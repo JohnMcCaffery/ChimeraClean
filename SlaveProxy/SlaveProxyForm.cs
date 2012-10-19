@@ -23,16 +23,17 @@ namespace SlaveProxy {
             public uint localID;
             public UUID id;
 
-            public string Name { get { return firstName + " " + lastName; }  
-                set {  
+            public string Name {
+                get { return firstName + " " + lastName; }
+                set {
                     String[] split = value.Split(' ');
                     firstName = split[0];
                     lastName = split[1];
                 }
             }
-            public UUID ID { 
-                get { return id; } 
-                set { id = value; } 
+            public UUID ID {
+                get { return id; }
+                set { id = value; }
             }
 
             public Avatar(string firstName, string lastName, uint localID, UUID id) {
@@ -48,9 +49,12 @@ namespace SlaveProxy {
         }
 
         private XMLRPCSlave slaveClient;
-        private int packetCount = 0;
         private Queue<Packet> packetsToProcess = new Queue<Packet>();
+        private int packetCount = 0;
+        private Avatar selectedAvatar;
         private bool loggedIn = false;
+        private bool processAgentUpdates = false;
+        private bool processObjectUpdates = false;
 
         public SlaveProxyForm() {
             InitializeComponent();
@@ -69,8 +73,9 @@ namespace SlaveProxy {
             //}
 
             proxyPanel.Proxy.AddDelegate(PacketType.ObjectUpdate, Direction.Incoming, ObjectUpdatePacketReceived);
-            proxyPanel.Proxy.AddDelegate(PacketType.ImprovedTerseObjectUpdate, Direction.Incoming, (p, ep) => { 
-                ProcessImprovedTersePacket((ImprovedTerseObjectUpdatePacket)p);
+            proxyPanel.Proxy.AddDelegate(PacketType.ImprovedTerseObjectUpdate, Direction.Incoming, (p, ep) => {
+                if (processObjectUpdates)
+                    ProcessImprovedTersePacket((ImprovedTerseObjectUpdatePacket)p);
                 return p;
             });
 
@@ -82,14 +87,14 @@ namespace SlaveProxy {
         }
 
         private Nwc.XmlRpc.XmlRpcResponse LoginResponseReceived(Nwc.XmlRpc.XmlRpcResponse response) {
-                    Nwc.XmlRpc.XmlRpcResponse masterResponse = slaveClient.MasterResponse;
-                    new Thread(() => {
-                        Thread.Sleep(1000);
-                        ProcessPackets();
-                        loggedIn = true;
-                    }).Start();
-                    //return masterResponse != null ? masterResponse : response;
-                    return response;
+            Nwc.XmlRpc.XmlRpcResponse masterResponse = slaveClient.MasterResponse;
+            new Thread(() => {
+                Thread.Sleep(1000);
+                ProcessPackets();
+                loggedIn = true;
+            }).Start();
+            //return masterResponse != null ? masterResponse : response;
+            return response;
         }
 
         private Packet ObjectUpdatePacketReceived(Packet p, IPEndPoint ep) {
@@ -113,9 +118,9 @@ namespace SlaveProxy {
         }
 
         private Packet MasterPacketReceived(Packet p, IPEndPoint ep) {
-            //if (p.Type == PacketType.ImprovedTerseObjectUpdate)
-                //ProcessImprovedTersePacket((ImprovedTerseObjectUpdatePacket)p);
-
+            if (processAgentUpdates && p.Type == PacketType.AgentUpdate)
+                AgentUpdatePacketReceived((AgentUpdatePacket)p, ep);
+            
             packetCount++;
             Invoke(new Action(() => {
                 countLabel.Text = slaveClient.ReceivedPackets + "";
@@ -124,115 +129,71 @@ namespace SlaveProxy {
             }));
 
             //if (p.Type != PacketType.ImprovedTerseObjectUpdate) {
-                //lock (packetsToProcess)
-                    //packetsToProcess.Enqueue(p);
+            //lock (packetsToProcess)
+            //packetsToProcess.Enqueue(p);
             //}
             return p;
         }
 
-        private uint selectedID = 0;
-        private DateTime prev = DateTime.Now;
+        private Packet AgentUpdatePacketReceived(AgentUpdatePacket  p, IPEndPoint ep) {
+            if (selectedAvatar != null && selectedAvatar.id == p.AgentData.AgentID) {
+                positionPanel.Value = p.AgentData.CameraAtAxis;
+                rotationPanel.Vector = p.AgentData.CameraCenter;
+                velocityPanel.Value = Vector3.Zero;
+                accelerationPanel.Value = Vector3.Zero;
+                rotationalVelocityPanel.Value = Vector3.Zero;
+            }
+            return p;
+        }
 
         private void ProcessImprovedTersePacket(ImprovedTerseObjectUpdatePacket p) {
-                byte[] block = p.ObjectData[0].Data;
+            byte[] block = p.ObjectData[0].Data;
 
-                if (selectedID == Utils.BytesToUInt(block, 0)) {
-                    Vector3 position = new Vector3(block, 0x16) + (Vector3.UnitZ * 2f);
-                    Vector3 velocity = new Vector3(
-                        Utils.UInt16ToFloat(block, 0x22, -128.0f, 128.0f),
-                        Utils.UInt16ToFloat(block, 0x22 + 2, -128.0f, 128.0f),
-                        Utils.UInt16ToFloat(block, 0x22 + 4, -128.0f, 128.0f));
-                    Vector3 acceleration = new Vector3(
-                        Utils.UInt16ToFloat(block, 0x28, -128.0f, 128.0f),
-                        Utils.UInt16ToFloat(block, 0x28 + 2, -128.0f, 128.0f),
-                        Utils.UInt16ToFloat(block, 0x28 + 4, -128.0f, 128.0f));
-                    Quaternion rotation = new Quaternion(
-                        Utils.UInt16ToFloat(block, 0x2E, -1.0f, 1.0f),
-                        Utils.UInt16ToFloat(block, 0x2E + 2, -1.0f, 1.0f),
-                        Utils.UInt16ToFloat(block, 0x2E + 4, -1.0f, 1.0f),
-                        Utils.UInt16ToFloat(block, 0x2E + 6, -1.0f, 1.0f));
-                    Vector3 rotationalVelocity = new Vector3(
-                        Utils.UInt16ToFloat(block, 0x36, -64.0f, 64.0f),
-                        Utils.UInt16ToFloat(block, 0x36 + 2, -64.0f, 64.0f),
-                        Utils.UInt16ToFloat(block, 0x36 + 4, -64.0f, 64.0f));
+            if (selectedAvatar.localID == Utils.BytesToUInt(block, 0)) {
+                Vector3 position = new Vector3(block, 0x16) + (Vector3.UnitZ * 2f);
+                Vector3 velocity = new Vector3(
+                    Utils.UInt16ToFloat(block, 0x22, -128.0f, 128.0f),
+                    Utils.UInt16ToFloat(block, 0x22 + 2, -128.0f, 128.0f),
+                    Utils.UInt16ToFloat(block, 0x22 + 4, -128.0f, 128.0f));
+                Vector3 acceleration = new Vector3(
+                    Utils.UInt16ToFloat(block, 0x28, -128.0f, 128.0f),
+                    Utils.UInt16ToFloat(block, 0x28 + 2, -128.0f, 128.0f),
+                    Utils.UInt16ToFloat(block, 0x28 + 4, -128.0f, 128.0f));
+                Quaternion rotation = new Quaternion(
+                    Utils.UInt16ToFloat(block, 0x2E, -1.0f, 1.0f),
+                    Utils.UInt16ToFloat(block, 0x2E + 2, -1.0f, 1.0f),
+                    Utils.UInt16ToFloat(block, 0x2E + 4, -1.0f, 1.0f),
+                    Utils.UInt16ToFloat(block, 0x2E + 6, -1.0f, 1.0f));
+                Vector3 rotationalVelocity = new Vector3(
+                    Utils.UInt16ToFloat(block, 0x36, -64.0f, 64.0f),
+                    Utils.UInt16ToFloat(block, 0x36 + 2, -64.0f, 64.0f),
+                    Utils.UInt16ToFloat(block, 0x36 + 4, -64.0f, 64.0f));
 
+                /*
+                setFollowCamPropertiesPanel.Position = position;
+                setFollowCamPropertiesPanel.Velocity = velocity;
+                setFollowCamPropertiesPanel.Acceleration = acceleration;
+                setFollowCamPropertiesPanel.Rotation = rotation;
+                setFollowCamPropertiesPanel.AngularAcceleration = rotationalVelocity;
+                */
 
-                    Console.WriteLine(position);
-                    if (setFollowCamPropertiesPanel.Velocity.Length() > 0) {
-                        float x = 1000;
-                        double diff = DateTime.Now.Subtract(prev).TotalMilliseconds;
-                        prev = DateTime.Now;
-
-                        Vector3 posDif = (position - setFollowCamPropertiesPanel.Position) * x;
-                        Vector3 scale = posDif / (setFollowCamPropertiesPanel.Velocity * (float)diff);
-
-                        //.99
-                        /*
-                        ((n - o) * 1000) / v * diff = .99
-                        n = (.99diff * v) + o
-                         */
-                    }
-
-                    setFollowCamPropertiesPanel.Position = position;
-                    setFollowCamPropertiesPanel.Velocity = velocity;
-                    setFollowCamPropertiesPanel.Acceleration = acceleration;
-                    setFollowCamPropertiesPanel.Rotation = rotation;
-                    setFollowCamPropertiesPanel.AngularAcceleration = rotationalVelocity;
-
-                    positionPanel.Value = position;
-                    velocityPanel.Value = velocity;
-                    accelerationPanel.Value = acceleration;
-                    rotationPanel.Vector = Vector3.UnitX * rotation;
-                    rotationalVelocityPanel.Value = rotationalVelocity;
-
-                    /*
-                    SetFollowCamPropertiesPacket packet = new SetFollowCamPropertiesPacket();
-                    packet.CameraProperty = new SetFollowCamPropertiesPacket.CameraPropertyBlock[22];
-                    for (int j = 0; j < 22; j++) {
-                        packet.CameraProperty[j] = new SetFollowCamPropertiesPacket.CameraPropertyBlock();
-                        packet.CameraProperty[j].Type = j + 1;
-                    }
-                    //Vector3 focus = positionVectorPanel.Value + focusRotationPanel.Value;
-                    Vector3 focusVector = Vector3.UnitX * rot;
-                    Vector3 focus = focusVector + pos;
-
-                    packet.CameraProperty[0].Value = 0;
-                    packet.CameraProperty[1].Value = 0;
-                    packet.CameraProperty[2].Value = 0;
-                    packet.CameraProperty[3].Value = 0;
-                    packet.CameraProperty[4].Value = 0;
-                    packet.CameraProperty[5].Value = 0;
-                    packet.CameraProperty[6].Value = 0;
-                    packet.CameraProperty[7].Value = 0;
-                    packet.CameraProperty[8].Value = 0;
-                    packet.CameraProperty[9].Value = 0;
-                    packet.CameraProperty[10].Value = 0;
-                    packet.CameraProperty[11].Value = 1f;
-                    packet.CameraProperty[12].Value = 0f;
-                    packet.CameraProperty[13].Value = pos.X;
-                    packet.CameraProperty[14].Value = pos.Y;
-                    packet.CameraProperty[15].Value = pos.Z;
-                    packet.CameraProperty[16].Value = 0f;
-                    packet.CameraProperty[17].Value = focus.X;
-                    packet.CameraProperty[18].Value = focus.Y;
-                    packet.CameraProperty[19].Value = focus.Z;
-                    packet.CameraProperty[20].Value = 1f;
-                    packet.CameraProperty[21].Value = 1f;
-
-                    proxyPanel.Proxy.InjectPacket(packet, Direction.Incoming);
-                    */
-                }
+                positionPanel.Value = position;
+                velocityPanel.Value = velocity;
+                accelerationPanel.Value = acceleration;
+                rotationPanel.Vector = Vector3.UnitX * rotation;
+                rotationalVelocityPanel.Value = rotationalVelocity;
+            }
         }
 
         private void Pinged() {
-                Invoke(new Action(() => {
-                    nameBox.Enabled = false;
-                    masterURIBox.Enabled = false;
-                    connectButton.Enabled = false;
-                    portBox.Enabled = false;
-                    xmlRpcPortBox.Enabled = false;
-                    listenIPBox.Enabled = false;
-                }));
+            Invoke(new Action(() => {
+                nameBox.Enabled = false;
+                masterURIBox.Enabled = false;
+                connectButton.Enabled = false;
+                portBox.Enabled = false;
+                xmlRpcPortBox.Enabled = false;
+                listenIPBox.Enabled = false;
+            }));
         }
 
         private void connectButton_Click(object sender, EventArgs e) {
@@ -263,17 +224,14 @@ namespace SlaveProxy {
         }
 
         private void updateTimer_Tick(object sender, EventArgs e) {
-            if (proxyPanel.HasStarted && selectedID > 0)
+            if (proxyPanel.HasStarted && selectedAvatar != null && selectedAvatar.localID > 0)
                 //new Thread(() => {
-                    proxyPanel.Proxy.InjectPacket(setFollowCamPropertiesPanel.Packet, Direction.Incoming);
-                //}).Start();
+                proxyPanel.Proxy.InjectPacket(setFollowCamPropertiesPanel.Packet, Direction.Incoming);
+            //}).Start();
         }
 
         private void avatarList_SelectedIndexChanged(object sender, EventArgs e) {
-            if (avatarList.SelectedItem == null)
-                selectedID = 0;
-            else
-                selectedID = ((Avatar)avatarList.SelectedItem).localID;
+            selectedAvatar = (Avatar)avatarList.SelectedItem;
         }
 
         private void positionPanel_OnChange(object sender, EventArgs e) {
@@ -284,45 +242,51 @@ namespace SlaveProxy {
             setFollowCamPropertiesPanel.Rotation = rotationPanel.Rotation;
         }
 
+        private void processAgentUpdatesCheck_CheckedChanged(object sender, EventArgs e) {
+            processAgentUpdates = processAgentUpdatesCheck.Checked;
+        }
+
+        private void processObjectUpdatesCheck_CheckedChanged(object sender, EventArgs e) {
+            processObjectUpdates = processObjectUpdatesCheck.Checked;
         }
     }
-    /*
-                ImprovedTerseObjectUpdatePacket packet = (ImprovedTerseObjectUpdatePacket)p;
-                //setCameraOffsetPropertiesPanel.Position = packet.ObjectData[0].Data; 
-                
-                byte[] block = packet.ObjectData[0].Data;
-                int i = 4;
-
-                StringBuilder result = new StringBuilder();
-                uint localId = Utils.BytesToUInt(block, 0);
-                byte attachmentPoint = block[i++];
-                bool isAvatar = (block[i++] != 0);
-
-                // Collision normal for avatar
-                if (isAvatar) {
-                    Vector4 collisionNormal = new Vector4(block, i);
-                    i += 16;
-                }
-
-                Vector3 position = new Vector3(block, i);
-                i += 12;
-                Vector3 acceleration = new Vector3(
-                    Utils.UInt16ToFloat(block, i, -128.0f, 128.0f),
-                    Utils.UInt16ToFloat(block, i + 2, -128.0f, 128.0f),
-                    Utils.UInt16ToFloat(block, i + 4, -128.0f, 128.0f));
-
-                i += 6;
-                Quaternion rotation = new Quaternion(
-                    Utils.UInt16ToFloat(block, i, -1.0f, 1.0f),
-                    Utils.UInt16ToFloat(block, i + 2, -1.0f, 1.0f),
-                    Utils.UInt16ToFloat(block, i + 4, -1.0f, 1.0f),
-                    Utils.UInt16ToFloat(block, i + 6, -1.0f, 1.0f));
-                                      
-                i += 8;
-                // Angular velocity (omega)
-                Vector3 anglularVelocity = new Vector3(
-                    Utils.UInt16ToFloat(block, i, -64.0f, 64.0f),
-                    Utils.UInt16ToFloat(block, i + 2, -64.0f, 64.0f),
-                    Utils.UInt16ToFloat(block, i + 4, -64.0f, 64.0f));
-    */
 }
+/*
+            ImprovedTerseObjectUpdatePacket packet = (ImprovedTerseObjectUpdatePacket)p;
+            //setCameraOffsetPropertiesPanel.Position = packet.ObjectData[0].Data; 
+                
+            byte[] block = packet.ObjectData[0].Data;
+            int i = 4;
+
+            StringBuilder result = new StringBuilder();
+            uint localId = Utils.BytesToUInt(block, 0);
+            byte attachmentPoint = block[i++];
+            bool isAvatar = (block[i++] != 0);
+
+            // Collision normal for avatar
+            if (isAvatar) {
+                Vector4 collisionNormal = new Vector4(block, i);
+                i += 16;
+            }
+
+            Vector3 position = new Vector3(block, i);
+            i += 12;
+            Vector3 acceleration = new Vector3(
+                Utils.UInt16ToFloat(block, i, -128.0f, 128.0f),
+                Utils.UInt16ToFloat(block, i + 2, -128.0f, 128.0f),
+                Utils.UInt16ToFloat(block, i + 4, -128.0f, 128.0f));
+
+            i += 6;
+            Quaternion rotation = new Quaternion(
+                Utils.UInt16ToFloat(block, i, -1.0f, 1.0f),
+                Utils.UInt16ToFloat(block, i + 2, -1.0f, 1.0f),
+                Utils.UInt16ToFloat(block, i + 4, -1.0f, 1.0f),
+                Utils.UInt16ToFloat(block, i + 6, -1.0f, 1.0f));
+                                      
+            i += 8;
+            // Angular velocity (omega)
+            Vector3 anglularVelocity = new Vector3(
+                Utils.UInt16ToFloat(block, i, -64.0f, 64.0f),
+                Utils.UInt16ToFloat(block, i + 2, -64.0f, 64.0f),
+                Utils.UInt16ToFloat(block, i + 4, -64.0f, 64.0f));
+*/

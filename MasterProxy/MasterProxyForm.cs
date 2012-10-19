@@ -18,15 +18,16 @@ using OpenMetaverse;
 namespace MasterProxy {
     public partial class MasterProxyForm : Form {
         private XMLRPCMaster masterServer;
-        private int packetCount = 0;
         private Queue<object> newSlaves = new Queue<object>();
         private Dictionary<string, bool> forwardedPackets = new Dictionary<string, bool>();
         private HashSet<PacketType> enabledPackets = new HashSet<PacketType>();
+        private int packetCount = 0;
+        private bool forwardLogin;
         
         public MasterProxyForm() {
             enabledPackets.Add(PacketType.AgentUpdate);
-            enabledPackets.Add(PacketType.ObjectUpdate);
-            enabledPackets.Add(PacketType.ImprovedTerseObjectUpdate);
+            //enabledPackets.Add(PacketType.ObjectUpdate);
+            //enabledPackets.Add(PacketType.ImprovedTerseObjectUpdate);
 
             InitializeComponent();
 
@@ -75,11 +76,12 @@ namespace MasterProxy {
         private void proxyPanel_Started(object sender, EventArgs e) {
             foreach (PacketType pt in Enum.GetValues(typeof(PacketType))) {
                 proxyPanel.Proxy.AddDelegate(pt, Direction.Incoming, BroadcastPacket);
-                proxyPanel.Proxy.AddDelegate(pt, Direction.Incoming, BroadcastPacket);
+                proxyPanel.Proxy.AddDelegate(pt, Direction.Outgoing, BroadcastPacket);
             }
 
             proxyPanel.Proxy.AddLoginResponseDelegate(response => {
-                masterServer.SetLoginResponse(response); 
+                if (forwardLogin)
+                    masterServer.SetLoginResponse(response); 
                 return response;
             });
         }
@@ -92,6 +94,10 @@ namespace MasterProxy {
 
         private void packetList_ItemChecked(object sender, ItemCheckedEventArgs e) {
             forwardedPackets[e.Item.Text] = e.Item.Checked;
+        }
+
+        private void forwardLoginCheck_CheckedChanged(object sender, EventArgs e) {
+            forwardLogin = forwardLoginCheck.Checked;
         }
     }
 }

@@ -55,11 +55,14 @@ namespace UtilLib {
 
         public void BroadcastPacket(Packet packet) {
             //new Thread(() => {
+            //if (slaves.Count > 0) {
+                byte[] buffer = packet.ToBytes();
+                int end = buffer.Length - 1;
                 lock (slaves)
-                    foreach (var slave in slaveEPs) {
-                        byte[] buffer = packet.ToBytes();
+                    foreach (UdpClient slave in slaveEPs)
                         slave.Send(buffer, buffer.Length);
-                    }
+                Packet p = Packet.BuildPacket(buffer, ref end, new byte[8192]);
+            //}
             //}).Start();
         }
 

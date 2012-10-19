@@ -45,6 +45,8 @@
             this.unprocessedPacketsLabel = new System.Windows.Forms.Label();
             this.tabContainer = new System.Windows.Forms.TabControl();
             this.networkTab = new System.Windows.Forms.TabPage();
+            this.processObjectUpdatesCheck = new System.Windows.Forms.CheckBox();
+            this.processAgentUpdatesCheck = new System.Windows.Forms.CheckBox();
             this.cameraTab = new System.Windows.Forms.TabPage();
             this.setFollowCamPropertiesPanel = new UtilLib.SetFollowCamPropertiesPanel();
             this.avatarsTab = new System.Windows.Forms.TabPage();
@@ -78,7 +80,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.masterURIBox.Location = new System.Drawing.Point(130, 34);
             this.masterURIBox.Name = "masterURIBox";
-            this.masterURIBox.Size = new System.Drawing.Size(800, 20);
+            this.masterURIBox.Size = new System.Drawing.Size(330, 20);
             this.masterURIBox.TabIndex = 2;
             this.masterURIBox.Text = "http://localhost:5678/Master.rem";
             // 
@@ -88,7 +90,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.connectButton.Location = new System.Drawing.Point(181, 6);
             this.connectButton.Name = "connectButton";
-            this.connectButton.Size = new System.Drawing.Size(749, 23);
+            this.connectButton.Size = new System.Drawing.Size(279, 23);
             this.connectButton.TabIndex = 3;
             this.connectButton.Text = "Connect";
             this.connectButton.UseVisualStyleBackColor = true;
@@ -114,7 +116,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.listenIPBox.Location = new System.Drawing.Point(130, 86);
             this.listenIPBox.Name = "listenIPBox";
-            this.listenIPBox.Size = new System.Drawing.Size(800, 20);
+            this.listenIPBox.Size = new System.Drawing.Size(330, 20);
             this.listenIPBox.TabIndex = 9;
             this.listenIPBox.Text = "127.0.0.1";
             // 
@@ -236,11 +238,13 @@
             this.tabContainer.Location = new System.Drawing.Point(-1, 36);
             this.tabContainer.Name = "tabContainer";
             this.tabContainer.SelectedIndex = 0;
-            this.tabContainer.Size = new System.Drawing.Size(949, 599);
+            this.tabContainer.Size = new System.Drawing.Size(496, 387);
             this.tabContainer.TabIndex = 21;
             // 
             // networkTab
             // 
+            this.networkTab.Controls.Add(this.processObjectUpdatesCheck);
+            this.networkTab.Controls.Add(this.processAgentUpdatesCheck);
             this.networkTab.Controls.Add(this.label1);
             this.networkTab.Controls.Add(this.xmlRpcPortBox);
             this.networkTab.Controls.Add(this.label3);
@@ -261,10 +265,34 @@
             this.networkTab.Location = new System.Drawing.Point(4, 22);
             this.networkTab.Name = "networkTab";
             this.networkTab.Padding = new System.Windows.Forms.Padding(3);
-            this.networkTab.Size = new System.Drawing.Size(941, 573);
+            this.networkTab.Size = new System.Drawing.Size(471, 366);
             this.networkTab.TabIndex = 0;
             this.networkTab.Text = "Network";
             this.networkTab.UseVisualStyleBackColor = true;
+            // 
+            // processObjectUpdatesCheck
+            // 
+            this.processObjectUpdatesCheck.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.processObjectUpdatesCheck.AutoSize = true;
+            this.processObjectUpdatesCheck.Location = new System.Drawing.Point(319, 131);
+            this.processObjectUpdatesCheck.Name = "processObjectUpdatesCheck";
+            this.processObjectUpdatesCheck.Size = new System.Drawing.Size(141, 17);
+            this.processObjectUpdatesCheck.TabIndex = 22;
+            this.processObjectUpdatesCheck.Text = "Process Object Updates";
+            this.processObjectUpdatesCheck.UseVisualStyleBackColor = true;
+            this.processObjectUpdatesCheck.CheckedChanged += new System.EventHandler(this.processObjectUpdatesCheck_CheckedChanged);
+            // 
+            // processAgentUpdatesCheck
+            // 
+            this.processAgentUpdatesCheck.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.processAgentUpdatesCheck.AutoSize = true;
+            this.processAgentUpdatesCheck.Location = new System.Drawing.Point(319, 112);
+            this.processAgentUpdatesCheck.Name = "processAgentUpdatesCheck";
+            this.processAgentUpdatesCheck.Size = new System.Drawing.Size(138, 17);
+            this.processAgentUpdatesCheck.TabIndex = 21;
+            this.processAgentUpdatesCheck.Text = "Process Agent Updates";
+            this.processAgentUpdatesCheck.UseVisualStyleBackColor = true;
+            this.processAgentUpdatesCheck.CheckedChanged += new System.EventHandler(this.processAgentUpdatesCheck_CheckedChanged);
             // 
             // cameraTab
             // 
@@ -273,7 +301,7 @@
             this.cameraTab.Location = new System.Drawing.Point(4, 22);
             this.cameraTab.Name = "cameraTab";
             this.cameraTab.Padding = new System.Windows.Forms.Padding(3);
-            this.cameraTab.Size = new System.Drawing.Size(941, 573);
+            this.cameraTab.Size = new System.Drawing.Size(488, 361);
             this.cameraTab.TabIndex = 1;
             this.cameraTab.Text = "Camera";
             this.cameraTab.UseVisualStyleBackColor = true;
@@ -287,7 +315,7 @@
             this.setFollowCamPropertiesPanel.Name = "setFollowCamPropertiesPanel";
             this.setFollowCamPropertiesPanel.Position = ((OpenMetaverse.Vector3)(resources.GetObject("setFollowCamPropertiesPanel.Position")));
             this.setFollowCamPropertiesPanel.Rotation = ((OpenMetaverse.Quaternion)(resources.GetObject("setFollowCamPropertiesPanel.Rotation")));
-            this.setFollowCamPropertiesPanel.Size = new System.Drawing.Size(935, 567);
+            this.setFollowCamPropertiesPanel.Size = new System.Drawing.Size(482, 355);
             this.setFollowCamPropertiesPanel.TabIndex = 0;
             this.setFollowCamPropertiesPanel.Velocity = ((OpenMetaverse.Vector3)(resources.GetObject("setFollowCamPropertiesPanel.Velocity")));
             // 
@@ -297,7 +325,7 @@
             this.avatarsTab.Location = new System.Drawing.Point(4, 22);
             this.avatarsTab.Name = "avatarsTab";
             this.avatarsTab.Padding = new System.Windows.Forms.Padding(3);
-            this.avatarsTab.Size = new System.Drawing.Size(941, 573);
+            this.avatarsTab.Size = new System.Drawing.Size(467, 419);
             this.avatarsTab.TabIndex = 2;
             this.avatarsTab.Text = "Avatars";
             this.avatarsTab.UseVisualStyleBackColor = true;
@@ -308,7 +336,7 @@
             this.avatarList.FormattingEnabled = true;
             this.avatarList.Location = new System.Drawing.Point(3, 3);
             this.avatarList.Name = "avatarList";
-            this.avatarList.Size = new System.Drawing.Size(935, 567);
+            this.avatarList.Size = new System.Drawing.Size(461, 413);
             this.avatarList.TabIndex = 22;
             this.avatarList.SelectedIndexChanged += new System.EventHandler(this.avatarList_SelectedIndexChanged);
             // 
@@ -323,7 +351,7 @@
             this.packetTab.Location = new System.Drawing.Point(4, 22);
             this.packetTab.Name = "packetTab";
             this.packetTab.Padding = new System.Windows.Forms.Padding(3);
-            this.packetTab.Size = new System.Drawing.Size(941, 573);
+            this.packetTab.Size = new System.Drawing.Size(498, 366);
             this.packetTab.TabIndex = 3;
             this.packetTab.Text = "Packet";
             this.packetTab.UseVisualStyleBackColor = true;
@@ -337,7 +365,7 @@
             this.velocityPanel.Max = 32D;
             this.velocityPanel.Min = -32D;
             this.velocityPanel.Name = "velocityPanel";
-            this.velocityPanel.Size = new System.Drawing.Size(910, 98);
+            this.velocityPanel.Size = new System.Drawing.Size(878, 98);
             this.velocityPanel.TabIndex = 4;
             this.velocityPanel.Value = ((OpenMetaverse.Vector3)(resources.GetObject("velocityPanel.Value")));
             this.velocityPanel.X = 0F;
@@ -353,7 +381,7 @@
             this.rotationalVelocityPanel.Max = 32D;
             this.rotationalVelocityPanel.Min = -32D;
             this.rotationalVelocityPanel.Name = "rotationalVelocityPanel";
-            this.rotationalVelocityPanel.Size = new System.Drawing.Size(910, 98);
+            this.rotationalVelocityPanel.Size = new System.Drawing.Size(878, 98);
             this.rotationalVelocityPanel.TabIndex = 3;
             this.rotationalVelocityPanel.Value = ((OpenMetaverse.Vector3)(resources.GetObject("rotationalVelocityPanel.Value")));
             this.rotationalVelocityPanel.X = 0F;
@@ -369,7 +397,7 @@
             this.accelerationPanel.Max = 32D;
             this.accelerationPanel.Min = -32D;
             this.accelerationPanel.Name = "accelerationPanel";
-            this.accelerationPanel.Size = new System.Drawing.Size(910, 98);
+            this.accelerationPanel.Size = new System.Drawing.Size(878, 98);
             this.accelerationPanel.TabIndex = 2;
             this.accelerationPanel.Value = ((OpenMetaverse.Vector3)(resources.GetObject("accelerationPanel.Value")));
             this.accelerationPanel.X = 0F;
@@ -385,7 +413,7 @@
             this.positionPanel.Max = 256D;
             this.positionPanel.Min = 0D;
             this.positionPanel.Name = "positionPanel";
-            this.positionPanel.Size = new System.Drawing.Size(910, 98);
+            this.positionPanel.Size = new System.Drawing.Size(878, 98);
             this.positionPanel.TabIndex = 1;
             this.positionPanel.Value = ((OpenMetaverse.Vector3)(resources.GetObject("positionPanel.Value")));
             this.positionPanel.X = 0F;
@@ -401,7 +429,7 @@
             this.rotationPanel.Location = new System.Drawing.Point(9, 114);
             this.rotationPanel.Name = "rotationPanel";
             this.rotationPanel.Rotation = ((OpenMetaverse.Quaternion)(resources.GetObject("rotationPanel.Rotation")));
-            this.rotationPanel.Size = new System.Drawing.Size(910, 147);
+            this.rotationPanel.Size = new System.Drawing.Size(878, 147);
             this.rotationPanel.TabIndex = 0;
             this.rotationPanel.Vector = ((OpenMetaverse.Vector3)(resources.GetObject("rotationPanel.Vector")));
             this.rotationPanel.OnChange += new System.EventHandler(this.rotationPanel_OnChange);
@@ -421,14 +449,14 @@
             this.proxyPanel.LoginURI = "http://localhost:9000";
             this.proxyPanel.Name = "proxyPanel";
             this.proxyPanel.Port = "8081";
-            this.proxyPanel.Size = new System.Drawing.Size(949, 29);
+            this.proxyPanel.Size = new System.Drawing.Size(496, 29);
             this.proxyPanel.TabIndex = 13;
             // 
             // SlaveProxyForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(945, 626);
+            this.ClientSize = new System.Drawing.Size(492, 420);
             this.Controls.Add(this.tabContainer);
             this.Controls.Add(this.proxyPanel);
             this.Name = "SlaveProxyForm";
@@ -478,6 +506,8 @@
         private ProxyTestGUI.RotationPanel rotationPanel;
         private ProxyTestGUI.VectorPanel rotationalVelocityPanel;
         private ProxyTestGUI.VectorPanel velocityPanel;
+        private System.Windows.Forms.CheckBox processObjectUpdatesCheck;
+        private System.Windows.Forms.CheckBox processAgentUpdatesCheck;
     }
 }
 
