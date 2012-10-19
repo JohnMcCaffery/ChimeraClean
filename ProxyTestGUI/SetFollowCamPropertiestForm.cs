@@ -12,32 +12,6 @@ using OpenMetaverse.Packets;
 using System.Collections;
 using System.Threading;
 
-/*
-1   FOLLOWCAM_PITCH = 0,
-2   FOLLOWCAM_FOCUS_OFFSET,
-3   FOLLOWCAM_FOCUS_OFFSET_X, //this HAS to come after FOLLOWCAM_FOCUS_OFFSET in this list
-4   FOLLOWCAM_FOCUS_OFFSET_Y,
-5   FOLLOWCAM_FOCUS_OFFSET_Z,
-6   FOLLOWCAM_POSITION_LAG,
-7   FOLLOWCAM_FOCUS_LAG,
-8   FOLLOWCAM_DISTANCE,
-9   FOLLOWCAM_BEHINDNESS_ANGLE,
-10  FOLLOWCAM_BEHINDNESS_LAG,
-11  FOLLOWCAM_POSITION_THRESHOLD,
-12  FOLLOWCAM_FOCUS_THRESHOLD,
-13  FOLLOWCAM_ACTIVE,
-14  FOLLOWCAM_POSITION,
-15  FOLLOWCAM_POSITION_X, //this HAS to come after FOLLOWCAM_POSITION in this list
-16  FOLLOWCAM_POSITION_Y,
-17  FOLLOWCAM_POSITION_Z,
-18  FOLLOWCAM_FOCUS,
-19  FOLLOWCAM_FOCUS_X, //this HAS to come after FOLLOWCAM_FOCUS in this list
-20  FOLLOWCAM_FOCUS_Y,
-21  FOLLOWCAM_FOCUS_Z,
-22  FOLLOWCAM_POSITION_LOCKED,
-23  FOLLOWCAM_FOCUS_LOCKED,
-24  NUM_FOLLOWCAM_ATTRIBUTES
-*/
 
 namespace ProxyTestGUI {
     public partial class SetFollowCamPropertiestForm : Form {
@@ -77,9 +51,9 @@ namespace ProxyTestGUI {
             string file = AppDomain.CurrentDomain.SetupInformation.ConfigurationFile;
 
             string port = "8080";
-            string listenIP = "138.251.194.192";
-            //string listenIP = "127.0.0.1";
-            string loginURI = "http://apollo.cs.st-andrews.ac.uk";
+            //string listenIP = "138.251.194.192";
+            string listenIP = "127.0.0.1";
+            string loginURI = "http://apollo.cs.st-andrews.ac.uk:8002";
 
             string portArg = "--proxy-login-port="+port;
             string listenIPArg = "--proxy-client-facing-address="+listenIP;
@@ -89,6 +63,7 @@ namespace ProxyTestGUI {
             mProxy = new Proxy(config);
             mProxy.AddLoginResponseDelegate(response => {
                 mLoggedIn = true;
+                return response;
             });
             mProxy.AddDelegate(PacketType.ObjectUpdate, Direction.Incoming, (p, ep) => {
                 ObjectUpdatePacket packet = (ObjectUpdatePacket) p;
@@ -113,7 +88,7 @@ namespace ProxyTestGUI {
 
             InitializeComponent();
 
-            focusRotationPanel.Value = Vector3.UnitX;
+            focusRotationPanel.Vector = Vector3.UnitX;
         }
 
         private void updateTimer_Tick(object sender, EventArgs e) {
@@ -128,7 +103,7 @@ namespace ProxyTestGUI {
                 packet.CameraProperty[i].Type = i+1;
             }
 
-            Vector3 focus = positionVectorPanel.Value + focusRotationPanel.Value;
+            Vector3 focus = positionVectorPanel.Value + focusRotationPanel.Vector;
 
             packet.CameraProperty[0].Value = (float) type1Value.Value;
             packet.CameraProperty[1].Value = (float) type2Value.Value;

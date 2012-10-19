@@ -13,71 +13,84 @@ using UtilLib;
 using OpenMetaverse.Packets;
 using GridProxy;
 using System.Net;
+using OpenMetaverse;
 
 namespace MasterProxy {
     public partial class MasterProxyForm : Form {
         private XMLRPCMaster masterServer;
-        private Proxy proxy;
         private int packetCount = 0;
-        private bool loggedIn = false;
         private Queue<object> newSlaves = new Queue<object>();
+        private Dictionary<string, bool> forwardedPackets = new Dictionary<string, bool>();
+        private HashSet<PacketType> enabledPackets = new HashSet<PacketType>();
         
         public MasterProxyForm() {
+            enabledPackets.Add(PacketType.AgentUpdate);
+            enabledPackets.Add(PacketType.ObjectUpdate);
+            enabledPackets.Add(PacketType.ImprovedTerseObjectUpdate);
+
             InitializeComponent();
 
             masterServer = new XMLRPCMaster();
-            masterServer.SlaveConnected += (source, args) => {
+            masterServer.OnSlaveConnected += (source, args) => {
                 lock (newSlaves)
                     newSlaves.Enqueue(source);
             };
+
+            foreach (PacketType pt in Enum.GetValues(typeof(PacketType))) {
+                ListViewItem item = packetList.Items.Add(pt.ToString());
+                item.Checked = enabledPackets.Contains(pt) || selectAll.Checked;
+                forwardedPackets[item.Text] = item.Checked;
+            }
         }
 
         private void listTimer_Tick(object sender, EventArgs e) {
+            packetCountLabel.Text = packetCount + "";
             lock(newSlaves)
                 while (newSlaves.Count > 0)
                     slavesListBox.Items.Add(newSlaves.Dequeue());
-            if (loggedIn) {
-                loggedInLabel.Text = "Logged In";
-                connectButton.Enabled = false;
-                portBox.Enabled = false;
-                listenIPBox.Enabled = false;
-                loginURIBox.Enabled = false;
-            }
         }
 
         private Packet BroadcastPacket(Packet p, IPEndPoint ep) {
-            /*
-            if (p.GetType() == typeof(ImprovedTerseObjectUpdatePacket)) {
-                //Process terse packet
-            } else if (p.GetType() == typeof(AgentUpdatePacket)) {
-                //Process agent update packet
-            }
-            if (p != null)
+            if (forwardedPackets[p.Type.ToString()]) {
+                /*
+                if (p.GetType() == typeof(ImprovedTerseObjectUpdatePacket)) {
+                    //Process terse packet
+                } else if (p.GetType() == typeof(AgentUpdatePacket)) {
+                    //Process agent update packet
+                }
+                if (p != null)
+                    masterServer.BroadcastPacket(p);
+                */
                 masterServer.BroadcastPacket(p);
-            */
-            masterServer.BroadcastPacket(p);
-            packetCount++;
-            packetCountLabel.Text = packetCount + "";
+                packetCount++;
+            }
             return p;
         }
 
-        private void connectButton_Click(object sender, EventArgs e) {
-            string file = AppDomain.CurrentDomain.SetupInformation.ConfigurationFile;
+        private void MasterProxyForm_FormClosing(object sender, FormClosingEventArgs e) {
+            if (proxyPanel.HasStarted)
+                proxyPanel.Proxy.Stop();
+        }
 
-            string portArg = "--proxy-login-port="+portBox.Text;
-            string listenIPArg = "--proxy-client-facing-address="+listenIPBox.Text;
-            string loginURIArg = "--proxy-remote-login-uri="+loginURIBox.Text;
-            string[] args = { portArg, listenIPArg, loginURIArg };
-            ProxyConfig config = new ProxyConfig("Routing God", "jm726@st-andrews.ac.uk", args);
-            proxy = new Proxy(config);
-            proxy.AddLoginResponseDelegate(response => {
-                loggedIn = true;
+        private void proxyPanel_Started(object sender, EventArgs e) {
+            foreach (PacketType pt in Enum.GetValues(typeof(PacketType))) {
+                proxyPanel.Proxy.AddDelegate(pt, Direction.Incoming, BroadcastPacket);
+            }
+
+            proxyPanel.Proxy.AddLoginResponseDelegate(response => {
+                masterServer.SetLoginResponse(response); 
+                return response;
             });
+        }
 
-            foreach (PacketType packetType in Enum.GetValues(typeof(PacketType))) 
-                proxy.AddDelegate(packetType, Direction.Incoming, BroadcastPacket);
+        private void selectAll_CheckedChanged(object sender, EventArgs e) {
+            foreach (ListViewItem item in packetList.Items) {
+                item.Checked = selectAll.Checked;
+            }
+        }
 
-            masterServer.BroadcastPacket(new ImprovedTerseObjectUpdatePacket());
+        private void packetList_ItemChecked(object sender, ItemCheckedEventArgs e) {
+            forwardedPackets[e.Item.Text] = e.Item.Checked;
         }
     }
 }
