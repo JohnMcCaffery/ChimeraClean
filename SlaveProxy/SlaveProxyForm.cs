@@ -131,6 +131,7 @@ namespace SlaveProxy {
         }
 
         private uint selectedID = 0;
+        private DateTime prev = DateTime.Now;
 
         private void ProcessImprovedTersePacket(ImprovedTerseObjectUpdatePacket p) {
                 byte[] block = p.ObjectData[0].Data;
@@ -155,6 +156,23 @@ namespace SlaveProxy {
                         Utils.UInt16ToFloat(block, 0x36 + 2, -64.0f, 64.0f),
                         Utils.UInt16ToFloat(block, 0x36 + 4, -64.0f, 64.0f));
 
+
+                    Console.WriteLine(position);
+                    if (setFollowCamPropertiesPanel.Velocity.Length() > 0) {
+                        float x = 1000;
+                        double diff = DateTime.Now.Subtract(prev).TotalMilliseconds;
+                        prev = DateTime.Now;
+
+                        Vector3 posDif = (position - setFollowCamPropertiesPanel.Position) * x;
+                        Vector3 scale = posDif / (setFollowCamPropertiesPanel.Velocity * (float)diff);
+
+                        //.99
+                        /*
+                        ((n - o) * 1000) / v * diff = .99
+                        n = (.99diff * v) + o
+                         */
+                    }
+
                     setFollowCamPropertiesPanel.Position = position;
                     setFollowCamPropertiesPanel.Velocity = velocity;
                     setFollowCamPropertiesPanel.Acceleration = acceleration;
@@ -165,7 +183,8 @@ namespace SlaveProxy {
                     velocityPanel.Value = velocity;
                     accelerationPanel.Value = acceleration;
                     rotationPanel.Vector = Vector3.UnitX * rotation;
-                    rotationalVelocityPanel.Value = rotationalVelocity;
+                    rotationalVelocityPanel.Value = rotationalVelocity;
+
                     /*
                     SetFollowCamPropertiesPacket packet = new SetFollowCamPropertiesPacket();
                     packet.CameraProperty = new SetFollowCamPropertiesPacket.CameraPropertyBlock[22];
@@ -245,9 +264,9 @@ namespace SlaveProxy {
 
         private void updateTimer_Tick(object sender, EventArgs e) {
             if (proxyPanel.HasStarted && selectedID > 0)
-                new Thread(() => {
+                //new Thread(() => {
                     proxyPanel.Proxy.InjectPacket(setFollowCamPropertiesPanel.Packet, Direction.Incoming);
-                }).Start();
+                //}).Start();
         }
 
         private void avatarList_SelectedIndexChanged(object sender, EventArgs e) {
@@ -255,6 +274,16 @@ namespace SlaveProxy {
                 selectedID = 0;
             else
                 selectedID = ((Avatar)avatarList.SelectedItem).localID;
+        }
+
+        private void positionPanel_OnChange(object sender, EventArgs e) {
+            setFollowCamPropertiesPanel.Position = positionPanel.Value;
+        }
+
+        private void rotationPanel_OnChange(object sender, EventArgs e) {
+            setFollowCamPropertiesPanel.Rotation = rotationPanel.Rotation;
+        }
+
         }
     }
     /*

@@ -261,7 +261,7 @@
             this.networkTab.Location = new System.Drawing.Point(4, 22);
             this.networkTab.Name = "networkTab";
             this.networkTab.Padding = new System.Windows.Forms.Padding(3);
-            this.networkTab.Size = new System.Drawing.Size(941, 403);
+            this.networkTab.Size = new System.Drawing.Size(941, 573);
             this.networkTab.TabIndex = 0;
             this.networkTab.Text = "Network";
             this.networkTab.UseVisualStyleBackColor = true;
@@ -273,7 +273,7 @@
             this.cameraTab.Location = new System.Drawing.Point(4, 22);
             this.cameraTab.Name = "cameraTab";
             this.cameraTab.Padding = new System.Windows.Forms.Padding(3);
-            this.cameraTab.Size = new System.Drawing.Size(941, 403);
+            this.cameraTab.Size = new System.Drawing.Size(941, 573);
             this.cameraTab.TabIndex = 1;
             this.cameraTab.Text = "Camera";
             this.cameraTab.UseVisualStyleBackColor = true;
@@ -287,7 +287,7 @@
             this.setFollowCamPropertiesPanel.Name = "setFollowCamPropertiesPanel";
             this.setFollowCamPropertiesPanel.Position = ((OpenMetaverse.Vector3)(resources.GetObject("setFollowCamPropertiesPanel.Position")));
             this.setFollowCamPropertiesPanel.Rotation = ((OpenMetaverse.Quaternion)(resources.GetObject("setFollowCamPropertiesPanel.Rotation")));
-            this.setFollowCamPropertiesPanel.Size = new System.Drawing.Size(935, 397);
+            this.setFollowCamPropertiesPanel.Size = new System.Drawing.Size(935, 567);
             this.setFollowCamPropertiesPanel.TabIndex = 0;
             this.setFollowCamPropertiesPanel.Velocity = ((OpenMetaverse.Vector3)(resources.GetObject("setFollowCamPropertiesPanel.Velocity")));
             // 
@@ -297,7 +297,7 @@
             this.avatarsTab.Location = new System.Drawing.Point(4, 22);
             this.avatarsTab.Name = "avatarsTab";
             this.avatarsTab.Padding = new System.Windows.Forms.Padding(3);
-            this.avatarsTab.Size = new System.Drawing.Size(941, 403);
+            this.avatarsTab.Size = new System.Drawing.Size(941, 573);
             this.avatarsTab.TabIndex = 2;
             this.avatarsTab.Text = "Avatars";
             this.avatarsTab.UseVisualStyleBackColor = true;
@@ -308,7 +308,7 @@
             this.avatarList.FormattingEnabled = true;
             this.avatarList.Location = new System.Drawing.Point(3, 3);
             this.avatarList.Name = "avatarList";
-            this.avatarList.Size = new System.Drawing.Size(935, 397);
+            this.avatarList.Size = new System.Drawing.Size(935, 567);
             this.avatarList.TabIndex = 22;
             this.avatarList.SelectedIndexChanged += new System.EventHandler(this.avatarList_SelectedIndexChanged);
             // 
@@ -337,7 +337,7 @@
             this.velocityPanel.Max = 32D;
             this.velocityPanel.Min = -32D;
             this.velocityPanel.Name = "velocityPanel";
-            this.velocityPanel.Size = new System.Drawing.Size(926, 98);
+            this.velocityPanel.Size = new System.Drawing.Size(910, 98);
             this.velocityPanel.TabIndex = 4;
             this.velocityPanel.Value = ((OpenMetaverse.Vector3)(resources.GetObject("velocityPanel.Value")));
             this.velocityPanel.X = 0F;
@@ -353,7 +353,7 @@
             this.rotationalVelocityPanel.Max = 32D;
             this.rotationalVelocityPanel.Min = -32D;
             this.rotationalVelocityPanel.Name = "rotationalVelocityPanel";
-            this.rotationalVelocityPanel.Size = new System.Drawing.Size(926, 98);
+            this.rotationalVelocityPanel.Size = new System.Drawing.Size(910, 98);
             this.rotationalVelocityPanel.TabIndex = 3;
             this.rotationalVelocityPanel.Value = ((OpenMetaverse.Vector3)(resources.GetObject("rotationalVelocityPanel.Value")));
             this.rotationalVelocityPanel.X = 0F;
@@ -369,7 +369,7 @@
             this.accelerationPanel.Max = 32D;
             this.accelerationPanel.Min = -32D;
             this.accelerationPanel.Name = "accelerationPanel";
-            this.accelerationPanel.Size = new System.Drawing.Size(926, 98);
+            this.accelerationPanel.Size = new System.Drawing.Size(910, 98);
             this.accelerationPanel.TabIndex = 2;
             this.accelerationPanel.Value = ((OpenMetaverse.Vector3)(resources.GetObject("accelerationPanel.Value")));
             this.accelerationPanel.X = 0F;
@@ -385,12 +385,13 @@
             this.positionPanel.Max = 256D;
             this.positionPanel.Min = 0D;
             this.positionPanel.Name = "positionPanel";
-            this.positionPanel.Size = new System.Drawing.Size(926, 98);
+            this.positionPanel.Size = new System.Drawing.Size(910, 98);
             this.positionPanel.TabIndex = 1;
             this.positionPanel.Value = ((OpenMetaverse.Vector3)(resources.GetObject("positionPanel.Value")));
             this.positionPanel.X = 0F;
             this.positionPanel.Y = 0F;
             this.positionPanel.Z = 0F;
+            this.positionPanel.OnChange += new System.EventHandler(this.positionPanel_OnChange);
             // 
             // rotationPanel
             // 
@@ -400,9 +401,10 @@
             this.rotationPanel.Location = new System.Drawing.Point(9, 114);
             this.rotationPanel.Name = "rotationPanel";
             this.rotationPanel.Rotation = ((OpenMetaverse.Quaternion)(resources.GetObject("rotationPanel.Rotation")));
-            this.rotationPanel.Size = new System.Drawing.Size(926, 147);
+            this.rotationPanel.Size = new System.Drawing.Size(910, 147);
             this.rotationPanel.TabIndex = 0;
-            this.rotationPanel.Vector = ((OpenMetaverse.Vector3)(resources.GetObject("rotationPanel.Value")));
+            this.rotationPanel.Vector = ((OpenMetaverse.Vector3)(resources.GetObject("rotationPanel.Vector")));
+            this.rotationPanel.OnChange += new System.EventHandler(this.rotationPanel_OnChange);
             // 
             // updateTimer
             // 
@@ -416,7 +418,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.proxyPanel.ListenIP = "127.0.0.1";
             this.proxyPanel.Location = new System.Drawing.Point(-1, 1);
-            this.proxyPanel.LoginURI = "http://apollo.cs.st-andrews.ac.uk:8002";
+            this.proxyPanel.LoginURI = "http://localhost:9000";
             this.proxyPanel.Name = "proxyPanel";
             this.proxyPanel.Port = "8081";
             this.proxyPanel.Size = new System.Drawing.Size(949, 29);

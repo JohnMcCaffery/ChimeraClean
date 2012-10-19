@@ -75,6 +75,7 @@ namespace MasterProxy {
         private void proxyPanel_Started(object sender, EventArgs e) {
             foreach (PacketType pt in Enum.GetValues(typeof(PacketType))) {
                 proxyPanel.Proxy.AddDelegate(pt, Direction.Incoming, BroadcastPacket);
+                proxyPanel.Proxy.AddDelegate(pt, Direction.Incoming, BroadcastPacket);
             }
 
             proxyPanel.Proxy.AddLoginResponseDelegate(response => {
