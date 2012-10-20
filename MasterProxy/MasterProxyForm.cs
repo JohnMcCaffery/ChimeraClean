@@ -21,7 +21,7 @@ namespace MasterProxy {
         private Queue<object> newSlaves = new Queue<object>();
         private Dictionary<string, bool> forwardedPackets = new Dictionary<string, bool>();
         private HashSet<PacketType> enabledPackets = new HashSet<PacketType>();
-        private int packetCount = 0;
+        private int packetCount = 0, forwardedCount = 0;
         private bool forwardLogin;
         
         public MasterProxyForm() {
@@ -29,14 +29,7 @@ namespace MasterProxy {
             //enabledPackets.Add(PacketType.ObjectUpdate);
             //enabledPackets.Add(PacketType.ImprovedTerseObjectUpdate);
 
-            InitializeComponent();
-
-            masterServer = new XMLRPCMaster();
-            masterServer.OnSlaveConnected += (source, args) => {
-                lock (newSlaves)
-                    newSlaves.Enqueue(source);
-            };
-
+            InitializeComponent();
             foreach (PacketType pt in Enum.GetValues(typeof(PacketType))) {
                 ListViewItem item = packetList.Items.Add(pt.ToString());
                 item.Checked = enabledPackets.Contains(pt) || selectAll.Checked;
@@ -46,24 +39,17 @@ namespace MasterProxy {
 
         private void listTimer_Tick(object sender, EventArgs e) {
             packetCountLabel.Text = packetCount + "";
+            forwardedCountLabel.Text = forwardedCount + "";
             lock(newSlaves)
                 while (newSlaves.Count > 0)
                     slavesListBox.Items.Add(newSlaves.Dequeue());
         }
 
         private Packet BroadcastPacket(Packet p, IPEndPoint ep) {
+            packetCount++;
             if (forwardedPackets[p.Type.ToString()]) {
-                /*
-                if (p.GetType() == typeof(ImprovedTerseObjectUpdatePacket)) {
-                    //Process terse packet
-                } else if (p.GetType() == typeof(AgentUpdatePacket)) {
-                    //Process agent update packet
-                }
-                if (p != null)
-                    masterServer.BroadcastPacket(p);
-                */
                 masterServer.BroadcastPacket(p);
-                packetCount++;
+                forwardedCount++;
             }
             return p;
         }
@@ -71,6 +57,8 @@ namespace MasterProxy {
         private void MasterProxyForm_FormClosing(object sender, FormClosingEventArgs e) {
             if (proxyPanel.HasStarted)
                 proxyPanel.Proxy.Stop();
+            if (masterServer != null)
+                masterServer.Stop();
         }
 
         private void proxyPanel_Started(object sender, EventArgs e) {
@@ -84,6 +72,13 @@ namespace MasterProxy {
                     masterServer.SetLoginResponse(response); 
                 return response;
             });
+
+            udpPortBox.Enabled = false;
+            masterServer = new XMLRPCMaster(proxyPanel.Proxy.proxyConfig.clientFacingAddress.ToString(), int.Parse(udpPortBox.Text));
+            masterServer.OnSlaveConnected += (source, args) => {
+                lock (newSlaves)
+                    newSlaves.Enqueue(source);
+            };
         }
 
         private void selectAll_CheckedChanged(object sender, EventArgs e) {

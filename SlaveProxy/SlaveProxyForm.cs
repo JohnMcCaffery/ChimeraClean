@@ -14,6 +14,7 @@ using GridProxy;
 using OpenMetaverse.Packets;
 using OpenMetaverse;
 using System.Net;
+using System.Collections;
 
 namespace SlaveProxy {
     public partial class SlaveProxyForm : Form {
@@ -48,13 +49,15 @@ namespace SlaveProxy {
             }
         }
 
-        private XMLRPCSlave slaveClient;
         private Queue<Packet> packetsToProcess = new Queue<Packet>();
-        private int packetCount = 0;
+        private Dictionary<UUID, Avatar> avatars = new Dictionary<UUID, Avatar>();
+        private XMLRPCSlave slaveClient;
         private Avatar selectedAvatar;
-        private bool loggedIn = false;
+        private int processedCount = 0;
         private bool processAgentUpdates = false;
         private bool processObjectUpdates = false;
+        private bool controlCamera = false;
+        private UUID slaveAvatar = UUID.Zero;        private UUID sessionID;
 
         public SlaveProxyForm() {
             InitializeComponent();
@@ -67,33 +70,33 @@ namespace SlaveProxy {
         }
 
         private void ProxyStarted(object source, EventArgs args) {
-            //foreach (PacketType pt in Enum.GetValues(typeof(PacketType))) {
-            //proxyPanel.Proxy.AddDelegate(pt, Direction.Outgoing, (packet, ep) => { return null; });
-            //proxyPanel.Proxy.AddDelegate(pt, Direction.Incoming, (packet, ep) => { return null; });
-            //}
-
             proxyPanel.Proxy.AddDelegate(PacketType.ObjectUpdate, Direction.Incoming, ObjectUpdatePacketReceived);
-            proxyPanel.Proxy.AddDelegate(PacketType.ImprovedTerseObjectUpdate, Direction.Incoming, (p, ep) => {
-                if (processObjectUpdates)
-                    ProcessImprovedTersePacket((ImprovedTerseObjectUpdatePacket)p);
-                return p;
-            });
+            proxyPanel.Proxy.AddDelegate(PacketType.ImprovedTerseObjectUpdate, Direction.Incoming, ImprovedTersePacketPacketReceived);
+            proxyPanel.Proxy.AddDelegate(PacketType.AgentUpdate, Direction.Outgoing, AgentUpdatePacketReceived);
 
-            //Replace all login responses with faked ones
             proxyPanel.Proxy.AddLoginResponseDelegate(LoginResponseReceived);
-
-            //Kill all login requests
-            //proxyPanel.Proxy.AddLoginRequestDelegate((s, a) => { return null; });
+        }
+        private Packet MasterPacketReceived(Packet p, IPEndPoint ep) {
+            if (processAgentUpdates && p.Type == PacketType.AgentUpdate) {
+                AgentUpdatePacketReceived((AgentUpdatePacket)p, ep);
+            }            if (processObjectUpdates && p.Type == PacketType.ImprovedTerseObjectUpdate) {
+                ImprovedTersePacketPacketReceived(p, ep);
+            }
+            
+            Invoke(new Action(() => {
+                countLabel.Text = processedCount + "";
+                packetsToProcessLabel.Text = packetsToProcess.Count + "";
+                processedPacketsLabel.Text = slaveClient.UnprocessedPackets + "";
+            }));
+            return p;
         }
 
+
         private Nwc.XmlRpc.XmlRpcResponse LoginResponseReceived(Nwc.XmlRpc.XmlRpcResponse response) {
-            Nwc.XmlRpc.XmlRpcResponse masterResponse = slaveClient.MasterResponse;
-            new Thread(() => {
-                Thread.Sleep(1000);
-                ProcessPackets();
-                loggedIn = true;
-            }).Start();
-            //return masterResponse != null ? masterResponse : response;
+            Hashtable responseData = (System.Collections.Hashtable)response.Value;
+            sessionID = UUID.Parse(responseData["session_id"].ToString());
+            slaveAvatar = UUID.Parse(responseData["avatar_id"].ToString());
+            avatars.Add(slaveAvatar, new Avatar(responseData["first_name"].ToString(), responseData["last_name"].ToString(), uint.MaxValue, slaveAvatar));
             return response;
         }
 
@@ -108,46 +111,37 @@ namespace SlaveProxy {
                     string lastName = tokens[3];
 
                     Invoke(new Action(() => {
-                        //avatarsListBox.DataSource = avatarsBindingSource;
-                        avatarList.Items.Add(new Avatar(firstName, lastName, block.ID, block.FullID));
+                        Avatar avatar = new Avatar(firstName, lastName, block.ID, block.FullID);
+                        avatarList.Items.Add(avatar);
+                        avatars[avatar.ID] = avatar;
                     }));
                 }
             }
-            //"FirstName STRING RW SV Routing\nLastName STRING RW SV God\nTitle STRING RW SV "
             return packet;
         }
 
-        private Packet MasterPacketReceived(Packet p, IPEndPoint ep) {
-            if (processAgentUpdates && p.Type == PacketType.AgentUpdate)
-                AgentUpdatePacketReceived((AgentUpdatePacket)p, ep);
-            
-            packetCount++;
-            Invoke(new Action(() => {
-                countLabel.Text = slaveClient.ReceivedPackets + "";
-                packetsToProcessLabel.Text = packetsToProcess.Count + "";
-                unprocessedPacketsLabel.Text = slaveClient.UnprocessedPackets + "";
-            }));
-
-            //if (p.Type != PacketType.ImprovedTerseObjectUpdate) {
-            //lock (packetsToProcess)
-            //packetsToProcess.Enqueue(p);
-            //}
-            return p;
-        }
-
-        private Packet AgentUpdatePacketReceived(AgentUpdatePacket  p, IPEndPoint ep) {
+        private Packet AgentUpdatePacketReceived(Packet  packet, IPEndPoint ep) {
+            AgentUpdatePacket p = (AgentUpdatePacket)packet;
             if (selectedAvatar != null && selectedAvatar.id == p.AgentData.AgentID) {
-                positionPanel.Value = p.AgentData.CameraAtAxis;
-                rotationPanel.Vector = p.AgentData.CameraCenter;
+                positionPanel.Value = p.AgentData.CameraCenter;
+                rotationPanel.Vector = p.AgentData.CameraAtAxis;
                 velocityPanel.Value = Vector3.Zero;
                 accelerationPanel.Value = Vector3.Zero;
                 rotationalVelocityPanel.Value = Vector3.Zero;
-            }
+
+                setFollowCamPropertiesPanel.CameraFocus = p.AgentData.CameraAtAxis;
+                processedCount++;
+            } 
             return p;
         }
 
-        private void ProcessImprovedTersePacket(ImprovedTerseObjectUpdatePacket p) {
-            byte[] block = p.ObjectData[0].Data;
+        private Packet ImprovedTersePacketPacketReceived(Packet p, IPEndPoint ep) {
+            if (!processObjectUpdates || selectedAvatar == null)
+                return p;
+
+            processedCount++;
+            ImprovedTerseObjectUpdatePacket packet = (ImprovedTerseObjectUpdatePacket)p;
+            byte[] block = packet.ObjectData[0].Data;
 
             if (selectedAvatar.localID == Utils.BytesToUInt(block, 0)) {
                 Vector3 position = new Vector3(block, 0x16) + (Vector3.UnitZ * 2f);
@@ -169,65 +163,54 @@ namespace SlaveProxy {
                     Utils.UInt16ToFloat(block, 0x36 + 2, -64.0f, 64.0f),
                     Utils.UInt16ToFloat(block, 0x36 + 4, -64.0f, 64.0f));
 
-                /*
-                setFollowCamPropertiesPanel.Position = position;
-                setFollowCamPropertiesPanel.Velocity = velocity;
-                setFollowCamPropertiesPanel.Acceleration = acceleration;
-                setFollowCamPropertiesPanel.Rotation = rotation;
-                setFollowCamPropertiesPanel.AngularAcceleration = rotationalVelocity;
-                */
-
                 positionPanel.Value = position;
                 velocityPanel.Value = velocity;
                 accelerationPanel.Value = acceleration;
                 rotationPanel.Vector = Vector3.UnitX * rotation;
                 rotationalVelocityPanel.Value = rotationalVelocity;
             }
+            return packet;
         }
 
         private void Pinged() {
             Invoke(new Action(() => {
                 nameBox.Enabled = false;
-                masterURIBox.Enabled = false;
+                masterAddressBox.Enabled = false;
                 connectButton.Enabled = false;
+                masterXmlRpcPortBox.Enabled = false;
+                listenIPBox.Enabled = false;
                 portBox.Enabled = false;
                 xmlRpcPortBox.Enabled = false;
-                listenIPBox.Enabled = false;
             }));
         }
 
         private void connectButton_Click(object sender, EventArgs e) {
             slaveClient.Name = nameBox.Text;
-            slaveClient.Connect(masterURIBox.Text, listenIPBox.Text, int.Parse(portBox.Text), int.Parse(xmlRpcPortBox.Text));
-        }
-
-        private void checkTimer_Tick(object sender, EventArgs e) {
-            if (loggedIn) {
-                //new Thread(ProcessPackets).Start();
-                ProcessPackets();
-            }
+            slaveClient.Connect(
+                masterAddressBox.Text, 
+                listenIPBox.Text, 
+                int.Parse(masterXmlRpcPortBox.Text), 
+                int.Parse(portBox.Text), 
+                int.Parse(xmlRpcPortBox.Text)
+            );
         }
 
         private void SlaveProxyForm_FormClosing(object sender, FormClosingEventArgs e) {
+            controlCamera = false;
             if (proxyPanel.HasStarted)
                 proxyPanel.Proxy.Stop();
+            slaveClient.Stop();
         }
 
-        private void ProcessPackets() {
-            while (packetsToProcess.Count > 0) {
-                Packet packet;
-                lock (packetsToProcess)
-                    packet = packetsToProcess.Dequeue();
-                //proxyPanel.Proxy.InjectPacket(packet, Direction.Incoming);
-
-            }
+        private bool SendCameraPackets {
+            get { return controlCamera && (processObjectUpdates || processAgentUpdates); }
         }
 
         private void updateTimer_Tick(object sender, EventArgs e) {
-            if (proxyPanel.HasStarted && selectedAvatar != null && selectedAvatar.localID > 0)
-                //new Thread(() => {
-                proxyPanel.Proxy.InjectPacket(setFollowCamPropertiesPanel.Packet, Direction.Incoming);
-            //}).Start();
+            if (SendCameraPackets && proxyPanel.HasStarted && selectedAvatar != null)
+                new Thread(() => {
+                    proxyPanel.Proxy.InjectPacket(setFollowCamPropertiesPanel.Packet, Direction.Incoming);
+                }).Start();
         }
 
         private void avatarList_SelectedIndexChanged(object sender, EventArgs e) {
@@ -244,49 +227,31 @@ namespace SlaveProxy {
 
         private void processAgentUpdatesCheck_CheckedChanged(object sender, EventArgs e) {
             processAgentUpdates = processAgentUpdatesCheck.Checked;
+            if (!processObjectUpdates && !processAgentUpdates) StopControllingCamera();
         }
 
         private void processObjectUpdatesCheck_CheckedChanged(object sender, EventArgs e) {
             processObjectUpdates = processObjectUpdatesCheck.Checked;
+            if (!processObjectUpdates && !processAgentUpdates) StopControllingCamera();
+        }
+
+        private void controlCameraCheck_CheckedChanged(object sender, EventArgs e) {
+            controlCamera = controlCameraCheck.Checked;
+            if (!controlCamera) StopControllingCamera();
+        }
+
+        private void timerValue_ValueChanged(object sender, EventArgs e) {
+            updateTimer.Interval = Decimal.ToInt32(timerValue.Value);
+        }
+        private void StopControllingCamera() {
+            if (proxyPanel != null) {
+                SetFollowCamPropertiesPacket packet = new SetFollowCamPropertiesPacket();
+                packet.CameraProperty = new SetFollowCamPropertiesPacket.CameraPropertyBlock[1];
+                packet.CameraProperty[0] = new SetFollowCamPropertiesPacket.CameraPropertyBlock();
+                packet.CameraProperty[0].Type = 13;
+                packet.CameraProperty[0].Value = 0;
+                proxyPanel.Proxy.InjectPacket(packet, Direction.Incoming);
+            }
         }
     }
 }
-/*
-            ImprovedTerseObjectUpdatePacket packet = (ImprovedTerseObjectUpdatePacket)p;
-            //setCameraOffsetPropertiesPanel.Position = packet.ObjectData[0].Data; 
-                
-            byte[] block = packet.ObjectData[0].Data;
-            int i = 4;
-
-            StringBuilder result = new StringBuilder();
-            uint localId = Utils.BytesToUInt(block, 0);
-            byte attachmentPoint = block[i++];
-            bool isAvatar = (block[i++] != 0);
-
-            // Collision normal for avatar
-            if (isAvatar) {
-                Vector4 collisionNormal = new Vector4(block, i);
-                i += 16;
-            }
-
-            Vector3 position = new Vector3(block, i);
-            i += 12;
-            Vector3 acceleration = new Vector3(
-                Utils.UInt16ToFloat(block, i, -128.0f, 128.0f),
-                Utils.UInt16ToFloat(block, i + 2, -128.0f, 128.0f),
-                Utils.UInt16ToFloat(block, i + 4, -128.0f, 128.0f));
-
-            i += 6;
-            Quaternion rotation = new Quaternion(
-                Utils.UInt16ToFloat(block, i, -1.0f, 1.0f),
-                Utils.UInt16ToFloat(block, i + 2, -1.0f, 1.0f),
-                Utils.UInt16ToFloat(block, i + 4, -1.0f, 1.0f),
-                Utils.UInt16ToFloat(block, i + 6, -1.0f, 1.0f));
-                                      
-            i += 8;
-            // Angular velocity (omega)
-            Vector3 anglularVelocity = new Vector3(
-                Utils.UInt16ToFloat(block, i, -64.0f, 64.0f),
-                Utils.UInt16ToFloat(block, i + 2, -64.0f, 64.0f),
-                Utils.UInt16ToFloat(block, i + 4, -64.0f, 64.0f));
-*/

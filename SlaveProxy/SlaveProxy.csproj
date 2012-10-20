@@ -36,10 +36,6 @@
     <Reference Include="CookComputing.XmlRpcV2">
       <HintPath>..\..\..\XMLRPC\bin\CookComputing.XmlRpcV2.dll</HintPath>
     </Reference>
-    <Reference Include="GridProxy, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\libopenmetaverse\Programs\GridProxy\obj\Debug\GridProxy.dll</HintPath>
-    </Reference>
     <Reference Include="OpenMetaverse, Version=0.0.0.17171, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\libopenmetaverse\OpenMetaverse\obj\Debug\OpenMetaverse.dll</HintPath>
@@ -100,6 +96,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\libopenmetaverse\Programs\GridProxy\GridProxy.csproj">
+      <Project>{2B2F8C8E-39CF-4818-A622-369A7FC61E15}</Project>
+      <Name>GridProxy</Name>
+    </ProjectReference>
     <ProjectReference Include="..\UtilLib\UtilLib.csproj">
       <Project>{58E39BFE-20D5-4C8D-BCFC-6B5E641C2DFF}</Project>
       <Name>UtilLib</Name>

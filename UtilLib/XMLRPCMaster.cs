@@ -10,37 +10,52 @@ using System.Net.Sockets;
 using Nwc.XmlRpc;
 using System.IO;
 using System.Xml;
+using GridProxy;
+using System.Net;
 
 namespace UtilLib {
     [XmlRpcUrl("http://diana.apollo.cs.st-andrews.ac.uk")]
     public interface IMaster {
         [XmlRpcMethod]
-        void Register(string uri, string address, int port, int xmlrpcPort);
+        int Register(string uri, string address, int port, int xmlrpcPort);
     }
 
     public interface IMasterProxy : IMaster, IXmlRpcProxy { }
 
     public class XMLRPCMaster : MarshalByRefObject, IMaster {
-        private List<UdpClient> slaveEPs = new List<UdpClient>();
+        private List<IPEndPoint> slaveEPs = new List<IPEndPoint>();
         private List<ISlave> slaves = new List<ISlave>();
+        private Proxy proxy;
+        //private UdpClient udpClient = new UdpClient();
 
         public event EventHandler OnSlaveConnected;
 
-        public XMLRPCMaster() {
+        public XMLRPCMaster(string listenAddress, int port) {
             RemotingConfiguration.Configure(AppDomain.CurrentDomain.SetupInformation.ConfigurationFile, false);
             RemotingConfiguration.RegisterWellKnownServiceType(typeof(XMLRPCMaster), "Master.rem", WellKnownObjectMode.Singleton);
-            RemotingServices.Marshal(this, "Master.rem");
+            RemotingServices.Marshal(this, "Master.rem");
+            string portArg = "--proxy-login-port=0"; //No one will ever log in
+            string clientListenIPArg = "--proxy-client-facing-address="+listenAddress; //No client will ever send packets to the server so this is irrelevant
+            string clientPortArg = "--proxy-client-facing-port=0"; //No client will ever send packets to the server so this is irrelevant
+            string serverListenIPArg = "--proxy-server-facing-address="+listenAddress; //This is the address packets sent by this master will appear from
+            string serverPortArg = "--proxy-server-facing-port="+port; //This is the port packets sent by this master will appear from
+            string loginURIArg = "--proxy-remote-login-uri=http://"+listenAddress+":0"; //This proxy will never log in.
+            string[] args = { portArg, clientListenIPArg, clientPortArg, serverListenIPArg, serverPortArg, loginURIArg };
+            ProxyConfig config = new ProxyConfig("Routing God", "jm726@st-andrews.ac.uk", args);
+            proxy = new Proxy(config);
+            proxy.Start();
         }
 
         #region IMaster Members
 
-        public void Register(string name, string address, int port, int xmlrpcPort) {
+        //private <IPEndPoint slaveEPs;
 
+        public int Register(string name, string address, int port, int xmlrpcPort) {
             ISlaveProxy slave = XmlRpcProxyGen.Create<ISlaveProxy>();
             slave.Url = "http://"+address+":"+xmlrpcPort+"/Slave.rem";
 
             lock (slaves) {
-                slaveEPs.Add(new UdpClient(address, port));
+                slaveEPs.Add(new IPEndPoint(IPAddress.Parse(address), port));
                 slaves.Add(slave);
             }
 
@@ -49,19 +64,23 @@ namespace UtilLib {
                 if (OnSlaveConnected != null)
                     OnSlaveConnected(name, null);
             }).Start();
+
+            return proxy.ServerSoucePort;
         }
 
         #endregion
 
         public void BroadcastPacket(Packet packet) {
+            foreach (var ep in slaveEPs)
+                proxy.SendPacket(packet, ep, false);
             //new Thread(() => {
             //if (slaves.Count > 0) {
-                byte[] buffer = packet.ToBytes();
-                int end = buffer.Length - 1;
-                lock (slaves)
-                    foreach (UdpClient slave in slaveEPs)
-                        slave.Send(buffer, buffer.Length);
-                Packet p = Packet.BuildPacket(buffer, ref end, new byte[8192]);
+                //byte[] buffer = packet.ToBytes();
+                //int end = buffer.Length - 1;
+                //lock (slaves)
+                    //foreach (UdpClient slave in slaveEPs)
+                        //slave.Send(buffer, buffer.Length);
+                //Packet p = Packet.BuildPacket(buffer, ref end, new byte[8192]);
             //}
             //}).Start();
         }
@@ -82,6 +101,10 @@ namespace UtilLib {
                     }
                 }
             }).Start();
+        }
+
+        public void Stop() {
+            proxy.Stop();
         }
     }
 }

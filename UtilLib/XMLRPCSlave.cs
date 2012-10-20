@@ -31,6 +31,7 @@ namespace UtilLib {
         private bool pinged = false;
         private string name;
         private int unprocessedPackets = 0;
+        private int processedPackets = 0;
         private int receivedPackets = 0;
         private Nwc.XmlRpc.XmlRpcResponse masterResponse = null;
 
@@ -45,6 +46,10 @@ namespace UtilLib {
 
         public Nwc.XmlRpc.XmlRpcResponse MasterResponse {
             get { return masterResponse; }
+        }
+
+        public int ProcessedPackets {
+            get { return processedPackets; }
         }
 
         public int UnprocessedPackets {
@@ -85,16 +90,66 @@ namespace UtilLib {
         private byte[] receiveBuffer = new byte[8192];
         private byte[] zeroBuffer = new byte[8192];
         private EndPoint remoteEndPoint = (EndPoint)new IPEndPoint(IPAddress.Any, 0);
+        Proxy proxy;
 
-        public void Connect(string masterURI, string listeningIP, int port, int xmlRpcPort) {
-            socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
-            socket.Bind(new IPEndPoint(IPAddress.Parse(listeningIP), port));
-            socket.BeginReceiveFrom(receiveBuffer, 0, receiveBuffer.Length, SocketFlags.None, ref remoteEndPoint, new AsyncCallback(ProcessPacket), null);
+        private IPAddress GetAddress(string address) {
+            IPAddress ip;
+            if (IPAddress.TryParse(address, out ip)) 
+                return ip;
+
+            Uri uri = new Uri(address);
+            if (uri.IsLoopback)
+                return IPAddress.Loopback;
+            switch (uri.HostNameType) {
+                case UriHostNameType.Dns: return Dns.GetHostAddresses(address)[0];
+                case UriHostNameType.IPv4: return IPAddress.Parse(address);
+            }
+            return IPAddress.Any;
+        }
+
+        public void Connect(string masterAddress, string listeningAddress, int masterXmlRpcPort, int port, int xmlRpcPort) {
+            //socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+            //socket.Bind(new IPEndPoint(IPAddress.Parse(listeningIP), port));
+            //socket.BeginReceiveFrom(receiveBuffer, 0, receiveBuffer.Length, SocketFlags.None, ref remoteEndPoint, new AsyncCallback(ProcessPacket), null);
 
             IMasterProxy master = XmlRpcProxyGen.Create<IMasterProxy>();
-            master.Url = masterURI;
+            master.Url = "http://"+masterAddress+":"+masterXmlRpcPort+"/Master.rem";
 
-            new Thread(() => master.Register(name, listeningIP, port, xmlRpcPort)).Start();
+            new Thread(() => {
+                int masterPort = master.Register(name, listeningAddress, port, xmlRpcPort);
+
+                IPAddress masterIP = GetAddress(masterAddress);
+                IPAddress listenIP = GetAddress(listeningAddress);
+
+                string serverListenIPArg = "--proxy-remote-facing-address=" + listenIP.ToString();
+                string serverListenPortArg = "--proxy-remote-facing-port=" + port;
+                string clientLoginPortArg = "--proxy-login-port=0"; //Never going to be used. No one will ever connect to this proxy.
+                string loginURIArg = "--proxy-remote-login-uri=http://http://localhost:9000";
+                string[] args = { serverListenIPArg, serverListenPortArg, clientLoginPortArg, loginURIArg };
+                ProxyConfig config = new ProxyConfig("Routing God", "jm726@st-andrews.ac.uk", args);
+                proxy = new Proxy(config);
+                proxy.ActiveCircuit = new IPEndPoint(masterIP, masterPort);
+
+                foreach (PacketType pt in Enum.GetValues(typeof(PacketType)))
+                    proxy.AddDelegate(pt, Direction.Incoming, ProcessPacket);
+
+                proxy.Start();
+                
+            }).Start();
+        }
+
+        private Packet ProcessPacket(Packet p, IPEndPoint ep) {
+            receivedPackets++;
+            try {
+                if (OnPacketReceived != null)
+                    OnPacketReceived(p, ep);
+                processedPackets++;
+            } catch (Exception e) {
+                Console.WriteLine(e.Message);
+                Console.WriteLine(e.StackTrace);
+                unprocessedPackets++;
+            }
+            return null;
         }
 
         private void ProcessPacket(IAsyncResult ar) {
@@ -116,6 +171,11 @@ namespace UtilLib {
             } finally {
                 socket.BeginReceiveFrom(receiveBuffer, 0, receiveBuffer.Length, SocketFlags.None, ref remoteEndPoint, new AsyncCallback(ProcessPacket), null);
             }
-        } 
+        }
+
+        public void Stop() {
+            if (proxy != null)
+                proxy.Stop();
+        }
     }
 }
