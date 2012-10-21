@@ -29,7 +29,8 @@ namespace MasterProxy {
             //enabledPackets.Add(PacketType.ObjectUpdate);
             //enabledPackets.Add(PacketType.ImprovedTerseObjectUpdate);
 
-            InitializeComponent();
+            InitializeComponent();
+
             foreach (PacketType pt in Enum.GetValues(typeof(PacketType))) {
                 ListViewItem item = packetList.Items.Add(pt.ToString());
                 item.Checked = enabledPackets.Contains(pt) || selectAll.Checked;
@@ -73,7 +74,8 @@ namespace MasterProxy {
                 return response;
             });
 
-            udpPortBox.Enabled = false;
+            udpPortBox.Enabled = false;
+
             masterServer = new XMLRPCMaster(proxyPanel.Proxy.proxyConfig.clientFacingAddress.ToString(), int.Parse(udpPortBox.Text));
             masterServer.OnSlaveConnected += (source, args) => {
                 lock (newSlaves)

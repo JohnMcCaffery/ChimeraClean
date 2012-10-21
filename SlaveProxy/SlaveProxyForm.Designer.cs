@@ -42,6 +42,8 @@
             this.processedPacketsLabel = new System.Windows.Forms.Label();
             this.tabContainer = new System.Windows.Forms.TabControl();
             this.networkTab = new System.Windows.Forms.TabPage();
+            this.timerValueLabel = new System.Windows.Forms.Label();
+            this.timerValue = new System.Windows.Forms.NumericUpDown();
             this.controlCameraCheck = new System.Windows.Forms.CheckBox();
             this.label6 = new System.Windows.Forms.Label();
             this.unprocessedPacketsLabel = new System.Windows.Forms.Label();
@@ -65,16 +67,14 @@
             this.accelerationPanel = new ProxyTestGUI.VectorPanel();
             this.positionPanel = new ProxyTestGUI.VectorPanel();
             this.proxyPanel = new UtilLib.ProxyPanel();
-            this.timerValue = new System.Windows.Forms.NumericUpDown();
-            this.timerValueLabel = new System.Windows.Forms.Label();
             this.tabContainer.SuspendLayout();
             this.networkTab.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.timerValue)).BeginInit();
             this.slaveBox.SuspendLayout();
             this.masterBox.SuspendLayout();
             this.cameraTab.SuspendLayout();
             this.avatarsTab.SuspendLayout();
             this.packetTab.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.timerValue)).BeginInit();
             this.SuspendLayout();
             // 
             // nameBox
@@ -260,6 +260,35 @@
             this.networkTab.Text = "Network";
             this.networkTab.UseVisualStyleBackColor = true;
             // 
+            // timerValueLabel
+            // 
+            this.timerValueLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.timerValueLabel.AutoSize = true;
+            this.timerValueLabel.Location = new System.Drawing.Point(302, 219);
+            this.timerValueLabel.Name = "timerValueLabel";
+            this.timerValueLabel.Size = new System.Drawing.Size(122, 13);
+            this.timerValueLabel.TabIndex = 34;
+            this.timerValueLabel.Text = "Packet Send Frequency";
+            // 
+            // timerValue
+            // 
+            this.timerValue.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.timerValue.Location = new System.Drawing.Point(430, 217);
+            this.timerValue.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.timerValue.Name = "timerValue";
+            this.timerValue.Size = new System.Drawing.Size(52, 20);
+            this.timerValue.TabIndex = 33;
+            this.timerValue.Value = new decimal(new int[] {
+            20,
+            0,
+            0,
+            0});
+            this.timerValue.ValueChanged += new System.EventHandler(this.timerValue_ValueChanged);
+            // 
             // controlCameraCheck
             // 
             this.controlCameraCheck.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -443,13 +472,13 @@
             // 
             this.setFollowCamPropertiesPanel.Acceleration = ((OpenMetaverse.Vector3)(resources.GetObject("setFollowCamPropertiesPanel.Acceleration")));
             this.setFollowCamPropertiesPanel.AngularAcceleration = ((OpenMetaverse.Vector3)(resources.GetObject("setFollowCamPropertiesPanel.AngularAcceleration")));
-            this.setFollowCamPropertiesPanel.CameraFocus = ((OpenMetaverse.Vector3)(resources.GetObject("setFollowCamPropertiesPanel.CameraFocus")));
             this.setFollowCamPropertiesPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.setFollowCamPropertiesPanel.Location = new System.Drawing.Point(3, 3);
+            this.setFollowCamPropertiesPanel.MinimumSize = new System.Drawing.Size(485, 343);
             this.setFollowCamPropertiesPanel.Name = "setFollowCamPropertiesPanel";
             this.setFollowCamPropertiesPanel.Position = ((OpenMetaverse.Vector3)(resources.GetObject("setFollowCamPropertiesPanel.Position")));
             this.setFollowCamPropertiesPanel.Rotation = ((OpenMetaverse.Quaternion)(resources.GetObject("setFollowCamPropertiesPanel.Rotation")));
-            this.setFollowCamPropertiesPanel.Size = new System.Drawing.Size(482, 355);
+            this.setFollowCamPropertiesPanel.Size = new System.Drawing.Size(485, 355);
             this.setFollowCamPropertiesPanel.TabIndex = 0;
             this.setFollowCamPropertiesPanel.Velocity = ((OpenMetaverse.Vector3)(resources.GetObject("setFollowCamPropertiesPanel.Velocity")));
             // 
@@ -460,10 +489,12 @@
             this.rotationPanel.DisplayName = "Rotation";
             this.rotationPanel.Location = new System.Drawing.Point(0, 110);
             this.rotationPanel.Name = "rotationPanel";
+            this.rotationPanel.Pitch = 0F;
             this.rotationPanel.Rotation = ((OpenMetaverse.Quaternion)(resources.GetObject("rotationPanel.Rotation")));
-            this.rotationPanel.Size = new System.Drawing.Size(477, 147);
+            this.rotationPanel.Size = new System.Drawing.Size(461, 147);
             this.rotationPanel.TabIndex = 4;
             this.rotationPanel.Vector = ((OpenMetaverse.Vector3)(resources.GetObject("rotationPanel.Vector")));
+            this.rotationPanel.Yaw = 0F;
             this.rotationPanel.OnChange += new System.EventHandler(this.rotationPanel_OnChange);
             // 
             // velocityPanel
@@ -475,7 +506,7 @@
             this.velocityPanel.Max = 5D;
             this.velocityPanel.Min = -5D;
             this.velocityPanel.Name = "velocityPanel";
-            this.velocityPanel.Size = new System.Drawing.Size(474, 98);
+            this.velocityPanel.Size = new System.Drawing.Size(458, 98);
             this.velocityPanel.TabIndex = 3;
             this.velocityPanel.Value = ((OpenMetaverse.Vector3)(resources.GetObject("velocityPanel.Value")));
             this.velocityPanel.X = 0F;
@@ -491,7 +522,7 @@
             this.rotationalVelocityPanel.Max = 5D;
             this.rotationalVelocityPanel.Min = -5D;
             this.rotationalVelocityPanel.Name = "rotationalVelocityPanel";
-            this.rotationalVelocityPanel.Size = new System.Drawing.Size(474, 98);
+            this.rotationalVelocityPanel.Size = new System.Drawing.Size(458, 98);
             this.rotationalVelocityPanel.TabIndex = 2;
             this.rotationalVelocityPanel.Value = ((OpenMetaverse.Vector3)(resources.GetObject("rotationalVelocityPanel.Value")));
             this.rotationalVelocityPanel.X = 0F;
@@ -507,7 +538,7 @@
             this.accelerationPanel.Max = 5D;
             this.accelerationPanel.Min = -5D;
             this.accelerationPanel.Name = "accelerationPanel";
-            this.accelerationPanel.Size = new System.Drawing.Size(474, 98);
+            this.accelerationPanel.Size = new System.Drawing.Size(458, 98);
             this.accelerationPanel.TabIndex = 1;
             this.accelerationPanel.Value = ((OpenMetaverse.Vector3)(resources.GetObject("accelerationPanel.Value")));
             this.accelerationPanel.X = 0F;
@@ -544,35 +575,6 @@
             this.proxyPanel.Size = new System.Drawing.Size(496, 29);
             this.proxyPanel.TabIndex = 13;
             // 
-            // timerValue
-            // 
-            this.timerValue.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.timerValue.Location = new System.Drawing.Point(430, 217);
-            this.timerValue.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.timerValue.Name = "timerValue";
-            this.timerValue.Size = new System.Drawing.Size(52, 20);
-            this.timerValue.TabIndex = 33;
-            this.timerValue.Value = new decimal(new int[] {
-            20,
-            0,
-            0,
-            0});
-            this.timerValue.ValueChanged += new System.EventHandler(this.timerValue_ValueChanged);
-            // 
-            // timerValueLabel
-            // 
-            this.timerValueLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.timerValueLabel.AutoSize = true;
-            this.timerValueLabel.Location = new System.Drawing.Point(302, 219);
-            this.timerValueLabel.Name = "timerValueLabel";
-            this.timerValueLabel.Size = new System.Drawing.Size(122, 13);
-            this.timerValueLabel.TabIndex = 34;
-            this.timerValueLabel.Text = "Packet Send Frequency";
-            // 
             // SlaveProxyForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -587,6 +589,7 @@
             this.tabContainer.ResumeLayout(false);
             this.networkTab.ResumeLayout(false);
             this.networkTab.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.timerValue)).EndInit();
             this.slaveBox.ResumeLayout(false);
             this.slaveBox.PerformLayout();
             this.masterBox.ResumeLayout(false);
@@ -594,7 +597,6 @@
             this.cameraTab.ResumeLayout(false);
             this.avatarsTab.ResumeLayout(false);
             this.packetTab.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.timerValue)).EndInit();
             this.ResumeLayout(false);
 
         }

@@ -33,7 +33,8 @@ namespace UtilLib {
         public XMLRPCMaster(string listenAddress, int port) {
             RemotingConfiguration.Configure(AppDomain.CurrentDomain.SetupInformation.ConfigurationFile, false);
             RemotingConfiguration.RegisterWellKnownServiceType(typeof(XMLRPCMaster), "Master.rem", WellKnownObjectMode.Singleton);
-            RemotingServices.Marshal(this, "Master.rem");
+            RemotingServices.Marshal(this, "Master.rem");
+
             string portArg = "--proxy-login-port=0"; //No one will ever log in
             string clientListenIPArg = "--proxy-client-facing-address="+listenAddress; //No client will ever send packets to the server so this is irrelevant
             string clientPortArg = "--proxy-client-facing-port=0"; //No client will ever send packets to the server so this is irrelevant

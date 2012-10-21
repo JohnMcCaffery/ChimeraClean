@@ -31,12 +31,12 @@
             this.packetNameColumn = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.selectAll = new System.Windows.Forms.CheckBox();
             this.forwardLoginCheck = new System.Windows.Forms.CheckBox();
-            this.proxyPanel = new UtilLib.ProxyPanel();
             this.udpPortBox = new System.Windows.Forms.TextBox();
             this.localAddressLabel = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.forwardedCountLabel = new System.Windows.Forms.Label();
+            this.proxyPanel = new UtilLib.ProxyPanel();
             this.SuspendLayout();
             // 
             // listTimer
@@ -76,7 +76,7 @@
             this.packetList.Location = new System.Drawing.Point(171, 41);
             this.packetList.MultiSelect = false;
             this.packetList.Name = "packetList";
-            this.packetList.Size = new System.Drawing.Size(444, 212);
+            this.packetList.Size = new System.Drawing.Size(393, 212);
             this.packetList.Sorting = System.Windows.Forms.SortOrder.Ascending;
             this.packetList.TabIndex = 11;
             this.packetList.UseCompatibleStateImageBehavior = false;
@@ -92,7 +92,7 @@
             // 
             this.selectAll.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.selectAll.AutoSize = true;
-            this.selectAll.Location = new System.Drawing.Point(495, 260);
+            this.selectAll.Location = new System.Drawing.Point(444, 260);
             this.selectAll.Name = "selectAll";
             this.selectAll.Size = new System.Drawing.Size(120, 17);
             this.selectAll.TabIndex = 12;
@@ -104,7 +104,7 @@
             // 
             this.forwardLoginCheck.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.forwardLoginCheck.AutoSize = true;
-            this.forwardLoginCheck.Location = new System.Drawing.Point(396, 260);
+            this.forwardLoginCheck.Location = new System.Drawing.Point(345, 260);
             this.forwardLoginCheck.Name = "forwardLoginCheck";
             this.forwardLoginCheck.Size = new System.Drawing.Size(93, 17);
             this.forwardLoginCheck.TabIndex = 13;
@@ -112,24 +112,11 @@
             this.forwardLoginCheck.UseVisualStyleBackColor = true;
             this.forwardLoginCheck.CheckedChanged += new System.EventHandler(this.forwardLoginCheck_CheckedChanged);
             // 
-            // proxyPanel
-            // 
-            this.proxyPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.proxyPanel.ListenIP = "127.0.0.1";
-            this.proxyPanel.Location = new System.Drawing.Point(121, 5);
-            this.proxyPanel.LoginURI = "http://localhost:9000";
-            this.proxyPanel.Name = "proxyPanel";
-            this.proxyPanel.Port = "8080";
-            this.proxyPanel.Size = new System.Drawing.Size(508, 30);
-            this.proxyPanel.TabIndex = 10;
-            this.proxyPanel.OnStarted += new System.EventHandler(this.proxyPanel_Started);
-            // 
             // udpPortBox
             // 
             this.udpPortBox.Location = new System.Drawing.Point(72, 9);
             this.udpPortBox.Name = "udpPortBox";
-            this.udpPortBox.Size = new System.Drawing.Size(43, 20);
+            this.udpPortBox.Size = new System.Drawing.Size(32, 20);
             this.udpPortBox.TabIndex = 14;
             this.udpPortBox.Text = "8090";
             // 
@@ -170,11 +157,24 @@
             this.forwardedCountLabel.TabIndex = 17;
             this.forwardedCountLabel.Text = "0";
             // 
+            // proxyPanel
+            // 
+            this.proxyPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.proxyPanel.ListenIP = "127.0.0.1";
+            this.proxyPanel.Location = new System.Drawing.Point(110, 5);
+            this.proxyPanel.LoginURI = "http://localhost:9000";
+            this.proxyPanel.Name = "proxyPanel";
+            this.proxyPanel.Port = "8080";
+            this.proxyPanel.Size = new System.Drawing.Size(468, 30);
+            this.proxyPanel.TabIndex = 10;
+            this.proxyPanel.OnStarted += new System.EventHandler(this.proxyPanel_Started);
+            // 
             // MasterProxyForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(627, 281);
+            this.ClientSize = new System.Drawing.Size(576, 281);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.forwardedCountLabel);
             this.Controls.Add(this.label1);

@@ -57,7 +57,8 @@ namespace SlaveProxy {
         private bool processAgentUpdates = false;
         private bool processObjectUpdates = false;
         private bool controlCamera = false;
-        private UUID slaveAvatar = UUID.Zero;        private UUID sessionID;
+        private UUID slaveAvatar = UUID.Zero;
+        private UUID sessionID;
 
         public SlaveProxyForm() {
             InitializeComponent();
@@ -75,11 +76,13 @@ namespace SlaveProxy {
             proxyPanel.Proxy.AddDelegate(PacketType.AgentUpdate, Direction.Outgoing, AgentUpdatePacketReceived);
 
             proxyPanel.Proxy.AddLoginResponseDelegate(LoginResponseReceived);
-        }
+        }
+
         private Packet MasterPacketReceived(Packet p, IPEndPoint ep) {
             if (processAgentUpdates && p.Type == PacketType.AgentUpdate) {
                 AgentUpdatePacketReceived((AgentUpdatePacket)p, ep);
-            }            if (processObjectUpdates && p.Type == PacketType.ImprovedTerseObjectUpdate) {
+            }
+            if (processObjectUpdates && p.Type == PacketType.ImprovedTerseObjectUpdate) {
                 ImprovedTersePacketPacketReceived(p, ep);
             }
             
@@ -90,7 +93,6 @@ namespace SlaveProxy {
             }));
             return p;
         }
-
 
         private Nwc.XmlRpc.XmlRpcResponse LoginResponseReceived(Nwc.XmlRpc.XmlRpcResponse response) {
             Hashtable responseData = (System.Collections.Hashtable)response.Value;
@@ -128,8 +130,7 @@ namespace SlaveProxy {
                 velocityPanel.Value = Vector3.Zero;
                 accelerationPanel.Value = Vector3.Zero;
                 rotationalVelocityPanel.Value = Vector3.Zero;
-
-                setFollowCamPropertiesPanel.CameraFocus = p.AgentData.CameraAtAxis;
+                sendCameraUpdate();
                 processedCount++;
             } 
             return p;
@@ -168,6 +169,8 @@ namespace SlaveProxy {
                 accelerationPanel.Value = acceleration;
                 rotationPanel.Vector = Vector3.UnitX * rotation;
                 rotationalVelocityPanel.Value = rotationalVelocity;
+
+                sendCameraUpdate();
             }
             return packet;
         }
@@ -207,10 +210,7 @@ namespace SlaveProxy {
         }
 
         private void updateTimer_Tick(object sender, EventArgs e) {
-            if (SendCameraPackets && proxyPanel.HasStarted && selectedAvatar != null)
-                new Thread(() => {
-                    proxyPanel.Proxy.InjectPacket(setFollowCamPropertiesPanel.Packet, Direction.Incoming);
-                }).Start();
+            //sendCameraUpdate();
         }
 
         private void avatarList_SelectedIndexChanged(object sender, EventArgs e) {
@@ -223,6 +223,7 @@ namespace SlaveProxy {
 
         private void rotationPanel_OnChange(object sender, EventArgs e) {
             setFollowCamPropertiesPanel.Rotation = rotationPanel.Rotation;
+            Packet p = setFollowCamPropertiesPanel.Packet;
         }
 
         private void processAgentUpdatesCheck_CheckedChanged(object sender, EventArgs e) {
@@ -242,7 +243,15 @@ namespace SlaveProxy {
 
         private void timerValue_ValueChanged(object sender, EventArgs e) {
             updateTimer.Interval = Decimal.ToInt32(timerValue.Value);
-        }
+        }
+
+        private void sendCameraUpdate() {
+            if (SendCameraPackets && proxyPanel.HasStarted && selectedAvatar != null)
+                //new Thread(() => {
+                    proxyPanel.Proxy.InjectPacket(setFollowCamPropertiesPanel.Packet, Direction.Incoming);
+                //}).Start();
+        }
+
         private void StopControllingCamera() {
             if (proxyPanel != null) {
                 SetFollowCamPropertiesPacket packet = new SetFollowCamPropertiesPacket();
