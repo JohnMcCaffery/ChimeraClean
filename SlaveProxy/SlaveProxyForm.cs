@@ -71,9 +71,9 @@ namespace SlaveProxy {
         }
 
         private void ProxyStarted(object source, EventArgs args) {
-            proxyPanel.Proxy.AddDelegate(PacketType.ObjectUpdate, Direction.Incoming, ObjectUpdatePacketReceived);
+            //proxyPanel.Proxy.AddDelegate(PacketType.ObjectUpdate, Direction.Incoming, ObjectUpdatePacketReceived);
             proxyPanel.Proxy.AddDelegate(PacketType.ImprovedTerseObjectUpdate, Direction.Incoming, ImprovedTersePacketPacketReceived);
-            proxyPanel.Proxy.AddDelegate(PacketType.AgentUpdate, Direction.Outgoing, AgentUpdatePacketReceived);
+            //proxyPanel.Proxy.AddDelegate(PacketType.AgentUpdate, Direction.Outgoing, AgentUpdatePacketReceived);
 
             proxyPanel.Proxy.AddLoginResponseDelegate(LoginResponseReceived);
         }
@@ -84,6 +84,9 @@ namespace SlaveProxy {
             }
             if (processObjectUpdates && p.Type == PacketType.ImprovedTerseObjectUpdate) {
                 ImprovedTersePacketPacketReceived(p, ep);
+            }
+            if (p.Type == PacketType.ObjectUpdate) {
+                ObjectUpdatePacketReceived(p, ep);
             }
             
             Invoke(new Action(() => {
@@ -115,6 +118,7 @@ namespace SlaveProxy {
                     Invoke(new Action(() => {
                         Avatar avatar = new Avatar(firstName, lastName, block.ID, block.FullID);
                         avatarList.Items.Add(avatar);
+                        avatarList.SelectedItem = avatar;
                         avatars[avatar.ID] = avatar;
                     }));
                 }
@@ -124,7 +128,7 @@ namespace SlaveProxy {
 
         private Packet AgentUpdatePacketReceived(Packet  packet, IPEndPoint ep) {
             AgentUpdatePacket p = (AgentUpdatePacket)packet;
-            if (selectedAvatar != null && selectedAvatar.id == p.AgentData.AgentID) {
+            //if (selectedAvatar != null && selectedAvatar.id == p.AgentData.AgentID) {
                 positionPanel.Value = p.AgentData.CameraCenter;
                 rotationPanel.Vector = p.AgentData.CameraAtAxis;
                 velocityPanel.Value = Vector3.Zero;
@@ -132,7 +136,7 @@ namespace SlaveProxy {
                 rotationalVelocityPanel.Value = Vector3.Zero;
                 sendCameraUpdate();
                 processedCount++;
-            } 
+            //} 
             return p;
         }
 
@@ -209,10 +213,6 @@ namespace SlaveProxy {
             get { return controlCamera && (processObjectUpdates || processAgentUpdates); }
         }
 
-        private void updateTimer_Tick(object sender, EventArgs e) {
-            //sendCameraUpdate();
-        }
-
         private void avatarList_SelectedIndexChanged(object sender, EventArgs e) {
             selectedAvatar = (Avatar)avatarList.SelectedItem;
         }
@@ -241,12 +241,8 @@ namespace SlaveProxy {
             if (!controlCamera) StopControllingCamera();
         }
 
-        private void timerValue_ValueChanged(object sender, EventArgs e) {
-            updateTimer.Interval = Decimal.ToInt32(timerValue.Value);
-        }
-
         private void sendCameraUpdate() {
-            if (SendCameraPackets && proxyPanel.HasStarted && selectedAvatar != null)
+            if (SendCameraPackets && proxyPanel.HasStarted)
                 //new Thread(() => {
                     proxyPanel.Proxy.InjectPacket(setFollowCamPropertiesPanel.Packet, Direction.Incoming);
                 //}).Start();

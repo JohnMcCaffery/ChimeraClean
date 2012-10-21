@@ -23,7 +23,6 @@
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent() {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SlaveProxyForm));
             this.nameBox = new System.Windows.Forms.TextBox();
             this.masterAddressBox = new System.Windows.Forms.TextBox();
@@ -56,11 +55,10 @@
             this.processObjectUpdatesCheck = new System.Windows.Forms.CheckBox();
             this.processAgentUpdatesCheck = new System.Windows.Forms.CheckBox();
             this.cameraTab = new System.Windows.Forms.TabPage();
+            this.setFollowCamPropertiesPanel = new UtilLib.SetFollowCamPropertiesPanel();
             this.avatarsTab = new System.Windows.Forms.TabPage();
             this.avatarList = new System.Windows.Forms.ListBox();
             this.packetTab = new System.Windows.Forms.TabPage();
-            this.updateTimer = new System.Windows.Forms.Timer(this.components);
-            this.setFollowCamPropertiesPanel = new UtilLib.SetFollowCamPropertiesPanel();
             this.rotationPanel = new ProxyTestGUI.RotationPanel();
             this.velocityPanel = new ProxyTestGUI.VectorPanel();
             this.rotationalVelocityPanel = new ProxyTestGUI.VectorPanel();
@@ -287,7 +285,6 @@
             0,
             0,
             0});
-            this.timerValue.ValueChanged += new System.EventHandler(this.timerValue_ValueChanged);
             // 
             // controlCameraCheck
             // 
@@ -425,6 +422,20 @@
             this.cameraTab.Text = "Camera";
             this.cameraTab.UseVisualStyleBackColor = true;
             // 
+            // setFollowCamPropertiesPanel
+            // 
+            this.setFollowCamPropertiesPanel.Acceleration = ((OpenMetaverse.Vector3)(resources.GetObject("setFollowCamPropertiesPanel.Acceleration")));
+            this.setFollowCamPropertiesPanel.AngularAcceleration = ((OpenMetaverse.Vector3)(resources.GetObject("setFollowCamPropertiesPanel.AngularAcceleration")));
+            this.setFollowCamPropertiesPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.setFollowCamPropertiesPanel.Location = new System.Drawing.Point(3, 3);
+            this.setFollowCamPropertiesPanel.MinimumSize = new System.Drawing.Size(485, 343);
+            this.setFollowCamPropertiesPanel.Name = "setFollowCamPropertiesPanel";
+            this.setFollowCamPropertiesPanel.Position = ((OpenMetaverse.Vector3)(resources.GetObject("setFollowCamPropertiesPanel.Position")));
+            this.setFollowCamPropertiesPanel.Rotation = ((OpenMetaverse.Quaternion)(resources.GetObject("setFollowCamPropertiesPanel.Rotation")));
+            this.setFollowCamPropertiesPanel.Size = new System.Drawing.Size(485, 355);
+            this.setFollowCamPropertiesPanel.TabIndex = 0;
+            this.setFollowCamPropertiesPanel.Velocity = ((OpenMetaverse.Vector3)(resources.GetObject("setFollowCamPropertiesPanel.Velocity")));
+            // 
             // avatarsTab
             // 
             this.avatarsTab.Controls.Add(this.avatarList);
@@ -461,26 +472,6 @@
             this.packetTab.TabIndex = 3;
             this.packetTab.Text = "Packet";
             this.packetTab.UseVisualStyleBackColor = true;
-            // 
-            // updateTimer
-            // 
-            this.updateTimer.Enabled = true;
-            this.updateTimer.Interval = 20;
-            this.updateTimer.Tick += new System.EventHandler(this.updateTimer_Tick);
-            // 
-            // setFollowCamPropertiesPanel
-            // 
-            this.setFollowCamPropertiesPanel.Acceleration = ((OpenMetaverse.Vector3)(resources.GetObject("setFollowCamPropertiesPanel.Acceleration")));
-            this.setFollowCamPropertiesPanel.AngularAcceleration = ((OpenMetaverse.Vector3)(resources.GetObject("setFollowCamPropertiesPanel.AngularAcceleration")));
-            this.setFollowCamPropertiesPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.setFollowCamPropertiesPanel.Location = new System.Drawing.Point(3, 3);
-            this.setFollowCamPropertiesPanel.MinimumSize = new System.Drawing.Size(485, 343);
-            this.setFollowCamPropertiesPanel.Name = "setFollowCamPropertiesPanel";
-            this.setFollowCamPropertiesPanel.Position = ((OpenMetaverse.Vector3)(resources.GetObject("setFollowCamPropertiesPanel.Position")));
-            this.setFollowCamPropertiesPanel.Rotation = ((OpenMetaverse.Quaternion)(resources.GetObject("setFollowCamPropertiesPanel.Rotation")));
-            this.setFollowCamPropertiesPanel.Size = new System.Drawing.Size(485, 355);
-            this.setFollowCamPropertiesPanel.TabIndex = 0;
-            this.setFollowCamPropertiesPanel.Velocity = ((OpenMetaverse.Vector3)(resources.GetObject("setFollowCamPropertiesPanel.Velocity")));
             // 
             // rotationPanel
             // 
@@ -624,7 +615,6 @@
         private System.Windows.Forms.TabPage cameraTab;
         private System.Windows.Forms.TabPage avatarsTab;
         private System.Windows.Forms.ListBox avatarList;
-        private System.Windows.Forms.Timer updateTimer;
         private System.Windows.Forms.TabPage packetTab;
         //private ProxyTestGUI.VectorPanel accelerationPanel;
         //private ProxyTestGUI.VectorPanel positionPanel;

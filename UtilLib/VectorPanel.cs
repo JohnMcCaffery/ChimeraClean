@@ -14,12 +14,16 @@ namespace ProxyTestGUI {
         private float trackerScale = 100.0f;
         private bool externalSet = false;
         private bool valueChange = false;
+        private Vector3 vector;
 
         public Vector3 Value {
-            get { return new Vector3((float)xValue.Value, (float)yValue.Value, (float)zValue.Value); }
+            get { return vector; }
             set {
+                if (vector.X == value.X && vector.Y == value.Y && vector.Z == value.Z)
+                    return;
                 Action change = new Action(() => {
                     externalSet = true;
+
                     if (!float.IsInfinity(value.X) && value.X > decimal.ToDouble(xValue.Maximum))
                         xValue.Maximum = new decimal(value.X);
                     if (value.X < decimal.ToDouble(xValue.Minimum))
@@ -35,10 +39,14 @@ namespace ProxyTestGUI {
                     if (value.Z < decimal.ToDouble(zValue.Minimum))
                         zValue.Minimum = new decimal(value.Z);
 
-                    xValue.Value = float.IsInfinity(value.X) ? xValue.Maximum : new decimal(value.X);
-                    yValue.Value = float.IsInfinity(value.Y) ? yValue.Maximum : new decimal(value.Y);
-                    zValue.Value = float.IsInfinity(value.Z) ? zValue.Maximum : new decimal(value.Z);
+                    if (!valueChange) {
+                        xValue.Value = float.IsInfinity(value.X) ? xValue.Maximum : new decimal(value.X);
+                        yValue.Value = float.IsInfinity(value.Y) ? yValue.Maximum : new decimal(value.Y);
+                        zValue.Value = float.IsInfinity(value.Z) ? zValue.Maximum : new decimal(value.Z);
+                    }
                     externalSet = false;
+
+                    vector = new Vector3((float)xValue.Value, (float)yValue.Value, (float)zValue.Value);
 
                     if (OnChange != null)
                         OnChange(this, null);
@@ -98,39 +106,48 @@ namespace ProxyTestGUI {
         }
 
         private void xValue_ValueChanged(object sender, EventArgs e) {
-            float value = Value.X * trackerScale;
-            valueChange = true;
-            if (value > (float)xSlider.Maximum) xSlider.Value = xSlider.Maximum;
-            else if (value < (float)xSlider.Minimum) xSlider.Value = xSlider.Minimum;
-            else xSlider.Value = Convert.ToInt32(value);
-            valueChange = false;
+            float v = (float)decimal.ToDouble(xValue.Value);
+            int value = Convert.ToInt32(v * trackerScale);
+            if (v == vector.X)
+                return;
 
-            if (!externalSet && OnChange != null)
-                OnChange(this, new EventArgs());
+            valueChange = true;
+
+            if (!externalSet)
+                Value = new Vector3(value, vector.Y, vector.Z);
+            xSlider.Value = Math.Max(xSlider.Minimum, Math.Min(xSlider.Maximum, value));
+
+            valueChange = false;
         }
 
         private void yValue_ValueChanged(object sender, EventArgs e) {
-            valueChange = true;
-            float value = Value.Y * trackerScale;
-            if (value > (float)ySlider.Maximum) ySlider.Value = ySlider.Maximum;
-            else if (value < (float)ySlider.Minimum) ySlider.Value = ySlider.Minimum;
-            else ySlider.Value = Convert.ToInt32(value);
-            valueChange = false;
+            float v = (float)decimal.ToDouble(yValue.Value);
+            int value = Convert.ToInt32(v * trackerScale);
+            if (v == vector.Y)
+                return;
 
-            if (!externalSet && OnChange != null)
-                OnChange(this, new EventArgs());
+            valueChange = true;
+
+            if (!externalSet)
+                Value = new Vector3(vector.X, value, vector.Z);
+            ySlider.Value = Math.Max(ySlider.Minimum, Math.Min(ySlider.Maximum, value));
+
+            valueChange = false;
         }
 
         private void zValue_ValueChanged(object sender, EventArgs e) {
-            valueChange = true;
-            float value = Value.Z * trackerScale;
-            if (value > (float)zSlider.Maximum) zSlider.Value = zSlider.Maximum;
-            else if (value < (float)zSlider.Minimum) zSlider.Value = zSlider.Minimum;
-            else zSlider.Value = Convert.ToInt32(value);
-            valueChange = false;
+            float v = (float)decimal.ToDouble(zValue.Value);
+            int value = Convert.ToInt32(v * trackerScale);
+            if (v == vector.Z)
+                return;
 
-            if (!externalSet && OnChange != null)
-                OnChange(this, new EventArgs());
+            valueChange = true;
+
+            if (!externalSet)
+                Value = new Vector3(vector.X, vector.Y, value);
+            zSlider.Value = Math.Max(zSlider.Minimum, Math.Min(zSlider.Maximum, value));
+
+            valueChange = false;
         }
 
         private void xSlider_Scroll(object sender, EventArgs e) {

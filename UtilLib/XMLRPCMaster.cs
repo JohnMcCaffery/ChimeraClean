@@ -74,16 +74,6 @@ namespace UtilLib {
         public void BroadcastPacket(Packet packet) {
             foreach (var ep in slaveEPs)
                 proxy.SendPacket(packet, ep, false);
-            //new Thread(() => {
-            //if (slaves.Count > 0) {
-                //byte[] buffer = packet.ToBytes();
-                //int end = buffer.Length - 1;
-                //lock (slaves)
-                    //foreach (UdpClient slave in slaveEPs)
-                        //slave.Send(buffer, buffer.Length);
-                //Packet p = Packet.BuildPacket(buffer, ref end, new byte[8192]);
-            //}
-            //}).Start();
         }
 
         public void SetLoginResponse(Nwc.XmlRpc.XmlRpcResponse response) {

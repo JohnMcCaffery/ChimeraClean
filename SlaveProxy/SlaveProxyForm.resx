@@ -131,13 +131,6 @@
         b3IzAwAAAAFYAVkBWgAAAAsLCwIAAAAAAAAAAAAAAAAAAAAL
 </value>
   </data>
-  <data name="setFollowCamPropertiesPanel.CameraFocus" mimetype="application/x-microsoft.net.object.binary.base64">
-    <value>
-        AAEAAAD/////AQAAAAAAAAAMAgAAAElPcGVuTWV0YXZlcnNlVHlwZXMsIFZlcnNpb249MC4wLjAuMCwg
-        Q3VsdHVyZT1uZXV0cmFsLCBQdWJsaWNLZXlUb2tlbj1udWxsBQEAAAAVT3Blbk1ldGF2ZXJzZS5WZWN0
-        b3IzAwAAAAFYAVkBWgAAAAsLCwIAAAAAAAAAAAAAAAAAAAAL
-</value>
-  </data>
   <data name="setFollowCamPropertiesPanel.Position" mimetype="application/x-microsoft.net.object.binary.base64">
     <value>
         AAEAAAD/////AQAAAAAAAAAMAgAAAElPcGVuTWV0YXZlcnNlVHlwZXMsIFZlcnNpb249MC4wLjAuMCwg
@@ -201,9 +194,6 @@
         b3IzAwAAAAFYAVkBWgAAAAsLCwIAAAAAAABDAAAAQwAAAEML
 </value>
   </data>
-  <metadata name="updateTimer.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>125, 17</value>
-  </metadata>
   <metadata name="$this.TrayHeight" type="System.Int32, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>54</value>
   </metadata>

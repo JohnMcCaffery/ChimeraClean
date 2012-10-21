@@ -91,12 +91,12 @@
             this.pitchValue.DecimalPlaces = 2;
             this.pitchValue.Location = new System.Drawing.Point(26, 122);
             this.pitchValue.Maximum = new decimal(new int[] {
-            180,
+            360,
             0,
             0,
             0});
             this.pitchValue.Minimum = new decimal(new int[] {
-            180,
+            360,
             0,
             0,
             -2147483648});

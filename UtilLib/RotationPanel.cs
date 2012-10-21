@@ -11,6 +11,7 @@ using OpenMetaverse;
 namespace ProxyTestGUI {
     public partial class RotationPanel : UserControl {
         private Quaternion pitch = Quaternion.Identity, yaw = Quaternion.Identity, rotation = Quaternion.Identity;
+        private float oldYaw, oldPitch;
 
         public string DisplayName {
             get { return vectorPanel.DisplayName; }
@@ -29,20 +30,22 @@ namespace ProxyTestGUI {
                     pitch *= (float)RAD2DEG;
                     yaw *= (float)RAD2DEG;
 
-                    pitch = pitch > 180f ? 180f : pitch;
-                    pitch = pitch < -180f ? -180f : pitch;
+                    pitch = pitch > 180 ? -180 + (180-pitch) : pitch;
+                    pitch = pitch < -180 ? 180-(180+pitch) : pitch;
 
-                    yaw = yaw > 360f ? 360f : yaw;
-                    yaw = yaw < -360f ? 360f : yaw;
+                    yaw = yaw > 180 ? -180 + (180-yaw) : yaw;
+                    yaw = yaw < -180 ? 180-(180+yaw) : yaw;
 
-                    if (!mPitchChanging)
-                        pitchValue.Value = new decimal(pitch);
-                    if (!mYawChanging)
-                        yawValue.Value = new decimal(yaw);
-                    if (!mVectorChanging)
-                        vectorPanel.Value = Vector3.UnitX * value;
-                    if (OnChange != null)
-                        OnChange(this, null);
+                    if (oldPitch != pitch && oldYaw != yaw) {
+                        if (!mPitchChanging)
+                            pitchValue.Value = new decimal(pitch);
+                        if (!mYawChanging)
+                            yawValue.Value = new decimal(yaw);
+                        if (!mVectorChanging)
+                            vectorPanel.Value = Vector3.UnitX * value;
+                        if (OnChange != null)
+                            OnChange(this, null);
+                    }
                     mRotationChanging = false;
                 };
                 if (InvokeRequired)
@@ -50,7 +53,8 @@ namespace ProxyTestGUI {
                 else
                     change();
             }
-        }        public Vector3 Vector {
+        }
+        public Vector3 Vector {
             get { return vectorPanel.Value; }
             set { vectorPanel.Value = value; }
         }
@@ -93,27 +97,42 @@ namespace ProxyTestGUI {
         }
 
         private void yawValue_ValueChanged(object sender, EventArgs e) {
+            float yaw = (float)decimal.ToDouble(yawValue.Value);
+            if (oldYaw == yaw)
+                return;
             mYawChanging = true;
             if (!mRotationChanging)
                 Rotation = CalculateRotation();
 
             if (!mYawSliderChanging) {
                 int val = decimal.ToInt32(yawValue.Value);
-                yawSlider.Value = val > 180 ? 180 : (val < -180 ? -180 : val);
+                int modifiedVal = val > 180 ? (val - 360) : (val < -180 ? 360 + val : val);
+                if (modifiedVal != val) {
+                    yawValue.Value = new decimal(modifiedVal);
+                }
+                yawSlider.Value = modifiedVal;
             }
+            oldYaw = yaw;
             mYawChanging = false;
         }
 
         private void pitchValue_ValueChanged(object sender, EventArgs e) {
+            float pitch = (float)decimal.ToDouble(yawValue.Value);
+            if (oldPitch == pitch)
+                return;
             mPitchChanging = true;
             CalculateRotation();
             if (!mRotationChanging)
                 Rotation = CalculateRotation();
 
             if (!mPitchSliderChanging) {
-                int val = decimal.ToInt32(yawValue.Value);
-                pitchSlider.Value = val > 90 ? 90 : (val < -90 ? -90 : val);
+                int val = decimal.ToInt32(pitchValue.Value);
+                int modifiedVal = val > 180 ? (val - 360) : (val < -180 ? 360 + val : val);
+                if (modifiedVal != val)
+                    pitchValue.Value = new decimal(modifiedVal);
+                pitchSlider.Value = modifiedVal > 90 ? 90 : (modifiedVal < -90 ? -90 : modifiedVal);
             }
+            oldPitch = pitch;
             mPitchChanging = false;
         }
 
