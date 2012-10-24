@@ -61,9 +61,13 @@ namespace UtilLib {
             }
 
             new Thread(() => {
-                slave.Ping();
-                if (OnSlaveConnected != null)
-                    OnSlaveConnected(name, null);
+                try {
+                    slave.Ping();
+                    if (OnSlaveConnected != null)
+                        OnSlaveConnected(name, null);
+                } catch (Exception e) {
+                    Console.WriteLine(e.Message + "\n" + e.StackTrace);
+                }
             }).Start();
 
             return proxy.ServerSoucePort;

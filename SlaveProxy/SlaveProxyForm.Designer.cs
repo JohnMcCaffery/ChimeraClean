@@ -91,7 +91,7 @@
             this.masterAddressBox.Name = "masterAddressBox";
             this.masterAddressBox.Size = new System.Drawing.Size(284, 20);
             this.masterAddressBox.TabIndex = 2;
-            this.masterAddressBox.Text = "127.0.0.1";
+            this.masterAddressBox.Text = "192.168.1.104";
             // 
             // connectButton
             // 
@@ -122,7 +122,7 @@
             this.listenIPBox.Name = "listenIPBox";
             this.listenIPBox.Size = new System.Drawing.Size(182, 20);
             this.listenIPBox.TabIndex = 9;
-            this.listenIPBox.Text = "127.0.0.1";
+            this.listenIPBox.Text = "129.168.1.101";
             // 
             // listenIPLabel
             // 
@@ -482,7 +482,7 @@
             this.rotationPanel.Name = "rotationPanel";
             this.rotationPanel.Pitch = 0F;
             this.rotationPanel.Rotation = ((OpenMetaverse.Quaternion)(resources.GetObject("rotationPanel.Rotation")));
-            this.rotationPanel.Size = new System.Drawing.Size(461, 147);
+            this.rotationPanel.Size = new System.Drawing.Size(445, 147);
             this.rotationPanel.TabIndex = 4;
             this.rotationPanel.Vector = ((OpenMetaverse.Vector3)(resources.GetObject("rotationPanel.Vector")));
             this.rotationPanel.Yaw = 0F;
@@ -497,7 +497,7 @@
             this.velocityPanel.Max = 5D;
             this.velocityPanel.Min = -5D;
             this.velocityPanel.Name = "velocityPanel";
-            this.velocityPanel.Size = new System.Drawing.Size(458, 98);
+            this.velocityPanel.Size = new System.Drawing.Size(442, 98);
             this.velocityPanel.TabIndex = 3;
             this.velocityPanel.Value = ((OpenMetaverse.Vector3)(resources.GetObject("velocityPanel.Value")));
             this.velocityPanel.X = 0F;
@@ -513,7 +513,7 @@
             this.rotationalVelocityPanel.Max = 5D;
             this.rotationalVelocityPanel.Min = -5D;
             this.rotationalVelocityPanel.Name = "rotationalVelocityPanel";
-            this.rotationalVelocityPanel.Size = new System.Drawing.Size(458, 98);
+            this.rotationalVelocityPanel.Size = new System.Drawing.Size(442, 98);
             this.rotationalVelocityPanel.TabIndex = 2;
             this.rotationalVelocityPanel.Value = ((OpenMetaverse.Vector3)(resources.GetObject("rotationalVelocityPanel.Value")));
             this.rotationalVelocityPanel.X = 0F;
@@ -529,7 +529,7 @@
             this.accelerationPanel.Max = 5D;
             this.accelerationPanel.Min = -5D;
             this.accelerationPanel.Name = "accelerationPanel";
-            this.accelerationPanel.Size = new System.Drawing.Size(458, 98);
+            this.accelerationPanel.Size = new System.Drawing.Size(442, 98);
             this.accelerationPanel.TabIndex = 1;
             this.accelerationPanel.Value = ((OpenMetaverse.Vector3)(resources.GetObject("accelerationPanel.Value")));
             this.accelerationPanel.X = 0F;
@@ -560,7 +560,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.proxyPanel.ListenIP = "127.0.0.1";
             this.proxyPanel.Location = new System.Drawing.Point(-1, 1);
-            this.proxyPanel.LoginURI = "http://localhost:9000";
+            this.proxyPanel.LoginURI = "http://mimuve.cs.st-andrews.ac.uk:8002";
             this.proxyPanel.Name = "proxyPanel";
             this.proxyPanel.Port = "8081";
             this.proxyPanel.Size = new System.Drawing.Size(496, 29);

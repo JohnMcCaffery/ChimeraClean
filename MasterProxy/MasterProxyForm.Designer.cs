@@ -177,7 +177,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.proxyPanel.ListenIP = "127.0.0.1";
             this.proxyPanel.Location = new System.Drawing.Point(110, 5);
-            this.proxyPanel.LoginURI = "http://localhost:9000";
+            this.proxyPanel.LoginURI = "http://mimuve.cs.st-andrews.ac.uk:8002";
             this.proxyPanel.Name = "proxyPanel";
             this.proxyPanel.Port = "8080";
             this.proxyPanel.Size = new System.Drawing.Size(531, 30);
