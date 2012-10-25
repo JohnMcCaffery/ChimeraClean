@@ -1,4 +1,24 @@
-﻿namespace SlaveProxy {
+﻿/*************************************************************************
+Copyright (c) 2012 John McCaffery 
+
+This file is part of Armadillo Proxy.
+
+Routing Project is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Routing Project is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Routing Project.  If not, see <http://www.gnu.org/licenses/>.
+
+**************************************************************************/
+
+namespace SlaveProxy {
     partial class SlaveProxyForm {
         /// <summary>
         /// Required designer variable.
@@ -91,7 +111,7 @@
             this.masterAddressBox.Name = "masterAddressBox";
             this.masterAddressBox.Size = new System.Drawing.Size(284, 20);
             this.masterAddressBox.TabIndex = 2;
-            this.masterAddressBox.Text = "192.168.1.104";
+            this.masterAddressBox.Text = "127.0.0.1";
             // 
             // connectButton
             // 
@@ -122,7 +142,7 @@
             this.listenIPBox.Name = "listenIPBox";
             this.listenIPBox.Size = new System.Drawing.Size(182, 20);
             this.listenIPBox.TabIndex = 9;
-            this.listenIPBox.Text = "129.168.1.101";
+            this.listenIPBox.Text = "127.0.0.1";
             // 
             // listenIPLabel
             // 
@@ -560,7 +580,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.proxyPanel.ListenIP = "127.0.0.1";
             this.proxyPanel.Location = new System.Drawing.Point(-1, 1);
-            this.proxyPanel.LoginURI = "http://mimuve.cs.st-andrews.ac.uk:8002";
+            this.proxyPanel.LoginURI = "http://apollo.cs.st-andrews.ac.uk:8002";
             this.proxyPanel.Name = "proxyPanel";
             this.proxyPanel.Port = "8081";
             this.proxyPanel.Size = new System.Drawing.Size(496, 29);
