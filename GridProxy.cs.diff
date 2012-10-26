@@ -1,0 +1,822 @@
+74,78d73
+<         /// The port that packets from the fake server will be sent from.
+<         /// Use 0 to bind to any available port
+<         /// </summary>
+<         public ushort clientFacingPort = 0;
+<         /// <summary>
+83,87d77
+<         /// The Port that the proxy will listen for packets from the server on
+<         /// Use 0 to bind to any available port
+<         /// </summary>
+<         public ushort remoteFacingPort = 0;
+<         /// <summary>
+118d107
+<             argumentParsers["proxy-client-facing-port"] = new ArgumentParser(ParseClientFacingPort);
+120d108
+<             argumentParsers["proxy-remote-facing-port"] = new ArgumentParser(ParseRemoteFacingPort);
+157d144
+<             Console.WriteLine("  --proxy-client-facing-port=<IP>     listen for communication with the client on port <port>");
+159d145
+<             Console.WriteLine("  --proxy-remote-facing-port=<IP>     listen for communication with the server on port <port>");
+179,183d164
+<         private void ParseClientFacingPort(string value)
+<         {
+<             clientFacingPort = Convert.ToUInt16(value);
+<         }
+< 
+189,193d169
+<         private void ParseRemoteFacingPort(string value)
+<         {
+<             remoteFacingPort = Convert.ToUInt16(value);
+<         }
+< 
+234,241d209
+<         public IPEndPoint ActiveCircuit {
+<             get { return activeCircuit; }
+<             set { activeCircuit = ProxySim(value); }
+<         }
+<         public int ServerSoucePort {
+<             get { return ((IPEndPoint) simFacingSocket.LocalEndPoint).Port; }
+<         }
+< 
+397,398c365,368
+<                 for (; ; ) {
+<                     try {
+---
+>                 for (; ; )
+>                 {
+>                     try
+>                     {
+401c371,372
+<                         Thread connThread = new Thread((ThreadStart)delegate {
+---
+>                         Thread connThread = new Thread((ThreadStart)delegate
+>                         {
+410c381,383
+<                     } catch (SocketException e) {
+---
+>                     }
+>                     catch (SocketException e)
+>                     {
+417c390,392
+<                     } catch (ObjectDisposedException) {
+---
+>                     }
+>                     catch (ObjectDisposedException)
+>                     {
+420,427c395,404
+<                 }
+<                 // send any packets queued for injection
+<                 if (activeCircuit != null) {
+<                     lock (this) {
+<                         SimProxy activeProxy = (SimProxy)simProxies[activeCircuit];
+<                         foreach (Packet packet in queuedOutgoingInjections)
+<                             activeProxy.Inject(packet, Direction.Outgoing);
+<                         queuedOutgoingInjections = new List<Packet>();
+---
+>                     // send any packets queued for injection
+>                     if (activeCircuit != null)
+>                     {
+>                         lock (this)
+>                         {
+>                             SimProxy activeProxy = (SimProxy)simProxies[activeCircuit];
+>                             foreach (Packet packet in queuedOutgoingInjections)
+>                                 activeProxy.Inject(packet, Direction.Outgoing);
+>                             queuedOutgoingInjections = new List<Packet>();
+>                         }
+1145,1147c1122
+<                         try { 
+<                             request = d(this, new XmlRpcRequestEventArgs(request));
+<                         }
+---
+>                         try { d(this, new XmlRpcRequestEventArgs(request)); }
+1152,1162c1127,1132
+< 
+<                 XmlRpcResponse response = null;
+<                 if (request != null) {
+<                     try {
+<                         // forward the XML-RPC request to the server
+<                         response = (XmlRpcResponse)request.Send(proxyConfig.remoteLoginUri.ToString(),
+<                             30 * 1000); // 30 second timeout
+<                     } catch (Exception e) {
+<                         OpenMetaverse.Logger.Log("Error during login response", Helpers.LogLevel.Error, e);
+<                         return;
+<                     }
+---
+>                 XmlRpcResponse response;
+>                 try
+>                 {
+>                     // forward the XML-RPC request to the server
+>                     response = (XmlRpcResponse)request.Send(proxyConfig.remoteLoginUri.ToString(),
+>                         30 * 1000); // 30 second timeout
+1164,1165c1134
+< 
+<                 lock (loginResponseDelegates)
+---
+>                 catch (Exception e)
+1167,1173c1136,1137
+<                     foreach (XmlRpcResponseDelegate d in loginResponseDelegates)
+<                     {
+<                         try { 
+<                             response = d(response);
+<                         }
+<                         catch (Exception e) { OpenMetaverse.Logger.Log("Exception in login response delegate" + e, Helpers.LogLevel.Error, e); }
+<                     }
+---
+>                     OpenMetaverse.Logger.Log("Error during login response", Helpers.LogLevel.Error, e);
+>                     return;
+1208a1173,1177
+>                 // forward the XML-RPC response to the client
+>                 StreamWriter writer = new StreamWriter(netStream);
+>                 writer.Write("HTTP/1.0 200 OK\r\n");
+>                 writer.Write("Content-type: text/xml\r\n");
+>                 writer.Write("\r\n");
+1210,1216c1179,1181
+<                 if (response != null) {
+<                     // forward the XML-RPC response to the client
+<                     StreamWriter writer = new StreamWriter(netStream);
+<                     writer.Write("HTTP/1.0 200 OK\r\n");
+<                     writer.Write("Content-type: text/xml\r\n");
+<                     writer.Write("\r\n");
+< 
+---
+>                 XmlTextWriter responseWriter = new XmlTextWriter(writer);
+>                 XmlRpcResponseSerializer.Singleton.Serialize(responseWriter, response);
+>                 responseWriter.Close(); writer.Close();
+1218,1220c1183,1189
+<                     XmlTextWriter responseWriter = new XmlTextWriter(writer);
+<                     XmlRpcResponseSerializer.Singleton.Serialize(responseWriter, response);
+<                     responseWriter.Close(); writer.Close();
+---
+>                 lock (loginResponseDelegates)
+>                 {
+>                     foreach (XmlRpcResponseDelegate d in loginResponseDelegates)
+>                     {
+>                         try { d(response); }
+>                         catch (Exception e) { OpenMetaverse.Logger.Log("Exception in login response delegate" + e, Helpers.LogLevel.Error, e); }
+>                     }
+1221a1191
+> 
+1225,1226c1195,1198
+<         private void ProxyLoginSD(NetworkStream netStream, byte[] content) {
+<             lock (this) {
+---
+>         private void ProxyLoginSD(NetworkStream netStream, byte[] content)
+>         {
+>             lock (this)
+>             {
+1231,1233c1203,1208
+<                     delegate(CapsClient client, OSD result, Exception error) {
+<                         if (error == null) {
+<                             if (result != null && result.Type == OSDType.Map) {
+---
+>                     delegate(CapsClient client, OSD result, Exception error)
+>                     {
+>                         if (error == null)
+>                         {
+>                             if (result != null && result.Type == OSDType.Map)
+>                             {
+1243c1218,1219
+<                 if (response == null) {
+---
+>                 if (response == null)
+>                 {
+1260,1261c1236,1239
+<                 if (sim_port == null || sim_ip == null || seed_capability == null) {
+<                     if (map != null) {
+---
+>                 if (sim_port == null || sim_ip == null || seed_capability == null)
+>                 {
+>                     if (map != null)
+>                     {
+1314c1292,1293
+<         private void InitializeSimProxy() {
+---
+>         private void InitializeSimProxy()
+>         {
+1318c1297
+<             simFacingSocket.Bind(new IPEndPoint(proxyConfig.remoteFacingAddress, proxyConfig.remoteFacingPort));
+---
+>             simFacingSocket.Bind(new IPEndPoint(proxyConfig.remoteFacingAddress, 0));
+1323c1302,1303
+<         private void Reset() {
+---
+>         private void Reset()
+>         {
+1335c1315,1316
+<         private void RunSimProxy() {
+---
+>         private void RunSimProxy()
+>         {
+1340c1321,1322
+<         private void ReceiveFromSim(IAsyncResult ar) {
+---
+>         private void ReceiveFromSim(IAsyncResult ar)
+>         {
+1342c1324,1325
+<                 try {
+---
+>                 try
+>                 {
+1350c1333,1334
+<                     if (proxyHandlers.ContainsKey(remoteEndPoint)) {
+---
+>                     if (proxyHandlers.ContainsKey(remoteEndPoint))
+>                     {
+1372c1356,1357
+<                         if (incomingCheckers.ContainsKey(packet.Type)) {
+---
+>                         if (incomingCheckers.ContainsKey(packet.Type))
+>                         {
+1386c1371,1372
+<                         if (incomingDelegates.ContainsKey(packet.Type)) {
+---
+>                         if (incomingDelegates.ContainsKey(packet.Type))
+>                         {
+1393c1379,1380
+<                             if (packet.Header.AckList != null && needsCopy) {
+---
+>                             if (packet.Header.AckList != null && needsCopy)
+>                             {
+1399c1386,1387
+<                             try {
+---
+>                             try
+>                             {
+1401c1389,1390
+<                                 if (newPacket == null) {
+---
+>                                 if (newPacket == null)
+>                                 {
+1409c1398,1400
+<                                 } else {
+---
+>                                 }
+>                                 else
+>                                 {
+1420c1411,1413
+<                             } catch (Exception e) {
+---
+>                             }
+>                             catch (Exception e)
+>                             {
+1426c1419,1420
+<                         } else
+---
+>                         }
+>                         else
+1428c1422,1423
+<                     } else
+---
+>                     }
+>                     else
+1431c1426,1428
+<                 } catch (Exception e) {
+---
+>                 }
+>                 catch (Exception e)
+>                 {
+1433c1430,1432
+<                 } finally {
+---
+>                 }
+>                 finally
+>                 {
+1435c1434,1435
+<                     try {
+---
+>                     try
+>                     {
+1438c1438,1440
+<                     } catch (Exception e) {
+---
+>                     }
+>                     catch (Exception e)
+>                     {
+1445c1447,1448
+<         public void SendPacket(Packet packet, IPEndPoint endPoint, bool skipZero) {
+---
+>         public void SendPacket(Packet packet, IPEndPoint endPoint, bool skipZero)
+>         {
+1450c1453,1454
+<             else {
+---
+>             else
+>             {
+1457c1461,1462
+<         public Packet SpoofAck(uint sequence) {
+---
+>         public Packet SpoofAck(uint sequence)
+>         {
+1466c1471,1472
+<         public Packet SeparateAck(Packet packet) {
+---
+>         public Packet SeparateAck(Packet packet)
+>         {
+1470c1476,1477
+<             for (int i = 0; i < packet.Header.AckList.Length; ++i) {
+---
+>             for (int i = 0; i < packet.Header.AckList.Length; ++i)
+>             {
+1481c1488,1489
+<         public static void SwapPacket(Packet oldPacket, Packet newPacket) {
+---
+>         public static void SwapPacket(Packet oldPacket, Packet newPacket)
+>         {
+1487c1495,1496
+<             if (oldAcks != 0 || newAcks != 0) {
+---
+>             if (oldAcks != 0 || newAcks != 0)
+>             {
+1497c1506,1507
+<         private IPEndPoint ProxySim(IPEndPoint simEndPoint) {
+---
+>         private IPEndPoint ProxySim(IPEndPoint simEndPoint)
+>         {
+1501c1511,1512
+<             else {
+---
+>             else
+>             {
+1514c1525,1526
+<         private void AddHandler(EndPoint endPoint, SimProxy proxy) {
+---
+>         private void AddHandler(EndPoint endPoint, SimProxy proxy)
+>         {
+1519c1531,1532
+<         private class SimProxy {
+---
+>         private class SimProxy
+>         {
+1536c1549,1550
+<             public SimProxy(ProxyConfig proxyConfig, IPEndPoint simEndPoint, Proxy proxy) {
+---
+>             public SimProxy(ProxyConfig proxyConfig, IPEndPoint simEndPoint, Proxy proxy)
+>             {
+1541c1555
+<                 socket.Bind(new IPEndPoint(proxyConfig.clientFacingAddress, proxyConfig.clientFacingPort));
+---
+>                 socket.Bind(new IPEndPoint(proxyConfig.clientFacingAddress, 0));
+1547c1561,1562
+<             public void Reset() {
+---
+>             public void Reset()
+>             {
+1559,1560c1574,1577
+<             private void BackgroundTasks() {
+<                 try {
+---
+>             private void BackgroundTasks()
+>             {
+>                 try
+>                 {
+1567,1569c1584,1589
+<                     for (; ; Thread.Sleep(1000)) lock (proxy) {
+<                             if ((tick = (tick + 1) % 60) == 0) {
+<                                 for (int i = 0; i < incomingInjectionsPoint; ++i) {
+---
+>                     for (; ; Thread.Sleep(1000)) lock (proxy)
+>                         {
+>                             if ((tick = (tick + 1) % 60) == 0)
+>                             {
+>                                 for (int i = 0; i < incomingInjectionsPoint; ++i)
+>                                 {
+1575c1595,1596
+<                                 for (int i = 0; i < outgoingInjectionsPoint; ++i) {
+---
+>                                 for (int i = 0; i < outgoingInjectionsPoint; ++i)
+>                                 {
+1581c1602,1603
+<                                 for (int i = 0; i < incomingSeenAcksPoint; ++i) {
+---
+>                                 for (int i = 0; i < incomingSeenAcksPoint; ++i)
+>                                 {
+1587c1609,1610
+<                                 for (int i = 0; i < outgoingSeenAcksPoint; ++i) {
+---
+>                                 for (int i = 0; i < outgoingSeenAcksPoint; ++i)
+>                                 {
+1595c1618,1619
+<                                 if (!incomingSeenAcks.Contains(id)) {
+---
+>                                 if (!incomingSeenAcks.Contains(id))
+>                                 {
+1602c1626,1627
+<                                 if (!outgoingSeenAcks.Contains(id)) {
+---
+>                                 if (!outgoingSeenAcks.Contains(id))
+>                                 {
+1608c1633,1635
+<                 } catch (Exception e) {
+---
+>                 }
+>                 catch (Exception e)
+>                 {
+1614c1641,1642
+<             public IPEndPoint LocalEndPoint() {
+---
+>             public IPEndPoint LocalEndPoint()
+>             {
+1624c1652,1653
+<             public void Run() {
+---
+>             public void Run()
+>             {
+1632,1634c1661,1666
+<             private void ReceiveFromClient(IAsyncResult ar) {
+<                 lock (proxy) {
+<                     try {
+---
+>             private void ReceiveFromClient(IAsyncResult ar)
+>             {
+>                 lock (proxy)
+>                 {
+>                     try
+>                     {
+1640c1672,1673
+<                         try { length = socket.EndReceiveFrom(ar, ref clientEndPoint); } catch (SocketException) { }
+---
+>                         try { length = socket.EndReceiveFrom(ar, ref clientEndPoint); }
+>                         catch (SocketException) { }
+1642c1675,1676
+<                         if (length != 0) {
+---
+>                         if (length != 0)
+>                         {
+1661c1695,1696
+<                             if (proxy.outgoingCheckers.ContainsKey(packet.Type)) {
+---
+>                             if (proxy.outgoingCheckers.ContainsKey(packet.Type))
+>                             {
+1675,1676c1710,1713
+<                             if (proxy.outgoingDelegates.ContainsKey(packet.Type)) {
+<                                 if (packet.Header.AckList != null && needsCopy) {
+---
+>                             if (proxy.outgoingDelegates.ContainsKey(packet.Type))
+>                             {
+>                                 if (packet.Header.AckList != null && needsCopy)
+>                                 {
+1682c1719,1720
+<                                 try {
+---
+>                                 try
+>                                 {
+1684c1722,1723
+<                                     if (newPacket == null) {
+---
+>                                     if (newPacket == null)
+>                                     {
+1692c1731,1733
+<                                     } else {
+---
+>                                     }
+>                                     else
+>                                     {
+1703c1744,1746
+<                                 } catch (Exception e) {
+---
+>                                 }
+>                                 catch (Exception e)
+>                                 {
+1709c1752,1753
+<                             } else
+---
+>                             }
+>                             else
+1713c1757,1758
+<                             if (firstReceive) {
+---
+>                             if (firstReceive)
+>                             {
+1720c1765,1767
+<                     } catch (Exception e) {
+---
+>                     }
+>                     catch (Exception e)
+>                     {
+1722c1769,1771
+<                     } finally {
+---
+>                     }
+>                     finally
+>                     {
+1724c1773,1774
+<                         try {
+---
+>                         try
+>                         {
+1727c1777,1779
+<                         } catch (SocketException e) {
+---
+>                         }
+>                         catch (SocketException e)
+>                         {
+1735c1787,1788
+<             public void SendPacket(Packet packet, bool skipZero) {
+---
+>             public void SendPacket(Packet packet, bool skipZero)
+>             {
+1739c1792,1793
+<                 else {
+---
+>                 else
+>                 {
+1746,1748c1800,1805
+<             public void Inject(Packet packet, Direction direction) {
+<                 if (direction == Direction.Incoming) {
+<                     if (firstReceive) {
+---
+>             public void Inject(Packet packet, Direction direction)
+>             {
+>                 if (direction == Direction.Incoming)
+>                 {
+>                     if (firstReceive)
+>                     {
+1755c1812,1814
+<                 } else {
+---
+>                 }
+>                 else
+>                 {
+1763c1822,1823
+<                 if (direction == Direction.Incoming) {
+---
+>                 if (direction == Direction.Incoming)
+>                 {
+1767c1827,1828
+<                     else {
+---
+>                     else
+>                     {
+1771c1832,1833
+<                 } else
+---
+>                 }
+>                 else
+1776c1838,1839
+<             public void WaitForAck(Packet packet, Direction direction) {
+---
+>             public void WaitForAck(Packet packet, Direction direction)
+>             {
+1782c1845,1846
+<             public Packet CheckAcks(Packet packet, Direction direction, ref int length, ref bool needsCopy) {
+---
+>             public Packet CheckAcks(Packet packet, Direction direction, ref int length, ref bool needsCopy)
+>             {
+1790c1854,1855
+<                 if (packet.Type == PacketType.PacketAck) {
+---
+>                 if (packet.Type == PacketType.PacketAck)
+>                 {
+1793c1858,1859
+<                     foreach (PacketAckPacket.PacketsBlock pb in ((PacketAckPacket)packet).Packets) {
+---
+>                     foreach (PacketAckPacket.PacketsBlock pb in ((PacketAckPacket)packet).Packets)
+>                     {
+1795c1861,1862
+<                         if (acks.ContainsKey(id)) {
+---
+>                         if (acks.ContainsKey(id))
+>                         {
+1799c1866,1868
+<                         } else {
+---
+>                         }
+>                         else
+>                         {
+1803c1872,1873
+<                     if (changed) {
+---
+>                     if (changed)
+>                     {
+1808c1878,1879
+<                         foreach (PacketAckPacket.PacketsBlock pb in newPacketBlocks) {
+---
+>                         foreach (PacketAckPacket.PacketsBlock pb in newPacketBlocks)
+>                         {
+1819c1890,1891
+<                 if (packet.Header.AppendedAcks) {
+---
+>                 if (packet.Header.AppendedAcks)
+>                 {
+1821c1893,1894
+<                     for (int i = 0; i < ackCount; ) {
+---
+>                     for (int i = 0; i < ackCount; )
+>                     {
+1824c1897,1898
+<                         if (acks.ContainsKey(ackID)) {
+---
+>                         if (acks.ContainsKey(ackID))
+>                         {
+1833c1907,1908
+<                         } else
+---
+>                         }
+>                         else
+1836c1911,1912
+<                     if (ackCount == 0) {
+---
+>                     if (ackCount == 0)
+>                     {
+1846c1922,1923
+<             public Packet ModifySequence(Packet packet, Direction direction, ref int length, ref bool needsCopy) {
+---
+>             public Packet ModifySequence(Packet packet, Direction direction, ref int length, ref bool needsCopy)
+>             {
+1859c1936,1937
+<                 if (packet.Header.AppendedAcks) {
+---
+>                 if (packet.Header.AppendedAcks)
+>                 {
+1861c1939,1940
+<                     for (int i = 0; i < ackCount; ++i) {
+---
+>                     for (int i = 0; i < ackCount; ++i)
+>                     {
+1873c1952,1953
+<                 if (packet.Type == PacketType.PacketAck) {
+---
+>                 if (packet.Type == PacketType.PacketAck)
+>                 {
+1875c1955,1956
+<                     foreach (PacketAckPacket.PacketsBlock pb in pap.Packets) {
+---
+>                     foreach (PacketAckPacket.PacketsBlock pb in pap.Packets)
+>                     {
+1886c1967,1968
+<                     switch (packet.Header.Frequency) {
+---
+>                     switch (packet.Header.Frequency)
+>                     {
+1911c1993,1994
+<         private void InitializeAddressCheckers() {
+---
+>         private void InitializeAddressCheckers()
+>         {
+1923c2006,2007
+<         private void AddMystery(PacketType type) {
+---
+>         private void AddMystery(PacketType type)
+>         {
+1929c2013,2014
+<         private void GenericCheck(ref uint simIP, ref ushort simPort, ref string simCaps, bool active) {
+---
+>         private void GenericCheck(ref uint simIP, ref ushort simPort, ref string simCaps, bool active)
+>         {
+1938c2023,2024
+<             if (simCaps != null && simCaps.Length > 0) {
+---
+>             if (simCaps != null && simCaps.Length > 0)
+>             {
+1941c2027,2028
+<                 lock (this) {
+---
+>                 lock (this)
+>                 {
+1952c2039,2040
+<         private Packet CheckTeleportFinish(Packet packet) {
+---
+>         private Packet CheckTeleportFinish(Packet packet)
+>         {
+1961c2049,2050
+<         private Packet CheckEnableSimulator(Packet packet) {
+---
+>         private Packet CheckEnableSimulator(Packet packet)
+>         {
+1969c2058,2059
+<         private Packet CheckCrossedRegion(Packet packet) {
+---
+>         private Packet CheckCrossedRegion(Packet packet)
+>         {
+1978c2068,2069
+<         private Packet LogPacket(Packet packet, string type) {
+---
+>         private Packet LogPacket(Packet packet, string type)
+>         {
+1984c2075,2076
+<         private Packet LogIncomingMysteryPacket(Packet packet) {
+---
+>         private Packet LogIncomingMysteryPacket(Packet packet)
+>         {
+1989c2081,2082
+<         private Packet LogOutgoingMysteryPacket(Packet packet) {
+---
+>         private Packet LogOutgoingMysteryPacket(Packet packet)
+>         {
+1993c2086,2087
+<         public void AddLoginRequestDelegate(XmlRpcRequestDelegate xmlRpcRequestDelegate) {
+---
+>         public void AddLoginRequestDelegate(XmlRpcRequestDelegate xmlRpcRequestDelegate)
+>         {
+2000c2094,2095
+<         public void AddLoginResponseDelegate(XmlRpcResponseDelegate xmlRpcResponseDelegate) {
+---
+>         public void AddLoginResponseDelegate(XmlRpcResponseDelegate xmlRpcResponseDelegate)
+>         {
+2009c2104,2105
+<     public enum CapsDataFormat {
+---
+>     public enum CapsDataFormat
+>     {
+2015c2111,2112
+<     public class CapInfo {
+---
+>     public class CapInfo
+>     {
+2028c2125,2126
+<         public CapInfo(string URI, IPEndPoint Sim, string CapType, CapsDataFormat ReqFmt, CapsDataFormat RespFmt) {
+---
+>         public CapInfo(string URI, IPEndPoint Sim, string CapType, CapsDataFormat ReqFmt, CapsDataFormat RespFmt)
+>         {
+2031c2129,2130
+<         public string URI {
+---
+>         public string URI
+>         {
+2034c2133,2134
+<         public string CapType {
+---
+>         public string CapType
+>         {
+2037c2137,2138
+<         public IPEndPoint Sim {
+---
+>         public IPEndPoint Sim
+>         {
+2040c2141,2142
+<         public CapsDataFormat ReqFmt {
+---
+>         public CapsDataFormat ReqFmt
+>         {
+2043c2145,2146
+<         public CapsDataFormat RespFmt {
+---
+>         public CapsDataFormat RespFmt
+>         {
+2047,2049c2150,2155
+<         public void AddDelegate(CapsDelegate deleg) {
+<             lock (this) {
+<                 if (!Delegates.Contains(deleg)) {
+---
+>         public void AddDelegate(CapsDelegate deleg)
+>         {
+>             lock (this)
+>             {
+>                 if (!Delegates.Contains(deleg))
+>                 {
+2054,2056c2160,2165
+<         public void RemoveDelegate(CapsDelegate deleg) {
+<             lock (this) {
+<                 if (Delegates.Contains(deleg)) {
+---
+>         public void RemoveDelegate(CapsDelegate deleg)
+>         {
+>             lock (this)
+>             {
+>                 if (Delegates.Contains(deleg))
+>                 {
+2063,2064c2172,2175
+<         public List<CapsDelegate> GetDelegates() {
+<             lock (this) {
+---
+>         public List<CapsDelegate> GetDelegates()
+>         {
+>             lock (this)
+>             {
+2071,2072c2182,2185
+<     public class CapsRequest {
+<         public CapsRequest(CapInfo info) {
+---
+>     public class CapsRequest
+>     {
+>         public CapsRequest(CapInfo info)
+>         {
+2095c2208
+<     public delegate XmlRpcRequest XmlRpcRequestDelegate(object sender, XmlRpcRequestEventArgs e);
+---
+>     public delegate void XmlRpcRequestDelegate(object sender, XmlRpcRequestEventArgs e);
+2098c2211
+<     public delegate XmlRpcResponse XmlRpcResponseDelegate(XmlRpcResponse response);
+---
+>     public delegate void XmlRpcResponseDelegate(XmlRpcResponse response);
+2112c2225,2226
+<     public enum Direction {
+---
+>     public enum Direction
+>     {
+2116c2230,2231
+<     public enum CapsStage {
+---
+>     public enum CapsStage
+>     {
+2121c2236,2237
+<     public class XmlRpcRequestEventArgs : EventArgs {
+---
+>     public class XmlRpcRequestEventArgs : EventArgs
+>     {
+2124c2240,2241
+<         public XmlRpcRequestEventArgs(XmlRpcRequest request) {
+---
+>         public XmlRpcRequestEventArgs(XmlRpcRequest request)
+>         {
