@@ -135,7 +135,7 @@ namespace UtilLib {
             IMasterProxy master = XmlRpcProxyGen.Create<IMasterProxy>();
             master.Url = "http://"+masterAddress+":"+masterXmlRpcPort+"/Master.rem";
 
-            new Thread(() => {
+            //new Thread(() => {
                 int masterPort = master.Register(name, listeningAddress, port, xmlRpcPort);
 
                 IPAddress masterIP = GetAddress(masterAddress);
@@ -155,7 +155,7 @@ namespace UtilLib {
 
                 proxy.Start();
                 
-            }).Start();
+            //}).Start();
         }
 
         private Packet ProcessPacket(Packet p, IPEndPoint ep) {

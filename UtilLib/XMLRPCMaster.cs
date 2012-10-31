@@ -65,6 +65,9 @@ namespace UtilLib {
             ProxyConfig config = new ProxyConfig("Routing God", "jm726@st-andrews.ac.uk", args);
             proxy = new Proxy(config);
             proxy.Start();
+
+            foreach (PacketType packetType in Enum.GetValues(typeof(PacketType)))
+                proxy.AddDelegate(packetType, Direction.Incoming, (p, ep) => null);
         }
 
         #region IMaster Members
@@ -75,10 +78,13 @@ namespace UtilLib {
             ISlaveProxy slave = XmlRpcProxyGen.Create<ISlaveProxy>();
             slave.Url = "http://"+address+":"+xmlrpcPort+"/Slave.rem";
 
+            IPEndPoint ep = new IPEndPoint(IPAddress.Parse(address), port);
             lock (slaves) {
-                slaveEPs.Add(new IPEndPoint(IPAddress.Parse(address), port));
+                slaveEPs.Add(ep);
                 slaves.Add(slave);
             }
+
+            proxy.ActiveCircuit = ep;
 
             new Thread(() => {
                 try {
@@ -119,6 +125,9 @@ namespace UtilLib {
         }
 
         public void Stop() {
+            foreach (var ep in slaveEPs)
+                proxy.SendPacket(new DisableSimulatorPacket(), ep, false);
+            Thread.Sleep(500);
             proxy.Stop();
         }
     }

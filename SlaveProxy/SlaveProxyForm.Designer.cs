@@ -63,6 +63,8 @@ namespace SlaveProxy {
             this.proxyTab = new System.Windows.Forms.TabPage();
             this.proxyPanel = new UtilLib.ProxyPanel();
             this.networkTab = new System.Windows.Forms.TabPage();
+            this.label7 = new System.Windows.Forms.Label();
+            this.packetsReceivedLabel = new System.Windows.Forms.Label();
             this.timerValueLabel = new System.Windows.Forms.Label();
             this.timerValue = new System.Windows.Forms.NumericUpDown();
             this.controlCameraCheck = new System.Windows.Forms.CheckBox();
@@ -86,8 +88,8 @@ namespace SlaveProxy {
             this.rotationalVelocityPanel = new ProxyTestGUI.VectorPanel();
             this.accelerationPanel = new ProxyTestGUI.VectorPanel();
             this.positionPanel = new ProxyTestGUI.VectorPanel();
-            this.label7 = new System.Windows.Forms.Label();
-            this.packetsReceivedLabel = new System.Windows.Forms.Label();
+            this.debugTab = new System.Windows.Forms.TabPage();
+            this.logPanel1 = new UtilLib.LogPanel();
             this.tabContainer.SuspendLayout();
             this.proxyTab.SuspendLayout();
             this.networkTab.SuspendLayout();
@@ -97,6 +99,7 @@ namespace SlaveProxy {
             this.cameraTab.SuspendLayout();
             this.avatarsTab.SuspendLayout();
             this.packetTab.SuspendLayout();
+            this.debugTab.SuspendLayout();
             this.SuspendLayout();
             // 
             // nameBox
@@ -249,6 +252,7 @@ namespace SlaveProxy {
             this.tabContainer.Controls.Add(this.cameraTab);
             this.tabContainer.Controls.Add(this.avatarsTab);
             this.tabContainer.Controls.Add(this.packetTab);
+            this.tabContainer.Controls.Add(this.debugTab);
             this.tabContainer.Location = new System.Drawing.Point(-1, 5);
             this.tabContainer.Name = "tabContainer";
             this.tabContainer.SelectedIndex = 0;
@@ -310,6 +314,24 @@ namespace SlaveProxy {
             this.networkTab.TabIndex = 0;
             this.networkTab.Text = "Network";
             this.networkTab.UseVisualStyleBackColor = true;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(20, 201);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(95, 13);
+            this.label7.TabIndex = 36;
+            this.label7.Text = "Packets Received";
+            // 
+            // packetsReceivedLabel
+            // 
+            this.packetsReceivedLabel.AutoSize = true;
+            this.packetsReceivedLabel.Location = new System.Drawing.Point(118, 201);
+            this.packetsReceivedLabel.Name = "packetsReceivedLabel";
+            this.packetsReceivedLabel.Size = new System.Drawing.Size(13, 13);
+            this.packetsReceivedLabel.TabIndex = 35;
+            this.packetsReceivedLabel.Text = "0";
             // 
             // timerValueLabel
             // 
@@ -607,23 +629,24 @@ namespace SlaveProxy {
             this.positionPanel.Z = 128F;
             this.positionPanel.OnChange += new System.EventHandler(this.positionPanel_OnChange);
             // 
-            // label7
+            // debugTab
             // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(20, 201);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(95, 13);
-            this.label7.TabIndex = 36;
-            this.label7.Text = "Packets Received";
+            this.debugTab.Controls.Add(this.logPanel1);
+            this.debugTab.Location = new System.Drawing.Point(4, 22);
+            this.debugTab.Name = "debugTab";
+            this.debugTab.Padding = new System.Windows.Forms.Padding(3);
+            this.debugTab.Size = new System.Drawing.Size(651, 392);
+            this.debugTab.TabIndex = 5;
+            this.debugTab.Text = "Debug";
+            this.debugTab.UseVisualStyleBackColor = true;
             // 
-            // packetsReceivedLabel
+            // logPanel1
             // 
-            this.packetsReceivedLabel.AutoSize = true;
-            this.packetsReceivedLabel.Location = new System.Drawing.Point(118, 201);
-            this.packetsReceivedLabel.Name = "packetsReceivedLabel";
-            this.packetsReceivedLabel.Size = new System.Drawing.Size(13, 13);
-            this.packetsReceivedLabel.TabIndex = 35;
-            this.packetsReceivedLabel.Text = "0";
+            this.logPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.logPanel1.Location = new System.Drawing.Point(3, 3);
+            this.logPanel1.Name = "logPanel1";
+            this.logPanel1.Size = new System.Drawing.Size(645, 386);
+            this.logPanel1.TabIndex = 0;
             // 
             // SlaveProxyForm
             // 
@@ -647,6 +670,7 @@ namespace SlaveProxy {
             this.cameraTab.ResumeLayout(false);
             this.avatarsTab.ResumeLayout(false);
             this.packetTab.ResumeLayout(false);
+            this.debugTab.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -702,6 +726,8 @@ namespace SlaveProxy {
         private System.Windows.Forms.TabPage proxyTab;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label packetsReceivedLabel;
+        private System.Windows.Forms.TabPage debugTab;
+        private UtilLib.LogPanel logPanel1;
     }
 }
 

@@ -65,21 +65,24 @@ namespace MasterProxy {
             this.rotationPanel = new ProxyTestGUI.RotationPanel();
             this.positionPanel = new ProxyTestGUI.VectorPanel();
             this.mouseTab = new System.Windows.Forms.TabPage();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.mouseScaleSlider = new System.Windows.Forms.TrackBar();
+            this.moveScaleSlider = new System.Windows.Forms.TrackBar();
             this.yawLabel = new System.Windows.Forms.Label();
             this.pitchLabel = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.createdCountLabel = new System.Windows.Forms.Label();
-            this.moveScaleSlider = new System.Windows.Forms.TrackBar();
-            this.mouseScaleSlider = new System.Windows.Forms.TrackBar();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
+            this.debugTab = new System.Windows.Forms.TabPage();
+            this.logPanel1 = new UtilLib.LogPanel();
             this.tabContainer.SuspendLayout();
             this.proxyTab.SuspendLayout();
             this.configTab.SuspendLayout();
             this.controlTab.SuspendLayout();
             this.mouseTab.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.moveScaleSlider)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.mouseScaleSlider)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.moveScaleSlider)).BeginInit();
+            this.debugTab.SuspendLayout();
             this.SuspendLayout();
             // 
             // listTimer
@@ -212,6 +215,7 @@ namespace MasterProxy {
             this.tabContainer.Controls.Add(this.configTab);
             this.tabContainer.Controls.Add(this.controlTab);
             this.tabContainer.Controls.Add(this.mouseTab);
+            this.tabContainer.Controls.Add(this.debugTab);
             this.tabContainer.Location = new System.Drawing.Point(1, 4);
             this.tabContainer.Name = "tabContainer";
             this.tabContainer.SelectedIndex = 0;
@@ -331,6 +335,44 @@ namespace MasterProxy {
             this.mouseTab.MouseMove += new System.Windows.Forms.MouseEventHandler(this.mouseTab_MouseMove);
             this.mouseTab.MouseUp += new System.Windows.Forms.MouseEventHandler(this.mouseTab_MouseUp);
             // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(7, 233);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(84, 13);
+            this.label5.TabIndex = 5;
+            this.label5.Text = "Move Sensitivity";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(6, 281);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(89, 13);
+            this.label4.TabIndex = 4;
+            this.label4.Text = "Mouse Sensitivity";
+            // 
+            // mouseScaleSlider
+            // 
+            this.mouseScaleSlider.Location = new System.Drawing.Point(101, 281);
+            this.mouseScaleSlider.Maximum = 40;
+            this.mouseScaleSlider.Minimum = 10;
+            this.mouseScaleSlider.Name = "mouseScaleSlider";
+            this.mouseScaleSlider.Size = new System.Drawing.Size(531, 42);
+            this.mouseScaleSlider.TabIndex = 2;
+            this.mouseScaleSlider.Value = 20;
+            // 
+            // moveScaleSlider
+            // 
+            this.moveScaleSlider.Location = new System.Drawing.Point(101, 233);
+            this.moveScaleSlider.Maximum = 40;
+            this.moveScaleSlider.Minimum = 10;
+            this.moveScaleSlider.Name = "moveScaleSlider";
+            this.moveScaleSlider.Size = new System.Drawing.Size(531, 42);
+            this.moveScaleSlider.TabIndex = 1;
+            this.moveScaleSlider.Value = 20;
+            // 
             // yawLabel
             // 
             this.yawLabel.AutoSize = true;
@@ -369,43 +411,24 @@ namespace MasterProxy {
             this.createdCountLabel.TabIndex = 20;
             this.createdCountLabel.Text = "0";
             // 
-            // moveScaleSlider
+            // debugTab
             // 
-            this.moveScaleSlider.Location = new System.Drawing.Point(101, 233);
-            this.moveScaleSlider.Maximum = 40;
-            this.moveScaleSlider.Minimum = 10;
-            this.moveScaleSlider.Name = "moveScaleSlider";
-            this.moveScaleSlider.Size = new System.Drawing.Size(531, 42);
-            this.moveScaleSlider.TabIndex = 1;
-            this.moveScaleSlider.Value = 20;
+            this.debugTab.Controls.Add(this.logPanel1);
+            this.debugTab.Location = new System.Drawing.Point(4, 22);
+            this.debugTab.Name = "debugTab";
+            this.debugTab.Padding = new System.Windows.Forms.Padding(3);
+            this.debugTab.Size = new System.Drawing.Size(632, 329);
+            this.debugTab.TabIndex = 4;
+            this.debugTab.Text = "Debug";
+            this.debugTab.UseVisualStyleBackColor = true;
             // 
-            // mouseScaleSlider
+            // logPanel1
             // 
-            this.mouseScaleSlider.Location = new System.Drawing.Point(101, 281);
-            this.mouseScaleSlider.Maximum = 40;
-            this.mouseScaleSlider.Minimum = 10;
-            this.mouseScaleSlider.Name = "mouseScaleSlider";
-            this.mouseScaleSlider.Size = new System.Drawing.Size(531, 42);
-            this.mouseScaleSlider.TabIndex = 2;
-            this.mouseScaleSlider.Value = 20;
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(6, 281);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(89, 13);
-            this.label4.TabIndex = 4;
-            this.label4.Text = "Mouse Sensitivity";
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(7, 233);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(84, 13);
-            this.label5.TabIndex = 5;
-            this.label5.Text = "Move Sensitivity";
+            this.logPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.logPanel1.Location = new System.Drawing.Point(3, 3);
+            this.logPanel1.Name = "logPanel1";
+            this.logPanel1.Size = new System.Drawing.Size(626, 323);
+            this.logPanel1.TabIndex = 0;
             // 
             // MasterProxyForm
             // 
@@ -434,8 +457,9 @@ namespace MasterProxy {
             this.controlTab.ResumeLayout(false);
             this.mouseTab.ResumeLayout(false);
             this.mouseTab.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.moveScaleSlider)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.mouseScaleSlider)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.moveScaleSlider)).EndInit();
+            this.debugTab.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -471,6 +495,8 @@ namespace MasterProxy {
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TrackBar mouseScaleSlider;
         private System.Windows.Forms.TrackBar moveScaleSlider;
+        private System.Windows.Forms.TabPage debugTab;
+        private UtilLib.LogPanel logPanel1;
     }
 }
 

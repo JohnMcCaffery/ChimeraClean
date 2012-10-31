@@ -30,11 +30,11 @@ using CookComputing.XmlRpc;
 using System.Runtime.Remoting;
 using System.Threading;
 using UtilLib;
-using GridProxy;
 using OpenMetaverse.Packets;
 using OpenMetaverse;
 using System.Net;
 using System.Collections;
+using GridProxy;
 
 namespace SlaveProxy {
     public partial class SlaveProxyForm : Form {
@@ -90,9 +90,13 @@ namespace SlaveProxy {
             proxyPanel.OnStarted += ProxyStarted;
 
             foreach (var ip in Dns.GetHostEntry(Dns.GetHostName()).AddressList)
-                if (ip.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
-                        listenIPBox.Text = ip.ToString();
-            
+                if (ip.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork) {
+                    listenIPBox.Text = ip.ToString();
+                    masterAddressBox.Text = ip.ToString();
+                }
+
+
+            Logger.Log("WinGridProxy ready", Helpers.LogLevel.Info);
         }
 
         private void ProxyStarted(object source, EventArgs args) {
@@ -107,6 +111,8 @@ namespace SlaveProxy {
 
         private Packet MasterPacketReceived(Packet p, IPEndPoint ep) {
             packetsReceived++;
+            if (p.Type == PacketType.DisableSimulator)
+                DisableSimulatorPacketReceived(p, ep);
             if (processAgentUpdates && p.Type == PacketType.AgentUpdate) {
                 AgentUpdatePacketReceived((AgentUpdatePacket)p, ep);
             }
@@ -117,13 +123,27 @@ namespace SlaveProxy {
                 ObjectUpdatePacketReceived(p, ep);
             }
 
-            Invoke(new Action(() => {
+            BeginInvoke(new Action(() => {
                 countLabel.Text = processedCount + "";
                 packetsToProcessLabel.Text = packetsToProcess.Count + "";
                 processedPacketsLabel.Text = slaveClient.UnprocessedPackets + "";
                 packetsReceivedLabel.Text = packetsReceived + "";
             }));
             return p;
+        }
+
+        private Packet DisableSimulatorPacketReceived(Packet p, IPEndPoint ep) {
+            BeginInvoke(new Action(() => {
+                slaveClient.Stop();
+                nameBox.Enabled = true;
+                masterAddressBox.Enabled = true;
+                connectButton.Enabled = true;
+                masterXmlRpcPortBox.Enabled = true;
+                listenIPBox.Enabled = true;
+                portBox.Enabled = true;
+                xmlRpcPortBox.Enabled = true;
+            }));
+            return null;
         }
 
         private Nwc.XmlRpc.XmlRpcResponse LoginResponseReceived(Nwc.XmlRpc.XmlRpcResponse response) {
@@ -144,7 +164,7 @@ namespace SlaveProxy {
                     string firstName = tokens[1];
                     string lastName = tokens[3];
 
-                    Invoke(new Action(() => {
+                    BeginInvoke(new Action(() => {
                         Avatar avatar = new Avatar(firstName, lastName, block.ID, block.FullID);
                         avatarList.Items.Add(avatar);
                         avatarList.SelectedItem = avatar;
@@ -157,19 +177,6 @@ namespace SlaveProxy {
 
         private Packet AgentUpdatePacketReceived(Packet packet, IPEndPoint ep) {
             AgentUpdatePacket p = (AgentUpdatePacket)packet;
-            /*if (proxyPanel.HasStarted) {
-                proxyPanel.Proxy.InjectPacket(packet, Direction.Outgoing);
-                AgentMovementCompletePacket moveP = new AgentMovementCompletePacket();
-                moveP.AgentData.AgentID = slaveAvatar;
-                moveP.AgentData.SessionID = sessionID;
-                moveP.Data.Position = p.AgentData.CameraCenter;
-                moveP.Data.LookAt = p.AgentData.CameraCenter + p.AgentData.CameraAtAxis;
-
-                ScriptTeleportRequestPacket teleport = new ScriptTeleportRequestPacket();
-                teleport.Data.LookAt = p.AgentData.CameraCenter + p.AgentData.CameraAtAxis;
-                teleport.Data.SimPosition = p.AgentData.CameraCenter;
-                teleport.Data.SimName = ;
-            }*/
             //if (selectedAvatar != null && selectedAvatar.id == p.AgentData.AgentID) {
             if (lastX.Length() > 0) {
                 if (p.AgentData.CameraCenter.X < 5 && lastX.X > 250)
@@ -238,7 +245,7 @@ namespace SlaveProxy {
         }
 
         private void Pinged() {
-            Invoke(new Action(() => {
+            BeginInvoke(new Action(() => {
                 nameBox.Enabled = false;
                 masterAddressBox.Enabled = false;
                 connectButton.Enabled = false;
