@@ -60,6 +60,8 @@ namespace SlaveProxy {
             this.label3 = new System.Windows.Forms.Label();
             this.processedPacketsLabel = new System.Windows.Forms.Label();
             this.tabContainer = new System.Windows.Forms.TabControl();
+            this.proxyTab = new System.Windows.Forms.TabPage();
+            this.proxyPanel = new UtilLib.ProxyPanel();
             this.networkTab = new System.Windows.Forms.TabPage();
             this.timerValueLabel = new System.Windows.Forms.Label();
             this.timerValue = new System.Windows.Forms.NumericUpDown();
@@ -84,8 +86,10 @@ namespace SlaveProxy {
             this.rotationalVelocityPanel = new ProxyTestGUI.VectorPanel();
             this.accelerationPanel = new ProxyTestGUI.VectorPanel();
             this.positionPanel = new ProxyTestGUI.VectorPanel();
-            this.proxyPanel = new UtilLib.ProxyPanel();
+            this.label7 = new System.Windows.Forms.Label();
+            this.packetsReceivedLabel = new System.Windows.Forms.Label();
             this.tabContainer.SuspendLayout();
+            this.proxyTab.SuspendLayout();
             this.networkTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.timerValue)).BeginInit();
             this.slaveBox.SuspendLayout();
@@ -99,7 +103,7 @@ namespace SlaveProxy {
             // 
             this.nameBox.Location = new System.Drawing.Point(47, 8);
             this.nameBox.Name = "nameBox";
-            this.nameBox.Size = new System.Drawing.Size(45, 20);
+            this.nameBox.Size = new System.Drawing.Size(142, 20);
             this.nameBox.TabIndex = 0;
             this.nameBox.Text = "Slave 1";
             // 
@@ -109,17 +113,17 @@ namespace SlaveProxy {
             | System.Windows.Forms.AnchorStyles.Right)));
             this.masterAddressBox.Location = new System.Drawing.Point(64, 21);
             this.masterAddressBox.Name = "masterAddressBox";
-            this.masterAddressBox.Size = new System.Drawing.Size(284, 20);
+            this.masterAddressBox.Size = new System.Drawing.Size(450, 20);
             this.masterAddressBox.TabIndex = 2;
-            this.masterAddressBox.Text = "127.0.0.1";
+            this.masterAddressBox.Text = "138.251.194.190";
             // 
             // connectButton
             // 
             this.connectButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.connectButton.Location = new System.Drawing.Point(98, 6);
+            this.connectButton.Location = new System.Drawing.Point(195, 6);
             this.connectButton.Name = "connectButton";
-            this.connectButton.Size = new System.Drawing.Size(387, 23);
+            this.connectButton.Size = new System.Drawing.Size(456, 23);
             this.connectButton.TabIndex = 3;
             this.connectButton.Text = "Connect";
             this.connectButton.UseVisualStyleBackColor = true;
@@ -140,9 +144,9 @@ namespace SlaveProxy {
             | System.Windows.Forms.AnchorStyles.Right)));
             this.listenIPBox.Location = new System.Drawing.Point(61, 19);
             this.listenIPBox.Name = "listenIPBox";
-            this.listenIPBox.Size = new System.Drawing.Size(182, 20);
+            this.listenIPBox.Size = new System.Drawing.Size(348, 20);
             this.listenIPBox.TabIndex = 9;
-            this.listenIPBox.Text = "127.0.0.1";
+            this.listenIPBox.Text = "138.251.194.190";
             // 
             // listenIPLabel
             // 
@@ -174,7 +178,7 @@ namespace SlaveProxy {
             // masterXmlRpcPortBox
             // 
             this.masterXmlRpcPortBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.masterXmlRpcPortBox.Location = new System.Drawing.Point(436, 21);
+            this.masterXmlRpcPortBox.Location = new System.Drawing.Point(602, 21);
             this.masterXmlRpcPortBox.Name = "masterXmlRpcPortBox";
             this.masterXmlRpcPortBox.Size = new System.Drawing.Size(38, 20);
             this.masterXmlRpcPortBox.TabIndex = 15;
@@ -184,7 +188,7 @@ namespace SlaveProxy {
             // 
             this.xmlRpcPortLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.xmlRpcPortLabel.AutoSize = true;
-            this.xmlRpcPortLabel.Location = new System.Drawing.Point(354, 24);
+            this.xmlRpcPortLabel.Location = new System.Drawing.Point(520, 24);
             this.xmlRpcPortLabel.Name = "xmlRpcPortLabel";
             this.xmlRpcPortLabel.Size = new System.Drawing.Size(76, 13);
             this.xmlRpcPortLabel.TabIndex = 14;
@@ -240,18 +244,47 @@ namespace SlaveProxy {
             this.tabContainer.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.tabContainer.Controls.Add(this.proxyTab);
             this.tabContainer.Controls.Add(this.networkTab);
             this.tabContainer.Controls.Add(this.cameraTab);
             this.tabContainer.Controls.Add(this.avatarsTab);
             this.tabContainer.Controls.Add(this.packetTab);
-            this.tabContainer.Location = new System.Drawing.Point(-1, 36);
+            this.tabContainer.Location = new System.Drawing.Point(-1, 5);
             this.tabContainer.Name = "tabContainer";
             this.tabContainer.SelectedIndex = 0;
-            this.tabContainer.Size = new System.Drawing.Size(496, 387);
+            this.tabContainer.Size = new System.Drawing.Size(659, 418);
             this.tabContainer.TabIndex = 21;
+            // 
+            // proxyTab
+            // 
+            this.proxyTab.Controls.Add(this.proxyPanel);
+            this.proxyTab.Location = new System.Drawing.Point(4, 22);
+            this.proxyTab.Name = "proxyTab";
+            this.proxyTab.Padding = new System.Windows.Forms.Padding(3);
+            this.proxyTab.Size = new System.Drawing.Size(651, 392);
+            this.proxyTab.TabIndex = 4;
+            this.proxyTab.Text = "Proxy";
+            this.proxyTab.UseVisualStyleBackColor = true;
+            // 
+            // proxyPanel
+            // 
+            this.proxyPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.proxyPanel.FirstName = "Friar";
+            this.proxyPanel.LastName = "John";
+            this.proxyPanel.ListenIP = "127.0.0.1";
+            this.proxyPanel.Location = new System.Drawing.Point(0, 6);
+            this.proxyPanel.LoginURI = "http://apollo.cs.st-andrews.ac.uk:8002";
+            this.proxyPanel.Name = "proxyPanel";
+            this.proxyPanel.Password = "friend";
+            this.proxyPanel.Port = "8081";
+            this.proxyPanel.Size = new System.Drawing.Size(648, 386);
+            this.proxyPanel.TabIndex = 13;
             // 
             // networkTab
             // 
+            this.networkTab.Controls.Add(this.label7);
+            this.networkTab.Controls.Add(this.packetsReceivedLabel);
             this.networkTab.Controls.Add(this.timerValueLabel);
             this.networkTab.Controls.Add(this.timerValue);
             this.networkTab.Controls.Add(this.controlCameraCheck);
@@ -273,7 +306,7 @@ namespace SlaveProxy {
             this.networkTab.Location = new System.Drawing.Point(4, 22);
             this.networkTab.Name = "networkTab";
             this.networkTab.Padding = new System.Windows.Forms.Padding(3);
-            this.networkTab.Size = new System.Drawing.Size(488, 361);
+            this.networkTab.Size = new System.Drawing.Size(651, 392);
             this.networkTab.TabIndex = 0;
             this.networkTab.Text = "Network";
             this.networkTab.UseVisualStyleBackColor = true;
@@ -282,7 +315,7 @@ namespace SlaveProxy {
             // 
             this.timerValueLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.timerValueLabel.AutoSize = true;
-            this.timerValueLabel.Location = new System.Drawing.Point(302, 219);
+            this.timerValueLabel.Location = new System.Drawing.Point(463, 219);
             this.timerValueLabel.Name = "timerValueLabel";
             this.timerValueLabel.Size = new System.Drawing.Size(122, 13);
             this.timerValueLabel.TabIndex = 34;
@@ -291,7 +324,7 @@ namespace SlaveProxy {
             // timerValue
             // 
             this.timerValue.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.timerValue.Location = new System.Drawing.Point(430, 217);
+            this.timerValue.Location = new System.Drawing.Point(591, 217);
             this.timerValue.Minimum = new decimal(new int[] {
             1,
             0,
@@ -310,7 +343,7 @@ namespace SlaveProxy {
             // 
             this.controlCameraCheck.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.controlCameraCheck.AutoSize = true;
-            this.controlCameraCheck.Location = new System.Drawing.Point(317, 194);
+            this.controlCameraCheck.Location = new System.Drawing.Point(483, 197);
             this.controlCameraCheck.Name = "controlCameraCheck";
             this.controlCameraCheck.Size = new System.Drawing.Size(168, 17);
             this.controlCameraCheck.TabIndex = 32;
@@ -348,7 +381,7 @@ namespace SlaveProxy {
             this.slaveBox.Controls.Add(this.portBox);
             this.slaveBox.Location = new System.Drawing.Point(3, 93);
             this.slaveBox.Name = "slaveBox";
-            this.slaveBox.Size = new System.Drawing.Size(482, 52);
+            this.slaveBox.Size = new System.Drawing.Size(648, 52);
             this.slaveBox.TabIndex = 29;
             this.slaveBox.TabStop = false;
             this.slaveBox.Text = "Published End Point";
@@ -356,7 +389,7 @@ namespace SlaveProxy {
             // xmlRpcPortBox
             // 
             this.xmlRpcPortBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.xmlRpcPortBox.Location = new System.Drawing.Point(436, 19);
+            this.xmlRpcPortBox.Location = new System.Drawing.Point(602, 19);
             this.xmlRpcPortBox.Name = "xmlRpcPortBox";
             this.xmlRpcPortBox.Size = new System.Drawing.Size(38, 20);
             this.xmlRpcPortBox.TabIndex = 26;
@@ -366,7 +399,7 @@ namespace SlaveProxy {
             // 
             this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(249, 22);
+            this.label5.Location = new System.Drawing.Point(415, 22);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(52, 13);
             this.label5.TabIndex = 23;
@@ -376,7 +409,7 @@ namespace SlaveProxy {
             // 
             this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(354, 22);
+            this.label4.Location = new System.Drawing.Point(520, 22);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(76, 13);
             this.label4.TabIndex = 25;
@@ -385,7 +418,7 @@ namespace SlaveProxy {
             // portBox
             // 
             this.portBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.portBox.Location = new System.Drawing.Point(307, 19);
+            this.portBox.Location = new System.Drawing.Point(473, 19);
             this.portBox.Name = "portBox";
             this.portBox.Size = new System.Drawing.Size(41, 20);
             this.portBox.TabIndex = 24;
@@ -401,7 +434,7 @@ namespace SlaveProxy {
             this.masterBox.Controls.Add(this.masterXmlRpcPortBox);
             this.masterBox.Location = new System.Drawing.Point(3, 35);
             this.masterBox.Name = "masterBox";
-            this.masterBox.Size = new System.Drawing.Size(482, 52);
+            this.masterBox.Size = new System.Drawing.Size(648, 52);
             this.masterBox.TabIndex = 28;
             this.masterBox.TabStop = false;
             this.masterBox.Text = "Master End Point";
@@ -410,7 +443,7 @@ namespace SlaveProxy {
             // 
             this.processObjectUpdatesCheck.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.processObjectUpdatesCheck.AutoSize = true;
-            this.processObjectUpdatesCheck.Location = new System.Drawing.Point(317, 171);
+            this.processObjectUpdatesCheck.Location = new System.Drawing.Point(483, 174);
             this.processObjectUpdatesCheck.Name = "processObjectUpdatesCheck";
             this.processObjectUpdatesCheck.Size = new System.Drawing.Size(141, 17);
             this.processObjectUpdatesCheck.TabIndex = 22;
@@ -422,7 +455,7 @@ namespace SlaveProxy {
             // 
             this.processAgentUpdatesCheck.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.processAgentUpdatesCheck.AutoSize = true;
-            this.processAgentUpdatesCheck.Location = new System.Drawing.Point(317, 148);
+            this.processAgentUpdatesCheck.Location = new System.Drawing.Point(483, 151);
             this.processAgentUpdatesCheck.Name = "processAgentUpdatesCheck";
             this.processAgentUpdatesCheck.Size = new System.Drawing.Size(138, 17);
             this.processAgentUpdatesCheck.TabIndex = 21;
@@ -437,7 +470,7 @@ namespace SlaveProxy {
             this.cameraTab.Location = new System.Drawing.Point(4, 22);
             this.cameraTab.Name = "cameraTab";
             this.cameraTab.Padding = new System.Windows.Forms.Padding(3);
-            this.cameraTab.Size = new System.Drawing.Size(488, 361);
+            this.cameraTab.Size = new System.Drawing.Size(651, 392);
             this.cameraTab.TabIndex = 1;
             this.cameraTab.Text = "Camera";
             this.cameraTab.UseVisualStyleBackColor = true;
@@ -452,7 +485,7 @@ namespace SlaveProxy {
             this.setFollowCamPropertiesPanel.Name = "setFollowCamPropertiesPanel";
             this.setFollowCamPropertiesPanel.Position = ((OpenMetaverse.Vector3)(resources.GetObject("setFollowCamPropertiesPanel.Position")));
             this.setFollowCamPropertiesPanel.Rotation = ((OpenMetaverse.Quaternion)(resources.GetObject("setFollowCamPropertiesPanel.Rotation")));
-            this.setFollowCamPropertiesPanel.Size = new System.Drawing.Size(485, 355);
+            this.setFollowCamPropertiesPanel.Size = new System.Drawing.Size(645, 386);
             this.setFollowCamPropertiesPanel.TabIndex = 0;
             this.setFollowCamPropertiesPanel.Velocity = ((OpenMetaverse.Vector3)(resources.GetObject("setFollowCamPropertiesPanel.Velocity")));
             // 
@@ -462,7 +495,7 @@ namespace SlaveProxy {
             this.avatarsTab.Location = new System.Drawing.Point(4, 22);
             this.avatarsTab.Name = "avatarsTab";
             this.avatarsTab.Padding = new System.Windows.Forms.Padding(3);
-            this.avatarsTab.Size = new System.Drawing.Size(488, 361);
+            this.avatarsTab.Size = new System.Drawing.Size(651, 392);
             this.avatarsTab.TabIndex = 2;
             this.avatarsTab.Text = "Avatars";
             this.avatarsTab.UseVisualStyleBackColor = true;
@@ -473,7 +506,7 @@ namespace SlaveProxy {
             this.avatarList.FormattingEnabled = true;
             this.avatarList.Location = new System.Drawing.Point(3, 3);
             this.avatarList.Name = "avatarList";
-            this.avatarList.Size = new System.Drawing.Size(482, 355);
+            this.avatarList.Size = new System.Drawing.Size(645, 386);
             this.avatarList.TabIndex = 22;
             this.avatarList.SelectedIndexChanged += new System.EventHandler(this.avatarList_SelectedIndexChanged);
             // 
@@ -488,7 +521,7 @@ namespace SlaveProxy {
             this.packetTab.Location = new System.Drawing.Point(4, 22);
             this.packetTab.Name = "packetTab";
             this.packetTab.Padding = new System.Windows.Forms.Padding(3);
-            this.packetTab.Size = new System.Drawing.Size(488, 361);
+            this.packetTab.Size = new System.Drawing.Size(651, 392);
             this.packetTab.TabIndex = 3;
             this.packetTab.Text = "Packet";
             this.packetTab.UseVisualStyleBackColor = true;
@@ -502,7 +535,7 @@ namespace SlaveProxy {
             this.rotationPanel.Name = "rotationPanel";
             this.rotationPanel.Pitch = 0F;
             this.rotationPanel.Rotation = ((OpenMetaverse.Quaternion)(resources.GetObject("rotationPanel.Rotation")));
-            this.rotationPanel.Size = new System.Drawing.Size(445, 147);
+            this.rotationPanel.Size = new System.Drawing.Size(429, 147);
             this.rotationPanel.TabIndex = 4;
             this.rotationPanel.Vector = ((OpenMetaverse.Vector3)(resources.GetObject("rotationPanel.Vector")));
             this.rotationPanel.Yaw = 0F;
@@ -517,7 +550,7 @@ namespace SlaveProxy {
             this.velocityPanel.Max = 5D;
             this.velocityPanel.Min = -5D;
             this.velocityPanel.Name = "velocityPanel";
-            this.velocityPanel.Size = new System.Drawing.Size(442, 98);
+            this.velocityPanel.Size = new System.Drawing.Size(426, 98);
             this.velocityPanel.TabIndex = 3;
             this.velocityPanel.Value = ((OpenMetaverse.Vector3)(resources.GetObject("velocityPanel.Value")));
             this.velocityPanel.X = 0F;
@@ -533,7 +566,7 @@ namespace SlaveProxy {
             this.rotationalVelocityPanel.Max = 5D;
             this.rotationalVelocityPanel.Min = -5D;
             this.rotationalVelocityPanel.Name = "rotationalVelocityPanel";
-            this.rotationalVelocityPanel.Size = new System.Drawing.Size(442, 98);
+            this.rotationalVelocityPanel.Size = new System.Drawing.Size(426, 98);
             this.rotationalVelocityPanel.TabIndex = 2;
             this.rotationalVelocityPanel.Value = ((OpenMetaverse.Vector3)(resources.GetObject("rotationalVelocityPanel.Value")));
             this.rotationalVelocityPanel.X = 0F;
@@ -549,7 +582,7 @@ namespace SlaveProxy {
             this.accelerationPanel.Max = 5D;
             this.accelerationPanel.Min = -5D;
             this.accelerationPanel.Name = "accelerationPanel";
-            this.accelerationPanel.Size = new System.Drawing.Size(442, 98);
+            this.accelerationPanel.Size = new System.Drawing.Size(426, 98);
             this.accelerationPanel.TabIndex = 1;
             this.accelerationPanel.Value = ((OpenMetaverse.Vector3)(resources.GetObject("accelerationPanel.Value")));
             this.accelerationPanel.X = 0F;
@@ -574,30 +607,36 @@ namespace SlaveProxy {
             this.positionPanel.Z = 128F;
             this.positionPanel.OnChange += new System.EventHandler(this.positionPanel_OnChange);
             // 
-            // proxyPanel
+            // label7
             // 
-            this.proxyPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.proxyPanel.ListenIP = "127.0.0.1";
-            this.proxyPanel.Location = new System.Drawing.Point(-1, 1);
-            this.proxyPanel.LoginURI = "http://apollo.cs.st-andrews.ac.uk:8002";
-            this.proxyPanel.Name = "proxyPanel";
-            this.proxyPanel.Port = "8081";
-            this.proxyPanel.Size = new System.Drawing.Size(496, 29);
-            this.proxyPanel.TabIndex = 13;
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(20, 201);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(95, 13);
+            this.label7.TabIndex = 36;
+            this.label7.Text = "Packets Received";
+            // 
+            // packetsReceivedLabel
+            // 
+            this.packetsReceivedLabel.AutoSize = true;
+            this.packetsReceivedLabel.Location = new System.Drawing.Point(118, 201);
+            this.packetsReceivedLabel.Name = "packetsReceivedLabel";
+            this.packetsReceivedLabel.Size = new System.Drawing.Size(13, 13);
+            this.packetsReceivedLabel.TabIndex = 35;
+            this.packetsReceivedLabel.Text = "0";
             // 
             // SlaveProxyForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(492, 420);
+            this.ClientSize = new System.Drawing.Size(655, 420);
             this.Controls.Add(this.tabContainer);
-            this.Controls.Add(this.proxyPanel);
             this.MinimumSize = new System.Drawing.Size(500, 447);
             this.Name = "SlaveProxyForm";
             this.Text = "Slave Proxy GUI";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.SlaveProxyForm_FormClosing);
             this.tabContainer.ResumeLayout(false);
+            this.proxyTab.ResumeLayout(false);
             this.networkTab.ResumeLayout(false);
             this.networkTab.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.timerValue)).EndInit();
@@ -660,6 +699,9 @@ namespace SlaveProxy {
         private System.Windows.Forms.CheckBox controlCameraCheck;
         private System.Windows.Forms.Label timerValueLabel;
         private System.Windows.Forms.NumericUpDown timerValue;
+        private System.Windows.Forms.TabPage proxyTab;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label packetsReceivedLabel;
     }
 }
 

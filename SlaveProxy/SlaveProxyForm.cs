@@ -88,6 +88,11 @@ namespace SlaveProxy {
             slaveClient.OnPing += Pinged;
 
             proxyPanel.OnStarted += ProxyStarted;
+
+            foreach (var ip in Dns.GetHostEntry(Dns.GetHostName()).AddressList)
+                if (ip.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
+                        listenIPBox.Text = ip.ToString();
+            
         }
 
         private void ProxyStarted(object source, EventArgs args) {
@@ -98,7 +103,10 @@ namespace SlaveProxy {
             proxyPanel.Proxy.AddLoginResponseDelegate(LoginResponseReceived);
         }
 
+        private int packetsReceived = 0;
+
         private Packet MasterPacketReceived(Packet p, IPEndPoint ep) {
+            packetsReceived++;
             if (processAgentUpdates && p.Type == PacketType.AgentUpdate) {
                 AgentUpdatePacketReceived((AgentUpdatePacket)p, ep);
             }
@@ -108,11 +116,12 @@ namespace SlaveProxy {
             if (p.Type == PacketType.ObjectUpdate) {
                 ObjectUpdatePacketReceived(p, ep);
             }
-            
+
             Invoke(new Action(() => {
                 countLabel.Text = processedCount + "";
                 packetsToProcessLabel.Text = packetsToProcess.Count + "";
                 processedPacketsLabel.Text = slaveClient.UnprocessedPackets + "";
+                packetsReceivedLabel.Text = packetsReceived + "";
             }));
             return p;
         }
@@ -146,19 +155,48 @@ namespace SlaveProxy {
             return packet;
         }
 
-        private Packet AgentUpdatePacketReceived(Packet  packet, IPEndPoint ep) {
+        private Packet AgentUpdatePacketReceived(Packet packet, IPEndPoint ep) {
             AgentUpdatePacket p = (AgentUpdatePacket)packet;
+            /*if (proxyPanel.HasStarted) {
+                proxyPanel.Proxy.InjectPacket(packet, Direction.Outgoing);
+                AgentMovementCompletePacket moveP = new AgentMovementCompletePacket();
+                moveP.AgentData.AgentID = slaveAvatar;
+                moveP.AgentData.SessionID = sessionID;
+                moveP.Data.Position = p.AgentData.CameraCenter;
+                moveP.Data.LookAt = p.AgentData.CameraCenter + p.AgentData.CameraAtAxis;
+
+                ScriptTeleportRequestPacket teleport = new ScriptTeleportRequestPacket();
+                teleport.Data.LookAt = p.AgentData.CameraCenter + p.AgentData.CameraAtAxis;
+                teleport.Data.SimPosition = p.AgentData.CameraCenter;
+                teleport.Data.SimName = ;
+            }*/
             //if (selectedAvatar != null && selectedAvatar.id == p.AgentData.AgentID) {
-                positionPanel.Value = p.AgentData.CameraCenter;
-                rotationPanel.Vector = p.AgentData.CameraAtAxis;
-                velocityPanel.Value = Vector3.Zero;
-                accelerationPanel.Value = Vector3.Zero;
-                rotationalVelocityPanel.Value = Vector3.Zero;
-                sendCameraUpdate();
-                processedCount++;
+            if (lastX.Length() > 0) {
+                if (p.AgentData.CameraCenter.X < 5 && lastX.X > 250)
+                    shift.X += 255;
+                else if (p.AgentData.CameraCenter.X > 250 && lastX.X < 5)
+                    shift.X -= 255;
+
+                if (p.AgentData.CameraCenter.Y < 5 && lastX.Y > 250)
+                    shift.Y += 255;
+                else if (p.AgentData.CameraCenter.Y > 250 && lastX.Y < 5)
+                    shift.Y -= 255;
+            }
+            lastX = p.AgentData.CameraCenter;
+
+            positionPanel.Value = p.AgentData.CameraCenter + shift;
+            rotationPanel.Vector = p.AgentData.CameraAtAxis;
+            velocityPanel.Value = Vector3.Zero;
+            accelerationPanel.Value = Vector3.Zero;
+            rotationalVelocityPanel.Value = Vector3.Zero;
+            sendCameraUpdate();
+            processedCount++;
             //} 
             return p;
         }
+
+        private Vector3 lastX = Vector3.Zero;
+        private Vector3 shift = Vector3.Zero;
 
         private Packet ImprovedTersePacketPacketReceived(Packet p, IPEndPoint ep) {
             if (!processObjectUpdates || selectedAvatar == null)
@@ -262,7 +300,7 @@ namespace SlaveProxy {
         }
 
         private void sendCameraUpdate() {
-            if (SendCameraPackets && proxyPanel.HasStarted)
+            //if (SendCameraPackets && proxyPanel.HasStarted)
                 //new Thread(() => {
                     proxyPanel.Proxy.InjectPacket(setFollowCamPropertiesPanel.Packet, Direction.Incoming);
                 //}).Start();

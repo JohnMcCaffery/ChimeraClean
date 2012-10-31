@@ -27,10 +27,13 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using GridProxy;
+using System.Diagnostics;
+using System.Runtime.InteropServices;
 
 namespace UtilLib {
     public partial class ProxyPanel : UserControl {
         private Proxy proxy;
+        private Process client;
         private bool loggedIn;
 
         public Proxy Proxy { get { return proxy; } }
@@ -57,38 +60,102 @@ namespace UtilLib {
         }
 
         private void connectButton_Click(object sender, EventArgs e) {
-            if (proxy != null)
+            if (proxyStartButton.Text.Equals("Start Proxy")) {
+                if (proxy != null)
+                    proxy.Stop();
+                string file = AppDomain.CurrentDomain.SetupInformation.ConfigurationFile;
+
+                string portArg = "--proxy-login-port=" + portBox.Text;
+                string listenIPArg = "--proxy-client-facing-address=" + listenIPBox.Text;
+                string loginURIArg = "--proxy-remote-login-uri=" + loginURIBox.Text;
+                string[] args = { portArg, listenIPArg, loginURIArg };
+                ProxyConfig config = new ProxyConfig("Routing God", "jm726@st-andrews.ac.uk", args);
+                proxy = new Proxy(config);
+                proxy.AddLoginResponseDelegate(response => {
+                    loggedIn = true;
+                    if (LoggedIn != null)
+                        LoggedIn(proxy, null);
+                    return response;
+                });
+
+                proxy.Start();
+
+                if (OnStarted != null)
+                    OnStarted(proxy, null);
+
+                proxyStartButton.Text = "Stop Proxy";
+                proxyStatusLabel.Text = "Started";
+
+                portBox.Enabled = false;
+                listenIPBox.Enabled = false;
+                loginURIBox.Enabled = false;
+            } else if (proxy != null) {
                 proxy.Stop();
-            string file = AppDomain.CurrentDomain.SetupInformation.ConfigurationFile;
+                proxy = null;
 
-            string portArg = "--proxy-login-port="+portBox.Text;
-            string listenIPArg = "--proxy-client-facing-address="+listenIPBox.Text;
-            string loginURIArg = "--proxy-remote-login-uri="+loginURIBox.Text;
-            string[] args = { portArg, listenIPArg, loginURIArg };
-            ProxyConfig config = new ProxyConfig("Routing God", "jm726@st-andrews.ac.uk", args);
-            proxy = new Proxy(config);
-            proxy.AddLoginResponseDelegate(response => {
-                loggedIn = true;
-                if (LoggedIn != null)
-                    LoggedIn(proxy, null);
-                return response;
-            });
+                proxyStartButton.Text = "Start Proxy";
+                proxyStatusLabel.Text = "Stopped";
 
-            proxy.Start();
-
-            if (OnStarted != null)
-                OnStarted(proxy, null);
-
-            startButton.Text = "ReStart";
+                portBox.Enabled = true;
+                listenIPBox.Enabled = true;
+                loginURIBox.Enabled = true;
+            }
         }
 
         private void updateTimer_Tick(object sender, EventArgs e) {
             if (loggedIn) {
-                startButton.Enabled = false;
-                portBox.Enabled = false;
-                listenIPBox.Enabled = false;
-                loginURIBox.Enabled = false;
+                proxyStatusLabel.Text = "Started + Client Logged In";
             } 
         }
+
+        private void clientStartButton_Click(object sender, EventArgs e) {
+            if (clientStartButton.Text.Equals("Start Client")) {
+                if (proxy == null)
+                    proxyStartButton.PerformClick();
+                client = new Process();
+                client.StartInfo.FileName = targetBox.Text;
+                if (useLoginURICheck.Checked)
+                    client.StartInfo.Arguments = "--loginuri http://" + listenIPBox.Text + ":" + portBox.Text;
+                else
+                    client.StartInfo.Arguments = " --grid " + portBox.Text;
+                client.StartInfo.Arguments += " --login " + firstNameBox.Text + " " + lastNameBox.Text + " " + passwordBox.Text;
+                client.Start();
+
+                clientStatusLabel.Text = "Started";
+                clientStartButton.Text = "Stop Client";
+                firstNameBox.Enabled = false;
+                lastNameBox.Enabled = false;
+                passwordBox.Enabled = false;
+                targetBox.Enabled = false;
+            } else {
+                clientStatusLabel.Text = "Stopped";
+                clientStartButton.Text = "Start Client";
+                firstNameBox.Enabled = true;
+                lastNameBox.Enabled = true;
+                passwordBox.Enabled = true;
+                targetBox.Enabled = true;
+                //SendMEssage(client.Id, 
+            }
+        }
+
+        [DllImport("User32.dll", EntryPoint = "SendMessage")]
+        public static extern int SendMEssage(int hWnd, int Msg, int wParam, int lParam);
+
+        public string FirstName {
+            get { return firstNameBox.Text; }
+            set { firstNameBox.Text = value; }
+        }
+
+
+        public string LastName {
+            get { return lastNameBox.Text; }
+            set { lastNameBox.Text = value; }
+        }
+
+        public string Password {
+            get { return passwordBox.Text; }
+            set { passwordBox.Text = value; }
+        }
+
     }
 }

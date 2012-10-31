@@ -56,11 +56,11 @@ namespace ProxyTestGUI {
                     yaw = yaw > 180 ? -180 + (180-yaw) : yaw;
                     yaw = yaw < -180 ? 180-(180+yaw) : yaw;
 
-                    if (oldPitch != pitch && oldYaw != yaw) {
-                        if (!mPitchChanging)
+                    if (oldPitch != pitch || oldYaw != yaw) {
+                        if (!mPitchChanging && !mYawChanging) {
                             pitchValue.Value = new decimal(pitch);
-                        if (!mYawChanging)
                             yawValue.Value = new decimal(yaw);
+                        }
                         if (!mVectorChanging)
                             vectorPanel.Value = Vector3.UnitX * value;
                         if (OnChange != null)
@@ -80,11 +80,18 @@ namespace ProxyTestGUI {
         }
         public float Yaw {
             get { return (float)decimal.ToDouble(yawValue.Value); }
-            set { yawValue.Value = new decimal(value); }
+            set { yawValue.Value = new decimal(constrain(value)); }
         }
         public float Pitch {
             get { return (float)decimal.ToDouble(pitchValue.Value); }
-            set { pitchValue.Value = new decimal(value); }
+            set { pitchValue.Value = new decimal(constrain(value)); }
+        }
+
+        private float constrain(float x) {
+            x += 180;
+            x %= 360;
+            x += x > 0 ? -180 : 180;
+            return x;
         }
 
         public event EventHandler OnChange;
@@ -137,11 +144,10 @@ namespace ProxyTestGUI {
         }
 
         private void pitchValue_ValueChanged(object sender, EventArgs e) {
-            float pitch = (float)decimal.ToDouble(yawValue.Value);
+            float pitch = (float)decimal.ToDouble(pitchValue.Value);
             if (oldPitch == pitch)
                 return;
             mPitchChanging = true;
-            CalculateRotation();
             if (!mRotationChanging)
                 Rotation = CalculateRotation();
 
@@ -157,7 +163,8 @@ namespace ProxyTestGUI {
         }
 
         private Quaternion CalculateRotation() {
-            Quaternion yaw = Quaternion.CreateFromEulers(0f, 0f, (float) (decimal.ToDouble(yawValue.Value) * DEG2RAD));
+            //Quaternion yaw = Quaternion.CreateFromEulers(0f, 0f, (float) (decimal.ToDouble(yawValue.Value) * DEG2RAD));
+            Quaternion yaw = Quaternion.CreateFromAxisAngle(Vector3.UnitZ, (float) (decimal.ToDouble(yawValue.Value) * DEG2RAD));
             Vector3 newDir = Vector3.UnitX * yaw;
             Vector3 normal = Vector3.Cross(Vector3.UnitZ, newDir);
             Quaternion pitch = Quaternion.CreateFromAxisAngle(normal, (float)(decimal.ToDouble(pitchValue.Value)  * DEG2RAD));

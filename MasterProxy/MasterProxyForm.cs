@@ -26,7 +26,10 @@ namespace MasterProxy {
         private bool forwardLogin;
         private bool processingPacket;
         private bool slaveConnected;
-        private bool leftDown, rightDown, forwardDown, backwardDown, upDown, downDown, yawRightDown, yawLeftDown, pitchUpDown, pitchDownDown;
+        private bool leftDown, rightDown, forwardDown, backwardDown;
+        private bool upDown, downDown;
+        private bool yawRightDown, yawLeftDown, pitchUpDown, pitchDownDown;
+        private bool mouselook = false;
         private Packet masterObjectPacket = null;
         private UUID masterID;
         
@@ -136,6 +139,7 @@ namespace MasterProxy {
                 case Keys.D6: yawRightDown = false; break;
                 case Keys.D8: pitchUpDown = false; break;
                 case Keys.D5: pitchDownDown = false; break;
+                case Keys.M: mouselook = !mouselook; break;
             }
         }
 
@@ -160,18 +164,19 @@ namespace MasterProxy {
         }
 
         private void listTimer_Tick(object sender, EventArgs e) {
-            if (yawLeftDown) rotationPanel.Yaw -= .25f;
-            if (yawRightDown) rotationPanel.Yaw += .25f;
-            if (pitchUpDown) rotationPanel.Pitch += .25f;
-            if (pitchDownDown) rotationPanel.Pitch -= .25f;
+            float shift = 5.0f / moveScaleSlider.Value;
+            if (yawLeftDown) rotationPanel.Yaw -= shift;
+            if (yawRightDown) rotationPanel.Yaw += shift;
+            if (pitchUpDown) rotationPanel.Pitch += shift;
+            if (pitchDownDown) rotationPanel.Pitch -= shift;
 
             Vector3 move = Vector3.Zero;
-            if (forwardDown) move.X += .25f;
-            if (backwardDown) move.X -= .25f;
-            if (leftDown) move.Y -= .25f;
-            if (rightDown) move.Y += .25f;
-            if (upDown) move.Z += .25f;
-            if (downDown) move.Z -= .25f;
+            if (forwardDown) move.X += shift;
+            if (backwardDown) move.X -= shift;
+            if (leftDown) move.Y -= shift;
+            if (rightDown) move.Y += shift;
+            if (upDown) move.Z += shift;
+            if (downDown) move.Z -= shift;
 
             if (move != Vector3.Zero) {
                 move *= rotationPanel.Rotation;
@@ -184,6 +189,50 @@ namespace MasterProxy {
             lock(newSlaves)
                 while (newSlaves.Count > 0)
                     slavesListBox.Items.Add(newSlaves.Dequeue());
+        }
+
+        private int prevX, prevY;
+        private void MasterProxyForm_MouseMove(object sender, MouseEventArgs e) {
+            /*if (mouselook) {
+                rotationPanel.Yaw += prevX - e.X;
+                rotationPanel.Pitch += prevY - e.Y;
+            } */
+            prevX = e.X;
+            prevY = e.Y;
+        }
+
+        private int r = 30;
+        private void mouseTab_Paint(object sender, PaintEventArgs e) {
+            e.Graphics.Clear(Color.SlateGray);
+            if (mouseDown)
+                e.Graphics.DrawEllipse(new Pen(Color.Black), x - r, y - r, r * 2, r * 2);
+        }
+
+        private int x, y;
+        private float pitch, yaw;
+        private bool mouseDown;
+
+        private void mouseTab_MouseDown(object sender, MouseEventArgs e) {
+            x = e.X;
+            y = e.Y;
+            pitch = rotationPanel.Pitch;
+            yaw = rotationPanel.Yaw;
+            mouseDown = true;
+            pitchLabel.Text = "Pitch: " + pitch;
+            yawLabel.Text = "Yaw: " + yaw;
+        }
+
+        private void mouseTab_MouseUp(object sender, MouseEventArgs e) {
+            mouseDown = false;
+        }
+
+        private void mouseTab_MouseMove(object sender, MouseEventArgs e) {
+            if (mouseDown) {
+                rotationPanel.Pitch = pitch + ((e.Y - y) / (mouseScaleSlider.Value / 10));
+                rotationPanel.Yaw = yaw + ((x - e.X) / 2) / ((mouseScaleSlider.Value / 20));
+                pitchLabel.Text = "Pitch: " + rotationPanel.Pitch;
+                yawLabel.Text = "Yaw: " + rotationPanel.Yaw;
+            }
         }
     }
 }

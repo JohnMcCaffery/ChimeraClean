@@ -57,17 +57,29 @@ namespace MasterProxy {
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.forwardedCountLabel = new System.Windows.Forms.Label();
-            this.proxyPanel = new UtilLib.ProxyPanel();
             this.tabContainer = new System.Windows.Forms.TabControl();
+            this.proxyTab = new System.Windows.Forms.TabPage();
+            this.proxyPanel = new UtilLib.ProxyPanel();
             this.configTab = new System.Windows.Forms.TabPage();
             this.controlTab = new System.Windows.Forms.TabPage();
             this.rotationPanel = new ProxyTestGUI.RotationPanel();
             this.positionPanel = new ProxyTestGUI.VectorPanel();
+            this.mouseTab = new System.Windows.Forms.TabPage();
+            this.yawLabel = new System.Windows.Forms.Label();
+            this.pitchLabel = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.createdCountLabel = new System.Windows.Forms.Label();
+            this.moveScaleSlider = new System.Windows.Forms.TrackBar();
+            this.mouseScaleSlider = new System.Windows.Forms.TrackBar();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
             this.tabContainer.SuspendLayout();
+            this.proxyTab.SuspendLayout();
             this.configTab.SuspendLayout();
             this.controlTab.SuspendLayout();
+            this.mouseTab.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.moveScaleSlider)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.mouseScaleSlider)).BeginInit();
             this.SuspendLayout();
             // 
             // listTimer
@@ -146,7 +158,7 @@ namespace MasterProxy {
             // 
             // udpPortBox
             // 
-            this.udpPortBox.Location = new System.Drawing.Point(72, 9);
+            this.udpPortBox.Location = new System.Drawing.Point(64, 272);
             this.udpPortBox.Name = "udpPortBox";
             this.udpPortBox.Size = new System.Drawing.Size(32, 20);
             this.udpPortBox.TabIndex = 14;
@@ -155,7 +167,7 @@ namespace MasterProxy {
             // localAddressLabel
             // 
             this.localAddressLabel.AutoSize = true;
-            this.localAddressLabel.Location = new System.Drawing.Point(12, 12);
+            this.localAddressLabel.Location = new System.Drawing.Point(7, 275);
             this.localAddressLabel.Name = "localAddressLabel";
             this.localAddressLabel.Size = new System.Drawing.Size(52, 13);
             this.localAddressLabel.TabIndex = 15;
@@ -191,35 +203,53 @@ namespace MasterProxy {
             this.forwardedCountLabel.TabIndex = 17;
             this.forwardedCountLabel.Text = "0";
             // 
-            // proxyPanel
-            // 
-            this.proxyPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.proxyPanel.ListenIP = "127.0.0.1";
-            this.proxyPanel.Location = new System.Drawing.Point(110, 5);
-            this.proxyPanel.LoginURI = "http://apollo.cs.st-andrews.ac.uk:8002";
-            this.proxyPanel.Name = "proxyPanel";
-            this.proxyPanel.Port = "8080";
-            this.proxyPanel.Size = new System.Drawing.Size(531, 30);
-            this.proxyPanel.TabIndex = 10;
-            this.proxyPanel.OnStarted += new System.EventHandler(this.proxyPanel_Started);
-            this.proxyPanel.KeyDown += new System.Windows.Forms.KeyEventHandler(this.keyDown);
-            this.proxyPanel.KeyUp += new System.Windows.Forms.KeyEventHandler(this.keyUp);
-            // 
             // tabContainer
             // 
             this.tabContainer.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.tabContainer.Controls.Add(this.proxyTab);
             this.tabContainer.Controls.Add(this.configTab);
             this.tabContainer.Controls.Add(this.controlTab);
-            this.tabContainer.Location = new System.Drawing.Point(1, 41);
+            this.tabContainer.Controls.Add(this.mouseTab);
+            this.tabContainer.Location = new System.Drawing.Point(1, 4);
             this.tabContainer.Name = "tabContainer";
             this.tabContainer.SelectedIndex = 0;
-            this.tabContainer.Size = new System.Drawing.Size(640, 318);
+            this.tabContainer.Size = new System.Drawing.Size(640, 355);
             this.tabContainer.TabIndex = 19;
             this.tabContainer.KeyDown += new System.Windows.Forms.KeyEventHandler(this.keyDown);
             this.tabContainer.KeyUp += new System.Windows.Forms.KeyEventHandler(this.keyUp);
+            // 
+            // proxyTab
+            // 
+            this.proxyTab.Controls.Add(this.proxyPanel);
+            this.proxyTab.Controls.Add(this.localAddressLabel);
+            this.proxyTab.Controls.Add(this.udpPortBox);
+            this.proxyTab.Location = new System.Drawing.Point(4, 22);
+            this.proxyTab.Name = "proxyTab";
+            this.proxyTab.Padding = new System.Windows.Forms.Padding(3);
+            this.proxyTab.Size = new System.Drawing.Size(632, 329);
+            this.proxyTab.TabIndex = 2;
+            this.proxyTab.Text = "Proxy";
+            this.proxyTab.UseVisualStyleBackColor = true;
+            // 
+            // proxyPanel
+            // 
+            this.proxyPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.proxyPanel.FirstName = "Routing";
+            this.proxyPanel.LastName = "God";
+            this.proxyPanel.ListenIP = "127.0.0.1";
+            this.proxyPanel.Location = new System.Drawing.Point(3, 3);
+            this.proxyPanel.LoginURI = "http://apollo.cs.st-andrews.ac.uk:8002";
+            this.proxyPanel.Name = "proxyPanel";
+            this.proxyPanel.Password = "1245";
+            this.proxyPanel.Port = "8080";
+            this.proxyPanel.Size = new System.Drawing.Size(629, 197);
+            this.proxyPanel.TabIndex = 10;
+            this.proxyPanel.OnStarted += new System.EventHandler(this.proxyPanel_Started);
+            this.proxyPanel.KeyDown += new System.Windows.Forms.KeyEventHandler(this.keyDown);
+            this.proxyPanel.KeyUp += new System.Windows.Forms.KeyEventHandler(this.keyUp);
             // 
             // configTab
             // 
@@ -228,7 +258,7 @@ namespace MasterProxy {
             this.configTab.Location = new System.Drawing.Point(4, 22);
             this.configTab.Name = "configTab";
             this.configTab.Padding = new System.Windows.Forms.Padding(3);
-            this.configTab.Size = new System.Drawing.Size(632, 292);
+            this.configTab.Size = new System.Drawing.Size(632, 329);
             this.configTab.TabIndex = 0;
             this.configTab.Text = "Configuration";
             this.configTab.UseVisualStyleBackColor = true;
@@ -240,7 +270,7 @@ namespace MasterProxy {
             this.controlTab.Location = new System.Drawing.Point(4, 22);
             this.controlTab.Name = "controlTab";
             this.controlTab.Padding = new System.Windows.Forms.Padding(3);
-            this.controlTab.Size = new System.Drawing.Size(632, 292);
+            this.controlTab.Size = new System.Drawing.Size(632, 329);
             this.controlTab.TabIndex = 1;
             this.controlTab.Text = "Control";
             this.controlTab.UseVisualStyleBackColor = true;
@@ -281,6 +311,44 @@ namespace MasterProxy {
             this.positionPanel.KeyDown += new System.Windows.Forms.KeyEventHandler(this.keyDown);
             this.positionPanel.KeyUp += new System.Windows.Forms.KeyEventHandler(this.keyUp);
             // 
+            // mouseTab
+            // 
+            this.mouseTab.Controls.Add(this.label5);
+            this.mouseTab.Controls.Add(this.label4);
+            this.mouseTab.Controls.Add(this.mouseScaleSlider);
+            this.mouseTab.Controls.Add(this.moveScaleSlider);
+            this.mouseTab.Controls.Add(this.yawLabel);
+            this.mouseTab.Controls.Add(this.pitchLabel);
+            this.mouseTab.Location = new System.Drawing.Point(4, 22);
+            this.mouseTab.Name = "mouseTab";
+            this.mouseTab.Padding = new System.Windows.Forms.Padding(3);
+            this.mouseTab.Size = new System.Drawing.Size(632, 329);
+            this.mouseTab.TabIndex = 3;
+            this.mouseTab.Text = "Mouse";
+            this.mouseTab.UseVisualStyleBackColor = true;
+            this.mouseTab.Paint += new System.Windows.Forms.PaintEventHandler(this.mouseTab_Paint);
+            this.mouseTab.MouseDown += new System.Windows.Forms.MouseEventHandler(this.mouseTab_MouseDown);
+            this.mouseTab.MouseMove += new System.Windows.Forms.MouseEventHandler(this.mouseTab_MouseMove);
+            this.mouseTab.MouseUp += new System.Windows.Forms.MouseEventHandler(this.mouseTab_MouseUp);
+            // 
+            // yawLabel
+            // 
+            this.yawLabel.AutoSize = true;
+            this.yawLabel.Location = new System.Drawing.Point(6, 20);
+            this.yawLabel.Name = "yawLabel";
+            this.yawLabel.Size = new System.Drawing.Size(31, 13);
+            this.yawLabel.TabIndex = 1;
+            this.yawLabel.Text = "Yaw:";
+            // 
+            // pitchLabel
+            // 
+            this.pitchLabel.AutoSize = true;
+            this.pitchLabel.Location = new System.Drawing.Point(7, 7);
+            this.pitchLabel.Name = "pitchLabel";
+            this.pitchLabel.Size = new System.Drawing.Size(34, 13);
+            this.pitchLabel.TabIndex = 0;
+            this.pitchLabel.Text = "Pitch:";
+            // 
             // label3
             // 
             this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
@@ -301,6 +369,44 @@ namespace MasterProxy {
             this.createdCountLabel.TabIndex = 20;
             this.createdCountLabel.Text = "0";
             // 
+            // moveScaleSlider
+            // 
+            this.moveScaleSlider.Location = new System.Drawing.Point(101, 233);
+            this.moveScaleSlider.Maximum = 40;
+            this.moveScaleSlider.Minimum = 10;
+            this.moveScaleSlider.Name = "moveScaleSlider";
+            this.moveScaleSlider.Size = new System.Drawing.Size(531, 42);
+            this.moveScaleSlider.TabIndex = 1;
+            this.moveScaleSlider.Value = 20;
+            // 
+            // mouseScaleSlider
+            // 
+            this.mouseScaleSlider.Location = new System.Drawing.Point(101, 281);
+            this.mouseScaleSlider.Maximum = 40;
+            this.mouseScaleSlider.Minimum = 10;
+            this.mouseScaleSlider.Name = "mouseScaleSlider";
+            this.mouseScaleSlider.Size = new System.Drawing.Size(531, 42);
+            this.mouseScaleSlider.TabIndex = 2;
+            this.mouseScaleSlider.Value = 20;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(6, 281);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(89, 13);
+            this.label4.TabIndex = 4;
+            this.label4.Text = "Mouse Sensitivity";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(7, 233);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(84, 13);
+            this.label5.TabIndex = 5;
+            this.label5.Text = "Move Sensitivity";
+            // 
             // MasterProxyForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -309,11 +415,8 @@ namespace MasterProxy {
             this.Controls.Add(this.createdCountLabel);
             this.Controls.Add(this.tabContainer);
             this.Controls.Add(this.forwardedCountLabel);
-            this.Controls.Add(this.localAddressLabel);
-            this.Controls.Add(this.udpPortBox);
             this.Controls.Add(this.forwardLoginCheck);
             this.Controls.Add(this.selectAll);
-            this.Controls.Add(this.proxyPanel);
             this.Controls.Add(this.packetCountLabel);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.label2);
@@ -323,9 +426,16 @@ namespace MasterProxy {
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MasterProxyForm_FormClosing);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.keyDown);
             this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.keyUp);
+            this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MasterProxyForm_MouseMove);
             this.tabContainer.ResumeLayout(false);
+            this.proxyTab.ResumeLayout(false);
+            this.proxyTab.PerformLayout();
             this.configTab.ResumeLayout(false);
             this.controlTab.ResumeLayout(false);
+            this.mouseTab.ResumeLayout(false);
+            this.mouseTab.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.moveScaleSlider)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.mouseScaleSlider)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -353,6 +463,14 @@ namespace MasterProxy {
         private ProxyTestGUI.RotationPanel rotationPanel;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label createdCountLabel;
+        private System.Windows.Forms.TabPage proxyTab;
+        private System.Windows.Forms.TabPage mouseTab;
+        private System.Windows.Forms.Label yawLabel;
+        private System.Windows.Forms.Label pitchLabel;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.TrackBar mouseScaleSlider;
+        private System.Windows.Forms.TrackBar moveScaleSlider;
     }
 }
 
