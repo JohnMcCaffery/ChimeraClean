@@ -18,7 +18,7 @@ using System.Collections;
 
 namespace MasterProxy {
     public partial class MasterProxyForm : Form {
-        private XMLRPCMaster masterServer;
+        private InterProxyServer masterServer;
         private Queue<object> newSlaves = new Queue<object>();
         private Dictionary<string, bool> forwardedPackets = new Dictionary<string, bool>();
         private HashSet<PacketType> enabledPackets = new HashSet<PacketType>();
@@ -88,7 +88,7 @@ namespace MasterProxy {
 
             udpPortBox.Enabled = false;
 
-            masterServer = new XMLRPCMaster(proxyPanel.Proxy.proxyConfig.clientFacingAddress.ToString(), int.Parse(udpPortBox.Text));
+            masterServer = new InterProxyServer(proxyPanel.Proxy.proxyConfig.clientFacingAddress.ToString(), int.Parse(udpPortBox.Text));
             masterServer.OnSlaveConnected += (source, args) => {
                 slaveConnected = true;
                 lock (newSlaves)

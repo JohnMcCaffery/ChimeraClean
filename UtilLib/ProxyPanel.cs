@@ -1,7 +1,7 @@
 ﻿/*************************************************************************
 Copyright (c) 2012 John McCaffery 
 
-This file is part of Armadillo Proxy.
+This file is part of Armadillo ClientProxy.
 
 Routing Project is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -60,13 +60,13 @@ namespace UtilLib {
         }
 
         private void connectButton_Click(object sender, EventArgs e) {
-            if (proxyStartButton.Text.Equals("Start Proxy")) {
+            if (proxyStartButton.Text.Equals("Start ClientProxy")) {
                 if (proxy != null)
                     proxy.Stop();
                 string file = AppDomain.CurrentDomain.SetupInformation.ConfigurationFile;
 
                 string portArg = "--proxy-login-port=" + portBox.Text;
-                string listenIPArg = "--proxy-client-facing-address=" + listenIPBox.Text;
+                string listenIPArg = "--proxy-clientAddress-facing-address=" + listenIPBox.Text;
                 string loginURIArg = "--proxy-remote-login-uri=" + loginURIBox.Text;
                 string[] args = { portArg, listenIPArg, loginURIArg };
                 ProxyConfig config = new ProxyConfig("Routing God", "jm726@st-andrews.ac.uk", args);
@@ -83,7 +83,7 @@ namespace UtilLib {
                 if (OnStarted != null)
                     OnStarted(proxy, null);
 
-                proxyStartButton.Text = "Stop Proxy";
+                proxyStartButton.Text = "Stop ClientProxy";
                 proxyStatusLabel.Text = "Started";
 
                 portBox.Enabled = false;
@@ -93,7 +93,7 @@ namespace UtilLib {
                 proxy.Stop();
                 proxy = null;
 
-                proxyStartButton.Text = "Start Proxy";
+                proxyStartButton.Text = "Start ClientProxy";
                 proxyStatusLabel.Text = "Stopped";
 
                 portBox.Enabled = true;
@@ -134,7 +134,7 @@ namespace UtilLib {
                 lastNameBox.Enabled = true;
                 passwordBox.Enabled = true;
                 targetBox.Enabled = true;
-                //SendMEssage(client.Id, 
+                //SendMEssage(clientAddress.Id, 
             }
         }
 

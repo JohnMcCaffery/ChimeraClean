@@ -1,0 +1,183 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="UtilLib.LogPanel" Collapsed="true">
+    <Position X="6" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAACAAAACAAAAAAAgCAAAAAAAAAA=</HashCode>
+      <FileName>LogPanel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UtilLib.SetFollowCamPropertiesPanel" Collapsed="true">
+    <Position X="6" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQLAQABhCACCJQwhACglxRCEIQAIAA0ACQEJBQEBDA=</HashCode>
+      <FileName>SetFollowCamPropertiesPanel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UtilLib.InterProxyServer" BaseTypeListCollapsed="true">
+    <Position X="4.75" Y="3.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>EAIEAAAAACAAEQAAAAAAAAAACAAAEAAKIAcBAhAAAAA=</HashCode>
+      <FileName>InterProxyServer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UtilLib.InterProxyClient" BaseTypeListCollapsed="true">
+    <Position X="11.25" Y="3.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAJAAAAAUAAAAAACAIQIAIAEKIIIIAEAAAAAAAA=</HashCode>
+      <FileName>InterProxyClient.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UtilLib.CameraMaster">
+    <Position X="0.5" Y="2.75" Width="2" />
+    <AssociationLine Name="InterProxyServer" Type="UtilLib.InterProxyServer" FixedFromPoint="true">
+      <Path>
+        <Point X="2.5" Y="7.375" />
+        <Point X="4.75" Y="7.375" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="ClientProxy" Type="GridProxy.Proxy" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="1.5" Y="7.782" />
+        <Point X="1.5" Y="8.128" />
+        <Point X="2.75" Y="8.128" />
+        <Point X="2.75" Y="8.75" />
+        <Point X="7.5" Y="8.75" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>EgJQAAAAAIEAAYAAAAACAAgggwgAMAAAIoAAAoABAAQ=</HashCode>
+      <FileName>PositionMaster.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="InterProxyServer" />
+      <Property Name="ClientProxy" />
+      <Property Name="Rotation" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="UtilLib.FullMaster">
+    <Position X="0.5" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAA=</HashCode>
+      <FileName>FullMaster.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="ClientProxy" />
+      <Property Name="Proxy1" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="UtilLib.CameraSlave">
+    <Position X="15" Y="3.5" Width="1.5" />
+    <AssociationLine Name="ClientProxy" Type="GridProxy.Proxy" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="15.75" Y="4.109" />
+        <Point X="15.75" Y="7.25" />
+        <Point X="15.25" Y="7.25" />
+        <Point X="15.25" Y="8.75" />
+        <Point X="9.5" Y="8.75" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAgAAAAA=</HashCode>
+      <FileName>PositionSlave.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="InterProxyClient" />
+      <Property Name="ClientProxy" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="UtilLib.FullSlave">
+    <Position X="8.25" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAA=</HashCode>
+      <FileName>FullSlave.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="ClientProxy" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="GridProxy.Proxy">
+    <Position X="7.5" Y="8.25" Width="2" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="UtilLib.Rotation">
+    <Position X="7.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAEAAAAAAAAAAAAAAgAAAABAAAAAAAI=</HashCode>
+      <FileName>Rotation.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GridProxy.ProxyConfig" Collapsed="true">
+    <Position X="15.5" Y="8.5" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="GridProxy.CapInfo" Collapsed="true">
+    <Position X="15.5" Y="7.5" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="GridProxy.CapsRequest" Collapsed="true">
+    <Position X="17.25" Y="7.5" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="GridProxy.XmlRpcRequestEventArgs" Collapsed="true">
+    <Position X="17.25" Y="8.5" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Interface Name="UtilLib.IMaster" Collapsed="true">
+    <Position X="3.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>InterProxyServer.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="UtilLib.IMasterProxy" Collapsed="true">
+    <Position X="3.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>InterProxyServer.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="UtilLib.ISlave" Collapsed="true">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAQAAAEAAAAAAAAAAAAAAAAAAAAAABAA=</HashCode>
+      <FileName>InterProxyClient.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="UtilLib.ISlaveProxy" Collapsed="true">
+    <Position X="0.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>InterProxyClient.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="GridProxy.CapsDataFormat" Collapsed="true">
+    <Position X="15.5" Y="9.75" Width="1.5" />
+    <TypeIdentifier />
+  </Enum>
+  <Enum Name="GridProxy.Direction" Collapsed="true">
+    <Position X="15.5" Y="10.5" Width="1.5" />
+    <TypeIdentifier />
+  </Enum>
+  <Enum Name="GridProxy.CapsStage" Collapsed="true">
+    <Position X="17.25" Y="9.75" Width="1.5" />
+    <TypeIdentifier />
+  </Enum>
+  <Delegate Name="GridProxy.XmlRpcRequestDelegate" Collapsed="true">
+    <Position X="15.5" Y="12.25" Width="1.5" />
+    <TypeIdentifier />
+  </Delegate>
+  <Delegate Name="GridProxy.XmlRpcResponseDelegate" Collapsed="true">
+    <Position X="17.25" Y="12.25" Width="1.5" />
+    <TypeIdentifier />
+  </Delegate>
+  <Delegate Name="GridProxy.PacketDelegate" Collapsed="true">
+    <Position X="17.25" Y="11.5" Width="1.5" />
+    <TypeIdentifier />
+  </Delegate>
+  <Delegate Name="GridProxy.CapsDelegate" Collapsed="true">
+    <Position X="15.5" Y="11.5" Width="1.5" />
+    <TypeIdentifier />
+  </Delegate>
+  <Font Name="Tahoma" Size="8.25" />
+</ClassDiagram>

@@ -1,7 +1,7 @@
 ﻿/*************************************************************************
 Copyright (c) 2012 John McCaffery 
 
-This file is part of Armadillo Proxy.
+This file is part of Armadillo ClientProxy.
 
 Routing Project is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -170,7 +170,7 @@ namespace ProxyTestGUI {
             this.type6Label.Name = "type6Label";
             this.type6Label.Size = new System.Drawing.Size(65, 13);
             this.type6Label.TabIndex = 12;
-            this.type6Label.Text = "Position Lag";
+            this.type6Label.Text = "LookAt Lag";
             // 
             // type7Value
             // 
@@ -255,7 +255,7 @@ namespace ProxyTestGUI {
             this.type11Label.Name = "type11Label";
             this.type11Label.Size = new System.Drawing.Size(94, 13);
             this.type11Label.TabIndex = 16;
-            this.type11Label.Text = "Position Threshold";
+            this.type11Label.Text = "LookAt Threshold";
             // 
             // type13Value
             // 
@@ -271,7 +271,7 @@ namespace ProxyTestGUI {
             this.type13Label.Name = "type13Label";
             this.type13Label.Size = new System.Drawing.Size(44, 13);
             this.type13Label.TabIndex = 40;
-            this.type13Label.Text = "Position";
+            this.type13Label.Text = "LookAt";
             // 
             // type17Value
             // 
@@ -434,7 +434,7 @@ namespace ProxyTestGUI {
             // 
             this.positionVectorPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.positionVectorPanel.DisplayName = "Position Vector";
+            this.positionVectorPanel.DisplayName = "LookAt Vector";
             this.positionVectorPanel.Location = new System.Drawing.Point(156, 98);
             this.positionVectorPanel.Max = 256D;
             this.positionVectorPanel.Min = 0D;
@@ -482,7 +482,7 @@ namespace ProxyTestGUI {
             this.positionLockedCheckbox.Name = "positionLockedCheckbox";
             this.positionLockedCheckbox.Size = new System.Drawing.Size(102, 17);
             this.positionLockedCheckbox.TabIndex = 78;
-            this.positionLockedCheckbox.Text = "Position Locked";
+            this.positionLockedCheckbox.Text = "LookAt Locked";
             this.positionLockedCheckbox.UseVisualStyleBackColor = true;
             // 
             // timeValue

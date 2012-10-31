@@ -1,7 +1,7 @@
 ﻿/*************************************************************************
 Copyright (c) 2012 John McCaffery 
 
-This file is part of Armadillo Proxy.
+This file is part of Armadillo ClientProxy.
 
 Routing Project is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -71,7 +71,7 @@ namespace SlaveProxy {
 
         private Queue<Packet> packetsToProcess = new Queue<Packet>();
         private Dictionary<UUID, Avatar> avatars = new Dictionary<UUID, Avatar>();
-        private XMLRPCSlave slaveClient;
+        private InterProxyClient slaveClient;
         private Avatar selectedAvatar;
         private int processedCount = 0;
         private bool processAgentUpdates = false;
@@ -83,7 +83,7 @@ namespace SlaveProxy {
         public SlaveProxyForm() {
             InitializeComponent();
 
-            slaveClient = new XMLRPCSlave();
+            slaveClient = new InterProxyClient();
             slaveClient.OnPacketReceived += MasterPacketReceived;
             slaveClient.OnPing += Pinged;
 
@@ -100,9 +100,9 @@ namespace SlaveProxy {
         }
 
         private void ProxyStarted(object source, EventArgs args) {
-            //proxyPanel.Proxy.AddDelegate(PacketType.ObjectUpdate, Direction.Incoming, ObjectUpdatePacketReceived);
+            //proxyPanel.ClientProxy.AddDelegate(PacketType.ObjectUpdate, Direction.Incoming, ObjectUpdatePacketReceived);
             proxyPanel.Proxy.AddDelegate(PacketType.ImprovedTerseObjectUpdate, Direction.Incoming, ImprovedTersePacketPacketReceived);
-            //proxyPanel.Proxy.AddDelegate(PacketType.AgentUpdate, Direction.Outgoing, AgentUpdatePacketReceived);
+            //proxyPanel.ClientProxy.AddDelegate(PacketType.AgentUpdate, Direction.Outgoing, AgentUpdatePacketReceived);
 
             proxyPanel.Proxy.AddLoginResponseDelegate(LoginResponseReceived);
         }

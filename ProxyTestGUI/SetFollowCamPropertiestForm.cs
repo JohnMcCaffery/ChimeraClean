@@ -1,7 +1,7 @@
 ﻿/*************************************************************************
 Copyright (c) 2012 John McCaffery 
 
-This file is part of Armadillo Proxy.
+This file is part of Armadillo ClientProxy.
 
 Routing Project is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -76,7 +76,7 @@ namespace ProxyTestGUI {
             string loginURI = "http://apollo.cs.st-andrews.ac.uk:8002";
 
             string portArg = "--proxy-login-port="+port;
-            string listenIPArg = "--proxy-client-facing-address="+listenIP;
+            string listenIPArg = "--proxy-clientAddress-facing-address="+listenIP;
             string loginURIArg = "--proxy-remote-login-uri="+loginURI;
             string[] args = { portArg, listenIPArg, loginURIArg };
             ProxyConfig config = new ProxyConfig("Routing God", "jm726@st-andrews.ac.uk", args);

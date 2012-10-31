@@ -1,7 +1,7 @@
 ﻿/*************************************************************************
 Copyright (c) 2012 John McCaffery 
 
-This file is part of Armadillo Proxy.
+This file is part of Armadillo ClientProxy.
 
 Routing Project is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -154,7 +154,7 @@ namespace ProxyTestGUI {
             this.pitchLabel.Name = "pitchLabel";
             this.pitchLabel.Size = new System.Drawing.Size(14, 13);
             this.pitchLabel.TabIndex = 88;
-            this.pitchLabel.Text = "P";
+            this.pitchLabel.Text = "LookAt";
             // 
             // RotationPanel
             // 

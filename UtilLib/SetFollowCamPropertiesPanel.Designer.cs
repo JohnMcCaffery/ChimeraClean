@@ -1,7 +1,7 @@
 ﻿/*************************************************************************
 Copyright (c) 2012 John McCaffery 
 
-This file is part of Armadillo Proxy.
+This file is part of Armadillo ClientProxy.
 
 Routing Project is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -113,7 +113,7 @@ namespace UtilLib {
             this.positionLockedCheckbox.Name = "positionLockedCheckbox";
             this.positionLockedCheckbox.Size = new System.Drawing.Size(102, 17);
             this.positionLockedCheckbox.TabIndex = 106;
-            this.positionLockedCheckbox.Text = "Position Locked";
+            this.positionLockedCheckbox.Text = "LookAt Locked";
             this.positionLockedCheckbox.UseVisualStyleBackColor = true;
             // 
             // focusLockedCheckbox
@@ -172,7 +172,7 @@ namespace UtilLib {
             this.type13Label.Name = "type13Label";
             this.type13Label.Size = new System.Drawing.Size(44, 13);
             this.type13Label.TabIndex = 98;
-            this.type13Label.Text = "Position";
+            this.type13Label.Text = "LookAt";
             // 
             // type17Value
             // 
@@ -239,7 +239,7 @@ namespace UtilLib {
             this.type11Label.Name = "type11Label";
             this.type11Label.Size = new System.Drawing.Size(94, 13);
             this.type11Label.TabIndex = 90;
-            this.type11Label.Text = "Position Threshold";
+            this.type11Label.Text = "LookAt Threshold";
             // 
             // type6Value
             // 
@@ -266,7 +266,7 @@ namespace UtilLib {
             this.type6Label.Name = "type6Label";
             this.type6Label.Size = new System.Drawing.Size(65, 13);
             this.type6Label.TabIndex = 88;
-            this.type6Label.Text = "Position Lag";
+            this.type6Label.Text = "LookAt Lag";
             // 
             // type7Value
             // 
@@ -438,7 +438,7 @@ namespace UtilLib {
             // 
             this.rawPositionPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.rawPositionPanel.DisplayName = "Position";
+            this.rawPositionPanel.DisplayName = "LookAt";
             this.rawPositionPanel.Location = new System.Drawing.Point(0, 3);
             this.rawPositionPanel.Max = 255D;
             this.rawPositionPanel.Min = 0D;
@@ -482,7 +482,7 @@ namespace UtilLib {
             // 
             this.positionPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.positionPanel.DisplayName = "Position Offset";
+            this.positionPanel.DisplayName = "LookAt Offset";
             this.positionPanel.Location = new System.Drawing.Point(0, 3);
             this.positionPanel.Max = 5D;
             this.positionPanel.Min = -5D;
@@ -526,7 +526,7 @@ namespace UtilLib {
             // 
             this.finalPositionPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.finalPositionPanel.DisplayName = "Position";
+            this.finalPositionPanel.DisplayName = "LookAt";
             this.finalPositionPanel.Enabled = false;
             this.finalPositionPanel.Location = new System.Drawing.Point(0, 3);
             this.finalPositionPanel.Max = 255D;

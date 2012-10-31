@@ -1,7 +1,7 @@
 ﻿/*************************************************************************
 Copyright (c) 2012 John McCaffery 
 
-This file is part of Armadillo Proxy.
+This file is part of Armadillo ClientProxy.
 
 Routing Project is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -195,7 +195,7 @@ namespace SlaveProxy {
             this.xmlRpcPortLabel.Name = "xmlRpcPortLabel";
             this.xmlRpcPortLabel.Size = new System.Drawing.Size(76, 13);
             this.xmlRpcPortLabel.TabIndex = 14;
-            this.xmlRpcPortLabel.Text = "XML-RPC Port";
+            this.xmlRpcPortLabel.Text = "XML-RPC SlavePort";
             // 
             // packetsToProcessLabel
             // 
@@ -267,7 +267,7 @@ namespace SlaveProxy {
             this.proxyTab.Padding = new System.Windows.Forms.Padding(3);
             this.proxyTab.Size = new System.Drawing.Size(651, 392);
             this.proxyTab.TabIndex = 4;
-            this.proxyTab.Text = "Proxy";
+            this.proxyTab.Text = "ClientProxy";
             this.proxyTab.UseVisualStyleBackColor = true;
             // 
             // proxyPanel
@@ -425,7 +425,7 @@ namespace SlaveProxy {
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(52, 13);
             this.label5.TabIndex = 23;
-            this.label5.Text = "UDP Port";
+            this.label5.Text = "UDP SlavePort";
             // 
             // label4
             // 
@@ -435,7 +435,7 @@ namespace SlaveProxy {
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(76, 13);
             this.label4.TabIndex = 25;
-            this.label4.Text = "XML-RPC Port";
+            this.label4.Text = "XML-RPC SlavePort";
             // 
             // portBox
             // 
@@ -505,7 +505,7 @@ namespace SlaveProxy {
             this.setFollowCamPropertiesPanel.Location = new System.Drawing.Point(3, 3);
             this.setFollowCamPropertiesPanel.MinimumSize = new System.Drawing.Size(485, 343);
             this.setFollowCamPropertiesPanel.Name = "setFollowCamPropertiesPanel";
-            this.setFollowCamPropertiesPanel.Position = ((OpenMetaverse.Vector3)(resources.GetObject("setFollowCamPropertiesPanel.Position")));
+            this.setFollowCamPropertiesPanel.Position = ((OpenMetaverse.Vector3)(resources.GetObject("setFollowCamPropertiesPanel.LookAt")));
             this.setFollowCamPropertiesPanel.Rotation = ((OpenMetaverse.Quaternion)(resources.GetObject("setFollowCamPropertiesPanel.Rotation")));
             this.setFollowCamPropertiesPanel.Size = new System.Drawing.Size(645, 386);
             this.setFollowCamPropertiesPanel.TabIndex = 0;
@@ -615,7 +615,7 @@ namespace SlaveProxy {
             // 
             this.positionPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.positionPanel.DisplayName = "Position";
+            this.positionPanel.DisplayName = "LookAt";
             this.positionPanel.Location = new System.Drawing.Point(3, 6);
             this.positionPanel.Max = 256D;
             this.positionPanel.Min = 0D;
@@ -656,7 +656,7 @@ namespace SlaveProxy {
             this.Controls.Add(this.tabContainer);
             this.MinimumSize = new System.Drawing.Size(500, 447);
             this.Name = "SlaveProxyForm";
-            this.Text = "Slave Proxy GUI";
+            this.Text = "Slave ClientProxy GUI";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.SlaveProxyForm_FormClosing);
             this.tabContainer.ResumeLayout(false);
             this.proxyTab.ResumeLayout(false);

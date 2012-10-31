@@ -1,7 +1,7 @@
 ﻿/*************************************************************************
 Copyright (c) 2012 John McCaffery 
 
-This file is part of Armadillo Proxy.
+This file is part of Armadillo ClientProxy.
 
 Routing Project is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -174,7 +174,7 @@ namespace MasterProxy {
             this.localAddressLabel.Name = "localAddressLabel";
             this.localAddressLabel.Size = new System.Drawing.Size(52, 13);
             this.localAddressLabel.TabIndex = 15;
-            this.localAddressLabel.Text = "UDP Port";
+            this.localAddressLabel.Text = "UDP SlavePort";
             // 
             // label1
             // 
@@ -234,7 +234,7 @@ namespace MasterProxy {
             this.proxyTab.Padding = new System.Windows.Forms.Padding(3);
             this.proxyTab.Size = new System.Drawing.Size(632, 329);
             this.proxyTab.TabIndex = 2;
-            this.proxyTab.Text = "Proxy";
+            this.proxyTab.Text = "ClientProxy";
             this.proxyTab.UseVisualStyleBackColor = true;
             // 
             // proxyPanel
@@ -300,7 +300,7 @@ namespace MasterProxy {
             // 
             this.positionPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.positionPanel.DisplayName = "Position";
+            this.positionPanel.DisplayName = "LookAt";
             this.positionPanel.Location = new System.Drawing.Point(0, 3);
             this.positionPanel.Max = 256D;
             this.positionPanel.Min = 0D;
@@ -445,7 +445,7 @@ namespace MasterProxy {
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label3);
             this.Name = "MasterProxyForm";
-            this.Text = "Master Proxy";
+            this.Text = "Master ClientProxy";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MasterProxyForm_FormClosing);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.keyDown);
             this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.keyUp);
