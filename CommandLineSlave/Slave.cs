@@ -10,7 +10,7 @@ namespace CommandLineSlave {
         static void Main(string[] args) {
             InterProxyClient s = new InterProxyClient();
             s.OnPacketReceived += (p, ep) => { 
-                Console.WriteLine("Recevied " + p.Type + " from master."); 
+                Console.WriteLine("Received " + p.Type + " from master."); 
                 return null;
             };
             s.OnConnected += (source, arg) => Console.WriteLine("Connected to master.");

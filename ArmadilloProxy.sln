@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommandLineMaster", "Comman
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommandLineSlave", "CommandLineSlave\CommandLineSlave.csproj", "{F632B844-E72D-42A3-B0F2-0096114E5B0A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleTest", "ConsoleTest\ConsoleTest.csproj", "{B355EB5C-BEA8-4748-9EFC-0607EE26200A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -131,6 +133,16 @@ Global
 		{F632B844-E72D-42A3-B0F2-0096114E5B0A}.Release|Mixed Platforms.Build.0 = Release|x86
 		{F632B844-E72D-42A3-B0F2-0096114E5B0A}.Release|x86.ActiveCfg = Release|x86
 		{F632B844-E72D-42A3-B0F2-0096114E5B0A}.Release|x86.Build.0 = Release|x86
+		{B355EB5C-BEA8-4748-9EFC-0607EE26200A}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{B355EB5C-BEA8-4748-9EFC-0607EE26200A}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{B355EB5C-BEA8-4748-9EFC-0607EE26200A}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{B355EB5C-BEA8-4748-9EFC-0607EE26200A}.Debug|x86.ActiveCfg = Debug|x86
+		{B355EB5C-BEA8-4748-9EFC-0607EE26200A}.Debug|x86.Build.0 = Debug|x86
+		{B355EB5C-BEA8-4748-9EFC-0607EE26200A}.Release|Any CPU.ActiveCfg = Release|x86
+		{B355EB5C-BEA8-4748-9EFC-0607EE26200A}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{B355EB5C-BEA8-4748-9EFC-0607EE26200A}.Release|Mixed Platforms.Build.0 = Release|x86
+		{B355EB5C-BEA8-4748-9EFC-0607EE26200A}.Release|x86.ActiveCfg = Release|x86
+		{B355EB5C-BEA8-4748-9EFC-0607EE26200A}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

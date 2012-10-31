@@ -17,7 +17,7 @@
   <Class Name="UtilLib.InterProxyServer" BaseTypeListCollapsed="true">
     <Position X="4.75" Y="3.5" Width="1.75" />
     <TypeIdentifier>
-      <HashCode>EAIEAAAAACAAEQAAAAAAAAAACAAAEAAKIAcBAhAAAAA=</HashCode>
+      <HashCode>EIIEAAAAACAAEQAAAAAAAAAACAAAEAAKIAcBAhAAAAA=</HashCode>
       <FileName>InterProxyServer.cs</FileName>
     </TypeIdentifier>
   </Class>

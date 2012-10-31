@@ -65,6 +65,7 @@ namespace UtilLib {
         public event EventHandler OnSlaveDisconnected;
         public readonly static string DISCONNECT = "Disconnect";
         public readonly static string PING = "Ping";
+        public readonly static byte[] PING_B = Encoding.ASCII.GetBytes(PING);
 
         /// <summary>
         /// Start the master so that slaves can connect to it at the specified address and port.
@@ -79,6 +80,7 @@ namespace UtilLib {
         /// Start the master on localhost with a random port.
         /// </summary>
         public InterProxyServer() {
+            Address = Dns.GetHostName();
             Start();
         }
 
@@ -94,21 +96,39 @@ namespace UtilLib {
         /// The port that slaves can use to connect to this master.
         /// </summary>
         public int Port {
-            get { return ((IPEndPoint) socket.Client.LocalEndPoint).Port; }
+            get {
+                if (ep == null)
+                    Address = Dns.GetHostName();
+                return ep.Port; }
+            set {
+                if (ep == null)
+                    Address = Dns.GetHostName();
+                ep.Port = value; 
+            }
         }
 
         /// <summary>
         /// The address that slaves can use to connect to this master.
         /// </summary>
         public string Address {
-            get { return ((IPEndPoint) socket.Client.LocalEndPoint).Address.ToString(); }
+            get { 
+                if (ep == null)
+                    Address = Dns.GetHostName();
+                return ep.Address.ToString(); 
+            }
+            set {
+                int port = ep != null ? ep.Port : 0;
+                foreach (var ip in Dns.GetHostEntry(Dns.GetHostName()).AddressList)
+                    if (ip.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
+                        ep = new IPEndPoint(ip, port);
+            }
         }
 
         /// <summary>
         /// True if ready to receive connections from slaves.
         /// </summary>
         public bool Running {
-            get { return socket.Client.IsBound; }
+            get { return socket.Client != null && socket.Client.IsBound; }
         }
 
         /// <summary>
@@ -125,17 +145,13 @@ namespace UtilLib {
             get { return slaves.Count; }
         }
 
-        #region IMaster Members
-
-        #endregion
-
         public void BroadcastPacket(Packet packet) {
             byte[] bytes = packet.ToBytes();
             lock (slaves) {
                 foreach (var slave in slaves.Keys)
                     socket.Send(bytes, bytes.Length, slave);
             }
-            Logger.Log("Sent " + packet.Type + " packet to " + slaves.Count + " slaves.", Helpers.LogLevel.Debug);
+            Logger.Log("Master sent " + packet.Type + " packet to " + slaves.Count + " slaves.", Helpers.LogLevel.Debug);
         }
 
         /// <summary>
@@ -143,27 +159,8 @@ namespace UtilLib {
         /// Will bind to localhost and whatever port is open.
         /// </summary>
         public void Start() {
-            Start(Dns.GetHostName(), 0);
-        }
-
-        /// <summary>
-        /// Start a proxy so that clients can connect to this master and be shadowed. Address is localhost, port is specified.
-        /// </summary>
-        /// <param name="port">The port that clients can use to connect to this proxy.</param>
-        public void Start(int port) {
-            Start(Dns.GetHostName(), port);
-        }
-
-        /// <summary>
-        /// Start the master so that slaves can connect to it. Specifies the address and port to start it on.
-        /// </summary>
-        /// <param name="address">The address that slaves can connect to this master on.</param>
-        /// <param name="port">The port that slaves can connect to this master on.</param>
-        public void Start(string address, int port) {
-            foreach (var ip in Dns.GetHostEntry(address).AddressList)
-                if (ip.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork) 
-                    ep = new IPEndPoint(ip, port);
-
+            if (ep == null)
+                Logger.Log("Master unable to start. No End Point specified.", Helpers.LogLevel.Info);
             if (socket == null)
                 socket = new UdpClient();
             if (Running)
@@ -178,28 +175,50 @@ namespace UtilLib {
         }
 
         /// <summary>
+        /// Start a proxy so that clients can connect to this master and be shadowed. Address is localhost, port is specified.
+        /// </summary>
+        /// <param name="port">The port that clients can use to connect to this proxy.</param>
+        public void Start(int port) {
+            Port = port;
+            Start();
+        }
+
+        /// <summary>
+        /// Start the master so that slaves can connect to it. Specifies the address and port to start it on.
+        /// </summary>
+        /// <param name="address">The address that slaves can connect to this master on.</param>
+        /// <param name="port">The port that slaves can connect to this master on.</param>
+        public void Start(string address, int port) {
+            Address = address;
+            Port = port;
+            Start();
+        }
+
+        /// <summary>
         /// Process incoming packets from slaves. Incoming packets are either connection requests or disconnect notifiers.
         /// </summary>
         private void PacketReceived(IAsyncResult ar) {
+            if (socket == null)
+                return;
             IPEndPoint ep = new IPEndPoint(IPAddress.Any, 0);
             bool disposing = false;
             try {
                 byte[] bytes = socket.EndReceive(ar, ref ep);
-                if (slaves.ContainsKey(ep)) 
+                string msg = Encoding.ASCII.GetString(bytes);
+                if (msg.Equals(DISCONNECT) && slaves.ContainsKey(ep)) 
                     SlaveDisconnected(ep);
-                else {
-                    string name = Encoding.ASCII.GetString(bytes);
+                else if (msg.Equals(PING)) {
+                    socket.Send(PING_B, PING_B.Length, ep);
+                } else if (!msg.Equals(DISCONNECT)) {
                     lock(slaves)
-                        slaves.Add(ep, name);
+                        slaves.Add(ep, msg);
 
-                    Logger.Log("Slave '" + name + "' connected from " + ep + ".", Helpers.LogLevel.Info);
+                    Logger.Log("Master saw slave '" + msg + "' connect from " + ep + ".", Helpers.LogLevel.Info);
                     socket.Send(bytes, bytes.Length, ep);
 
                     if (OnSlaveConnected != null)
-                        OnSlaveConnected(name, null);
+                        OnSlaveConnected(msg, null);
                 }
-                if (socket.Client != null && socket.Client.IsBound && !disposing)
-                    socket.BeginReceive(PacketReceived, null);
             } catch (ObjectDisposedException e) {
                 disposing = true;
                 return;
@@ -209,8 +228,8 @@ namespace UtilLib {
                 else
                     throw e;
             } finally {
-            if (socket.Client != null && socket.Client.IsBound)
-                socket.BeginReceive(PacketReceived, null);
+                if (!disposing && socket.Client != null && socket.Client.IsBound)
+                    socket.BeginReceive(PacketReceived, null);
             }
         }
 
@@ -218,36 +237,44 @@ namespace UtilLib {
         /// Remove a slave from the list of slaves connected.
         /// </summary>
         private void SlaveDisconnected(IPEndPoint ep) {
-                string name = slaves[ep];
-                lock (slaves)
+            lock (slaves) {
+                if (slaves.ContainsKey(ep)) {
+                    string name = slaves[ep];
                     slaves.Remove(ep);
-                Logger.Log("Slave '" + name + "' at " + ep + " disconnected.", Helpers.LogLevel.Info);
-                if (OnSlaveDisconnected != null)
-                    OnSlaveDisconnected(name, null);
+                    Logger.Log("Master saw slave '" + name + "' at " + ep + " disconnect.", Helpers.LogLevel.Info);
+                    if (OnSlaveDisconnected != null)
+                        OnSlaveDisconnected(name, null);
+                }
+
+            }
         }
 
         /// <summary>
         /// Test which slave has been disconnected and remove it from the list of slaves.
         /// </summary>
         private void TestDisconnect() {
-            IPEndPoint ep = new IPEndPoint(IPAddress.Loopback, 0);
+            IPEndPoint ep = new IPEndPoint(IPAddress.Any, 0);
             UdpClient testClient = new UdpClient(ep);
             IPEndPoint testEP = new IPEndPoint(IPAddress.Any, 0);
-            byte[] bytes = Encoding.ASCII.GetBytes(PING);
             List<IPEndPoint> toRemove = new List<IPEndPoint>();
+            bool pingReceived = false;
+            object pingLock = new object();
             lock (slaves) {
                 foreach (IPEndPoint slave in slaves.Keys) {
                     testClient.BeginReceive(ar => {
                         try {
-                            testClient.EndReceive(ar, ref testEP);
-                        } catch (SocketException e) {
-                            if (e.Message.Equals("An existing connection was forcibly closed by the remote host"))
-                                toRemove.Add(slave);
-                        }
+                            byte[] data = testClient.EndReceive(ar, ref testEP);
+                            pingReceived = Encoding.ASCII.GetString(data).Equals(InterProxyServer.PING);
+                            lock (pingLock)
+                                Monitor.PulseAll(pingLock);
+                        } catch (ObjectDisposedException e) {
+                        } catch (SocketException e) { }
                     }, ep);
-                    testClient.Send(bytes, bytes.Length, slave);
-                    testClient.Send(bytes, bytes.Length, ep);
-                    Thread.Sleep(500);
+                    testClient.Send(PING_B, PING_B.Length, slave);
+                    lock (pingLock)
+                        Monitor.Wait(pingLock, 1000);
+                    if (!pingReceived)
+                        toRemove.Add(slave);
                 }
             }
             foreach (var slave in toRemove)
@@ -264,6 +291,8 @@ namespace UtilLib {
                 foreach (var slave in slaves.Keys)
                     socket.Send(close, close.Length, slave);
             socket.Close();
+            socket = null;
+            slaves.Clear();
         }
     }
 }

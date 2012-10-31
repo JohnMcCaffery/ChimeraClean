@@ -160,12 +160,12 @@ namespace UtilLib {
                     if (ip.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork) 
                         masterEP = new IPEndPoint(ip, port);
             } catch (SocketException e) {
-                Logger.Log("Unable to look up master address at " + address + ":" + port + "." + e.Message, Helpers.LogLevel.Info);
+                Logger.Log("Slave unable to look up master address at " + address + ":" + port + "." + e.Message, Helpers.LogLevel.Info);
                 masterEP = null;
                 return;
             }
             if (masterEP == null) { 
-                Logger.Log("No IP address found for " + address + ":" + port + ".", Helpers.LogLevel.Info);
+                Logger.Log("Slave not able to look up master IP address found for " + address + ":" + port + ".", Helpers.LogLevel.Info);
                 return;
             }
             
@@ -195,23 +195,18 @@ namespace UtilLib {
                 return;
             } catch (SocketException e) {
                 if (e.Message.Equals("An existing connection was forcibly closed by the remote host")) {
-                    if (connected) {
-                        connected = false;
-                        Logger.Log("Failure communicating with the server.", Helpers.LogLevel.Info);
+                    if (!connected && masterEP != null) {
+                        Logger.Log("Slave unable to connect to master at " + masterEP + ".", Helpers.LogLevel.Info);
                         if (OnConnectionLost != null)
                             OnConnectionLost(this, null);
-                    } else {
-                        Logger.Log("Unable to connect to master at " + masterEP + ".", Helpers.LogLevel.Info);
-                        if (OnConnectionLost != null)
-                            OnConnectionLost(this, null);
+                        masterEP = null;
+                        return;
                     }
-                    masterEP = null;
-                    return;
-                } else
+                } else 
                     throw e;
 
             } catch (Exception e) {
-                Logger.Log("Problem receiving packet. " + e.Message, Helpers.LogLevel.Info);
+                Logger.Log("Slave had problem receiving packet. " + e.Message, Helpers.LogLevel.Info);
                 return;
             } finally {
                 if (socket.Client != null && !disposing)
@@ -220,27 +215,36 @@ namespace UtilLib {
 
             //Packet received from unknown host
             if (!ep.Equals(masterEP)) {
-                Logger.Log("Packet received from unknown host " + ep + ".", Helpers.LogLevel.Info);
+                Logger.Log("Slave received packet from unknown host " + ep + ".", Helpers.LogLevel.Info);
+                return;
+            }
+
+            string msg = Encoding.ASCII.GetString(bytes);
+
+            //Ping
+            if (ep.Equals(masterEP) && msg.Equals(InterProxyServer.PING)) {
+                socket.Send(InterProxyServer.PING_B, InterProxyServer.PING_B.Length, masterEP);
                 return;
             }
 
             //Connect
-            if (ep.Equals(masterEP) && Encoding.ASCII.GetString(bytes).Equals(Name)) {
-                Logger.Log(Name + " successfully connected to master at " + masterEP + ".", Helpers.LogLevel.Info);
+            if (msg.Equals(Name)) {
+                Logger.Log("Slave '" + Name + "' successfully connected to master at " + masterEP + ".", Helpers.LogLevel.Info);
                 socket.BeginReceive(ReceivePacketDatagram, null);
                 connected = true;
                 if (OnConnected != null)
                     OnConnected(this, null);
+                Thread pingThread = new Thread(TestDisconnect);
+                pingThread.Name = "PingThread";
+                pingThread.Start();
                 return;
             }
 
             //Disconnect
-            if (Encoding.ASCII.GetString(bytes).Equals(InterProxyServer.DISCONNECT)) {
-                Logger.Log("Master signalled disconnect.", Helpers.LogLevel.Info);
+            if (msg.Equals(InterProxyServer.DISCONNECT)) {
+                Logger.Log("Slave disconnecting. Master signalled disconnect.", Helpers.LogLevel.Info);
                 masterEP = null;
-                connected = false;
-                if (OnDisconnected != null)
-                    OnDisconnected(this, null);
+                Disconnect();
                 return;
             }
 
@@ -249,12 +253,12 @@ namespace UtilLib {
                 int end = bytes.Length - 1;
                 Packet packet = Packet.BuildPacket(bytes, ref end, new byte[8996]);
                 
-                Logger.Log("Received " + packet.Type + " from master at " + masterEP + ".", Helpers.LogLevel.Debug);
+                Logger.Log("Slave received " + packet.Type + " from master at " + masterEP + ".", Helpers.LogLevel.Debug);
 
                 if (OnPacketReceived != null)
                     OnPacketReceived(packet, null);
             } catch (Exception e) {
-                Logger.Log("Problem processing packet from " + ep + ". " + e.Message, Helpers.LogLevel.Info);
+                Logger.Log("Slave had problem processing packet from " + ep + ". " + e.Message, Helpers.LogLevel.Info);
                 return;
             }
         }
@@ -268,7 +272,7 @@ namespace UtilLib {
                 if (OnPacketReceived != null)
                     OnPacketReceived(p, ep);
             } catch (Exception e) {
-                Logger.Log("Unable to process " + p.Type + ". " + e.Message, Helpers.LogLevel.Info);
+                Logger.Log("Slave unable to process " + p.Type + ". " + e.Message, Helpers.LogLevel.Info);
             }
             return null;
         }
@@ -279,8 +283,16 @@ namespace UtilLib {
         /// </summary>
         public void Disconnect() {
             if (Connected) {
-                byte[] bytes = ASCIIEncoding.ASCII.GetBytes("Disconnect");
-                socket.Send(bytes, bytes.Length, masterEP);
+                IPEndPoint oldMaster = masterEP;
+                connected = false;
+                masterEP = null;
+                if (oldMaster != null) {
+                    byte[] bytes = ASCIIEncoding.ASCII.GetBytes("Disconnect");
+                    socket.Send(bytes, bytes.Length, oldMaster);
+                    Logger.Log("Slave disconnected from master at " + oldMaster + ".", Helpers.LogLevel.Info);
+                } 
+                if (OnDisconnected != null)
+                    OnDisconnected(this, null);
             }
         }
 
@@ -292,6 +304,42 @@ namespace UtilLib {
                 Disconnect();
                 socket.Close();
             }
+        }
+
+        /// <summary>
+        /// Test which slave has been disconnected and remove it from the list of slaves.
+        /// </summary>
+        private void TestDisconnect() {
+            IPEndPoint ep = new IPEndPoint(IPAddress.Any, 0);
+            UdpClient testClient = new UdpClient(ep);
+            IPEndPoint testEP = new IPEndPoint(IPAddress.Any, 0);
+            bool pingReceived = false;
+            object pingLock = new object();
+            AsyncCallback requestCallback = ar => {
+                try {
+                    byte[] data = testClient.EndReceive(ar, ref testEP);
+                    pingReceived = Encoding.ASCII.GetString(data).Equals(InterProxyServer.PING);
+                    lock (pingLock)
+                        Monitor.PulseAll(pingLock);
+                } catch (ObjectDisposedException e) {
+                } catch (SocketException e) { }
+            };
+            while (Connected) {
+                pingReceived = false;
+                testClient.BeginReceive(requestCallback, null);
+                testClient.Send(InterProxyServer.PING_B, InterProxyServer.PING_B.Length, masterEP);
+
+                if (Connected) lock (pingLock)
+                    Monitor.Wait(pingLock, 1000);
+
+                if (!pingReceived) {
+                    Logger.Log("Slave unable to ping master at " + masterEP + ". Assuming connection dead.", Helpers.LogLevel.Info);
+                    masterEP = null;
+                    Disconnect();
+                }
+
+            }
+            testClient.Close();
         }
     }
 }
