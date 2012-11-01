@@ -1,7 +1,7 @@
 ﻿/*************************************************************************
 Copyright (c) 2012 John McCaffery 
 
-This file is part of Armadillo ClientProxy.
+This file is part of Armadillo SlaveProxy.
 
 Routing Project is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -27,16 +27,70 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using OpenMetaverse;
+using UtilLib;
 
 namespace ProxyTestGUI {
     public partial class RotationPanel : UserControl {
-        private Quaternion pitch = Quaternion.Identity, yaw = Quaternion.Identity, rotation = Quaternion.Identity;
-        private float oldYaw, oldPitch;
+        private readonly Rotation rotation = new Rotation();
+        public event EventHandler OnChange;
+        public Quaternion Rotation {
+            get { return rotation.Rot; }
+            set { rotation.Rot = value; }
+        }
+        public Vector3 Vector {
+            get { return rotation.LookAt; }
+            set { rotation.LookAt = value; }
+        }
+        public float Yaw {
+            get { return rotation.Yaw; }
+            set { rotation.Yaw = value; }
+        }
+        public float Pitch {
+            get { return rotation.Pitch; }
+            set { rotation.Pitch = value; }
+        }
+
+        public RotationPanel() {
+            InitializeComponent();
+
+            rotation.OnChange += (src, args) => {
+                vectorPanel.Value = rotation.LookAt;
+                pitchValue.Value = new decimal (rotation.Pitch);
+                pitchSlider.Value = (int)rotation.Pitch;
+                yawValue.Value = new decimal (rotation.Yaw);
+                yawSlider.Value = (int)rotation.Yaw;
+            };
+        }
+
 
         public string DisplayName {
             get { return vectorPanel.DisplayName; }
             set { vectorPanel.DisplayName = value; }
         }
+
+        private void yawSlider_Scroll(object sender, EventArgs e) {
+            yawValue.Value = yawSlider.Value;
+        }
+
+        private void pitchSlider_Scroll(object sender, EventArgs e) {
+            pitchValue.Value = pitchSlider.Value;
+        }
+
+        private void yawValue_ValueChanged(object sender, EventArgs e) {
+            rotation.Yaw = (float) decimal.ToDouble(yawValue.Value);
+        }
+
+        private void pitchValue_ValueChanged(object sender, EventArgs e) {
+            rotation.Pitch = (float) decimal.ToDouble(pitchValue.Value);
+        }
+
+        private void vectorPanel_Load(object sender, EventArgs e) {
+            rotation.LookAt = vectorPanel.Value;
+        }
+
+        /*
+        private Quaternion pitch = Quaternion.Identity, yaw = Quaternion.Identity, rotation = Quaternion.Identity;
+        private float oldYaw, oldPitch;
         public Quaternion Rotation {
             get { return rotation; }
             set {
@@ -47,8 +101,8 @@ namespace ProxyTestGUI {
                     float roll, pitch, yaw;
                     value.GetEulerAngles(out roll, out pitch, out yaw);
 
-                    pitch *= (float)RAD2DEG;
-                    yaw *= (float)RAD2DEG;
+                    pitch *= (float)Rotation.RAD2DEG;
+                    yaw *= (float)Rotation.RAD2DEG;
 
                     pitch = pitch > 180 ? -180 + (180-pitch) : pitch;
                     pitch = pitch < -180 ? 180-(180+pitch) : pitch;
@@ -93,16 +147,6 @@ namespace ProxyTestGUI {
             x += x > 0 ? -180 : 180;
             return x;
         }
-
-        public event EventHandler OnChange;
-
-        public RotationPanel() {
-            InitializeComponent();
-            vectorPanel.X = 1f;
-        }
-
-        public static readonly double RAD2DEG = 180.0 / Math.PI;
-        public static readonly double DEG2RAD = Math.PI / 180.0;
 
         private bool mRotationChanging = false;
         private bool mVectorChanging = false;
@@ -195,5 +239,6 @@ namespace ProxyTestGUI {
             pitchValue.Enabled = Enabled;
             pitchSlider.Enabled = Enabled;
         }
+        */
     }
 }

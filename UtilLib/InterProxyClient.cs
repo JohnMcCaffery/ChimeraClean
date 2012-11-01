@@ -1,7 +1,7 @@
 ﻿/*************************************************************************
 Copyright (c) 2012 John McCaffery 
 
-This file is part of Armadillo ClientProxy.
+This file is part of Armadillo SlaveProxy.
 
 Routing Project is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -33,18 +33,6 @@ using System.Configuration;
 using OpenMetaverse;
 
 namespace UtilLib {
-    [XmlRpcUrl("http://diana.apollo.cs.st-andrews.ac.uk")]
-    public interface ISlave {
-        [XmlRpcMethod]
-        string GetName();
-        [XmlRpcMethod]
-        void Ping();
-        [XmlRpcMethod]
-        void SetLoginResponse(string content);
-    }
-
-    public interface ISlaveProxy : ISlave, IXmlRpcProxy { }
-
     public class InterProxyClient {
         /// <summary>
         /// The socket on which the slave receives packets.
@@ -81,15 +69,15 @@ namespace UtilLib {
         }
 
         /// <summary>
-        /// Connect a new InterProxyClient and have it automatically connect to a local server on 'port'.
+        /// Connect a new InterProxyClient and have it automatically connect to a local server on 'masterPort'.
         /// </summary>
         public InterProxyClient(int port) : this(Dns.GetHostName(), port) { }
 
         /// <summary>
-        /// Create a new InterProxyClient and have it automatically connect to a local server on 'port'.
+        /// Create a new InterProxyClient and have it automatically connect to a local server on 'masterPort'.
         /// </summary>
-        /// <param name="address">The address of the master server to connect to.</param>
-        /// <param name="port">The port on the master server to connect to.</param>
+        /// <param name="masterAddress">The masterAddress of the master server to connect to.</param>
+        /// <param name="masterPort">The masterPort on the master server to connect to.</param>
         public InterProxyClient(string address, int port) : this () {
             Connect(address, port);
         }
@@ -151,8 +139,8 @@ namespace UtilLib {
         /// <summary>
         /// Connect to the master server.
         /// </summary>
-        /// <param name="address">The address of the master server.</param>
-        /// <param name="port">The port for the master server.</param>
+        /// <param name="masterAddress">The masterAddress of the master server.</param>
+        /// <param name="masterPort">The masterPort for the master server.</param>
         public void Connect(string address, int port) {
             masterEP = null;
             try {
@@ -160,12 +148,12 @@ namespace UtilLib {
                     if (ip.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork) 
                         masterEP = new IPEndPoint(ip, port);
             } catch (SocketException e) {
-                Logger.Log("Slave unable to look up master address at " + address + ":" + port + "." + e.Message, Helpers.LogLevel.Info);
+                Logger.Log("Slave unable to look up master masterAddress at " + address + ":" + port + "." + e.Message, Helpers.LogLevel.Info);
                 masterEP = null;
                 return;
             }
             if (masterEP == null) { 
-                Logger.Log("Slave not able to look up master IP address found for " + address + ":" + port + ".", Helpers.LogLevel.Info);
+                Logger.Log("Slave not able to look up master IP masterAddress found for " + address + ":" + port + ".", Helpers.LogLevel.Info);
                 return;
             }
             
@@ -176,7 +164,7 @@ namespace UtilLib {
         /// <summary>
         /// Connect to the a master server running locally.
         /// </summary>
-        /// <param name="port">The port the master server is listening on.</param>
+        /// <param name="masterPort">The masterPort the master server is listening on.</param>
         public void Connect(int port) {
             Connect(Dns.GetHostName(), port);
         }

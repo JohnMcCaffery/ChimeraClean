@@ -70,8 +70,9 @@
     <Compile Include="LogPanel.Designer.cs">
       <DependentUpon>LogPanel.cs</DependentUpon>
     </Compile>
-    <Compile Include="PositionMaster.cs" />
-    <Compile Include="PositionSlave.cs" />
+    <Compile Include="Master.cs" />
+    <Compile Include="CameraMaster.cs" />
+    <Compile Include="CameraSlave.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ProxyPanel.cs">
       <SubType>UserControl</SubType>

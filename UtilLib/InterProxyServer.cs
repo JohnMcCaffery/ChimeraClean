@@ -1,7 +1,7 @@
 ﻿/*************************************************************************
 Copyright (c) 2012 John McCaffery 
 
-This file is part of Armadillo ClientProxy.
+This file is part of Armadillo SlaveProxy.
 
 Routing Project is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -34,14 +34,6 @@ using System.Net;
 using OpenMetaverse;
 
 namespace UtilLib {
-    [XmlRpcUrl("http://diana.apollo.cs.st-andrews.ac.uk")]
-    public interface IMaster {
-        [XmlRpcMethod]
-        int Register(string uri, string address, int port, int xmlrpcPort);
-    }
-
-    public interface IMasterProxy : IMaster, IXmlRpcProxy { }
-
     public class InterProxyServer {
         /// <summary>
         /// All slaves current connected, indexed by end point.
@@ -68,16 +60,16 @@ namespace UtilLib {
         public readonly static byte[] PING_B = Encoding.ASCII.GetBytes(PING);
 
         /// <summary>
-        /// Start the master so that slaves can connect to it at the specified address and port.
+        /// Start the master so that slaves can connect to it at the specified masterAddress and masterPort.
         /// </summary>
-        /// <param name="address">The address that slaves can connect to this master at.</param>
-        /// <param name="port">The port that slaves can connect to this master on.</param>
+        /// <param name="masterAddress">The masterAddress that slaves can connect to this master at.</param>
+        /// <param name="masterPort">The masterPort that slaves can connect to this master on.</param>
         public InterProxyServer(string address, int port) {
             Start(address, port);
         }
 
         /// <summary>
-        /// Start the master on localhost with a random port.
+        /// Start the master on localhost with a random masterPort.
         /// </summary>
         public InterProxyServer() {
             Address = Dns.GetHostName();
@@ -85,15 +77,15 @@ namespace UtilLib {
         }
 
         /// <summary>
-        /// Start the master on localhost with a specified port.
+        /// Start the master on localhost with a specified masterPort.
         /// </summary>
-        /// <param name="port">The port to listen for connections for slaves on.</param>
+        /// <param name="masterPort">The masterPort to listen for connections for slaves on.</param>
         public InterProxyServer(int port) {
             Start(port);
         }
 
         /// <summary>
-        /// The port that slaves can use to connect to this master.
+        /// The masterPort that slaves can use to connect to this master.
         /// </summary>
         public int Port {
             get {
@@ -108,7 +100,7 @@ namespace UtilLib {
         }
 
         /// <summary>
-        /// The address that slaves can use to connect to this master.
+        /// The masterAddress that slaves can use to connect to this master.
         /// </summary>
         public string Address {
             get { 
@@ -156,7 +148,7 @@ namespace UtilLib {
 
         /// <summary>
         /// Start the master so that slaves can connect into it.
-        /// Will bind to localhost and whatever port is open.
+        /// Will bind to localhost and whatever masterPort is open.
         /// </summary>
         public void Start() {
             if (ep == null)
@@ -175,19 +167,19 @@ namespace UtilLib {
         }
 
         /// <summary>
-        /// Start a proxy so that clients can connect to this master and be shadowed. Address is localhost, port is specified.
+        /// Start a proxy so that clients can connect to this master and be shadowed. Address is localhost, masterPort is specified.
         /// </summary>
-        /// <param name="port">The port that clients can use to connect to this proxy.</param>
+        /// <param name="masterPort">The masterPort that clients can use to connect to this proxy.</param>
         public void Start(int port) {
             Port = port;
             Start();
         }
 
         /// <summary>
-        /// Start the master so that slaves can connect to it. Specifies the address and port to start it on.
+        /// Start the master so that slaves can connect to it. Specifies the masterAddress and masterPort to start it on.
         /// </summary>
-        /// <param name="address">The address that slaves can connect to this master on.</param>
-        /// <param name="port">The port that slaves can connect to this master on.</param>
+        /// <param name="masterAddress">The masterAddress that slaves can connect to this master on.</param>
+        /// <param name="masterPort">The masterPort that slaves can connect to this master on.</param>
         public void Start(string address, int port) {
             Address = address;
             Port = port;

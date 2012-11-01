@@ -1,7 +1,7 @@
 ﻿/*************************************************************************
 Copyright (c) 2012 John McCaffery 
 
-This file is part of Armadillo ClientProxy.
+This file is part of Armadillo SlaveProxy.
 
 Routing Project is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -72,7 +72,7 @@ namespace ProxyTestGUI {
             this.vectorPanel.X = 1F;
             this.vectorPanel.Y = 0F;
             this.vectorPanel.Z = 0F;
-            this.vectorPanel.OnChange += new System.EventHandler(this.vectorPanel_OnChange);
+            this.vectorPanel.Load += new System.EventHandler(this.vectorPanel_Load);
             // 
             // yawValue
             // 
@@ -154,7 +154,7 @@ namespace ProxyTestGUI {
             this.pitchLabel.Name = "pitchLabel";
             this.pitchLabel.Size = new System.Drawing.Size(14, 13);
             this.pitchLabel.TabIndex = 88;
-            this.pitchLabel.Text = "LookAt";
+            this.pitchLabel.Text = "P";
             // 
             // RotationPanel
             // 
@@ -169,7 +169,6 @@ namespace ProxyTestGUI {
             this.Controls.Add(this.vectorPanel);
             this.Name = "RotationPanel";
             this.Size = new System.Drawing.Size(410, 147);
-            this.EnabledChanged += new System.EventHandler(this.RotationPanel_EnabledChanged);
             ((System.ComponentModel.ISupportInitialize)(this.yawValue)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.yawSlider)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pitchValue)).EndInit();

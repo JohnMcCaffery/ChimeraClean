@@ -1,7 +1,7 @@
 ﻿/*************************************************************************
 Copyright (c) 2012 John McCaffery 
 
-This file is part of Armadillo ClientProxy.
+This file is part of Armadillo SlaveProxy.
 
 Routing Project is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -123,7 +123,7 @@ namespace UtilLib {
             this.portLabel.Name = "portLabel";
             this.portLabel.Size = new System.Drawing.Size(26, 13);
             this.portLabel.TabIndex = 11;
-            this.portLabel.Text = "SlavePort";
+            this.portLabel.Text = "MasterPort";
             // 
             // proxyStartButton
             // 
@@ -133,7 +133,7 @@ namespace UtilLib {
             this.proxyStartButton.Name = "proxyStartButton";
             this.proxyStartButton.Size = new System.Drawing.Size(674, 20);
             this.proxyStartButton.TabIndex = 18;
-            this.proxyStartButton.Text = "Start ClientProxy";
+            this.proxyStartButton.Text = "Start SlaveProxy";
             this.proxyStartButton.UseVisualStyleBackColor = true;
             this.proxyStartButton.Click += new System.EventHandler(this.connectButton_Click);
             // 
@@ -234,7 +234,7 @@ namespace UtilLib {
             this.proxyStatusLabelLabel.Name = "proxyStatusLabelLabel";
             this.proxyStatusLabelLabel.Size = new System.Drawing.Size(72, 13);
             this.proxyStatusLabelLabel.TabIndex = 28;
-            this.proxyStatusLabelLabel.Text = "ClientProxy Status: ";
+            this.proxyStatusLabelLabel.Text = "SlaveProxy Status: ";
             // 
             // proxyStatusLabel
             // 

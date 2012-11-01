@@ -1,7 +1,7 @@
 ﻿/*************************************************************************
 Copyright (c) 2012 John McCaffery 
 
-This file is part of Armadillo ClientProxy.
+This file is part of Armadillo SlaveProxy.
 
 Routing Project is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -456,7 +456,7 @@ namespace ProxyTestGUI {
             this.activeCheckbox.Name = "activeCheckbox";
             this.activeCheckbox.Size = new System.Drawing.Size(56, 17);
             this.activeCheckbox.TabIndex = 76;
-            this.activeCheckbox.Text = "Active";
+            this.activeCheckbox.Text = "SendPackets";
             this.activeCheckbox.UseVisualStyleBackColor = true;
             // 
             // focusLockedCheckbox

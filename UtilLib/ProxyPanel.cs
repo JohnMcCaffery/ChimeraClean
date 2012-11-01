@@ -1,7 +1,7 @@
 ﻿/*************************************************************************
 Copyright (c) 2012 John McCaffery 
 
-This file is part of Armadillo ClientProxy.
+This file is part of Armadillo SlaveProxy.
 
 Routing Project is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -60,13 +60,13 @@ namespace UtilLib {
         }
 
         private void connectButton_Click(object sender, EventArgs e) {
-            if (proxyStartButton.Text.Equals("Start ClientProxy")) {
+            if (proxyStartButton.Text.Equals("Start SlaveProxy")) {
                 if (proxy != null)
                     proxy.Stop();
                 string file = AppDomain.CurrentDomain.SetupInformation.ConfigurationFile;
 
-                string portArg = "--proxy-login-port=" + portBox.Text;
-                string listenIPArg = "--proxy-clientAddress-facing-address=" + listenIPBox.Text;
+                string portArg = "--proxy-login-masterPort=" + portBox.Text;
+                string listenIPArg = "--proxy-proxyAddress-facing-masterAddress=" + listenIPBox.Text;
                 string loginURIArg = "--proxy-remote-login-uri=" + loginURIBox.Text;
                 string[] args = { portArg, listenIPArg, loginURIArg };
                 ProxyConfig config = new ProxyConfig("Routing God", "jm726@st-andrews.ac.uk", args);
@@ -83,7 +83,7 @@ namespace UtilLib {
                 if (OnStarted != null)
                     OnStarted(proxy, null);
 
-                proxyStartButton.Text = "Stop ClientProxy";
+                proxyStartButton.Text = "Stop SlaveProxy";
                 proxyStatusLabel.Text = "Started";
 
                 portBox.Enabled = false;
@@ -93,7 +93,7 @@ namespace UtilLib {
                 proxy.Stop();
                 proxy = null;
 
-                proxyStartButton.Text = "Start ClientProxy";
+                proxyStartButton.Text = "Start SlaveProxy";
                 proxyStatusLabel.Text = "Stopped";
 
                 portBox.Enabled = true;
@@ -115,7 +115,7 @@ namespace UtilLib {
                 client = new Process();
                 client.StartInfo.FileName = targetBox.Text;
                 if (useLoginURICheck.Checked)
-                    client.StartInfo.Arguments = "--loginuri http://" + listenIPBox.Text + ":" + portBox.Text;
+                    client.StartInfo.Arguments = "--proxyLoginURI http://" + listenIPBox.Text + ":" + portBox.Text;
                 else
                     client.StartInfo.Arguments = " --grid " + portBox.Text;
                 client.StartInfo.Arguments += " --login " + firstNameBox.Text + " " + lastNameBox.Text + " " + passwordBox.Text;
@@ -134,7 +134,7 @@ namespace UtilLib {
                 lastNameBox.Enabled = true;
                 passwordBox.Enabled = true;
                 targetBox.Enabled = true;
-                //SendMEssage(clientAddress.Id, 
+                //SendMEssage(proxyAddress.Id, 
             }
         }
 
