@@ -32,14 +32,15 @@ using UtilLib;
 namespace ProxyTestGUI {
     public partial class RotationPanel : UserControl {
         private readonly Rotation rotation = new Rotation();
-        public event EventHandler OnChange;
+        public event EventHandler OnChange;
+
         public Quaternion Rotation {
             get { return rotation.Rot; }
             set { rotation.Rot = value; }
         }
         public Vector3 Vector {
-            get { return rotation.LookAt; }
-            set { rotation.LookAt = value; }
+            get { return rotation.LookAtVector; }
+            set { rotation.LookAtVector = value; }
         }
         public float Yaw {
             get { return rotation.Yaw; }
@@ -54,7 +55,7 @@ namespace ProxyTestGUI {
             InitializeComponent();
 
             rotation.OnChange += (src, args) => {
-                vectorPanel.Value = rotation.LookAt;
+                vectorPanel.Value = rotation.LookAtVector;
                 pitchValue.Value = new decimal (rotation.Pitch);
                 pitchSlider.Value = (int)rotation.Pitch;
                 yawValue.Value = new decimal (rotation.Yaw);
@@ -85,7 +86,7 @@ namespace ProxyTestGUI {
         }
 
         private void vectorPanel_Load(object sender, EventArgs e) {
-            rotation.LookAt = vectorPanel.Value;
+            rotation.LookAtVector = vectorPanel.Value;
         }
 
         /*

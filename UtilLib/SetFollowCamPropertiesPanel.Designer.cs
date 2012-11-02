@@ -111,7 +111,7 @@ namespace UtilLib {
             this.positionLockedCheckbox.CheckState = System.Windows.Forms.CheckState.Checked;
             this.positionLockedCheckbox.Location = new System.Drawing.Point(9, 314);
             this.positionLockedCheckbox.Name = "positionLockedCheckbox";
-            this.positionLockedCheckbox.Size = new System.Drawing.Size(102, 17);
+            this.positionLockedCheckbox.Size = new System.Drawing.Size(99, 17);
             this.positionLockedCheckbox.TabIndex = 106;
             this.positionLockedCheckbox.Text = "LookAt Locked";
             this.positionLockedCheckbox.UseVisualStyleBackColor = true;
@@ -136,7 +136,7 @@ namespace UtilLib {
             this.activeCheckbox.CheckState = System.Windows.Forms.CheckState.Checked;
             this.activeCheckbox.Location = new System.Drawing.Point(55, 213);
             this.activeCheckbox.Name = "activeCheckbox";
-            this.activeCheckbox.Size = new System.Drawing.Size(56, 17);
+            this.activeCheckbox.Size = new System.Drawing.Size(90, 17);
             this.activeCheckbox.TabIndex = 104;
             this.activeCheckbox.Text = "SendPackets";
             this.activeCheckbox.UseVisualStyleBackColor = true;
@@ -170,7 +170,7 @@ namespace UtilLib {
             this.type13Label.AutoSize = true;
             this.type13Label.Location = new System.Drawing.Point(48, 264);
             this.type13Label.Name = "type13Label";
-            this.type13Label.Size = new System.Drawing.Size(44, 13);
+            this.type13Label.Size = new System.Drawing.Size(41, 13);
             this.type13Label.TabIndex = 98;
             this.type13Label.Text = "LookAt";
             // 
@@ -237,7 +237,7 @@ namespace UtilLib {
             this.type11Label.AutoSize = true;
             this.type11Label.Location = new System.Drawing.Point(-2, 163);
             this.type11Label.Name = "type11Label";
-            this.type11Label.Size = new System.Drawing.Size(94, 13);
+            this.type11Label.Size = new System.Drawing.Size(91, 13);
             this.type11Label.TabIndex = 90;
             this.type11Label.Text = "LookAt Threshold";
             // 
@@ -264,7 +264,7 @@ namespace UtilLib {
             this.type6Label.AutoSize = true;
             this.type6Label.Location = new System.Drawing.Point(27, 33);
             this.type6Label.Name = "type6Label";
-            this.type6Label.Size = new System.Drawing.Size(65, 13);
+            this.type6Label.Size = new System.Drawing.Size(62, 13);
             this.type6Label.TabIndex = 88;
             this.type6Label.Text = "LookAt Lag";
             // 

@@ -74,6 +74,7 @@
     <Compile Include="CameraMaster.cs" />
     <Compile Include="CameraSlave.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ProxyManager.cs" />
     <Compile Include="ProxyPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>

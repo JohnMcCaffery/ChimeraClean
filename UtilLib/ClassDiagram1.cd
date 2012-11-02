@@ -1,37 +1,37 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Class Name="UtilLib.LogPanel" Collapsed="true">
-    <Position X="6" Y="0.5" Width="1.5" />
+    <Position X="20.5" Y="4" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAACAAAAAAAACAAAACAAAAAAAgCAAAAAAAAAA=</HashCode>
       <FileName>LogPanel.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="UtilLib.SetFollowCamPropertiesPanel" Collapsed="true">
-    <Position X="2.75" Y="1" Width="2.25" />
+    <Position X="17.25" Y="4.5" Width="2.25" />
     <TypeIdentifier>
       <HashCode>AAQLAQABhCACCJQwhACglxRCEIQAIAA0ACQEJBQEBDA=</HashCode>
       <FileName>SetFollowCamPropertiesPanel.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="UtilLib.InterProxyServer" BaseTypeListCollapsed="true">
-    <Position X="5" Y="2.75" Width="1.75" />
+    <Position X="5" Y="6" Width="1.75" />
     <TypeIdentifier>
       <HashCode>EIIEAAAAACAAEQAAAAAAAAAACAAAEAAKIAcBAhAAAAA=</HashCode>
       <FileName>InterProxyServer.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="UtilLib.InterProxyClient" BaseTypeListCollapsed="true">
-    <Position X="9.75" Y="2.5" Width="2.25" />
+    <Position X="9.75" Y="5.75" Width="2.25" />
     <TypeIdentifier>
       <HashCode>AAQAAAJAAAAAUAAAAAACAIQIAIAEKIIIIAEAAAAAAAA=</HashCode>
       <FileName>InterProxyClient.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="UtilLib.CameraMaster">
-    <Position X="0.5" Y="9.25" Width="2.75" />
+    <Position X="0.5" Y="12.5" Width="2.75" />
     <TypeIdentifier>
-      <HashCode>AABAAAAAgAAABIggAAACAAggAwQgIACEAAEAgIAAAAQ=</HashCode>
+      <HashCode>AABAAAAAgAAABIggAAACAAggAwQgIACEAAEggIAAAAQ=</HashCode>
       <FileName>CameraMaster.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -39,7 +39,7 @@
     </ShowAsAssociation>
   </Class>
   <Class Name="UtilLib.FullMaster">
-    <Position X="3.75" Y="9.25" Width="1.5" />
+    <Position X="3.75" Y="12.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAQAAAAAAAAAAAAACAAAEAAAAAAAA=</HashCode>
       <FileName>FullMaster.cs</FileName>
@@ -49,39 +49,35 @@
     </ShowAsAssociation>
   </Class>
   <Class Name="UtilLib.CameraSlave">
-    <Position X="13.5" Y="2.5" Width="1.5" />
+    <Position X="13.5" Y="5.75" Width="1.75" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAgAAAAA=</HashCode>
+      <HashCode>AAAAEAQAAAAAAAAAAAAAAIAAAAAAAAKAAAEEEAAAAAA=</HashCode>
       <FileName>CameraSlave.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="InterProxyClient" />
-      <Property Name="ClientProxy" />
     </ShowAsAssociation>
   </Class>
   <Class Name="UtilLib.FullSlave">
-    <Position X="12.75" Y="8" Width="1.5" />
+    <Position X="16.25" Y="5.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAEAAAAAAAA=</HashCode>
       <FileName>FullSlave.cs</FileName>
     </TypeIdentifier>
-    <ShowAsAssociation>
-      <Property Name="ClientProxy" />
-    </ShowAsAssociation>
   </Class>
   <Class Name="GridProxy.Proxy">
-    <Position X="7.25" Y="6" Width="2" />
+    <Position X="7.25" Y="9.25" Width="2" />
     <TypeIdentifier />
   </Class>
   <Class Name="UtilLib.Rotation">
-    <Position X="7.25" Y="11.25" Width="1.5" />
+    <Position X="7.25" Y="14.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAACAAAAAQCACAEBAACEAAAAAEAgQkAAAABAAAAAIAI=</HashCode>
+      <HashCode>AAACAAAAAQiACAEBAACEAAAAAEAgAkAAAABACAAAIAA=</HashCode>
       <FileName>Rotation.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="ProxyTestGUI.RotationPanel">
-    <Position X="9.5" Y="11.25" Width="1.5" />
+    <Position X="9.5" Y="14.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>ACAQEkAAASAAAIEAIACAAAACAAACEAAQAEBARAIACAA=</HashCode>
       <FileName>RotationPanel.cs</FileName>
@@ -91,14 +87,23 @@
     </ShowAsAssociation>
   </Class>
   <Class Name="UtilLib.Master">
-    <Position X="1.5" Y="2.75" Width="2.25" />
+    <Position X="1.5" Y="6" Width="2.25" />
     <TypeIdentifier>
-      <HashCode>EAIQAAAEAJEAAQAAAgAgAgACwAAEEgSAIAEGQAAAAgA=</HashCode>
+      <HashCode>EAIQAAAAABEAAQAAAAAAAAAAAAAEEAAAIAAAQAAAAAA=</HashCode>
       <FileName>Master.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
-      <Field Name="clientProxy" />
       <Field Name="masterServer" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="UtilLib.ProxyManager">
+    <Position X="7.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAABAAAAIAAAAAAAgAhAgACwAAAAgSAAAEHAAAAAgA=</HashCode>
+      <FileName>ProxyManager.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="clientProxy" />
     </ShowAsAssociation>
   </Class>
   <Font Name="Tahoma" Size="8.25" />

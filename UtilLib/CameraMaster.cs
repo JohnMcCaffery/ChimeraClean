@@ -14,6 +14,7 @@ namespace UtilLib {
         private int packetsForwarded;
         private int packetsCreated;
         private int packetsProccessed;
+        private bool processingPacket;
 
         /// <summary>
         /// Triggered whenever a packet is received from the connected proxyAddress.
@@ -41,31 +42,35 @@ namespace UtilLib {
         public CameraMaster() {
             Rotation = new Rotation();
             Position = new Vector3(128f, 128f, 24f);
+            Rotation.OnChange += RotationChanged;
+            OnSlaveConnected += (source, args) => {
+                CreatePacket();
+            };
         }
 
-        /// <param name="slavePort">Create a master with the masterPort that slaves can use to connect to this master specified. Address is localhost. Clients can connect on localhost with a random masterPort that is specified when the proxy is started.</param>
-        public CameraMaster(int slavePort) : this() {
-            StartMaster(slavePort);
+        /// <param name="masterPort">Create a master with the masterPort that slaves can use to connect to this master specified. Address is localhost. Clients can connect on localhost with a random masterPort that is specified when the proxy is started.</param>
+        public CameraMaster(int masterPort) : this() {
+            StartMaster(masterPort);
         }
 
         /// <summary>
         /// Create a master with an masterAddress and masterPort specified for clients to connect to. Slaves can connect using localhost and a random masterPort selected when the master is started.
         /// </summary>
-        /// <param name="proxyAddress">The masterAddress that clients should use to connect to this proxy.</param>
-        /// <param name="clientPort">The masterPort that clients should use to connect to this proxy.</param>
-        public CameraMaster(string loginURI, string clientAddress, int clientPort) {
-            StartProxy(loginURI, clientAddress, clientPort);
+        /// <param name="loginURI">The address of the server the proxy is proxying.</param>
+        /// <param name="proxyPort">The masterPort that clients should use to connect to this proxy.</param>
+        public CameraMaster(string loginURI, int proxyPort) : this() {
+            StartProxy(loginURI, proxyPort);
         }
 
         /// <summary>
         /// Create a master with an masterAddress and masterPort specified for clients to connect to and a masterPort specified for slaves to connect to.
         /// </summary>
-        /// <param name="proxyAddress">The masterAddress that clients should use to connect to this proxy.</param>
-        /// <param name="clientPort">The masterPort that clients should use to connect to this proxy.</param>
-        /// <param name="slavePort">The masterPort that slaves should use to connect to this proxy.</param>
-        public CameraMaster(string loginURI, string clientAddress, int clientPort, int slavePort) {
-            StartProxy(loginURI, clientAddress, clientPort);
-            StartMaster(slavePort);
+        /// <param name="loginURI">The address of the server the proxy is proxying.</param>
+        /// <param name="proxyPort">The masterPort that clients should use to connect to this proxy.</param>
+        /// <param name="masterPort">The masterPort that slaves should use to connect to this proxy.</param>
+        public CameraMaster(string loginURI, int proxyPort, int masterPort) : this() {
+            StartProxy(loginURI, proxyPort);
+            StartMaster(masterPort);
         }
 
         /// <summary>
@@ -117,22 +122,24 @@ namespace UtilLib {
         public Vector3 Position {
             get;
             set;
-        }
+        }
+
         private void RotationChanged(object source, EventArgs args) {
-            CreatePacket();
+            if (!processingPacket)
+                CreatePacket();
         }
 
         private void CreatePacket() {
             AgentUpdatePacket p = (AgentUpdatePacket) Packet.BuildPacket(PacketType.AgentUpdate);
             p.AgentData.AgentID = UUID.Random();
             p.AgentData.BodyRotation = Quaternion.Identity;
-            p.AgentData.CameraLeftAxis = Vector3.Cross(Vector3.UnitZ, Rotation.LookAt);
+            p.AgentData.CameraLeftAxis = Vector3.Cross(Vector3.UnitZ, Rotation.LookAtVector);
             p.AgentData.CameraUpAxis = Vector3.UnitZ;
             p.AgentData.HeadRotation = Quaternion.Identity;
             p.AgentData.SessionID = UUID.Random();
 
             p.AgentData.CameraCenter = Position;
-            p.AgentData.CameraAtAxis = Position + Rotation.LookAt;
+            p.AgentData.CameraAtAxis = Position + Rotation.LookAtVector;
             masterServer.BroadcastPacket(p);
             packetsCreated++;
             if (OnPacketGenerated != null)
@@ -147,13 +154,26 @@ namespace UtilLib {
         }
         private Packet ReceivePacket(Packet p, IPEndPoint ep) {
             packetsReceived++;
-            OnPacketReceived(p, ep);
-            if (packetTypesToForward.Contains(p.Type)) {
-                packetsProccessed++;
+            bool processed = true;
+            if (OnPacketReceived != null)
+                OnPacketReceived(p, ep);
+            if (p.Type == PacketType.AgentUpdate) {
                 packetsForwarded++;
                 masterServer.BroadcastPacket(p);
-                OnPacketForwarded(p, null);
+                if (OnPacketForwarded != null)
+                    OnPacketForwarded(this, null);
+            } else if (packetTypesToForward.Contains(p.Type)) {
+                packetsForwarded++;
+                masterServer.BroadcastPacket(p);
+                if (OnPacketForwarded != null)
+                    OnPacketForwarded(p, null);
+            } else {
+                packetsProccessed++;
+                processed = false;
             }
+
+            if (processed && OnPacketProcessed != null)
+                OnPacketProcessed(this, null);
             return p;
         }
     }

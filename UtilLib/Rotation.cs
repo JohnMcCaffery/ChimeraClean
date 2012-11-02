@@ -5,7 +5,8 @@ using System.Text;
 using OpenMetaverse;
 
 namespace UtilLib {
-    public class Rotation {        public static readonly double RAD2DEG = 180.0 / Math.PI;
+    public class Rotation {
+        public static readonly double RAD2DEG = 180.0 / Math.PI;
         public static readonly double DEG2RAD = Math.PI / 180.0;
 
         /// <summary>
@@ -14,8 +15,9 @@ namespace UtilLib {
         public event EventHandler OnChange;
 
         private Quaternion rotation = Quaternion.Identity;
-        private Vector3 vector = Vector3.UnitX;
-        private float yaw, pitch;
+        private Vector3 lookAtVector = Vector3.UnitX;
+        private float yaw, pitch;
+
         private bool mRotationChanging = false;
         private bool mVectorChanging = false;
         private bool mYawChanging = false;
@@ -30,20 +32,24 @@ namespace UtilLib {
                 if (pitch == value)
                     return;
                 pitch = value;
+                mPitchChanging = true;
                 if (!mRotationChanging)
                     Rot = CalculateRotation();
                 mPitchChanging = false;
             }
-        }
+        }
+
         /// <summary>
         /// Rotation of the camera around the z axis (horizontal).
         /// </summary>
         public float Yaw {
             get { return yaw; }
-            set {                value = constrain(value);
+            set {
+                value = constrain(value);
                 if (yaw == value)
                     return;
                 yaw = value;
+                mYawChanging = true;
                 if (!mRotationChanging)
                     Rot = CalculateRotation();
                 mYawChanging = false;
@@ -56,22 +62,22 @@ namespace UtilLib {
         public Quaternion Rot {
             get { return rotation; }
             set {
-                mRotationChanging = true;
+                if (rotation.Equals(value))
+                    return;
                 rotation = value;
-                Vector3 newVec = Vector3.UnitX * value;
-                float roll, pitch, yaw;
-                value.GetEulerAngles(out roll, out pitch, out yaw);
 
-                if (this.pitch != pitch || this.yaw != yaw) {
-                    if (!mPitchChanging && !mYawChanging) {
-                        Pitch = pitch;
-                        Yaw = yaw;
-                    }
-                    if (!mVectorChanging)
-                        vector = newVec;
-                    if (OnChange != null)
-                        OnChange(this, null);
+                mRotationChanging = true;
+                if (!mPitchChanging && !mYawChanging) {
+                    float roll, pitch, yaw;
+                    value.GetEulerAngles(out roll, out pitch, out yaw);
+                    Pitch = (float) (pitch * RAD2DEG);
+                    Yaw = (float) (yaw * RAD2DEG);
                 }
+                if (!mVectorChanging) 
+                    lookAtVector = Vector3.UnitX * value;
+
+                if (OnChange != null)
+                    OnChange(this, null);
                 mRotationChanging = false;
             }
         }
@@ -79,10 +85,10 @@ namespace UtilLib {
         /// <summary>
         /// Direction the camera is looking.
         /// </summary>
-        public Vector3 LookAt {
-            get { return LookAt; }
+        public Vector3 LookAtVector {
+            get { return lookAtVector; }
             set {
-                if (value.Equals(vector))
+                if (value.Equals(lookAtVector))
                     return;
 
                 mVectorChanging = true;

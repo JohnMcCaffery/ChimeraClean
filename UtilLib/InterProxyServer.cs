@@ -73,15 +73,14 @@ namespace UtilLib {
         /// </summary>
         public InterProxyServer() {
             Address = Dns.GetHostName();
-            Start();
         }
 
         /// <summary>
         /// Start the master on localhost with a specified masterPort.
         /// </summary>
         /// <param name="masterPort">The masterPort to listen for connections for slaves on.</param>
-        public InterProxyServer(int port) {
-            Start(port);
+        public InterProxyServer(int port) : this() {
+            Port = port;
         }
 
         /// <summary>
@@ -120,7 +119,7 @@ namespace UtilLib {
         /// True if ready to receive connections from slaves.
         /// </summary>
         public bool Running {
-            get { return socket.Client != null && socket.Client.IsBound; }
+            get { return socket != null && socket.Client != null && socket.Client.IsBound; }
         }
 
         /// <summary>
@@ -139,9 +138,15 @@ namespace UtilLib {
 
         public void BroadcastPacket(Packet packet) {
             byte[] bytes = packet.ToBytes();
+            int length = bytes.Length;
+            if (packet.Header.Zerocoded) {
+                byte[] zerod = new byte[8192];
+                length = Helpers.ZeroEncode(bytes, bytes.Length, zerod);
+                bytes = zerod;
+            }
             lock (slaves) {
                 foreach (var slave in slaves.Keys)
-                    socket.Send(bytes, bytes.Length, slave);
+                    socket.Send(bytes, length, slave);
             }
             Logger.Log("Master sent " + packet.Type + " packet to " + slaves.Count + " slaves.", Helpers.LogLevel.Debug);
         }

@@ -239,14 +239,14 @@ namespace UtilLib {
             //Actual Packet
             try {
                 int end = bytes.Length - 1;
-                Packet packet = Packet.BuildPacket(bytes, ref end, new byte[8996]);
+                Packet packet = Packet.BuildPacket(bytes, ref end, new byte[8192]);
                 
                 Logger.Log("Slave received " + packet.Type + " from master at " + masterEP + ".", Helpers.LogLevel.Debug);
 
                 if (OnPacketReceived != null)
                     OnPacketReceived(packet, null);
             } catch (Exception e) {
-                Logger.Log("Slave had problem processing packet from " + ep + ". " + e.Message, Helpers.LogLevel.Info);
+                Logger.Log("Slave had problem processing packet from " + ep + ".\n " + e.Message, Helpers.LogLevel.Info);
                 return;
             }
         }

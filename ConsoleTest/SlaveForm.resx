@@ -117,70 +117,21 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="rawRotationPanel.Rotation" mimetype="application/x-microsoft.net.object.binary.base64">
+  <data name="rotationOffsetPanel.Rotation" mimetype="application/x-microsoft.net.object.binary.base64">
     <value>
         AAEAAAD/////AQAAAAAAAAAMAgAAAElPcGVuTWV0YXZlcnNlVHlwZXMsIFZlcnNpb249MC4wLjAuMCwg
         Q3VsdHVyZT1uZXV0cmFsLCBQdWJsaWNLZXlUb2tlbj1udWxsBQEAAAAYT3Blbk1ldGF2ZXJzZS5RdWF0
         ZXJuaW9uBAAAAAFYAVkBWgFXAAAAAAsLCwsCAAAAAAAAAAAAAAAAAAAAAACAPws=
 </value>
   </data>
-  <data name="rawRotationPanel.Vector" mimetype="application/x-microsoft.net.object.binary.base64">
+  <data name="rotationOffsetPanel.Vector" mimetype="application/x-microsoft.net.object.binary.base64">
     <value>
         AAEAAAD/////AQAAAAAAAAAMAgAAAElPcGVuTWV0YXZlcnNlVHlwZXMsIFZlcnNpb249MC4wLjAuMCwg
         Q3VsdHVyZT1uZXV0cmFsLCBQdWJsaWNLZXlUb2tlbj1udWxsBQEAAAAVT3Blbk1ldGF2ZXJzZS5WZWN0
         b3IzAwAAAAFYAVkBWgAAAAsLCwIAAAAAAIA/AAAAAAAAAAAL
 </value>
   </data>
-  <data name="rawPositionPanel.Value" mimetype="application/x-microsoft.net.object.binary.base64">
-    <value>
-        AAEAAAD/////AQAAAAAAAAAMAgAAAElPcGVuTWV0YXZlcnNlVHlwZXMsIFZlcnNpb249MC4wLjAuMCwg
-        Q3VsdHVyZT1uZXV0cmFsLCBQdWJsaWNLZXlUb2tlbj1udWxsBQEAAAAVT3Blbk1ldGF2ZXJzZS5WZWN0
-        b3IzAwAAAAFYAVkBWgAAAAsLCwIAAAAAAABDAAAAQwAAAEML
-</value>
-  </data>
-  <data name="focusPanel.Rotation" mimetype="application/x-microsoft.net.object.binary.base64">
-    <value>
-        AAEAAAD/////AQAAAAAAAAAMAgAAAElPcGVuTWV0YXZlcnNlVHlwZXMsIFZlcnNpb249MC4wLjAuMCwg
-        Q3VsdHVyZT1uZXV0cmFsLCBQdWJsaWNLZXlUb2tlbj1udWxsBQEAAAAYT3Blbk1ldGF2ZXJzZS5RdWF0
-        ZXJuaW9uBAAAAAFYAVkBWgFXAAAAAAsLCwsCAAAAAAAAAAAAAAAAAAAAAACAPws=
-</value>
-  </data>
-  <data name="focusPanel.Vector" mimetype="application/x-microsoft.net.object.binary.base64">
-    <value>
-        AAEAAAD/////AQAAAAAAAAAMAgAAAElPcGVuTWV0YXZlcnNlVHlwZXMsIFZlcnNpb249MC4wLjAuMCwg
-        Q3VsdHVyZT1uZXV0cmFsLCBQdWJsaWNLZXlUb2tlbj1udWxsBQEAAAAVT3Blbk1ldGF2ZXJzZS5WZWN0
-        b3IzAwAAAAFYAVkBWgAAAAsLCwIAAAAAAIA/AAAAAAAAAAAL
-</value>
-  </data>
-  <data name="positionPanel.Value" mimetype="application/x-microsoft.net.object.binary.base64">
-    <value>
-        AAEAAAD/////AQAAAAAAAAAMAgAAAElPcGVuTWV0YXZlcnNlVHlwZXMsIFZlcnNpb249MC4wLjAuMCwg
-        Q3VsdHVyZT1uZXV0cmFsLCBQdWJsaWNLZXlUb2tlbj1udWxsBQEAAAAVT3Blbk1ldGF2ZXJzZS5WZWN0
-        b3IzAwAAAAFYAVkBWgAAAAsLCwIAAAAAAAAAAAAAAAAAAAAL
-</value>
-  </data>
-  <data name="finalFocusPanel.Rotation" mimetype="application/x-microsoft.net.object.binary.base64">
-    <value>
-        AAEAAAD/////AQAAAAAAAAAMAgAAAElPcGVuTWV0YXZlcnNlVHlwZXMsIFZlcnNpb249MC4wLjAuMCwg
-        Q3VsdHVyZT1uZXV0cmFsLCBQdWJsaWNLZXlUb2tlbj1udWxsBQEAAAAYT3Blbk1ldGF2ZXJzZS5RdWF0
-        ZXJuaW9uBAAAAAFYAVkBWgFXAAAAAAsLCwsCAAAAAAAAAAAAAAAAAAAAAACAPws=
-</value>
-  </data>
-  <data name="finalFocusPanel.Vector" mimetype="application/x-microsoft.net.object.binary.base64">
-    <value>
-        AAEAAAD/////AQAAAAAAAAAMAgAAAElPcGVuTWV0YXZlcnNlVHlwZXMsIFZlcnNpb249MC4wLjAuMCwg
-        Q3VsdHVyZT1uZXV0cmFsLCBQdWJsaWNLZXlUb2tlbj1udWxsBQEAAAAVT3Blbk1ldGF2ZXJzZS5WZWN0
-        b3IzAwAAAAFYAVkBWgAAAAsLCwIAAAAAAIA/AAAAAAAAAAAL
-</value>
-  </data>
-  <data name="finalPositionPanel.Value" mimetype="application/x-microsoft.net.object.binary.base64">
-    <value>
-        AAEAAAD/////AQAAAAAAAAAMAgAAAElPcGVuTWV0YXZlcnNlVHlwZXMsIFZlcnNpb249MC4wLjAuMCwg
-        Q3VsdHVyZT1uZXV0cmFsLCBQdWJsaWNLZXlUb2tlbj1udWxsBQEAAAAVT3Blbk1ldGF2ZXJzZS5WZWN0
-        b3IzAwAAAAFYAVkBWgAAAAsLCwIAAAAAAABDAAAAQwAAAEML
-</value>
-  </data>
-  <data name="focusOffsetPanel.Value" mimetype="application/x-microsoft.net.object.binary.base64">
+  <data name="positionOffsetPanel.Value" mimetype="application/x-microsoft.net.object.binary.base64">
     <value>
         AAEAAAD/////AQAAAAAAAAAMAgAAAElPcGVuTWV0YXZlcnNlVHlwZXMsIFZlcnNpb249MC4wLjAuMCwg
         Q3VsdHVyZT1uZXV0cmFsLCBQdWJsaWNLZXlUb2tlbj1udWxsBQEAAAAVT3Blbk1ldGF2ZXJzZS5WZWN0
