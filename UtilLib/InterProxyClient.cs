@@ -224,7 +224,7 @@ namespace UtilLib {
                     OnConnected(this, null);
                 Thread pingThread = new Thread(TestDisconnect);
                 pingThread.Name = "PingThread";
-                pingThread.Start();
+                //pingThread.Start();
                 return;
             }
 

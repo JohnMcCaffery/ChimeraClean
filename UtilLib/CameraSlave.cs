@@ -94,7 +94,8 @@ namespace UtilLib {
             Rotation finalRotation = new Rotation();
             finalRotation.Yaw = SourceRotation.Yaw + OffsetRotation.Yaw;
             finalRotation.Pitch = SourceRotation.Pitch + OffsetRotation.Pitch;
-            Vector3 position = SourcePosition + (OffsetPosition * SourceRotation.Rot);
+            //Vector3 position = SourcePosition + (OffsetPosition * SourceRotation.Rot);
+            Vector3 position = SourcePosition;
             Vector3 focus = position + finalRotation.LookAtVector;
 
             packet.CameraProperty[0].Value = 0;

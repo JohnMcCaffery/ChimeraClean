@@ -60,6 +60,8 @@ namespace ProxyTestGUI {
                 pitchSlider.Value = (int)rotation.Pitch;
                 yawValue.Value = new decimal (rotation.Yaw);
                 yawSlider.Value = (int)rotation.Yaw;
+                if (OnChange != null)
+                    OnChange(this, null);
             };
         }
 
