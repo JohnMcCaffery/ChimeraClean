@@ -117,67 +117,25 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="finalRotation.LookAtVector" mimetype="application/x-microsoft.net.object.binary.base64">
+  <data name="rawPosition.Value" mimetype="application/x-microsoft.net.object.binary.base64">
+    <value>
+        AAEAAAD/////AQAAAAAAAAAMAgAAAElPcGVuTWV0YXZlcnNlVHlwZXMsIFZlcnNpb249MC4wLjAuMCwg
+        Q3VsdHVyZT1uZXV0cmFsLCBQdWJsaWNLZXlUb2tlbj1udWxsBQEAAAAVT3Blbk1ldGF2ZXJzZS5WZWN0
+        b3IzAwAAAAFYAVkBWgAAAAsLCwIAAAAAAABDAAAAQwAAAEML
+</value>
+  </data>
+  <data name="rawRotation.LookAtVector" mimetype="application/x-microsoft.net.object.binary.base64">
     <value>
         AAEAAAD/////AQAAAAAAAAAMAgAAAElPcGVuTWV0YXZlcnNlVHlwZXMsIFZlcnNpb249MC4wLjAuMCwg
         Q3VsdHVyZT1uZXV0cmFsLCBQdWJsaWNLZXlUb2tlbj1udWxsBQEAAAAVT3Blbk1ldGF2ZXJzZS5WZWN0
         b3IzAwAAAAFYAVkBWgAAAAsLCwIAAAAAAIA/AAAAAAAAAAAL
 </value>
   </data>
-  <data name="finalRotation.Rotation" mimetype="application/x-microsoft.net.object.binary.base64">
+  <data name="rawRotation.Rotation" mimetype="application/x-microsoft.net.object.binary.base64">
     <value>
         AAEAAAD/////AQAAAAAAAAAMAgAAAElPcGVuTWV0YXZlcnNlVHlwZXMsIFZlcnNpb249MC4wLjAuMCwg
         Q3VsdHVyZT1uZXV0cmFsLCBQdWJsaWNLZXlUb2tlbj1udWxsBQEAAAAYT3Blbk1ldGF2ZXJzZS5RdWF0
         ZXJuaW9uBAAAAAFYAVkBWgFXAAAAAAsLCwsCAAAAAAAAAAAAAAAAAAAAAACAPws=
-</value>
-  </data>
-  <data name="finalPosition.Value" mimetype="application/x-microsoft.net.object.binary.base64">
-    <value>
-        AAEAAAD/////AQAAAAAAAAAMAgAAAElPcGVuTWV0YXZlcnNlVHlwZXMsIFZlcnNpb249MC4wLjAuMCwg
-        Q3VsdHVyZT1uZXV0cmFsLCBQdWJsaWNLZXlUb2tlbj1udWxsBQEAAAAVT3Blbk1ldGF2ZXJzZS5WZWN0
-        b3IzAwAAAAFYAVkBWgAAAAsLCwIAAAAAAAAAAAAAAAAAAAAL
-</value>
-  </data>
-  <data name="masterRotation.LookAtVector" mimetype="application/x-microsoft.net.object.binary.base64">
-    <value>
-        AAEAAAD/////AQAAAAAAAAAMAgAAAElPcGVuTWV0YXZlcnNlVHlwZXMsIFZlcnNpb249MC4wLjAuMCwg
-        Q3VsdHVyZT1uZXV0cmFsLCBQdWJsaWNLZXlUb2tlbj1udWxsBQEAAAAVT3Blbk1ldGF2ZXJzZS5WZWN0
-        b3IzAwAAAAFYAVkBWgAAAAsLCwIAAAAAAIA/AAAAAAAAAAAL
-</value>
-  </data>
-  <data name="masterRotation.Rotation" mimetype="application/x-microsoft.net.object.binary.base64">
-    <value>
-        AAEAAAD/////AQAAAAAAAAAMAgAAAElPcGVuTWV0YXZlcnNlVHlwZXMsIFZlcnNpb249MC4wLjAuMCwg
-        Q3VsdHVyZT1uZXV0cmFsLCBQdWJsaWNLZXlUb2tlbj1udWxsBQEAAAAYT3Blbk1ldGF2ZXJzZS5RdWF0
-        ZXJuaW9uBAAAAAFYAVkBWgFXAAAAAAsLCwsCAAAAAAAAAAAAAAAAAAAAAACAPws=
-</value>
-  </data>
-  <data name="masterPosition.Value" mimetype="application/x-microsoft.net.object.binary.base64">
-    <value>
-        AAEAAAD/////AQAAAAAAAAAMAgAAAElPcGVuTWV0YXZlcnNlVHlwZXMsIFZlcnNpb249MC4wLjAuMCwg
-        Q3VsdHVyZT1uZXV0cmFsLCBQdWJsaWNLZXlUb2tlbj1udWxsBQEAAAAVT3Blbk1ldGF2ZXJzZS5WZWN0
-        b3IzAwAAAAFYAVkBWgAAAAsLCwIAAAAAAAAAAAAAAAAAAAAL
-</value>
-  </data>
-  <data name="rotationOffsetPanel.LookAtVector" mimetype="application/x-microsoft.net.object.binary.base64">
-    <value>
-        AAEAAAD/////AQAAAAAAAAAMAgAAAElPcGVuTWV0YXZlcnNlVHlwZXMsIFZlcnNpb249MC4wLjAuMCwg
-        Q3VsdHVyZT1uZXV0cmFsLCBQdWJsaWNLZXlUb2tlbj1udWxsBQEAAAAVT3Blbk1ldGF2ZXJzZS5WZWN0
-        b3IzAwAAAAFYAVkBWgAAAAsLCwIAAAAAAIA/AAAAAAAAAAAL
-</value>
-  </data>
-  <data name="rotationOffsetPanel.Rotation" mimetype="application/x-microsoft.net.object.binary.base64">
-    <value>
-        AAEAAAD/////AQAAAAAAAAAMAgAAAElPcGVuTWV0YXZlcnNlVHlwZXMsIFZlcnNpb249MC4wLjAuMCwg
-        Q3VsdHVyZT1uZXV0cmFsLCBQdWJsaWNLZXlUb2tlbj1udWxsBQEAAAAYT3Blbk1ldGF2ZXJzZS5RdWF0
-        ZXJuaW9uBAAAAAFYAVkBWgFXAAAAAAsLCwsCAAAAAAAAAAAAAAAAAAAAAACAPws=
-</value>
-  </data>
-  <data name="positionOffsetPanel.Value" mimetype="application/x-microsoft.net.object.binary.base64">
-    <value>
-        AAEAAAD/////AQAAAAAAAAAMAgAAAElPcGVuTWV0YXZlcnNlVHlwZXMsIFZlcnNpb249MC4wLjAuMCwg
-        Q3VsdHVyZT1uZXV0cmFsLCBQdWJsaWNLZXlUb2tlbj1udWxsBQEAAAAVT3Blbk1ldGF2ZXJzZS5WZWN0
-        b3IzAwAAAAFYAVkBWgAAAAsLCwIAAAAAAAAAAAAAAAAAAAAL
 </value>
   </data>
 </root>

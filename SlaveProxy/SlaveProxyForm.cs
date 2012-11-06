@@ -125,7 +125,7 @@ namespace SlaveProxy {
             BeginInvoke(new Action(() => {
                 countLabel.Text = processedCount + "";
                 packetsToProcessLabel.Text = packetsToProcess.Count + "";
-                processedPacketsLabel.Text = slaveClient.UnprocessedPackets + "";
+                //processedPacketsLabel.Text = slaveClient.ReceivedPackets + "";
                 packetsReceivedLabel.Text = packetsReceived + "";
             }));
             return p;
@@ -191,7 +191,7 @@ namespace SlaveProxy {
             lastX = p.AgentData.CameraCenter;
 
             positionPanel.Value = p.AgentData.CameraCenter + shift;
-            rotationPanel.Vector = p.AgentData.CameraAtAxis;
+            rotationPanel.LookAtVector = p.AgentData.CameraAtAxis;
             velocityPanel.Value = Vector3.Zero;
             accelerationPanel.Value = Vector3.Zero;
             rotationalVelocityPanel.Value = Vector3.Zero;
@@ -235,7 +235,7 @@ namespace SlaveProxy {
                 positionPanel.Value = position;
                 velocityPanel.Value = velocity;
                 accelerationPanel.Value = acceleration;
-                rotationPanel.Vector = Vector3.UnitX * rotation;
+                rotationPanel.LookAtVector = Vector3.UnitX * rotation;
                 rotationalVelocityPanel.Value = rotationalVelocity;
 
                 sendCameraUpdate();

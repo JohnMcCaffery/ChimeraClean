@@ -21,16 +21,31 @@ namespace ConsoleTest {
             slave.OnProxyStarted += (source, args) => {
                 Invoke(new Action(() => Text = "Slave: " + slave.ProxyPort));
             };
+            slave.OnUpdateSentToClient += (position, lookAt) => {
+                Invoke(new Action(() => {
+                    masterPosition.Value = slave.MasterPosition;
+                    masterRotation.LookAtVector = slave.MasterRotation.LookAtVector;
+                    finalPosition.Value = position;
+                    finalRotation.LookAtVector = lookAt;
+                }));
+            };
         }
 
         private void rotationOffsetPanel_OnChange(object sender, EventArgs e) {
-            slave.OffsetRotation.Rot = rotationOffsetPanel.Rotation;
+            slave.OffsetRotation.Quaternion = rotationOffsetPanel.Rotation;
         }
 
         private void positionOffset_OnChange(object sender, EventArgs e) {
             slave.OffsetPosition = positionOffsetPanel.Value;
         }
 
+        private void rawRotation_OnChange(object sender, EventArgs e) {
+            slave.MasterRotation.Quaternion = masterRotation.Rotation;
+        }
+
+        private void rawPosition_OnChange(object sender, EventArgs e) {
+            slave.MasterPosition = masterPosition.Value;
+        }
         private void SlaveForm_FormClosing(object sender, FormClosingEventArgs e) {
             slave.Stop();
         }

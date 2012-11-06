@@ -22,7 +22,7 @@
     </TypeIdentifier>
   </Class>
   <Class Name="UtilLib.InterProxyClient" BaseTypeListCollapsed="true">
-    <Position X="10" Y="7.25" Width="2.25" />
+    <Position X="9.75" Y="7.25" Width="2.25" />
     <TypeIdentifier>
       <HashCode>AAQAAAJQIAAAUAACAAAAAIQAAAAEAAIAIAAQAAACAQA=</HashCode>
       <FileName>InterProxyClient.cs</FileName>
@@ -31,12 +31,9 @@
   <Class Name="UtilLib.CameraMaster">
     <Position X="0.5" Y="12.25" Width="2.25" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAgAAABIggAAACAAggAwQgIACEAAEgkIAAAAQ=</HashCode>
+      <HashCode>AAAAAAAAgAAABIggIACAIAkgAwQgIACEAAEggIAAAAQ=</HashCode>
       <FileName>CameraMaster.cs</FileName>
     </TypeIdentifier>
-    <ShowAsAssociation>
-      <Property Name="MasterRotation" />
-    </ShowAsAssociation>
   </Class>
   <Class Name="UtilLib.FullMaster">
     <Position X="3" Y="12.25" Width="1.75" />
@@ -48,7 +45,7 @@
   <Class Name="UtilLib.CameraSlave">
     <Position X="13.5" Y="6" Width="1.75" />
     <TypeIdentifier>
-      <HashCode>AAAAEAQAAAAAAAAAAAAAAIAAAAAAAAaAIAEEEAAAAAA=</HashCode>
+      <HashCode>AAAAAAAABBAACAAAAAQAAoAAAgYAAAeQIAEEEQAAAAE=</HashCode>
       <FileName>CameraSlave.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -67,16 +64,16 @@
     <TypeIdentifier />
   </Class>
   <Class Name="UtilLib.Rotation">
-    <Position X="7.25" Y="12.25" Width="1.5" />
+    <Position X="7.25" Y="12.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAACAAAAAQiACAEBAACEAAAAAEAgAkAAAABACAAAIAA=</HashCode>
+      <HashCode>AAACAAAAAQiACAEBAACEAAAAAEAgAEAAAABACAAQIAA=</HashCode>
       <FileName>Rotation.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="ProxyTestGUI.RotationPanel">
-    <Position X="7.25" Y="17" Width="2" />
+    <Position X="7.25" Y="17.25" Width="2" />
     <TypeIdentifier>
-      <HashCode>ACAQEkAAASAAAIEAIACAAAACAAACEAAQAEBARAIACAA=</HashCode>
+      <HashCode>ACAQEkAAASgAAIEAIACAAAACAAACEAAQAABARAIACAA=</HashCode>
       <FileName>Controls\RotationPanel.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -114,7 +111,7 @@
     </ShowAsAssociation>
   </Class>
   <Class Name="UtilLib.BackChannel">
-    <Position X="7.75" Y="6" Width="1.75" />
+    <Position X="7.25" Y="6" Width="2.25" />
     <TypeIdentifier>
       <HashCode>AICEgAAAAAAAAAAAAEACAgAKCIAAODADQAUGAgAAEwA=</HashCode>
       <FileName>BackChannel.cs</FileName>

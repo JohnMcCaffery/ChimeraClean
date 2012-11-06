@@ -430,7 +430,7 @@ namespace UtilLib {
             this.rawRotationPanel.Rotation = ((OpenMetaverse.Quaternion)(resources.GetObject("rawRotationPanel.MasterRotation")));
             this.rawRotationPanel.Size = new System.Drawing.Size(468, 153);
             this.rawRotationPanel.TabIndex = 122;
-            this.rawRotationPanel.Vector = ((OpenMetaverse.Vector3)(resources.GetObject("rawRotationPanel.Vector")));
+            this.rawRotationPanel.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("rawRotationPanel.Vector")));
             this.rawRotationPanel.Yaw = 0F;
             this.rawRotationPanel.OnChange += new System.EventHandler(this.onChange);
             // 
@@ -474,7 +474,7 @@ namespace UtilLib {
             this.focusPanel.Rotation = ((OpenMetaverse.Quaternion)(resources.GetObject("focusPanel.MasterRotation")));
             this.focusPanel.Size = new System.Drawing.Size(468, 153);
             this.focusPanel.TabIndex = 108;
-            this.focusPanel.Vector = ((OpenMetaverse.Vector3)(resources.GetObject("focusPanel.Vector")));
+            this.focusPanel.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("focusPanel.Vector")));
             this.focusPanel.Yaw = 0F;
             this.focusPanel.OnChange += new System.EventHandler(this.onChange);
             // 
@@ -519,7 +519,7 @@ namespace UtilLib {
             this.finalFocusPanel.Rotation = ((OpenMetaverse.Quaternion)(resources.GetObject("finalFocusPanel.MasterRotation")));
             this.finalFocusPanel.Size = new System.Drawing.Size(468, 153);
             this.finalFocusPanel.TabIndex = 120;
-            this.finalFocusPanel.Vector = ((OpenMetaverse.Vector3)(resources.GetObject("finalFocusPanel.Vector")));
+            this.finalFocusPanel.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("finalFocusPanel.Vector")));
             this.finalFocusPanel.Yaw = 0F;
             // 
             // finalPositionPanel

@@ -108,7 +108,7 @@ namespace ProxyTestGUI {
 
             InitializeComponent();
 
-            focusRotationPanel.Vector = Vector3.UnitX;
+            focusRotationPanel.LookAtVector = Vector3.UnitX;
         }
 
         private void updateTimer_Tick(object sender, EventArgs e) {
@@ -123,7 +123,7 @@ namespace ProxyTestGUI {
                 packet.CameraProperty[i].Type = i+1;
             }
 
-            Vector3 focus = positionVectorPanel.Value + focusRotationPanel.Vector;
+            Vector3 focus = positionVectorPanel.Value + focusRotationPanel.LookAtVector;
 
             packet.CameraProperty[0].Value = (float) type1Value.Value;
             packet.CameraProperty[1].Value = (float) type2Value.Value;

@@ -559,7 +559,7 @@ namespace SlaveProxy {
             this.rotationPanel.Rotation = ((OpenMetaverse.Quaternion)(resources.GetObject("rotationPanel.MasterRotation")));
             this.rotationPanel.Size = new System.Drawing.Size(429, 147);
             this.rotationPanel.TabIndex = 4;
-            this.rotationPanel.Vector = ((OpenMetaverse.Vector3)(resources.GetObject("rotationPanel.Vector")));
+            this.rotationPanel.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("rotationPanel.Vector")));
             this.rotationPanel.Yaw = 0F;
             this.rotationPanel.OnChange += new System.EventHandler(this.rotationPanel_OnChange);
             // 

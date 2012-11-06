@@ -68,7 +68,7 @@ namespace UtilLib {
         public SetFollowCamPropertiesPanel() {
             InitializeComponent();
             useVelocity = velocityCheckbox.Checked;
-            focusPanel.Vector = new Vector3(1f, 0f, 0f);
+            focusPanel.LookAtVector = new Vector3(1f, 0f, 0f);
         }
 
         public Vector3 Position {
@@ -108,7 +108,7 @@ namespace UtilLib {
                     Position += Velocity * (float)(scale * diff);
                 }
                 Vector3 position = finalPositionPanel.Value;
-                Vector3 focus = finalFocusPanel.Vector + position;
+                Vector3 focus = finalFocusPanel.LookAtVector + position;
 
                 packet.CameraProperty[0].Value = (float)type1Value.Value;
                 packet.CameraProperty[1].Value = (float)type2Value.Value;

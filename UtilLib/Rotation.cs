@@ -34,7 +34,7 @@ namespace UtilLib {
                 pitch = value;
                 mPitchChanging = true;
                 if (!mRotationChanging)
-                    Rot = CalculateRotation();
+                    Quaternion = CalculateRotation();
                 mPitchChanging = false;
             }
         }
@@ -51,7 +51,7 @@ namespace UtilLib {
                 yaw = value;
                 mYawChanging = true;
                 if (!mRotationChanging)
-                    Rot = CalculateRotation();
+                    Quaternion = CalculateRotation();
                 mYawChanging = false;
             }
         }
@@ -59,7 +59,7 @@ namespace UtilLib {
         /// <summary>
         /// MasterRotation of the Camera.
         /// </summary>
-        public Quaternion Rot {
+        public Quaternion Quaternion {
             get { return rotation; }
             set {
                 if (rotation.Equals(value))
@@ -90,22 +90,54 @@ namespace UtilLib {
             set {
                 if (value.Equals(lookAtVector))
                     return;
+                lookAtVector = value;
 
                 mVectorChanging = true;
                 if (!mRotationChanging) {
                     Vector3 cross = Vector3.Cross(Vector3.UnitX, value);
                     float dot = (float)Math.Acos(Vector3.Dot(Vector3.UnitX, Vector3.Normalize(value)));
-                    Rot = Quaternion.CreateFromAxisAngle(cross, dot);
+                    Quaternion = Quaternion.CreateFromAxisAngle(cross, dot);
                 }
                 mVectorChanging = false;
             }
+        }
+
+        /// <summary>
+        /// Initialise the rotation with 0 yaw and pitch.
+        /// </summary>
+        public Rotation() { }
+
+        /// <summary>
+        /// Initialise the Rotation looking along the specified vector.
+        /// </summary>
+        /// <param name="lookAtVector">A vector representing the direction along which this Rotation starts looking.</param>
+        public Rotation(Vector3 lookAtVector) {
+            LookAtVector = lookAtVector;
+        }
+
+        /// <summary>
+        /// Initiliase the Rotation with the specified yaw and pitch.
+        /// </summary>
+        /// <param name="pitch">The pitch value for this Rotation to start with.</param>
+        /// <param name="yaw">The yaw value for this Rotation to start with.</param>
+        public Rotation(float pitch, float yaw) {
+            Pitch = pitch;
+            Yaw = yaw;
+        }
+
+        /// <summary>
+        /// Initialise the Rotation with the specified Rotation.
+        /// </summary>
+        /// <param name="rotation">The quaternion value representing this Rotations starting rotation.</param>
+        public Rotation(Quaternion rotation) {
+            Quaternion = rotation;
         }
 
         private Quaternion CalculateRotation() {
             Quaternion yaw = Quaternion.CreateFromAxisAngle(Vector3.UnitZ, (float) (this.yaw * DEG2RAD));
             Vector3 newDir = Vector3.UnitX * yaw;
             Vector3 normal = Vector3.Cross(Vector3.UnitZ, newDir);
-            Quaternion pitch = Quaternion.CreateFromAxisAngle(normal, this.pitch);
+            Quaternion pitch = Quaternion.CreateFromAxisAngle(normal, (float) (this.pitch * DEG2RAD));
 
             return pitch * yaw;
         }

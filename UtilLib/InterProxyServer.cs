@@ -83,6 +83,8 @@ namespace UtilLib {
                     }
                 }
                 Send(name, source);
+                if (OnSlaveConnected != null)
+                    OnSlaveConnected(name, source);
             }
         }
 

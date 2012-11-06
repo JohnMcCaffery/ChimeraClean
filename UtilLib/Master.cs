@@ -9,17 +9,28 @@ using OpenMetaverse;
 
 namespace UtilLib {
     public abstract class Master : ProxyManager {
-        private readonly Dictionary<IPEndPoint, Slave> slaves = new Dictionary<IPEndPoint,Slave>();
+        private readonly Dictionary<string, Slave> slaves = new Dictionary<string,Slave>();
 
         public class Slave {
+            private readonly IPEndPoint ep;
+            private string name;
+            private Quaternion rotation = Quaternion.Identity;
+            private Vector3 position = Vector3.Zero;
+
+            /// <summary>
+            /// Called whenever the slave changes.
+            /// </summary>
+            public event EventHandler OnChange;
+
             /// <summary>
             /// RotationOffset Offset for the slave.
             /// </summary>
-            public Rotation RotationOffset {
-                get {
-                    throw new System.NotImplementedException();
-                }
-                set {
+            public Quaternion RotationOffset {
+                get { return rotation; }
+                set { 
+                    rotation = value;
+                    if (OnChange != null)
+                        OnChange(this, null);
                 }
             }
 
@@ -27,10 +38,11 @@ namespace UtilLib {
             /// Position offset for the slave.
             /// </summary>
             public Vector3 PositionOffset {
-                get {
-                    throw new System.NotImplementedException();
-                }
-                set {
+                get { return position; }
+                set { 
+                    position = value;
+                    if (OnChange != null)
+                        OnChange(this, null);
                 }
             }
 
@@ -38,22 +50,20 @@ namespace UtilLib {
             /// Name of the slave.
             /// </summary>
             public string Name {
-                get {
-                    throw new System.NotImplementedException();
-                }
-                set {
-                }
+                get { return name; }
+                set { name = value; }
             }
 
             /// <summary>
             /// The address of the slave so packets can be sent to it.
             /// </summary>
-            public IPEndPoint Address {
-                get {
-                    throw new System.NotImplementedException();
-                }
-                set {
-                }
+            public IPEndPoint TargetEP {
+                get { return ep; }
+            }
+
+            public Slave(string name, IPEndPoint ep) {
+                this.name = name;
+                this.ep = ep;
             }
         }
 
@@ -70,10 +80,7 @@ namespace UtilLib {
         /// <summary>
         /// Triggered whenever a slave connects.
         /// </summary>
-        public event Action<string, IPEndPoint> OnSlaveConnected {
-            add { masterServer.OnSlaveConnected += value; }
-            remove { masterServer.OnSlaveConnected -= value; }
-        }
+        public event System.Action<Slave> OnSlaveConnected;
 
         /// <summary>
         /// Address that slaves should use to connect to this master.
@@ -99,8 +106,22 @@ namespace UtilLib {
         /// <summary>
         /// Names of the slaves that are connected.
         /// </summary>
-        public Slave[] Slaves {
-            get { return slaves.Values.ToArray(); }
+        public Dictionary<string, Slave> Slaves {
+            get { return slaves; }
+        }
+
+        public Master() {
+            masterServer.OnSlaveConnected += (name, ep) => {
+                Slave slave = new Slave(name, ep);
+                lock (slaves)
+                    slaves.Add(name, slave);
+                if (OnSlaveConnected != null)
+                    OnSlaveConnected(slave);
+            };
+            masterServer.OnSlaveDisconnected += name => {
+                lock (slaves)
+                    slaves.Remove(name);
+            };
         }
 
         /// <summary>

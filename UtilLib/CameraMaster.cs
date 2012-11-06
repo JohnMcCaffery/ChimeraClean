@@ -14,6 +14,9 @@ namespace UtilLib {
         private int packetsCreated;
         private int packetsProccessed;
         private bool processingPacket;
+        private Vector3 position;
+        private Rotation rotation;
+
         private readonly HashSet<PacketType> packetTypesToForward = new HashSet<PacketType>();
 
         /// <summary>
@@ -37,13 +40,18 @@ namespace UtilLib {
         public event EventHandler OnPacketForwarded;
 
         /// <summary>
+        /// Triggered whenever the camera is updated, either by a received packet or by a direct change in value.
+        /// </summary>
+        public event EventHandler OnCameraUpdated;
+
+        /// <summary>
         /// Creates a master with no specified masterAddress and masterPort. Address is localhost. Port will be generated when the master is started.
         /// </summary>
         public CameraMaster() {
-            MasterRotation = new Rotation();
+            Rotation = new Rotation();
             Position = new Vector3(128f, 128f, 24f);
-            MasterRotation.OnChange += RotationChanged;
-            OnSlaveConnected += (source, args) => {
+            OnSlaveConnected += (slave) => {
+                slave.OnChange += (source, args) => CreatePacket();
                 CreatePacket();
             };
         }
@@ -74,17 +82,9 @@ namespace UtilLib {
         }
 
         /// <summary>
-        /// MasterRotation of the camera.
-        /// </summary>
-        public Rotation MasterRotation {
-            get;
-            set;
-        }
-
-        /// <summary>
         /// How many packets have been received from the connected proxyAddress.
         /// </summary>
-        public int PacketsReceieved {
+        public int PacketsReceived {
             get { return packetsReceived; }
         }
 
@@ -113,15 +113,24 @@ namespace UtilLib {
         /// Positon of the camera.
         /// </summary>
         public Vector3 Position {
-            get;
-            set;
+            get { return position; }
+            set {
+                position = value;
+                CreatePacket();
+            }
         }
 
-        public UtilLib.Rotation[] Rotation {
-            get {
-                throw new System.NotImplementedException();
-            }
+        /// <summary>
+        /// The rotation of the camera.
+        /// </summary>
+        public Rotation Rotation {
+            get { return rotation; }
             set {
+                if (rotation != null)
+                    rotation.OnChange -= RotationChanged;
+                rotation = value;
+                rotation.OnChange += RotationChanged;
+                RotationChanged(rotation, null);
             }
         }
 
@@ -134,17 +143,23 @@ namespace UtilLib {
             AgentUpdatePacket p = (AgentUpdatePacket) Packet.BuildPacket(PacketType.AgentUpdate);
             p.AgentData.AgentID = UUID.Random();
             p.AgentData.BodyRotation = Quaternion.Identity;
-            p.AgentData.CameraLeftAxis = Vector3.Cross(Vector3.UnitZ, MasterRotation.LookAtVector);
+            p.AgentData.CameraLeftAxis = Vector3.Cross(Vector3.UnitZ, Rotation.LookAtVector);
             p.AgentData.CameraUpAxis = Vector3.UnitZ;
             p.AgentData.HeadRotation = Quaternion.Identity;
             p.AgentData.SessionID = UUID.Random();
 
-            p.AgentData.CameraCenter = Position;
-            p.AgentData.CameraAtAxis = Position + MasterRotation.LookAtVector;
-            masterServer.BroadcastPacket(p);
+
+            foreach (var slave in Slaves.Values) {
+                p.AgentData.CameraCenter = Position + (slave.PositionOffset * Rotation.Quaternion);
+                p.AgentData.CameraAtAxis = Rotation.LookAtVector * slave.RotationOffset;
+                masterServer.Send(p, slave.TargetEP);
+            }
+
             packetsCreated++;
             if (OnPacketGenerated != null)
                 OnPacketGenerated(p, null);
+            if (OnCameraUpdated != null)
+                OnCameraUpdated(this, null);
         }
 
         protected override Packet ReceiveIncomingPacket(Packet p, IPEndPoint ep) {
@@ -153,16 +168,14 @@ namespace UtilLib {
         protected override Packet ReceiveOutgoingPacket(Packet p, IPEndPoint ep) {
             return ReceivePacket(p, ep);
         }
+
         private Packet ReceivePacket(Packet p, IPEndPoint ep) {
             packetsReceived++;
             bool processed = true;
             if (OnPacketReceived != null)
                 OnPacketReceived(p, ep);
             if (p.Type == PacketType.AgentUpdate) {
-                packetsForwarded++;
-                masterServer.BroadcastPacket(p);
-                if (OnPacketForwarded != null)
-                    OnPacketForwarded(this, null);
+                ProcessAgentUpdatePacket(p);
             } else if (packetTypesToForward.Contains(p.Type)) {
                 packetsForwarded++;
                 masterServer.BroadcastPacket(p);
@@ -177,5 +190,22 @@ namespace UtilLib {
                 OnPacketProcessed(this, null);
             return p;
         }
+
+        private void ProcessAgentUpdatePacket(Packet p) {
+            AgentUpdatePacket packet = (AgentUpdatePacket)p;
+
+            processingPacket = true;
+            Position = packet.AgentData.CameraCenter;
+            Rotation.LookAtVector = packet.AgentData.CameraAtAxis;
+            processingPacket = false;
+
+            packetsForwarded++;
+            masterServer.BroadcastPacket(p);
+            if (OnPacketForwarded != null)
+                OnPacketForwarded(this, null);
+            if (OnCameraUpdated != null)
+                OnCameraUpdated(this, null);
+        }
+
     }
 }

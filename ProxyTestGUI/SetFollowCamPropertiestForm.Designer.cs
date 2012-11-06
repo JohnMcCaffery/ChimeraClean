@@ -539,7 +539,7 @@ namespace ProxyTestGUI {
             this.focusRotationPanel.Name = "focusRotationPanel";
             this.focusRotationPanel.Size = new System.Drawing.Size(625, 153);
             this.focusRotationPanel.TabIndex = 83;
-            this.focusRotationPanel.Vector = ((OpenMetaverse.Vector3)(resources.GetObject("focusRotationPanel.Value")));
+            this.focusRotationPanel.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("focusRotationPanel.Value")));
             // 
             // SetFollowCamPropertiestForm
             // 

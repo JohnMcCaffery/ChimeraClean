@@ -35,10 +35,10 @@ namespace ProxyTestGUI {
         public event EventHandler OnChange;
 
         public Quaternion Rotation {
-            get { return rotation.Rot; }
-            set { rotation.Rot = value; }
+            get { return rotation.Quaternion; }
+            set { rotation.Quaternion = value; }
         }
-        public Vector3 Vector {
+        public Vector3 LookAtVector {
             get { return rotation.LookAtVector; }
             set { rotation.LookAtVector = value; }
         }
