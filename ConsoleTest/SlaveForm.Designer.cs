@@ -32,11 +32,11 @@
             // 
             this.rotationOffsetPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.rotationOffsetPanel.DisplayName = "Rotation Offset";
+            this.rotationOffsetPanel.DisplayName = "MasterRotation Offset";
             this.rotationOffsetPanel.Location = new System.Drawing.Point(12, 12);
             this.rotationOffsetPanel.Name = "rotationOffsetPanel";
             this.rotationOffsetPanel.Pitch = 0F;
-            this.rotationOffsetPanel.Rotation = ((OpenMetaverse.Quaternion)(resources.GetObject("rotationOffsetPanel.Rotation")));
+            this.rotationOffsetPanel.Rotation = ((OpenMetaverse.Quaternion)(resources.GetObject("rotationOffsetPanel.MasterRotation")));
             this.rotationOffsetPanel.Size = new System.Drawing.Size(517, 147);
             this.rotationOffsetPanel.TabIndex = 0;
             this.rotationOffsetPanel.Vector = ((OpenMetaverse.Vector3)(resources.GetObject("rotationOffsetPanel.Vector")));
@@ -47,7 +47,7 @@
             // 
             this.positionOffsetPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.positionOffsetPanel.DisplayName = "Position Offset";
+            this.positionOffsetPanel.DisplayName = "PositionOffset Offset";
             this.positionOffsetPanel.Location = new System.Drawing.Point(12, 165);
             this.positionOffsetPanel.Max = 1024D;
             this.positionOffsetPanel.Min = -1024D;

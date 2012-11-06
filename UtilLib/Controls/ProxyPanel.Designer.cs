@@ -133,7 +133,7 @@ namespace UtilLib {
             this.proxyStartButton.Name = "proxyStartButton";
             this.proxyStartButton.Size = new System.Drawing.Size(674, 20);
             this.proxyStartButton.TabIndex = 18;
-            this.proxyStartButton.Text = "Start SlaveProxy";
+            this.proxyStartButton.Text = "Bind SlaveProxy";
             this.proxyStartButton.UseVisualStyleBackColor = true;
             this.proxyStartButton.Click += new System.EventHandler(this.connectButton_Click);
             // 
@@ -150,7 +150,7 @@ namespace UtilLib {
             this.clientStartButton.Name = "clientStartButton";
             this.clientStartButton.Size = new System.Drawing.Size(674, 23);
             this.clientStartButton.TabIndex = 19;
-            this.clientStartButton.Text = "Start Client";
+            this.clientStartButton.Text = "Bind Client";
             this.clientStartButton.UseVisualStyleBackColor = true;
             this.clientStartButton.Click += new System.EventHandler(this.clientStartButton_Click);
             // 

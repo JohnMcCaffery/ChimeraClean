@@ -85,7 +85,6 @@ namespace SlaveProxy {
 
             slaveClient = new InterProxyClient();
             slaveClient.OnPacketReceived += MasterPacketReceived;
-            slaveClient.OnPing += Pinged;
 
             proxyPanel.OnStarted += ProxyStarted;
 
@@ -260,10 +259,7 @@ namespace SlaveProxy {
             slaveClient.Name = nameBox.Text;
             slaveClient.Connect(
                 masterAddressBox.Text, 
-                listenIPBox.Text, 
-                int.Parse(masterXmlRpcPortBox.Text), 
-                int.Parse(portBox.Text), 
-                int.Parse(xmlRpcPortBox.Text)
+                int.Parse(portBox.Text)
             );
         }
 
@@ -310,7 +306,7 @@ namespace SlaveProxy {
             //if (SendCameraPackets && proxyPanel.HasStarted)
                 //new Thread(() => {
                     proxyPanel.Proxy.InjectPacket(setFollowCamPropertiesPanel.Packet, Direction.Incoming);
-                //}).Start();
+                //}).Bind();
         }
 
         private void StopControllingCamera() {

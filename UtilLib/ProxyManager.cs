@@ -66,9 +66,9 @@ namespace UtilLib {
         }
 
         /// <summary>
-        /// Start a proxy so that clients can connect to this master and be shadowed.
+        /// Bind a proxy so that clients can connect to this master and be shadowed.
         /// </summary>
-        public void StartProxy() {
+        public bool StartProxy() {
             if (clientProxy != null)
                 clientProxy.Stop();
             string file = AppDomain.CurrentDomain.SetupInformation.ConfigurationFile;
@@ -95,17 +95,19 @@ namespace UtilLib {
 
             if (OnProxyStarted != null)
                 OnProxyStarted(clientProxy, null);
+
+            return proxyStarted;
         }
 
         /// <summary>
-        /// Start a proxy so that clients can connect to this master and be shadowed. Specifies the masterAddress and masterPort to start on.
+        /// Bind a proxy so that clients can connect to this master and be shadowed. Specifies the masterAddress and masterPort to start on.
         /// </summary>
         /// <param name="masterAddress">The masterAddress that clients can use to connect to this proxy.</param>
         /// <param name="masterPort">The masterPort that clients can use to connect to this proxy.</param>
-        public void StartProxy(string loginURI, int port) {
+        public bool StartProxy(string loginURI, int port) {
             proxyLoginURI = loginURI;
             proxyPort = port;
-            StartProxy();
+            return StartProxy();
         }
 
         /// <summary>
@@ -125,7 +127,7 @@ namespace UtilLib {
         protected abstract Packet ReceiveIncomingPacket(Packet p, IPEndPoint ep);
 
         /// <summary>
-        /// Stop the client proxy.
+        /// Disconnect the client proxy.
         /// </summary>
         protected void StopProxy() {
             if (proxyStarted)

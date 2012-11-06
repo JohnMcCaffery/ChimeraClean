@@ -9,8 +9,8 @@ namespace CommandLineMaster {
     class Master {
         static void Main(string[] args) {
             InterProxyServer m = new InterProxyServer(8080);
-            m.OnSlaveConnected += (source, arg) => Console.WriteLine(source + " connected.");
-            m.OnSlaveDisconnected += (source, arg) => Console.WriteLine(source + " disconnected.");
+            m.OnSlaveConnected += (name, source) => Console.WriteLine(name + " connected from " + source + ".");
+            m.OnSlaveDisconnected += (name) => Console.WriteLine(name + " disconnected.");
 
             Console.ReadLine();
 
@@ -20,6 +20,7 @@ namespace CommandLineMaster {
 
             Console.ReadLine();
             m.Stop();
+            Console.ReadLine();
         }
     }
 }

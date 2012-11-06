@@ -423,11 +423,11 @@ namespace UtilLib {
             // 
             this.rawRotationPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.rawRotationPanel.DisplayName = "Rotation";
+            this.rawRotationPanel.DisplayName = "MasterRotation";
             this.rawRotationPanel.Location = new System.Drawing.Point(0, 107);
             this.rawRotationPanel.Name = "rawRotationPanel";
             this.rawRotationPanel.Pitch = 0F;
-            this.rawRotationPanel.Rotation = ((OpenMetaverse.Quaternion)(resources.GetObject("rawRotationPanel.Rotation")));
+            this.rawRotationPanel.Rotation = ((OpenMetaverse.Quaternion)(resources.GetObject("rawRotationPanel.MasterRotation")));
             this.rawRotationPanel.Size = new System.Drawing.Size(468, 153);
             this.rawRotationPanel.TabIndex = 122;
             this.rawRotationPanel.Vector = ((OpenMetaverse.Vector3)(resources.GetObject("rawRotationPanel.Vector")));
@@ -467,11 +467,11 @@ namespace UtilLib {
             // 
             this.focusPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.focusPanel.DisplayName = "Rotation Offset";
+            this.focusPanel.DisplayName = "MasterRotation Offset";
             this.focusPanel.Location = new System.Drawing.Point(0, 107);
             this.focusPanel.Name = "focusPanel";
             this.focusPanel.Pitch = 0F;
-            this.focusPanel.Rotation = ((OpenMetaverse.Quaternion)(resources.GetObject("focusPanel.Rotation")));
+            this.focusPanel.Rotation = ((OpenMetaverse.Quaternion)(resources.GetObject("focusPanel.MasterRotation")));
             this.focusPanel.Size = new System.Drawing.Size(468, 153);
             this.focusPanel.TabIndex = 108;
             this.focusPanel.Vector = ((OpenMetaverse.Vector3)(resources.GetObject("focusPanel.Vector")));
@@ -511,12 +511,12 @@ namespace UtilLib {
             // 
             this.finalFocusPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.finalFocusPanel.DisplayName = "Rotation";
+            this.finalFocusPanel.DisplayName = "MasterRotation";
             this.finalFocusPanel.Enabled = false;
             this.finalFocusPanel.Location = new System.Drawing.Point(0, 107);
             this.finalFocusPanel.Name = "finalFocusPanel";
             this.finalFocusPanel.Pitch = 0F;
-            this.finalFocusPanel.Rotation = ((OpenMetaverse.Quaternion)(resources.GetObject("finalFocusPanel.Rotation")));
+            this.finalFocusPanel.Rotation = ((OpenMetaverse.Quaternion)(resources.GetObject("finalFocusPanel.MasterRotation")));
             this.finalFocusPanel.Size = new System.Drawing.Size(468, 153);
             this.finalFocusPanel.TabIndex = 120;
             this.finalFocusPanel.Vector = ((OpenMetaverse.Vector3)(resources.GetObject("finalFocusPanel.Vector")));

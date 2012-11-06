@@ -506,7 +506,7 @@ namespace SlaveProxy {
             this.setFollowCamPropertiesPanel.MinimumSize = new System.Drawing.Size(485, 343);
             this.setFollowCamPropertiesPanel.Name = "setFollowCamPropertiesPanel";
             this.setFollowCamPropertiesPanel.Position = ((OpenMetaverse.Vector3)(resources.GetObject("setFollowCamPropertiesPanel.LookAt")));
-            this.setFollowCamPropertiesPanel.Rotation = ((OpenMetaverse.Quaternion)(resources.GetObject("setFollowCamPropertiesPanel.Rotation")));
+            this.setFollowCamPropertiesPanel.Rotation = ((OpenMetaverse.Quaternion)(resources.GetObject("setFollowCamPropertiesPanel.MasterRotation")));
             this.setFollowCamPropertiesPanel.Size = new System.Drawing.Size(645, 386);
             this.setFollowCamPropertiesPanel.TabIndex = 0;
             this.setFollowCamPropertiesPanel.Velocity = ((OpenMetaverse.Vector3)(resources.GetObject("setFollowCamPropertiesPanel.Velocity")));
@@ -552,11 +552,11 @@ namespace SlaveProxy {
             // 
             this.rotationPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.rotationPanel.DisplayName = "Rotation";
+            this.rotationPanel.DisplayName = "MasterRotation";
             this.rotationPanel.Location = new System.Drawing.Point(0, 110);
             this.rotationPanel.Name = "rotationPanel";
             this.rotationPanel.Pitch = 0F;
-            this.rotationPanel.Rotation = ((OpenMetaverse.Quaternion)(resources.GetObject("rotationPanel.Rotation")));
+            this.rotationPanel.Rotation = ((OpenMetaverse.Quaternion)(resources.GetObject("rotationPanel.MasterRotation")));
             this.rotationPanel.Size = new System.Drawing.Size(429, 147);
             this.rotationPanel.TabIndex = 4;
             this.rotationPanel.Vector = ((OpenMetaverse.Vector3)(resources.GetObject("rotationPanel.Vector")));

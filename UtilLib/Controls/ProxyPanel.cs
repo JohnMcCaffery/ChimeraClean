@@ -60,7 +60,7 @@ namespace UtilLib {
         }
 
         private void connectButton_Click(object sender, EventArgs e) {
-            if (proxyStartButton.Text.Equals("Start SlaveProxy")) {
+            if (proxyStartButton.Text.Equals("Bind SlaveProxy")) {
                 if (proxy != null)
                     proxy.Stop();
                 string file = AppDomain.CurrentDomain.SetupInformation.ConfigurationFile;
@@ -83,7 +83,7 @@ namespace UtilLib {
                 if (OnStarted != null)
                     OnStarted(proxy, null);
 
-                proxyStartButton.Text = "Stop SlaveProxy";
+                proxyStartButton.Text = "Disconnect SlaveProxy";
                 proxyStatusLabel.Text = "Started";
 
                 portBox.Enabled = false;
@@ -93,7 +93,7 @@ namespace UtilLib {
                 proxy.Stop();
                 proxy = null;
 
-                proxyStartButton.Text = "Start SlaveProxy";
+                proxyStartButton.Text = "Bind SlaveProxy";
                 proxyStatusLabel.Text = "Stopped";
 
                 portBox.Enabled = true;
@@ -109,7 +109,7 @@ namespace UtilLib {
         }
 
         private void clientStartButton_Click(object sender, EventArgs e) {
-            if (clientStartButton.Text.Equals("Start Client")) {
+            if (clientStartButton.Text.Equals("Bind Client")) {
                 if (proxy == null)
                     proxyStartButton.PerformClick();
                 client = new Process();
@@ -122,14 +122,14 @@ namespace UtilLib {
                 client.Start();
 
                 clientStatusLabel.Text = "Started";
-                clientStartButton.Text = "Stop Client";
+                clientStartButton.Text = "Disconnect Client";
                 firstNameBox.Enabled = false;
                 lastNameBox.Enabled = false;
                 passwordBox.Enabled = false;
                 targetBox.Enabled = false;
             } else {
                 clientStatusLabel.Text = "Stopped";
-                clientStartButton.Text = "Start Client";
+                clientStartButton.Text = "Bind Client";
                 firstNameBox.Enabled = true;
                 lastNameBox.Enabled = true;
                 passwordBox.Enabled = true;

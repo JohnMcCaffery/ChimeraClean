@@ -23,7 +23,7 @@ namespace UtilLib {
         private bool mYawChanging = false;
         private bool mPitchChanging = false;
         /// <summary>
-        /// Rotation of the camera around the y axis (vertical).
+        /// MasterRotation of the camera around the y axis (vertical).
         /// </summary>
         public float Pitch {
             get { return pitch; }
@@ -40,7 +40,7 @@ namespace UtilLib {
         }
 
         /// <summary>
-        /// Rotation of the camera around the z axis (horizontal).
+        /// MasterRotation of the camera around the z axis (horizontal).
         /// </summary>
         public float Yaw {
             get { return yaw; }
@@ -57,7 +57,7 @@ namespace UtilLib {
         }
 
         /// <summary>
-        /// Rotation of the Camera.
+        /// MasterRotation of the Camera.
         /// </summary>
         public Quaternion Rot {
             get { return rotation; }

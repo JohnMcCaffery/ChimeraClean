@@ -9,12 +9,12 @@ using OpenMetaverse;
 
 namespace UtilLib {
     public class CameraMaster : Master {
-        private readonly HashSet<PacketType> packetTypesToForward = new HashSet<PacketType>();
         private int packetsReceived;
         private int packetsForwarded;
         private int packetsCreated;
         private int packetsProccessed;
         private bool processingPacket;
+        private readonly HashSet<PacketType> packetTypesToForward = new HashSet<PacketType>();
 
         /// <summary>
         /// Triggered whenever a packet is received from the connected proxyAddress.
@@ -40,9 +40,9 @@ namespace UtilLib {
         /// Creates a master with no specified masterAddress and masterPort. Address is localhost. Port will be generated when the master is started.
         /// </summary>
         public CameraMaster() {
-            Rotation = new Rotation();
+            MasterRotation = new Rotation();
             Position = new Vector3(128f, 128f, 24f);
-            Rotation.OnChange += RotationChanged;
+            MasterRotation.OnChange += RotationChanged;
             OnSlaveConnected += (source, args) => {
                 CreatePacket();
             };
@@ -74,9 +74,9 @@ namespace UtilLib {
         }
 
         /// <summary>
-        /// Rotation of the camera.
+        /// MasterRotation of the camera.
         /// </summary>
-        public Rotation Rotation {
+        public Rotation MasterRotation {
             get;
             set;
         }
@@ -110,18 +110,19 @@ namespace UtilLib {
         }
 
         /// <summary>
-        /// Which packet types will be forwarded.
-        /// </summary>
-        public HashSet<PacketType> PacketTypesToForward {
-            get { return packetTypesToForward; }
-        }
-
-        /// <summary>
         /// Positon of the camera.
         /// </summary>
         public Vector3 Position {
             get;
             set;
+        }
+
+        public UtilLib.Rotation[] Rotation {
+            get {
+                throw new System.NotImplementedException();
+            }
+            set {
+            }
         }
 
         private void RotationChanged(object source, EventArgs args) {
@@ -133,13 +134,13 @@ namespace UtilLib {
             AgentUpdatePacket p = (AgentUpdatePacket) Packet.BuildPacket(PacketType.AgentUpdate);
             p.AgentData.AgentID = UUID.Random();
             p.AgentData.BodyRotation = Quaternion.Identity;
-            p.AgentData.CameraLeftAxis = Vector3.Cross(Vector3.UnitZ, Rotation.LookAtVector);
+            p.AgentData.CameraLeftAxis = Vector3.Cross(Vector3.UnitZ, MasterRotation.LookAtVector);
             p.AgentData.CameraUpAxis = Vector3.UnitZ;
             p.AgentData.HeadRotation = Quaternion.Identity;
             p.AgentData.SessionID = UUID.Random();
 
             p.AgentData.CameraCenter = Position;
-            p.AgentData.CameraAtAxis = Position + Rotation.LookAtVector;
+            p.AgentData.CameraAtAxis = Position + MasterRotation.LookAtVector;
             masterServer.BroadcastPacket(p);
             packetsCreated++;
             if (OnPacketGenerated != null)

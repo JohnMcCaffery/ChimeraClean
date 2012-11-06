@@ -5,16 +5,64 @@ using System.Text;
 using GridProxy;
 using OpenMetaverse.Packets;
 using System.Net;
+using OpenMetaverse;
 
 namespace UtilLib {
     public abstract class Master : ProxyManager {
+        private readonly Dictionary<IPEndPoint, Slave> slaves = new Dictionary<IPEndPoint,Slave>();
+
+        public class Slave {
+            /// <summary>
+            /// RotationOffset Offset for the slave.
+            /// </summary>
+            public Rotation RotationOffset {
+                get {
+                    throw new System.NotImplementedException();
+                }
+                set {
+                }
+            }
+
+            /// <summary>
+            /// Position offset for the slave.
+            /// </summary>
+            public Vector3 PositionOffset {
+                get {
+                    throw new System.NotImplementedException();
+                }
+                set {
+                }
+            }
+
+            /// <summary>
+            /// Name of the slave.
+            /// </summary>
+            public string Name {
+                get {
+                    throw new System.NotImplementedException();
+                }
+                set {
+                }
+            }
+
+            /// <summary>
+            /// The address of the slave so packets can be sent to it.
+            /// </summary>
+            public IPEndPoint Address {
+                get {
+                    throw new System.NotImplementedException();
+                }
+                set {
+                }
+            }
+        }
 
         protected readonly InterProxyServer masterServer = new InterProxyServer();
 
         /// <summary>
         /// Triggered whenever a slave disconnects.
         /// </summary>
-        public event EventHandler OnSlaveDisconnected {
+        public event Action<string> OnSlaveDisconnected {
             add { masterServer.OnSlaveDisconnected += value; }
             remove { masterServer.OnSlaveDisconnected -= value; }
         }
@@ -22,7 +70,7 @@ namespace UtilLib {
         /// <summary>
         /// Triggered whenever a slave connects.
         /// </summary>
-        public event EventHandler OnSlaveConnected {
+        public event Action<string, IPEndPoint> OnSlaveConnected {
             add { masterServer.OnSlaveConnected += value; }
             remove { masterServer.OnSlaveConnected -= value; }
         }
@@ -45,45 +93,47 @@ namespace UtilLib {
         /// True if the master is ready to receive connections from slaves.
         /// </summary>
         public bool MasterRunning {
-            get { return masterServer != null && masterServer.Running; }
-        }
-
-        /// <summary>
-        /// Number of slaves that are connected.
-        /// </summary>
-        public int SlaveCount {
-            get { return masterServer.SlaveCount; }
+            get { return masterServer.Bound; }
         }
 
         /// <summary>
         /// Names of the slaves that are connected.
         /// </summary>
-        public string[] Slaves {
-            get { return masterServer.Slaves; }
+        public Slave[] Slaves {
+            get { return slaves.Values.ToArray(); }
         }
 
         /// <summary>
-        /// Start the master so that slaves can connect into it.
+        /// Bind the master so that slaves can connect into it.
         /// </summary>
-        public void StartMaster() {
-            masterServer.Start();
+        public bool StartMaster() {
+            return masterServer.Start();
         }
 
         /// <summary>
-        /// Start the master so that slaves can connect into it.
+        /// Bind the master so that slaves can connect into it.
         /// </summary>
         /// <param name="masterPort">The masterPort that clients should connect to this master on.</param>
-        public void StartMaster(int port) {
-            masterServer.Start(port);
+        public bool StartMaster(int port) {
+            return masterServer.Start(port);
         }
 
         /// <summary>
-        /// Stop the master, closing any ports it had opened to listen.
+        /// Disconnect the master, closing any ports it had opened to listen.
         /// </summary>
         public void Stop() {
             StopProxy();
-            if (MasterRunning)
-                masterServer.Stop();
+            masterServer.Stop();
+        }
+
+        /// <summary>
+        /// Set whether a packet type is to be forwarded.
+        /// </summary>
+        /// <param name="packet">The type of packet to forward or stop forwarding.</param>
+        /// <param name="forward">True if the packet is to be forwared.</param>
+        /// <param name="direction">Whether to deal with ingoing or outgoing packets.</param>
+        public void SetPacketForward(OpenMetaverse.Packets.PacketType packet, bool forward, Direction direction) {
+            throw new System.NotImplementedException();
         }
     }
 }

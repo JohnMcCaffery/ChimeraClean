@@ -28,7 +28,7 @@ namespace UtilLib {
         }
 
         /// <summary>
-        /// Rotation to rotate the camera rotation around.
+        /// MasterRotation to rotate the camera rotation around.
         /// </summary>
         public Rotation OffsetRotation {
             get;
@@ -44,7 +44,7 @@ namespace UtilLib {
         }
 
         /// <summary>
-        /// Rotation supplied for the camera rotation.
+        /// MasterRotation supplied for the camera rotation.
         /// </summary>
         public Rotation SourceRotation {
             get;
@@ -56,7 +56,7 @@ namespace UtilLib {
             set;
         }
 
-        public void Connect(int port) {
+        public bool Connect(int port) {
             InterProxyClient.OnPacketReceived += (p, ep) => {
                 if (p.Type == PacketType.AgentUpdate) {
                     AgentUpdatePacket ap = (AgentUpdatePacket)p;
@@ -66,13 +66,12 @@ namespace UtilLib {
                 }
                 return p;
             };
-            InterProxyClient.Connect(port);
+            return InterProxyClient.Connect(port);
         }
 
         public void Stop() {
             StopProxy();
-            if (InterProxyClient.Running)
-                InterProxyClient.Stop();
+            InterProxyClient.Stop();
         }
     
         protected override OpenMetaverse.Packets.Packet ReceiveOutgoingPacket(OpenMetaverse.Packets.Packet p, System.Net.IPEndPoint ep) {
