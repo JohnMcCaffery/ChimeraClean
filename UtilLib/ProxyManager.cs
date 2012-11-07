@@ -5,6 +5,8 @@ using System.Text;
 using GridProxy;
 using OpenMetaverse.Packets;
 using System.Net;
+using System.Net.Sockets;
+using OpenMetaverse;
 
 namespace UtilLib {
     public abstract class ProxyManager {
@@ -78,20 +80,25 @@ namespace UtilLib {
             string loginURIArg = "--proxy-remote-login-uri=" + proxyLoginURI;
             string[] args = { portArg, listenIPArg, loginURIArg };
             ProxyConfig config = new ProxyConfig("Routing God", "jm726@st-andrews.ac.uk", args);
-            clientProxy = new Proxy(config);
-            clientProxy.AddLoginResponseDelegate(response => {
-                clientLoggedIn = true;
-                if (OnClientLoggedIn != null)
-                    OnClientLoggedIn(clientProxy, null);
-                return response;
-            });
-            foreach (PacketType pt in Enum.GetValues(typeof(PacketType))) {
-                clientProxy.AddDelegate(pt, Direction.Incoming, ReceiveIncomingPacket);
-                clientProxy.AddDelegate(pt, Direction.Outgoing, ReceiveOutgoingPacket);
-            }
+            try {
+                clientProxy = new Proxy(config);
+                clientProxy.AddLoginResponseDelegate(response => {
+                    clientLoggedIn = true;
+                    if (OnClientLoggedIn != null)
+                        OnClientLoggedIn(clientProxy, null);
+                    return response;
+                });
+                foreach (PacketType pt in Enum.GetValues(typeof(PacketType))) {
+                    clientProxy.AddDelegate(pt, Direction.Incoming, ReceiveIncomingPacket);
+                    clientProxy.AddDelegate(pt, Direction.Outgoing, ReceiveOutgoingPacket);
+                }
 
-            clientProxy.Start();
-            proxyStarted = true;
+                clientProxy.Start();
+                proxyStarted = true;
+            } catch (NullReferenceException e) {
+                Logger.Log("Unable to start proxy. " + e.Message, Helpers.LogLevel.Info);
+                return false;
+            }
 
             if (OnProxyStarted != null)
                 OnProxyStarted(clientProxy, null);

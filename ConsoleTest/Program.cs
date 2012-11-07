@@ -15,46 +15,60 @@ namespace ConsoleTest {
             Console.ReadKey();
             action();
             Thread.Sleep(1000);
+        }
 
+        static void StartGui(Func<Form> createForm) {
+                Thread t = new Thread(() => {
+                    Form f = createForm();
+                    f.ShowDialog();
+                });
+                t.SetApartmentState(ApartmentState.STA);
+                t.Start();
+                //Application.EnableVisualStyles();
+                //Application.Run(new SlaveForm(s));
         }
 
         static void Main(string[] args) {
             int masterPort = 8090;
             int masterProxyPort = 8080;
-            int slaveProxyPort = 8081;
+            int slave1ProxyPort = 8081;
+            int slave2ProxyPort = 8082;
             CameraMaster m = new CameraMaster();
-            CameraSlave s = new CameraSlave();
+            CameraSlave s1 = new CameraSlave();
+            CameraSlave s2 = new CameraSlave();
 
-            Run("Bind Master", () => m.StartMaster(masterPort));
+            m.StartMaster(masterPort);
+            s1.Connect(masterPort);
+            s2.Connect(masterPort);
+            StartGui(() => new MasterForm(m));
+            StartGui(() => new SlaveForm(s1));
+            StartGui(() => new SlaveForm(s2));
+            //Run("Bind Master", () => m.StartMaster(masterPort));
             //Run("Bind Slave Proxy", () => s.StartProxy("http://apollo.cs.st-andrews.ac.uk:8002", slaveProxyPort));
-            Run("Bind Master GUI", () => {
-                Thread t = new Thread(() => {
-                    MasterForm f = new MasterForm(m);
-                    f.ShowDialog();
-                });
-                t.SetApartmentState(ApartmentState.STA);
-                t.Start();
-                //Application.EnableVisualStyles();
-                //Application.Run(new SlaveForm(s));
-            });
-            Run("Bind Slave GUI", () => {
-                Thread t = new Thread(() => {
-                    SlaveForm f = new SlaveForm(s);
-                    f.ShowDialog();
-                });
-                t.SetApartmentState(ApartmentState.STA);
-                t.Start();
-                //Application.EnableVisualStyles();
-                //Application.Run(new SlaveForm(s));
+            //Run("Bind Proxy", () => m.StartProxy("http://apollo.cs.st-andrews.ac.uk:8002", masterProxyPort));
+            //Run("Bind Master GUI", () => {
+            //});
+            //Run("Bind Master GUI", () => StartGui(() => new MasterForm(m)));
+            //Run("Bind Slave 1 GUI", () => StartGui(() => new SlaveForm(s1)));
+            //Run("Bind Slave 2 GUI", () => StartGui(() => new SlaveForm(s2)));
+            Run("Start Proxys", () => {
+                s1.StartProxy("http://apollo.cs.st-andrews.ac.uk:8002", slave1ProxyPort);
+                s2.StartProxy("http://apollo.cs.st-andrews.ac.uk:8002", slave2ProxyPort);
+                //m.StartProxy("http://apollo.cs.st-andrews.ac.uk:8002", masterProxyPort);
             });
             //Run("Connect Slave", () => s.Connect(masterPort));
             //Run("Change Yaw", () => m.Rotation.Yaw += 45);
             //Run("Change Pitch", () => m.Rotation.Pitch += 45);
             //Run("Change Vector", () => m.Rotation.LookAtVector = new Vector3(1f, 1f, 1f));
             //Run("Change MasterRotation", () => m.Rotation.Quaternion = Quaternion.CreateFromEulers(1f, 1f, 1f));
-            //Run("Bind Proxy", () => m.StartProxy("http://apollo.cs.st-andrews.ac.uk:8002", masterProxyPort));
             Run("Disconnect Master", () => m.Stop());
-            Run("Disconnect Slave", () => s.Stop());
+            Run("Disconnect Slave 1", () => s1.Stop());
+            Run("Disconnect Slave 2", () => s2.Stop());
+            Run("Stop All", () => {
+                s1.Stop();
+                s2.Stop();
+                m.Stop();
+            });
 
             /*
             InterProxyServer m = new InterProxyServer(masterPort);
@@ -80,8 +94,7 @@ namespace ConsoleTest {
             Run("Close Slave", () => s.Disconnect());
             */
 
-
-            Console.ReadKey();
+            Run("Exit", () => { });
         }
     }
 }

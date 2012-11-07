@@ -9,12 +9,12 @@ using OpenMetaverse;
 
 namespace UtilLib {
     public abstract class Master : ProxyManager {
-        private readonly Dictionary<string, Slave> slaves = new Dictionary<string,Slave>();
+        protected readonly Dictionary<string, Slave> slaves = new Dictionary<string,Slave>();
 
         public class Slave {
             private readonly IPEndPoint ep;
             private string name;
-            private Quaternion rotation = Quaternion.Identity;
+            private Rotation rotation;
             private Vector3 position = Vector3.Zero;
 
             /// <summary>
@@ -25,10 +25,13 @@ namespace UtilLib {
             /// <summary>
             /// RotationOffset Offset for the slave.
             /// </summary>
-            public Quaternion RotationOffset {
+            public Rotation RotationOffset {
                 get { return rotation; }
-                set { 
+                set {
+                    if (rotation != null)
+                        rotation.OnChange -= RotationChanged;
                     rotation = value;
+                    rotation.OnChange += RotationChanged;
                     if (OnChange != null)
                         OnChange(this, null);
                 }
@@ -64,6 +67,12 @@ namespace UtilLib {
             public Slave(string name, IPEndPoint ep) {
                 this.name = name;
                 this.ep = ep;
+                RotationOffset = new Rotation();
+            }
+
+            private void RotationChanged(object source, EventArgs args) {
+                if (OnChange != null)
+                    OnChange(this, args);
             }
         }
 
@@ -80,7 +89,7 @@ namespace UtilLib {
         /// <summary>
         /// Triggered whenever a slave connects.
         /// </summary>
-        public event System.Action<Slave> OnSlaveConnected;
+        public event Action<Slave> OnSlaveConnected;
 
         /// <summary>
         /// Address that slaves should use to connect to this master.
@@ -104,10 +113,10 @@ namespace UtilLib {
         }
 
         /// <summary>
-        /// Names of the slaves that are connected.
+        /// All of the slaves that are connected.
         /// </summary>
-        public Dictionary<string, Slave> Slaves {
-            get { return slaves; }
+        public Slave[] Slaves {
+            get { return slaves.Values.ToArray(); }
         }
 
         public Master() {

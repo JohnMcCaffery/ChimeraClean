@@ -17,9 +17,11 @@ namespace ConsoleTest {
         public SlaveForm(CameraSlave slave) {
             this.slave = slave;
             InitializeComponent();
-            Text = "Slave: " + slave.ProxyPort;
+            Text = slave.Name;
+            if (slave.ProxyRunning)
+                Text += ": " + slave.ProxyPort;
             slave.OnProxyStarted += (source, args) => {
-                Invoke(new Action(() => Text = "Slave: " + slave.ProxyPort));
+                Invoke(new Action(() => Text = Name + ": " + slave.ProxyPort));
             };
             slave.OnUpdateSentToClient += (position, lookAt) => {
                 Invoke(new Action(() => {
@@ -45,7 +47,8 @@ namespace ConsoleTest {
 
         private void rawPosition_OnChange(object sender, EventArgs e) {
             slave.MasterPosition = masterPosition.Value;
-        }
+        }
+
         private void SlaveForm_FormClosing(object sender, FormClosingEventArgs e) {
             slave.Stop();
         }

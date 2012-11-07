@@ -130,8 +130,8 @@ namespace ProxyTestGUI {
             this.pitchSlider.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pitchSlider.Location = new System.Drawing.Point(87, 122);
-            this.pitchSlider.Maximum = 90;
-            this.pitchSlider.Minimum = -90;
+            this.pitchSlider.Maximum = 180;
+            this.pitchSlider.Minimum = -180;
             this.pitchSlider.Name = "pitchSlider";
             this.pitchSlider.Size = new System.Drawing.Size(320, 42);
             this.pitchSlider.TabIndex = 86;

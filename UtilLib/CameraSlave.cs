@@ -7,6 +7,7 @@ using OpenMetaverse;
 
 namespace UtilLib {
     public class CameraSlave : ProxyManager {
+        private static int SlaveCount = 0;
         /// <summary>
         /// Triggered whenever a camera update is received from the master.
         /// </summary>
@@ -25,9 +26,15 @@ namespace UtilLib {
         private readonly Rotation finalRotation;
         private readonly InterProxyClient interProxyClient;
 
-        public CameraSlave() : this(new InterProxyClient()) { }
+        public CameraSlave() : this("Slave " + (SlaveCount + 1), new InterProxyClient()) { }
 
-        public CameraSlave(InterProxyClient client) {            finalPosition = MasterPosition;
+        public CameraSlave(string name) : this (name, new InterProxyClient()) { }
+
+        public CameraSlave(InterProxyClient client) : this ("Slave " + (SlaveCount + 1), client)  { }
+        public CameraSlave(string name, InterProxyClient client) {
+            client.Name = name;
+
+            finalPosition = MasterPosition;
             finalRotation = new Rotation();            
             
             offsetPosition = Vector3.Zero;
@@ -38,7 +45,17 @@ namespace UtilLib {
 
             interProxyClient = client;
             OnClientLoggedIn += (source, args) => InjectPacket();
-        }
+            SlaveCount++;
+        }
+
+        /// <summary>
+        /// The name that this proxy will show up as to the master.
+        /// </summary>
+        public string Name {
+            get { return interProxyClient.Name; }
+            set { interProxyClient.Name = value; }
+        }
+
         /// <summary>
         /// Vector supplied for the camera position.
         /// </summary>
@@ -104,7 +121,8 @@ namespace UtilLib {
 
         public InterProxyClient InterProxyClient {
             get { return interProxyClient; }
-        }
+        }
+
         private void RotationChanged(object source, EventArgs args) {
             Recalculate();
         }
@@ -177,7 +195,8 @@ namespace UtilLib {
             packet.CameraProperty[20].Value = 1f;
             packet.CameraProperty[21].Value = 1f;
 
-            clientProxy.InjectPacket(packet, GridProxy.Direction.Incoming);
+            if (clientProxy != null)
+                clientProxy.InjectPacket(packet, GridProxy.Direction.Incoming);
 
             if (OnUpdateSentToClient != null)
                 OnUpdateSentToClient(FinalPosition, FinalRotation.LookAtVector);
