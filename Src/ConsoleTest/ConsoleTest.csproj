@@ -18,7 +18,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>..\..\Bin\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -34,11 +34,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="OpenMetaverse">
-      <HintPath>..\..\..\libopenmetaverse\OpenMetaverse\obj\Debug\OpenMetaverse.dll</HintPath>
+      <HintPath>..\..\..\..\libopenmetaverse\OpenMetaverse\obj\Debug\OpenMetaverse.dll</HintPath>
     </Reference>
-    <Reference Include="OpenMetaverseTypes, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\libopenmetaverse\OpenMetaverseTypes\obj\Debug\OpenMetaverseTypes.dll</HintPath>
+    <Reference Include="OpenMetaverseTypes">
+      <HintPath>..\..\..\..\libopenmetaverse\OpenMetaverseTypes\obj\Debug\OpenMetaverseTypes.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -79,9 +78,11 @@
   <ItemGroup>
     <EmbeddedResource Include="MasterForm.resx">
       <DependentUpon>MasterForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="SlaveForm.resx">
       <DependentUpon>SlaveForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

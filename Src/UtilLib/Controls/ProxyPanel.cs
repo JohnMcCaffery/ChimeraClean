@@ -32,20 +32,19 @@ using System.Runtime.InteropServices;
 
 namespace UtilLib {
     public partial class ProxyPanel : UserControl {
-        private Proxy proxy;
+        private ProxyManager proxy;
         private Process client;
         private bool loggedIn;
 
-        public Proxy Proxy { get { return proxy; } }
+        public ProxyManager Proxy { 
+            get { return proxy; }
+            set { proxy = value; }
+        }
         public bool HasStarted { get { return proxy != null; } }
 
         public string Port {
             get { return portBox.Text; }
             set { portBox.Text = value; }
-        }
-        public string ListenIP {
-            get { return listenIPBox.Text; }
-            set { listenIPBox.Text = value; }
         }
         public string LoginURI {
             get { return loginURIBox.Text; }
@@ -59,45 +58,34 @@ namespace UtilLib {
             InitializeComponent();
         }
 
+        public ProxyPanel(ProxyManager proxy)
+            : this() {
+                this.proxy = proxy;
+        }
+
         private void connectButton_Click(object sender, EventArgs e) {
+            if (proxy == null)
+                return;
             if (proxyStartButton.Text.Equals("Bind SlaveProxy")) {
-                if (proxy != null)
-                    proxy.Stop();
+                if (proxy.ProxyRunning)
+                    proxy.StopProxy();
                 string file = AppDomain.CurrentDomain.SetupInformation.ConfigurationFile;
 
-                string portArg = "--proxy-login-masterPort=" + portBox.Text;
-                string listenIPArg = "--proxy-proxyAddress-facing-masterAddress=" + listenIPBox.Text;
-                string loginURIArg = "--proxy-remote-login-uri=" + loginURIBox.Text;
-                string[] args = { portArg, listenIPArg, loginURIArg };
-                ProxyConfig config = new ProxyConfig("Routing God", "jm726@st-andrews.ac.uk", args);
-                proxy = new Proxy(config);
-                proxy.AddLoginResponseDelegate(response => {
-                    loggedIn = true;
-                    if (LoggedIn != null)
-                        LoggedIn(proxy, null);
-                    return response;
-                });
+                if (proxy.StartProxy(loginURIBox.Text, Int32.Parse(portBox.Text))) {
+                    proxyStartButton.Text = "Disconnect SlaveProxy";
+                    proxyStatusLabel.Text = "Started";
 
-                proxy.Start();
-
-                if (OnStarted != null)
-                    OnStarted(proxy, null);
-
-                proxyStartButton.Text = "Disconnect SlaveProxy";
-                proxyStatusLabel.Text = "Started";
-
-                portBox.Enabled = false;
-                listenIPBox.Enabled = false;
-                loginURIBox.Enabled = false;
+                    portBox.Enabled = false;
+                    loginURIBox.Enabled = false;
+                }
             } else if (proxy != null) {
-                proxy.Stop();
+                proxy.StopProxy();
                 proxy = null;
 
                 proxyStartButton.Text = "Bind SlaveProxy";
                 proxyStatusLabel.Text = "Stopped";
 
                 portBox.Enabled = true;
-                listenIPBox.Enabled = true;
                 loginURIBox.Enabled = true;
             }
         }
@@ -115,7 +103,7 @@ namespace UtilLib {
                 client = new Process();
                 client.StartInfo.FileName = targetBox.Text;
                 if (useLoginURICheck.Checked)
-                    client.StartInfo.Arguments = "--proxyLoginURI http://" + listenIPBox.Text + ":" + portBox.Text;
+                    client.StartInfo.Arguments = "--proxyLoginURI http://localhost:" + portBox.Text;
                 else
                     client.StartInfo.Arguments = " --grid " + portBox.Text;
                 client.StartInfo.Arguments += " --login " + firstNameBox.Text + " " + lastNameBox.Text + " " + passwordBox.Text;

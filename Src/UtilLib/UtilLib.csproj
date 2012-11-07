@@ -40,14 +40,13 @@
     <Reference Include="log4net">
       <HintPath>..\..\..\libopenmetaverse\bin\log4net.dll</HintPath>
     </Reference>
-    <Reference Include="OpenMetaverse">
-      <HintPath>..\..\..\libopenmetaverse\OpenMetaverse\obj\Debug\OpenMetaverse.dll</HintPath>
+    <Reference Include="OpenMetaverse, Version=0.0.0.17171, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\libopenmetaverse\OpenMetaverse\obj\Debug\OpenMetaverse.dll</HintPath>
     </Reference>
-    <Reference Include="OpenMetaverse.StructuredData">
-      <HintPath>..\..\..\libopenmetaverse\bin\OpenMetaverse.StructuredData.dll</HintPath>
-    </Reference>
-    <Reference Include="OpenMetaverseTypes">
-      <HintPath>..\..\..\libopenmetaverse\OpenMetaverseTypes\obj\Debug\OpenMetaverseTypes.dll</HintPath>
+    <Reference Include="OpenMetaverseTypes, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\libopenmetaverse\OpenMetaverseTypes\obj\Debug\OpenMetaverseTypes.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -126,7 +125,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\libopenmetaverse\Programs\WinGridProxy\WinGridProxy.csproj">
+    <ProjectReference Include="..\..\..\..\libopenmetaverse\Programs\WinGridProxy\WinGridProxy.csproj">
       <Project>{421F8BA2-92D3-4C24-AD53-FE1FEC91C419}</Project>
       <Name>WinGridProxy</Name>
     </ProjectReference>

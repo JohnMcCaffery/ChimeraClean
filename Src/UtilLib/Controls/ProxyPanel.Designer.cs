@@ -46,8 +46,6 @@ namespace UtilLib {
             this.components = new System.ComponentModel.Container();
             this.loginURIBox = new System.Windows.Forms.TextBox();
             this.loginURILabel = new System.Windows.Forms.Label();
-            this.listenIPBox = new System.Windows.Forms.TextBox();
-            this.listenIPLabel = new System.Windows.Forms.Label();
             this.portBox = new System.Windows.Forms.TextBox();
             this.portLabel = new System.Windows.Forms.Label();
             this.proxyStartButton = new System.Windows.Forms.Button();
@@ -74,7 +72,7 @@ namespace UtilLib {
             | System.Windows.Forms.AnchorStyles.Right)));
             this.loginURIBox.Location = new System.Drawing.Point(64, 5);
             this.loginURIBox.Name = "loginURIBox";
-            this.loginURIBox.Size = new System.Drawing.Size(616, 20);
+            this.loginURIBox.Size = new System.Drawing.Size(501, 20);
             this.loginURIBox.TabIndex = 16;
             this.loginURIBox.Text = "http://apollo.cs.st-andrews.ac.uk:8002";
             // 
@@ -87,29 +85,10 @@ namespace UtilLib {
             this.loginURILabel.TabIndex = 15;
             this.loginURILabel.Text = "Login URI";
             // 
-            // listenIPBox
-            // 
-            this.listenIPBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.listenIPBox.Location = new System.Drawing.Point(57, 29);
-            this.listenIPBox.Name = "listenIPBox";
-            this.listenIPBox.Size = new System.Drawing.Size(546, 20);
-            this.listenIPBox.TabIndex = 14;
-            this.listenIPBox.Text = "127.0.0.1";
-            // 
-            // listenIPLabel
-            // 
-            this.listenIPLabel.AutoSize = true;
-            this.listenIPLabel.Location = new System.Drawing.Point(3, 32);
-            this.listenIPLabel.Name = "listenIPLabel";
-            this.listenIPLabel.Size = new System.Drawing.Size(48, 13);
-            this.listenIPLabel.TabIndex = 13;
-            this.listenIPLabel.Text = "Listen IP";
-            // 
             // portBox
             // 
             this.portBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.portBox.Location = new System.Drawing.Point(641, 29);
+            this.portBox.Location = new System.Drawing.Point(641, 5);
             this.portBox.Name = "portBox";
             this.portBox.Size = new System.Drawing.Size(39, 20);
             this.portBox.TabIndex = 12;
@@ -119,17 +98,17 @@ namespace UtilLib {
             // 
             this.portLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.portLabel.AutoSize = true;
-            this.portLabel.Location = new System.Drawing.Point(609, 32);
+            this.portLabel.Location = new System.Drawing.Point(571, 8);
             this.portLabel.Name = "portLabel";
-            this.portLabel.Size = new System.Drawing.Size(26, 13);
+            this.portLabel.Size = new System.Drawing.Size(64, 13);
             this.portLabel.TabIndex = 11;
-            this.portLabel.Text = "MasterPort";
+            this.portLabel.Text = "Access Port";
             // 
             // proxyStartButton
             // 
             this.proxyStartButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.proxyStartButton.Location = new System.Drawing.Point(6, 55);
+            this.proxyStartButton.Location = new System.Drawing.Point(6, 31);
             this.proxyStartButton.Name = "proxyStartButton";
             this.proxyStartButton.Size = new System.Drawing.Size(674, 20);
             this.proxyStartButton.TabIndex = 18;
@@ -146,7 +125,7 @@ namespace UtilLib {
             // 
             this.clientStartButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.clientStartButton.Location = new System.Drawing.Point(6, 133);
+            this.clientStartButton.Location = new System.Drawing.Point(6, 107);
             this.clientStartButton.Name = "clientStartButton";
             this.clientStartButton.Size = new System.Drawing.Size(674, 23);
             this.clientStartButton.TabIndex = 19;
@@ -156,7 +135,7 @@ namespace UtilLib {
             // 
             // firstNameBox
             // 
-            this.firstNameBox.Location = new System.Drawing.Point(64, 81);
+            this.firstNameBox.Location = new System.Drawing.Point(64, 55);
             this.firstNameBox.Name = "firstNameBox";
             this.firstNameBox.Size = new System.Drawing.Size(116, 20);
             this.firstNameBox.TabIndex = 20;
@@ -165,7 +144,7 @@ namespace UtilLib {
             // firstNameLabel
             // 
             this.firstNameLabel.AutoSize = true;
-            this.firstNameLabel.Location = new System.Drawing.Point(3, 84);
+            this.firstNameLabel.Location = new System.Drawing.Point(3, 58);
             this.firstNameLabel.Name = "firstNameLabel";
             this.firstNameLabel.Size = new System.Drawing.Size(57, 13);
             this.firstNameLabel.TabIndex = 21;
@@ -174,7 +153,7 @@ namespace UtilLib {
             // lastNameLabel
             // 
             this.lastNameLabel.AutoSize = true;
-            this.lastNameLabel.Location = new System.Drawing.Point(186, 84);
+            this.lastNameLabel.Location = new System.Drawing.Point(186, 58);
             this.lastNameLabel.Name = "lastNameLabel";
             this.lastNameLabel.Size = new System.Drawing.Size(58, 13);
             this.lastNameLabel.TabIndex = 23;
@@ -182,7 +161,7 @@ namespace UtilLib {
             // 
             // lastNameBox
             // 
-            this.lastNameBox.Location = new System.Drawing.Point(250, 81);
+            this.lastNameBox.Location = new System.Drawing.Point(250, 55);
             this.lastNameBox.Name = "lastNameBox";
             this.lastNameBox.Size = new System.Drawing.Size(122, 20);
             this.lastNameBox.TabIndex = 22;
@@ -191,7 +170,7 @@ namespace UtilLib {
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(378, 84);
+            this.label1.Location = new System.Drawing.Point(378, 58);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(53, 13);
             this.label1.TabIndex = 25;
@@ -201,7 +180,7 @@ namespace UtilLib {
             // 
             this.passwordBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.passwordBox.Location = new System.Drawing.Point(437, 81);
+            this.passwordBox.Location = new System.Drawing.Point(437, 55);
             this.passwordBox.Name = "passwordBox";
             this.passwordBox.PasswordChar = '*';
             this.passwordBox.Size = new System.Drawing.Size(243, 20);
@@ -212,7 +191,7 @@ namespace UtilLib {
             // 
             this.targetBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.targetBox.Location = new System.Drawing.Point(42, 107);
+            this.targetBox.Location = new System.Drawing.Point(42, 81);
             this.targetBox.Name = "targetBox";
             this.targetBox.Size = new System.Drawing.Size(638, 20);
             this.targetBox.TabIndex = 26;
@@ -221,7 +200,7 @@ namespace UtilLib {
             // clientLabel
             // 
             this.clientLabel.AutoSize = true;
-            this.clientLabel.Location = new System.Drawing.Point(3, 110);
+            this.clientLabel.Location = new System.Drawing.Point(3, 84);
             this.clientLabel.Name = "clientLabel";
             this.clientLabel.Size = new System.Drawing.Size(33, 13);
             this.clientLabel.TabIndex = 27;
@@ -230,9 +209,9 @@ namespace UtilLib {
             // proxyStatusLabelLabel
             // 
             this.proxyStatusLabelLabel.AutoSize = true;
-            this.proxyStatusLabelLabel.Location = new System.Drawing.Point(3, 159);
+            this.proxyStatusLabelLabel.Location = new System.Drawing.Point(3, 133);
             this.proxyStatusLabelLabel.Name = "proxyStatusLabelLabel";
-            this.proxyStatusLabelLabel.Size = new System.Drawing.Size(72, 13);
+            this.proxyStatusLabelLabel.Size = new System.Drawing.Size(99, 13);
             this.proxyStatusLabelLabel.TabIndex = 28;
             this.proxyStatusLabelLabel.Text = "SlaveProxy Status: ";
             // 
@@ -240,7 +219,7 @@ namespace UtilLib {
             // 
             this.proxyStatusLabel.AutoSize = true;
             this.proxyStatusLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.proxyStatusLabel.Location = new System.Drawing.Point(81, 159);
+            this.proxyStatusLabel.Location = new System.Drawing.Point(81, 133);
             this.proxyStatusLabel.Name = "proxyStatusLabel";
             this.proxyStatusLabel.Size = new System.Drawing.Size(28, 13);
             this.proxyStatusLabel.TabIndex = 29;
@@ -250,7 +229,7 @@ namespace UtilLib {
             // 
             this.clientStatusLabel.AutoSize = true;
             this.clientStatusLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.clientStatusLabel.Location = new System.Drawing.Point(81, 172);
+            this.clientStatusLabel.Location = new System.Drawing.Point(81, 146);
             this.clientStatusLabel.Name = "clientStatusLabel";
             this.clientStatusLabel.Size = new System.Drawing.Size(28, 13);
             this.clientStatusLabel.TabIndex = 31;
@@ -259,17 +238,17 @@ namespace UtilLib {
             // clientStatusLabelLabel
             // 
             this.clientStatusLabelLabel.AutoSize = true;
-            this.clientStatusLabelLabel.Location = new System.Drawing.Point(3, 172);
+            this.clientStatusLabelLabel.Location = new System.Drawing.Point(3, 146);
             this.clientStatusLabelLabel.Name = "clientStatusLabelLabel";
             this.clientStatusLabelLabel.Size = new System.Drawing.Size(72, 13);
             this.clientStatusLabelLabel.TabIndex = 30;
             this.clientStatusLabelLabel.Text = "Client Status: ";
             // 
-            // checkBox1
+            // useLoginURICheck
             // 
             this.useLoginURICheck.AutoSize = true;
-            this.useLoginURICheck.Location = new System.Drawing.Point(250, 162);
-            this.useLoginURICheck.Name = "checkBox1";
+            this.useLoginURICheck.Location = new System.Drawing.Point(250, 136);
+            this.useLoginURICheck.Name = "useLoginURICheck";
             this.useLoginURICheck.Size = new System.Drawing.Size(93, 17);
             this.useLoginURICheck.TabIndex = 32;
             this.useLoginURICheck.Text = "Use LoginURI";
@@ -296,12 +275,10 @@ namespace UtilLib {
             this.Controls.Add(this.proxyStartButton);
             this.Controls.Add(this.loginURIBox);
             this.Controls.Add(this.loginURILabel);
-            this.Controls.Add(this.listenIPBox);
-            this.Controls.Add(this.listenIPLabel);
             this.Controls.Add(this.portBox);
             this.Controls.Add(this.portLabel);
             this.Name = "ProxyPanel";
-            this.Size = new System.Drawing.Size(683, 283);
+            this.Size = new System.Drawing.Size(683, 176);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -311,8 +288,6 @@ namespace UtilLib {
 
         private System.Windows.Forms.TextBox loginURIBox;
         private System.Windows.Forms.Label loginURILabel;
-        private System.Windows.Forms.TextBox listenIPBox;
-        private System.Windows.Forms.Label listenIPLabel;
         private System.Windows.Forms.TextBox portBox;
         private System.Windows.Forms.Label portLabel;
         private System.Windows.Forms.Button proxyStartButton;

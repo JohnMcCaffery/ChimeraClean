@@ -136,7 +136,7 @@ namespace UtilLib {
         /// <summary>
         /// Disconnect the client proxy.
         /// </summary>
-        protected void StopProxy() {
+        public void StopProxy() {
             if (proxyStarted)
                 clientProxy.Stop();
             proxyStarted = false;

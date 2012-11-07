@@ -34,8 +34,8 @@
             this.hvSplit = new System.Windows.Forms.SplitContainer();
             this.hBox = new System.Windows.Forms.GroupBox();
             this.vBox = new System.Windows.Forms.GroupBox();
-            this.hTab = new System.Windows.Forms.TabPage();
-            this.vTab = new System.Windows.Forms.TabPage();
+            this.proxyTab = new System.Windows.Forms.TabPage();
+            this.proxyPanel = new UtilLib.ProxyPanel();
             this.slavesTab.SuspendLayout();
             this.rawTab.SuspendLayout();
             this.visualSlavesSplit.Panel1.SuspendLayout();
@@ -46,6 +46,7 @@
             this.hvSplit.Panel1.SuspendLayout();
             this.hvSplit.Panel2.SuspendLayout();
             this.hvSplit.SuspendLayout();
+            this.proxyTab.SuspendLayout();
             this.SuspendLayout();
             // 
             // slavesTab
@@ -55,7 +56,7 @@
             this.slavesTab.Location = new System.Drawing.Point(0, 0);
             this.slavesTab.Name = "slavesTab";
             this.slavesTab.SelectedIndex = 0;
-            this.slavesTab.Size = new System.Drawing.Size(617, 285);
+            this.slavesTab.Size = new System.Drawing.Size(617, 231);
             this.slavesTab.TabIndex = 0;
             // 
             // rawTab
@@ -66,7 +67,7 @@
             this.rawTab.Location = new System.Drawing.Point(4, 22);
             this.rawTab.Name = "rawTab";
             this.rawTab.Padding = new System.Windows.Forms.Padding(3);
-            this.rawTab.Size = new System.Drawing.Size(609, 259);
+            this.rawTab.Size = new System.Drawing.Size(609, 205);
             this.rawTab.TabIndex = 0;
             this.rawTab.Text = "Input Values";
             this.rawTab.UseVisualStyleBackColor = true;
@@ -77,10 +78,10 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.rawPosition.DisplayName = "Raw Position";
             this.rawPosition.Location = new System.Drawing.Point(0, 153);
-            this.rawPosition.Max = 1024D;
+            this.rawPosition.Max = 12800D;
             this.rawPosition.Min = -1024D;
             this.rawPosition.Name = "rawPosition";
-            this.rawPosition.Size = new System.Drawing.Size(577, 98);
+            this.rawPosition.Size = new System.Drawing.Size(513, 98);
             this.rawPosition.TabIndex = 1;
             this.rawPosition.Value = ((OpenMetaverse.Vector3)(resources.GetObject("rawPosition.Value")));
             this.rawPosition.X = 128F;
@@ -98,7 +99,7 @@
             this.rawRotation.Name = "rawRotation";
             this.rawRotation.Pitch = 0F;
             this.rawRotation.Rotation = ((OpenMetaverse.Quaternion)(resources.GetObject("rawRotation.Rotation")));
-            this.rawRotation.Size = new System.Drawing.Size(577, 147);
+            this.rawRotation.Size = new System.Drawing.Size(513, 147);
             this.rawRotation.TabIndex = 0;
             this.rawRotation.Yaw = 0F;
             this.rawRotation.OnChange += new System.EventHandler(this.rawRotation_OnChange);
@@ -119,19 +120,18 @@
             this.visualSlavesSplit.Panel2.AutoScroll = true;
             this.visualSlavesSplit.Panel2.Controls.Add(this.slavesTab);
             this.visualSlavesSplit.Size = new System.Drawing.Size(617, 457);
-            this.visualSlavesSplit.SplitterDistance = 168;
+            this.visualSlavesSplit.SplitterDistance = 222;
             this.visualSlavesSplit.TabIndex = 1;
             // 
             // displayTab
             // 
             this.displayTab.Controls.Add(this.bothTab);
-            this.displayTab.Controls.Add(this.hTab);
-            this.displayTab.Controls.Add(this.vTab);
+            this.displayTab.Controls.Add(this.proxyTab);
             this.displayTab.Dock = System.Windows.Forms.DockStyle.Fill;
             this.displayTab.Location = new System.Drawing.Point(0, 0);
             this.displayTab.Name = "displayTab";
             this.displayTab.SelectedIndex = 0;
-            this.displayTab.Size = new System.Drawing.Size(617, 168);
+            this.displayTab.Size = new System.Drawing.Size(617, 222);
             this.displayTab.TabIndex = 0;
             // 
             // bothTab
@@ -140,7 +140,7 @@
             this.bothTab.Location = new System.Drawing.Point(4, 22);
             this.bothTab.Name = "bothTab";
             this.bothTab.Padding = new System.Windows.Forms.Padding(3);
-            this.bothTab.Size = new System.Drawing.Size(609, 142);
+            this.bothTab.Size = new System.Drawing.Size(609, 196);
             this.bothTab.TabIndex = 2;
             this.bothTab.Text = "Horizontal and Vertical";
             this.bothTab.UseVisualStyleBackColor = true;
@@ -158,7 +158,7 @@
             // hvSplit.Panel2
             // 
             this.hvSplit.Panel2.Controls.Add(this.vBox);
-            this.hvSplit.Size = new System.Drawing.Size(603, 136);
+            this.hvSplit.Size = new System.Drawing.Size(603, 190);
             this.hvSplit.SplitterDistance = 293;
             this.hvSplit.TabIndex = 0;
             // 
@@ -167,7 +167,7 @@
             this.hBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.hBox.Location = new System.Drawing.Point(0, 0);
             this.hBox.Name = "hBox";
-            this.hBox.Size = new System.Drawing.Size(293, 136);
+            this.hBox.Size = new System.Drawing.Size(293, 190);
             this.hBox.TabIndex = 0;
             this.hBox.TabStop = false;
             this.hBox.Text = "Horizontal";
@@ -178,33 +178,36 @@
             this.vBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.vBox.Location = new System.Drawing.Point(0, 0);
             this.vBox.Name = "vBox";
-            this.vBox.Size = new System.Drawing.Size(306, 136);
+            this.vBox.Size = new System.Drawing.Size(306, 190);
             this.vBox.TabIndex = 0;
             this.vBox.TabStop = false;
             this.vBox.Text = "Vertical";
             this.vBox.Paint += new System.Windows.Forms.PaintEventHandler(this.vTab_Paint);
             // 
-            // hTab
+            // proxyTab
             // 
-            this.hTab.Location = new System.Drawing.Point(4, 22);
-            this.hTab.Name = "hTab";
-            this.hTab.Padding = new System.Windows.Forms.Padding(3);
-            this.hTab.Size = new System.Drawing.Size(609, 142);
-            this.hTab.TabIndex = 0;
-            this.hTab.Text = "Horizontal";
-            this.hTab.UseVisualStyleBackColor = true;
-            this.hTab.Paint += new System.Windows.Forms.PaintEventHandler(this.hTab_Paint);
+            this.proxyTab.Controls.Add(this.proxyPanel);
+            this.proxyTab.Location = new System.Drawing.Point(4, 22);
+            this.proxyTab.Name = "proxyTab";
+            this.proxyTab.Padding = new System.Windows.Forms.Padding(3);
+            this.proxyTab.Size = new System.Drawing.Size(609, 196);
+            this.proxyTab.TabIndex = 3;
+            this.proxyTab.Text = "Proxy";
+            this.proxyTab.UseVisualStyleBackColor = true;
             // 
-            // vTab
+            // proxyPanel
             // 
-            this.vTab.Location = new System.Drawing.Point(4, 22);
-            this.vTab.Name = "vTab";
-            this.vTab.Padding = new System.Windows.Forms.Padding(3);
-            this.vTab.Size = new System.Drawing.Size(609, 142);
-            this.vTab.TabIndex = 1;
-            this.vTab.Text = "Vertical";
-            this.vTab.UseVisualStyleBackColor = true;
-            this.vTab.Paint += new System.Windows.Forms.PaintEventHandler(this.vTab_Paint);
+            this.proxyPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.proxyPanel.FirstName = "Routing";
+            this.proxyPanel.LastName = "God";
+            this.proxyPanel.Location = new System.Drawing.Point(3, 3);
+            this.proxyPanel.LoginURI = "http://apollo.cs.st-andrews.ac.uk:8002";
+            this.proxyPanel.Name = "proxyPanel";
+            this.proxyPanel.Password = "1245";
+            this.proxyPanel.Port = "8080";
+            this.proxyPanel.Proxy = null;
+            this.proxyPanel.Size = new System.Drawing.Size(603, 190);
+            this.proxyPanel.TabIndex = 0;
             // 
             // MasterForm
             // 
@@ -225,6 +228,7 @@
             this.hvSplit.Panel1.ResumeLayout(false);
             this.hvSplit.Panel2.ResumeLayout(false);
             this.hvSplit.ResumeLayout(false);
+            this.proxyTab.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -237,11 +241,11 @@
         private ProxyTestGUI.RotationPanel rawRotation;
         private System.Windows.Forms.SplitContainer visualSlavesSplit;
         private System.Windows.Forms.TabControl displayTab;
-        private System.Windows.Forms.TabPage hTab;
-        private System.Windows.Forms.TabPage vTab;
         private System.Windows.Forms.TabPage bothTab;
         private System.Windows.Forms.SplitContainer hvSplit;
         private System.Windows.Forms.GroupBox hBox;
         private System.Windows.Forms.GroupBox vBox;
+        private System.Windows.Forms.TabPage proxyTab;
+        private UtilLib.ProxyPanel proxyPanel;
     }
 }

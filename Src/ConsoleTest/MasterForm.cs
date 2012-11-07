@@ -19,6 +19,8 @@ namespace ConsoleTest {
         public MasterForm(CameraMaster master) {
             InitializeComponent();
 
+            proxyPanel.Proxy = master;
+
             this.master = master;
             rawPosition.Value = master.Position;
             rawRotation.LookAtVector = master.Rotation.LookAtVector;
@@ -36,8 +38,6 @@ namespace ConsoleTest {
         }
 
         private void RefreshDrawings() {
-            hTab.Refresh();
-            vTab.Refresh();
             hvSplit.Panel1.Refresh();
             hvSplit.Panel2.Refresh();
         }
@@ -107,8 +107,6 @@ namespace ConsoleTest {
                 rotationOffset.OnChange += (p, ep) => {
                     slave.RotationOffset.Pitch = rotationOffset.Pitch;
                     slave.RotationOffset.Yaw = rotationOffset.Yaw;
-                    hTab.Refresh();
-                    vTab.Refresh();
                     hvSplit.Panel1.Refresh();
                     hvSplit.Panel2.Refresh();
                 };

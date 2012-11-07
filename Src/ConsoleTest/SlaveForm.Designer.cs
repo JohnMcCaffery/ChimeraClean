@@ -34,10 +34,13 @@
             this.rotationOffsetPanel = new ProxyTestGUI.RotationPanel();
             this.positionOffsetPanel = new ProxyTestGUI.VectorPanel();
             this.mainTabContainer = new System.Windows.Forms.TabControl();
+            this.proxyTab = new System.Windows.Forms.TabPage();
+            this.proxyPanel = new UtilLib.ProxyPanel();
             this.finalTab.SuspendLayout();
             this.rawTab.SuspendLayout();
             this.offsetTab.SuspendLayout();
             this.mainTabContainer.SuspendLayout();
+            this.proxyTab.SuspendLayout();
             this.SuspendLayout();
             // 
             // finalTab
@@ -177,12 +180,38 @@
             this.mainTabContainer.Controls.Add(this.offsetTab);
             this.mainTabContainer.Controls.Add(this.rawTab);
             this.mainTabContainer.Controls.Add(this.finalTab);
+            this.mainTabContainer.Controls.Add(this.proxyTab);
             this.mainTabContainer.Dock = System.Windows.Forms.DockStyle.Fill;
             this.mainTabContainer.Location = new System.Drawing.Point(0, 0);
             this.mainTabContainer.Name = "mainTabContainer";
             this.mainTabContainer.SelectedIndex = 0;
             this.mainTabContainer.Size = new System.Drawing.Size(640, 305);
             this.mainTabContainer.TabIndex = 2;
+            // 
+            // proxyTab
+            // 
+            this.proxyTab.Controls.Add(this.proxyPanel);
+            this.proxyTab.Location = new System.Drawing.Point(4, 22);
+            this.proxyTab.Name = "proxyTab";
+            this.proxyTab.Padding = new System.Windows.Forms.Padding(3);
+            this.proxyTab.Size = new System.Drawing.Size(632, 279);
+            this.proxyTab.TabIndex = 3;
+            this.proxyTab.Text = "Proxy";
+            this.proxyTab.UseVisualStyleBackColor = true;
+            // 
+            // proxyPanel
+            // 
+            this.proxyPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.proxyPanel.FirstName = "Routing";
+            this.proxyPanel.LastName = "God";
+            this.proxyPanel.Location = new System.Drawing.Point(3, 3);
+            this.proxyPanel.LoginURI = "http://apollo.cs.st-andrews.ac.uk:8002";
+            this.proxyPanel.Name = "proxyPanel1";
+            this.proxyPanel.Password = "1245";
+            this.proxyPanel.Port = "8080";
+            this.proxyPanel.Proxy = null;
+            this.proxyPanel.Size = new System.Drawing.Size(626, 273);
+            this.proxyPanel.TabIndex = 0;
             // 
             // SlaveForm
             // 
@@ -197,6 +226,7 @@
             this.rawTab.ResumeLayout(false);
             this.offsetTab.ResumeLayout(false);
             this.mainTabContainer.ResumeLayout(false);
+            this.proxyTab.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -213,6 +243,8 @@
         private ProxyTestGUI.VectorPanel finalPosition;
         private ProxyTestGUI.RotationPanel masterRotation;
         private ProxyTestGUI.VectorPanel masterPosition;
+        private System.Windows.Forms.TabPage proxyTab;
+        private UtilLib.ProxyPanel proxyPanel;
 
 
 

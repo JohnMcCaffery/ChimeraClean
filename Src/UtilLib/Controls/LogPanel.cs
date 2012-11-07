@@ -12,7 +12,8 @@ using OpenMetaverse;
 namespace UtilLib {
     public partial class LogPanel : UserControl {
         public LogPanel() {
-            InitializeComponent();
+            InitializeComponent();
+
             Logger.Log("Log Panel Ready", Helpers.LogLevel.Info);
             if (FireEventAppender.Instance != null) {
                 FireEventAppender.Instance.MessageLoggedEvent += new MessageLoggedEventHandler(Instance_MessageLoggedEvent);

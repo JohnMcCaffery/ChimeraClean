@@ -15,6 +15,7 @@ namespace ConsoleTest {
         public SlaveForm() : this (new CameraSlave()) { }
 
         public SlaveForm(CameraSlave slave) {
+            proxyPanel.Proxy = slave;
             this.slave = slave;
             InitializeComponent();
             Text = slave.Name;
