@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{851CF697-BE95-4F3C-94AB-FFCD0193AE6F}</ProjectGuid>
+    <ProjectGuid>ce33cf54-38ae-41e3-a81d-d3ec7fe49b28</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ProxyTest</RootNamespace>
-    <AssemblyName>ProxyTest</AssemblyName>
+    <RootNamespace>ArmadilloProxy</RootNamespace>
+    <AssemblyName>ArmadilloProxy</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

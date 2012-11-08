@@ -7,6 +7,7 @@ using OpenMetaverse.Packets;
 using System.Net;
 using System.Net.Sockets;
 using OpenMetaverse;
+using System.Diagnostics;
 
 namespace UtilLib {
     public abstract class ProxyManager {
@@ -115,6 +116,24 @@ namespace UtilLib {
             proxyLoginURI = loginURI;
             proxyPort = port;
             return StartProxy();
+        }
+
+        private Process client;
+
+        public bool StartClient(string clientExe, string firstName, string lastName, string password) {
+            return StartClientLogin(clientExe, firstName, lastName, password, "--loginURI http://localhost:" + proxyPort);
+        }
+
+        public bool StartClient(string clientExe, string firstName, string lastName, string password, string grid) {
+            return StartClientLogin(clientExe, firstName, lastName, password, "--grid " + grid);
+        }
+
+        private bool StartClientLogin(string clientExe, string firstName, string lastName, string password, string loginArgument) {
+            client = new Process();
+            client.StartInfo.FileName = clientExe;
+            client.StartInfo.Arguments = loginArgument;
+            client.StartInfo.Arguments += " --login " + firstName + " " + lastName + " " + password;
+            return client.Start();
         }
 
         /// <summary>
