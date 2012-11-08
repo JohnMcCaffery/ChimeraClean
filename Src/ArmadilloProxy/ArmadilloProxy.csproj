@@ -5,7 +5,7 @@
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>ce33cf54-38ae-41e3-a81d-d3ec7fe49b28</ProjectGuid>
+    <ProjectGuid>{C4A96637-6530-4AA1-8765-674200CF23A1}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ArmadilloProxy</RootNamespace>

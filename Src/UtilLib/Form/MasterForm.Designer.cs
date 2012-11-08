@@ -81,7 +81,7 @@
             this.rawPosition.Max = 12800D;
             this.rawPosition.Min = -1024D;
             this.rawPosition.Name = "rawPosition";
-            this.rawPosition.Size = new System.Drawing.Size(513, 98);
+            this.rawPosition.Size = new System.Drawing.Size(497, 98);
             this.rawPosition.TabIndex = 1;
             this.rawPosition.Value = ((OpenMetaverse.Vector3)(resources.GetObject("rawPosition.Value")));
             this.rawPosition.X = 128F;
@@ -99,7 +99,7 @@
             this.rawRotation.Name = "rawRotation";
             this.rawRotation.Pitch = 0F;
             this.rawRotation.Rotation = ((OpenMetaverse.Quaternion)(resources.GetObject("rawRotation.Rotation")));
-            this.rawRotation.Size = new System.Drawing.Size(513, 147);
+            this.rawRotation.Size = new System.Drawing.Size(497, 147);
             this.rawRotation.TabIndex = 0;
             this.rawRotation.Yaw = 0F;
             this.rawRotation.OnChange += new System.EventHandler(this.rawRotation_OnChange);

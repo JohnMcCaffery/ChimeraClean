@@ -62,6 +62,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BackChannel.cs" />
+    <Compile Include="Form\MasterForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\MasterForm.Designer.cs">
+      <DependentUpon>MasterForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form\SlaveForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\SlaveForm.Designer.cs">
+      <DependentUpon>SlaveForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="FullMaster.cs" />
     <Compile Include="FullSlave.cs" />
     <Compile Include="Controls\LogPanel.cs">
@@ -70,6 +82,7 @@
     <Compile Include="Controls\LogPanel.Designer.cs">
       <DependentUpon>LogPanel.cs</DependentUpon>
     </Compile>
+    <Compile Include="Init.cs" />
     <Compile Include="Master.cs" />
     <Compile Include="CameraMaster.cs" />
     <Compile Include="CameraSlave.cs" />
@@ -122,6 +135,14 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\VectorPanel.resx">
       <DependentUpon>VectorPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form\MasterForm.resx">
+      <DependentUpon>MasterForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form\SlaveForm.resx">
+      <DependentUpon>SlaveForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
