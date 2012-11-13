@@ -198,15 +198,20 @@ namespace UtilLib {
             IPEndPoint testEP = new IPEndPoint(IPAddress.Any, 0);
             bool pingReceived = false;
             object pingLock = new object();
-            testConnectionSocket.BeginReceive(ar => {
+            if (testConnectionSocket.Client != null)
                 try {
-                    byte[] data = testConnectionSocket.EndReceive(ar, ref testEP);
-                    pingReceived = Encoding.ASCII.GetString(data).Equals(InterProxyServer.PING);
-                    lock (pingLock)
-                        Monitor.PulseAll(pingLock);
+                    testConnectionSocket.BeginReceive(ar => {
+                        try {
+                            byte[] data = testConnectionSocket.EndReceive(ar, ref testEP);
+                            pingReceived = Encoding.ASCII.GetString(data).Equals(InterProxyServer.PING);
+                            lock (pingLock)
+                                Monitor.PulseAll(pingLock);
+                        } catch (ObjectDisposedException e) {
+                        } catch (SocketException e) { }
+                    }, ep);
                 } catch (ObjectDisposedException e) {
-                } catch (SocketException e) { }
-            }, ep);
+                    Logger.DebugLog("BackChannel unable to test connection. TestConnectionSocket disposed.");
+                }
             testConnectionSocket.Send(PING_B, PING_B.Length, ep);
             lock (pingLock)
                 Monitor.Wait(pingLock, 1000);

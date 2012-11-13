@@ -99,14 +99,6 @@ namespace UtilLib {
         }
 
         /// <summary>
-        /// Port that slaves should use to connect to this master.
-        /// </summary>
-        public int MasterPort {
-            get { return masterServer.Port; }
-            set { masterServer.Port = value; }
-        }
-
-        /// <summary>
         /// True if the master is ready to receive connections from slaves.
         /// </summary>
         public bool MasterRunning {
@@ -120,7 +112,9 @@ namespace UtilLib {
             get { return slaves.Values.ToArray(); }
         }
 
-        public Master() {
+        public Master() : this(null) { }
+
+        public Master(Init.Config config) : base (config) {
             masterServer.OnSlaveConnected += (name, ep) => {
                 Slave slave = new Slave(name, ep);
                 lock (slaves)
@@ -137,16 +131,19 @@ namespace UtilLib {
         /// <summary>
         /// Bind the master so that slaves can connect into it.
         /// </summary>
+        /// <returns>True if the master was successfully started.</returns>
         public bool StartMaster() {
-            return masterServer.Start();
+            return masterServer.Start(ProxyConfig.MasterPort);
         }
 
         /// <summary>
         /// Bind the master so that slaves can connect into it.
         /// </summary>
         /// <param name="masterPort">The masterPort that clients should connect to this master on.</param>
+        /// <returns>True if the master was successfully started.</returns>
         public bool StartMaster(int port) {
-            return masterServer.Start(port);
+            ProxyConfig.MasterPort = port;
+            return masterServer.Start();
         }
 
         /// <summary>

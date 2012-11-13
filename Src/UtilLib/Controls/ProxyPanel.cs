@@ -33,8 +33,6 @@ using System.Runtime.InteropServices;
 namespace UtilLib {
     public partial class ProxyPanel : UserControl {
         private ProxyManager proxy;
-        private Process client;
-        private bool loggedIn;
 
         public ProxyManager Proxy { 
             get { return proxy; }
@@ -42,13 +40,24 @@ namespace UtilLib {
                 proxy = value;
                 if (proxy == null)
                     return;
+
+                proxy.OnClientLoggedIn += (source, args) => {
+                    Invoke(new Action(() => proxyStatusLabel.Text = "Started + Client Logged In"));
+                };
+                proxy.OnProxyStarted += (source, args) => {
+                    Invoke(new Action(() => proxyStatusLabel.Text = "Started"));
+                };
+
                 Action init = () => {
-                    portBox.Text = proxy.ProxyPort.ToString();
-                    loginURIBox.Text = proxy.ProxyLoginURI;
-                    targetBox.Text = proxy.ClientExecutable;
-                    firstNameBox.Text = proxy.FirstName;
-                    lastNameBox.Text = proxy.LastName;
-                    passwordBox.Text = proxy.Password;
+                    portBox.Text = proxy.ProxyConfig.ProxyPort.ToString();
+                    loginURIBox.Text = proxy.ProxyConfig.ProxyLoginURI;
+                    targetBox.Text = proxy.ProxyConfig.ClientExecutable;
+                    firstNameBox.Text = proxy.ProxyConfig.LoginFirstName;
+                    lastNameBox.Text = proxy.ProxyConfig.LoginLastName;
+                    passwordBox.Text = proxy.ProxyConfig.LoginPassword;
+                    gridBox.Text = proxy.ProxyConfig.LoginGrid;
+                    gridBox.Enabled = proxy.ProxyConfig.UseGrid;
+                    gridCheck.Checked = proxy.ProxyConfig.UseGrid;
 
                     if (proxy.ProxyRunning) {
                         proxyStartButton.Text = "Disconnect SlaveProxy";
@@ -61,6 +70,7 @@ namespace UtilLib {
                     if (proxy.ClientLoggedIn) {
                         clientStatusLabel.Text = "Started";
                         clientStartButton.Text = "Disconnect Client";
+                        proxyStatusLabel.Text = "Started + Client Logged In";
                         firstNameBox.Enabled = false;
                         lastNameBox.Enabled = false;
                         passwordBox.Enabled = false;
@@ -84,16 +94,13 @@ namespace UtilLib {
             set { loginURIBox.Text = value; }
         }
 
-        public event EventHandler LoggedIn;
-        public event EventHandler OnStarted;
-
         public ProxyPanel() {
             InitializeComponent();
         }
 
         public ProxyPanel(ProxyManager proxy)
             : this() {
-                this.proxy = proxy;
+            Proxy = proxy;
         }
 
         private void connectButton_Click(object sender, EventArgs e) {
@@ -104,7 +111,7 @@ namespace UtilLib {
                     proxy.StopProxy();
                 string file = AppDomain.CurrentDomain.SetupInformation.ConfigurationFile;
 
-                if (proxy.StartProxy(loginURIBox.Text, Int32.Parse(portBox.Text))) {
+                if (proxy.StartProxy()) {
                     proxyStartButton.Text = "Disconnect SlaveProxy";
                     proxyStatusLabel.Text = "Started";
 
@@ -123,21 +130,12 @@ namespace UtilLib {
             }
         }
 
-        private void updateTimer_Tick(object sender, EventArgs e) {
-            if (loggedIn) {
-                proxyStatusLabel.Text = "Started + Client Logged In";
-            } 
-        }
-
         private void clientStartButton_Click(object sender, EventArgs e) {
-            if (clientStartButton.Text.Equals("Bind Client")) {
+            if (clientStartButton.Text.Equals("Launch Client")) {
                 if (!proxy.ProxyRunning)
                     proxyStartButton.PerformClick();
 
-                if (gridCheck.Checked)
-                    proxy.StartClient(targetBox.Text, firstNameBox.Text, lastNameBox.Text, passwordBox.Text, gridBox.Text);
-                else
-                    proxy.StartClient(targetBox.Text, firstNameBox.Text, lastNameBox.Text, passwordBox.Text);
+                proxy.StartClient();
 
                 clientStatusLabel.Text = "Started";
                 clientStartButton.Text = "Disconnect Client";
@@ -145,13 +143,17 @@ namespace UtilLib {
                 lastNameBox.Enabled = false;
                 passwordBox.Enabled = false;
                 targetBox.Enabled = false;
+                gridCheck.Enabled = false;
+                gridBox.Enabled = false;
             } else {
                 clientStatusLabel.Text = "Stopped";
-                clientStartButton.Text = "Bind Client";
+                clientStartButton.Text = "Launch Client";
                 firstNameBox.Enabled = true;
                 lastNameBox.Enabled = true;
                 passwordBox.Enabled = true;
                 targetBox.Enabled = true;
+                gridCheck.Enabled = true;
+                gridBox.Enabled = true;
                 //SendMEssage(proxyAddress.Id, 
             }
         }
@@ -176,11 +178,43 @@ namespace UtilLib {
         }
 
         private void portBox_TextChanged(object sender, EventArgs e) {
-            gridBox.Text = portBox.Text;
+            if (gridBox.Text.Equals("")) {
+                gridBox.Text = portBox.Text;
+                proxy.ProxyConfig.LoginGrid = portBox.Text;
+            }
+            proxy.ProxyConfig.ProxyPort = Int32.Parse(portBox.Text);
         }
 
         private void gridCheck_CheckedChanged(object sender, EventArgs e) {
             gridBox.Enabled = gridCheck.Checked;
+            if (gridCheck.Checked && gridBox.Text.Equals(""))
+                gridBox.Text = portBox.Text;
+            else if (gridCheck.Checked)
+                proxy.ProxyConfig.LoginGrid = gridBox.Text;
+        }
+
+        private void loginURIBox_TextChanged(object sender, EventArgs e) {
+            proxy.ProxyConfig.ProxyLoginURI = loginURIBox.Text;
+        }
+
+        private void firstNameBox_TextChanged(object sender, EventArgs e) {
+            proxy.ProxyConfig.LoginFirstName = firstNameBox.Text;
+        }
+
+        private void lastNameBox_TextChanged(object sender, EventArgs e) {
+            proxy.ProxyConfig.LoginLastName = lastNameBox.Text;
+        }
+
+        private void passwordBox_TextChanged(object sender, EventArgs e) {
+            proxy.ProxyConfig.LoginPassword = passwordBox.Text;
+        }
+
+        private void targetBox_TextChanged(object sender, EventArgs e) {
+            proxy.ProxyConfig.ClientExecutable = targetBox.Text;
+        }
+
+        private void gridBox_TextChanged(object sender, EventArgs e) {
+            proxy.ProxyConfig.LoginGrid = gridBox.Text;
         }
 
     }

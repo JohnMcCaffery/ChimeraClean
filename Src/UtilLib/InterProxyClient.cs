@@ -47,18 +47,33 @@ namespace UtilLib {
         /// </summary>
         private bool connected = false;
 
-        private readonly object connectLock = new object();
+        private readonly object connectLock = new object();
+
         private readonly object testLock = new object();
 
         /// <summary>
         /// Create a new InterProxyClient
         /// </summary>
-        public InterProxyClient() {
+        public InterProxyClient(string name) {
             Bind(0);
             Logger.Log("Slave bound to " + Address + ":" + Port + ".", Helpers.LogLevel.Info);
-            Name = "Slave 1";
+            Name = name;
 
             AddPacketDelegate(DISCONNECT, HandleDisconnect);
+        }
+
+        /// <summary>
+        /// Connect a new InterProxyClient and have it automatically connect to a local server on 'masterPort'.
+        /// </summary>
+        public InterProxyClient(string name, int port) : this(name, port, Dns.GetHostName()) { }
+
+        /// <summary>
+        /// Create a new InterProxyClient and have it automatically connect to a local server on 'masterPort'.
+        /// </summary>
+        /// <param name="masterAddress">The masterAddress of the master server to connect to.</param>
+        /// <param name="masterPort">The masterPort on the master server to connect to.</param>
+        public InterProxyClient(string name, int port, string address) : this (name) {
+            Connect(address, port);
         }
 
         private void HandleDisconnect(string msg, IPEndPoint source) {
@@ -68,20 +83,6 @@ namespace UtilLib {
                 if (OnDisconnected != null)
                     OnDisconnected(this, null);
             }
-        }
-
-        /// <summary>
-        /// Connect a new InterProxyClient and have it automatically connect to a local server on 'masterPort'.
-        /// </summary>
-        public InterProxyClient(int port) : this(Dns.GetHostName(), port) { }
-
-        /// <summary>
-        /// Create a new InterProxyClient and have it automatically connect to a local server on 'masterPort'.
-        /// </summary>
-        /// <param name="masterAddress">The masterAddress of the master server to connect to.</param>
-        /// <param name="masterPort">The masterPort on the master server to connect to.</param>
-        public InterProxyClient(string address, int port) : this () {
-            Connect(address, port);
         }
 
         /// <summary>

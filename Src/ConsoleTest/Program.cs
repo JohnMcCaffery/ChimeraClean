@@ -32,6 +32,12 @@ namespace ConsoleTest {
             CameraMaster m = Init.InitCameraMaster(args, AppDomain.CurrentDomain.SetupInformation.ConfigurationFile);
             StartGui(() => new MasterForm(m));
 
+            CameraSlave s1 = Init.InitCameraSlave(args, AppDomain.CurrentDomain.SetupInformation.ConfigurationFile, "Slave1");
+            StartGui(() => new SlaveForm(s1));
+
+            CameraSlave s2 = Init.InitCameraSlave(args, AppDomain.CurrentDomain.SetupInformation.ConfigurationFile, "Slave2");
+            StartGui(() => new SlaveForm(s2));
+
             /*
             int masterPort = 8090;
             int masterProxyPort = 8080;

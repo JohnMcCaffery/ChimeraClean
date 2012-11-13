@@ -43,13 +43,11 @@ namespace UtilLib {
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent() {
-            this.components = new System.ComponentModel.Container();
             this.loginURIBox = new System.Windows.Forms.TextBox();
             this.loginURILabel = new System.Windows.Forms.Label();
             this.portBox = new System.Windows.Forms.TextBox();
             this.portLabel = new System.Windows.Forms.Label();
             this.proxyStartButton = new System.Windows.Forms.Button();
-            this.updateTimer = new System.Windows.Forms.Timer(this.components);
             this.clientStartButton = new System.Windows.Forms.Button();
             this.firstNameBox = new System.Windows.Forms.TextBox();
             this.firstNameLabel = new System.Windows.Forms.Label();
@@ -76,6 +74,7 @@ namespace UtilLib {
             this.loginURIBox.Size = new System.Drawing.Size(501, 20);
             this.loginURIBox.TabIndex = 16;
             this.loginURIBox.Text = "http://apollo.cs.st-andrews.ac.uk:8002";
+            this.loginURIBox.TextChanged += new System.EventHandler(this.loginURIBox_TextChanged);
             // 
             // loginURILabel
             // 
@@ -118,11 +117,6 @@ namespace UtilLib {
             this.proxyStartButton.UseVisualStyleBackColor = true;
             this.proxyStartButton.Click += new System.EventHandler(this.connectButton_Click);
             // 
-            // updateTimer
-            // 
-            this.updateTimer.Enabled = true;
-            this.updateTimer.Tick += new System.EventHandler(this.updateTimer_Tick);
-            // 
             // clientStartButton
             // 
             this.clientStartButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -131,7 +125,7 @@ namespace UtilLib {
             this.clientStartButton.Name = "clientStartButton";
             this.clientStartButton.Size = new System.Drawing.Size(674, 23);
             this.clientStartButton.TabIndex = 19;
-            this.clientStartButton.Text = "Bind Client";
+            this.clientStartButton.Text = "Launch Client";
             this.clientStartButton.UseVisualStyleBackColor = true;
             this.clientStartButton.Click += new System.EventHandler(this.clientStartButton_Click);
             // 
@@ -142,6 +136,7 @@ namespace UtilLib {
             this.firstNameBox.Size = new System.Drawing.Size(116, 20);
             this.firstNameBox.TabIndex = 20;
             this.firstNameBox.Text = "Routing";
+            this.firstNameBox.TextChanged += new System.EventHandler(this.firstNameBox_TextChanged);
             // 
             // firstNameLabel
             // 
@@ -168,6 +163,7 @@ namespace UtilLib {
             this.lastNameBox.Size = new System.Drawing.Size(122, 20);
             this.lastNameBox.TabIndex = 22;
             this.lastNameBox.Text = "God";
+            this.lastNameBox.TextChanged += new System.EventHandler(this.lastNameBox_TextChanged);
             // 
             // label1
             // 
@@ -188,6 +184,7 @@ namespace UtilLib {
             this.passwordBox.Size = new System.Drawing.Size(243, 20);
             this.passwordBox.TabIndex = 24;
             this.passwordBox.Text = "1245";
+            this.passwordBox.TextChanged += new System.EventHandler(this.passwordBox_TextChanged);
             // 
             // targetBox
             // 
@@ -198,6 +195,7 @@ namespace UtilLib {
             this.targetBox.Size = new System.Drawing.Size(502, 20);
             this.targetBox.TabIndex = 26;
             this.targetBox.Text = "C:\\\\Program Files (x86)\\\\Firestorm-Release\\\\Firestorm-Release.exe";
+            this.targetBox.TextChanged += new System.EventHandler(this.targetBox_TextChanged);
             // 
             // clientLabel
             // 
@@ -248,6 +246,7 @@ namespace UtilLib {
             // 
             // gridCheck
             // 
+            this.gridCheck.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.gridCheck.AutoSize = true;
             this.gridCheck.CheckAlign = System.Drawing.ContentAlignment.BottomRight;
             this.gridCheck.Location = new System.Drawing.Point(550, 83);
@@ -260,11 +259,12 @@ namespace UtilLib {
             // 
             // gridBox
             // 
+            this.gridBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.gridBox.Location = new System.Drawing.Point(601, 81);
             this.gridBox.Name = "gridBox";
             this.gridBox.Size = new System.Drawing.Size(79, 20);
             this.gridBox.TabIndex = 33;
-            this.gridBox.Text = "8080";
+            this.gridBox.TextChanged += new System.EventHandler(this.gridBox_TextChanged);
             // 
             // ProxyPanel
             // 
@@ -304,7 +304,6 @@ namespace UtilLib {
         private System.Windows.Forms.TextBox portBox;
         private System.Windows.Forms.Label portLabel;
         private System.Windows.Forms.Button proxyStartButton;
-        private System.Windows.Forms.Timer updateTimer;
         private System.Windows.Forms.Button clientStartButton;
         private System.Windows.Forms.TextBox firstNameBox;
         private System.Windows.Forms.Label firstNameLabel;

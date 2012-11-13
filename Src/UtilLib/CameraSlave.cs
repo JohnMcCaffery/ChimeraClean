@@ -26,12 +26,17 @@ namespace UtilLib {
         private readonly Rotation finalRotation;
         private readonly InterProxyClient interProxyClient;
 
-        public CameraSlave() : this("Slave " + (SlaveCount + 1), new InterProxyClient()) { }
+        public CameraSlave() : this("Slave " + (SlaveCount + 1)) { }
 
-        public CameraSlave(string name) : this (name, new InterProxyClient()) { }
+        public CameraSlave(string name) : this (name, new InterProxyClient(name)) { }
 
-        public CameraSlave(InterProxyClient client) : this ("Slave " + (SlaveCount + 1), client)  { }
-        public CameraSlave(string name, InterProxyClient client) {
+        public CameraSlave(string name, Init.Config config) : this(name, new InterProxyClient(name, config.MasterPort), config) { }
+
+        public CameraSlave(InterProxyClient client) : this ("Slave " + (SlaveCount + 1), client)  { }
+
+        public CameraSlave(string name, InterProxyClient client) : this (name, client, null) { }
+
+        public CameraSlave(string name, InterProxyClient client, Init.Config config) : base (config) { 
             client.Name = name;
 
             finalPosition = MasterPosition;
@@ -128,6 +133,10 @@ namespace UtilLib {
         }
 
         public bool Connect(int port) {
+            ProxyConfig.MasterPort = port;
+            return Connect();
+        }
+        public bool Connect() {
             InterProxyClient.OnPacketReceived += (p, ep) => {
                 if (p.Type == PacketType.AgentUpdate) {
                     AgentUpdatePacket ap = (AgentUpdatePacket)p;
@@ -139,7 +148,7 @@ namespace UtilLib {
                 }
                 return p;
             };
-            return InterProxyClient.Connect(port);
+            return InterProxyClient.Connect(ProxyConfig.MasterPort);
         }
 
         public void Stop() {

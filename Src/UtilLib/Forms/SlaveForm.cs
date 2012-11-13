@@ -15,14 +15,14 @@ namespace ConsoleTest {
         public SlaveForm() : this (new CameraSlave()) { }
 
         public SlaveForm(CameraSlave slave) {
-            proxyPanel.Proxy = slave;
             this.slave = slave;
             InitializeComponent();
+            proxyPanel.Proxy = slave;
             Text = slave.Name;
             if (slave.ProxyRunning)
-                Text += ": " + slave.ProxyPort;
+                Text += ": " + slave.ProxyConfig.ProxyPort;
             slave.OnProxyStarted += (source, args) => {
-                Invoke(new Action(() => Text = Name + ": " + slave.ProxyPort));
+                Invoke(new Action(() => Text = Name + ": " + slave.ProxyConfig.ProxyPort));
             };
             slave.OnUpdateSentToClient += (position, lookAt) => {
                 Invoke(new Action(() => {

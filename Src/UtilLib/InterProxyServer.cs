@@ -121,7 +121,7 @@ namespace UtilLib {
         /// Will bind to localhost and whatever masterPort is open.
         /// </summary>
         public bool Start() {
-            if (Bind(port)) {
+            if (Bind(Port)) {
                 Logger.Log("Master bound to " + Address + ":" + Port, Helpers.LogLevel.Info);
                 return true;
             }

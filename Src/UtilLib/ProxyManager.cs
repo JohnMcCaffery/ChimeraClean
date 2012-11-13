@@ -10,20 +10,15 @@ using OpenMetaverse;
 using System.Diagnostics;
 using System.ComponentModel;
 using System.Threading;
+using GridProxyConfig = GridProxy.ProxyConfig;
 
 namespace UtilLib {
     public abstract class ProxyManager {
-        private Process client;
-        private string clientExe = "C:\\Program Files (x86)\\Firestorm-Release\\Firestorm-Release.exe";
-        private string firstName = null;
-        private string lastName = null;
-        private string password = null;
-        private string grid = null;
 
+        private Process client;
         protected Proxy clientProxy;
         private readonly string proxyAddress = "127.0.0.1";
-        private string proxyLoginURI = "http://diana.cs.st-andrews.ac.uk:8002";
-        private int proxyPort = 8080;
+        private Init.Config proxyConfig;
         private bool clientLoggedIn;
         private bool proxyStarted;
 
@@ -36,69 +31,6 @@ namespace UtilLib {
         /// Triggered whenever a client logs in to the proxy.
         /// </summary>
         public event EventHandler OnClientLoggedIn;
-
-        /// <summary>
-        /// The executable that will run the client.
-        /// </summary>
-        public string ClientExecutable {
-            get { return clientExe; }
-            set { clientExe = value; }
-        }
-
-        /// <summary>
-        /// The first name to login with.
-        /// </summary>
-        public string FirstName {
-            get { return firstName; }
-            set { firstName = value; }
-        }
-
-        /// <summary>
-        /// The last name to login with.
-        /// </summary>
-        public string LastName {
-            get { return lastName; }
-            set { lastName = value; }
-        }
-
-        /// <summary>
-        /// The password to login with.
-        /// </summary>
-        public string Password {
-            get { return password; }
-            set { password = value; }
-        }
-
-        /// <summary>
-        /// The name of the grid the client should connect to.
-        /// </summary>
-        public string Grid {
-            get { return grid; }
-            set { grid = value; }
-        }
-
-        /// <summary>
-        /// The address of the server the proxy is proxying.
-        /// </summary>
-        public string ProxyLoginURI {
-            get { return proxyLoginURI; }
-            set { proxyLoginURI = value; }
-        }
-
-        /// <summary>
-        /// Address that clients should use to connect to the proxy.
-        /// </summary>
-        public string ProxyAddress {
-            get { return proxyAddress; }
-        }
-
-        /// <summary>
-        /// Port that clients should use to connect to the proxy.
-        /// </summary>
-        public int ProxyPort {
-            get { return proxyPort; }
-            set { proxyPort = value; }
-        }
 
         /// <summary>
         /// True if the proxy is ready to receive a connection from a client.
@@ -115,18 +47,60 @@ namespace UtilLib {
         }
 
         /// <summary>
-        /// Bind a proxy so that clients can connect to this master and be shadowed.
+        /// The configuration used to start the proxy.
         /// </summary>
+        public Init.Config ProxyConfig {
+            get {
+                if (proxyConfig == null)
+                    proxyConfig = new Init.Config();
+                return proxyConfig; 
+            }
+            set { proxyConfig = value; }
+        }
+
+        /// <summary>
+        /// Create a ProxyManager specifying a configuration.
+        /// </summary>
+        /// <param name="config">The configuration for the proxy manager.</param>
+        protected ProxyManager(Init.Config config) {
+            proxyConfig = config;
+        }
+
+        /// <summary>
+        /// Create a ProxyManager without specifying a configuration.
+        /// </summary>
+        protected ProxyManager() {
+            proxyConfig = null;
+        }
+
+        /// <summary>
+        /// Bind a proxy with the configuration specified in the passed config.
+        /// </summary>
+        /// <param name="config">The configuration to set up the proxy with.</param>
+        /// <returns>True if the proxy was successfully started.</returns>
+        public bool StartProxy(Init.Config config) {
+            proxyConfig = config;
+            return StartProxy();
+        }
+
+        /// <summary>
+        /// Bind a proxy with the details specified in ProxyConfig.
+        /// </summary>
+        /// <returns>True if the proxy was successfully started.</returns>
         public bool StartProxy() {
+            if (proxyConfig == null)
+                throw new Exception("Unable to start proxy. No configuration specified.");
+            if (proxyConfig.ProxyLoginURI == null)
+                throw new Exception("Unable to start proxy. No login URI specified in the configuration.");
             if (clientProxy != null)
                 clientProxy.Stop();
             string file = AppDomain.CurrentDomain.SetupInformation.ConfigurationFile;
 
-            string portArg = "--proxy-login-port=" + proxyPort;
+            string portArg = "--proxy-login-port=" + proxyConfig.ProxyPort;
             string listenIPArg = "--proxy-proxyAddress-facing-address=" + proxyAddress;
-            string loginURIArg = "--proxy-remote-login-uri=" + proxyLoginURI;
+            string loginURIArg = "--proxy-remote-login-uri=" + proxyConfig.ProxyLoginURI;
             string[] args = { portArg, listenIPArg, loginURIArg };
-            ProxyConfig config = new ProxyConfig("Routing God", "jm726@st-andrews.ac.uk", args);
+            GridProxyConfig config = new GridProxyConfig("Routing God", "jm726@st-andrews.ac.uk", args);
             try {
                 clientProxy = new Proxy(config);
                 clientProxy.AddLoginResponseDelegate(response => {
@@ -157,34 +131,30 @@ namespace UtilLib {
             return proxyStarted;
         }
 
-        /// <summary>
-        /// Bind a proxy so that clients can connect to this master and be shadowed. Specifies the masterAddress and masterPort to start on.
-        /// </summary>
-        /// <param name="masterAddress">The masterAddress that clients can use to connect to this proxy.</param>
-        /// <param name="masterPort">The masterPort that clients can use to connect to this proxy.</param>
-        public bool StartProxy(string loginURI, int port) {
-            proxyLoginURI = loginURI;
-            proxyPort = port;
-            return StartProxy();
-        }
-
         private object startLock = new object();
 
+        /// <summary>
+        /// Start a client process to connect to the proxy. If the proxy is not already running it is started.
+        /// </summary>
+        /// <returns>True if the client was successfully started</returns>
         public bool StartClient() {
-            if (firstName == null)
-                throw new Exception("Unable to start client. No first name specified.");
-            if (lastName == null)
-                throw new Exception("Unable to start client. No last name specified.");
-            if (password == null)
-                throw new Exception("Unable to start client. No password specified.");
+            if (proxyConfig == null)
+                throw new Exception("Unable to start client. No configuration specified.");
+            if (proxyConfig.ClientExecutable == null)
+                throw new Exception("Unable to start client. No executable specified.");
+            if (!ProxyRunning) 
+                StartProxy();
+
             client = new Process();
-            client.StartInfo.FileName = clientExe;
-            if (grid == null)
-                client.StartInfo.Arguments = "--loginURI http://localhost:" + proxyPort;
+            client.StartInfo.FileName = proxyConfig.ClientExecutable;
+            if (proxyConfig.UseGrid)
+                client.StartInfo.Arguments = "--grid " + proxyConfig.LoginGrid;
             else
-                client.StartInfo.Arguments = "--grid " + grid;
-            client.StartInfo.Arguments += " --login " + firstName + " " + lastName + " " + password;
+                client.StartInfo.Arguments = "--loginURI http://localhost:" + proxyConfig.ProxyPort;
+            if (proxyConfig.AutoLoginClient)
+                client.StartInfo.Arguments += " --login " + proxyConfig.LoginFirstName + " " + proxyConfig.LoginLastName + " " + proxyConfig.LoginPassword;
             try {
+                Logger.Log("Starting client '" + client.StartInfo.FileName + "' with arguments '" + client.StartInfo.Arguments + "'.", Helpers.LogLevel.Info);
                 if (!client.Start())
                     return false;
 
@@ -194,22 +164,9 @@ namespace UtilLib {
                 return clientLoggedIn;
 
             } catch (Win32Exception e) {
-                Logger.Log("Unable to start client from " + clientExe + ". " + e.Message, Helpers.LogLevel.Info);
+                Logger.Log("Unable to start client from " + client.StartInfo.FileName + ". " + e.Message, Helpers.LogLevel.Info);
                 return false;
             }
-        }
-
-        public bool StartClient(string clientExe, string firstName, string lastName, string password) {
-            this.clientExe = clientExe;
-            this.firstName = firstName;
-            this.lastName = lastName;
-            this.password = password;
-            return StartClient();
-        }
-
-        public bool StartClient(string clientExe, string firstName, string lastName, string password, string grid) {
-            this.grid = grid;
-            return StartClient(clientExe, firstName, lastName, password);
         }
 
         /// <summary>
