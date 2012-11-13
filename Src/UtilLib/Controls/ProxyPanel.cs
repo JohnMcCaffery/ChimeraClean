@@ -38,7 +38,40 @@ namespace UtilLib {
 
         public ProxyManager Proxy { 
             get { return proxy; }
-            set { proxy = value; }
+            set { 
+                proxy = value;
+                if (proxy == null)
+                    return;
+                Action init = () => {
+                    portBox.Text = proxy.ProxyPort.ToString();
+                    loginURIBox.Text = proxy.ProxyLoginURI;
+                    targetBox.Text = proxy.ClientExecutable;
+                    firstNameBox.Text = proxy.FirstName;
+                    lastNameBox.Text = proxy.LastName;
+                    passwordBox.Text = proxy.Password;
+
+                    if (proxy.ProxyRunning) {
+                        proxyStartButton.Text = "Disconnect SlaveProxy";
+                        proxyStatusLabel.Text = "Started";
+
+                        portBox.Enabled = false;
+                        loginURIBox.Enabled = false;
+                    }
+
+                    if (proxy.ClientLoggedIn) {
+                        clientStatusLabel.Text = "Started";
+                        clientStartButton.Text = "Disconnect Client";
+                        firstNameBox.Enabled = false;
+                        lastNameBox.Enabled = false;
+                        passwordBox.Enabled = false;
+                        targetBox.Enabled = false;
+                    }
+                };
+                if (InvokeRequired)
+                    Invoke(init);
+                else
+                    init();
+            }
         }
         public bool HasStarted { get { return proxy != null; } }
 
@@ -98,16 +131,13 @@ namespace UtilLib {
 
         private void clientStartButton_Click(object sender, EventArgs e) {
             if (clientStartButton.Text.Equals("Bind Client")) {
-                if (proxy == null)
+                if (!proxy.ProxyRunning)
                     proxyStartButton.PerformClick();
-                client = new Process();
-                client.StartInfo.FileName = targetBox.Text;
-                if (useLoginURICheck.Checked)
-                    client.StartInfo.Arguments = "--proxyLoginURI http://localhost:" + portBox.Text;
+
+                if (gridCheck.Checked)
+                    proxy.StartClient(targetBox.Text, firstNameBox.Text, lastNameBox.Text, passwordBox.Text, gridBox.Text);
                 else
-                    client.StartInfo.Arguments = " --grid " + portBox.Text;
-                client.StartInfo.Arguments += " --login " + firstNameBox.Text + " " + lastNameBox.Text + " " + passwordBox.Text;
-                client.Start();
+                    proxy.StartClient(targetBox.Text, firstNameBox.Text, lastNameBox.Text, passwordBox.Text);
 
                 clientStatusLabel.Text = "Started";
                 clientStartButton.Text = "Disconnect Client";
@@ -143,6 +173,14 @@ namespace UtilLib {
         public string Password {
             get { return passwordBox.Text; }
             set { passwordBox.Text = value; }
+        }
+
+        private void portBox_TextChanged(object sender, EventArgs e) {
+            gridBox.Text = portBox.Text;
+        }
+
+        private void gridCheck_CheckedChanged(object sender, EventArgs e) {
+            gridBox.Enabled = gridCheck.Checked;
         }
 
     }

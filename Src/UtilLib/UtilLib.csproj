@@ -40,6 +40,9 @@
     <Reference Include="log4net">
       <HintPath>..\..\..\libopenmetaverse\bin\log4net.dll</HintPath>
     </Reference>
+    <Reference Include="Nini">
+      <HintPath>..\..\..\..\opensim-0.7.3.1\bin\Nini.dll</HintPath>
+    </Reference>
     <Reference Include="OpenMetaverse, Version=0.0.0.17171, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\libopenmetaverse\OpenMetaverse\obj\Debug\OpenMetaverse.dll</HintPath>
@@ -62,16 +65,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BackChannel.cs" />
-    <Compile Include="Form\MasterForm.cs">
+    <Compile Include="Forms\MasterForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form\MasterForm.Designer.cs">
+    <Compile Include="Forms\MasterForm.Designer.cs">
       <DependentUpon>MasterForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Form\SlaveForm.cs">
+    <Compile Include="Forms\SlaveForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form\SlaveForm.Designer.cs">
+    <Compile Include="Forms\SlaveForm.Designer.cs">
       <DependentUpon>SlaveForm.cs</DependentUpon>
     </Compile>
     <Compile Include="FullMaster.cs" />
@@ -136,11 +139,11 @@
     <EmbeddedResource Include="Controls\VectorPanel.resx">
       <DependentUpon>VectorPanel.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Form\MasterForm.resx">
+    <EmbeddedResource Include="Forms\MasterForm.resx">
       <DependentUpon>MasterForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Form\SlaveForm.resx">
+    <EmbeddedResource Include="Forms\SlaveForm.resx">
       <DependentUpon>SlaveForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>

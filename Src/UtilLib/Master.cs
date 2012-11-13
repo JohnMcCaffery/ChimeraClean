@@ -103,6 +103,7 @@ namespace UtilLib {
         /// </summary>
         public int MasterPort {
             get { return masterServer.Port; }
+            set { masterServer.Port = value; }
         }
 
         /// <summary>

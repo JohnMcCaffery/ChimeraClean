@@ -63,7 +63,8 @@ namespace UtilLib {
             this.proxyStatusLabel = new System.Windows.Forms.Label();
             this.clientStatusLabel = new System.Windows.Forms.Label();
             this.clientStatusLabelLabel = new System.Windows.Forms.Label();
-            this.useLoginURICheck = new System.Windows.Forms.CheckBox();
+            this.gridCheck = new System.Windows.Forms.CheckBox();
+            this.gridBox = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // loginURIBox
@@ -93,6 +94,7 @@ namespace UtilLib {
             this.portBox.Size = new System.Drawing.Size(39, 20);
             this.portBox.TabIndex = 12;
             this.portBox.Text = "8080";
+            this.portBox.TextChanged += new System.EventHandler(this.portBox_TextChanged);
             // 
             // portLabel
             // 
@@ -193,7 +195,7 @@ namespace UtilLib {
             | System.Windows.Forms.AnchorStyles.Right)));
             this.targetBox.Location = new System.Drawing.Point(42, 81);
             this.targetBox.Name = "targetBox";
-            this.targetBox.Size = new System.Drawing.Size(638, 20);
+            this.targetBox.Size = new System.Drawing.Size(502, 20);
             this.targetBox.TabIndex = 26;
             this.targetBox.Text = "C:\\\\Program Files (x86)\\\\Firestorm-Release\\\\Firestorm-Release.exe";
             // 
@@ -244,21 +246,32 @@ namespace UtilLib {
             this.clientStatusLabelLabel.TabIndex = 30;
             this.clientStatusLabelLabel.Text = "Client Status: ";
             // 
-            // useLoginURICheck
+            // gridCheck
             // 
-            this.useLoginURICheck.AutoSize = true;
-            this.useLoginURICheck.Location = new System.Drawing.Point(250, 136);
-            this.useLoginURICheck.Name = "useLoginURICheck";
-            this.useLoginURICheck.Size = new System.Drawing.Size(93, 17);
-            this.useLoginURICheck.TabIndex = 32;
-            this.useLoginURICheck.Text = "Use LoginURI";
-            this.useLoginURICheck.UseVisualStyleBackColor = true;
+            this.gridCheck.AutoSize = true;
+            this.gridCheck.CheckAlign = System.Drawing.ContentAlignment.BottomRight;
+            this.gridCheck.Location = new System.Drawing.Point(550, 83);
+            this.gridCheck.Name = "gridCheck";
+            this.gridCheck.Size = new System.Drawing.Size(45, 17);
+            this.gridCheck.TabIndex = 32;
+            this.gridCheck.Text = "Grid";
+            this.gridCheck.UseVisualStyleBackColor = true;
+            this.gridCheck.CheckedChanged += new System.EventHandler(this.gridCheck_CheckedChanged);
+            // 
+            // gridBox
+            // 
+            this.gridBox.Location = new System.Drawing.Point(601, 81);
+            this.gridBox.Name = "gridBox";
+            this.gridBox.Size = new System.Drawing.Size(79, 20);
+            this.gridBox.TabIndex = 33;
+            this.gridBox.Text = "8080";
             // 
             // ProxyPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.useLoginURICheck);
+            this.Controls.Add(this.gridBox);
+            this.Controls.Add(this.gridCheck);
             this.Controls.Add(this.clientStatusLabel);
             this.Controls.Add(this.clientStatusLabelLabel);
             this.Controls.Add(this.proxyStatusLabel);
@@ -305,6 +318,7 @@ namespace UtilLib {
         private System.Windows.Forms.Label proxyStatusLabel;
         private System.Windows.Forms.Label clientStatusLabel;
         private System.Windows.Forms.Label clientStatusLabelLabel;
-        private System.Windows.Forms.CheckBox useLoginURICheck;
+        private System.Windows.Forms.CheckBox gridCheck;
+        private System.Windows.Forms.TextBox gridBox;
     }
 }

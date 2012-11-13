@@ -133,7 +133,7 @@ namespace UtilLib {
         /// </summary>
         /// <param name="masterPort">The masterPort that clients can use to connect to this proxy.</param>
         public bool Start(int port) {
-            this.port = port;
+            Port = port;
             return Start();
         }
 

@@ -40,7 +40,9 @@ namespace UtilLib {
 
         /// <summary>
         /// Tracks whether the socket is currently bound.
-        /// </summary>        private bool bound;
+        /// </summary>
+        private bool bound;
+
         /// <summary>
         /// Buffer for zero coded packets.
         /// </summary>
@@ -50,11 +52,17 @@ namespace UtilLib {
         /// How many packets the slave has received.
         /// </summary>
         private int receivedPackets = 0;
+        
+        /// <summary>
+        /// The port to bind to.
+        /// </summary>
+        private int port;
 
         /// <summary>
         /// Triggered whenever a new datagram packet is received.
         /// </summary>
-        public event DataDelegate OnDataReceived;
+        public event DataDelegate OnDataReceived;
+
         /// <summary>
         /// Triggered whenever a new packet is received.
         /// </summary>
@@ -77,20 +85,31 @@ namespace UtilLib {
         /// </summary>
         public bool Bound {
             get { return bound; }
-        }        /// <summary>
+        }
+
+        /// <summary>
         /// The address that packets will be received on.
         /// "Not Bound" if not bound.
-        /// </summary>        public string Address {            get { return bound ? ((IPEndPoint) socket.Client.LocalEndPoint).Address.ToString() : "Not Bound"; }        }                /// <summary>
+        /// </summary>
+        public string Address {
+            get { return bound ? ((IPEndPoint) socket.Client.LocalEndPoint).Address.ToString() : "Not Bound"; }
+        }
+        
+        /// <summary>
         /// The port that packets will be received on.
-        /// -1 if not bound.
-        /// </summary>        public int Port {            get { return bound ? ((IPEndPoint) socket.Client.LocalEndPoint).Port : -1; }        }
+        /// </summary>
+        public int Port {
+            get { return bound ? ((IPEndPoint) socket.Client.LocalEndPoint).Port : port; }
+            set { port = bound ? Port : value; }
+        }
 
         /// <summary>
         /// How many packets this slave has received.
         /// </summary>
         public int ReceivedPackets {
             get { return receivedPackets; }
-        }
+        }
+
         /// <summary>
         /// Will be called whenever a send fails because a connection was forcibly closed by the remote host.
         /// </summary>
@@ -207,7 +226,8 @@ namespace UtilLib {
             IPEndPoint source = new IPEndPoint(IPAddress.Any, 0);
             bool disposing = false;
             try {
-                byte[] bytes = socket.EndReceive(ar, ref source);                if (OnDataReceived != null)
+                byte[] bytes = socket.EndReceive(ar, ref source);
+                if (OnDataReceived != null)
                     OnDataReceived(bytes, bytes.Length, source);
                 string msg = Encoding.ASCII.GetString(bytes);
                 string key = packetDelegates.Keys.SingleOrDefault(str => msg.StartsWith(str));
@@ -246,6 +266,10 @@ namespace UtilLib {
             }
         }
 
+        protected bool Bind() {
+            return Bind(port);
+        }
+
         /// <summary>
         /// Bind the UDP socket to a specific port.
         /// </summary>
@@ -269,7 +293,8 @@ namespace UtilLib {
     /// 
     /// <param name="msg">The message received, as a string.</param>
     /// <param name="source">The source of the data.</param>
-    public delegate void MessageDelegate(string msg, IPEndPoint source);
+    public delegate void MessageDelegate(string msg, IPEndPoint source);
+
 
     /// <summary>
     /// Callback for when a datagram packet.

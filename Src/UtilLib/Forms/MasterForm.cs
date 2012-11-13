@@ -22,8 +22,10 @@ namespace ConsoleTest {
             proxyPanel.Proxy = master;
 
             this.master = master;
+
             rawPosition.Value = master.Position;
             rawRotation.LookAtVector = master.Rotation.LookAtVector;
+
             master.OnCameraUpdated += (source, args) => {
                 Invoke(new Action(() => {
                     rawPosition.Value = master.Position;
