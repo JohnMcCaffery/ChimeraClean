@@ -251,7 +251,7 @@
             // injectedLabel
             // 
             this.injectedLabel.AutoSize = true;
-            this.injectedLabel.Location = new System.Drawing.Point(116, 85);
+            this.injectedLabel.Location = new System.Drawing.Point(116, 103);
             this.injectedLabel.Name = "injectedLabel";
             this.injectedLabel.Size = new System.Drawing.Size(13, 13);
             this.injectedLabel.TabIndex = 3;
@@ -260,7 +260,7 @@
             // receivedLabel
             // 
             this.receivedLabel.AutoSize = true;
-            this.receivedLabel.Location = new System.Drawing.Point(116, 72);
+            this.receivedLabel.Location = new System.Drawing.Point(116, 81);
             this.receivedLabel.Name = "receivedLabel";
             this.receivedLabel.Size = new System.Drawing.Size(13, 13);
             this.receivedLabel.TabIndex = 2;
@@ -269,7 +269,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(8, 85);
+            this.label2.Location = new System.Drawing.Point(8, 103);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(93, 13);
             this.label2.TabIndex = 1;
@@ -278,7 +278,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(8, 72);
+            this.label1.Location = new System.Drawing.Point(8, 81);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(101, 13);
             this.label1.TabIndex = 0;
