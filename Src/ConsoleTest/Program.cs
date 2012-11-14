@@ -17,26 +17,20 @@ namespace ConsoleTest {
             Thread.Sleep(1000);
         }
 
-        static void StartGui(Func<Form> createForm) {
-                Thread t = new Thread(() => {
-                    Form f = createForm();
-                    f.ShowDialog();
-                });
-                t.SetApartmentState(ApartmentState.STA);
-                t.Start();
-                //Application.EnableVisualStyles();
-                //Application.Run(new SlaveForm(s));
-        }
-
         static void Main(string[] args) {
             CameraMaster m = Init.InitCameraMaster(args, AppDomain.CurrentDomain.SetupInformation.ConfigurationFile);
-            StartGui(() => new MasterForm(m));
-
             CameraSlave s1 = Init.InitCameraSlave(args, AppDomain.CurrentDomain.SetupInformation.ConfigurationFile, "Slave1");
-            StartGui(() => new SlaveForm(s1));
-
             CameraSlave s2 = Init.InitCameraSlave(args, AppDomain.CurrentDomain.SetupInformation.ConfigurationFile, "Slave2");
-            StartGui(() => new SlaveForm(s2));
+
+            Run("Start Master GUI", () => {
+                Init.StartGui(() => new MasterForm(m));
+            });
+            Run("Start Slave1 GUI", () => {
+                Init.StartGui(() => new SlaveForm(s1));
+            });
+            Run("Start Slave2 GUI", () => {
+                Init.StartGui(() => new SlaveForm(s2));
+            });
 
             /*
             int masterPort = 8090;

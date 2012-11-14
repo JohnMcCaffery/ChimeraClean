@@ -6,9 +6,11 @@ using GridProxy;
 using OpenMetaverse.Packets;
 using System.Net;
 using OpenMetaverse;
+using log4net;
 
 namespace UtilLib {
     public abstract class Master : ProxyManager {
+        public ILog Logger = log4net.LogManager.GetLogger("Master Logger");
         protected readonly Dictionary<string, Slave> slaves = new Dictionary<string,Slave>();
 
         public class Slave {

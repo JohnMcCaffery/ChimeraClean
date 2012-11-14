@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace SlaveProxy.Properties {
+namespace ArmadilloSlaveGUI.Properties {
 
 
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]

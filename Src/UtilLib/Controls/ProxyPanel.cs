@@ -29,6 +29,7 @@ using System.Windows.Forms;
 using GridProxy;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+using OpenMetaverse;
 
 namespace UtilLib {
     public partial class ProxyPanel : UserControl {
@@ -106,23 +107,30 @@ namespace UtilLib {
         private void connectButton_Click(object sender, EventArgs e) {
             if (proxy == null)
                 return;
-            if (proxyStartButton.Text.Equals("Bind SlaveProxy")) {
+            if (proxyStartButton.Text.Equals("Start Proxy")) {
                 if (proxy.ProxyRunning)
                     proxy.StopProxy();
                 string file = AppDomain.CurrentDomain.SetupInformation.ConfigurationFile;
 
-                if (proxy.StartProxy()) {
-                    proxyStartButton.Text = "Disconnect SlaveProxy";
+                for (int i = 0; i < 5 && !proxy.StartProxy(); i++, proxy.ProxyConfig.ProxyPort++) {
+                    int port = proxy.ProxyConfig.ProxyPort;
+                    Logger.Log("Unable to start proxy on port " + (port - 1) + ", trying " + port + ".", Helpers.LogLevel.Info);
+                }
+                if (proxy.ProxyRunning) {
+                    proxyStartButton.Text = "Stop Proxy";
                     proxyStatusLabel.Text = "Started";
 
                     portBox.Enabled = false;
                     loginURIBox.Enabled = false;
+                } else {
+                    Logger.Log("Unable to start proxy.", Helpers.LogLevel.Info);
+                    proxyStatusLabel.Text = "Unable to start";
                 }
             } else if (proxy != null) {
                 proxy.StopProxy();
                 proxy = null;
 
-                proxyStartButton.Text = "Bind SlaveProxy";
+                proxyStartButton.Text = "Start Proxy";
                 proxyStatusLabel.Text = "Stopped";
 
                 portBox.Enabled = true;

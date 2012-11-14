@@ -36,6 +36,9 @@
             this.vBox = new System.Windows.Forms.GroupBox();
             this.proxyTab = new System.Windows.Forms.TabPage();
             this.proxyPanel = new UtilLib.ProxyPanel();
+            this.networkTab = new System.Windows.Forms.TabPage();
+            this.debugTab = new System.Windows.Forms.TabPage();
+            this.debugPanel = new UtilLib.LogPanel();
             this.slavesTab.SuspendLayout();
             this.rawTab.SuspendLayout();
             this.visualSlavesSplit.Panel1.SuspendLayout();
@@ -47,6 +50,7 @@
             this.hvSplit.Panel2.SuspendLayout();
             this.hvSplit.SuspendLayout();
             this.proxyTab.SuspendLayout();
+            this.debugTab.SuspendLayout();
             this.SuspendLayout();
             // 
             // slavesTab
@@ -81,7 +85,7 @@
             this.rawPosition.Max = 12800D;
             this.rawPosition.Min = -1024D;
             this.rawPosition.Name = "rawPosition";
-            this.rawPosition.Size = new System.Drawing.Size(497, 98);
+            this.rawPosition.Size = new System.Drawing.Size(449, 98);
             this.rawPosition.TabIndex = 1;
             this.rawPosition.Value = ((OpenMetaverse.Vector3)(resources.GetObject("rawPosition.Value")));
             this.rawPosition.X = 128F;
@@ -99,7 +103,7 @@
             this.rawRotation.Name = "rawRotation";
             this.rawRotation.Pitch = 0F;
             this.rawRotation.Rotation = ((OpenMetaverse.Quaternion)(resources.GetObject("rawRotation.Rotation")));
-            this.rawRotation.Size = new System.Drawing.Size(497, 147);
+            this.rawRotation.Size = new System.Drawing.Size(449, 147);
             this.rawRotation.TabIndex = 0;
             this.rawRotation.Yaw = 0F;
             this.rawRotation.OnChange += new System.EventHandler(this.rawRotation_OnChange);
@@ -127,6 +131,8 @@
             // 
             this.displayTab.Controls.Add(this.bothTab);
             this.displayTab.Controls.Add(this.proxyTab);
+            this.displayTab.Controls.Add(this.networkTab);
+            this.displayTab.Controls.Add(this.debugTab);
             this.displayTab.Dock = System.Windows.Forms.DockStyle.Fill;
             this.displayTab.Location = new System.Drawing.Point(0, 0);
             this.displayTab.Name = "displayTab";
@@ -209,6 +215,35 @@
             this.proxyPanel.Size = new System.Drawing.Size(603, 190);
             this.proxyPanel.TabIndex = 0;
             // 
+            // networkTab
+            // 
+            this.networkTab.Location = new System.Drawing.Point(4, 22);
+            this.networkTab.Name = "networkTab";
+            this.networkTab.Padding = new System.Windows.Forms.Padding(3);
+            this.networkTab.Size = new System.Drawing.Size(609, 196);
+            this.networkTab.TabIndex = 4;
+            this.networkTab.Text = "Network";
+            this.networkTab.UseVisualStyleBackColor = true;
+            // 
+            // debugTab
+            // 
+            this.debugTab.Controls.Add(this.debugPanel);
+            this.debugTab.Location = new System.Drawing.Point(4, 22);
+            this.debugTab.Name = "debugTab";
+            this.debugTab.Padding = new System.Windows.Forms.Padding(3);
+            this.debugTab.Size = new System.Drawing.Size(609, 196);
+            this.debugTab.TabIndex = 5;
+            this.debugTab.Text = "Debug";
+            this.debugTab.UseVisualStyleBackColor = true;
+            // 
+            // debugPanel
+            // 
+            this.debugPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.debugPanel.Location = new System.Drawing.Point(3, 3);
+            this.debugPanel.Name = "debugPanel";
+            this.debugPanel.Size = new System.Drawing.Size(603, 190);
+            this.debugPanel.TabIndex = 0;
+            // 
             // MasterForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -229,6 +264,7 @@
             this.hvSplit.Panel2.ResumeLayout(false);
             this.hvSplit.ResumeLayout(false);
             this.proxyTab.ResumeLayout(false);
+            this.debugTab.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -247,5 +283,8 @@
         private System.Windows.Forms.GroupBox vBox;
         private System.Windows.Forms.TabPage proxyTab;
         private UtilLib.ProxyPanel proxyPanel;
+        private System.Windows.Forms.TabPage networkTab;
+        private System.Windows.Forms.TabPage debugTab;
+        private UtilLib.LogPanel debugPanel;
     }
 }

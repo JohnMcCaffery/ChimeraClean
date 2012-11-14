@@ -40,8 +40,6 @@ namespace UtilLib {
         /// </summary>
         private Dictionary<IPEndPoint, string> slaves = new Dictionary<IPEndPoint, string>();
 
-        private int port;
-
         /// <summary>
         /// Triggered whenever a slave connected to the master. Source is the name of the slave.
         /// </summary>
@@ -74,17 +72,17 @@ namespace UtilLib {
             if (split.Length == 2) {
                 string name = split[1];
                 lock (slaves) {
-                    if (slaves.ContainsKey(source)) {
-                        Logger.Log("Master re-registed slave " + slaves[source] + " at " + source + " as '" + name + "'.", Helpers.LogLevel.Info);
-                        slaves[source] = name;
+                    if (slaves.Values.Contains(name)) {
+                        Logger.Log("Master received connect from already registered slave '" + name + "' from " + source + "'. Rejected.", Helpers.LogLevel.Info);
+                        Send(REJECT + " '" + name  + "' already bound.", source);
                     } else {
                         Logger.Log("Master registered new slave '" + name + "' at " + source + ".", Helpers.LogLevel.Info);
                         slaves.Add(source, split[1]);
+                        Send(name, source);
+                        if (OnSlaveConnected != null)
+                            OnSlaveConnected(name, source);
                     }
                 }
-                Send(name, source);
-                if (OnSlaveConnected != null)
-                    OnSlaveConnected(name, source);
             }
         }
 

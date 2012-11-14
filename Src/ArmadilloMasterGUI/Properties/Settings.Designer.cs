@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace MasterProxy.Properties {
+namespace ArmadilloMasterGUI.Properties {
 
 
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]

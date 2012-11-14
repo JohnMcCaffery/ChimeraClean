@@ -34,6 +34,24 @@ namespace ConsoleTest {
                 }));
             };
             master.OnSlaveConnected += AddSlaveTab;
+            master.OnSlaveDisconnected += (slave) => {
+                if (slaveTabs.ContainsKey(slave)) {
+                    Invoke(new Action(() => {
+                        TabPage slaveTab = slaveTabs[slave];
+
+                        this.slavesTab.SuspendLayout();
+                        slaveTab.SuspendLayout();
+                        this.SuspendLayout();
+
+                        this.slavesTab.TabPages.Remove(slaveTab);
+                        slaveTabs.Remove(slave);
+
+                        this.slavesTab.ResumeLayout(false);
+                        slaveTab.ResumeLayout(false);
+                        this.ResumeLayout(false);
+                    }));
+                }
+            };
 
             foreach (var slave in master.Slaves)
                 AddSlaveTab(slave);
@@ -112,6 +130,10 @@ namespace ConsoleTest {
                     hvSplit.Panel1.Refresh();
                     hvSplit.Panel2.Refresh();
                 };
+
+                this.slavesTab.ResumeLayout(false);
+                slaveTab.ResumeLayout(false);
+                this.ResumeLayout(false);
             });
             if (InvokeRequired)
                 Invoke(add);

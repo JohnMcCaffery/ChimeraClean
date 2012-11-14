@@ -60,6 +60,7 @@ namespace UtilLib {
             Name = name;
 
             AddPacketDelegate(DISCONNECT, HandleDisconnect);
+            AddPacketDelegate(REJECT, RejectHandler);
         }
 
         /// <summary>
@@ -150,6 +151,13 @@ namespace UtilLib {
             if (!connected)
                 Logger.Log("Slave unable to connect to " + masterEP + ". No reply received.", Helpers.LogLevel.Info);
             return connected;
+        }
+
+        private void RejectHandler(string msg, IPEndPoint source) {
+            Logger.Log("Slave '" + Name + "' unable to register with master at " + source + ". " + msg, Helpers.LogLevel.Info);
+            connected = false;
+            lock (connectLock)
+                Monitor.PulseAll(connectLock);
         }
 
         private void ConnectHandler(string msg, IPEndPoint source) {

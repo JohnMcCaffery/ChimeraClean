@@ -17,11 +17,15 @@ namespace UtilLib {
 
         public readonly static string DISCONNECT = "Disconnect";
 
+        public readonly static string REJECT = "Reject";
+
         public readonly static byte[] PING_B = Encoding.ASCII.GetBytes(PING);
 
         public readonly static byte[] CONNECT_B = Encoding.ASCII.GetBytes(CONNECT);
 
         public readonly static byte[] DISCONNECT_B = Encoding.ASCII.GetBytes(DISCONNECT);
+
+        public readonly static byte[] REJECT_B = Encoding.ASCII.GetBytes(REJECT);
 
         /// <summary>
         /// Mapping of listeners for every different packet received.
@@ -169,7 +173,7 @@ namespace UtilLib {
         /// <param name="identifier">If the data in a packet starts with this string the delegate will be called.</param>
         /// <param name="handler">The delegate that is called if the packet data starts with identifier.</param>
         protected void AddPacketDelegate(string identifier, MessageDelegate handler) {
-            packetDelegates.Add(identifier, handler);
+            packetDelegates[identifier] = handler;
         }
 
         /// <summary>

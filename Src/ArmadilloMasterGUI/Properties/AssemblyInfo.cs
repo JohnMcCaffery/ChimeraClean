@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("CommandLineSlave")]
+[assembly: AssemblyTitle("ArmadilloMasterGUI")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("CommandLineSlave")]
+[assembly: AssemblyProduct("ArmadilloMasterGUI")]
 [assembly: AssemblyCopyright("Copyright ©  2012")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("8c326991-a37d-42a6-84cc-6ed165e8b542")]
+[assembly: Guid("54aa82e1-4775-4a1a-a13d-6b3357f20ebc")]
 
 // Version information for an assembly consists of the following four values:
 //

@@ -25,22 +25,26 @@
         private void InitializeComponent() {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SlaveForm));
             this.finalTab = new System.Windows.Forms.TabPage();
-            this.finalRotation = new ProxyTestGUI.RotationPanel();
-            this.finalPosition = new ProxyTestGUI.VectorPanel();
             this.rawTab = new System.Windows.Forms.TabPage();
-            this.masterRotation = new ProxyTestGUI.RotationPanel();
-            this.masterPosition = new ProxyTestGUI.VectorPanel();
             this.offsetTab = new System.Windows.Forms.TabPage();
-            this.rotationOffsetPanel = new ProxyTestGUI.RotationPanel();
-            this.positionOffsetPanel = new ProxyTestGUI.VectorPanel();
             this.mainTabContainer = new System.Windows.Forms.TabControl();
             this.proxyTab = new System.Windows.Forms.TabPage();
+            this.networkTab = new System.Windows.Forms.TabPage();
+            this.debugTab = new System.Windows.Forms.TabPage();
+            this.rotationOffsetPanel = new ProxyTestGUI.RotationPanel();
+            this.positionOffsetPanel = new ProxyTestGUI.VectorPanel();
+            this.masterRotation = new ProxyTestGUI.RotationPanel();
+            this.masterPosition = new ProxyTestGUI.VectorPanel();
+            this.finalRotation = new ProxyTestGUI.RotationPanel();
+            this.finalPosition = new ProxyTestGUI.VectorPanel();
             this.proxyPanel = new UtilLib.ProxyPanel();
+            this.debugPanel = new UtilLib.LogPanel();
             this.finalTab.SuspendLayout();
             this.rawTab.SuspendLayout();
             this.offsetTab.SuspendLayout();
             this.mainTabContainer.SuspendLayout();
             this.proxyTab.SuspendLayout();
+            this.networkTab.SuspendLayout();
             this.SuspendLayout();
             // 
             // finalTab
@@ -55,38 +59,6 @@
             this.finalTab.Text = "Final Values";
             this.finalTab.UseVisualStyleBackColor = true;
             // 
-            // finalRotation
-            // 
-            this.finalRotation.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.finalRotation.DisplayName = "Final Rotation";
-            this.finalRotation.Enabled = false;
-            this.finalRotation.Location = new System.Drawing.Point(0, 0);
-            this.finalRotation.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("finalRotation.LookAtVector")));
-            this.finalRotation.Name = "finalRotation";
-            this.finalRotation.Pitch = 0F;
-            this.finalRotation.Rotation = ((OpenMetaverse.Quaternion)(resources.GetObject("finalRotation.Rotation")));
-            this.finalRotation.Size = new System.Drawing.Size(632, 147);
-            this.finalRotation.TabIndex = 2;
-            this.finalRotation.Yaw = 0F;
-            // 
-            // finalPosition
-            // 
-            this.finalPosition.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.finalPosition.DisplayName = "Final Position";
-            this.finalPosition.Enabled = false;
-            this.finalPosition.Location = new System.Drawing.Point(0, 153);
-            this.finalPosition.Max = 1024D;
-            this.finalPosition.Min = -1024D;
-            this.finalPosition.Name = "finalPosition";
-            this.finalPosition.Size = new System.Drawing.Size(632, 98);
-            this.finalPosition.TabIndex = 3;
-            this.finalPosition.Value = ((OpenMetaverse.Vector3)(resources.GetObject("finalPosition.Value")));
-            this.finalPosition.X = 0F;
-            this.finalPosition.Y = 0F;
-            this.finalPosition.Z = 0F;
-            // 
             // rawTab
             // 
             this.rawTab.Controls.Add(this.masterRotation);
@@ -99,38 +71,6 @@
             this.rawTab.Text = "Master Values";
             this.rawTab.UseVisualStyleBackColor = true;
             // 
-            // masterRotation
-            // 
-            this.masterRotation.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.masterRotation.DisplayName = "Master Rotation";
-            this.masterRotation.Location = new System.Drawing.Point(0, 0);
-            this.masterRotation.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("masterRotation.LookAtVector")));
-            this.masterRotation.Name = "masterRotation";
-            this.masterRotation.Pitch = 0F;
-            this.masterRotation.Rotation = ((OpenMetaverse.Quaternion)(resources.GetObject("masterRotation.Rotation")));
-            this.masterRotation.Size = new System.Drawing.Size(632, 147);
-            this.masterRotation.TabIndex = 2;
-            this.masterRotation.Yaw = 0F;
-            this.masterRotation.OnChange += new System.EventHandler(this.rawRotation_OnChange);
-            // 
-            // masterPosition
-            // 
-            this.masterPosition.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.masterPosition.DisplayName = "Master Position";
-            this.masterPosition.Location = new System.Drawing.Point(0, 153);
-            this.masterPosition.Max = 1024D;
-            this.masterPosition.Min = -1024D;
-            this.masterPosition.Name = "masterPosition";
-            this.masterPosition.Size = new System.Drawing.Size(632, 98);
-            this.masterPosition.TabIndex = 3;
-            this.masterPosition.Value = ((OpenMetaverse.Vector3)(resources.GetObject("masterPosition.Value")));
-            this.masterPosition.X = 0F;
-            this.masterPosition.Y = 0F;
-            this.masterPosition.Z = 0F;
-            this.masterPosition.OnChange += new System.EventHandler(this.rawPosition_OnChange);
-            // 
             // offsetTab
             // 
             this.offsetTab.Controls.Add(this.rotationOffsetPanel);
@@ -142,6 +82,53 @@
             this.offsetTab.TabIndex = 0;
             this.offsetTab.Text = "Offsets";
             this.offsetTab.UseVisualStyleBackColor = true;
+            // 
+            // mainTabContainer
+            // 
+            this.mainTabContainer.Controls.Add(this.offsetTab);
+            this.mainTabContainer.Controls.Add(this.rawTab);
+            this.mainTabContainer.Controls.Add(this.finalTab);
+            this.mainTabContainer.Controls.Add(this.proxyTab);
+            this.mainTabContainer.Controls.Add(this.networkTab);
+            this.mainTabContainer.Controls.Add(this.debugTab);
+            this.mainTabContainer.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.mainTabContainer.Location = new System.Drawing.Point(0, 0);
+            this.mainTabContainer.Name = "mainTabContainer";
+            this.mainTabContainer.SelectedIndex = 0;
+            this.mainTabContainer.Size = new System.Drawing.Size(640, 305);
+            this.mainTabContainer.TabIndex = 2;
+            // 
+            // proxyTab
+            // 
+            this.proxyTab.Controls.Add(this.proxyPanel);
+            this.proxyTab.Location = new System.Drawing.Point(4, 22);
+            this.proxyTab.Name = "proxyTab";
+            this.proxyTab.Padding = new System.Windows.Forms.Padding(3);
+            this.proxyTab.Size = new System.Drawing.Size(632, 279);
+            this.proxyTab.TabIndex = 3;
+            this.proxyTab.Text = "Proxy";
+            this.proxyTab.UseVisualStyleBackColor = true;
+            // 
+            // networkTab
+            // 
+            this.networkTab.Controls.Add(this.debugPanel);
+            this.networkTab.Location = new System.Drawing.Point(4, 22);
+            this.networkTab.Name = "networkTab";
+            this.networkTab.Padding = new System.Windows.Forms.Padding(3);
+            this.networkTab.Size = new System.Drawing.Size(632, 279);
+            this.networkTab.TabIndex = 4;
+            this.networkTab.Text = "Network";
+            this.networkTab.UseVisualStyleBackColor = true;
+            // 
+            // debugTab
+            // 
+            this.debugTab.Location = new System.Drawing.Point(4, 22);
+            this.debugTab.Name = "debugTab";
+            this.debugTab.Padding = new System.Windows.Forms.Padding(3);
+            this.debugTab.Size = new System.Drawing.Size(632, 279);
+            this.debugTab.TabIndex = 5;
+            this.debugTab.Text = "Debug";
+            this.debugTab.UseVisualStyleBackColor = true;
             // 
             // rotationOffsetPanel
             // 
@@ -175,29 +162,69 @@
             this.positionOffsetPanel.Z = 0F;
             this.positionOffsetPanel.OnChange += new System.EventHandler(this.positionOffset_OnChange);
             // 
-            // mainTabContainer
+            // masterRotation
             // 
-            this.mainTabContainer.Controls.Add(this.offsetTab);
-            this.mainTabContainer.Controls.Add(this.rawTab);
-            this.mainTabContainer.Controls.Add(this.finalTab);
-            this.mainTabContainer.Controls.Add(this.proxyTab);
-            this.mainTabContainer.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.mainTabContainer.Location = new System.Drawing.Point(0, 0);
-            this.mainTabContainer.Name = "mainTabContainer";
-            this.mainTabContainer.SelectedIndex = 0;
-            this.mainTabContainer.Size = new System.Drawing.Size(640, 305);
-            this.mainTabContainer.TabIndex = 2;
+            this.masterRotation.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.masterRotation.DisplayName = "Master Rotation";
+            this.masterRotation.Location = new System.Drawing.Point(0, 0);
+            this.masterRotation.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("masterRotation.LookAtVector")));
+            this.masterRotation.Name = "masterRotation";
+            this.masterRotation.Pitch = 0F;
+            this.masterRotation.Rotation = ((OpenMetaverse.Quaternion)(resources.GetObject("masterRotation.Rotation")));
+            this.masterRotation.Size = new System.Drawing.Size(632, 147);
+            this.masterRotation.TabIndex = 2;
+            this.masterRotation.Yaw = 0F;
+            this.masterRotation.OnChange += new System.EventHandler(this.rawRotation_OnChange);
             // 
-            // proxyTab
+            // masterPosition
             // 
-            this.proxyTab.Controls.Add(this.proxyPanel);
-            this.proxyTab.Location = new System.Drawing.Point(4, 22);
-            this.proxyTab.Name = "proxyTab";
-            this.proxyTab.Padding = new System.Windows.Forms.Padding(3);
-            this.proxyTab.Size = new System.Drawing.Size(632, 279);
-            this.proxyTab.TabIndex = 3;
-            this.proxyTab.Text = "Proxy";
-            this.proxyTab.UseVisualStyleBackColor = true;
+            this.masterPosition.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.masterPosition.DisplayName = "Master Position";
+            this.masterPosition.Location = new System.Drawing.Point(0, 153);
+            this.masterPosition.Max = 2048D;
+            this.masterPosition.Min = -2048D;
+            this.masterPosition.Name = "masterPosition";
+            this.masterPosition.Size = new System.Drawing.Size(632, 98);
+            this.masterPosition.TabIndex = 3;
+            this.masterPosition.Value = ((OpenMetaverse.Vector3)(resources.GetObject("masterPosition.Value")));
+            this.masterPosition.X = 0F;
+            this.masterPosition.Y = 0F;
+            this.masterPosition.Z = 0F;
+            this.masterPosition.OnChange += new System.EventHandler(this.rawPosition_OnChange);
+            // 
+            // finalRotation
+            // 
+            this.finalRotation.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.finalRotation.DisplayName = "Final Rotation";
+            this.finalRotation.Enabled = false;
+            this.finalRotation.Location = new System.Drawing.Point(0, 0);
+            this.finalRotation.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("finalRotation.LookAtVector")));
+            this.finalRotation.Name = "finalRotation";
+            this.finalRotation.Pitch = 0F;
+            this.finalRotation.Rotation = ((OpenMetaverse.Quaternion)(resources.GetObject("finalRotation.Rotation")));
+            this.finalRotation.Size = new System.Drawing.Size(632, 147);
+            this.finalRotation.TabIndex = 2;
+            this.finalRotation.Yaw = 0F;
+            // 
+            // finalPosition
+            // 
+            this.finalPosition.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.finalPosition.DisplayName = "Final Position";
+            this.finalPosition.Enabled = false;
+            this.finalPosition.Location = new System.Drawing.Point(0, 153);
+            this.finalPosition.Max = 2048D;
+            this.finalPosition.Min = -2048D;
+            this.finalPosition.Name = "finalPosition";
+            this.finalPosition.Size = new System.Drawing.Size(632, 98);
+            this.finalPosition.TabIndex = 3;
+            this.finalPosition.Value = ((OpenMetaverse.Vector3)(resources.GetObject("finalPosition.Value")));
+            this.finalPosition.X = 0F;
+            this.finalPosition.Y = 0F;
+            this.finalPosition.Z = 0F;
             // 
             // proxyPanel
             // 
@@ -206,12 +233,20 @@
             this.proxyPanel.LastName = "God";
             this.proxyPanel.Location = new System.Drawing.Point(3, 3);
             this.proxyPanel.LoginURI = "http://apollo.cs.st-andrews.ac.uk:8002";
-            this.proxyPanel.Name = "proxyPanel1";
+            this.proxyPanel.Name = "proxyPanel";
             this.proxyPanel.Password = "1245";
             this.proxyPanel.Port = "8080";
             this.proxyPanel.Proxy = null;
             this.proxyPanel.Size = new System.Drawing.Size(626, 273);
             this.proxyPanel.TabIndex = 0;
+            // 
+            // debugPanel
+            // 
+            this.debugPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.debugPanel.Location = new System.Drawing.Point(3, 3);
+            this.debugPanel.Name = "debugPanel";
+            this.debugPanel.Size = new System.Drawing.Size(626, 273);
+            this.debugPanel.TabIndex = 0;
             // 
             // SlaveForm
             // 
@@ -227,6 +262,7 @@
             this.offsetTab.ResumeLayout(false);
             this.mainTabContainer.ResumeLayout(false);
             this.proxyTab.ResumeLayout(false);
+            this.networkTab.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -245,6 +281,9 @@
         private ProxyTestGUI.VectorPanel masterPosition;
         private System.Windows.Forms.TabPage proxyTab;
         private UtilLib.ProxyPanel proxyPanel;
+        private System.Windows.Forms.TabPage networkTab;
+        private System.Windows.Forms.TabPage debugTab;
+        private UtilLib.LogPanel debugPanel;
 
 
 

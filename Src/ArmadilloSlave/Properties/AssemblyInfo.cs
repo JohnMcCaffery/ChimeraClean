@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("SlaveProxy")]
+[assembly: AssemblyTitle("ArmadilloSlave")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("SlaveProxy")]
+[assembly: AssemblyProduct("ArmadilloSlave")]
 [assembly: AssemblyCopyright("Copyright ©  2012")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("10722ea5-46cc-4a5d-8c2d-05506bb4a3f4")]
+[assembly: Guid("07c18323-0a75-42bf-b5a3-5f2c29323cd5")]
 
 // Version information for an assembly consists of the following four values:
 //
