@@ -17,6 +17,8 @@ namespace UtilLib {
 
         public readonly static string DISCONNECT = "Disconnect";
 
+        public readonly static string ACCEPT = "Accept";
+
         public readonly static string REJECT = "Reject";
 
         public readonly static byte[] PING_B = Encoding.ASCII.GetBytes(PING);
@@ -24,6 +26,8 @@ namespace UtilLib {
         public readonly static byte[] CONNECT_B = Encoding.ASCII.GetBytes(CONNECT);
 
         public readonly static byte[] DISCONNECT_B = Encoding.ASCII.GetBytes(DISCONNECT);
+
+        public readonly static byte[] ACCEPT_B = Encoding.ASCII.GetBytes(ACCEPT);
 
         public readonly static byte[] REJECT_B = Encoding.ASCII.GetBytes(REJECT);
 

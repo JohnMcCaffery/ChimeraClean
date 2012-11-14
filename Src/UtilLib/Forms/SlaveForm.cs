@@ -21,8 +21,26 @@ namespace ConsoleTest {
             Text = slave.Name;
             if (slave.ProxyRunning)
                 Text += ": " + slave.ProxyConfig.ProxyPort;
+
+            addressBox.Text = slave.ProxyConfig.MasterAddress;
+            portBox.Text = slave.ProxyConfig.MasterPort.ToString();
+            nameBox.Text = slave.Name;
+
+            if (slave.ConnectedToMaster) {
+                addressBox.Text = slave.ProxyConfig.MasterAddress;
+                addressBox.Enabled = false;
+
+                portBox.Text = slave.ProxyConfig.MasterPort.ToString();
+                portBox.Enabled = false;
+
+                nameBox.Text = slave.Name;
+                nameBox.Enabled = false;
+
+                connectButton.Text = "Disconnect from Master";
+            }
+
             slave.OnProxyStarted += (source, args) => {
-                Invoke(new Action(() => Text = Name + ": " + slave.ProxyConfig.ProxyPort));
+                Invoke(new Action(() => Text = slave.Name + ": " + slave.ProxyConfig.ProxyPort));
             };
             slave.OnUpdateSentToClient += (position, lookAt) => {
                 Invoke(new Action(() => {
@@ -30,6 +48,8 @@ namespace ConsoleTest {
                     masterRotation.LookAtVector = slave.MasterRotation.LookAtVector;
                     finalPosition.Value = position;
                     finalRotation.LookAtVector = lookAt;
+                    receivedLabel.Text = slave.PacketsReceived.ToString();
+                    injectedLabel.Text = slave.PacketsInjected.ToString();
                 }));
             };
         }
@@ -52,6 +72,39 @@ namespace ConsoleTest {
 
         private void SlaveForm_FormClosing(object sender, FormClosingEventArgs e) {
             slave.Stop();
+        }
+
+        private void controlCamera_CheckedChanged(object sender, EventArgs e) {
+            slave.ControlCamera = controlCamera.Checked;
+        }
+
+        private void masterBox_TextChanged(object sender, EventArgs e) {
+            slave.ProxyConfig.MasterAddress = addressBox.Text;
+        }
+
+        private void portBox_TextChanged(object sender, EventArgs e) {
+            slave.ProxyConfig.MasterPort = Int32.Parse(portBox.Text);
+        }
+
+        private void connectButton_Click(object sender, EventArgs e) {
+            if (connectButton.Text.Equals("Connect To Master")) {
+                slave.Name = nameBox.Text;
+                if (slave.Connect()) {
+                    addressBox.Enabled = false;
+                    portBox.Enabled = false;
+                    nameBox.Enabled = false;
+                    connectButton.Text = "Disconnect from Master";
+                    statusLabel.Text = "Connected";
+                } else
+                    statusLabel.Text = "Unable to Connect";
+            } else {
+                slave.Disconnect();
+                addressBox.Enabled = true;
+                portBox.Enabled = true;
+                nameBox.Enabled = true;
+                connectButton.Text = "Connect To Master";
+                statusLabel.Text = "Disconnected";
+            }
         }
     }
 }

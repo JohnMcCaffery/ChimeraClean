@@ -26,6 +26,9 @@ namespace ConsoleTest {
             rawPosition.Value = master.Position;
             rawRotation.LookAtVector = master.Rotation.LookAtVector;
 
+            master.OnProxyStarted += (source, args) => {
+                Invoke(new Action(() => Text = "Master: " + master.ProxyConfig.ProxyPort));
+            };
             master.OnCameraUpdated += (source, args) => {
                 Invoke(new Action(() => {
                     rawPosition.Value = master.Position;
@@ -88,37 +91,36 @@ namespace ConsoleTest {
                 slaveTab.Location = new System.Drawing.Point(4, 22);
                 slaveTab.Name = name + "Tab";
                 slaveTab.Padding = new System.Windows.Forms.Padding(3);
-                slaveTab.Size = new System.Drawing.Size(609, 265);
+                slaveTab.Size = new System.Drawing.Size(slavesTab.Size.Width - 12, 231);
                 slaveTab.TabIndex = 0;
                 slaveTab.Text = name;
-                slaveTab.UseVisualStyleBackColor = true;
+                slaveTab.UseVisualStyleBackColor = true;                // 
+                // rotationRotation
+                // 
+                rotationOffset.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                | System.Windows.Forms.AnchorStyles.Right)));
+                rotationOffset.DisplayName = name + " Rotation";
+                rotationOffset.Location = rawRotation.Location;
+                rotationOffset.Name = name + "Rotation";
+                rotationOffset.Pitch = 0F;
+                rotationOffset.Size = rawRotation.Size;
+                rotationOffset.TabIndex = 0;
+                rotationOffset.Yaw = 0F;
+                rotationOffset.OnChange += new System.EventHandler(this.rawRotation_OnChange);
                 // 
                 // positionOffset
                 // 
                 positionOffset.DisplayName = name + " Position";
-                positionOffset.Location = new System.Drawing.Point(0, 153);
+                positionOffset.Location = rawPosition.Location;
                 positionOffset.Max = maxOffset;
                 positionOffset.Min = -maxOffset;
                 positionOffset.Name = name + "Position";
-                positionOffset.Size = new System.Drawing.Size(609, 98);
+                positionOffset.Size = rawPosition.Size;
                 positionOffset.TabIndex = 1;
                 positionOffset.X = 0F;
                 positionOffset.Y = 0F;
                 positionOffset.Z = 0F;
                 positionOffset.OnChange += new System.EventHandler(this.rawPosition_OnChange);
-                // 
-                // rotationOffset
-                // 
-                rotationOffset.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                | System.Windows.Forms.AnchorStyles.Right)));
-                rotationOffset.DisplayName = name + " Rotation";
-                rotationOffset.Location = new System.Drawing.Point(0, 0);
-                rotationOffset.Name = name + "Rotation";
-                rotationOffset.Pitch = 0F;
-                rotationOffset.Size = new System.Drawing.Size(613, 147);
-                rotationOffset.TabIndex = 0;
-                rotationOffset.Yaw = 0F;
-                rotationOffset.OnChange += new System.EventHandler(this.rawRotation_OnChange);
 
                 positionOffset.OnChange += (p, ep) => {
                     slave.PositionOffset = positionOffset.Value;

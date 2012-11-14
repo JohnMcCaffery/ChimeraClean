@@ -31,9 +31,11 @@ using System.Net.Sockets;
 using System.Net;
 using System.Configuration;
 using OpenMetaverse;
+using log4net;
 
 namespace UtilLib {
     public class InterProxyClient : BackChannel {
+        private ILog Logger = LogManager.GetLogger("InterProxyClientLogger");
         /// <summary>
         /// The name of this slave.
         /// </summary>
@@ -56,30 +58,17 @@ namespace UtilLib {
         /// </summary>
         public InterProxyClient(string name) {
             Bind(0);
-            Logger.Log("Slave bound to " + Address + ":" + Port + ".", Helpers.LogLevel.Info);
+            Logger.Info("Slave bound to " + Address + ":" + Port + ".");
             Name = name;
 
             AddPacketDelegate(DISCONNECT, HandleDisconnect);
             AddPacketDelegate(REJECT, RejectHandler);
-        }
-
-        /// <summary>
-        /// Connect a new InterProxyClient and have it automatically connect to a local server on 'masterPort'.
-        /// </summary>
-        public InterProxyClient(string name, int port) : this(name, port, Dns.GetHostName()) { }
-
-        /// <summary>
-        /// Create a new InterProxyClient and have it automatically connect to a local server on 'masterPort'.
-        /// </summary>
-        /// <param name="masterAddress">The masterAddress of the master server to connect to.</param>
-        /// <param name="masterPort">The masterPort on the master server to connect to.</param>
-        public InterProxyClient(string name, int port, string address) : this (name) {
-            Connect(address, port);
+            AddPacketDelegate(ACCEPT, ConnectHandler);
         }
 
         private void HandleDisconnect(string msg, IPEndPoint source) {
             if (source.Equals(masterEP)) {
-                Logger.Log("Slave disconnected. Master at " + masterEP + " signalled disconnect.", Helpers.LogLevel.Info);
+                Logger.Info("Slave disconnected. Master at " + masterEP + " signalled disconnect.");
                 connected = false;
                 if (OnDisconnected != null)
                     OnDisconnected(this, null);
@@ -91,7 +80,10 @@ namespace UtilLib {
         /// </summary>
         public string Name {
             get { return name; }
-            set { name = value; }
+            set { 
+                name = value;
+                Logger = LogManager.GetLogger(Name);
+            }
         }
 
         /// <summary>
@@ -113,10 +105,10 @@ namespace UtilLib {
 
         protected override void ConnectionForciblyClosed() {
             if (connected) {
-                Logger.Log("Connection to master at " + masterEP + " lost.", Helpers.LogLevel.Info);
+                Logger.Info("Connection to master at " + masterEP + " lost.");
                 DisconnectUtil();
             } else {
-                Logger.Log("Unable to send packet to master at " + masterEP + ".", Helpers.LogLevel.Info);
+                Logger.Info("Unable to send packet to master at " + masterEP + ".");
             }
         }
 
@@ -131,17 +123,16 @@ namespace UtilLib {
                     if (ip.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork) 
                         masterEP = new IPEndPoint(ip, port);
             } catch (SocketException e) {
-                Logger.Log("Slave unable to look up master masterAddress at " + address + ":" + port + "." + e.Message, Helpers.LogLevel.Info);
+                Logger.Info("Slave unable to look up master masterAddress at " + address + ":" + port + "." + e.Message);
                 masterEP = null;
                 return false;
             }
             if (masterEP == null) { 
-                Logger.Log("Slave not able to look up master IP masterAddress found for " + address + ":" + port + ".", Helpers.LogLevel.Info);
+                Logger.Info("Slave not able to look up master IP masterAddress found for " + address + ":" + port + ".");
                 return false;
             }
 
             int attempt = 1;
-            AddPacketDelegate(Name, ConnectHandler);
             while (!connected && attempt <= 5) {
                 Send(CONNECT + " " + Name, masterEP);
                 lock (connectLock)
@@ -149,19 +140,19 @@ namespace UtilLib {
                 attempt++;
             }
             if (!connected)
-                Logger.Log("Slave unable to connect to " + masterEP + ". No reply received.", Helpers.LogLevel.Info);
+                Logger.Info("Slave unable to connect to " + masterEP + ". No reply received.");
             return connected;
         }
 
         private void RejectHandler(string msg, IPEndPoint source) {
-            Logger.Log("Slave '" + Name + "' unable to register with master at " + source + ". " + msg, Helpers.LogLevel.Info);
+            Logger.Info("Slave '" + Name + "' unable to register with master at " + source + ". " + msg);
             connected = false;
             lock (connectLock)
                 Monitor.PulseAll(connectLock);
         }
 
         private void ConnectHandler(string msg, IPEndPoint source) {
-            Logger.Log("Slave '" + Name + "' connected to master at " + source + ".", Helpers.LogLevel.Info);
+            Logger.Info("Slave '" + Name + "' connected to master at " + source + ".");
             masterEP = source;
             connected = true;
             if (OnConnected != null)
@@ -196,7 +187,7 @@ namespace UtilLib {
         private void TestDisconnect() {
             while (Connected) {
                 if (!CheckConnection(masterEP, 5)) {
-                    Logger.Log("Connection lost with master at " + masterEP + ".", Helpers.LogLevel.Info);
+                    Logger.Info("Connection lost with master at " + masterEP + ".");
                     DisconnectUtil();
                 }
                 lock (testLock)
@@ -211,10 +202,10 @@ namespace UtilLib {
         public void Disconnect() {
             if (connected) {
                 Send(DISCONNECT_B, masterEP);
-                Logger.Log("Slave '" + Name + "' disconnected from master at " + masterEP, Helpers.LogLevel.Info);
                 DisconnectUtil();
+                Logger.Info("Slave '" + Name + "' disconnected from master at " + masterEP);
             } else {
-                Logger.Log("Slave '" + Name + "' cannot disconnect. Not currently connected.", Helpers.LogLevel.Info);
+                Logger.Info("Slave '" + Name + "' cannot disconnect. Not currently connected.");
             }
         }
 

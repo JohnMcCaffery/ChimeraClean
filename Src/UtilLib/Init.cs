@@ -32,7 +32,9 @@ namespace UtilLib {
         public static readonly int SECTION_WIDTH = 8;
         public static readonly int LONG_WIDTH = 20;
         public static readonly int SHORT_WIDTH = 5;
-        public static readonly int DEFAULT_WIDTH = 25;        public static readonly int EXPLANATION_WIDTH= 100;
+        public static readonly int DEFAULT_WIDTH = 25;
+        public static readonly int EXPLANATION_WIDTH= 100;
+
         public static string MakeHelpLine(object section, object lng, object shrt, object explanation, object deflt) {
             string sectionCol = "{0,-" + SECTION_WIDTH + "} ";
             string longCol = "{1,-" + LONG_WIDTH + "} ";
@@ -59,7 +61,7 @@ namespace UtilLib {
             ret += MakeHelpLine(section, "AutoConnectSlave", "as", "Whether to automatically connect the slave to the master", "true") + "\n";
             ret += MakeHelpLine(section, "AutoStartProxy", "ap", "Whether to autostart a proxy", "true") + "\n";
             ret += MakeHelpLine(section, "AutoStartClient", "ac", "Whether to auto launch the client executable to connect to the proxy", "false") + "\n";
-            ret += MakeHelpLine(section, "ProxyPort", "pp", "The port the proxy is to run on", Config.DEFAULT_PROXY_PORT) + "\n";
+            ret += MakeHelpLine(section, "ProxyPort", "p", "The port the proxy is to run on", Config.DEFAULT_PROXY_PORT) + "\n";
             ret += MakeHelpLine(section, "FirstName", "f", "The first name to log in with", "Not Set") + "\n";
             ret += MakeHelpLine(section, "LastName", "l", "The last name to log in with", "Not Set") + "\n";
             ret += MakeHelpLine(section, "Password", "pw", "The password to log in with", "Not Set") + "\n";
@@ -68,6 +70,7 @@ namespace UtilLib {
         public class Config {
             public static readonly string DEFAULT_LOGINURI = "http://localhost:9000";
             public static readonly string DEFAULT_CLIENT_EXE = "C:\\Program Files (x86)\\Firestorm-Release\\Firestorm-Release.exe";
+            public static readonly string DEFAULT_MASTER_ADDRESS = "127.0.0.1";
             public static readonly int DEFAULT_MASTER_PORT = 8090;
             public static readonly int DEFAULT_PROXY_PORT = 8080;
             public static int CURRENT_PORT = DEFAULT_PROXY_PORT;
@@ -85,6 +88,7 @@ namespace UtilLib {
 
             //Master
             private int masterPort = DEFAULT_MASTER_PORT;
+            private string masterAddress = DEFAULT_MASTER_ADDRESS;
 
             /// <summary>
             /// True if the client should automatically log in whilst starting.
@@ -114,6 +118,13 @@ namespace UtilLib {
             public int ProxyPort {
                 get { return proxyPort; }
                 set { proxyPort = value; }
+            }
+            /// <summary>
+            /// The address of the master server.
+            /// </summary>
+            public string MasterAddress {
+                get { return masterAddress; }
+                set { masterAddress = value; }
             }
 
             /// <summary>
@@ -174,9 +185,9 @@ namespace UtilLib {
                 config.AddSwitch("General", "UseGrid", "ug");
                 config.AddSwitch("General", "ProxyGrid", "g");
                 config.AddSwitch("General", "LoginURI", "u");
+                config.AddSwitch("General", "MasterAddress", "ma");
                 config.AddSwitch("General", "MasterPort", "mp");
-                config.AddSwitch("General", "MasterAddres%*s\n", "ma");
-                config.AddSwitch(section, "ProxyPort", "pp");
+                config.AddSwitch(section, "ProxyPort", "p");
                 config.AddSwitch(section, "FirstName", "f");
                 config.AddSwitch(section, "LastName", "l");
                 config.AddSwitch(section, "Password", "pw");
@@ -191,6 +202,7 @@ namespace UtilLib {
                 clientExe = Get(generalConfig, "ClientExe", DEFAULT_CLIENT_EXE);
                 loginURI = Get(generalConfig, "LoginURI", DEFAULT_LOGINURI);
                 masterPort = Get(generalConfig, "MasterPort", DEFAULT_MASTER_PORT);
+                masterAddress = Get(generalConfig, "MasterAddress", DEFAULT_MASTER_ADDRESS);
 
                 firstName = Get(mainConfig, "FirstName", null);
                 lastName = Get(mainConfig, "LastName", null);
@@ -263,7 +275,8 @@ namespace UtilLib {
             if (autostartSlave)
                 s.Connect();
             return s;
-        }
+        }
+
         public static bool Get(IConfig cfg, string key, bool defalt) {
             return cfg == null ? defalt : cfg.GetBoolean(key, defalt);
         }

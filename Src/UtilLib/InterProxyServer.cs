@@ -78,7 +78,7 @@ namespace UtilLib {
                     } else {
                         Logger.Log("Master registered new slave '" + name + "' at " + source + ".", Helpers.LogLevel.Info);
                         slaves.Add(source, split[1]);
-                        Send(name, source);
+                        Send(ACCEPT, source);
                         if (OnSlaveConnected != null)
                             OnSlaveConnected(name, source);
                     }

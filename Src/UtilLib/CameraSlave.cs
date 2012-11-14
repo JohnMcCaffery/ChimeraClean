@@ -8,6 +8,9 @@ using OpenMetaverse;
 namespace UtilLib {
     public class CameraSlave : ProxyManager {
         private static int SlaveCount = 0;
+        private bool controlCamera = true;
+        private int injectedPackets = 0;
+
         /// <summary>
         /// Triggered whenever a camera update is received from the master.
         /// </summary>
@@ -30,7 +33,7 @@ namespace UtilLib {
 
         public CameraSlave(string name) : this (name, new InterProxyClient(name)) { }
 
-        public CameraSlave(string name, Init.Config config) : this(name, new InterProxyClient(name, config.MasterPort), config) { }
+        public CameraSlave(string name, Init.Config config) : this(name, new InterProxyClient(name), config) { }
 
         public CameraSlave(InterProxyClient client) : this ("Slave " + (SlaveCount + 1), client)  { }
 
@@ -48,9 +51,41 @@ namespace UtilLib {
             masterPosition = new Vector3(128f, 128f, 24f);
             MasterRotation = new Rotation();
 
+            OnClientLoggedIn += (source, args) => InjectPacket();
             interProxyClient = client;
-            OnClientLoggedIn += (source, args) => InjectPacket();
+            interProxyClient.OnPacketReceived += (p, ep) => {
+                if (p.Type == PacketType.AgentUpdate) {
+                    AgentUpdatePacket ap = (AgentUpdatePacket)p;
+                    masterPosition = ap.AgentData.CameraCenter;
+                    masterRotation.LookAtVector = ap.AgentData.CameraAtAxis;
+                    Recalculate();
+                    if (OnUpdateReceivedFromMaster != null)
+                        OnUpdateReceivedFromMaster(ap.AgentData.CameraCenter, ap.AgentData.CameraAtAxis);
+                }
+                return p;
+            };
             SlaveCount++;
+        }
+
+        /// <summary>
+        /// How many packets the slave has received from the master.
+        /// </summary>
+        public int PacketsReceived {
+            get { return interProxyClient.ReceivedPackets; }
+        }
+
+        /// <summary>
+        /// How many packets the slave has sent to the client.
+        /// </summary>
+        public int PacketsInjected {
+            get { return injectedPackets; }
+        }
+
+        /// <summary>
+        /// True if the client is connected to the server.
+        /// </summary>
+        public bool ConnectedToMaster {
+            get { return interProxyClient.Connected; }
         }
 
         /// <summary>
@@ -122,6 +157,17 @@ namespace UtilLib {
         /// </summary>
         public Rotation FinalRotation {
             get { return finalRotation; }
+        }
+        /// <summary>
+        /// Whether to send packets to the client to control the camera.
+        /// </summary>
+        public bool ControlCamera {
+            get { return controlCamera; }
+            set {
+                controlCamera = value;
+                if (!value)
+                    InjectPacket(0f);
+            }
         }
 
         public InterProxyClient InterProxyClient {
@@ -137,18 +183,11 @@ namespace UtilLib {
             return Connect();
         }
         public bool Connect() {
-            InterProxyClient.OnPacketReceived += (p, ep) => {
-                if (p.Type == PacketType.AgentUpdate) {
-                    AgentUpdatePacket ap = (AgentUpdatePacket)p;
-                    masterPosition = ap.AgentData.CameraCenter;
-                    masterRotation.LookAtVector = ap.AgentData.CameraAtAxis;
-                    Recalculate();
-                    if (OnUpdateReceivedFromMaster != null)
-                        OnUpdateReceivedFromMaster(ap.AgentData.CameraCenter, ap.AgentData.CameraAtAxis);
-                }
-                return p;
-            };
-            return InterProxyClient.Connect(ProxyConfig.MasterPort);
+            return InterProxyClient.Connect(ProxyConfig.MasterAddress, ProxyConfig.MasterPort);
+        }
+
+        public void Disconnect() {
+            interProxyClient.Disconnect();
         }
 
         public void Stop() {
@@ -173,6 +212,10 @@ namespace UtilLib {
         }
 
         private void InjectPacket() {
+            InjectPacket(1f);
+        }
+
+        private void InjectPacket(float enable) {
             SetFollowCamPropertiesPacket packet = new SetFollowCamPropertiesPacket();
             packet.CameraProperty = new SetFollowCamPropertiesPacket.CameraPropertyBlock[22];
             for (int i = 0; i < 22; i++) {
@@ -192,7 +235,7 @@ namespace UtilLib {
             packet.CameraProperty[8].Value = 0f;
             packet.CameraProperty[9].Value = 0f;
             packet.CameraProperty[10].Value = 0f;
-            packet.CameraProperty[11].Value = 1f;
+            packet.CameraProperty[11].Value = enable;
             packet.CameraProperty[12].Value = 0f;
             packet.CameraProperty[13].Value = FinalPosition.X;
             packet.CameraProperty[14].Value = FinalPosition.Y;
@@ -204,8 +247,10 @@ namespace UtilLib {
             packet.CameraProperty[20].Value = 1f;
             packet.CameraProperty[21].Value = 1f;
 
-            if (clientProxy != null)
+            if (clientProxy != null) {
                 clientProxy.InjectPacket(packet, GridProxy.Direction.Incoming);
+                injectedPackets++;
+            }
 
             if (OnUpdateSentToClient != null)
                 OnUpdateSentToClient(FinalPosition, FinalRotation.LookAtVector);

@@ -9,7 +9,8 @@ using System.IO;
 
 namespace ArmadilloSlave {
     class ArmadilloSlave {
-        static void Main(string[] args) {            ArgvConfigSource config = new ArgvConfigSource(args);
+        static void Main(string[] args) {
+            ArgvConfigSource config = new ArgvConfigSource(args);
 
             config.AddSwitch("Slave", "Name", "n");
 
@@ -35,7 +36,6 @@ namespace ArmadilloSlave {
                 Console.WriteLine(Init.MakeHelpLine(name, "Help", "h", "Display this help", "Not Set"));
                 return;
             }
-
 
             CameraSlave m = Init.InitCameraSlave(args, file, name);
             if (config.Configs[name].GetBoolean("GUI", true))
