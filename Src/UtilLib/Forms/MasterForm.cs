@@ -26,6 +26,12 @@ namespace ConsoleTest {
             rawPosition.Value = master.Position;
             rawRotation.LookAtVector = master.Rotation.LookAtVector;
 
+            if (master.MasterRunning) {
+                statusLabel.Text = "Bound to " + master.ProxyConfig.MasterAddress + ":" + master.ProxyConfig.MasterPort;
+                bindButton.Text = "Unbind";
+                portBox.Enabled = false;
+            }
+
             master.OnProxyStarted += (source, args) => {
                 Invoke(new Action(() => Text = "Master: " + master.ProxyConfig.ProxyPort));
             };
@@ -34,6 +40,10 @@ namespace ConsoleTest {
                     rawPosition.Value = master.Position;
                     rawRotation.LookAtVector = master.Rotation.LookAtVector;
                     RefreshDrawings();
+                    label1.Text = master.PacketsReceived.ToString();
+                    processedLabel.Text = master.PacketsProcessed.ToString();
+                    generatedLabel.Text = master.PacketsGenerated.ToString();
+                    forwardedLabel.Text = master.PacketsForwarded.ToString();
                 }));
             };
             master.OnSlaveConnected += AddSlaveTab;
@@ -94,7 +104,8 @@ namespace ConsoleTest {
                 slaveTab.Size = new System.Drawing.Size(slavesTab.Size.Width - 12, 231);
                 slaveTab.TabIndex = 0;
                 slaveTab.Text = name;
-                slaveTab.UseVisualStyleBackColor = true;                // 
+                slaveTab.UseVisualStyleBackColor = true;
+                // 
                 // rotationRotation
                 // 
                 rotationOffset.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
@@ -144,7 +155,7 @@ namespace ConsoleTest {
         }
 
         private void MasterForm_FormClosing(object sender, FormClosingEventArgs e) {
-            master.Stop();
+            master.StopMaster();
         }
 
         private void rawRotation_OnChange(object sender, EventArgs e) {
@@ -225,6 +236,22 @@ namespace ConsoleTest {
                 int slaveX = (int)(slaveHVector.Length() * scale * (slaveCross.Z < 0 ? 1 : -1));
                 Point slaveLookAtEnd = new Point(slaveOrigin.X + slaveX, slaveOrigin.Y + (int)(rot.LookAtVector.Z * scale));
                 g.DrawLine(Pens.Black, slaveOrigin, slaveLookAtEnd);
+            }
+        }
+
+        private void bindButton_Click(object sender, EventArgs e) {
+            if (bindButton.Text.Equals("Bind")) {
+                if (master.StartMaster(Int32.Parse(portBox.Text))) {
+                    statusLabel.Text = "Bound to " + master.ProxyConfig.MasterAddress + ":" + master.ProxyConfig.MasterPort;
+                    bindButton.Text = "Unbind";
+                    portBox.Enabled = false;
+                } else
+                    statusLabel.Text = "Unable to bind to " + master.ProxyConfig.MasterAddress + ":" + master.ProxyConfig.MasterPort;
+            } else {
+                master.StopMaster();
+                bindButton.Text = "Bind";
+                statusLabel.Text = "Unbound";
+                portBox.Enabled = true;
             }
         }
     }

@@ -51,7 +51,8 @@ namespace UtilLib {
             masterPosition = new Vector3(128f, 128f, 24f);
             MasterRotation = new Rotation();
 
-            OnClientLoggedIn += (source, args) => InjectPacket();
+            OnClientLoggedIn += (source, args) => InjectPacket();
+
             interProxyClient = client;
             interProxyClient.OnPacketReceived += (p, ep) => {
                 if (p.Type == PacketType.AgentUpdate) {
@@ -157,7 +158,8 @@ namespace UtilLib {
         /// </summary>
         public Rotation FinalRotation {
             get { return finalRotation; }
-        }
+        }
+
         /// <summary>
         /// Whether to send packets to the client to control the camera.
         /// </summary>
@@ -165,8 +167,7 @@ namespace UtilLib {
             get { return controlCamera; }
             set {
                 controlCamera = value;
-                if (!value)
-                    InjectPacket(0f);
+                InjectPacket(value ? 1f : 0f);
             }
         }
 

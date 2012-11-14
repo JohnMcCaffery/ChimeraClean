@@ -151,8 +151,7 @@ namespace UtilLib {
         /// <summary>
         /// Disconnect the master, closing any ports it had opened to listen.
         /// </summary>
-        public void Stop() {
-            StopProxy();
+        public void StopMaster() {
             masterServer.Stop();
         }
 

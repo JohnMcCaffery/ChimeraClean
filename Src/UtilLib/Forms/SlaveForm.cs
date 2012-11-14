@@ -37,7 +37,9 @@ namespace ConsoleTest {
                 nameBox.Enabled = false;
 
                 connectButton.Text = "Disconnect from Master";
-            }
+                statusLabel.Text = "Connected to " + slave.ProxyConfig.MasterAddress + ":" + slave.ProxyConfig.MasterPort + " as " + slave.Name;
+            } else 
+                statusLabel.Text = "Not Connected";
 
             slave.OnProxyStarted += (source, args) => {
                 Invoke(new Action(() => Text = slave.Name + ": " + slave.ProxyConfig.ProxyPort));
@@ -94,7 +96,7 @@ namespace ConsoleTest {
                     portBox.Enabled = false;
                     nameBox.Enabled = false;
                     connectButton.Text = "Disconnect from Master";
-                    statusLabel.Text = "Connected";
+                    statusLabel.Text = "Connected to " + slave.ProxyConfig.MasterAddress + ":" + slave.ProxyConfig.MasterPort + " as " + slave.Name;
                 } else
                     statusLabel.Text = "Unable to Connect";
             } else {
@@ -103,7 +105,7 @@ namespace ConsoleTest {
                 portBox.Enabled = true;
                 nameBox.Enabled = true;
                 connectButton.Text = "Connect To Master";
-                statusLabel.Text = "Disconnected";
+                statusLabel.Text = "Not Connected";
             }
         }
     }

@@ -11,7 +11,7 @@ namespace UtilLib {
     public class CameraMaster : Master {
         private int packetsReceived;
         private int packetsForwarded;
-        private int packetsCreated;
+        private int packetsGenerated;
         private int packetsProccessed;
         private bool processingPacket;
         private Vector3 position;
@@ -76,7 +76,7 @@ namespace UtilLib {
         /// How many packets were generated and sent to all connected slaves.
         /// </summary>
         public int PacketsGenerated {
-            get { return PacketsGenerated; }
+            get { return packetsGenerated; }
         }
 
         /// <summary>
@@ -133,7 +133,7 @@ namespace UtilLib {
                 masterServer.Send(p, slave.TargetEP);
             }
 
-            packetsCreated++;
+            packetsGenerated++;
             if (OnPacketGenerated != null)
                 OnPacketGenerated(p, null);
             if (OnCameraUpdated != null)

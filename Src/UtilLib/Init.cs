@@ -118,7 +118,8 @@ namespace UtilLib {
             public int ProxyPort {
                 get { return proxyPort; }
                 set { proxyPort = value; }
-            }
+            }
+
             /// <summary>
             /// The address of the master server.
             /// </summary>
