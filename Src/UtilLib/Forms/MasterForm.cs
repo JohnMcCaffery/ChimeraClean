@@ -40,7 +40,7 @@ namespace ConsoleTest {
                     rawPosition.Value = master.Position;
                     rawRotation.LookAtVector = master.Rotation.LookAtVector;
                     RefreshDrawings();
-                    label1.Text = master.PacketsReceived.ToString();
+                    receivedLabel.Text = master.PacketsReceived.ToString();
                     processedLabel.Text = master.PacketsProcessed.ToString();
                     generatedLabel.Text = master.PacketsGenerated.ToString();
                     forwardedLabel.Text = master.PacketsForwarded.ToString();
@@ -253,6 +253,109 @@ namespace ConsoleTest {
                 statusLabel.Text = "Unbound";
                 portBox.Enabled = true;
             }
+        }
+        private int x, y, currentX, currentY;
+        private float pitch, yaw;
+        private bool mouseDown;
+
+        private void mouseTab_MouseDown(object sender, MouseEventArgs e) {
+            x = e.X;
+            y = e.Y;
+            currentX = e.X;
+            currentY = e.Y;
+            pitch = rawRotation.Pitch;
+            yaw = rawRotation.Yaw;
+            mouseDown = true;
         }
+
+        private Point GetCentre(Control c) {
+            if (c.Parent == null)
+                return c.Location;
+
+            Point parentLoc = GetCentre(c.Parent);
+            return new Point(c.Location.X + parentLoc.X, c.Location.Y + parentLoc.Y);
+        }
+
+        private void mouseTab_MouseUp(object sender, MouseEventArgs e) {
+            mouseDown = false;
+            Point centre = new Point(mousePanel.Width / 2, mousePanel.Height / 2);
+            System.Windows.Forms.Cursor.Position = mousePanel.PointToScreen(centre);
+            mousePanel.Refresh();
+        }
+
+        private void mouseTab_MouseMove(object sender, MouseEventArgs e) {
+            if (mouseDown) {
+                currentX = e.X;
+                currentY = e.Y;
+                master.Rotation.Pitch = pitch + (((e.Y - y) * mouseScaleSlider.Value) / 20);
+                master.Rotation.Yaw = yaw + ((((x - e.X) / 2) * mouseScaleSlider.Value) / 10);
+                mousePanel.Refresh();
+            }
+        }
+
+        private void mousePanel_Paint(object sender, PaintEventArgs e) {
+            if (mouseDown)
+                e.Graphics.DrawLine(new Pen(Color.Black), x, y, currentX, currentY);
+            else {
+                e.Graphics.Clear(mousePanel.BackColor);
+                string text = "Click and Drag to Mouselook";
+                Point pos = new Point((e.ClipRectangle.Width / 2) - 70, e.ClipRectangle.Height / 2);
+                e.Graphics.DrawString(text, label1.Font, Brushes.Black, pos);
+            }
+        }
+        private bool leftDown, rightDown, forwardDown, backwardDown;
+        private bool upDown, downDown;
+        private bool yawRightDown, yawLeftDown, pitchUpDown, pitchDownDown;
+
+        private void keyDown(object sender, KeyEventArgs e) {
+            switch (e.KeyData) {
+                case Keys.A: leftDown = true; break;
+                case Keys.D: rightDown = true; break;
+                case Keys.W: forwardDown = true; break;
+                case Keys.S: backwardDown = true; break;
+                case Keys.PageUp: upDown = true; break;
+                case Keys.PageDown: downDown = true; break;
+                case Keys.Left: yawLeftDown = true; break;
+                case Keys.Right: yawRightDown = true; break;
+                case Keys.Up: pitchUpDown = true; break;
+                case Keys.Down: pitchDownDown = true; break;
+            }
+        }
+
+        private void keyUp(object sender, KeyEventArgs e) {
+            switch (e.KeyData) {
+                case Keys.A: leftDown = false; break;
+                case Keys.D: rightDown = false; break;
+                case Keys.W: forwardDown = false; break;
+                case Keys.S: backwardDown = false; break;
+                case Keys.PageUp: upDown = false; break;
+                case Keys.PageDown: downDown = false; break;
+                case Keys.D4: yawLeftDown = false; break;
+                case Keys.D6: yawRightDown = false; break;
+                case Keys.D8: pitchUpDown = false; break;
+                case Keys.D5: pitchDownDown = false; break;
+            }
+        }
+
+        private void moveTimer_Tick(object sender, EventArgs e) {
+            float shift = .05f * moveScaleSlider.Value;
+            if (yawLeftDown) master.Rotation.Yaw -= shift;
+            if (yawRightDown) master.Rotation.Yaw += shift;
+            if (pitchUpDown) master.Rotation.Pitch += shift;
+            if (pitchDownDown) master.Rotation.Pitch -= shift;
+
+            Vector3 move = Vector3.Zero;
+            if (forwardDown) move.X += shift;
+            if (backwardDown) move.X -= shift;
+            if (leftDown) move.Y += shift;
+            if (rightDown) move.Y -= shift;
+            if (upDown) move.Z += shift;
+            if (downDown) move.Z -= shift;
+
+            if (move != Vector3.Zero) {
+                move *= rawRotation.Rotation;
+                master.Position += move;
+            }
+        }   
     }
 }
