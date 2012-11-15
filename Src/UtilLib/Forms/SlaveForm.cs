@@ -44,6 +44,14 @@ namespace ConsoleTest {
             slave.OnProxyStarted += (source, args) => {
                 Invoke(new Action(() => Text = slave.Name + ": " + slave.ProxyConfig.ProxyPort));
             };
+            slave.OnMasterDisconnected += () => {
+                addressBox.Enabled = true;
+                portBox.Enabled = true;
+                nameBox.Enabled = true;
+
+                connectButton.Text = "Connect To Master";
+                statusLabel.Text = "Not Connected";
+            };
             slave.OnUpdateSentToClient += (position, lookAt) => {
                 Invoke(new Action(() => {
                     masterPosition.Value = slave.MasterPosition;

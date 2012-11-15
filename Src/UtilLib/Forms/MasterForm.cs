@@ -253,7 +253,8 @@ namespace ConsoleTest {
                 statusLabel.Text = "Unbound";
                 portBox.Enabled = true;
             }
-        }
+        }
+
         private int x, y, currentX, currentY;
         private float pitch, yaw;
         private bool mouseDown;
@@ -302,7 +303,8 @@ namespace ConsoleTest {
                 Point pos = new Point((e.ClipRectangle.Width / 2) - 70, e.ClipRectangle.Height / 2);
                 e.Graphics.DrawString(text, label1.Font, Brushes.Black, pos);
             }
-        }
+        }
+
         private bool leftDown, rightDown, forwardDown, backwardDown;
         private bool upDown, downDown;
         private bool yawRightDown, yawLeftDown, pitchUpDown, pitchDownDown;

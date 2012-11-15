@@ -21,6 +21,11 @@ namespace UtilLib {
         /// </summary>
         public event System.Action<Vector3, Vector3> OnUpdateSentToClient;
 
+        /// <summary>
+        /// Triggered whenever the master signals for the client to disconnect.
+        /// </summary>
+        public event Action OnMasterDisconnected;
+
         private Vector3 masterPosition;
         private Rotation masterRotation;
         private Vector3 offsetPosition;
@@ -64,6 +69,10 @@ namespace UtilLib {
                         OnUpdateReceivedFromMaster(ap.AgentData.CameraCenter, ap.AgentData.CameraAtAxis);
                 }
                 return p;
+            };
+            interProxyClient.OnDisconnected += (source, args) => {
+                if (OnMasterDisconnected != null)
+                    OnMasterDisconnected();
             };
             SlaveCount++;
         }
