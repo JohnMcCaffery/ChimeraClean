@@ -8,6 +8,7 @@ using OpenMetaverse.Packets;
 using OpenMetaverse;
 using System.Threading;
 using GridProxy;
+using log4net;
 
 namespace UtilLib {
     public abstract class BackChannel {
@@ -30,6 +31,8 @@ namespace UtilLib {
         public readonly static byte[] ACCEPT_B = Encoding.ASCII.GetBytes(ACCEPT);
 
         public readonly static byte[] REJECT_B = Encoding.ASCII.GetBytes(REJECT);
+
+        private ILog logger;
 
         /// <summary>
         /// Mapping of listeners for every different packet received.
@@ -84,8 +87,17 @@ namespace UtilLib {
         /// <summary>
         /// Adds a listener for ping events.
         /// </summary>
-        public BackChannel() {
+        public BackChannel(ILog logger) {
+            this.logger = logger;
             AddPacketDelegate(PING, (msg, source) => Send(msg, source));
+        }
+
+        /// <summary>
+        /// The logger to use when writing to the logs.
+        /// </summary>
+        protected ILog Logger {
+            get { return logger; }
+            set { logger = value; }
         }
 
         /// <summary>
@@ -147,9 +159,9 @@ namespace UtilLib {
             try {
                 socket.Send(bytes, bytes.Length, destination);
             } catch (SocketException e) {
-                Logger.Log("Unable to send packet. " + e.Message, Helpers.LogLevel.Info);
+                Logger.Info("Unable to send packet. " + e.Message);
             } catch (ObjectDisposedException e) {
-                Logger.Log("Can't send packet through a closed socket.", Helpers.LogLevel.Info);
+                Logger.Info("Can't send packet through a closed socket.");
             }
         }
 
@@ -218,7 +230,7 @@ namespace UtilLib {
                         } catch (SocketException e) { }
                     }, ep);
                 } catch (ObjectDisposedException e) {
-                    Logger.DebugLog("BackChannel unable to test connection. TestConnectionSocket disposed.");
+                    Logger.Debug("BackChannel unable to test connection. TestConnectionSocket disposed.");
                 }
             testConnectionSocket.Send(PING_B, PING_B.Length, ep);
             lock (pingLock)
@@ -266,16 +278,16 @@ namespace UtilLib {
             try {
                 int length = bytes.Length - 1;
                 Packet p = Packet.BuildPacket(bytes, ref length, zeroBuffer);
-                Logger.Log("Received " + p.Type + " packet from " + source + ".", Helpers.LogLevel.Debug);
+                Logger.Info("Received " + p.Type + " packet from " + source + ".");
                 try {
                     receivedPackets++;
                     if (OnPacketReceived != null)
                         OnPacketReceived(p, source);
                 } catch (Exception e) {
-                    Logger.Log("Problem in packet received delegate. " + e.Message + "\n" + e.StackTrace, OpenMetaverse.Helpers.LogLevel.Info);
+                    Logger.Info("Problem in packet received delegate.", e);
                 }
             } catch (Exception e) {
-                Logger.Log("Problem unpacking packet from " + source + ". " + e.Message, OpenMetaverse.Helpers.LogLevel.Info);
+                Logger.Info("Problem unpacking packet from " + source + ".", e);
             }
         }
 

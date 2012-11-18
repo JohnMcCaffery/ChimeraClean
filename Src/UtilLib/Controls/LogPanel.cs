@@ -14,6 +14,7 @@ namespace UtilLib {
     public partial class LogPanel : UserControl {
         private object createdLock = new object();
         private bool created = false;
+        private string source = null;
         
         public LogPanel() {
             InitializeComponent();
@@ -38,6 +39,8 @@ namespace UtilLib {
         }
 
         void Instance_MessageLoggedEvent(object sender, MessageLoggedEventArgs e) {
+            if (source != null && !source.Equals(e.LoggingEvent.LoggerName))
+                return;
             if (!created)
                 lock (createdLock)
                     Monitor.Wait(createdLock);

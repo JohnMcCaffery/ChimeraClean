@@ -128,7 +128,6 @@ namespace UtilLib {
                 }
             } else if (proxy != null) {
                 proxy.StopProxy();
-                proxy = null;
 
                 proxyStartButton.Text = "Start Proxy";
                 proxyStatusLabel.Text = "Stopped";
@@ -140,7 +139,7 @@ namespace UtilLib {
 
         private void clientStartButton_Click(object sender, EventArgs e) {
             if (clientStartButton.Text.Equals("Launch Client")) {
-                if (!proxy.ProxyRunning)
+                if (proxy != null && !proxy.ProxyRunning)
                     proxyStartButton.PerformClick();
 
                 proxy.StartClient();

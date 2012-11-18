@@ -32,6 +32,7 @@ using System.Xml;
 using GridProxy;
 using System.Net;
 using OpenMetaverse;
+using log4net;
 
 namespace UtilLib {
     public class InterProxyServer : BackChannel {
@@ -62,7 +63,7 @@ namespace UtilLib {
         /// <summary>
         /// Bind the master on localhost with a random masterPort.
         /// </summary>
-        public InterProxyServer() {
+        public InterProxyServer() : base (LogManager.GetLogger("Master")) {
             AddPacketDelegate(CONNECT, HandleSlaveConnected);
             AddPacketDelegate(DISCONNECT, HandleSlaveDisconnected);
         }
@@ -73,10 +74,10 @@ namespace UtilLib {
                 string name = split[1];
                 lock (slaves) {
                     if (slaves.Values.Contains(name)) {
-                        Logger.Log("Master received connect from already registered slave '" + name + "' from " + source + "'. Rejected.", Helpers.LogLevel.Info);
+                        Logger.Info("Master received connect from already registered slave '" + name + "' from " + source + "'. Rejected.");
                         Send(REJECT + " '" + name  + "' already bound.", source);
                     } else {
-                        Logger.Log("Master registered new slave '" + name + "' at " + source + ".", Helpers.LogLevel.Info);
+                        Logger.Info("Master registered new slave '" + name + "' at " + source + ".");
                         slaves.Add(source, split[1]);
                         Send(ACCEPT, source);
                         if (OnSlaveConnected != null)
@@ -111,7 +112,7 @@ namespace UtilLib {
                 foreach (var slave in slaves.Keys)
                     Send(bytes, slave);
             }
-            Logger.Log("Master sent " + packet.Type + " packet to " + slaves.Count + " slaves.", Helpers.LogLevel.Debug);
+            Logger.Info("Master sent " + packet.Type + " packet to " + slaves.Count + " slaves.");
         }
 
         /// <summary>
@@ -120,7 +121,7 @@ namespace UtilLib {
         /// </summary>
         public bool Start() {
             if (Bind(Port)) {
-                Logger.Log("Master bound to " + Address + ":" + Port, Helpers.LogLevel.Info);
+                Logger.Info("Master bound to " + Address + ":" + Port);
                 return true;
             }
             return false;
@@ -143,7 +144,7 @@ namespace UtilLib {
                 if (slaves.ContainsKey(ep)) {
                     string name = slaves[ep];
                     slaves.Remove(ep);
-                    Logger.Log("Master saw slave '" + name + "' at " + ep + " disconnect.", Helpers.LogLevel.Info);
+                    Logger.Info("Master saw slave '" + name + "' at " + ep + " disconnect.");
                     if (OnSlaveDisconnected != null)
                         OnSlaveDisconnected(name);
                 }
@@ -159,7 +160,7 @@ namespace UtilLib {
                 foreach (var slave in slaves.Keys)
                     Send(DISCONNECT_B, slave);
             Unbind();
-            Logger.Log("Master closed. " + slaves.Count + " slaves notified.", Helpers.LogLevel.Info);
+            Logger.Info("Master closed. " + slaves.Count + " slaves notified.");
             slaves.Clear();
         }
     }

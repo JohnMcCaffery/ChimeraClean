@@ -33,6 +33,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="GridProxy, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\libopenmetaverse\bin\GridProxy.dll</HintPath>
+    </Reference>
     <Reference Include="OpenMetaverse">
       <HintPath>..\..\..\..\libopenmetaverse\OpenMetaverse\obj\Debug\OpenMetaverse.dll</HintPath>
     </Reference>

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using OpenMetaverse.Packets;
 using OpenMetaverse;
+using log4net;
 
 namespace UtilLib {
     public class CameraSlave : ProxyManager {
@@ -44,7 +45,7 @@ namespace UtilLib {
 
         public CameraSlave(string name, InterProxyClient client) : this (name, client, null) { }
 
-        public CameraSlave(string name, InterProxyClient client, Init.Config config) : base (config) { 
+        public CameraSlave(string name, InterProxyClient client, Init.Config config) : base (config, LogManager.GetLogger(name)) { 
             client.Name = name;
 
             finalPosition = MasterPosition;
@@ -103,7 +104,10 @@ namespace UtilLib {
         /// </summary>
         public string Name {
             get { return interProxyClient.Name; }
-            set { interProxyClient.Name = value; }
+            set { 
+                interProxyClient.Name = value;
+                Logger = LogManager.GetLogger(value);
+            }
         }
 
         /// <summary>

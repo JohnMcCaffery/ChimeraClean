@@ -53,7 +53,7 @@ namespace ConsoleTest {
                 statusLabel.Text = "Not Connected";
             };
             slave.OnUpdateSentToClient += (position, lookAt) => {
-                Invoke(new Action(() => {
+                BeginInvoke(new Action(() => {
                     masterPosition.Value = slave.MasterPosition;
                     masterRotation.LookAtVector = slave.MasterRotation.LookAtVector;
                     finalPosition.Value = position;

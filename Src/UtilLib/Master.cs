@@ -116,7 +116,7 @@ namespace UtilLib {
 
         public Master() : this(null) { }
 
-        public Master(Init.Config config) : base (config) {
+        public Master(Init.Config config) : base (config, LogManager.GetLogger("Master")) {
             masterServer.OnSlaveConnected += (name, ep) => {
                 Slave slave = new Slave(name, ep);
                 lock (slaves)

@@ -7,6 +7,7 @@ using OpenMetaverse.Packets;
 using System.Threading;
 using OpenMetaverse;
 using System.Windows.Forms;
+using GridProxy;
 
 namespace ConsoleTest {
     class Program {
@@ -18,6 +19,32 @@ namespace ConsoleTest {
         }
 
         static void Main(string[] args) {
+
+            string portArg = "--proxy-login-port=" + 8081;
+            string listenIPArg = "--proxy-proxyAddress-facing-address=127.0.0.1";
+            string loginURIArg = "--proxy-remote-login-uri=http://localhost:9000";
+            string[] args1 = args.Concat(new string[]{ portArg, listenIPArg, loginURIArg }).ToArray();
+            ProxyConfig config1 = new ProxyConfig("Routing God", "jm726@st-andrews.ac.uk", args1);
+ 
+            portArg = "--proxy-login-port=" + 8082;
+            listenIPArg = "--proxy-proxyAddress-facing-address=127.0.0.1";
+            loginURIArg = "--proxy-remote-login-uri=http://localhost:9000";
+            string[] args2 = args.Concat(new string[]{ portArg, listenIPArg, loginURIArg }).ToArray();
+
+            ProxyConfig config2 = new ProxyConfig("Routing Project", "jm726@st-andrews.ac.uk", args2);           
+            
+            Proxy p1 = new Proxy(config1);
+            Proxy p2 = new Proxy(config2);
+
+            p1.Start();
+            p2.Start();
+
+            Run("Stop", () => {
+                p1.Stop();
+                p2.Stop();
+            });
+
+            /*
             CameraMaster m = Init.InitCameraMaster(args, AppDomain.CurrentDomain.SetupInformation.ConfigurationFile);
             CameraSlave s1 = Init.InitCameraSlave(args, AppDomain.CurrentDomain.SetupInformation.ConfigurationFile, "Slave1");
             CameraSlave s2 = Init.InitCameraSlave(args, AppDomain.CurrentDomain.SetupInformation.ConfigurationFile, "Slave2");

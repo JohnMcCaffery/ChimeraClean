@@ -35,7 +35,6 @@ using log4net;
 
 namespace UtilLib {
     public class InterProxyClient : BackChannel {
-        private ILog Logger = LogManager.GetLogger("InterProxyClientLogger");
         /// <summary>
         /// The name of this slave.
         /// </summary>
@@ -56,7 +55,7 @@ namespace UtilLib {
         /// <summary>
         /// Create a new InterProxyClient
         /// </summary>
-        public InterProxyClient(string name) {
+        public InterProxyClient(string name) : base (LogManager.GetLogger(name)) {
             Bind(0);
             Logger.Info("Slave bound to " + Address + ":" + Port + ".");
             Name = name;

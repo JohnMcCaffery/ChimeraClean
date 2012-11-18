@@ -11,13 +11,15 @@ using System.Diagnostics;
 using System.ComponentModel;
 using System.Threading;
 using GridProxyConfig = GridProxy.ProxyConfig;
+using log4net;
 
 namespace UtilLib {
     public abstract class ProxyManager {
+        private static readonly string proxyAddress = "127.0.0.1";
 
         private Process client;
+        private ILog logger;
         protected Proxy clientProxy;
-        private readonly string proxyAddress = "127.0.0.1";
         private Init.Config proxyConfig;
         private bool clientLoggedIn;
         private bool proxyStarted;
@@ -31,6 +33,14 @@ namespace UtilLib {
         /// Triggered whenever a client logs in to the proxy.
         /// </summary>
         public event EventHandler OnClientLoggedIn;
+
+        /// <summary>
+        /// The logger to use when writing to the logs.
+        /// </summary>
+        protected ILog Logger {
+            get { return logger; }
+            set { logger = value; }
+        }
 
         /// <summary>
         /// True if the proxy is ready to receive a connection from a client.
@@ -62,8 +72,9 @@ namespace UtilLib {
         /// Create a ProxyManager specifying a configuration.
         /// </summary>
         /// <param name="config">The configuration for the proxy manager.</param>
-        protected ProxyManager(Init.Config config) {
+        protected ProxyManager(Init.Config config, ILog logger) {
             proxyConfig = config;
+            this.logger = logger;
         }
 
         /// <summary>
@@ -109,8 +120,10 @@ namespace UtilLib {
                     lock(startLock)
                         Monitor.PulseAll(startLock);
 
-                    if (OnClientLoggedIn != null)
-                        OnClientLoggedIn(clientProxy, null);
+                    new Thread(() => {
+                        if (OnClientLoggedIn != null)
+                            OnClientLoggedIn(clientProxy, null);
+                    }).Start();
                     return response;
                 });
                 foreach (PacketType pt in Enum.GetValues(typeof(PacketType))) {
@@ -121,7 +134,7 @@ namespace UtilLib {
                 clientProxy.Start();
                 proxyStarted = true;
             } catch (NullReferenceException e) {
-                Logger.Log("Unable to start proxy. " + e.Message, Helpers.LogLevel.Info);
+                Logger.Info("Unable to start proxy. " + e.Message);
                 return false;
             }
 
@@ -154,7 +167,7 @@ namespace UtilLib {
             if (proxyConfig.AutoLoginClient)
                 client.StartInfo.Arguments += " --login " + proxyConfig.LoginFirstName + " " + proxyConfig.LoginLastName + " " + proxyConfig.LoginPassword;
             try {
-                Logger.Log("Starting client '" + client.StartInfo.FileName + "' with arguments '" + client.StartInfo.Arguments + "'.", Helpers.LogLevel.Info);
+                Logger.Info("Starting client '" + client.StartInfo.FileName + "' with arguments '" + client.StartInfo.Arguments + "'.");
                 if (!client.Start())
                     return false;
 
@@ -164,7 +177,7 @@ namespace UtilLib {
                 return clientLoggedIn;
 
             } catch (Win32Exception e) {
-                Logger.Log("Unable to start client from " + client.StartInfo.FileName + ". " + e.Message, Helpers.LogLevel.Info);
+                Logger.Info("Unable to start client from " + client.StartInfo.FileName + ". " + e.Message);
                 return false;
             }
         }
