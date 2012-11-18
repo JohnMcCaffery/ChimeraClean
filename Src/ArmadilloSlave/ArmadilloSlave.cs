@@ -8,43 +8,45 @@ using ConsoleTest;
 using System.IO;
 
 namespace ArmadilloSlave {
-    class ArmadilloSlave {
-        static void Main(string[] args) {
+    public class ArmadilloSlave {
+        public static void Main(string[] args) {
             ArgvConfigSource config = new ArgvConfigSource(args);
 
             config.AddSwitch("Slave", "Name", "n");
+            config.AddSwitch("General", "File", "f");
 
-            string file = config.Configs["Slave"].Get("File", AppDomain.CurrentDomain.SetupInformation.ConfigurationFile);
+            string file = Init.AddFile(config);
 
-            if (File.Exists(file) && Path.GetExtension(file).ToUpper().Equals("config")) {
-                DotNetConfigSource dotnet = new DotNetConfigSource(file);
-                config.Merge(dotnet);
-            }
+            string name = Init.Get(config.Configs["Slave"], "Name", "Slave1");
 
-            string name = config.Configs["Slave"].Get("Name", "Slave1");
-
-            config.AddSwitch(name, "File", "f");
             config.AddSwitch(name, "GUI", "g");
             config.AddSwitch(name, "Help", "h");
 
-            if (config.Configs[name].Get("Help", null) != null) {
+            if (Init.Has(config.Configs[name], "Help")) {
+                Console.WriteLine("Slave Help");
                 Console.WriteLine(Init.HelpHeaders);
-                Console.WriteLine(Init.Help(name));
-                Console.WriteLine(Init.MakeHelpLine("Slave", "Name", "h", "The name for this slave", "Slave1"));
-                Console.WriteLine(Init.MakeHelpLine(name, "File", "f", "The config file to use", "AppDomain ConfigFile"));
-                Console.WriteLine(Init.MakeHelpLine(name, "GUI", "h", "Whether to launch a GUI", true));
-                Console.WriteLine(Init.MakeHelpLine(name, "Help", "h", "Display this help", "Not Set"));
+
+                IEnumerable<string> list = Init.Help("Master");
+                list = list.Concat(new string[] {
+                    Init.MakeHelpLine(name, "GUI", "g", "Whether to launch a GUI.", true),
+                    Init.MakeHelpLine(name, "Help", "h", "Display this help.", "Not Set"),
+                    Init.MakeHelpLine("Slave", "File", "f", "The config file to use.", "AppDomain ConfigFile"),
+                    Init.MakeHelpLine("Slave", "Name", "n", "The name for this slave.", "Slave1")
+                });
+                foreach (string line in list.OrderBy(l => l))
+                    Console.WriteLine(line);
+
                 return;
             }
 
-            CameraSlave m = Init.InitCameraSlave(args, file, name);
-            if (config.Configs[name].GetBoolean("GUI", true))
-                Init.StartGui(() => new SlaveForm(m));
-            else {
-                Console.WriteLine("Type 'Exit' to quit.");
-                while (!Console.ReadLine().ToUpper().Equals("EXIT"))
-                    Console.WriteLine("Type 'Exit' to quit.");
-            }
+            CameraSlave s = Init.InitCameraSlave(args, file, name);
+            if (Init.Get(config.Configs[name], "GUI", true))
+                Init.StartGui(() => new SlaveForm(s));
+            //else {
+                //Console.WriteLine("Type 'Exit' to quit.");
+                //while (!Console.ReadLine().ToUpper().Equals("EXIT"))
+                    //Console.WriteLine("Type 'Exit' to quit.");
+            //}
         }
     }
 }

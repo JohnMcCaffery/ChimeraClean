@@ -44,12 +44,12 @@ namespace UtilLib {
         /// <summary>
         /// Triggered whenever a slave connected to the master. Source is the name of the slave.
         /// </summary>
-        public event System.Action<string, IPEndPoint> OnSlaveConnected;
+        public event Action<string, IPEndPoint> OnSlaveConnected;
 
         /// <summary>
         /// Triggered whenever a slave disconnects from the master. Source is the name of the slave.
         /// </summary>
-        public event System.Action<string> OnSlaveDisconnected;
+        public event Action<string> OnSlaveDisconnected;
 
         /// <summary>
         /// Bind the master so that slaves can connect to it at the specified masterAddress and masterPort.

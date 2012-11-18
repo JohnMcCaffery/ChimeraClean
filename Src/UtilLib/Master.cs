@@ -153,6 +153,7 @@ namespace UtilLib {
         /// </summary>
         public void StopMaster() {
             masterServer.Stop();
+            slaves.Clear();
         }
 
         /// <summary>

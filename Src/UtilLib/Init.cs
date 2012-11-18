@@ -49,23 +49,23 @@ namespace UtilLib {
             get { return MakeHelpLine("Section", "Long", "Short", "Explanation", "Default"); }
         }
 
-        public static string Help(string section) {
-            string ret = "";
-            ret += MakeHelpLine("General", "UseGrid", "ug", "Whether to use the '--grid' flag when launching the client", "true") + "\n";
-            ret += MakeHelpLine("General", "ProxyGrid", "g", "The name of the grid to specify using '--grid' when launching the client.", "The proxy port") + "\n";
-            ret += MakeHelpLine("General", "LoginURI", "u", "The LoginURI of the actual servr being proxied", Config.DEFAULT_LOGINURI) + "\n";
-            ret += MakeHelpLine("General", "MasterPort", "mp", "The port the master is running/will be run on for distributing packets between master/slaves", Config.DEFAULT_MASTER_PORT) + "\n";
-            ret += MakeHelpLine("General", "MasterAddress", "ma", "The address the master is running at for distributing packets between master/slaves", "localhost") + "\n";
-            ret += MakeHelpLine("General", "ClientExe", "e", "The file to be executed to launch the client", Path.GetFileName(Config.DEFAULT_CLIENT_EXE)) + "\n";
-            ret += MakeHelpLine(section, "AutoStartMaster", "am", "Whether to automatically start the master running", "true") + "\n";
-            ret += MakeHelpLine(section, "AutoConnectSlave", "as", "Whether to automatically connect the slave to the master", "true") + "\n";
-            ret += MakeHelpLine(section, "AutoStartProxy", "ap", "Whether to autostart a proxy", "true") + "\n";
-            ret += MakeHelpLine(section, "AutoStartClient", "ac", "Whether to auto launch the client executable to connect to the proxy", "false") + "\n";
-            ret += MakeHelpLine(section, "ProxyPort", "p", "The port the proxy is to run on", Config.DEFAULT_PROXY_PORT) + "\n";
-            ret += MakeHelpLine(section, "FirstName", "f", "The first name to log in with", "Not Set") + "\n";
-            ret += MakeHelpLine(section, "LastName", "l", "The last name to log in with", "Not Set") + "\n";
-            ret += MakeHelpLine(section, "Password", "pw", "The password to log in with", "Not Set") + "\n";
-            return ret;
+        public static string[] Help(string section) {
+            return new string[] {
+                 MakeHelpLine("General", "ClientExe", "e", "The file to be executed to launch the client.", Path.GetFileName(Config.DEFAULT_CLIENT_EXE)),
+                 MakeHelpLine("General", "LoginURI", "u", "The LoginURI of the actual servr being proxied.", Config.DEFAULT_LOGINURI),
+                 MakeHelpLine("General", "MasterAddress", "ma", "The address the master is running at for distributing packets between master/slaves.", "localhost"),
+                 MakeHelpLine("General", "MasterPort", "mp", "The port the master is running/will be run on for distributing packets between master/slaves.", Config.DEFAULT_MASTER_PORT),
+                 MakeHelpLine("General", "UseGrid", "ug", "Whether to use the '--grid' flag when launching the client.", "true"),
+                 MakeHelpLine(section, "AutoConnectSlave", "as", "Whether to automatically connect the slave to the master.", "true"),
+                 MakeHelpLine(section, "AutoStartClient", "ac", "Whether to auto launch the client executable to connect to the proxy.", "false"),
+                 MakeHelpLine(section, "AutoStartMaster", "am", "Whether to automatically start the master running.", "true"),
+                 MakeHelpLine(section, "AutoStartProxy", "ap", "Whether to autostart a proxy.", "true"),
+                 MakeHelpLine(section, "FirstName", "fn", "The first name to log in with.", "Not Set"),
+                 MakeHelpLine(section, "LastName", "l", "The last name to log in with.", "Not Set"),
+                 MakeHelpLine(section, "Password", "pw", "The password to log in with.", "Not Set"),
+                 MakeHelpLine(section, "ProxyGrid", "g", "The name of the grid to specify using '--grid' when launching the client.", "The proxy port"),
+                 MakeHelpLine(section, "ProxyPort", "p", "The port the proxy is to run on.", Config.DEFAULT_PROXY_PORT)
+            };
         }
         public class Config {
             public static readonly string DEFAULT_LOGINURI = "http://localhost:9000";
@@ -189,14 +189,11 @@ namespace UtilLib {
                 config.AddSwitch("General", "MasterAddress", "ma");
                 config.AddSwitch("General", "MasterPort", "mp");
                 config.AddSwitch(section, "ProxyPort", "p");
-                config.AddSwitch(section, "FirstName", "f");
+                config.AddSwitch(section, "FirstName", "fn");
                 config.AddSwitch(section, "LastName", "l");
                 config.AddSwitch(section, "Password", "pw");
 
-                if (File.Exists(file)) {
-                    IConfigSource dotnet = new DotNetConfigSource(file);
-                    config.Merge(dotnet);
-                }
+                AddFile(config, file);
                 IConfig mainConfig = config.Configs[section];
                 IConfig generalConfig = config.Configs["General"];
 
@@ -215,17 +212,14 @@ namespace UtilLib {
             }
         }
 
-        public static CameraMaster InitCameraMaster(string[] args, string configFile) {
+        public static CameraMaster InitCameraMaster(string[] args, string file) {
             ArgvConfigSource config = new ArgvConfigSource(args);
 
             config.AddSwitch("Master", "AutoStartMaster", "am");
             config.AddSwitch("Master", "AutoStartProxy", "ap");
             config.AddSwitch("Master", "AutoStartClient", "ac");
 
-            if (File.Exists(configFile)) {
-                IConfigSource dotnet = new DotNetConfigSource(configFile);
-                config.Merge(dotnet);
-            }
+            AddFile(config, file);
 
             IConfig masterConfig = config.Configs["Master"];
             IConfig generalConfig = config.Configs["General"];
@@ -233,9 +227,9 @@ namespace UtilLib {
             Config proxyConfig = new Config(args, "Master", AppDomain.CurrentDomain.SetupInformation.ConfigurationFile);
             CameraMaster m = new CameraMaster(proxyConfig);
 
-            bool autostartProxy = Get(generalConfig, "AutoStartProxy", false);
-            bool autostartClient = Get(generalConfig, "AutoStartClient", false);
-            bool autostartMaster = Get(generalConfig, "AutoStartMaster", true);
+            bool autostartProxy = Get(masterConfig, "AutoStartProxy", false);
+            bool autostartClient = Get(masterConfig, "AutoStartClient", false);
+            bool autostartMaster = Get(masterConfig, "AutoStartMaster", true);
             if (autostartProxy || autostartClient)
                 while (!m.StartProxy())
                     proxyConfig.ProxyPort++;
@@ -246,17 +240,14 @@ namespace UtilLib {
             return m;
         }
 
-        public static CameraSlave InitCameraSlave(string[] args, string configFile, string slave) {
+        public static CameraSlave InitCameraSlave(string[] args, string file, string slave) {
             ArgvConfigSource config = new ArgvConfigSource(args);
 
             config.AddSwitch(slave, "AutoConnectSlave", "as");
             config.AddSwitch(slave, "AutoStartProxy", "ap");
             config.AddSwitch(slave, "AutoStartClient", "ac");
 
-            if (File.Exists(configFile)) {
-                IConfigSource dotnet = new DotNetConfigSource(configFile);
-                config.Merge(dotnet);
-            }
+            AddFile(config, file);
             
             IConfig slaveConfig = config.Configs[slave];
             IConfig generalConfig = config.Configs["General"];
@@ -264,9 +255,9 @@ namespace UtilLib {
             Config proxyConfig = new Config(args, slave, AppDomain.CurrentDomain.SetupInformation.ConfigurationFile);
             CameraSlave s = new CameraSlave(slave, proxyConfig);
 
-            bool autostartProxy = Get(generalConfig, "AutoStartProxy", false);
-            bool autostartClient = Get(generalConfig, "AutoStartClient", false);
-            bool autostartSlave = Get(generalConfig, "AutoConnectSlave", true);
+            bool autostartProxy = Get(slaveConfig, "AutoStartProxy", false);
+            bool autostartClient = Get(slaveConfig, "AutoStartClient", false);
+            bool autostartSlave = Get(slaveConfig, "AutoConnectSlave", true);
 
             if (autostartProxy || autostartClient)
                 while (!s.StartProxy())
@@ -278,6 +269,9 @@ namespace UtilLib {
             return s;
         }
 
+        public static bool Has(IConfig cfg, string key) {
+            return cfg != null && cfg.Contains(key);
+        }
         public static bool Get(IConfig cfg, string key, bool defalt) {
             return cfg == null ? defalt : cfg.GetBoolean(key, defalt);
         }
@@ -287,15 +281,45 @@ namespace UtilLib {
         public static int Get(IConfig cfg, string key, int defalt) {
             return cfg == null ? defalt : cfg.GetInt(key, defalt);
         }
-        public static void StartGui(Func<Form> createForm) {
+
+        public static Form StartGui(Func<Form> createForm) {
+            if (Thread.CurrentThread.GetApartmentState() == ApartmentState.STA) {
+                Form f = createForm();
+                f.ShowDialog();
+                return f;
+            } else {
+                object createLock = new object();
+                Form f = null;
+                bool started = false;
                 Thread t = new Thread(() => {
-                    Form f = createForm();
+                    f = createForm();
+                    lock (createLock)
+                        Monitor.PulseAll(createLock);
+                    started = true;
                     f.ShowDialog();
                 });
                 t.SetApartmentState(ApartmentState.STA);
                 t.Start();
-                //Application.EnableVisualStyles();
-                //Application.Run(new SlaveForm(s));
+                if (!started)
+                    lock (createLock)
+                        Monitor.Wait(createLock);
+                return f;
+            }
+        }
+
+        public static string AddFile(IConfigSource config) {
+            string file = Get(config.Configs["General"], "File", AppDomain.CurrentDomain.SetupInformation.ConfigurationFile);
+            AddFile(config, file);
+            return file;
+        }
+        public static void AddFile(IConfigSource config, string file) {
+            if (File.Exists(file) && Path.GetExtension(file).ToUpper().Equals(".CONFIG")) {
+                DotNetConfigSource dotnet = new DotNetConfigSource(file);
+                config.Merge(dotnet);
+            } else if (File.Exists(file) && Path.GetExtension(file).ToUpper().Equals(".INI")) {
+                IniConfigSource ini = new IniConfigSource(file);
+                config.Merge(ini);
+            }
         }
     }
 }

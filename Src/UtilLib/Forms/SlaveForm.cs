@@ -19,6 +19,7 @@ namespace ConsoleTest {
             InitializeComponent();
             proxyPanel.Proxy = slave;
             Text = slave.Name;
+            debugPanel.Source = slave.Name;
             if (slave.ProxyRunning)
                 Text += ": " + slave.ProxyConfig.ProxyPort;
 
@@ -105,6 +106,7 @@ namespace ConsoleTest {
         private void connectButton_Click(object sender, EventArgs e) {
             if (connectButton.Text.Equals("Connect To Master")) {
                 slave.Name = nameBox.Text;
+                debugPanel.Source = slave.Name;
                 if (slave.Connect()) {
                     addressBox.Enabled = false;
                     portBox.Enabled = false;

@@ -47,24 +47,7 @@ namespace ConsoleTest {
                 }));
             };
             master.OnSlaveConnected += AddSlaveTab;
-            master.OnSlaveDisconnected += (slave) => {
-                if (slaveTabs.ContainsKey(slave)) {
-                    Invoke(new Action(() => {
-                        TabPage slaveTab = slaveTabs[slave];
-
-                        this.slavesTab.SuspendLayout();
-                        slaveTab.SuspendLayout();
-                        this.SuspendLayout();
-
-                        this.slavesTab.TabPages.Remove(slaveTab);
-                        slaveTabs.Remove(slave);
-
-                        this.slavesTab.ResumeLayout(false);
-                        slaveTab.ResumeLayout(false);
-                        this.ResumeLayout(false);
-                    }));
-                }
-            };
+            master.OnSlaveDisconnected += RemoveSlave;
 
             foreach (var slave in master.Slaves)
                 AddSlaveTab(slave);
@@ -81,17 +64,20 @@ namespace ConsoleTest {
                 TabPage slaveTab = new System.Windows.Forms.TabPage();
                 VectorPanel positionOffset = new ProxyTestGUI.VectorPanel();
                 RotationPanel rotationOffset = new ProxyTestGUI.RotationPanel();
-                this.slavesTab.SuspendLayout();
+                this.slavesTabContainer.SuspendLayout();
                 slaveTab.SuspendLayout();
+                this.debugTab.SuspendLayout();
                 this.SuspendLayout();
 
                 string name = slave.Name;
-                slaveTabs.Add(name, slaveTab);
+                this.slaveTabs.Add(name, slaveTab);
 
                 // 
                 // mainTab
                 // 
-                slavesTab.Controls.Add(slaveTab);
+                this.slavesTabContainer.TabPages.Remove(this.debugTab);
+                this.slavesTabContainer.Controls.Add(slaveTab);
+                this.slavesTabContainer.Controls.Add(this.debugTab);
                 // 
                 // slaveTab
                 // 
@@ -101,7 +87,7 @@ namespace ConsoleTest {
                 slaveTab.Location = new System.Drawing.Point(4, 22);
                 slaveTab.Name = name + "Tab";
                 slaveTab.Padding = new System.Windows.Forms.Padding(3);
-                slaveTab.Size = new System.Drawing.Size(slavesTab.Size.Width - 12, 231);
+                slaveTab.Size = new System.Drawing.Size(slavesTabContainer.Size.Width - 12, 231);
                 slaveTab.TabIndex = 0;
                 slaveTab.Text = name;
                 slaveTab.UseVisualStyleBackColor = true;
@@ -146,7 +132,7 @@ namespace ConsoleTest {
                     hvSplit.Panel2.Refresh();
                 };
 
-                this.slavesTab.ResumeLayout(false);
+                this.slavesTabContainer.ResumeLayout(false);
                 slaveTab.ResumeLayout(false);
                 this.ResumeLayout(false);
             });
@@ -154,9 +140,28 @@ namespace ConsoleTest {
                 Invoke(add);
             else
                 add();
+        }
+        private void RemoveSlave(string slave) {
+            if (slaveTabs.ContainsKey(slave)) {
+                Invoke(new Action(() => {
+                    TabPage slaveTab = slaveTabs[slave];
+
+                    this.slavesTabContainer.SuspendLayout();
+                    slaveTab.SuspendLayout();
+                    this.SuspendLayout();
+
+                    this.slavesTabContainer.TabPages.Remove(slaveTab);
+                    slaveTabs.Remove(slave);
+
+                    this.slavesTabContainer.ResumeLayout(false);
+                    slaveTab.ResumeLayout(false);
+                    this.ResumeLayout(false);
+                }));
+            }
         }
 
         private void MasterForm_FormClosing(object sender, FormClosingEventArgs e) {
+            master.StopProxy();
             master.StopMaster();
         }
 
@@ -251,6 +256,8 @@ namespace ConsoleTest {
                     statusLabel.Text = "Unable to bind to " + master.ProxyConfig.MasterAddress + ":" + master.ProxyConfig.MasterPort;
             } else {
                 master.StopMaster();
+                foreach (var slave in slaveTabs.Keys.ToArray())
+                    RemoveSlave(slave);
                 bindButton.Text = "Bind";
                 statusLabel.Text = "Unbound";
                 portBox.Enabled = true;

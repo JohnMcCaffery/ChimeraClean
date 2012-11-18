@@ -15,21 +15,28 @@ namespace UtilLib {
         private object createdLock = new object();
         private bool created = false;
         private string source = null;
+
+        public string Source {
+            get { return source; }
+            set { source = value; }
+        }
         
         public LogPanel() {
-            InitializeComponent();
-
-            Logger.Log("Log Panel Ready", Helpers.LogLevel.Info);
-            if (FireEventAppender.Instance != null) 
-                FireEventAppender.Instance.MessageLoggedEvent += new MessageLoggedEventHandler(Instance_MessageLoggedEvent);
-
             //Only start processing events when a handle has been created.
+            ControlAdded += (source, args) => {
+                Visible = true;
+            };
             HandleCreated += (source, args) => {
-                Thread.Sleep(10);
                 created = true;
                 lock (createdLock)
                     Monitor.PulseAll(createdLock);
             };
+            InitializeComponent();
+
+            log4net.Config.XmlConfigurator.Configure();
+            Logger.Log("Log Panel Ready", Helpers.LogLevel.Info);
+            if (FireEventAppender.Instance != null) 
+                FireEventAppender.Instance.MessageLoggedEvent += new MessageLoggedEventHandler(Instance_MessageLoggedEvent);
         }
 
         protected override void DestroyHandle() {
@@ -41,9 +48,9 @@ namespace UtilLib {
         void Instance_MessageLoggedEvent(object sender, MessageLoggedEventArgs e) {
             if (source != null && !source.Equals(e.LoggingEvent.LoggerName))
                 return;
-            if (!created)
-                lock (createdLock)
-                    Monitor.Wait(createdLock);
+            //if (!created)
+                //lock (createdLock)
+                    //Monitor.Wait(createdLock);
 
             if (!created || this.IsDisposed || this.Disposing)
                 return;
@@ -52,8 +59,8 @@ namespace UtilLib {
                 e.LoggingEvent.RenderedMessage, e.LoggingEvent.ExceptionObject);
             Action a = () => debugTextBox.AppendText(s + "\n");
 
-            if (InvokeRequired)
-                Invoke(a);
+            if (InvokeRequired || !IsHandleCreated)
+                BeginInvoke(a);
             else
                 a();
         }
