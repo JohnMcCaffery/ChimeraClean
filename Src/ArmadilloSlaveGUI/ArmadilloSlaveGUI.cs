@@ -16,18 +16,7 @@ namespace ArmadilloSlaveGUI {
         static void Main(string[] args) {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-
-            ArgvConfigSource config = new ArgvConfigSource(args);
-
-            config.AddSwitch("Slave", "Name", "n");
-            config.AddSwitch("General", "File", "f");
-
-            string file = Init.AddFile(config);
-
-            string name = Init.Get(config.Configs["Slave"], "Name", "Slave1");
-
-            CameraSlave s = Init.InitCameraSlave(args, file, name);
-            Application.Run(new SlaveForm(s));
+            CameraSlave s = Init.InitCameraSlave(args.Concat(new string[] { "-g", "true" }).ToArray());
         }
     }
 }

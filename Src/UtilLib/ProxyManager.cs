@@ -206,5 +206,12 @@ namespace UtilLib {
                 clientProxy.Stop();
             proxyStarted = false;
         }
+
+        /// <summary>
+        /// Stop all functionality coming from this proxy manager. Should be overriden by any inheriting classes.
+        /// </summary>
+        public virtual void Stop() {
+            StopProxy();
+        }
     }
 }

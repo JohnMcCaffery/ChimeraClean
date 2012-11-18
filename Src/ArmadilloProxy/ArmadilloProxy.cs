@@ -37,8 +37,13 @@ namespace ArmadilloProxy {
 
             IConfig general = config.Configs["General"];
 
-            if (Init.Has(general, "Master"))
-                ArmadilloMaster.ArmadilloMaster.Main(args);
+            List<ProxyManager> consoleInstances = new List<ProxyManager>();
+
+            if (Init.Has(general, "Master")) {
+                ProxyManager m = Init.InitCameraMaster(args);
+                if (!Init.Get(config.Configs["Master"], "GUI", true))
+                    consoleInstances.Add(m);
+            }
 
             if (help && (Init.Has(general, "Slave") || Init.Has(general, "SlaveCount"))) {
                 if (Init.Has(general, "Master"))
@@ -47,10 +52,23 @@ namespace ArmadilloProxy {
             } else {
                 int sc = Init.Get(general, "SlaveCount", -1);
                 if (sc > 0) {
-                    for (int i = 1; i <= sc; i++)
-                        ArmadilloSlave.ArmadilloSlave.Main(new string[] { "-n", "Slave" + i }.Concat(args).ToArray());
-                } else if (Init.Has(general, "Slave"))
-                    ArmadilloSlave.ArmadilloSlave.Main(args);
+                    for (int i = 1; i <= sc; i++) {
+                        CameraSlave s = Init.InitCameraSlave(new string[] { "-n", "Slave" + i }.Concat(args).ToArray());
+                        if (!Init.Get(config.Configs["Slave" + i], "GUI", true))
+                            consoleInstances.Add(s);
+                    }
+                } else if (Init.Has(general, "Slave")) {
+                    CameraSlave s = Init.InitCameraSlave(args);
+                    if (!Init.Get(config.Configs[s.Name], "GUI", true))
+                        consoleInstances.Add(s);
+                }
+            }
+
+            if (consoleInstances.Count > 0) {
+                Console.WriteLine("Press any key to exit.");
+                Console.ReadKey();
+                foreach (var instance in consoleInstances)
+                    instance.Stop();
             }
         }
     }

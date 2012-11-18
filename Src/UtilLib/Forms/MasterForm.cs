@@ -33,10 +33,10 @@ namespace ConsoleTest {
             }
 
             master.OnProxyStarted += (source, args) => {
-                Invoke(new Action(() => Text = "Master: " + master.ProxyConfig.ProxyPort));
+                BeginInvoke(new Action(() => Text = "Master: " + master.ProxyConfig.ProxyPort));
             };
             master.OnCameraUpdated += (source, args) => {
-                Invoke(new Action(() => {
+                Action a = () => {
                     rawPosition.Value = master.Position;
                     rawRotation.LookAtVector = master.Rotation.LookAtVector;
                     RefreshDrawings();
@@ -44,7 +44,11 @@ namespace ConsoleTest {
                     processedLabel.Text = master.PacketsProcessed.ToString();
                     generatedLabel.Text = master.PacketsGenerated.ToString();
                     forwardedLabel.Text = master.PacketsForwarded.ToString();
-                }));
+                };
+                if (InvokeRequired)
+                    Invoke(a);
+                else
+                    a();
             };
             master.OnSlaveConnected += AddSlaveTab;
             master.OnSlaveDisconnected += RemoveSlave;
@@ -140,7 +144,8 @@ namespace ConsoleTest {
                 Invoke(add);
             else
                 add();
-        }
+        }
+
         private void RemoveSlave(string slave) {
             if (slaveTabs.ContainsKey(slave)) {
                 Invoke(new Action(() => {
@@ -161,8 +166,7 @@ namespace ConsoleTest {
         }
 
         private void MasterForm_FormClosing(object sender, FormClosingEventArgs e) {
-            master.StopProxy();
-            master.StopMaster();
+            master.Stop();
         }
 
         private void rawRotation_OnChange(object sender, EventArgs e) {

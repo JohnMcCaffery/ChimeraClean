@@ -207,9 +207,13 @@ namespace UtilLib {
             interProxyClient.Disconnect();
         }
 
-        public void Stop() {
-            StopProxy();
+        public void StopSlave() {
             InterProxyClient.Stop();
+        }
+
+        public override void Stop() {
+            base.Stop();
+            StopSlave();
         }
     
         protected override OpenMetaverse.Packets.Packet ReceiveOutgoingPacket(OpenMetaverse.Packets.Packet p, System.Net.IPEndPoint ep) {

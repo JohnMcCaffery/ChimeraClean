@@ -60,8 +60,8 @@ namespace ConsoleTest {
             ProxyManager p2 = new ProxyManager(cfg2, LogManager.GetLogger("Proxy2"));
 
 
-            Init.StartGui(() => new ProxyForm(p1));
-            Init.StartGui(() => new ProxyForm(p2));
+            //Init.StartGui(() => new ProxyForm(p1));
+            //Init.StartGui(() => new ProxyForm(p2));
 
             //p1.Start();
             //p2.Start();

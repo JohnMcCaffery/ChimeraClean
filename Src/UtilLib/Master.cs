@@ -157,6 +157,14 @@ namespace UtilLib {
         }
 
         /// <summary>
+        /// Stop this master server and stop the proxy server.
+        /// </summary>
+        public override void Stop() {
+            base.Stop();
+            StopMaster();
+        }
+
+        /// <summary>
         /// Set whether a packet type is to be forwarded.
         /// </summary>
         /// <param name="packet">The type of packet to forward or stop forwarding.</param>
