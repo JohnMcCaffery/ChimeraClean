@@ -34,9 +34,6 @@
     <Reference Include="CookComputing.XmlRpcV2">
       <HintPath>..\..\..\XMLRPC\bin\CookComputing.XmlRpcV2.dll</HintPath>
     </Reference>
-    <Reference Include="GridProxy">
-      <HintPath>..\..\..\libopenmetaverse\Programs\GridProxy\obj\Debug\GridProxy.dll</HintPath>
-    </Reference>
     <Reference Include="log4net">
       <HintPath>..\..\..\libopenmetaverse\bin\log4net.dll</HintPath>
     </Reference>
@@ -149,7 +146,11 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\libopenmetaverse\Programs\WinGridProxy\WinGridProxy.csproj">
+    <ProjectReference Include="..\..\..\..\libopenmetaverse-mine\Programs\GridProxy\GridProxy.csproj">
+      <Project>{8AC3C5EE-0748-41A8-81C5-36473EEEB53C}</Project>
+      <Name>GridProxy</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\libopenmetaverse-mine\Programs\WinGridProxy\WinGridProxy.csproj">
       <Project>{421F8BA2-92D3-4C24-AD53-FE1FEC91C419}</Project>
       <Name>WinGridProxy</Name>
     </ProjectReference>

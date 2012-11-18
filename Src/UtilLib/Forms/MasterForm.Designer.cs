@@ -61,6 +61,8 @@
             this.mouseScaleSlider = new System.Windows.Forms.TrackBar();
             this.moveScaleSlider = new System.Windows.Forms.TrackBar();
             this.moveTimer = new System.Windows.Forms.Timer(this.components);
+            this.label3 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
             this.slavesTab.SuspendLayout();
             this.rawTab.SuspendLayout();
             this.visualSlavesSplit.Panel1.SuspendLayout();
@@ -90,7 +92,7 @@
             this.slavesTab.Location = new System.Drawing.Point(0, 0);
             this.slavesTab.Name = "slavesTab";
             this.slavesTab.SelectedIndex = 0;
-            this.slavesTab.Size = new System.Drawing.Size(1038, 293);
+            this.slavesTab.Size = new System.Drawing.Size(762, 299);
             this.slavesTab.TabIndex = 0;
             this.slavesTab.KeyDown += new System.Windows.Forms.KeyEventHandler(this.keyDown);
             this.slavesTab.KeyUp += new System.Windows.Forms.KeyEventHandler(this.keyUp);
@@ -103,7 +105,7 @@
             this.rawTab.Location = new System.Drawing.Point(4, 22);
             this.rawTab.Name = "rawTab";
             this.rawTab.Padding = new System.Windows.Forms.Padding(3);
-            this.rawTab.Size = new System.Drawing.Size(1030, 267);
+            this.rawTab.Size = new System.Drawing.Size(754, 273);
             this.rawTab.TabIndex = 0;
             this.rawTab.Text = "Input Values";
             this.rawTab.UseVisualStyleBackColor = true;
@@ -118,9 +120,10 @@
             this.rawRotation.Name = "rawRotation";
             this.rawRotation.Pitch = 0F;
             this.rawRotation.Rotation = ((OpenMetaverse.Quaternion)(resources.GetObject("rawRotation.Rotation")));
-            this.rawRotation.Size = new System.Drawing.Size(1008, 147);
+            this.rawRotation.Size = new System.Drawing.Size(732, 147);
             this.rawRotation.TabIndex = 2;
             this.rawRotation.Yaw = 0F;
+            this.rawRotation.OnChange += new System.EventHandler(this.rawRotation_OnChange);
             // 
             // rawPosition
             // 
@@ -131,7 +134,7 @@
             this.rawPosition.Max = 2048D;
             this.rawPosition.Min = -2048D;
             this.rawPosition.Name = "rawPosition";
-            this.rawPosition.Size = new System.Drawing.Size(1005, 98);
+            this.rawPosition.Size = new System.Drawing.Size(729, 98);
             this.rawPosition.TabIndex = 1;
             this.rawPosition.Value = ((OpenMetaverse.Vector3)(resources.GetObject("rawPosition.Value")));
             this.rawPosition.X = 128F;
@@ -155,8 +158,8 @@
             // 
             this.visualSlavesSplit.Panel2.AutoScroll = true;
             this.visualSlavesSplit.Panel2.Controls.Add(this.slavesTab);
-            this.visualSlavesSplit.Size = new System.Drawing.Size(1038, 648);
-            this.visualSlavesSplit.SplitterDistance = 345;
+            this.visualSlavesSplit.Size = new System.Drawing.Size(762, 545);
+            this.visualSlavesSplit.SplitterDistance = 236;
             this.visualSlavesSplit.SplitterWidth = 10;
             this.visualSlavesSplit.TabIndex = 1;
             this.visualSlavesSplit.KeyDown += new System.Windows.Forms.KeyEventHandler(this.keyDown);
@@ -177,8 +180,8 @@
             // 
             this.topSplit.Panel2.Controls.Add(this.mouseContainer);
             this.topSplit.Panel2.Controls.Add(this.controlPanel);
-            this.topSplit.Size = new System.Drawing.Size(1038, 345);
-            this.topSplit.SplitterDistance = 549;
+            this.topSplit.Size = new System.Drawing.Size(762, 236);
+            this.topSplit.SplitterDistance = 267;
             this.topSplit.SplitterWidth = 10;
             this.topSplit.TabIndex = 1;
             this.topSplit.KeyDown += new System.Windows.Forms.KeyEventHandler(this.keyDown);
@@ -194,7 +197,7 @@
             this.displayTab.Location = new System.Drawing.Point(0, 0);
             this.displayTab.Name = "displayTab";
             this.displayTab.SelectedIndex = 0;
-            this.displayTab.Size = new System.Drawing.Size(549, 345);
+            this.displayTab.Size = new System.Drawing.Size(267, 236);
             this.displayTab.TabIndex = 0;
             this.displayTab.KeyDown += new System.Windows.Forms.KeyEventHandler(this.keyDown);
             this.displayTab.KeyUp += new System.Windows.Forms.KeyEventHandler(this.keyUp);
@@ -205,7 +208,7 @@
             this.bothTab.Location = new System.Drawing.Point(4, 22);
             this.bothTab.Name = "bothTab";
             this.bothTab.Padding = new System.Windows.Forms.Padding(3);
-            this.bothTab.Size = new System.Drawing.Size(541, 319);
+            this.bothTab.Size = new System.Drawing.Size(259, 210);
             this.bothTab.TabIndex = 2;
             this.bothTab.Text = "Horizontal and Vertical";
             this.bothTab.UseVisualStyleBackColor = true;
@@ -223,8 +226,8 @@
             // hvSplit.Panel2
             // 
             this.hvSplit.Panel2.Controls.Add(this.vBox);
-            this.hvSplit.Size = new System.Drawing.Size(535, 313);
-            this.hvSplit.SplitterDistance = 258;
+            this.hvSplit.Size = new System.Drawing.Size(253, 204);
+            this.hvSplit.SplitterDistance = 122;
             this.hvSplit.TabIndex = 0;
             // 
             // hBox
@@ -232,7 +235,7 @@
             this.hBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.hBox.Location = new System.Drawing.Point(0, 0);
             this.hBox.Name = "hBox";
-            this.hBox.Size = new System.Drawing.Size(258, 313);
+            this.hBox.Size = new System.Drawing.Size(122, 204);
             this.hBox.TabIndex = 0;
             this.hBox.TabStop = false;
             this.hBox.Text = "Horizontal";
@@ -243,7 +246,7 @@
             this.vBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.vBox.Location = new System.Drawing.Point(0, 0);
             this.vBox.Name = "vBox";
-            this.vBox.Size = new System.Drawing.Size(273, 313);
+            this.vBox.Size = new System.Drawing.Size(127, 204);
             this.vBox.TabIndex = 0;
             this.vBox.TabStop = false;
             this.vBox.Text = "Vertical";
@@ -255,7 +258,7 @@
             this.proxyTab.Location = new System.Drawing.Point(4, 22);
             this.proxyTab.Name = "proxyTab";
             this.proxyTab.Padding = new System.Windows.Forms.Padding(3);
-            this.proxyTab.Size = new System.Drawing.Size(541, 325);
+            this.proxyTab.Size = new System.Drawing.Size(259, 210);
             this.proxyTab.TabIndex = 3;
             this.proxyTab.Text = "Proxy";
             this.proxyTab.UseVisualStyleBackColor = true;
@@ -271,11 +274,13 @@
             this.proxyPanel.Password = "1245";
             this.proxyPanel.Port = "8080";
             this.proxyPanel.Proxy = null;
-            this.proxyPanel.Size = new System.Drawing.Size(541, 319);
+            this.proxyPanel.Size = new System.Drawing.Size(253, 204);
             this.proxyPanel.TabIndex = 0;
             // 
             // networkTab
             // 
+            this.networkTab.Controls.Add(this.label8);
+            this.networkTab.Controls.Add(this.label3);
             this.networkTab.Controls.Add(this.generatedLabel);
             this.networkTab.Controls.Add(this.forwardedLabel);
             this.networkTab.Controls.Add(this.label6);
@@ -291,7 +296,7 @@
             this.networkTab.Location = new System.Drawing.Point(4, 22);
             this.networkTab.Name = "networkTab";
             this.networkTab.Padding = new System.Windows.Forms.Padding(3);
-            this.networkTab.Size = new System.Drawing.Size(541, 325);
+            this.networkTab.Size = new System.Drawing.Size(259, 210);
             this.networkTab.TabIndex = 4;
             this.networkTab.Text = "Network";
             this.networkTab.UseVisualStyleBackColor = true;
@@ -299,7 +304,7 @@
             // generatedLabel
             // 
             this.generatedLabel.AutoSize = true;
-            this.generatedLabel.Location = new System.Drawing.Point(111, 71);
+            this.generatedLabel.Location = new System.Drawing.Point(111, 83);
             this.generatedLabel.Name = "generatedLabel";
             this.generatedLabel.Size = new System.Drawing.Size(13, 13);
             this.generatedLabel.TabIndex = 26;
@@ -308,7 +313,7 @@
             // forwardedLabel
             // 
             this.forwardedLabel.AutoSize = true;
-            this.forwardedLabel.Location = new System.Drawing.Point(111, 58);
+            this.forwardedLabel.Location = new System.Drawing.Point(111, 70);
             this.forwardedLabel.Name = "forwardedLabel";
             this.forwardedLabel.Size = new System.Drawing.Size(13, 13);
             this.forwardedLabel.TabIndex = 25;
@@ -317,7 +322,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(3, 71);
+            this.label6.Location = new System.Drawing.Point(3, 83);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(105, 13);
             this.label6.TabIndex = 24;
@@ -326,7 +331,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(3, 58);
+            this.label7.Location = new System.Drawing.Point(3, 70);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(105, 13);
             this.label7.TabIndex = 23;
@@ -335,7 +340,7 @@
             // processedLabel
             // 
             this.processedLabel.AutoSize = true;
-            this.processedLabel.Location = new System.Drawing.Point(111, 45);
+            this.processedLabel.Location = new System.Drawing.Point(111, 57);
             this.processedLabel.Name = "processedLabel";
             this.processedLabel.Size = new System.Drawing.Size(13, 13);
             this.processedLabel.TabIndex = 22;
@@ -344,7 +349,7 @@
             // receivedLabel
             // 
             this.receivedLabel.AutoSize = true;
-            this.receivedLabel.Location = new System.Drawing.Point(111, 32);
+            this.receivedLabel.Location = new System.Drawing.Point(111, 44);
             this.receivedLabel.Name = "receivedLabel";
             this.receivedLabel.Size = new System.Drawing.Size(13, 13);
             this.receivedLabel.TabIndex = 21;
@@ -353,7 +358,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(3, 45);
+            this.label4.Location = new System.Drawing.Point(3, 57);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(105, 13);
             this.label4.TabIndex = 20;
@@ -362,7 +367,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(3, 32);
+            this.label1.Location = new System.Drawing.Point(3, 44);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(101, 13);
             this.label1.TabIndex = 19;
@@ -371,7 +376,7 @@
             // statusLabel
             // 
             this.statusLabel.AutoSize = true;
-            this.statusLabel.Location = new System.Drawing.Point(158, 11);
+            this.statusLabel.Location = new System.Drawing.Point(49, 31);
             this.statusLabel.Name = "statusLabel";
             this.statusLabel.Size = new System.Drawing.Size(51, 13);
             this.statusLabel.TabIndex = 14;
@@ -379,9 +384,11 @@
             // 
             // bindButton
             // 
+            this.bindButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.bindButton.Location = new System.Drawing.Point(91, 6);
             this.bindButton.Name = "bindButton";
-            this.bindButton.Size = new System.Drawing.Size(61, 23);
+            this.bindButton.Size = new System.Drawing.Size(162, 23);
             this.bindButton.TabIndex = 13;
             this.bindButton.Text = "Bind";
             this.bindButton.UseVisualStyleBackColor = true;
@@ -400,7 +407,7 @@
             // 
             this.portLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.portLabel.AutoSize = true;
-            this.portLabel.Location = new System.Drawing.Point(-274, 11);
+            this.portLabel.Location = new System.Drawing.Point(-550, 11);
             this.portLabel.Name = "portLabel";
             this.portLabel.Size = new System.Drawing.Size(26, 13);
             this.portLabel.TabIndex = 11;
@@ -412,7 +419,7 @@
             this.debugTab.Location = new System.Drawing.Point(4, 22);
             this.debugTab.Name = "debugTab";
             this.debugTab.Padding = new System.Windows.Forms.Padding(3);
-            this.debugTab.Size = new System.Drawing.Size(541, 325);
+            this.debugTab.Size = new System.Drawing.Size(259, 210);
             this.debugTab.TabIndex = 5;
             this.debugTab.Text = "Debug";
             this.debugTab.UseVisualStyleBackColor = true;
@@ -422,7 +429,7 @@
             this.debugPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.debugPanel.Location = new System.Drawing.Point(3, 3);
             this.debugPanel.Name = "debugPanel";
-            this.debugPanel.Size = new System.Drawing.Size(541, 319);
+            this.debugPanel.Size = new System.Drawing.Size(253, 204);
             this.debugPanel.TabIndex = 0;
             // 
             // mouseContainer
@@ -433,7 +440,7 @@
             this.mouseContainer.Controls.Add(this.mousePanel);
             this.mouseContainer.Location = new System.Drawing.Point(3, 3);
             this.mouseContainer.Name = "mouseContainer";
-            this.mouseContainer.Size = new System.Drawing.Size(472, 232);
+            this.mouseContainer.Size = new System.Drawing.Size(478, 123);
             this.mouseContainer.TabIndex = 8;
             this.mouseContainer.TabStop = false;
             this.mouseContainer.Text = "Mouselook";
@@ -445,7 +452,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.mousePanel.Location = new System.Drawing.Point(3, 13);
             this.mousePanel.Name = "mousePanel";
-            this.mousePanel.Size = new System.Drawing.Size(466, 216);
+            this.mousePanel.Size = new System.Drawing.Size(472, 107);
             this.mousePanel.TabIndex = 7;
             this.mousePanel.Paint += new System.Windows.Forms.PaintEventHandler(this.mousePanel_Paint);
             this.mousePanel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.mouseTab_MouseDown);
@@ -460,9 +467,9 @@
             this.controlPanel.Controls.Add(this.label2);
             this.controlPanel.Controls.Add(this.mouseScaleSlider);
             this.controlPanel.Controls.Add(this.moveScaleSlider);
-            this.controlPanel.Location = new System.Drawing.Point(3, 241);
+            this.controlPanel.Location = new System.Drawing.Point(3, 132);
             this.controlPanel.Name = "controlPanel";
-            this.controlPanel.Size = new System.Drawing.Size(473, 100);
+            this.controlPanel.Size = new System.Drawing.Size(479, 100);
             this.controlPanel.TabIndex = 6;
             // 
             // label5
@@ -491,7 +498,7 @@
             this.mouseScaleSlider.Maximum = 40;
             this.mouseScaleSlider.Minimum = 10;
             this.mouseScaleSlider.Name = "mouseScaleSlider";
-            this.mouseScaleSlider.Size = new System.Drawing.Size(467, 42);
+            this.mouseScaleSlider.Size = new System.Drawing.Size(473, 42);
             this.mouseScaleSlider.TabIndex = 2;
             this.mouseScaleSlider.Value = 20;
             // 
@@ -503,7 +510,7 @@
             this.moveScaleSlider.Maximum = 40;
             this.moveScaleSlider.Minimum = 10;
             this.moveScaleSlider.Name = "moveScaleSlider";
-            this.moveScaleSlider.Size = new System.Drawing.Size(467, 42);
+            this.moveScaleSlider.Size = new System.Drawing.Size(473, 42);
             this.moveScaleSlider.TabIndex = 1;
             this.moveScaleSlider.Value = 20;
             // 
@@ -513,11 +520,29 @@
             this.moveTimer.Interval = 50;
             this.moveTimer.Tick += new System.EventHandler(this.moveTimer_Tick);
             // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(3, 11);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(26, 13);
+            this.label3.TabIndex = 0;
+            this.label3.Text = "Port";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(3, 31);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(40, 13);
+            this.label8.TabIndex = 27;
+            this.label8.Text = "Status:";
+            // 
             // MasterForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1038, 648);
+            this.ClientSize = new System.Drawing.Size(762, 545);
             this.Controls.Add(this.visualSlavesSplit);
             this.Name = "MasterForm";
             this.Text = "MasterForm";
@@ -588,5 +613,7 @@
         private System.Windows.Forms.SplitContainer topSplit;
         private System.Windows.Forms.GroupBox mouseContainer;
         private System.Windows.Forms.Panel mousePanel;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label label3;
     }
 }

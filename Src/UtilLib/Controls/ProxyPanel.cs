@@ -187,40 +187,48 @@ namespace UtilLib {
         private void portBox_TextChanged(object sender, EventArgs e) {
             if (gridBox.Text.Equals("")) {
                 gridBox.Text = portBox.Text;
-                proxy.ProxyConfig.LoginGrid = portBox.Text;
+                if (proxy != null)
+                    proxy.ProxyConfig.LoginGrid = portBox.Text;
             }
-            proxy.ProxyConfig.ProxyPort = Int32.Parse(portBox.Text);
+            if (proxy != null)
+                proxy.ProxyConfig.ProxyPort = Int32.Parse(portBox.Text);
         }
 
         private void gridCheck_CheckedChanged(object sender, EventArgs e) {
             gridBox.Enabled = gridCheck.Checked;
             if (gridCheck.Checked && gridBox.Text.Equals(""))
                 gridBox.Text = portBox.Text;
-            else if (gridCheck.Checked)
+            else if (gridCheck.Checked && proxy != null)
                 proxy.ProxyConfig.LoginGrid = gridBox.Text;
         }
 
         private void loginURIBox_TextChanged(object sender, EventArgs e) {
-            proxy.ProxyConfig.ProxyLoginURI = loginURIBox.Text;
+            if (proxy != null)
+                proxy.ProxyConfig.ProxyLoginURI = loginURIBox.Text;
         }
 
         private void firstNameBox_TextChanged(object sender, EventArgs e) {
+            if (proxy != null)
             proxy.ProxyConfig.LoginFirstName = firstNameBox.Text;
         }
 
         private void lastNameBox_TextChanged(object sender, EventArgs e) {
+            if (proxy != null)
             proxy.ProxyConfig.LoginLastName = lastNameBox.Text;
         }
 
         private void passwordBox_TextChanged(object sender, EventArgs e) {
+            if (proxy != null)
             proxy.ProxyConfig.LoginPassword = passwordBox.Text;
         }
 
         private void targetBox_TextChanged(object sender, EventArgs e) {
+            if (proxy != null)
             proxy.ProxyConfig.ClientExecutable = targetBox.Text;
         }
 
         private void gridBox_TextChanged(object sender, EventArgs e) {
+            if (proxy != null)
             proxy.ProxyConfig.LoginGrid = gridBox.Text;
         }
 

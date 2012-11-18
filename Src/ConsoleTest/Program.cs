@@ -8,6 +8,7 @@ using System.Threading;
 using OpenMetaverse;
 using System.Windows.Forms;
 using GridProxy;
+using log4net;
 
 namespace ConsoleTest {
     class Program {
@@ -20,6 +21,7 @@ namespace ConsoleTest {
 
         static void Main(string[] args) {
 
+            /*
             string portArg = "--proxy-login-port=" + 8081;
             string listenIPArg = "--proxy-proxyAddress-facing-address=127.0.0.1";
             string loginURIArg = "--proxy-remote-login-uri=http://localhost:9000";
@@ -34,14 +36,39 @@ namespace ConsoleTest {
             ProxyConfig config2 = new ProxyConfig("Routing Project", "jm726@st-andrews.ac.uk", args2);           
             
             Proxy p1 = new Proxy(config1);
-            Proxy p2 = new Proxy(config2);
+            Proxy p2 = new Proxy(config2);*/
 
-            p1.Start();
-            p2.Start();
+            Init.Config cfg1 = new Init.Config();
+            cfg1.ProxyLoginURI = "http://localhost:9000";
+            cfg1.ProxyPort = 8080;
+            cfg1.ClientExecutable = "C:\\Program Files (x86)\\Firestorm-release\\firestorm-release.exe";
+            cfg1.LoginPassword = "1245";
+            cfg1.LoginFirstName = "Routing";
+            cfg1.LoginLastName = "God";
+            cfg1.LoginGrid = "8080";
+
+            Init.Config cfg2 = new Init.Config();
+            cfg2.ProxyLoginURI = "http://localhost:9000";
+            cfg2.ProxyPort = 8081;
+            cfg2.ClientExecutable = "C:\\Program Files (x86)\\Firestorm-release\\firestorm-release.exe";
+            cfg2.LoginPassword = "1245";
+            cfg2.LoginFirstName = "Routing";
+            cfg2.LoginLastName = "Project";
+            cfg2.LoginGrid = "8081";
+
+            ProxyManager p1 = new ProxyManager(cfg1, LogManager.GetLogger("Proxy1"));
+            ProxyManager p2 = new ProxyManager(cfg2, LogManager.GetLogger("Proxy2"));
+
+
+            Init.StartGui(() => new ProxyForm(p1));
+            Init.StartGui(() => new ProxyForm(p2));
+
+            //p1.Start();
+            //p2.Start();
 
             Run("Stop", () => {
-                p1.Stop();
-                p2.Stop();
+                p1.StopProxy();
+                p2.StopProxy();
             });
 
             /*

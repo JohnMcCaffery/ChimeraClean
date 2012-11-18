@@ -109,7 +109,7 @@ namespace ConsoleTest {
                 // rotationRotation
                 // 
                 rotationOffset.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                | System.Windows.Forms.AnchorStyles.Right)));
+                | System.Windows.Forms.AnchorStyles.Right | System.Windows.Forms.AnchorStyles.Left)));
                 rotationOffset.DisplayName = name + " Rotation";
                 rotationOffset.Location = rawRotation.Location;
                 rotationOffset.Name = name + "Rotation";
@@ -121,6 +121,8 @@ namespace ConsoleTest {
                 // 
                 // positionOffset
                 // 
+                positionOffset.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                | System.Windows.Forms.AnchorStyles.Right | System.Windows.Forms.AnchorStyles.Left)));
                 positionOffset.DisplayName = name + " Position";
                 positionOffset.Location = rawPosition.Location;
                 positionOffset.Max = maxOffset;

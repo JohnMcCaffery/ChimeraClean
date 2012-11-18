@@ -14,7 +14,7 @@ using GridProxyConfig = GridProxy.ProxyConfig;
 using log4net;
 
 namespace UtilLib {
-    public abstract class ProxyManager {
+    public class ProxyManager {
         private static readonly string proxyAddress = "127.0.0.1";
 
         private Process client;
@@ -69,19 +69,19 @@ namespace UtilLib {
         }
 
         /// <summary>
+        /// Create a ProxyManager without specifying a configuration.
+        /// </summary>
+        public ProxyManager() {
+            proxyConfig = null;
+        }
+        
+        /// <summary>
         /// Create a ProxyManager specifying a configuration.
         /// </summary>
         /// <param name="config">The configuration for the proxy manager.</param>
-        protected ProxyManager(Init.Config config, ILog logger) {
+        public ProxyManager(Init.Config config, ILog logger) {
             proxyConfig = config;
             this.logger = logger;
-        }
-
-        /// <summary>
-        /// Create a ProxyManager without specifying a configuration.
-        /// </summary>
-        protected ProxyManager() {
-            proxyConfig = null;
         }
 
         /// <summary>
@@ -188,7 +188,7 @@ namespace UtilLib {
         /// <param name="p">The packet that was received.</param>
         /// <param name="ep">The end point the packet was received from.</param>
         /// <returns>The packet which is to be forwarded on to the server.</returns>
-        protected abstract Packet ReceiveOutgoingPacket(Packet p, IPEndPoint ep);
+        protected virtual Packet ReceiveOutgoingPacket(Packet p, IPEndPoint ep) { return p; }
 
         /// <summary>
         /// Called whenever a packet is received from the server.
@@ -196,7 +196,7 @@ namespace UtilLib {
         /// <param name="p">The packet that was received.</param>
         /// <param name="ep">The end point the packet was received from.</param>
         /// <returns>The packet which is to be forwarded on to the client.</returns>
-        protected abstract Packet ReceiveIncomingPacket(Packet p, IPEndPoint ep);
+        protected virtual Packet ReceiveIncomingPacket(Packet p, IPEndPoint ep) { return p; }
 
         /// <summary>
         /// Disconnect the client proxy.

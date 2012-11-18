@@ -93,7 +93,8 @@ namespace UtilLib {
             get { return position; }
             set {
                 position = value;
-                CreatePacket();
+                if (!processingPacket)
+                    CreatePacket();
             }
         }
 
@@ -124,7 +125,6 @@ namespace UtilLib {
             p.AgentData.CameraUpAxis = Vector3.UnitZ;
             p.AgentData.HeadRotation = Quaternion.Identity;
             p.AgentData.SessionID = UUID.Random();
-
 
             foreach (var slave in slaves.Values) {
                 Rotation rot = new Rotation(Rotation.Pitch + slave.RotationOffset.Pitch, Rotation.Yaw + slave.RotationOffset.Yaw);
@@ -177,8 +177,8 @@ namespace UtilLib {
             Rotation.LookAtVector = packet.AgentData.CameraAtAxis;
             processingPacket = false;
 
-            packetsForwarded++;
-            masterServer.BroadcastPacket(p);
+            //packetsForwarded++;
+            CreatePacket();
             if (OnPacketForwarded != null)
                 OnPacketForwarded(this, null);
             if (OnCameraUpdated != null)

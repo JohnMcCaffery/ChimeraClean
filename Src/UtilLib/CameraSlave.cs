@@ -57,7 +57,10 @@ namespace UtilLib {
             masterPosition = new Vector3(128f, 128f, 24f);
             MasterRotation = new Rotation();
 
-            OnClientLoggedIn += (source, args) => InjectPacket();
+            OnClientLoggedIn += (source, args) => {
+                if (controlCamera)
+                    InjectPacket();
+            };
 
             interProxyClient = client;
             interProxyClient.OnPacketReceived += (p, ep) => {
@@ -222,7 +225,8 @@ namespace UtilLib {
             FinalRotation.Pitch = MasterRotation.Pitch + OffsetRotation.Pitch;
             finalPosition = MasterPosition + (OffsetPosition * MasterRotation.Quaternion);
             //FinalPosition = SourcePosition;
-            InjectPacket();
+            if (controlCamera)
+                InjectPacket();
         }
 
         private void InjectPacket() {

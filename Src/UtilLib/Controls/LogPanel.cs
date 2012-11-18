@@ -19,7 +19,7 @@ namespace UtilLib {
         public LogPanel() {
             InitializeComponent();
 
-            //Logger.Log("Log Panel Ready", Helpers.LogLevel.Info);
+            Logger.Log("Log Panel Ready", Helpers.LogLevel.Info);
             if (FireEventAppender.Instance != null) 
                 FireEventAppender.Instance.MessageLoggedEvent += new MessageLoggedEventHandler(Instance_MessageLoggedEvent);
 
