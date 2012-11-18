@@ -42,12 +42,8 @@ namespace UtilLib {
                 if (proxy == null)
                     return;
 
-                proxy.OnClientLoggedIn += (source, args) => {
-                    Invoke(new Action(() => proxyStatusLabel.Text = "Started + Client Logged In"));
-                };
-                proxy.OnProxyStarted += (source, args) => {
-                    Invoke(new Action(() => proxyStatusLabel.Text = "Started"));
-                };
+                proxy.OnProxyStarted += (source, args) => ProxyStarted() ;
+                proxy.OnClientLoggedIn += (source, args) => ClientLoggedIn();
 
                 Action init = () => {
                     portBox.Text = proxy.ProxyConfig.ProxyPort.ToString();
@@ -60,30 +56,54 @@ namespace UtilLib {
                     gridBox.Enabled = proxy.ProxyConfig.UseGrid;
                     gridCheck.Checked = proxy.ProxyConfig.UseGrid;
 
-                    if (proxy.ProxyRunning) {
-                        proxyStartButton.Text = "Disconnect SlaveProxy";
-                        proxyStatusLabel.Text = "Started";
-
-                        portBox.Enabled = false;
-                        loginURIBox.Enabled = false;
-                    }
-
-                    if (proxy.ClientLoggedIn) {
-                        clientStatusLabel.Text = "Started";
-                        clientStartButton.Text = "Disconnect Client";
-                        proxyStatusLabel.Text = "Started + Client Logged In";
-                        firstNameBox.Enabled = false;
-                        lastNameBox.Enabled = false;
-                        passwordBox.Enabled = false;
-                        targetBox.Enabled = false;
-                    }
                 };
                 if (InvokeRequired)
                     Invoke(init);
                 else
                     init();
+
+                if (proxy.ProxyRunning)
+                    ProxyStarted();
+
+                if (proxy.ClientLoggedIn)
+                    ClientLoggedIn();
             }
         }
+
+        private void ProxyStarted() {
+            Action a = new Action(() => {
+                proxyStartButton.Text = "Disconnect SlaveProxy";
+                proxyStatusLabel.Text = "Started";
+
+                portBox.Enabled = false;
+                loginURIBox.Enabled = false;
+            });
+
+            if (InvokeRequired)
+                Invoke(a);
+            else
+                a();
+        }
+
+        private void ClientLoggedIn() {
+            Action a = new Action(() => {
+                clientStatusLabel.Text = "Started";
+                clientStartButton.Text = "Disconnect Client";
+                proxyStatusLabel.Text = "Started + Client Logged In";
+                firstNameBox.Enabled = false;
+                lastNameBox.Enabled = false;
+                passwordBox.Enabled = false;
+                targetBox.Enabled = false;
+                gridBox.Enabled = false;
+                gridCheck.Enabled = false;
+            });
+
+            if (InvokeRequired)
+                Invoke(a);
+            else
+                a();
+        }
+
         public bool HasStarted { get { return proxy != null; } }
 
         public string Port {
@@ -116,13 +136,7 @@ namespace UtilLib {
                     int port = proxy.ProxyConfig.ProxyPort;
                     Logger.Log("Unable to start proxy on port " + (port - 1) + ", trying " + port + ".", Helpers.LogLevel.Info);
                 }
-                if (proxy.ProxyRunning) {
-                    proxyStartButton.Text = "Stop Proxy";
-                    proxyStatusLabel.Text = "Started";
-
-                    portBox.Enabled = false;
-                    loginURIBox.Enabled = false;
-                } else {
+                if (!proxy.ProxyRunning) {
                     Logger.Log("Unable to start proxy.", Helpers.LogLevel.Info);
                     proxyStatusLabel.Text = "Unable to start";
                 }
@@ -143,15 +157,6 @@ namespace UtilLib {
                     proxyStartButton.PerformClick();
 
                 proxy.StartClient();
-
-                clientStatusLabel.Text = "Started";
-                clientStartButton.Text = "Disconnect Client";
-                firstNameBox.Enabled = false;
-                lastNameBox.Enabled = false;
-                passwordBox.Enabled = false;
-                targetBox.Enabled = false;
-                gridCheck.Enabled = false;
-                gridBox.Enabled = false;
             } else {
                 clientStatusLabel.Text = "Stopped";
                 clientStartButton.Text = "Launch Client";

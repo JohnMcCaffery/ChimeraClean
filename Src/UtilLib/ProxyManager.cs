@@ -171,8 +171,8 @@ namespace UtilLib {
                 if (!client.Start())
                     return false;
 
-                lock (startLock)
-                    Monitor.Wait(startLock, 10000);
+                //lock (startLock)
+                    //Monitor.Wait(startLock, 10000);
 
                 return clientLoggedIn;
 

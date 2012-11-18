@@ -26,7 +26,7 @@ namespace ArmadilloSlave {
                 Console.WriteLine("Slave Help");
                 Console.WriteLine(Init.HelpHeaders);
 
-                IEnumerable<string> list = Init.Help("Master");
+                IEnumerable<string> list = Init.Help(name);
                 list = list.Concat(new string[] {
                     Init.MakeHelpLine(name, "GUI", "g", "Whether to launch a GUI.", true),
                     Init.MakeHelpLine(name, "Help", "h", "Display this help.", "Not Set"),
