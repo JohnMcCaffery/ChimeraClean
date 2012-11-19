@@ -9,17 +9,18 @@ using UtilLib;
 namespace ArmadilloProxy {
     class ArmadilloProxy {
         static void Main(string[] args) {
-            ArgvConfigSource config = new ArgvConfigSource(args);
+            ArgvConfigSource argConfig = new ArgvConfigSource(args);
 
-            config.AddSwitch("General", "Master", "m");
-            config.AddSwitch("General", "Slave", "s");
-            config.AddSwitch("General", "SlaveCount", "sc");
-            config.AddSwitch("General", "FirstSlave", "fs");
-            config.AddSwitch("General", "File", "f");
-            config.AddSwitch("General", "Help", "h");
-            config.AddSwitch("General", "Name", "n");
+            argConfig.AddSwitch("General", "Master", "m");
+            argConfig.AddSwitch("General", "Slave", "s");
+            argConfig.AddSwitch("General", "SlaveCount", "sc");
+            argConfig.AddSwitch("General", "FirstSlave", "fs");
+            argConfig.AddSwitch("General", "File", "f");
+            argConfig.AddSwitch("General", "Help", "h");
+            argConfig.AddSwitch("General", "Name", "n");
 
-            Init.AddFile(config);
+            string file;
+            IConfigSource config = Init.AddFile(argConfig, out file);
             
             bool help = Init.Has(config.Configs["General"], "Help");
             if (help) {

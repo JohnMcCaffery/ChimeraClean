@@ -185,19 +185,19 @@ namespace UtilLib {
             }
 
             public Config(string[] args, string section, string file) {
-                ArgvConfigSource config = InitArgConfig(args);
-                config.AddSwitch("General", "ClientExe", "e");
-                config.AddSwitch("General", "UseGrid", "ug");
-                config.AddSwitch("General", "ProxyGrid", "g");
-                config.AddSwitch("General", "LoginURI", "u");
-                config.AddSwitch("General", "MasterAddress", "ma");
-                config.AddSwitch("General", "MasterPort", "mp");
-                config.AddSwitch(section, "ProxyPort", "p");
-                config.AddSwitch(section, "FirstName", "fn");
-                config.AddSwitch(section, "LastName", "l");
-                config.AddSwitch(section, "Password", "pw");
+                ArgvConfigSource argConfig = InitArgConfig(args);
+                argConfig.AddSwitch("General", "ClientExe", "e");
+                argConfig.AddSwitch("General", "UseGrid", "ug");
+                argConfig.AddSwitch("General", "ProxyGrid", "g");
+                argConfig.AddSwitch("General", "LoginURI", "u");
+                argConfig.AddSwitch("General", "MasterAddress", "ma");
+                argConfig.AddSwitch("General", "MasterPort", "mp");
+                argConfig.AddSwitch(section, "ProxyPort", "p");
+                argConfig.AddSwitch(section, "FirstName", "fn");
+                argConfig.AddSwitch(section, "LastName", "l");
+                argConfig.AddSwitch(section, "Password", "pw");
 
-                AddFile(config, file);
+                IConfigSource config = AddFile(argConfig, file);
                 IConfig mainConfig = config.Configs[section];
                 IConfig generalConfig = config.Configs["General"];
 
@@ -217,15 +217,16 @@ namespace UtilLib {
         }
 
         public static CameraMaster InitCameraMaster(string[] args) {
-            ArgvConfigSource config = InitArgConfig(args);
-            config.AddSwitch("Master", "AutoStartMaster", "am");
-            config.AddSwitch("Master", "AutoStartProxy", "ap");
-            config.AddSwitch("Master", "AutoStartClient", "ac");
-            config.AddSwitch("Master", "File", "f");
-            config.AddSwitch("Master", "GUI", "g");
-            config.AddSwitch("Master", "Help", "h");
+            ArgvConfigSource argConfig = InitArgConfig(args);
+            argConfig.AddSwitch("Master", "AutoStartMaster", "am");
+            argConfig.AddSwitch("Master", "AutoStartProxy", "ap");
+            argConfig.AddSwitch("Master", "AutoStartClient", "ac");
+            argConfig.AddSwitch("Master", "File", "f");
+            argConfig.AddSwitch("Master", "GUI", "g");
+            argConfig.AddSwitch("Master", "Help", "h");
 
-            string file = Init.AddFile(config);
+            string file;
+            IConfigSource config = Init.AddFile(argConfig, out file);
 
             IConfig masterConfig = config.Configs["Master"];
             IConfig generalConfig = config.Configs["General"];
@@ -260,20 +261,20 @@ namespace UtilLib {
         }
 
         public static CameraSlave InitCameraSlave(string[] args) {
-            ArgvConfigSource config = InitArgConfig(args);
-            config.AddSwitch("General", "Name", "n");
-            config.AddSwitch("General", "File", "f");
-
-            string file = Init.AddFile(config);
+            ArgvConfigSource argConfig = InitArgConfig(args);
+            argConfig.AddSwitch("General", "Name", "n");
+            argConfig.AddSwitch("General", "File", "f");
+            string file;
+            IConfigSource config = AddFile(argConfig, out file);
             string name = Init.Get(config.Configs["Slave"], "Name", "Slave1");
 
-            config.AddSwitch(name, "AutoConnectSlave", "as");
-            config.AddSwitch(name, "AutoStartProxy", "ap");
-            config.AddSwitch(name, "AutoStartClient", "ac");
-            config.AddSwitch(name, "GUI", "g");
-            config.AddSwitch(name, "Help", "h");
+            argConfig.AddSwitch(name, "AutoConnectSlave", "as");
+            argConfig.AddSwitch(name, "AutoStartProxy", "ap");
+            argConfig.AddSwitch(name, "AutoStartClient", "ac");
+            argConfig.AddSwitch(name, "GUI", "g");
+            argConfig.AddSwitch(name, "Help", "h");
 
-            AddFile(config, file);
+            config = AddFile(argConfig, out file);
             
             IConfig slaveConfig = config.Configs[name];
             IConfig generalConfig = config.Configs["General"];
@@ -324,7 +325,8 @@ namespace UtilLib {
             return cfg == null ? defalt : cfg.GetInt(key, defalt);
         }
 
-        public static ArgvConfigSource InitArgConfig(string[] args) {            try {
+        public static ArgvConfigSource InitArgConfig(string[] args) {
+            try {
                 return new ArgvConfigSource(args);
             } catch (Exception e) {
                 Console.WriteLine("Unable to load argument config." + e.Message + "\n" + e.StackTrace);
@@ -374,27 +376,31 @@ namespace UtilLib {
             };
         }
 
-        public static string AddFile(IConfigSource config) {
-            string file = Get(config.Configs["General"], "File", AppDomain.CurrentDomain.SetupInformation.ConfigurationFile);
-            AddFile(config, file);
-            return file;
+        public static IConfigSource AddFile(IConfigSource config, out string file) {
+            file = Get(config.Configs["General"], "File", AppDomain.CurrentDomain.SetupInformation.ConfigurationFile);
+            return AddFile(config, file);
         }
-        public static void AddFile(IConfigSource config, string file) {
+        public static IConfigSource AddFile(IConfigSource config, string file) {
             if (File.Exists(file) && Path.GetExtension(file).ToUpper().Equals(".CONFIG")) {
                 try {
                     DotNetConfigSource dotnet = new DotNetConfigSource(file);
-                    config.Merge(dotnet);
+                    //config.Merge(dotnet);
+                    dotnet.Merge(config);
+                    return dotnet;
                 } catch (Exception e) {
                     Console.WriteLine("Unable to load app configuration file " + file + "'." + e.Message + ".\n" + e.StackTrace);
                 }
             } else if (File.Exists(file) && Path.GetExtension(file).ToUpper().Equals(".INI")) {
                 try {
                     IniConfigSource ini = new IniConfigSource(file);
-                    config.Merge(ini);
+                    //config.Merge(ini);
+                    ini.Merge(config);
+                    return ini;
                 } catch (Exception e) {
                     Console.WriteLine("Unable to load ini configuration file " + file + "'." + e.Message + ".\n" + e.StackTrace);
                 }
             }
+            return config;
         }
     }
 }

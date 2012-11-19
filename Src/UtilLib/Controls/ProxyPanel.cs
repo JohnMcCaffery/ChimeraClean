@@ -154,8 +154,9 @@ namespace UtilLib {
         private void clientStartButton_Click(object sender, EventArgs e) {
             if (clientStartButton.Text.Equals("Launch Client")) {
                 if (proxy != null && !proxy.ProxyRunning)
-                    proxyStartButton.PerformClick();
+                    proxy.StartProxy();
 
+                proxy.ProxyConfig.LoginGrid = gridCheck.Checked ? gridBox.Text : null;
                 proxy.StartClient();
             } else {
                 clientStatusLabel.Text = "Stopped";

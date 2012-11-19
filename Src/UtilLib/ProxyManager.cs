@@ -163,7 +163,7 @@ namespace UtilLib {
             if (proxyConfig.UseGrid)
                 client.StartInfo.Arguments = "--grid " + proxyConfig.LoginGrid;
             else
-                client.StartInfo.Arguments = "--loginURI http://localhost:" + proxyConfig.ProxyPort;
+                client.StartInfo.Arguments = "--loginuri http://localhost:" + proxyConfig.ProxyPort;
             if (proxyConfig.AutoLoginClient)
                 client.StartInfo.Arguments += " --login " + proxyConfig.LoginFirstName + " " + proxyConfig.LoginLastName + " " + proxyConfig.LoginPassword;
             try {
