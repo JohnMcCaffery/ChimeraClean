@@ -49,14 +49,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ArmadilloMaster\ArmadilloMaster.csproj">
-      <Project>{E15D815C-59D1-4C81-8BAE-50430DBA2110}</Project>
-      <Name>ArmadilloMaster</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ArmadilloSlave\ArmadilloSlave.csproj">
-      <Project>{995A89EB-F262-4052-B1D6-C9C1090049A7}</Project>
-      <Name>ArmadilloSlave</Name>
-    </ProjectReference>
     <ProjectReference Include="..\UtilLib\UtilLib.csproj">
       <Project>{58E39BFE-20D5-4C8D-BCFC-6B5E641C2DFF}</Project>
       <Name>UtilLib</Name>

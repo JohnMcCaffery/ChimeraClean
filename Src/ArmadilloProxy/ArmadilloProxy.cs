@@ -51,7 +51,7 @@ namespace ArmadilloProxy {
             if (help && (Init.Has(general, "Slave") || Init.Has(general, "SlaveCount"))) {
                 if (Init.Has(general, "Master"))
                     Console.WriteLine("");
-                ArmadilloSlave.ArmadilloSlave.Main(args);
+                Init.InitCameraSlave(args);
             } else {
                 int sc = Init.Get(general, "SlaveCount", -1);
                 if (Init.Has(general, "Slave") || Init.Get(general, "Name", null) != null) {

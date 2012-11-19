@@ -3,12 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 using UtilLib;
-using System.IO;
-using Nini.Config;
 using ConsoleTest;
+using Nini.Config;
 
-namespace ArmadilloSlaveGUI {
-    static class ArmadilloSlaveGUI {
+namespace ArmadilloMasterGUI {
+    static class ArmadilloMaster {
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
@@ -16,7 +15,7 @@ namespace ArmadilloSlaveGUI {
         static void Main(string[] args) {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            CameraSlave s = Init.InitCameraSlave(args.Concat(new string[] { "-g", "true" }).ToArray());
+            CameraMaster m = Init.InitCameraMaster(args.Concat(new string[] { "-g", "true" }).ToArray());
         }
     }
 }
