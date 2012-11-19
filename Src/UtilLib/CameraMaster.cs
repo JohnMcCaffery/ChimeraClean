@@ -133,6 +133,8 @@ namespace UtilLib {
                 masterServer.Send(p, slave.TargetEP);
             }
 
+            Logger.Debug("Master created AgentUpdatePacket and broadcast it to " + slaves.Count + " slaves.");
+
             packetsGenerated++;
             if (OnPacketGenerated != null)
                 OnPacketGenerated(p, null);

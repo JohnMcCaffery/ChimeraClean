@@ -278,7 +278,7 @@ namespace UtilLib {
             try {
                 int length = bytes.Length - 1;
                 Packet p = Packet.BuildPacket(bytes, ref length, zeroBuffer);
-                Logger.Info("Received " + p.Type + " packet from " + source + ".");
+                Logger.Debug("Received " + p.Type + " packet from " + source + ".");
                 try {
                     receivedPackets++;
                     if (OnPacketReceived != null)

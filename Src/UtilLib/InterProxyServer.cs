@@ -112,7 +112,7 @@ namespace UtilLib {
                 foreach (var slave in slaves.Keys)
                     Send(bytes, slave);
             }
-            Logger.Info("Master sent " + packet.Type + " packet to " + slaves.Count + " slaves.");
+            Logger.Debug("Master broadcast " + packet.Type + " packet to " + slaves.Count + " slaves.");
         }
 
         /// <summary>
