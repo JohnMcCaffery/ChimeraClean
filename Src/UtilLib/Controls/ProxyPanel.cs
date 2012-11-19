@@ -156,7 +156,6 @@ namespace UtilLib {
                 if (proxy != null && !proxy.ProxyRunning)
                     proxy.StartProxy();
 
-                proxy.ProxyConfig.LoginGrid = gridCheck.Checked ? gridBox.Text : null;
                 proxy.StartClient();
             } else {
                 clientStatusLabel.Text = "Stopped";
@@ -166,7 +165,7 @@ namespace UtilLib {
                 passwordBox.Enabled = true;
                 targetBox.Enabled = true;
                 gridCheck.Enabled = true;
-                gridBox.Enabled = true;
+                gridBox.Enabled = proxy.ProxyConfig.UseGrid;
                 //SendMEssage(proxyAddress.Id, 
             }
         }
@@ -202,6 +201,7 @@ namespace UtilLib {
 
         private void gridCheck_CheckedChanged(object sender, EventArgs e) {
             gridBox.Enabled = gridCheck.Checked;
+            proxy.ProxyConfig.UseGrid = gridCheck.Checked;
             if (gridCheck.Checked && gridBox.Text.Equals(""))
                 gridBox.Text = portBox.Text;
             else if (gridCheck.Checked && proxy != null)
@@ -215,27 +215,27 @@ namespace UtilLib {
 
         private void firstNameBox_TextChanged(object sender, EventArgs e) {
             if (proxy != null)
-            proxy.ProxyConfig.LoginFirstName = firstNameBox.Text;
+                proxy.ProxyConfig.LoginFirstName = firstNameBox.Text;
         }
 
         private void lastNameBox_TextChanged(object sender, EventArgs e) {
             if (proxy != null)
-            proxy.ProxyConfig.LoginLastName = lastNameBox.Text;
+                proxy.ProxyConfig.LoginLastName = lastNameBox.Text;
         }
 
         private void passwordBox_TextChanged(object sender, EventArgs e) {
             if (proxy != null)
-            proxy.ProxyConfig.LoginPassword = passwordBox.Text;
+                proxy.ProxyConfig.LoginPassword = passwordBox.Text;
         }
 
         private void targetBox_TextChanged(object sender, EventArgs e) {
             if (proxy != null)
-            proxy.ProxyConfig.ClientExecutable = targetBox.Text;
+                proxy.ProxyConfig.ClientExecutable = targetBox.Text;
         }
 
         private void gridBox_TextChanged(object sender, EventArgs e) {
             if (proxy != null)
-            proxy.ProxyConfig.LoginGrid = gridBox.Text;
+                proxy.ProxyConfig.LoginGrid = gridBox.Text;
         }
 
     }

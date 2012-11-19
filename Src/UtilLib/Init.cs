@@ -85,6 +85,7 @@ namespace UtilLib {
             private string lastName = null;
             private string password = null;
             private string grid = null;
+            private bool useGrid = false;
 
             //Proxy
             private string loginURI = DEFAULT_LOGINURI;
@@ -105,7 +106,8 @@ namespace UtilLib {
             /// True if a '--grid' argument rather than a '--loginuri' argument should be specified when launching the client.
             /// </summary>
             public bool UseGrid {
-                get { return grid != null; }
+                get { return useGrid && grid != null; }
+                set { useGrid = value; }
             }
 
             /// <summary>
@@ -211,8 +213,8 @@ namespace UtilLib {
                 password = Get(mainConfig, "Password", null);
                 proxyPort = Get(mainConfig, "ProxyPort", CURRENT_PORT++);
 
-                if (Get(generalConfig, "UseGrid", true))
-                    LoginGrid = Get(generalConfig, "ProxyGrid", proxyPort.ToString());
+                UseGrid = Get(generalConfig, "UseGrid", true);
+                LoginGrid = Get(generalConfig, "ProxyGrid", proxyPort.ToString());
             }
         }
 
