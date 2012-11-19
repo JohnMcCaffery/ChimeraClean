@@ -12,6 +12,8 @@ using System.ComponentModel;
 using System.Threading;
 using GridProxyConfig = GridProxy.ProxyConfig;
 using log4net;
+using OpenMetaverse.StructuredData;
+using System.Collections;
 
 namespace UtilLib {
     public class ProxyManager {
@@ -23,6 +25,11 @@ namespace UtilLib {
         private Init.Config proxyConfig;
         private bool clientLoggedIn;
         private bool proxyStarted;
+        private UUID secureSessionID = UUID.Zero;
+        private UUID sessionID = UUID.Zero;
+        private UUID agentID = UUID.Zero;
+        private string firstName = "NotLoggedIn";
+        private string lastName = "NotLoggedIn";
 
         /// <summary>
         /// Triggered whenever the client proxy starts up.
@@ -54,6 +61,41 @@ namespace UtilLib {
         /// </summary>
         public bool ClientLoggedIn {
             get { return clientLoggedIn; }
+        }
+
+        /// <summary>
+        /// The session ID the client received when it logged in to the proxy.
+        /// </summary>
+        public UUID SessionID {
+            get { return sessionID; }
+        }
+
+        /// <summary>
+        /// The secure session ID the client received when it logged in to the proxy.
+        /// </summary>
+        public UUID SecureSessionID {
+            get { return secureSessionID; }
+        }
+
+        /// <summary>
+        /// The UUID of the agent currently logged in to the proxy.
+        /// </summary>
+        public UUID AgentID {
+            get { return agentID; }
+        }
+
+        /// <summary>
+        /// The first name of the agent currently logged in to the proxy.
+        /// </summary>
+        public string FirstName {
+            get { return firstName; }
+        }
+
+        /// <summary>
+        /// The last name of the agent currently logged in to the proxy.
+        /// </summary>
+        public string LastName {
+            get { return lastName; }
         }
 
         /// <summary>
@@ -116,6 +158,13 @@ namespace UtilLib {
                 clientProxy = new Proxy(config);
                 clientProxy.AddLoginResponseDelegate(response => {
                     clientLoggedIn = true;
+                    Hashtable t = (Hashtable)response.Value;
+
+                    sessionID = UUID.Parse(t["session_id"].ToString());
+                    secureSessionID = UUID.Parse(t["secure_session_id"].ToString());
+                    agentID = UUID.Parse(t["agent_id"].ToString());
+                    firstName = t["first_name"].ToString();
+                    lastName = t["last_name"].ToString();
 
                     lock(startLock)
                         Monitor.PulseAll(startLock);
@@ -124,7 +173,6 @@ namespace UtilLib {
                         if (OnClientLoggedIn != null)
                             OnClientLoggedIn(clientProxy, null);
                     }).Start();
-                    return response;
                 });
                 foreach (PacketType pt in Enum.GetValues(typeof(PacketType))) {
                     clientProxy.AddDelegate(pt, Direction.Incoming, ReceiveIncomingPacket);
