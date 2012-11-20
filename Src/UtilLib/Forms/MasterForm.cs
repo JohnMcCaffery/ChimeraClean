@@ -15,8 +15,9 @@ namespace ConsoleTest {
         private readonly CameraMaster master;
         private readonly Dictionary<string, TabPage> slaveTabs = new Dictionary<string, TabPage>();
         private readonly Dictionary<string, Color> slaveColours = new Dictionary<string, Color>();
+        private bool ignorePitch = false;
 
-        public MasterForm() : this (new CameraMaster()) { }
+        public MasterForm() : this(new CameraMaster()) { }
         public MasterForm(CameraMaster master) {
             InitializeComponent();
 
@@ -217,7 +218,7 @@ namespace ConsoleTest {
 
             foreach (var slave in master.Slaves) {
                 Vector3 slaveOffset = slave.PositionOffset * master.Rotation.Quaternion;
-                Point slaveOrigin = new Point(origin.X + (int) (slaveOffset.Y * offsetMultiplierH), origin.Y + (int) (-slaveOffset.X * offsetMultiplierV));
+                Point slaveOrigin = new Point(origin.X + (int)(slaveOffset.Y * offsetMultiplierH), origin.Y + (int)(-slaveOffset.X * offsetMultiplierV));
 
                 Rotation rot = new Rotation(master.Rotation.Pitch + slave.RotationOffset.Pitch, master.Rotation.Yaw + slave.RotationOffset.Yaw);
                 Point slaveLookAtEnd = new Point(slaveOrigin.X + (int)(rot.LookAtVector.Y * scale), slaveOrigin.Y + (int)(-rot.LookAtVector.X * scale));
@@ -233,7 +234,7 @@ namespace ConsoleTest {
             g.FillEllipse(Brushes.Black, new Rectangle(origin.X - r, origin.Y - r, r * 2, r * 2));
 
             Vector3 masterLookAt = master.Rotation.LookAtVector;
-            Point masterLookAtEnd = new Point(origin.X + (int) (masterLookAt.Y * scale), origin.Y + (int) (-masterLookAt.X * scale));
+            Point masterLookAtEnd = new Point(origin.X + (int)(masterLookAt.Y * scale), origin.Y + (int)(-masterLookAt.X * scale));
             g.DrawLine(Pens.Black, origin, masterLookAtEnd);
         }
 
@@ -249,7 +250,7 @@ namespace ConsoleTest {
 
             foreach (var slave in master.Slaves) {
                 Vector3 slaveOffset = slave.PositionOffset * master.Rotation.Quaternion;
-                Point slaveOrigin = new Point(origin.X + (int) (slaveOffset.X * offsetMultiplierH), origin.Y + (int) (-slaveOffset.Z * offsetMultiplierV));
+                Point slaveOrigin = new Point(origin.X + (int)(slaveOffset.X * offsetMultiplierH), origin.Y + (int)(-slaveOffset.Z * offsetMultiplierV));
 
                 Rotation rot = new Rotation(master.Rotation.Pitch + slave.RotationOffset.Pitch, master.Rotation.Yaw + slave.RotationOffset.Yaw);
                 Vector2 slaveHVector = new Vector2(rot.LookAtVector.Y, rot.LookAtVector.X);
@@ -272,7 +273,7 @@ namespace ConsoleTest {
             Vector2 hVector = new Vector2(masterLookAt.Y, masterLookAt.X);
             Vector3 cross = Vector3.Cross(new Vector3(hVector, 0f), Vector3.UnitX);
             int x = (int)(hVector.Length() * scale * (cross.Z < 0 ? 1 : -1));
-            Point masterLookAtEnd = new Point(origin.X + x, origin.Y + (int) (masterLookAt.Z * scale));
+            Point masterLookAtEnd = new Point(origin.X + x, origin.Y + (int)(masterLookAt.Z * scale));
             g.DrawLine(Pens.Black, origin, masterLookAtEnd);
         }
 
@@ -327,7 +328,8 @@ namespace ConsoleTest {
             if (mouseDown) {
                 currentX = e.X;
                 currentY = e.Y;
-                master.Rotation.Pitch = pitch + (((e.Y - y) * mouseScaleSlider.Value) / 20);
+                if (!ignorePitch)
+                    master.Rotation.Pitch = pitch + (((e.Y - y) * mouseScaleSlider.Value) / 20);
                 master.Rotation.Yaw = yaw + ((((x - e.X) / 2) * mouseScaleSlider.Value) / 10);
                 mousePanel.Refresh();
             }
@@ -335,7 +337,7 @@ namespace ConsoleTest {
 
         private void mousePanel_Paint(object sender, PaintEventArgs e) {
             if (mouseDown)
-                e.Graphics.DrawLine(new Pen(Color.Black), x, y, currentX, currentY);
+                e.Graphics.DrawLine(new Pen(Color.Black), x, y, currentX, ignorePitch ? y : currentY);
             else {
                 e.Graphics.Clear(mousePanel.BackColor);
                 string text = "Click and Drag to Mouselook";
@@ -382,8 +384,10 @@ namespace ConsoleTest {
             float shift = .05f * moveScaleSlider.Value;
             if (yawLeftDown) master.Rotation.Yaw -= shift;
             if (yawRightDown) master.Rotation.Yaw += shift;
-            if (pitchUpDown) master.Rotation.Pitch += shift;
-            if (pitchDownDown) master.Rotation.Pitch -= shift;
+            if (!ignorePitch) {
+                if (pitchUpDown) master.Rotation.Pitch += shift;
+                if (pitchDownDown) master.Rotation.Pitch -= shift;
+            }
 
             Vector3 move = Vector3.Zero;
             if (forwardDown) move.X += shift;
@@ -397,6 +401,10 @@ namespace ConsoleTest {
                 move *= rawRotation.Rotation;
                 master.Position += move;
             }
-        }   
+        }
+
+        private void ignorePitchCheck_CheckedChanged(object sender, EventArgs e) {
+            ignorePitch = ignorePitchCheck.Checked;
+        }
     }
 }
