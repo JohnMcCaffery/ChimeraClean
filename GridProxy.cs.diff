@@ -1,5 +1,5 @@
 diff --git a/Programs/GridProxy/GridProxy.cs b/Programs/GridProxy/GridProxy.cs
-index f7e8e85..7ee0b94 100644
+index f7e8e85..dcd8631 100644
 --- a/Programs/GridProxy/GridProxy.cs
 +++ b/Programs/GridProxy/GridProxy.cs
 @@ -593,8 +593,10 @@ namespace GridProxy
@@ -15,12 +15,12 @@ index f7e8e85..7ee0b94 100644
                  OpenMetaverse.Logger.Log("404 not found: " + uri, Helpers.LogLevel.Error);
                  byte[] wr = Encoding.ASCII.GetBytes("HTTP/1.0 404 Not Found\r\nContent-Length: 0\r\n\r\n");
                  netStream.Write(wr, 0, wr.Length);
-@@ -607,6 +609,117 @@ namespace GridProxy
+@@ -607,6 +609,122 @@ namespace GridProxy
  
          }
  
 +        private void ProxyGetGridInfo(NetworkStream netStream, string meth, string uri, Dictionary<string, string> headers, byte[] content, int reqNo) {
-+            HttpWebRequest req = (HttpWebRequest)HttpWebRequest.Create(proxyConfig.remoteLoginUri);
++            HttpWebRequest req = (HttpWebRequest)HttpWebRequest.Create(proxyConfig.remoteLoginUri + uri.Substring(1));
 +            req.KeepAlive = false;
 +
 +            foreach (string header in headers.Keys) {
@@ -83,7 +83,7 @@ index f7e8e85..7ee0b94 100644
 +                Array.Resize(ref respBuf, length);
 +
 +
-+                consoleMsg += "[" + reqNo + "] Response from " + uri + "\nStatus: " + (int)resp.StatusCode + " " + resp.StatusDescription + "\n";
++                consoleMsg += "[" + reqNo + "] Response from " + req.RequestUri + "\nStatus: " + (int)resp.StatusCode + " " + resp.StatusDescription + "\n";
 +
 +                {
 +                    byte[] wr = Encoding.UTF8.GetBytes("HTTP/1.0 " + (int)resp.StatusCode + " " + resp.StatusDescription + "\r\n");
@@ -111,7 +111,12 @@ index f7e8e85..7ee0b94 100644
 +
 +            consoleMsg += "\n" + respString + "\n--------";
 +            OpenMetaverse.Logger.Log(consoleMsg, Helpers.LogLevel.Debug);
++            string port = new Regex(@"[0-9]:.*/").Match(loginURI).Value.Substring(2).TrimEnd('/');
++            respString = new Regex(@"<gridnick>.*</gridnick>").Replace(respString, "<gridnick>"+port+"</gridnick>");
++            respString = new Regex(@"<gridname>.*</gridname>").Replace(respString, "<gridname>Proxy:"+port+"</gridname>");
++            respString = new Regex(@"<login>.*</login>").Replace(respString, "<login>"+loginURI+"</login>");
 +            OpenMetaverse.Logger.Log("[" + reqNo + "] Fixed-up response:\n" + respString + "\n--------", Helpers.LogLevel.Debug);
++            respBuf = Encoding.UTF8.GetBytes(respString);
 +
 +            try
 +            {
