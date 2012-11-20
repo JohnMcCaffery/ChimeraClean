@@ -1,0 +1,142 @@
+diff --git a/Programs/GridProxy/GridProxy.cs b/Programs/GridProxy/GridProxy.cs
+index f7e8e85..0f99e2c 100644
+--- a/Programs/GridProxy/GridProxy.cs
++++ b/Programs/GridProxy/GridProxy.cs
+@@ -585,16 +585,9 @@ namespace GridProxy
+             else if (new Regex(@"^/https?://.*$").Match(uri).Success)
+             {
+                 ProxyCaps(netStream, meth, uri.Substring(1), headers, content, reqNo);
+-            }
+-            else if (new Regex(@"^/https?:/.*$").Match(uri).Success)
+-            {
+-                //This is a libomv client and the proxy CAPS URI has been munged by the C# URI class
+-                //Part of the LIBOMV-457 work around, TODO make this much nicer.
+-                uri = uri.Replace(":/", "://");
+-                ProxyCaps(netStream, meth, uri.Substring(1), headers, content, reqNo);
+-            }
+-            else
+-            {
++            } else if (new Regex(@"^/get_grid_info").Match(uri).Success) {
++                ProxyGetGridInfo(netStream, meth, uri, headers, content, reqNo);
++            } else {
+                 OpenMetaverse.Logger.Log("404 not found: " + uri, Helpers.LogLevel.Error);
+                 byte[] wr = Encoding.ASCII.GetBytes("HTTP/1.0 404 Not Found\r\nContent-Length: 0\r\n\r\n");
+                 netStream.Write(wr, 0, wr.Length);
+@@ -607,6 +600,117 @@ namespace GridProxy
+ 
+         }
+ 
++        private void ProxyGetGridInfo(NetworkStream netStream, string meth, string uri, Dictionary<string, string> headers, byte[] content, int reqNo) {
++            HttpWebRequest req = (HttpWebRequest)HttpWebRequest.Create(proxyConfig.remoteLoginUri);
++            req.KeepAlive = false;
++
++            foreach (string header in headers.Keys) {
++                if (header == "accept") {
++                    req.Accept = headers["accept"];
++                }
++            }
++
++            req.Method = meth;
++
++            // can't do gets on requests with a content body
++            // without throwing a protocol exception. So force it to post 
++            // incase our parser stupidly set it to GET due to the viewer 
++            // doing something stupid like sending an empty request
++            if (content.Length > 0)
++                req.Method = "POST";
++
++            req.ContentLength = content.Length;
++
++            HttpWebResponse resp;
++            try {
++                if (content.Length > 0) {
++                    Stream reqStream = req.GetRequestStream();
++                    reqStream.Write(content, 0, content.Length);
++                    reqStream.Close();
++                } 
++                resp = (HttpWebResponse)req.GetResponse();
++            } catch (WebException e) {
++                if (e.Status == WebExceptionStatus.Timeout || e.Status == WebExceptionStatus.SendFailure) {
++                    OpenMetaverse.Logger.Log("Request timeout", Helpers.LogLevel.Warning, e);
++                    byte[] wr = Encoding.ASCII.GetBytes("HTTP/1.0 504 Proxy Request Timeout\r\nContent-Length: 0\r\n\r\n");
++                    netStream.Write(wr, 0, wr.Length);
++                    return;
++                } else if (e.Status == WebExceptionStatus.ProtocolError && e.Response != null) {
++                    resp = (HttpWebResponse)e.Response;
++                } else {
++                    OpenMetaverse.Logger.Log("Request error", Helpers.LogLevel.Error, e);
++                    byte[] wr = Encoding.ASCII.GetBytes("HTTP/1.0 502 Gateway Error\r\nContent-Length: 0\r\n\r\n"); // FIXME
++                    netStream.Write(wr, 0, wr.Length);
++                    return;
++                }
++            }
++
++            string consoleMsg = "";
++            byte[] respBuf = null;
++            try {
++                Stream respStream = resp.GetResponseStream();
++                int read;
++                int length = 0;
++                respBuf = new byte[256];
++
++                do {
++                    read = respStream.Read(respBuf, length, 256);
++                    if (read > 0) {
++                        length += read;
++                        Array.Resize(ref respBuf, length + 256);
++                    }
++                } while (read > 0);
++
++                Array.Resize(ref respBuf, length);
++
++
++                consoleMsg += "[" + reqNo + "] Response from " + uri + "\nStatus: " + (int)resp.StatusCode + " " + resp.StatusDescription + "\n";
++
++                {
++                    byte[] wr = Encoding.UTF8.GetBytes("HTTP/1.0 " + (int)resp.StatusCode + " " + resp.StatusDescription + "\r\n");
++                    netStream.Write(wr, 0, wr.Length);
++                }
++
++                for (int i = 0; i < resp.Headers.Count; i++) {
++                    string key = resp.Headers.Keys[i];
++                    string val = resp.Headers[i];
++                    string lkey = key.ToLower();
++                    if (lkey != "content-length" && lkey != "transfer-encoding" && lkey != "connection") {
++                        consoleMsg += key + ": " + val + "\n";
++                        byte[] wr = Encoding.UTF8.GetBytes(key + ": " + val + "\r\n");
++                        netStream.Write(wr, 0, wr.Length);
++                    }
++                }
++            } catch (Exception ex) {
++                // TODO: Should we handle this somehow?
++                OpenMetaverse.Logger.DebugLog("Failed writing output: " + ex.Message);
++            }
++
++
++            string respString;
++            respString = Encoding.UTF8.GetString(respBuf);
++
++            consoleMsg += "\n" + respString + "\n--------";
++            OpenMetaverse.Logger.Log(consoleMsg, Helpers.LogLevel.Debug);
++            OpenMetaverse.Logger.Log("[" + reqNo + "] Fixed-up response:\n" + respString + "\n--------", Helpers.LogLevel.Debug);
++
++            try
++            {
++                byte[] wr2 = Encoding.UTF8.GetBytes("Content-Length: " + respBuf.Length + "\r\n\r\n");
++                netStream.Write(wr2, 0, wr2.Length);
++
++                netStream.Write(respBuf, 0, respBuf.Length);
++            }
++            catch (SocketException) { }
++            catch (IOException) { }
++            catch (Exception e)
++            {
++                OpenMetaverse.Logger.Log("Exception: Error writing to stream " + e, Helpers.LogLevel.Error, e);
++            }
++
++            return;
++        }
++
+         public ObservableDictionary<string, CapInfo> KnownCaps = new ObservableDictionary<string, CapInfo>();
+         //private Dictionary<string, bool> SubHack = new Dictionary<string, bool>();
+ 
