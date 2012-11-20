@@ -189,10 +189,6 @@ namespace UtilLib {
             }
         }
 
-        public InterProxyClient InterProxyClient {
-            get { return interProxyClient; }
-        }
-
         private void RotationChanged(object source, EventArgs args) {
             Recalculate();
         }
@@ -202,7 +198,7 @@ namespace UtilLib {
             return Connect();
         }
         public bool Connect() {
-            return InterProxyClient.Connect(ProxyConfig.MasterAddress, ProxyConfig.MasterPort);
+            return interProxyClient.Connect(ProxyConfig.MasterAddress, ProxyConfig.MasterPort);
         }
 
         public void Disconnect() {
@@ -210,7 +206,7 @@ namespace UtilLib {
         }
 
         public void StopSlave() {
-            InterProxyClient.Stop();
+            interProxyClient.Stop();
         }
 
         public override void Stop() {
