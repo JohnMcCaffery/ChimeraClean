@@ -1,77 +1,90 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
-  <Class Name="UtilLib.LogPanel" Collapsed="true">
-    <Position X="11.25" Y="1.25" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAACAAAAAAAACAAAACAAAAAAAgCAAAAAAAAAA=</HashCode>
-      <FileName>Controls\LogPanel.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="UtilLib.SetFollowCamPropertiesPanel" Collapsed="true">
-    <Position X="11.25" Y="0.5" Width="2.25" />
-    <TypeIdentifier>
-      <HashCode>AAQLAQABhCACCJQwhACglxRCEIQAIAA0ACQEJBQEBDA=</HashCode>
-      <FileName>Controls\SetFollowCamPropertiesPanel.cs</FileName>
-    </TypeIdentifier>
-  </Class>
   <Class Name="UtilLib.InterProxyServer" BaseTypeListCollapsed="true">
-    <Position X="4.75" Y="7.25" Width="2.25" />
+    <Position X="8" Y="7.5" Width="2.25" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
     <TypeIdentifier>
-      <HashCode>AAIAAQAAACAAAAAAAAACAAAAAAAAEAgAIAgBABAAAQA=</HashCode>
+      <HashCode>AAIAAQAAACAAAAAAAAACAAAAAAAAEAAAIAgBABAAAQA=</HashCode>
       <FileName>InterProxyServer.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="UtilLib.InterProxyClient" BaseTypeListCollapsed="true">
-    <Position X="9.75" Y="7.25" Width="2.25" />
+    <Position X="13.25" Y="7.5" Width="2" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
     <TypeIdentifier>
-      <HashCode>AAQAAAJQIAAAUAACAAAAAIQAAAAEAAIAIAAQAAACAQA=</HashCode>
+      <HashCode>AAQAAAJQIAAAUAACAAAEAIQAAAAEAAIAIAAQAAACAQA=</HashCode>
       <FileName>InterProxyClient.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="UtilLib.CameraMaster">
-    <Position X="0.5" Y="12.25" Width="2.25" />
+    <Position X="3.75" Y="13" Width="2.25" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
     <TypeIdentifier>
-      <HashCode>AAAAAAAAgAAABIggIACAIAkgAwQgIACEAAEggIAAAAQ=</HashCode>
+      <HashCode>AAAAAAAAgAIABIggIACAIAkgAwQgIACEAAEggIAAAAQ=</HashCode>
       <FileName>CameraMaster.cs</FileName>
     </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Rotation" />
+    </ShowAsAssociation>
   </Class>
   <Class Name="UtilLib.FullMaster">
-    <Position X="3" Y="12.25" Width="1.75" />
+    <Position X="6.25" Y="13" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAEAAAAAAAA=</HashCode>
       <FileName>FullMaster.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="UtilLib.CameraSlave">
-    <Position X="13.5" Y="6" Width="1.75" />
+    <Position X="16.75" Y="5.75" Width="2.25" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
     <TypeIdentifier>
-      <HashCode>AAAAAAAABBAACAAAAAQAAoAAAgYAAAeQIAEEEQAAAAE=</HashCode>
+      <HashCode>AAUAAQAABBABCYAAAIQAAoQBAg4AAAWQIAEEEQAAAAE=</HashCode>
       <FileName>CameraSlave.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
-      <Property Name="InterProxyClient" />
+      <Field Name="interProxyClient" />
+      <Property Name="FinalRotation" />
+      <Property Name="MasterRotation" />
+      <Property Name="OffsetRotation" />
     </ShowAsAssociation>
   </Class>
   <Class Name="UtilLib.FullSlave">
-    <Position X="15.75" Y="6" Width="1.75" />
+    <Position X="14.5" Y="5.75" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAEAAAAAAAA=</HashCode>
       <FileName>FullSlave.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="GridProxy.Proxy">
-    <Position X="4" Y="0.5" Width="2" />
+    <Position X="7.25" Y="0.5" Width="2" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
     <TypeIdentifier />
   </Class>
   <Class Name="UtilLib.Rotation">
-    <Position X="7.25" Y="12.5" Width="1.5" />
+    <Position X="12" Y="11.75" Width="2" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
     <TypeIdentifier>
       <HashCode>AAACAAAAAQiACAEBAACEAAAAAEAgAEAAAABACAAQIAA=</HashCode>
       <FileName>Rotation.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="ProxyTestGUI.RotationPanel">
-    <Position X="7.25" Y="17.25" Width="2" />
+    <Position X="9.25" Y="11.75" Width="2" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
     <TypeIdentifier>
       <HashCode>ACAQEkAAASgAAIEAIACAAAACAAACEAAQAABARAIACAA=</HashCode>
       <FileName>Controls\RotationPanel.cs</FileName>
@@ -81,19 +94,23 @@
     </ShowAsAssociation>
   </Class>
   <Class Name="UtilLib.Master">
-    <Position X="1.5" Y="6" Width="2" />
+    <Position X="4.75" Y="5.75" Width="2" />
     <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
       <Compartment Name="Nested Types" Collapsed="false" />
     </Compartments>
     <NestedTypes>
       <Class Name="UtilLib.Master.Slave">
+        <Compartments>
+          <Compartment Name="Fields" Collapsed="true" />
+        </Compartments>
         <TypeIdentifier>
           <NewMemberFileName>Master.cs</NewMemberFileName>
         </TypeIdentifier>
       </Class>
     </NestedTypes>
     <TypeIdentifier>
-      <HashCode>EAIQAAAAABEAAAAAAAAAAAAAAAAEEAAAIAQAQBAAAAA=</HashCode>
+      <HashCode>EAIQAAAAABMAgAAAAAAAAAAAAAAEEAAAIAQAABAAAAA=</HashCode>
       <FileName>Master.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -101,9 +118,12 @@
     </ShowAsAssociation>
   </Class>
   <Class Name="UtilLib.ProxyManager">
-    <Position X="7" Y="1.25" Width="2" />
+    <Position X="10.25" Y="0.5" Width="2.25" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
     <TypeIdentifier>
-      <HashCode>AAAABAAAAIAAAAAAAgAhAgACwAAAAgSAAAEHAAAAAgA=</HashCode>
+      <HashCode>AAAABEAAAIJRAIQCEgglAgAIwAABAgCAIAEBTAAAAAg=</HashCode>
       <FileName>ProxyManager.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -111,18 +131,40 @@
     </ShowAsAssociation>
   </Class>
   <Class Name="UtilLib.BackChannel">
-    <Position X="7.25" Y="6" Width="2.25" />
+    <Position X="10.75" Y="5.75" Width="2" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
     <TypeIdentifier>
-      <HashCode>AICEgAAAAAAAAAAAAEACAgAKCIAAODADQAUGAgAAEwA=</HashCode>
+      <HashCode>AICEgAAABAIAAAACBEACAgAKCIAAODgDQAUGAgAAEwA=</HashCode>
       <FileName>BackChannel.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Delegate Name="UtilLib.MessageDelegate">
-    <Position X="11.25" Y="2" Width="1.5" />
+  <Class Name="ConsoleTest.MasterForm">
+    <Position X="0.5" Y="13" Width="2.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAA=</HashCode>
-      <FileName>BackChannel.cs</FileName>
+      <HashCode>gUGAASjSgaUwKBQRQMCgEAFShIiIhEIbMlFjiJkAAAo=</HashCode>
+      <FileName>Forms\MasterForm.cs</FileName>
     </TypeIdentifier>
-  </Delegate>
+    <ShowAsAssociation>
+      <Field Name="master" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="ConsoleTest.SlaveForm">
+    <Position X="19.75" Y="5.75" Width="2.25" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>ACEoQQAQACGAABRQQFCBEgECCAEIAAQRAkAACBAICAk=</HashCode>
+      <FileName>Forms\SlaveForm.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="slave" />
+    </ShowAsAssociation>
+  </Class>
   <Font Name="Tahoma" Size="8.25" />
 </ClassDiagram>
