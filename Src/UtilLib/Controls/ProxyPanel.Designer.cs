@@ -48,14 +48,14 @@ namespace UtilLib {
             this.portBox = new System.Windows.Forms.TextBox();
             this.portLabel = new System.Windows.Forms.Label();
             this.proxyStartButton = new System.Windows.Forms.Button();
-            this.clientStartButton = new System.Windows.Forms.Button();
+            this.viewerLaunchButton = new System.Windows.Forms.Button();
             this.firstNameBox = new System.Windows.Forms.TextBox();
             this.firstNameLabel = new System.Windows.Forms.Label();
             this.lastNameLabel = new System.Windows.Forms.Label();
             this.lastNameBox = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.passwordBox = new System.Windows.Forms.TextBox();
-            this.targetBox = new System.Windows.Forms.TextBox();
+            this.viewerExeBox = new System.Windows.Forms.TextBox();
             this.clientLabel = new System.Windows.Forms.Label();
             this.proxyStatusLabelLabel = new System.Windows.Forms.Label();
             this.proxyStatusLabel = new System.Windows.Forms.Label();
@@ -117,17 +117,17 @@ namespace UtilLib {
             this.proxyStartButton.UseVisualStyleBackColor = true;
             this.proxyStartButton.Click += new System.EventHandler(this.connectButton_Click);
             // 
-            // clientStartButton
+            // viewerLaunchButton
             // 
-            this.clientStartButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.viewerLaunchButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.clientStartButton.Location = new System.Drawing.Point(6, 107);
-            this.clientStartButton.Name = "clientStartButton";
-            this.clientStartButton.Size = new System.Drawing.Size(674, 23);
-            this.clientStartButton.TabIndex = 19;
-            this.clientStartButton.Text = "Launch Client";
-            this.clientStartButton.UseVisualStyleBackColor = true;
-            this.clientStartButton.Click += new System.EventHandler(this.clientStartButton_Click);
+            this.viewerLaunchButton.Location = new System.Drawing.Point(6, 107);
+            this.viewerLaunchButton.Name = "viewerLaunchButton";
+            this.viewerLaunchButton.Size = new System.Drawing.Size(674, 23);
+            this.viewerLaunchButton.TabIndex = 19;
+            this.viewerLaunchButton.Text = "Launch Viewer";
+            this.viewerLaunchButton.UseVisualStyleBackColor = true;
+            this.viewerLaunchButton.Click += new System.EventHandler(this.viewerLaunchButton_Click);
             // 
             // firstNameBox
             // 
@@ -186,25 +186,25 @@ namespace UtilLib {
             this.passwordBox.Text = "1245";
             this.passwordBox.TextChanged += new System.EventHandler(this.passwordBox_TextChanged);
             // 
-            // targetBox
+            // viewerExeBox
             // 
-            this.targetBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.viewerExeBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.targetBox.Location = new System.Drawing.Point(42, 81);
-            this.targetBox.Name = "targetBox";
-            this.targetBox.Size = new System.Drawing.Size(502, 20);
-            this.targetBox.TabIndex = 26;
-            this.targetBox.Text = "C:\\\\Program Files (x86)\\\\Firestorm-Release\\\\Firestorm-Release.exe";
-            this.targetBox.TextChanged += new System.EventHandler(this.targetBox_TextChanged);
+            this.viewerExeBox.Location = new System.Drawing.Point(48, 81);
+            this.viewerExeBox.Name = "viewerExeBox";
+            this.viewerExeBox.Size = new System.Drawing.Size(496, 20);
+            this.viewerExeBox.TabIndex = 26;
+            this.viewerExeBox.Text = "C:\\\\Program Files (x86)\\\\Firestorm-Release\\\\Firestorm-Release.exe";
+            this.viewerExeBox.TextChanged += new System.EventHandler(this.targetBox_TextChanged);
             // 
             // clientLabel
             // 
             this.clientLabel.AutoSize = true;
             this.clientLabel.Location = new System.Drawing.Point(3, 84);
             this.clientLabel.Name = "clientLabel";
-            this.clientLabel.Size = new System.Drawing.Size(33, 13);
+            this.clientLabel.Size = new System.Drawing.Size(39, 13);
             this.clientLabel.TabIndex = 27;
-            this.clientLabel.Text = "Client";
+            this.clientLabel.Text = "Viewer";
             // 
             // proxyStatusLabelLabel
             // 
@@ -260,6 +260,7 @@ namespace UtilLib {
             // gridBox
             // 
             this.gridBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.gridBox.Enabled = false;
             this.gridBox.Location = new System.Drawing.Point(601, 81);
             this.gridBox.Name = "gridBox";
             this.gridBox.Size = new System.Drawing.Size(79, 20);
@@ -277,14 +278,14 @@ namespace UtilLib {
             this.Controls.Add(this.proxyStatusLabel);
             this.Controls.Add(this.proxyStatusLabelLabel);
             this.Controls.Add(this.clientLabel);
-            this.Controls.Add(this.targetBox);
+            this.Controls.Add(this.viewerExeBox);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.passwordBox);
             this.Controls.Add(this.lastNameLabel);
             this.Controls.Add(this.lastNameBox);
             this.Controls.Add(this.firstNameLabel);
             this.Controls.Add(this.firstNameBox);
-            this.Controls.Add(this.clientStartButton);
+            this.Controls.Add(this.viewerLaunchButton);
             this.Controls.Add(this.proxyStartButton);
             this.Controls.Add(this.loginURIBox);
             this.Controls.Add(this.loginURILabel);
@@ -304,14 +305,14 @@ namespace UtilLib {
         private System.Windows.Forms.TextBox portBox;
         private System.Windows.Forms.Label portLabel;
         private System.Windows.Forms.Button proxyStartButton;
-        private System.Windows.Forms.Button clientStartButton;
+        private System.Windows.Forms.Button viewerLaunchButton;
         private System.Windows.Forms.TextBox firstNameBox;
         private System.Windows.Forms.Label firstNameLabel;
         private System.Windows.Forms.Label lastNameLabel;
         private System.Windows.Forms.TextBox lastNameBox;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox passwordBox;
-        private System.Windows.Forms.TextBox targetBox;
+        private System.Windows.Forms.TextBox viewerExeBox;
         private System.Windows.Forms.Label clientLabel;
         private System.Windows.Forms.Label proxyStatusLabelLabel;
         private System.Windows.Forms.Label proxyStatusLabel;

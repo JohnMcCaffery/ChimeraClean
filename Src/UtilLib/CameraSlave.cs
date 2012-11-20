@@ -57,6 +57,8 @@ namespace UtilLib {
             masterPosition = new Vector3(128f, 128f, 24f);
             MasterRotation = new Rotation();
 
+            controlCamera = config.ControlCamera;
+
             OnClientLoggedIn += (source, args) => {
                 if (controlCamera)
                     InjectPacket();

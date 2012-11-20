@@ -41,7 +41,7 @@ namespace ConsoleTest {
             Init.Config cfg1 = new Init.Config();
             cfg1.ProxyLoginURI = "http://localhost:9000";
             cfg1.ProxyPort = 8080;
-            cfg1.ClientExecutable = "C:\\Program Files (x86)\\Firestorm-release\\firestorm-release.exe";
+            cfg1.ViewerExecutable = "C:\\Program Files (x86)\\Firestorm-release\\firestorm-release.exe";
             cfg1.LoginPassword = "1245";
             cfg1.LoginFirstName = "Routing";
             cfg1.LoginLastName = "God";
@@ -50,7 +50,7 @@ namespace ConsoleTest {
             Init.Config cfg2 = new Init.Config();
             cfg2.ProxyLoginURI = "http://localhost:9000";
             cfg2.ProxyPort = 8081;
-            cfg2.ClientExecutable = "C:\\Program Files (x86)\\Firestorm-release\\firestorm-release.exe";
+            cfg2.ViewerExecutable = "C:\\Program Files (x86)\\Firestorm-release\\firestorm-release.exe";
             cfg2.LoginPassword = "1245";
             cfg2.LoginFirstName = "Routing";
             cfg2.LoginLastName = "Project";

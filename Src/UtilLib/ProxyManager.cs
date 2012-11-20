@@ -201,13 +201,13 @@ namespace UtilLib {
         public bool StartClient() {
             if (proxyConfig == null)
                 throw new Exception("Unable to start client. No configuration specified.");
-            if (proxyConfig.ClientExecutable == null)
+            if (proxyConfig.ViewerExecutable == null)
                 throw new Exception("Unable to start client. No executable specified.");
             if (!ProxyRunning) 
                 StartProxy();
 
             client = new Process();
-            client.StartInfo.FileName = proxyConfig.ClientExecutable;
+            client.StartInfo.FileName = proxyConfig.ViewerExecutable;
             if (proxyConfig.UseGrid)
                 client.StartInfo.Arguments = "--grid " + proxyConfig.LoginGrid;
             else

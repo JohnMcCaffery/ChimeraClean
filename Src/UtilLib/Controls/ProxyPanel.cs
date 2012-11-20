@@ -48,7 +48,7 @@ namespace UtilLib {
                 Action init = () => {
                     portBox.Text = proxy.ProxyConfig.ProxyPort.ToString();
                     loginURIBox.Text = proxy.ProxyConfig.ProxyLoginURI;
-                    targetBox.Text = proxy.ProxyConfig.ClientExecutable;
+                    viewerExeBox.Text = proxy.ProxyConfig.ViewerExecutable;
                     firstNameBox.Text = proxy.ProxyConfig.LoginFirstName;
                     lastNameBox.Text = proxy.ProxyConfig.LoginLastName;
                     passwordBox.Text = proxy.ProxyConfig.LoginPassword;
@@ -88,12 +88,12 @@ namespace UtilLib {
         private void ClientLoggedIn() {
             Action a = new Action(() => {
                 clientStatusLabel.Text = "Started";
-                clientStartButton.Text = "Disconnect Client";
+                viewerLaunchButton.Text = "Stop Viewer";
                 proxyStatusLabel.Text = "Started + Client Logged In";
                 firstNameBox.Enabled = false;
                 lastNameBox.Enabled = false;
                 passwordBox.Enabled = false;
-                targetBox.Enabled = false;
+                viewerExeBox.Enabled = false;
                 gridBox.Enabled = false;
                 gridCheck.Enabled = false;
             });
@@ -151,19 +151,19 @@ namespace UtilLib {
             }
         }
 
-        private void clientStartButton_Click(object sender, EventArgs e) {
-            if (clientStartButton.Text.Equals("Launch Client")) {
+        private void viewerLaunchButton_Click(object sender, EventArgs e) {
+            if (viewerLaunchButton.Text.Equals("Launch Viewer")) {
                 if (proxy != null && !proxy.ProxyRunning)
                     proxy.StartProxy();
 
                 proxy.StartClient();
             } else {
                 clientStatusLabel.Text = "Stopped";
-                clientStartButton.Text = "Launch Client";
+                viewerLaunchButton.Text = "Launch Viewer";
                 firstNameBox.Enabled = true;
                 lastNameBox.Enabled = true;
                 passwordBox.Enabled = true;
-                targetBox.Enabled = true;
+                viewerExeBox.Enabled = true;
                 gridCheck.Enabled = true;
                 gridBox.Enabled = proxy.ProxyConfig.UseGrid;
                 //SendMEssage(proxyAddress.Id, 
@@ -230,7 +230,7 @@ namespace UtilLib {
 
         private void targetBox_TextChanged(object sender, EventArgs e) {
             if (proxy != null)
-                proxy.ProxyConfig.ClientExecutable = targetBox.Text;
+                proxy.ProxyConfig.ViewerExecutable = viewerExeBox.Text;
         }
 
         private void gridBox_TextChanged(object sender, EventArgs e) {

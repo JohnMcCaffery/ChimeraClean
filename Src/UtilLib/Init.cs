@@ -18,7 +18,7 @@ namespace UtilLib {
     /// General LoginURI u
     /// General MasterPort mp
     /// General MasterAddress ma
-    /// General ClientExe e
+    /// General ViewerExe v
     /// 
     /// section AutoStartMaster am
     /// section AutoConnectSlave as
@@ -52,7 +52,7 @@ namespace UtilLib {
 
         public static string[] Help(string section) {
             return new string[] {
-                MakeHelpLine("General", "ClientExe", "e", "The file to be executed to launch the client.", Path.GetFileName(Config.DEFAULT_CLIENT_EXE)),
+                MakeHelpLine("General", "ViewerExe", "e", "The file to be executed to launch the client.", Path.GetFileName(Config.DEFAULT_CLIENT_EXE)),
                 MakeHelpLine("General", "LoginURI", "u", "The LoginURI of the actual servr being proxied.", Config.DEFAULT_LOGINURI),
                 MakeHelpLine("General", "MasterAddress", "ma", "The address the master is running at for distributing packets between master/slaves.", "localhost"),
                 MakeHelpLine("General", "MasterPort", "mp", "The port the master is running/will be run on for distributing packets between master/slaves.", Config.DEFAULT_MASTER_PORT),
@@ -64,6 +64,7 @@ namespace UtilLib {
                 MakeHelpLine(section, "FirstName", "fn", "The first name to log in with.", "Not Set"),
                 MakeHelpLine(section, "LastName", "l", "The last name to log in with.", "Not Set"),
                 MakeHelpLine(section, "Password", "pw", "The password to log in with.", "Not Set"),
+                MakeHelpLine(section, "ControlCamera", "c", "True if the proxy is allowed to control the camera of its client.", true),
                 MakeHelpLine(section, "ProxyGrid", "g", "The name of the grid to specify using '--grid' when launching the client.", "The proxy port"),
                 MakeHelpLine(section, "ProxyPort", "p", "The port the proxy is to run on.", Config.DEFAULT_PROXY_PORT),
                 MakeHelpLine(section, "GUI", "g", "Whether to launch a GUI.", true),
@@ -80,7 +81,7 @@ namespace UtilLib {
             public static int CURRENT_PORT = DEFAULT_PROXY_PORT;
 
             //Client
-            private string clientExe = null;
+            private string viewerExe = null;
             private string firstName = null;
             private string lastName = null;
             private string password = null;
@@ -94,6 +95,9 @@ namespace UtilLib {
             //Master
             private int masterPort = DEFAULT_MASTER_PORT;
             private string masterAddress = DEFAULT_MASTER_ADDRESS;
+
+            //Slave
+            private bool controlCamera = true;
 
             /// <summary>
             /// True if the client should automatically log in whilst starting.
@@ -143,11 +147,11 @@ namespace UtilLib {
             }
 
             /// <summary>
-            /// The executable that will run the client.
+            /// The executable that will run the viewer.
             /// </summary>
-            public string ClientExecutable {
-                get { return clientExe; }
-                set { clientExe = value; }
+            public string ViewerExecutable {
+                get { return viewerExe; }
+                set { viewerExe = value; }
             }
 
             /// <summary>
@@ -182,13 +186,21 @@ namespace UtilLib {
                 set { grid = value; }
             }
 
+            /// <summary>
+            /// Whether the proxy should control the camera of the client which is connected to it.
+            /// </summary>
+            public bool ControlCamera {
+                get { return controlCamera; }
+                set { controlCamera = value; }
+            }
+
             public Config() {
                 proxyPort = CURRENT_PORT++;
             }
 
             public Config(string[] args, string section, string file) {
                 ArgvConfigSource argConfig = InitArgConfig(args);
-                argConfig.AddSwitch("General", "ClientExe", "e");
+                argConfig.AddSwitch("General", "ViewerExe", "v");
                 argConfig.AddSwitch("General", "UseGrid", "ug");
                 argConfig.AddSwitch("General", "ProxyGrid", "g");
                 argConfig.AddSwitch("General", "LoginURI", "u");
@@ -198,23 +210,26 @@ namespace UtilLib {
                 argConfig.AddSwitch(section, "FirstName", "fn");
                 argConfig.AddSwitch(section, "LastName", "l");
                 argConfig.AddSwitch(section, "Password", "pw");
+                argConfig.AddSwitch(section, "ControlCamera", "c");
 
                 IConfigSource config = AddFile(argConfig, file);
                 IConfig mainConfig = config.Configs[section];
                 IConfig generalConfig = config.Configs["General"];
 
-                clientExe = Get(generalConfig, "ClientExe", DEFAULT_CLIENT_EXE);
-                loginURI = Get(generalConfig, "LoginURI", DEFAULT_LOGINURI);
                 masterPort = Get(generalConfig, "MasterPort", DEFAULT_MASTER_PORT);
                 masterAddress = Get(generalConfig, "MasterAddress", DEFAULT_MASTER_ADDRESS);
+
+                viewerExe = Get(generalConfig, "ViewerExe", DEFAULT_CLIENT_EXE);
+                loginURI = Get(generalConfig, "LoginURI", DEFAULT_LOGINURI);
+                UseGrid = Get(generalConfig, "UseGrid", true);
 
                 firstName = Get(mainConfig, "FirstName", null);
                 lastName = Get(mainConfig, "LastName", null);
                 password = Get(mainConfig, "Password", null);
                 proxyPort = Get(mainConfig, "ProxyPort", CURRENT_PORT++);
+                LoginGrid = Get(mainConfig, "ProxyGrid", proxyPort.ToString());
 
-                UseGrid = Get(generalConfig, "UseGrid", true);
-                LoginGrid = Get(generalConfig, "ProxyGrid", proxyPort.ToString());
+                controlCamera = Get(mainConfig, "ControlCamera", true);
             }
         }
 
@@ -265,10 +280,11 @@ namespace UtilLib {
         public static CameraSlave InitCameraSlave(string[] args) {
             ArgvConfigSource argConfig = InitArgConfig(args);
             argConfig.AddSwitch("General", "Name", "n");
-            argConfig.AddSwitch("General", "File", "f");
+            argConfig.AddSwitch("General", "File", "f");
+
             string file;
             IConfigSource config = AddFile(argConfig, out file);
-            string name = Init.Get(config.Configs["Slave"], "Name", "Slave1");
+            string name = Init.Get(config.Configs["General"], "Name", "Slave1");
 
             argConfig.AddSwitch(name, "AutoConnectSlave", "as");
             argConfig.AddSwitch(name, "AutoStartProxy", "ap");
