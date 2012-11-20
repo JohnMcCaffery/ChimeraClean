@@ -21,7 +21,7 @@
     </TypeIdentifier>
   </Class>
   <Class Name="UtilLib.CameraMaster">
-    <Position X="3.75" Y="13" Width="2.25" />
+    <Position X="3.75" Y="12.5" Width="2.25" />
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
@@ -34,7 +34,7 @@
     </ShowAsAssociation>
   </Class>
   <Class Name="UtilLib.FullMaster">
-    <Position X="6.25" Y="13" Width="1.75" />
+    <Position X="6.25" Y="12.5" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAEAAAAAAAA=</HashCode>
       <FileName>FullMaster.cs</FileName>
@@ -45,6 +45,13 @@
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
+    <AssociationLine Name="MasterRotation" Type="UtilLib.Rotation" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="17.297" Y="10.791" />
+        <Point X="17.297" Y="12.75" />
+        <Point X="14" Y="12.75" />
+      </Path>
+    </AssociationLine>
     <TypeIdentifier>
       <HashCode>AAUAAQAABBABCYAAAIQAAoQBAg4AAAWQIAEEEQAAAAE=</HashCode>
       <FileName>CameraSlave.cs</FileName>
@@ -141,7 +148,7 @@
     </TypeIdentifier>
   </Class>
   <Class Name="ConsoleTest.MasterForm">
-    <Position X="0.5" Y="13" Width="2.5" />
+    <Position X="0.5" Y="12.5" Width="2.5" />
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>

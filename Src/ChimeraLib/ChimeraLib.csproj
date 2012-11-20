@@ -8,8 +8,8 @@
     <ProjectGuid>{58E39BFE-20D5-4C8D-BCFC-6B5E641C2DFF}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>UtilLib</RootNamespace>
-    <AssemblyName>UtilLib</AssemblyName>
+    <RootNamespace>ChimeraLib</RootNamespace>
+    <AssemblyName>ChimeraLib</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
