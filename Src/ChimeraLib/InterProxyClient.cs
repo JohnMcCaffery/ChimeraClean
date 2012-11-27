@@ -127,10 +127,12 @@ namespace UtilLib {
             try {
                 foreach (var ip in Dns.GetHostEntry(address).AddressList)
                     if (ip.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork) 
-                        if (IPAddress.IsLoopback(ip))
-                            masterEP = new IPEndPoint(IPAddress.Loopback, port);
-                        else
-                            masterEP = new IPEndPoint(ip, port);
+                        masterEP = new IPEndPoint(ip, port);                if (IPAddress.IsLoopback(masterEP.Address))
+                    foreach (IPAddress ip in Dns.GetHostAddresses(Dns.GetHostName())) {
+                        if (ip.AddressFamily == AddressFamily.InterNetwork)
+                            masterEP.Address = ip;
+
+                }
             } catch (SocketException e) {
                 Logger.Info("Slave unable to look up master address at " + address + "." + e.Message);
                 if (OnUnableToConnect != null)

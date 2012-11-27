@@ -326,12 +326,12 @@ namespace UtilLib {
                         ip = testIP;
 
                 }
-                /*if (IPAddress.IsLoopback(ip))
+                if (IPAddress.IsLoopback(ip))
                     foreach (IPAddress testIP in Dns.GetHostAddresses(Dns.GetHostName())) {
                         if (testIP.AddressFamily == AddressFamily.InterNetwork)
                             ip = testIP;
 
-                }*/
+                }
                 socket = new UdpClient(new IPEndPoint(ip, port));
                 testConnectionSocket = new UdpClient(0);
                 socket.BeginReceive(PacketReceived, null);

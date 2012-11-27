@@ -280,7 +280,8 @@ namespace UtilLib {
                     m.StartProxy();
                 if (Get(masterConfig, "AutoStartClient", false))
                     m.StartClient();
-            }
+            }
+
             return m;
         }
 

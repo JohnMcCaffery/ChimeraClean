@@ -58,7 +58,7 @@ namespace ConsoleTest {
                 nameBox.Enabled = false;
 
                 connectButton.Text = "Disconnect from Master";
-                statusLabel.Text = "Connected to " + slave.ProxyConfig.MasterAddress + ":" + slave.ProxyConfig.MasterPort + " as " + slave.Name;
+                statusLabel.Text = "Connected to " + slave.MasterAddress + ":" + slave.ProxyConfig.MasterPort + " as " + slave.Name;
             };
 
             slave.OnUnableToConnectToMaster += (source, args) => {
