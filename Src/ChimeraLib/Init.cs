@@ -7,6 +7,7 @@ using System.Windows.Forms;
 using System.Threading;
 using System.IO;
 using ConsoleTest;
+using log4net;
 
 namespace UtilLib {
     /// <summary>
@@ -258,22 +259,28 @@ namespace UtilLib {
 
             AddFile(config, file);
 
+            LogManager.GetLogger("Master").Info("Creating Master.");
+
             Config proxyConfig = new Config(args, "Master", AppDomain.CurrentDomain.SetupInformation.ConfigurationFile);
             CameraMaster m = new CameraMaster(proxyConfig);
 
             bool autostartMaster = Get(masterConfig, "AutoStartMaster", true);
-            if (autostartMaster)
-                m.StartMaster();
 
-            if (Get(masterConfig, "GUI", true))
+            if (Get(masterConfig, "GUI", true)) {
+                if (autostartMaster)
+                    new Thread(() => {
+                        Thread.Sleep(500);
+                        m.StartMaster();
+                    }).Start();
                 Init.StartGui(masterConfig, m, () => new MasterForm(m));
-            else {
+            } else {
+                if (autostartMaster)
+                    m.StartMaster();
                 if (Get(masterConfig, "AutoStartClient", false) || Get(masterConfig, "AutoStartProxy", false))
                     m.StartProxy();
                 if (Get(masterConfig, "AutoStartClient", false))
                     m.StartClient();
-            }
-
+            }
             return m;
         }
 
@@ -311,17 +318,25 @@ namespace UtilLib {
                 return null;
             }
 
+            LogManager.GetLogger(name).Info("Creating " + name + ".");
+
             Config proxyConfig = new Config(args, name, AppDomain.CurrentDomain.SetupInformation.ConfigurationFile);
             CameraSlave s = new CameraSlave(name, proxyConfig);
 
             bool autostartSlave = Get(slaveConfig, "AutoConnectSlave", true);
 
-            if (autostartSlave)
-                s.Connect();
 
-            if (Init.Get(slaveConfig, "GUI", true))
+            if (Init.Get(slaveConfig, "GUI", true)) {
+                if (autostartSlave)
+                    new Thread(() => {
+                        Thread.Sleep(500);
+                        s.Connect();
+                    }).Start();
                 Init.StartGui(slaveConfig, s, () => new SlaveForm(s));
-            else {
+
+            } else {
+                if (autostartSlave)
+                    s.Connect();
                 if (Get(slaveConfig, "AutoStartClient", false) || Get(slaveConfig, "AutoStartProxy", false))
                     s.StartProxy();
                 if (Get(slaveConfig, "AutoStartClient", false))

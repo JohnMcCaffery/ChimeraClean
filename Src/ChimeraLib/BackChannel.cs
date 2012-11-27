@@ -63,11 +63,21 @@ namespace UtilLib {
         /// How many packets the slave has received.
         /// </summary>
         private int receivedPackets = 0;
-        
+
         /// <summary>
-        /// The port to bind to.
+        /// The address to bind to. Default = "localhost".
         /// </summary>
-        private int port;
+        private string address = Dns.GetHostName();
+
+        /// <summary>
+        /// The port to bind to. Default = 0.
+        /// </summary>
+        private int port = 0;
+
+        /// <summary>
+        /// Triggered whenever the back channel binds itself to a port.
+        /// </summary>
+        public event EventHandler OnBound;
 
         /// <summary>
         /// Triggered whenever a new datagram packet is received.
@@ -113,6 +123,11 @@ namespace UtilLib {
         /// </summary>
         public string Address {
             get { return bound ? ((IPEndPoint) socket.Client.LocalEndPoint).Address.ToString() : "Not Bound"; }
+            set {
+                if (bound)
+                    throw new Exception("Unable to set address. Socket currently bound to " + Address);
+                address = value;
+            }
         }
         
         /// <summary>
@@ -156,6 +171,10 @@ namespace UtilLib {
         /// <param name="data">The data to send.</param>
         /// <param name="destination">The end point to send the data to.</param>
         public void Send(byte[] bytes, IPEndPoint destination) {
+            if (!bound) {
+                Logger.Info("Can't send packet. Socket has not yet been bound.");
+                return;
+            }
             try {
                 socket.Send(bytes, bytes.Length, destination);
             } catch (SocketException e) {
@@ -292,19 +311,34 @@ namespace UtilLib {
         }
 
         protected bool Bind() {
-            return Bind(port);
+            return Bind(address, Port);
         }
 
         /// <summary>
         /// Bind the UDP socket to a specific port.
         /// </summary>
         /// <param name="port">The port to bind the socket to.</param>
-        protected bool Bind(int port) {
+        protected bool Bind(string address, int port) {
             try {
-                socket = new UdpClient(port);
+                IPAddress ip = IPAddress.Any;
+                foreach (IPAddress testIP in Dns.GetHostAddresses(address)) {
+                    if (testIP.AddressFamily == AddressFamily.InterNetwork)
+                        ip = testIP;
+
+                }
+                /*if (IPAddress.IsLoopback(ip))
+                    foreach (IPAddress testIP in Dns.GetHostAddresses(Dns.GetHostName())) {
+                        if (testIP.AddressFamily == AddressFamily.InterNetwork)
+                            ip = testIP;
+
+                }*/
+                socket = new UdpClient(new IPEndPoint(ip, port));
                 testConnectionSocket = new UdpClient(0);
                 socket.BeginReceive(PacketReceived, null);
                 bound = true;
+                if (OnBound != null)
+                    OnBound(socket.Client.LocalEndPoint, null);
+                //Logger.Info("Bound to " + socket.Client.LocalEndPoint + ".");
                 return true;
             } catch (SocketException e) {
                 return false;

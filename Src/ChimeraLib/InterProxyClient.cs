@@ -52,11 +52,13 @@ namespace UtilLib {
 
         private readonly object testLock = new object();
 
+        public string MasterAddress { get { return masterEP == null ? "Not Connected" : masterEP.Address.ToString(); } }
+
         /// <summary>
         /// Create a new InterProxyClient
         /// </summary>
         public InterProxyClient(string name) : base (LogManager.GetLogger(name)) {
-            Bind(0);
+            Bind();
             Logger.Info("Slave bound to " + Address + ":" + Port + ".");
             Name = name;
 
@@ -102,6 +104,11 @@ namespace UtilLib {
         /// </summary>
         public event EventHandler OnDisconnected;
 
+        /// <summary>
+        /// Called if the slave tried to connect to the master but failed.
+        /// </summary>
+        public event EventHandler OnUnableToConnect;
+
         protected override void ConnectionForciblyClosed() {
             if (connected) {
                 Logger.Info("Connection to master at " + masterEP + " lost.");
@@ -120,26 +127,38 @@ namespace UtilLib {
             try {
                 foreach (var ip in Dns.GetHostEntry(address).AddressList)
                     if (ip.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork) 
-                        masterEP = new IPEndPoint(ip, port);
+                        if (IPAddress.IsLoopback(ip))
+                            masterEP = new IPEndPoint(IPAddress.Loopback, port);
+                        else
+                            masterEP = new IPEndPoint(ip, port);
             } catch (SocketException e) {
-                Logger.Info("Slave unable to look up master masterAddress at " + address + ":" + port + "." + e.Message);
+                Logger.Info("Slave unable to look up master address at " + address + "." + e.Message);
+                if (OnUnableToConnect != null)
+                    OnUnableToConnect("Slave unable to look up master address at " + address + "." + e.Message, null);
                 masterEP = null;
                 return false;
             }
             if (masterEP == null) { 
                 Logger.Info("Slave not able to look up master IP masterAddress found for " + address + ":" + port + ".");
+                if (OnUnableToConnect != null)
+                    OnUnableToConnect("Slave not able to look up master IP masterAddress found for " + address + ":" + port + ".", null);
                 return false;
             }
 
             int attempt = 1;
             while (!connected && attempt <= 5) {
+                Logger.Debug("Attempting to connect to " + masterEP + ". Attempt " + attempt + ".");
                 Send(CONNECT + " " + Name, masterEP);
                 lock (connectLock)
                     Monitor.Wait(connectLock, 1000);
                 attempt++;
             }
-            if (!connected)
+            if (!connected) {
                 Logger.Info("Slave unable to connect to " + masterEP + ". No reply received.");
+                if (OnUnableToConnect != null)
+                    OnUnableToConnect("Unable to connect to " + masterEP + ". No reply received.", null);
+            }
+
             return connected;
         }
 

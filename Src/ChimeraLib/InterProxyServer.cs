@@ -120,7 +120,7 @@ namespace UtilLib {
         /// Will bind to localhost and whatever masterPort is open.
         /// </summary>
         public bool Start() {
-            if (Bind(Port)) {
+            if (Bind()) {
                 Logger.Info("Master bound to " + Address + ":" + Port);
                 return true;
             }
@@ -132,6 +132,17 @@ namespace UtilLib {
         /// </summary>
         /// <param name="masterPort">The masterPort that clients can use to connect to this proxy.</param>
         public bool Start(int port) {
+            Port = port;
+            return Start();
+        }
+
+        /// <summary>
+        /// Bind a proxy so that clients can connect to this master and be shadowed. Address and port are specified.
+        /// </summary>
+        /// <param name="address">The address that clients can use to connect to this proxy.</param>
+        /// <param name="port">The port that clients can use to connect to this proxy.</param>
+        public bool Start(string address, int port) {
+            Address = address;
             Port = port;
             return Start();
         }

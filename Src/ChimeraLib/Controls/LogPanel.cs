@@ -15,6 +15,7 @@ namespace UtilLib {
         private object createdLock = new object();
         private bool created = false;
         private string source = null;
+        private readonly Queue<string> backlog = new Queue<string>();
 
         public string Source {
             get { return source; }
@@ -23,13 +24,12 @@ namespace UtilLib {
         
         public LogPanel() {
             //Only start processing events when a handle has been created.
-            ControlAdded += (source, args) => {
-                Visible = true;
-            };
             HandleCreated += (source, args) => {
-                created = true;
-                lock (createdLock)
-                    Monitor.PulseAll(createdLock);
+                lock (backlog) {
+                    created = true;
+                    while (backlog.Count > 0)
+                        debugTextBox.AppendText(backlog.Dequeue());
+                }
             };
             InitializeComponent();
 
@@ -52,12 +52,19 @@ namespace UtilLib {
                 //lock (createdLock)
                     //Monitor.Wait(createdLock);
 
-            if (!created || this.IsDisposed || this.Disposing)
+            if (this.IsDisposed || this.Disposing)
                 return;
 
-            string s = String.Format("{0} [{1}] {2} {3}", e.LoggingEvent.TimeStamp, e.LoggingEvent.Level,
+            string s = String.Format("{0} [{1}] {2} {3}\n", e.LoggingEvent.TimeStamp, e.LoggingEvent.Level,
                 e.LoggingEvent.RenderedMessage, e.LoggingEvent.ExceptionObject);
-            Action a = () => debugTextBox.AppendText(s + "\n");
+
+            lock (backlog) {
+                if (!created) {
+                    backlog.Enqueue(s);
+                    return;
+                }
+            }
+            Action a = () => debugTextBox.AppendText(s);
 
             if (InvokeRequired || !IsHandleCreated)
                 BeginInvoke(a);

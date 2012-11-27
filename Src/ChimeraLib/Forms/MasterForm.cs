@@ -28,11 +28,22 @@ namespace ConsoleTest {
             rawPosition.Value = master.Position;
             rawRotation.LookAtVector = master.Rotation.LookAtVector;
 
+            addressBox.Text = master.ProxyConfig.MasterAddress;
+            portBox.Text = master.ProxyConfig.MasterPort.ToString();
+
             if (master.MasterRunning) {
-                statusLabel.Text = "Bound to " + master.ProxyConfig.MasterAddress + ":" + master.ProxyConfig.MasterPort;
+                statusLabel.Text = "Bound to " + master.MasterAddress + ":" + master.ProxyConfig.MasterPort;
                 bindButton.Text = "Unbind";
+                addressBox.Enabled = false;
                 portBox.Enabled = false;
             }
+
+            master.OnMasterBound += (source, args) => {
+                statusLabel.Text = "Bound to " + source;
+                bindButton.Text = "Unbind";
+                addressBox.Enabled = false;
+                portBox.Enabled = false;
+            };
 
             master.OnProxyStarted += (source, args) => {
                 BeginInvoke(new Action(() => Text = "Master: " + master.ProxyConfig.ProxyPort));
@@ -279,18 +290,15 @@ namespace ConsoleTest {
 
         private void bindButton_Click(object sender, EventArgs e) {
             if (bindButton.Text.Equals("Bind")) {
-                if (master.StartMaster(Int32.Parse(portBox.Text))) {
-                    statusLabel.Text = "Bound to " + master.ProxyConfig.MasterAddress + ":" + master.ProxyConfig.MasterPort;
-                    bindButton.Text = "Unbind";
-                    portBox.Enabled = false;
-                } else
-                    statusLabel.Text = "Unable to bind to " + master.ProxyConfig.MasterAddress + ":" + master.ProxyConfig.MasterPort;
+                if (!master.StartMaster(addressBox.Text, Int32.Parse(portBox.Text)))
+                    statusLabel.Text = "Unable to bind to " + master.MasterAddress + ":" + master.ProxyConfig.MasterPort;
             } else {
                 master.StopMaster();
                 foreach (var slave in slaveTabs.Keys.ToArray())
                     RemoveSlave(slave);
                 bindButton.Text = "Bind";
                 statusLabel.Text = "Unbound";
+                addressBox.Enabled = true;
                 portBox.Enabled = true;
             }
         }

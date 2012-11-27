@@ -23,9 +23,19 @@ namespace UtilLib {
         public event System.Action<Vector3, Vector3> OnUpdateSentToClient;
 
         /// <summary>
+        /// Triggered whenever the slave connects to the master.
+        /// </summary>
+        public event EventHandler OnConnectedToMaster;
+
+        /// <summary>
+        /// Triggered if the slave is unable to connect to the master.
+        /// </summary>
+        public event EventHandler OnUnableToConnectToMaster;
+
+        /// <summary>
         /// Triggered whenever the master signals for the client to disconnect.
         /// </summary>
-        public event Action OnMasterDisconnected;
+        public event Action OnDisconnectedFromMaster;
 
         private Vector3 masterPosition;
         private Rotation masterRotation;
@@ -77,8 +87,16 @@ namespace UtilLib {
                 return p;
             };
             interProxyClient.OnDisconnected += (source, args) => {
-                if (OnMasterDisconnected != null)
-                    OnMasterDisconnected();
+                if (OnDisconnectedFromMaster != null)
+                    OnDisconnectedFromMaster();
+            };
+            interProxyClient.OnConnected += (source, args) => {
+                if (OnConnectedToMaster != null)
+                    OnConnectedToMaster(source, args);
+            };
+            interProxyClient.OnUnableToConnect += (source, args) => {
+                if (OnUnableToConnectToMaster != null)
+                    OnUnableToConnectToMaster(source, args);
             };
             SlaveCount++;
         }
@@ -102,6 +120,10 @@ namespace UtilLib {
         /// </summary>
         public bool ConnectedToMaster {
             get { return interProxyClient.Connected; }
+        }
+
+        public string MasterAddress {
+            get { return interProxyClient.MasterAddress; }
         }
 
         /// <summary>

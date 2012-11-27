@@ -94,6 +94,11 @@ namespace UtilLib {
         public event Action<Slave> OnSlaveConnected;
 
         /// <summary>
+        /// Triggered whenever the master is bound to a socket.
+        /// </summary>
+        public event EventHandler OnMasterBound;
+
+        /// <summary>
         /// Address that slaves should use to connect to this master.
         /// </summary>
         public string MasterAddress {
@@ -128,6 +133,10 @@ namespace UtilLib {
                 lock (slaves)
                     slaves.Remove(name);
             };
+            masterServer.OnBound += (source, args) => {
+                if (OnMasterBound != null)
+                    OnMasterBound(source, args);
+            };
         }
 
         /// <summary>
@@ -135,7 +144,7 @@ namespace UtilLib {
         /// </summary>
         /// <returns>True if the master was successfully started.</returns>
         public bool StartMaster() {
-            return masterServer.Start(ProxyConfig.MasterPort);
+            return masterServer.Start(ProxyConfig.MasterAddress, ProxyConfig.MasterPort);
         }
 
         /// <summary>
@@ -146,6 +155,17 @@ namespace UtilLib {
         public bool StartMaster(int port) {
             ProxyConfig.MasterPort = port;
             return masterServer.Start();
+        }
+        /// <summary>
+        /// Bind the master so that slaves can connect into it.
+        /// </summary>
+        /// <param name="address">The address that clients should connect to this master on.</param>
+        /// <param name="port">The port that clients should connect to this master on.</param>
+        /// <returns>True if the master was successfully started.</returns>
+        public bool StartMaster(string address, int port) {
+            ProxyConfig.MasterAddress = address;
+            ProxyConfig.MasterPort = port;
+            return masterServer.Start(address, port);
         }
 
         /// <summary>

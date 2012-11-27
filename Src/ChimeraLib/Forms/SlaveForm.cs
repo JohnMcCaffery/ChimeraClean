@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using UtilLib;
+using System.Threading;
 
 namespace ConsoleTest {
     public partial class SlaveForm : Form {
@@ -45,7 +46,34 @@ namespace ConsoleTest {
             slave.OnProxyStarted += (source, args) => {
                 Invoke(new Action(() => Text = slave.Name + ": " + slave.ProxyConfig.ProxyPort));
             };
-            slave.OnMasterDisconnected += () => {
+
+            slave.OnConnectedToMaster += (source, args) => {
+                addressBox.Text = slave.ProxyConfig.MasterAddress;
+                addressBox.Enabled = false;
+
+                portBox.Text = slave.ProxyConfig.MasterPort.ToString();
+                portBox.Enabled = false;
+
+                nameBox.Text = slave.Name;
+                nameBox.Enabled = false;
+
+                connectButton.Text = "Disconnect from Master";
+                statusLabel.Text = "Connected to " + slave.ProxyConfig.MasterAddress + ":" + slave.ProxyConfig.MasterPort + " as " + slave.Name;
+            };
+
+            slave.OnUnableToConnectToMaster += (source, args) => {
+                if (InvokeRequired)
+                    Invoke(new Action(() => statusLabel.Text = source.ToString()));
+                else
+                    statusLabel.Text = source.ToString();
+            };
+
+            slave.OnProxyStarted += (source, args) => {
+                Invoke(new Action(() => Text = slave.Name + ": " + slave.ProxyConfig.ProxyPort));
+            };
+
+
+            slave.OnDisconnectedFromMaster += () => {
                 Action a = () => {
                     addressBox.Enabled = true;
                     portBox.Enabled = true;
@@ -107,14 +135,7 @@ namespace ConsoleTest {
             if (connectButton.Text.Equals("Connect To Master")) {
                 slave.Name = nameBox.Text;
                 debugPanel.Source = slave.Name;
-                if (slave.Connect()) {
-                    addressBox.Enabled = false;
-                    portBox.Enabled = false;
-                    nameBox.Enabled = false;
-                    connectButton.Text = "Disconnect from Master";
-                    statusLabel.Text = "Connected to " + slave.ProxyConfig.MasterAddress + ":" + slave.ProxyConfig.MasterPort + " as " + slave.Name;
-                } else
-                    statusLabel.Text = "Unable to Connect";
+                new Thread(() => slave.Connect()).Start();
             } else {
                 slave.Disconnect();
                 addressBox.Enabled = true;
