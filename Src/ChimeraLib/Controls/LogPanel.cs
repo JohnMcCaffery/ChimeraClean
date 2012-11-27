@@ -46,7 +46,7 @@ namespace UtilLib {
         }
 
         void Instance_MessageLoggedEvent(object sender, MessageLoggedEventArgs e) {
-            if (source != null && !source.Equals(e.LoggingEvent.LoggerName))
+            if (!e.LoggingEvent.LoggerName.Equals("OpenMetaverse") && source != null && !source.Equals(e.LoggingEvent.LoggerName))
                 return;
             //if (!created)
                 //lock (createdLock)

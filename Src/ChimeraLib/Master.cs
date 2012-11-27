@@ -165,7 +165,7 @@ namespace UtilLib {
         public bool StartMaster(string address, int port) {
             ProxyConfig.MasterAddress = address;
             ProxyConfig.MasterPort = port;
-            return masterServer.Start(address, port);
+            return masterServer.Start();
         }
 
         /// <summary>

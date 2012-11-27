@@ -9,6 +9,7 @@ using OpenMetaverse;
 using System.Threading;
 using GridProxy;
 using log4net;
+using System.Net.NetworkInformation;
 
 namespace UtilLib {
     public abstract class BackChannel {
@@ -31,6 +32,8 @@ namespace UtilLib {
         public readonly static byte[] ACCEPT_B = Encoding.ASCII.GetBytes(ACCEPT);
 
         public readonly static byte[] REJECT_B = Encoding.ASCII.GetBytes(REJECT);
+
+        private readonly List<IPAddress> localAddresses = new List<IPAddress>();
 
         private ILog logger;
 
@@ -74,6 +77,16 @@ namespace UtilLib {
         /// </summary>
         private int port = 0;
 
+        protected IPAddress AsLocalIP(string address) {
+            return localAddresses.FirstOrDefault(addr => addr.ToString().Equals(address));
+        }
+
+        protected IPAddress GetLocal() {
+            if (localAddresses.Count == 0)
+                return IPAddress.Loopback;
+            return localAddresses.First();
+        }
+
         /// <summary>
         /// Triggered whenever the back channel binds itself to a port.
         /// </summary>
@@ -99,7 +112,13 @@ namespace UtilLib {
         /// </summary>
         public BackChannel(ILog logger) {
             this.logger = logger;
-            AddPacketDelegate(PING, (msg, source) => Send(msg, source));
+            AddPacketDelegate(PING, (msg, source) => Send(msg, source));
+            foreach (var ni in NetworkInterface.GetAllNetworkInterfaces()) {
+                if (ni.OperationalStatus == OperationalStatus.Up && ni.NetworkInterfaceType != NetworkInterfaceType.Loopback)
+                    foreach (var addr in ni.GetIPProperties().UnicastAddresses)
+                        if (addr.Address.AddressFamily == AddressFamily.InterNetwork)
+                            localAddresses.Add(addr.Address);
+            }
         }
 
         /// <summary>

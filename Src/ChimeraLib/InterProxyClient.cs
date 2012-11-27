@@ -32,6 +32,7 @@ using System.Net;
 using System.Configuration;
 using OpenMetaverse;
 using log4net;
+using System.Net.NetworkInformation;
 
 namespace UtilLib {
     public class InterProxyClient : BackChannel {
@@ -47,6 +48,8 @@ namespace UtilLib {
         /// True if connected to the master.
         /// </summary>
         private bool connected = false;
+
+        private bool rejected = false;
 
         private readonly object connectLock = new object();
 
@@ -125,13 +128,15 @@ namespace UtilLib {
         /// <param name="masterPort">The masterPort for the master server.</param>
         public bool Connect(string address, int port) {
             try {
-                foreach (var ip in Dns.GetHostEntry(address).AddressList)
-                    if (ip.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork) 
-                        masterEP = new IPEndPoint(ip, port);                if (IPAddress.IsLoopback(masterEP.Address))
-                    foreach (IPAddress ip in Dns.GetHostAddresses(Dns.GetHostName())) {
-                        if (ip.AddressFamily == AddressFamily.InterNetwork)
-                            masterEP.Address = ip;
-
+                IPAddress local = AsLocalIP(address);
+                if (local != null)
+                    masterEP = new IPEndPoint(local, port);
+                else {
+                    foreach (var ip in Dns.GetHostEntry(address).AddressList)
+                        if (ip.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
+                            masterEP = new IPEndPoint(ip, port);
+                    if (IPAddress.IsLoopback(masterEP.Address))
+                        masterEP.Address = GetLocal();
                 }
             } catch (SocketException e) {
                 Logger.Info("Slave unable to look up master address at " + address + "." + e.Message);
@@ -148,14 +153,15 @@ namespace UtilLib {
             }
 
             int attempt = 1;
-            while (!connected && attempt <= 5) {
+            rejected = false;
+            while (!connected && !rejected && attempt <= 5) {
                 Logger.Debug("Attempting to connect to " + masterEP + ". Attempt " + attempt + ".");
                 Send(CONNECT + " " + Name, masterEP);
                 lock (connectLock)
                     Monitor.Wait(connectLock, 1000);
                 attempt++;
             }
-            if (!connected) {
+            if (!connected && !rejected) {
                 Logger.Info("Slave unable to connect to " + masterEP + ". No reply received.");
                 if (OnUnableToConnect != null)
                     OnUnableToConnect("Unable to connect to " + masterEP + ". No reply received.", null);
@@ -166,6 +172,10 @@ namespace UtilLib {
 
         private void RejectHandler(string msg, IPEndPoint source) {
             Logger.Info("Slave '" + Name + "' unable to register with master at " + source + ". " + msg);
+            if (OnUnableToConnect != null)
+                OnUnableToConnect("Slave '" + Name + "' unable to register with master at " + source + ". " + msg, null);
+
+            rejected = true;
             connected = false;
             lock (connectLock)
                 Monitor.PulseAll(connectLock);

@@ -48,17 +48,23 @@ namespace ConsoleTest {
             };
 
             slave.OnConnectedToMaster += (source, args) => {
-                addressBox.Text = slave.ProxyConfig.MasterAddress;
-                addressBox.Enabled = false;
+                Action a = () => {
+                    addressBox.Text = slave.ProxyConfig.MasterAddress;
+                    addressBox.Enabled = false;
 
-                portBox.Text = slave.ProxyConfig.MasterPort.ToString();
-                portBox.Enabled = false;
+                    portBox.Text = slave.ProxyConfig.MasterPort.ToString();
+                    portBox.Enabled = false;
 
-                nameBox.Text = slave.Name;
-                nameBox.Enabled = false;
+                    nameBox.Text = slave.Name;
+                    nameBox.Enabled = false;
 
-                connectButton.Text = "Disconnect from Master";
-                statusLabel.Text = "Connected to " + slave.MasterAddress + ":" + slave.ProxyConfig.MasterPort + " as " + slave.Name;
+                    connectButton.Text = "Disconnect from Master";
+                    statusLabel.Text = "Connected to " + slave.MasterAddress + ":" + slave.ProxyConfig.MasterPort + " as " + slave.Name;
+                };
+                if (InvokeRequired)
+                    Invoke(a);
+                else
+                    a();
             };
 
             slave.OnUnableToConnectToMaster += (source, args) => {
