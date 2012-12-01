@@ -112,7 +112,8 @@ namespace UtilLib {
         /// </summary>
         public BackChannel(ILog logger) {
             this.logger = logger;
-            AddPacketDelegate(PING, (msg, source) => Send(msg, source));
+            AddPacketDelegate(PING, (msg, source) => Send(msg, source));
+
             foreach (var ni in NetworkInterface.GetAllNetworkInterfaces()) {
                 if (ni.OperationalStatus == OperationalStatus.Up && ni.NetworkInterfaceType != NetworkInterfaceType.Loopback)
                     foreach (var addr in ni.GetIPProperties().UnicastAddresses)
