@@ -135,8 +135,7 @@ namespace UtilLib {
 
         private Quaternion CalculateRotation() {
             Quaternion yaw = Quaternion.CreateFromAxisAngle(Vector3.UnitZ, (float) (this.yaw * DEG2RAD));
-            Vector3 newDir = Vector3.UnitX * yaw;
-            Vector3 normal = Vector3.Cross(Vector3.UnitZ, newDir);
+            Vector3 normal = Vector3.UnitY * yaw;
             Quaternion pitch = Quaternion.CreateFromAxisAngle(normal, (float) (this.pitch * DEG2RAD));
 
             return pitch * yaw;
