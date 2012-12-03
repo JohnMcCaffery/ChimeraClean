@@ -75,6 +75,7 @@ namespace ChimeraLib {
         /// <summary>
         /// How wide the screen is in real space (mm). 
         /// Changing this will also change the aspect ratio and the diagonal.
+        /// Width is a function of height and aspect ration. w = h / ar
         /// </summary>
         public double Width {
             get { return (Math.Cos(Math.Atan(aspectRatio)) * mmDiagonal); }
@@ -141,15 +142,14 @@ namespace ChimeraLib {
             get {
                 if (position.Z == 0)
                     return Math.PI;
-                return Math.Atan2(Height, position.Z); 
+                return Math.Atan2(Height, position.Z) * 2; 
             }
             set {
                 double fov = FieldOfView;
                 if (Math.Abs(fov) < TOLERANCE || value <= 0.0)
                     return;
-                double ratio = Height / Math.Sin(fov);
-                double height = Math.Sin(value) * ratio;
-                mmDiagonal =  Math.Sqrt(Math.Pow(height, 2) + Math.Pow(height * aspectRatio, 2));
+                double height = (position.Z * Math.Sin(value / 2)) / Math.Cos(value / 2);
+                mmDiagonal =  Math.Sqrt(Math.Pow(height, 2) + Math.Pow(height / aspectRatio, 2));
                 Changed();
             }
         }
