@@ -8,14 +8,18 @@ using UtilLib;
 namespace ChimeraLib {
     public class Window {
         private Rotation rotation = new Rotation(0f, 0f);
-        private Vector3 position = Vector3.UnitZ * 400;
-        private Vector3 positionOffset = Vector3.Zero;
+        private Vector3 screenPosition = Vector3.UnitZ * 400;
+        private Vector3 eyePosition = Vector3.Zero;
         private double aspectRatio = 9f / 16f;
         private double mmDiagonal = 19.0 * 25.4;
+        private bool lockFrustum = true;
         
         public static readonly double TOLERANCE = 0.0001;
         //private float height = 720f;
 
+        public Window() {
+            rotation.OnChange += RotationChanged;
+        }
         private void Changed() {
             if (OnChange != null)
                 OnChange(this, null);
@@ -30,16 +34,33 @@ namespace ChimeraLib {
         /// </summary>
         public event EventHandler OnChange;
 
+        /// <summary>
+        /// Triggered whenever any the eye offset property changes.
+        /// Useful for having other screens automatically adjust to this screens positioning.
+        /// Supplies the difference between the old eye position and the new one that can be added to frustum position to keep it in one place.
+        /// </summary>
+        public event Action<Vector3> OnEyeChange;
+
+        /// <summary>
+        /// When true changing the eye offset will not affect the location of the screen.
+        /// </summary>
+        public bool LockScreenPosition {
+            get { return lockFrustum; }
+            set {
+                lockFrustum = value;
+                Changed();
+            }
+        }
 
         /// <summary>
         /// The position of the centre screen in real space (mm).
         /// </summary>
         public Vector3 ScreenPosition {
-            get { return position; }
+            get { return screenPosition; }
             set {
-                if (value == position)
+                if (value == screenPosition)
                     return;
-                position = value;
+                screenPosition = value;
                 Changed();
             }
         }
@@ -48,11 +69,19 @@ namespace ChimeraLib {
         /// The offset of the origin/eye position for this screen from the centre of the real space (mm).
         /// </summary>
         public Vector3 EyeOffset {
-            get { return positionOffset; }
+            get { return eyePosition; }
             set {
-                if (value == positionOffset)
+                if (value == eyePosition)
                     return;
-                positionOffset = value;
+                if (lockFrustum) {
+                    Vector3 diff = value - eyePosition;
+                    diff = new Vector3(-diff.X, diff.Z, diff.Y);
+                    screenPosition += diff;
+                    //screenPosition += new Vector3(-diff.X, diff.Z, diff.Y);
+                    if (OnEyeChange != null)
+                        OnEyeChange(diff);
+                }
+                eyePosition = value;
                 Changed();
             }
         }
@@ -140,15 +169,15 @@ namespace ChimeraLib {
         /// </summary>
         public double FieldOfView {
             get {
-                if (position.Z == 0)
+                if (screenPosition.Z == 0)
                     return Math.PI;
-                return Math.Atan2(Height, position.Z) * 2; 
+                return Math.Atan2(Height, screenPosition.Z) * 2; 
             }
             set {
                 double fov = FieldOfView;
                 if (Math.Abs(fov) < TOLERANCE || value <= 0.0)
                     return;
-                double height = (position.Z * Math.Sin(value / 2)) / Math.Cos(value / 2);
+                double height = (screenPosition.Z * Math.Sin(value / 2)) / Math.Cos(value / 2);
                 mmDiagonal =  Math.Sqrt(Math.Pow(height, 2) + Math.Pow(height / aspectRatio, 2));
                 Changed();
             }

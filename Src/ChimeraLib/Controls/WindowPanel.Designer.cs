@@ -30,6 +30,7 @@
             this.offsetTab = new System.Windows.Forms.TabPage();
             this.eyeOffsetPanel = new ProxyTestGUI.VectorPanel();
             this.rotationOffsetPanel = new ProxyTestGUI.RotationPanel();
+            this.lockScreenCheck = new System.Windows.Forms.CheckBox();
             this.mainTab.SuspendLayout();
             this.screenTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.aspectRatioValue)).BeginInit();
@@ -54,7 +55,7 @@
             this.mainTab.Location = new System.Drawing.Point(0, 0);
             this.mainTab.Name = "mainTab";
             this.mainTab.SelectedIndex = 0;
-            this.mainTab.Size = new System.Drawing.Size(819, 491);
+            this.mainTab.Size = new System.Drawing.Size(819, 280);
             this.mainTab.TabIndex = 0;
             // 
             // screenTab
@@ -83,7 +84,7 @@
             this.screenTab.Location = new System.Drawing.Point(4, 22);
             this.screenTab.Name = "screenTab";
             this.screenTab.Padding = new System.Windows.Forms.Padding(3);
-            this.screenTab.Size = new System.Drawing.Size(811, 465);
+            this.screenTab.Size = new System.Drawing.Size(811, 254);
             this.screenTab.TabIndex = 0;
             this.screenTab.Text = "Screen";
             this.screenTab.UseVisualStyleBackColor = true;
@@ -396,12 +397,13 @@
             // offsetTab
             // 
             this.offsetTab.AutoScroll = true;
+            this.offsetTab.Controls.Add(this.lockScreenCheck);
             this.offsetTab.Controls.Add(this.eyeOffsetPanel);
             this.offsetTab.Controls.Add(this.rotationOffsetPanel);
             this.offsetTab.Location = new System.Drawing.Point(4, 22);
             this.offsetTab.Name = "offsetTab";
             this.offsetTab.Padding = new System.Windows.Forms.Padding(3);
-            this.offsetTab.Size = new System.Drawing.Size(811, 465);
+            this.offsetTab.Size = new System.Drawing.Size(811, 254);
             this.offsetTab.TabIndex = 1;
             this.offsetTab.Text = "Offsets";
             this.offsetTab.UseVisualStyleBackColor = true;
@@ -413,9 +415,9 @@
             this.eyeOffsetPanel.DisplayName = "Eye Offset (cm)";
             this.eyeOffsetPanel.Location = new System.Drawing.Point(3, 156);
             this.eyeOffsetPanel.Max = 1000D;
-            this.eyeOffsetPanel.Min = 0D;
+            this.eyeOffsetPanel.Min = -1000D;
             this.eyeOffsetPanel.Name = "eyeOffsetPanel";
-            this.eyeOffsetPanel.Size = new System.Drawing.Size(805, 98);
+            this.eyeOffsetPanel.Size = new System.Drawing.Size(789, 98);
             this.eyeOffsetPanel.TabIndex = 1;
             this.eyeOffsetPanel.Value = ((OpenMetaverse.Vector3)(resources.GetObject("eyeOffsetPanel.Value")));
             this.eyeOffsetPanel.X = 0F;
@@ -433,16 +435,27 @@
             this.rotationOffsetPanel.Name = "rotationOffsetPanel";
             this.rotationOffsetPanel.Pitch = 0F;
             this.rotationOffsetPanel.Rotation = ((OpenMetaverse.Quaternion)(resources.GetObject("rotationOffsetPanel.Rotation")));
-            this.rotationOffsetPanel.Size = new System.Drawing.Size(805, 147);
+            this.rotationOffsetPanel.Size = new System.Drawing.Size(789, 147);
             this.rotationOffsetPanel.TabIndex = 0;
             this.rotationOffsetPanel.Yaw = 0F;
             this.rotationOffsetPanel.OnChange += new System.EventHandler(this.rotationOffsetPanel_OnChange);
+            // 
+            // lockScreenCheck
+            // 
+            this.lockScreenCheck.AutoSize = true;
+            this.lockScreenCheck.Location = new System.Drawing.Point(100, 6);
+            this.lockScreenCheck.Name = "lockScreenCheck";
+            this.lockScreenCheck.Size = new System.Drawing.Size(132, 17);
+            this.lockScreenCheck.TabIndex = 2;
+            this.lockScreenCheck.Text = "Lock Screen Positions";
+            this.lockScreenCheck.UseVisualStyleBackColor = true;
+            this.lockScreenCheck.CheckedChanged += new System.EventHandler(this.lockScreenCheck_CheckedChanged);
             // 
             // WindowPanel
             // 
             this.Controls.Add(this.mainTab);
             this.Name = "WindowPanel";
-            this.Size = new System.Drawing.Size(819, 491);
+            this.Size = new System.Drawing.Size(819, 280);
             this.mainTab.ResumeLayout(false);
             this.screenTab.ResumeLayout(false);
             this.screenTab.PerformLayout();
@@ -458,6 +471,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.widthValue)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.fovValue)).EndInit();
             this.offsetTab.ResumeLayout(false);
+            this.offsetTab.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -489,5 +503,6 @@
         private ProxyTestGUI.VectorPanel eyeOffsetPanel;
         private ProxyTestGUI.RotationPanel rotationOffsetPanel;
         private System.Windows.Forms.Label fovLabel;
+        private System.Windows.Forms.CheckBox lockScreenCheck;
     }
 }

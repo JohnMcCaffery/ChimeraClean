@@ -10,6 +10,7 @@ using UtilLib;
 using ProxyTestGUI;
 using OpenMetaverse;
 using ChimeraLib;
+using ChimeraLib.Controls;
 
 namespace ConsoleTest {
     public partial class MasterForm : Form {
@@ -67,6 +68,11 @@ namespace ConsoleTest {
                 else
                     a();
             };
+            master.Window.OnEyeChange += (diff) => {
+                foreach (var slave in master.Slaves)
+                    slave.Window.ScreenPosition += diff;
+            };
+            master.Window.OnChange += (source, args) => RefreshDrawings();
             master.OnSlaveConnected += AddSlaveTab;
             master.OnSlaveDisconnected += RemoveSlave;
 
@@ -83,8 +89,7 @@ namespace ConsoleTest {
             Action add = new Action(() => {
                 System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MasterForm));
                 TabPage slaveTab = new System.Windows.Forms.TabPage();
-                VectorPanel positionOffset = new ProxyTestGUI.VectorPanel();
-                RotationPanel rotationOffset = new ProxyTestGUI.RotationPanel();
+                WindowPanel slaveWindowPanel = new WindowPanel(slave.Window);
                 Button colourButton = new Button();
                 this.slavesTabContainer.SuspendLayout();
                 slaveTab.SuspendLayout();
@@ -107,61 +112,43 @@ namespace ConsoleTest {
                 // slaveTab
                 // 
                 slaveTab.AutoScroll = true;
-                slaveTab.Controls.Add(rotationOffset);
-                slaveTab.Controls.Add(positionOffset);
+                slaveTab.Controls.Add(slaveWindowPanel);
                 slaveTab.Controls.Add(colourButton);
                 slaveTab.Location = new System.Drawing.Point(4, 22);
                 slaveTab.Name = name + "Tab";
                 slaveTab.Padding = new System.Windows.Forms.Padding(3);
-                slaveTab.Size = new System.Drawing.Size(slavesTabContainer.Size.Width - 12, 231);
+                slaveTab.Size = new Size(rawTab.Width, slaveTab.Height + colourButton.Height);
                 slaveTab.TabIndex = 0;
                 slaveTab.Text = name;
                 slaveTab.UseVisualStyleBackColor = true;
                 // 
-                // rotationRotation
+                // slaveWindowPanel
                 // 
-                rotationOffset.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                | System.Windows.Forms.AnchorStyles.Right | System.Windows.Forms.AnchorStyles.Left)));
-                rotationOffset.DisplayName = name + " VirtualRotationOffset";
-                rotationOffset.Location = rawRotation.Location;
-                rotationOffset.Name = name + "VirtualRotationOffset";
-                rotationOffset.Pitch = 0F;
-                rotationOffset.Size = rawRotation.Size;
-                rotationOffset.TabIndex = 0;
-                rotationOffset.Yaw = 0F;
-                // 
-                // positionOffset
-                // 
-                positionOffset.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                | System.Windows.Forms.AnchorStyles.Right | System.Windows.Forms.AnchorStyles.Left)));
-                positionOffset.DisplayName = name + " VirtualPositionOffset";
-                positionOffset.Location = rawPosition.Location;
-                positionOffset.Max = maxOffset;
-                positionOffset.Min = -maxOffset;
-                positionOffset.Name = name + "VirtualPositionOffset";
-                positionOffset.Size = rawPosition.Size;
-                positionOffset.TabIndex = 2;
-                positionOffset.X = 0F;
-                positionOffset.Y = 0F;
-                positionOffset.Z = 0F;
+                slaveTab.AutoScroll = false;
+                slaveWindowPanel.Anchor = (AnchorStyles)(
+                  System.Windows.Forms.AnchorStyles.Top
+                | System.Windows.Forms.AnchorStyles.Left
+                | System.Windows.Forms.AnchorStyles.Right);
+                slaveWindowPanel.AutoScroll = true;
+                slaveWindowPanel.Location = masterWindowPanel.Location;
+                slaveWindowPanel.Name = "slaveWindowPanel";
+                slaveWindowPanel.Size = new Size(slaveTab.Width, slaveWindowPanel.Height);
+                slaveWindowPanel.TabIndex = 0;
+                slaveWindowPanel.Window = null;
                 //
                 // colourButton
                 //
-                colourButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                | System.Windows.Forms.AnchorStyles.Right | System.Windows.Forms.AnchorStyles.Left)));
+                colourButton.Anchor = (AnchorStyles)(
+                  System.Windows.Forms.AnchorStyles.Top 
+                | System.Windows.Forms.AnchorStyles.Left
+                | System.Windows.Forms.AnchorStyles.Right);
                 colourButton.Text = "Choose Colour";
-                colourButton.Location = new Point(positionOffset.Location.X, positionOffset.Location.Y + positionOffset.Size.Height);
+                colourButton.Location = new Point(slaveWindowPanel.Location.X, slaveWindowPanel.Location.Y + slaveWindowPanel.Size.Height);
                 colourButton.Name = name + "ChooseColour";
-                colourButton.Size = new Size(rawPosition.Size.Width, bindButton.Size.Height);
-                colourButton.TabIndex = 3;
+                colourButton.Size = new Size(slaveWindowPanel.Size.Width, colourButton.Size.Height);
+                colourButton.TabIndex = 1;
 
-                positionOffset.OnChange += (p, ep) => {
-                    slave.Window.EyeOffset = positionOffset.Value;
-                    RefreshDrawings();
-                };
-                rotationOffset.OnChange += (p, ep) => {
-                    slave.Window.RotationOffset.Pitch = rotationOffset.Pitch;
-                    slave.Window.RotationOffset.Yaw = rotationOffset.Yaw;
+                slave.Window.OnChange += (p, ep) => {
                     RefreshDrawings();
                 };
                 colourButton.Click += (source, args) => {
@@ -222,149 +209,66 @@ namespace ConsoleTest {
         private float maxOffset = 32f;
 
         private void hTab_Paint(object sender, PaintEventArgs e) {
-            /*
-            Graphics g = e.Graphics;
-            int w = e.ClipRectangle.Width;
-            int h = e.ClipRectangle.Height;
-            float scale = Math.Min(w, h);
-            Point origin = new Point(w / 2, h / 2);
-            Vector3 originV = new Vector3(w / 2, h / 2, 0);
-
-            float offsetMultiplierH = (scale / 2) / maxOffset;
-            float offsetMultiplierV = (scale / 2) / maxOffset;
-
+            Vector3 origin = new Vector3(e.ClipRectangle.Width / 2, e.ClipRectangle.Height / 2f, 0f);
             foreach (var slave in master.Slaves) {
-                Vector3 slaveOffset = slave.PositionOffset * master.Rotation.Quaternion;
-                Point slaveOrigin = new Point(origin.X + (int)(slaveOffset.Y * offsetMultiplierH), origin.Y + (int)(-slaveOffset.X * offsetMultiplierV));
-
-                Rotation rot;
-                if (!lockMasterCheck.Checked)
-                    rot = new Rotation(master.Rotation.Pitch + slave.RotationOffset.Pitch, master.Rotation.Yaw + slave.RotationOffset.Yaw);
-                else
-                    rot = slave.RotationOffset;
-                Point slaveLookAtEnd = new Point(slaveOrigin.X + (int)(rot.LookAtVector.Y * scale), slaveOrigin.Y + (int)(-rot.LookAtVector.X * scale));
-
                 lock (slaveColours)
-                    if (!slaveColours.ContainsKey(slave.Name))
-                        slaveColours.Add(slave.Name, Color.Purple);
-                g.DrawLine(new Pen(slaveColours[slave.Name]), slaveOrigin, slaveLookAtEnd);
+                    DrawWindow(e.Graphics, slave.Window, origin, true, master.Window.EyeOffset, slaveColours.ContainsKey(slave.Name) ? slaveColours[slave.Name] : Color.Black);
             }
+            DrawWindow(e.Graphics, master.Window, origin, true, Vector3.Zero, Color.Black);
 
-            g.DrawLine(Pens.LightGreen, 0f, h / 2f, w, h / 2f);
-            g.DrawLine(Pens.Red, w / 2f, 0f, w / 2f, h);
-            g.FillEllipse(Brushes.Black, new Rectangle(origin.X - r, origin.Y - r, r * 2, r * 2));
-
-            float scaleV = (scaleBar.Maximum - scaleBar.Value) / 100f;
-            float masterLeftX = (float) ((decimal.ToDouble(widthValue.Value) / -2) + frustumPosition.X);
-            float masterRightX = (float) ((decimal.ToDouble(widthValue.Value) / 2) + frustumPosition.X);
-            Vector3 masterLeft = new Vector3(masterLeftX, -frustumPosition.Z * 2, 0) * scaleV;
-            Vector3 masterRight = new Vector3(masterRightX, -frustumPosition.Z * 2, 0) * scaleV;
-
-            if (!lockMasterCheck.Checked) {
-                Vector3 masterLookAt = new Vector3(0f, -masterRight.Length() * 3, 0f);
-
-                Quaternion q = Quaternion.CreateFromEulers(0f, 0f, (float) (master.Rotation.Yaw * Rotation.DEG2RAD));
-                masterLookAt *= q;
-                masterLeft *= q;
-                masterRight *= q;
-
-                g.DrawLine(Pens.Black, origin, toPointH(masterLookAt + originV));
-            }
-            g.DrawLine(Pens.Black, toPointH(masterLeft + originV), toPointH(masterRight + originV));
-            g.DrawLine(Pens.Black, origin, toPointH((masterLeft * 3) + originV));
-            g.DrawLine(Pens.Black, origin, toPointH((masterRight * 3) + originV));
-            */
+            e.Graphics.DrawLine(Pens.LightGreen, 0f, origin.Y, e.ClipRectangle.Width, origin.Y);
+            e.Graphics.DrawLine(Pens.Red, origin.X, 0f, origin.X, e.ClipRectangle.Height);
         }
 
         private void vTab_Paint(object sender, PaintEventArgs e) {
-            /*
-            //float scale = scaleBar.Value / 10f;
-            Graphics g = e.Graphics;
-            int w = e.ClipRectangle.Width;
-            int h = e.ClipRectangle.Height;
-            float scale = Math.Min(w, h);
-            Point origin = new Point(r, h / 2);
-            Vector3 originV = new Vector3(r, 0f, h / 2);
-
-            float offsetMultiplierH = (scale / 2) / maxOffset;
-            float offsetMultiplierV = (scale / 2) / maxOffset;
-
+            Vector3 origin = new Vector3(r, e.ClipRectangle.Height / 2, 0f);
             foreach (var slave in master.Slaves) {
-                Vector3 slaveOffset = slave.PositionOffset * master.Rotation.Quaternion;
-                Point slaveOrigin = new Point(origin.X + (int)(slaveOffset.X * offsetMultiplierH), origin.Y + (int)(-slaveOffset.Z * offsetMultiplierV));
-
-                Rotation rot;
-                if (!lockMasterCheck.Checked)
-                    rot = new Rotation(master.Rotation.Pitch + slave.RotationOffset.Pitch, master.Rotation.Yaw + slave.RotationOffset.Yaw);
-                else
-                    rot = slave.RotationOffset;
-                Vector2 slaveHVector = new Vector2(rot.LookAtVector.Y, rot.LookAtVector.X);
-                Vector3 slaveCross = Vector3.Cross(new Vector3(slaveHVector, 0f), Vector3.UnitX);
-                int slaveX = (int)(slaveHVector.Length() * scale * (slaveCross.Z < 0 ? 1 : -1));
-                Point slaveLookAtEnd = new Point(slaveOrigin.X + slaveX, slaveOrigin.Y + (int)(rot.LookAtVector.Z * scale));
-
                 lock (slaveColours)
-                    if (!slaveColours.ContainsKey(slave.Name))
-                        slaveColours.Add(slave.Name, Color.Purple);
-                g.DrawLine(new Pen(slaveColours[slave.Name]), slaveOrigin, slaveLookAtEnd);
+                    DrawWindow(e.Graphics, slave.Window, origin, false, master.Window.EyeOffset, slaveColours.ContainsKey(slave.Name) ? slaveColours[slave.Name] : Color.Black);
             }
-
-            g.DrawLine(Pens.LightGreen, 0f, h / 2f, w, h / 2f);
-            g.DrawLine(Pens.Blue, r, 0f, r, h);
-            g.FillEllipse(Brushes.Black, 0, origin.Y - r, r * 2, r * 2);
-
-            float scaleV = (scaleBar.Maximum - scaleBar.Value) / 100f;
-            float masterTopY = (float) ((decimal.ToDouble(heightValue.Value) / -2) + frustumPosition.Y);
-            float masterBottomY = (float) ((decimal.ToDouble(heightValue.Value) / 2) + frustumPosition.Y);
-            Vector3 masterTop = new Vector3(frustumPosition.Z * 2, 0, -masterTopY) * scaleV;
-            Vector3 masterBottom = new Vector3(frustumPosition.Z * 2, 0, -masterBottomY) * scaleV;
-
-            if (!lockMasterCheck.Checked) {
-                Vector3 masterLookAt = new Vector3(masterTop.Length() * 3, 0f, 0f);
-
-                Quaternion q = Quaternion.CreateFromEulers(0f, (float) (master.Rotation.Pitch * Rotation.DEG2RAD), 0f);
-                masterLookAt *= q;
-                masterTop *= q;
-                masterBottom *= q;
-
-                g.DrawLine(Pens.Black, origin, toPointV(masterLookAt + originV));
-            
-            }
-            g.DrawLine(Pens.Black, toPointV(masterTop + originV), toPointV(masterBottom + originV));
-            g.DrawLine(Pens.Black, origin, toPointV((masterTop * 3) + originV));
-            g.DrawLine(Pens.Black, origin, toPointV((masterBottom * 3) + originV));
-            */
+            DrawWindow(e.Graphics, master.Window, origin, false, Vector3.Zero, Color.Black);
+            e.Graphics.DrawLine(Pens.LightGreen, 0f, origin.Y, e.ClipRectangle.Width, origin.Y);
+            e.Graphics.DrawLine(Pens.Blue, r, 0f, r, e.ClipRectangle.Height);
         }
 
-        private void DrawWindow(Window window, Vector3 originOffset, Vector3 paneOrigin, float angle, Graphics g) {
-            /*
-            float scale = (scaleBar.Maximum - scaleBar.Value) / 100f;
-            float masterTopY = (float) ((decimal.ToDouble(heightValue.Value) / -2) + frustumPosition.Y);
-            float masterBottomY = (float) ((decimal.ToDouble(heightValue.Value) / 2) + frustumPosition.Y);
-            Vector3 end1 = new Vector3(frustumPosition.Z * 2, 0, -masterTopY) * scale;
-            Vector3 end2 = new Vector3(frustumPosition.Z * 2, 0, -masterBottomY) * scale;
-            Vector3 origin = paneOrigin + (originOffset * scale);
+        private void DrawWindow(Graphics g, Window window, Vector3 paneOrigin, bool yaw, Vector3 originOffset, Color colour) {
+            float scale = (scaleBar.Maximum - scaleBar.Value) / 2000f;
+            float end1Free = (float) (((yaw ? window.Width : window.Height) / -2) + (yaw ? window.ScreenPosition.X : window.ScreenPosition.Y));
+            float end2Free = (float) (((yaw ? window.Width : window.Height) / 2) + (yaw ? window.ScreenPosition.X : window.ScreenPosition.Y));
+            float fixedEnd = window.ScreenPosition.Z;
+            Vector3 end1 = new Vector3(yaw ? end1Free : fixedEnd, yaw ? -fixedEnd : -end1Free, 0f) * scale;
+            Vector3 end2 = new Vector3(yaw ? end2Free : fixedEnd, yaw ? -fixedEnd : -end2Free, 0f) * scale;
+            Vector3 origin = (originOffset + window.EyeOffset) * scale;
+            if (!yaw)
+                origin = new Vector3(-origin.Y, origin.Z, 0f);
 
-            if (!lockMasterCheck.Checked) {
-                Quaternion q = Quaternion.CreateFromEulers(angle, 0f, 0f);
-                end1 *= q;
-                end2 *= q;
-            
-            }
-            g.DrawLine(Pens.Black, toPointH(end1 + origin), toPointH(end2 + origin));
-            g.DrawLine(Pens.Black, toPointH(origin), toPointV((end1 * 3) + origin));
-            g.DrawLine(Pens.Black, toPointH(origin), toPointV((end2 * 3) + origin));
-            */
+            Vector3 end1Far = end1 * 3f;
+            Vector3 end2Far = end2 * 3f;
+            end1 += origin;
+            end2 += origin;
+
+            float angle = yaw ? window.RotationOffset.Yaw : window.RotationOffset.Pitch;
+            Quaternion q = Quaternion.CreateFromEulers(0f, 0f, (float) (angle * Rotation.DEG2RAD));
+            end1 *= q;
+            end2 *= q;
+
+            origin += paneOrigin;
+            g.DrawLine(new Pen(colour), toPoint(end1 + paneOrigin), toPoint(end2 + paneOrigin));
+            g.DrawLine(new Pen(colour), toPoint(origin), toPoint((end1Far * 3) + origin));
+            g.DrawLine(new Pen(colour), toPoint(origin), toPoint((end2Far * 3) + origin));
+            g.FillEllipse(new SolidBrush(colour), origin.X - r, origin.Y - r, r * 2, r * 2);
         }
 
         public static Point toPoint(Vector2 v) {
             return new Point((int) v.X, (int) v.Y);
         }
-        public static Point toPointH(Vector3 v) {
+        /// <summary>
+        /// Only takes the x and y component when creating the point
+        /// </summary>
+        /// <param name="v"></param>
+        /// <returns></returns>
+        public static Point toPoint(Vector3 v) {
             return new Point((int) v.X, (int) v.Y);
-        }
-        public static Point toPointV(Vector3 v) {
-            return new Point((int) v.X, (int) v.Z);
         }
         public static Point combine(Point op1, Point op2) {
             return new Point(op1.X + op2.X, op2.Y + op1.Y);

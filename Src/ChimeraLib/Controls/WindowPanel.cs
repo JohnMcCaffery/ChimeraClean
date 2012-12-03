@@ -14,11 +14,11 @@ namespace ChimeraLib.Controls {
         private static double INCH2MM = 25.4;
         private Window window;
 
-        public WindowPanel() {
+        public WindowPanel() : this(new Window()) {
+        }
+        public WindowPanel(Window window) {
             InitializeComponent();
             aspectRatioValue.Value = aspectRatioHValue.Value / aspectRatioWValue.Value;
-        }
-        public WindowPanel(Window window) : this() {
             Window = window;
         }
 
@@ -57,6 +57,7 @@ namespace ChimeraLib.Controls {
 
                 init = true;
                 decimal aspectRatio = aspectRatioValue.Value;
+                lockScreenCheck.Checked = window.LockScreenPosition;
                 widthSlider.Value = (int) (window.Width);
                 widthValue.Value = new decimal(window.Width / 10.0);
                 heightSlider.Value = (int) (window.Height);
@@ -71,7 +72,7 @@ namespace ChimeraLib.Controls {
                     aspectRatioHValue.Value = new decimal(window.Height);
                 }
                 screenPositionPanel.Value = window.ScreenPosition / 100f;
-                eyeOffsetPanel.Value = window.EyeOffset;
+                eyeOffsetPanel.Value = window.EyeOffset / 10f;
                 rotationOffsetPanel.Rotation = window.RotationOffset.Quaternion;
                 fovLabel.Text = "Field of View (radians): " + Math.Round(window.FieldOfView, 3);
                 init = false;
@@ -140,12 +141,19 @@ namespace ChimeraLib.Controls {
 
         private void eyeOffsetPanel_OnChange(object sender, EventArgs e) {
             if (window != null && !init)
-                window.EyeOffset = eyeOffsetPanel.Value;
+                window.EyeOffset = eyeOffsetPanel.Value * 10f;
         }
 
         private void rotationOffsetPanel_OnChange(object sender, EventArgs e) {
-            if (window != null && !init)
-                window.RotationOffset.Quaternion = rotationOffsetPanel.Rotation;
+            if (window != null && !init) {
+                window.RotationOffset.Yaw = rotationOffsetPanel.Yaw;
+                window.RotationOffset.Pitch = rotationOffsetPanel.Pitch;
+            }
+        }
+
+        private void lockScreenCheck_CheckedChanged(object sender, EventArgs e) {
+            if (window != null && !init) 
+                window.LockScreenPosition = lockScreenCheck.Checked;
         }
     }
 }
