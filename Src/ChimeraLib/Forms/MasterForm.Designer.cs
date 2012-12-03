@@ -40,6 +40,7 @@
             this.vBox = new System.Windows.Forms.GroupBox();
             this.lockMasterCheck = new System.Windows.Forms.CheckBox();
             this.proxyTab = new System.Windows.Forms.TabPage();
+            this.proxyPanel = new UtilLib.ProxyPanel();
             this.networkTab = new System.Windows.Forms.TabPage();
             this.addressBox = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
@@ -66,16 +67,14 @@
             this.mouseScaleSlider = new System.Windows.Forms.TrackBar();
             this.moveScaleSlider = new System.Windows.Forms.TrackBar();
             this.slavesTabContainer = new System.Windows.Forms.TabControl();
-            this.rawTab = new System.Windows.Forms.TabPage();
-            this.tabControl1 = new System.Windows.Forms.TabControl();
             this.virtualTab = new System.Windows.Forms.TabPage();
-            this.screenTab = new System.Windows.Forms.TabPage();
-            this.debugTab = new System.Windows.Forms.TabPage();
-            this.proxyPanel = new UtilLib.ProxyPanel();
             this.rawRotation = new ProxyTestGUI.RotationPanel();
             this.rawPosition = new ProxyTestGUI.VectorPanel();
+            this.masterTab = new System.Windows.Forms.TabPage();
             this.masterWindowPanel = new ChimeraLib.Controls.WindowPanel();
+            this.debugTab = new System.Windows.Forms.TabPage();
             this.debugPanel = new UtilLib.LogPanel();
+            this.tabControl1 = new System.Windows.Forms.TabControl();
             this.visualSlavesSplit.Panel1.SuspendLayout();
             this.visualSlavesSplit.Panel2.SuspendLayout();
             this.visualSlavesSplit.SuspendLayout();
@@ -97,10 +96,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.mouseScaleSlider)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.moveScaleSlider)).BeginInit();
             this.slavesTabContainer.SuspendLayout();
-            this.rawTab.SuspendLayout();
-            this.tabControl1.SuspendLayout();
             this.virtualTab.SuspendLayout();
-            this.screenTab.SuspendLayout();
+            this.masterTab.SuspendLayout();
             this.debugTab.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -127,7 +124,7 @@
             this.visualSlavesSplit.Panel2.AutoScroll = true;
             this.visualSlavesSplit.Panel2.Controls.Add(this.slavesTabContainer);
             this.visualSlavesSplit.Size = new System.Drawing.Size(762, 559);
-            this.visualSlavesSplit.SplitterDistance = 154;
+            this.visualSlavesSplit.SplitterDistance = 219;
             this.visualSlavesSplit.SplitterWidth = 10;
             this.visualSlavesSplit.TabIndex = 1;
             this.visualSlavesSplit.KeyDown += new System.Windows.Forms.KeyEventHandler(this.keyDown);
@@ -148,8 +145,8 @@
             // 
             this.topSplit.Panel2.Controls.Add(this.mouseContainer);
             this.topSplit.Panel2.Controls.Add(this.controlPanel);
-            this.topSplit.Size = new System.Drawing.Size(762, 154);
-            this.topSplit.SplitterDistance = 533;
+            this.topSplit.Size = new System.Drawing.Size(762, 219);
+            this.topSplit.SplitterDistance = 509;
             this.topSplit.SplitterWidth = 10;
             this.topSplit.TabIndex = 1;
             this.topSplit.KeyDown += new System.Windows.Forms.KeyEventHandler(this.keyDown);
@@ -164,7 +161,7 @@
             this.displayTab.Location = new System.Drawing.Point(0, 0);
             this.displayTab.Name = "displayTab";
             this.displayTab.SelectedIndex = 0;
-            this.displayTab.Size = new System.Drawing.Size(533, 154);
+            this.displayTab.Size = new System.Drawing.Size(509, 219);
             this.displayTab.TabIndex = 0;
             this.displayTab.KeyDown += new System.Windows.Forms.KeyEventHandler(this.keyDown);
             this.displayTab.KeyUp += new System.Windows.Forms.KeyEventHandler(this.keyUp);
@@ -177,7 +174,7 @@
             this.bothTab.Location = new System.Drawing.Point(4, 22);
             this.bothTab.Name = "bothTab";
             this.bothTab.Padding = new System.Windows.Forms.Padding(3);
-            this.bothTab.Size = new System.Drawing.Size(525, 128);
+            this.bothTab.Size = new System.Drawing.Size(501, 193);
             this.bothTab.TabIndex = 2;
             this.bothTab.Text = "Horizontal and Vertical";
             this.bothTab.UseVisualStyleBackColor = true;
@@ -186,7 +183,7 @@
             // 
             this.label11.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(0, 99);
+            this.label11.Location = new System.Drawing.Point(0, 164);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(34, 13);
             this.label11.TabIndex = 2;
@@ -196,10 +193,10 @@
             // 
             this.scaleBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.scaleBar.Location = new System.Drawing.Point(28, 99);
+            this.scaleBar.Location = new System.Drawing.Point(28, 164);
             this.scaleBar.Maximum = 400;
             this.scaleBar.Name = "scaleBar";
-            this.scaleBar.Size = new System.Drawing.Size(497, 42);
+            this.scaleBar.Size = new System.Drawing.Size(473, 42);
             this.scaleBar.TabIndex = 1;
             this.scaleBar.TickStyle = System.Windows.Forms.TickStyle.None;
             this.scaleBar.Value = 100;
@@ -220,8 +217,8 @@
             // hvSplit.Panel2
             // 
             this.hvSplit.Panel2.Controls.Add(this.vBox);
-            this.hvSplit.Size = new System.Drawing.Size(525, 90);
-            this.hvSplit.SplitterDistance = 243;
+            this.hvSplit.Size = new System.Drawing.Size(501, 155);
+            this.hvSplit.SplitterDistance = 231;
             this.hvSplit.TabIndex = 0;
             // 
             // hBox
@@ -229,7 +226,7 @@
             this.hBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.hBox.Location = new System.Drawing.Point(0, 0);
             this.hBox.Name = "hBox";
-            this.hBox.Size = new System.Drawing.Size(243, 90);
+            this.hBox.Size = new System.Drawing.Size(231, 155);
             this.hBox.TabIndex = 0;
             this.hBox.TabStop = false;
             this.hBox.Text = "Horizontal";
@@ -241,7 +238,7 @@
             this.vBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.vBox.Location = new System.Drawing.Point(0, 0);
             this.vBox.Name = "vBox";
-            this.vBox.Size = new System.Drawing.Size(278, 90);
+            this.vBox.Size = new System.Drawing.Size(266, 155);
             this.vBox.TabIndex = 0;
             this.vBox.TabStop = false;
             this.vBox.Text = "Vertical";
@@ -253,7 +250,7 @@
             this.lockMasterCheck.AutoSize = true;
             this.lockMasterCheck.Checked = true;
             this.lockMasterCheck.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.lockMasterCheck.Location = new System.Drawing.Point(191, 3);
+            this.lockMasterCheck.Location = new System.Drawing.Point(179, 3);
             this.lockMasterCheck.Name = "lockMasterCheck";
             this.lockMasterCheck.Size = new System.Drawing.Size(85, 17);
             this.lockMasterCheck.TabIndex = 0;
@@ -267,10 +264,24 @@
             this.proxyTab.Location = new System.Drawing.Point(4, 22);
             this.proxyTab.Name = "proxyTab";
             this.proxyTab.Padding = new System.Windows.Forms.Padding(3);
-            this.proxyTab.Size = new System.Drawing.Size(525, 128);
+            this.proxyTab.Size = new System.Drawing.Size(501, 199);
             this.proxyTab.TabIndex = 3;
             this.proxyTab.Text = "Proxy";
             this.proxyTab.UseVisualStyleBackColor = true;
+            // 
+            // proxyPanel
+            // 
+            this.proxyPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.proxyPanel.FirstName = "Routing";
+            this.proxyPanel.LastName = "God";
+            this.proxyPanel.Location = new System.Drawing.Point(3, 3);
+            this.proxyPanel.LoginURI = "http://apollo.cs.st-andrews.ac.uk:8002";
+            this.proxyPanel.Name = "proxyPanel";
+            this.proxyPanel.Password = "1245";
+            this.proxyPanel.Port = "8080";
+            this.proxyPanel.Proxy = null;
+            this.proxyPanel.Size = new System.Drawing.Size(501, 193);
+            this.proxyPanel.TabIndex = 0;
             // 
             // networkTab
             // 
@@ -293,7 +304,7 @@
             this.networkTab.Location = new System.Drawing.Point(4, 22);
             this.networkTab.Name = "networkTab";
             this.networkTab.Padding = new System.Windows.Forms.Padding(3);
-            this.networkTab.Size = new System.Drawing.Size(525, 128);
+            this.networkTab.Size = new System.Drawing.Size(501, 199);
             this.networkTab.TabIndex = 4;
             this.networkTab.Text = "Network";
             this.networkTab.UseVisualStyleBackColor = true;
@@ -304,7 +315,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.addressBox.Location = new System.Drawing.Point(52, 8);
             this.addressBox.Name = "addressBox";
-            this.addressBox.Size = new System.Drawing.Size(164, 20);
+            this.addressBox.Size = new System.Drawing.Size(158, 20);
             this.addressBox.TabIndex = 29;
             // 
             // label9
@@ -418,7 +429,7 @@
             // bindButton
             // 
             this.bindButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.bindButton.Location = new System.Drawing.Point(310, 6);
+            this.bindButton.Location = new System.Drawing.Point(304, 6);
             this.bindButton.Name = "bindButton";
             this.bindButton.Size = new System.Drawing.Size(248, 23);
             this.bindButton.TabIndex = 13;
@@ -429,7 +440,7 @@
             // portBox
             // 
             this.portBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.portBox.Location = new System.Drawing.Point(254, 8);
+            this.portBox.Location = new System.Drawing.Point(248, 8);
             this.portBox.Mask = "0000#";
             this.portBox.Name = "portBox";
             this.portBox.Size = new System.Drawing.Size(50, 20);
@@ -440,7 +451,7 @@
             // 
             this.portLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.portLabel.AutoSize = true;
-            this.portLabel.Location = new System.Drawing.Point(-405, 11);
+            this.portLabel.Location = new System.Drawing.Point(-411, 11);
             this.portLabel.Name = "portLabel";
             this.portLabel.Size = new System.Drawing.Size(26, 13);
             this.portLabel.TabIndex = 11;
@@ -454,7 +465,7 @@
             this.mouseContainer.Controls.Add(this.mousePanel);
             this.mouseContainer.Location = new System.Drawing.Point(3, 3);
             this.mouseContainer.Name = "mouseContainer";
-            this.mouseContainer.Size = new System.Drawing.Size(212, 41);
+            this.mouseContainer.Size = new System.Drawing.Size(236, 106);
             this.mouseContainer.TabIndex = 8;
             this.mouseContainer.TabStop = false;
             this.mouseContainer.Text = "Mouselook";
@@ -467,7 +478,7 @@
             this.mousePanel.Controls.Add(this.ignorePitchCheck);
             this.mousePanel.Location = new System.Drawing.Point(3, 13);
             this.mousePanel.Name = "mousePanel";
-            this.mousePanel.Size = new System.Drawing.Size(206, 25);
+            this.mousePanel.Size = new System.Drawing.Size(230, 90);
             this.mousePanel.TabIndex = 7;
             this.mousePanel.Paint += new System.Windows.Forms.PaintEventHandler(this.mousePanel_Paint);
             this.mousePanel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.mouseTab_MouseDown);
@@ -494,9 +505,9 @@
             this.controlPanel.Controls.Add(this.label2);
             this.controlPanel.Controls.Add(this.mouseScaleSlider);
             this.controlPanel.Controls.Add(this.moveScaleSlider);
-            this.controlPanel.Location = new System.Drawing.Point(3, 50);
+            this.controlPanel.Location = new System.Drawing.Point(3, 115);
             this.controlPanel.Name = "controlPanel";
-            this.controlPanel.Size = new System.Drawing.Size(213, 100);
+            this.controlPanel.Size = new System.Drawing.Size(237, 100);
             this.controlPanel.TabIndex = 6;
             // 
             // label5
@@ -525,7 +536,7 @@
             this.mouseScaleSlider.Maximum = 40;
             this.mouseScaleSlider.Minimum = 10;
             this.mouseScaleSlider.Name = "mouseScaleSlider";
-            this.mouseScaleSlider.Size = new System.Drawing.Size(207, 42);
+            this.mouseScaleSlider.Size = new System.Drawing.Size(231, 42);
             this.mouseScaleSlider.TabIndex = 2;
             this.mouseScaleSlider.Value = 20;
             // 
@@ -537,45 +548,23 @@
             this.moveScaleSlider.Maximum = 40;
             this.moveScaleSlider.Minimum = 10;
             this.moveScaleSlider.Name = "moveScaleSlider";
-            this.moveScaleSlider.Size = new System.Drawing.Size(207, 42);
+            this.moveScaleSlider.Size = new System.Drawing.Size(231, 42);
             this.moveScaleSlider.TabIndex = 1;
             this.moveScaleSlider.Value = 20;
             // 
             // slavesTabContainer
             // 
-            this.slavesTabContainer.Controls.Add(this.rawTab);
+            this.slavesTabContainer.Controls.Add(this.virtualTab);
+            this.slavesTabContainer.Controls.Add(this.masterTab);
             this.slavesTabContainer.Controls.Add(this.debugTab);
             this.slavesTabContainer.Dock = System.Windows.Forms.DockStyle.Fill;
             this.slavesTabContainer.Location = new System.Drawing.Point(0, 0);
             this.slavesTabContainer.Name = "slavesTabContainer";
             this.slavesTabContainer.SelectedIndex = 0;
-            this.slavesTabContainer.Size = new System.Drawing.Size(762, 395);
+            this.slavesTabContainer.Size = new System.Drawing.Size(762, 330);
             this.slavesTabContainer.TabIndex = 0;
             this.slavesTabContainer.KeyDown += new System.Windows.Forms.KeyEventHandler(this.keyDown);
             this.slavesTabContainer.KeyUp += new System.Windows.Forms.KeyEventHandler(this.keyUp);
-            // 
-            // rawTab
-            // 
-            this.rawTab.AutoScroll = true;
-            this.rawTab.Controls.Add(this.tabControl1);
-            this.rawTab.Location = new System.Drawing.Point(4, 22);
-            this.rawTab.Name = "rawTab";
-            this.rawTab.Padding = new System.Windows.Forms.Padding(3);
-            this.rawTab.Size = new System.Drawing.Size(754, 369);
-            this.rawTab.TabIndex = 0;
-            this.rawTab.Text = "Input Values";
-            this.rawTab.UseVisualStyleBackColor = true;
-            // 
-            // tabControl1
-            // 
-            this.tabControl1.Controls.Add(this.virtualTab);
-            this.tabControl1.Controls.Add(this.screenTab);
-            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabControl1.Location = new System.Drawing.Point(3, 3);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(748, 363);
-            this.tabControl1.TabIndex = 3;
             // 
             // virtualTab
             // 
@@ -585,47 +574,10 @@
             this.virtualTab.Location = new System.Drawing.Point(4, 22);
             this.virtualTab.Name = "virtualTab";
             this.virtualTab.Padding = new System.Windows.Forms.Padding(3);
-            this.virtualTab.Size = new System.Drawing.Size(740, 337);
+            this.virtualTab.Size = new System.Drawing.Size(754, 304);
             this.virtualTab.TabIndex = 0;
             this.virtualTab.Text = "Virtual Space";
             this.virtualTab.UseVisualStyleBackColor = true;
-            // 
-            // screenTab
-            // 
-            this.screenTab.AutoScroll = true;
-            this.screenTab.Controls.Add(this.masterWindowPanel);
-            this.screenTab.Location = new System.Drawing.Point(4, 22);
-            this.screenTab.Name = "screenTab";
-            this.screenTab.Padding = new System.Windows.Forms.Padding(3);
-            this.screenTab.Size = new System.Drawing.Size(740, 337);
-            this.screenTab.TabIndex = 1;
-            this.screenTab.Text = "Physical";
-            this.screenTab.UseVisualStyleBackColor = true;
-            // 
-            // debugTab
-            // 
-            this.debugTab.Controls.Add(this.debugPanel);
-            this.debugTab.Location = new System.Drawing.Point(4, 22);
-            this.debugTab.Name = "debugTab";
-            this.debugTab.Padding = new System.Windows.Forms.Padding(3);
-            this.debugTab.Size = new System.Drawing.Size(754, 369);
-            this.debugTab.TabIndex = 5;
-            this.debugTab.Text = "Debug";
-            this.debugTab.UseVisualStyleBackColor = true;
-            // 
-            // proxyPanel
-            // 
-            this.proxyPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.proxyPanel.FirstName = "Routing";
-            this.proxyPanel.LastName = "God";
-            this.proxyPanel.Location = new System.Drawing.Point(3, 3);
-            this.proxyPanel.LoginURI = "http://apollo.cs.st-andrews.ac.uk:8002";
-            this.proxyPanel.Name = "proxyPanel";
-            this.proxyPanel.Password = "1245";
-            this.proxyPanel.Port = "8080";
-            this.proxyPanel.Proxy = null;
-            this.proxyPanel.Size = new System.Drawing.Size(519, 122);
-            this.proxyPanel.TabIndex = 0;
             // 
             // rawRotation
             // 
@@ -637,7 +589,7 @@
             this.rawRotation.Name = "rawRotation";
             this.rawRotation.Pitch = 0F;
             this.rawRotation.Rotation = ((OpenMetaverse.Quaternion)(resources.GetObject("rawRotation.Rotation")));
-            this.rawRotation.Size = new System.Drawing.Size(673, 147);
+            this.rawRotation.Size = new System.Drawing.Size(751, 147);
             this.rawRotation.TabIndex = 2;
             this.rawRotation.Yaw = 0F;
             this.rawRotation.OnChange += new System.EventHandler(this.rawRotation_OnChange);
@@ -651,13 +603,25 @@
             this.rawPosition.Max = 2048D;
             this.rawPosition.Min = -2048D;
             this.rawPosition.Name = "rawPosition";
-            this.rawPosition.Size = new System.Drawing.Size(670, 98);
+            this.rawPosition.Size = new System.Drawing.Size(745, 98);
             this.rawPosition.TabIndex = 1;
             this.rawPosition.Value = ((OpenMetaverse.Vector3)(resources.GetObject("rawPosition.Value")));
             this.rawPosition.X = 128F;
             this.rawPosition.Y = 128F;
             this.rawPosition.Z = 128F;
             this.rawPosition.OnChange += new System.EventHandler(this.rawPosition_OnChange);
+            // 
+            // masterTab
+            // 
+            this.masterTab.AutoScroll = true;
+            this.masterTab.Controls.Add(this.masterWindowPanel);
+            this.masterTab.Location = new System.Drawing.Point(4, 22);
+            this.masterTab.Name = "ScreenTab";
+            this.masterTab.Padding = new System.Windows.Forms.Padding(3);
+            this.masterTab.Size = new System.Drawing.Size(754, 304);
+            this.masterTab.TabIndex = 1;
+            this.masterTab.Text = "Master";
+            this.masterTab.UseVisualStyleBackColor = true;
             // 
             // masterWindowPanel
             // 
@@ -667,13 +631,14 @@
             this.masterWindowPanel.AutoScroll = true;
             this.masterWindowPanel.Location = new System.Drawing.Point(0, 0);
             this.masterWindowPanel.Name = "masterWindowPanel";
-            this.masterWindowPanel.Size = new System.Drawing.Size(737, 406);
+            this.masterWindowPanel.Size = new System.Drawing.Size(754, 335);
             this.masterWindowPanel.TabIndex = 0;
             window1.AspectRatio = 0.56249999999999989D;
             window1.Diagonal = 482.60000000000008D;
             window1.EyeOffset = ((OpenMetaverse.Vector3)(resources.GetObject("window1.EyeOffset")));
             window1.FieldOfView = 1.0682923887133409D;
             window1.Height = 236.60007424667296D;
+            window1.LockScreenPosition = true;
             rotation1.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("rotation1.LookAtVector")));
             rotation1.Pitch = 0F;
             rotation1.Quaternion = ((OpenMetaverse.Quaternion)(resources.GetObject("rotation1.Quaternion")));
@@ -683,14 +648,33 @@
             window1.Width = 420.62235421630754D;
             this.masterWindowPanel.Window = window1;
             // 
+            // debugTab
+            // 
+            this.debugTab.Controls.Add(this.debugPanel);
+            this.debugTab.Location = new System.Drawing.Point(4, 22);
+            this.debugTab.Name = "debugTab";
+            this.debugTab.Padding = new System.Windows.Forms.Padding(3);
+            this.debugTab.Size = new System.Drawing.Size(754, 298);
+            this.debugTab.TabIndex = 5;
+            this.debugTab.Text = "Debug";
+            this.debugTab.UseVisualStyleBackColor = true;
+            // 
             // debugPanel
             // 
             this.debugPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.debugPanel.Location = new System.Drawing.Point(3, 3);
             this.debugPanel.Name = "debugPanel";
-            this.debugPanel.Size = new System.Drawing.Size(748, 363);
+            this.debugPanel.Size = new System.Drawing.Size(748, 375);
             this.debugPanel.Source = null;
             this.debugPanel.TabIndex = 0;
+            // 
+            // tabControl1
+            // 
+            this.tabControl1.Location = new System.Drawing.Point(0, 0);
+            this.tabControl1.Name = "tabControl1";
+            this.tabControl1.SelectedIndex = 0;
+            this.tabControl1.Size = new System.Drawing.Size(200, 100);
+            this.tabControl1.TabIndex = 0;
             // 
             // MasterForm
             // 
@@ -729,10 +713,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.mouseScaleSlider)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.moveScaleSlider)).EndInit();
             this.slavesTabContainer.ResumeLayout(false);
-            this.rawTab.ResumeLayout(false);
-            this.tabControl1.ResumeLayout(false);
             this.virtualTab.ResumeLayout(false);
-            this.screenTab.ResumeLayout(false);
+            this.masterTab.ResumeLayout(false);
             this.debugTab.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -741,7 +723,6 @@
         #endregion
 
         private System.Windows.Forms.TabControl slavesTabContainer;
-        private System.Windows.Forms.TabPage rawTab;
         private ProxyTestGUI.VectorPanel rawPosition;
         private System.Windows.Forms.SplitContainer visualSlavesSplit;
         private System.Windows.Forms.TabControl displayTab;
@@ -784,7 +765,7 @@
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage virtualTab;
-        private System.Windows.Forms.TabPage screenTab;
+        private System.Windows.Forms.TabPage masterTab;
         private System.Windows.Forms.TrackBar scaleBar;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.CheckBox lockMasterCheck;

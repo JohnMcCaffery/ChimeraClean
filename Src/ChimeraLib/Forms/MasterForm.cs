@@ -136,7 +136,7 @@ namespace ConsoleTest {
                 slaveTab.Location = new System.Drawing.Point(4, 22);
                 slaveTab.Name = name + "Tab";
                 slaveTab.Padding = new System.Windows.Forms.Padding(3);
-                slaveTab.Size = new Size(rawTab.Width, slaveTab.Height + colourButton.Height);
+                slaveTab.Size = new Size(masterTab.Width, slaveTab.Height + colourButton.Height);
                 slaveTab.TabIndex = 0;
                 slaveTab.Text = name;
                 slaveTab.UseVisualStyleBackColor = true;
