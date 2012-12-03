@@ -41,16 +41,18 @@ namespace ChimeraLib.Controls {
             Action a = () => {
                 double max = Math.Max(window.Height, window.Width);
                 if (max > heightSlider.Maximum) {
-                    heightSlider.Maximum = (int) max;
-                    heightValue.Maximum = new decimal(max / 10.0);
-                    widthSlider.Maximum = (int) max;
-                    widthValue.Maximum = new decimal(max / 10.0);
+                    return;
+                    //heightSlider.Maximum = (int) max;
+                    //heightValue.Maximum = new decimal(max / 10.0);
+                    //widthSlider.Maximum = (int) max;
+                    //widthValue.Maximum = new decimal(max / 10.0);
                 }
 
                 double diagonalInch = Window.Diagonal / INCH2MM;
-                if (diagonalInch * 10 > diagonalSlider.Maximum) {
-                    diagonalSlider.Maximum = (int) diagonalInch * 10;
-                    diagonalValue.Maximum = new decimal(diagonalInch);
+                if (diagonalInch * 10.0 > diagonalSlider.Maximum) {
+                    return;
+                    //diagonalSlider.Maximum = (int) (diagonalInch * 10.0);
+                    //diagonalValue.Maximum = new decimal(diagonalInch);
                 }
 
                 init = true;
@@ -61,7 +63,7 @@ namespace ChimeraLib.Controls {
                 heightValue.Value = new decimal(window.Height / 10.0);
                 diagonalSlider.Value = (int) (diagonalInch * 10);
                 diagonalValue.Value = new decimal(diagonalInch);
-                fovSlider.Value = (int)((window.FieldOfView * 100) * Rotation.RAD2DEG);
+                fovSlider.Value = (int)(window.FieldOfView * Rotation.RAD2DEG * 100);
                 fovValue.Value = new decimal(window.FieldOfView * Rotation.RAD2DEG);
                 aspectRatioValue.Value = new decimal(window.AspectRatio);
                 if (Math.Abs(aspectRatio - aspectRatioValue.Value) > ASPECT_RATIO_TOLERANCE) {
