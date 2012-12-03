@@ -193,7 +193,7 @@ namespace UtilLib {
         }
 
         /// <summary>
-        /// Rotation to rotate the camera rotation around.
+        /// VirtualRotationOffset to rotate the camera rotation around.
         /// </summary>
         public Rotation OffsetRotation {
             get { return offsetRotation; }

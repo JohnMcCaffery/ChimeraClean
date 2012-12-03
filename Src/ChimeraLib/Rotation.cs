@@ -127,25 +127,25 @@ namespace UtilLib {
         public Rotation() { }
 
         /// <summary>
-        /// Initialise the Rotation looking along the specified vector.
+        /// Initialise the VirtualRotationOffset looking along the specified vector.
         /// </summary>
-        /// <param name="lookAtVector">A vector representing the direction along which this Rotation starts looking.</param>
+        /// <param name="lookAtVector">A vector representing the direction along which this VirtualRotationOffset starts looking.</param>
         public Rotation(Vector3 lookAtVector) {
             LookAtVector = lookAtVector;
         }
 
         /// <summary>
-        /// Initiliase the Rotation with the specified yaw and pitch.
+        /// Initiliase the VirtualRotationOffset with the specified yaw and pitch.
         /// </summary>
-        /// <param name="pitch">The pitch value for this Rotation to start with.</param>
-        /// <param name="yaw">The yaw value for this Rotation to start with.</param>
+        /// <param name="pitch">The pitch value for this VirtualRotationOffset to start with.</param>
+        /// <param name="yaw">The yaw value for this VirtualRotationOffset to start with.</param>
         public Rotation(float pitch, float yaw) {
             Pitch = pitch;
             Yaw = yaw;
         }
 
         /// <summary>
-        /// Initialise the Rotation with the specified Rotation.
+        /// Initialise the VirtualRotationOffset with the specified VirtualRotationOffset.
         /// </summary>
         /// <param name="rotation">The quaternion value representing this Rotations starting rotation.</param>
         public Rotation(Quaternion rotation) {

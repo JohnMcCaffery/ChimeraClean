@@ -78,13 +78,12 @@
             // 
             this.finalRotation.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.finalRotation.DisplayName = "Final Rotation";
+            this.finalRotation.DisplayName = "Final VirtualRotationOffset";
             this.finalRotation.Enabled = false;
             this.finalRotation.Location = new System.Drawing.Point(0, 0);
             this.finalRotation.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("finalRotation.LookAtVector")));
             this.finalRotation.Name = "finalRotation";
             this.finalRotation.Pitch = 0F;
-            this.finalRotation.Rotation = ((OpenMetaverse.Quaternion)(resources.GetObject("finalRotation.Rotation")));
             this.finalRotation.Size = new System.Drawing.Size(632, 147);
             this.finalRotation.TabIndex = 2;
             this.finalRotation.Yaw = 0F;
@@ -93,7 +92,7 @@
             // 
             this.finalPosition.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.finalPosition.DisplayName = "Final Position";
+            this.finalPosition.DisplayName = "Final VirtualPositionOffset";
             this.finalPosition.Enabled = false;
             this.finalPosition.Location = new System.Drawing.Point(0, 153);
             this.finalPosition.Max = 2048D;
@@ -122,12 +121,11 @@
             // 
             this.masterRotation.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.masterRotation.DisplayName = "Master Rotation";
+            this.masterRotation.DisplayName = "Master VirtualRotationOffset";
             this.masterRotation.Location = new System.Drawing.Point(0, 0);
             this.masterRotation.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("masterRotation.LookAtVector")));
             this.masterRotation.Name = "masterRotation";
             this.masterRotation.Pitch = 0F;
-            this.masterRotation.Rotation = ((OpenMetaverse.Quaternion)(resources.GetObject("masterRotation.Rotation")));
             this.masterRotation.Size = new System.Drawing.Size(632, 147);
             this.masterRotation.TabIndex = 2;
             this.masterRotation.Yaw = 0F;
@@ -137,7 +135,7 @@
             // 
             this.masterPosition.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.masterPosition.DisplayName = "Master Position";
+            this.masterPosition.DisplayName = "Master VirtualPositionOffset";
             this.masterPosition.Location = new System.Drawing.Point(0, 153);
             this.masterPosition.Max = 2048D;
             this.masterPosition.Min = -2048D;
@@ -166,12 +164,11 @@
             // 
             this.rotationOffsetPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.rotationOffsetPanel.DisplayName = "Rotation Offset";
+            this.rotationOffsetPanel.DisplayName = "VirtualRotationOffset Offset";
             this.rotationOffsetPanel.Location = new System.Drawing.Point(0, 0);
             this.rotationOffsetPanel.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("rotationOffsetPanel.LookAtVector")));
             this.rotationOffsetPanel.Name = "rotationOffsetPanel";
             this.rotationOffsetPanel.Pitch = 0F;
-            this.rotationOffsetPanel.Rotation = ((OpenMetaverse.Quaternion)(resources.GetObject("rotationOffsetPanel.Rotation")));
             this.rotationOffsetPanel.Size = new System.Drawing.Size(632, 147);
             this.rotationOffsetPanel.TabIndex = 0;
             this.rotationOffsetPanel.Yaw = 0F;
@@ -181,7 +178,7 @@
             // 
             this.positionOffsetPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.positionOffsetPanel.DisplayName = "Position Offset";
+            this.positionOffsetPanel.DisplayName = "VirtualPositionOffset Offset";
             this.positionOffsetPanel.Location = new System.Drawing.Point(0, 153);
             this.positionOffsetPanel.Max = 1024D;
             this.positionOffsetPanel.Min = -1024D;

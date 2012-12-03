@@ -146,9 +146,9 @@ namespace UtilLib {
             p.AgentData.SessionID = UUID.Random();
 
             foreach (var slave in slaves.Values) {
-                Rotation rot = new Rotation(Rotation.Pitch + slave.RotationOffset.Pitch, Rotation.Yaw + slave.RotationOffset.Yaw);
+                Rotation rot = new Rotation(Rotation.Pitch + slave.Window.RotationOffset.Pitch, Rotation.Yaw + slave.Window.RotationOffset.Yaw);
                 p.AgentData.CameraAtAxis = rot.LookAtVector;
-                p.AgentData.CameraCenter = Position + (slave.PositionOffset * Rotation.Quaternion);
+                p.AgentData.CameraCenter = Position + (slave.Window.EyeOffset * Rotation.Quaternion);
                 masterServer.Send(p, slave.TargetEP);
             }
 
