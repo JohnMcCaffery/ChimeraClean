@@ -170,13 +170,16 @@ namespace ChimeraLib {
             get {
                 if (screenPosition.Z == 0)
                     return Math.PI;
-                return Math.Atan2(Height, screenPosition.Z) * 2; 
+                return Math.Atan2(Height / 2, screenPosition.Z) * 2; 
             }
             set {
                 double fov = FieldOfView;
                 if (Math.Abs(fov) < TOLERANCE || value <= 0.0)
                     return;
-                double height = (screenPosition.Z * Math.Sin(value / 2)) / Math.Cos(value / 2);
+                double height = 2 * screenPosition.Z * Math.Sin(value / 2.0);
+                double a = Math.Cos(value / 2);
+                if (a != 0.0)
+                    height /= a;
                 mmDiagonal =  Math.Sqrt(Math.Pow(height, 2) + Math.Pow(height / aspectRatio, 2));
                 Changed();
             }

@@ -117,7 +117,7 @@ namespace ConsoleTest {
                 slaveTab.Location = new System.Drawing.Point(4, 22);
                 slaveTab.Name = name + "Tab";
                 slaveTab.Padding = new System.Windows.Forms.Padding(3);
-                slaveTab.Size = new Size(rawTab.Width, slaveTab.Height + colourButton.Height);
+                slaveTab.Size = new Size(masterTab.Width, slaveTab.Height + colourButton.Height);
                 slaveTab.TabIndex = 0;
                 slaveTab.Text = name;
                 slaveTab.UseVisualStyleBackColor = true;
@@ -226,7 +226,8 @@ namespace ConsoleTest {
                 lock (slaveColours)
                     DrawWindow(e.Graphics, slave.Window, origin, false, master.Window.EyeOffset, slaveColours.ContainsKey(slave.Name) ? slaveColours[slave.Name] : Color.Black);
             }
-            DrawWindow(e.Graphics, master.Window, origin, false, Vector3.Zero, Color.Black);
+            DrawWindow(e.Graphics, master.Window, origin, false, Vector3.Zero, Color.Black);
+
             e.Graphics.DrawLine(Pens.LightGreen, 0f, origin.Y, e.ClipRectangle.Width, origin.Y);
             e.Graphics.DrawLine(Pens.Blue, r, 0f, r, e.ClipRectangle.Height);
         }
