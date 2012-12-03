@@ -72,7 +72,7 @@ namespace ProxyTestGUI {
             this.vectorPanel.X = 1F;
             this.vectorPanel.Y = 0F;
             this.vectorPanel.Z = 0F;
-            this.vectorPanel.Load += new System.EventHandler(this.vectorPanel_Load);
+            this.vectorPanel.OnChange += new System.EventHandler(this.vectorPanel_OnChange);
             // 
             // yawValue
             // 
