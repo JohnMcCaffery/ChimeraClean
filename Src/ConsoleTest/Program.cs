@@ -122,10 +122,10 @@ namespace ConsoleTest {
                 //m.StartProxy("http://apollo.cs.st-andrews.ac.uk:8002", masterProxyPort);
             });
             //Run("Connect Slave", () => s.Connect(masterPort));
-            //Run("Change Yaw", () => m.Rotation.Yaw += 45);
-            //Run("Change Pitch", () => m.Rotation.Pitch += 45);
-            //Run("Change Vector", () => m.Rotation.LookAtVector = new Vector3(1f, 1f, 1f));
-            //Run("Change MasterRotation", () => m.Rotation.Quaternion = Quaternion.CreateFromEulers(1f, 1f, 1f));
+            //Run("Change Yaw", () => m.VirtualRotationOffset.Yaw += 45);
+            //Run("Change Pitch", () => m.VirtualRotationOffset.Pitch += 45);
+            //Run("Change Vector", () => m.VirtualRotationOffset.LookAtVector = new Vector3(1f, 1f, 1f));
+            //Run("Change MasterRotation", () => m.VirtualRotationOffset.Quaternion = Quaternion.CreateFromEulers(1f, 1f, 1f));
             Run("Disconnect Master", () => m.Stop());
             Run("Disconnect Slave 1", () => s1.Stop());
             Run("Disconnect Slave 2", () => s2.Stop());

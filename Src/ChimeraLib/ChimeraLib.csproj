@@ -66,6 +66,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BackChannel.cs" />
+    <Compile Include="Controls\WindowPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\WindowPanel.Designer.cs">
+      <DependentUpon>WindowPanel.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\MasterForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -87,6 +93,7 @@
       <DependentUpon>LogPanel.cs</DependentUpon>
     </Compile>
     <Compile Include="Init.cs" />
+    <Compile Include="Window.cs" />
     <Compile Include="Master.cs" />
     <Compile Include="CameraMaster.cs" />
     <Compile Include="CameraSlave.cs" />
@@ -139,6 +146,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\VectorPanel.resx">
       <DependentUpon>VectorPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\WindowPanel.resx">
+      <DependentUpon>WindowPanel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\MasterForm.resx">
       <DependentUpon>MasterForm.cs</DependentUpon>

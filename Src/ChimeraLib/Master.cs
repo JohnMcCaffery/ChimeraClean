@@ -7,6 +7,7 @@ using OpenMetaverse.Packets;
 using System.Net;
 using OpenMetaverse;
 using log4net;
+using ChimeraLib;
 
 namespace UtilLib {
     public abstract class Master : ProxyManager {
@@ -18,38 +19,12 @@ namespace UtilLib {
             private string name;
             private Rotation rotation;
             private Vector3 position = Vector3.Zero;
+            private Window window;
 
             /// <summary>
             /// Called whenever the slave changes.
             /// </summary>
             public event EventHandler OnChange;
-
-            /// <summary>
-            /// RotationOffset Offset for the slave.
-            /// </summary>
-            public Rotation RotationOffset {
-                get { return rotation; }
-                set {
-                    if (rotation != null)
-                        rotation.OnChange -= RotationChanged;
-                    rotation = value;
-                    rotation.OnChange += RotationChanged;
-                    if (OnChange != null)
-                        OnChange(this, null);
-                }
-            }
-
-            /// <summary>
-            /// Position offset for the slave.
-            /// </summary>
-            public Vector3 PositionOffset {
-                get { return position; }
-                set { 
-                    position = value;
-                    if (OnChange != null)
-                        OnChange(this, null);
-                }
-            }
 
             /// <summary>
             /// Name of the slave.
@@ -66,18 +41,19 @@ namespace UtilLib {
                 get { return ep; }
             }
 
+            public ChimeraLib.Window Window {
+                get { return window; }
+            }
+
             public Slave(string name, IPEndPoint ep) {
                 this.name = name;
                 this.ep = ep;
-                RotationOffset = new Rotation();
-            }
-
-            private void RotationChanged(object source, EventArgs args) {
-                if (OnChange != null)
-                    OnChange(this, args);
+                this.window = new Window();
+                //TODO add config read ins for window
             }
         }
 
+        private Window window = null;
         protected readonly InterProxyServer masterServer = new InterProxyServer();
 
         /// <summary>
@@ -122,6 +98,7 @@ namespace UtilLib {
         public Master() : this(null) { }
 
         public Master(Init.Config config) : base (config, LogManager.GetLogger("Master")) {
+            window = new Window();
             masterServer.OnSlaveConnected += (name, ep) => {
                 Slave slave = new Slave(name, ep);
                 lock (slaves)
@@ -155,7 +132,8 @@ namespace UtilLib {
         public bool StartMaster(int port) {
             ProxyConfig.MasterPort = port;
             return masterServer.Start();
-        }
+        }
+
         /// <summary>
         /// Bind the master so that slaves can connect into it.
         /// </summary>
@@ -192,6 +170,10 @@ namespace UtilLib {
         /// <param name="direction">Whether to deal with ingoing or outgoing packets.</param>
         public void SetPacketForward(OpenMetaverse.Packets.PacketType packet, bool forward, Direction direction) {
             throw new System.NotImplementedException();
+        }
+
+        public Window Window {
+            get { return window; }
         }
     }
 }

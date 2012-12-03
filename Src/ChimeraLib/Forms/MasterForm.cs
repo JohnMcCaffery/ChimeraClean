@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using UtilLib;
 using ProxyTestGUI;
 using OpenMetaverse;
+using ChimeraLib;
 
 namespace ConsoleTest {
     public partial class MasterForm : Form {
@@ -19,10 +20,12 @@ namespace ConsoleTest {
         private bool changing;
 
         public MasterForm() : this(new CameraMaster()) { }
+
         public MasterForm(CameraMaster master) {
             InitializeComponent();
 
             proxyPanel.Proxy = master;
+            masterWindowPanel.Window = master.Window;
 
             this.master = master;
 
@@ -119,9 +122,9 @@ namespace ConsoleTest {
                 // 
                 rotationOffset.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                 | System.Windows.Forms.AnchorStyles.Right | System.Windows.Forms.AnchorStyles.Left)));
-                rotationOffset.DisplayName = name + " Rotation";
+                rotationOffset.DisplayName = name + " VirtualRotationOffset";
                 rotationOffset.Location = rawRotation.Location;
-                rotationOffset.Name = name + "Rotation";
+                rotationOffset.Name = name + "VirtualRotationOffset";
                 rotationOffset.Pitch = 0F;
                 rotationOffset.Size = rawRotation.Size;
                 rotationOffset.TabIndex = 0;
@@ -131,11 +134,11 @@ namespace ConsoleTest {
                 // 
                 positionOffset.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                 | System.Windows.Forms.AnchorStyles.Right | System.Windows.Forms.AnchorStyles.Left)));
-                positionOffset.DisplayName = name + " Position";
+                positionOffset.DisplayName = name + " VirtualPositionOffset";
                 positionOffset.Location = rawPosition.Location;
                 positionOffset.Max = maxOffset;
                 positionOffset.Min = -maxOffset;
-                positionOffset.Name = name + "Position";
+                positionOffset.Name = name + "VirtualPositionOffset";
                 positionOffset.Size = rawPosition.Size;
                 positionOffset.TabIndex = 2;
                 positionOffset.X = 0F;
@@ -153,12 +156,12 @@ namespace ConsoleTest {
                 colourButton.TabIndex = 3;
 
                 positionOffset.OnChange += (p, ep) => {
-                    slave.PositionOffset = positionOffset.Value;
+                    slave.Window.EyeOffset = positionOffset.Value;
                     RefreshDrawings();
                 };
                 rotationOffset.OnChange += (p, ep) => {
-                    slave.RotationOffset.Pitch = rotationOffset.Pitch;
-                    slave.RotationOffset.Yaw = rotationOffset.Yaw;
+                    slave.Window.RotationOffset.Pitch = rotationOffset.Pitch;
+                    slave.Window.RotationOffset.Yaw = rotationOffset.Yaw;
                     RefreshDrawings();
                 };
                 colourButton.Click += (source, args) => {
@@ -204,7 +207,7 @@ namespace ConsoleTest {
         }
 
         private void rawRotation_OnChange(object sender, EventArgs e) {
-            //master.Rotation.Quaternion = rawRotation.Rotation;
+            //master.VirtualRotationOffset.Quaternion = rawRotation.VirtualRotationOffset;
             master.Rotation.Pitch = rawRotation.Pitch;
             master.Rotation.Yaw = rawRotation.Yaw;
             RefreshDrawings();
@@ -219,6 +222,7 @@ namespace ConsoleTest {
         private float maxOffset = 32f;
 
         private void hTab_Paint(object sender, PaintEventArgs e) {
+            /*
             Graphics g = e.Graphics;
             int w = e.ClipRectangle.Width;
             int h = e.ClipRectangle.Height;
@@ -269,9 +273,11 @@ namespace ConsoleTest {
             g.DrawLine(Pens.Black, toPointH(masterLeft + originV), toPointH(masterRight + originV));
             g.DrawLine(Pens.Black, origin, toPointH((masterLeft * 3) + originV));
             g.DrawLine(Pens.Black, origin, toPointH((masterRight * 3) + originV));
+            */
         }
 
         private void vTab_Paint(object sender, PaintEventArgs e) {
+            /*
             //float scale = scaleBar.Value / 10f;
             Graphics g = e.Graphics;
             int w = e.ClipRectangle.Width;
@@ -327,6 +333,28 @@ namespace ConsoleTest {
             g.DrawLine(Pens.Black, toPointV(masterTop + originV), toPointV(masterBottom + originV));
             g.DrawLine(Pens.Black, origin, toPointV((masterTop * 3) + originV));
             g.DrawLine(Pens.Black, origin, toPointV((masterBottom * 3) + originV));
+            */
+        }
+
+        private void DrawWindow(Window window, Vector3 originOffset, Vector3 paneOrigin, float angle, Graphics g) {
+            /*
+            float scale = (scaleBar.Maximum - scaleBar.Value) / 100f;
+            float masterTopY = (float) ((decimal.ToDouble(heightValue.Value) / -2) + frustumPosition.Y);
+            float masterBottomY = (float) ((decimal.ToDouble(heightValue.Value) / 2) + frustumPosition.Y);
+            Vector3 end1 = new Vector3(frustumPosition.Z * 2, 0, -masterTopY) * scale;
+            Vector3 end2 = new Vector3(frustumPosition.Z * 2, 0, -masterBottomY) * scale;
+            Vector3 origin = paneOrigin + (originOffset * scale);
+
+            if (!lockMasterCheck.Checked) {
+                Quaternion q = Quaternion.CreateFromEulers(angle, 0f, 0f);
+                end1 *= q;
+                end2 *= q;
+            
+            }
+            g.DrawLine(Pens.Black, toPointH(end1 + origin), toPointH(end2 + origin));
+            g.DrawLine(Pens.Black, toPointH(origin), toPointV((end1 * 3) + origin));
+            g.DrawLine(Pens.Black, toPointH(origin), toPointV((end2 * 3) + origin));
+            */
         }
 
         public static Point toPoint(Vector2 v) {
@@ -485,46 +513,6 @@ namespace ConsoleTest {
 
         private void frustumPosition_OnChange(object sender, EventArgs e) {
             RefreshDrawings();
-        }
-        private void widthScale_Scroll(object sender, EventArgs e) {
-            if (!changing) {
-                changing = true;
-                //widthValue.Value = widthScale.Value / 100;
-                widthValue.Value = widthScale.Value;
-                changing = false;
-            }
-            RefreshDrawings();
-        }
-
-        private void widthValue_ValueChanged(object sender, EventArgs e) {
-            if (!changing) {
-                changing = true;
-                //widthScale.Value = (int) (widthValue.Value * 100);
-                widthScale.Value = (int) (widthValue.Value);
-                changing = false;
-            }
-            RefreshDrawings();
-        }
-
-        private void heightValue_ValueChanged(object sender, EventArgs e) {
-            if (!changing) {                changing = true;
-                //heightScale.Value = (int) (heightValue.Value * 100);
-                heightSlider.Value = (int) (heightValue.Value);
-                changing = false;
-            }
-            RefreshDrawings();
-
-        }
-
-        private void heightSlider_Scroll(object sender, EventArgs e) {
-            if (!changing) {
-                changing = true;
-                //heightValue.Value = heightScale.Value / 100;
-                heightValue.Value = heightSlider.Value;
-                changing = false;
-            }
-            RefreshDrawings();
-
         }
 
         private void scaleBar_Scroll(object sender, EventArgs e) {
