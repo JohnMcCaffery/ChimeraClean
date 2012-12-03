@@ -77,7 +77,6 @@ namespace ChimeraLib {
                     Vector3 diff = value - eyePosition;
                     diff = new Vector3(-diff.X, diff.Z, diff.Y);
                     screenPosition += diff;
-                    //screenPosition += new Vector3(-diff.X, diff.Z, diff.Y);
                     if (OnEyeChange != null)
                         OnEyeChange(diff);
                 }

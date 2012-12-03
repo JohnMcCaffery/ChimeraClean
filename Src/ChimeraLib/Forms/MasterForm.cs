@@ -262,8 +262,6 @@ namespace ConsoleTest {
             if (!yaw)
                 origin = new Vector3(-origin.Y, origin.Z, 0f);
 
-            Vector3 end1Far = end1 * 3f;
-            Vector3 end2Far = end2 * 3f;
             end1 += origin;
             end2 += origin;
 
@@ -274,8 +272,8 @@ namespace ConsoleTest {
 
             origin += paneOrigin;
             g.DrawLine(new Pen(colour), toPoint(end1 + paneOrigin), toPoint(end2 + paneOrigin));
-            g.DrawLine(new Pen(colour), toPoint(origin), toPoint((end1Far * 3) + origin));
-            g.DrawLine(new Pen(colour), toPoint(origin), toPoint((end2Far * 3) + origin));
+            g.DrawLine(new Pen(colour), toPoint(origin), toPoint((end1 * 3) + origin));
+            g.DrawLine(new Pen(colour), toPoint(origin), toPoint((end2 * 3) + origin));
             g.FillEllipse(new SolidBrush(colour), origin.X - r, origin.Y - r, r * 2, r * 2);
         }
 
@@ -296,13 +294,6 @@ namespace ConsoleTest {
         public static Point mult(Point op1, int op2) {
             return new Point(op1.X * op2, op1.Y * op2);
         }
-        /*
-        public static Point operator +(Point op1, Point op2) {
-            return new Point(op1.X + op2.X, op1.Y + op2.Y);
-        }
-        public static Point operator *(Point op1, Point op2) {
-            return new Point(op1.X * op2.X, op1.Y * op2.Y);
-        }*/
 
         private void bindButton_Click(object sender, EventArgs e) {
             if (bindButton.Text.Equals("Bind")) {
