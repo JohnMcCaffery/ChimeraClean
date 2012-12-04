@@ -46,14 +46,12 @@
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>AAUAAQAABBABCYIAAMQAAoQAAg4AAAWQIAEEEQACAAE=</HashCode>
+      <HashCode>AAUAAQAABBABCYIgAMQAAoQAAgwAAAWQIAEAAAACAAE=</HashCode>
       <FileName>CameraSlave.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Field Name="interProxyClient" />
-      <Property Name="MasterRotation" />
-      <Property Name="OffsetRotation" />
-      <Property Name="FinalRotation" />
+      <Property Name="Rotation" />
     </ShowAsAssociation>
   </Class>
   <Class Name="UtilLib.FullSlave">
@@ -86,7 +84,7 @@
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>ACAQEkAAASgAAIEAIACAAAACAAACEAAQAABARAIACAA=</HashCode>
+      <HashCode>ACAQEkAAASgAAIEAAACAAAACAAQCEAAQAABARAIACAA=</HashCode>
       <FileName>Controls\RotationPanel.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -146,7 +144,7 @@
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>o2HAASjSkaUwKBUxYMCiEAFShIiMlEI7slFjiJkABQo=</HashCode>
+      <HashCode>oUHAASjSkaUwKBUxYMCgAAFShIiMlEI7slFjiJkABQs=</HashCode>
       <FileName>Forms\MasterForm.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -159,7 +157,7 @@
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>ACEoQQAQACGAABRQQFCBEgECCAEIAAQRAkAACBAICAk=</HashCode>
+      <HashCode>AAEgQQAQACGAABRQSFCCEAECCAAIAAQRAkAACBAIAAg=</HashCode>
       <FileName>Forms\SlaveForm.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -169,7 +167,7 @@
   <Class Name="ChimeraLib.Window">
     <Position X="0.5" Y="5.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>QAAAAAAABQAAAAAQBkCAIEAAAAQAIAACAgIAACAAAAA=</HashCode>
+      <HashCode>ACAAgAAABQAAAAAQBkCAAEAAAAQAIAACAgJAICBAAAA=</HashCode>
       <FileName>Window.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -179,7 +177,7 @@
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>cCACoCAUAAAAABAABAADAIkSBSBIQECIAQBACAAACAA=</HashCode>
+      <HashCode>cGACoCAUAQIAABAABgIDAIkSBABIQIKIAQBACBAACAA=</HashCode>
       <FileName>Controls\WindowPanel.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>

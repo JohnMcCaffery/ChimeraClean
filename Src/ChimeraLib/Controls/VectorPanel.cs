@@ -80,15 +80,24 @@ namespace ProxyTestGUI {
 
         public float X {
             get { return (float)xValue.Value; }
-            set { xValue.Value = new decimal(value); }
+            set { 
+                xValue.Value = new decimal(value);
+                xSlider.Value = (int)(value * trackerScale);
+            }
         }
         public float Y {
             get { return (float)yValue.Value; }
-            set { yValue.Value = new decimal(value); }
+            set { 
+                yValue.Value = new decimal(value);
+                ySlider.Value = (int)(value * trackerScale);
+            }
         }
         public float Z {
             get { return (float)zValue.Value; }
-            set { zValue.Value = new decimal(value); }
+            set { 
+                zValue.Value = new decimal(value);
+                zSlider.Value = (int)(value * trackerScale);
+            }
         }
 
         public string DisplayName {

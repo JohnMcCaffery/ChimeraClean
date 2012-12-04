@@ -18,7 +18,6 @@ namespace ConsoleTest {
         private readonly Dictionary<string, TabPage> slaveTabs = new Dictionary<string, TabPage>();
         private readonly Dictionary<string, Color> slaveColours = new Dictionary<string, Color>();
         private bool ignorePitch = false;
-        private bool changing;
 
         public MasterForm() : this(new CameraMaster()) { }
 
@@ -206,15 +205,15 @@ namespace ConsoleTest {
         }
 
         private int r = 5;
-        private float maxOffset = 32f;
 
         private void hTab_Paint(object sender, PaintEventArgs e) {
             Vector3 origin = new Vector3(e.ClipRectangle.Width / 2, e.ClipRectangle.Height / 2f, 0f);
+            float scale = ((scaleBar.Maximum - scaleBar.Value) * e.ClipRectangle.Width) / 600000f;
             foreach (var slave in master.Slaves) {
                 lock (slaveColours)
-                    DrawWindow(e.Graphics, slave.Window, origin, true, master.Window.EyeOffset, slaveColours.ContainsKey(slave.Name) ? slaveColours[slave.Name] : Color.Black);
+                    DrawWindow(e.Graphics, slave.Window, origin, true, master.Window.EyeOffset, slaveColours.ContainsKey(slave.Name) ? slaveColours[slave.Name] : Color.Black, scale);
             }
-            DrawWindow(e.Graphics, master.Window, origin, true, Vector3.Zero, Color.Black);
+            DrawWindow(e.Graphics, master.Window, origin, true, Vector3.Zero, Color.Black, scale);
 
             e.Graphics.DrawLine(Pens.LightGreen, 0f, origin.Y, e.ClipRectangle.Width, origin.Y);
             e.Graphics.DrawLine(Pens.Red, origin.X, 0f, origin.X, e.ClipRectangle.Height);
@@ -222,18 +221,18 @@ namespace ConsoleTest {
 
         private void vTab_Paint(object sender, PaintEventArgs e) {
             Vector3 origin = new Vector3(r, e.ClipRectangle.Height / 2, 0f);
+            float scale = ((scaleBar.Maximum - scaleBar.Value) * e.ClipRectangle.Width) / 600000f;
             foreach (var slave in master.Slaves) {
                 lock (slaveColours)
-                    DrawWindow(e.Graphics, slave.Window, origin, false, master.Window.EyeOffset, slaveColours.ContainsKey(slave.Name) ? slaveColours[slave.Name] : Color.Black);
+                    DrawWindow(e.Graphics, slave.Window, origin, false, master.Window.EyeOffset, slaveColours.ContainsKey(slave.Name) ? slaveColours[slave.Name] : Color.Black, scale);
             }
-            DrawWindow(e.Graphics, master.Window, origin, false, Vector3.Zero, Color.Black);
+            DrawWindow(e.Graphics, master.Window, origin, false, Vector3.Zero, Color.Black, scale);
 
             e.Graphics.DrawLine(Pens.LightGreen, 0f, origin.Y, e.ClipRectangle.Width, origin.Y);
             e.Graphics.DrawLine(Pens.Blue, r, 0f, r, e.ClipRectangle.Height);
         }
 
-        private void DrawWindow(Graphics g, Window window, Vector3 paneOrigin, bool yaw, Vector3 originOffset, Color colour) {
-            float scale = (scaleBar.Maximum - scaleBar.Value) / 2000f;
+        private void DrawWindow(Graphics g, Window window, Vector3 paneOrigin, bool yaw, Vector3 originOffset, Color colour, float scale) {
             float end1Free = (float) (((yaw ? window.Width : window.Height) / -2) + (yaw ? window.ScreenPosition.X : window.ScreenPosition.Y));
             float end2Free = (float) (((yaw ? window.Width : window.Height) / 2) + (yaw ? window.ScreenPosition.X : window.ScreenPosition.Y));
             float fixedEnd = window.ScreenPosition.Z;
