@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using UtilLib;
+using OpenMetaverse;
 
 namespace ChimeraLib.Controls {
     public partial class WindowPanel : UserControl {
@@ -137,8 +138,11 @@ namespace ChimeraLib.Controls {
         }
 
         private void screenPositionPanel_OnChange(object sender, EventArgs e) {
-            if (window != null && !init)
+            if (window != null && !init) {
+                if (screenPositionPanel.Z < .01f)
+                    screenPositionPanel.Z = 0.1f;
                 window.ScreenPosition = screenPositionPanel.Value * 100f;
+            }
         }
 
         private void eyeOffsetPanel_OnChange(object sender, EventArgs e) {

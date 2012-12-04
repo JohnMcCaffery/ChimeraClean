@@ -56,12 +56,8 @@ namespace UtilLib {
         /// </summary>
         public event Action OnDisconnectedFromMaster;
 
-        private Vector3 masterPosition;
-        private Rotation masterRotation;
-        private Vector3 offsetPosition;
-        private Rotation offsetRotation;
-        private Vector3 finalPosition;
-        private readonly Rotation finalRotation;
+        private Vector3 position;
+        private readonly Rotation rotation;
         private readonly InterProxyClient interProxyClient;
 
         public CameraSlave() : this("Slave " + (SlaveCount + 1)) { }
@@ -77,14 +73,8 @@ namespace UtilLib {
         public CameraSlave(string name, InterProxyClient client, Init.Config config) : base (config, LogManager.GetLogger(name)) { 
             client.Name = name;
 
-            finalPosition = MasterPosition;
-            finalRotation = new Rotation();            
-            
-            offsetPosition = Vector3.Zero;
-            OffsetRotation = new Rotation();
-
-            masterPosition = new Vector3(128f, 128f, 24f);
-            MasterRotation = new Rotation();
+            position = new Vector3(128f, 128f, 24f);
+            rotation = new Rotation();            
 
             controlCamera = config.ControlCamera;
 
@@ -97,9 +87,9 @@ namespace UtilLib {
             interProxyClient.OnPacketReceived += (p, ep) => {
                 if (p.Type == PacketType.AgentUpdate) {
                     AgentUpdatePacket ap = (AgentUpdatePacket)p;
-                    masterPosition = ap.AgentData.CameraCenter;
-                    masterRotation.LookAtVector = ap.AgentData.CameraAtAxis;
-                    Recalculate();
+                    position = ap.AgentData.CameraCenter;
+                    rotation.LookAtVector = ap.AgentData.CameraAtAxis;
+                    Update();
                     if (OnUpdateReceivedFromMaster != null)
                         OnUpdateReceivedFromMaster(ap.AgentData.CameraCenter, ap.AgentData.CameraAtAxis);
                 }
@@ -157,66 +147,18 @@ namespace UtilLib {
         }
 
         /// <summary>
-        /// Vector supplied for the camera position.
-        /// </summary>
-        public Vector3 MasterPosition {
-            get { return masterPosition; }
-            set {
-                masterPosition = value;
-                Recalculate();
-            }
-        }
-
-        /// <summary>
-        /// MasterRotation supplied for the camera rotation.
-        /// </summary>
-        public Rotation MasterRotation {
-            get { return masterRotation; }
-            set {
-                if (masterRotation != null)
-                    masterRotation.OnChange -= RotationChanged;
-                masterRotation = value;
-                masterRotation.OnChange += RotationChanged;
-            }
-        }
-
-        /// <summary>
-        /// Vector to be added to any position vector to get the new camera position.
-        /// </summary>
-        public Vector3 OffsetPosition {
-            get { return offsetPosition; 
-            }
-            set {
-                offsetPosition = value;
-                Recalculate();
-            }
-        }
-
-        /// <summary>
-        /// VirtualRotationOffset to rotate the camera rotation around.
-        /// </summary>
-        public Rotation OffsetRotation {
-            get { return offsetRotation; }
-            set {
-                if (offsetRotation != null)
-                    offsetRotation.OnChange -= RotationChanged;
-                offsetRotation = value;
-                offsetRotation.OnChange += RotationChanged;
-            }
-        }
-
-        /// <summary>
         /// The postion after the offset has been applied to the source value.
         /// </summary>
-        public Vector3 FinalPosition {
-            get { return finalPosition; }
+        public Vector3 Position {
+            get { return position; }
+            set { position = value; }
         }
 
         /// <summary>
         /// The rotation after the offset has been applied to the source value.
         /// </summary>
-        public Rotation FinalRotation {
-            get { return finalRotation; }
+        public Rotation Rotation {
+            get { return rotation; }
         }
 
         /// <summary>
@@ -228,10 +170,6 @@ namespace UtilLib {
                 controlCamera = value;
                 InjectPacket(value ? 1f : 0f);
             }
-        }
-
-        private void RotationChanged(object source, EventArgs args) {
-            Recalculate();
         }
 
         public bool Connect(int port) {
@@ -263,11 +201,7 @@ namespace UtilLib {
             return p;
         }
 
-        private void Recalculate() {
-            FinalRotation.Yaw = MasterRotation.Yaw + OffsetRotation.Yaw;
-            FinalRotation.Pitch = MasterRotation.Pitch + OffsetRotation.Pitch;
-            finalPosition = MasterPosition + (OffsetPosition * MasterRotation.Quaternion);
-            //FinalPosition = SourcePosition;
+        private void Update() {
             if (controlCamera)
                 InjectPacket();
         }
@@ -284,7 +218,7 @@ namespace UtilLib {
                 packet.CameraProperty[i].Type = i + 1;
             }
 
-            Vector3 focus = FinalPosition + FinalRotation.LookAtVector;
+            Vector3 focus = Position + Rotation.LookAtVector;
             packet.CameraProperty[0].Value = 0;
             packet.CameraProperty[1].Value = 0f;
             packet.CameraProperty[2].Value = 0f;
@@ -298,9 +232,9 @@ namespace UtilLib {
             packet.CameraProperty[10].Value = 0f;
             packet.CameraProperty[11].Value = enable;
             packet.CameraProperty[12].Value = 0f;
-            packet.CameraProperty[13].Value = FinalPosition.X;
-            packet.CameraProperty[14].Value = FinalPosition.Y;
-            packet.CameraProperty[15].Value = FinalPosition.Z;
+            packet.CameraProperty[13].Value = Position.X;
+            packet.CameraProperty[14].Value = Position.Y;
+            packet.CameraProperty[15].Value = Position.Z;
             packet.CameraProperty[16].Value = 0f;
             packet.CameraProperty[17].Value = focus.X;
             packet.CameraProperty[18].Value = focus.Y;
@@ -314,7 +248,7 @@ namespace UtilLib {
             }
 
             if (OnUpdateSentToClient != null)
-                OnUpdateSentToClient(FinalPosition, FinalRotation.LookAtVector);
+                OnUpdateSentToClient(Position, Rotation.LookAtVector);
         }
     }
 }

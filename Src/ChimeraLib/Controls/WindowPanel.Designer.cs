@@ -229,7 +229,7 @@
             this.fovSlider.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.fovSlider.Location = new System.Drawing.Point(256, 99);
-            this.fovSlider.Maximum = 17900;
+            this.fovSlider.Maximum = 17999;
             this.fovSlider.Minimum = 1;
             this.fovSlider.Name = "fovSlider";
             this.fovSlider.Size = new System.Drawing.Size(555, 42);
@@ -356,10 +356,10 @@
             this.fovValue.DecimalPlaces = 2;
             this.fovValue.Location = new System.Drawing.Point(130, 99);
             this.fovValue.Maximum = new decimal(new int[] {
-            179,
+            17999,
             0,
             0,
-            0});
+            131072});
             this.fovValue.Minimum = new decimal(new int[] {
             1,
             0,
