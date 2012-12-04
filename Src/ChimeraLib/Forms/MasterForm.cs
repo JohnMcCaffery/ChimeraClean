@@ -205,10 +205,11 @@ namespace ConsoleTest {
         }
 
         private int r = 5;
+        private float scaleScale = 6000000f;
 
         private void hTab_Paint(object sender, PaintEventArgs e) {
             Vector3 origin = new Vector3(e.ClipRectangle.Width / 2, e.ClipRectangle.Height / 2f, 0f);
-            float scale = ((scaleBar.Maximum - scaleBar.Value) * e.ClipRectangle.Width) / 600000f;
+            float scale = ((scaleBar.Maximum - scaleBar.Value) * e.ClipRectangle.Width) / scaleScale;
             foreach (var slave in master.Slaves) {
                 lock (slaveColours)
                     DrawWindow(e.Graphics, slave.Window, origin, true, master.Window.EyeOffset, slaveColours.ContainsKey(slave.Name) ? slaveColours[slave.Name] : Color.Black, scale);
@@ -221,7 +222,7 @@ namespace ConsoleTest {
 
         private void vTab_Paint(object sender, PaintEventArgs e) {
             Vector3 origin = new Vector3(r, e.ClipRectangle.Height / 2, 0f);
-            float scale = ((scaleBar.Maximum - scaleBar.Value) * e.ClipRectangle.Width) / 600000f;
+            float scale = ((scaleBar.Maximum - scaleBar.Value) * e.ClipRectangle.Width) / scaleScale;
             foreach (var slave in master.Slaves) {
                 lock (slaveColours)
                     DrawWindow(e.Graphics, slave.Window, origin, false, master.Window.EyeOffset, slaveColours.ContainsKey(slave.Name) ? slaveColours[slave.Name] : Color.Black, scale);
