@@ -8,12 +8,12 @@ using UtilLib;
 namespace ChimeraLib {
     public class Window {
         private Rotation rotation = new Rotation(0f, 0f);
-        private Vector3 screenPosition = Vector3.UnitZ * 400;
+        private Vector3 screenPosition = Vector3.UnitX * 400;
         private Vector3 eyePosition = Vector3.Zero;
         private double aspectRatio = 9f / 16f;
         private double mmDiagonal = 19.0 * 25.4;
         private bool lockFrustum = true;
-        
+
         public static readonly double TOLERANCE = 0.0001;
         //private float height = 720f;
 
@@ -68,18 +68,17 @@ namespace ChimeraLib {
         /// <summary>
         /// The offset of the origin/eye position for this screen from the centre of the real space (mm).
         /// </summary>
-        public Vector3 EyeOffset {
+        public Vector3 EyePosition {
             get { return eyePosition; }
             set {
                 if (value == eyePosition)
                     return;
-                if (lockFrustum) {
-                    Vector3 diff = value - eyePosition;
-                    diff = new Vector3(-diff.X, diff.Z, diff.Y);
+                Vector3 diff = value - eyePosition;
+                if (!lockFrustum) {
                     screenPosition += diff;
-                    if (OnEyeChange != null)
-                        OnEyeChange(diff);
                 }
+                if (OnEyeChange != null)
+                    OnEyeChange(diff);
                 eyePosition = value;
                 Changed();
             }
@@ -168,20 +167,60 @@ namespace ChimeraLib {
         /// </summary>
         public double FieldOfView {
             get {
-                if (screenPosition.Z == 0)
-                    return Math.PI;
-                return Math.Atan2(Height / 2, screenPosition.Z) * 2; 
+                Vector3 top = new Vector3(0f, 0f, (float) (Height / 2.0));
+                Vector3 bottom = top * -1;
+                Quaternion q = Quaternion.CreateFromEulers(0f, (float) (rotation.Pitch * Rotation.DEG2RAD), 0f);
+                top *= q;
+                bottom *= q;
+
+                top += screenPosition;
+                bottom += screenPosition;
+
+                float dot = Vector3.Dot(Vector3.Normalize(top - eyePosition), Vector3.Normalize(bottom - eyePosition));
+                return Math.Acos(dot);
             }
             set {
                 double fov = FieldOfView;
                 if (Math.Abs(fov) < TOLERANCE || value <= 0.0)
                     return;
-                double height = 2 * screenPosition.Z * Math.Sin(value / 2.0);
+                double height = 2 * ScreenDistance * Math.Sin(value / 2.0);
                 double a = Math.Cos(value / 2);
                 if (a != 0.0)
                     height /= a;
-                mmDiagonal =  Math.Sqrt(Math.Pow(height, 2) + Math.Pow(height / aspectRatio, 2));
+                mmDiagonal = Math.Sqrt(Math.Pow(height, 2) + Math.Pow(height / aspectRatio, 2));
                 Changed();
+            }
+        }
+
+        public double FrustumOffsetH {
+            get { return CalculateFrustumOffset(v => new Vector2(v.X, v.Y)); } 
+        }
+
+        public double FrustumOffsetV {
+            //get { return CalculateFrustumOffset(v => new Vector2(v.X, v.Z)); }
+            get { return CalculateFrustumOffset(v => new Vector2((float) Math.Sqrt(Math.Pow(v.X, 2) + Math.Pow(v.Y, 2)), v.Z)); }
+        }
+
+        private double CalculateFrustumOffset(Func<Vector3, Vector2> to2D) {
+            Vector2 h = to2D(screenPosition - eyePosition);
+            Vector2 hNormal = Vector2.Normalize(h);
+            Vector2 a = to2D(Vector3.Normalize(rotation.LookAtVector));
+            float dot = Vector2.Dot(a, Vector2.Normalize(h));
+            double angle = Math.Acos(dot) * Rotation.RAD2DEG;
+            float length = h.Length();
+            //return h.Length() * Math.Sqrt(1 - Math.Pow(Vector2.Dot(a, Vector2.Normalize(h)), 2));
+            Vector2 rot = to2D((screenPosition - eyePosition) * Quaternion.Inverse(rotation.Quaternion));
+            double component = Math.Sqrt(1 - Math.Pow(Vector2.Dot(a, Vector2.Normalize(h)), 2));
+            return h.Length() * component * (rot.Y > 0 ? 1.0 : -1.0);
+        }
+
+        /// <summary>
+        /// How far away the screen is from the origin along the direction the screen is rotated.
+        /// </summary>
+        public double ScreenDistance {
+            //get { return Vector3.Dot(screenPosition - eyePosition, Vector3.Normalize(rotation.LookAtVector)); }
+            get { 
+                return (double) (screenPosition - eyePosition).Length();
             }
         }
     }

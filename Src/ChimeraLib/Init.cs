@@ -83,6 +83,7 @@ namespace UtilLib {
 
             //Client
             private string viewerExe = null;
+            private string workingDir = null;
             private string firstName = null;
             private string lastName = null;
             private string password = null;
@@ -153,6 +154,10 @@ namespace UtilLib {
             public string ViewerExecutable {
                 get { return viewerExe; }
                 set { viewerExe = value; }
+            }
+            public string ViewerWorkingDirectory {
+                get { return workingDir; }
+                set { workingDir = value; }
             }
 
             /// <summary>
@@ -202,6 +207,7 @@ namespace UtilLib {
             public Config(string[] args, string section, string file) {
                 ArgvConfigSource argConfig = InitArgConfig(args);
                 argConfig.AddSwitch("General", "ViewerExe", "v");
+                argConfig.AddSwitch("General", "WorkingDirectory", "d");
                 argConfig.AddSwitch("General", "UseGrid", "ug");
                 argConfig.AddSwitch("General", "ProxyGrid", "g");
                 argConfig.AddSwitch("General", "LoginURI", "u");
@@ -221,6 +227,7 @@ namespace UtilLib {
                 masterAddress = Get(generalConfig, "MasterAddress", DEFAULT_MASTER_ADDRESS);
 
                 viewerExe = Get(generalConfig, "ViewerExe", DEFAULT_CLIENT_EXE);
+                workingDir = Get(generalConfig, "WorkingDirectory", Path.GetDirectoryName(viewerExe));
                 loginURI = Get(generalConfig, "LoginURI", DEFAULT_LOGINURI);
                 UseGrid = Get(generalConfig, "UseGrid", true);
 

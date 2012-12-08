@@ -361,6 +361,7 @@ namespace UtilLib {
                 //Logger.Info("Bound to " + socket.Client.LocalEndPoint + ".");
                 return true;
             } catch (SocketException e) {
+                Logger.Info("Unable to bind channel. " + e.Message);
                 return false;
             }
         }

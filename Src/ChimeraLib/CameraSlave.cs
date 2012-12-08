@@ -5,12 +5,16 @@ using System.Text;
 using OpenMetaverse.Packets;
 using OpenMetaverse;
 using log4net;
+using ChimeraLib;
+using GridProxy;
+using System.Net;
 
 namespace UtilLib {
     public class CameraSlave : ProxyManager {
         private static int SlaveCount = 0;
         private bool controlCamera = true;
         private int injectedPackets = 0;
+        private Window window;
 
         /// <summary>
         /// Triggered whenever a camera update is received from the master.
@@ -20,7 +24,7 @@ namespace UtilLib {
         /// <summary>
         /// Triggered whenever a camera update is sent to the client.
         /// </summary>
-        public event System.Action<Vector3, Vector3> OnUpdateSentToClient;
+        public event Action<Vector3, Vector3> OnUpdateSentToClient;
 
         /// <summary>
         /// Triggered whenever the slave connects to the master.
@@ -38,7 +42,7 @@ namespace UtilLib {
         public event Action OnDisconnectedFromMaster;
 
         private Vector3 position;
-        private readonly Rotation rotation;
+        private Rotation rotation;
         private readonly InterProxyClient interProxyClient;
 
         public CameraSlave() : this("Slave " + (SlaveCount + 1)) { }
@@ -55,7 +59,8 @@ namespace UtilLib {
             client.Name = name;
 
             position = new Vector3(128f, 128f, 24f);
-            rotation = new Rotation();            
+            Rotation = new Rotation();
+            Window = new Window();
 
             controlCamera = config.ControlCamera;
 
@@ -65,17 +70,7 @@ namespace UtilLib {
             };
 
             interProxyClient = client;
-            interProxyClient.OnPacketReceived += (p, ep) => {
-                if (p.Type == PacketType.AgentUpdate) {
-                    AgentUpdatePacket ap = (AgentUpdatePacket)p;
-                    position = ap.AgentData.CameraCenter;
-                    rotation.LookAtVector = ap.AgentData.CameraAtAxis;
-                    Update();
-                    if (OnUpdateReceivedFromMaster != null)
-                        OnUpdateReceivedFromMaster(ap.AgentData.CameraCenter, ap.AgentData.CameraAtAxis);
-                }
-                return p;
-            };
+            interProxyClient.OnPacketReceived += ProcessPacket;
             interProxyClient.OnDisconnected += (source, args) => {
                 if (OnDisconnectedFromMaster != null)
                     OnDisconnectedFromMaster();
@@ -89,6 +84,25 @@ namespace UtilLib {
                     OnUnableToConnectToMaster(source, args);
             };
             SlaveCount++;
+        }
+
+
+        private Packet ProcessPacket(Packet p, IPEndPoint ep) {
+            if (p.Type == PacketType.AgentUpdate) {
+                AgentUpdatePacket ap = (AgentUpdatePacket)p;
+                position = ap.AgentData.CameraCenter;
+                rotation.LookAtVector = ap.AgentData.CameraAtAxis;
+                Update();
+                if (OnUpdateReceivedFromMaster != null)
+                    OnUpdateReceivedFromMaster(ap.AgentData.CameraCenter, ap.AgentData.CameraAtAxis);
+            } else if (p.Type == PacketType.SetCameraProperties) {
+                SetCameraPropertiesPacket cp = (SetCameraPropertiesPacket)p;
+                window.ScreenPosition = new Vector3(cp.CameraProperty.FrustumOffsetX, cp.CameraProperty.FrustumOffsetY, window.ScreenPosition.Z) * 100;
+                window.Width = cp.CameraProperty.FrustumOffsetX * 100;
+                window.Height = cp.CameraProperty.FrustumOffsetY * 100;
+                window.FieldOfView = cp.CameraProperty.CameraAngle;
+            }
+            return p;
         }
 
         /// <summary>
@@ -126,20 +140,43 @@ namespace UtilLib {
                 Logger = LogManager.GetLogger(value);
             }
         }
-
         /// <summary>
-        /// The postion after the offset has been applied to the source value.
+        /// The avatar position in virtual space.
         /// </summary>
         public Vector3 Position {
             get { return position; }
-            set { position = value; }
+            set { 
+                position = value;
+                Update();
+            }
         }
 
         /// <summary>
-        /// The rotation after the offset has been applied to the source value.
+        /// The avatar rotation in virtual space.
         /// </summary>
         public Rotation Rotation {
             get { return rotation; }
+            set {
+                if (rotation != null)
+                    rotation.OnChange -= ValueChanged;
+                rotation = value;
+                rotation.OnChange += ValueChanged;
+                ValueChanged(rotation, null);
+            }
+        }
+
+        /// <summary>
+        /// The window which defines the position of the screen this slave projects onto in real space.
+        /// </summary>
+        public Window Window {
+            get { return window; }
+            set {
+                if (window != null)
+                    window.OnChange -= ValueChanged;
+                window = value;
+                window.OnChange += ValueChanged;
+                ValueChanged(window, null);
+            }
         }
 
         /// <summary>
@@ -151,6 +188,10 @@ namespace UtilLib {
                 controlCamera = value;
                 InjectPacket(value ? 1f : 0f);
             }
+        }
+
+        private void ValueChanged (object source, EventArgs args) {
+            Update();
         }
 
         public bool Connect(int port) {
@@ -192,39 +233,51 @@ namespace UtilLib {
         }
 
         private void InjectPacket(float enable) {
-            SetFollowCamPropertiesPacket packet = new SetFollowCamPropertiesPacket();
-            packet.CameraProperty = new SetFollowCamPropertiesPacket.CameraPropertyBlock[22];
-            for (int i = 0; i < 22; i++) {
-                packet.CameraProperty[i] = new SetFollowCamPropertiesPacket.CameraPropertyBlock();
-                packet.CameraProperty[i].Type = i + 1;
-            }
-
-            Vector3 focus = Position + Rotation.LookAtVector;
-            packet.CameraProperty[0].Value = 0;
-            packet.CameraProperty[1].Value = 0f;
-            packet.CameraProperty[2].Value = 0f;
-            packet.CameraProperty[3].Value = 0f;
-            packet.CameraProperty[4].Value = 0f;
-            packet.CameraProperty[5].Value = 0f;
-            packet.CameraProperty[6].Value = 0f;
-            packet.CameraProperty[7].Value = 0f;
-            packet.CameraProperty[8].Value = 0f;
-            packet.CameraProperty[9].Value = 0f;
-            packet.CameraProperty[10].Value = 0f;
-            packet.CameraProperty[11].Value = enable;
-            packet.CameraProperty[12].Value = 0f;
-            packet.CameraProperty[13].Value = Position.X;
-            packet.CameraProperty[14].Value = Position.Y;
-            packet.CameraProperty[15].Value = Position.Z;
-            packet.CameraProperty[16].Value = 0f;
-            packet.CameraProperty[17].Value = focus.X;
-            packet.CameraProperty[18].Value = focus.Y;
-            packet.CameraProperty[19].Value = focus.Z;
-            packet.CameraProperty[20].Value = 1f;
-            packet.CameraProperty[21].Value = 1f;
+            if (window == null)
+                return;
 
             if (clientProxy != null) {
-                clientProxy.InjectPacket(packet, GridProxy.Direction.Incoming);
+                SetFollowCamPropertiesPacket cameraPacket = new SetFollowCamPropertiesPacket();
+                cameraPacket.CameraProperty = new SetFollowCamPropertiesPacket.CameraPropertyBlock[22];
+                for (int i = 0; i < 22; i++) {
+                    cameraPacket.CameraProperty[i] = new SetFollowCamPropertiesPacket.CameraPropertyBlock();
+                    cameraPacket.CameraProperty[i].Type = i + 1;
+                }
+
+                Rotation finalRot = rotation + window.RotationOffset;
+                Vector3 finalPos = position + (window.EyePosition / 1000f);
+                Vector3 lookAt = finalPos + finalRot.LookAtVector;
+                cameraPacket.CameraProperty[0].Value = 0;
+                cameraPacket.CameraProperty[1].Value = 0f;
+                cameraPacket.CameraProperty[2].Value = 0f;
+                cameraPacket.CameraProperty[3].Value = 0f;
+                cameraPacket.CameraProperty[4].Value = 0f;
+                cameraPacket.CameraProperty[5].Value = 0f;
+                cameraPacket.CameraProperty[6].Value = 0f;
+                cameraPacket.CameraProperty[7].Value = 0f;
+                cameraPacket.CameraProperty[8].Value = 0f;
+                cameraPacket.CameraProperty[9].Value = 0f;
+                cameraPacket.CameraProperty[10].Value = 0f;
+                cameraPacket.CameraProperty[11].Value = enable;
+                cameraPacket.CameraProperty[12].Value = 0f;
+                cameraPacket.CameraProperty[13].Value = finalPos.X;
+                cameraPacket.CameraProperty[14].Value = finalPos.Y;
+                cameraPacket.CameraProperty[15].Value = finalPos.Z;
+                cameraPacket.CameraProperty[16].Value = 0f;
+                cameraPacket.CameraProperty[17].Value = lookAt.X;
+                cameraPacket.CameraProperty[18].Value = lookAt.Y;
+                cameraPacket.CameraProperty[19].Value = lookAt.Z;
+                cameraPacket.CameraProperty[20].Value = 1f;
+                cameraPacket.CameraProperty[21].Value = 1f;
+
+                SetCameraPropertiesPacket screenPacket = new SetCameraPropertiesPacket();
+                screenPacket.CameraProperty = new SetCameraPropertiesPacket.CameraPropertyBlock();
+                screenPacket.CameraProperty.FrustumOffsetX = (float)(window.ScreenPosition.X / 100.0);
+                screenPacket.CameraProperty.FrustumOffsetY = (float)(window.ScreenPosition.Y / 100.0);
+                screenPacket.CameraProperty.CameraAngle = (float)window.FieldOfView;
+
+                clientProxy.InjectPacket(cameraPacket, Direction.Incoming);
+                clientProxy.InjectPacket(screenPacket, Direction.Incoming);
                 injectedPackets++;
             }
 

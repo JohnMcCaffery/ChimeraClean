@@ -68,7 +68,6 @@ namespace ProxyTestGUI {
             this.vectorPanel.Name = "vectorPanel";
             this.vectorPanel.Size = new System.Drawing.Size(404, 98);
             this.vectorPanel.TabIndex = 0;
-            this.vectorPanel.Value = ((OpenMetaverse.Vector3)(resources.GetObject("vectorPanel.Value")));
             this.vectorPanel.X = 1F;
             this.vectorPanel.Y = 0F;
             this.vectorPanel.Z = 0F;

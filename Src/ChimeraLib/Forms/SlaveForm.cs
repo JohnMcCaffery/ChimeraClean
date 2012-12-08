@@ -12,13 +12,17 @@ using System.Threading;
 namespace ConsoleTest {
     public partial class SlaveForm : Form {
         private CameraSlave slave;
+        private bool updating;
 
         public SlaveForm() : this (new CameraSlave()) { }
 
         public SlaveForm(CameraSlave slave) {
             this.slave = slave;
             InitializeComponent();
+
             proxyPanel.Proxy = slave;
+            screenWindowPanel.Window = slave.Window;
+
             Text = slave.Name;
             debugPanel.Source = slave.Name;
             if (slave.ProxyRunning)
@@ -93,22 +97,29 @@ namespace ConsoleTest {
                 else
                     a();
             };
+
             slave.OnUpdateSentToClient += (position, lookAt) => {
                 BeginInvoke(new Action(() => {
-                    masterPosition.Value = slave.Position;
-                    masterRotation.LookAtVector = slave.Rotation.LookAtVector;
+                    updating = true;
+                    positionPanel.Value = slave.Position;
+                    rotationPanel.LookAtVector = slave.Rotation.LookAtVector;
                     receivedLabel.Text = slave.PacketsReceived.ToString();
                     injectedLabel.Text = slave.PacketsInjected.ToString();
+                    updating = false;
                 }));
             };
         }
 
         private void rotation_OnChange(object sender, EventArgs e) {
-            slave.Rotation.Quaternion = masterRotation.Rotation;
+            if (!updating) {
+                slave.Rotation.Pitch = rotationPanel.Pitch;
+                slave.Rotation.Yaw = rotationPanel.Yaw;
+            }
         }
 
         private void position_OnChange(object sender, EventArgs e) {
-            slave.Position = masterPosition.Value;
+            if (!updating)
+                slave.Position = positionPanel.Value;
         }
 
         private void SlaveForm_FormClosing(object sender, FormClosingEventArgs e) {

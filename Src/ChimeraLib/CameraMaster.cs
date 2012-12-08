@@ -54,6 +54,20 @@ namespace UtilLib {
                 slave.OnChange += (source, args) => CreatePacket();
                 CreatePacket();
             };
+
+            Window.OnChange += (source, args) => {
+                SetCameraPropertiesPacket screenPacket = new SetCameraPropertiesPacket();
+                screenPacket.CameraProperty.CameraAngle = (float)Window.FieldOfView;
+                screenPacket.CameraProperty.FrustumOffsetX = (float)(Window.ScreenPosition.X / Window.Width);
+                screenPacket.CameraProperty.FrustumOffsetY = (float)(Window.ScreenPosition.Y / Window.Height);
+
+
+                Byte[] bytes = screenPacket.ToBytes();
+                int end = bytes.Length - 1;
+                SetCameraPropertiesPacket testPacket = (SetCameraPropertiesPacket) Packet.BuildPacket(bytes, ref end, new byte[1000]);
+                foreach (var slave in slaves.Values) 
+                    masterServer.Send(screenPacket, slave.TargetEP);
+            };
         }
 
         public CameraMaster() : this(null) { }
@@ -118,26 +132,32 @@ namespace UtilLib {
         }
 
         private void CreatePacket() {
-            AgentUpdatePacket p = (AgentUpdatePacket) Packet.BuildPacket(PacketType.AgentUpdate);
-            p.AgentData.AgentID = UUID.Random();
-            p.AgentData.BodyRotation = Quaternion.Identity;
-            p.AgentData.CameraLeftAxis = Vector3.Cross(Vector3.UnitZ, Rotation.LookAtVector);
-            p.AgentData.CameraUpAxis = Vector3.UnitZ;
-            p.AgentData.HeadRotation = Quaternion.Identity;
-            p.AgentData.SessionID = UUID.Random();
+            SetCameraPropertiesPacket screenPacket = new SetCameraPropertiesPacket();
+            screenPacket.CameraProperty.CameraAngle = (float) Window.FieldOfView;
+            screenPacket.CameraProperty.FrustumOffsetX = (float) (Window.ScreenPosition.X / Window.Width);
+            screenPacket.CameraProperty.FrustumOffsetY = (float) (Window.ScreenPosition.Y / Window.Height);
+
+            AgentUpdatePacket cameraPacket = (AgentUpdatePacket) Packet.BuildPacket(PacketType.AgentUpdate);
+            cameraPacket.AgentData.AgentID = UUID.Random();
+            cameraPacket.AgentData.BodyRotation = Quaternion.Identity;
+            cameraPacket.AgentData.CameraLeftAxis = Vector3.Cross(Vector3.UnitZ, Rotation.LookAtVector);
+            cameraPacket.AgentData.CameraUpAxis = Vector3.UnitZ;
+            cameraPacket.AgentData.HeadRotation = Quaternion.Identity;
+            cameraPacket.AgentData.SessionID = UUID.Random();
 
             foreach (var slave in slaves.Values) {
                 Rotation rot = new Rotation(Rotation.Pitch + slave.Window.RotationOffset.Pitch, Rotation.Yaw + slave.Window.RotationOffset.Yaw);
-                p.AgentData.CameraAtAxis = rot.LookAtVector;
-                p.AgentData.CameraCenter = Position + (slave.Window.EyeOffset * Rotation.Quaternion);
-                masterServer.Send(p, slave.TargetEP);
+                cameraPacket.AgentData.CameraAtAxis = rot.LookAtVector;
+                cameraPacket.AgentData.CameraCenter = Position + (slave.Window.EyePosition * Rotation.Quaternion);
+                masterServer.Send(cameraPacket, slave.TargetEP);
+                masterServer.Send(screenPacket, slave.TargetEP);
             }
 
             Logger.Debug("Master created AgentUpdatePacket and broadcast it to " + slaves.Count + " slaves.");
 
             packetsGenerated++;
             if (OnPacketGenerated != null)
-                OnPacketGenerated(p, null);
+                OnPacketGenerated(cameraPacket, null);
             if (OnCameraUpdated != null)
                 OnCameraUpdated(this, null);
         }
@@ -187,5 +207,10 @@ namespace UtilLib {
                 OnCameraUpdated(this, null);
         }
 
+
+        internal void InjectPacket(SetFollowCamPropertiesPacket packet, Direction direction) {
+            if (ProxyRunning)
+                clientProxy.InjectPacket(packet, direction);
+        }
     }
 }

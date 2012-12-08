@@ -27,8 +27,8 @@
             ChimeraLib.Window window1 = new ChimeraLib.Window();
             UtilLib.Rotation rotation1 = new UtilLib.Rotation();
             this.rawTab = new System.Windows.Forms.TabPage();
-            this.masterRotation = new ProxyTestGUI.RotationPanel();
-            this.masterPosition = new ProxyTestGUI.VectorPanel();
+            this.rotationPanel = new ProxyTestGUI.RotationPanel();
+            this.positionPanel = new ProxyTestGUI.VectorPanel();
             this.screenTab = new System.Windows.Forms.TabPage();
             this.screenWindowPanel = new ChimeraLib.Controls.WindowPanel();
             this.mainTabContainer = new System.Windows.Forms.TabControl();
@@ -61,8 +61,8 @@
             // 
             // rawTab
             // 
-            this.rawTab.Controls.Add(this.masterRotation);
-            this.rawTab.Controls.Add(this.masterPosition);
+            this.rawTab.Controls.Add(this.rotationPanel);
+            this.rawTab.Controls.Add(this.positionPanel);
             this.rawTab.Location = new System.Drawing.Point(4, 22);
             this.rawTab.Name = "rawTab";
             this.rawTab.Padding = new System.Windows.Forms.Padding(3);
@@ -73,35 +73,35 @@
             // 
             // masterRotation
             // 
-            this.masterRotation.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.rotationPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.masterRotation.DisplayName = "Master VirtualRotationOffset";
-            this.masterRotation.Location = new System.Drawing.Point(0, 0);
-            this.masterRotation.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("masterRotation.LookAtVector")));
-            this.masterRotation.Name = "masterRotation";
-            this.masterRotation.Pitch = 0F;
-            this.masterRotation.Rotation = ((OpenMetaverse.Quaternion)(resources.GetObject("masterRotation.Rotation")));
-            this.masterRotation.Size = new System.Drawing.Size(632, 147);
-            this.masterRotation.TabIndex = 2;
-            this.masterRotation.Yaw = 0F;
-            this.masterRotation.OnChange += new System.EventHandler(this.rotation_OnChange);
+            this.rotationPanel.DisplayName = "Master VirtualRotationOffset";
+            this.rotationPanel.Location = new System.Drawing.Point(0, 0);
+            this.rotationPanel.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("masterRotation.LookAtVector")));
+            this.rotationPanel.Name = "masterRotation";
+            this.rotationPanel.Pitch = 0F;
+            this.rotationPanel.Rotation = ((OpenMetaverse.Quaternion)(resources.GetObject("masterRotation.Rotation")));
+            this.rotationPanel.Size = new System.Drawing.Size(632, 147);
+            this.rotationPanel.TabIndex = 2;
+            this.rotationPanel.Yaw = 0F;
+            this.rotationPanel.OnChange += new System.EventHandler(this.rotation_OnChange);
             // 
             // masterPosition
             // 
-            this.masterPosition.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.positionPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.masterPosition.DisplayName = "Master VirtualPositionOffset";
-            this.masterPosition.Location = new System.Drawing.Point(0, 153);
-            this.masterPosition.Max = 2048D;
-            this.masterPosition.Min = -2048D;
-            this.masterPosition.Name = "masterPosition";
-            this.masterPosition.Size = new System.Drawing.Size(632, 98);
-            this.masterPosition.TabIndex = 3;
-            this.masterPosition.Value = ((OpenMetaverse.Vector3)(resources.GetObject("masterPosition.Value")));
-            this.masterPosition.X = 0F;
-            this.masterPosition.Y = 0F;
-            this.masterPosition.Z = 0F;
-            this.masterPosition.OnChange += new System.EventHandler(this.position_OnChange);
+            this.positionPanel.DisplayName = "Master VirtualPositionOffset";
+            this.positionPanel.Location = new System.Drawing.Point(0, 153);
+            this.positionPanel.Max = 2048D;
+            this.positionPanel.Min = -2048D;
+            this.positionPanel.Name = "masterPosition";
+            this.positionPanel.Size = new System.Drawing.Size(632, 98);
+            this.positionPanel.TabIndex = 3;
+            this.positionPanel.Value = ((OpenMetaverse.Vector3)(resources.GetObject("masterPosition.Value")));
+            this.positionPanel.X = 0F;
+            this.positionPanel.Y = 0F;
+            this.positionPanel.Z = 0F;
+            this.positionPanel.OnChange += new System.EventHandler(this.position_OnChange);
             // 
             // screenTab
             // 
@@ -125,7 +125,7 @@
             this.screenWindowPanel.TabIndex = 0;
             window1.AspectRatio = 0.5625D;
             window1.Diagonal = 482.59999999999997D;
-            window1.EyeOffset = ((OpenMetaverse.Vector3)(resources.GetObject("window1.EyeOffset")));
+            window1.EyePosition = ((OpenMetaverse.Vector3)(resources.GetObject("window1.EyeOffset")));
             window1.FieldOfView = 0.5751065017725624D;
             window1.Height = 236.60007424667296D;
             window1.LockScreenPosition = true;
@@ -383,8 +383,8 @@
         private System.Windows.Forms.TabPage rawTab;
         private System.Windows.Forms.TabPage screenTab;
         private System.Windows.Forms.TabControl mainTabContainer;
-        private ProxyTestGUI.RotationPanel masterRotation;
-        private ProxyTestGUI.VectorPanel masterPosition;
+        private ProxyTestGUI.RotationPanel rotationPanel;
+        private ProxyTestGUI.VectorPanel positionPanel;
         private System.Windows.Forms.TabPage proxyTab;
         private UtilLib.ProxyPanel proxyPanel;
         private System.Windows.Forms.TabPage networkTab;

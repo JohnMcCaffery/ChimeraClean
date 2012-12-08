@@ -65,19 +65,23 @@ namespace ChimeraLib.Controls {
                 heightValue.Value = new decimal(window.Height / 10.0);
                 diagonalSlider.Value = (int) (diagonalInch * 10);
                 diagonalValue.Value = new decimal(diagonalInch);
-                fovSlider.Value = (int)(window.FieldOfView * Rotation.RAD2DEG * 100);
-                fovValue.Value = new decimal(window.FieldOfView * Rotation.RAD2DEG);
+                if (window.FieldOfView < Math.PI) {
+                    fovSlider.Value = (int)(window.FieldOfView * Rotation.RAD2DEG * 100);
+                    fovValue.Value = new decimal(window.FieldOfView * Rotation.RAD2DEG);
+                }
                 aspectRatioValue.Value = new decimal(window.AspectRatio);
                 if (Math.Abs(aspectRatio - aspectRatioValue.Value) > ASPECT_RATIO_TOLERANCE) {
                     aspectRatioWValue.Value = new decimal(window.Width);
                     aspectRatioHValue.Value = new decimal(window.Height);
                 }
-                screenPositionPanel.Value = window.ScreenPosition / 100f;
-                eyeOffsetPanel.Value = window.EyeOffset / 10f;
+                screenPositionPanel.Value = window.ScreenPosition / 10f;
+                eyeOffsetPanel.Value = window.EyePosition / 10f;
                 rotationOffsetPanel.Rotation = window.RotationOffset.Quaternion;
                 fovLabel.Text = "Field of View (radians): " + Math.Round(window.FieldOfView, 5);
-                widthLabel.Text = "Normalized Width (x offset / width): " + Math.Round(window.ScreenPosition.X / window.Width, 5);
-                heightLabel.Text = "Normalized Height (y offset / height): " + Math.Round(window.ScreenPosition.Y / window.Height, 5);
+                widthLabel.Text = "Normalized Width (h offset / width): " + Math.Round(window.FrustumOffsetH / window.Width, 5);
+                heightLabel.Text = "Normalized Height (v offset / height): " + Math.Round(window.FrustumOffsetV / window.Height, 5);
+                hOffsetLabel.Text = "Frustum Offset H: " + Math.Round(window.FrustumOffsetH / 10.0, 5);
+                vOffsetLabel.Text = "Frustum Offset V: " + Math.Round(window.FrustumOffsetV / 10.0, 5);
                 init = false;
             };
 
@@ -138,16 +142,13 @@ namespace ChimeraLib.Controls {
         }
 
         private void screenPositionPanel_OnChange(object sender, EventArgs e) {
-            if (window != null && !init) {
-                if (screenPositionPanel.Z < .01f)
-                    screenPositionPanel.Z = 0.1f;
-                window.ScreenPosition = screenPositionPanel.Value * 100f;
-            }
+            if (window != null && !init)
+                window.ScreenPosition = screenPositionPanel.Value * 10f;
         }
 
         private void eyeOffsetPanel_OnChange(object sender, EventArgs e) {
             if (window != null && !init)
-                window.EyeOffset = eyeOffsetPanel.Value * 10f;
+                window.EyePosition = eyeOffsetPanel.Value * 10f;
         }
 
         private void rotationOffsetPanel_OnChange(object sender, EventArgs e) {
