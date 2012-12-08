@@ -30,6 +30,10 @@ using ProxyTestGUI;
 using OpenMetaverse;
 using ChimeraLib;
 using ChimeraLib.Controls;
+using OpenMetaverse.Skeletal.Kinect;
+using OpenMetaverse.Skeletal;
+using OpenMetaverse.Packets;
+using GridProxy;
 
 namespace ConsoleTest {
     public partial class MasterForm : Form {
@@ -37,6 +41,7 @@ namespace ConsoleTest {
         private readonly Dictionary<string, TabPage> slaveTabs = new Dictionary<string, TabPage>();
         private readonly Dictionary<string, Color> slaveColours = new Dictionary<string, Color>();
         private bool ignorePitch = false;
+        private KinectSource k = new KinectSource();
 
         public MasterForm() : this(new CameraMaster()) { }
 
@@ -53,6 +58,44 @@ namespace ConsoleTest {
 
             addressBox.Text = master.ProxyConfig.MasterAddress;
             portBox.Text = master.ProxyConfig.MasterPort.ToString();
+
+
+            k.OnImage += imageFrame => {
+                float xScale = (float)kinectFramePanel.Width / (float)k.ImageWidth;
+                float yScale = (float)kinectFramePanel.Height / (float)k.ImageHeight;
+                int width = xScale > yScale ? (int)(kinectFramePanel.Height * ((float)k.ImageWidth / (float)k.ImageHeight)) : kinectFramePanel.Width;
+                int height = yScale > xScale ? (int)(kinectFramePanel.Width * ((float)k.ImageHeight / (float)k.ImageWidth)) : kinectFramePanel.Height;
+
+                lock (this) {
+                    Bitmap scaled = new Bitmap(imageFrame, width, height);
+                    kinectFramePanel.Image = scaled;
+                }
+            };
+            Vector3 min = new Vector3(float.MaxValue);
+            Vector3 max = new Vector3(float.MinValue);
+            k.OnChange += position => {
+                master.Window.EyePosition = position;
+                Vector3 oldMin = min;
+                Vector3 oldMax = max;
+                if (min.X > position.X)
+                    min.X = position.X;
+                if (min.Y > position.Y)
+                    min.Y = position.Y;
+                if (min.Z > position.Z)
+                    min.Z = position.Z;
+
+                if (max.X < position.X)
+                    max.X = position.X;
+                if (max.Y < position.Y)
+                    max.Y = position.Y;
+                if (max.Z < position.Z)
+                    max.Z = position.Z;
+
+                if (oldMin != min)
+                    Console.WriteLine("Min: " + min);
+                if (oldMax != max)
+                    Console.WriteLine("Max: " + min);
+            };
 
             if (master.MasterRunning) {
                 statusLabel.Text = "Bound to " + master.MasterAddress + ":" + master.ProxyConfig.MasterPort;
@@ -87,8 +130,9 @@ namespace ConsoleTest {
                     a();
             };
             master.Window.OnEyeChange += (diff) => {
-                foreach (var slave in master.Slaves)
-                    slave.Window.ScreenPosition += diff;
+                if (master.Window.LockScreenPosition)
+                    foreach (var slave in master.Slaves)
+                        slave.Window.ScreenPosition += diff;
             };
             master.Window.OnChange += (source, args) => RefreshDrawings();
             master.OnSlaveConnected += AddSlaveTab;
@@ -99,8 +143,14 @@ namespace ConsoleTest {
         }
 
         private void RefreshDrawings() {
-            hvSplit.Panel1.Refresh();
-            hvSplit.Panel2.Refresh();
+            Action a = () => {
+                hvSplit.Panel1.Refresh();
+                hvSplit.Panel2.Refresh();
+            };
+            if (InvokeRequired)
+                Invoke(a);
+            else
+                a();
         }
 
         private void AddSlaveTab(Master.Slave slave) {
@@ -209,6 +259,7 @@ namespace ConsoleTest {
 
         private void MasterForm_FormClosing(object sender, FormClosingEventArgs e) {
             master.Stop();
+            k.Stop();
         }
 
         private void rawRotation_OnChange(object sender, EventArgs e) {
@@ -228,65 +279,116 @@ namespace ConsoleTest {
 
         private void hTab_Paint(object sender, PaintEventArgs e) {
             Vector3 origin = new Vector3(e.ClipRectangle.Width / 2, e.ClipRectangle.Height / 2f, 0f);
+            e.Graphics.DrawLine(Pens.LightGreen, 0f, origin.Y, e.ClipRectangle.Width, origin.Y);
+            e.Graphics.DrawLine(Pens.Red, origin.X, 0f, origin.X, e.ClipRectangle.Height);
+
             float scale = ((scaleBar.Maximum - scaleBar.Value) * e.ClipRectangle.Width) / scaleScale;
             foreach (var slave in master.Slaves) {
                 lock (slaveColours)
-                    DrawWindow(e.Graphics, slave.Window, origin, true, master.Window.EyeOffset, slaveColours.ContainsKey(slave.Name) ? slaveColours[slave.Name] : Color.Black, scale);
+                    DrawWindow(e.Graphics, slave.Window, origin, true, master.Window.EyePosition, slaveColours.ContainsKey(slave.Name) ? slaveColours[slave.Name] : Color.Black, scale);
             }
             DrawWindow(e.Graphics, master.Window, origin, true, Vector3.Zero, Color.Black, scale);
 
-            e.Graphics.DrawLine(Pens.LightGreen, 0f, origin.Y, e.ClipRectangle.Width, origin.Y);
-            e.Graphics.DrawLine(Pens.Red, origin.X, 0f, origin.X, e.ClipRectangle.Height);
         }
 
         private void vTab_Paint(object sender, PaintEventArgs e) {
-            Vector3 origin = new Vector3(r, e.ClipRectangle.Height / 2, 0f);
+            Vector3 origin = new Vector3(e.ClipRectangle.Width / 2f, e.ClipRectangle.Height / 2f, 0f);
+            e.Graphics.DrawLine(Pens.Red, 0f, origin.Y, e.ClipRectangle.Width, origin.Y);
+            e.Graphics.DrawLine(Pens.Blue, origin.X, 0f, origin.X, e.ClipRectangle.Height);
+
             float scale = ((scaleBar.Maximum - scaleBar.Value) * e.ClipRectangle.Width) / scaleScale;
+            //float scale = 1f;
             foreach (var slave in master.Slaves) {
                 lock (slaveColours)
-                    DrawWindow(e.Graphics, slave.Window, origin, false, master.Window.EyeOffset, slaveColours.ContainsKey(slave.Name) ? slaveColours[slave.Name] : Color.Black, scale);
+                    DrawWindow(e.Graphics, slave.Window, origin, false, master.Window.EyePosition, slaveColours.ContainsKey(slave.Name) ? slaveColours[slave.Name] : Color.Black, scale);
             }
             DrawWindow(e.Graphics, master.Window, origin, false, Vector3.Zero, Color.Black, scale);
 
-            e.Graphics.DrawLine(Pens.LightGreen, 0f, origin.Y, e.ClipRectangle.Width, origin.Y);
-            e.Graphics.DrawLine(Pens.Blue, r, 0f, r, e.ClipRectangle.Height);
         }
 
         private void DrawWindow(Graphics g, Window window, Vector3 paneOrigin, bool yaw, Vector3 originOffset, Color colour, float scale) {
-            float end1Free = (float) (((yaw ? window.Width : window.Height) / -2) + (yaw ? window.ScreenPosition.X : window.ScreenPosition.Y));
-            float end2Free = (float) (((yaw ? window.Width : window.Height) / 2) + (yaw ? window.ScreenPosition.X : window.ScreenPosition.Y));
-            float fixedEnd = window.ScreenPosition.Z;
-            Vector3 end1 = new Vector3(yaw ? end1Free : fixedEnd, yaw ? -fixedEnd : -end1Free, 0f) * scale;
-            Vector3 end2 = new Vector3(yaw ? end2Free : fixedEnd, yaw ? -fixedEnd : -end2Free, 0f) * scale;
-            Vector3 origin = (originOffset + window.EyeOffset) * scale;
-            if (!yaw)
-                origin = new Vector3(-origin.Y, origin.Z, 0f);
+            Vector3 end1 = new Vector3(yaw ? 0f : -(float)window.Height/2f, yaw ? -(float)window.Width/2f : 0f, 0f) * scale;
+            Vector3 end2 = new Vector3(yaw ? 0f :  (float)window.Height/2f, yaw ?  (float)window.Width/2f : 0f, 0f) * scale;
+            Vector3 origin = (originOffset + window.EyePosition) * scale;
+            Vector3 screenPosition = window.ScreenPosition * scale;
+            Vector3 diff = screenPosition - origin;
 
-            end1 += origin;
-            end2 += origin;
+            Quaternion q = Quaternion.CreateFromEulers(0f, 0f, (float) Rotation.DEG2RAD * window.RotationOffset.Yaw);
+            Vector3 lookAt = new Vector3(window.RotationOffset.LookAtVector.X, window.RotationOffset.LookAtVector.Y, 0f);
 
-            float angle = yaw ? window.RotationOffset.Yaw : window.RotationOffset.Pitch;
-            Quaternion q = Quaternion.CreateFromEulers(0f, 0f, (float) (angle * Rotation.DEG2RAD));
+            //Vector3 end1Far = (((diff + end1) - origin) * 3) + origin + paneOrigin;
+            //Vector3 end2Far = (((diff + end2) - origin) * 3) + origin + paneOrigin;
+
+            if (!yaw) {
+                screenPosition = to2DV(screenPosition);
+                diff = to2DV(diff);
+                lookAt = to2DV(window.RotationOffset.LookAtVector);
+                origin = screenPosition - diff;
+                q = Quaternion.CreateFromEulers(0f, 0f, (float)Rotation.DEG2RAD * window.RotationOffset.Pitch);
+            }
+
+            float lookatDistance = Vector3.Dot(diff, Vector3.Normalize(lookAt));
+            lookAt = new Vector3(yaw ? lookatDistance : 0f, yaw ? 0f : lookatDistance, 0f);
+
+            lookAt *= q;
             end1 *= q;
             end2 *= q;
 
-            origin += paneOrigin;
-            g.DrawLine(new Pen(colour), toPoint(end1 + paneOrigin), toPoint(end2 + paneOrigin));
-            g.DrawLine(new Pen(colour), toPoint(origin), toPoint((end1 * 3) + origin));
-            g.DrawLine(new Pen(colour), toPoint(origin), toPoint((end2 * 3) + origin));
-            g.FillEllipse(new SolidBrush(colour), origin.X - r, origin.Y - r, r * 2, r * 2);
+            Vector3 cross1 = screenPosition + (Vector3.Normalize(lookAt) * 10f);
+            Vector3 cross2 = screenPosition + (Vector3.Normalize(lookAt) * -10f);
+
+            end1 += diff + origin;
+            end2 += diff + origin;
+            lookAt += origin;
+
+            g.DrawLine(new Pen(colour), toPoint(end1, paneOrigin, true), toPoint(end2, paneOrigin, true));
+            g.DrawLine(new Pen(colour), toPoint(cross1, paneOrigin, true), toPoint(cross2, paneOrigin, true));
+            g.DrawLine(new Pen(colour), toPoint(origin, paneOrigin, true), toPoint(end1, paneOrigin, true));
+            g.DrawLine(new Pen(colour), toPoint(origin, paneOrigin, true), toPoint(end2, paneOrigin, true));
+            g.DrawLine(new Pen(colour), toPoint(origin, paneOrigin, true), toPoint(lookAt, paneOrigin, true));
+            Point centre = toPoint(origin, paneOrigin, true);
+            g.FillEllipse(new SolidBrush(colour), centre.X - r, centre.Y - r, r * 2, r * 2);
+            /*
+            if (yaw)
+                DrawH(origin, end1, end2, screenPosition, lookAt, paneOrigin, colour, cross1, cross2);
+            else
+                DrawV();
+            */
         }
 
-        public static Point toPoint(Vector2 v) {
-            return new Point((int) v.X, (int) v.Y);
+        private Vector3 to2DV(Vector3 v) {
+            return new Vector3(v.Z, new Vector2(v.X, v.Y).Length(), 0f);
         }
+
+        /*
+        private void DrawH(Vector3 origin, Vector3 end1, Vector3 end2, Vector3 screenPosition, Vector3 lookAt, Vector3 paneOrigin, Color colour, Vector3 cross1, Vector3 cross2) {
+            g.DrawLine(new Pen(colour), toPoint(end1, paneOrigin, true), toPoint(end2, paneOrigin, true));
+            g.DrawLine(new Pen(colour), toPoint(cross1, paneOrigin, true), toPoint(cross2, paneOrigin, true));
+            g.DrawLine(new Pen(colour), toPoint(origin, paneOrigin, true), toPoint(end1, paneOrigin, true));
+            g.DrawLine(new Pen(colour), toPoint(origin, paneOrigin, true), toPoint(end2, paneOrigin, true));
+            g.DrawLine(new Pen(colour), toPoint(origin, paneOrigin, true), toPoint(lookAt, paneOrigin, true));
+            Point centre = toPoint(origin, paneOrigin, true);
+            g.FillEllipse(new SolidBrush(colour), centre.X - r, centre.Y - r, r * 2, r * 2);
+        }
+        */
+
         /// <summary>
         /// Only takes the x and y component when creating the point
         /// </summary>
         /// <param name="v"></param>
         /// <returns></returns>
-        public static Point toPoint(Vector3 v) {
-            return new Point((int) v.X, (int) v.Y);
+        public static Point toPoint(Vector3 v, Vector3 centre, bool yaw) {
+            return new Point((int)(v.Y + centre.X), (int)(centre.Y - v.X));
+            /*
+            if (yaw)
+                return new Point((int)(v.Y + centre.X), (int)(centre.Y - v.X));
+            else {
+                double x = Math.Sqrt(Math.Pow(v.X, 2) + Math.Pow(v.Y, 2));
+                if (Vector3.Cross(new Vector3(v.X, v.Y, 0f), Vector3.UnitX).Z < 0f)
+                    x *= -1;
+                return new Point((int)(centre.X + x), (int)(centre.Y - v.Z));
+            }
+            */
         }
         public static Point combine(Point op1, Point op2) {
             return new Point(op1.X + op2.X, op2.Y + op1.Y);
@@ -432,6 +534,52 @@ namespace ConsoleTest {
 
         private void scaleBar_Scroll(object sender, EventArgs e) {
             RefreshDrawings();
+        }
+
+        private void UpdateMaster() {
+            SetFollowCamPropertiesPacket cameraPacket = new SetFollowCamPropertiesPacket();
+            cameraPacket.CameraProperty = new SetFollowCamPropertiesPacket.CameraPropertyBlock[22];
+            for (int i = 0; i < 22; i++) {
+                cameraPacket.CameraProperty[i] = new SetFollowCamPropertiesPacket.CameraPropertyBlock();
+                cameraPacket.CameraProperty[i].Type = i + 1;
+            }
+
+            Rotation finalRot = new Rotation(rawRotation.Pitch + master.Rotation.Pitch, rawRotation.Yaw + master.Rotation.Yaw);
+            Vector3 finalPos = rawPosition.Value + (master.Window.EyePosition / 1000f);
+            Vector3 lookAt = finalPos + finalRot.LookAtVector;
+            cameraPacket.CameraProperty[0].Value = 0;
+            cameraPacket.CameraProperty[1].Value = 0f;
+            cameraPacket.CameraProperty[2].Value = 0f;
+            cameraPacket.CameraProperty[3].Value = 0f;
+            cameraPacket.CameraProperty[4].Value = 0f;
+            cameraPacket.CameraProperty[5].Value = 0f;
+            cameraPacket.CameraProperty[6].Value = 0f;
+            cameraPacket.CameraProperty[7].Value = 0f;
+            cameraPacket.CameraProperty[8].Value = 0f;
+            cameraPacket.CameraProperty[9].Value = 0f;
+            cameraPacket.CameraProperty[10].Value = 0f;
+            cameraPacket.CameraProperty[11].Value = 1f; //enable
+            cameraPacket.CameraProperty[12].Value = 0f;
+            cameraPacket.CameraProperty[13].Value = finalPos.X;
+            cameraPacket.CameraProperty[14].Value = finalPos.Y;
+            cameraPacket.CameraProperty[15].Value = finalPos.Z;
+            cameraPacket.CameraProperty[16].Value = 0f;
+            cameraPacket.CameraProperty[17].Value = lookAt.X;
+            cameraPacket.CameraProperty[18].Value = lookAt.Y;
+            cameraPacket.CameraProperty[19].Value = lookAt.Z;
+            cameraPacket.CameraProperty[20].Value = 1f;
+            cameraPacket.CameraProperty[21].Value = 1f;
+
+            SetCameraPropertiesPacket screenPacket = new SetCameraPropertiesPacket();
+            screenPacket.CameraProperty = new SetCameraPropertiesPacket.CameraPropertyBlock();
+            screenPacket.CameraProperty.FrustumOffsetX = (float)(master.Window.FrustumOffsetH / 100.0);
+            screenPacket.CameraProperty.FrustumOffsetY = (float)(master.Window.FrustumOffsetV / 100.0);
+            screenPacket.CameraProperty.CameraAngle = (float)master.Window.FieldOfView;
+            screenPacket.CameraProperty.AspectRatio = (float)master.Window.Width / master.Window.Height;
+            screenPacket.CameraProperty.AspectSet = true;
+
+            master.InjectPacket(cameraPacket, Direction.Incoming);
+            master.InjectPacket(screenPacket, Direction.Incoming);
         }
     }
 }

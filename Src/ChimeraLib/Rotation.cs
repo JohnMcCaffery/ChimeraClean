@@ -25,6 +25,10 @@ using OpenMetaverse;
 
 namespace UtilLib {
     public class Rotation {
+        public static Rotation operator +(Rotation r1, Rotation r2) {
+            return new Rotation(r1.Pitch + r2.Pitch, r1.Yaw + r2.Yaw);
+        }
+
         public static readonly double RAD2DEG = 180.0 / Math.PI;
         public static readonly double DEG2RAD = Math.PI / 180.0;
 

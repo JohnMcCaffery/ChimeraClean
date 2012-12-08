@@ -227,6 +227,7 @@ namespace UtilLib {
 
             client = new Process();
             client.StartInfo.FileName = proxyConfig.ViewerExecutable;
+            client.StartInfo.WorkingDirectory = proxyConfig.ViewerWorkingDirectory;
             if (proxyConfig.UseGrid)
                 client.StartInfo.Arguments = "--grid " + proxyConfig.LoginGrid;
             else
