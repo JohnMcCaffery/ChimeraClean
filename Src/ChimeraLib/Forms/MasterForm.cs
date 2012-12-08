@@ -97,6 +97,10 @@ namespace ConsoleTest {
                     Console.WriteLine("Max: " + min);
             };
 
+            //TODO this is a hack to add master control. Should be done through master.
+            master.Window.OnChange += (source, args) => UpdateMaster();
+            master.OnCameraUpdated += (source, args) => UpdateMaster();
+
             if (master.MasterRunning) {
                 statusLabel.Text = "Bound to " + master.MasterAddress + ":" + master.ProxyConfig.MasterPort;
                 bindButton.Text = "Unbind";
@@ -572,10 +576,10 @@ namespace ConsoleTest {
 
             SetCameraPropertiesPacket screenPacket = new SetCameraPropertiesPacket();
             screenPacket.CameraProperty = new SetCameraPropertiesPacket.CameraPropertyBlock();
-            screenPacket.CameraProperty.FrustumOffsetX = (float)(master.Window.FrustumOffsetH / 100.0);
-            screenPacket.CameraProperty.FrustumOffsetY = (float)(master.Window.FrustumOffsetV / 100.0);
+            screenPacket.CameraProperty.FrustumOffsetH = (float)(master.Window.FrustumOffsetH / master.Window.Width);
+            screenPacket.CameraProperty.FrustumOffsetV = (float)(master.Window.FrustumOffsetV / master.Window.Height);
             screenPacket.CameraProperty.CameraAngle = (float)master.Window.FieldOfView;
-            screenPacket.CameraProperty.AspectRatio = (float)master.Window.Width / master.Window.Height;
+            screenPacket.CameraProperty.AspectRatio = (float) (master.Window.Width / master.Window.Height);
             screenPacket.CameraProperty.AspectSet = true;
 
             master.InjectPacket(cameraPacket, Direction.Incoming);

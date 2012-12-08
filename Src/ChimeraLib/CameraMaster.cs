@@ -77,8 +77,8 @@ namespace UtilLib {
             Window.OnChange += (source, args) => {
                 SetCameraPropertiesPacket screenPacket = new SetCameraPropertiesPacket();
                 screenPacket.CameraProperty.CameraAngle = (float)Window.FieldOfView;
-                screenPacket.CameraProperty.FrustumOffsetX = (float)(Window.ScreenPosition.X / Window.Width);
-                screenPacket.CameraProperty.FrustumOffsetY = (float)(Window.ScreenPosition.Y / Window.Height);
+                screenPacket.CameraProperty.FrustumOffsetH = (float)(Window.ScreenPosition.X / Window.Width);
+                screenPacket.CameraProperty.FrustumOffsetV = (float)(Window.ScreenPosition.Y / Window.Height);
 
 
                 Byte[] bytes = screenPacket.ToBytes();
@@ -153,8 +153,8 @@ namespace UtilLib {
         private void CreatePacket() {
             SetCameraPropertiesPacket screenPacket = new SetCameraPropertiesPacket();
             screenPacket.CameraProperty.CameraAngle = (float) Window.FieldOfView;
-            screenPacket.CameraProperty.FrustumOffsetX = (float) (Window.ScreenPosition.X / Window.Width);
-            screenPacket.CameraProperty.FrustumOffsetY = (float) (Window.ScreenPosition.Y / Window.Height);
+            screenPacket.CameraProperty.FrustumOffsetH = (float) (Window.ScreenPosition.X / Window.Width);
+            screenPacket.CameraProperty.FrustumOffsetV = (float) (Window.ScreenPosition.Y / Window.Height);
 
             AgentUpdatePacket cameraPacket = (AgentUpdatePacket) Packet.BuildPacket(PacketType.AgentUpdate);
             cameraPacket.AgentData.AgentID = UUID.Random();
@@ -227,7 +227,7 @@ namespace UtilLib {
         }
 
 
-        internal void InjectPacket(SetFollowCamPropertiesPacket packet, Direction direction) {
+        internal void InjectPacket(Packet packet, Direction direction) {
             if (ProxyRunning)
                 clientProxy.InjectPacket(packet, direction);
         }
