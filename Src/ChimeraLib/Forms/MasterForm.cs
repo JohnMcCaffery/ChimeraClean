@@ -80,7 +80,7 @@ namespace ConsoleTest {
 
             //TODO this is a hack to add master control. Should be done through master.
             master.Window.OnChange += (source, args) => UpdateMaster();
-            master.OnCameraUpdated += (source, args) => UpdateMaster();
+            //master.OnCameraUpdated += (source, args) => UpdateMaster();
 
             if (master.MasterRunning) {
                 statusLabel.Text = "Bound to " + master.MasterAddress + ":" + master.ProxyConfig.MasterPort;
@@ -110,7 +110,7 @@ namespace ConsoleTest {
                     forwardedLabel.Text = master.PacketsForwarded.ToString();
                 };
                 if (InvokeRequired)
-                    Invoke(a);
+                    BeginInvoke(a);
                 else
                     a();
             };
@@ -301,9 +301,6 @@ namespace ConsoleTest {
             Quaternion q = Quaternion.CreateFromEulers(0f, 0f, (float) Rotation.DEG2RAD * window.RotationOffset.Yaw);
             Vector3 lookAt = new Vector3(window.RotationOffset.LookAtVector.X, window.RotationOffset.LookAtVector.Y, 0f);
 
-            //Vector3 end1Far = (((diff + end1) - origin) * 3) + origin + paneOrigin;
-            //Vector3 end2Far = (((diff + end2) - origin) * 3) + origin + paneOrigin;
-
             if (!yaw) {
                 screenPosition = to2DV(screenPosition);
                 diff = to2DV(diff);
@@ -319,8 +316,10 @@ namespace ConsoleTest {
             end1 *= q;
             end2 *= q;
 
-            Vector3 cross1 = screenPosition + (Vector3.Normalize(lookAt) * 10f);
-            Vector3 cross2 = screenPosition + (Vector3.Normalize(lookAt) * -10f);
+            Vector3 cross1 = screenPosition + (Vector3.Normalize(lookAt) * 30f * scale);
+            Vector3 cross2 = screenPosition + (Vector3.Normalize(lookAt) * -30f * scale);
+            Vector3 end1Far = ((end1 + diff) * 3) + origin;
+            Vector3 end2Far = ((end2 + diff) * 3) + origin;
 
             end1 += diff + origin;
             end2 += diff + origin;
@@ -328,34 +327,16 @@ namespace ConsoleTest {
 
             g.DrawLine(new Pen(colour), toPoint(end1, paneOrigin, true), toPoint(end2, paneOrigin, true));
             g.DrawLine(new Pen(colour), toPoint(cross1, paneOrigin, true), toPoint(cross2, paneOrigin, true));
-            g.DrawLine(new Pen(colour), toPoint(origin, paneOrigin, true), toPoint(end1, paneOrigin, true));
-            g.DrawLine(new Pen(colour), toPoint(origin, paneOrigin, true), toPoint(end2, paneOrigin, true));
+            g.DrawLine(new Pen(colour), toPoint(origin, paneOrigin, true), toPoint(end1Far, paneOrigin, true));
+            g.DrawLine(new Pen(colour), toPoint(origin, paneOrigin, true), toPoint(end2Far, paneOrigin, true));
             g.DrawLine(new Pen(colour), toPoint(origin, paneOrigin, true), toPoint(lookAt, paneOrigin, true));
             Point centre = toPoint(origin, paneOrigin, true);
             g.FillEllipse(new SolidBrush(colour), centre.X - r, centre.Y - r, r * 2, r * 2);
-            /*
-            if (yaw)
-                DrawH(origin, end1, end2, screenPosition, lookAt, paneOrigin, colour, cross1, cross2);
-            else
-                DrawV();
-            */
         }
 
         private Vector3 to2DV(Vector3 v) {
             return new Vector3(v.Z, new Vector2(v.X, v.Y).Length(), 0f);
         }
-
-        /*
-        private void DrawH(Vector3 origin, Vector3 end1, Vector3 end2, Vector3 screenPosition, Vector3 lookAt, Vector3 paneOrigin, Color colour, Vector3 cross1, Vector3 cross2) {
-            g.DrawLine(new Pen(colour), toPoint(end1, paneOrigin, true), toPoint(end2, paneOrigin, true));
-            g.DrawLine(new Pen(colour), toPoint(cross1, paneOrigin, true), toPoint(cross2, paneOrigin, true));
-            g.DrawLine(new Pen(colour), toPoint(origin, paneOrigin, true), toPoint(end1, paneOrigin, true));
-            g.DrawLine(new Pen(colour), toPoint(origin, paneOrigin, true), toPoint(end2, paneOrigin, true));
-            g.DrawLine(new Pen(colour), toPoint(origin, paneOrigin, true), toPoint(lookAt, paneOrigin, true));
-            Point centre = toPoint(origin, paneOrigin, true);
-            g.FillEllipse(new SolidBrush(colour), centre.X - r, centre.Y - r, r * 2, r * 2);
-        }
-        */
 
         /// <summary>
         /// Only takes the x and y component when creating the point
@@ -364,16 +345,6 @@ namespace ConsoleTest {
         /// <returns></returns>
         public static Point toPoint(Vector3 v, Vector3 centre, bool yaw) {
             return new Point((int)(v.Y + centre.X), (int)(centre.Y - v.X));
-            /*
-            if (yaw)
-                return new Point((int)(v.Y + centre.X), (int)(centre.Y - v.X));
-            else {
-                double x = Math.Sqrt(Math.Pow(v.X, 2) + Math.Pow(v.Y, 2));
-                if (Vector3.Cross(new Vector3(v.X, v.Y, 0f), Vector3.UnitX).Z < 0f)
-                    x *= -1;
-                return new Point((int)(centre.X + x), (int)(centre.Y - v.Z));
-            }
-            */
         }
         public static Point combine(Point op1, Point op2) {
             return new Point(op1.X + op2.X, op2.Y + op1.Y);
@@ -529,8 +500,13 @@ namespace ConsoleTest {
                 cameraPacket.CameraProperty[i].Type = i + 1;
             }
 
-            Rotation finalRot = new Rotation(rawRotation.Pitch + master.Rotation.Pitch, rawRotation.Yaw + master.Rotation.Yaw);
-            Vector3 finalPos = rawPosition.Value + (master.Window.EyePosition / 1000f);
+            Rotation finalRot = master.Rotation;
+            if (rotationCheck.Checked)
+                finalRot = new Rotation(master.Rotation.Pitch + master.Window.RotationOffset.Pitch, master.Rotation.Yaw + master.Window.RotationOffset.Yaw);
+            Vector3 finalPos = master.Position;
+            if (eyeOffsetCheck.Checked)
+                finalPos = master.Position + ((master.Window.EyePosition * master.Rotation.Quaternion) / 1000f);
+            //Vector3 lookAt = finalPos + master.Rotation.LookAtVector;
             Vector3 lookAt = finalPos + finalRot.LookAtVector;
             cameraPacket.CameraProperty[0].Value = 0;
             cameraPacket.CameraProperty[1].Value = 0f;
@@ -557,13 +533,24 @@ namespace ConsoleTest {
 
             SetCameraPropertiesPacket screenPacket = new SetCameraPropertiesPacket();
             screenPacket.CameraProperty = new SetCameraPropertiesPacket.CameraPropertyBlock();
-            screenPacket.CameraProperty.FrustumOffsetH = (float)(master.Window.FrustumOffsetH / master.Window.Width);
-            screenPacket.CameraProperty.FrustumOffsetV = (float)(master.Window.FrustumOffsetV / master.Window.Height);
-            screenPacket.CameraProperty.CameraAngle = (float)master.Window.FieldOfView;
+            screenPacket.CameraProperty.FrustumOffsetH = 0f;
+            screenPacket.CameraProperty.FrustumOffsetV = 0f;
+            screenPacket.CameraProperty.CameraAngle = 1f;
             screenPacket.CameraProperty.AspectRatio = (float) (master.Window.Width / master.Window.Height);
-            screenPacket.CameraProperty.AspectSet = true;
+            screenPacket.CameraProperty.AspectSet = false;
 
-            master.InjectPacket(cameraPacket, Direction.Incoming);
+            if (frustumHCheck.Checked)
+                screenPacket.CameraProperty.FrustumOffsetH = (float)(master.Window.FrustumOffsetH / master.Window.Width);
+            if (frustumVCheck.Checked)
+                screenPacket.CameraProperty.FrustumOffsetV = (float)(master.Window.FrustumOffsetV / master.Window.Height);
+            if (fovCheck.Checked)
+                screenPacket.CameraProperty.CameraAngle = (float) master.Window.FieldOfView;
+            if (aspectRatioCheck.Checked)
+                screenPacket.CameraProperty.AspectSet = true;
+
+
+            if (eyeOffsetCheck.Checked || rotationCheck.Checked)
+                master.InjectPacket(cameraPacket, Direction.Incoming);
             master.InjectPacket(screenPacket, Direction.Incoming);
         }
     }

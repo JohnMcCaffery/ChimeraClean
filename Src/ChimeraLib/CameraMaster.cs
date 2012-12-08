@@ -195,8 +195,12 @@ namespace UtilLib {
             AgentUpdatePacket packet = (AgentUpdatePacket)p;
 
             processingPacket = true;
-            Position = packet.AgentData.CameraCenter;
-            Rotation.LookAtVector = packet.AgentData.CameraAtAxis;
+            bool posEq = Equal(position, packet.AgentData.CameraCenter);
+            bool modEq = Equal(packet.AgentData.CameraCenter, ModifiedPosition);
+            if (!Equal(position,packet.AgentData.CameraCenter) && !Equal(packet.AgentData.CameraCenter, ModifiedPosition))
+                Position = packet.AgentData.CameraCenter;
+            if (!Equal(rotation.LookAtVector, packet.AgentData.CameraAtAxis) && !Equal(packet.AgentData.CameraAtAxis, Rotation.LookAtVector))
+                Rotation.LookAtVector = packet.AgentData.CameraAtAxis;
             processingPacket = false;
 
             //packetsForwarded++;
@@ -207,10 +211,24 @@ namespace UtilLib {
                 OnCameraUpdated(this, null);
         }
 
+        private bool Equal(Vector3 v1, Vector3 v2) {
+            return Math.Abs(v1.X - v2.X) < TOLERANCE && Math.Abs(v1.Y - v2.Y) < TOLERANCE && Math.Abs(v1.Z - v2.Z) < TOLERANCE;
+        }
+
+        private static readonly double TOLERANCE = .001f;
+
 
         internal void InjectPacket(Packet packet, Direction direction) {
             if (ProxyRunning)
                 clientProxy.InjectPacket(packet, direction);
+        }
+
+        public Vector3 ModifiedPosition {
+            get { return Position + ((Window.EyePosition * Rotation.Quaternion) / 1000f); }
+        }
+
+        public Rotation ModifiedRotation {
+            get { return new Rotation(Rotation.Pitch + Window.RotationOffset.Pitch, Rotation.Yaw + Window.RotationOffset.Yaw); }
         }
     }
 }

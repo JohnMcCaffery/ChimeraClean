@@ -154,7 +154,8 @@ namespace UtilLib {
             public string ViewerExecutable {
                 get { return viewerExe; }
                 set { viewerExe = value; }
-            }
+            }
+
             public string ViewerWorkingDirectory {
                 get { return workingDir; }
                 set { workingDir = value; }

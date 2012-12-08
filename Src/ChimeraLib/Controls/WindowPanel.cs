@@ -59,14 +59,14 @@ namespace ChimeraLib.Controls {
                 init = true;
                 decimal aspectRatio = aspectRatioValue.Value;
                 lockScreenCheck.Checked = window.LockScreenPosition;
-                widthSlider.Value = (int) (window.Width);
+                widthSlider.Value =  (int) Math.Round(window.Width);
                 widthValue.Value = new decimal(window.Width / 10.0);
-                heightSlider.Value = (int) (window.Height);
+                heightSlider.Value = (int) Math.Round(window.Height);
                 heightValue.Value = new decimal(window.Height / 10.0);
-                diagonalSlider.Value = (int) (diagonalInch * 10);
+                diagonalSlider.Value = (int) Math.Round(diagonalInch * 10);
                 diagonalValue.Value = new decimal(diagonalInch);
                 if (window.FieldOfView < Math.PI) {
-                    fovSlider.Value = (int)(window.FieldOfView * Rotation.RAD2DEG * 100);
+                    fovSlider.Value = (int)Math.Round(window.FieldOfView * Rotation.RAD2DEG * 100);
                     fovValue.Value = new decimal(window.FieldOfView * Rotation.RAD2DEG);
                 }
                 aspectRatioValue.Value = new decimal(window.AspectRatio);
