@@ -97,9 +97,9 @@ namespace UtilLib {
                     OnUpdateReceivedFromMaster(ap.AgentData.CameraCenter, ap.AgentData.CameraAtAxis);
             } else if (p.Type == PacketType.SetCameraProperties) {
                 SetCameraPropertiesPacket cp = (SetCameraPropertiesPacket)p;
-                window.ScreenPosition = new Vector3(cp.CameraProperty.FrustumOffsetX, cp.CameraProperty.FrustumOffsetY, window.ScreenPosition.Z) * 100;
-                window.Width = cp.CameraProperty.FrustumOffsetX * 100;
-                window.Height = cp.CameraProperty.FrustumOffsetY * 100;
+                window.ScreenPosition = new Vector3(cp.CameraProperty.FrustumOffsetH, cp.CameraProperty.FrustumOffsetV, window.ScreenPosition.Z) * 100;
+                window.Width = cp.CameraProperty.FrustumOffsetH * 100;
+                window.Height = cp.CameraProperty.FrustumOffsetV * 100;
                 window.FieldOfView = cp.CameraProperty.CameraAngle;
             }
             return p;
@@ -272,9 +272,11 @@ namespace UtilLib {
 
                 SetCameraPropertiesPacket screenPacket = new SetCameraPropertiesPacket();
                 screenPacket.CameraProperty = new SetCameraPropertiesPacket.CameraPropertyBlock();
-                screenPacket.CameraProperty.FrustumOffsetX = (float)(window.ScreenPosition.X / 100.0);
-                screenPacket.CameraProperty.FrustumOffsetY = (float)(window.ScreenPosition.Y / 100.0);
+                screenPacket.CameraProperty.FrustumOffsetH = (float)(window.FrustumOffsetH / window.Width);
+                screenPacket.CameraProperty.FrustumOffsetV = (float)(window.FrustumOffsetV / window.Height);
                 screenPacket.CameraProperty.CameraAngle = (float)window.FieldOfView;
+                screenPacket.CameraProperty.AspectRatio = (float)(window.Width / window.Height);
+                screenPacket.CameraProperty.AspectSet = true;
 
                 clientProxy.InjectPacket(cameraPacket, Direction.Incoming);
                 clientProxy.InjectPacket(screenPacket, Direction.Incoming);

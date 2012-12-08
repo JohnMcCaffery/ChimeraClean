@@ -57,9 +57,9 @@ namespace ChimeraLib {
         }
 
         void supplier_OnSkeletonFrame(object sender, SkeletonFrameEventArgs e) {
-            bmp = CopyDataToBitmap(e.Image.ToArray());
-            if (OnImage != null)
-                OnImage(bmp);
+            //bmp = CopyDataToBitmap(e.Image.ToArray());
+            //if (OnImage != null)
+                //OnImage(bmp);
 
             int id = (int)sender;
             if (!_lastUpdated.ContainsKey(id) && id != 0) {
