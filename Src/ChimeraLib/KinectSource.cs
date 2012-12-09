@@ -16,9 +16,9 @@ namespace ChimeraLib {
         private readonly List<KeyValuePair<int, DateTime>> _users = new List<KeyValuePair<int, DateTime>>();
         private readonly KinectSkeletonFrameSupplier supplier;
         private readonly object _imageLock = new object();
-        private readonly Rotation rotation;
+        private readonly Rotation rotation = new Rotation(0, 180);
         private readonly Vector3 scale = new Vector3 (1000f);
-        private Vector3 offset;
+        private Vector3 offset = new Vector3(400f, 0f, 0f);
 
         private int _locked = -1;
         private Bitmap bmp;
