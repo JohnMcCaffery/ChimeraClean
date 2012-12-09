@@ -56,6 +56,9 @@ namespace ConsoleTest {
             rawPosition.Value = master.Position;
             cameraOffsetPanel.Value = master.CameraOffset;
             rawRotation.LookAtVector = master.Rotation.LookAtVector;
+            kinectOffsetPanel.Value = k.Offset;
+            kinectRotationPanel.Pitch = k.Rotation.Pitch;
+            kinectRotationPanel.Yaw = k.Rotation.Yaw;
 
             addressBox.Text = master.ProxyConfig.MasterAddress;
             portBox.Text = master.ProxyConfig.MasterPort.ToString();
