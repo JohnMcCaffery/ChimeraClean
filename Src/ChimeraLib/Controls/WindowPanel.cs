@@ -15,7 +15,7 @@ namespace ChimeraLib.Controls {
         private static double INCH2MM = 25.4;
         private Window window;
 
-        public WindowPanel() : this(new Window("Window")) {
+        public WindowPanel() : this(new Window()) {
         }
         public WindowPanel(Window window) {
             InitializeComponent();

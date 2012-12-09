@@ -20,10 +20,10 @@ namespace ChimeraLib {
         private readonly Rotation rotation = new Rotation(0, 180);
         private readonly Vector3 scale = new Vector3 (1000f);
         private Vector3 position = new Vector3(400f, 0f, 0f);
+        private Vector3 rawValue = Vector3.Zero;
 
         private int _locked = -1;
         private Bitmap bmp;
-        private Vector3 head;
 
 
         public bool Started {
@@ -33,8 +33,16 @@ namespace ChimeraLib {
             get { return bmp; }
         }
 
+        public Vector3 RawValue {
+            get { return rawValue; }
+            set { 
+                rawValue = value;
+                if (OnChange != null)
+                    OnChange(HeadPosition);
+            }
+        }
         public Vector3 HeadPosition {
-            get { return head; }
+            get { return ((rawValue * scale) * rotation.Quaternion) + position; }
         }
         /// <summary>
         /// Where the kinect is positioned in real space (mm).
@@ -64,18 +72,21 @@ namespace ChimeraLib {
 
         public event Action<Bitmap> OnImage;
 
-        public KinectSource() {            DotNetConfigSource configSource = new DotNetConfigSource(AppDomain.CurrentDomain.SetupInformation.ConfigurationFile);
-            IConfig config = configSource.Configs["Kinect"];
-            if (config != null) {
-                float posX = config.GetFloat("PositionX", 0f);
-                float posY = config.GetFloat("PositionY", 0f);
-                float posZ = config.GetFloat("PositionZ", 0f);
+        public KinectSource() {
+            if (AppDomain.CurrentDomain.SetupInformation.ConfigurationFile != null) {
+                DotNetConfigSource configSource = new DotNetConfigSource(AppDomain.CurrentDomain.SetupInformation.ConfigurationFile);
+                IConfig config = configSource.Configs["Kinect"];
+                if (config != null) {
+                    float posX = config.GetFloat("PositionX", 0f);
+                    float posY = config.GetFloat("PositionY", 0f);
+                    float posZ = config.GetFloat("PositionZ", 0f);
 
-                float pitch = config.GetFloat("Pitch", 0f);
-                float yaw = config.GetFloat("Yaw", 0f);
+                    float pitch = config.GetFloat("Pitch", 0f);
+                    float yaw = config.GetFloat("Yaw", 0f);
 
-                position = new Vector3(posX, posY, posZ);
-                rotation = new Rotation(pitch, yaw);
+                    position = new Vector3(posX, posY, posZ);
+                    rotation = new Rotation(pitch, yaw);
+                }
             }
             supplier = new KinectSkeletonFrameSupplier();
             try {
@@ -128,9 +139,9 @@ namespace ChimeraLib {
             if (id != _locked || id == 0)
                 return;
 
-            head = ((e.Skeleton.GetJoint("Head").Position * scale) * rotation.Quaternion) + position;
+            rawValue = e.Skeleton.GetJoint("Head").Position;
             if (OnChange != null)
-                OnChange(head);
+                OnChange(HeadPosition);
         }
         
         /// <summary>

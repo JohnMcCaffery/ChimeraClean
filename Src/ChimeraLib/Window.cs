@@ -24,6 +24,8 @@ namespace ChimeraLib {
         }
 
         public Window(string name) : this() {
+            if (AppDomain.CurrentDomain.SetupInformation.ConfigurationFile == null)
+                return;
             DotNetConfigSource configSource = new DotNetConfigSource(AppDomain.CurrentDomain.SetupInformation.ConfigurationFile);
             IConfig config = configSource.Configs[name];
             if (config != null) {
@@ -31,7 +33,7 @@ namespace ChimeraLib {
                 float posY = config.GetFloat("PositionY", 0f);
                 float posZ = config.GetFloat("PositionZ", 0f);
 
-                float eyeX = config.GetFloat("EyeX", 0f);
+                float eyeX = config.GetFloat("EyeX", -1000f);
                 float eyeY = config.GetFloat("EyeY", 0f);
                 float eyeZ = config.GetFloat("EyeZ", 0f);
 
@@ -39,7 +41,7 @@ namespace ChimeraLib {
                 float yaw = config.GetFloat("Yaw", 0f);
 
                 aspectRatio = config.GetDouble("AspectRatio", H / W);
-                Diagonal = config.GetDouble("Diagonal", mmDiagonal * 25.4);
+                Diagonal = config.GetDouble("Diagonal", mmDiagonal);
 
                 screenPosition = new Vector3(posX, posY, posZ);
                 eyePosition = new Vector3(eyeX, eyeY, eyeZ);
@@ -157,7 +159,7 @@ namespace ChimeraLib {
         }
 
         /// <summary>
-        /// The diagonal size of the screen. Specified in inches.
+        /// The diagonal size of the screen. Specified in mm.
         /// This is included for convenience. Most screens are rated in diagonal inches.
         /// Changing this will change the width and height according to the aspect ratio.
         /// </summary>
