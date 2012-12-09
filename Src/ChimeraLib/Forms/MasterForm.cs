@@ -55,9 +55,8 @@ namespace ConsoleTest {
             };
             Vector3 min = new Vector3(float.MaxValue);
             Vector3 max = new Vector3(float.MinValue);
-            Vector3 scale = new Vector3(-1000f, 1000f, 1000f);
             k.OnChange += position => {
-                master.Window.EyePosition = position * scale;
+                master.Window.EyePosition = position;
                 Vector3 oldMin = min;
                 Vector3 oldMax = max;
                 if (min.X > position.X)
