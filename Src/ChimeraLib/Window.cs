@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using OpenMetaverse;
 using UtilLib;
+using Nini.Config;
 
 namespace ChimeraLib {
     public class Window {
@@ -17,10 +18,33 @@ namespace ChimeraLib {
         private bool lockFrustum = true;
 
         public static readonly double TOLERANCE = 0.0001;
-        //private float height = 720f;
 
         public Window() {
             rotation.OnChange += RotationChanged;
+        }
+
+        public Window(string name) : this() {
+            DotNetConfigSource configSource = new DotNetConfigSource(AppDomain.CurrentDomain.SetupInformation.ConfigurationFile);
+            IConfig config = configSource.Configs[name];
+            if (config != null) {
+                float posX = config.GetFloat("PositionX", 0f);
+                float posY = config.GetFloat("PositionY", 0f);
+                float posZ = config.GetFloat("PositionZ", 0f);
+
+                float eyeX = config.GetFloat("EyeX", 0f);
+                float eyeY = config.GetFloat("EyeY", 0f);
+                float eyeZ = config.GetFloat("EyeZ", 0f);
+
+                float pitch = config.GetFloat("Pitch", 0f);
+                float yaw = config.GetFloat("Yaw", 0f);
+
+                aspectRatio = config.GetDouble("AspectRatio", H / W);
+                Diagonal = config.GetDouble("Diagonal", mmDiagonal * 25.4);
+
+                screenPosition = new Vector3(posX, posY, posZ);
+                eyePosition = new Vector3(eyeX, eyeY, eyeZ);
+                rotation = new Rotation(pitch, yaw);
+            }
         }
         private void Changed() {
             if (OnChange != null)
