@@ -7,11 +7,13 @@ using UtilLib;
 
 namespace ChimeraLib {
     public class Window {
+        private static readonly double W = 385;
+        private static readonly double H = 185;
         private Rotation rotation = new Rotation(0f, 0f);
-        private Vector3 screenPosition = Vector3.UnitX * 400;
-        private Vector3 eyePosition = Vector3.Zero;
-        private double aspectRatio = 9f / 16f;
-        private double mmDiagonal = 19.0 * 25.4;
+        private Vector3 screenPosition = Vector3.Zero;
+        private Vector3 eyePosition = Vector3.UnitX * -1000;
+        private double aspectRatio = H / W;
+        private double mmDiagonal = Math.Sqrt(Math.Pow(W, 2) + Math.Pow(H, 2));
         private bool lockFrustum = true;
 
         public static readonly double TOLERANCE = 0.0001;
@@ -215,13 +217,13 @@ namespace ChimeraLib {
         }
 
         /// <summary>
-        /// How far away the screen is from the origin along the direction the screen is rotated.
+        /// How far away the screen is from the origin along the direction the screen is rotated. (mm)
         /// </summary>
         public double ScreenDistance {
-            //get { return Vector3.Dot(screenPosition - eyePosition, Vector3.Normalize(rotation.LookAtVector)); }
-            get { 
-                return (double) (screenPosition - eyePosition).Length();
-            }
+            get { return Vector3.Dot(screenPosition - eyePosition, Vector3.Normalize(rotation.LookAtVector)); }
+            //get { 
+                //return (double) (screenPosition - eyePosition).Length();
+            //}
         }
     }
 }

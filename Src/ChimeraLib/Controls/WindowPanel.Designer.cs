@@ -10,10 +10,12 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(WindowPanel));
             this.mainTab = new System.Windows.Forms.TabControl();
             this.screenTab = new System.Windows.Forms.TabPage();
-            this.screenPositionPanel = new ProxyTestGUI.VectorPanel();
-            this.heightLabel = new System.Windows.Forms.Label();
-            this.widthLabel = new System.Windows.Forms.Label();
             this.fovLabel = new System.Windows.Forms.Label();
+            this.widthLabel = new System.Windows.Forms.Label();
+            this.heightLabel = new System.Windows.Forms.Label();
+            this.lockScreenCheck = new System.Windows.Forms.CheckBox();
+            this.vOffsetLabel = new System.Windows.Forms.Label();
+            this.hOffsetLabel = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.aspectRatioValue = new System.Windows.Forms.NumericUpDown();
@@ -33,11 +35,9 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.offsetTab = new System.Windows.Forms.TabPage();
-            this.lockScreenCheck = new System.Windows.Forms.CheckBox();
             this.eyeOffsetPanel = new ProxyTestGUI.VectorPanel();
             this.rotationOffsetPanel = new ProxyTestGUI.RotationPanel();
-            this.vOffsetLabel = new System.Windows.Forms.Label();
-            this.hOffsetLabel = new System.Windows.Forms.Label();
+            this.screenPositionPanel = new ProxyTestGUI.VectorPanel();
             this.mainTab.SuspendLayout();
             this.screenTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.aspectRatioValue)).BeginInit();
@@ -51,7 +51,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.heightValue)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.widthValue)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.fovValue)).BeginInit();
-            this.offsetTab.SuspendLayout();
             this.SuspendLayout();
             // 
             // mainTab
@@ -62,18 +61,21 @@
             this.mainTab.Location = new System.Drawing.Point(0, 0);
             this.mainTab.Name = "mainTab";
             this.mainTab.SelectedIndex = 0;
-            this.mainTab.Size = new System.Drawing.Size(819, 429);
+            this.mainTab.Size = new System.Drawing.Size(637, 295);
             this.mainTab.TabIndex = 0;
             // 
             // screenTab
             // 
             this.screenTab.AutoScroll = true;
+            this.screenTab.Controls.Add(this.fovLabel);
+            this.screenTab.Controls.Add(this.widthLabel);
+            this.screenTab.Controls.Add(this.heightLabel);
+            this.screenTab.Controls.Add(this.lockScreenCheck);
+            this.screenTab.Controls.Add(this.eyeOffsetPanel);
+            this.screenTab.Controls.Add(this.rotationOffsetPanel);
             this.screenTab.Controls.Add(this.vOffsetLabel);
             this.screenTab.Controls.Add(this.hOffsetLabel);
             this.screenTab.Controls.Add(this.screenPositionPanel);
-            this.screenTab.Controls.Add(this.heightLabel);
-            this.screenTab.Controls.Add(this.widthLabel);
-            this.screenTab.Controls.Add(this.fovLabel);
             this.screenTab.Controls.Add(this.label7);
             this.screenTab.Controls.Add(this.label6);
             this.screenTab.Controls.Add(this.aspectRatioValue);
@@ -95,60 +97,72 @@
             this.screenTab.Location = new System.Drawing.Point(4, 22);
             this.screenTab.Name = "screenTab";
             this.screenTab.Padding = new System.Windows.Forms.Padding(3);
-            this.screenTab.Size = new System.Drawing.Size(811, 403);
+            this.screenTab.Size = new System.Drawing.Size(629, 269);
             this.screenTab.TabIndex = 0;
             this.screenTab.Text = "Screen";
             this.screenTab.UseVisualStyleBackColor = true;
             // 
-            // screenPositionPanel
-            // 
-            this.screenPositionPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.screenPositionPanel.DisplayName = "Screen Position (cm)";
-            this.screenPositionPanel.Location = new System.Drawing.Point(0, 0);
-            this.screenPositionPanel.Max = 4000D;
-            this.screenPositionPanel.Min = -1000D;
-            this.screenPositionPanel.Name = "screenPositionPanel";
-            this.screenPositionPanel.Size = new System.Drawing.Size(808, 98);
-            this.screenPositionPanel.TabIndex = 22;
-            this.screenPositionPanel.Value = ((OpenMetaverse.Vector3)(resources.GetObject("screenPositionPanel.Value")));
-            this.screenPositionPanel.X = 40F;
-            this.screenPositionPanel.Y = 0F;
-            this.screenPositionPanel.Z = 0F;
-            this.screenPositionPanel.OnChange += new System.EventHandler(this.screenPositionPanel_OnChange);
-            // 
-            // heightLabel
-            // 
-            this.heightLabel.AutoSize = true;
-            this.heightLabel.Location = new System.Drawing.Point(432, 232);
-            this.heightLabel.Name = "heightLabel";
-            this.heightLabel.Size = new System.Drawing.Size(184, 13);
-            this.heightLabel.TabIndex = 21;
-            this.heightLabel.Text = "Normalized Width (x offset / width):  0";
-            // 
-            // widthLabel
-            // 
-            this.widthLabel.AutoSize = true;
-            this.widthLabel.Location = new System.Drawing.Point(176, 232);
-            this.widthLabel.Name = "widthLabel";
-            this.widthLabel.Size = new System.Drawing.Size(191, 13);
-            this.widthLabel.TabIndex = 20;
-            this.widthLabel.Text = "Normalized Height (y offset / height):  0";
-            // 
             // fovLabel
             // 
             this.fovLabel.AutoSize = true;
-            this.fovLabel.Location = new System.Drawing.Point(8, 232);
+            this.fovLabel.Location = new System.Drawing.Point(385, 245);
             this.fovLabel.Name = "fovLabel";
             this.fovLabel.Size = new System.Drawing.Size(145, 13);
             this.fovLabel.TabIndex = 19;
             this.fovLabel.Text = "Field Of View (radians): 1.571";
             // 
+            // widthLabel
+            // 
+            this.widthLabel.AutoSize = true;
+            this.widthLabel.Location = new System.Drawing.Point(176, 245);
+            this.widthLabel.Name = "widthLabel";
+            this.widthLabel.Size = new System.Drawing.Size(118, 13);
+            this.widthLabel.TabIndex = 20;
+            this.widthLabel.Text = "2 * Offset V / Height:  0";
+            // 
+            // heightLabel
+            // 
+            this.heightLabel.AutoSize = true;
+            this.heightLabel.Location = new System.Drawing.Point(176, 232);
+            this.heightLabel.Name = "heightLabel";
+            this.heightLabel.Size = new System.Drawing.Size(116, 13);
+            this.heightLabel.TabIndex = 21;
+            this.heightLabel.Text = "2 * Offset H / Width:  0";
+            // 
+            // lockScreenCheck
+            // 
+            this.lockScreenCheck.AutoSize = true;
+            this.lockScreenCheck.Location = new System.Drawing.Point(483, 3);
+            this.lockScreenCheck.Name = "lockScreenCheck";
+            this.lockScreenCheck.Size = new System.Drawing.Size(132, 17);
+            this.lockScreenCheck.TabIndex = 27;
+            this.lockScreenCheck.Text = "Lock Screen Positions";
+            this.lockScreenCheck.UseVisualStyleBackColor = true;
+            this.lockScreenCheck.CheckedChanged += new System.EventHandler(this.lockScreenCheck_CheckedChanged);
+            // 
+            // vOffsetLabel
+            // 
+            this.vOffsetLabel.AutoSize = true;
+            this.vOffsetLabel.Location = new System.Drawing.Point(6, 245);
+            this.vOffsetLabel.Name = "vOffsetLabel";
+            this.vOffsetLabel.Size = new System.Drawing.Size(97, 13);
+            this.vOffsetLabel.TabIndex = 24;
+            this.vOffsetLabel.Text = "Frustum Offset V: 0";
+            // 
+            // hOffsetLabel
+            // 
+            this.hOffsetLabel.AutoSize = true;
+            this.hOffsetLabel.Location = new System.Drawing.Point(6, 232);
+            this.hOffsetLabel.Name = "hOffsetLabel";
+            this.hOffsetLabel.Size = new System.Drawing.Size(98, 13);
+            this.hOffsetLabel.TabIndex = 23;
+            this.hOffsetLabel.Text = "Frustum Offset H: 0";
+            // 
             // label7
             // 
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.Location = new System.Drawing.Point(407, 209);
+            this.label7.Location = new System.Drawing.Point(270, 209);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(22, 13);
             this.label7.TabIndex = 18;
@@ -158,7 +172,7 @@
             // 
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(256, 209);
+            this.label6.Location = new System.Drawing.Point(187, 209);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(19, 13);
             this.label6.TabIndex = 17;
@@ -166,23 +180,21 @@
             // 
             // aspectRatioValue
             // 
-            this.aspectRatioValue.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.aspectRatioValue.DecimalPlaces = 4;
-            this.aspectRatioValue.Location = new System.Drawing.Point(435, 207);
+            this.aspectRatioValue.Location = new System.Drawing.Point(298, 207);
             this.aspectRatioValue.Maximum = new decimal(new int[] {
             1569325056,
             23283064,
             0,
             0});
             this.aspectRatioValue.Name = "aspectRatioValue";
-            this.aspectRatioValue.Size = new System.Drawing.Size(370, 20);
+            this.aspectRatioValue.Size = new System.Drawing.Size(89, 20);
             this.aspectRatioValue.TabIndex = 16;
             this.aspectRatioValue.ValueChanged += new System.EventHandler(this.aspectRatioValue_ValueChanged);
             // 
             // aspectRatioHValue
             // 
-            this.aspectRatioHValue.Location = new System.Drawing.Point(281, 207);
+            this.aspectRatioHValue.Location = new System.Drawing.Point(212, 207);
             this.aspectRatioHValue.Maximum = new decimal(new int[] {
             10000,
             0,
@@ -194,7 +206,7 @@
             0,
             0});
             this.aspectRatioHValue.Name = "aspectRatioHValue";
-            this.aspectRatioHValue.Size = new System.Drawing.Size(120, 20);
+            this.aspectRatioHValue.Size = new System.Drawing.Size(52, 20);
             this.aspectRatioHValue.TabIndex = 15;
             this.aspectRatioHValue.Value = new decimal(new int[] {
             10,
@@ -205,13 +217,11 @@
             // 
             // diagonalSlider
             // 
-            this.diagonalSlider.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.diagonalSlider.Location = new System.Drawing.Point(256, 180);
             this.diagonalSlider.Maximum = 1810;
             this.diagonalSlider.Minimum = 1;
             this.diagonalSlider.Name = "diagonalSlider";
-            this.diagonalSlider.Size = new System.Drawing.Size(555, 42);
+            this.diagonalSlider.Size = new System.Drawing.Size(131, 42);
             this.diagonalSlider.TabIndex = 14;
             this.diagonalSlider.TickStyle = System.Windows.Forms.TickStyle.None;
             this.diagonalSlider.Value = 190;
@@ -219,13 +229,11 @@
             // 
             // heightSlider
             // 
-            this.heightSlider.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.heightSlider.Location = new System.Drawing.Point(256, 155);
             this.heightSlider.Maximum = 4000;
             this.heightSlider.Minimum = 1;
             this.heightSlider.Name = "heightSlider";
-            this.heightSlider.Size = new System.Drawing.Size(555, 42);
+            this.heightSlider.Size = new System.Drawing.Size(131, 42);
             this.heightSlider.TabIndex = 13;
             this.heightSlider.TickStyle = System.Windows.Forms.TickStyle.None;
             this.heightSlider.Value = 260;
@@ -233,13 +241,11 @@
             // 
             // widthSlider
             // 
-            this.widthSlider.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.widthSlider.Location = new System.Drawing.Point(256, 126);
             this.widthSlider.Maximum = 4000;
             this.widthSlider.Minimum = 1;
             this.widthSlider.Name = "widthSlider";
-            this.widthSlider.Size = new System.Drawing.Size(555, 42);
+            this.widthSlider.Size = new System.Drawing.Size(131, 42);
             this.widthSlider.TabIndex = 12;
             this.widthSlider.TickStyle = System.Windows.Forms.TickStyle.None;
             this.widthSlider.Value = 410;
@@ -247,13 +253,11 @@
             // 
             // fovSlider
             // 
-            this.fovSlider.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.fovSlider.Location = new System.Drawing.Point(256, 99);
             this.fovSlider.Maximum = 17999;
             this.fovSlider.Minimum = 1;
             this.fovSlider.Name = "fovSlider";
-            this.fovSlider.Size = new System.Drawing.Size(555, 42);
+            this.fovSlider.Size = new System.Drawing.Size(131, 42);
             this.fovSlider.TabIndex = 11;
             this.fovSlider.TickStyle = System.Windows.Forms.TickStyle.None;
             this.fovSlider.Value = 9000;
@@ -282,7 +286,7 @@
             0,
             0});
             this.aspectRatioWValue.Name = "aspectRatioWValue";
-            this.aspectRatioWValue.Size = new System.Drawing.Size(120, 20);
+            this.aspectRatioWValue.Size = new System.Drawing.Size(51, 20);
             this.aspectRatioWValue.TabIndex = 9;
             this.aspectRatioWValue.Value = new decimal(new int[] {
             16,
@@ -426,41 +430,27 @@
             // offsetTab
             // 
             this.offsetTab.AutoScroll = true;
-            this.offsetTab.Controls.Add(this.lockScreenCheck);
-            this.offsetTab.Controls.Add(this.eyeOffsetPanel);
-            this.offsetTab.Controls.Add(this.rotationOffsetPanel);
             this.offsetTab.Location = new System.Drawing.Point(4, 22);
             this.offsetTab.Name = "offsetTab";
             this.offsetTab.Padding = new System.Windows.Forms.Padding(3);
-            this.offsetTab.Size = new System.Drawing.Size(811, 403);
+            this.offsetTab.Size = new System.Drawing.Size(629, 269);
             this.offsetTab.TabIndex = 1;
             this.offsetTab.Text = "Offsets";
             this.offsetTab.UseVisualStyleBackColor = true;
-            // 
-            // lockScreenCheck
-            // 
-            this.lockScreenCheck.AutoSize = true;
-            this.lockScreenCheck.Location = new System.Drawing.Point(100, 6);
-            this.lockScreenCheck.Name = "lockScreenCheck";
-            this.lockScreenCheck.Size = new System.Drawing.Size(132, 17);
-            this.lockScreenCheck.TabIndex = 2;
-            this.lockScreenCheck.Text = "Lock Screen Positions";
-            this.lockScreenCheck.UseVisualStyleBackColor = true;
-            this.lockScreenCheck.CheckedChanged += new System.EventHandler(this.lockScreenCheck_CheckedChanged);
             // 
             // eyeOffsetPanel
             // 
             this.eyeOffsetPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.eyeOffsetPanel.DisplayName = "Eye Offset (cm)";
-            this.eyeOffsetPanel.Location = new System.Drawing.Point(3, 156);
+            this.eyeOffsetPanel.Location = new System.Drawing.Point(388, 153);
             this.eyeOffsetPanel.Max = 1000D;
-            this.eyeOffsetPanel.Min = -1000D;
+            this.eyeOffsetPanel.Min = -10000D;
             this.eyeOffsetPanel.Name = "eyeOffsetPanel";
-            this.eyeOffsetPanel.Size = new System.Drawing.Size(789, 98);
-            this.eyeOffsetPanel.TabIndex = 1;
+            this.eyeOffsetPanel.Size = new System.Drawing.Size(241, 98);
+            this.eyeOffsetPanel.TabIndex = 26;
             this.eyeOffsetPanel.Value = ((OpenMetaverse.Vector3)(resources.GetObject("eyeOffsetPanel.Value")));
-            this.eyeOffsetPanel.X = 0F;
+            this.eyeOffsetPanel.X = -100F;
             this.eyeOffsetPanel.Y = 0F;
             this.eyeOffsetPanel.Z = 0F;
             this.eyeOffsetPanel.OnChange += new System.EventHandler(this.eyeOffsetPanel_OnChange);
@@ -470,39 +460,37 @@
             this.rotationOffsetPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.rotationOffsetPanel.DisplayName = "Rotation Offset";
-            this.rotationOffsetPanel.Location = new System.Drawing.Point(3, 3);
+            this.rotationOffsetPanel.Location = new System.Drawing.Point(388, 0);
             this.rotationOffsetPanel.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("rotationOffsetPanel.LookAtVector")));
             this.rotationOffsetPanel.Name = "rotationOffsetPanel";
             this.rotationOffsetPanel.Pitch = 0F;
             this.rotationOffsetPanel.Rotation = ((OpenMetaverse.Quaternion)(resources.GetObject("rotationOffsetPanel.Rotation")));
-            this.rotationOffsetPanel.Size = new System.Drawing.Size(789, 147);
-            this.rotationOffsetPanel.TabIndex = 0;
+            this.rotationOffsetPanel.Size = new System.Drawing.Size(241, 147);
+            this.rotationOffsetPanel.TabIndex = 25;
             this.rotationOffsetPanel.Yaw = 0F;
             this.rotationOffsetPanel.OnChange += new System.EventHandler(this.rotationOffsetPanel_OnChange);
             // 
-            // vOffsetLabel
+            // screenPositionPanel
             // 
-            this.vOffsetLabel.AutoSize = true;
-            this.vOffsetLabel.Location = new System.Drawing.Point(264, 245);
-            this.vOffsetLabel.Name = "vOffsetLabel";
-            this.vOffsetLabel.Size = new System.Drawing.Size(97, 13);
-            this.vOffsetLabel.TabIndex = 24;
-            this.vOffsetLabel.Text = "Frustum Offset V: 0";
-            // 
-            // hOffsetLabel
-            // 
-            this.hOffsetLabel.AutoSize = true;
-            this.hOffsetLabel.Location = new System.Drawing.Point(8, 245);
-            this.hOffsetLabel.Name = "hOffsetLabel";
-            this.hOffsetLabel.Size = new System.Drawing.Size(98, 13);
-            this.hOffsetLabel.TabIndex = 23;
-            this.hOffsetLabel.Text = "Frustum Offset H: 0";
+            this.screenPositionPanel.DisplayName = "Screen Position (cm)";
+            this.screenPositionPanel.Location = new System.Drawing.Point(0, 0);
+            this.screenPositionPanel.Max = 1000D;
+            this.screenPositionPanel.Min = -1000D;
+            this.screenPositionPanel.Name = "screenPositionPanel";
+            this.screenPositionPanel.Size = new System.Drawing.Size(387, 98);
+            this.screenPositionPanel.TabIndex = 22;
+            this.screenPositionPanel.Value = ((OpenMetaverse.Vector3)(resources.GetObject("screenPositionPanel.Value")));
+            this.screenPositionPanel.X = 0F;
+            this.screenPositionPanel.Y = 0F;
+            this.screenPositionPanel.Z = 0F;
+            this.screenPositionPanel.OnChange += new System.EventHandler(this.screenPositionPanel_OnChange);
             // 
             // WindowPanel
             // 
             this.Controls.Add(this.mainTab);
+            this.MinimumSize = new System.Drawing.Size(637, 295);
             this.Name = "WindowPanel";
-            this.Size = new System.Drawing.Size(819, 429);
+            this.Size = new System.Drawing.Size(637, 295);
             this.mainTab.ResumeLayout(false);
             this.screenTab.ResumeLayout(false);
             this.screenTab.PerformLayout();
@@ -517,8 +505,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.heightValue)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.widthValue)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.fovValue)).EndInit();
-            this.offsetTab.ResumeLayout(false);
-            this.offsetTab.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -543,14 +529,14 @@
         private System.Windows.Forms.NumericUpDown aspectRatioValue;
         private System.Windows.Forms.NumericUpDown aspectRatioHValue;
         private System.Windows.Forms.Label label7;
-        private ProxyTestGUI.VectorPanel eyeOffsetPanel;
-        private ProxyTestGUI.RotationPanel rotationOffsetPanel;
         private System.Windows.Forms.Label fovLabel;
-        private System.Windows.Forms.CheckBox lockScreenCheck;
         private System.Windows.Forms.Label heightLabel;
         private System.Windows.Forms.Label widthLabel;
         private ProxyTestGUI.VectorPanel screenPositionPanel;
         private System.Windows.Forms.Label vOffsetLabel;
         private System.Windows.Forms.Label hOffsetLabel;
+        private System.Windows.Forms.CheckBox lockScreenCheck;
+        private ProxyTestGUI.VectorPanel eyeOffsetPanel;
+        private ProxyTestGUI.RotationPanel rotationOffsetPanel;
     }
 }

@@ -35,6 +35,7 @@ namespace ConsoleTest {
             this.master = master;
 
             rawPosition.Value = master.Position;
+            cameraOffsetPanel.Value = master.CameraOffset;
             rawRotation.LookAtVector = master.Rotation.LookAtVector;
 
             addressBox.Text = master.ProxyConfig.MasterAddress;
@@ -54,8 +55,9 @@ namespace ConsoleTest {
             };
             Vector3 min = new Vector3(float.MaxValue);
             Vector3 max = new Vector3(float.MinValue);
+            Vector3 scale = new Vector3(-1000f, 1000f, 1000f);
             k.OnChange += position => {
-                master.Window.EyePosition = position;
+                master.Window.EyePosition = position * scale;
                 Vector3 oldMin = min;
                 Vector3 oldMax = max;
                 if (min.X > position.X)
@@ -77,10 +79,6 @@ namespace ConsoleTest {
                 if (oldMax != max)
                     Console.WriteLine("Max: " + min);
             };
-
-            //TODO this is a hack to add master control. Should be done through master.
-            master.Window.OnChange += (source, args) => UpdateMaster();
-            //master.OnCameraUpdated += (source, args) => UpdateMaster();
 
             if (master.MasterRunning) {
                 statusLabel.Text = "Bound to " + master.MasterAddress + ":" + master.ProxyConfig.MasterPort;
@@ -282,7 +280,6 @@ namespace ConsoleTest {
             e.Graphics.DrawLine(Pens.Blue, origin.X, 0f, origin.X, e.ClipRectangle.Height);
 
             float scale = ((scaleBar.Maximum - scaleBar.Value) * e.ClipRectangle.Width) / scaleScale;
-            //float scale = 1f;
             foreach (var slave in master.Slaves) {
                 lock (slaveColours)
                     DrawWindow(e.Graphics, slave.Window, origin, false, master.Window.EyePosition, slaveColours.ContainsKey(slave.Name) ? slaveColours[slave.Name] : Color.Black, scale);
@@ -300,8 +297,10 @@ namespace ConsoleTest {
 
             Quaternion q = Quaternion.CreateFromEulers(0f, 0f, (float) Rotation.DEG2RAD * window.RotationOffset.Yaw);
             Vector3 lookAt = new Vector3(window.RotationOffset.LookAtVector.X, window.RotationOffset.LookAtVector.Y, 0f);
+            //Vector3 avatar = screenPosition - (master.CameraOffset * 100 * scale);
 
             if (!yaw) {
+                //avatar = to2DV(avatar);
                 screenPosition = to2DV(screenPosition);
                 diff = to2DV(diff);
                 lookAt = to2DV(window.RotationOffset.LookAtVector);
@@ -330,8 +329,13 @@ namespace ConsoleTest {
             g.DrawLine(new Pen(colour), toPoint(origin, paneOrigin, true), toPoint(end1Far, paneOrigin, true));
             g.DrawLine(new Pen(colour), toPoint(origin, paneOrigin, true), toPoint(end2Far, paneOrigin, true));
             g.DrawLine(new Pen(colour), toPoint(origin, paneOrigin, true), toPoint(lookAt, paneOrigin, true));
+            //g.DrawLine(new Pen(colour), toPoint(origin, paneOrigin, true), toPoint(avatar, paneOrigin, true));
+
             Point centre = toPoint(origin, paneOrigin, true);
+            //Point avatarP = toPoint(avatar, paneOrigin, true);
+
             g.FillEllipse(new SolidBrush(colour), centre.X - r, centre.Y - r, r * 2, r * 2);
+            //g.FillEllipse(new SolidBrush(colour), avatarP.X - r, avatarP.Y - r, r * 2, r * 2);
         }
 
         private Vector3 to2DV(Vector3 v) {
@@ -446,20 +450,20 @@ namespace ConsoleTest {
                 case Keys.S: backwardDown = false; break;
                 case Keys.PageUp: upDown = false; break;
                 case Keys.PageDown: downDown = false; break;
-                case Keys.D4: yawLeftDown = false; break;
-                case Keys.D6: yawRightDown = false; break;
-                case Keys.D8: pitchUpDown = false; break;
-                case Keys.D5: pitchDownDown = false; break;
+                case Keys.Left: yawLeftDown = false; break;
+                case Keys.Right: yawRightDown = false; break;
+                case Keys.Up: pitchUpDown = false; break;
+                case Keys.Down: pitchDownDown = false; break;
             }
         }
 
         private void moveTimer_Tick(object sender, EventArgs e) {
             float shift = .05f * moveScaleSlider.Value;
-            if (yawLeftDown) master.Rotation.Yaw -= shift;
-            if (yawRightDown) master.Rotation.Yaw += shift;
+            //if (yawLeftDown) master.Rotation.Yaw -= shift;
+            //if (yawRightDown) master.Rotation.Yaw += shift;
             if (!ignorePitch) {
-                if (pitchUpDown) master.Rotation.Pitch += shift;
-                if (pitchDownDown) master.Rotation.Pitch -= shift;
+                //if (pitchUpDown) master.Rotation.Pitch += shift;
+                //if (pitchDownDown) master.Rotation.Pitch -= shift;
             }
 
             Vector3 move = Vector3.Zero;
@@ -472,7 +476,7 @@ namespace ConsoleTest {
 
             if (move != Vector3.Zero) {
                 move *= rawRotation.Rotation;
-                master.Position += move;
+                //master.Position += move;
             }
         }
 
@@ -492,66 +496,40 @@ namespace ConsoleTest {
             RefreshDrawings();
         }
 
-        private void UpdateMaster() {
-            SetFollowCamPropertiesPacket cameraPacket = new SetFollowCamPropertiesPacket();
-            cameraPacket.CameraProperty = new SetFollowCamPropertiesPacket.CameraPropertyBlock[22];
-            for (int i = 0; i < 22; i++) {
-                cameraPacket.CameraProperty[i] = new SetFollowCamPropertiesPacket.CameraPropertyBlock();
-                cameraPacket.CameraProperty[i].Type = i + 1;
-            }
+        private void cameraOffsetPanel_OnChange(object sender, EventArgs e) {
+            master.CameraOffset = cameraOffsetPanel.Value;
+        }
 
-            Rotation finalRot = master.Rotation;
-            if (rotationCheck.Checked)
-                finalRot = new Rotation(master.Rotation.Pitch + master.Window.RotationOffset.Pitch, master.Rotation.Yaw + master.Window.RotationOffset.Yaw);
-            Vector3 finalPos = master.Position;
-            if (eyeOffsetCheck.Checked)
-                finalPos = master.Position + ((master.Window.EyePosition * master.Rotation.Quaternion) / 1000f);
-            //Vector3 lookAt = finalPos + master.Rotation.LookAtVector;
-            Vector3 lookAt = finalPos + finalRot.LookAtVector;
-            cameraPacket.CameraProperty[0].Value = 0;
-            cameraPacket.CameraProperty[1].Value = 0f;
-            cameraPacket.CameraProperty[2].Value = 0f;
-            cameraPacket.CameraProperty[3].Value = 0f;
-            cameraPacket.CameraProperty[4].Value = 0f;
-            cameraPacket.CameraProperty[5].Value = 0f;
-            cameraPacket.CameraProperty[6].Value = 0f;
-            cameraPacket.CameraProperty[7].Value = 0f;
-            cameraPacket.CameraProperty[8].Value = 0f;
-            cameraPacket.CameraProperty[9].Value = 0f;
-            cameraPacket.CameraProperty[10].Value = 0f;
-            cameraPacket.CameraProperty[11].Value = 1f; //enable
-            cameraPacket.CameraProperty[12].Value = 0f;
-            cameraPacket.CameraProperty[13].Value = finalPos.X;
-            cameraPacket.CameraProperty[14].Value = finalPos.Y;
-            cameraPacket.CameraProperty[15].Value = finalPos.Z;
-            cameraPacket.CameraProperty[16].Value = 0f;
-            cameraPacket.CameraProperty[17].Value = lookAt.X;
-            cameraPacket.CameraProperty[18].Value = lookAt.Y;
-            cameraPacket.CameraProperty[19].Value = lookAt.Z;
-            cameraPacket.CameraProperty[20].Value = 1f;
-            cameraPacket.CameraProperty[21].Value = 1f;
+        private void frustumHCheck_CheckedChanged(object sender, EventArgs e) {
+            master.UpdateFrustumH = frustumHCheck.Checked;
+        }
 
-            SetCameraPropertiesPacket screenPacket = new SetCameraPropertiesPacket();
-            screenPacket.CameraProperty = new SetCameraPropertiesPacket.CameraPropertyBlock();
-            screenPacket.CameraProperty.FrustumOffsetH = 0f;
-            screenPacket.CameraProperty.FrustumOffsetV = 0f;
-            screenPacket.CameraProperty.CameraAngle = 1f;
-            screenPacket.CameraProperty.AspectRatio = (float) (master.Window.Width / master.Window.Height);
-            screenPacket.CameraProperty.AspectSet = false;
+        private void frustumVCheck_CheckedChanged(object sender, EventArgs e) {
+            master.UpdateFrustumV = frustumVCheck.Checked;
+        }
 
-            if (frustumHCheck.Checked)
-                screenPacket.CameraProperty.FrustumOffsetH = (float)(master.Window.FrustumOffsetH / master.Window.Width);
-            if (frustumVCheck.Checked)
-                screenPacket.CameraProperty.FrustumOffsetV = (float)(master.Window.FrustumOffsetV / master.Window.Height);
-            if (fovCheck.Checked)
-                screenPacket.CameraProperty.CameraAngle = (float) master.Window.FieldOfView;
-            if (aspectRatioCheck.Checked)
-                screenPacket.CameraProperty.AspectSet = true;
+        private void fovCheck_CheckedChanged(object sender, EventArgs e) {
+            master.UpdateFoV = fovCheck.Checked;
+        }
 
+        private void aspectRatioCheck_CheckedChanged(object sender, EventArgs e) {
+            master.UpdateAspectRatio = aspectRatioCheck.Checked;
+        }
 
-            if (eyeOffsetCheck.Checked || rotationCheck.Checked)
-                master.InjectPacket(cameraPacket, Direction.Incoming);
-            master.InjectPacket(screenPacket, Direction.Incoming);
+        private void eyeOffsetCheck_CheckedChanged(object sender, EventArgs e) {
+            master.UpdateEyeOffset = eyeOffsetCheck.Checked;
+        }
+
+        private void rotationCheck_CheckedChanged(object sender, EventArgs e) {
+            master.UpdateRotation = rotationCheck.Checked;
+        }
+
+        private void frustumNearCheck_CheckedChanged(object sender, EventArgs e) {
+            master.UpdateFrustumNear = frustumNearCheck.Checked;
+        }
+
+        private void viewerControlCheck_CheckedChanged(object sender, EventArgs e) {
+            master.ViewerControl = viewerControlCheck.Checked;
         }
     }
 }

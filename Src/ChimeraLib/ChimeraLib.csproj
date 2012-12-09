@@ -95,6 +95,7 @@
     </Compile>
     <Compile Include="Init.cs" />
     <Compile Include="KinectSource.cs" />
+    <Compile Include="SetCameraProperties.cs" />
     <Compile Include="Window.cs" />
     <Compile Include="Master.cs" />
     <Compile Include="CameraMaster.cs" />

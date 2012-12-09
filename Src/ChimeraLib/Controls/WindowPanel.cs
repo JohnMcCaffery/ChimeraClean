@@ -78,8 +78,8 @@ namespace ChimeraLib.Controls {
                 eyeOffsetPanel.Value = window.EyePosition / 10f;
                 rotationOffsetPanel.Rotation = window.RotationOffset.Quaternion;
                 fovLabel.Text = "Field of View (radians): " + Math.Round(window.FieldOfView, 5);
-                widthLabel.Text = "Normalized Width (h offset / width): " + Math.Round(window.FrustumOffsetH / window.Width, 5);
-                heightLabel.Text = "Normalized Height (v offset / height): " + Math.Round(window.FrustumOffsetV / window.Height, 5);
+                widthLabel.Text = "2 * Offset H / Width: " + Math.Round((2 * window.FrustumOffsetH) / window.Width, 5);
+                heightLabel.Text = "2 * Offset V / Height: " + Math.Round((2 * window.FrustumOffsetV) / window.Height, 5);
                 hOffsetLabel.Text = "Frustum Offset H: " + Math.Round(window.FrustumOffsetH / 10.0, 5);
                 vOffsetLabel.Text = "Frustum Offset V: " + Math.Round(window.FrustumOffsetV / 10.0, 5);
                 init = false;
