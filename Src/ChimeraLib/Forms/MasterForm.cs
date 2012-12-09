@@ -56,9 +56,8 @@ namespace ConsoleTest {
             rawPosition.Value = master.Position;
             cameraOffsetPanel.Value = master.CameraOffset;
             rawRotation.LookAtVector = master.Rotation.LookAtVector;
-            kinectOffsetPanel.Value = k.Offset;
-            kinectRotationPanel.Pitch = k.Rotation.Pitch;
-            kinectRotationPanel.Yaw = k.Rotation.Yaw;
+            kinectPositionPanel.Value = k.Position / 10f;
+            kinectRotationPanel.LookAtVector = k.Rotation.LookAtVector;
 
             addressBox.Text = master.ProxyConfig.MasterAddress;
             portBox.Text = master.ProxyConfig.MasterPort.ToString();
@@ -312,9 +311,11 @@ namespace ConsoleTest {
         private void DrawWindow(Graphics g, Window window, Vector3 paneOrigin, bool yaw, Vector3 originOffset, Color colour, float scale) {
             Vector3 end1 = new Vector3(yaw ? 0f : -(float)window.Height/2f, yaw ? -(float)window.Width/2f : 0f, 0f) * scale;
             Vector3 end2 = new Vector3(yaw ? 0f :  (float)window.Height/2f, yaw ?  (float)window.Width/2f : 0f, 0f) * scale;
-            Vector3 origin = (originOffset + window.EyePosition) * scale;
-            Vector3 screenPosition = window.ScreenPosition * scale;
-            Vector3 diff = screenPosition - origin;
+            Vector3 eye = (originOffset + window.EyePosition) * scale;
+            Vector3 screen = window.ScreenPosition * scale;
+            Vector3 eyeToScreen = screen - eye;
+            Vector3 kinect = k.Position * scale;
+            Vector3 kinectForward = k.Rotation.LookAtVector * 10000f;
 
             Quaternion q = Quaternion.CreateFromEulers(0f, 0f, (float) Rotation.DEG2RAD * window.RotationOffset.Yaw);
             Vector3 lookAt = new Vector3(window.RotationOffset.LookAtVector.X, window.RotationOffset.LookAtVector.Y, 0f);
@@ -322,40 +323,45 @@ namespace ConsoleTest {
 
             if (!yaw) {
                 //avatar = to2DV(avatar);
-                screenPosition = to2DV(screenPosition);
-                diff = to2DV(diff);
+                kinect = to2DV(kinect);
+                kinectForward = to2DV(kinectForward) * -1f;
+                screen = to2DV(screen);
+                eyeToScreen = to2DV(eyeToScreen);
                 lookAt = to2DV(window.RotationOffset.LookAtVector);
-                origin = screenPosition - diff;
+                eye = screen - eyeToScreen;
                 q = Quaternion.CreateFromEulers(0f, 0f, (float)Rotation.DEG2RAD * window.RotationOffset.Pitch);
             }
 
-            float lookatDistance = Vector3.Dot(diff, Vector3.Normalize(lookAt));
+            float lookatDistance = Vector3.Dot(eyeToScreen, Vector3.Normalize(lookAt));
             lookAt = new Vector3(yaw ? lookatDistance : 0f, yaw ? 0f : lookatDistance, 0f);
 
             lookAt *= q;
             end1 *= q;
             end2 *= q;
 
-            Vector3 cross1 = screenPosition + (Vector3.Normalize(lookAt) * 30f * scale);
-            Vector3 cross2 = screenPosition + (Vector3.Normalize(lookAt) * -30f * scale);
-            Vector3 end1Far = ((end1 + diff) * 3) + origin;
-            Vector3 end2Far = ((end2 + diff) * 3) + origin;
+            Vector3 cross1 = screen + (Vector3.Normalize(lookAt) * 30f * scale);
+            Vector3 cross2 = screen + (Vector3.Normalize(lookAt) * -30f * scale);
+            Vector3 end1Far = ((end1 + eyeToScreen) * 3) + eye;
+            Vector3 end2Far = ((end2 + eyeToScreen) * 3) + eye;
 
-            end1 += diff + origin;
-            end2 += diff + origin;
-            lookAt += origin;
+            end1 += eyeToScreen + eye;
+            end2 += eyeToScreen + eye;
+            lookAt += eye;
 
             g.DrawLine(new Pen(colour), toPoint(end1, paneOrigin, true), toPoint(end2, paneOrigin, true));
             g.DrawLine(new Pen(colour), toPoint(cross1, paneOrigin, true), toPoint(cross2, paneOrigin, true));
-            g.DrawLine(new Pen(colour), toPoint(origin, paneOrigin, true), toPoint(end1Far, paneOrigin, true));
-            g.DrawLine(new Pen(colour), toPoint(origin, paneOrigin, true), toPoint(end2Far, paneOrigin, true));
-            g.DrawLine(new Pen(colour), toPoint(origin, paneOrigin, true), toPoint(lookAt, paneOrigin, true));
+            g.DrawLine(new Pen(colour), toPoint(eye, paneOrigin, true), toPoint(end1Far, paneOrigin, true));
+            g.DrawLine(new Pen(colour), toPoint(eye, paneOrigin, true), toPoint(end2Far, paneOrigin, true));
+            g.DrawLine(new Pen(colour), toPoint(eye, paneOrigin, true), toPoint(lookAt, paneOrigin, true));
+            g.DrawLine(new Pen(Color.Red), toPoint(kinect, paneOrigin, true), toPoint(kinect + kinectForward, paneOrigin, true));
             //g.DrawLine(new Pen(colour), toPoint(origin, paneOrigin, true), toPoint(avatar, paneOrigin, true));
 
-            Point centre = toPoint(origin, paneOrigin, true);
+            Point centre = toPoint(eye, paneOrigin, true);
+            Point kinectP = toPoint(kinect, paneOrigin, true);
             //Point avatarP = toPoint(avatar, paneOrigin, true);
 
             g.FillEllipse(new SolidBrush(colour), centre.X - r, centre.Y - r, r * 2, r * 2);
+            g.FillEllipse(new SolidBrush(Color.Red), kinectP.X - r, kinectP.Y - r, r * 2, r * 2);
             //g.FillEllipse(new SolidBrush(colour), avatarP.X - r, avatarP.Y - r, r * 2, r * 2);
         }
 
@@ -551,6 +557,17 @@ namespace ConsoleTest {
 
         private void viewerControlCheck_CheckedChanged(object sender, EventArgs e) {
             master.ViewerControl = viewerControlCheck.Checked;
+        }
+
+        private void kinectOffsetPanel_OnChange(object sender, EventArgs e) {
+            k.Position = kinectPositionPanel.Value * 10f;
+            RefreshDrawings();
+        }
+
+        private void kinectRotationPanel_OnChange(object sender, EventArgs e) {
+            k.Rotation.Pitch = kinectRotationPanel.Pitch;
+            k.Rotation.Yaw = kinectRotationPanel.Yaw;
+            RefreshDrawings();
         }
     }
 }

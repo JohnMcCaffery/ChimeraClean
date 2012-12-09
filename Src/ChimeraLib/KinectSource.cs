@@ -35,7 +35,10 @@ namespace ChimeraLib {
         public Vector3 HeadPosition {
             get { return head; }
         }
-        public Vector3 Offset {
+        /// <summary>
+        /// Where the kinect is positioned in real space (mm).
+        /// </summary>
+        public Vector3 Position {
             get { return offset; }
             set { offset = value; }
         }
