@@ -79,7 +79,7 @@ namespace UtilLib {
 
             position = new Vector3(128f, 128f, 24f);
             Rotation = new Rotation();
-            Window = new Window();
+            Window = new Window(name);
 
             controlCamera = config.ControlCamera;
 

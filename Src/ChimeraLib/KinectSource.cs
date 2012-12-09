@@ -9,6 +9,7 @@ using OpenMetaverse;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 using UtilLib;
+using Nini.Config;
 
 namespace ChimeraLib {
     public class KinectSource {
@@ -18,7 +19,7 @@ namespace ChimeraLib {
         private readonly object _imageLock = new object();
         private readonly Rotation rotation = new Rotation(0, 180);
         private readonly Vector3 scale = new Vector3 (1000f);
-        private Vector3 offset = new Vector3(400f, 0f, 0f);
+        private Vector3 position = new Vector3(400f, 0f, 0f);
 
         private int _locked = -1;
         private Bitmap bmp;
@@ -39,13 +40,17 @@ namespace ChimeraLib {
         /// Where the kinect is positioned in real space (mm).
         /// </summary>
         public Vector3 Position {
-            get { return offset; }
-            set { offset = value; }
+            get { return position; }
+            set { position = value; }
         }
         public Rotation Rotation {
             get { return rotation; }
         }
-                
+
+        public bool ProcessImageFrames {
+            get { return supplier.ImageEnabled; }
+            set { supplier.ImageEnabled = value; }
+        }
 
         public int ImageWidth {
             get { return supplier.ImageWidth; }
@@ -59,11 +64,22 @@ namespace ChimeraLib {
 
         public event Action<Bitmap> OnImage;
 
-        public KinectSource() {
+        public KinectSource() {            DotNetConfigSource configSource = new DotNetConfigSource(AppDomain.CurrentDomain.SetupInformation.ConfigurationFile);
+            IConfig config = configSource.Configs["Kinect"];
+            if (config != null) {
+                float posX = config.GetFloat("PositionX", 0f);
+                float posY = config.GetFloat("PositionY", 0f);
+                float posZ = config.GetFloat("PositionZ", 0f);
+
+                float pitch = config.GetFloat("Pitch", 0f);
+                float yaw = config.GetFloat("Yaw", 0f);
+
+                position = new Vector3(posX, posY, posZ);
+                rotation = new Rotation(pitch, yaw);
+            }
             supplier = new KinectSkeletonFrameSupplier();
             try {
                 supplier.Start();
-                supplier.ImageEnabled = true;
                 supplier.OnSkeletonFrame += new EventHandler<SkeletonFrameEventArgs>(supplier_OnSkeletonFrame);
             } catch (Exception e) {
                 Console.WriteLine("Problem starting Kinect: " + e.Message);
@@ -72,9 +88,11 @@ namespace ChimeraLib {
         }
 
         void supplier_OnSkeletonFrame(object sender, SkeletonFrameEventArgs e) {
-            //bmp = CopyDataToBitmap(e.Image.ToArray());
-            //if (OnImage != null)
-                //OnImage(bmp);
+            if (supplier.ImageEnabled) {
+                bmp = CopyDataToBitmap(e.Image.ToArray());
+                if (OnImage != null)
+                    OnImage(bmp);
+            }
 
             int id = (int)sender;
             if (!_lastUpdated.ContainsKey(id) && id != 0) {
@@ -110,7 +128,7 @@ namespace ChimeraLib {
             if (id != _locked || id == 0)
                 return;
 
-            head = ((e.Skeleton.GetJoint("Head").Position * scale) * rotation.Quaternion) + offset;
+            head = ((e.Skeleton.GetJoint("Head").Position * scale) * rotation.Quaternion) + position;
             if (OnChange != null)
                 OnChange(head);
         }

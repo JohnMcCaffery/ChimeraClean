@@ -67,7 +67,7 @@ namespace UtilLib {
             public Slave(string name, IPEndPoint ep) {
                 this.name = name;
                 this.ep = ep;
-                this.window = new Window();
+                this.window = new Window(name);
                 //TODO add config read ins for window
             }
         }
@@ -117,7 +117,7 @@ namespace UtilLib {
         public Master() : this(null) { }
 
         public Master(Init.Config config) : base (config, LogManager.GetLogger("Master")) {
-            window = new Window();
+            window = new Window("Master");
             masterServer.OnSlaveConnected += (name, ep) => {
                 Slave slave = new Slave(name, ep);
                 lock (slaves)
