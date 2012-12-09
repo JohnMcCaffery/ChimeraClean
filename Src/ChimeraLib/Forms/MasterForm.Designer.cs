@@ -24,11 +24,12 @@
         /// </summary>
         private void InitializeComponent() {
             this.components = new System.ComponentModel.Container();
-            ChimeraLib.Window window2 = new ChimeraLib.Window();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MasterForm));
-            UtilLib.Rotation rotation2 = new UtilLib.Rotation();
+            ChimeraLib.Window window1 = new ChimeraLib.Window();
+            UtilLib.Rotation rotation1 = new UtilLib.Rotation();
             this.moveTimer = new System.Windows.Forms.Timer(this.components);
             this.slaveColourPicker = new System.Windows.Forms.ColorDialog();
+            this.tabControl1 = new System.Windows.Forms.TabControl();
             this.visualSlavesSplit = new System.Windows.Forms.SplitContainer();
             this.topSplit = new System.Windows.Forms.SplitContainer();
             this.displayTab = new System.Windows.Forms.TabControl();
@@ -73,19 +74,21 @@
             this.ignorePitchCheck = new System.Windows.Forms.CheckBox();
             this.slavesTabContainer = new System.Windows.Forms.TabControl();
             this.virtualTab = new System.Windows.Forms.TabPage();
+            this.cameraOffsetPanel = new ProxyTestGUI.VectorPanel();
             this.rawRotation = new ProxyTestGUI.RotationPanel();
             this.rawPosition = new ProxyTestGUI.VectorPanel();
             this.masterTab = new System.Windows.Forms.TabPage();
+            this.frustumNearCheck = new System.Windows.Forms.CheckBox();
+            this.rotationCheck = new System.Windows.Forms.CheckBox();
+            this.eyeOffsetCheck = new System.Windows.Forms.CheckBox();
+            this.aspectRatioCheck = new System.Windows.Forms.CheckBox();
+            this.fovCheck = new System.Windows.Forms.CheckBox();
+            this.frustumVCheck = new System.Windows.Forms.CheckBox();
+            this.frustumHCheck = new System.Windows.Forms.CheckBox();
             this.masterWindowPanel = new ChimeraLib.Controls.WindowPanel();
             this.debugTab = new System.Windows.Forms.TabPage();
             this.debugPanel = new UtilLib.LogPanel();
-            this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.frustumHCheck = new System.Windows.Forms.CheckBox();
-            this.frustumVCheck = new System.Windows.Forms.CheckBox();
-            this.fovCheck = new System.Windows.Forms.CheckBox();
-            this.aspectRatioCheck = new System.Windows.Forms.CheckBox();
-            this.eyeOffsetCheck = new System.Windows.Forms.CheckBox();
-            this.rotationCheck = new System.Windows.Forms.CheckBox();
+            this.viewerControlCheck = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.visualSlavesSplit)).BeginInit();
             this.visualSlavesSplit.Panel1.SuspendLayout();
             this.visualSlavesSplit.Panel2.SuspendLayout();
@@ -125,6 +128,14 @@
             this.moveTimer.Interval = 50;
             this.moveTimer.Tick += new System.EventHandler(this.moveTimer_Tick);
             // 
+            // tabControl1
+            // 
+            this.tabControl1.Location = new System.Drawing.Point(0, 0);
+            this.tabControl1.Name = "tabControl1";
+            this.tabControl1.SelectedIndex = 0;
+            this.tabControl1.Size = new System.Drawing.Size(200, 100);
+            this.tabControl1.TabIndex = 0;
+            // 
             // visualSlavesSplit
             // 
             this.visualSlavesSplit.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -142,7 +153,7 @@
             this.visualSlavesSplit.Panel2.AutoScroll = true;
             this.visualSlavesSplit.Panel2.Controls.Add(this.slavesTabContainer);
             this.visualSlavesSplit.Size = new System.Drawing.Size(845, 559);
-            this.visualSlavesSplit.SplitterDistance = 195;
+            this.visualSlavesSplit.SplitterDistance = 147;
             this.visualSlavesSplit.SplitterWidth = 10;
             this.visualSlavesSplit.TabIndex = 1;
             this.visualSlavesSplit.KeyDown += new System.Windows.Forms.KeyEventHandler(this.keyDown);
@@ -162,8 +173,8 @@
             // topSplit.Panel2
             // 
             this.topSplit.Panel2.Controls.Add(this.inputTabContainer);
-            this.topSplit.Size = new System.Drawing.Size(845, 195);
-            this.topSplit.SplitterDistance = 448;
+            this.topSplit.Size = new System.Drawing.Size(845, 147);
+            this.topSplit.SplitterDistance = 208;
             this.topSplit.SplitterWidth = 10;
             this.topSplit.TabIndex = 1;
             this.topSplit.KeyDown += new System.Windows.Forms.KeyEventHandler(this.keyDown);
@@ -178,7 +189,7 @@
             this.displayTab.Location = new System.Drawing.Point(0, 0);
             this.displayTab.Name = "displayTab";
             this.displayTab.SelectedIndex = 0;
-            this.displayTab.Size = new System.Drawing.Size(448, 195);
+            this.displayTab.Size = new System.Drawing.Size(208, 147);
             this.displayTab.TabIndex = 0;
             this.displayTab.KeyDown += new System.Windows.Forms.KeyEventHandler(this.keyDown);
             this.displayTab.KeyUp += new System.Windows.Forms.KeyEventHandler(this.keyUp);
@@ -191,7 +202,7 @@
             this.bothTab.Location = new System.Drawing.Point(4, 22);
             this.bothTab.Name = "bothTab";
             this.bothTab.Padding = new System.Windows.Forms.Padding(3);
-            this.bothTab.Size = new System.Drawing.Size(440, 169);
+            this.bothTab.Size = new System.Drawing.Size(200, 121);
             this.bothTab.TabIndex = 2;
             this.bothTab.Text = "Horizontal and Vertical";
             this.bothTab.UseVisualStyleBackColor = true;
@@ -200,7 +211,7 @@
             // 
             this.label11.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(0, 140);
+            this.label11.Location = new System.Drawing.Point(0, 92);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(34, 13);
             this.label11.TabIndex = 2;
@@ -210,10 +221,10 @@
             // 
             this.scaleBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.scaleBar.Location = new System.Drawing.Point(28, 140);
+            this.scaleBar.Location = new System.Drawing.Point(28, 92);
             this.scaleBar.Maximum = 4000;
             this.scaleBar.Name = "scaleBar";
-            this.scaleBar.Size = new System.Drawing.Size(412, 42);
+            this.scaleBar.Size = new System.Drawing.Size(172, 42);
             this.scaleBar.TabIndex = 1;
             this.scaleBar.TickStyle = System.Windows.Forms.TickStyle.None;
             this.scaleBar.Value = 500;
@@ -234,8 +245,8 @@
             // hvSplit.Panel2
             // 
             this.hvSplit.Panel2.Controls.Add(this.vBox);
-            this.hvSplit.Size = new System.Drawing.Size(440, 131);
-            this.hvSplit.SplitterDistance = 197;
+            this.hvSplit.Size = new System.Drawing.Size(200, 83);
+            this.hvSplit.SplitterDistance = 77;
             this.hvSplit.TabIndex = 0;
             // 
             // hBox
@@ -243,7 +254,7 @@
             this.hBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.hBox.Location = new System.Drawing.Point(0, 0);
             this.hBox.Name = "hBox";
-            this.hBox.Size = new System.Drawing.Size(197, 131);
+            this.hBox.Size = new System.Drawing.Size(77, 83);
             this.hBox.TabIndex = 0;
             this.hBox.TabStop = false;
             this.hBox.Text = "Horizontal";
@@ -255,7 +266,7 @@
             this.vBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.vBox.Location = new System.Drawing.Point(0, 0);
             this.vBox.Name = "vBox";
-            this.vBox.Size = new System.Drawing.Size(239, 131);
+            this.vBox.Size = new System.Drawing.Size(119, 83);
             this.vBox.TabIndex = 0;
             this.vBox.TabStop = false;
             this.vBox.Text = "Vertical";
@@ -267,7 +278,7 @@
             this.lockMasterCheck.AutoSize = true;
             this.lockMasterCheck.Checked = true;
             this.lockMasterCheck.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.lockMasterCheck.Location = new System.Drawing.Point(152, 3);
+            this.lockMasterCheck.Location = new System.Drawing.Point(32, 3);
             this.lockMasterCheck.Name = "lockMasterCheck";
             this.lockMasterCheck.Size = new System.Drawing.Size(85, 17);
             this.lockMasterCheck.TabIndex = 0;
@@ -282,7 +293,7 @@
             this.proxyTab.Location = new System.Drawing.Point(4, 22);
             this.proxyTab.Name = "proxyTab";
             this.proxyTab.Padding = new System.Windows.Forms.Padding(3);
-            this.proxyTab.Size = new System.Drawing.Size(446, 266);
+            this.proxyTab.Size = new System.Drawing.Size(200, 127);
             this.proxyTab.TabIndex = 3;
             this.proxyTab.Text = "Proxy";
             this.proxyTab.UseVisualStyleBackColor = true;
@@ -308,7 +319,7 @@
             this.proxyPanel.Password = "1245";
             this.proxyPanel.Port = "8080";
             this.proxyPanel.Proxy = null;
-            this.proxyPanel.Size = new System.Drawing.Size(440, 260);
+            this.proxyPanel.Size = new System.Drawing.Size(200, 121);
             this.proxyPanel.TabIndex = 0;
             // 
             // networkTab
@@ -332,7 +343,7 @@
             this.networkTab.Location = new System.Drawing.Point(4, 22);
             this.networkTab.Name = "networkTab";
             this.networkTab.Padding = new System.Windows.Forms.Padding(3);
-            this.networkTab.Size = new System.Drawing.Size(446, 266);
+            this.networkTab.Size = new System.Drawing.Size(200, 127);
             this.networkTab.TabIndex = 4;
             this.networkTab.Text = "Network";
             this.networkTab.UseVisualStyleBackColor = true;
@@ -343,7 +354,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.addressBox.Location = new System.Drawing.Point(54, 8);
             this.addressBox.Name = "addressBox";
-            this.addressBox.Size = new System.Drawing.Size(239, 20);
+            this.addressBox.Size = new System.Drawing.Size(221, 20);
             this.addressBox.TabIndex = 29;
             // 
             // label9
@@ -368,7 +379,7 @@
             // 
             this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(299, 11);
+            this.label3.Location = new System.Drawing.Point(281, 11);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(26, 13);
             this.label3.TabIndex = 0;
@@ -458,7 +469,7 @@
             // bindButton
             // 
             this.bindButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.bindButton.Location = new System.Drawing.Point(387, 6);
+            this.bindButton.Location = new System.Drawing.Point(369, 6);
             this.bindButton.Name = "bindButton";
             this.bindButton.Size = new System.Drawing.Size(59, 23);
             this.bindButton.TabIndex = 13;
@@ -469,7 +480,7 @@
             // portBox
             // 
             this.portBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.portBox.Location = new System.Drawing.Point(331, 8);
+            this.portBox.Location = new System.Drawing.Point(313, 8);
             this.portBox.Mask = "0000#";
             this.portBox.Name = "portBox";
             this.portBox.Size = new System.Drawing.Size(50, 20);
@@ -480,7 +491,7 @@
             // 
             this.portLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.portLabel.AutoSize = true;
-            this.portLabel.Location = new System.Drawing.Point(-328, 11);
+            this.portLabel.Location = new System.Drawing.Point(-346, 11);
             this.portLabel.Name = "portLabel";
             this.portLabel.Size = new System.Drawing.Size(26, 13);
             this.portLabel.TabIndex = 11;
@@ -494,7 +505,7 @@
             this.inputTabContainer.Location = new System.Drawing.Point(0, 0);
             this.inputTabContainer.Name = "inputTabContainer";
             this.inputTabContainer.SelectedIndex = 0;
-            this.inputTabContainer.Size = new System.Drawing.Size(387, 195);
+            this.inputTabContainer.Size = new System.Drawing.Size(627, 147);
             this.inputTabContainer.TabIndex = 2;
             // 
             // tabPage1
@@ -503,7 +514,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(379, 169);
+            this.tabPage1.Size = new System.Drawing.Size(619, 121);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Kinect";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -513,7 +524,7 @@
             this.kinectFramePanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.kinectFramePanel.Location = new System.Drawing.Point(3, 3);
             this.kinectFramePanel.Name = "kinectFramePanel";
-            this.kinectFramePanel.Size = new System.Drawing.Size(373, 163);
+            this.kinectFramePanel.Size = new System.Drawing.Size(613, 115);
             this.kinectFramePanel.TabIndex = 0;
             this.kinectFramePanel.TabStop = false;
             // 
@@ -524,7 +535,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(373, 266);
+            this.tabPage2.Size = new System.Drawing.Size(619, 127);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Mouselook";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -537,9 +548,9 @@
             this.controlPanel.Controls.Add(this.label2);
             this.controlPanel.Controls.Add(this.mouseScaleSlider);
             this.controlPanel.Controls.Add(this.moveScaleSlider);
-            this.controlPanel.Location = new System.Drawing.Point(0, 166);
+            this.controlPanel.Location = new System.Drawing.Point(0, 27);
             this.controlPanel.Name = "controlPanel";
-            this.controlPanel.Size = new System.Drawing.Size(355, 100);
+            this.controlPanel.Size = new System.Drawing.Size(373, 100);
             this.controlPanel.TabIndex = 6;
             // 
             // label5
@@ -568,7 +579,7 @@
             this.mouseScaleSlider.Maximum = 40;
             this.mouseScaleSlider.Minimum = 10;
             this.mouseScaleSlider.Name = "mouseScaleSlider";
-            this.mouseScaleSlider.Size = new System.Drawing.Size(349, 42);
+            this.mouseScaleSlider.Size = new System.Drawing.Size(367, 42);
             this.mouseScaleSlider.TabIndex = 2;
             this.mouseScaleSlider.Value = 20;
             // 
@@ -580,7 +591,7 @@
             this.moveScaleSlider.Maximum = 40;
             this.moveScaleSlider.Minimum = 10;
             this.moveScaleSlider.Name = "moveScaleSlider";
-            this.moveScaleSlider.Size = new System.Drawing.Size(349, 42);
+            this.moveScaleSlider.Size = new System.Drawing.Size(367, 42);
             this.moveScaleSlider.TabIndex = 1;
             this.moveScaleSlider.Value = 20;
             // 
@@ -592,7 +603,7 @@
             this.mouseContainer.Controls.Add(this.mousePanel);
             this.mouseContainer.Location = new System.Drawing.Point(0, 3);
             this.mouseContainer.Name = "mouseContainer";
-            this.mouseContainer.Size = new System.Drawing.Size(355, 163);
+            this.mouseContainer.Size = new System.Drawing.Size(373, 24);
             this.mouseContainer.TabIndex = 8;
             this.mouseContainer.TabStop = false;
             this.mouseContainer.Text = "Mouselook";
@@ -605,7 +616,7 @@
             this.mousePanel.Controls.Add(this.ignorePitchCheck);
             this.mousePanel.Location = new System.Drawing.Point(3, 13);
             this.mousePanel.Name = "mousePanel";
-            this.mousePanel.Size = new System.Drawing.Size(349, 147);
+            this.mousePanel.Size = new System.Drawing.Size(367, 8);
             this.mousePanel.TabIndex = 7;
             this.mousePanel.Paint += new System.Windows.Forms.PaintEventHandler(this.mousePanel_Paint);
             this.mousePanel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.mouseTab_MouseDown);
@@ -633,7 +644,7 @@
             this.slavesTabContainer.Location = new System.Drawing.Point(0, 0);
             this.slavesTabContainer.Name = "slavesTabContainer";
             this.slavesTabContainer.SelectedIndex = 0;
-            this.slavesTabContainer.Size = new System.Drawing.Size(845, 354);
+            this.slavesTabContainer.Size = new System.Drawing.Size(845, 402);
             this.slavesTabContainer.TabIndex = 0;
             this.slavesTabContainer.KeyDown += new System.Windows.Forms.KeyEventHandler(this.keyDown);
             this.slavesTabContainer.KeyUp += new System.Windows.Forms.KeyEventHandler(this.keyUp);
@@ -641,15 +652,34 @@
             // virtualTab
             // 
             this.virtualTab.AutoScroll = true;
+            this.virtualTab.Controls.Add(this.viewerControlCheck);
+            this.virtualTab.Controls.Add(this.cameraOffsetPanel);
             this.virtualTab.Controls.Add(this.rawRotation);
             this.virtualTab.Controls.Add(this.rawPosition);
             this.virtualTab.Location = new System.Drawing.Point(4, 22);
             this.virtualTab.Name = "virtualTab";
             this.virtualTab.Padding = new System.Windows.Forms.Padding(3);
-            this.virtualTab.Size = new System.Drawing.Size(837, 302);
+            this.virtualTab.Size = new System.Drawing.Size(837, 376);
             this.virtualTab.TabIndex = 0;
             this.virtualTab.Text = "Virtual Space";
             this.virtualTab.UseVisualStyleBackColor = true;
+            // 
+            // cameraOffsetPanel
+            // 
+            this.cameraOffsetPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.cameraOffsetPanel.DisplayName = "CameraOffset";
+            this.cameraOffsetPanel.Location = new System.Drawing.Point(8, 260);
+            this.cameraOffsetPanel.Max = 10D;
+            this.cameraOffsetPanel.Min = -10D;
+            this.cameraOffsetPanel.Name = "cameraOffsetPanel";
+            this.cameraOffsetPanel.Size = new System.Drawing.Size(826, 98);
+            this.cameraOffsetPanel.TabIndex = 3;
+            this.cameraOffsetPanel.Value = ((OpenMetaverse.Vector3)(resources.GetObject("cameraOffsetPanel.Value")));
+            this.cameraOffsetPanel.X = -4F;
+            this.cameraOffsetPanel.Y = 0F;
+            this.cameraOffsetPanel.Z = 2F;
+            this.cameraOffsetPanel.OnChange += new System.EventHandler(this.cameraOffsetPanel_OnChange);
             // 
             // rawRotation
             // 
@@ -661,7 +691,7 @@
             this.rawRotation.Name = "rawRotation";
             this.rawRotation.Pitch = 0F;
             this.rawRotation.Rotation = ((OpenMetaverse.Quaternion)(resources.GetObject("rawRotation.Rotation")));
-            this.rawRotation.Size = new System.Drawing.Size(773, 147);
+            this.rawRotation.Size = new System.Drawing.Size(837, 147);
             this.rawRotation.TabIndex = 2;
             this.rawRotation.Yaw = 0F;
             // 
@@ -674,7 +704,7 @@
             this.rawPosition.Max = 2048D;
             this.rawPosition.Min = -2048D;
             this.rawPosition.Name = "rawPosition";
-            this.rawPosition.Size = new System.Drawing.Size(764, 98);
+            this.rawPosition.Size = new System.Drawing.Size(831, 98);
             this.rawPosition.TabIndex = 1;
             this.rawPosition.Value = ((OpenMetaverse.Vector3)(resources.GetObject("rawPosition.Value")));
             this.rawPosition.X = 128F;
@@ -685,6 +715,7 @@
             // masterTab
             // 
             this.masterTab.AutoScroll = true;
+            this.masterTab.Controls.Add(this.frustumNearCheck);
             this.masterTab.Controls.Add(this.rotationCheck);
             this.masterTab.Controls.Add(this.eyeOffsetCheck);
             this.masterTab.Controls.Add(this.aspectRatioCheck);
@@ -695,70 +726,65 @@
             this.masterTab.Location = new System.Drawing.Point(4, 22);
             this.masterTab.Name = "masterTab";
             this.masterTab.Padding = new System.Windows.Forms.Padding(3);
-            this.masterTab.Size = new System.Drawing.Size(837, 328);
+            this.masterTab.Size = new System.Drawing.Size(837, 376);
             this.masterTab.TabIndex = 1;
             this.masterTab.Text = "Master";
             this.masterTab.UseVisualStyleBackColor = true;
             // 
-            // masterWindowPanel
+            // frustumNearCheck
             // 
-            this.masterWindowPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.masterWindowPanel.Location = new System.Drawing.Point(3, 3);
-            this.masterWindowPanel.Name = "masterWindowPanel";
-            this.masterWindowPanel.Size = new System.Drawing.Size(831, 322);
-            this.masterWindowPanel.TabIndex = 0;
-            window2.AspectRatio = 0.56250000000000011D;
-            window2.Diagonal = 482.59999999999997D;
-            window2.EyePosition = ((OpenMetaverse.Vector3)(resources.GetObject("window2.EyePosition")));
-            window2.FieldOfView = 0.57510636124758763D;
-            window2.Height = 236.600074246673D;
-            window2.LockScreenPosition = true;
-            rotation2.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("rotation2.LookAtVector")));
-            rotation2.Pitch = 0F;
-            rotation2.Quaternion = ((OpenMetaverse.Quaternion)(resources.GetObject("rotation2.Quaternion")));
-            rotation2.Yaw = 0F;
-            window2.RotationOffset = rotation2;
-            window2.ScreenPosition = ((OpenMetaverse.Vector3)(resources.GetObject("window2.ScreenPosition")));
-            window2.Width = 420.62235421630743D;
-            this.masterWindowPanel.Window = window2;
+            this.frustumNearCheck.AutoSize = true;
+            this.frustumNearCheck.Location = new System.Drawing.Point(175, 285);
+            this.frustumNearCheck.Name = "frustumNearCheck";
+            this.frustumNearCheck.Size = new System.Drawing.Size(94, 17);
+            this.frustumNearCheck.TabIndex = 7;
+            this.frustumNearCheck.Text = "FrumstumNear";
+            this.frustumNearCheck.UseVisualStyleBackColor = true;
+            this.frustumNearCheck.CheckedChanged += new System.EventHandler(this.frustumNearCheck_CheckedChanged);
             // 
-            // debugTab
+            // rotationCheck
             // 
-            this.debugTab.Controls.Add(this.debugPanel);
-            this.debugTab.Location = new System.Drawing.Point(4, 22);
-            this.debugTab.Name = "debugTab";
-            this.debugTab.Padding = new System.Windows.Forms.Padding(3);
-            this.debugTab.Size = new System.Drawing.Size(837, 231);
-            this.debugTab.TabIndex = 5;
-            this.debugTab.Text = "Debug";
-            this.debugTab.UseVisualStyleBackColor = true;
+            this.rotationCheck.AutoSize = true;
+            this.rotationCheck.Location = new System.Drawing.Point(497, 285);
+            this.rotationCheck.Name = "rotationCheck";
+            this.rotationCheck.Size = new System.Drawing.Size(66, 17);
+            this.rotationCheck.TabIndex = 6;
+            this.rotationCheck.Text = "Rotation";
+            this.rotationCheck.UseVisualStyleBackColor = true;
+            this.rotationCheck.CheckedChanged += new System.EventHandler(this.rotationCheck_CheckedChanged);
             // 
-            // debugPanel
+            // eyeOffsetCheck
             // 
-            this.debugPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.debugPanel.Location = new System.Drawing.Point(3, 3);
-            this.debugPanel.Name = "debugPanel";
-            this.debugPanel.Size = new System.Drawing.Size(831, 213);
-            this.debugPanel.Source = null;
-            this.debugPanel.TabIndex = 0;
+            this.eyeOffsetCheck.AutoSize = true;
+            this.eyeOffsetCheck.Location = new System.Drawing.Point(416, 285);
+            this.eyeOffsetCheck.Name = "eyeOffsetCheck";
+            this.eyeOffsetCheck.Size = new System.Drawing.Size(75, 17);
+            this.eyeOffsetCheck.TabIndex = 5;
+            this.eyeOffsetCheck.Text = "Eye Offset";
+            this.eyeOffsetCheck.UseVisualStyleBackColor = true;
+            this.eyeOffsetCheck.CheckedChanged += new System.EventHandler(this.eyeOffsetCheck_CheckedChanged);
             // 
-            // tabControl1
+            // aspectRatioCheck
             // 
-            this.tabControl1.Location = new System.Drawing.Point(0, 0);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(200, 100);
-            this.tabControl1.TabIndex = 0;
+            this.aspectRatioCheck.AutoSize = true;
+            this.aspectRatioCheck.Location = new System.Drawing.Point(326, 285);
+            this.aspectRatioCheck.Name = "aspectRatioCheck";
+            this.aspectRatioCheck.Size = new System.Drawing.Size(84, 17);
+            this.aspectRatioCheck.TabIndex = 4;
+            this.aspectRatioCheck.Text = "AspectRatio";
+            this.aspectRatioCheck.UseVisualStyleBackColor = true;
+            this.aspectRatioCheck.CheckedChanged += new System.EventHandler(this.aspectRatioCheck_CheckedChanged);
             // 
-            // frustumHV
+            // fovCheck
             // 
-            this.frustumHCheck.AutoSize = true;
-            this.frustumHCheck.Location = new System.Drawing.Point(6, 285);
-            this.frustumHCheck.Name = "frustumHV";
-            this.frustumHCheck.Size = new System.Drawing.Size(79, 17);
-            this.frustumHCheck.TabIndex = 1;
-            this.frustumHCheck.Text = "FrumstumH";
-            this.frustumHCheck.UseVisualStyleBackColor = true;
+            this.fovCheck.AutoSize = true;
+            this.fovCheck.Location = new System.Drawing.Point(275, 285);
+            this.fovCheck.Name = "fovCheck";
+            this.fovCheck.Size = new System.Drawing.Size(45, 17);
+            this.fovCheck.TabIndex = 3;
+            this.fovCheck.Text = "FoV";
+            this.fovCheck.UseVisualStyleBackColor = true;
+            this.fovCheck.CheckedChanged += new System.EventHandler(this.fovCheck_CheckedChanged);
             // 
             // frustumVCheck
             // 
@@ -769,46 +795,72 @@
             this.frustumVCheck.TabIndex = 2;
             this.frustumVCheck.Text = "FrumstumV";
             this.frustumVCheck.UseVisualStyleBackColor = true;
+            this.frustumVCheck.CheckedChanged += new System.EventHandler(this.frustumVCheck_CheckedChanged);
             // 
-            // fovCheck
+            // frustumHCheck
             // 
-            this.fovCheck.AutoSize = true;
-            this.fovCheck.Location = new System.Drawing.Point(176, 285);
-            this.fovCheck.Name = "fovCheck";
-            this.fovCheck.Size = new System.Drawing.Size(45, 17);
-            this.fovCheck.TabIndex = 3;
-            this.fovCheck.Text = "FoV";
-            this.fovCheck.UseVisualStyleBackColor = true;
+            this.frustumHCheck.AutoSize = true;
+            this.frustumHCheck.Location = new System.Drawing.Point(6, 285);
+            this.frustumHCheck.Name = "frustumHCheck";
+            this.frustumHCheck.Size = new System.Drawing.Size(79, 17);
+            this.frustumHCheck.TabIndex = 1;
+            this.frustumHCheck.Text = "FrumstumH";
+            this.frustumHCheck.UseVisualStyleBackColor = true;
+            this.frustumHCheck.CheckedChanged += new System.EventHandler(this.frustumHCheck_CheckedChanged);
             // 
-            // aspectRatioCheck
+            // masterWindowPanel
             // 
-            this.aspectRatioCheck.AutoSize = true;
-            this.aspectRatioCheck.Location = new System.Drawing.Point(227, 285);
-            this.aspectRatioCheck.Name = "aspectRatioCheck";
-            this.aspectRatioCheck.Size = new System.Drawing.Size(84, 17);
-            this.aspectRatioCheck.TabIndex = 4;
-            this.aspectRatioCheck.Text = "AspectRatio";
-            this.aspectRatioCheck.UseVisualStyleBackColor = true;
+            this.masterWindowPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.masterWindowPanel.Location = new System.Drawing.Point(3, 3);
+            this.masterWindowPanel.MinimumSize = new System.Drawing.Size(637, 295);
+            this.masterWindowPanel.Name = "masterWindowPanel";
+            this.masterWindowPanel.Size = new System.Drawing.Size(831, 370);
+            this.masterWindowPanel.TabIndex = 0;
+            window1.AspectRatio = 0.56250000000000011D;
+            window1.Diagonal = 482.59999999999997D;
+            window1.EyePosition = ((OpenMetaverse.Vector3)(resources.GetObject("window1.EyePosition")));
+            window1.FieldOfView = 3.1415926535897931D;
+            window1.Height = 236.600074246673D;
+            window1.LockScreenPosition = true;
+            rotation1.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("rotation1.LookAtVector")));
+            rotation1.Pitch = 0F;
+            rotation1.Quaternion = ((OpenMetaverse.Quaternion)(resources.GetObject("rotation1.Quaternion")));
+            rotation1.Yaw = 0F;
+            window1.RotationOffset = rotation1;
+            window1.ScreenPosition = ((OpenMetaverse.Vector3)(resources.GetObject("window1.ScreenPosition")));
+            window1.Width = 420.62235421630743D;
+            this.masterWindowPanel.Window = window1;
             // 
-            // eyeOffsetCheck
+            // debugTab
             // 
-            this.eyeOffsetCheck.AutoSize = true;
-            this.eyeOffsetCheck.Location = new System.Drawing.Point(317, 285);
-            this.eyeOffsetCheck.Name = "eyeOffsetCheck";
-            this.eyeOffsetCheck.Size = new System.Drawing.Size(75, 17);
-            this.eyeOffsetCheck.TabIndex = 5;
-            this.eyeOffsetCheck.Text = "Eye Offset";
-            this.eyeOffsetCheck.UseVisualStyleBackColor = true;
+            this.debugTab.Controls.Add(this.debugPanel);
+            this.debugTab.Location = new System.Drawing.Point(4, 22);
+            this.debugTab.Name = "debugTab";
+            this.debugTab.Padding = new System.Windows.Forms.Padding(3);
+            this.debugTab.Size = new System.Drawing.Size(837, 376);
+            this.debugTab.TabIndex = 5;
+            this.debugTab.Text = "Debug";
+            this.debugTab.UseVisualStyleBackColor = true;
             // 
-            // rotationCheck
+            // debugPanel
             // 
-            this.rotationCheck.AutoSize = true;
-            this.rotationCheck.Location = new System.Drawing.Point(398, 285);
-            this.rotationCheck.Name = "rotationCheck";
-            this.rotationCheck.Size = new System.Drawing.Size(66, 17);
-            this.rotationCheck.TabIndex = 6;
-            this.rotationCheck.Text = "Rotation";
-            this.rotationCheck.UseVisualStyleBackColor = true;
+            this.debugPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.debugPanel.Location = new System.Drawing.Point(3, 3);
+            this.debugPanel.Name = "debugPanel";
+            this.debugPanel.Size = new System.Drawing.Size(831, 370);
+            this.debugPanel.Source = null;
+            this.debugPanel.TabIndex = 0;
+            // 
+            // viewerControlCheck
+            // 
+            this.viewerControlCheck.AutoSize = true;
+            this.viewerControlCheck.Location = new System.Drawing.Point(101, 7);
+            this.viewerControlCheck.Name = "viewerControlCheck";
+            this.viewerControlCheck.Size = new System.Drawing.Size(94, 17);
+            this.viewerControlCheck.TabIndex = 4;
+            this.viewerControlCheck.Text = "Viewer Control";
+            this.viewerControlCheck.UseVisualStyleBackColor = true;
+            this.viewerControlCheck.CheckedChanged += new System.EventHandler(this.viewerControlCheck_CheckedChanged);
             // 
             // MasterForm
             // 
@@ -856,6 +908,7 @@
             this.mousePanel.PerformLayout();
             this.slavesTabContainer.ResumeLayout(false);
             this.virtualTab.ResumeLayout(false);
+            this.virtualTab.PerformLayout();
             this.masterTab.ResumeLayout(false);
             this.masterTab.PerformLayout();
             this.debugTab.ResumeLayout(false);
@@ -924,5 +977,8 @@
         private System.Windows.Forms.CheckBox fovCheck;
         private System.Windows.Forms.CheckBox frustumVCheck;
         private System.Windows.Forms.CheckBox frustumHCheck;
+        private ProxyTestGUI.VectorPanel cameraOffsetPanel;
+        private System.Windows.Forms.CheckBox frustumNearCheck;
+        private System.Windows.Forms.CheckBox viewerControlCheck;
     }
 }
