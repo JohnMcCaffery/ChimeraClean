@@ -575,5 +575,9 @@ namespace ConsoleTest {
         private void kinectValuePanel_OnChange(object sender, EventArgs e) {
             k.RawValue = kinectValuePanel.Value;
         }
+
+        private void kinectImageCheck_CheckedChanged(object sender, EventArgs e) {
+            k.ProcessImageFrames = kinectImageCheck.Checked;
+        }
     }
 }
