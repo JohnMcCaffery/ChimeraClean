@@ -8,6 +8,7 @@ using System.Drawing;
 using OpenMetaverse;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
+using UtilLib;
 
 namespace ChimeraLib {
     public class KinectSource {
@@ -15,6 +16,9 @@ namespace ChimeraLib {
         private readonly List<KeyValuePair<int, DateTime>> _users = new List<KeyValuePair<int, DateTime>>();
         private readonly KinectSkeletonFrameSupplier supplier;
         private readonly object _imageLock = new object();
+        private readonly Rotation rotation;
+        private readonly Vector3 scale = new Vector3 (1000f);
+        private Vector3 offset;
 
         private int _locked = -1;
         private Bitmap bmp;
@@ -31,6 +35,14 @@ namespace ChimeraLib {
         public Vector3 HeadPosition {
             get { return head; }
         }
+        public Vector3 Offset {
+            get { return offset; }
+            set { offset = value; }
+        }
+        public Rotation Rotation {
+            get { return rotation; }
+        }
+                
 
         public int ImageWidth {
             get { return supplier.ImageWidth; }
@@ -95,7 +107,7 @@ namespace ChimeraLib {
             if (id != _locked || id == 0)
                 return;
 
-            head = e.Skeleton.GetJoint("Head").Position;
+            head = ((e.Skeleton.GetJoint("Head").Position * scale) * rotation.Quaternion) + offset;
             if (OnChange != null)
                 OnChange(head);
         }
