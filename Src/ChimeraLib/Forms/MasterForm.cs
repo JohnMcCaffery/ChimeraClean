@@ -78,6 +78,7 @@ namespace ConsoleTest {
             Vector3 max = new Vector3(float.MinValue);
             k.OnChange += position => {
                 master.Window.EyePosition = position;
+                kinectValuePanel.Value = k.RawValue;
                 Vector3 oldMin = min;
                 Vector3 oldMax = max;
                 if (min.X > position.X)
@@ -324,7 +325,8 @@ namespace ConsoleTest {
             if (!yaw) {
                 //avatar = to2DV(avatar);
                 kinect = to2DV(kinect);
-                kinectForward = to2DV(kinectForward) * -1f;
+                kinectForward = to2DV(kinectForward);
+                kinectForward = new Vector3(kinectForward.X, -kinectForward.Y, kinectForward.Z);
                 screen = to2DV(screen);
                 eyeToScreen = to2DV(eyeToScreen);
                 lookAt = to2DV(window.RotationOffset.LookAtVector);
@@ -568,6 +570,10 @@ namespace ConsoleTest {
             k.Rotation.Pitch = kinectRotationPanel.Pitch;
             k.Rotation.Yaw = kinectRotationPanel.Yaw;
             RefreshDrawings();
+        }
+
+        private void kinectValuePanel_OnChange(object sender, EventArgs e) {
+            k.RawValue = kinectValuePanel.Value;
         }
     }
 }
