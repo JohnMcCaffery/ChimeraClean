@@ -17,8 +17,8 @@ namespace UtilLib {
         private uint localID;
         private bool processingPacket;
         private bool viewerControl;
-        private Vector3 position;
-        private Rotation rotation;
+        private Vector3 worldPosition;
+        private Rotation worldRotation;
         private Vector3 cameraOffset = new Vector3(0f, 0f, 0f);
 
         private readonly HashSet<PacketType> packetTypesToForward = new HashSet<PacketType>();
@@ -36,7 +36,7 @@ namespace UtilLib {
         /// <summary>
         /// Triggered whenever a packet is created and sent to all connected slaves.
         /// </summary>
-        public event EventHandler OnPacketGenerated;
+        public event EventHandler OnSlavesUpdated;
 
         /// <summary>
         /// Triggered whenever a packet from the connected proxyAddress is forwarded to all connected slaves.
@@ -55,22 +55,17 @@ namespace UtilLib {
             Rotation = new Rotation();
             Position = new Vector3(128f, 128f, 24f);
             OnSlaveConnected += (slave) => {
-                slave.OnChange += (source, args) => CreatePacket();
-                CreatePacket();
+                slave.Window.OnChange += (source, args) => {
+                    masterServer.Send(worldPosition, worldRotation, slave.Window, slave.EP);
+                    if (OnCameraUpdated != null)
+                        OnCameraUpdated(this, null);
+                };
+                NotifySlaves();
             };
 
             Window.OnChange += (source, args) => {
-                SetCameraPropertiesPacket screenPacket = new SetCameraPropertiesPacket();
-                screenPacket.CameraProperty.CameraAngle = (float)Window.FieldOfView;
-                screenPacket.CameraProperty.FrustumOffsetH = (float)(Window.ScreenPosition.X / Window.Width);
-                screenPacket.CameraProperty.FrustumOffsetV = (float)(Window.ScreenPosition.Y / Window.Height);
-
-
-                //Byte[] bytes = screenPacket.ToBytes();
-                //int end = bytes.Length - 1;
-                //SetCameraPropertiesPacket testPacket = (SetCameraPropertiesPacket) Packet.BuildPacket(bytes, ref end, new byte[1000]);
                 foreach (var slave in slaves.Values) 
-                    masterServer.Send(screenPacket, slave.TargetEP);
+                    masterServer.Send(worldPosition, worldRotation, slave.Window, slave.EP);
 
                 GenerateMasterPacket();
             };
@@ -110,11 +105,11 @@ namespace UtilLib {
         /// Positon of the camera.
         /// </summary>
         public Vector3 Position {
-            get { return position; }
+            get { return worldPosition; }
             set {
-                position = value;
+                worldPosition = value;
                 if (!processingPacket)
-                    CreatePacket();
+                    NotifySlaves();
             }
         }
 
@@ -130,81 +125,69 @@ namespace UtilLib {
         /// The rotation of the camera.
         /// </summary>
         public Rotation Rotation {
-            get { return rotation; }
+            get { return worldRotation; }
             set {
-                if (rotation != null)
-                    rotation.OnChange -= RotationChanged;
-                rotation = value;
-                rotation.OnChange += RotationChanged;
-                RotationChanged(rotation, null);
+                if (worldRotation != null)
+                    worldRotation.OnChange -= RotationChanged;
+                worldRotation = value;
+                worldRotation.OnChange += RotationChanged;
+                RotationChanged(worldRotation, null);
             }
         }
 
         private void RotationChanged(object source, EventArgs args) {
             if (!processingPacket)
-                CreatePacket();
+                NotifySlaves();
         }
 
-        private void CreatePacket() {
-            SetCameraPropertiesPacket screenPacket = new SetCameraPropertiesPacket();
-            screenPacket.CameraProperty.CameraAngle = (float) Window.FieldOfView;
-            screenPacket.CameraProperty.FrustumOffsetH = (float) (Window.ScreenPosition.X / Window.Width);
-            screenPacket.CameraProperty.FrustumOffsetV = (float) (Window.ScreenPosition.Y / Window.Height);
-
-            AgentUpdatePacket cameraPacket = (AgentUpdatePacket) Packet.BuildPacket(PacketType.AgentUpdate);
-            cameraPacket.AgentData.AgentID = UUID.Random();
-            cameraPacket.AgentData.BodyRotation = Quaternion.Identity;
-            cameraPacket.AgentData.CameraLeftAxis = Vector3.Cross(Vector3.UnitZ, Rotation.LookAtVector);
-            cameraPacket.AgentData.CameraUpAxis = Vector3.UnitZ;
-            cameraPacket.AgentData.HeadRotation = Quaternion.Identity;
-            cameraPacket.AgentData.SessionID = UUID.Random();
-
+        private void NotifySlaves() {
             foreach (var slave in slaves.Values) {
-                Rotation rot = new Rotation(Rotation.Pitch + slave.Window.RotationOffset.Pitch, Rotation.Yaw + slave.Window.RotationOffset.Yaw);
-                cameraPacket.AgentData.CameraAtAxis = rot.LookAtVector;
-                cameraPacket.AgentData.CameraCenter = Position + (slave.Window.EyePosition * Rotation.Quaternion);
-                masterServer.Send(cameraPacket, slave.TargetEP);
-                masterServer.Send(screenPacket, slave.TargetEP);
+                masterServer.Send(worldPosition, worldRotation, slave.Window, slave.EP);
             }
 
-            Logger.Debug("Master created AgentUpdatePacket and broadcast it to " + slaves.Count + " slaves.");
+            Logger.Debug("Master created Notified all slaves of a change and broadcast it to " + slaves.Count + " slaves.");
 
             GenerateMasterPacket();
 
             packetsGenerated++;
-            if (OnPacketGenerated != null)
-                OnPacketGenerated(cameraPacket, null);
+            if (OnSlavesUpdated != null)
+                OnSlavesUpdated(this, null);
             if (OnCameraUpdated != null)
                 OnCameraUpdated(this, null);
         }
 
         private bool updateRotation;
         private bool updateEyeOffset;
-        private bool updateFrustumH;
-        private bool updateFrustumV;
-        private bool updateFrustumNear;
+        private bool updateFrustum;
+        private bool updateFrustumDirectly;
         private bool updateFoV;
         private bool updateAspectRatio;
         private bool updatingCamera;
+        private float vanishingDistance = 512f;
 
-        public bool UpdateFrustumH {
-            get { return updateFrustumH; }
-            set { 
-                updateFrustumH = value; 
+        public float VanishingDistance {
+            get { return vanishingDistance; }
+            set {
+                vanishingDistance = value;
                 GenerateMasterPacket();
             }
         }
-        public bool UpdateFrustumV {
-            get { return updateFrustumV; }
+        public bool UpdateFrustum {
+            get { return updateFrustum; }
             set { 
-                updateFrustumV = value; 
+                updateFrustum = value; 
                 GenerateMasterPacket();
             }
         }
-        public bool UpdateFrustumNear {
-            get { return updateFrustumNear; }
-            set { 
-                updateFrustumNear = value; 
+        public bool UpdateFrustumDirectly {
+            get { return updateFrustumDirectly; }
+            set {
+                if (updateFrustumDirectly && !value) {
+                    SetFrustumPacket p = new SetFrustumPacket();
+                    p.Frustum.ControlFrustum = false;
+                    InjectPacket(p, Direction.Incoming);
+                }
+                updateFrustumDirectly = value; 
                 GenerateMasterPacket();
             }
         }
@@ -249,102 +232,13 @@ namespace UtilLib {
             if (!ProxyRunning)
                 return;
             if (updatingCamera) {
-                SetFollowCamPropertiesPacket cameraPacket = new SetFollowCamPropertiesPacket();
-                cameraPacket.CameraProperty = new SetFollowCamPropertiesPacket.CameraPropertyBlock[22];
-                for (int i = 0; i < 22; i++) {
-                    cameraPacket.CameraProperty[i] = new SetFollowCamPropertiesPacket.CameraPropertyBlock();
-                    cameraPacket.CameraProperty[i].Type = i + 1;
-                }
-
-                Rotation finalRot = rotation;
-                if (updateRotation)
-                    finalRot = new Rotation(rotation.Pitch + Window.RotationOffset.Pitch, rotation.Yaw + Window.RotationOffset.Yaw);
-                Vector3 finalPos = position;
-                if (updateEyeOffset) {
-                    Vector3 rotatatedLookAt = ((Window.EyePosition * new Vector3(1f, -1f, 1f)) / 1000f) * rotation.Quaternion;
-                    finalPos += rotatatedLookAt;
-                }
-                //Vector3 lookAt = finalPos + master.Rotation.LookAtVector;
-                Vector3 lookAt = finalPos + finalRot.LookAtVector;
-                cameraPacket.CameraProperty[0].Value = 0;
-                cameraPacket.CameraProperty[1].Value = 0f;
-                cameraPacket.CameraProperty[2].Value = 0f;
-                cameraPacket.CameraProperty[3].Value = 0f;
-                cameraPacket.CameraProperty[4].Value = 0f;
-                cameraPacket.CameraProperty[5].Value = 0f;
-                cameraPacket.CameraProperty[6].Value = 0f;
-                cameraPacket.CameraProperty[7].Value = 0f;
-                cameraPacket.CameraProperty[8].Value = 0f;
-                cameraPacket.CameraProperty[9].Value = 0f;
-                cameraPacket.CameraProperty[10].Value = 0f;
-                cameraPacket.CameraProperty[11].Value = 1f; //enable
-                cameraPacket.CameraProperty[12].Value = 0f;
-                cameraPacket.CameraProperty[13].Value = finalPos.X;
-                cameraPacket.CameraProperty[14].Value = finalPos.Y;
-                cameraPacket.CameraProperty[15].Value = finalPos.Z;
-                cameraPacket.CameraProperty[16].Value = 0f;
-                cameraPacket.CameraProperty[17].Value = lookAt.X;
-                cameraPacket.CameraProperty[18].Value = lookAt.Y;
-                cameraPacket.CameraProperty[19].Value = lookAt.Z;
-                cameraPacket.CameraProperty[20].Value = 1f;
-                cameraPacket.CameraProperty[21].Value = 1f;
-                clientProxy.InjectPacket(cameraPacket, Direction.Incoming);
+                clientProxy.InjectPacket(Window.CreateSetFollowCamPropertiesPacket(worldPosition, worldRotation), Direction.Incoming);
             }
 
-            if (updateFrustumH || updateFrustumV || UpdateFrustumNear || updateFoV || updateAspectRatio) {
-                /*
-                Vector3 upperRight = new Vector3(0f, (float)(Window.Width / 2.0), (float)(Window.Height / 2.0));
-                Vector3 lowerLeft = new Vector3(0f, (float)(Window.Width / -2.0), (float)(Window.Height / -2.0));
-                Vector3 diff = Window.ScreenPosition - Window.EyePosition;
-
-                upperRight += diff;
-                lowerLeft += diff;
-
-                upperRight /= diff.X;
-                lowerLeft /= diff.X;
-
-                float x1 = Math.Min(upperRight.Y, lowerLeft.Y);
-                float x2 = Math.Max(upperRight.Y, lowerLeft.Y);
-                float y1 = Math.Max(upperRight.Z, lowerLeft.Z);
-                float y2 = Math.Min(upperRight.Z, lowerLeft.Z);
-
-                double fovH = Math.Atan2(x2 - x1, 2 * Window.AspectRatio) * 2.0;
-                double fovV = Math.Atan2(y1 - y2, 2) * 2.0;
-
-                double frustumOffsetH = (x2 + x1) / (x2 - x1);
-                double frustumOffsetV = (y1 + y2) / (y1 - y2);
-
-                SetCameraPropertiesPacket screenPacket = new SetCameraPropertiesPacket();
-                screenPacket.CameraProperty = new SetCameraPropertiesPacket.CameraPropertyBlock();
-                screenPacket.CameraProperty.FrustumOffsetH = (float) frustumOffsetH;
-                screenPacket.CameraProperty.FrustumOffsetV = (float) frustumOffsetV;
-                screenPacket.CameraProperty.CameraAngle = (float) fovH;
-
-                screenPacket.CameraProperty.AspectSet = false;
-                screenPacket.CameraProperty.SetNear = false;
-                */
-
-                SetCameraPropertiesPacket screenPacket = new SetCameraPropertiesPacket();
-                screenPacket.CameraProperty = new SetCameraPropertiesPacket.CameraPropertyBlock();
-                screenPacket.CameraProperty.FrustumOffsetH = 0f;
-                screenPacket.CameraProperty.FrustumOffsetV = 0f;
-                screenPacket.CameraProperty.CameraAngle = 1f;
-
-                screenPacket.CameraProperty.AspectRatio = (float)(Window.Width / Window.Height);
-                screenPacket.CameraProperty.AspectSet = updateAspectRatio;
-
-                screenPacket.CameraProperty.FrustumNear = 0f;
-                screenPacket.CameraProperty.SetNear = false;
-
-                if (updateFrustumH)
-                    screenPacket.CameraProperty.FrustumOffsetH = (float)((2 * Window.FrustumOffsetH) / Window.Width);
-                if (updateFrustumV)
-                    screenPacket.CameraProperty.FrustumOffsetV = (float)((2 * Window.FrustumOffsetV) / Window.Height);
-                if (updateFoV)
-                    screenPacket.CameraProperty.CameraAngle = (float)Window.FieldOfView;
-
-                clientProxy.InjectPacket(screenPacket, Direction.Incoming);
-            }
+            if (updateFrustumDirectly)
+                clientProxy.InjectPacket(Window.CreateFrustumPacket(vanishingDistance), Direction.Incoming);
+            else if (updateFrustum || updateFoV || updateAspectRatio)
+                clientProxy.InjectPacket(Window.CreateCameraPacket(updateFrustum, updateFoV), Direction.Incoming);
         }
 
         protected override Packet ReceiveIncomingPacket(Packet p, IPEndPoint ep) {
@@ -441,16 +335,16 @@ Utils.UInt16ToFloat(block.Data, i + 4, -64.0f, 64.0f));
                 processingPacket = true;
 
                 newPosition += cameraOffset * newRotation;
-                if (!Equal(newPosition, position) && !Equal(newPosition, ModifiedPosition))
+                if (!Equal(newPosition, worldPosition) && !Equal(newPosition, ModifiedPosition))
                     Position = newPosition;
 
                 Vector3 lookAt = Vector3.UnitX * newRotation;
-                if (!Equal(lookAt, rotation.LookAtVector) && !Equal(lookAt, ModifiedRotation.LookAtVector))
+                if (!Equal(lookAt, worldRotation.LookAtVector) && !Equal(lookAt, ModifiedRotation.LookAtVector))
                     Rotation.LookAtVector = lookAt;
 
                 processingPacket = false;
 
-                CreatePacket();
+                NotifySlaves();
             }
         }
 
@@ -458,16 +352,16 @@ Utils.UInt16ToFloat(block.Data, i + 4, -64.0f, 64.0f));
             AgentUpdatePacket packet = (AgentUpdatePacket)p;
 
             processingPacket = true;
-            bool posEq = Equal(position, packet.AgentData.CameraCenter);
+            bool posEq = Equal(worldPosition, packet.AgentData.CameraCenter);
             bool modEq = Equal(packet.AgentData.CameraCenter, ModifiedPosition);
-            if (!Equal(position,packet.AgentData.CameraCenter) && !Equal(packet.AgentData.CameraCenter, ModifiedPosition))
+            if (!Equal(worldPosition,packet.AgentData.CameraCenter) && !Equal(packet.AgentData.CameraCenter, ModifiedPosition))
                 Position = packet.AgentData.CameraCenter;
-            if (!Equal(rotation.LookAtVector, packet.AgentData.CameraAtAxis) && !Equal(packet.AgentData.CameraAtAxis, Rotation.LookAtVector))
+            if (!Equal(worldRotation.LookAtVector, packet.AgentData.CameraAtAxis) && !Equal(packet.AgentData.CameraAtAxis, Rotation.LookAtVector))
                 Rotation.LookAtVector = packet.AgentData.CameraAtAxis;
             processingPacket = false;
 
             //packetsForwarded++;
-            CreatePacket();
+            NotifySlaves();
             if (OnPacketForwarded != null)
                 OnPacketForwarded(this, null);
             if (OnCameraUpdated != null)
@@ -501,10 +395,10 @@ Utils.UInt16ToFloat(block.Data, i + 4, -64.0f, 64.0f));
         public Vector3 CameraOffset {
             get { return cameraOffset; }
             set {
-                position -= cameraOffset * rotation.Quaternion;
+                worldPosition -= cameraOffset * worldRotation.Quaternion;
                 cameraOffset = value;
-                position += cameraOffset * rotation.Quaternion;
-                CreatePacket();
+                worldPosition += cameraOffset * worldRotation.Quaternion;
+                NotifySlaves();
             }
         }
     }

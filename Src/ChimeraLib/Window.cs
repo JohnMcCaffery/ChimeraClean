@@ -12,7 +12,7 @@ namespace ChimeraLib {
         private static readonly double H = 185;
         private Rotation rotation = new Rotation(0f, 0f);
         private Vector3 screenPosition = Vector3.Zero;
-        private Vector3 eyePosition = Vector3.UnitX * -1000;
+        private Vector3 eyePosition = Vector3.Zero;
         private double aspectRatio = H / W;
         private double mmDiagonal = Math.Sqrt(Math.Pow(W, 2) + Math.Pow(H, 2));
         private bool lockFrustum = true;
@@ -29,23 +29,16 @@ namespace ChimeraLib {
             DotNetConfigSource configSource = new DotNetConfigSource(AppDomain.CurrentDomain.SetupInformation.ConfigurationFile);
             IConfig config = configSource.Configs[name];
             if (config != null) {
-                float posX = config.GetFloat("PositionX", 0f);
-                float posY = config.GetFloat("PositionY", 0f);
-                float posZ = config.GetFloat("PositionZ", 0f);
+                float pitch = config.GetFloat("Pitch", rotation.Yaw);
+                float yaw = config.GetFloat("Yaw", rotation.Pitch);
 
-                float eyeX = config.GetFloat("EyeX", -1000f);
-                float eyeY = config.GetFloat("EyeY", 0f);
-                float eyeZ = config.GetFloat("EyeZ", 0f);
+                aspectRatio = config.GetDouble("AspectRatio", aspectRatio);
+                mmDiagonal = config.GetDouble("Diagonal", mmDiagonal);
 
-                float pitch = config.GetFloat("Pitch", 0f);
-                float yaw = config.GetFloat("Yaw", 0f);
-
-                aspectRatio = config.GetDouble("AspectRatio", H / W);
-                Diagonal = config.GetDouble("Diagonal", mmDiagonal);
-
-                screenPosition = new Vector3(posX, posY, posZ);
-                eyePosition = new Vector3(eyeX, eyeY, eyeZ);
-                rotation = new Rotation(pitch, yaw);
+                screenPosition = Vector3.Parse(config.Get("ScreenPosition", screenPosition.ToString()));
+                eyePosition = Vector3.Parse(config.Get("EyePosition", eyePosition.ToString()));
+                rotation.Yaw = yaw;
+                rotation.Pitch = pitch;
             }
         }
         private void Changed() {
@@ -205,7 +198,9 @@ namespace ChimeraLib {
                 bottom += screenPosition;
 
                 float dot = Vector3.Dot(Vector3.Normalize(top - eyePosition), Vector3.Normalize(bottom - eyePosition));
-                return Math.Acos(dot);
+                //return Math.Acos(dot);
+
+                return Math.Atan2(Height, ScreenDistance);
             }
             set {
                 double fov = FieldOfView;

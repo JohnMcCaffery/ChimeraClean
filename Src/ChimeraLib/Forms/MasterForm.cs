@@ -37,8 +37,10 @@ namespace ConsoleTest {
             rawPosition.Value = master.Position;
             cameraOffsetPanel.Value = master.CameraOffset;
             rawRotation.LookAtVector = master.Rotation.LookAtVector;
+            vanishingDistanceValue.Value = new decimal(master.VanishingDistance);
             kinectPositionPanel.Value = k.Position / 10f;
             kinectRotationPanel.LookAtVector = k.Rotation.LookAtVector;
+            kinectValuePanel.Value = k.RawValue;
 
             addressBox.Text = master.ProxyConfig.MasterAddress;
             portBox.Text = master.ProxyConfig.MasterPort.ToString();
@@ -114,11 +116,6 @@ namespace ConsoleTest {
                 else
                     a();
             };
-            master.Window.OnEyeChange += (diff) => {
-                if (master.Window.LockScreenPosition)
-                    foreach (var slave in master.Slaves)
-                        slave.Window.ScreenPosition += diff;
-            };
             master.Window.OnChange += (source, args) => RefreshDrawings();
             master.OnSlaveConnected += AddSlaveTab;
             master.OnSlaveDisconnected += RemoveSlave;
@@ -128,11 +125,13 @@ namespace ConsoleTest {
         }
 
         private void RefreshDrawings() {
+            if (IsDisposed)
+                return;
             Action a = () => {
                 hvSplit.Panel1.Refresh();
                 hvSplit.Panel2.Refresh();
             };
-            if (InvokeRequired)
+            if (InvokeRequired && !IsDisposed)
                 Invoke(a);
             else
                 a();
@@ -270,7 +269,7 @@ namespace ConsoleTest {
             float scale = ((scaleBar.Maximum - scaleBar.Value) * e.ClipRectangle.Width) / scaleScale;
             foreach (var slave in master.Slaves) {
                 lock (slaveColours)
-                    DrawWindow(e.Graphics, slave.Window, origin, true, master.Window.EyePosition, slaveColours.ContainsKey(slave.Name) ? slaveColours[slave.Name] : Color.Black, scale);
+                    DrawWindow(e.Graphics, slave.Window, origin, true, Vector3.Zero, slaveColours.ContainsKey(slave.Name) ? slaveColours[slave.Name] : Color.Black, scale);
             }
             DrawWindow(e.Graphics, master.Window, origin, true, Vector3.Zero, Color.Black, scale);
 
@@ -284,7 +283,7 @@ namespace ConsoleTest {
             float scale = ((scaleBar.Maximum - scaleBar.Value) * e.ClipRectangle.Width) / scaleScale;
             foreach (var slave in master.Slaves) {
                 lock (slaveColours)
-                    DrawWindow(e.Graphics, slave.Window, origin, false, master.Window.EyePosition, slaveColours.ContainsKey(slave.Name) ? slaveColours[slave.Name] : Color.Black, scale);
+                    DrawWindow(e.Graphics, slave.Window, origin, false, Vector3.Zero, slaveColours.ContainsKey(slave.Name) ? slaveColours[slave.Name] : Color.Black, scale);
             }
             DrawWindow(e.Graphics, master.Window, origin, false, Vector3.Zero, Color.Black, scale);
 
@@ -321,6 +320,11 @@ namespace ConsoleTest {
             lookAt *= q;
             end1 *= q;
             end2 *= q;
+
+            Vector3 rotCorrect = new Vector3(1f, -1f, 1f);
+            lookAt *= rotCorrect;
+            end1 *= rotCorrect;
+            end2 *= rotCorrect;
 
             Vector3 cross1 = screen + (Vector3.Normalize(lookAt) * 30f * scale);
             Vector3 cross2 = screen + (Vector3.Normalize(lookAt) * -30f * scale);
@@ -510,20 +514,16 @@ namespace ConsoleTest {
             master.CameraOffset = cameraOffsetPanel.Value;
         }
 
-        private void frustumHCheck_CheckedChanged(object sender, EventArgs e) {
-            master.UpdateFrustumH = frustumHCheck.Checked;
-        }
-
-        private void frustumVCheck_CheckedChanged(object sender, EventArgs e) {
-            master.UpdateFrustumV = frustumVCheck.Checked;
+        private void frustumCheck_CheckedChanged(object sender, EventArgs e) {
+            master.UpdateFrustum = frustumHCheck.Checked;
         }
 
         private void fovCheck_CheckedChanged(object sender, EventArgs e) {
             master.UpdateFoV = fovCheck.Checked;
         }
 
-        private void aspectRatioCheck_CheckedChanged(object sender, EventArgs e) {
-            master.UpdateAspectRatio = aspectRatioCheck.Checked;
+        private void controlFrustumDirectlyCheck_CheckedChanged(object sender, EventArgs e) {
+            master.UpdateFrustumDirectly = controlFrustumDirectlyCheck.Checked;
         }
 
         private void eyeOffsetCheck_CheckedChanged(object sender, EventArgs e) {
@@ -532,10 +532,6 @@ namespace ConsoleTest {
 
         private void rotationCheck_CheckedChanged(object sender, EventArgs e) {
             master.UpdateRotation = rotationCheck.Checked;
-        }
-
-        private void frustumNearCheck_CheckedChanged(object sender, EventArgs e) {
-            master.UpdateFrustumNear = frustumNearCheck.Checked;
         }
 
         private void viewerControlCheck_CheckedChanged(object sender, EventArgs e) {
@@ -559,6 +555,10 @@ namespace ConsoleTest {
 
         private void kinectImageCheck_CheckedChanged(object sender, EventArgs e) {
             k.ProcessImageFrames = kinectImageCheck.Checked;
+        }
+
+        private void vanishingDistanceValue_ValueChanged(object sender, EventArgs e) {
+            master.VanishingDistance = (float) decimal.ToDouble(vanishingDistanceValue.Value);
         }
     }
 }
