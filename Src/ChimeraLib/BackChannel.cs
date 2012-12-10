@@ -29,28 +29,28 @@ using System.Threading;
 using GridProxy;
 using log4net;
 using System.Net.NetworkInformation;
+using ChimeraLib;
 
 namespace UtilLib {
+    public interface IScreenListener {
+        Rotation WorldRotation { get; }
+        Vector3 WorldPosition { get; set; }
+        Window Window { get; }
+    }
     public abstract class BackChannel {
-        public readonly static string PING = "Ping";
+        public readonly static byte PING = 0;
 
-        public readonly static string CONNECT = "Connect";
+        public readonly static byte CONNECT = 1;
 
-        public readonly static string DISCONNECT = "Disconnect";
+        public readonly static byte DISCONNECT = 2;
 
-        public readonly static string ACCEPT = "Accept";
+        public readonly static byte ACCEPT = 3;
 
-        public readonly static string REJECT = "Reject";
+        public readonly static byte REJECT = 4;
 
-        public readonly static byte[] PING_B = Encoding.ASCII.GetBytes(PING);
+        public readonly static byte DATA = 5;
 
-        public readonly static byte[] CONNECT_B = Encoding.ASCII.GetBytes(CONNECT);
-
-        public readonly static byte[] DISCONNECT_B = Encoding.ASCII.GetBytes(DISCONNECT);
-
-        public readonly static byte[] ACCEPT_B = Encoding.ASCII.GetBytes(ACCEPT);
-
-        public readonly static byte[] REJECT_B = Encoding.ASCII.GetBytes(REJECT);
+        public readonly static byte CUSTOM = 6;
 
         private readonly List<IPAddress> localAddresses = new List<IPAddress>();
 
@@ -59,7 +59,9 @@ namespace UtilLib {
         /// <summary>
         /// Mapping of listeners for every different packet received.
         /// </summary>
-        private readonly Dictionary<string, MessageDelegate> packetDelegates = new Dictionary<string,MessageDelegate>();
+        private readonly Dictionary<byte, MessageDelegate> packetDelegates = new Dictionary<byte, MessageDelegate>();
+
+        private readonly List<IScreenListener> dataListeners = new List<IScreenListener>();
 
         /// <summary>
         /// UdpClient to send and receive packets from.
@@ -117,11 +119,6 @@ namespace UtilLib {
         public event DataDelegate OnDataReceived;
 
         /// <summary>
-        /// Triggered whenever a new packet is received.
-        /// </summary>
-        public event PacketDelegate OnPacketReceived;
-
-        /// <summary>
         /// Triggered when a connection to a given end point is lost.
         /// </summary>
         public event Action<IPEndPoint> OnConnectionLost;
@@ -131,7 +128,8 @@ namespace UtilLib {
         /// </summary>
         public BackChannel(ILog logger) {
             this.logger = logger;
-            AddPacketDelegate(PING, (msg, source) => Send(msg, source));
+            AddPacketDelegate(PING, (msg, source) => Send(PING, source));
+            AddPacketDelegate(DATA, ProcessPacket);
 
             foreach (var ni in NetworkInterface.GetAllNetworkInterfaces()) {
                 if (ni.OperationalStatus == OperationalStatus.Up && ni.NetworkInterfaceType != NetworkInterfaceType.Loopback)
@@ -161,19 +159,19 @@ namespace UtilLib {
         /// "Not Bound" if not bound.
         /// </summary>
         public string Address {
-            get { return bound ? ((IPEndPoint) socket.Client.LocalEndPoint).Address.ToString() : "Not Bound"; }
+            get { return bound ? ((IPEndPoint)socket.Client.LocalEndPoint).Address.ToString() : "Not Bound"; }
             set {
                 if (bound)
                     throw new Exception("Unable to set address. Socket currently bound to " + Address);
                 address = value;
             }
         }
-        
+
         /// <summary>
         /// The port that packets will be received on.
         /// </summary>
         public int Port {
-            get { return bound ? ((IPEndPoint) socket.Client.LocalEndPoint).Port : port; }
+            get { return bound ? ((IPEndPoint)socket.Client.LocalEndPoint).Port : port; }
             set { port = bound ? Port : value; }
         }
 
@@ -205,49 +203,20 @@ namespace UtilLib {
         }
 
         /// <summary>
-        /// Send data to the specified end point.
-        /// </summary>
-        /// <param name="data">The data to send.</param>
-        /// <param name="destination">The end point to send the data to.</param>
-        public void Send(byte[] bytes, IPEndPoint destination) {
-            if (!bound) {
-                Logger.Info("Can't send packet. Socket has not yet been bound.");
-                return;
-            }
-            try {
-                socket.Send(bytes, bytes.Length, destination);
-            } catch (SocketException e) {
-                Logger.Info("Unable to send packet. " + e.Message);
-            } catch (ObjectDisposedException e) {
-                Logger.Info("Can't send packet through a closed socket.");
-            }
-        }
-
-        /// <summary>
-        /// Send a packet to the specified end point.
-        /// </summary>
-        /// <param name="packet">The packet to send.</param>
-        /// <param name="destination">The end point to send the packet to.</param>
-        public void Send(Packet packet, IPEndPoint destination) {
-            Send(GetBytes(packet), destination);
-        }
-
-        /// <summary>
-        /// Send a string to the specified end point.
-        /// </summary>
-        /// <param name="msg">The message to send.</param>
-        /// <param name="destination">The destination to send the packet to.</param>
-        public void Send(string msg, IPEndPoint destination) {
-            Send(Encoding.ASCII.GetBytes(msg), destination);
-        }
-
-        /// <summary>
         /// Add a delegate which controls how packets with certain data will be handled.
         /// </summary>
         /// <param name="identifier">If the data in a packet starts with this string the delegate will be called.</param>
         /// <param name="handler">The delegate that is called if the packet data starts with identifier.</param>
-        protected void AddPacketDelegate(string identifier, MessageDelegate handler) {
+        protected void AddPacketDelegate(byte identifier, MessageDelegate handler) {
             packetDelegates[identifier] = handler;
+        }
+
+        public void AddDataListener(IScreenListener listener) {
+            dataListeners.Add(listener);
+        }
+
+        public void RemoveDataListener(IScreenListener listener) {
+            dataListeners.Remove(listener);
         }
 
         /// <summary>
@@ -270,7 +239,7 @@ namespace UtilLib {
         /// <param name="ep">The end point to check the connection with.</param>
         /// <param name="count">How many more attempts to make before stopping checking.</param>
         protected bool CheckConnection(IPEndPoint ep, int count) {
-            if (count == 0) 
+            if (count == 0)
                 return false;
 
             IPEndPoint testEP = new IPEndPoint(IPAddress.Any, 0);
@@ -281,7 +250,7 @@ namespace UtilLib {
                     testConnectionSocket.BeginReceive(ar => {
                         try {
                             byte[] data = testConnectionSocket.EndReceive(ar, ref testEP);
-                            pingReceived = Encoding.ASCII.GetString(data).Equals(InterProxyServer.PING);
+                            pingReceived = data[0] == PING;
                             lock (pingLock)
                                 Monitor.PulseAll(pingLock);
                         } catch (ObjectDisposedException e) {
@@ -290,7 +259,7 @@ namespace UtilLib {
                 } catch (ObjectDisposedException e) {
                     Logger.Debug("BackChannel unable to test connection. TestConnectionSocket disposed.");
                 }
-            testConnectionSocket.Send(PING_B, PING_B.Length, ep);
+            testConnectionSocket.Send(new byte[] { PING }, 1, ep);
             lock (pingLock)
                 Monitor.Wait(pingLock, 1000);
 
@@ -312,12 +281,9 @@ namespace UtilLib {
                 byte[] bytes = socket.EndReceive(ar, ref source);
                 if (OnDataReceived != null)
                     OnDataReceived(bytes, bytes.Length, source);
-                string msg = Encoding.ASCII.GetString(bytes);
-                string key = packetDelegates.Keys.SingleOrDefault(str => msg.StartsWith(str));
-                if (key != null)
-                    packetDelegates[key](msg, source);
-                else
-                    ProcessPacket(bytes, source);
+                byte key = bytes[0];
+                if (packetDelegates.ContainsKey(key))
+                    packetDelegates[key](bytes, source);
             } catch (ObjectDisposedException e) {
                 disposing = true;
                 return;
@@ -334,19 +300,93 @@ namespace UtilLib {
 
         private void ProcessPacket(byte[] bytes, IPEndPoint source) {
             try {
-                int length = bytes.Length - 1;
-                Packet p = Packet.BuildPacket(bytes, ref length, zeroBuffer);
-                Logger.Debug("Received " + p.Type + " packet from " + source + ".");
-                try {
-                    receivedPackets++;
-                    if (OnPacketReceived != null)
-                        OnPacketReceived(p, source);
-                } catch (Exception e) {
-                    Logger.Info("Problem in packet received delegate.", e);
+                Logger.Debug("Received data packet from " + source + ".");
+                receivedPackets++;
+
+                int i = 1;
+                Vector3 worldPosition = new Vector3(bytes, i); i += 12;
+                float worldYaw = Utils.BytesToFloat(bytes, i); i += 4;
+                float worldPitch = Utils.BytesToFloat(bytes, i); i += 4;
+
+                Vector3 screenPosition = new Vector3(bytes, i); i += 12;
+                Vector3 eyePosition = new Vector3(bytes, i); i += 12;
+                float screenYaw = Utils.BytesToFloat(bytes, i); i += 4;
+                float screenPitch = Utils.BytesToFloat(bytes, i); i += 4;
+                double screenDiagonal = Utils.BytesToDouble(bytes, i); i += 8;
+                double aspectRatio = Utils.BytesToDouble(bytes, i); i += 8;
+
+                foreach (var listener in dataListeners) {
+                    listener.WorldPosition = worldPosition;
+                    listener.WorldRotation.Yaw = worldYaw;
+                    listener.WorldRotation.Pitch = worldPitch;
+
+                    listener.Window.ScreenPosition = screenPosition;
+                    listener.Window.EyePosition = eyePosition;
+                    listener.Window.RotationOffset.Yaw = screenYaw;
+                    listener.Window.RotationOffset.Pitch = screenPitch;
+                    listener.Window.Diagonal = screenDiagonal;
+                    listener.Window.AspectRatio = aspectRatio;
                 }
             } catch (Exception e) {
                 Logger.Info("Problem unpacking packet from " + source + ".", e);
             }
+        }
+
+        /// <summary>
+        /// Send a data packet to the specified end point.
+        /// </summary>
+        /// <param name="worldPosition">The position in the virtual world to send.</param>
+        /// <param name="worldRotation">The rotation in the virtual world to send.</param>
+        /// <param name="window">Information about the window to send.</param>
+        /// <param name="destination">The end point to send the packet to.</param>
+        public void Send(Vector3 worldPosition, Rotation worldRotation, Window window, IPEndPoint destination) {
+            byte[] bytes = new byte[69];
+            int i = 0;
+            bytes[i++] = DATA;
+            worldPosition.ToBytes(bytes, i); i += 12;
+            Utils.FloatToBytes(worldRotation.Yaw, bytes, i);  i += 4;
+            Utils.FloatToBytes(worldRotation.Pitch, bytes, i); i += 4;
+
+            window.ScreenPosition.ToBytes(bytes, i); i += 12;
+            window.EyePosition.ToBytes(bytes, i); i += 12;
+            Utils.FloatToBytes(window.RotationOffset.Yaw, bytes, i); i += 4;
+            Utils.FloatToBytes(window.RotationOffset.Pitch, bytes, i); i += 4;
+            Utils.DoubleToBytes(window.Diagonal, bytes, i); i += 8;
+            Utils.DoubleToBytes(window.AspectRatio, bytes, i); i += 8;;
+
+            Send(bytes, destination);
+        }
+
+        public void Send(byte type, IPEndPoint destination) {
+            Send(new byte[] { type }, destination);
+        }
+
+        /// <summary>
+        /// Send data to the specified end point.
+        /// </summary>
+        /// <param name="data">The data to send.</param>
+        /// <param name="destination">The end point to send the data to.</param>
+        public void Send(byte[] bytes, IPEndPoint destination) {
+            if (!bound) {
+                Logger.Info("Can't send packet. Socket has not yet been bound.");
+                return;
+            }
+            try {
+                socket.Send(bytes, bytes.Length, destination);
+            } catch (SocketException e) {
+                Logger.Info("Unable to send packet. " + e.Message);
+            } catch (ObjectDisposedException e) {
+                Logger.Info("Can't send packet through a closed socket.");
+            }
+        }
+
+        /// <summary>
+        /// Send a string to the specified end point.
+        /// </summary>
+        /// <param name="msg">The message to send.</param>
+        /// <param name="destination">The destination to send the packet to.</param>
+        public void Send(byte type, string msg, IPEndPoint destination) {
+            Send(new byte[] { type }.Concat(Encoding.ASCII.GetBytes(msg)).ToArray(), destination);
         }
 
         protected bool Bind() {
@@ -392,7 +432,7 @@ namespace UtilLib {
     /// 
     /// <param name="msg">The message received, as a string.</param>
     /// <param name="source">The source of the data.</param>
-    public delegate void MessageDelegate(string msg, IPEndPoint source);
+    public delegate void MessageDelegate(byte[] msg, IPEndPoint source);
 
 
     /// <summary>

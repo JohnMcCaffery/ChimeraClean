@@ -117,11 +117,11 @@ namespace ConsoleTest {
                     a();
             };
 
-            slave.OnUpdateSentToClient += (position, lookAt) => {
+            slave.OnUpdateSentToViewer += (position, lookAt) => {
                 BeginInvoke(new Action(() => {
                     updating = true;
-                    positionPanel.Value = slave.Position;
-                    rotationPanel.LookAtVector = slave.Rotation.LookAtVector;
+                    positionPanel.Value = slave.WorldPosition;
+                    rotationPanel.LookAtVector = slave.WorldRotation.LookAtVector;
                     receivedLabel.Text = slave.PacketsReceived.ToString();
                     injectedLabel.Text = slave.PacketsInjected.ToString();
                     updating = false;
@@ -131,14 +131,14 @@ namespace ConsoleTest {
 
         private void rotation_OnChange(object sender, EventArgs e) {
             if (!updating) {
-                slave.Rotation.Pitch = rotationPanel.Pitch;
-                slave.Rotation.Yaw = rotationPanel.Yaw;
+                slave.WorldRotation.Pitch = rotationPanel.Pitch;
+                slave.WorldRotation.Yaw = rotationPanel.Yaw;
             }
         }
 
         private void position_OnChange(object sender, EventArgs e) {
             if (!updating)
-                slave.Position = positionPanel.Value;
+                slave.WorldPosition = positionPanel.Value;
         }
 
         private void SlaveForm_FormClosing(object sender, FormClosingEventArgs e) {

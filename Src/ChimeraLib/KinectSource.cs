@@ -18,9 +18,9 @@ namespace ChimeraLib {
         private readonly KinectSkeletonFrameSupplier supplier;
         private readonly object _imageLock = new object();
         private readonly Rotation rotation = new Rotation(0, 180);
-        private readonly Vector3 scale = new Vector3 (1000f);
-        private Vector3 position = new Vector3(400f, 0f, 0f);
-        private Vector3 rawValue = Vector3.Zero;
+        private readonly Vector3 scale = new Vector3 (1000f, -1000f, 1000f);
+        private Vector3 position = new Vector3(1000f, 0f, 0f);
+        private Vector3 rawValue = Vector3.UnitX * 2f;
 
         private int _locked = -1;
         private Bitmap bmp;
@@ -49,7 +49,11 @@ namespace ChimeraLib {
         /// </summary>
         public Vector3 Position {
             get { return position; }
-            set { position = value; }
+            set { 
+                position = value;
+                if (OnChange != null)
+                    OnChange(HeadPosition);
+            }
         }
         public Rotation Rotation {
             get { return rotation; }
@@ -77,14 +81,10 @@ namespace ChimeraLib {
                 DotNetConfigSource configSource = new DotNetConfigSource(AppDomain.CurrentDomain.SetupInformation.ConfigurationFile);
                 IConfig config = configSource.Configs["Kinect"];
                 if (config != null) {
-                    float posX = config.GetFloat("PositionX", 0f);
-                    float posY = config.GetFloat("PositionY", 0f);
-                    float posZ = config.GetFloat("PositionZ", 0f);
+                    float pitch = config.GetFloat("Pitch", rotation.Yaw);
+                    float yaw = config.GetFloat("Yaw", rotation.Pitch);
 
-                    float pitch = config.GetFloat("Pitch", 0f);
-                    float yaw = config.GetFloat("Yaw", 0f);
-
-                    position = new Vector3(posX, posY, posZ);
+                    position = Vector3.Parse(config.Get("Position", position.ToString()));
                     rotation = new Rotation(pitch, yaw);
                 }
             }
@@ -96,6 +96,10 @@ namespace ChimeraLib {
                 Console.WriteLine("Problem starting Kinect: " + e.Message);
                 supplier = null;
             }
+            rotation.OnChange += (source, args) => {
+                if (OnChange != null)
+                    OnChange(HeadPosition);
+            };
         }
 
         void supplier_OnSkeletonFrame(object sender, SkeletonFrameEventArgs e) {

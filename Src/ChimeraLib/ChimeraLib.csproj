@@ -72,7 +72,9 @@
     <Compile Include="Controls\WindowPanel.Designer.cs">
       <DependentUpon>WindowPanel.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\MasterForm.cs" />
+    <Compile Include="Forms\MasterForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Forms\MasterForm.Designer.cs">
       <DependentUpon>MasterForm.cs</DependentUpon>
     </Compile>

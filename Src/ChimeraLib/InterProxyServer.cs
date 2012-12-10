@@ -68,26 +68,23 @@ namespace UtilLib {
             AddPacketDelegate(DISCONNECT, HandleSlaveDisconnected);
         }
 
-        private void HandleSlaveConnected(string msg, IPEndPoint source) {
-            string[] split = msg.Split(new char[] {' '}, 2);
-            if (split.Length == 2) {
-                string name = split[1];
-                lock (slaves) {
-                    if (slaves.Values.Contains(name)) {
-                        Logger.Info("Master received connect from already registered slave '" + name + "' from " + source + "'. Rejected.");
-                        Send(REJECT + " '" + name  + "' already bound.", source);
-                    } else {
-                        Logger.Info("Master registered new slave '" + name + "' at " + source + ".");
-                        slaves.Add(source, split[1]);
-                        Send(ACCEPT, source);
-                        if (OnSlaveConnected != null)
-                            OnSlaveConnected(name, source);
-                    }
+        private void HandleSlaveConnected(byte[] data, IPEndPoint source) {
+            string name = Encoding.ASCII.GetString(data, 1, data.Length - 1);
+            lock (slaves) {
+                if (slaves.Values.Contains(name)) {
+                    Logger.Info("Master received connect from already registered slave '" + name + "' from " + source + "'. Rejected.");
+                    Send(REJECT, "'" + name + "' already bound.", source);
+                } else {
+                    Logger.Info("Master registered new slave '" + name + "' at " + source + ".");
+                    slaves.Add(source, name);
+                    Send(ACCEPT, source);
+                    if (OnSlaveConnected != null)
+                        OnSlaveConnected(name, source);
                 }
             }
         }
 
-        private void HandleSlaveDisconnected(string msg, IPEndPoint source) {
+        private void HandleSlaveDisconnected(byte[] data, IPEndPoint source) {
             DisconnectSlave(source);
         }
 
@@ -169,7 +166,7 @@ namespace UtilLib {
         public void Stop() {
             lock (slaves)
                 foreach (var slave in slaves.Keys)
-                    Send(DISCONNECT_B, slave);
+                    Send(DISCONNECT, slave);
             Unbind();
             Logger.Info("Master closed. " + slaves.Count + " slaves notified.");
             slaves.Clear();

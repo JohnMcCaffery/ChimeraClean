@@ -70,7 +70,7 @@ namespace UtilLib {
             AddPacketDelegate(ACCEPT, ConnectHandler);
         }
 
-        private void HandleDisconnect(string msg, IPEndPoint source) {
+        private void HandleDisconnect(byte[] data, IPEndPoint source) {
             if (source.Equals(masterEP)) {
                 Logger.Info("Slave disconnected. Master at " + masterEP + " signalled disconnect.");
                 connected = false;
@@ -156,7 +156,7 @@ namespace UtilLib {
             rejected = false;
             while (!connected && !rejected && attempt <= 5) {
                 Logger.Debug("Attempting to connect to " + masterEP + ". Attempt " + attempt + ".");
-                Send(CONNECT + " " + Name, masterEP);
+                Send(CONNECT, Name, masterEP);
                 lock (connectLock)
                     Monitor.Wait(connectLock, 1000);
                 attempt++;
@@ -170,7 +170,8 @@ namespace UtilLib {
             return connected;
         }
 
-        private void RejectHandler(string msg, IPEndPoint source) {
+        private void RejectHandler(byte[] data, IPEndPoint source) {
+            string msg = Encoding.ASCII.GetString(data, 1, data.Length - 1);
             Logger.Info("Slave '" + Name + "' unable to register with master at " + source + ". " + msg);
             if (OnUnableToConnect != null)
                 OnUnableToConnect("Slave '" + Name + "' unable to register with master at " + source + ". " + msg, null);
@@ -181,7 +182,7 @@ namespace UtilLib {
                 Monitor.PulseAll(connectLock);
         }
 
-        private void ConnectHandler(string msg, IPEndPoint source) {
+        private void ConnectHandler(byte[] bytes, IPEndPoint source) {
             Logger.Info("Slave '" + Name + "' connected to master at " + source + ".");
             masterEP = source;
             connected = true;
@@ -231,7 +232,7 @@ namespace UtilLib {
         /// </summary>
         public void Disconnect() {
             if (connected) {
-                Send(DISCONNECT_B, masterEP);
+                Send(DISCONNECT, masterEP);
                 DisconnectUtil();
                 Logger.Info("Slave '" + Name + "' disconnected from master at " + masterEP);
             } else {

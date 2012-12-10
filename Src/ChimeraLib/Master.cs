@@ -41,11 +41,6 @@ namespace UtilLib {
             private Window window;
 
             /// <summary>
-            /// Called whenever the slave changes.
-            /// </summary>
-            public event EventHandler OnChange;
-
-            /// <summary>
             /// Name of the slave.
             /// </summary>
             public string Name {
@@ -56,19 +51,22 @@ namespace UtilLib {
             /// <summary>
             /// The address of the slave so packets can be sent to it.
             /// </summary>
-            public IPEndPoint TargetEP {
+            public IPEndPoint EP {
                 get { return ep; }
             }
 
-            public ChimeraLib.Window Window {
+            /// <summary>
+            /// The window object that represents where the slave is in real space.
+            /// </summary>
+            public Window Window {
                 get { return window; }
             }
 
-            public Slave(string name, IPEndPoint ep) {
+            public Slave(string name, IPEndPoint ep, Vector3 eyePosition) {
                 this.name = name;
                 this.ep = ep;
-                this.window = new Window(name);
-                //TODO add config read ins for window
+                window = new Window(name);
+                window.EyePosition = eyePosition;
             }
         }
 
@@ -119,7 +117,7 @@ namespace UtilLib {
         public Master(Init.Config config) : base (config, LogManager.GetLogger("Master")) {
             window = new Window("Master");
             masterServer.OnSlaveConnected += (name, ep) => {
-                Slave slave = new Slave(name, ep);
+                Slave slave = new Slave(name, ep, window.EyePosition);
                 lock (slaves)
                     slaves.Add(name, slave);
                 if (OnSlaveConnected != null)
@@ -132,6 +130,11 @@ namespace UtilLib {
             masterServer.OnBound += (source, args) => {
                 if (OnMasterBound != null)
                     OnMasterBound(source, args);
+            };            window.OnEyeChange += (diff) => {
+                if (window.LockScreenPosition)
+                    foreach (var slave in Slaves)
+                        //slave.Window.ScreenPosition += diff;
+                        slave.Window.EyePosition = window.EyePosition;
             };
         }
 
