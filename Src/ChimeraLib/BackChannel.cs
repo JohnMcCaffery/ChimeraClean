@@ -330,7 +330,8 @@ namespace UtilLib {
             } catch (Exception e) {
                 Logger.Info("Problem unpacking packet from " + source + ".", e);
             }
-        }
+        }
+
 
         /// <summary>
         /// Send a data packet to the specified end point.
