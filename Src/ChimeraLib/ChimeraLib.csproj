@@ -10,8 +10,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ChimeraLib</RootNamespace>
     <AssemblyName>ChimeraLib</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -94,7 +95,7 @@
     </Compile>
     <Compile Include="Init.cs" />
     <Compile Include="KinectSource.cs" />
-    <Compile Include="SetCameraProperties.cs" />
+    <Compile Include="SetCameraPropertiesPacket.cs" />
     <Compile Include="Window.cs" />
     <Compile Include="Master.cs" />
     <Compile Include="CameraMaster.cs" />
@@ -169,6 +170,10 @@
     <ProjectReference Include="..\..\..\..\libopenmetaverse-mine\Programs\WinGridProxy\WinGridProxy.csproj">
       <Project>{421F8BA2-92D3-4C24-AD53-FE1FEC91C419}</Project>
       <Name>WinGridProxy</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\opensim-0.7.3.1\bin\Kinect\OpenMetaverse.Skeletal\OpenMetaverse.Skeletal.csproj">
+      <Project>{9C127EDC-FE71-4214-83DA-76F0E2E7882E}</Project>
+      <Name>OpenMetaverse.Skeletal</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
