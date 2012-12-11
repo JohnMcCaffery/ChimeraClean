@@ -317,7 +317,8 @@ namespace ChimeraLib {
             return packet;
         }
     }
-}
+}
+
             /*
             float x1 = p.Frustum.x1;
             float x2 = p.Frustum.x2;

@@ -335,7 +335,7 @@ namespace ConsoleTest {
             end2 += eyeToScreen + eye;
             lookAt += eye;
 
-            g.DrawLine(new Pen(colour), toPoint(end1, paneOrigin, true), toPoint(end2, paneOrigin, true));
+            g.DrawLine(new Pen(colour, 4f), toPoint(end1, paneOrigin, true), toPoint(end2, paneOrigin, true));
             g.DrawLine(new Pen(colour), toPoint(cross1, paneOrigin, true), toPoint(cross2, paneOrigin, true));
             g.DrawLine(new Pen(colour), toPoint(eye, paneOrigin, true), toPoint(end1Far, paneOrigin, true));
             g.DrawLine(new Pen(colour), toPoint(eye, paneOrigin, true), toPoint(end2Far, paneOrigin, true));
