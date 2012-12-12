@@ -474,8 +474,8 @@ namespace ConsoleTest {
                 case Keys.D: rightDown = true; break;
                 case Keys.W: forwardDown = true; break;
                 case Keys.S: backwardDown = true; break;
-                case Keys.PageUp: upDown = true; break;
-                case Keys.PageDown: downDown = true; break;
+                case Keys.R: upDown = true; break;
+                case Keys.F: downDown = true; break;
                 case Keys.Left: yawLeftDown = true; break;
                 case Keys.Right: yawRightDown = true; break;
                 case Keys.Up: pitchUpDown = true; break;
@@ -489,8 +489,8 @@ namespace ConsoleTest {
                 case Keys.D: rightDown = false; break;
                 case Keys.W: forwardDown = false; break;
                 case Keys.S: backwardDown = false; break;
-                case Keys.PageUp: upDown = false; break;
-                case Keys.PageDown: downDown = false; break;
+                case Keys.R: upDown = false; break;
+                case Keys.F: downDown = false; break;
                 case Keys.Left: yawLeftDown = false; break;
                 case Keys.Right: yawRightDown = false; break;
                 case Keys.Up: pitchUpDown = false; break;
@@ -512,12 +512,12 @@ namespace ConsoleTest {
             if (backwardDown) move.X -= shift;
             if (leftDown) move.Y += shift;
             if (rightDown) move.Y -= shift;
-            if (upDown) move.Z += shift;
-            if (downDown) move.Z -= shift;
 
-            if (move != Vector3.Zero) {
+            if (move != Vector3.Zero || upDown || downDown) {
                 move *= rawRotation.Rotation;
-                //master.Position += move;
+                if (upDown) move.Z = shift;
+                if (downDown) move.Z = -shift;
+                master.Position += move;
             }
         }
 

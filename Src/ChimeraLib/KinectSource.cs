@@ -34,15 +34,16 @@ namespace ChimeraLib {
     public class KinectSource {
         private readonly Dictionary<int, DateTime> _lastUpdated = new Dictionary<int, DateTime>();
         private readonly List<KeyValuePair<int, DateTime>> _users = new List<KeyValuePair<int, DateTime>>();
-        private readonly KinectSkeletonFrameSupplier supplier;
         private readonly object _imageLock = new object();
         private readonly Rotation rotation = new Rotation(0, 180);
         private readonly Vector3 scale = new Vector3 (1000f, -1000f, 1000f);
+        private KinectSkeletonFrameSupplier supplier;
         private Vector3 position = new Vector3(1000f, 0f, 0f);
         private Vector3 rawValue = Vector3.UnitX * 2f;
         private Vector3 headPosition = new Vector3(-1000f, 0f, 0f);
         private bool enabled = false;
         private Vector3 startPosition = new Vector3(0f, -1000f, 0f);
+        private bool init = false;
 
         private int _locked = -1;
         private Bitmap bmp;
@@ -115,14 +116,6 @@ namespace ChimeraLib {
                     rotation = new Rotation(pitch, yaw);
                 }
             }
-            supplier = new KinectSkeletonFrameSupplier();
-            try {
-                supplier.Start();
-                supplier.OnSkeletonFrame += new EventHandler<SkeletonFrameEventArgs>(supplier_OnSkeletonFrame);
-            } catch (Exception e) {
-                Console.WriteLine("Problem starting Kinect: " + e.Message);
-                supplier = null;
-            }
             rotation.OnChange += (source, args) => Change();
         }
 
@@ -137,6 +130,15 @@ namespace ChimeraLib {
             startPosition = eye;
             headPosition = Head(rawValue);
             enabled = true;
+
+            try {
+                supplier = new KinectSkeletonFrameSupplier();
+                supplier.OnSkeletonFrame += new EventHandler<SkeletonFrameEventArgs>(supplier_OnSkeletonFrame);
+                supplier.Start();
+            } catch (Exception e) {
+                Console.WriteLine("Problem starting Kinect: " + e.Message);
+                supplier = null;
+            }
             if (OnChange != null)
                 OnChange(HeadPosition);
         }
@@ -144,6 +146,10 @@ namespace ChimeraLib {
         public void Disable() {
             headPosition = startPosition;
             enabled = false;
+            if (Started) {
+                supplier.Stop();
+                supplier = null;
+            }
             if (OnChange != null)
                 OnChange(startPosition);
         }
@@ -199,7 +205,8 @@ namespace ChimeraLib {
             headPosition = Head(rawValue);
             if (OnChange != null)
                 OnChange(HeadPosition);
-        }        
+        }
+        
         /// <summary>
         /// http://www.tek-tips.com/viewthread.cfm?qid=1264492
         /// function CopyDataToBitmap

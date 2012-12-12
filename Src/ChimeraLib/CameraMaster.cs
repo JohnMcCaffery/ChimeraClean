@@ -289,11 +289,11 @@ namespace UtilLib {
             bool processed = true;
             if (OnPacketReceived != null)
                 OnPacketReceived(p, ep);
-            if (p.Type == PacketType.AgentUpdate) {
-                //ProcessAgentUpdatePacket(p);
+            if (p.Type == PacketType.AgentUpdate && cameraControl == CameraControlEnum.None) {
+                ProcessAgentUpdatePacket(p);
             } else if (p.Type == PacketType.ObjectUpdate) {
                 ProcessObjectUpdatePacket(p);
-            } else if (p.Type == PacketType.ImprovedTerseObjectUpdate) {
+            } else if (p.Type == PacketType.ImprovedTerseObjectUpdate && cameraControl != CameraControlEnum.None) {
                 ProcessImprovedTerseObjectUpdatePacket(p);
             } else if (packetTypesToForward.Contains(p.Type)) {
                 packetsForwarded++;
@@ -388,11 +388,11 @@ Utils.UInt16ToFloat(block.Data, i + 4, -64.0f, 64.0f));
             AgentUpdatePacket packet = (AgentUpdatePacket)p;
 
             processingPacket = true;
-            bool posEq = Equal(worldPosition, packet.AgentData.CameraCenter);
-            bool modEq = Equal(packet.AgentData.CameraCenter, ModifiedPosition);
-            if (!Equal(worldPosition,packet.AgentData.CameraCenter) && !Equal(packet.AgentData.CameraCenter, ModifiedPosition))
+            //bool posEq = Equal(worldPosition, packet.AgentData.CameraCenter);
+            //bool modEq = Equal(packet.AgentData.CameraCenter, ModifiedPosition);
+            //if (!Equal(worldPosition,packet.AgentData.CameraCenter) && !Equal(packet.AgentData.CameraCenter, ModifiedPosition))
                 Position = packet.AgentData.CameraCenter;
-            if (!Equal(worldRotation.LookAtVector, packet.AgentData.CameraAtAxis) && !Equal(packet.AgentData.CameraAtAxis, Rotation.LookAtVector))
+            //if (!Equal(worldRotation.LookAtVector, packet.AgentData.CameraAtAxis) && !Equal(packet.AgentData.CameraAtAxis, Rotation.LookAtVector))
                 Rotation.LookAtVector = packet.AgentData.CameraAtAxis;
             processingPacket = false;
 
