@@ -61,6 +61,12 @@ namespace ConsoleTest {
             kinectRotationPanel.LookAtVector = k.Rotation.LookAtVector;
             kinectValuePanel.Value = k.RawValue;
 
+            aspectRatioCheck.Checked = master.UpdateAspectRatio;
+            cameraPositionCheck.Checked = master.UpdateCameraPosition;
+            fovCheck.Checked = master.UpdateFoV;
+            frustumCheck.Checked = master.UpdateFrustum;
+            cameraRotationCheck.Checked = master.UpdateRotation;
+
             addressBox.Text = master.ProxyConfig.MasterAddress;
             portBox.Text = master.ProxyConfig.MasterPort.ToString();
 
@@ -359,7 +365,8 @@ namespace ConsoleTest {
             g.DrawLine(new Pen(colour), toPoint(eye, paneOrigin, true), toPoint(end1Far, paneOrigin, true));
             g.DrawLine(new Pen(colour), toPoint(eye, paneOrigin, true), toPoint(end2Far, paneOrigin, true));
             g.DrawLine(new Pen(colour), toPoint(eye, paneOrigin, true), toPoint(lookAt, paneOrigin, true));
-            g.DrawLine(new Pen(Color.Red), toPoint(kinect, paneOrigin, true), toPoint(kinect + kinectForward, paneOrigin, true));
+            if (enableKinectCheck.Checked)
+                g.DrawLine(new Pen(Color.Red), toPoint(kinect, paneOrigin, true), toPoint(kinect + kinectForward, paneOrigin, true));
             //g.DrawLine(new Pen(colour), toPoint(origin, paneOrigin, true), toPoint(avatar, paneOrigin, true));
 
             Point centre = toPoint(eye, paneOrigin, true);
@@ -367,7 +374,8 @@ namespace ConsoleTest {
             //Point avatarP = toPoint(avatar, paneOrigin, true);
 
             g.FillEllipse(new SolidBrush(colour), centre.X - r, centre.Y - r, r * 2, r * 2);
-            g.FillEllipse(new SolidBrush(Color.Red), kinectP.X - r, kinectP.Y - r, r * 2, r * 2);
+            if (enableKinectCheck.Checked)
+                g.FillEllipse(new SolidBrush(Color.Red), kinectP.X - r, kinectP.Y - r, r * 2, r * 2);
             //g.FillEllipse(new SolidBrush(colour), avatarP.X - r, avatarP.Y - r, r * 2, r * 2);
         }
 
@@ -517,10 +525,6 @@ namespace ConsoleTest {
             ignorePitch = ignorePitchCheck.Checked;
         }
 
-        private void lockMasterCheck_CheckedChanged(object sender, EventArgs e) {
-            RefreshDrawings();
-        }
-
         private void frustumPosition_OnChange(object sender, EventArgs e) {
             RefreshDrawings();
         }
@@ -531,26 +535,6 @@ namespace ConsoleTest {
 
         private void cameraOffsetPanel_OnChange(object sender, EventArgs e) {
             master.CameraOffset = cameraOffsetPanel.Value;
-        }
-
-        private void frustumCheck_CheckedChanged(object sender, EventArgs e) {
-            master.UpdateFrustum = frustumHCheck.Checked;
-        }
-
-        private void fovCheck_CheckedChanged(object sender, EventArgs e) {
-            master.UpdateFoV = fovCheck.Checked;
-        }
-
-        private void controlFrustumDirectlyCheck_CheckedChanged(object sender, EventArgs e) {
-            master.UpdateFrustumDirectly = controlFrustumDirectlyCheck.Checked;
-        }
-
-        private void eyeOffsetCheck_CheckedChanged(object sender, EventArgs e) {
-            master.UpdateEyeOffset = eyeOffsetCheck.Checked;
-        }
-
-        private void rotationCheck_CheckedChanged(object sender, EventArgs e) {
-            master.UpdateRotation = rotationCheck.Checked;
         }
 
         private void viewerControlCheck_CheckedChanged(object sender, EventArgs e) {
@@ -578,6 +562,62 @@ namespace ConsoleTest {
 
         private void vanishingDistanceValue_ValueChanged(object sender, EventArgs e) {
             master.VanishingDistance = (float) decimal.ToDouble(vanishingDistanceValue.Value);
+        }
+
+        private void enableKinectCheck_CheckedChanged(object sender, EventArgs e) {
+            if (enableKinectCheck.Checked)
+                k.Enable(master.Window.EyePosition);
+            else
+                k.Disable();
+        }
+
+        private void masterCameraCheck_CheckedChanged(object sender, EventArgs e) {
+            cameraPositionCheck.Checked = true;
+
+        }
+
+        private void CameraControlChanged(CameraMaster.CameraControlEnum state) {
+            master.CameraControl = state;
+            frustumCheck.Enabled = state == CameraMaster.CameraControlEnum.Individual;
+            cameraRotationCheck.Enabled = state == CameraMaster.CameraControlEnum.Individual;
+            cameraPositionCheck.Enabled = state == CameraMaster.CameraControlEnum.Individual;
+            aspectRatioCheck.Enabled = state == CameraMaster.CameraControlEnum.Individual;
+            fovCheck.Enabled = state == CameraMaster.CameraControlEnum.Individual;
+        }
+
+        private void noControlButton_CheckedChanged(object sender, EventArgs e) {
+            if (noControlButton.Checked)
+                CameraControlChanged(CameraMaster.CameraControlEnum.None);
+        }
+
+        private void frustumButton_CheckedChanged(object sender, EventArgs e) {
+            if (frustumButton.Checked)
+                CameraControlChanged(CameraMaster.CameraControlEnum.Frustum);
+        }
+
+        private void individualButton_CheckedChanged(object sender, EventArgs e) {
+            if (individualButton.Checked)
+                CameraControlChanged(CameraMaster.CameraControlEnum.Individual);
+        }
+
+        private void rotationCheck_CheckedChanged(object sender, EventArgs e) {
+            master.UpdateRotation = cameraRotationCheck.Checked;
+        }
+
+        private void cameraPositionCheck_CheckedChanged(object sender, EventArgs e) {
+            master.UpdateCameraPosition = cameraPositionCheck.Checked;
+        }
+
+        private void fovCheck_CheckedChanged(object sender, EventArgs e) {
+            master.UpdateFoV = fovCheck.Checked;
+        }
+
+        private void frustumHCheck_CheckedChanged(object sender, EventArgs e) {
+            master.UpdateFrustum = frustumCheck.Checked;
+        }
+
+        private void aspectRatioCheck_CheckedChanged(object sender, EventArgs e) {
+            master.UpdateAspectRatio = aspectRatioCheck.Checked;
         }
     }
 }

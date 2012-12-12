@@ -175,14 +175,37 @@ namespace UtilLib {
                 OnCameraUpdated(this, null);
         }
 
+        private float vanishingDistance = 512f;
+        private bool updateFrustum;
         private bool updateRotation;
         private bool updateEyeOffset;
-        private bool updateFrustum;
-        private bool updateFrustumDirectly;
         private bool updateFoV;
         private bool updateAspectRatio;
-        private bool updatingCamera;
-        private float vanishingDistance = 512f;
+
+        private CameraControlEnum cameraControl = CameraControlEnum.None;
+
+        public enum CameraControlEnum { Individual, Frustum, None }
+
+        public CameraControlEnum CameraControl {
+            get { return cameraControl; }
+            set { 
+                cameraControl = value;
+                if (!ProxyRunning)
+                    return;
+
+                if (value == CameraMaster.CameraControlEnum.Frustum) {
+                    clientProxy.InjectPacket(new SetCameraPropertiesPacket(false), Direction.Incoming);
+                    GenerateMasterPacket();
+                } else if (value == CameraControlEnum.Individual) {
+                    clientProxy.InjectPacket(new SetFrustumPacket(false), Direction.Incoming);
+                    CameraChange();
+                } else if (value == CameraMaster.CameraControlEnum.None) {
+                    clientProxy.InjectPacket(new SetCameraPropertiesPacket(false), Direction.Incoming);
+                    clientProxy.InjectPacket(new SetFrustumPacket(false), Direction.Incoming);
+                    clientProxy.InjectPacket(new ClearFollowCamPropertiesPacket(), Direction.Incoming);
+                }
+            }
+        }
 
         public float VanishingDistance {
             get { return vanishingDistance; }
@@ -195,18 +218,6 @@ namespace UtilLib {
             get { return updateFrustum; }
             set { 
                 updateFrustum = value; 
-                GenerateMasterPacket();
-            }
-        }
-        public bool UpdateFrustumDirectly {
-            get { return updateFrustumDirectly; }
-            set {
-                if (updateFrustumDirectly && !value) {
-                    SetFrustumPacket p = new SetFrustumPacket();
-                    p.Frustum.ControlFrustum = false;
-                    InjectPacket(p, Direction.Incoming);
-                }
-                updateFrustumDirectly = value; 
                 GenerateMasterPacket();
             }
         }
@@ -231,33 +242,39 @@ namespace UtilLib {
                 CameraChange();
             }
         }
-        public bool UpdateEyeOffset {
+        public bool UpdateCameraPosition {
             get { return updateEyeOffset; }
             set {
                 updateEyeOffset = value;
                 CameraChange();
             }
         }
+
         private void CameraChange() {
-            if (!updateRotation && !updateEyeOffset && updatingCamera) {
+            if (!ProxyRunning)
+                return;
+
+            if (!updateEyeOffset && !updateRotation)
                 clientProxy.InjectPacket(new ClearFollowCamPropertiesPacket(), Direction.Incoming);
-                updatingCamera = false;
-            } else {
-                updatingCamera = true;
-                GenerateMasterPacket();
-            }
+
+            GenerateMasterPacket();
         }
+
         private void GenerateMasterPacket() {
             if (!ProxyRunning)
                 return;
-            if (updatingCamera) {
+
+
+            if (cameraControl == CameraControlEnum.Frustum) {
                 clientProxy.InjectPacket(Window.CreateSetFollowCamPropertiesPacket(worldPosition, worldRotation), Direction.Incoming);
+                clientProxy.InjectPacket(Window.CreateFrustumPacket(vanishingDistance), Direction.Incoming);
             }
 
-            if (updateFrustumDirectly)
-                clientProxy.InjectPacket(Window.CreateFrustumPacket(vanishingDistance), Direction.Incoming);
-            else if (updateFrustum || updateFoV || updateAspectRatio)
-                clientProxy.InjectPacket(Window.CreateCameraPacket(updateFrustum, updateFoV), Direction.Incoming);
+            if (cameraControl == CameraControlEnum.Individual) {
+                if (updateEyeOffset || updateRotation)
+                    clientProxy.InjectPacket(Window.CreateSetFollowCamPropertiesPacket(worldPosition, worldRotation, updateEyeOffset, updateRotation), Direction.Incoming);
+                clientProxy.InjectPacket(Window.CreateCameraPacket(updateFrustum, updateFoV, updateAspectRatio), Direction.Incoming);
+            }
         }
 
         protected override Packet ReceiveIncomingPacket(Packet p, IPEndPoint ep) {

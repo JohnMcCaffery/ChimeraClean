@@ -117,9 +117,9 @@ namespace ChimeraLib {
                 if (!lockFrustum) {
                     screenPosition += diff;
                 }
+                eyePosition = value;
                 if (OnEyeChange != null)
                     OnEyeChange(diff);
-                eyePosition = value;
                 Changed();
             }
         }

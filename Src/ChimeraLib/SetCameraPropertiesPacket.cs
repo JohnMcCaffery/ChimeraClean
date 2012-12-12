@@ -95,6 +95,16 @@ namespace ChimeraLib {
             CameraProperty = new CameraPropertyBlock();
         }
 
+        public SetCameraPropertiesPacket(bool enable) : this() {
+            if (!enable) {
+                CameraProperty.FrustumOffsetH = 0f;
+                CameraProperty.FrustumOffsetV = 0f;
+                CameraProperty.CameraAngle = 1f;
+                CameraProperty.AspectSet = false;
+                CameraProperty.SetNear = false;
+            }
+        }
+
         public SetCameraPropertiesPacket(byte[] bytes, ref int i)
             : this() {
             int packetEnd = bytes.Length - 1;
@@ -205,6 +215,12 @@ namespace ChimeraLib {
             Frustum = new FrustumBlock();
         }
 
+        public SetFrustumPacket(bool enable)
+            : this() {
+
+            Frustum.ControlFrustum = enable;
+        }
+
         public SetFrustumPacket(byte[] bytes, ref int i)
             : this() {
             int packetEnd = bytes.Length - 1;
@@ -249,7 +265,7 @@ namespace ChimeraLib {
     }
 
     public static class PacketExtensions {
-        public static SetFollowCamPropertiesPacket CreateSetFollowCamPropertiesPacket(this Window window, Vector3 position, Rotation rotation) {
+        public static SetFollowCamPropertiesPacket CreateSetFollowCamPropertiesPacket(this Window window, Vector3 position, Rotation rotation, bool combinePosition = true, bool combineRotation = true) {
             SetFollowCamPropertiesPacket cameraPacket = new SetFollowCamPropertiesPacket();
             cameraPacket.CameraProperty = new SetFollowCamPropertiesPacket.CameraPropertyBlock[22];
             for (int i = 0; i < 22; i++) {
@@ -257,10 +273,16 @@ namespace ChimeraLib {
                 cameraPacket.CameraProperty[i].Type = i + 1;
             }
 
-            Rotation finalRot = new Rotation(rotation.Pitch + window.RotationOffset.Pitch, rotation.Yaw + window.RotationOffset.Yaw);
-            Vector3 rotatatedLookAt = ((window.EyePosition * new Vector3(1f, -1f, 1f)) / 1000f) * rotation.Quaternion;
-            Vector3 finalPos = position + rotatatedLookAt;
-            Vector3 lookAt = finalPos + finalRot.LookAtVector;
+            Rotation finalRot = new Rotation(rotation.Pitch, rotation.Yaw);
+            if (combineRotation) {
+                finalRot.Pitch += window.RotationOffset.Pitch;
+                finalRot.Yaw += window.RotationOffset.Yaw;
+            }
+            if (combinePosition) {
+                Vector3 rotatatedLookAt = ((window.EyePosition * new Vector3(1f, -1f, 1f)) / 1000f) * rotation.Quaternion;
+                position += rotatatedLookAt;
+            }
+            Vector3 lookAt = position + finalRot.LookAtVector;
             cameraPacket.CameraProperty[0].Value = 0;
             cameraPacket.CameraProperty[1].Value = 0f;
             cameraPacket.CameraProperty[2].Value = 0f;
@@ -274,9 +296,9 @@ namespace ChimeraLib {
             cameraPacket.CameraProperty[10].Value = 0f;
             cameraPacket.CameraProperty[11].Value = 1f; //enable
             cameraPacket.CameraProperty[12].Value = 0f;
-            cameraPacket.CameraProperty[13].Value = finalPos.X;
-            cameraPacket.CameraProperty[14].Value = finalPos.Y;
-            cameraPacket.CameraProperty[15].Value = finalPos.Z;
+            cameraPacket.CameraProperty[13].Value = position.X;
+            cameraPacket.CameraProperty[14].Value = position.Y;
+            cameraPacket.CameraProperty[15].Value = position.Z;
             cameraPacket.CameraProperty[16].Value = 0f;
             cameraPacket.CameraProperty[17].Value = lookAt.X;
             cameraPacket.CameraProperty[18].Value = lookAt.Y;
@@ -313,7 +335,7 @@ namespace ChimeraLib {
             return p;
         }
 
-        public static SetCameraPropertiesPacket CreateCameraPacket(this Window window, bool updateFrustum = true, bool updateFoV = true) {
+        public static SetCameraPropertiesPacket CreateCameraPacket(this Window window, bool updateFrustum = true, bool updateFoV = true, bool updateAspectRatio = true) {
             SetCameraPropertiesPacket packet = new SetCameraPropertiesPacket();
             packet.CameraProperty = new SetCameraPropertiesPacket.CameraPropertyBlock();
             packet.CameraProperty.FrustumOffsetH = 0f;
@@ -321,7 +343,7 @@ namespace ChimeraLib {
             packet.CameraProperty.CameraAngle = 1f;
 
             packet.CameraProperty.AspectRatio = (float)(window.Width / window.Height);
-            packet.CameraProperty.AspectSet = false;
+            packet.CameraProperty.AspectSet = updateAspectRatio;
 
             packet.CameraProperty.FrustumNear = .01f;
             packet.CameraProperty.SetNear = false;

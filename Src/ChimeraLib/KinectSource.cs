@@ -40,6 +40,9 @@ namespace ChimeraLib {
         private readonly Vector3 scale = new Vector3 (1000f, -1000f, 1000f);
         private Vector3 position = new Vector3(1000f, 0f, 0f);
         private Vector3 rawValue = Vector3.UnitX * 2f;
+        private Vector3 headPosition = new Vector3(-1000f, 0f, 0f);
+        private bool enabled = false;
+        private Vector3 startPosition = new Vector3(0f, -1000f, 0f);
 
         private int _locked = -1;
         private Bitmap bmp;
@@ -56,12 +59,12 @@ namespace ChimeraLib {
             get { return rawValue; }
             set { 
                 rawValue = value;
-                if (OnChange != null)
-                    OnChange(HeadPosition);
+                headPosition = Head(value);
+                Change();
             }
         }
         public Vector3 HeadPosition {
-            get { return ((rawValue * scale) * rotation.Quaternion) + position; }
+            get { return headPosition; }
         }
         /// <summary>
         /// Where the kinect is positioned in real space (mm).
@@ -70,8 +73,7 @@ namespace ChimeraLib {
             get { return position; }
             set { 
                 position = value;
-                if (OnChange != null)
-                    OnChange(HeadPosition);
+                Change();
             }
         }
         public Rotation Rotation {
@@ -90,6 +92,12 @@ namespace ChimeraLib {
         public int ImageHeight {
             get { return supplier.ImageHeight; }
         }
+
+        private void Change() {
+            if (enabled && OnChange != null)
+                OnChange(HeadPosition);
+        }
+
 
         public event Action<Vector3> OnChange;
 
@@ -115,18 +123,43 @@ namespace ChimeraLib {
                 Console.WriteLine("Problem starting Kinect: " + e.Message);
                 supplier = null;
             }
-            rotation.OnChange += (source, args) => {
-                if (OnChange != null)
-                    OnChange(HeadPosition);
-            };
+            rotation.OnChange += (source, args) => Change();
         }
 
-        void supplier_OnSkeletonFrame(object sender, SkeletonFrameEventArgs e) {
+        /// <summary>
+        /// Enable kinect input.
+        /// Stores the original head position so when the Kinect is disable it can be reset.
+        /// </summary>
+        /// <param name="eye">The original head position to be reset to</param>
+        public void Enable(Vector3 eye) {
+            if (enabled)
+                return;
+            startPosition = eye;
+            headPosition = Head(rawValue);
+            enabled = true;
+            if (OnChange != null)
+                OnChange(HeadPosition);
+        }
+
+        public void Disable() {
+            headPosition = startPosition;
+            enabled = false;
+            if (OnChange != null)
+                OnChange(startPosition);
+        }
+        private Vector3 Head(Vector3 raw) {
+            return((rawValue * scale) * rotation.Quaternion) + position;
+        }
+
+        public void supplier_OnSkeletonFrame(object sender, SkeletonFrameEventArgs e) {
             if (supplier.ImageEnabled) {
                 bmp = CopyDataToBitmap(e.Image.ToArray());
                 if (OnImage != null)
                     OnImage(bmp);
             }
+
+            if (!enabled)
+                return;
 
             int id = (int)sender;
             if (!_lastUpdated.ContainsKey(id) && id != 0) {
@@ -163,17 +196,17 @@ namespace ChimeraLib {
                 return;
 
             rawValue = e.Skeleton.GetJoint("Head").Position;
+            headPosition = Head(rawValue);
             if (OnChange != null)
                 OnChange(HeadPosition);
-        }
-        
+        }        
         /// <summary>
         /// http://www.tek-tips.com/viewthread.cfm?qid=1264492
         /// function CopyDataToBitmap
         /// Purpose: Given the pixel data return a bitmap of size [352,288],PixelFormat=24RGB 
         /// </summary>
         /// <param name="data">Byte array with pixel data</param>
-        public Bitmap CopyDataToBitmap(byte[] data) {
+        private Bitmap CopyDataToBitmap(byte[] data) {
             lock (_imageLock) {
                 //Here create the Bitmap to the know height, width and format
                 Bitmap bmp = new Bitmap(supplier.ImageWidth, supplier.ImageHeight, System.Drawing.Imaging.PixelFormat.Format32bppRgb);
