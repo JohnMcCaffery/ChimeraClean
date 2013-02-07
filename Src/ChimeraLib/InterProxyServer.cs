@@ -22,7 +22,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using CookComputing.XmlRpc;
 using System.Runtime.Remoting;
 using System.Threading;
 using OpenMetaverse.Packets;

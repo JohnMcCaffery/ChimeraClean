@@ -32,26 +32,26 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CookComputing.XmlRpcV2">
-      <HintPath>..\..\..\XMLRPC\bin\CookComputing.XmlRpcV2.dll</HintPath>
+    <Reference Include="GridProxy">
+      <HintPath>..\..\Lib\GridProxy.dll</HintPath>
     </Reference>
     <Reference Include="log4net">
-      <HintPath>..\..\..\libopenmetaverse\bin\log4net.dll</HintPath>
+      <HintPath>..\..\Lib\log4net.dll</HintPath>
     </Reference>
     <Reference Include="Nini">
-      <HintPath>..\..\..\..\opensim-0.7.3.1\bin\Nini.dll</HintPath>
+      <HintPath>..\..\Lib\Nini.dll</HintPath>
     </Reference>
-    <Reference Include="OpenMetaverse, Version=0.0.0.17171, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\libopenmetaverse\OpenMetaverse\obj\Debug\OpenMetaverse.dll</HintPath>
+    <Reference Include="OpenMetaverse">
+      <HintPath>..\..\Lib\OpenMetaverse.dll</HintPath>
     </Reference>
-    <Reference Include="OpenMetaverse.StructuredData, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\libopenmetaverse\bin\OpenMetaverse.StructuredData.dll</HintPath>
+    <Reference Include="OpenMetaverse.Skeletal">
+      <HintPath>..\..\Lib\OpenMetaverse.Skeletal.dll</HintPath>
     </Reference>
-    <Reference Include="OpenMetaverseTypes, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\libopenmetaverse\OpenMetaverseTypes\obj\Debug\OpenMetaverseTypes.dll</HintPath>
+    <Reference Include="OpenMetaverse.StructuredData">
+      <HintPath>..\..\Lib\OpenMetaverse.StructuredData.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenMetaverseTypes">
+      <HintPath>..\..\Lib\OpenMetaverseTypes.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -61,8 +61,11 @@
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="WinGridProxy">
+      <HintPath>..\..\Lib\WinGridProxy.exe</HintPath>
+    </Reference>
     <Reference Include="XMLRPC">
-      <HintPath>..\..\..\libopenmetaverse\bin\XMLRPC.dll</HintPath>
+      <HintPath>..\..\Lib\XMLRPC.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -161,20 +164,6 @@
       <DependentUpon>SlaveForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\..\libopenmetaverse-mine\Programs\GridProxy\GridProxy.csproj">
-      <Project>{8AC3C5EE-0748-41A8-81C5-36473EEEB53C}</Project>
-      <Name>GridProxy</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\..\libopenmetaverse-mine\Programs\WinGridProxy\WinGridProxy.csproj">
-      <Project>{421F8BA2-92D3-4C24-AD53-FE1FEC91C419}</Project>
-      <Name>WinGridProxy</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\..\opensim-0.7.3.1\bin\Kinect\OpenMetaverse.Skeletal\OpenMetaverse.Skeletal.csproj">
-      <Project>{9C127EDC-FE71-4214-83DA-76F0E2E7882E}</Project>
-      <Name>OpenMetaverse.Skeletal</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
