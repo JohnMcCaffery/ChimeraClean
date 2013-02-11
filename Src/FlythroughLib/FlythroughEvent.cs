@@ -5,10 +5,8 @@ using System.Text;
 using OpenMetaverse;
 using UtilLib;
 
-namespace FlythroughLib
-{
-    public abstract class FlythroughEvent
-    {
+namespace FlythroughLib {
+    public abstract class FlythroughEvent {
         /// <summary>
         /// The event that this event is part of. May be null.
         /// </summary>
@@ -22,6 +20,27 @@ namespace FlythroughLib
         /// </summary>
         private FlythroughEvent mPrevEvent;
         /// <summary>
+        /// The current step being processed.
+        /// </summary>
+        private int mCurrentStep;
+        /// <summary>
+        /// The total number of steps in the event.
+        /// </summary>
+        private int mSteps;
+        /// <summary>
+        /// The flythroughmanager which contains all the events.
+        /// </summary>
+        private FlythroughManager mContainer;
+        /// <summary>
+        /// How long the event will last.
+        /// </summary>
+        private int mLength;
+
+        /// <summary>
+        /// Whether the event is currently playing
+        /// </summary>
+        private bool mPlaying;
+        /// <summary>
         /// Triggered whenever the event completes.
         /// </summary>
         public event EventHandler OnComplete;
@@ -32,277 +51,141 @@ namespace FlythroughLib
         public event EventHandler OnStart;
 
         /// <summary>
-        /// Triggered whenever the rotation changes.
+        /// Initialise this event with no parent, next or previous events.
         /// </summary>
-        public event EventHandler OnPositionChange;
-
-        /// <summary>
-        /// Triggered whenever the rotation changes.
-        /// </summary>
-        public event EventHandler OnRotationChange;
+        /// <param name="container">The container which manages all events.</param>
+        public FlythroughEvent(FlythroughManager container) {
+            mContainer = container;
+        }
 
         /// <summary>
         /// Initialise this event with a parent event. No next or previous events.
         /// </summary>
-        /// <param name="parentEvent">The event this event is part of.</param>
-        public FlythroughEvent(FlythroughEvent parentEvent)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        /// <summary>
-        /// Initialise this event with no parent, next or previous events.
-        /// </summary>
-        public FlythroughEvent()
-        {
-            throw new System.NotImplementedException();
+        /// <param name="container">The container which manages all events.</param>
+        /// <param name="parent">The event this event is part of.</param>
+        public FlythroughEvent(FlythroughManager container, FlythroughEvent parent) {
+            mContainer = container;
+            mParentEvent = parent;
         }
 
         /// <summary>
         /// Initialise this event with a previous and a next event. No parent.
         /// </summary>
+        /// <param name="container">The container which manages all events.</param>
         /// <param name="prev">The previous event in the sequence. May be null.</param>
         /// <param name="next">The next event in the sequence. May be null.</param>
-        public FlythroughEvent(FlythroughEvent prev, FlythroughEvent next)
-        {
-            throw new System.NotImplementedException();
+        public FlythroughEvent(FlythroughManager container, FlythroughEvent prev, FlythroughEvent next) {
+            mContainer = container;
+            mPrevEvent = prev;
+            mNextEvent = next;
         }
 
+        /// <param name="container">The container which manages all events.</param>
         /// <param name="parent">The event this event is part of.</param>
         /// <param name="prev">The previous event in the sequence. May be null.</param>
         /// <param name="next">The next event in the sequence. May be null.</param>
-        public FlythroughEvent(FlythroughEvent parent, FlythroughEvent prev, FlythroughEvent next)
-        {
-            throw new System.NotImplementedException();
+        public FlythroughEvent(FlythroughManager container, FlythroughEvent parent, FlythroughEvent prev, FlythroughEvent next) {
+            mContainer = container;
+            mParentEvent = parent;
+            mPrevEvent = prev;
+            mNextEvent = next;
         }
         /// <summary>
         /// The name of the event. Not unique.
+        /// </summary> public string Name } 
         /// </summary>
-        public string Name
-        {
-            get
-            {
-                throw new System.NotImplementedException();
-            }
-            set
-            {
-            }
-        }
-
-        /// <summary>
-        /// How long (ms) the event takes.
-        /// </summary>
-        public int Length
-        {
-            get
-            {
-                throw new System.NotImplementedException();
-            }
-            set
-            {
-            }
+        public int Length {
+            get { return mLength; }
         }
 
         /// <summary>
         /// How many steps it will take to complete the event.
+        /// </summary> public int Steps } 
         /// </summary>
-        public int Steps
-        {
-            get
-            {
-                throw new System.NotImplementedException();
-            }
-            set
-            {
-            }
-        }
-
-        /// <summary>
-        /// The current step the event is on.
-        /// </summary>
-        public int CurrentStep
-        {
-            get
-            {
-                throw new System.NotImplementedException();
-            }
-            set
-            {
-            }
+        public int CurrentStep {
+            get { return mCurrentStep; }
         }
 
         /// <summary>
         /// How far through the event currently is.
+        /// </summary> public int CurrentTime } 
         /// </summary>
-        public int CurrentTime
-        {
-            get
-            {
-                throw new System.NotImplementedException();
-            }
-            set
-            {
-            }
-        }
-
-        /// <summary>
-        /// The current rotation dictated by the event.
-        /// </summary>
-        public Vector3 Position
-        {
-            get
-            {
-                throw new System.NotImplementedException();
-            }
-            set
-            {
-            }
-        }
-
-        /// <summary>
-        /// The current rotation dictated by the event.
-        /// </summary>
-        public Rotation Rotation
-        {
-            get
-            {
-                throw new System.NotImplementedException();
-            }
-            set
-            {
-            }
-        }
-
-        /// <summary>
-        /// Whether this event is currently playing.
-        /// </summary>
-        public bool Playing
-        {
-            get
-            {
-                throw new System.NotImplementedException();
-            }
-            set
-            {
-            }
+        public bool Playing {
+            get { return mPlaying; }
         }
 
         /// <summary>
         /// The event this event is part of. May be null.
         /// </summary>
-        public FlythroughEvent ParentEvent
-        {
-            get
-            {
-                throw new System.NotImplementedException();
-            }
-            set
-            {
-            }
+        public FlythroughEvent ParentEvent {
+            get { return mParentEvent; }
         }
 
         /// <summary>
         /// The next event in the sequence. May be null.
         /// </summary>
-        public FlythroughEvent NextEvent
-        {
-            get
-            {
+        public FlythroughEvent NextEvent {
+            get {
                 throw new System.NotImplementedException();
             }
-            set
-            {
+            set {
             }
         }
 
         /// <summary>
         /// The previous event in the sequence. May be null.
         /// </summary>
-        private FlythroughEvent PrevEvent
-        {
-            get
-            {
-                throw new System.NotImplementedException();
-            }
-            set
-            {
-            }
+        private FlythroughEvent PrevEvent {
+            get { return mPrevEvent; }
+        }
+
+        /// <summary>
+        /// The container which manages all the events.
+        /// </summary>
+        public FlythroughManager Container {
+            get { return mContainer; }
         }
 
         /// <summary>
         /// Trigger the OnComplete event.
         /// </summary>
-        private void TriggerOnComplete()
-        {
+        private void TriggerOnComplete() {
             throw new System.NotImplementedException();
         }
 
         /// <summary>
         /// Trigger the OnStart event.
         /// </summary>
-        private void TriggerOnStart()
-        {
+        private void TriggerOnStart() {
             throw new System.NotImplementedException();
         }
 
         /// <summary>
         /// Start the event.
         /// </summary>
-        public void Play()
-        {
+        public void Play() {
             throw new System.NotImplementedException();
         }
 
         /// <summary>
         /// Pause the event.
         /// </summary>
-        public void Pause()
-        {
+        public void Pause() {
             throw new System.NotImplementedException();
         }
 
         /// <summary>
-        /// Set the rotation for the event.
+        /// Trigger the next step to happen. Returns true if there is another event to come. False otherwise.
         /// </summary>
-        /// <param name="rotation">The rotation to set.</param>
-        private void SetPosition(Vector3 position)
-        {
+        public abstract bool Step() {
             throw new System.NotImplementedException();
         }
 
         /// <summary>
-        /// Set the rotation for the event, via a new Rotation object.
+        /// Set how far through the event playback has reached.
         /// </summary>
-        /// <param name="rotation">The rotation to set.</param>
-        private void SetRotation(Random rotation)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        /// <summary>
-        /// Set the rotation for the event, via pitch and yaw.
-        /// </summary>
-        /// <param name="pitch">The pitch to set.</param>
-        /// <param name="yaw">The yaw to set.</param>
-        private void SetRotation(float pitch, float yaw)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        /// <summary>
-        /// Set the rotation for the event, via a quaternion.
-        /// </summary>
-        /// <param name="rotation">The quaternion to set rotation equal to.</param>
-        private void SetRotation(Queryable rotation)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        /// <summary>
-        /// Trigger the next step to happen.
-        /// </summary>
-        public abstract void Step()
-        {
+        /// <param name="time">The time through the event to play from.</param>
+        public void SetTime(int time) {
             throw new System.NotImplementedException();
         }
     }
