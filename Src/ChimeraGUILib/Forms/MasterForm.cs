@@ -37,7 +37,7 @@ using GridProxy;
 
 namespace ConsoleTest {
     public partial class MasterForm : Form {
-        private readonly CameraMaster master;
+        private readonly CameraMaster mMaster;
         private readonly Dictionary<string, TabPage> slaveTabs = new Dictionary<string, TabPage>();
         private readonly Dictionary<string, Color> slaveColours = new Dictionary<string, Color>();
         private bool ignorePitch = false;
@@ -51,7 +51,9 @@ namespace ConsoleTest {
             proxyPanel.Proxy = master;
             masterWindowPanel.Window = master.Window;
 
-            this.master = master;
+            mMaster = master;
+            flythroughPanel.Master = master;
+
 
             rawPosition.Value = master.Position;
             cameraOffsetPanel.Value = master.CameraOffset;
@@ -267,19 +269,19 @@ namespace ConsoleTest {
         }
 
         private void MasterForm_FormClosing(object sender, FormClosingEventArgs e) {
-            master.Stop();
+            mMaster.Stop();
             k.Stop();
         }
 
         private void rawRotation_OnChange(object sender, EventArgs e) {
             //master.VirtualRotationOffset.Quaternion = rawRotation.VirtualRotationOffset;
-            master.Rotation.Pitch = rawRotation.Pitch;
-            master.Rotation.Yaw = rawRotation.Yaw;
+            mMaster.Rotation.Pitch = rawRotation.Pitch;
+            mMaster.Rotation.Yaw = rawRotation.Yaw;
             RefreshDrawings();
         }
 
         private void rawPosition_OnChange(object sender, EventArgs e) {
-            master.Position = rawPosition.Value;
+            mMaster.Position = rawPosition.Value;
             RefreshDrawings();
         }
 
@@ -292,11 +294,11 @@ namespace ConsoleTest {
             e.Graphics.DrawLine(Pens.Red, origin.X, 0f, origin.X, e.ClipRectangle.Height);
 
             float scale = ((scaleBar.Maximum - scaleBar.Value) * e.ClipRectangle.Width) / scaleScale;
-            foreach (var slave in master.Slaves) {
+            foreach (var slave in mMaster.Slaves) {
                 lock (slaveColours)
                     DrawWindow(e.Graphics, slave.Window, origin, true, Vector3.Zero, slaveColours.ContainsKey(slave.Name) ? slaveColours[slave.Name] : Color.Black, scale);
             }
-            DrawWindow(e.Graphics, master.Window, origin, true, Vector3.Zero, Color.Black, scale);
+            DrawWindow(e.Graphics, mMaster.Window, origin, true, Vector3.Zero, Color.Black, scale);
 
         }
 
@@ -306,11 +308,11 @@ namespace ConsoleTest {
             e.Graphics.DrawLine(Pens.Blue, origin.X, 0f, origin.X, e.ClipRectangle.Height);
 
             float scale = ((scaleBar.Maximum - scaleBar.Value) * e.ClipRectangle.Width) / scaleScale;
-            foreach (var slave in master.Slaves) {
+            foreach (var slave in mMaster.Slaves) {
                 lock (slaveColours)
                     DrawWindow(e.Graphics, slave.Window, origin, false, Vector3.Zero, slaveColours.ContainsKey(slave.Name) ? slaveColours[slave.Name] : Color.Black, scale);
             }
-            DrawWindow(e.Graphics, master.Window, origin, false, Vector3.Zero, Color.Black, scale);
+            DrawWindow(e.Graphics, mMaster.Window, origin, false, Vector3.Zero, Color.Black, scale);
 
         }
 
@@ -400,10 +402,10 @@ namespace ConsoleTest {
 
         private void bindButton_Click(object sender, EventArgs e) {
             if (bindButton.Text.Equals("Bind")) {
-                if (!master.StartMaster(addressBox.Text, Int32.Parse(portBox.Text)))
-                    statusLabel.Text = "Unable to bind to " + master.MasterAddress + ":" + master.ProxyConfig.MasterPort;
+                if (!mMaster.StartMaster(addressBox.Text, Int32.Parse(portBox.Text)))
+                    statusLabel.Text = "Unable to bind to " + mMaster.MasterAddress + ":" + mMaster.ProxyConfig.MasterPort;
             } else {
-                master.StopMaster();
+                mMaster.StopMaster();
                 foreach (var slave in slaveTabs.Keys.ToArray())
                     RemoveSlave(slave);
                 bindButton.Text = "Bind";
@@ -447,8 +449,8 @@ namespace ConsoleTest {
                 currentX = e.X;
                 currentY = e.Y;
                 if (!ignorePitch)
-                    master.Rotation.Pitch = pitch + (((e.Y - y) * mouseScaleSlider.Value) / 20);
-                master.Rotation.Yaw = yaw + ((((x - e.X) / 2) * mouseScaleSlider.Value) / 10);
+                    mMaster.Rotation.Pitch = pitch + (((e.Y - y) * mouseScaleSlider.Value) / 20);
+                mMaster.Rotation.Yaw = yaw + ((((x - e.X) / 2) * mouseScaleSlider.Value) / 10);
                 mousePanel.Refresh();
             }
         }
@@ -517,7 +519,7 @@ namespace ConsoleTest {
                 move *= rawRotation.Rotation;
                 if (upDown) move.Z = shift;
                 if (downDown) move.Z = -shift;
-                master.Position += move;
+                mMaster.Position += move;
             }
         }
 
@@ -534,11 +536,11 @@ namespace ConsoleTest {
         }
 
         private void cameraOffsetPanel_OnChange(object sender, EventArgs e) {
-            master.CameraOffset = cameraOffsetPanel.Value;
+            mMaster.CameraOffset = cameraOffsetPanel.Value;
         }
 
         private void viewerControlCheck_CheckedChanged(object sender, EventArgs e) {
-            master.ViewerControl = viewerControlCheck.Checked;
+            mMaster.ViewerControl = viewerControlCheck.Checked;
         }
 
         private void kinectOffsetPanel_OnChange(object sender, EventArgs e) {
@@ -561,12 +563,12 @@ namespace ConsoleTest {
         }
 
         private void vanishingDistanceValue_ValueChanged(object sender, EventArgs e) {
-            master.VanishingDistance = (float) decimal.ToDouble(vanishingDistanceValue.Value);
+            mMaster.VanishingDistance = (float) decimal.ToDouble(vanishingDistanceValue.Value);
         }
 
         private void enableKinectCheck_CheckedChanged(object sender, EventArgs e) {
             if (enableKinectCheck.Checked)
-                k.Enable(master.Window.EyePosition);
+                k.Enable(mMaster.Window.EyePosition);
             else
                 k.Disable();
         }
@@ -577,7 +579,7 @@ namespace ConsoleTest {
         }
 
         private void CameraControlChanged(CameraMaster.CameraControlEnum state) {
-            master.CameraControl = state;
+            mMaster.CameraControl = state;
             frustumCheck.Enabled = state == CameraMaster.CameraControlEnum.Individual;
             cameraRotationCheck.Enabled = state == CameraMaster.CameraControlEnum.Individual;
             cameraPositionCheck.Enabled = state == CameraMaster.CameraControlEnum.Individual;
@@ -601,23 +603,23 @@ namespace ConsoleTest {
         }
 
         private void rotationCheck_CheckedChanged(object sender, EventArgs e) {
-            master.UpdateRotation = cameraRotationCheck.Checked;
+            mMaster.UpdateRotation = cameraRotationCheck.Checked;
         }
 
         private void cameraPositionCheck_CheckedChanged(object sender, EventArgs e) {
-            master.UpdateCameraPosition = cameraPositionCheck.Checked;
+            mMaster.UpdateCameraPosition = cameraPositionCheck.Checked;
         }
 
         private void fovCheck_CheckedChanged(object sender, EventArgs e) {
-            master.UpdateFoV = fovCheck.Checked;
+            mMaster.UpdateFoV = fovCheck.Checked;
         }
 
         private void frustumHCheck_CheckedChanged(object sender, EventArgs e) {
-            master.UpdateFrustum = frustumCheck.Checked;
+            mMaster.UpdateFrustum = frustumCheck.Checked;
         }
 
         private void aspectRatioCheck_CheckedChanged(object sender, EventArgs e) {
-            master.UpdateAspectRatio = aspectRatioCheck.Checked;
+            mMaster.UpdateAspectRatio = aspectRatioCheck.Checked;
         }
     }
 }
