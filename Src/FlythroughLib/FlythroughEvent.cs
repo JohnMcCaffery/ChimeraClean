@@ -106,7 +106,6 @@ namespace FlythroughLib {
                     mSteps = 1;
                 else
                     mSteps = value / FlythroughManager.TICK_LENGTH;
-                LengthChanged();
             }
         }
 
@@ -172,23 +171,9 @@ namespace FlythroughLib {
         /// <summary>
         /// Trigger the next step to happen. Returns true if there is another event to come. False otherwise.
         /// </summary>
-        public abstract bool Step();
-
-        /// <summary>
-        /// Called whenever length (and therefore # steps) changes.
-        /// </summary>
-        protected abstract void LengthChanged();
-
-
-        /// <summary>
-        /// Move the step counter forward and calculate whether the event is finished.
-        /// </summary>
-        protected bool DoStep() {
+        public virtual bool Step() {
             mCurrentStep++;
-            bool running = mCurrentStep < mSteps;
-            if (!running)
-                mCurrentStep = 0;
-            return running;
+            return mCurrentStep < mSteps;
         }
 
         /// <summary>
@@ -200,13 +185,6 @@ namespace FlythroughLib {
                 mCurrentStep = time / FlythroughManager.TICK_LENGTH;
             else
                 mCurrentStep = mSteps;
-        }
-
-        /// <summary>
-        /// Reset the step counter.
-        /// </summary>
-        public void Reset() {
-            mCurrentStep = 0;
         }
     }
 }

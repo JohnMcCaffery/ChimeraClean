@@ -33,34 +33,16 @@ namespace FlythroughLib {
         /// </summary>
         public Vector3 Target {
             get { return mTargetPosition;  }
-            set { 
-                mTargetPosition = value; 
-                mShift = (mTargetPosition - mStartPosition) / TotalSteps;
-            }
-        }
-   
-        /// <summary>
-        /// The position the camera starts at.
-        /// </summary>
-        public Vector3 Start {
-            get { return mStartPosition;  }
-            set { 
-                mStartPosition = value;
-                mShift = (mTargetPosition - mStartPosition) / TotalSteps;
-            }
+            set { mTargetPosition = value; }
         }
     
         public override bool Step() {
             if (CurrentStep == 0)
-                Start= Container.Position;
+                mStartPosition = Container.Position;
 
             Container.SetPosition(mStartPosition + (mShift * CurrentStep));
 
-            return DoStep();
-        }
-
-        protected override void LengthChanged() {
-            mShift = (mTargetPosition - mStartPosition) / TotalSteps;
+            return base.Step();
         }
     }
 }
