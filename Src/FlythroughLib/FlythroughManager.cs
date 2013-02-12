@@ -16,7 +16,7 @@ namespace FlythroughLib {
         /// <summary>
         /// The events that make up the sequence.
         /// </summary>
-        private List<FlythroughEvent> mEvents;
+        private readonly List<FlythroughEvent> mEvents = new List<FlythroughEvent>();
         /// <summary>
         /// The event currently playing.
         /// </summary>
@@ -94,6 +94,7 @@ namespace FlythroughLib {
             if (mCurrentEvent == null) {
                 mCurrentEventIndex = 0;
                 mCurrentEvent = mEvents[mCurrentEventIndex];
+                mCurrentEvent.Reset();
             }
             Start();
         }
@@ -155,10 +156,11 @@ namespace FlythroughLib {
             while (mPlaying && mCurrentEvent != null) {
                 lock (this) {
                     if (!mCurrentEvent.Step()) {
-                        if (mEvents.Count < mCurrentEventIndex + 1) {
+                        if (mEvents.Count <= mCurrentEventIndex + 1) {
                             mPlaying = false;
                             mCurrentEvent = null;
-                            OnComplete(this, null);
+                            if (OnComplete != null)
+                                OnComplete(this, null);
                         } else {
                             mCurrentEvent = mEvents[++mCurrentEventIndex];
                         }

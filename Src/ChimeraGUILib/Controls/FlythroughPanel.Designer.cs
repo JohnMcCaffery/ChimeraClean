@@ -41,6 +41,7 @@
             this.playButton.TabIndex = 8;
             this.playButton.Text = "Play";
             this.playButton.UseVisualStyleBackColor = true;
+            this.playButton.Click += new System.EventHandler(this.playButton_Click);
             // 
             // lengthValue
             // 
