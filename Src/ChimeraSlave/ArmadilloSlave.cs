@@ -35,7 +35,9 @@ namespace ArmadilloSlaveGUI {
         static void Main(string[] args) {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            CameraSlave s = Init.InitCameraSlave(args.Concat(new string[] { "-g", "true" }).ToArray());
+            IConfig slaveConfig;
+            CameraSlave s = Init.InitCameraSlave(args.Concat(new string[] { "-g", "true" }).ToArray(), out slaveConfig);
+            Init.StartGui(slaveConfig, s, () => new SlaveForm(s));
         }
     }
 }

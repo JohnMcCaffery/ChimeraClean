@@ -25,7 +25,6 @@ using Nini.Config;
 using System.Windows.Forms;
 using System.Threading;
 using System.IO;
-using ConsoleTest;
 using log4net;
 
 namespace UtilLib {
@@ -261,7 +260,7 @@ namespace UtilLib {
             }
         }
 
-        public static CameraMaster InitCameraMaster(string[] args) {
+        public static CameraMaster InitCameraMaster(string[] args, out IConfig masterConfig ) {
             ArgvConfigSource argConfig = InitArgConfig(args);
             argConfig.AddSwitch("Master", "AutoStartMaster", "am");
             argConfig.AddSwitch("Master", "AutoStartProxy", "ap");
@@ -273,7 +272,7 @@ namespace UtilLib {
             string file;
             IConfigSource config = Init.AddFile(argConfig, out file);
 
-            IConfig masterConfig = config.Configs["Master"];
+            masterConfig = config.Configs["Master"];
             IConfig generalConfig = config.Configs["General"];
 
             if (Init.Has(masterConfig, "Help")) {
@@ -299,7 +298,7 @@ namespace UtilLib {
                         Thread.Sleep(500);
                         m.StartMaster();
                     }).Start();
-                Init.StartGui(masterConfig, m, () => new MasterForm(m));
+                //Init.StartGui(masterConfig, m, () => new MasterForm(m));
             } else {
                 if (autostartMaster)
                     m.StartMaster();
@@ -312,7 +311,7 @@ namespace UtilLib {
             return m;
         }
 
-        public static CameraSlave InitCameraSlave(string[] args) {
+        public static CameraSlave InitCameraSlave(string[] args, out IConfig slaveConfig) {
             ArgvConfigSource argConfig = InitArgConfig(args);
             argConfig.AddSwitch("General", "Name", "n");
             argConfig.AddSwitch("General", "File", "f");
@@ -329,7 +328,7 @@ namespace UtilLib {
 
             config = AddFile(argConfig, out file);
             
-            IConfig slaveConfig = config.Configs[name];
+            slaveConfig = config.Configs[name];
             IConfig generalConfig = config.Configs["General"];
 
             if (Init.Has(slaveConfig, "Help")) {
@@ -360,7 +359,7 @@ namespace UtilLib {
                         Thread.Sleep(500);
                         s.Connect();
                     }).Start();
-                Init.StartGui(slaveConfig, s, () => new SlaveForm(s));
+                //Init.StartGui(slaveConfig, s, () => new SlaveForm(s));
 
             } else {
                 if (autostartSlave)

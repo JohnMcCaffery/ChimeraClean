@@ -16,7 +16,7 @@ namespace FlythroughLib {
         /// <summary>
         /// The events that make up the sequence.
         /// </summary>
-        private FlythroughLib.FlythroughEvent[] mEvents;
+        private List<FlythroughEvent> mEvents;
         /// <summary>
         /// The event currently playing.
         /// </summary>
@@ -74,20 +74,21 @@ namespace FlythroughLib {
         /// Whether the flythrough is currently playing.
         /// </summary>
         public bool Playing {
-            get { return mCurrentEvent != null && mCurrentEvent.Playing; }
+            get { return mCurrentEvent != null && mPlaying; }
         }
 
         /// <summary>
         /// The events which make up the flythrough.
         /// </summary>
         public FlythroughEvent[] Events {
-            get { return mEvents; }
+            get { return mEvents.ToArray(); }
         }
+
         /// <summary>
         /// Start the flythrough running. Will continue on from wherever it was before.
         /// </summary>
         public void Play() {
-            if (mEvents.Length == 0)
+            if (mEvents.Count == 0)
                 return;
 
             if (mCurrentEvent == null) {
@@ -95,6 +96,18 @@ namespace FlythroughLib {
                 mCurrentEvent = mEvents[mCurrentEventIndex];
             }
             Start();
+        }
+
+        /// <summary>
+        /// Start the flythrough running. Specifies where the camera starts.
+        /// </summary>
+        /// <param name="position">The position that the camera starts at.</param>
+        /// <param name="rotation">The rotation that the camera starts at.</param>
+        public void Play(Vector3 position, Rotation rotation) {
+            mPosition = position;
+            mRotation = rotation;
+
+            Play();
         }
 
         /// <summary>
@@ -119,7 +132,7 @@ namespace FlythroughLib {
         public void JumpTo(int time) {
             lock (this) {
                 int total = 0;
-                for (int i = 0; total < time && i < mEvents.Length; i++) {
+                for (int i = 0; total < time && i < mEvents.Count; i++) {
                     mCurrentEvent = mEvents[i];
                     total += mCurrentEvent.Length;
                 }
@@ -142,7 +155,7 @@ namespace FlythroughLib {
             while (mPlaying && mCurrentEvent != null) {
                 lock (this) {
                     if (!mCurrentEvent.Step()) {
-                        if (mEvents.Length < mCurrentEventIndex + 1) {
+                        if (mEvents.Count < mCurrentEventIndex + 1) {
                             mPlaying = false;
                             mCurrentEvent = null;
                             OnComplete(this, null);
@@ -202,6 +215,14 @@ namespace FlythroughLib {
             Thread t = new Thread(TimerMethod);
             t.Name = "FLythroughTimer";
             t.Start();
+        }
+
+        /// <summary>
+        /// Add a new event to the sequence.
+        /// </summary>
+        /// <param name="evt">The event to add.</param>
+        public void AddEvent(FlythroughEvent evt) {
+            mEvents.Add(evt);
         }
     }
 }

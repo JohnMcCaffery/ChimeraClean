@@ -79,6 +79,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ChimeraGUILib\ChimeraGUILib.csproj">
+      <Project>{E30ACDAE-ACED-4D3A-BFA8-625F4C119E5F}</Project>
+      <Name>ChimeraGUILib</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ChimeraLib\ChimeraLib.csproj">
       <Project>{58E39BFE-20D5-4C8D-BCFC-6B5E641C2DFF}</Project>
       <Name>ChimeraLib</Name>

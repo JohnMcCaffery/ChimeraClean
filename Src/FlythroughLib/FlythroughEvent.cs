@@ -10,19 +10,19 @@ namespace FlythroughLib {
         /// <summary>
         /// The flythroughmanager which contains all the events.
         /// </summary>
-        private FlythroughManager mContainer;
+        private readonly FlythroughManager mContainer;
         /// <summary>
         /// The event that this event is part of. May be null.
         /// </summary>
-        private FlythroughEvent mParentEvent;
+        private readonly FlythroughEvent mParentEvent;
         /// <summary>
         /// The next event in the sequence. May be null.
         /// </summary>
-        private FlythroughEvent mNextEvent;
+        private readonly FlythroughEvent mNextEvent;
         /// <summary>
         /// The previous event in the sequence. May be null.
         /// </summary>
-        private FlythroughEvent mPrevEvent;
+        private readonly FlythroughEvent mPrevEvent;
         /// <summary>
         /// The current step being processed.
         /// </summary>
@@ -53,11 +53,7 @@ namespace FlythroughLib {
         /// <param name="length">The length of time the event will run (ms).</param>
         public FlythroughEvent(FlythroughManager container, int length) {
             mContainer = container;
-            mLength = length;
-            if (length == 0)
-                mSteps = 1;
-            else
-                mSteps = length / FlythroughManager.TICK_LENGTH;
+            Length = length;
         }
 
         /// <summary>
@@ -98,11 +94,19 @@ namespace FlythroughLib {
         }
 
         /// <summary>
-        /// The name of the event. Not unique.
-        /// </summary> public string Name } 
+        /// How long the event will run for.
         /// </summary>
         public int Length {
             get { return mLength; }
+            set {
+                if (mCurrentStep != 0)
+                    throw new Exception("Unable to set length. Event is currently running.");
+                mLength = value;
+                if (value == 0)
+                    mSteps = 1;
+                else
+                    mSteps = value / FlythroughManager.TICK_LENGTH;
+            }
         }
 
         /// <summary>
@@ -111,14 +115,6 @@ namespace FlythroughLib {
         /// </summary>
         public int CurrentStep {
             get { return mCurrentStep; }
-        }
-
-        /// <summary>
-        /// How far through the event currently is.
-        /// </summary> public int CurrentTime } 
-        /// </summary>
-        public bool Playing {
-            get { return mPlaying; }
         }
 
         /// <summary>
@@ -175,7 +171,10 @@ namespace FlythroughLib {
         /// <summary>
         /// Trigger the next step to happen. Returns true if there is another event to come. False otherwise.
         /// </summary>
-        public abstract bool Step();
+        public virtual bool Step() {
+            mCurrentStep++;
+            return mCurrentStep < mSteps;
+        }
 
         /// <summary>
         /// Set how far through the event playback has reached.

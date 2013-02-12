@@ -1,0 +1,168 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{E30ACDAE-ACED-4D3A-BFA8-625F4C119E5F}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ChimeraGUILib</RootNamespace>
+    <AssemblyName>ChimeraGUILib</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="GridProxy">
+      <HintPath>..\..\Lib\GridProxy.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net">
+      <HintPath>..\..\Lib\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenMetaverse">
+      <HintPath>..\..\Lib\OpenMetaverse.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenMetaverse.Skeletal">
+      <HintPath>..\..\Lib\OpenMetaverse.Skeletal.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenMetaverseTypes">
+      <HintPath>..\..\Lib\OpenMetaverseTypes.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WinGridProxy">
+      <HintPath>..\..\Lib\WinGridProxy.exe</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Controls\FlythroughPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\FlythroughPanel.Designer.cs">
+      <DependentUpon>FlythroughPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\MasterForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\MasterForm.Designer.cs">
+      <DependentUpon>MasterForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\SlaveForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\SlaveForm.Designer.cs">
+      <DependentUpon>SlaveForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\LogPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\LogPanel.Designer.cs">
+      <DependentUpon>LogPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Controls\ProxyPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\ProxyPanel.Designer.cs">
+      <DependentUpon>ProxyPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\RotationPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\RotationPanel.Designer.cs">
+      <DependentUpon>RotationPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\SetFollowCamPropertiesPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\SetFollowCamPropertiesPanel.Designer.cs">
+      <DependentUpon>SetFollowCamPropertiesPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\VectorPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\VectorPanel.Designer.cs">
+      <DependentUpon>VectorPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\WindowPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\WindowPanel.Designer.cs">
+      <DependentUpon>WindowPanel.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Controls\FlythroughPanel.resx">
+      <DependentUpon>FlythroughPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\MasterForm.resx">
+      <DependentUpon>MasterForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\SlaveForm.resx">
+      <DependentUpon>SlaveForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\LogPanel.resx">
+      <DependentUpon>LogPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\ProxyPanel.resx">
+      <DependentUpon>ProxyPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\RotationPanel.resx">
+      <DependentUpon>RotationPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\SetFollowCamPropertiesPanel.resx">
+      <DependentUpon>SetFollowCamPropertiesPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\VectorPanel.resx">
+      <DependentUpon>VectorPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\WindowPanel.resx">
+      <DependentUpon>WindowPanel.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ChimeraLib\ChimeraLib.csproj">
+      <Project>{58E39BFE-20D5-4C8D-BCFC-6B5E641C2DFF}</Project>
+      <Name>ChimeraLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FlythroughLib\FlythroughLib.csproj">
+      <Project>{D0708045-6CCA-4764-B438-A2D6E8635978}</Project>
+      <Name>FlythroughLib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

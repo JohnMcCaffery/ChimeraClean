@@ -42,6 +42,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
@@ -52,6 +53,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ChimeraGUILib\ChimeraGUILib.csproj">
+      <Project>{E30ACDAE-ACED-4D3A-BFA8-625F4C119E5F}</Project>
+      <Name>ChimeraGUILib</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ChimeraLib\ChimeraLib.csproj">
       <Project>{58E39BFE-20D5-4C8D-BCFC-6B5E641C2DFF}</Project>
       <Name>ChimeraLib</Name>
