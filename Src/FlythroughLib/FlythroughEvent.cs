@@ -8,6 +8,10 @@ using UtilLib;
 namespace FlythroughLib {
     public abstract class FlythroughEvent {
         /// <summary>
+        /// The flythroughmanager which contains all the events.
+        /// </summary>
+        private FlythroughManager mContainer;
+        /// <summary>
         /// The event that this event is part of. May be null.
         /// </summary>
         private FlythroughEvent mParentEvent;
@@ -22,24 +26,16 @@ namespace FlythroughLib {
         /// <summary>
         /// The current step being processed.
         /// </summary>
-        private int mCurrentStep;
+        private int mCurrentStep = 0;
         /// <summary>
         /// The total number of steps in the event.
         /// </summary>
-        private int mSteps;
-        /// <summary>
-        /// The flythroughmanager which contains all the events.
-        /// </summary>
-        private FlythroughManager mContainer;
+        private int mSteps = 1;
         /// <summary>
         /// How long the event will last.
         /// </summary>
         private int mLength;
 
-        /// <summary>
-        /// Whether the event is currently playing
-        /// </summary>
-        private bool mPlaying;
         /// <summary>
         /// Triggered whenever the event completes.
         /// </summary>
@@ -54,17 +50,24 @@ namespace FlythroughLib {
         /// Initialise this event with no parent, next or previous events.
         /// </summary>
         /// <param name="container">The container which manages all events.</param>
-        public FlythroughEvent(FlythroughManager container) {
+        /// <param name="length">The length of time the event will run (ms).</param>
+        public FlythroughEvent(FlythroughManager container, int length) {
             mContainer = container;
+            mLength = length;
+            if (length == 0)
+                mSteps = 1;
+            else
+                mSteps = length / FlythroughManager.TICK_LENGTH;
         }
 
         /// <summary>
         /// Initialise this event with a parent event. No next or previous events.
         /// </summary>
         /// <param name="container">The container which manages all events.</param>
+        /// <param name="length">The length of time the event will run (ms).</param>
         /// <param name="parent">The event this event is part of.</param>
-        public FlythroughEvent(FlythroughManager container, FlythroughEvent parent) {
-            mContainer = container;
+        public FlythroughEvent(FlythroughManager container, int length, FlythroughEvent parent)
+            : this(container, length) {
             mParentEvent = parent;
         }
 
@@ -72,24 +75,28 @@ namespace FlythroughLib {
         /// Initialise this event with a previous and a next event. No parent.
         /// </summary>
         /// <param name="container">The container which manages all events.</param>
+        /// <param name="length">The length of time the event will run (ms).</param>
         /// <param name="prev">The previous event in the sequence. May be null.</param>
         /// <param name="next">The next event in the sequence. May be null.</param>
-        public FlythroughEvent(FlythroughManager container, FlythroughEvent prev, FlythroughEvent next) {
-            mContainer = container;
+        public FlythroughEvent(FlythroughManager container, int length, FlythroughEvent prev, FlythroughEvent next)
+            : this(container, length) {
             mPrevEvent = prev;
             mNextEvent = next;
         }
 
+        /// <summary>
+        /// Initialise this event with a parent event and previous and next events.
+        /// </summary>
         /// <param name="container">The container which manages all events.</param>
+        /// <param name="length">The length of time the event will run (ms).</param>
         /// <param name="parent">The event this event is part of.</param>
         /// <param name="prev">The previous event in the sequence. May be null.</param>
         /// <param name="next">The next event in the sequence. May be null.</param>
-        public FlythroughEvent(FlythroughManager container, FlythroughEvent parent, FlythroughEvent prev, FlythroughEvent next) {
-            mContainer = container;
+        public FlythroughEvent(FlythroughManager container, int length, FlythroughEvent parent, FlythroughEvent prev, FlythroughEvent next)
+            : this(container, length, prev, next) {
             mParentEvent = parent;
-            mPrevEvent = prev;
-            mNextEvent = next;
         }
+
         /// <summary>
         /// The name of the event. Not unique.
         /// </summary> public string Name } 
@@ -125,11 +132,7 @@ namespace FlythroughLib {
         /// The next event in the sequence. May be null.
         /// </summary>
         public FlythroughEvent NextEvent {
-            get {
-                throw new System.NotImplementedException();
-            }
-            set {
-            }
+            get { return mNextEvent; }
         }
 
         /// <summary>
@@ -147,46 +150,42 @@ namespace FlythroughLib {
         }
 
         /// <summary>
-        /// Trigger the OnComplete event.
+        /// How many steps the event will take.
         /// </summary>
-        private void TriggerOnComplete() {
-            throw new System.NotImplementedException();
+        public int TotalSteps {
+            get { return mSteps; }
         }
 
         /// <summary>
         /// Trigger the OnStart event.
         /// </summary>
         private void TriggerOnStart() {
-            throw new System.NotImplementedException();
+            if (OnStart != null)
+                OnStart(this, null);
         }
 
         /// <summary>
-        /// Start the event.
+        /// Trigger the OnComplete event.
         /// </summary>
-        public void Play() {
-            throw new System.NotImplementedException();
-        }
-
-        /// <summary>
-        /// Pause the event.
-        /// </summary>
-        public void Pause() {
-            throw new System.NotImplementedException();
+        private void TriggerOnComplete() {
+            if (OnComplete != null)
+                OnComplete(this, null);
         }
 
         /// <summary>
         /// Trigger the next step to happen. Returns true if there is another event to come. False otherwise.
         /// </summary>
-        public abstract bool Step() {
-            throw new System.NotImplementedException();
-        }
+        public abstract bool Step();
 
         /// <summary>
         /// Set how far through the event playback has reached.
         /// </summary>
         /// <param name="time">The time through the event to play from.</param>
         public void SetTime(int time) {
-            throw new System.NotImplementedException();
+            if (time < mLength)
+                mCurrentStep = time / FlythroughManager.TICK_LENGTH;
+            else
+                mCurrentStep = mSteps;
         }
     }
 }

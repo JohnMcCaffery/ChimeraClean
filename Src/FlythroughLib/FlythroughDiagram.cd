@@ -10,7 +10,7 @@
   <Class Name="FlythroughLib.FlythroughEvent">
     <Position X="6.25" Y="0.5" Width="2.5" />
     <TypeIdentifier>
-      <HashCode>BBAoACUAIAABAAAAkAAUAABKAAAAAAAAqAAAAACQAAA=</HashCode>
+      <HashCode>BBAIACUAIAABAAAAkAAUAABKAAQAAAAAKAAAAACQAAA=</HashCode>
       <FileName>FlythroughEvent.cs</FileName>
     </TypeIdentifier>
   </Class>

@@ -11,7 +11,7 @@ namespace FlythroughLib {
         /// <summary>
         /// The length of a tick.
         /// </summary>
-        private static readonly int TICK_LENGTH = 20;
+        internal static readonly int TICK_LENGTH = 20;
 
         /// <summary>
         /// The events that make up the sequence.
@@ -93,22 +93,23 @@ namespace FlythroughLib {
             if (mCurrentEvent == null) {
                 mCurrentEventIndex = 0;
                 mCurrentEvent = mEvents[mCurrentEventIndex];
-                Start();
             }
+            Start();
         }
 
         /// <summary>
         /// Reset the flythrough so if started it will start from the beginning.
         /// </summary>
         public void Reset() {
-            throw new System.NotImplementedException();
+            mPlaying = false;
+            mCurrentEvent = null;
         }
 
         /// <summary>
         /// Pause the playthrough as its running.
         /// </summary>
         public void Pause() {
-            throw new System.NotImplementedException();
+            mPlaying = false;
         }
 
         /// <summary>
@@ -194,6 +195,9 @@ namespace FlythroughLib {
         /// Start the flythrough loop running.
         /// </summary>
         private void Start() {
+            if (mPlaying)
+                return;
+
             mPlaying = true;
             Thread t = new Thread(TimerMethod);
             t.Name = "FLythroughTimer";
