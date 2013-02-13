@@ -52,7 +52,7 @@ namespace FlythroughLib {
     
         public override bool Step() {
             if (CurrentStep == 0)
-                Start= Container.Position;
+                Start = Container.Position;
 
             Container.SetPosition(mStartPosition + (mShift * CurrentStep));
 

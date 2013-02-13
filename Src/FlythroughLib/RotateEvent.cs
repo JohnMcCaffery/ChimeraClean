@@ -1,0 +1,81 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace FlythroughLib {
+    public class RotateEvent : FlythroughEvent {
+        /// <summary>
+        /// How much to change pitch by every step.
+        /// </summary>
+        private float mPitchShift;
+        /// <summary>
+        /// How much to change pitch by every step.
+        /// </summary>
+        private float mYawShift;
+        /// <summary>
+        /// How many degrees to rotate around the pitch axis.
+        /// </summary>
+        public float mPitchDelta;
+        /// <summary>
+        /// How many degrees to rotate around the pitch axis.
+        /// </summary>
+        public int mYawDelta;
+
+        /// <summary>
+        /// Create the event specifying pitch and pitch.
+        /// </summary>
+        /// <param name="container">The container which this event is part of.</param>
+        /// <param name="length">The length of time the event will run (ms).</param>
+        /// <param name="pitch">How far the event should rotate the camera around the pitch axis (degrees).</param>
+        /// <param name="yaw">How far the event should rotate the camera around the yaw axis (degrees).</param>
+        public RotateEvent(FlythroughManager container, int length, float pitch, float yaw)
+            : base(container, length) {
+            throw new System.NotImplementedException();
+        }
+
+        /// <summary>
+        /// Create the event specifying the bare minimum.
+        /// </summary>
+        /// <param name="container">The container which this event is part of.</param>
+        /// <param name="length">The length of time the event will run (ms).</param>
+        public RotateEvent(FlythroughManager container, int length)
+            : base(container, length) {
+            throw new System.NotImplementedException();
+        }
+   
+
+        /// <summary>
+        /// How many degrees to rotate around the pitch axis.
+        /// </summary>
+        public float PitchDelta {
+            get { return mPitchDelta; }
+            set { 
+                mPitchDelta = value;
+                mPitchShift = value / TotalSteps;
+            }
+        }
+
+        /// <summary>
+        /// How many degrees to rotate around the pitch axis.
+        /// </summary>
+        public int YawDelta {
+            get { return mYawDelta; }
+            set {
+                mYawDelta = value;
+                mYawShift = value / TotalSteps;
+            }
+        }
+ 
+        public override bool Step() {
+            Container.Rotation.Yaw += mYawShift;
+            Container.Rotation.Pitch += mYawShift;
+            return DoStep();
+        }
+
+        protected override void LengthChanged() {
+            mPitchShift = mPitchDelta / TotalSteps;
+            mYawShift = mYawDelta / TotalSteps;
+        }
+    }
+}

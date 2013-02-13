@@ -12,11 +12,6 @@ namespace FlythroughLib {
         /// The length of a tick.
         /// </summary>
         internal static readonly int TICK_LENGTH = 20;
-
-        /// <summary>
-        /// The events that make up the sequence.
-        /// </summary>
-        private readonly List<FlythroughEvent> mEvents = new List<FlythroughEvent>();
         /// <summary>
         /// The event currently playing.
         /// </summary>
@@ -37,6 +32,14 @@ namespace FlythroughLib {
         /// The index of the currently playing event.
         /// </summary>
         private int mCurrentEventIndex;
+        /// <summary>
+        /// The first event in the sequence.
+        /// </summary>
+        private FlythroughEvent mFirstEvent;
+        /// <summary>
+        /// The last event in the sequence.
+        /// </summary>
+        private FlythroughEvent mLastEvent;
         /// <summary>
         /// Triggered whenever the rotation changes.
         /// </summary>
@@ -78,22 +81,15 @@ namespace FlythroughLib {
         }
 
         /// <summary>
-        /// The events which make up the flythrough.
-        /// </summary>
-        public FlythroughEvent[] Events {
-            get { return mEvents.ToArray(); }
-        }
-
-        /// <summary>
         /// Start the flythrough running. Will continue on from wherever it was before.
         /// </summary>
         public void Play() {
-            if (mEvents.Count == 0)
+            if (mFirstEvent == null)
                 return;
 
             if (mCurrentEvent == null) {
                 mCurrentEventIndex = 0;
-                mCurrentEvent = mEvents[mCurrentEventIndex];
+                mCurrentEvent = mFirstEvent;
                 mCurrentEvent.Reset();
             }
             Start();
@@ -133,11 +129,12 @@ namespace FlythroughLib {
         public void JumpTo(int time) {
             lock (this) {
                 int total = 0;
-                for (int i = 0; total < time && i < mEvents.Count; i++) {
-                    mCurrentEvent = mEvents[i];
+                while (total < time && mCurrentEvent != null) {
                     total += mCurrentEvent.Length;
+                    mCurrentEvent = mCurrentEvent.NextEvent;
                 }
-                mCurrentEvent.SetTime(time - (total - mCurrentEvent.Length));
+                if (mCurrentEvent != null)
+                    mCurrentEvent.SetTime(time - (total - mCurrentEvent.Length));
             }
         }
 
@@ -156,13 +153,12 @@ namespace FlythroughLib {
             while (mPlaying && mCurrentEvent != null) {
                 lock (this) {
                     if (!mCurrentEvent.Step()) {
-                        if (mEvents.Count <= mCurrentEventIndex + 1) {
+                        mCurrentEvent = mCurrentEvent.NextEvent;
+                        if (mCurrentEvent == null) {
                             mPlaying = false;
                             mCurrentEvent = null;
                             if (OnComplete != null)
                                 OnComplete(this, null);
-                        } else {
-                            mCurrentEvent = mEvents[++mCurrentEventIndex];
                         }
                     }
                 }
@@ -179,10 +175,10 @@ namespace FlythroughLib {
         }
 
         /// <summary>
-        /// Set the rotation for the event, via pitch and yaw.
+        /// Set the rotation for the event, via pitch and pitch.
         /// </summary>
         /// <param name="pitch">The pitch to set.</param>
-        /// <param name="yaw">The yaw to set.</param>
+        /// <param name="pitch">The pitch to set.</param>
         internal void SetRotation(float pitch, float yaw) {
             mRotation.Pitch = pitch;
             mRotation.Yaw = yaw;
@@ -224,7 +220,12 @@ namespace FlythroughLib {
         /// </summary>
         /// <param name="evt">The event to add.</param>
         public void AddEvent(FlythroughEvent evt) {
-            mEvents.Add(evt);
+            if (mFirstEvent == null)
+                mFirstEvent = evt;
+            else
+                mLastEvent.NextEvent = evt;
+            
+            mLastEvent = evt;
         }
     }
 }

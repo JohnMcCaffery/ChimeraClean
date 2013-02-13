@@ -14,15 +14,15 @@ namespace FlythroughLib {
         /// <summary>
         /// The event that this event is part of. May be null.
         /// </summary>
-        private readonly FlythroughEvent mParentEvent;
+        private FlythroughEvent mParentEvent;
         /// <summary>
         /// The next event in the sequence. May be null.
         /// </summary>
-        private readonly FlythroughEvent mNextEvent;
+        private FlythroughEvent mNextEvent;
         /// <summary>
         /// The previous event in the sequence. May be null.
         /// </summary>
-        private readonly FlythroughEvent mPrevEvent;
+        private FlythroughEvent mPrevEvent;
         /// <summary>
         /// The current step being processed.
         /// </summary>
@@ -123,6 +123,7 @@ namespace FlythroughLib {
         /// </summary>
         public FlythroughEvent ParentEvent {
             get { return mParentEvent; }
+            set { mParentEvent = value; }
         }
 
         /// <summary>
@@ -130,6 +131,7 @@ namespace FlythroughLib {
         /// </summary>
         public FlythroughEvent NextEvent {
             get { return mNextEvent; }
+            set { mNextEvent = value; }
         }
 
         /// <summary>
@@ -137,6 +139,7 @@ namespace FlythroughLib {
         /// </summary>
         private FlythroughEvent PrevEvent {
             get { return mPrevEvent; }
+            set { mPrevEvent = value; }
         }
 
         /// <summary>
