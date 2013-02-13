@@ -126,7 +126,7 @@ namespace UtilLib {
         private void connectButton_Click(object sender, EventArgs e) {
             if (proxy == null)
                 return;
-            if (proxyStartButton.Text.Equals("Start Proxy")) {
+            if (proxyStartButton.Text.Equals("Plane Proxy")) {
                 if (proxy.ProxyRunning)
                     proxy.StopProxy();
                 string file = AppDomain.CurrentDomain.SetupInformation.ConfigurationFile;
@@ -142,7 +142,7 @@ namespace UtilLib {
             } else if (proxy != null) {
                 proxy.StopProxy();
 
-                proxyStartButton.Text = "Start Proxy";
+                proxyStartButton.Text = "Plane Proxy";
                 proxyStatusLabel.Text = "Stopped";
 
                 portBox.Enabled = true;

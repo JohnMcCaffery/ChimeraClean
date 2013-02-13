@@ -47,16 +47,16 @@
     </TypeIdentifier>
   </Class>
   <Class Name="FlythroughLib.LookAtLockEvent">
-    <Position X="11.5" Y="4.75" Width="1.5" />
+    <Position X="11.5" Y="4.75" Width="2.25" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAABAAAAAAAACAABAAAAAAAIAAAABAAAAA=</HashCode>
       <FileName>LookAtLockEvent.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="FlythroughLib.CircleEvent">
-    <Position X="9.75" Y="4.5" Width="1.5" />
+    <Position X="9.5" Y="4.5" Width="1.75" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAACAAAAAAAAAQAAAABAAAAAAAIAAAAAAAACA=</HashCode>
+      <HashCode>AAAIAAAQEAAAAAAAAAAQAABgBAAACAEAIAIAAAAAAAA=</HashCode>
       <FileName>CircleEvent.cs</FileName>
     </TypeIdentifier>
   </Class>

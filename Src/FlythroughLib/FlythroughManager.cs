@@ -81,7 +81,7 @@ namespace FlythroughLib {
         }
 
         /// <summary>
-        /// Start the flythrough running. Will continue on from wherever it was before.
+        /// Plane the flythrough running. Will continue on from wherever it was before.
         /// </summary>
         public void Play() {
             if (mFirstEvent == null)
@@ -96,7 +96,7 @@ namespace FlythroughLib {
         }
 
         /// <summary>
-        /// Start the flythrough running. Specifies where the camera starts.
+        /// Plane the flythrough running. Specifies where the camera starts.
         /// </summary>
         /// <param name="position">The position that the camera starts at.</param>
         /// <param name="rotation">The rotation that the camera starts at.</param>
@@ -203,7 +203,7 @@ namespace FlythroughLib {
         }
 
         /// <summary>
-        /// Start the flythrough loop running.
+        /// Plane the flythrough loop running.
         /// </summary>
         private void Start() {
             if (mPlaying)
