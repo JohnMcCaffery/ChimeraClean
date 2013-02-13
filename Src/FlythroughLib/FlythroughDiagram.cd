@@ -40,10 +40,24 @@
     </TypeIdentifier>
   </Class>
   <Class Name="FlythroughLib.ComboEvent">
-    <Position X="14" Y="0.5" Width="1.5" />
+    <Position X="7.25" Y="4.5" Width="1.75" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAACAAAAABQCIAAAJAJQAAAAAAIAEAAAEAAAA=</HashCode>
       <FileName>ComboEvent.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FlythroughLib.LookAtLockEvent">
+    <Position X="11.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAACAABAAAAAAAIAAAABAAAAA=</HashCode>
+      <FileName>LookAtLockEvent.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FlythroughLib.CircleEvent">
+    <Position X="9.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAAAQAAAABAAAAAAAIAAAAAAAACA=</HashCode>
+      <FileName>CircleEvent.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Font Name="Segoe UI" Size="9" />

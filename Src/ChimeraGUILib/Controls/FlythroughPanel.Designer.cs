@@ -33,6 +33,7 @@
             this.yawValue = new System.Windows.Forms.NumericUpDown();
             this.pitchLabel = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
+            this.lockLookAtVectorPanel = new ProxyTestGUI.VectorPanel();
             ((System.ComponentModel.ISupportInitialize)(this.lengthValue)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pitchValue)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.yawValue)).BeginInit();
@@ -95,7 +96,7 @@
             // 
             this.targetVectorPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.targetVectorPanel.DisplayName = "Name";
+            this.targetVectorPanel.DisplayName = "Move To Target";
             this.targetVectorPanel.Location = new System.Drawing.Point(0, 3);
             this.targetVectorPanel.Max = 1024D;
             this.targetVectorPanel.Min = -1024D;
@@ -149,10 +150,27 @@
             this.label2.TabIndex = 13;
             this.label2.Text = "Yaw";
             // 
+            // lockLookAtVectorPanel
+            // 
+            this.lockLookAtVectorPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.lockLookAtVectorPanel.DisplayName = "Lock Look At Target";
+            this.lockLookAtVectorPanel.Location = new System.Drawing.Point(-3, 155);
+            this.lockLookAtVectorPanel.Max = 1024D;
+            this.lockLookAtVectorPanel.Min = -1024D;
+            this.lockLookAtVectorPanel.Name = "lockLookAtVectorPanel";
+            this.lockLookAtVectorPanel.Size = new System.Drawing.Size(508, 98);
+            this.lockLookAtVectorPanel.TabIndex = 14;
+            this.lockLookAtVectorPanel.Value = ((OpenMetaverse.Vector3)(resources.GetObject("lockLookAtVectorPanel.Value")));
+            this.lockLookAtVectorPanel.X = 128F;
+            this.lockLookAtVectorPanel.Y = 128F;
+            this.lockLookAtVectorPanel.Z = 60F;
+            // 
             // FlythroughPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.lockLookAtVectorPanel);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.pitchLabel);
             this.Controls.Add(this.yawValue);
@@ -163,7 +181,7 @@
             this.Controls.Add(this.Length);
             this.Controls.Add(this.targetVectorPanel);
             this.Name = "FlythroughPanel";
-            this.Size = new System.Drawing.Size(508, 160);
+            this.Size = new System.Drawing.Size(508, 348);
             ((System.ComponentModel.ISupportInitialize)(this.lengthValue)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pitchValue)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.yawValue)).EndInit();
@@ -183,5 +201,6 @@
         private System.Windows.Forms.NumericUpDown yawValue;
         private System.Windows.Forms.Label pitchLabel;
         private System.Windows.Forms.Label label2;
+        private ProxyTestGUI.VectorPanel lockLookAtVectorPanel;
     }
 }

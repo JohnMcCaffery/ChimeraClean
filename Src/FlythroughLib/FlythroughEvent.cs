@@ -96,7 +96,7 @@ namespace FlythroughLib {
         /// <summary>
         /// How long the event will run for.
         /// </summary>
-        public int Length {
+        public virtual int Length {
             get { return mLength; }
             set {
                 if (mCurrentStep != 0)
