@@ -22,12 +22,12 @@ namespace FlythroughLib.Panels {
         public FlythroughPanel() {
             InitializeComponent();
 
-            mMoveToEvent = new MoveToEvent(mContainer, (int) lengthValue.Value, targetVectorPanel.Value);
-            targetVectorPanel.OnChange += (source, args) => mMoveToEvent.Target = targetVectorPanel.Value;
+            mMoveToEvent = new MoveToEvent(mContainer, (int) lengthValue.Value, moveToTargetVectorPanel.Value);
+            moveToTargetVectorPanel.OnChange += (source, args) => mMoveToEvent.Target = moveToTargetVectorPanel.Value;
             lengthValue.ValueChanged += (source, args) => mMoveToEvent.Length = (int)lengthValue.Value;
 
-            mMoveToEvent2 = new MoveToEvent(mContainer, (int) lengthValue.Value, targetVectorPanel.Value);
-            targetVectorPanel.OnChange += (source, args) => mMoveToEvent2.Target = targetVectorPanel.Value + new Vector3(0, 50f, 0);
+            mMoveToEvent2 = new MoveToEvent(mContainer, (int) lengthValue.Value, moveToTargetVectorPanel.Value);
+            moveToTargetVectorPanel.OnChange += (source, args) => mMoveToEvent2.Target = moveToTargetVectorPanel.Value + new Vector3(0, 50f, 0);
 
             mRotateToEvent = new RotateToEvent(mContainer, (int)lengthValue.Value);
             pitchValue.ValueChanged += (source, args) => mRotateToEvent.PitchTarget = (float)pitchValue.Value;
@@ -39,7 +39,7 @@ namespace FlythroughLib.Panels {
 
             mComboEvent = new ComboEvent(mContainer);
             mComboEvent.AddStream1Event(mMoveToEvent);
-            mComboEvent.AddStream1Event(mMoveToEvent2);
+            //mComboEvent.AddStream1Event(mMoveToEvent2);
             mComboEvent.AddStream2Event(mLookAtLockEvent);
 
             mContainer.OnPositionChange += (source, args) => mMaster.Position = mContainer.Position;
@@ -64,6 +64,19 @@ namespace FlythroughLib.Panels {
 
         private void button1_Click(object sender, EventArgs e) {
             mMoveToEvent.Target = mMaster.Position;
+            moveToTargetVectorPanel.Value = mMoveToEvent.Target;
+        }
+
+        private void rotateToTakeCurrentButton_Click(object sender, EventArgs e) {
+            mRotateToEvent.PitchTarget = mMaster.Rotation.Pitch;
+            mRotateToEvent.YawTarget = mMaster.Rotation.Yaw;
+            pitchValue.Value = new decimal(mRotateToEvent.PitchTarget);
+            pitchValue.Value = new decimal(mRotateToEvent.YawTarget);
+        }
+
+        private void lookAtTakeCurrentButton_Click(object sender, EventArgs e) {
+            mLookAtLockEvent.Target = mMaster.Position;
+            lockLookAtVectorPanel.Value = mLookAtLockEvent.Target;
         }
     }
 }

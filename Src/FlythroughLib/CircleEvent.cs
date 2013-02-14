@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using UtilLib;
+using OpenMetaverse;
 
 namespace FlythroughLib {
     public class CircleEvent : FlythroughEvent {
@@ -23,7 +24,9 @@ namespace FlythroughLib {
         /// </summary>
         private float mRadius;
 
-        public CircleEvent() : base (null, 0) {
+        /// <param name="container">The container which this event is part of.</param>
+        /// <param name="length">The length of time the event will last (ms).</param>
+        public CircleEvent(FlythroughManager container, int length) : base (null, 0) {
             throw new System.NotImplementedException();
         }
         /// <summary>
@@ -85,9 +88,7 @@ namespace FlythroughLib {
             throw new NotImplementedException();
         }
 
-        /// <param name="container">The container which this event is part of.</param>
-        /// <param name="length">The length of time the event will last (ms).</param>
-        protected override void LengthChanged(FlythroughManager container, int length) {
+        protected override void LengthChanged() {
             throw new NotImplementedException();
         }
     }
