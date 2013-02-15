@@ -33,7 +33,8 @@
             // 
             // lookAtTakeCurrentButton
             // 
-            this.lookAtTakeCurrentButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lookAtTakeCurrentButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.lookAtTakeCurrentButton.Location = new System.Drawing.Point(132, 99);
             this.lookAtTakeCurrentButton.Name = "lookAtTakeCurrentButton";
             this.lookAtTakeCurrentButton.Size = new System.Drawing.Size(107, 23);

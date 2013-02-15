@@ -60,6 +60,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controls\FlythroughEventPanels\BlankPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\FlythroughEventPanels\BlankPanel.Designer.cs">
+      <DependentUpon>BlankPanel.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\FlythroughEventPanels\ComboPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -147,6 +153,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Controls\FlythroughEventPanels\BlankPanel.resx">
+      <DependentUpon>BlankPanel.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Controls\FlythroughEventPanels\ComboPanel.resx">
       <DependentUpon>ComboPanel.cs</DependentUpon>
     </EmbeddedResource>

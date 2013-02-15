@@ -147,30 +147,6 @@ namespace FlythroughLib {
         }
 
         /// <summary>
-        /// Initialise the flythrough from an xml file.
-        /// </summary>
-        /// <param name="file">The file to load as a flythrough.</param>
-        public void Load(string file) {
-            XmlDocument doc = new XmlDocument();
-            doc.Load(file);
-            foreach (XmlNode node in doc.GetElementsByTagName("Events")[0].ChildNodes) {
-                FlythroughEvent evt = null;
-                switch (node.Name) {
-                    case "ComboEvent": evt = new ComboEvent(this); break;
-                    case "RotateEvent": evt = new RotateEvent(this, 0); break;
-                    case "RotateToEvent": evt = new RotateToEvent(this, 0); break;
-                    case "MoveToEvent": evt = new MoveToEvent(this, 0, Vector3.Zero); break;
-                    case "CircleEvent": evt = new CircleEvent(this, 0); break;
-                    case "LookAtEvent": evt = new LookAtEvent(this, 0); break;
-                }
-                if (evt != null) {
-                    evt.Load(node);
-                    AddEvent(evt);
-                }
-            }
-        }
-
-        /// <summary>
         /// Body of the timer loop.
         /// </summary>
         private void TimerMethod() {
@@ -264,6 +240,34 @@ namespace FlythroughLib {
                 evt.NextEvent.PrevEvent = evt.PrevEvent;
                 if (evt.NextEvent.NextEvent == null)
                     mLastEvent = evt.NextEvent;
+            }
+        }
+
+        /// <summary>
+        /// Initialise the flythrough from an xml file.
+        /// </summary>
+        /// <param name="file">The file to load as a flythrough.</param>
+        public void Load(string file) {
+            mCurrentEvent = null;
+            mFirstEvent = null;
+            mLastEvent = null;
+            XmlDocument doc = new XmlDocument();
+            doc.Load(file);
+            foreach (XmlNode node in doc.GetElementsByTagName("Events")[0].ChildNodes) {
+                FlythroughEvent evt = null;
+                switch (node.Name) {
+                    case "ComboEvent": evt = new ComboEvent(this); break;
+                    case "RotateEvent": evt = new RotateEvent(this, 0); break;
+                    case "RotateToEvent": evt = new RotateToEvent(this, 0); break;
+                    case "MoveToEvent": evt = new MoveToEvent(this, 0, Vector3.Zero); break;
+                    case "CircleEvent": evt = new CircleEvent(this, 0); break;
+                    case "LookAtEvent": evt = new LookAtEvent(this, 0); break;
+                    case "BlankEvent": evt = new BlankEvent(this, 0); break;
+                }
+                if (evt != null) {
+                    evt.Load(node);
+                    AddEvent(evt);
+                }
             }
         }
 

@@ -65,6 +65,7 @@ namespace FlythroughLib {
 
         public override void Load(XmlNode node) {
             Target = Vector3.Parse(node.Attributes["Target"].Value);
+            Length = int.Parse(node.Attributes["Length"].Value);
         }
 
         public override XmlNode Save(XmlDocument doc) {

@@ -51,6 +51,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BlankEvent.cs" />
     <Compile Include="CircleEvent.cs" />
     <Compile Include="ComboEvent.cs" />
     <Compile Include="FlythroughEvent.cs" />

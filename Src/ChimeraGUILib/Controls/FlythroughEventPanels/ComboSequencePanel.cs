@@ -35,18 +35,44 @@ namespace ChimeraGUILib.Controls.FlythroughEventPanels {
         private void moveToEventToolStripMenuItem_Click(object sender, EventArgs e) {
             MoveToEvent evt = new MoveToEvent(mEvent.Container, 0, Vector3.Zero);
             MoveToPanel panel = new MoveToPanel(evt, mMaster);
+
+            if (mSequence1)
+                mEvent.AddStream1Event(evt);
+            else
+                mEvent.AddStream2Event(evt);
             AddEvent(evt, panel);
         }
 
         private void rotateToEventToolStripMenuItem_Click(object sender, EventArgs e) {
             RotateToEvent evt = new RotateToEvent(mEvent.Container, 0);
             RotateToPanel panel = new RotateToPanel(evt, mMaster);
+
+            if (mSequence1)
+                mEvent.AddStream1Event(evt);
+            else
+                mEvent.AddStream2Event(evt);
             AddEvent(evt, panel);
         }
 
         private void lookAtEventToolStripMenuItem_Click(object sender, EventArgs e) {
             LookAtEvent evt = new LookAtEvent(mEvent.Container, 0);
             LookAtPanel panel = new LookAtPanel(evt, mMaster);
+
+            if (mSequence1)
+                mEvent.AddStream1Event(evt);
+            else
+                mEvent.AddStream2Event(evt);
+            AddEvent(evt, panel);
+        }
+
+        private void blankEventToolStripMenuItem_Click(object sender, EventArgs e) {
+            BlankEvent evt = new BlankEvent(mEvent.Container, 0);
+            BlankPanel panel = new BlankPanel(evt);
+
+            if (mSequence1)
+                mEvent.AddStream1Event(evt);
+            else
+                mEvent.AddStream2Event(evt);
             AddEvent(evt, panel);
         }
         
@@ -54,11 +80,6 @@ namespace ChimeraGUILib.Controls.FlythroughEventPanels {
             mEvents.Add(evt.Name, evt);
             mPanels.Add(evt.Name, panel);
             eventsList.Items.Add(evt.Name);
-
-            if (mSequence1)
-                mEvent.AddStream1Event(evt);
-            else
-                mEvent.AddStream2Event(evt);
 
             int left = eventsList.Width + eventsList.Location.X;
             panel.Size = new System.Drawing.Size(Width - left, Height);
@@ -72,6 +93,10 @@ namespace ChimeraGUILib.Controls.FlythroughEventPanels {
         }
 
         private void eventsList_SelectedValueChanged(object sender, EventArgs e) {
+            if (eventsList.SelectedItem == null) {
+                mCurrentPanel = null;
+                return;
+            }
             if (mCurrentPanel != null)
                 mCurrentPanel.Visible = false;
             mCurrentPanel = mPanels[(string) eventsList.SelectedItem];
@@ -79,6 +104,9 @@ namespace ChimeraGUILib.Controls.FlythroughEventPanels {
         }
 
         private void removeToolStripMenuItem_Click(object sender, EventArgs e) {
+            if (eventsList.SelectedItem == null)
+                return;
+
             FlythroughEvent evt = mEvents[(string)eventsList.SelectedItem];
             UserControl panel = mPanels[(string)eventsList.SelectedItem];
 
@@ -88,6 +116,17 @@ namespace ChimeraGUILib.Controls.FlythroughEventPanels {
             Controls.Remove(panel);
 
             mEvent.RemoveEvent(evt, mSequence1);
+        }
+
+        private void moveUpToolStripMenuItem_Click(object sender, EventArgs e) {
+            if (eventsList.SelectedItem != null) {
+                mEvent.MoveUp(mEvents[(string)eventsList.SelectedItem]);
+                if (eventsList.SelectedIndex > 0) {
+                    object tmp = eventsList.Items[eventsList.SelectedIndex - 1];
+                    eventsList.Items[eventsList.SelectedIndex - 1] = eventsList.SelectedItem;
+                    eventsList.Items[eventsList.SelectedIndex] = tmp;
+                }
+            }
         }
     }
 }

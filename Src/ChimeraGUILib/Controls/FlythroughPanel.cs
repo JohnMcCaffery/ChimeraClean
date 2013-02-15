@@ -43,26 +43,36 @@ namespace FlythroughLib.Panels {
         private void moveToEventToolStripMenuItem_Click(object sender, EventArgs e) {
             MoveToEvent evt = new MoveToEvent(mContainer, 0, Vector3.Zero);
             MoveToPanel panel = new MoveToPanel(evt, mMaster);
+            mContainer.AddEvent(evt);
             AddEvent(evt, panel);
         }
 
         private void comboEventToolStripMenuItem_Click(object sender, EventArgs e) {
             ComboEvent evt = new ComboEvent(mContainer);
             ComboPanel panel = new ComboPanel(evt, mMaster);
+            mContainer.AddEvent(evt);
             AddEvent(evt, panel);
         }
 
         private void rotateToEventToolStripMenuItem_Click(object sender, EventArgs e) {
             RotateToEvent evt = new RotateToEvent(mContainer, 0);
             RotateToPanel panel = new RotateToPanel(evt, mMaster);
+            mContainer.AddEvent(evt);
             AddEvent(evt, panel);
         }
 
         private void lookAtEventToolStripMenuItem_Click(object sender, EventArgs e) {
             LookAtEvent evt = new LookAtEvent(mContainer, 0);
             LookAtPanel panel = new LookAtPanel(evt, mMaster);
-            AddEvent(evt, panel);
             mContainer.AddEvent(evt);
+            AddEvent(evt, panel);
+        }
+
+        private void blankEventToolStripMenuItem_Click(object sender, EventArgs e) {
+            BlankEvent evt = new BlankEvent(mContainer, 0);
+            BlankPanel panel = new BlankPanel(evt);
+            mContainer.AddEvent(evt);
+            AddEvent(evt, panel);
         }
         
         private void AddEvent(FlythroughEvent evt, UserControl panel) {
@@ -106,6 +116,7 @@ namespace FlythroughLib.Panels {
 
         private void loadButton_Click(object sender, EventArgs e) {
             if (loadSequenceDialog.ShowDialog(this) == DialogResult.OK) {
+                eventsList.Items.Clear();
                 mContainer.Load(loadSequenceDialog.FileName);
 
                 FlythroughEvent evt = mContainer.FirstEvent;
@@ -115,23 +126,21 @@ namespace FlythroughLib.Panels {
                         AddEvent(evt, panel);
 
                     if (evt is ComboEvent) {
-                        ComboEvent combo = (ComboEvent)evt;
-                        ComboPanel comboPanel = (ComboPanel)panel;
-                        FlythroughEvent streamEvent = combo.Stream1First;
-                        while (streamEvent != null) {
-                            UserControl p = GetPanel(streamEvent);
-                            if (p != null)
-                                comboPanel.AddEvent(evt, p, true);
-                        }
-                        streamEvent = combo.Stream2First;
-                        while (streamEvent != null) {
-                            UserControl p = GetPanel(streamEvent);
-                            if (p != null)
-                                comboPanel.AddEvent(evt, p, true);
-                        }
+                        LoadComboStream((ComboEvent) evt, (ComboPanel) panel, true);
+                        LoadComboStream((ComboEvent) evt, (ComboPanel) panel, false);
                     }
                     evt = evt.NextEvent;
                 }
+            }
+        }
+
+        private void LoadComboStream(ComboEvent combo, ComboPanel comboPanel, bool stream1) {
+            FlythroughEvent streamEvent = stream1? combo.Stream1First : combo.Stream2First;
+            while (streamEvent != null) {
+                UserControl p = GetPanel(streamEvent);
+                if (p != null)
+                    comboPanel.AddEvent(streamEvent, p, stream1);
+                streamEvent = streamEvent.NextEvent;
             }
         }
 
@@ -145,6 +154,8 @@ namespace FlythroughLib.Panels {
                 return new MoveToPanel((MoveToEvent)evt, Master);
             if (evt is LookAtEvent)
                 return new LookAtPanel((LookAtEvent)evt, Master);
+            if (evt is BlankEvent)
+                return new BlankPanel((BlankEvent)evt);
             return null;
         }
 

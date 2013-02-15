@@ -37,7 +37,8 @@
             // 
             // rotateToTakeCurrentButton
             // 
-            this.rotateToTakeCurrentButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.rotateToTakeCurrentButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.rotateToTakeCurrentButton.Location = new System.Drawing.Point(215, 0);
             this.rotateToTakeCurrentButton.Name = "rotateToTakeCurrentButton";
             this.rotateToTakeCurrentButton.Size = new System.Drawing.Size(107, 23);

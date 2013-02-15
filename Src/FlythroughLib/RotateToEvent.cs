@@ -133,6 +133,7 @@ namespace FlythroughLib {
         public override void Load(XmlNode node) {
             PitchTarget = float.Parse(node.Attributes["Pitch"].Value);
             YawTarget = float.Parse(node.Attributes["Yaw"].Value);
+            Length = int.Parse(node.Attributes["Length"].Value);
         }
 
         public override XmlNode Save(XmlDocument doc) {

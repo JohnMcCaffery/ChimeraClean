@@ -153,6 +153,29 @@ namespace FlythroughLib {
             //Do nothing
         }
 
+        public void MoveUp(FlythroughEvent evt) {
+            if (evt.PrevEvent != null) {
+                if (evt.PrevEvent.PrevEvent != null)
+                    evt.PrevEvent.PrevEvent.NextEvent = evt;
+
+                evt.PrevEvent = evt.PrevEvent.PrevEvent;
+                evt.NextEvent = evt.PrevEvent;
+
+                if (evt.PrevEvent != null) {
+                    evt.PrevEvent.PrevEvent = evt;
+                    evt.PrevEvent.NextEvent = evt.NextEvent;
+                }
+
+                if (evt.NextEvent != null)
+                    evt.NextEvent.PrevEvent = evt.PrevEvent;
+
+                if (evt.PrevEvent == mStream1First)
+                    mStream1First = evt;
+                if (evt.PrevEvent == mStream2First)
+                    mStream2First = evt;
+            }
+        }
+
         public void RemoveEvent(FlythroughEvent evt, bool sequence1) {
             FlythroughEvent firstEvent = sequence1 ? mStream1First : mStream2First;
             FlythroughEvent lastEvent = sequence1 ? mStream1Last : mStream2Last;
@@ -187,6 +210,7 @@ namespace FlythroughLib {
                     case "MoveToEvent": evt = new MoveToEvent(Container, 0, Vector3.Zero); break;
                     case "CircleEvent": evt = new CircleEvent(Container, 0); break;
                     case "LookAtEvent": evt = new LookAtEvent(Container, 0); break;
+                    case "BlankEvent": evt = new BlankEvent(Container, 0); break;
                 }
                 if (evt != null) {
                     evt.Load(node);
