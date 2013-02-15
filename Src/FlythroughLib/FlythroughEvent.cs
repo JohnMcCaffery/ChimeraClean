@@ -103,7 +103,7 @@ namespace FlythroughLib {
                 if (mCurrentStep != 0)
                     throw new Exception("Unable to set length. Event is currently running.");
                 mLength = value;
-                if (value == 0)
+                if (value < FlythroughManager.TICK_LENGTH)
                     mSteps = 1;
                 else
                     mSteps = value / FlythroughManager.TICK_LENGTH;

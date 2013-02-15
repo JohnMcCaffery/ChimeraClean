@@ -125,6 +125,7 @@ namespace ChimeraGUILib.Controls.FlythroughEventPanels {
                     object tmp = eventsList.Items[eventsList.SelectedIndex - 1];
                     eventsList.Items[eventsList.SelectedIndex - 1] = eventsList.SelectedItem;
                     eventsList.Items[eventsList.SelectedIndex] = tmp;
+                    eventsList.SelectedIndex = eventsList.SelectedIndex - 1;
                 }
             }
         }

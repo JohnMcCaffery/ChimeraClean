@@ -38,6 +38,7 @@
             this.loadButton = new System.Windows.Forms.Button();
             this.saveButton = new System.Windows.Forms.Button();
             this.blankEventToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.loopCheck = new System.Windows.Forms.CheckBox();
             this.eventsContextMenu.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -47,7 +48,7 @@
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.playButton.Location = new System.Drawing.Point(224, 322);
             this.playButton.Name = "playButton";
-            this.playButton.Size = new System.Drawing.Size(281, 23);
+            this.playButton.Size = new System.Drawing.Size(225, 23);
             this.playButton.TabIndex = 8;
             this.playButton.Text = "Play";
             this.playButton.UseVisualStyleBackColor = true;
@@ -71,7 +72,7 @@
             this.addToolStripMenuItem,
             this.removeToolStripMenuItem});
             this.eventsContextMenu.Name = "eventsContextMenu";
-            this.eventsContextMenu.Size = new System.Drawing.Size(153, 70);
+            this.eventsContextMenu.Size = new System.Drawing.Size(118, 48);
             // 
             // addToolStripMenuItem
             // 
@@ -82,7 +83,7 @@
             this.comboEventToolStripMenuItem,
             this.blankEventToolStripMenuItem});
             this.addToolStripMenuItem.Name = "addToolStripMenuItem";
-            this.addToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.addToolStripMenuItem.Size = new System.Drawing.Size(117, 22);
             this.addToolStripMenuItem.Text = "Add";
             // 
             // moveToEventToolStripMenuItem
@@ -116,7 +117,7 @@
             // removeToolStripMenuItem
             // 
             this.removeToolStripMenuItem.Name = "removeToolStripMenuItem";
-            this.removeToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.removeToolStripMenuItem.Size = new System.Drawing.Size(117, 22);
             this.removeToolStripMenuItem.Text = "Remove";
             this.removeToolStripMenuItem.Click += new System.EventHandler(this.removeToolStripMenuItem_Click);
             // 
@@ -153,18 +154,31 @@
             this.blankEventToolStripMenuItem.Text = "Blank Event";
             this.blankEventToolStripMenuItem.Click += new System.EventHandler(this.blankEventToolStripMenuItem_Click);
             // 
+            // loopCheck
+            // 
+            this.loopCheck.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.loopCheck.AutoSize = true;
+            this.loopCheck.Location = new System.Drawing.Point(455, 326);
+            this.loopCheck.Name = "loopCheck";
+            this.loopCheck.Size = new System.Drawing.Size(50, 17);
+            this.loopCheck.TabIndex = 12;
+            this.loopCheck.Text = "Loop";
+            this.loopCheck.UseVisualStyleBackColor = true;
+            // 
             // FlythroughPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.eventsList);
             this.Controls.Add(this.loadButton);
+            this.Controls.Add(this.loopCheck);
             this.Controls.Add(this.saveButton);
             this.Controls.Add(this.playButton);
             this.Name = "FlythroughPanel";
             this.Size = new System.Drawing.Size(508, 348);
             this.eventsContextMenu.ResumeLayout(false);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -184,5 +198,6 @@
         private System.Windows.Forms.Button loadButton;
         private System.Windows.Forms.Button saveButton;
         private System.Windows.Forms.ToolStripMenuItem blankEventToolStripMenuItem;
+        private System.Windows.Forms.CheckBox loopCheck;
     }
 }

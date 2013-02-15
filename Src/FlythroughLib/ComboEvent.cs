@@ -99,6 +99,7 @@ namespace FlythroughLib {
             else
                 mStream1Last.NextEvent = evt;
 
+            evt.PrevEvent = mStream1Last;
             mStream1Last = evt;
         }
 
@@ -112,6 +113,7 @@ namespace FlythroughLib {
             else
                 mStream2Last.NextEvent = evt;
 
+            evt.PrevEvent = mStream2Last;
             mStream2Last = evt;
         }
 
@@ -155,24 +157,34 @@ namespace FlythroughLib {
 
         public void MoveUp(FlythroughEvent evt) {
             if (evt.PrevEvent != null) {
-                if (evt.PrevEvent.PrevEvent != null)
-                    evt.PrevEvent.PrevEvent.NextEvent = evt;
+                FlythroughEvent one = evt.PrevEvent.PrevEvent;
+                FlythroughEvent two = evt;
+                FlythroughEvent three = evt.PrevEvent;
+                FlythroughEvent four = evt.NextEvent;
 
-                evt.PrevEvent = evt.PrevEvent.PrevEvent;
-                evt.NextEvent = evt.PrevEvent;
+                if (one != null)
+                    one.NextEvent = evt;
 
-                if (evt.PrevEvent != null) {
-                    evt.PrevEvent.PrevEvent = evt;
-                    evt.PrevEvent.NextEvent = evt.NextEvent;
+                two.PrevEvent = evt.PrevEvent.PrevEvent;
+                two.NextEvent = evt.PrevEvent;
+
+                if (three != null) {
+                    three.PrevEvent = evt;
+                    three.NextEvent = evt.NextEvent;
                 }
 
-                if (evt.NextEvent != null)
-                    evt.NextEvent.PrevEvent = evt.PrevEvent;
+                if (four != null)
+                    four.PrevEvent = evt.PrevEvent;
 
-                if (evt.PrevEvent == mStream1First)
+                if (three == mStream1First)
                     mStream1First = evt;
-                if (evt.PrevEvent == mStream2First)
+                if (three == mStream2First)
                     mStream2First = evt;
+
+                if (evt == mStream1Last)
+                    mStream1Last = evt.NextEvent;
+                if (evt == mStream2Last)
+                    mStream2Last = evt.NextEvent;
             }
         }
 

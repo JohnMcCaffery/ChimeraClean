@@ -23,7 +23,12 @@ namespace FlythroughLib.Panels {
             InitializeComponent();
 
             mContainer.OnPositionChange += (source, args) => mMaster.Position = mContainer.Position;
-            mContainer.OnComplete += (source, args) => Invoke(new Action(() => playButton.Enabled = true));
+            mContainer.OnComplete += (source, args) => {
+                if (loopCheck.Checked)
+                    mContainer.Play();
+                else
+                    Invoke(new Action(() => playButton.Enabled = true));
+            };
             mContainer.OnRotationChange += (source, args) => {
                 mMaster.Rotation.Pitch = mContainer.Rotation.Pitch;
                 mMaster.Rotation.Yaw = mContainer.Rotation.Yaw;

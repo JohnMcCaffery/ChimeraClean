@@ -68,7 +68,7 @@ namespace FlythroughLib {
             if (CurrentStep == 0)
                 Start = Container.Position;
 
-            Container.SetPosition(mStartPosition + (mShift * CurrentStep));
+            Container.SetPosition(mStartPosition + (mShift * (CurrentStep + 1)));
 
             return DoStep();
         }
