@@ -6,6 +6,10 @@ using System.Text;
 namespace FlythroughLib {
     public class RotateEvent : FlythroughEvent {
         /// <summary>
+        /// How many LookAtEvents have been created.
+        /// </summary>
+        private static int COUNT = 0;
+        /// <summary>
         /// How much to change pitch by every step.
         /// </summary>
         private float mPitchShift;
@@ -20,7 +24,11 @@ namespace FlythroughLib {
         /// <summary>
         /// How many degrees to rotate around the pitch axis.
         /// </summary>
-        public int mYawDelta;
+        public float mYawDelta;
+        /// <summary>
+        /// The name of the event.
+        /// </summary>
+        private readonly string mName;
 
         /// <summary>
         /// Create the event specifying pitch and pitch.
@@ -30,8 +38,10 @@ namespace FlythroughLib {
         /// <param name="pitch">How far the event should rotate the camera around the pitch axis (degrees).</param>
         /// <param name="yaw">How far the event should rotate the camera around the yaw axis (degrees).</param>
         public RotateEvent(FlythroughManager container, int length, float pitch, float yaw)
-            : base(container, length) {
-            throw new System.NotImplementedException();
+            : this(container, length) {
+
+            mPitchDelta = pitch;
+            mYawDelta = yaw;
         }
 
         /// <summary>
@@ -41,7 +51,8 @@ namespace FlythroughLib {
         /// <param name="length">The length of time the event will run (ms).</param>
         public RotateEvent(FlythroughManager container, int length)
             : base(container, length) {
-            throw new System.NotImplementedException();
+
+            mName = "Rotate " + (++COUNT);
         }
    
 
@@ -59,12 +70,16 @@ namespace FlythroughLib {
         /// <summary>
         /// How many degrees to rotate around the pitch axis.
         /// </summary>
-        public int YawDelta {
+        public float YawDelta {
             get { return mYawDelta; }
             set {
                 mYawDelta = value;
                 mYawShift = value / TotalSteps;
             }
+        }
+
+        public override string Name {
+            get { return mName; }
         }
  
         public override bool Step() {

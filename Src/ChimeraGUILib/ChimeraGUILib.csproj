@@ -60,6 +60,36 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controls\FlythroughEventPanels\ComboPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\FlythroughEventPanels\ComboPanel.Designer.cs">
+      <DependentUpon>ComboPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\FlythroughEventPanels\ComboSequencePanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\FlythroughEventPanels\ComboSequencePanel.Designer.cs">
+      <DependentUpon>ComboSequencePanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\FlythroughEventPanels\LookAtPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\FlythroughEventPanels\LookAtPanel.Designer.cs">
+      <DependentUpon>LookAtPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\FlythroughEventPanels\MoveToPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\FlythroughEventPanels\MoveToPanel.Designer.cs">
+      <DependentUpon>MoveToPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\FlythroughEventPanels\RotateToPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\FlythroughEventPanels\RotateToPanel.Designer.cs">
+      <DependentUpon>RotateToPanel.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\FlythroughPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -117,6 +147,21 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Controls\FlythroughEventPanels\ComboPanel.resx">
+      <DependentUpon>ComboPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\FlythroughEventPanels\ComboSequencePanel.resx">
+      <DependentUpon>ComboSequencePanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\FlythroughEventPanels\LookAtPanel.resx">
+      <DependentUpon>LookAtPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\FlythroughEventPanels\MoveToPanel.resx">
+      <DependentUpon>MoveToPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\FlythroughEventPanels\RotateToPanel.resx">
+      <DependentUpon>RotateToPanel.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Controls\FlythroughPanel.resx">
       <DependentUpon>FlythroughPanel.cs</DependentUpon>
     </EmbeddedResource>

@@ -6,6 +6,10 @@ using System.Text;
 namespace FlythroughLib {
     public class RotateToEvent : FlythroughEvent {
         /// <summary>
+        /// How many RotateToEvents have been created.
+        /// </summary>
+        private static int COUNT = 0;
+        /// <summary>
         /// How much to change pitch by every step.
         /// </summary>
         private float mPitchShift;
@@ -21,16 +25,18 @@ namespace FlythroughLib {
         /// How many degrees around the yaw axis to start at.
         /// </summary>
         private float mYawStart;
-
         /// <summary>
         /// How many degrees around the yaw axis to finish at
         /// </summary>
         private float mYawTarget;
-
         /// <summary>
         /// How many degrees around the pitch axis to end at.
         /// </summary>
         private float mPitchTarget;
+        /// <summary>
+        /// The name of the event.
+        /// </summary>
+        private readonly string mName;
 
         /// <summary>
         /// Create the event specifying pitch and pitch.
@@ -40,7 +46,7 @@ namespace FlythroughLib {
         /// <param name="pitch">How far the event should rotate the camera around the pitch axis (degrees).</param>
         /// <param name="yaw">How far the event should rotate the camera around the yaw axis (degrees).</param>
         public RotateToEvent(FlythroughManager container, int length, float pitch, float yaw)
-            : base(container, length) {
+            : this(container, length) {
 
             PitchTarget = pitch;
             YawTarget = yaw;
@@ -53,6 +59,8 @@ namespace FlythroughLib {
         /// <param name="length">The length of time the event will run (ms).</param>
         public RotateToEvent(FlythroughManager container, int length)
             : base(container, length) {
+
+            mName = "Rotate To " + (++COUNT);
         }
 
 
@@ -84,7 +92,7 @@ namespace FlythroughLib {
         public float PitchTarget {
             get { return mPitchStart; }
             set {
-                mPitchStart = value;
+                mPitchTarget = value;
                 mPitchShift = (value - mPitchStart) / TotalSteps;
             }
         }
@@ -95,10 +103,15 @@ namespace FlythroughLib {
         public float YawTarget {
             get { return mYawStart; }
             set {
-                mYawStart = value;
+                mYawTarget = value;
                 mYawShift = (value - mYawStart) / TotalSteps;
             }
         }
+
+        public override string Name {
+            get { return mName; }
+        }
+    
         public override bool Step() {
             if (CurrentStep == 0) {
                 PitchStart = Container.Rotation.Pitch;

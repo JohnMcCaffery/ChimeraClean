@@ -7,6 +7,10 @@ using OpenMetaverse;
 namespace FlythroughLib {
     public class MoveToEvent : FlythroughEvent {
         /// <summary>
+        /// How many MoveToEvents have been created.
+        /// </summary>
+        private static int COUNT = 0;
+        /// <summary>
         /// The position the camera will end in.
         /// </summary>
         private Vector3 mTargetPosition;
@@ -18,6 +22,10 @@ namespace FlythroughLib {
         /// The position the camera started at.
         /// </summary>
         private Vector3 mStartPosition;
+        /// <summary>
+        /// The name of the event.
+        /// </summary>
+        private readonly string mName;
 
         /// <summary>
         /// Initialise the event, specificying where the camera will end up.
@@ -26,6 +34,7 @@ namespace FlythroughLib {
         public MoveToEvent(FlythroughManager container, int length, Vector3 target)
             : base(container, length) {
             mTargetPosition = target;
+            mName = "Move To " + (++COUNT);
         }
 
         /// <summary>
@@ -48,6 +57,10 @@ namespace FlythroughLib {
                 mStartPosition = value;
                 mShift = (mTargetPosition - mStartPosition) / TotalSteps;
             }
+        }
+
+        public override string Name {
+            get { return mName; }
         }
     
         public override bool Step() {

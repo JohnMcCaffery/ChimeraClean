@@ -81,6 +81,17 @@ namespace FlythroughLib {
         }
 
         /// <summary>
+        /// The first event in the sequence.
+        /// </summary>
+        public FlythroughEvent FirstEvent {
+            get {
+                throw new System.NotImplementedException();
+            }
+            set {
+            }
+        }
+
+        /// <summary>
         /// Plane the flythrough running. Will continue on from wherever it was before.
         /// </summary>
         public void Play() {

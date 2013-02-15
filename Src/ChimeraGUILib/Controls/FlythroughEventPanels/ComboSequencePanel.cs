@@ -6,60 +6,46 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using UtilLib;
+using FlythroughLib;
 using OpenMetaverse;
-using ChimeraGUILib.Controls.FlythroughEventPanels;
+using UtilLib;
 
-namespace FlythroughLib.Panels {
-    public partial class FlythroughPanel : UserControl {
+namespace ChimeraGUILib.Controls.FlythroughEventPanels {
+    public partial class ComboSequencePanel : UserControl {
         private readonly Dictionary<string, FlythroughEvent> mEvents = new Dictionary<string, FlythroughEvent>();
         private readonly Dictionary<string, UserControl> mPanels = new Dictionary<string, UserControl>();
 
-        private FlythroughManager mContainer = new FlythroughManager();
+        private ComboEvent mEvent;
         private CameraMaster mMaster;
         private UserControl mCurrentPanel;
+        private bool mSequence1;
 
-        public FlythroughPanel() {
+        public ComboSequencePanel() {
             InitializeComponent();
-
-            mContainer.OnPositionChange += (source, args) => mMaster.Position = mContainer.Position;
-            mContainer.OnComplete += (source, args) => Invoke(new Action(() => playButton.Enabled = true));
-            mContainer.OnRotationChange += (source, args) => {
-                mMaster.Rotation.Pitch = mContainer.Rotation.Pitch;
-                mMaster.Rotation.Yaw = mContainer.Rotation.Yaw;
-            };
         }
 
-        public CameraMaster Master {
-            get { return mMaster; }
-            set { mMaster = value; }
-        }
+        public void Init(ComboEvent evt, bool sequence1, CameraMaster master) {
+            mEvent = evt;
+            mSequence1 = sequence1;
+            mMaster = master;
 
-        private void playButton_Click(object sender, EventArgs e) {
-            mContainer.Play(mMaster.Position, mMaster.Rotation);
-            playButton.Enabled = false;
+            eventsLabel.Text = string.Format("Sequence {0} Events", sequence1 ? 1 : 2);
         }
 
         private void moveToEventToolStripMenuItem_Click(object sender, EventArgs e) {
-            MoveToEvent evt = new MoveToEvent(mContainer, 0, Vector3.Zero);
+            MoveToEvent evt = new MoveToEvent(mEvent.Container, 0, Vector3.Zero);
             MoveToPanel panel = new MoveToPanel(evt, mMaster);
             AddEvent(evt, panel);
         }
 
-        private void comboEventToolStripMenuItem_Click(object sender, EventArgs e) {
-            ComboEvent evt = new ComboEvent(mContainer);
-            ComboPanel panel = new ComboPanel(evt, mMaster);
-            AddEvent(evt, panel);
-        }
-
         private void rotateToEventToolStripMenuItem_Click(object sender, EventArgs e) {
-            RotateToEvent evt = new RotateToEvent(mContainer, 0);
+            RotateToEvent evt = new RotateToEvent(mEvent.Container, 0);
             RotateToPanel panel = new RotateToPanel(evt, mMaster);
             AddEvent(evt, panel);
         }
 
         private void lookAtEventToolStripMenuItem_Click(object sender, EventArgs e) {
-            LookAtEvent evt = new LookAtEvent(mContainer, 0);
+            LookAtEvent evt = new LookAtEvent(mEvent.Container, 0);
             LookAtPanel panel = new LookAtPanel(evt, mMaster);
             AddEvent(evt, panel);
         }
@@ -69,7 +55,10 @@ namespace FlythroughLib.Panels {
             mPanels.Add(evt.Name, panel);
             eventsList.Items.Add(evt.Name);
 
-            mContainer.AddEvent(evt);
+            if (mSequence1)
+                mEvent.AddStream1Event(evt);
+            else
+                mEvent.AddStream2Event(evt);
 
             int left = eventsList.Width + eventsList.Location.X;
             panel.Size = new System.Drawing.Size(Width - left, Height);

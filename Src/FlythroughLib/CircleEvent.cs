@@ -8,6 +8,10 @@ using OpenMetaverse;
 namespace FlythroughLib {
     public class CircleEvent : FlythroughEvent {
         /// <summary>
+        /// How many LookAtEvents have been created.
+        /// </summary>
+        private static int COUNT = 0;
+        /// <summary>
         /// The vector which describes the 0 point. This defines where the arc will start and the plane on which it will rotate.
         /// </summary>
         private Rotation mPlane;
@@ -23,12 +27,19 @@ namespace FlythroughLib {
         /// The radius of the circle to describe.
         /// </summary>
         private float mRadius;
+        /// <summary>
+        /// The name of the event.
+        /// </summary>
+        private readonly string mName;
 
         /// <param name="container">The container which this event is part of.</param>
         /// <param name="length">The length of time the event will last (ms).</param>
-        public CircleEvent(FlythroughManager container, int length) : base (null, 0) {
-            throw new System.NotImplementedException();
+        public CircleEvent(FlythroughManager container, int length)
+            : base(null, 0) {
+
+            mName = "Look At " + (++COUNT);
         }
+
         /// <summary>
         /// The vector which describes the 0 point. This defines where the arc will start and the plane on which it will rotate.
         /// </summary>
@@ -83,12 +94,16 @@ namespace FlythroughLib {
             set {
             }
         }
-    
-        public override bool Step() {
-            throw new NotImplementedException();
+
+        public override string Name {
+            get { return mName; }
         }
 
         protected override void LengthChanged() {
+            throw new NotImplementedException();
+        }
+
+        public override bool Step() {
             throw new NotImplementedException();
         }
     }

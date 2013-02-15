@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using OpenMetaverse;
 using UtilLib;
+using System.Xml;
 
 namespace FlythroughLib {
     public abstract class FlythroughEvent {
@@ -157,6 +158,13 @@ namespace FlythroughLib {
         }
 
         /// <summary>
+        /// Unique name for the event.
+        /// </summary>
+        public abstract string Name {
+            get;
+        }
+
+        /// <summary>
         /// Trigger the OnStart event.
         /// </summary>
         private void TriggerOnStart() {
@@ -210,6 +218,14 @@ namespace FlythroughLib {
         /// </summary>
         public void Reset() {
             mCurrentStep = 0;
+        }
+
+        /// <summary>
+        /// Load parameters from an XML node.
+        /// </summary>
+        /// <param name="node">The noad to load parameters from.</param>
+        public void Load(XmlNode node) {
+            throw new System.NotImplementedException();
         }
     }
 }

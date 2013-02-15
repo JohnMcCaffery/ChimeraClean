@@ -6,6 +6,10 @@ using System.Text;
 namespace FlythroughLib {
     public class ComboEvent : FlythroughEvent {
         /// <summary>
+        /// How many LookAtEvents have been created.
+        /// </summary>
+        private static int COUNT = 0;
+        /// <summary>
         /// The event currently playing.
         /// </summary>
         private FlythroughEvent mStream1Current;
@@ -43,6 +47,37 @@ namespace FlythroughLib {
         /// True if stream 2 is currently playing.
         /// </summary>
         private bool mStream2Playing;
+        /// <summary>
+        /// The name of the event.
+        /// </summary>
+        private readonly string mName;
+
+        public override int Length {
+            get {
+                int stream1L = 0, stream2L = 0;
+                FlythroughEvent s1 = mStream1First, s2 = mStream2First;
+                while (s1 != null) { stream1L = s1.Length; s1 = s1.NextEvent; }
+                while (s2 != null) { stream2L = s2.Length; s2 = s2.NextEvent; }
+                return Math.Max(stream1L, stream2L);
+            }
+            set {
+                base.Length = value;
+            }
+        }
+
+        public override string Name {
+            get { return mName; }
+        }
+
+        /// <summary>
+        /// Initialise with no events in the streams.
+        /// </summary>
+        /// <param name="container">The container this event is part of.</param>
+        public ComboEvent(FlythroughManager container)
+            : base(container, (FlythroughManager.TICK_LENGTH * 2) + 1) {
+
+            mName = "Combo " + (++COUNT);
+        }
 
         /// <summary>
         /// Add a new event to the sequence.
@@ -68,19 +103,6 @@ namespace FlythroughLib {
                 mStream2Last.NextEvent = evt;
 
             mStream2Last = evt;
-        }
-
-        public override int Length {
-            get {
-                int stream1L = 0, stream2L = 0;
-                FlythroughEvent s1 = mStream1First, s2 = mStream2First;
-                while (s1 != null) { stream1L = s1.Length; s1 = s1.NextEvent; }
-                while (s2 != null) { stream2L = s2.Length; s2 = s2.NextEvent; }
-                return Math.Max(stream1L, stream2L);
-            }
-            set {
-                base.Length = value;
-            }
         }
 
         public override bool Step() {
@@ -119,14 +141,6 @@ namespace FlythroughLib {
 
         protected override void LengthChanged() {
             //Do nothing
-        }
-
-        /// <summary>
-        /// Initialise with no events in the streams.
-        /// </summary>
-        /// <param name="container">The container this event is part of.</param>
-        public ComboEvent(FlythroughManager container)
-            : base(container, (FlythroughManager.TICK_LENGTH * 2) + 1) {
         }
     }
 }
