@@ -85,8 +85,13 @@ namespace FlythroughLib {
             XmlNode node = doc.CreateElement("MoveToEvent");
 
             XmlAttribute target = doc.CreateAttribute("Target");
+            XmlAttribute length = doc.CreateAttribute("Length");
+
             target.Value = mTarget.ToString();
+            length.Value = Length.ToString();
+
             node.Attributes.Append(target);
+            node.Attributes.Append(length);
 
             return node;
         }

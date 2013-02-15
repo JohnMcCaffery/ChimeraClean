@@ -67,6 +67,14 @@ namespace FlythroughLib {
             }
         }
 
+        public FlythroughEvent Stream1First {
+            get { return mStream1First; }
+        }
+
+        public FlythroughEvent Stream2First {
+            get { return mStream2First; }
+        }
+
         public override string Name {
             get { return mName; }
         }
@@ -198,6 +206,8 @@ namespace FlythroughLib {
             SaveStream(stream1, mStream1First);
             SaveStream(stream2, mStream2First);
 
+            root.AppendChild(stream1);
+            root.AppendChild(stream2);
             return root;
         }
 

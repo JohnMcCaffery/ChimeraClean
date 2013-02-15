@@ -62,14 +62,13 @@ namespace FlythroughLib.Panels {
             LookAtEvent evt = new LookAtEvent(mContainer, 0);
             LookAtPanel panel = new LookAtPanel(evt, mMaster);
             AddEvent(evt, panel);
+            mContainer.AddEvent(evt);
         }
         
         private void AddEvent(FlythroughEvent evt, UserControl panel) {
             mEvents.Add(evt.Name, evt);
             mPanels.Add(evt.Name, panel);
             eventsList.Items.Add(evt.Name);
-
-            mContainer.AddEvent(evt);
 
             int left = eventsList.Width + eventsList.Location.X;
             panel.Size = new System.Drawing.Size(Width - left, Height);
@@ -108,7 +107,45 @@ namespace FlythroughLib.Panels {
         private void loadButton_Click(object sender, EventArgs e) {
             if (loadSequenceDialog.ShowDialog(this) == DialogResult.OK) {
                 mContainer.Load(loadSequenceDialog.FileName);
+
+                FlythroughEvent evt = mContainer.FirstEvent;
+                while (evt != null) {
+                    UserControl panel = GetPanel(evt);
+                    if (panel != null)
+                        AddEvent(evt, panel);
+
+                    if (evt is ComboEvent) {
+                        ComboEvent combo = (ComboEvent)evt;
+                        ComboPanel comboPanel = (ComboPanel)panel;
+                        FlythroughEvent streamEvent = combo.Stream1First;
+                        while (streamEvent != null) {
+                            UserControl p = GetPanel(streamEvent);
+                            if (p != null)
+                                comboPanel.AddEvent(evt, p, true);
+                        }
+                        streamEvent = combo.Stream2First;
+                        while (streamEvent != null) {
+                            UserControl p = GetPanel(streamEvent);
+                            if (p != null)
+                                comboPanel.AddEvent(evt, p, true);
+                        }
+                    }
+                    evt = evt.NextEvent;
+                }
             }
+        }
+
+
+        private UserControl GetPanel(FlythroughEvent evt) {
+            if (evt is ComboEvent)
+                return new ComboPanel((ComboEvent)evt, Master);
+            if (evt is RotateToEvent)
+                return new RotateToPanel((RotateToEvent)evt, Master);
+            if (evt is MoveToEvent)
+                return new MoveToPanel((MoveToEvent)evt, Master);
+            if (evt is LookAtEvent)
+                return new LookAtPanel((LookAtEvent)evt, Master);
+            return null;
         }
 
         private void saveButton_Click(object sender, EventArgs e) {

@@ -140,12 +140,15 @@ namespace FlythroughLib {
 
             XmlAttribute pitch = doc.CreateAttribute("Pitch");
             XmlAttribute yaw = doc.CreateAttribute("Yaw");
+            XmlAttribute length = doc.CreateAttribute("Length");
             
             pitch.Value = mPitchTarget.ToString();
             yaw.Value = mYawTarget.ToString();
+            length.Value = Length.ToString();
 
             node.Attributes.Append(pitch);
             node.Attributes.Append(yaw);
+            node.Attributes.Append(length);
 
             return node;
         }

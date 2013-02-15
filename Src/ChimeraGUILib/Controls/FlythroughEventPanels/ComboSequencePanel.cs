@@ -50,7 +50,7 @@ namespace ChimeraGUILib.Controls.FlythroughEventPanels {
             AddEvent(evt, panel);
         }
         
-        private void AddEvent(FlythroughEvent evt, UserControl panel) {
+        public void AddEvent(FlythroughEvent evt, UserControl panel) {
             mEvents.Add(evt.Name, evt);
             mPanels.Add(evt.Name, panel);
             eventsList.Items.Add(evt.Name);

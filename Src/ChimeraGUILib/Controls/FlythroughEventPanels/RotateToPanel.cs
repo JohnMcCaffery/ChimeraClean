@@ -23,9 +23,15 @@ namespace ChimeraGUILib.Controls.FlythroughEventPanels {
             mEvent = evt;
             mMaster = master;
 
-            mEvent.PitchTarget = (float) pitchValue.Value;
-            mEvent.YawTarget = (float) yawValue.Value;
-            mEvent.Length = (int) lengthValue.Value;
+            if (mEvent.PitchTarget == 0f && mEvent.YawTarget == 0f) {
+                mEvent.PitchTarget = (float)pitchValue.Value;
+                mEvent.YawTarget = (float)yawValue.Value;
+                mEvent.Length = (int)lengthValue.Value;
+            } else {
+                pitchValue.Value = new decimal(mEvent.PitchTarget);
+                yawValue.Value = new decimal(mEvent.YawTarget);
+                lengthValue.Value = mEvent.Length;
+            }
 
             pitchValue.ValueChanged += (source, args) => mEvent.PitchTarget = (float)pitchValue.Value;
             yawValue.ValueChanged += (source, args) => mEvent.YawTarget = (float)yawValue.Value;

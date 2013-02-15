@@ -8,6 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using FlythroughLib;
 using UtilLib;
+using OpenMetaverse;
 
 namespace ChimeraGUILib.Controls.FlythroughEventPanels {
     public partial class LookAtPanel : UserControl {
@@ -23,8 +24,13 @@ namespace ChimeraGUILib.Controls.FlythroughEventPanels {
             mEvent = evt;
             mMaster = master;
 
-            mEvent.Target = targetVectorPanel.Value;
-            mEvent.Length = (int) lengthValue.Value;
+            if (mEvent.Target == Vector3.Zero) {
+                mEvent.Target = targetVectorPanel.Value;
+                mEvent.Length = (int)lengthValue.Value;
+            } else {
+                targetVectorPanel.Value = mEvent.Target;
+                lengthValue.Value = mEvent.Length;
+            }
 
             mEvent.Target = targetVectorPanel.Value;
             targetVectorPanel.OnChange += (source, args) => mEvent.Target = targetVectorPanel.Value;

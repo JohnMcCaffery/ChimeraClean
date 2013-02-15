@@ -85,11 +85,7 @@ namespace FlythroughLib {
         /// The first event in the sequence.
         /// </summary>
         public FlythroughEvent FirstEvent {
-            get {
-                throw new System.NotImplementedException();
-            }
-            set {
-            }
+            get { return mFirstEvent; }
         }
 
         /// <summary>
@@ -274,7 +270,7 @@ namespace FlythroughLib {
         public void Save(string file) {
             XmlDocument doc = new XmlDocument();
             XmlNode root = doc.CreateElement("Events");
-            FlythroughEvent evt = mCurrentEvent;
+            FlythroughEvent evt = mFirstEvent;
             while (evt != null) {
                 root.AppendChild(evt.Save(doc));
                 evt = evt.NextEvent;

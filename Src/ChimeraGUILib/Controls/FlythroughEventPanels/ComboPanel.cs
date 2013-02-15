@@ -26,5 +26,12 @@ namespace ChimeraGUILib.Controls.FlythroughEventPanels {
             sequence1Panel.Init(evt, true, mMaster);
             sequence2Panel.Init(evt, false, mMaster);
         }
+
+        public void AddEvent(FlythroughEvent evt, UserControl panel, bool sequence1) {
+            if (sequence1)
+                sequence1Panel.AddEvent(evt, panel);
+            else
+                sequence2Panel.AddEvent(evt, panel);
+        }
     }
 }

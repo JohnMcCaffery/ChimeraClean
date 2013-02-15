@@ -124,6 +124,7 @@
             // 
             // loadButton
             // 
+            this.loadButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.loadButton.Location = new System.Drawing.Point(129, 322);
             this.loadButton.Name = "loadButton";
             this.loadButton.Size = new System.Drawing.Size(40, 23);
@@ -134,6 +135,7 @@
             // 
             // saveButton
             // 
+            this.saveButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.saveButton.Location = new System.Drawing.Point(175, 322);
             this.saveButton.Name = "saveButton";
             this.saveButton.Size = new System.Drawing.Size(43, 23);
