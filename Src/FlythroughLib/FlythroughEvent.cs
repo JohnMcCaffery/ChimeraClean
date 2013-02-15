@@ -138,7 +138,7 @@ namespace FlythroughLib {
         /// <summary>
         /// The previous event in the sequence. May be null.
         /// </summary>
-        private FlythroughEvent PrevEvent {
+        public FlythroughEvent PrevEvent {
             get { return mPrevEvent; }
             set { mPrevEvent = value; }
         }
@@ -224,8 +224,13 @@ namespace FlythroughLib {
         /// Load parameters from an XML node.
         /// </summary>
         /// <param name="node">The noad to load parameters from.</param>
-        public void Load(XmlNode node) {
-            throw new System.NotImplementedException();
-        }
+        public abstract void Load(XmlNode node);
+
+        /// <summary>
+        /// Save the state of the event to an XML node which can later be written to file.
+        /// </summary>
+        /// <param name="doc">The document that the node is to be part of.</param>
+        /// <returns>An XML node storing all relevant information about the event.</returns>
+        public abstract XmlNode Save(XmlDocument doc);
     }
 }

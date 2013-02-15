@@ -83,10 +83,38 @@ namespace FlythroughLib.Panels {
         }
 
         private void eventsList_SelectedValueChanged(object sender, EventArgs e) {
+            if (eventsList.SelectedItem == null) {
+                mCurrentPanel = null;
+                return;
+            }
             if (mCurrentPanel != null)
                 mCurrentPanel.Visible = false;
             mCurrentPanel = mPanels[(string) eventsList.SelectedItem];
             mCurrentPanel.Visible = true;
+        }
+
+        private void removeToolStripMenuItem_Click(object sender, EventArgs e) {
+            FlythroughEvent evt = mEvents[(string)eventsList.SelectedItem];
+            UserControl panel = mPanels[(string)eventsList.SelectedItem];
+
+            mCurrentPanel = null;
+            panel.Visible = false;
+            eventsList.Items.Remove(eventsList.SelectedItem);
+            Controls.Remove(panel);
+
+            mContainer.RemoveEvent(evt);
+        }
+
+        private void loadButton_Click(object sender, EventArgs e) {
+            if (loadSequenceDialog.ShowDialog(this) == DialogResult.OK) {
+                mContainer.Load(loadSequenceDialog.FileName);
+            }
+        }
+
+        private void saveButton_Click(object sender, EventArgs e) {
+            if (saveSequenceDialog.ShowDialog(this) == DialogResult.OK) {
+                mContainer.Save(saveSequenceDialog.FileName);
+            }
         }
     }
 }

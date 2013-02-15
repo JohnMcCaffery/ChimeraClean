@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Xml;
 
 namespace FlythroughLib {
     public class RotateToEvent : FlythroughEvent {
@@ -90,7 +91,7 @@ namespace FlythroughLib {
         /// How many degrees around the pitch axis to end at.
         /// </summary>
         public float PitchTarget {
-            get { return mPitchStart; }
+            get { return mPitchTarget; }
             set {
                 mPitchTarget = value;
                 mPitchShift = (value - mPitchStart) / TotalSteps;
@@ -101,7 +102,7 @@ namespace FlythroughLib {
         /// How many degrees around the yaw axis to finish at
         /// </summary>
         public float YawTarget {
-            get { return mYawStart; }
+            get { return mYawTarget; }
             set {
                 mYawTarget = value;
                 mYawShift = (value - mYawStart) / TotalSteps;
@@ -127,6 +128,26 @@ namespace FlythroughLib {
         protected override void LengthChanged() {
             mPitchShift = (mPitchTarget - mPitchStart) / TotalSteps;
             mYawShift = (mYawTarget - mYawStart) / TotalSteps;
+        }
+
+        public override void Load(XmlNode node) {
+            PitchTarget = float.Parse(node.Attributes["Pitch"].Value);
+            YawTarget = float.Parse(node.Attributes["Yaw"].Value);
+        }
+
+        public override XmlNode Save(XmlDocument doc) {
+            XmlNode node = doc.CreateElement("RotateToEvent");
+
+            XmlAttribute pitch = doc.CreateAttribute("Pitch");
+            XmlAttribute yaw = doc.CreateAttribute("Yaw");
+            
+            pitch.Value = mPitchTarget.ToString();
+            yaw.Value = mYawTarget.ToString();
+
+            node.Attributes.Append(pitch);
+            node.Attributes.Append(yaw);
+
+            return node;
         }
     }
 }

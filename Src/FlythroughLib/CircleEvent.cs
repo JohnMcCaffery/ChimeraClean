@@ -106,5 +106,13 @@ namespace FlythroughLib {
         public override bool Step() {
             throw new NotImplementedException();
         }
+
+        public override void Load(System.Xml.XmlNode node) {
+            throw new NotImplementedException();
+        }
+
+        public override System.Xml.XmlNode Save(System.Xml.XmlDocument doc) {
+            throw new NotImplementedException();
+        }
     }
 }

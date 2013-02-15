@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using OpenMetaverse;
+using System.Xml;
 
 namespace FlythroughLib {
     public class LookAtEvent : FlythroughEvent {
@@ -60,6 +61,20 @@ namespace FlythroughLib {
 
         protected override void LengthChanged() {
             //Do Nothing
+        }
+
+        public override void Load(XmlNode node) {
+            Target = Vector3.Parse(node.Attributes["Target"].Value);
+        }
+
+        public override XmlNode Save(XmlDocument doc) {
+            XmlNode node = doc.CreateElement("LookAtEvent");
+
+            XmlAttribute target = doc.CreateAttribute("Target");
+            target.Value = mTarget.ToString();
+            node.Attributes.Append(target);
+
+            return node;
         }
     }
 }

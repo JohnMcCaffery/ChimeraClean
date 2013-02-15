@@ -55,7 +55,7 @@
     <Compile Include="ComboEvent.cs" />
     <Compile Include="FlythroughEvent.cs" />
     <Compile Include="FlythroughManager.cs" />
-    <Compile Include="LookAtLockEvent.cs" />
+    <Compile Include="LookAtEvent.cs" />
     <Compile Include="MoveToEvent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RotateEvent.cs" />

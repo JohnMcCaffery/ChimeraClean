@@ -5,6 +5,7 @@ using System.Text;
 using UtilLib;
 using OpenMetaverse;
 using System.Threading;
+using System.Xml;
 
 namespace FlythroughLib {
     public class FlythroughManager {
@@ -154,7 +155,23 @@ namespace FlythroughLib {
         /// </summary>
         /// <param name="file">The file to load as a flythrough.</param>
         public void Load(string file) {
-            throw new System.NotImplementedException();
+            XmlDocument doc = new XmlDocument();
+            doc.Load(file);
+            foreach (XmlNode node in doc.GetElementsByTagName("Events")[0].ChildNodes) {
+                FlythroughEvent evt = null;
+                switch (node.Name) {
+                    case "ComboEvent": evt = new ComboEvent(this); break;
+                    case "RotateEvent": evt = new RotateEvent(this, 0); break;
+                    case "RotateToEvent": evt = new RotateToEvent(this, 0); break;
+                    case "MoveToEvent": evt = new MoveToEvent(this, 0, Vector3.Zero); break;
+                    case "CircleEvent": evt = new CircleEvent(this, 0); break;
+                    case "LookAtEvent": evt = new LookAtEvent(this, 0); break;
+                }
+                if (evt != null) {
+                    evt.Load(node);
+                    AddEvent(evt);
+                }
+            }
         }
 
         /// <summary>
@@ -235,8 +252,36 @@ namespace FlythroughLib {
                 mFirstEvent = evt;
             else
                 mLastEvent.NextEvent = evt;
-            
+
+            evt.PrevEvent = mLastEvent;
             mLastEvent = evt;
+        }
+
+        public void RemoveEvent(FlythroughEvent evt) {
+            if (evt.PrevEvent != null) {
+                evt.PrevEvent.NextEvent = evt.NextEvent;
+                if (evt.PrevEvent.PrevEvent == null)
+                    mFirstEvent = evt.PrevEvent;
+            }
+
+            if (evt.NextEvent != null) {
+                evt.NextEvent.PrevEvent = evt.PrevEvent;
+                if (evt.NextEvent.NextEvent == null)
+                    mLastEvent = evt.NextEvent;
+            }
+        }
+
+        public void Save(string file) {
+            XmlDocument doc = new XmlDocument();
+            XmlNode root = doc.CreateElement("Events");
+            FlythroughEvent evt = mCurrentEvent;
+            while (evt != null) {
+                root.AppendChild(evt.Save(doc));
+                evt = evt.NextEvent;
+            }
+
+            doc.AppendChild(root);
+            doc.Save(file);
         }
     }
 }

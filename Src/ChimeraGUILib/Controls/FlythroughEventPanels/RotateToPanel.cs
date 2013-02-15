@@ -36,7 +36,7 @@ namespace ChimeraGUILib.Controls.FlythroughEventPanels {
             mEvent.PitchTarget = mMaster.Rotation.Pitch;
             mEvent.YawTarget = mMaster.Rotation.Yaw;
             pitchValue.Value = new decimal(mEvent.PitchTarget);
-            pitchValue.Value = new decimal(mEvent.YawTarget);
+            yawValue.Value = new decimal(mEvent.YawTarget);
         }
     }
 }

@@ -77,5 +77,17 @@ namespace ChimeraGUILib.Controls.FlythroughEventPanels {
             mCurrentPanel = mPanels[(string) eventsList.SelectedItem];
             mCurrentPanel.Visible = true;
         }
+
+        private void removeToolStripMenuItem_Click(object sender, EventArgs e) {
+            FlythroughEvent evt = mEvents[(string)eventsList.SelectedItem];
+            UserControl panel = mPanels[(string)eventsList.SelectedItem];
+
+            mCurrentPanel = null;
+            panel.Visible = false;
+            eventsList.Items.Remove(eventsList.SelectedItem);
+            Controls.Remove(panel);
+
+            mEvent.RemoveEvent(evt, mSequence1);
+        }
     }
 }

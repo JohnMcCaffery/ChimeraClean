@@ -29,22 +29,24 @@
             this.eventsList = new System.Windows.Forms.ListBox();
             this.eventsContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.addToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.comboEventToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.rotateToEventToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.moveToEventToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.rotateToEventToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.lookAtEventToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.moveUpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.moveDownToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.comboEventToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.removeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.loadSequenceDialog = new System.Windows.Forms.OpenFileDialog();
+            this.loadButton = new System.Windows.Forms.Button();
+            this.saveButton = new System.Windows.Forms.Button();
             this.eventsContextMenu.SuspendLayout();
             this.SuspendLayout();
             // 
             // playButton
             // 
-            this.playButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.playButton.Location = new System.Drawing.Point(129, 322);
+            this.playButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.playButton.Location = new System.Drawing.Point(224, 322);
             this.playButton.Name = "playButton";
-            this.playButton.Size = new System.Drawing.Size(376, 23);
+            this.playButton.Size = new System.Drawing.Size(281, 23);
             this.playButton.TabIndex = 8;
             this.playButton.Text = "Play";
             this.playButton.UseVisualStyleBackColor = true;
@@ -52,8 +54,8 @@
             // 
             // eventsList
             // 
-            this.eventsList.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)));
+            this.eventsList.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
             this.eventsList.ContextMenuStrip = this.eventsContextMenu;
             this.eventsList.FormattingEnabled = true;
             this.eventsList.Location = new System.Drawing.Point(3, 3);
@@ -66,10 +68,9 @@
             // 
             this.eventsContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.addToolStripMenuItem,
-            this.moveUpToolStripMenuItem,
-            this.moveDownToolStripMenuItem});
+            this.removeToolStripMenuItem});
             this.eventsContextMenu.Name = "eventsContextMenu";
-            this.eventsContextMenu.Size = new System.Drawing.Size(153, 92);
+            this.eventsContextMenu.Size = new System.Drawing.Size(114, 48);
             // 
             // addToolStripMenuItem
             // 
@@ -79,54 +80,75 @@
             this.lookAtEventToolStripMenuItem,
             this.comboEventToolStripMenuItem});
             this.addToolStripMenuItem.Name = "addToolStripMenuItem";
-            this.addToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.addToolStripMenuItem.Size = new System.Drawing.Size(113, 22);
             this.addToolStripMenuItem.Text = "Add";
-            // 
-            // comboEventToolStripMenuItem
-            // 
-            this.comboEventToolStripMenuItem.Name = "comboEventToolStripMenuItem";
-            this.comboEventToolStripMenuItem.Size = new System.Drawing.Size(157, 22);
-            this.comboEventToolStripMenuItem.Text = "Combo Event";
-            this.comboEventToolStripMenuItem.Click += new System.EventHandler(this.comboEventToolStripMenuItem_Click);
-            // 
-            // rotateToEventToolStripMenuItem
-            // 
-            this.rotateToEventToolStripMenuItem.Name = "rotateToEventToolStripMenuItem";
-            this.rotateToEventToolStripMenuItem.Size = new System.Drawing.Size(157, 22);
-            this.rotateToEventToolStripMenuItem.Text = "Rotate To Event";
-            this.rotateToEventToolStripMenuItem.Click += new System.EventHandler(this.rotateToEventToolStripMenuItem_Click);
             // 
             // moveToEventToolStripMenuItem
             // 
             this.moveToEventToolStripMenuItem.Name = "moveToEventToolStripMenuItem";
-            this.moveToEventToolStripMenuItem.Size = new System.Drawing.Size(157, 22);
+            this.moveToEventToolStripMenuItem.Size = new System.Drawing.Size(153, 22);
             this.moveToEventToolStripMenuItem.Text = "Move To Event";
             this.moveToEventToolStripMenuItem.Click += new System.EventHandler(this.moveToEventToolStripMenuItem_Click);
+            // 
+            // rotateToEventToolStripMenuItem
+            // 
+            this.rotateToEventToolStripMenuItem.Name = "rotateToEventToolStripMenuItem";
+            this.rotateToEventToolStripMenuItem.Size = new System.Drawing.Size(153, 22);
+            this.rotateToEventToolStripMenuItem.Text = "Rotate To Event";
+            this.rotateToEventToolStripMenuItem.Click += new System.EventHandler(this.rotateToEventToolStripMenuItem_Click);
             // 
             // lookAtEventToolStripMenuItem
             // 
             this.lookAtEventToolStripMenuItem.Name = "lookAtEventToolStripMenuItem";
-            this.lookAtEventToolStripMenuItem.Size = new System.Drawing.Size(157, 22);
+            this.lookAtEventToolStripMenuItem.Size = new System.Drawing.Size(153, 22);
             this.lookAtEventToolStripMenuItem.Text = "Look At Event";
             this.lookAtEventToolStripMenuItem.Click += new System.EventHandler(this.lookAtEventToolStripMenuItem_Click);
             // 
-            // moveUpToolStripMenuItem
+            // comboEventToolStripMenuItem
             // 
-            this.moveUpToolStripMenuItem.Name = "moveUpToolStripMenuItem";
-            this.moveUpToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.moveUpToolStripMenuItem.Text = "Move Up";
+            this.comboEventToolStripMenuItem.Name = "comboEventToolStripMenuItem";
+            this.comboEventToolStripMenuItem.Size = new System.Drawing.Size(153, 22);
+            this.comboEventToolStripMenuItem.Text = "Combo Event";
+            this.comboEventToolStripMenuItem.Click += new System.EventHandler(this.comboEventToolStripMenuItem_Click);
             // 
-            // moveDownToolStripMenuItem
+            // removeToolStripMenuItem
             // 
-            this.moveDownToolStripMenuItem.Name = "moveDownToolStripMenuItem";
-            this.moveDownToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.moveDownToolStripMenuItem.Text = "Move Down";
+            this.removeToolStripMenuItem.Name = "removeToolStripMenuItem";
+            this.removeToolStripMenuItem.Size = new System.Drawing.Size(113, 22);
+            this.removeToolStripMenuItem.Text = "Remove";
+            this.removeToolStripMenuItem.Click += new System.EventHandler(this.removeToolStripMenuItem_Click);
+            // 
+            // loadSequenceDialog
+            // 
+            this.loadSequenceDialog.FileName = "loadSequenceDialog";
+            // 
+            // loadButton
+            // 
+            this.loadButton.Location = new System.Drawing.Point(129, 322);
+            this.loadButton.Name = "loadButton";
+            this.loadButton.Size = new System.Drawing.Size(40, 23);
+            this.loadButton.TabIndex = 10;
+            this.loadButton.Text = "Load";
+            this.loadButton.UseVisualStyleBackColor = true;
+            this.loadButton.Click += new System.EventHandler(this.loadButton_Click);
+            // 
+            // saveButton
+            // 
+            this.saveButton.Location = new System.Drawing.Point(175, 322);
+            this.saveButton.Name = "saveButton";
+            this.saveButton.Size = new System.Drawing.Size(43, 23);
+            this.saveButton.TabIndex = 11;
+            this.saveButton.Text = "Save";
+            this.saveButton.UseVisualStyleBackColor = true;
+            this.saveButton.Click += new System.EventHandler(this.saveButton_Click);
             // 
             // FlythroughPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.eventsList);
+            this.Controls.Add(this.loadButton);
+            this.Controls.Add(this.saveButton);
             this.Controls.Add(this.playButton);
             this.Name = "FlythroughPanel";
             this.Size = new System.Drawing.Size(508, 348);
@@ -146,7 +168,9 @@
         private System.Windows.Forms.ToolStripMenuItem rotateToEventToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem moveToEventToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem lookAtEventToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem moveUpToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem moveDownToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem removeToolStripMenuItem;
+        private System.Windows.Forms.OpenFileDialog loadSequenceDialog;
+        private System.Windows.Forms.Button loadButton;
+        private System.Windows.Forms.Button saveButton;
     }
 }

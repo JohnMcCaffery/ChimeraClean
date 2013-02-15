@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using OpenMetaverse;
+using System.Xml;
 
 namespace FlythroughLib {
     public class MoveToEvent : FlythroughEvent {
@@ -13,7 +14,7 @@ namespace FlythroughLib {
         /// <summary>
         /// The position the camera will end in.
         /// </summary>
-        private Vector3 mTargetPosition;
+        private Vector3 mTarget;
         /// <summary>
         /// The shift to be applied each step.
         /// </summary>
@@ -33,7 +34,7 @@ namespace FlythroughLib {
         /// <param name="target">The position the camera will end up in.</param>
         public MoveToEvent(FlythroughManager container, int length, Vector3 target)
             : base(container, length) {
-            mTargetPosition = target;
+            mTarget = target;
             mName = "Move To " + (++COUNT);
         }
 
@@ -41,10 +42,10 @@ namespace FlythroughLib {
         /// The position the camera will end up at.
         /// </summary>
         public Vector3 Target {
-            get { return mTargetPosition;  }
+            get { return mTarget;  }
             set { 
-                mTargetPosition = value; 
-                mShift = (mTargetPosition - mStartPosition) / TotalSteps;
+                mTarget = value; 
+                mShift = (mTarget - mStartPosition) / TotalSteps;
             }
         }
    
@@ -55,7 +56,7 @@ namespace FlythroughLib {
             get { return mStartPosition;  }
             set { 
                 mStartPosition = value;
-                mShift = (mTargetPosition - mStartPosition) / TotalSteps;
+                mShift = (mTarget - mStartPosition) / TotalSteps;
             }
         }
 
@@ -73,7 +74,21 @@ namespace FlythroughLib {
         }
 
         protected override void LengthChanged() {
-            mShift = (mTargetPosition - mStartPosition) / TotalSteps;
+            mShift = (mTarget - mStartPosition) / TotalSteps;
+        }
+
+        public override void Load(XmlNode node) {
+            Target = Vector3.Parse(node.Attributes["Target"].Value);
+        }
+
+        public override XmlNode Save(XmlDocument doc) {
+            XmlNode node = doc.CreateElement("MoveToEvent");
+
+            XmlAttribute target = doc.CreateAttribute("Target");
+            target.Value = mTarget.ToString();
+            node.Attributes.Append(target);
+
+            return node;
         }
     }
 }

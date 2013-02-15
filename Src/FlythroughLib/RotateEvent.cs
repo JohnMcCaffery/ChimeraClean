@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Xml;
 
 namespace FlythroughLib {
     public class RotateEvent : FlythroughEvent {
@@ -91,6 +92,26 @@ namespace FlythroughLib {
         protected override void LengthChanged() {
             mPitchShift = mPitchDelta / TotalSteps;
             mYawShift = mYawDelta / TotalSteps;
+        }
+
+        public override void Load(XmlNode node) {
+            PitchDelta = float.Parse(node.Attributes["Pitch"].Value);
+            YawDelta = float.Parse(node.Attributes["Yaw"].Value);
+        }
+
+        public override XmlNode Save(XmlDocument doc) {
+            XmlNode node = doc.CreateElement("RotateEvent");
+
+            XmlAttribute pitch = doc.CreateAttribute("Pitch");
+            XmlAttribute yaw = doc.CreateAttribute("Yaw");
+            
+            pitch.Value = mPitchDelta.ToString();
+            yaw.Value = mYawDelta.ToString();
+
+            node.Attributes.Append(pitch);
+            node.Attributes.Append(yaw);
+
+            return node;
         }
     }
 }

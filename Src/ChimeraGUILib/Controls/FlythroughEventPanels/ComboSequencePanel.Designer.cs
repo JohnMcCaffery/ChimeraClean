@@ -30,16 +30,15 @@
             this.moveToEventToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.rotateToEventToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.lookAtEventToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.moveUpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.moveDownToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.eventsLabel = new System.Windows.Forms.Label();
+            this.removeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.eventsContextMenu.SuspendLayout();
             this.SuspendLayout();
             // 
             // eventsList
             // 
-            this.eventsList.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)));
+            this.eventsList.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
             this.eventsList.ContextMenuStrip = this.eventsContextMenu;
             this.eventsList.FormattingEnabled = true;
             this.eventsList.Location = new System.Drawing.Point(0, 13);
@@ -52,10 +51,9 @@
             // 
             this.eventsContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.addToolStripMenuItem,
-            this.moveUpToolStripMenuItem,
-            this.moveDownToolStripMenuItem});
+            this.removeToolStripMenuItem});
             this.eventsContextMenu.Name = "eventsContextMenu";
-            this.eventsContextMenu.Size = new System.Drawing.Size(139, 70);
+            this.eventsContextMenu.Size = new System.Drawing.Size(153, 70);
             // 
             // addToolStripMenuItem
             // 
@@ -64,41 +62,29 @@
             this.rotateToEventToolStripMenuItem,
             this.lookAtEventToolStripMenuItem});
             this.addToolStripMenuItem.Name = "addToolStripMenuItem";
-            this.addToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
+            this.addToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.addToolStripMenuItem.Text = "Add";
             // 
             // moveToEventToolStripMenuItem
             // 
             this.moveToEventToolStripMenuItem.Name = "moveToEventToolStripMenuItem";
-            this.moveToEventToolStripMenuItem.Size = new System.Drawing.Size(157, 22);
+            this.moveToEventToolStripMenuItem.Size = new System.Drawing.Size(153, 22);
             this.moveToEventToolStripMenuItem.Text = "Move To Event";
             this.moveToEventToolStripMenuItem.Click += new System.EventHandler(this.moveToEventToolStripMenuItem_Click);
             // 
             // rotateToEventToolStripMenuItem
             // 
             this.rotateToEventToolStripMenuItem.Name = "rotateToEventToolStripMenuItem";
-            this.rotateToEventToolStripMenuItem.Size = new System.Drawing.Size(157, 22);
+            this.rotateToEventToolStripMenuItem.Size = new System.Drawing.Size(153, 22);
             this.rotateToEventToolStripMenuItem.Text = "Rotate To Event";
             this.rotateToEventToolStripMenuItem.Click += new System.EventHandler(this.rotateToEventToolStripMenuItem_Click);
             // 
             // lookAtEventToolStripMenuItem
             // 
             this.lookAtEventToolStripMenuItem.Name = "lookAtEventToolStripMenuItem";
-            this.lookAtEventToolStripMenuItem.Size = new System.Drawing.Size(157, 22);
+            this.lookAtEventToolStripMenuItem.Size = new System.Drawing.Size(153, 22);
             this.lookAtEventToolStripMenuItem.Text = "Look At Event";
             this.lookAtEventToolStripMenuItem.Click += new System.EventHandler(this.lookAtEventToolStripMenuItem_Click);
-            // 
-            // moveUpToolStripMenuItem
-            // 
-            this.moveUpToolStripMenuItem.Name = "moveUpToolStripMenuItem";
-            this.moveUpToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
-            this.moveUpToolStripMenuItem.Text = "Move Up";
-            // 
-            // moveDownToolStripMenuItem
-            // 
-            this.moveDownToolStripMenuItem.Name = "moveDownToolStripMenuItem";
-            this.moveDownToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
-            this.moveDownToolStripMenuItem.Text = "Move Down";
             // 
             // eventsLabel
             // 
@@ -108,6 +94,13 @@
             this.eventsLabel.Size = new System.Drawing.Size(40, 13);
             this.eventsLabel.TabIndex = 12;
             this.eventsLabel.Text = "Events";
+            // 
+            // removeToolStripMenuItem
+            // 
+            this.removeToolStripMenuItem.Name = "removeToolStripMenuItem";
+            this.removeToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.removeToolStripMenuItem.Text = "Remove";
+            this.removeToolStripMenuItem.Click += new System.EventHandler(this.removeToolStripMenuItem_Click);
             // 
             // ComboSequencePanel
             // 
@@ -131,8 +124,7 @@
         private System.Windows.Forms.ToolStripMenuItem rotateToEventToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem moveToEventToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem lookAtEventToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem moveUpToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem moveDownToolStripMenuItem;
         private System.Windows.Forms.Label eventsLabel;
+        private System.Windows.Forms.ToolStripMenuItem removeToolStripMenuItem;
     }
 }

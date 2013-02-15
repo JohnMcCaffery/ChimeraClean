@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Xml;
+using OpenMetaverse;
 
 namespace FlythroughLib {
     public class ComboEvent : FlythroughEvent {
@@ -141,6 +143,70 @@ namespace FlythroughLib {
 
         protected override void LengthChanged() {
             //Do nothing
+        }
+
+        public void RemoveEvent(FlythroughEvent evt, bool sequence1) {
+            FlythroughEvent firstEvent = sequence1 ? mStream1First : mStream2First;
+            FlythroughEvent lastEvent = sequence1 ? mStream1Last : mStream2Last;
+            if (evt.PrevEvent != null) {
+                evt.PrevEvent.NextEvent = evt.NextEvent;
+                if (evt.PrevEvent.PrevEvent == null)
+                    firstEvent = evt.PrevEvent;
+            }
+
+            if (evt.NextEvent != null) {
+                evt.NextEvent.PrevEvent = evt.PrevEvent;
+                if (evt.NextEvent.NextEvent == null)
+                    lastEvent = evt.NextEvent;
+            }
+        }
+
+        public override void Load(XmlNode node) {
+            if (node.FirstChild != null) {
+                LoadNode(node.FirstChild, true);
+                if (node.FirstChild.NextSibling != null)
+                    LoadNode(node.FirstChild.NextSibling, false);
+            }
+        }
+
+        private void LoadNode(XmlNode root, bool sequence1) {
+            foreach (XmlNode node in root.ChildNodes) {
+                FlythroughEvent evt = null;
+                switch (node.Name) {
+                    case "ComboEvent": evt = new ComboEvent(Container); break;
+                    case "RotateEvent": evt = new RotateEvent(Container, 0); break;
+                    case "RotateToEvent": evt = new RotateToEvent(Container, 0); break;
+                    case "MoveToEvent": evt = new MoveToEvent(Container, 0, Vector3.Zero); break;
+                    case "CircleEvent": evt = new CircleEvent(Container, 0); break;
+                    case "LookAtEvent": evt = new LookAtEvent(Container, 0); break;
+                }
+                if (evt != null) {
+                    evt.Load(node);
+                    if (sequence1)
+                        AddStream1Event(evt);
+                    else
+                        AddStream2Event(evt);
+                }
+            }
+        }
+
+        public override XmlNode Save(XmlDocument doc) {
+            XmlNode root = doc.CreateElement("ComboEvent");
+            XmlNode stream1 = doc.CreateElement("Stream1");
+            XmlNode stream2 = doc.CreateElement("Stream2");
+
+            SaveStream(stream1, mStream1First);
+            SaveStream(stream2, mStream2First);
+
+            return root;
+        }
+
+        private void SaveStream(XmlNode root, FlythroughEvent firstEvt) {
+            FlythroughEvent evt = firstEvt;
+            while (evt != null) {
+                root.AppendChild(evt.Save(root.OwnerDocument));
+                evt = evt.NextEvent;
+            }
         }
     }
 }
