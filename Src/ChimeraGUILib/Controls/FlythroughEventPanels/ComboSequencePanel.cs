@@ -30,6 +30,20 @@ namespace ChimeraGUILib.Controls.FlythroughEventPanels {
             mMaster = master;
 
             eventsLabel.Text = string.Format("Sequence {0} Events", sequence1 ? 1 : 2);
+            evt.OnStart += (source, args) => {
+                Invoke(new Action(() => {
+                    if (eventsList.Items.Count > 0 && mSequence1 ? 
+                            mEvent.Stream1First == mEvent.Stream1Current : 
+                            mEvent.Stream2First == mEvent.Stream2Current)
+                        eventsList.SelectedIndex = 0;
+                }));
+            };
+            evt.OnNextEvent += (source, seq1) => {
+                Invoke(new Action(() => {
+                    if (seq1 == mSequence1 && eventsList.SelectedIndex < (eventsList.Items.Count - 1))
+                        eventsList.SelectedIndex++;
+                }));
+            };
         }
 
         private void moveToEventToolStripMenuItem_Click(object sender, EventArgs e) {
@@ -99,6 +113,10 @@ namespace ChimeraGUILib.Controls.FlythroughEventPanels {
             }
             if (mCurrentPanel != null)
                 mCurrentPanel.Visible = false;
+            if (mSequence1)
+                mEvent.Stream1Current = mEvents[(string)eventsList.SelectedItem];
+            else
+                mEvent.Stream2Current = mEvents[(string)eventsList.SelectedItem];
             mCurrentPanel = mPanels[(string) eventsList.SelectedItem];
             mCurrentPanel.Visible = true;
         }
@@ -128,6 +146,13 @@ namespace ChimeraGUILib.Controls.FlythroughEventPanels {
                     eventsList.SelectedIndex = eventsList.SelectedIndex - 1;
                 }
             }
+        }
+
+        private void resetButton_Click(object sender, EventArgs e) {
+            if (mSequence1)
+                mEvent.Stream1Current.Reset();
+            else
+                mEvent.Stream2Current.Reset();
         }
     }
 }

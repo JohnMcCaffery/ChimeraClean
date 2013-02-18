@@ -34,6 +34,13 @@ namespace ChimeraGUILib.Controls.FlythroughEventPanels {
 
             targetVectorPanel.OnChange += (source, args) => mEvent.Target = targetVectorPanel.Value;
             lengthValue.ValueChanged += (source, args) => mEvent.Length = (int)lengthValue.Value;
+            evt.OnStep += (source, args) => {
+                if (!IsDisposed)
+                    Invoke(new Action(() => {
+                        progressBar.Maximum = evt.TotalSteps;
+                        progressBar.Value = Math.Min(evt.CurrentStep, progressBar.Maximum);
+                    }));
+            };
         }
 
         private void moveToTakeCurrentButton_Click(object sender, EventArgs e) {

@@ -298,7 +298,6 @@ namespace UtilLib {
                         Thread.Sleep(500);
                         m.StartMaster();
                     }).Start();
-                //Init.StartGui(masterConfig, m, () => new MasterForm(m));
             } else {
                 if (autostartMaster)
                     m.StartMaster();
@@ -359,8 +358,6 @@ namespace UtilLib {
                         Thread.Sleep(500);
                         s.Connect();
                     }).Start();
-                //Init.StartGui(slaveConfig, s, () => new SlaveForm(s));
-
             } else {
                 if (autostartSlave)
                     s.Connect();

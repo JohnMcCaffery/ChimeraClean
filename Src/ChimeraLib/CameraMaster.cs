@@ -29,6 +29,10 @@ using ChimeraLib;
 
 namespace UtilLib {
     public class CameraMaster : Master {
+        /// <summary>
+        /// How often updates are to be generated (ms).
+        /// </summary>
+        public int UPDATE_FREQ = 20;
         private int packetsReceived;
         private int packetsForwarded;
         private int packetsGenerated;

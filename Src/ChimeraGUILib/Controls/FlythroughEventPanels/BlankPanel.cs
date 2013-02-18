@@ -26,6 +26,12 @@ namespace ChimeraGUILib.Controls.FlythroughEventPanels {
                 lengthValue.Value = mEvent.Length;
 
             lengthValue.ValueChanged += (source, args) => mEvent.Length = (int)lengthValue.Value;
+            evt.OnStep += (source, args) => {
+                Invoke(new Action(() => {
+                    progressBar.Maximum = evt.TotalSteps;
+                    progressBar.Value = Math.Min(evt.CurrentStep, progressBar.Maximum);
+                }));
+            };
         }
     }
 }

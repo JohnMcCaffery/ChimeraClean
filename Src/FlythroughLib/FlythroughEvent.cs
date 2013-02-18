@@ -48,6 +48,11 @@ namespace FlythroughLib {
         public event EventHandler OnStart;
 
         /// <summary>
+        /// Triggered every time the next step is triggered.
+        /// </summary>
+        public event EventHandler OnStep;
+
+        /// <summary>
         /// Initialise this event with no parent, next or previous events.
         /// </summary>
         /// <param name="container">The container which manages all events.</param>
@@ -197,6 +202,8 @@ namespace FlythroughLib {
         protected bool DoStep() {
             mCurrentStep++;
             bool running = mCurrentStep < mSteps;
+            if (OnStep != null)
+                OnStep(this, null);
             if (!running)
                 mCurrentStep = 0;
             return running;
@@ -216,7 +223,7 @@ namespace FlythroughLib {
         /// <summary>
         /// Reset the step counter.
         /// </summary>
-        public void Reset() {
+        public virtual void Reset() {
             mCurrentStep = 0;
         }
 

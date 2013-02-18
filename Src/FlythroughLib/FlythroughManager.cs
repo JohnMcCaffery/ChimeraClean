@@ -92,8 +92,11 @@ namespace FlythroughLib {
         /// Plane the flythrough running. Will continue on from wherever it was before.
         /// </summary>
         public void Play() {
-            if (mFirstEvent == null)
+            if (mFirstEvent == null) {
+                if (OnComplete != null)
+                    OnComplete(this, null);
                 return;
+            }
 
             if (mCurrentEvent == null) {
                 mCurrentEventIndex = 0;
@@ -120,7 +123,10 @@ namespace FlythroughLib {
         /// </summary>
         public void Reset() {
             mPlaying = false;
-            mCurrentEvent = null;
+            if (mCurrentEvent != null) {
+                mCurrentEvent.Reset();
+                mCurrentEvent = null;
+            }
         }
 
         /// <summary>
@@ -152,8 +158,9 @@ namespace FlythroughLib {
         private void TimerMethod() {
             while (mPlaying && mCurrentEvent != null) {
                 lock (this) {
-                    if (!mCurrentEvent.Step()) {
-                        mCurrentEvent = mCurrentEvent.NextEvent;
+                    if (mCurrentEvent != null && !mCurrentEvent.Step()) {
+                        if (mCurrentEvent != null)
+                            mCurrentEvent = mCurrentEvent.NextEvent;
                         if (mCurrentEvent == null) {
                             mPlaying = false;
                             mCurrentEvent = null;
@@ -282,6 +289,14 @@ namespace FlythroughLib {
 
             doc.AppendChild(root);
             doc.Save(file);
+        }
+
+        /// <summary>
+        /// Reset the currently playing event.
+        /// </summary>
+        public void ResetCurrent() {
+            if (mCurrentEvent != null)
+                mCurrentEvent.Reset();
         }
     }
 }

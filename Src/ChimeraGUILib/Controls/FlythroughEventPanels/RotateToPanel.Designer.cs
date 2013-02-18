@@ -30,6 +30,7 @@
             this.pitchValue = new System.Windows.Forms.NumericUpDown();
             this.lengthValue = new System.Windows.Forms.NumericUpDown();
             this.Length = new System.Windows.Forms.Label();
+            this.progressBar = new System.Windows.Forms.ProgressBar();
             ((System.ComponentModel.ISupportInitialize)(this.yawValue)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pitchValue)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lengthValue)).BeginInit();
@@ -130,10 +131,21 @@
             this.Length.TabIndex = 21;
             this.Length.Text = "Length(ms)";
             // 
+            // progressBar
+            // 
+            this.progressBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.progressBar.Location = new System.Drawing.Point(3, 55);
+            this.progressBar.Name = "progressBar";
+            this.progressBar.Size = new System.Drawing.Size(319, 23);
+            this.progressBar.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
+            this.progressBar.TabIndex = 23;
+            // 
             // RotateToPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.progressBar);
             this.Controls.Add(this.lengthValue);
             this.Controls.Add(this.Length);
             this.Controls.Add(this.rotateToTakeCurrentButton);
@@ -161,5 +173,6 @@
         private System.Windows.Forms.NumericUpDown pitchValue;
         private System.Windows.Forms.NumericUpDown lengthValue;
         private System.Windows.Forms.Label Length;
+        private System.Windows.Forms.ProgressBar progressBar;
     }
 }

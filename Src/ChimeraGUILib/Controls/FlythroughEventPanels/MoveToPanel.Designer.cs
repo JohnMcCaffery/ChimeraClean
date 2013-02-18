@@ -28,6 +28,7 @@
             this.lengthValue = new System.Windows.Forms.NumericUpDown();
             this.Length = new System.Windows.Forms.Label();
             this.targetVectorPanel = new ProxyTestGUI.VectorPanel();
+            this.progressBar = new System.Windows.Forms.ProgressBar();
             ((System.ComponentModel.ISupportInitialize)(this.lengthValue)).BeginInit();
             this.SuspendLayout();
             // 
@@ -90,10 +91,21 @@
             this.targetVectorPanel.Y = 128F;
             this.targetVectorPanel.Z = 60F;
             // 
+            // progressBar
+            // 
+            this.progressBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.progressBar.Location = new System.Drawing.Point(3, 125);
+            this.progressBar.Name = "progressBar";
+            this.progressBar.Size = new System.Drawing.Size(236, 23);
+            this.progressBar.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
+            this.progressBar.TabIndex = 14;
+            // 
             // MoveToPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.progressBar);
             this.Controls.Add(this.lengthValue);
             this.Controls.Add(this.Length);
             this.Controls.Add(this.moveToTakeCurrentButton);
@@ -113,5 +125,6 @@
         private ProxyTestGUI.VectorPanel targetVectorPanel;
         private System.Windows.Forms.NumericUpDown lengthValue;
         private System.Windows.Forms.Label Length;
+        private System.Windows.Forms.ProgressBar progressBar;
     }
 }
