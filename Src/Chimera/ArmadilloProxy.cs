@@ -24,6 +24,7 @@ using System.Text;
 using Nini.Config;
 using System.IO;
 using UtilLib;
+using ConsoleTest;
 
 namespace ArmadilloProxy {
     class ArmadilloProxy {
@@ -63,28 +64,38 @@ namespace ArmadilloProxy {
             List<ProxyManager> consoleInstances = new List<ProxyManager>();
 
             if (Init.Has(general, "Master")) {
-                ProxyManager m = Init.InitCameraMaster(args);
+                IConfig masterConfig;
+                CameraMaster m = Init.InitCameraMaster(args, out masterConfig);
                 if (!Init.Get(config.Configs["Master"], "GUI", true))
                     consoleInstances.Add(m);
+                if (Init.Get(masterConfig, "GUI", true))
+                    Init.StartGui(masterConfig, m, () => new MasterForm(m));
             }
 
+            IConfig slaveConfig;
             if (help && (Init.Has(general, "Slave") || Init.Has(general, "SlaveCount"))) {
                 if (Init.Has(general, "Master"))
                     Console.WriteLine("");
-                Init.InitCameraSlave(args);
+                CameraSlave s = Init.InitCameraSlave(args, out slaveConfig);
+                if (Init.Get(slaveConfig, "GUI", true))
+                    Init.StartGui(slaveConfig, s, () => new SlaveForm(s));
             } else {
                 int sc = Init.Get(general, "SlaveCount", -1);
                 if (Init.Has(general, "Slave") || Init.Get(general, "Name", null) != null) {
-                    CameraSlave s = Init.InitCameraSlave(args);
-                    if (!Init.Get(config.Configs[s.Name], "GUI", true))
+                    CameraSlave s = Init.InitCameraSlave(args, out slaveConfig);
+                    if (!Init.Get(slaveConfig, "GUI", true))
                         consoleInstances.Add(s);
+                    else
+                        Init.StartGui(slaveConfig, s, () => new SlaveForm(s));
                 } else if (sc > 0) {
                     int slave = Init.Get(general, "FirstSlave", 1);
                     for (int i = 1; i <= sc; i++) {
                         string slaveName = "Slave" + (slave++);
-                        CameraSlave s = Init.InitCameraSlave(new string[] { "-n", slaveName }.Concat(args).ToArray());
+                        CameraSlave s = Init.InitCameraSlave(new string[] { "-n", slaveName }.Concat(args).ToArray(), out slaveConfig);
                         if (!Init.Get(config.Configs[slaveName], "GUI", true))
                             consoleInstances.Add(s);
+                        else
+                            Init.StartGui(slaveConfig, s, () => new SlaveForm(s));
                     }
                 }
             }

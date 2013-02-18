@@ -22,8 +22,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 using UtilLib;
-using ConsoleTest;
 using Nini.Config;
+using ConsoleTest;
 
 namespace ArmadilloMasterGUI {
     static class ArmadilloMaster {
@@ -34,7 +34,9 @@ namespace ArmadilloMasterGUI {
         static void Main(string[] args) {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            CameraMaster m = Init.InitCameraMaster(args.Concat(new string[] { "-g", "true" }).ToArray());
+            IConfig masterConfig;
+            CameraMaster m = Init.InitCameraMaster(args.Concat(new string[] { "-g", "true" }).ToArray(), out masterConfig);
+            Init.StartGui(masterConfig, m, () => new MasterForm(m));
         }
     }
 }

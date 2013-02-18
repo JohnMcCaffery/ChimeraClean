@@ -60,9 +60,9 @@ namespace ProxyTestGUI {
                         zValue.Minimum = new decimal(value.Z);
 
                     if (!valueChange) {
-                        xValue.Value = float.IsInfinity(value.X) ? xValue.Maximum : new decimal(value.X);
-                        yValue.Value = float.IsInfinity(value.Y) ? yValue.Maximum : new decimal(value.Y);
-                        zValue.Value = float.IsInfinity(value.Z) ? zValue.Maximum : new decimal(value.Z);
+                        xValue.Value = float.IsInfinity(value.X) ? xValue.Maximum : float.IsNaN(value.X) ? decimal.Zero : new decimal(value.X);
+                        yValue.Value = float.IsInfinity(value.Y) ? yValue.Maximum : float.IsNaN(value.Y) ? decimal.Zero : new decimal(value.Y);
+                        zValue.Value = float.IsInfinity(value.Z) ? zValue.Maximum : float.IsNaN(value.Z) ? decimal.Zero : new decimal(value.Z);
                     }
                     externalSet = false;
 

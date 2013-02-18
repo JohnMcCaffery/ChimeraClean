@@ -38,9 +38,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\libopenmetaverse\bin\log4net.dll</HintPath>
     </Reference>
-    <Reference Include="Nini, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\opensim-0.7.3.1\bin\Nini.dll</HintPath>
+    <Reference Include="Nini">
+      <HintPath>..\..\Lib\Nini.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -79,6 +78,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ChimeraGUILib\ChimeraGUILib.csproj">
+      <Project>{E30ACDAE-ACED-4D3A-BFA8-625F4C119E5F}</Project>
+      <Name>ChimeraGUILib</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ChimeraLib\ChimeraLib.csproj">
       <Project>{58E39BFE-20D5-4C8D-BCFC-6B5E641C2DFF}</Project>
       <Name>ChimeraLib</Name>

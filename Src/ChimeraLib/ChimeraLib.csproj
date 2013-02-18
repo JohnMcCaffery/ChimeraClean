@@ -32,9 +32,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="GridProxy">
-      <HintPath>..\..\Lib\GridProxy.dll</HintPath>
-    </Reference>
     <Reference Include="log4net">
       <HintPath>..\..\Lib\log4net.dll</HintPath>
     </Reference>
@@ -70,32 +67,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BackChannel.cs" />
-    <Compile Include="Controls\WindowPanel.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Controls\WindowPanel.Designer.cs">
-      <DependentUpon>WindowPanel.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\MasterForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\MasterForm.Designer.cs">
-      <DependentUpon>MasterForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\SlaveForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\SlaveForm.Designer.cs">
-      <DependentUpon>SlaveForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="FullMaster.cs" />
     <Compile Include="FullSlave.cs" />
-    <Compile Include="Controls\LogPanel.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Controls\LogPanel.Designer.cs">
-      <DependentUpon>LogPanel.cs</DependentUpon>
-    </Compile>
     <Compile Include="Init.cs" />
     <Compile Include="KinectSource.cs" />
     <Compile Include="SetCameraPropertiesPacket.cs" />
@@ -105,31 +78,7 @@
     <Compile Include="CameraSlave.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ProxyManager.cs" />
-    <Compile Include="Controls\ProxyPanel.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Controls\ProxyPanel.Designer.cs">
-      <DependentUpon>ProxyPanel.cs</DependentUpon>
-    </Compile>
     <Compile Include="Rotation.cs" />
-    <Compile Include="Controls\RotationPanel.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Controls\RotationPanel.Designer.cs">
-      <DependentUpon>RotationPanel.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\SetFollowCamPropertiesPanel.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Controls\SetFollowCamPropertiesPanel.Designer.cs">
-      <DependentUpon>SetFollowCamPropertiesPanel.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\VectorPanel.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Controls\VectorPanel.Designer.cs">
-      <DependentUpon>VectorPanel.cs</DependentUpon>
-    </Compile>
     <Compile Include="InterProxyServer.cs" />
     <Compile Include="InterProxyClient.cs" />
   </ItemGroup>
@@ -138,32 +87,10 @@
     <None Include="ClassDiagram1.cd" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Controls\LogPanel.resx">
-      <DependentUpon>LogPanel.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Controls\ProxyPanel.resx">
-      <DependentUpon>ProxyPanel.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Controls\RotationPanel.resx">
-      <DependentUpon>RotationPanel.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Controls\SetFollowCamPropertiesPanel.resx">
-      <DependentUpon>SetFollowCamPropertiesPanel.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Controls\VectorPanel.resx">
-      <DependentUpon>VectorPanel.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Controls\WindowPanel.resx">
-      <DependentUpon>WindowPanel.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\MasterForm.resx">
-      <DependentUpon>MasterForm.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\SlaveForm.resx">
-      <DependentUpon>SlaveForm.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
+    <ProjectReference Include="..\..\..\libopenmetaverse\Programs\GridProxy\GridProxy.csproj">
+      <Project>{C04A5541-444E-4312-97E7-F66457F87EF8}</Project>
+      <Name>GridProxy</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

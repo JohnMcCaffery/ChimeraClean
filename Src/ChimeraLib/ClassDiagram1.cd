@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Class Name="UtilLib.InterProxyServer" BaseTypeListCollapsed="true">
-    <Position X="8" Y="7.5" Width="2.25" />
+    <Position X="8.25" Y="7.25" Width="2.25" />
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
@@ -11,7 +11,7 @@
     </TypeIdentifier>
   </Class>
   <Class Name="UtilLib.InterProxyClient" BaseTypeListCollapsed="true">
-    <Position X="13.25" Y="7.5" Width="2" />
+    <Position X="13.25" Y="7.25" Width="2" />
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
@@ -25,8 +25,15 @@
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
+    <NestedTypes>
+      <Enum Name="UtilLib.CameraMaster.CameraControlEnum" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>CameraMaster.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
     <TypeIdentifier>
-      <HashCode>AAAAAAAAgAIABIggIACAIAkgAwQgIACEAAEggIAAAAQ=</HashCode>
+      <HashCode>AIYCgAGAgAIChMghoBAgAAkgoQQgoAS1EBEgEIgAAAU=</HashCode>
       <FileName>CameraMaster.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -46,13 +53,13 @@
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>AAUAAQAABBABCYIgAMQAAoQAAgwAAAWQIAEAAAACAAE=</HashCode>
+      <HashCode>AAUAAQAAQBADiYIAAMSAIIQAAkgAAASIIAEACAACAAA=</HashCode>
       <FileName>CameraSlave.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Field Name="interProxyClient" />
-      <Property Name="Rotation" />
     </ShowAsAssociation>
+    <Lollipop Position="0.2" />
   </Class>
   <Class Name="UtilLib.FullSlave">
     <Position X="14.5" Y="5.75" Width="1.75" />
@@ -74,7 +81,7 @@
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>AAACAAAAAQiACAEBAACEAAAAAEAgAEAAAABACAAQIAA=</HashCode>
+      <HashCode>AAACAAAAAQiACAEBQACEAAAAAEAgAEAAAABACAAQIAA=</HashCode>
       <FileName>Rotation.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -134,7 +141,7 @@
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>AISEgAQgBAIAAAACBEACAgAKiIIAODgDQAUGAgAAEwA=</HashCode>
+      <HashCode>AAyEgAQgAAIAAAACAEAGAgAKiIIAGBgDQBUGAgAgAwA=</HashCode>
       <FileName>BackChannel.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -144,7 +151,7 @@
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>oUHAASjSkaUwKBUxYMCgAAFShIiMlEI7slFjiJkABQs=</HashCode>
+      <HashCode>s0HuISjSlaU0KFVxUNKwRpVShIiulEM781FjiJlFBUs=</HashCode>
       <FileName>Forms\MasterForm.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -157,7 +164,7 @@
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>AAEgQQAQACGAABRQSFCCEAECCAAIAAQRAkAACBAIAAg=</HashCode>
+      <HashCode>AAEgQQAQACGAABRwaBCCEAEGGAAICAABAkAACBAIAAg=</HashCode>
       <FileName>Forms\SlaveForm.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -166,23 +173,82 @@
   </Class>
   <Class Name="ChimeraLib.Window">
     <Position X="0.5" Y="5.75" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>ACAAgAAABQAAAAAQBkCAAEAAAAQAIAACAgJAICBAAAA=</HashCode>
-      <FileName>Window.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="ChimeraLib.Controls.WindowPanel">
-    <Position X="3" Y="4.25" Width="2" />
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>cGACoCAUAQIAABAABgIDAIkSBABIQIKIAQBACBAACAA=</HashCode>
+      <HashCode>ACAAgAAABQAUAAAQRkCAAEAAAAQAIAAiAgJAIGBIAAA=</HashCode>
+      <FileName>Window.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ChimeraLib.Controls.WindowPanel">
+    <Position X="2.75" Y="4.25" Width="2" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>cGACoCAUAQIAABAABgIAAIkSBABIQIKIASBACBAACAA=</HashCode>
       <FileName>Controls\WindowPanel.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="Window" />
     </ShowAsAssociation>
   </Class>
+  <Class Name="UtilLib.Init" Collapsed="true">
+    <Position X="19.5" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEAAAAAAAKAAJAEAAAIIAAAIAAAIAIEAAIQgAAAIA=</HashCode>
+      <FileName>Init.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ChimeraLib.KinectSource" Collapsed="true">
+    <Position X="21.25" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAAAAAAQBABZMgApCAKAMSAAKAAoIEIAAgAAAAAAA=</HashCode>
+      <FileName>KinectSource.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ChimeraLib.SetCameraPropertiesPacket" Collapsed="true">
+    <Position X="19.5" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACAAAAAgAAAAAAAAABAAAAAAEAABAAAAAAAAAA=</HashCode>
+      <FileName>SetCameraPropertiesPacket.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ChimeraLib.SetFrustumPacket" Collapsed="true">
+    <Position X="21.25" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACAAAAAEAAAAAAAAABAAAAAAEAABAAAAAAAAAA=</HashCode>
+      <FileName>SetCameraPropertiesPacket.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ChimeraLib.PacketExtensions" Collapsed="true">
+    <Position X="23.25" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAABAAAAAAAAAAEAgAAAAAAAAAAAAA=</HashCode>
+      <FileName>SetCameraPropertiesPacket.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="UtilLib.IScreenListener" Collapsed="true">
+    <Position X="19.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAQAAAgAAAAAAAAAAAAAAAAAAAAAAACAAAAAA=</HashCode>
+      <FileName>BackChannel.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Delegate Name="UtilLib.MessageDelegate" Collapsed="true">
+    <Position X="21.25" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAgAAAAAAAAAA=</HashCode>
+      <FileName>BackChannel.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="UtilLib.DataDelegate" Collapsed="true">
+    <Position X="19.5" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAABAAAAAAAABAAAAAACAAAAAAAAAA=</HashCode>
+      <FileName>BackChannel.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
   <Font Name="Tahoma" Size="8.25" />
 </ClassDiagram>

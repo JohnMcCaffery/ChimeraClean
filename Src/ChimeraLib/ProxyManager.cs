@@ -171,7 +171,8 @@ namespace UtilLib {
             string portArg = "--proxy-login-port=" + proxyConfig.ProxyPort;
             string listenIPArg = "--proxy-proxyAddress-facing-address=" + proxyAddress;
             string loginURIArg = "--proxy-remote-login-uri=" + proxyConfig.ProxyLoginURI;
-            string[] args = { portArg, listenIPArg, loginURIArg };
+            string proxyCaps = "--proxy-caps=false";
+            string[] args = { portArg, listenIPArg, loginURIArg, proxyCaps };
             GridProxyConfig config = new GridProxyConfig("Routing God", "jm726@st-andrews.ac.uk", args);
             try {
                 clientProxy = new Proxy(config);

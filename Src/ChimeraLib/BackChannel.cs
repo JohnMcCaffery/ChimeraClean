@@ -355,6 +355,8 @@ namespace UtilLib {
             Utils.DoubleToBytes(window.Diagonal, bytes, i); i += 8;
             Utils.DoubleToBytes(window.AspectRatio, bytes, i); i += 8;;
 
+
+
             Send(bytes, destination);
         }
 
