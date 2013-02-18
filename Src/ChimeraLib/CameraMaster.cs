@@ -40,8 +40,10 @@ namespace UtilLib {
         private uint localID;
         private bool processingPacket;
         private bool viewerControl;
-        private Vector3 worldPosition;
-        private Rotation worldRotation;
+        private Vector3 mWorldPosition;
+        private Rotation mWorldRotation;
+        private Vector3 mPositionDelta;
+        private Vector3 mRotationDelta;
         private Vector3 cameraOffset = new Vector3(0f, 0f, 0f);
 
         private readonly HashSet<PacketType> packetTypesToForward = new HashSet<PacketType>();
@@ -75,11 +77,11 @@ namespace UtilLib {
         /// Creates a master with no specified masterAddress and masterPort. Address is localhost. Port will be generated when the master is started.
         /// </summary>
         public CameraMaster(Init.Config config) : base(config) {
-            Rotation = new Rotation();
-            Position = new Vector3(128f, 128f, 24f);
+            mWorldRotation = new Rotation();
+            Update(new Vector3(128f, 128f, 24f), Vector3.Zero, Vector3.UnitX, Vector3.Zero);
             OnSlaveConnected += (slave) => {
                 slave.Window.OnChange += (source, args) => {
-                    masterServer.Send(worldPosition, worldRotation, slave.Window, slave.EP);
+                    masterServer.Send(mWorldPosition, mWorldRotation, slave.Window, slave.EP);
                     if (OnCameraUpdated != null)
                         OnCameraUpdated(this, null);
                 };
@@ -88,7 +90,7 @@ namespace UtilLib {
 
             Window.OnChange += (source, args) => {
                 foreach (var slave in slaves.Values) 
-                    masterServer.Send(worldPosition, worldRotation, slave.Window, slave.EP);
+                    masterServer.Send(mWorldPosition, mWorldRotation, slave.Window, slave.EP);
 
                 GenerateMasterPacket();
             };
@@ -125,18 +127,6 @@ namespace UtilLib {
         }
 
         /// <summary>
-        /// Positon of the camera.
-        /// </summary>
-        public Vector3 Position {
-            get { return worldPosition; }
-            set {
-                worldPosition = value;
-                if (!processingPacket)
-                    NotifySlaves();
-            }
-        }
-
-        /// <summary>
         /// If true then input from the proxied viewer software will be used to control position in the virtual world.
         /// </summary>
         public bool ViewerControl {
@@ -145,27 +135,74 @@ namespace UtilLib {
         }
 
         /// <summary>
+        /// Positon of the camera.
+        /// </summary>
+        public Vector3 Position {
+            get { return mWorldPosition; }
+            /*set {
+                mWorldPosition = value;
+                if (!processingPacket)
+                    NotifySlaves();
+            }*/
+        }
+
+        /*
+        public void SetPosition(Vector3 position, Vector3 positionDelta) {
+            mWorldPosition = position;
+            mPositionDelta = positionDelta;
+        }*/
+
+        /// <summary>
         /// The rotation of the camera.
         /// </summary>
-        public Rotation Rotation {
-            get { return worldRotation; }
-            set {
+        public Vector3 LookAt {
+            get { return mWorldRotation.LookAtVector; }
+            /*set {
                 if (worldRotation != null)
                     worldRotation.OnChange -= RotationChanged;
                 worldRotation = value;
                 worldRotation.OnChange += RotationChanged;
                 RotationChanged(worldRotation, null);
-            }
+            }*/
         }
 
+        public void Update(Vector3 position, Vector3 positionDelta, Vector3 lookAt, Vector3 lookAtDelta) {
+            mWorldPosition = position;
+            mPositionDelta = positionDelta;
+            mWorldRotation.LookAtVector = lookAt;
+            mRotationDelta = lookAtDelta;
+
+            NotifySlaves();
+        }
+
+        /*
+        public void SetRotation(float pitch, float yaw, float pitchDelta, float yawDelta) {
+            mWorldRotation.Pitch = pitch;
+            mWorldRotation.Yaw = yaw;
+            mRotationDelta = new Rotation(pitchDelta, yawDelta).LookAtVector;
+
+        }*/
+
+        /*
+        public void SetRotation(Vector3 lookAt, Vector3 lookAtDelta) {
+            mWorldRotation.LookAtVector = lookAt;
+            mRotationDelta = lookAtDelta;
+        }
+
+        public void SetRotation(Quaternion rotation, Quaternion rotationDelta) {
+            mWorldRotation.Quaternion = rotation;
+            mRotationDelta = new Rotation(rotationDelta).LookAtVector;
+        }*/
+
+        /*
         private void RotationChanged(object source, EventArgs args) {
             if (!processingPacket)
                 NotifySlaves();
-        }
+        }*/
 
         private void NotifySlaves() {
             foreach (var slave in slaves.Values) {
-                masterServer.Send(worldPosition, worldRotation, slave.Window, slave.EP);
+                masterServer.Send(mWorldPosition, mWorldRotation, slave.Window, slave.EP);
             }
 
             Logger.Debug("Master created Notified all slaves of a change and broadcast it to " + slaves.Count + " slaves.");
@@ -270,13 +307,13 @@ namespace UtilLib {
 
 
             if (cameraControl == CameraControlEnum.Frustum) {
-                clientProxy.InjectPacket(Window.CreateSetFollowCamPropertiesPacket(worldPosition, worldRotation), Direction.Incoming);
+                clientProxy.InjectPacket(Window.CreateSetFollowCamPropertiesPacket(mWorldPosition, mWorldRotation), Direction.Incoming);
                 clientProxy.InjectPacket(Window.CreateFrustumPacket(vanishingDistance), Direction.Incoming);
             }
 
             if (cameraControl == CameraControlEnum.Individual) {
                 if (updateEyeOffset || updateRotation)
-                    clientProxy.InjectPacket(Window.CreateSetFollowCamPropertiesPacket(worldPosition, worldRotation, updateEyeOffset, updateRotation), Direction.Incoming);
+                    clientProxy.InjectPacket(Window.CreateSetFollowCamPropertiesPacket(mWorldPosition, mWorldRotation, updateEyeOffset, updateRotation), Direction.Incoming);
                 clientProxy.InjectPacket(Window.CreateCameraPacket(updateFrustum, updateFoV, updateAspectRatio), Direction.Incoming);
             }
         }
@@ -348,39 +385,38 @@ namespace UtilLib {
                 Vector3 newPosition = new Vector3(block.Data, i);
                 i += 12;
                 // Velocity
-                new Vector3(
-Utils.UInt16ToFloat(block.Data, i, -128.0f, 128.0f),
-Utils.UInt16ToFloat(block.Data, i + 2, -128.0f, 128.0f),
-Utils.UInt16ToFloat(block.Data, i + 4, -128.0f, 128.0f));
+                Vector3 positionDelta = new Vector3(
+                    Utils.UInt16ToFloat(block.Data, i, -128.0f, 128.0f),
+                    Utils.UInt16ToFloat(block.Data, i + 2, -128.0f, 128.0f),
+                    Utils.UInt16ToFloat(block.Data, i + 4, -128.0f, 128.0f));
                 i += 6;
                 // Acceleration
                 new Vector3(
-Utils.UInt16ToFloat(block.Data, i, -64.0f, 64.0f),
-Utils.UInt16ToFloat(block.Data, i + 2, -64.0f, 64.0f),
-Utils.UInt16ToFloat(block.Data, i + 4, -64.0f, 64.0f));
+                    Utils.UInt16ToFloat(block.Data, i, -64.0f, 64.0f),
+                    Utils.UInt16ToFloat(block.Data, i + 2, -64.0f, 64.0f),
+                    Utils.UInt16ToFloat(block.Data, i + 4, -64.0f, 64.0f));
                 i += 6;
                 // Rotation (theta)
                 Quaternion newRotation = new Quaternion(
-  Utils.UInt16ToFloat(block.Data, i, -1.0f, 1.0f),
-  Utils.UInt16ToFloat(block.Data, i + 2, -1.0f, 1.0f),
-  Utils.UInt16ToFloat(block.Data, i + 4, -1.0f, 1.0f));
+                    Utils.UInt16ToFloat(block.Data, i, -1.0f, 1.0f),
+                    Utils.UInt16ToFloat(block.Data, i + 2, -1.0f, 1.0f),
+                    Utils.UInt16ToFloat(block.Data, i + 4, -1.0f, 1.0f));
                 i += 8;
                 // Angular velocity (omega)
-                new Vector3(
-  Utils.UInt16ToFloat(block.Data, i, -64.0f, 64.0f),
-  Utils.UInt16ToFloat(block.Data, i + 2, -64.0f, 64.0f),
-  Utils.UInt16ToFloat(block.Data, i + 4, -64.0f, 64.0f));
+                    Vector3 lookAtDelta = new Vector3(
+                    Utils.UInt16ToFloat(block.Data, i, -64.0f, 64.0f),
+                    Utils.UInt16ToFloat(block.Data, i + 2, -64.0f, 64.0f),
+                    Utils.UInt16ToFloat(block.Data, i + 4, -64.0f, 64.0f));
 
 
                 processingPacket = true;
 
                 newPosition += cameraOffset * newRotation;
-                if (!Equal(newPosition, worldPosition) && !Equal(newPosition, ModifiedPosition))
-                    Position = newPosition;
-
                 Vector3 lookAt = Vector3.UnitX * newRotation;
-                if (!Equal(lookAt, worldRotation.LookAtVector) && !Equal(lookAt, ModifiedRotation.LookAtVector))
-                    Rotation.LookAtVector = lookAt;
+                Update(newPosition, positionDelta, lookAt, lookAtDelta);
+
+                //if (!Equal(newPosition, mWorldPosition) && !Equal(newPosition, ModifiedPosition))
+                //if (!Equal(lookAt, mWorldRotation.LookAtVector) && !Equal(lookAt, ModifiedRotation.LookAtVector))
 
                 processingPacket = false;
 
@@ -392,12 +428,13 @@ Utils.UInt16ToFloat(block.Data, i + 4, -64.0f, 64.0f));
             AgentUpdatePacket packet = (AgentUpdatePacket)p;
 
             processingPacket = true;
+            Update(packet.AgentData.CameraCenter, Vector3.Zero, packet.AgentData.CameraAtAxis, Vector3.Zero);
             //bool posEq = Equal(worldPosition, packet.AgentData.CameraCenter);
             //bool modEq = Equal(packet.AgentData.CameraCenter, ModifiedPosition);
             //if (!Equal(worldPosition,packet.AgentData.CameraCenter) && !Equal(packet.AgentData.CameraCenter, ModifiedPosition))
-                Position = packet.AgentData.CameraCenter;
+                //SetPosition(packet.AgentData.CameraCenter, Vector3.Zero);
             //if (!Equal(worldRotation.LookAtVector, packet.AgentData.CameraAtAxis) && !Equal(packet.AgentData.CameraAtAxis, Rotation.LookAtVector))
-                Rotation.LookAtVector = packet.AgentData.CameraAtAxis;
+                //SetRotation(packet.AgentData.CameraAtAxis, Vector3.Zero);
             processingPacket = false;
 
             //packetsForwarded++;
@@ -421,11 +458,11 @@ Utils.UInt16ToFloat(block.Data, i + 4, -64.0f, 64.0f));
         }
 
         public Vector3 ModifiedPosition {
-            get { return Position + ((Window.EyePosition * Rotation.Quaternion) / 1000f); }
+            get { return Position + ((Window.EyePosition * mWorldRotation.Quaternion) / 1000f); }
         }
 
         public Rotation ModifiedRotation {
-            get { return new Rotation(Rotation.Pitch + Window.RotationOffset.Pitch, Rotation.Yaw + Window.RotationOffset.Yaw); }
+            get { return new Rotation(mWorldRotation.Pitch + Window.RotationOffset.Pitch, mWorldRotation.Yaw + Window.RotationOffset.Yaw); }
         }
 
         /// <summary>
@@ -435,9 +472,9 @@ Utils.UInt16ToFloat(block.Data, i + 4, -64.0f, 64.0f));
         public Vector3 CameraOffset {
             get { return cameraOffset; }
             set {
-                worldPosition -= cameraOffset * worldRotation.Quaternion;
+                mWorldPosition -= cameraOffset * mWorldRotation.Quaternion;
                 cameraOffset = value;
-                worldPosition += cameraOffset * worldRotation.Quaternion;
+                mWorldPosition += cameraOffset * mWorldRotation.Quaternion;
                 NotifySlaves();
             }
         }

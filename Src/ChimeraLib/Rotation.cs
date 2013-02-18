@@ -25,6 +25,16 @@ using OpenMetaverse;
 
 namespace UtilLib {
     public class Rotation {
+        /*public static bool operator!=(Rotation rot1, Rotation rot2) {
+            return  !(rot1.Equals(null) && rot2.Equals(null)) &&
+                   (rot1.Equals(null) ||
+                    rot2.Equals(null) || 
+                    rot1.Yaw != rot2.Yaw || 
+                    rot1.Pitch != rot2.Pitch);
+        }
+        public static bool operator==(Rotation rot1, Rotation rot2) {
+            return !rot1.Equals(null) && !rot2.Equals(null) && rot1.Yaw == rot2.Yaw && rot1.Pitch == rot2.Pitch;
+        }*/
         public static Rotation operator +(Rotation r1, Rotation r2) {
             return new Rotation(r1.Pitch + r2.Pitch, r1.Yaw + r2.Yaw);
         }

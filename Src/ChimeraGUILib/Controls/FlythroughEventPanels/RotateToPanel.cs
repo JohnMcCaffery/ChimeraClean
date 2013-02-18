@@ -45,8 +45,9 @@ namespace ChimeraGUILib.Controls.FlythroughEventPanels {
         }
 
         private void rotateToTakeCurrentButton_Click(object sender, EventArgs e) {
-            mEvent.PitchTarget = mMaster.Rotation.Pitch;
-            mEvent.YawTarget = mMaster.Rotation.Yaw;
+            Rotation rot = new Rotation(mMaster.LookAt);
+            mEvent.PitchTarget = rot.Pitch;
+            mEvent.YawTarget = rot.Yaw;
             pitchValue.Value = new decimal(mEvent.PitchTarget);
             yawValue.Value = new decimal(mEvent.YawTarget);
         }

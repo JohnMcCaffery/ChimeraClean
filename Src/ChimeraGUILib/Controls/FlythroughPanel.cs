@@ -22,16 +22,15 @@ namespace FlythroughLib.Panels {
         public FlythroughPanel() {
             InitializeComponent();
 
-            mContainer.OnPositionChange += (source, args) => mMaster.Position = mContainer.Position;
             mContainer.OnComplete += (source, args) => {
                 if (loopCheck.Checked)
                     mContainer.Play();
                 else
                     Invoke(new Action(() => playButton.Enabled = true));
             };
-            mContainer.OnRotationChange += (source, args) => {
-                mMaster.Rotation.Pitch = mContainer.Rotation.Pitch;
-                mMaster.Rotation.Yaw = mContainer.Rotation.Yaw;
+
+            mContainer.OnChange += (source, args) => {
+                mMaster.Update(args.Position, args.PositionDelta, args.LookAt, args.LookAtDelta);
             };
         }
 
@@ -41,7 +40,7 @@ namespace FlythroughLib.Panels {
         }
 
         private void playButton_Click(object sender, EventArgs e) {
-            mContainer.Play(mMaster.Position, mMaster.Rotation);
+            mContainer.Play(mMaster.Position, new Rotation(mMaster.LookAt));
             playButton.Enabled = false;
         }
 

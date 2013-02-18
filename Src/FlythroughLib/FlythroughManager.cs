@@ -8,6 +8,19 @@ using System.Threading;
 using System.Xml;
 
 namespace FlythroughLib {
+    public class FlythroughChangeEvent : EventArgs {
+        public Vector3 Position;
+        public Vector3 PositionDelta;
+        public Vector3 LookAt;
+        public Vector3 LookAtDelta;
+
+        public FlythroughChangeEvent(Vector3 position, Vector3 positionDelta, Vector3 lookAt, Vector3 lookAtDelta) {
+            Position = position;
+            PositionDelta = positionDelta;
+            LookAt = lookAt;
+            LookAtDelta = lookAtDelta;
+        }
+    }
     public class FlythroughManager {
         /// <summary>
         /// The length of a tick.
@@ -30,10 +43,6 @@ namespace FlythroughLib {
         /// </summary>
         private Rotation mRotation;
         /// <summary>
-        /// The index of the currently playing event.
-        /// </summary>
-        private int mCurrentEventIndex;
-        /// <summary>
         /// The first event in the sequence.
         /// </summary>
         private FlythroughEvent mFirstEvent;
@@ -41,15 +50,11 @@ namespace FlythroughLib {
         /// The last event in the sequence.
         /// </summary>
         private FlythroughEvent mLastEvent;
-        /// <summary>
-        /// Triggered whenever the rotation changes.
-        /// </summary>
-        public event EventHandler OnRotationChange;
 
         /// <summary>
         /// Triggered whenever the rotation changes.
         /// </summary>
-        public event EventHandler OnPositionChange;
+        public event EventHandler<FlythroughChangeEvent> OnChange;
 
         /// <summary>
         /// Triggered whenever the flythrough completes.
@@ -60,6 +65,11 @@ namespace FlythroughLib {
         /// Triggered whenever the flythrough starts.
         /// </summary>
         public event EventHandler OnStart;
+
+        /// <summary>
+        /// Triggered whenever position is updated.
+        /// </summary>
+        public event EventHandler OnPositionChange;
         /// <summary>
         /// The current rotation dictated by the flythrough.
         /// </summary>
@@ -99,7 +109,6 @@ namespace FlythroughLib {
             }
 
             if (mCurrentEvent == null) {
-                mCurrentEventIndex = 0;
                 mCurrentEvent = mFirstEvent;
                 mCurrentEvent.Reset();
             }
@@ -158,6 +167,8 @@ namespace FlythroughLib {
         private void TimerMethod() {
             while (mPlaying && mCurrentEvent != null) {
                 lock (this) {
+                    Vector3 oldPos = mPosition;
+                    Rotation oldRot = mRotation;
                     if (mCurrentEvent != null && !mCurrentEvent.Step()) {
                         if (mCurrentEvent != null)
                             mCurrentEvent = mCurrentEvent.NextEvent;
@@ -168,6 +179,13 @@ namespace FlythroughLib {
                                 OnComplete(this, null);
                         }
                     }
+                    if (oldPos != mPosition || oldRot.Pitch != mRotation.Pitch || oldRot.Yaw != mRotation.Yaw)
+                        OnChange(this, 
+                            new FlythroughChangeEvent(
+                                mPosition, 
+                                mPosition - oldPos, 
+                                mRotation.LookAtVector, 
+                                mRotation.LookAtVector - oldRot.LookAtVector));
                 }
                 Thread.Sleep(TICK_LENGTH);
             }

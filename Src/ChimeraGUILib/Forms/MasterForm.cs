@@ -57,7 +57,7 @@ namespace ConsoleTest {
 
             rawPosition.Value = master.Position;
             cameraOffsetPanel.Value = master.CameraOffset;
-            rawRotation.LookAtVector = master.Rotation.LookAtVector;
+            rawRotation.LookAtVector = master.LookAt;
             vanishingDistanceValue.Value = new decimal(master.VanishingDistance);
             kinectPositionPanel.Value = k.Position / 10f;
             kinectRotationPanel.LookAtVector = k.Rotation.LookAtVector;
@@ -130,8 +130,10 @@ namespace ConsoleTest {
             };
             master.OnCameraUpdated += (source, args) => {
                 Action a = () => {
+                    externalUpdate = true;
                     rawPosition.Value = master.Position;
-                    rawRotation.LookAtVector = master.Rotation.LookAtVector;
+                    rawRotation.LookAtVector = master.LookAt;
+                    externalUpdate = false;
                     RefreshDrawings();
                     receivedLabel.Text = master.PacketsReceived.ToString();
                     processedLabel.Text = master.PacketsProcessed.ToString();
@@ -150,6 +152,8 @@ namespace ConsoleTest {
             foreach (var slave in master.Slaves)
                 AddSlaveTab(slave);
         }
+
+        private bool externalUpdate;
 
         private void RefreshDrawings() {
             if (IsDisposed)
@@ -274,15 +278,15 @@ namespace ConsoleTest {
         }
 
         private void rawRotation_OnChange(object sender, EventArgs e) {
-            //master.VirtualRotationOffset.Quaternion = rawRotation.VirtualRotationOffset;
-            mMaster.Rotation.Pitch = rawRotation.Pitch;
-            mMaster.Rotation.Yaw = rawRotation.Yaw;
-            RefreshDrawings();
+            if (!externalUpdate)
+                mMaster.Update(rawPosition.Value, Vector3.Zero, rawRotation.LookAtVector, Vector3.Zero);
+            //RefreshDrawings();
         }
 
         private void rawPosition_OnChange(object sender, EventArgs e) {
-            mMaster.Position = rawPosition.Value;
-            RefreshDrawings();
+            if (!externalUpdate)
+                mMaster.Update(rawPosition.Value, Vector3.Zero, rawRotation.LookAtVector, Vector3.Zero);
+            //RefreshDrawings();
         }
 
         private int r = 5;
@@ -444,13 +448,19 @@ namespace ConsoleTest {
             mousePanel.Refresh();
         }
 
+        private Vector3 mLookAt, mOldLookAt;
+
         private void mouseTab_MouseMove(object sender, MouseEventArgs e) {
             if (mouseDown) {
                 currentX = e.X;
                 currentY = e.Y;
-                if (!ignorePitch)
-                    mMaster.Rotation.Pitch = pitch + (((e.Y - y) * mouseScaleSlider.Value) / 20);
-                mMaster.Rotation.Yaw = yaw + ((((x - e.X) / 2) * mouseScaleSlider.Value) / 10);
+                //if (!ignorePitch)
+                    //mMaster.LookAt.Pitch = pitch + (((e.Y - y) * mouseScaleSlider.Value) / 20);
+                //mMaster.LookAt.Yaw = yaw + ((((x - e.X) / 2) * mouseScaleSlider.Value) / 10);
+                Rotation rot = new Rotation(
+                    pitch + (((e.Y - y) * mouseScaleSlider.Value) / 20), 
+                    yaw + ((((x - e.X) / 2) * mouseScaleSlider.Value) / 10));
+                mLookAt = rot.LookAtVector;
                 mousePanel.Refresh();
             }
         }
@@ -515,11 +525,14 @@ namespace ConsoleTest {
             if (leftDown) move.Y += shift;
             if (rightDown) move.Y -= shift;
 
-            if (move != Vector3.Zero || upDown || downDown) {
+            if (move != Vector3.Zero || upDown || downDown || mLookAt != mOldLookAt) {
                 move *= rawRotation.Rotation;
                 if (upDown) move.Z = shift;
                 if (downDown) move.Z = -shift;
-                mMaster.Position += move;
+
+                Vector3 pos = mMaster.Position + move;
+                mMaster.Update(pos, move, mLookAt, mLookAt - mOldLookAt);
+                mOldLookAt = mLookAt;
             }
         }
 
