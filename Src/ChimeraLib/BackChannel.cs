@@ -33,8 +33,10 @@ using ChimeraLib;
 
 namespace UtilLib {
     public interface IScreenListener {
-        Rotation WorldRotation { get; }
         Vector3 WorldPosition { get; set; }
+        Vector3 WorldPositionDelta { get; set; }
+        Rotation WorldRotation { get; }
+        Vector3 WorldRotationDelta { get; set; }
         Window Window { get; }
     }
     public abstract class BackChannel {
@@ -114,7 +116,7 @@ namespace UtilLib {
         public event EventHandler OnBound;
 
         /// <summary>
-        /// Triggered whenever a new datagram packet is received.
+
         /// </summary>
         public event DataDelegate OnDataReceived;
 
@@ -305,8 +307,10 @@ namespace UtilLib {
 
                 int i = 1;
                 Vector3 worldPosition = new Vector3(bytes, i); i += 12;
+                Vector3 worldPositionDelta = new Vector3(bytes, i); i += 12;
                 float worldYaw = Utils.BytesToFloat(bytes, i); i += 4;
                 float worldPitch = Utils.BytesToFloat(bytes, i); i += 4;
+                Vector3 worldRotationDelta = new Vector3(bytes, i); i += 12;
 
                 Vector3 screenPosition = new Vector3(bytes, i); i += 12;
                 Vector3 eyePosition = new Vector3(bytes, i); i += 12;
@@ -317,8 +321,10 @@ namespace UtilLib {
 
                 foreach (var listener in dataListeners) {
                     listener.WorldPosition = worldPosition;
+                    listener.WorldPositionDelta = worldPositionDelta;
                     listener.WorldRotation.Yaw = worldYaw;
                     listener.WorldRotation.Pitch = worldPitch;
+                    listener.WorldRotationDelta = worldRotationDelta;
 
                     listener.Window.ScreenPosition = screenPosition;
                     listener.Window.EyePosition = eyePosition;
@@ -336,17 +342,19 @@ namespace UtilLib {
         /// <summary>
         /// Send a data packet to the specified end point.
         /// </summary>
-        /// <param name="worldPosition">The position in the virtual world to send.</param>
-        /// <param name="worldRotation">The rotation in the virtual world to send.</param>
+        /// <param name="position">The position in the virtual world to send.</param>
+        /// <param name="rotation">The rotation in the virtual world to send.</param>
         /// <param name="window">Information about the window to send.</param>
         /// <param name="destination">The end point to send the packet to.</param>
-        public void Send(Vector3 worldPosition, Rotation worldRotation, Window window, IPEndPoint destination) {
+        public void Send(Vector3 position, Vector3 positionDelta, Rotation rotation, Vector3 rotationDelta, Window window, IPEndPoint destination) {
             byte[] bytes = new byte[69];
             int i = 0;
             bytes[i++] = DATA;
-            worldPosition.ToBytes(bytes, i); i += 12;
-            Utils.FloatToBytes(worldRotation.Yaw, bytes, i);  i += 4;
-            Utils.FloatToBytes(worldRotation.Pitch, bytes, i); i += 4;
+            position.ToBytes(bytes, i); i += 12;
+            positionDelta.ToBytes(bytes, i); i += 12;
+            Utils.FloatToBytes(rotation.Yaw, bytes, i);  i += 4;
+            Utils.FloatToBytes(rotation.Pitch, bytes, i); i += 4;
+            rotationDelta.ToBytes(bytes, i); i += 12;
 
             window.ScreenPosition.ToBytes(bytes, i); i += 12;
             window.EyePosition.ToBytes(bytes, i); i += 12;

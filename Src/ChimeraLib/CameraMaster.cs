@@ -32,7 +32,7 @@ namespace UtilLib {
         /// <summary>
         /// How often updates are to be generated (ms).
         /// </summary>
-        public int UPDATE_FREQ = 20;
+        public static int UPDATE_FREQ = 20;
         private int packetsReceived;
         private int packetsForwarded;
         private int packetsGenerated;
@@ -81,7 +81,7 @@ namespace UtilLib {
             Update(new Vector3(128f, 128f, 24f), Vector3.Zero, Vector3.UnitX, Vector3.Zero);
             OnSlaveConnected += (slave) => {
                 slave.Window.OnChange += (source, args) => {
-                    masterServer.Send(mWorldPosition, mWorldRotation, slave.Window, slave.EP);
+                    masterServer.Send(mWorldPosition, mPositionDelta, mWorldRotation, mRotationDelta, slave.Window, slave.EP);
                     if (OnCameraUpdated != null)
                         OnCameraUpdated(this, null);
                 };
@@ -90,7 +90,7 @@ namespace UtilLib {
 
             Window.OnChange += (source, args) => {
                 foreach (var slave in slaves.Values) 
-                    masterServer.Send(mWorldPosition, mWorldRotation, slave.Window, slave.EP);
+                    masterServer.Send(mWorldPosition, mPositionDelta, mWorldRotation, mRotationDelta, slave.Window, slave.EP);
 
                 GenerateMasterPacket();
             };
@@ -202,7 +202,7 @@ namespace UtilLib {
 
         private void NotifySlaves() {
             foreach (var slave in slaves.Values) {
-                masterServer.Send(mWorldPosition, mWorldRotation, slave.Window, slave.EP);
+                masterServer.Send(mWorldPosition, mPositionDelta, mWorldRotation, mRotationDelta, slave.Window, slave.EP);
             }
 
             Logger.Debug("Master created Notified all slaves of a change and broadcast it to " + slaves.Count + " slaves.");

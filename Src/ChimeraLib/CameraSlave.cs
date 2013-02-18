@@ -239,13 +239,23 @@ namespace UtilLib {
             if (enable == 0f)
                 clientProxy.InjectPacket(new ClearFollowCamPropertiesPacket(), Direction.Incoming);
             else {
-                clientProxy.InjectPacket(window.CreateSetFollowCamPropertiesPacket(WorldPosition, WorldRotation), Direction.Incoming);
+                //clientProxy.InjectPacket(window.CreateSetFollowCamPropertiesPacket(WorldPosition, WorldRotation), Direction.Incoming);
                 //clientProxy.InjectPacket(window.CreateCameraPacket(), Direction.Incoming);
-                clientProxy.InjectPacket(window.CreateFrustumPacket(512f), Direction.Incoming);
+                //clientProxy.InjectPacket(window.CreateFrustumPacket(512f), Direction.Incoming);
+                clientProxy.InjectPacket(window.CreateWindowPacket(WorldPosition, WorldPositionDelta, WorldRotation.LookAtVector, WorldRotationDelta, CameraMaster.UPDATE_FREQ), Direction.Incoming);
             }
 
             if (OnUpdateSentToViewer != null)
                 OnUpdateSentToViewer(WorldPosition, WorldRotation.LookAtVector);
+        }
+
+
+        public Vector3 WorldPositionDelta {
+            get; set;
+        }
+
+        public Vector3 WorldRotationDelta {
+            get; set;
         }
     }
 }

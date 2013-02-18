@@ -130,7 +130,8 @@ namespace UtilLib {
             masterServer.OnBound += (source, args) => {
                 if (OnMasterBound != null)
                     OnMasterBound(source, args);
-            };            window.OnEyeChange += (diff) => {
+            };
+            window.OnEyeChange += (diff) => {
                 if (window.LockScreenPosition)
                     foreach (var slave in Slaves)
                         //slave.Window.ScreenPosition += diff;

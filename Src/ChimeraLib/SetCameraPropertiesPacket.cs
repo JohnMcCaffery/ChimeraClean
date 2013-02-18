@@ -264,6 +264,147 @@ namespace ChimeraLib {
         }
     }
 
+    public sealed class SetWindowPacket: Packet {
+        /// <exclude/>
+        public sealed class WindowBlock : PacketBlock {
+            public Matrix4 ProjectionMatrix;
+            public Vector3 Position;
+            public Vector3 PositionDelta;
+            public Vector3 LookAt;
+            public Vector3 LookAtDelta;
+            public UUID Source;
+
+            public override int Length {
+                get {
+                    //Matrix (4x4 floats (4bit) + 4 vector3s (3x floats (4bits)) + UUID
+                    return (16*4) + (12*4) + Source.GetBytes().Length;
+                }
+            }
+
+            public WindowBlock() { }
+            public WindowBlock(byte[] bytes, ref int i) {
+                FromBytes(bytes, ref i);
+            }
+
+            public override void FromBytes(byte[] bytes, ref int i) {
+                try {
+                    ProjectionMatrix.M11 = Utils.BytesToFloat(bytes, i); i += 4;
+                    ProjectionMatrix.M12 = Utils.BytesToFloat(bytes, i); i += 4;
+                    ProjectionMatrix.M13 = Utils.BytesToFloat(bytes, i); i += 4;
+                    ProjectionMatrix.M14 = Utils.BytesToFloat(bytes, i); i += 4;
+                    ProjectionMatrix.M21 = Utils.BytesToFloat(bytes, i); i += 4;
+                    ProjectionMatrix.M22 = Utils.BytesToFloat(bytes, i); i += 4;
+                    ProjectionMatrix.M23 = Utils.BytesToFloat(bytes, i); i += 4;
+                    ProjectionMatrix.M34 = Utils.BytesToFloat(bytes, i); i += 4;
+                    ProjectionMatrix.M31 = Utils.BytesToFloat(bytes, i); i += 4;
+                    ProjectionMatrix.M32 = Utils.BytesToFloat(bytes, i); i += 4;
+                    ProjectionMatrix.M33 = Utils.BytesToFloat(bytes, i); i += 4;
+                    ProjectionMatrix.M34 = Utils.BytesToFloat(bytes, i); i += 4;
+                    ProjectionMatrix.M41 = Utils.BytesToFloat(bytes, i); i += 4;
+                    ProjectionMatrix.M42 = Utils.BytesToFloat(bytes, i); i += 4;
+                    ProjectionMatrix.M43 = Utils.BytesToFloat(bytes, i); i += 4;
+                    ProjectionMatrix.M44 = Utils.BytesToFloat(bytes, i); i += 4;
+
+                    Position.FromBytes(bytes, i); i += 12;
+                    PositionDelta.FromBytes(bytes, i); i += 12;
+                    LookAt.FromBytes(bytes, i); i += 12;
+                    LookAtDelta.FromBytes(bytes, i); i += 12;
+
+                    Source.FromBytes(bytes, i);
+                } catch (Exception) {
+                    throw new MalformedDataException();
+                }
+            }
+
+            public override void ToBytes(byte[] bytes, ref int i) {
+                Utils.FloatToBytes(ProjectionMatrix.M11, bytes, i); i += 4;
+                Utils.FloatToBytes(ProjectionMatrix.M12, bytes, i); i += 4;
+                Utils.FloatToBytes(ProjectionMatrix.M13, bytes, i); i += 4;
+                Utils.FloatToBytes(ProjectionMatrix.M14, bytes, i); i += 4;
+                Utils.FloatToBytes(ProjectionMatrix.M21, bytes, i); i += 4;
+                Utils.FloatToBytes(ProjectionMatrix.M22, bytes, i); i += 4;
+                Utils.FloatToBytes(ProjectionMatrix.M23, bytes, i); i += 4;
+                Utils.FloatToBytes(ProjectionMatrix.M34, bytes, i); i += 4;
+                Utils.FloatToBytes(ProjectionMatrix.M31, bytes, i); i += 4;
+                Utils.FloatToBytes(ProjectionMatrix.M32, bytes, i); i += 4;
+                Utils.FloatToBytes(ProjectionMatrix.M33, bytes, i); i += 4;
+                Utils.FloatToBytes(ProjectionMatrix.M34, bytes, i); i += 4;
+                Utils.FloatToBytes(ProjectionMatrix.M41, bytes, i); i += 4;
+                Utils.FloatToBytes(ProjectionMatrix.M42, bytes, i); i += 4;
+                Utils.FloatToBytes(ProjectionMatrix.M43, bytes, i); i += 4;
+                Utils.FloatToBytes(ProjectionMatrix.M44, bytes, i); i += 4;
+
+                Position.ToBytes(bytes, i); i += 12;
+                PositionDelta.ToBytes(bytes, i); i += 12;
+                LookAt.ToBytes(bytes, i); i += 12;
+                LookAtDelta.ToBytes(bytes, i); i += 12;
+
+                Source.ToBytes(bytes, i);
+            }
+        }
+
+        public override int Length {
+            get {
+                int length = 10;
+                length += Window.Length;
+                return length;
+            }
+        }
+        public WindowBlock Window;
+
+        public SetWindowPacket () {
+            HasVariableBlocks = false;
+            //Type = PacketType.SetFollowCamProperties;
+            Header = new Header();
+            Header.Frequency = PacketFrequency.Low;
+            Header.ID = 429;
+            Header.Reliable = true;
+            Window = new WindowBlock();
+        }
+
+        public SetWindowPacket(byte[] bytes, ref int i)
+            : this() {
+            int packetEnd = bytes.Length - 1;
+            FromBytes(bytes, ref i, ref packetEnd, null);
+        }
+
+        override public void FromBytes(byte[] bytes, ref int i, ref int packetEnd, byte[] zeroBuffer) {
+            Header.FromBytes(bytes, ref i, ref packetEnd);
+            if (Header.Zerocoded && zeroBuffer != null) {
+                packetEnd = Helpers.ZeroDecode(bytes, packetEnd + 1, zeroBuffer) - 1;
+                bytes = zeroBuffer;
+            }
+            Window.FromBytes(bytes, ref i);
+        }
+
+        public SetWindowPacket(Header head, byte[] bytes, ref int i)
+            : this() {
+            int packetEnd = bytes.Length - 1;
+            FromBytes(head, bytes, ref i, ref packetEnd);
+        }
+
+        override public void FromBytes(Header header, byte[] bytes, ref int i, ref int packetEnd) {
+            Header = header;
+            Window.FromBytes(bytes, ref i);
+        }
+
+        public override byte[] ToBytes() {
+            int length = 10;
+            length += Window.Length;
+            if (Header.AckList != null && Header.AckList.Length > 0) { length += Header.AckList.Length * 4 + 1; }
+            byte[] bytes = new byte[length];
+            int i = 0;
+            Header.ToBytes(bytes, ref i);
+            Window.ToBytes(bytes, ref i);
+            if (Header.AckList != null && Header.AckList.Length > 0) { Header.AcksToBytes(bytes, ref i); }
+            return bytes;
+        }
+
+        public override byte[][] ToBytesMultiple() {
+            return new byte[][] { ToBytes() };
+        }
+    }
+
     public static class PacketExtensions {
         public static SetFollowCamPropertiesPacket CreateSetFollowCamPropertiesPacket(this Window window, Vector3 position, Rotation rotation, bool combinePosition = true, bool combineRotation = true) {
             SetFollowCamPropertiesPacket cameraPacket = new SetFollowCamPropertiesPacket();
@@ -333,6 +474,35 @@ namespace ChimeraLib {
             p.Frustum.ControlFrustum = true;
 
             return p;
+        }
+
+        public static SetFrustumPacket CreateWindowPacket(this Window window, 
+            Vector3 position, 
+            Vector3 positionDelta, 
+            Vector3 lookAt, 
+            Vector3 lookAtDelta, 
+            int tickLength) {
+            SetFrustumPacket fp = window.CreateFrustumPacket(512f);
+            float x1 = fp.Frustum.x1;
+            float x2 = fp.Frustum.x2;
+            float y1 = fp.Frustum.y1;
+            float y2 = fp.Frustum.y2;
+            float dn = fp.Frustum.dn;
+            float df = fp.Frustum.df;
+
+            SetWindowPacket p = new SetWindowPacket();
+            p.Window.Position = position;
+            p.Window.PositionDelta = positionDelta;
+            p.Window.LookAt = lookAt;
+            p.Window.LookAtDelta = lookAtDelta;
+		    p.Window.ProjectionMatrix = new Matrix4(
+    			(2*dn) / (x2-x1), 0, (x2+x1)/(x2-x1), 0,
+    			0, (2*dn)/(y1-y2), (y1+y2)/(y1-y2), 0,
+    			0, 0, -(df+dn)/(df-dn), -(2.0f*df*dn)/(df-dn),
+    			0, 0, -1.0f, 0);
+
+
+            return null;
         }
 
         public static SetCameraPropertiesPacket CreateCameraPacket(this Window window, bool updateFrustum = true, bool updateFoV = true, bool updateAspectRatio = true) {
