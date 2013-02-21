@@ -476,7 +476,7 @@ namespace ChimeraLib {
             return p;
         }
 
-        public static SetFrustumPacket CreateWindowPacket(this Window window, 
+        public static SetWindowPacket CreateWindowPacket(this Window window, 
             Vector3 position, 
             Vector3 positionDelta, 
             Vector3 lookAt, 
@@ -502,7 +502,7 @@ namespace ChimeraLib {
     			0, 0, -1.0f, 0);
 
 
-            return null;
+            return p;
         }
 
         public static SetCameraPropertiesPacket CreateCameraPacket(this Window window, bool updateFrustum = true, bool updateFoV = true, bool updateAspectRatio = true) {

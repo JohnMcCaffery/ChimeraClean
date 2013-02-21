@@ -347,7 +347,7 @@ namespace UtilLib {
         /// <param name="window">Information about the window to send.</param>
         /// <param name="destination">The end point to send the packet to.</param>
         public void Send(Vector3 position, Vector3 positionDelta, Rotation rotation, Vector3 rotationDelta, Window window, IPEndPoint destination) {
-            byte[] bytes = new byte[69];
+            byte[] bytes = new byte[93];
             int i = 0;
             bytes[i++] = DATA;
             position.ToBytes(bytes, i); i += 12;
