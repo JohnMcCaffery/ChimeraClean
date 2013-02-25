@@ -261,7 +261,10 @@ namespace UtilLib {
                 } catch (ObjectDisposedException e) {
                     Logger.Debug("BackChannel unable to test connection. TestConnectionSocket disposed.");
                 }
-            testConnectionSocket.Send(new byte[] { PING }, 1, ep);
+            if (testConnectionSocket.Client.Connected)
+                testConnectionSocket.Send(new byte[] { PING }, 1, ep);
+            else
+                return false;
             lock (pingLock)
                 Monitor.Wait(pingLock, 1000);
 
@@ -362,8 +365,6 @@ namespace UtilLib {
             Utils.FloatToBytes(window.RotationOffset.Pitch, bytes, i); i += 4;
             Utils.DoubleToBytes(window.Diagonal, bytes, i); i += 8;
             Utils.DoubleToBytes(window.AspectRatio, bytes, i); i += 8;;
-
-
 
             Send(bytes, destination);
         }

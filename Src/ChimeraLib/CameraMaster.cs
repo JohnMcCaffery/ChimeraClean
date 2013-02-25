@@ -32,7 +32,7 @@ namespace UtilLib {
         /// <summary>
         /// How often updates are to be generated (ms).
         /// </summary>
-        public static int UPDATE_FREQ = 20;
+        public static uint UPDATE_FREQ = 20;
         private int packetsReceived;
         private int packetsForwarded;
         private int packetsGenerated;

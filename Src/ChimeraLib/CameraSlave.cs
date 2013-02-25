@@ -237,7 +237,8 @@ namespace UtilLib {
                 return;
 
             if (enable == 0f)
-                clientProxy.InjectPacket(new ClearFollowCamPropertiesPacket(), Direction.Incoming);
+                clientProxy.InjectPacket(new ClearWindowPacket(), Direction.Incoming);
+                //clientProxy.InjectPacket(new ClearFollowCamPropertiesPacket(), Direction.Incoming);
             else {
                 //clientProxy.InjectPacket(window.CreateSetFollowCamPropertiesPacket(WorldPosition, WorldRotation), Direction.Incoming);
                 //clientProxy.InjectPacket(window.CreateCameraPacket(), Direction.Incoming);

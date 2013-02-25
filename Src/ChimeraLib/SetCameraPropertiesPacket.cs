@@ -272,12 +272,13 @@ namespace ChimeraLib {
             public Vector3 PositionDelta;
             public Vector3 LookAt;
             public Vector3 LookAtDelta;
+            public uint TickLength;
             public UUID Source;
 
             public override int Length {
                 get {
-                    //Matrix (4x4 floats (4bit) + 4 vector3s (3x floats (4bits)) + UUID
-                    return (16*4) + (12*4) + Source.GetBytes().Length;
+                    //Matrix (4x4 floats (4bit) + 4 vector3s (3x floats (4bits)) + (1 xint) UUID
+                    return (sizeof(float) * 16) + (sizeof(float) * 3 * 4) + sizeof(int) + Source.GetBytes().Length;
                 }
             }
 
@@ -310,6 +311,8 @@ namespace ChimeraLib {
                     LookAt.FromBytes(bytes, i); i += 12;
                     LookAtDelta.FromBytes(bytes, i); i += 12;
 
+                    TickLength = Utils.BytesToUInt(bytes, i); i += sizeof(int);
+
                     Source.FromBytes(bytes, i);
                 } catch (Exception) {
                     throw new MalformedDataException();
@@ -339,6 +342,8 @@ namespace ChimeraLib {
                 LookAt.ToBytes(bytes, i); i += 12;
                 LookAtDelta.ToBytes(bytes, i); i += 12;
 
+                Utils.UIntToBytes(TickLength, bytes, i); i += sizeof(int);
+
                 Source.ToBytes(bytes, i);
             }
         }
@@ -357,7 +362,7 @@ namespace ChimeraLib {
             //Type = PacketType.SetFollowCamProperties;
             Header = new Header();
             Header.Frequency = PacketFrequency.Low;
-            Header.ID = 429;
+            Header.ID = 427;
             Header.Reliable = true;
             Window = new WindowBlock();
         }
@@ -405,6 +410,122 @@ namespace ChimeraLib {
         }
     }
 
+    /// <exclude/>
+    public sealed class ClearWindowPacket : Packet
+    {
+        /// <exclude/>
+        public sealed class ObjectDataBlock : PacketBlock
+        {
+            public UUID ObjectID;
+
+            public override int Length
+            {
+                get
+                {
+                    return 16;
+                }
+            }
+
+            public ObjectDataBlock() { }
+            public ObjectDataBlock(byte[] bytes, ref int i)
+            {
+                FromBytes(bytes, ref i);
+            }
+
+            public override void FromBytes(byte[] bytes, ref int i)
+            {
+                try
+                {
+                    ObjectID.FromBytes(bytes, i); i += 16;
+                }
+                catch (Exception)
+                {
+                    throw new MalformedDataException();
+                }
+            }
+
+            public override void ToBytes(byte[] bytes, ref int i)
+            {
+                ObjectID.ToBytes(bytes, i); i += 16;
+            }
+
+        }
+
+        public override int Length
+        {
+            get
+            {
+                int length = 10;
+                length += ObjectData.Length;
+                return length;
+            }
+        }
+        public ObjectDataBlock ObjectData;
+
+        public ClearWindowPacket()
+        {
+            HasVariableBlocks = false;
+            Type = PacketType.ClearFollowCamProperties;
+            Header = new Header();
+            Header.Frequency = PacketFrequency.Low;
+            Header.ID = 428;
+            Header.Reliable = true;
+            ObjectData = new ObjectDataBlock();
+        }
+
+        public ClearWindowPacket(UUID id)
+            : this() {
+            ObjectData.ObjectID = id;
+        }
+
+        public ClearWindowPacket(byte[] bytes, ref int i) : this()
+        {
+            int packetEnd = bytes.Length - 1;
+            FromBytes(bytes, ref i, ref packetEnd, null);
+        }
+
+        override public void FromBytes(byte[] bytes, ref int i, ref int packetEnd, byte[] zeroBuffer)
+        {
+            Header.FromBytes(bytes, ref i, ref packetEnd);
+            if (Header.Zerocoded && zeroBuffer != null)
+            {
+                packetEnd = Helpers.ZeroDecode(bytes, packetEnd + 1, zeroBuffer) - 1;
+                bytes = zeroBuffer;
+            }
+            ObjectData.FromBytes(bytes, ref i);
+        }
+
+        public ClearWindowPacket(Header head, byte[] bytes, ref int i): this()
+        {
+            int packetEnd = bytes.Length - 1;
+            FromBytes(head, bytes, ref i, ref packetEnd);
+        }
+
+        override public void FromBytes(Header header, byte[] bytes, ref int i, ref int packetEnd)
+        {
+            Header = header;
+            ObjectData.FromBytes(bytes, ref i);
+        }
+
+        public override byte[] ToBytes()
+        {
+            int length = 10;
+            length += ObjectData.Length;
+            if (Header.AckList != null && Header.AckList.Length > 0) { length += Header.AckList.Length * 4 + 1; }
+            byte[] bytes = new byte[length];
+            int i = 0;
+            Header.ToBytes(bytes, ref i);
+            ObjectData.ToBytes(bytes, ref i);
+            if (Header.AckList != null && Header.AckList.Length > 0) { Header.AcksToBytes(bytes, ref i); }
+            return bytes;
+        }
+
+        public override byte[][] ToBytesMultiple()
+        {
+            return new byte[][] { ToBytes() };
+        }
+    }
+
     public static class PacketExtensions {
         public static SetFollowCamPropertiesPacket CreateSetFollowCamPropertiesPacket(this Window window, Vector3 position, Rotation rotation, bool combinePosition = true, bool combineRotation = true) {
             SetFollowCamPropertiesPacket cameraPacket = new SetFollowCamPropertiesPacket();
@@ -423,7 +544,7 @@ namespace ChimeraLib {
                 Vector3 rotatatedLookAt = ((window.EyePosition * new Vector3(1f, -1f, 1f)) / 1000f) * rotation.Quaternion;
                 position += rotatatedLookAt;
             }
-            Vector3 lookAt = position + finalRot.LookAtVector;
+            Vector3 focus = position + finalRot.LookAtVector;
             cameraPacket.CameraProperty[0].Value = 0;
             cameraPacket.CameraProperty[1].Value = 0f;
             cameraPacket.CameraProperty[2].Value = 0f;
@@ -441,9 +562,9 @@ namespace ChimeraLib {
             cameraPacket.CameraProperty[14].Value = position.Y;
             cameraPacket.CameraProperty[15].Value = position.Z;
             cameraPacket.CameraProperty[16].Value = 0f;
-            cameraPacket.CameraProperty[17].Value = lookAt.X;
-            cameraPacket.CameraProperty[18].Value = lookAt.Y;
-            cameraPacket.CameraProperty[19].Value = lookAt.Z;
+            cameraPacket.CameraProperty[17].Value = focus.X;
+            cameraPacket.CameraProperty[18].Value = focus.Y;
+            cameraPacket.CameraProperty[19].Value = focus.Z;
             cameraPacket.CameraProperty[20].Value = 1f;
             cameraPacket.CameraProperty[21].Value = 1f;
             return cameraPacket;
@@ -481,7 +602,7 @@ namespace ChimeraLib {
             Vector3 positionDelta, 
             Vector3 lookAt, 
             Vector3 lookAtDelta, 
-            int tickLength) {
+            uint tickLength) {
             SetFrustumPacket fp = window.CreateFrustumPacket(512f);
             float x1 = fp.Frustum.x1;
             float x2 = fp.Frustum.x2;
@@ -495,6 +616,7 @@ namespace ChimeraLib {
             p.Window.PositionDelta = positionDelta;
             p.Window.LookAt = lookAt;
             p.Window.LookAtDelta = lookAtDelta;
+            p.Window.TickLength = tickLength * 1000;
 		    p.Window.ProjectionMatrix = new Matrix4(
     			(2*dn) / (x2-x1), 0, (x2+x1)/(x2-x1), 0,
     			0, (2*dn)/(y1-y2), (y1+y2)/(y1-y2), 0,
