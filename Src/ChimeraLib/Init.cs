@@ -76,7 +76,8 @@ namespace UtilLib {
                 MakeHelpLine("General", "MasterAddress", "ma", "The address the master is running at for distributing packets between master/slaves.", "localhost"),
                 MakeHelpLine("General", "MasterPort", "mp", "The port the master is running/will be run on for distributing packets between master/slaves.", Config.DEFAULT_MASTER_PORT),
                 MakeHelpLine("General", "UseGrid", "ug", "Whether to use the '--grid' flag when launching the client. Will only work with OpenSim enabled viewers.", "false"),
-                MakeHelpLine("General", "UseSetFollowCamPackets", "uf", "Whether to use SetFollowCamProperties packets to control the client or SetWindowPackets. Set true for compatibility with unmodified viewers.", "false"),
+                MakeHelpLine("General", "UseSetFollowCamPackets", "uf", "Whether to use SetFollowCamProperties packets to control the client or SetWindowPackets. Set false to allow the view frame to be dictated by the size and shape of the window.", "false"),
+                MakeHelpLine("General", "EnableWindowPackets", "ew", "Whether to allow the proxy to inject Window packets. Set false for backward compatibility with unmodified viewers.", "true"),
                 MakeHelpLine(section, "AutoConnectSlave", "as", "Whether to automatically connect the slave to the master.", "true"),
                 MakeHelpLine(section, "AutoStartClient", "ac", "Whether to auto launch the client executable to connect to the proxy.", "false"),
                 MakeHelpLine(section, "AutoStartMaster", "am", "Whether to automatically start the master running.", "true"),
@@ -109,6 +110,7 @@ namespace UtilLib {
             private string grid = null;
             private bool useGrid = false;
             private bool useSetFollowCamPackets = false;
+            private bool enableWindowPackets = false;
 
             //Proxy
             private string loginURI = DEFAULT_LOGINURI;
@@ -221,6 +223,11 @@ namespace UtilLib {
                 set { controlCamera = value; }
             }
 
+            public bool EnableWindowPackets {
+                get { return enableWindowPackets; }
+                set { enableWindowPackets = value; }
+            }
+
             public bool UseSetFollowCamPackets {
                 get { return useSetFollowCamPackets; }
                 set { useSetFollowCamPackets = value; }
@@ -235,6 +242,8 @@ namespace UtilLib {
                 argConfig.AddSwitch("General", "ViewerExe", "v");
                 argConfig.AddSwitch("General", "WorkingDirectory", "d");
                 argConfig.AddSwitch("General", "UseGrid", "ug");
+                argConfig.AddSwitch("General", "UseSetFollowCamPackets", "uf");
+                argConfig.AddSwitch("General", "EnableWindowPackets", "ew");
                 argConfig.AddSwitch("General", "ProxyGrid", "g");
                 argConfig.AddSwitch("General", "LoginURI", "u");
                 argConfig.AddSwitch("General", "MasterAddress", "ma");
@@ -256,7 +265,8 @@ namespace UtilLib {
                 workingDir = Get(generalConfig, "WorkingDirectory", Path.GetDirectoryName(viewerExe));
                 loginURI = Get(generalConfig, "LoginURI", DEFAULT_LOGINURI);
                 UseGrid = Get(generalConfig, "UseGrid", false);
-                UseSetFollowCamPackets = Get(generalConfig, "UseSetFollowCamPackets", false);
+                EnableWindowPackets = Get(generalConfig, "EnableWindowPackets", true);
+                UseSetFollowCamPackets = !enableWindowPackets || Get(generalConfig, "UseSetFollowCamPackets", false);
 
                 firstName = Get(mainConfig, "FirstName", null);
                 lastName = Get(mainConfig, "LastName", null);

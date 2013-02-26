@@ -172,7 +172,7 @@
             this.controlCamera.AutoSize = true;
             this.controlCamera.Checked = true;
             this.controlCamera.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.controlCamera.Location = new System.Drawing.Point(8, 190);
+            this.controlCamera.Location = new System.Drawing.Point(3, 193);
             this.controlCamera.Name = "controlCamera";
             this.controlCamera.Size = new System.Drawing.Size(98, 17);
             this.controlCamera.TabIndex = 17;
@@ -183,7 +183,7 @@
             // followCamPacketsBox
             // 
             this.followCamPacketsBox.AutoSize = true;
-            this.followCamPacketsBox.Location = new System.Drawing.Point(8, 167);
+            this.followCamPacketsBox.Location = new System.Drawing.Point(3, 170);
             this.followCamPacketsBox.Name = "followCamPacketsBox";
             this.followCamPacketsBox.Size = new System.Drawing.Size(144, 17);
             this.followCamPacketsBox.TabIndex = 16;

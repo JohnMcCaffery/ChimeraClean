@@ -50,6 +50,7 @@ namespace ConsoleTest {
             addressBox.Text = slave.ProxyConfig.MasterAddress;
             portBox.Text = slave.ProxyConfig.MasterPort.ToString();
             nameBox.Text = slave.Name;
+            followCamPacketsBox.Enabled = slave.EnableWindowPackets;
             followCamPacketsBox.Checked = slave.UseSetFollowCamPackets;
 
             if (slave.ConnectedToMaster) {

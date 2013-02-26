@@ -63,6 +63,7 @@ namespace UtilLib {
         private Vector3 position;
         private Rotation rotation;
         private bool useSetFollowCam;
+        private bool enableWindow;
         private readonly InterProxyClient interProxyClient;
 
         public CameraSlave() : this("Slave " + (SlaveCount + 1)) { }
@@ -84,6 +85,7 @@ namespace UtilLib {
 
             controlCamera = config.ControlCamera;
             useSetFollowCam = config.UseSetFollowCamPackets;
+            enableWindow = config.EnableWindowPackets;
 
             OnClientLoggedIn += (source, args) => {
                 if (controlCamera)
@@ -109,6 +111,18 @@ namespace UtilLib {
 
         private bool clearFollowCam;
         private bool clearWindow;
+
+        public bool EnableWindowPackets {
+            get { return enableWindow; }
+            set {
+                if (!value) {
+                    useSetFollowCam = true;
+                    clearWindow = false;
+                }
+                enableWindow = value;
+                InjectPacket();
+            }
+        }
 
         public bool UseSetFollowCamPackets {
             get { return useSetFollowCam; }
@@ -253,16 +267,18 @@ namespace UtilLib {
 
             if (enable == 0f) {
                 clientProxy.InjectPacket(new ClearFollowCamPropertiesPacket(), Direction.Incoming);
-                clientProxy.InjectPacket(new ClearWindowPacket(), Direction.Incoming);
+                if (enableWindow)
+                    clientProxy.InjectPacket(new ClearWindowPacket(), Direction.Incoming);
             } else {
                 if (useSetFollowCam) {
-                    if (clearWindow)
+                    if (clearWindow && enableWindow)
                         clientProxy.InjectPacket(new ClearWindowPacket(), Direction.Incoming);
                     clientProxy.InjectPacket(window.CreateSetFollowCamPropertiesPacket(WorldPosition, WorldRotation), Direction.Incoming);
                 } else {
                     if (clearFollowCam)
                         clientProxy.InjectPacket(new ClearFollowCamPropertiesPacket(), Direction.Incoming);
-                    clientProxy.InjectPacket(window.CreateWindowPacket(WorldPosition, WorldPositionDelta, WorldRotation, WorldRotationDelta, CameraMaster.UPDATE_FREQ), Direction.Incoming);
+                    if (enableWindow)
+                        clientProxy.InjectPacket(window.CreateWindowPacket(WorldPosition, WorldPositionDelta, WorldRotation, WorldRotationDelta, CameraMaster.UPDATE_FREQ), Direction.Incoming);
                 }
             }
 

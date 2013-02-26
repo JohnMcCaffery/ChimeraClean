@@ -29,6 +29,7 @@ using ConsoleTest;
 namespace ArmadilloProxy {
     class ArmadilloProxy {
         static void Main(string[] args) {
+            bool started = false;
             ArgvConfigSource argConfig = new ArgvConfigSource(args);
 
             argConfig.AddSwitch("General", "Master", "m");
@@ -70,6 +71,7 @@ namespace ArmadilloProxy {
                     consoleInstances.Add(m);
                 if (Init.Get(masterConfig, "GUI", true))
                     Init.StartGui(masterConfig, m, () => new MasterForm(m));
+                started = true;
             }
 
             IConfig slaveConfig;
@@ -87,7 +89,9 @@ namespace ArmadilloProxy {
                         consoleInstances.Add(s);
                     else
                         Init.StartGui(slaveConfig, s, () => new SlaveForm(s));
+                    started = true;
                 } else if (sc > 0) {
+                    started = true;
                     int slave = Init.Get(general, "FirstSlave", 1);
                     for (int i = 1; i <= sc; i++) {
                         string slaveName = "Slave" + (slave++);
@@ -106,6 +110,9 @@ namespace ArmadilloProxy {
                 foreach (var instance in consoleInstances)
                     instance.Stop();
             }
+
+            if (!started)
+                Console.WriteLine("No configuration specified. Exiting.");
         }
     }
 }
