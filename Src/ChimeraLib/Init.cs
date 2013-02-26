@@ -26,6 +26,7 @@ using System.Windows.Forms;
 using System.Threading;
 using System.IO;
 using log4net;
+using OpenMetaverse;
 
 namespace UtilLib {
     /// <summary>
@@ -72,12 +73,15 @@ namespace UtilLib {
         public static string[] Help(string section) {
             return new string[] {
                 MakeHelpLine("General", "ViewerExe", "e", "The file to be executed to launch the client.", Path.GetFileName(Config.DEFAULT_CLIENT_EXE)),
-                MakeHelpLine("General", "LoginURI", "u", "The LoginURI of the actual servr being proxied.", Config.DEFAULT_LOGINURI),
+                MakeHelpLine("General", "LoginURI", "u", "The LoginURI of the actual server being proxied.", Config.DEFAULT_LOGINURI),
                 MakeHelpLine("General", "MasterAddress", "ma", "The address the master is running at for distributing packets between master/slaves.", "localhost"),
                 MakeHelpLine("General", "MasterPort", "mp", "The port the master is running/will be run on for distributing packets between master/slaves.", Config.DEFAULT_MASTER_PORT),
                 MakeHelpLine("General", "UseGrid", "ug", "Whether to use the '--grid' flag when launching the client. Will only work with OpenSim enabled viewers.", "false"),
                 MakeHelpLine("General", "UseSetFollowCamPackets", "uf", "Whether to use SetFollowCamProperties packets to control the client or SetWindowPackets. Set false to allow the view frame to be dictated by the size and shape of the window.", "false"),
                 MakeHelpLine("General", "EnableWindowPackets", "ew", "Whether to allow the proxy to inject Window packets. Set false for backward compatibility with unmodified viewers.", "true"),
+                MakeHelpLine("General", "WorldPosition", "cw", "The position the camera should start at in the world.", "true"),
+                MakeHelpLine("General", "WorldPitch", "pw", "The pitch the camera should start at.", "true"),
+                MakeHelpLine("General", "WorldYaw", "yw", "The yaw the camera should start at.", "true"),
                 MakeHelpLine(section, "AutoConnectSlave", "as", "Whether to automatically connect the slave to the master.", "true"),
                 MakeHelpLine(section, "AutoStartClient", "ac", "Whether to auto launch the client executable to connect to the proxy.", "false"),
                 MakeHelpLine(section, "AutoStartMaster", "am", "Whether to automatically start the master running.", "true"),
@@ -119,6 +123,9 @@ namespace UtilLib {
             //Master
             private int masterPort = DEFAULT_MASTER_PORT;
             private string masterAddress = DEFAULT_MASTER_ADDRESS;
+            private Vector3 worldPosition;
+            private float worldPitch;
+            private float worldYaw;
 
             //Slave
             private bool controlCamera = true;
@@ -223,14 +230,46 @@ namespace UtilLib {
                 set { controlCamera = value; }
             }
 
+            /// <summary>
+            /// Set this to false to stop the proxy from ever injecting Window packets into the client.
+            /// If false this will mean that using the proxy will not break unmodified viewers.
+            /// </summary>
             public bool EnableWindowPackets {
                 get { return enableWindowPackets; }
                 set { enableWindowPackets = value; }
             }
 
+            /// <summary>
+            /// Set true to have the proxy control the viewer via SetFollowCamProperties packets rather than  Window packets.
+            /// Using SetFollowCamProperties packets leaves control of the frustum to the viewer.
+            /// </summary>
             public bool UseSetFollowCamPackets {
                 get { return useSetFollowCamPackets; }
                 set { useSetFollowCamPackets = value; }
+            }
+
+            /// <summary>
+            /// Position of the camera in the world to start with.
+            /// </summary>
+            public Vector3 WorldPosition {
+                get { return worldPosition; }
+                set { worldPosition = value; }
+            }
+
+            /// <summary>
+            /// Pitch of the camera to start with.
+            /// </summary>
+            public float WorldPitch {
+                get { return worldPitch; }
+                set { worldPitch = value; }
+            }
+
+            /// <summary>
+            /// Yaw of the camera to start with.
+            /// </summary>
+            public float WorldYaw {
+                get { return worldYaw; }
+                set { worldYaw = value; }
             }
 
             public Config() {
@@ -248,6 +287,9 @@ namespace UtilLib {
                 argConfig.AddSwitch("General", "LoginURI", "u");
                 argConfig.AddSwitch("General", "MasterAddress", "ma");
                 argConfig.AddSwitch("General", "MasterPort", "mp");
+                argConfig.AddSwitch("General", "WorldPosition", "cw");
+                argConfig.AddSwitch("General", "WorldPitch", "pw");
+                argConfig.AddSwitch("General", "WorldYaw", "yw");
                 argConfig.AddSwitch(section, "ProxyPort", "p");
                 argConfig.AddSwitch(section, "FirstName", "fn");
                 argConfig.AddSwitch(section, "LastName", "l");
@@ -260,6 +302,9 @@ namespace UtilLib {
 
                 masterPort = Get(generalConfig, "MasterPort", DEFAULT_MASTER_PORT);
                 masterAddress = Get(generalConfig, "MasterAddress", DEFAULT_MASTER_ADDRESS);
+                worldPosition = GetV(generalConfig, "WorldPosition", new Vector3(128, 128, 40));
+                worldPitch = Get(generalConfig, "WorldPitch", 0f);
+                worldYaw = Get(generalConfig, "WorldYaw", 0f);
 
                 viewerExe = Get(generalConfig, "ViewerExe", DEFAULT_CLIENT_EXE);
                 workingDir = Get(generalConfig, "WorkingDirectory", Path.GetDirectoryName(viewerExe));
@@ -398,6 +443,16 @@ namespace UtilLib {
         }
         public static int Get(IConfig cfg, string key, int defalt) {
             return cfg == null ? defalt : cfg.GetInt(key, defalt);
+        }
+        public static float Get(IConfig cfg, string key, float defalt) {
+            return cfg == null ? defalt : cfg.GetFloat(key, defalt);
+        }
+        public static Vector3 GetV(IConfig cfg, string key, Vector3 defalt) {
+            string raw = cfg.Get(key, null);
+            Vector3 ret;
+            if (raw == null || !Vector3.TryParse(raw, out ret))
+                return defalt;
+            return ret;
         }
 
         public static ArgvConfigSource InitArgConfig(string[] args) {

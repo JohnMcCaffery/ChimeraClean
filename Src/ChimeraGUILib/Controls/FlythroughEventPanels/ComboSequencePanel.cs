@@ -32,9 +32,9 @@ namespace ChimeraGUILib.Controls.FlythroughEventPanels {
             eventsLabel.Text = string.Format("Sequence {0} Events", sequence1 ? 1 : 2);
             evt.OnStart += (source, args) => {
                 Invoke(new Action(() => {
-                    if (eventsList.Items.Count > 0 && mSequence1 ? 
+                    if (eventsList.Items.Count > 0 && (mSequence1 ? 
                             mEvent.Stream1First == mEvent.Stream1Current : 
-                            mEvent.Stream2First == mEvent.Stream2Current)
+                            mEvent.Stream2First == mEvent.Stream2Current))
                         eventsList.SelectedIndex = 0;
                 }));
             };

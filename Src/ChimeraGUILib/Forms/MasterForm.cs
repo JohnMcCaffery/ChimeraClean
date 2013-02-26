@@ -55,6 +55,7 @@ namespace ConsoleTest {
             flythroughPanel.Master = master;
 
 
+            externalUpdate = true;
             rawPosition.Value = master.Position;
             cameraOffsetPanel.Value = master.CameraOffset;
             rawRotation.LookAtVector = master.LookAt;
@@ -71,6 +72,7 @@ namespace ConsoleTest {
 
             addressBox.Text = master.ProxyConfig.MasterAddress;
             portBox.Text = master.ProxyConfig.MasterPort.ToString();
+            externalUpdate = true;
 
 
             k.OnImage += imageFrame => {

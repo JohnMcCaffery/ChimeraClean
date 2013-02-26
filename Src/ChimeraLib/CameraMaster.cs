@@ -77,8 +77,9 @@ namespace UtilLib {
         /// Creates a master with no specified masterAddress and masterPort. Address is localhost. Port will be generated when the master is started.
         /// </summary>
         public CameraMaster(Init.Config config) : base(config) {
-            mWorldRotation = new Rotation();
-            Update(new Vector3(128f, 128f, 24f), Vector3.Zero, Vector3.UnitX, Vector3.Zero);
+            mWorldRotation = new Rotation(config.WorldPitch, config.WorldYaw);
+
+            Update(config.WorldPosition, Vector3.Zero, mWorldRotation.LookAtVector, Vector3.Zero);
             OnSlaveConnected += (slave) => {
                 slave.Window.OnChange += (source, args) => {
                     masterServer.Send(mWorldPosition, mPositionDelta, mWorldRotation, mRotationDelta, slave.Window, slave.EP);
