@@ -89,8 +89,9 @@ namespace UtilLib {
             };
 
             Window.OnChange += (source, args) => {
-                foreach (var slave in slaves.Values) 
-                    masterServer.Send(mWorldPosition, mPositionDelta, mWorldRotation, mRotationDelta, slave.Window, slave.EP);
+                lock (slaves)
+                    foreach (var slave in slaves.Values) 
+                        masterServer.Send(mWorldPosition, mPositionDelta, mWorldRotation, mRotationDelta, slave.Window, slave.EP);
 
                 GenerateMasterPacket();
             };
@@ -201,8 +202,10 @@ namespace UtilLib {
         }*/
 
         private void NotifySlaves() {
-            foreach (var slave in slaves.Values) {
-                masterServer.Send(mWorldPosition, mPositionDelta, mWorldRotation, mRotationDelta, slave.Window, slave.EP);
+            lock (slaves) {
+                foreach (var slave in slaves.Values) {
+                    masterServer.Send(mWorldPosition, mPositionDelta, mWorldRotation, mRotationDelta, slave.Window, slave.EP);
+                }
             }
 
             Logger.Debug("Master created Notified all slaves of a change and broadcast it to " + slaves.Count + " slaves.");
@@ -235,14 +238,14 @@ namespace UtilLib {
                     return;
 
                 if (value == CameraMaster.CameraControlEnum.Frustum) {
-                    clientProxy.InjectPacket(new SetCameraPropertiesPacket(false), Direction.Incoming);
+                    //clientProxy.InjectPacket(new SetCameraPropertiesPacket(false), Direction.Incoming);
                     GenerateMasterPacket();
                 } else if (value == CameraControlEnum.Individual) {
-                    clientProxy.InjectPacket(new SetFrustumPacket(false), Direction.Incoming);
+                    //clientProxy.InjectPacket(new SetFrustumPacket(false), Direction.Incoming);
                     CameraChange();
                 } else if (value == CameraMaster.CameraControlEnum.None) {
-                    clientProxy.InjectPacket(new SetCameraPropertiesPacket(false), Direction.Incoming);
-                    clientProxy.InjectPacket(new SetFrustumPacket(false), Direction.Incoming);
+                    //clientProxy.InjectPacket(new SetCameraPropertiesPacket(false), Direction.Incoming);
+                    //clientProxy.InjectPacket(new SetFrustumPacket(false), Direction.Incoming);
                     clientProxy.InjectPacket(new ClearFollowCamPropertiesPacket(), Direction.Incoming);
                 }
             }
@@ -307,14 +310,14 @@ namespace UtilLib {
 
 
             if (cameraControl == CameraControlEnum.Frustum) {
-                clientProxy.InjectPacket(Window.CreateSetFollowCamPropertiesPacket(mWorldPosition, mWorldRotation), Direction.Incoming);
-                clientProxy.InjectPacket(Window.CreateFrustumPacket(vanishingDistance), Direction.Incoming);
+                //clientProxy.InjectPacket(Window.CreateSetFollowCamPropertiesPacket(mWorldPosition, mWorldRotation), Direction.Incoming);
+                clientProxy.InjectPacket(Window.CreateWindowPacket(Position, Vector3.Zero, mWorldRotation, Vector3.Zero, UPDATE_FREQ), Direction.Incoming);
             }
 
             if (cameraControl == CameraControlEnum.Individual) {
                 if (updateEyeOffset || updateRotation)
                     clientProxy.InjectPacket(Window.CreateSetFollowCamPropertiesPacket(mWorldPosition, mWorldRotation, updateEyeOffset, updateRotation), Direction.Incoming);
-                clientProxy.InjectPacket(Window.CreateCameraPacket(updateFrustum, updateFoV, updateAspectRatio), Direction.Incoming);
+                //clientProxy.InjectPacket(Window.CreateWindowPacket(Position, Vector3.Zero, mWorldRotation, Vector3.Zero, UPDATE_FREQ), Direction.Incoming);
             }
         }
 

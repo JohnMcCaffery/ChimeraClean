@@ -50,6 +50,7 @@ namespace ConsoleTest {
             addressBox.Text = slave.ProxyConfig.MasterAddress;
             portBox.Text = slave.ProxyConfig.MasterPort.ToString();
             nameBox.Text = slave.Name;
+            followCamPacketsBox.Checked = slave.UseSetFollowCamPackets;
 
             if (slave.ConnectedToMaster) {
                 addressBox.Text = slave.ProxyConfig.MasterAddress;
@@ -170,6 +171,10 @@ namespace ConsoleTest {
                 connectButton.Text = "Connect To Master";
                 statusLabel.Text = "Not Connected";
             }
+        }
+
+        private void followCamPacketsBox_CheckedChanged(object sender, EventArgs e) {
+            slave.UseSetFollowCamPackets = followCamPacketsBox.Checked;
         }
     }
 }

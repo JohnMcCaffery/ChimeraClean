@@ -75,7 +75,8 @@ namespace UtilLib {
                 MakeHelpLine("General", "LoginURI", "u", "The LoginURI of the actual servr being proxied.", Config.DEFAULT_LOGINURI),
                 MakeHelpLine("General", "MasterAddress", "ma", "The address the master is running at for distributing packets between master/slaves.", "localhost"),
                 MakeHelpLine("General", "MasterPort", "mp", "The port the master is running/will be run on for distributing packets between master/slaves.", Config.DEFAULT_MASTER_PORT),
-                MakeHelpLine("General", "UseGrid", "ug", "Whether to use the '--grid' flag when launching the client.", "true"),
+                MakeHelpLine("General", "UseGrid", "ug", "Whether to use the '--grid' flag when launching the client. Will only work with OpenSim enabled viewers.", "false"),
+                MakeHelpLine("General", "UseSetFollowCamPackets", "uf", "Whether to use SetFollowCamProperties packets to control the client or SetWindowPackets. Set true for compatibility with unmodified viewers.", "false"),
                 MakeHelpLine(section, "AutoConnectSlave", "as", "Whether to automatically connect the slave to the master.", "true"),
                 MakeHelpLine(section, "AutoStartClient", "ac", "Whether to auto launch the client executable to connect to the proxy.", "false"),
                 MakeHelpLine(section, "AutoStartMaster", "am", "Whether to automatically start the master running.", "true"),
@@ -107,6 +108,7 @@ namespace UtilLib {
             private string password = null;
             private string grid = null;
             private bool useGrid = false;
+            private bool useSetFollowCamPackets = false;
 
             //Proxy
             private string loginURI = DEFAULT_LOGINURI;
@@ -219,6 +221,11 @@ namespace UtilLib {
                 set { controlCamera = value; }
             }
 
+            public bool UseSetFollowCamPackets {
+                get { return useSetFollowCamPackets; }
+                set { useSetFollowCamPackets = value; }
+            }
+
             public Config() {
                 proxyPort = CURRENT_PORT++;
             }
@@ -248,7 +255,8 @@ namespace UtilLib {
                 viewerExe = Get(generalConfig, "ViewerExe", DEFAULT_CLIENT_EXE);
                 workingDir = Get(generalConfig, "WorkingDirectory", Path.GetDirectoryName(viewerExe));
                 loginURI = Get(generalConfig, "LoginURI", DEFAULT_LOGINURI);
-                UseGrid = Get(generalConfig, "UseGrid", true);
+                UseGrid = Get(generalConfig, "UseGrid", false);
+                UseSetFollowCamPackets = Get(generalConfig, "UseSetFollowCamPackets", false);
 
                 firstName = Get(mainConfig, "FirstName", null);
                 lastName = Get(mainConfig, "LastName", null);

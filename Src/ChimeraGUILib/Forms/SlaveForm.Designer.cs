@@ -33,6 +33,8 @@
             this.screenWindowPanel = new ChimeraLib.Controls.WindowPanel();
             this.mainTabContainer = new System.Windows.Forms.TabControl();
             this.proxyTab = new System.Windows.Forms.TabPage();
+            this.controlCamera = new System.Windows.Forms.CheckBox();
+            this.followCamPacketsBox = new System.Windows.Forms.CheckBox();
             this.proxyPanel = new UtilLib.ProxyPanel();
             this.networkTab = new System.Windows.Forms.TabPage();
             this.nameLabel = new System.Windows.Forms.Label();
@@ -44,7 +46,6 @@
             this.addressBox = new System.Windows.Forms.TextBox();
             this.addressLabel = new System.Windows.Forms.Label();
             this.connectButton = new System.Windows.Forms.Button();
-            this.controlCamera = new System.Windows.Forms.CheckBox();
             this.injectedLabel = new System.Windows.Forms.Label();
             this.receivedLabel = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
@@ -71,33 +72,33 @@
             this.rawTab.Text = "Virtual";
             this.rawTab.UseVisualStyleBackColor = true;
             // 
-            // masterRotation
+            // rotationPanel
             // 
-            this.rotationPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.rotationPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.rotationPanel.DisplayName = "Master VirtualRotationOffset";
             this.rotationPanel.Location = new System.Drawing.Point(0, 0);
-            this.rotationPanel.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("masterRotation.LookAtVector")));
-            this.rotationPanel.Name = "masterRotation";
+            this.rotationPanel.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("rotationPanel.LookAtVector")));
+            this.rotationPanel.Name = "rotationPanel";
             this.rotationPanel.Pitch = 0F;
-            this.rotationPanel.Rotation = ((OpenMetaverse.Quaternion)(resources.GetObject("masterRotation.Rotation")));
+            this.rotationPanel.Rotation = ((OpenMetaverse.Quaternion)(resources.GetObject("rotationPanel.Rotation")));
             this.rotationPanel.Size = new System.Drawing.Size(632, 147);
             this.rotationPanel.TabIndex = 2;
             this.rotationPanel.Yaw = 0F;
             this.rotationPanel.OnChange += new System.EventHandler(this.rotation_OnChange);
             // 
-            // masterPosition
+            // positionPanel
             // 
-            this.positionPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.positionPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.positionPanel.DisplayName = "Master VirtualPositionOffset";
             this.positionPanel.Location = new System.Drawing.Point(0, 153);
             this.positionPanel.Max = 2048D;
             this.positionPanel.Min = -2048D;
-            this.positionPanel.Name = "masterPosition";
+            this.positionPanel.Name = "positionPanel";
             this.positionPanel.Size = new System.Drawing.Size(632, 98);
             this.positionPanel.TabIndex = 3;
-            this.positionPanel.Value = ((OpenMetaverse.Vector3)(resources.GetObject("masterPosition.Value")));
+            this.positionPanel.Value = ((OpenMetaverse.Vector3)(resources.GetObject("positionPanel.Value")));
             this.positionPanel.X = 0F;
             this.positionPanel.Y = 0F;
             this.positionPanel.Z = 0F;
@@ -117,17 +118,18 @@
             // 
             // screenWindowPanel
             // 
-            this.screenWindowPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.screenWindowPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.screenWindowPanel.Location = new System.Drawing.Point(0, 0);
+            this.screenWindowPanel.MinimumSize = new System.Drawing.Size(637, 270);
             this.screenWindowPanel.Name = "screenWindowPanel";
-            this.screenWindowPanel.Size = new System.Drawing.Size(632, 288);
+            this.screenWindowPanel.Size = new System.Drawing.Size(637, 288);
             this.screenWindowPanel.TabIndex = 0;
-            window1.AspectRatio = 0.5625D;
+            window1.AspectRatio = 0.56250000000000011D;
             window1.Diagonal = 482.59999999999997D;
-            window1.EyePosition = ((OpenMetaverse.Vector3)(resources.GetObject("window1.EyeOffset")));
-            window1.FieldOfView = 0.5751065017725624D;
-            window1.Height = 236.60007424667296D;
+            window1.EyePosition = ((OpenMetaverse.Vector3)(resources.GetObject("window1.EyePosition")));
+            window1.FieldOfView = 1.5707963267948966D;
+            window1.Height = 236.600074246673D;
             window1.LockScreenPosition = true;
             rotation1.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("rotation1.LookAtVector")));
             rotation1.Pitch = 0F;
@@ -154,6 +156,8 @@
             // 
             // proxyTab
             // 
+            this.proxyTab.Controls.Add(this.controlCamera);
+            this.proxyTab.Controls.Add(this.followCamPacketsBox);
             this.proxyTab.Controls.Add(this.proxyPanel);
             this.proxyTab.Location = new System.Drawing.Point(4, 22);
             this.proxyTab.Name = "proxyTab";
@@ -162,6 +166,30 @@
             this.proxyTab.TabIndex = 3;
             this.proxyTab.Text = "Proxy";
             this.proxyTab.UseVisualStyleBackColor = true;
+            // 
+            // controlCamera
+            // 
+            this.controlCamera.AutoSize = true;
+            this.controlCamera.Checked = true;
+            this.controlCamera.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.controlCamera.Location = new System.Drawing.Point(8, 190);
+            this.controlCamera.Name = "controlCamera";
+            this.controlCamera.Size = new System.Drawing.Size(98, 17);
+            this.controlCamera.TabIndex = 17;
+            this.controlCamera.Text = "Control Camera";
+            this.controlCamera.UseVisualStyleBackColor = true;
+            this.controlCamera.Click += new System.EventHandler(this.controlCamera_CheckedChanged);
+            // 
+            // followCamPacketsBox
+            // 
+            this.followCamPacketsBox.AutoSize = true;
+            this.followCamPacketsBox.Location = new System.Drawing.Point(8, 167);
+            this.followCamPacketsBox.Name = "followCamPacketsBox";
+            this.followCamPacketsBox.Size = new System.Drawing.Size(144, 17);
+            this.followCamPacketsBox.TabIndex = 16;
+            this.followCamPacketsBox.Text = "Use Follow Cam Packets";
+            this.followCamPacketsBox.UseVisualStyleBackColor = true;
+            this.followCamPacketsBox.CheckedChanged += new System.EventHandler(this.followCamPacketsBox_CheckedChanged);
             // 
             // proxyPanel
             // 
@@ -188,7 +216,6 @@
             this.networkTab.Controls.Add(this.addressBox);
             this.networkTab.Controls.Add(this.addressLabel);
             this.networkTab.Controls.Add(this.connectButton);
-            this.networkTab.Controls.Add(this.controlCamera);
             this.networkTab.Controls.Add(this.injectedLabel);
             this.networkTab.Controls.Add(this.receivedLabel);
             this.networkTab.Controls.Add(this.label2);
@@ -258,8 +285,8 @@
             // 
             // addressBox
             // 
-            this.addressBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.addressBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.addressBox.Location = new System.Drawing.Point(94, 3);
             this.addressBox.Name = "addressBox";
             this.addressBox.Size = new System.Drawing.Size(442, 20);
@@ -278,8 +305,8 @@
             // 
             // connectButton
             // 
-            this.connectButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.connectButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.connectButton.Location = new System.Drawing.Point(168, 29);
             this.connectButton.Name = "connectButton";
             this.connectButton.Size = new System.Drawing.Size(456, 23);
@@ -287,20 +314,6 @@
             this.connectButton.Text = "Connect To Master";
             this.connectButton.UseVisualStyleBackColor = true;
             this.connectButton.Click += new System.EventHandler(this.connectButton_Click);
-            // 
-            // controlCamera
-            // 
-            this.controlCamera.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.controlCamera.AutoSize = true;
-            this.controlCamera.Checked = true;
-            this.controlCamera.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.controlCamera.Location = new System.Drawing.Point(526, 55);
-            this.controlCamera.Name = "controlCamera";
-            this.controlCamera.Size = new System.Drawing.Size(98, 17);
-            this.controlCamera.TabIndex = 4;
-            this.controlCamera.Text = "Control Camera";
-            this.controlCamera.UseVisualStyleBackColor = true;
-            this.controlCamera.CheckedChanged += new System.EventHandler(this.controlCamera_CheckedChanged);
             // 
             // injectedLabel
             // 
@@ -371,6 +384,7 @@
             this.screenTab.ResumeLayout(false);
             this.mainTabContainer.ResumeLayout(false);
             this.proxyTab.ResumeLayout(false);
+            this.proxyTab.PerformLayout();
             this.networkTab.ResumeLayout(false);
             this.networkTab.PerformLayout();
             this.debugTab.ResumeLayout(false);
@@ -394,7 +408,6 @@
         private System.Windows.Forms.Label receivedLabel;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.CheckBox controlCamera;
         private System.Windows.Forms.TextBox addressBox;
         private System.Windows.Forms.Label addressLabel;
         private System.Windows.Forms.Button connectButton;
@@ -405,6 +418,8 @@
         private System.Windows.Forms.Label nameLabel;
         private System.Windows.Forms.TextBox nameBox;
         private ChimeraLib.Controls.WindowPanel screenWindowPanel;
+        private System.Windows.Forms.CheckBox followCamPacketsBox;
+        private System.Windows.Forms.CheckBox controlCamera;
 
 
 

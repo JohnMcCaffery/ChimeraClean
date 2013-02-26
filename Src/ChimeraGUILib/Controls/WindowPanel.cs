@@ -98,10 +98,10 @@ namespace ChimeraLib.Controls {
                 widthLabel.Text = "2 * Offset H / Width: " + Math.Round((2 * window.FrustumOffsetH) / window.Width, 5);
                 heightLabel.Text = "2 * Offset V / Height: " + Math.Round((2 * window.FrustumOffsetV) / window.Height, 5);
 
-                SetCameraPropertiesPacket p = window.CreateCameraPacket();
-                double fovDeg = Math.Round(p.CameraProperty.CameraAngle * Rotation.RAD2DEG, 5);
-                double fovRad = Math.Round(p.CameraProperty.CameraAngle, 5);
-                fovLabel.Text = "FoV (rad/deg): " + fovRad  + " / " + fovDeg;
+                //SetCameraPropertiesPacket p = window.CreateCameraPacket();
+                //double fovDeg = Math.Round(p.CameraProperty.CameraAngle * Rotation.RAD2DEG, 5);
+                //double fovRad = Math.Round(p.CameraProperty.CameraAngle, 5);
+                //fovLabel.Text = "FoV (rad/deg): " + fovRad  + " / " + fovDeg;
                 hOffsetLabel.Text = "Offset H: " + Math.Round(window.FrustumOffsetH / 10.0, 5);
                 vOffsetLabel.Text = "Offset V: " + Math.Round(window.FrustumOffsetV / 10.0, 5);
                 init = false;
