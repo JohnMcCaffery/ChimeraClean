@@ -458,7 +458,7 @@ namespace ConsoleTest {
                     //mMaster.LookAt.Pitch = pitch + (((e.Y - y) * mouseScaleSlider.Value) / 20);
                 //mMaster.LookAt.Yaw = yaw + ((((x - e.X) / 2) * mouseScaleSlider.Value) / 10);
                 Rotation rot = new Rotation(
-                    pitch + (((e.Y - y) * mouseScaleSlider.Value) / 20), 
+                    ignorePitch ? 0f : pitch + (((e.Y - y) * mouseScaleSlider.Value) / 20), 
                     yaw + ((((x - e.X) / 2) * mouseScaleSlider.Value) / 10));
                 mLookAt = rot.LookAtVector;
                 mousePanel.Refresh();
@@ -486,8 +486,8 @@ namespace ConsoleTest {
                 case Keys.D: rightDown = true; break;
                 case Keys.W: forwardDown = true; break;
                 case Keys.S: backwardDown = true; break;
-                case Keys.R: upDown = true; break;
-                case Keys.F: downDown = true; break;
+                case Keys.E: upDown = true; break;
+                case Keys.Q: downDown = true; break;
                 case Keys.Left: yawLeftDown = true; break;
                 case Keys.Right: yawRightDown = true; break;
                 case Keys.Up: pitchUpDown = true; break;
@@ -501,8 +501,8 @@ namespace ConsoleTest {
                 case Keys.D: rightDown = false; break;
                 case Keys.W: forwardDown = false; break;
                 case Keys.S: backwardDown = false; break;
-                case Keys.R: upDown = false; break;
-                case Keys.F: downDown = false; break;
+                case Keys.E: upDown = false; break;
+                case Keys.Q: downDown = false; break;
                 case Keys.Left: yawLeftDown = false; break;
                 case Keys.Right: yawRightDown = false; break;
                 case Keys.Up: pitchUpDown = false; break;
@@ -524,6 +524,15 @@ namespace ConsoleTest {
             if (backwardDown) move.X -= shift;
             if (leftDown) move.Y += shift;
             if (rightDown) move.Y -= shift;
+
+            if (yawLeftDown || yawRightDown || pitchUpDown || pitchDownDown) {
+                Rotation r = new Rotation(mMaster.LookAt);
+                if (yawLeftDown) r.Yaw -= .05f * moveScaleSlider.Value;
+                if (yawRightDown) r.Yaw += .05f * moveScaleSlider.Value;
+                if (pitchUpDown) r.Pitch += .05f * moveScaleSlider.Value;
+                if (pitchDownDown) r.Pitch -= .05f * moveScaleSlider.Value;
+                mLookAt = r.LookAtVector;
+            }
 
             if (move != Vector3.Zero || upDown || downDown || mLookAt != mOldLookAt) {
                 move *= rawRotation.Rotation;
