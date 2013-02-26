@@ -243,7 +243,7 @@ namespace UtilLib {
                 //clientProxy.InjectPacket(window.CreateSetFollowCamPropertiesPacket(WorldPosition, WorldRotation), Direction.Incoming);
                 //clientProxy.InjectPacket(window.CreateCameraPacket(), Direction.Incoming);
                 //clientProxy.InjectPacket(window.CreateFrustumPacket(512f), Direction.Incoming);
-                clientProxy.InjectPacket(window.CreateWindowPacket(WorldPosition, WorldPositionDelta, WorldRotation.LookAtVector, WorldRotationDelta, CameraMaster.UPDATE_FREQ), Direction.Incoming);
+                clientProxy.InjectPacket(window.CreateWindowPacket(WorldPosition, WorldPositionDelta, WorldRotation, WorldRotationDelta, CameraMaster.UPDATE_FREQ), Direction.Incoming);
             }
 
             if (OnUpdateSentToViewer != null)

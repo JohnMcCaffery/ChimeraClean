@@ -289,22 +289,31 @@ namespace ChimeraLib {
 
             public override void FromBytes(byte[] bytes, ref int i) {
                 try {
-                    ProjectionMatrix.M11 = Utils.BytesToFloat(bytes, i); i += 4;
-                    ProjectionMatrix.M12 = Utils.BytesToFloat(bytes, i); i += 4;
-                    ProjectionMatrix.M13 = Utils.BytesToFloat(bytes, i); i += 4;
-                    ProjectionMatrix.M14 = Utils.BytesToFloat(bytes, i); i += 4;
-                    ProjectionMatrix.M21 = Utils.BytesToFloat(bytes, i); i += 4;
-                    ProjectionMatrix.M22 = Utils.BytesToFloat(bytes, i); i += 4;
-                    ProjectionMatrix.M23 = Utils.BytesToFloat(bytes, i); i += 4;
-                    ProjectionMatrix.M34 = Utils.BytesToFloat(bytes, i); i += 4;
-                    ProjectionMatrix.M31 = Utils.BytesToFloat(bytes, i); i += 4;
-                    ProjectionMatrix.M32 = Utils.BytesToFloat(bytes, i); i += 4;
-                    ProjectionMatrix.M33 = Utils.BytesToFloat(bytes, i); i += 4;
-                    ProjectionMatrix.M34 = Utils.BytesToFloat(bytes, i); i += 4;
-                    ProjectionMatrix.M41 = Utils.BytesToFloat(bytes, i); i += 4;
-                    ProjectionMatrix.M42 = Utils.BytesToFloat(bytes, i); i += 4;
-                    ProjectionMatrix.M43 = Utils.BytesToFloat(bytes, i); i += 4;
-                    ProjectionMatrix.M44 = Utils.BytesToFloat(bytes, i); i += 4;
+                    Vector4 r1 = new Vector4(), r2 = new Vector4(), r3 = new Vector4(), r4 = new Vector4();
+                    r1.FromBytes(bytes, i); i += sizeof(float) * 4;
+                    r2.FromBytes(bytes, i); i += sizeof(float) * 4;
+                    r3.FromBytes(bytes, i); i += sizeof(float) * 4;
+                    r4.FromBytes(bytes, i); i += sizeof(float) * 4;
+
+                    ProjectionMatrix.M11 = r1.X;
+                    ProjectionMatrix.M12 = r1.Y;
+                    ProjectionMatrix.M13 = r1.Z;
+                    ProjectionMatrix.M14 = r1.W;
+
+                    ProjectionMatrix.M21 = r2.X;
+                    ProjectionMatrix.M22 = r2.Y;
+                    ProjectionMatrix.M23 = r2.Z;
+                    ProjectionMatrix.M24 = r2.W;
+
+                    ProjectionMatrix.M31 = r3.X;
+                    ProjectionMatrix.M32 = r3.Y;
+                    ProjectionMatrix.M33 = r3.Z;
+                    ProjectionMatrix.M34 = r3.W;
+
+                    ProjectionMatrix.M41 = r4.X;
+                    ProjectionMatrix.M42 = r4.Y;
+                    ProjectionMatrix.M43 = r4.Z;
+                    ProjectionMatrix.M44 = r4.W;
 
                     Position.FromBytes(bytes, i); i += 12;
                     PositionDelta.FromBytes(bytes, i); i += 12;
@@ -320,6 +329,8 @@ namespace ChimeraLib {
             }
 
             public override void ToBytes(byte[] bytes, ref int i) {
+                //Vector4 r1;
+                //ProjectionMatrix.UpAxis
                 Utils.FloatToBytes(ProjectionMatrix.M11, bytes, i); i += 4;
                 Utils.FloatToBytes(ProjectionMatrix.M12, bytes, i); i += 4;
                 Utils.FloatToBytes(ProjectionMatrix.M13, bytes, i); i += 4;
@@ -600,9 +611,33 @@ namespace ChimeraLib {
         public static SetWindowPacket CreateWindowPacket(this Window window, 
             Vector3 position, 
             Vector3 positionDelta, 
-            Vector3 lookAt, 
+            Rotation rotation, 
             Vector3 lookAtDelta, 
             uint tickLength) {
+
+            Vector3 upperRight = new Vector3(0f, (float)(window.Width / 2.0), (float)(window.Height / 2.0));
+            Vector3 lowerLeft = new Vector3(0f, (float)(window.Width / -2.0), (float)(window.Height / -2.0));
+            Vector3 diff = window.ScreenPosition - window.EyePosition;
+
+            diff *= -window.RotationOffset.Quaternion;
+            //diff *= window.RotationOffset.Quaternion;
+
+            upperRight += diff;
+            lowerLeft += diff;
+
+            //upperRight /= (Math.Abs(diff.X) - .01f);
+            //lowerLeft /= (Math.Abs(diff.X) - .01f);
+            upperRight /= (float) (diff.X * 10.0);
+            lowerLeft /= (float) (diff.X * 10.0);
+
+            float x1 = Math.Min(upperRight.Y, lowerLeft.Y);
+            float x2 = Math.Max(upperRight.Y, lowerLeft.Y);
+            float y1 = Math.Max(upperRight.Z, lowerLeft.Z);
+            float y2 = Math.Min(upperRight.Z, lowerLeft.Z);
+            float dn = (diff.Length() / diff.X) * .1f;
+            float df = (512f * 100f) * dn;
+
+            /*
             SetFrustumPacket fp = window.CreateFrustumPacket(512f);
             float x1 = fp.Frustum.x1;
             float x2 = fp.Frustum.x2;
@@ -610,6 +645,9 @@ namespace ChimeraLib {
             float y2 = fp.Frustum.y2;
             float dn = fp.Frustum.dn;
             float df = fp.Frustum.df;
+            */
+
+            Vector3 lookAt = new Rotation(rotation.Pitch + window.RotationOffset.Pitch, rotation.Yaw + window.RotationOffset.Yaw).LookAtVector;
 
             SetWindowPacket p = new SetWindowPacket();
             p.Window.Position = position;
@@ -618,11 +656,10 @@ namespace ChimeraLib {
             p.Window.LookAtDelta = lookAtDelta;
             p.Window.TickLength = tickLength * 1000;
 		    p.Window.ProjectionMatrix = new Matrix4(
-    			(2*dn) / (x2-x1), 0, (x2+x1)/(x2-x1), 0,
-    			0, (2*dn)/(y1-y2), (y1+y2)/(y1-y2), 0,
-    			0, 0, -(df+dn)/(df-dn), -(2.0f*df*dn)/(df-dn),
-    			0, 0, -1.0f, 0);
-
+    			(2*dn) / (x2-x1),   0,              (x2+x1)/(x2-x1),   0,
+    			0,                  (2*dn)/(y1-y2), (y1+y2)/(y1-y2),   0,
+    			0,                  0,              -(df+dn)/(df-dn),   -(2.0f*df*dn)/(df-dn),
+    			0,                  0,              -1.0f,              0);
 
             return p;
         }

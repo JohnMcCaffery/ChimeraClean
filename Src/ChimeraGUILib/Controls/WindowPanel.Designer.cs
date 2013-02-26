@@ -85,8 +85,8 @@
             // 
             // eyeOffsetPanel
             // 
-            this.eyeOffsetPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.eyeOffsetPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.eyeOffsetPanel.DisplayName = "Eye Offset (cm)";
             this.eyeOffsetPanel.Location = new System.Drawing.Point(391, 156);
             this.eyeOffsetPanel.Max = 1000D;
@@ -102,8 +102,8 @@
             // 
             // rotationOffsetPanel
             // 
-            this.rotationOffsetPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.rotationOffsetPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.rotationOffsetPanel.DisplayName = "Rotation Offset";
             this.rotationOffsetPanel.Location = new System.Drawing.Point(391, 3);
             this.rotationOffsetPanel.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("rotationOffsetPanel.LookAtVector")));
@@ -211,7 +211,7 @@
             this.diagonalSlider.Maximum = 1810;
             this.diagonalSlider.Minimum = 1;
             this.diagonalSlider.Name = "diagonalSlider";
-            this.diagonalSlider.Size = new System.Drawing.Size(131, 42);
+            this.diagonalSlider.Size = new System.Drawing.Size(131, 45);
             this.diagonalSlider.TabIndex = 14;
             this.diagonalSlider.TickStyle = System.Windows.Forms.TickStyle.None;
             this.diagonalSlider.Value = 190;
@@ -223,7 +223,7 @@
             this.heightSlider.Maximum = 4000;
             this.heightSlider.Minimum = 1;
             this.heightSlider.Name = "heightSlider";
-            this.heightSlider.Size = new System.Drawing.Size(131, 42);
+            this.heightSlider.Size = new System.Drawing.Size(131, 45);
             this.heightSlider.TabIndex = 13;
             this.heightSlider.TickStyle = System.Windows.Forms.TickStyle.None;
             this.heightSlider.Value = 260;
@@ -235,7 +235,7 @@
             this.widthSlider.Maximum = 4000;
             this.widthSlider.Minimum = 1;
             this.widthSlider.Name = "widthSlider";
-            this.widthSlider.Size = new System.Drawing.Size(131, 42);
+            this.widthSlider.Size = new System.Drawing.Size(131, 45);
             this.widthSlider.TabIndex = 12;
             this.widthSlider.TickStyle = System.Windows.Forms.TickStyle.None;
             this.widthSlider.Value = 410;
@@ -247,7 +247,7 @@
             this.fovSlider.Maximum = 17999;
             this.fovSlider.Minimum = 1;
             this.fovSlider.Name = "fovSlider";
-            this.fovSlider.Size = new System.Drawing.Size(131, 42);
+            this.fovSlider.Size = new System.Drawing.Size(131, 45);
             this.fovSlider.TabIndex = 11;
             this.fovSlider.TickStyle = System.Windows.Forms.TickStyle.None;
             this.fovSlider.Value = 9000;
@@ -290,9 +290,9 @@
             this.label4.AutoSize = true;
             this.label4.Location = new System.Drawing.Point(11, 185);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(89, 13);
+            this.label4.Size = new System.Drawing.Size(72, 13);
             this.label4.TabIndex = 8;
-            this.label4.Text = "Diagonal (inches)";
+            this.label4.Text = "Diagonal (cm)";
             // 
             // diagonalValue
             // 

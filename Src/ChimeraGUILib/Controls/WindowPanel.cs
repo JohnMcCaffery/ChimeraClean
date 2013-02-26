@@ -31,7 +31,6 @@ using OpenMetaverse;
 namespace ChimeraLib.Controls {
     public partial class WindowPanel : UserControl {
         private static readonly decimal ASPECT_RATIO_TOLERANCE = new decimal(0.0001);
-        private static double INCH2MM = 25.4;
         private Window window;
 
         public WindowPanel() : this(new Window()) {
@@ -68,8 +67,8 @@ namespace ChimeraLib.Controls {
                     //widthValue.Maximum = new decimal(max / 10.0);
                 }
 
-                double diagonalInch = Window.Diagonal / INCH2MM;
-                if (diagonalInch * 10.0 > diagonalSlider.Maximum) {
+                double diagonal = Window.Diagonal;
+                if (diagonal * 10.0 > diagonalSlider.Maximum) {
                     return;
                     //diagonalSlider.Maximum = (int) (diagonalInch * 10.0);
                     //diagonalValue.Maximum = new decimal(diagonalInch);
@@ -82,8 +81,8 @@ namespace ChimeraLib.Controls {
                 widthValue.Value = new decimal(window.Width / 10.0);
                 heightSlider.Value = (int) Math.Round(window.Height);
                 heightValue.Value = new decimal(window.Height / 10.0);
-                diagonalSlider.Value = (int) Math.Round(diagonalInch * 10);
-                diagonalValue.Value = new decimal(diagonalInch);
+                diagonalSlider.Value = (int) Math.Round(diagonal * 10);
+                diagonalValue.Value = new decimal(diagonal);
                 if (window.FieldOfView < Math.PI) {
                     fovSlider.Value = (int)Math.Round(window.FieldOfView * Rotation.RAD2DEG * 100);
                     fovValue.Value = new decimal(window.FieldOfView * Rotation.RAD2DEG);
@@ -136,12 +135,12 @@ namespace ChimeraLib.Controls {
 
         private void diagonalSlider_Scroll(object sender, EventArgs e) {
             if (window != null && !init)
-                window.Diagonal = (diagonalSlider.Value / 10) * INCH2MM;
+                window.Diagonal = (diagonalSlider.Value / 10);
         }
 
         private void diagonalValue_ValueChanged(object sender, EventArgs e) {
             if (window != null && !init)
-                window.Diagonal = decimal.ToDouble(diagonalValue.Value) * INCH2MM;
+                window.Diagonal = decimal.ToDouble(diagonalValue.Value);
         }
 
         private void fovSlider_Scroll(object sender, EventArgs e) {

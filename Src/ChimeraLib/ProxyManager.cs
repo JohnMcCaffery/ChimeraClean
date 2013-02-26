@@ -180,19 +180,22 @@ namespace UtilLib {
                     clientLoggedIn = true;
                     Hashtable t = (Hashtable)response.Value;
 
-                    sessionID = UUID.Parse(t["session_id"].ToString());
-                    secureSessionID = UUID.Parse(t["secure_session_id"].ToString());
-                    agentID = UUID.Parse(t["agent_id"].ToString());
-                    firstName = t["first_name"].ToString();
-                    lastName = t["last_name"].ToString();
+                    if (bool.Parse(t["login"].ToString())) {
+                        sessionID = UUID.Parse(t["session_id"].ToString());
+                        secureSessionID = UUID.Parse(t["secure_session_id"].ToString());
+                        agentID = UUID.Parse(t["agent_id"].ToString());
+                        firstName = t["first_name"].ToString();
+                        lastName = t["last_name"].ToString();
 
-                    lock(startLock)
-                        Monitor.PulseAll(startLock);
+                        lock (startLock)
+                            Monitor.PulseAll(startLock);
 
-                    new Thread(() => {
-                        if (OnClientLoggedIn != null)
-                            OnClientLoggedIn(clientProxy, null);
-                    }).Start();
+                        new Thread(() => {
+                            if (OnClientLoggedIn != null)
+                                OnClientLoggedIn(clientProxy, null);
+                        }).Start();
+                    } else {
+                    }
                 });
                 foreach (PacketType pt in Enum.GetValues(typeof(PacketType))) {
                     clientProxy.AddDelegate(pt, Direction.Incoming, ReceiveIncomingPacket);

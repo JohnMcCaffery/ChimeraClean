@@ -1,0 +1,13 @@
+<Events>
+  <ComboEvent>
+    <Stream1>
+      <MoveToEvent Target="&lt;65.05504, 365.4938, 94.78091&gt;" Length="5000" />
+      <MoveToEvent Target="&lt;215.1401, 433.604, 96.86312&gt;" Length="5000" />
+      <MoveToEvent Target="&lt;635.2654, 328.7955, 44.61095&gt;" Length="5000" />
+      <MoveToEvent Target="&lt;128, 128, 60&gt;" Length="5000" />
+    </Stream1>
+    <Stream2>
+      <LookAtEvent Target="&lt;215.842, 357.6517, 89.61762&gt;" Length="20000" />
+    </Stream2>
+  </ComboEvent>
+</Events>

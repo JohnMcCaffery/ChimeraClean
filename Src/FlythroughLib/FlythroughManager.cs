@@ -168,7 +168,7 @@ namespace FlythroughLib {
             while (mPlaying && mCurrentEvent != null) {
                 lock (this) {
                     Vector3 oldPos = mPosition;
-                    Rotation oldRot = mRotation;
+                    Rotation oldRot = new Rotation(mRotation);
                     if (mCurrentEvent != null && !mCurrentEvent.Step()) {
                         if (mCurrentEvent != null)
                             mCurrentEvent = mCurrentEvent.NextEvent;

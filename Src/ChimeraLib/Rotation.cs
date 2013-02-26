@@ -141,7 +141,15 @@ namespace UtilLib {
         public Rotation() { }
 
         /// <summary>
-        /// Initialise the VirtualRotationOffset looking along the specified vector.
+        /// Initialise the Rotation from the specified rotation.
+        /// </summary>
+        /// <param name="lookAtVector">Another rotation to copy the values from.</param>
+        public Rotation(Rotation rotation) {
+            LookAtVector = rotation.LookAtVector;
+        }
+
+        /// <summary>
+        /// Initialise the Rotation looking along the specified vector.
         /// </summary>
         /// <param name="lookAtVector">A vector representing the direction along which this VirtualRotationOffset starts looking.</param>
         public Rotation(Vector3 lookAtVector) {
@@ -149,7 +157,7 @@ namespace UtilLib {
         }
 
         /// <summary>
-        /// Initiliase the VirtualRotationOffset with the specified yaw and pitch.
+        /// Initiliase the Rotation with the specified yaw and pitch.
         /// </summary>
         /// <param name="pitch">The pitch value for this VirtualRotationOffset to start with.</param>
         /// <param name="yaw">The yaw value for this VirtualRotationOffset to start with.</param>
