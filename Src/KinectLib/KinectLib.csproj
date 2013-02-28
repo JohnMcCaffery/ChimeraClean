@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{58E39BFE-20D5-4C8D-BCFC-6B5E641C2DFF}</ProjectGuid>
+    <ProjectGuid>{D9D475BF-C0EE-4DF6-89A3-55199BB32ABE}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ChimeraLib</RootNamespace>
-    <AssemblyName>ChimeraLib</AssemblyName>
+    <RootNamespace>KinectLib</RootNamespace>
+    <AssemblyName>KinectLib</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -32,67 +32,39 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="log4net">
-      <HintPath>..\..\Lib\log4net.dll</HintPath>
-    </Reference>
-    <Reference Include="Nini">
-      <HintPath>..\..\Lib\Nini.dll</HintPath>
-    </Reference>
-    <Reference Include="OpenMetaverse">
-      <HintPath>..\..\Lib\OpenMetaverse.dll</HintPath>
-    </Reference>
-    <Reference Include="OpenMetaverse.Skeletal">
-      <HintPath>..\..\Lib\OpenMetaverse.Skeletal.dll</HintPath>
-    </Reference>
-    <Reference Include="OpenMetaverse.StructuredData">
-      <HintPath>..\..\Lib\OpenMetaverse.StructuredData.dll</HintPath>
+    <Reference Include="NuiLib-DotNet_dv">
+      <HintPath>..\..\Lib\NuiLib-DotNet_dv.dll</HintPath>
     </Reference>
     <Reference Include="OpenMetaverseTypes">
       <HintPath>..\..\Lib\OpenMetaverseTypes.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="WinGridProxy">
-      <HintPath>..\..\Lib\WinGridProxy.exe</HintPath>
-    </Reference>
-    <Reference Include="XMLRPC">
-      <HintPath>..\..\Lib\XMLRPC.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BackChannel.cs" />
-    <Compile Include="FullMaster.cs" />
-    <Compile Include="FullSlave.cs" />
-    <Compile Include="Init.cs" />
-    <Compile Include="KinectSource.cs" />
-    <Compile Include="SetCameraPropertiesPacket.cs" />
-    <Compile Include="Window.cs" />
-    <Compile Include="Master.cs" />
-    <Compile Include="CameraMaster.cs" />
-    <Compile Include="CameraSlave.cs" />
+    <Compile Include="KinectManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ProxyManager.cs" />
-    <Compile Include="Rotation.cs" />
-    <Compile Include="InterProxyServer.cs" />
-    <Compile Include="InterProxyClient.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
-    <None Include="ClassDiagram1.cd" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\..\libopenmetaverse-mine\Programs\GridProxy\GridProxy.csproj">
-      <Project>{68177E13-C9CC-4524-8724-288EB8249002}</Project>
-      <Name>GridProxy</Name>
+    <ProjectReference Include="..\ChimeraLib\ChimeraLib.csproj">
+      <Project>{58E39BFE-20D5-4C8D-BCFC-6B5E641C2DFF}</Project>
+      <Name>ChimeraLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FlythroughLib\FlythroughLib.csproj">
+      <Project>{D0708045-6CCA-4764-B438-A2D6E8635978}</Project>
+      <Name>FlythroughLib</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>xcopy /d /y D:\Work\NuiLib\Lib\x86\vc10\NuiLib_dv.dll $(SolutionDir)..\Bin\
+xcopy /d /y D:\Work\NuiLib\Lib\x86\vc10\NuiLib-CLRSafe_dv.dll $(SolutionDir)..\Bin\
+xcopy /d /y D:\Work\NuiLib\Lib\x86\vc10\NuiLib-DotNet_dv.dll $(SolutionDir)..\Lib\</PreBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
