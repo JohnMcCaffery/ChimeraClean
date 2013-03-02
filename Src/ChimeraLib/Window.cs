@@ -162,7 +162,7 @@ namespace ChimeraLib {
         public double Height {
             get { return (Math.Sin(Math.Atan(aspectRatio)) * mmDiagonal); }
             set {
-                if (Math.Abs(Width - value) < TOLERANCE || value <= 0.0)
+                if (Math.Abs(Height - value) < TOLERANCE || value <= 0.0)
                     return;
                 aspectRatio = value / Width;
                 mmDiagonal = value / Math.Sin(Math.Atan(aspectRatio));

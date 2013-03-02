@@ -6,6 +6,7 @@ using UtilLib;
 using OpenMetaverse;
 using System.Threading;
 using System.Xml;
+using System.IO;
 
 namespace FlythroughLib {
     public class FlythroughChangeEvent : EventArgs {
@@ -41,7 +42,7 @@ namespace FlythroughLib {
         /// <summary>
         /// The current orientation of the flythrough.
         /// </summary>
-        private Rotation mRotation;
+        private Rotation mRotation = new Rotation();
         /// <summary>
         /// The first event in the sequence.
         /// </summary>
@@ -276,6 +277,10 @@ namespace FlythroughLib {
             mCurrentEvent = null;
             mFirstEvent = null;
             mLastEvent = null;
+            if (!File.Exists(file)) {
+                Console.WriteLine("Unable to load " + file + ". Ignoring load request.");
+                return;
+            }
             XmlDocument doc = new XmlDocument();
             doc.Load(file);
             foreach (XmlNode node in doc.GetElementsByTagName("Events")[0].ChildNodes) {

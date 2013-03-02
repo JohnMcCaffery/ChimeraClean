@@ -15,13 +15,18 @@ namespace FlythroughLib.Panels {
         private readonly Dictionary<string, FlythroughEvent> mEvents = new Dictionary<string, FlythroughEvent>();
         private readonly Dictionary<string, UserControl> mPanels = new Dictionary<string, UserControl>();
 
-        private FlythroughManager mContainer = new FlythroughManager();
+        private FlythroughManager mContainer;
         private CameraMaster mMaster;
         private UserControl mCurrentPanel;
 
+
         public FlythroughPanel() {
             InitializeComponent();
+        }
 
+        public void Init(CameraMaster master, FlythroughManager container) {
+            mMaster = master;
+            mContainer = container;
             mContainer.OnComplete += (source, args) => {
                 if (loopCheck.Checked)
                     mContainer.Play();
@@ -36,7 +41,9 @@ namespace FlythroughLib.Panels {
 
         public CameraMaster Master {
             get { return mMaster; }
-            set { mMaster = value; }
+        }
+        public FlythroughManager Container {
+            get { return mContainer; }
         }
 
         private void playButton_Click(object sender, EventArgs e) {

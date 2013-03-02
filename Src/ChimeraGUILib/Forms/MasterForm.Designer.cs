@@ -165,7 +165,7 @@
             // 
             this.visualSlavesSplit.Panel2.Controls.Add(this.slavesTabContainer);
             this.visualSlavesSplit.Size = new System.Drawing.Size(845, 739);
-            this.visualSlavesSplit.SplitterDistance = 275;
+            this.visualSlavesSplit.SplitterDistance = 269;
             this.visualSlavesSplit.SplitterWidth = 10;
             this.visualSlavesSplit.TabIndex = 1;
             this.visualSlavesSplit.KeyDown += new System.Windows.Forms.KeyEventHandler(this.keyDown);
@@ -185,8 +185,8 @@
             // topSplit.Panel2
             // 
             this.topSplit.Panel2.Controls.Add(this.inputTabContainer);
-            this.topSplit.Size = new System.Drawing.Size(845, 275);
-            this.topSplit.SplitterDistance = 192;
+            this.topSplit.Size = new System.Drawing.Size(845, 269);
+            this.topSplit.SplitterDistance = 186;
             this.topSplit.SplitterWidth = 10;
             this.topSplit.TabIndex = 1;
             this.topSplit.KeyDown += new System.Windows.Forms.KeyEventHandler(this.keyDown);
@@ -201,7 +201,7 @@
             this.displayTab.Location = new System.Drawing.Point(0, 0);
             this.displayTab.Name = "displayTab";
             this.displayTab.SelectedIndex = 0;
-            this.displayTab.Size = new System.Drawing.Size(192, 275);
+            this.displayTab.Size = new System.Drawing.Size(186, 269);
             this.displayTab.TabIndex = 0;
             this.displayTab.KeyDown += new System.Windows.Forms.KeyEventHandler(this.keyDown);
             this.displayTab.KeyUp += new System.Windows.Forms.KeyEventHandler(this.keyUp);
@@ -214,7 +214,7 @@
             this.bothTab.Location = new System.Drawing.Point(4, 22);
             this.bothTab.Name = "bothTab";
             this.bothTab.Padding = new System.Windows.Forms.Padding(3);
-            this.bothTab.Size = new System.Drawing.Size(184, 249);
+            this.bothTab.Size = new System.Drawing.Size(178, 243);
             this.bothTab.TabIndex = 2;
             this.bothTab.Text = "Horizontal and Vertical";
             this.bothTab.UseVisualStyleBackColor = true;
@@ -223,7 +223,7 @@
             // 
             this.label11.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(0, 220);
+            this.label11.Location = new System.Drawing.Point(0, 214);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(34, 13);
             this.label11.TabIndex = 2;
@@ -233,10 +233,10 @@
             // 
             this.scaleBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.scaleBar.Location = new System.Drawing.Point(28, 220);
+            this.scaleBar.Location = new System.Drawing.Point(28, 214);
             this.scaleBar.Maximum = 4000;
             this.scaleBar.Name = "scaleBar";
-            this.scaleBar.Size = new System.Drawing.Size(156, 45);
+            this.scaleBar.Size = new System.Drawing.Size(150, 45);
             this.scaleBar.TabIndex = 1;
             this.scaleBar.TickStyle = System.Windows.Forms.TickStyle.None;
             this.scaleBar.Value = 500;
@@ -257,8 +257,8 @@
             // hvSplit.Panel2
             // 
             this.hvSplit.Panel2.Controls.Add(this.vBox);
-            this.hvSplit.Size = new System.Drawing.Size(184, 211);
-            this.hvSplit.SplitterDistance = 91;
+            this.hvSplit.Size = new System.Drawing.Size(178, 205);
+            this.hvSplit.SplitterDistance = 88;
             this.hvSplit.TabIndex = 0;
             // 
             // hBox
@@ -266,7 +266,7 @@
             this.hBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.hBox.Location = new System.Drawing.Point(0, 0);
             this.hBox.Name = "hBox";
-            this.hBox.Size = new System.Drawing.Size(91, 211);
+            this.hBox.Size = new System.Drawing.Size(88, 205);
             this.hBox.TabIndex = 0;
             this.hBox.TabStop = false;
             this.hBox.Text = "Horizontal";
@@ -277,7 +277,7 @@
             this.vBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.vBox.Location = new System.Drawing.Point(0, 0);
             this.vBox.Name = "vBox";
-            this.vBox.Size = new System.Drawing.Size(89, 211);
+            this.vBox.Size = new System.Drawing.Size(86, 205);
             this.vBox.TabIndex = 0;
             this.vBox.TabStop = false;
             this.vBox.Text = "Vertical";
@@ -289,7 +289,7 @@
             this.proxyTab.Location = new System.Drawing.Point(4, 22);
             this.proxyTab.Name = "proxyTab";
             this.proxyTab.Padding = new System.Windows.Forms.Padding(3);
-            this.proxyTab.Size = new System.Drawing.Size(184, 255);
+            this.proxyTab.Size = new System.Drawing.Size(178, 249);
             this.proxyTab.TabIndex = 3;
             this.proxyTab.Text = "Proxy";
             this.proxyTab.UseVisualStyleBackColor = true;
@@ -305,7 +305,7 @@
             this.proxyPanel.Password = "1245";
             this.proxyPanel.Port = "8080";
             this.proxyPanel.Proxy = null;
-            this.proxyPanel.Size = new System.Drawing.Size(184, 249);
+            this.proxyPanel.Size = new System.Drawing.Size(178, 243);
             this.proxyPanel.TabIndex = 0;
             // 
             // networkTab
@@ -329,7 +329,7 @@
             this.networkTab.Location = new System.Drawing.Point(4, 22);
             this.networkTab.Name = "networkTab";
             this.networkTab.Padding = new System.Windows.Forms.Padding(3);
-            this.networkTab.Size = new System.Drawing.Size(184, 255);
+            this.networkTab.Size = new System.Drawing.Size(178, 249);
             this.networkTab.TabIndex = 4;
             this.networkTab.Text = "Network";
             this.networkTab.UseVisualStyleBackColor = true;
@@ -492,7 +492,7 @@
             this.inputTabContainer.Location = new System.Drawing.Point(0, 0);
             this.inputTabContainer.Name = "inputTabContainer";
             this.inputTabContainer.SelectedIndex = 0;
-            this.inputTabContainer.Size = new System.Drawing.Size(643, 275);
+            this.inputTabContainer.Size = new System.Drawing.Size(649, 269);
             this.inputTabContainer.TabIndex = 2;
             this.inputTabContainer.KeyDown += new System.Windows.Forms.KeyEventHandler(this.keyDown);
             this.inputTabContainer.KeyUp += new System.Windows.Forms.KeyEventHandler(this.keyUp);
@@ -504,7 +504,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(635, 249);
+            this.tabPage2.Size = new System.Drawing.Size(641, 243);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Mouselook";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -517,9 +517,9 @@
             this.controlPanel.Controls.Add(this.label2);
             this.controlPanel.Controls.Add(this.moveScaleSlider);
             this.controlPanel.Controls.Add(this.mouseScaleSlider);
-            this.controlPanel.Location = new System.Drawing.Point(0, 154);
+            this.controlPanel.Location = new System.Drawing.Point(0, 148);
             this.controlPanel.Name = "controlPanel";
-            this.controlPanel.Size = new System.Drawing.Size(563, 101);
+            this.controlPanel.Size = new System.Drawing.Size(569, 101);
             this.controlPanel.TabIndex = 6;
             // 
             // label5
@@ -548,7 +548,7 @@
             this.moveScaleSlider.Maximum = 40;
             this.moveScaleSlider.Minimum = 10;
             this.moveScaleSlider.Name = "moveScaleSlider";
-            this.moveScaleSlider.Size = new System.Drawing.Size(557, 45);
+            this.moveScaleSlider.Size = new System.Drawing.Size(563, 45);
             this.moveScaleSlider.TabIndex = 1;
             this.moveScaleSlider.Value = 20;
             // 
@@ -560,7 +560,7 @@
             this.mouseScaleSlider.Maximum = 40;
             this.mouseScaleSlider.Minimum = 10;
             this.mouseScaleSlider.Name = "mouseScaleSlider";
-            this.mouseScaleSlider.Size = new System.Drawing.Size(557, 45);
+            this.mouseScaleSlider.Size = new System.Drawing.Size(563, 45);
             this.mouseScaleSlider.TabIndex = 2;
             this.mouseScaleSlider.Value = 20;
             // 
@@ -572,7 +572,7 @@
             this.mouseContainer.Controls.Add(this.mousePanel);
             this.mouseContainer.Location = new System.Drawing.Point(0, 3);
             this.mouseContainer.Name = "mouseContainer";
-            this.mouseContainer.Size = new System.Drawing.Size(564, 152);
+            this.mouseContainer.Size = new System.Drawing.Size(570, 146);
             this.mouseContainer.TabIndex = 8;
             this.mouseContainer.TabStop = false;
             this.mouseContainer.Text = "Mouselook";
@@ -585,7 +585,7 @@
             this.mousePanel.Controls.Add(this.ignorePitchCheck);
             this.mousePanel.Location = new System.Drawing.Point(3, 13);
             this.mousePanel.Name = "mousePanel";
-            this.mousePanel.Size = new System.Drawing.Size(555, 133);
+            this.mousePanel.Size = new System.Drawing.Size(561, 127);
             this.mousePanel.TabIndex = 7;
             this.mousePanel.Paint += new System.Windows.Forms.PaintEventHandler(this.mousePanel_Paint);
             this.mousePanel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.mouseTab_MouseDown);
@@ -614,7 +614,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(635, 255);
+            this.tabPage1.Size = new System.Drawing.Size(641, 249);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Kinect";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -639,7 +639,7 @@
             this.kinectValuePanel.Max = 30D;
             this.kinectValuePanel.Min = -30D;
             this.kinectValuePanel.Name = "kinectValuePanel";
-            this.kinectValuePanel.Size = new System.Drawing.Size(324, 98);
+            this.kinectValuePanel.Size = new System.Drawing.Size(307, 98);
             this.kinectValuePanel.TabIndex = 3;
             this.kinectValuePanel.Value = ((OpenMetaverse.Vector3)(resources.GetObject("kinectValuePanel.Value")));
             this.kinectValuePanel.X = 2F;
@@ -656,7 +656,7 @@
             this.kinectPositionPanel.Max = 1000D;
             this.kinectPositionPanel.Min = -1000D;
             this.kinectPositionPanel.Name = "kinectPositionPanel";
-            this.kinectPositionPanel.Size = new System.Drawing.Size(321, 98);
+            this.kinectPositionPanel.Size = new System.Drawing.Size(304, 98);
             this.kinectPositionPanel.TabIndex = 2;
             this.kinectPositionPanel.Value = ((OpenMetaverse.Vector3)(resources.GetObject("kinectPositionPanel.Value")));
             this.kinectPositionPanel.X = 400F;
@@ -674,7 +674,7 @@
             this.kinectRotationPanel.Name = "kinectRotationPanel";
             this.kinectRotationPanel.Pitch = 0F;
             this.kinectRotationPanel.Rotation = ((OpenMetaverse.Quaternion)(resources.GetObject("kinectRotationPanel.Rotation")));
-            this.kinectRotationPanel.Size = new System.Drawing.Size(321, 147);
+            this.kinectRotationPanel.Size = new System.Drawing.Size(304, 147);
             this.kinectRotationPanel.TabIndex = 1;
             this.kinectRotationPanel.Yaw = 180F;
             this.kinectRotationPanel.OnChange += new System.EventHandler(this.kinectRotationPanel_OnChange);
@@ -686,7 +686,7 @@
             this.kinectFrameTab.Location = new System.Drawing.Point(4, 22);
             this.kinectFrameTab.Name = "kinectFrameTab";
             this.kinectFrameTab.Padding = new System.Windows.Forms.Padding(3);
-            this.kinectFrameTab.Size = new System.Drawing.Size(635, 255);
+            this.kinectFrameTab.Size = new System.Drawing.Size(641, 249);
             this.kinectFrameTab.TabIndex = 2;
             this.kinectFrameTab.Text = "Kinect Image";
             this.kinectFrameTab.UseVisualStyleBackColor = true;
@@ -707,7 +707,7 @@
             this.kinectFramePanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.kinectFramePanel.Location = new System.Drawing.Point(3, 3);
             this.kinectFramePanel.Name = "kinectFramePanel";
-            this.kinectFramePanel.Size = new System.Drawing.Size(623, 249);
+            this.kinectFramePanel.Size = new System.Drawing.Size(629, 243);
             this.kinectFramePanel.TabIndex = 1;
             this.kinectFramePanel.TabStop = false;
             // 
@@ -721,7 +721,7 @@
             this.slavesTabContainer.Location = new System.Drawing.Point(0, 0);
             this.slavesTabContainer.Name = "slavesTabContainer";
             this.slavesTabContainer.SelectedIndex = 0;
-            this.slavesTabContainer.Size = new System.Drawing.Size(845, 454);
+            this.slavesTabContainer.Size = new System.Drawing.Size(845, 460);
             this.slavesTabContainer.TabIndex = 0;
             this.slavesTabContainer.KeyDown += new System.Windows.Forms.KeyEventHandler(this.keyDown);
             this.slavesTabContainer.KeyUp += new System.Windows.Forms.KeyEventHandler(this.keyUp);
@@ -736,7 +736,7 @@
             this.virtualTab.Location = new System.Drawing.Point(4, 22);
             this.virtualTab.Name = "virtualTab";
             this.virtualTab.Padding = new System.Windows.Forms.Padding(3);
-            this.virtualTab.Size = new System.Drawing.Size(837, 428);
+            this.virtualTab.Size = new System.Drawing.Size(837, 434);
             this.virtualTab.TabIndex = 0;
             this.virtualTab.Text = "Virtual Space";
             this.virtualTab.UseVisualStyleBackColor = true;
@@ -807,7 +807,7 @@
             this.flythroughTab.Location = new System.Drawing.Point(4, 22);
             this.flythroughTab.Name = "flythroughTab";
             this.flythroughTab.Padding = new System.Windows.Forms.Padding(3);
-            this.flythroughTab.Size = new System.Drawing.Size(837, 422);
+            this.flythroughTab.Size = new System.Drawing.Size(837, 428);
             this.flythroughTab.TabIndex = 6;
             this.flythroughTab.Text = "Flythrough";
             this.flythroughTab.UseVisualStyleBackColor = true;
@@ -816,9 +816,8 @@
             // 
             this.flythroughPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flythroughPanel.Location = new System.Drawing.Point(3, 3);
-            this.flythroughPanel.Master = null;
             this.flythroughPanel.Name = "flythroughPanel";
-            this.flythroughPanel.Size = new System.Drawing.Size(831, 410);
+            this.flythroughPanel.Size = new System.Drawing.Size(831, 416);
             this.flythroughPanel.TabIndex = 0;
             // 
             // masterTab
@@ -831,7 +830,7 @@
             this.masterTab.Location = new System.Drawing.Point(4, 22);
             this.masterTab.Name = "masterTab";
             this.masterTab.Padding = new System.Windows.Forms.Padding(3);
-            this.masterTab.Size = new System.Drawing.Size(837, 422);
+            this.masterTab.Size = new System.Drawing.Size(837, 428);
             this.masterTab.TabIndex = 1;
             this.masterTab.Text = "Master";
             this.masterTab.UseVisualStyleBackColor = true;
@@ -992,7 +991,7 @@
             this.masterWindowPanel.Size = new System.Drawing.Size(853, 295);
             this.masterWindowPanel.TabIndex = 8;
             window1.AspectRatio = 0.48051948051948051D;
-            window1.Diagonal = 427.14166268347094D;
+            window1.Diagonal = 427.14166268347088D;
             window1.EyePosition = ((OpenMetaverse.Vector3)(resources.GetObject("window1.EyePosition")));
             window1.FieldOfView = 1.5707963267948966D;
             window1.Height = 185.00000000000003D;
@@ -1012,7 +1011,7 @@
             this.debugTab.Location = new System.Drawing.Point(4, 22);
             this.debugTab.Name = "debugTab";
             this.debugTab.Padding = new System.Windows.Forms.Padding(3);
-            this.debugTab.Size = new System.Drawing.Size(837, 422);
+            this.debugTab.Size = new System.Drawing.Size(837, 428);
             this.debugTab.TabIndex = 5;
             this.debugTab.Text = "Debug";
             this.debugTab.UseVisualStyleBackColor = true;

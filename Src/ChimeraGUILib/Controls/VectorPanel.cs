@@ -46,23 +46,23 @@ namespace ProxyTestGUI {
 
                     if (!float.IsInfinity(value.X) && value.X > decimal.ToDouble(xValue.Maximum))
                         xValue.Maximum = new decimal(value.X);
-                    if (value.X < decimal.ToDouble(xValue.Minimum))
+                    if (!float.IsNegativeInfinity(value.X) && value.X < decimal.ToDouble(xValue.Minimum))
                         xValue.Minimum = new decimal(value.X);
 
                     if (!float.IsInfinity(value.Y) && value.Y > decimal.ToDouble(yValue.Maximum))
                         yValue.Maximum = new decimal(value.Y);
-                    if (value.Y < decimal.ToDouble(yValue.Minimum))
+                    if (!float.IsNegativeInfinity(value.Y) && value.Y < decimal.ToDouble(yValue.Minimum))
                         yValue.Minimum = new decimal(value.Y);
 
                     if (!float.IsInfinity(value.Z) && value.Z > decimal.ToDouble(zValue.Maximum))
                         zValue.Maximum = new decimal(value.Z);
-                    if (value.Z < decimal.ToDouble(zValue.Minimum))
+                    if (!float.IsNegativeInfinity(value.Z) && value.Z < decimal.ToDouble(zValue.Minimum))
                         zValue.Minimum = new decimal(value.Z);
 
                     if (!valueChange) {
-                        xValue.Value = float.IsInfinity(value.X) ? xValue.Maximum : float.IsNaN(value.X) ? decimal.Zero : new decimal(value.X);
-                        yValue.Value = float.IsInfinity(value.Y) ? yValue.Maximum : float.IsNaN(value.Y) ? decimal.Zero : new decimal(value.Y);
-                        zValue.Value = float.IsInfinity(value.Z) ? zValue.Maximum : float.IsNaN(value.Z) ? decimal.Zero : new decimal(value.Z);
+                        xValue.Value = float.IsInfinity(value.X) ? xValue.Maximum : float.IsNaN(value.X) ? decimal.Zero : float.IsNegativeInfinity(value.X) ? xValue.Minimum : new decimal(value.X);
+                        yValue.Value = float.IsInfinity(value.Y) ? yValue.Maximum : float.IsNaN(value.Y) ? decimal.Zero : float.IsNegativeInfinity(value.Y) ? xValue.Minimum : new decimal(value.Y);
+                        zValue.Value = float.IsInfinity(value.Z) ? zValue.Maximum : float.IsNaN(value.Z) ? decimal.Zero : float.IsNegativeInfinity(value.Z) ? xValue.Minimum : new decimal(value.Z);
                     }
                     externalSet = false;
 
@@ -136,7 +136,9 @@ namespace ProxyTestGUI {
 
         private void xValue_ValueChanged(object sender, EventArgs e) {
             float v = (float)decimal.ToDouble(xValue.Value);
-            int value = Convert.ToInt32(v * trackerScale);
+            int value = (v < Int32.MaxValue / trackerScale) ?
+                Convert.ToInt32(v * trackerScale) :
+                int.MaxValue;
             if (v == vector.X)
                 return;
 
@@ -151,7 +153,9 @@ namespace ProxyTestGUI {
 
         private void yValue_ValueChanged(object sender, EventArgs e) {
             float v = (float)decimal.ToDouble(yValue.Value);
-            int value = Convert.ToInt32(v * trackerScale);
+            int value = (v < Int32.MaxValue / trackerScale) ?
+                Convert.ToInt32(v * trackerScale) :
+                int.MaxValue;
             if (v == vector.Y)
                 return;
 
@@ -166,7 +170,9 @@ namespace ProxyTestGUI {
 
         private void zValue_ValueChanged(object sender, EventArgs e) {
             float v = (float)decimal.ToDouble(zValue.Value);
-            int value = Convert.ToInt32(v * trackerScale);
+            int value = (v < Int32.MaxValue / trackerScale) ?
+                Convert.ToInt32(v * trackerScale) :
+                int.MaxValue;
             if (v == vector.Z)
                 return;
 
