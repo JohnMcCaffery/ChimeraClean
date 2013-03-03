@@ -8,7 +8,7 @@ using NuiLibDotNet;
 
 namespace KinectLib {
     public class PointSurface {
-        public static readonly float SCALE = 1f;
+        public static readonly float SCALE = 1000f;
         private Window mWindow;
         private KinectManager mManager;
         private Vector mPlaneTopLeft, mPlaneNormal;
@@ -24,6 +24,7 @@ namespace KinectLib {
 
         public event Action<PointSurface> OnChange;
 
+        public Window Window { get { return mWindow; } }
         public float X {
             get { return mUseManual ? mManualX : mX.Value; }
         }
@@ -84,11 +85,11 @@ namespace KinectLib {
             Change();
         }
 
-        public PointSurface(KinectManager manager, Window window, Vector pointDir, Vector pointStart) {
+        public PointSurface(KinectManager manager, Window window) {
             mWindow = window;
             mManager = manager;
-            mPointDir = pointDir;
-            mPointStart = pointStart;
+            mPointDir = manager.PointDir;
+            mPointStart = manager.PointStart;
 
             window.OnChange += ConfigureFromWindow;
             manager.KinectRotation.OnChange += ConfigureFromWindow;
@@ -101,7 +102,7 @@ namespace KinectLib {
 
             Vector vertical = Vector.Create(0f, 1f, 0f); // Vertical
             //Calculate the intersection of the plane defined by the point mPlaneTopLeft and the normal mPlaneNormal and the line defined by the point mPointStart and the direction mPointDir.
-            intersection = Nui.intersect(mPlaneTopLeft, mPlaneNormal, mPointStart, mPointDir); 
+            intersection = Nui.intersect(mPlaneTopLeft, Nui.normalize(mPlaneNormal), mPointStart, Nui.normalize(mPointDir)); 
             //Calculate a vector that represents the orientation of the top of the window.
             mTop = Nui.scale(Nui.cross(vertical, mPlaneNormal), mW);
             //Calculate a vector that represents the orientation of the side of the window.

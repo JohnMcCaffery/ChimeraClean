@@ -119,7 +119,7 @@ namespace KinectLib {
             if (mSurface != null) {
                 float localX = (float)e.X / (float)mPictureBox.Width;
                 float localY = (float)e.Y / (float)mPictureBox.Height;
-                mSurface.OverridePosition(mShape.Left + (localX * mShape.Width), mShape.Top + (localY * mShape.Height));
+                //mSurface.OverridePosition(mShape.Left + (localX * mShape.Width), mShape.Top + (localY * mShape.Height));
             }
         }
     }

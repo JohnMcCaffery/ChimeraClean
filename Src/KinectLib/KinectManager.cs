@@ -16,7 +16,7 @@ namespace KinectLib {
         private static float R2DEG = (float) (180.0 /  Math.PI);
         private CameraMaster mMaster;
         private FlythroughManager mFlythrough;
-        private Vector3 mPosition = new Vector3(2000f, 0f, 0f);
+        private Vector3 mPosition = new Vector3(0f, 0f, 0f);
         private Rotation mRotation = new Rotation(0f, 180f);
         private Vector3 mHead;
         private Vector3 mPoint;
@@ -73,7 +73,7 @@ namespace KinectLib {
         }
 
         public PointSurface AddWindow(Window window) {
-            PointSurface surface = new PointSurface(this, window, mPointStart, mPointDir);
+            PointSurface surface = new PointSurface(this, window);
 
             mSurfaces.Add(surface);
 
@@ -85,12 +85,12 @@ namespace KinectLib {
 
         public KinectManager() {
             Nui.Init();
-            //Nui.SetAutoPoll(true);
-            //mPointEnd = Nui.joint(Nui.Hand_Right);
-            //Vector pointStart = Nui.joint(Nui.Head);
-            //mPointDir = pointStart - pointEnd;
-            mPointStart = Vector.Create("Point Start", 0f, 0f, 10f);
-            mPointDir = Vector.Create("Point Dir", 0f, 0f, 1f);
+            Nui.SetAutoPoll(true);
+            Vector pointEnd = Nui.joint(Nui.Hand_Right);
+            mPointStart = Nui.joint(Nui.Shoulder_Right);
+            mPointDir = mPointStart - pointEnd;
+            //mPointStart = Vector.Create("Point Start", 0f, 0f, 10f);
+            //mPointDir = Vector.Create("Point Dir", 0f, 0f, 1f);
         }
 
         #region Move

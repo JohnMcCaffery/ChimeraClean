@@ -13,8 +13,6 @@ using UtilLib;
 namespace KinectLib {
     public partial class PointPanel : UserControl {
         private PointSurface mSurface;
-        private Vector pointStart;
-        private Vector pointDir;
         private KinectManager mManager;
 
         private bool guiChange, nuiChange;
@@ -24,36 +22,39 @@ namespace KinectLib {
             InitializeComponent();
         }
 
-        public void Init(KinectManager manager) {
+        public void Init(KinectManager manager, PointSurface surface) {
             mManager = manager;
 
-            windowPanel.Window.Width = 20f;
-            windowPanel.Window.Height = 20f;
-            windowPanel.Window.ScreenPosition = Vector3.Zero;
-            windowPanel.Window.RotationOffset.LookAtVector = Vector3.UnitX;
-            mManager.KinectPosition = kinectPositionPanel.Value;
-            mManager.KinectRotation.LookAtVector = kinectRotationPanel.LookAtVector;
+            windowPanel.Window = surface.Window;
+            ////windowPanel.Window.Width = 20f;
+            //windowPanel.Window.Height = 20f;
+            //windowPanel.Window.ScreenPosition = Vector3.Zero;
+            //windowPanel.Window.RotationOffset.LookAtVector = Vector3.UnitX;
+            //mManager.KinectPosition = kinectPositionPanel.Value;
+            //mManager.KinectRotation.LookAtVector = kinectRotationPanel.LookAtVector;
+            kinectPositionPanel.Value = mManager.KinectPosition; 
+            kinectRotationPanel.LookAtVector = mManager.KinectRotation.LookAtVector ;
 
             Vector3 lookat = pointDirPanel.LookAtVector;
             Vector3 start = pointStartPanel.Value;
-            pointDir = Vector.Create("LinePoint", lookat.X, lookat.Y, lookat.Z);
-            pointStart = Vector.Create("LineDir", start.X, start.Y, start.Z);
 
             pointStartPanel.OnChange += GuiChange;
             pointDirPanel.OnChange += GuiChange;
             kinectPositionPanel.OnChange += GuiChange;
             kinectRotationPanel.OnChange += GuiChange;
+            manager.PositionChange += () => GuiChange(manager, null);
+            manager.KinectRotation.OnChange += GuiChange;
 
-            mSurface = new PointSurface(mManager, windowPanel.Window, pointDir, pointStart);
+            mSurface = surface;
 
             guiChange = true;
             Nui.OnChange += () => {
-                if (!guiChange && !Disposing && !IsDisposed) {
+                if (!guiChange && !Disposing && !IsDisposed && Created) {
                     nuiChange = true;
-                    Console.WriteLine(pointStart.X + ", " + pointStart.Y + "," + pointStart.Z + " --- " + "X: " + mSurface.X + " Y: " + mSurface.Y);
+                    Console.WriteLine(mManager.PointStart.X + ", " + mManager.PointStart.Y + "," + mManager.PointStart.Z + " --- " + "X: " + mSurface.X + " Y: " + mSurface.Y);
                     Invoke(new Action(() => {
-                        pointStartPanel.Value = new Vector3(pointStart.X, pointStart.Y, pointStart.Z);
-                        pointDirPanel.LookAtVector = new Vector3(pointStart.X, pointStart.Y, pointStart.Z);
+                        pointStartPanel.Value = new Vector3(mManager.PointStart.X, mManager.PointStart.Y, mManager.PointStart.Z);
+                        pointDirPanel.LookAtVector = new Vector3(mManager.PointDir.X, mManager.PointDir.Y, mManager.PointDir.Z);
                         Change(mSurface);
                     }));
                     nuiChange = false;
@@ -71,10 +72,9 @@ namespace KinectLib {
         private void GuiChange(object source, EventArgs args) {
             if (!nuiChange) {
                 guiChange = true;
-                pointStart.Set(pointStartPanel.Value.X, pointStartPanel.Value.Y, pointStartPanel.Value.Z);
-                pointDir.Set(pointDirPanel.LookAtVector.X, pointDirPanel.LookAtVector.Y, pointDirPanel.LookAtVector.Z);
+                mManager.PointStart.Set(pointStartPanel.Value.X, pointStartPanel.Value.Y, pointStartPanel.Value.Z);
+                mManager.PointDir.Set(pointDirPanel.LookAtVector.X, pointDirPanel.LookAtVector.Y, pointDirPanel.LookAtVector.Z);
                 mManager.KinectRotation.LookAtVector = kinectRotationPanel.LookAtVector;
-                mSurface = new PointSurface(mManager, windowPanel.Window, pointDir, pointStart);
                 Nui.Poll();
                 Change(mSurface);
                 guiChange = false;
@@ -83,23 +83,23 @@ namespace KinectLib {
 
         private void Change(PointSurface surface) {
             Action a = () => {
-                xLabel.Text = "X: " + surface.X;
-                yLabel.Text = "Y: " + surface.Y;
-                topLeftXLabel.Text = "TopLeft X: " + surface.TopLeft.X;
-                topLeftYLabel.Text = "TopLeft Y: " + surface.TopLeft.Y;
-                topLeftZLabel.Text = "TopLeft Z: " + surface.TopLeft.Z;
-                planeNormalXLabel.Text = "Normal X: " + surface.Normal.X;
-                planeNormalYLabel.Text = "Normal Y: " + surface.Normal.Y;
-                planeNormalZLabel.Text = "Normal Z: " + surface.Normal.Z;
-                topXLabel.Text = "Top X: " + surface.Top.X;
-                topYLabel.Text = "Top Y: " + surface.Top.Y;
-                topZLabel.Text = "Top Z: " + surface.Top.Z;
-                sideXLabel.Text = "Side X: " + surface.Side.X;
-                sideYLabel.Text = "Side Y: " + surface.Side.Y;
-                sideZLabel.Text = "Side Z: " + surface.Side.Z;
-                intersectionXLabel.Text = "Intersection: " + surface.Intersection.X;
-                intersectionYLabel.Text = "Intersection: " + surface.Intersection.Y;
-                intersectionZLabel.Text = "Intersection: " + surface.Intersection.Z;
+                xLabel.Text = "X: " + surface.X.ToString(".000");
+                yLabel.Text = "Y: " + surface.Y.ToString(".000");
+                topLeftXLabel.Text = "TopLeft X: " + surface.TopLeft.X.ToString(".000");
+                topLeftYLabel.Text = "TopLeft Y: " + surface.TopLeft.Y.ToString(".000");
+                topLeftZLabel.Text = "TopLeft Z: " + surface.TopLeft.Z.ToString(".000");
+                planeNormalXLabel.Text = "Normal X: " + surface.Normal.X.ToString(".000");
+                planeNormalYLabel.Text = "Normal Y: " + surface.Normal.Y.ToString(".000");
+                planeNormalZLabel.Text = "Normal Z: " + surface.Normal.Z.ToString(".000");
+                topXLabel.Text = "Top X: " + surface.Top.X.ToString(".000");
+                topYLabel.Text = "Top Y: " + surface.Top.Y.ToString(".000");
+                topZLabel.Text = "Top Z: " + surface.Top.Z.ToString(".000");
+                sideXLabel.Text = "Side X: " + surface.Side.X.ToString(".000");
+                sideYLabel.Text = "Side Y: " + surface.Side.Y.ToString(".000");
+                sideZLabel.Text = "Side Z: " + surface.Side.Z.ToString(".000");
+                intersectionXLabel.Text = "Intersection: " + surface.Intersection.X.ToString(".000");
+                intersectionYLabel.Text = "Intersection: " + surface.Intersection.Y.ToString(".000");
+                intersectionZLabel.Text = "Intersection: " + surface.Intersection.Z.ToString(".000");
                 graphicBox.Refresh();
             };
             if (InvokeRequired)
@@ -108,18 +108,13 @@ namespace KinectLib {
                 a();
         }
 
-        private void initButton_Click(object sender, EventArgs e) {
-                //Nui.Init();
-            //Nui.SetAutoPoll(true);
-        }
-
         private void graphicBox_Paint(object sender, PaintEventArgs e) {
             if (!initialised)
                 return;
 
             Point centreP = new Point(e.ClipRectangle.Width / 2, e.ClipRectangle.Height / 2);
-            float scaleX = e.ClipRectangle.Width / 60f;
-            float scaleY = e.ClipRectangle.Height / 60f;
+            float scaleX = e.ClipRectangle.Width / 6000f;
+            float scaleY = e.ClipRectangle.Height / 6000f;
 
             //Window
             Point windowLeftP = new Point((int) (mSurface.TopLeft.X * scaleX) + centreP.X, centreP.Y - (int) (mSurface.TopLeft.Z * scaleY));
@@ -136,7 +131,7 @@ namespace KinectLib {
             e.Graphics.FillEllipse(Brushes.Black, new Rectangle(new Point(centreP.X - 2, centreP.Y - 2), new Size(4, 4)));
 
             //Point start
-            Point pointStartP = new Point((int) (pointStart.X * scaleX) + centreP.X, centreP.Y - (int) (pointStart.Z * scaleY));
+            Point pointStartP = new Point((int) (mManager.PointStart.X * scaleX) + centreP.X, centreP.Y - (int) (mManager.PointStart.Z * scaleY));
             e.Graphics.FillEllipse(Brushes.Black, new Rectangle(new Point(pointStartP.X - 2, pointStartP.Y - 2), new Size(4, 4)));
 
             //Point line

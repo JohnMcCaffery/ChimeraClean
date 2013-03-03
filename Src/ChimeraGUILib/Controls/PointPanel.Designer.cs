@@ -24,11 +24,10 @@
         /// </summary>
         private void InitializeComponent() {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PointPanel));
-            ChimeraLib.Window window4 = new ChimeraLib.Window();
-            UtilLib.Rotation rotation4 = new UtilLib.Rotation();
+            ChimeraLib.Window window1 = new ChimeraLib.Window();
+            UtilLib.Rotation rotation1 = new UtilLib.Rotation();
             this.xLabel = new System.Windows.Forms.Label();
             this.yLabel = new System.Windows.Forms.Label();
-            this.initButton = new System.Windows.Forms.Button();
             this.topYLabel = new System.Windows.Forms.Label();
             this.topXLabel = new System.Windows.Forms.Label();
             this.topZLabel = new System.Windows.Forms.Label();
@@ -71,16 +70,6 @@
             this.yLabel.Size = new System.Drawing.Size(20, 13);
             this.yLabel.TabIndex = 6;
             this.yLabel.Text = "Y: ";
-            // 
-            // initButton
-            // 
-            this.initButton.Location = new System.Drawing.Point(152, 349);
-            this.initButton.Name = "initButton";
-            this.initButton.Size = new System.Drawing.Size(227, 22);
-            this.initButton.TabIndex = 9;
-            this.initButton.Text = "Init";
-            this.initButton.UseVisualStyleBackColor = true;
-            this.initButton.Click += new System.EventHandler(this.initButton_Click);
             // 
             // topYLabel
             // 
@@ -284,20 +273,20 @@
             this.windowPanel.Name = "windowPanel";
             this.windowPanel.Size = new System.Drawing.Size(637, 270);
             this.windowPanel.TabIndex = 0;
-            window4.AspectRatio = 0.48051948051948051D;
-            window4.Diagonal = 427.14166268347088D;
-            window4.EyePosition = ((OpenMetaverse.Vector3)(resources.GetObject("window4.EyePosition")));
-            window4.FieldOfView = 1.5707963267948966D;
-            window4.Height = 185.00000000000003D;
-            window4.LockScreenPosition = true;
-            rotation4.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("rotation4.LookAtVector")));
-            rotation4.Pitch = 0F;
-            rotation4.Quaternion = ((OpenMetaverse.Quaternion)(resources.GetObject("rotation4.Quaternion")));
-            rotation4.Yaw = 0F;
-            window4.RotationOffset = rotation4;
-            window4.ScreenPosition = ((OpenMetaverse.Vector3)(resources.GetObject("window4.ScreenPosition")));
-            window4.Width = 385.00000000000006D;
-            this.windowPanel.Window = window4;
+            window1.AspectRatio = 0.48051948051948051D;
+            window1.Diagonal = 427.14166268347088D;
+            window1.EyePosition = ((OpenMetaverse.Vector3)(resources.GetObject("window1.EyePosition")));
+            window1.FieldOfView = 1.5707963267948966D;
+            window1.Height = 185.00000000000003D;
+            window1.LockScreenPosition = true;
+            rotation1.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("rotation1.LookAtVector")));
+            rotation1.Pitch = 0F;
+            rotation1.Quaternion = ((OpenMetaverse.Quaternion)(resources.GetObject("rotation1.Quaternion")));
+            rotation1.Yaw = 0F;
+            window1.RotationOffset = rotation1;
+            window1.ScreenPosition = ((OpenMetaverse.Vector3)(resources.GetObject("window1.ScreenPosition")));
+            window1.Width = 385.00000000000006D;
+            this.windowPanel.Window = window1;
             // 
             // intersectionZLabel
             // 
@@ -346,7 +335,6 @@
             this.Controls.Add(this.topZLabel);
             this.Controls.Add(this.topYLabel);
             this.Controls.Add(this.topXLabel);
-            this.Controls.Add(this.initButton);
             this.Controls.Add(this.pointDirPanel);
             this.Controls.Add(this.yLabel);
             this.Controls.Add(this.xLabel);
@@ -371,7 +359,6 @@
         private System.Windows.Forms.Label xLabel;
         private System.Windows.Forms.Label yLabel;
         private ProxyTestGUI.RotationPanel pointDirPanel;
-        private System.Windows.Forms.Button initButton;
         private System.Windows.Forms.Label topYLabel;
         private System.Windows.Forms.Label topXLabel;
         private System.Windows.Forms.Label topZLabel;

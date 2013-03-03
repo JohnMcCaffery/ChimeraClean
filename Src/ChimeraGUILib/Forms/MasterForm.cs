@@ -59,6 +59,7 @@ namespace ConsoleTest {
             FlythroughManager flythrough = new FlythroughManager();
             flythroughPanel.Init(master, flythrough);
 
+            /*
             KinectManager kinectManager = new KinectManager();
             kinectManager.Init(master, flythrough);
             kinectManager.SurfaceAdded += surface => {
@@ -82,6 +83,7 @@ namespace ConsoleTest {
             kinectManager.AddActiveArea(new ActiveArea.Data("C:\\Users\\Iain\\Desktop\\Helmsdale Demo - 18-2-2013\\100_2344.JPG", new RectangleF(.6f, .1f, .3f, .3f), evt1));
             kinectManager.AddActiveArea(new ActiveArea.Data("C:\\Users\\Iain\\Desktop\\Helmsdale Demo - 18-2-2013\\BroraSEW.jpg", new RectangleF(.1f, .6f, .3f, .3f), evt1));
             kinectManager.AddActiveArea(new ActiveArea.Data("C:\\Users\\Iain\\Desktop\\Helmsdale Demo - 18-2-2013\\s_BBB11_Aug-17-11_Brora-day 16 074.jpg", new RectangleF(.6f, .6f, .3f, .3f), evt1));
+             */
 
             externalUpdate = true;
             rawPosition.Value = master.Position;

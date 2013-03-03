@@ -208,7 +208,7 @@
             // diagonalSlider
             // 
             this.diagonalSlider.Location = new System.Drawing.Point(259, 183);
-            this.diagonalSlider.Maximum = 1810;
+            this.diagonalSlider.Maximum = 70000;
             this.diagonalSlider.Minimum = 1;
             this.diagonalSlider.Name = "diagonalSlider";
             this.diagonalSlider.Size = new System.Drawing.Size(131, 45);
@@ -299,7 +299,7 @@
             this.diagonalValue.DecimalPlaces = 1;
             this.diagonalValue.Location = new System.Drawing.Point(133, 183);
             this.diagonalValue.Maximum = new decimal(new int[] {
-            181,
+            7000,
             0,
             0,
             0});

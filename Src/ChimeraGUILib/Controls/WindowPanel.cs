@@ -68,7 +68,7 @@ namespace ChimeraLib.Controls {
                 }
 
                 double diagonal = Window.Diagonal;
-                if (diagonal * 10.0 > diagonalSlider.Maximum) {
+                if (diagonal > diagonalSlider.Maximum) {
                     return;
                     //diagonalSlider.Maximum = (int) (diagonalInch * 10.0);
                     //diagonalValue.Maximum = new decimal(diagonalInch);
@@ -81,8 +81,8 @@ namespace ChimeraLib.Controls {
                 widthValue.Value = new decimal(window.Width / 10.0);
                 heightSlider.Value = (int) Math.Round(window.Height);
                 heightValue.Value = new decimal(window.Height / 10.0);
-                diagonalSlider.Value = (int) Math.Round(diagonal * 10);
-                diagonalValue.Value = new decimal(diagonal);
+                diagonalSlider.Value = (int) Math.Round(diagonal);
+                diagonalValue.Value = new decimal(diagonal / 10.0);
                 if (window.FieldOfView < Math.PI) {
                     fovSlider.Value = (int)Math.Round(window.FieldOfView * Rotation.RAD2DEG * 100);
                     fovValue.Value = new decimal(window.FieldOfView * Rotation.RAD2DEG);
