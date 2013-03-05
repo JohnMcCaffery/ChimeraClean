@@ -94,9 +94,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ActiveArea.cs" />
-    <Compile Include="KinectManager.cs" />
-    <Compile Include="PointSurface.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

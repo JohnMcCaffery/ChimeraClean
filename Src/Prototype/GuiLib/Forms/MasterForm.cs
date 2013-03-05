@@ -30,8 +30,6 @@ using ProxyTestGUI;
 using OpenMetaverse;
 using ChimeraLib;
 using ChimeraLib.Controls;
-using OpenMetaverse.Skeletal.Kinect;
-using OpenMetaverse.Skeletal;
 using OpenMetaverse.Packets;
 using GridProxy;
 using KinectLib;
@@ -44,7 +42,6 @@ namespace ConsoleTest {
         private readonly Dictionary<string, TabPage> slaveTabs = new Dictionary<string, TabPage>();
         private readonly Dictionary<string, Color> slaveColours = new Dictionary<string, Color>();
         private bool ignorePitch = false;
-        private KinectSource k = new KinectSource();
 
         public MasterForm() : this(new CameraMaster()) { }
 
@@ -91,9 +88,6 @@ namespace ConsoleTest {
             rotationOffsetPanel.LookAtVector = master.RotationOffset.LookAtVector;
             rawRotation.LookAtVector = master.LookAt;
             vanishingDistanceValue.Value = new decimal(master.VanishingDistance);
-            kinectPositionPanel.Value = k.Position / 10f;
-            kinectRotationPanel.LookAtVector = k.Rotation.LookAtVector;
-            kinectValuePanel.Value = k.RawValue;
 
             aspectRatioCheck.Checked = master.UpdateAspectRatio;
             cameraPositionCheck.Checked = master.UpdateCameraPosition;
@@ -104,44 +98,6 @@ namespace ConsoleTest {
             addressBox.Text = master.ProxyConfig.MasterAddress;
             portBox.Text = master.ProxyConfig.MasterPort.ToString();
             externalUpdate = true;
-
-            k.OnImage += imageFrame => {
-                float xScale = (float)kinectFramePanel.Width / (float)k.ImageWidth;
-                float yScale = (float)kinectFramePanel.Height / (float)k.ImageHeight;
-                int width = xScale > yScale ? (int)(kinectFramePanel.Height * ((float)k.ImageWidth / (float)k.ImageHeight)) : kinectFramePanel.Width;
-                int height = yScale > xScale ? (int)(kinectFramePanel.Width * ((float)k.ImageHeight / (float)k.ImageWidth)) : kinectFramePanel.Height;
-
-                lock (this) {
-                    Bitmap scaled = new Bitmap(imageFrame, width, height);
-                    kinectFramePanel.Image = scaled;
-                }
-            };
-            Vector3 min = new Vector3(float.MaxValue);
-            Vector3 max = new Vector3(float.MinValue);
-            k.OnChange += position => {
-                master.Window.EyePosition = position;
-                kinectValuePanel.Value = k.RawValue;
-                Vector3 oldMin = min;
-                Vector3 oldMax = max;
-                if (min.X > position.X)
-                    min.X = position.X;
-                if (min.Y > position.Y)
-                    min.Y = position.Y;
-                if (min.Z > position.Z)
-                    min.Z = position.Z;
-
-                if (max.X < position.X)
-                    max.X = position.X;
-                if (max.Y < position.Y)
-                    max.Y = position.Y;
-                if (max.Z < position.Z)
-                    max.Z = position.Z;
-
-                if (oldMin != min)
-                    Console.WriteLine("Min: " + min);
-                if (oldMax != max)
-                    Console.WriteLine("Max: " + min);
-            };
 
             if (master.MasterRunning) {
                 statusLabel.Text = "Bound to " + master.MasterAddress + ":" + master.ProxyConfig.MasterPort;
@@ -306,7 +262,6 @@ namespace ConsoleTest {
 
         private void MasterForm_FormClosing(object sender, FormClosingEventArgs e) {
             mMaster.Stop();
-            k.Stop();
         }
 
         private void rawRotation_OnChange(object sender, EventArgs e) {
@@ -358,8 +313,6 @@ namespace ConsoleTest {
             Vector3 eye = (originOffset + window.EyePosition) * scale;
             Vector3 screen = window.ScreenPosition * scale;
             Vector3 eyeToScreen = screen - eye;
-            Vector3 kinect = k.Position * scale;
-            Vector3 kinectForward = k.Rotation.LookAtVector * 10000f;
 
             Quaternion q = Quaternion.CreateFromEulers(0f, 0f, (float) Rotation.DEG2RAD * window.RotationOffset.Yaw);
             Vector3 lookAt = new Vector3(window.RotationOffset.LookAtVector.X, window.RotationOffset.LookAtVector.Y, 0f);
@@ -367,9 +320,6 @@ namespace ConsoleTest {
 
             if (!yaw) {
                 //avatar = to2DV(avatar);
-                kinect = to2DV(kinect);
-                kinectForward = to2DV(kinectForward);
-                kinectForward = new Vector3(kinectForward.X, -kinectForward.Y, kinectForward.Z);
                 screen = to2DV(screen);
                 eyeToScreen = to2DV(eyeToScreen);
                 lookAt = to2DV(window.RotationOffset.LookAtVector);
@@ -403,17 +353,12 @@ namespace ConsoleTest {
             g.DrawLine(new Pen(colour), toPoint(eye, paneOrigin, true), toPoint(end1Far, paneOrigin, true));
             g.DrawLine(new Pen(colour), toPoint(eye, paneOrigin, true), toPoint(end2Far, paneOrigin, true));
             g.DrawLine(new Pen(colour), toPoint(eye, paneOrigin, true), toPoint(lookAt, paneOrigin, true));
-            if (enableKinectCheck.Checked)
-                g.DrawLine(new Pen(Color.Red), toPoint(kinect, paneOrigin, true), toPoint(kinect + kinectForward, paneOrigin, true));
             //g.DrawLine(new Pen(colour), toPoint(origin, paneOrigin, true), toPoint(avatar, paneOrigin, true));
 
             Point centre = toPoint(eye, paneOrigin, true);
-            Point kinectP = toPoint(kinect, paneOrigin, true);
             //Point avatarP = toPoint(avatar, paneOrigin, true);
 
             g.FillEllipse(new SolidBrush(colour), centre.X - r, centre.Y - r, r * 2, r * 2);
-            if (enableKinectCheck.Checked)
-                g.FillEllipse(new SolidBrush(Color.Red), kinectP.X - r, kinectP.Y - r, r * 2, r * 2);
             //g.FillEllipse(new SolidBrush(colour), avatarP.X - r, avatarP.Y - r, r * 2, r * 2);
         }
 
@@ -598,34 +543,8 @@ namespace ConsoleTest {
             mMaster.ViewerControl = viewerControlCheck.Checked;
         }
 
-        private void kinectOffsetPanel_OnChange(object sender, EventArgs e) {
-            k.Position = kinectPositionPanel.Value * 10f;
-            RefreshDrawings();
-        }
-
-        private void kinectRotationPanel_OnChange(object sender, EventArgs e) {
-            k.Rotation.Pitch = kinectRotationPanel.Pitch;
-            k.Rotation.Yaw = kinectRotationPanel.Yaw;
-            RefreshDrawings();
-        }
-
-        private void kinectValuePanel_OnChange(object sender, EventArgs e) {
-            k.RawValue = kinectValuePanel.Value;
-        }
-
-        private void kinectImageCheck_CheckedChanged(object sender, EventArgs e) {
-            k.ProcessImageFrames = kinectImageCheck.Checked;
-        }
-
         private void vanishingDistanceValue_ValueChanged(object sender, EventArgs e) {
             mMaster.VanishingDistance = (float) decimal.ToDouble(vanishingDistanceValue.Value);
-        }
-
-        private void enableKinectCheck_CheckedChanged(object sender, EventArgs e) {
-            if (enableKinectCheck.Checked)
-                k.Enable(mMaster.Window.EyePosition);
-            else
-                k.Disable();
         }
 
         private void masterCameraCheck_CheckedChanged(object sender, EventArgs e) {

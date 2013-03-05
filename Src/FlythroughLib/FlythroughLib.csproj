@@ -83,19 +83,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BlankEvent.cs" />
-    <Compile Include="CircleEvent.cs" />
-    <Compile Include="ComboEvent.cs" />
-    <Compile Include="FlythroughEvent.cs" />
-    <Compile Include="FlythroughManager.cs" />
-    <Compile Include="LookAtEvent.cs" />
-    <Compile Include="MoveToEvent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RotateEvent.cs" />
-    <Compile Include="RotateToEvent.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="FlythroughDiagram.cd" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ChimeraLib\ChimeraLib.csproj">

@@ -100,25 +100,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BackChannel.cs" />
-    <Compile Include="FullMaster.cs" />
-    <Compile Include="FullSlave.cs" />
-    <Compile Include="Init.cs" />
-    <Compile Include="KinectSource.cs" />
-    <Compile Include="SetCameraPropertiesPacket.cs" />
-    <Compile Include="Window.cs" />
-    <Compile Include="Master.cs" />
-    <Compile Include="CameraMaster.cs" />
-    <Compile Include="CameraSlave.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ProxyManager.cs" />
-    <Compile Include="Rotation.cs" />
-    <Compile Include="InterProxyServer.cs" />
-    <Compile Include="InterProxyClient.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="ClassDiagram1.cd" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\libopenmetaverse\Programs\GridProxy\GridProxy.csproj">

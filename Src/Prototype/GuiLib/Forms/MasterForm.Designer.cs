@@ -629,7 +629,6 @@
             this.enableKinectCheck.TabIndex = 4;
             this.enableKinectCheck.Text = "Enable Kinect";
             this.enableKinectCheck.UseVisualStyleBackColor = true;
-            this.enableKinectCheck.CheckedChanged += new System.EventHandler(this.enableKinectCheck_CheckedChanged);
             // 
             // kinectValuePanel
             // 
@@ -646,7 +645,6 @@
             this.kinectValuePanel.X = 2F;
             this.kinectValuePanel.Y = 0F;
             this.kinectValuePanel.Z = 0F;
-            this.kinectValuePanel.OnChange += new System.EventHandler(this.kinectValuePanel_OnChange);
             // 
             // kinectPositionPanel
             // 
@@ -663,7 +661,6 @@
             this.kinectPositionPanel.X = 400F;
             this.kinectPositionPanel.Y = 0F;
             this.kinectPositionPanel.Z = 0F;
-            this.kinectPositionPanel.OnChange += new System.EventHandler(this.kinectOffsetPanel_OnChange);
             // 
             // kinectRotationPanel
             // 
@@ -678,7 +675,6 @@
             this.kinectRotationPanel.Size = new System.Drawing.Size(202, 147);
             this.kinectRotationPanel.TabIndex = 1;
             this.kinectRotationPanel.Yaw = 180F;
-            this.kinectRotationPanel.OnChange += new System.EventHandler(this.kinectRotationPanel_OnChange);
             // 
             // kinectFrameTab
             // 
@@ -701,7 +697,6 @@
             this.kinectImageCheck.TabIndex = 2;
             this.kinectImageCheck.Text = "Show Kinect Image Frame";
             this.kinectImageCheck.UseVisualStyleBackColor = true;
-            this.kinectImageCheck.CheckedChanged += new System.EventHandler(this.kinectImageCheck_CheckedChanged);
             // 
             // kinectFramePanel
             // 

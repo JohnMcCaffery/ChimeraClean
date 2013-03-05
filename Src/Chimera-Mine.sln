@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinGridProxy", "..\..\..\libopenmetaverse-mine\Programs\WinGridProxy\WinGridProxy.csproj", "{421F8BA2-92D3-4C24-AD53-FE1FEC91C419}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinGridProxy", "..\..\libopenmetaverse-mine\Programs\WinGridProxy\WinGridProxy.csproj", "{421F8BA2-92D3-4C24-AD53-FE1FEC91C419}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chimera", "Chimera\Chimera.csproj", "{C4A96637-6530-4AA1-8765-674200CF23A1}"
 EndProject
@@ -11,7 +11,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChimeraMaster", "ChimeraMas
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChimeraSlave", "ChimeraSlave\ChimeraSlave.csproj", "{416F1E9A-E257-40AE-AFFE-3F97FECA24EF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenMetaverse.Skeletal", "..\..\..\opensim-0.7.3.1\bin\Kinect\OpenMetaverse.Skeletal\OpenMetaverse.Skeletal.csproj", "{9C127EDC-FE71-4214-83DA-76F0E2E7882E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenMetaverse.Skeletal", "..\..\opensim-0.7.3.1\bin\Kinect\OpenMetaverse.Skeletal\OpenMetaverse.Skeletal.csproj", "{9C127EDC-FE71-4214-83DA-76F0E2E7882E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JoystickClient", "..\..\Kinect\JoystickClient\JoystickClient.csproj", "{E704FF43-4998-4FF1-89F2-989928BE4D52}"
 EndProject
@@ -26,6 +26,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KinectLib", "KinectLib\KinectLib.csproj", "{D9D475BF-C0EE-4DF6-89A3-55199BB32ABE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KinectTest", "KinectTest\KinectTest.csproj", "{781611E9-D3DE-4E7E-A65E-6DB3DFC66A09}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Prototype", "Prototype\Prototype.csproj", "{658BEBF5-DFBA-4CE8-BFCF-0BD21EFA23D1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -400,6 +402,34 @@ Global
 		{781611E9-D3DE-4E7E-A65E-6DB3DFC66A09}.ReleaseVisual|Win32.ActiveCfg = Release|x86
 		{781611E9-D3DE-4E7E-A65E-6DB3DFC66A09}.ReleaseVisual|x64.ActiveCfg = Release|x86
 		{781611E9-D3DE-4E7E-A65E-6DB3DFC66A09}.ReleaseVisual|x86.ActiveCfg = Release|x86
+		{658BEBF5-DFBA-4CE8-BFCF-0BD21EFA23D1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{658BEBF5-DFBA-4CE8-BFCF-0BD21EFA23D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{658BEBF5-DFBA-4CE8-BFCF-0BD21EFA23D1}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{658BEBF5-DFBA-4CE8-BFCF-0BD21EFA23D1}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{658BEBF5-DFBA-4CE8-BFCF-0BD21EFA23D1}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{658BEBF5-DFBA-4CE8-BFCF-0BD21EFA23D1}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{658BEBF5-DFBA-4CE8-BFCF-0BD21EFA23D1}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{658BEBF5-DFBA-4CE8-BFCF-0BD21EFA23D1}.DebugVisual|Any CPU.ActiveCfg = Debug|Any CPU
+		{658BEBF5-DFBA-4CE8-BFCF-0BD21EFA23D1}.DebugVisual|Any CPU.Build.0 = Debug|Any CPU
+		{658BEBF5-DFBA-4CE8-BFCF-0BD21EFA23D1}.DebugVisual|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{658BEBF5-DFBA-4CE8-BFCF-0BD21EFA23D1}.DebugVisual|Mixed Platforms.Build.0 = Debug|Any CPU
+		{658BEBF5-DFBA-4CE8-BFCF-0BD21EFA23D1}.DebugVisual|Win32.ActiveCfg = Debug|Any CPU
+		{658BEBF5-DFBA-4CE8-BFCF-0BD21EFA23D1}.DebugVisual|x64.ActiveCfg = Debug|Any CPU
+		{658BEBF5-DFBA-4CE8-BFCF-0BD21EFA23D1}.DebugVisual|x86.ActiveCfg = Debug|Any CPU
+		{658BEBF5-DFBA-4CE8-BFCF-0BD21EFA23D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{658BEBF5-DFBA-4CE8-BFCF-0BD21EFA23D1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{658BEBF5-DFBA-4CE8-BFCF-0BD21EFA23D1}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{658BEBF5-DFBA-4CE8-BFCF-0BD21EFA23D1}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{658BEBF5-DFBA-4CE8-BFCF-0BD21EFA23D1}.Release|Win32.ActiveCfg = Release|Any CPU
+		{658BEBF5-DFBA-4CE8-BFCF-0BD21EFA23D1}.Release|x64.ActiveCfg = Release|Any CPU
+		{658BEBF5-DFBA-4CE8-BFCF-0BD21EFA23D1}.Release|x86.ActiveCfg = Release|Any CPU
+		{658BEBF5-DFBA-4CE8-BFCF-0BD21EFA23D1}.ReleaseVisual|Any CPU.ActiveCfg = Release|Any CPU
+		{658BEBF5-DFBA-4CE8-BFCF-0BD21EFA23D1}.ReleaseVisual|Any CPU.Build.0 = Release|Any CPU
+		{658BEBF5-DFBA-4CE8-BFCF-0BD21EFA23D1}.ReleaseVisual|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{658BEBF5-DFBA-4CE8-BFCF-0BD21EFA23D1}.ReleaseVisual|Mixed Platforms.Build.0 = Release|Any CPU
+		{658BEBF5-DFBA-4CE8-BFCF-0BD21EFA23D1}.ReleaseVisual|Win32.ActiveCfg = Release|Any CPU
+		{658BEBF5-DFBA-4CE8-BFCF-0BD21EFA23D1}.ReleaseVisual|x64.ActiveCfg = Release|Any CPU
+		{658BEBF5-DFBA-4CE8-BFCF-0BD21EFA23D1}.ReleaseVisual|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
