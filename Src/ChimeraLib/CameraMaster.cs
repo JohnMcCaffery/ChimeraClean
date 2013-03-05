@@ -26,6 +26,7 @@ using OpenMetaverse.Packets;
 using System.Net;
 using OpenMetaverse;
 using ChimeraLib;
+using Nini.Config;
 
 namespace UtilLib {
     public class CameraMaster : Master {
@@ -42,6 +43,8 @@ namespace UtilLib {
         private bool viewerControl;
         private Vector3 mWorldPosition;
         private Rotation mWorldRotation;
+        private Vector3 mPositionOffset;
+        private Rotation mRotationOffset = new Rotation();
         private Vector3 mPositionDelta;
         private Vector3 mRotationDelta;
         private Vector3 cameraOffset = new Vector3(0f, 0f, 0f);
@@ -77,6 +80,10 @@ namespace UtilLib {
         /// Creates a master with no specified masterAddress and masterPort. Address is localhost. Port will be generated when the master is started.
         /// </summary>
         public CameraMaster(Init.Config config) : base(config) {
+            mPositionOffset = Init.GetV(config.SectionConfig, "PositionOffset", Vector3.Zero);
+            mRotationOffset.Pitch = Init.Get(config.SectionConfig, "RotationOffsetPitch", 0f);
+            mRotationOffset.Yaw = Init.Get(config.SectionConfig, "RotationOffsetYaw", 0f);
+
             mWorldRotation = new Rotation(config.WorldPitch, config.WorldYaw);
 
             Update(config.WorldPosition, Vector3.Zero, mWorldRotation.LookAtVector, Vector3.Zero);
@@ -146,6 +153,15 @@ namespace UtilLib {
                 if (!processingPacket)
                     NotifySlaves();
             }*/
+        }
+
+        public Vector3 PositionOffset {
+            get { return mPositionOffset; }
+            set { mPositionOffset = value; }
+        }
+
+        public Rotation RotationOffset {
+            get { return mRotationOffset; }
         }
 
         /*
@@ -356,6 +372,8 @@ namespace UtilLib {
         }
         
         private void ProcessObjectUpdatePacket(Packet p) {
+            if (!viewerControl)
+                return;
             ObjectUpdatePacket packet = (ObjectUpdatePacket)p;
             foreach (var block in packet.ObjectData) {
                 if (block.FullID == AgentID)
@@ -429,10 +447,16 @@ namespace UtilLib {
         }
 
         private void ProcessAgentUpdatePacket(Packet p) {
+            if (!viewerControl)
+                return;
             AgentUpdatePacket packet = (AgentUpdatePacket)p;
 
             processingPacket = true;
-            Update(packet.AgentData.CameraCenter, Vector3.Zero, packet.AgentData.CameraAtAxis, Vector3.Zero);
+            Rotation rot = new Rotation(packet.AgentData.CameraAtAxis);
+            rot.Yaw += mRotationOffset.Yaw;
+            rot.Pitch += mRotationOffset.Pitch;
+            Vector3 pos = packet.AgentData.CameraCenter + (mPositionOffset * rot.Quaternion);
+            Update(pos, Vector3.Zero, rot.LookAtVector, Vector3.Zero);
             //bool posEq = Equal(worldPosition, packet.AgentData.CameraCenter);
             //bool modEq = Equal(packet.AgentData.CameraCenter, ModifiedPosition);
             //if (!Equal(worldPosition,packet.AgentData.CameraCenter) && !Equal(packet.AgentData.CameraCenter, ModifiedPosition))

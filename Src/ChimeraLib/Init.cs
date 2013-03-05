@@ -276,6 +276,17 @@ namespace UtilLib {
                 proxyPort = CURRENT_PORT++;
             }
 
+            public IConfig GeneralConfig {
+                get { return generalConfig; }
+            }
+
+            public IConfig SectionConfig {
+                get { return sectionConfig; }
+            }
+
+            private IConfig generalConfig;
+            private IConfig sectionConfig;
+
             public Config(string[] args, string section, string file) {
                 ArgvConfigSource argConfig = InitArgConfig(args);
                 argConfig.AddSwitch("General", "ViewerExe", "v");
@@ -297,8 +308,8 @@ namespace UtilLib {
                 argConfig.AddSwitch(section, "ControlCamera", "c");
 
                 IConfigSource config = AddFile(argConfig, file);
-                IConfig mainConfig = config.Configs[section];
-                IConfig generalConfig = config.Configs["General"];
+                sectionConfig = config.Configs[section];
+                generalConfig = config.Configs["General"];
 
                 masterPort = Get(generalConfig, "MasterPort", DEFAULT_MASTER_PORT);
                 masterAddress = Get(generalConfig, "MasterAddress", DEFAULT_MASTER_ADDRESS);
@@ -313,13 +324,13 @@ namespace UtilLib {
                 EnableWindowPackets = Get(generalConfig, "EnableWindowPackets", true);
                 UseSetFollowCamPackets = !enableWindowPackets || Get(generalConfig, "UseSetFollowCamPackets", false);
 
-                firstName = Get(mainConfig, "FirstName", null);
-                lastName = Get(mainConfig, "LastName", null);
-                password = Get(mainConfig, "Password", null);
-                proxyPort = Get(mainConfig, "ProxyPort", CURRENT_PORT++);
-                LoginGrid = Get(mainConfig, "ProxyGrid", proxyPort.ToString());
+                firstName = Get(sectionConfig, "FirstName", null);
+                lastName = Get(sectionConfig, "LastName", null);
+                password = Get(sectionConfig, "Password", null);
+                proxyPort = Get(sectionConfig, "ProxyPort", CURRENT_PORT++);
+                LoginGrid = Get(sectionConfig, "ProxyGrid", proxyPort.ToString());
 
-                controlCamera = Get(mainConfig, "ControlCamera", true);
+                controlCamera = Get(sectionConfig, "ControlCamera", true);
             }
         }
 

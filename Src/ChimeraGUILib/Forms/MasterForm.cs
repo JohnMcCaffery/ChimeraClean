@@ -87,7 +87,8 @@ namespace ConsoleTest {
 
             externalUpdate = true;
             rawPosition.Value = master.Position;
-            cameraOffsetPanel.Value = master.CameraOffset;
+            cameraOffsetPanel.Value = master.PositionOffset;
+            rotationOffsetPanel.LookAtVector = master.RotationOffset.LookAtVector;
             rawRotation.LookAtVector = master.LookAt;
             vanishingDistanceValue.Value = new decimal(master.VanishingDistance);
             kinectPositionPanel.Value = k.Position / 10f;
@@ -103,7 +104,6 @@ namespace ConsoleTest {
             addressBox.Text = master.ProxyConfig.MasterAddress;
             portBox.Text = master.ProxyConfig.MasterPort.ToString();
             externalUpdate = true;
-
 
             k.OnImage += imageFrame => {
                 float xScale = (float)kinectFramePanel.Width / (float)k.ImageWidth;
@@ -591,6 +591,7 @@ namespace ConsoleTest {
 
         private void cameraOffsetPanel_OnChange(object sender, EventArgs e) {
             mMaster.CameraOffset = cameraOffsetPanel.Value;
+            mMaster.PositionOffset = cameraOffsetPanel.Value;
         }
 
         private void viewerControlCheck_CheckedChanged(object sender, EventArgs e) {
@@ -674,6 +675,10 @@ namespace ConsoleTest {
 
         private void aspectRatioCheck_CheckedChanged(object sender, EventArgs e) {
             mMaster.UpdateAspectRatio = aspectRatioCheck.Checked;
+        }
+
+        private void rotationOffsetPanel_OnChange(object sender, EventArgs e) {
+            mMaster.RotationOffset.LookAtVector = rotationOffsetPanel.LookAtVector;
         }
     }
 }
