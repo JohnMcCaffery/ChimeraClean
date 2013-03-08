@@ -25,7 +25,7 @@ using OpenMetaverse.Packets;
 using OpenMetaverse;
 using UtilLib;
 
-namespace ChimeraLib {
+namespace Chimera {
     /// <exclude/>
     public sealed class SetWindowPacket: Packet {
         /// <exclude/>

@@ -1,4 +1,4 @@
-﻿namespace ChimeraLib.Controls {
+﻿namespace Chimera.Controls {
     partial class WindowPanel {
 
         #region Component Designer generated code

@@ -28,8 +28,8 @@ using System.Windows.Forms;
 using UtilLib;
 using ProxyTestGUI;
 using OpenMetaverse;
-using ChimeraLib;
-using ChimeraLib.Controls;
+using Chimera;
+using Chimera.Controls;
 using OpenMetaverse.Packets;
 using GridProxy;
 using KinectLib;
@@ -598,6 +598,14 @@ namespace ConsoleTest {
 
         private void rotationOffsetPanel_OnChange(object sender, EventArgs e) {
             mMaster.RotationOffset.LookAtVector = rotationOffsetPanel.LookAtVector;
+        }
+
+        private void mouseScaleSlider_Scroll(object sender, EventArgs e) {
+
+        }
+
+        private void moveScaleSlider_Scroll(object sender, EventArgs e) {
+
         }
     }
 }

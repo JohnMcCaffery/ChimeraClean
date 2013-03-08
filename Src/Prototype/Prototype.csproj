@@ -44,7 +44,7 @@
       <HintPath>..\..\Lib\Nini.dll</HintPath>
     </Reference>
     <Reference Include="NuiLib-DotNet_dv">
-      <HintPath>..\..\Bin\NuiLib-DotNet_dv.dll</HintPath>
+      <HintPath>..\..\..\..\NuiLib\Lib\x86\vc10\NuiLib-DotNet_dv.dll</HintPath>
     </Reference>
     <Reference Include="OpenMetaverse">
       <HintPath>..\..\Lib\OpenMetaverse.dll</HintPath>

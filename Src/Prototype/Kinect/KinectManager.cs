@@ -7,7 +7,7 @@ using FlythroughLib;
 using OpenMetaverse;
 using NuiLibDotNet;
 using C = NuiLibDotNet.Condition;
-using ChimeraLib;
+using Chimera;
 
 namespace KinectLib {
     public enum State { Positive, Negative, Dormant }

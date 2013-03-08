@@ -25,7 +25,7 @@ using OpenMetaverse;
 using UtilLib;
 using Nini.Config;
 
-namespace ChimeraLib {
+namespace Chimera {
     public class Window {
         private static readonly double W = 385;
         private static readonly double H = 185;

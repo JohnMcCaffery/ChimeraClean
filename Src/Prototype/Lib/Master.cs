@@ -26,7 +26,7 @@ using OpenMetaverse.Packets;
 using System.Net;
 using OpenMetaverse;
 using log4net;
-using ChimeraLib;
+using Chimera;
 
 namespace UtilLib {
     public abstract class Master : ProxyManager {

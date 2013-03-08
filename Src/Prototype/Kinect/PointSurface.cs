@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using ChimeraLib;
+using Chimera;
 using OpenMetaverse;
-using NuiLibDotNet;
 
 namespace KinectLib {
     public class PointSurface {

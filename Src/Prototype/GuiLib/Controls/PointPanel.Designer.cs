@@ -24,7 +24,7 @@
         /// </summary>
         private void InitializeComponent() {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PointPanel));
-            ChimeraLib.Window window1 = new ChimeraLib.Window();
+            Chimera.Window window1 = new Chimera.Window();
             UtilLib.Rotation rotation1 = new UtilLib.Rotation();
             this.xLabel = new System.Windows.Forms.Label();
             this.yLabel = new System.Windows.Forms.Label();
@@ -46,7 +46,7 @@
             this.pointStartPanel = new ProxyTestGUI.VectorPanel();
             this.kinectRotationPanel = new ProxyTestGUI.RotationPanel();
             this.kinectPositionPanel = new ProxyTestGUI.VectorPanel();
-            this.windowPanel = new ChimeraLib.Controls.WindowPanel();
+            this.windowPanel = new Chimera.Controls.WindowPanel();
             this.intersectionZLabel = new System.Windows.Forms.Label();
             this.intersectionYLabel = new System.Windows.Forms.Label();
             this.intersectionXLabel = new System.Windows.Forms.Label();
@@ -352,7 +352,7 @@
 
         #endregion
 
-        private ChimeraLib.Controls.WindowPanel windowPanel;
+        private Chimera.Controls.WindowPanel windowPanel;
         private ProxyTestGUI.VectorPanel kinectPositionPanel;
         private ProxyTestGUI.RotationPanel kinectRotationPanel;
         private ProxyTestGUI.VectorPanel pointStartPanel;

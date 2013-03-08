@@ -25,7 +25,7 @@ using GridProxy;
 using OpenMetaverse.Packets;
 using System.Net;
 using OpenMetaverse;
-using ChimeraLib;
+using Chimera;
 using Nini.Config;
 
 namespace UtilLib {

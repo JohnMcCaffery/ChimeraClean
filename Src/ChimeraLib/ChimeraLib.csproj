@@ -8,7 +8,7 @@
     <ProjectGuid>{58E39BFE-20D5-4C8D-BCFC-6B5E641C2DFF}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ChimeraLib</RootNamespace>
+    <RootNamespace>Chimera</RootNamespace>
     <AssemblyName>ChimeraLib</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -100,16 +100,70 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Inputs\KBMouseInput.cs" />
+    <Compile Include="Inputs\KBMousePanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Inputs\KBMousePanel.Designer.cs">
+      <DependentUpon>KBMousePanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Util\Init.cs" />
+    <Compile Include="Util\Rotation.cs" />
+    <Compile Include="GUI\Controls\RotationPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\Controls\RotationPanel.Designer.cs">
+      <DependentUpon>RotationPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\Controls\VectorPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\Controls\VectorPanel.Designer.cs">
+      <DependentUpon>VectorPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\Controls\WindowPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\Controls\WindowPanel.Designer.cs">
+      <DependentUpon>WindowPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\Forms\CoordinatorForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\Forms\CoordinatorForm.Designer.cs">
+      <DependentUpon>CoordinatorForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Interfaces\IInput.cs" />
+    <Compile Include="Interfaces\IMode.cs" />
+    <Compile Include="Interfaces\IOutput.cs" />
+    <Compile Include="Core\Coordinator.cs" />
+    <Compile Include="Core\NetworkMaster.cs" />
+    <Compile Include="Core\NetworkSlave.cs" />
+    <Compile Include="Interfaces\IOverlayArea.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Core\Window.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="ClassDiagram1.cd" />
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <ProjectReference Include="..\..\..\libopenmetaverse\Programs\GridProxy\GridProxy.csproj">
-      <Project>{C04A5541-444E-4312-97E7-F66457F87EF8}</Project>
-      <Name>GridProxy</Name>
-    </ProjectReference>
+    <EmbeddedResource Include="GUI\Controls\RotationPanel.resx">
+      <DependentUpon>RotationPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\Controls\VectorPanel.resx">
+      <DependentUpon>VectorPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\Controls\WindowPanel.resx">
+      <DependentUpon>WindowPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\Forms\CoordinatorForm.resx">
+      <DependentUpon>CoordinatorForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Inputs\KBMousePanel.resx">
+      <DependentUpon>KBMousePanel.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

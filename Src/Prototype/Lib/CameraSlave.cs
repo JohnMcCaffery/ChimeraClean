@@ -24,7 +24,7 @@ using System.Text;
 using OpenMetaverse.Packets;
 using OpenMetaverse;
 using log4net;
-using ChimeraLib;
+using Chimera;
 using GridProxy;
 using System.Net;
 

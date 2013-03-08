@@ -28,7 +28,7 @@ using System.Windows.Forms;
 using UtilLib;
 using OpenMetaverse;
 
-namespace ChimeraLib.Controls {
+namespace Chimera.Controls {
     public partial class WindowPanel : UserControl {
         private static readonly decimal ASPECT_RATIO_TOLERANCE = new decimal(0.0001);
         private Window window;

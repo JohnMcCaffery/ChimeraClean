@@ -1,0 +1,93 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Chimera.Coordinator">
+    <Position X="0.5" Y="0.5" Width="2" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>QARAIAAAJAgEAoAgCQBAgAgAEAACIQAiABEEAFCACiE=</HashCode>
+      <FileName>Core\Coordinator.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Windows" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="Chimera.NetworkMaster" Collapsed="true">
+    <Position X="0.5" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Core\NetworkMaster.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Chimera.Window">
+    <Position X="3.5" Y="3" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>ACgCFAIABAhABpAAAAAIA0QAAAAAAAAAQAwCAAiIAQI=</HashCode>
+      <FileName>Core\Window.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Coordinator" />
+      <Property Name="Output" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="MainMenuAreas" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="Chimera.NetworkWindow" Collapsed="true">
+    <Position X="0.5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Core\NetworkSlave.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Chimera.CameraUpdateEventArgs">
+    <Position X="3.25" Y="0.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAACAIAAAAAAAAIAgAAAAAAAAAAA=</HashCode>
+      <FileName>Core\Coordinator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="Chimera.IInput">
+    <Position X="5.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAACAAAAAAgAAIAAAAAAAAQAAAAAAAAAAABCAACAAAA=</HashCode>
+      <FileName>Interfaces\IInput.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Chimera.IOutput">
+    <Position X="6.25" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAACCACAAAA=</HashCode>
+      <FileName>Interfaces\IOutput.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Window" />
+    </ShowAsAssociation>
+  </Interface>
+  <Interface Name="Chimera.IMode">
+    <Position X="6.25" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAiQACAAAA=</HashCode>
+      <FileName>Interfaces\IMode.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="OverlayArea" />
+    </ShowAsAssociation>
+  </Interface>
+  <Interface Name="Chimera.IOverlayArea">
+    <Position X="3.5" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAIAAAgAAAAAAAAAAAAAAAAAAAAACCAAAAAA=</HashCode>
+      <FileName>Interfaces\IOverlayArea.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Mode" />
+      <Property Name="Window" />
+    </ShowAsAssociation>
+  </Interface>
+  <Font Name="Tahoma" Size="8.25" />
+</ClassDiagram>

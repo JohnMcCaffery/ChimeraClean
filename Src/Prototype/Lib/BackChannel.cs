@@ -29,7 +29,7 @@ using System.Threading;
 using GridProxy;
 using log4net;
 using System.Net.NetworkInformation;
-using ChimeraLib;
+using Chimera;
 
 namespace UtilLib {
     public interface IScreenListener {

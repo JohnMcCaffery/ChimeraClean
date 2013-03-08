@@ -24,13 +24,13 @@
         /// </summary>
         private void InitializeComponent() {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SlaveForm));
-            ChimeraLib.Window window1 = new ChimeraLib.Window();
+            Chimera.Window window1 = new Chimera.Window();
             UtilLib.Rotation rotation1 = new UtilLib.Rotation();
             this.rawTab = new System.Windows.Forms.TabPage();
             this.rotationPanel = new ProxyTestGUI.RotationPanel();
             this.positionPanel = new ProxyTestGUI.VectorPanel();
             this.screenTab = new System.Windows.Forms.TabPage();
-            this.screenWindowPanel = new ChimeraLib.Controls.WindowPanel();
+            this.screenWindowPanel = new Chimera.Controls.WindowPanel();
             this.mainTabContainer = new System.Windows.Forms.TabControl();
             this.proxyTab = new System.Windows.Forms.TabPage();
             this.controlCamera = new System.Windows.Forms.CheckBox();
@@ -417,7 +417,7 @@
         private System.Windows.Forms.Label statusLabel;
         private System.Windows.Forms.Label nameLabel;
         private System.Windows.Forms.TextBox nameBox;
-        private ChimeraLib.Controls.WindowPanel screenWindowPanel;
+        private Chimera.Controls.WindowPanel screenWindowPanel;
         private System.Windows.Forms.CheckBox followCamPacketsBox;
         private System.Windows.Forms.CheckBox controlCamera;
 
