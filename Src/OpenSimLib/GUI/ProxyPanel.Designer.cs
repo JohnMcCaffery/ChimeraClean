@@ -66,12 +66,14 @@ namespace Chimera.OpenSim.GUI {
             this.controlCamera = new System.Windows.Forms.CheckBox();
             this.label2 = new System.Windows.Forms.Label();
             this.workingDirectoryBox = new System.Windows.Forms.TextBox();
+            this.autoRestartBox = new System.Windows.Forms.CheckBox();
+            this.cycleMonitorButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // loginURIBox
             // 
-            this.loginURIBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.loginURIBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.loginURIBox.Location = new System.Drawing.Point(64, 5);
             this.loginURIBox.Name = "loginURIBox";
             this.loginURIBox.Size = new System.Drawing.Size(200, 20);
@@ -110,8 +112,8 @@ namespace Chimera.OpenSim.GUI {
             // 
             // proxyStartButton
             // 
-            this.proxyStartButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.proxyStartButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.proxyStartButton.Location = new System.Drawing.Point(6, 31);
             this.proxyStartButton.Name = "proxyStartButton";
             this.proxyStartButton.Size = new System.Drawing.Size(373, 20);
@@ -122,8 +124,8 @@ namespace Chimera.OpenSim.GUI {
             // 
             // viewerLaunchButton
             // 
-            this.viewerLaunchButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.viewerLaunchButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.viewerLaunchButton.Location = new System.Drawing.Point(3, 133);
             this.viewerLaunchButton.Name = "viewerLaunchButton";
             this.viewerLaunchButton.Size = new System.Drawing.Size(376, 23);
@@ -179,8 +181,8 @@ namespace Chimera.OpenSim.GUI {
             // 
             // passwordBox
             // 
-            this.passwordBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.passwordBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.passwordBox.Location = new System.Drawing.Point(308, 55);
             this.passwordBox.Name = "passwordBox";
             this.passwordBox.PasswordChar = '*';
@@ -191,8 +193,8 @@ namespace Chimera.OpenSim.GUI {
             // 
             // viewerExeBox
             // 
-            this.viewerExeBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.viewerExeBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.viewerExeBox.Location = new System.Drawing.Point(48, 81);
             this.viewerExeBox.Name = "viewerExeBox";
             this.viewerExeBox.Size = new System.Drawing.Size(195, 20);
@@ -274,7 +276,7 @@ namespace Chimera.OpenSim.GUI {
             // 
             this.controlCamera.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.controlCamera.AutoSize = true;
-            this.controlCamera.Location = new System.Drawing.Point(281, 162);
+            this.controlCamera.Location = new System.Drawing.Point(281, 159);
             this.controlCamera.Name = "controlCamera";
             this.controlCamera.Size = new System.Drawing.Size(98, 17);
             this.controlCamera.TabIndex = 34;
@@ -293,8 +295,8 @@ namespace Chimera.OpenSim.GUI {
             // 
             // workingDirectoryBox
             // 
-            this.workingDirectoryBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.workingDirectoryBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.workingDirectoryBox.Location = new System.Drawing.Point(101, 107);
             this.workingDirectoryBox.Name = "workingDirectoryBox";
             this.workingDirectoryBox.Size = new System.Drawing.Size(278, 20);
@@ -302,10 +304,34 @@ namespace Chimera.OpenSim.GUI {
             this.workingDirectoryBox.Text = "C:\\\\Program Files (x86)\\\\Firestorm-Release\\\\";
             this.workingDirectoryBox.TextChanged += new System.EventHandler(this.workingDirectory_TextChanged);
             // 
+            // autoRestartBox
+            // 
+            this.autoRestartBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.autoRestartBox.AutoSize = true;
+            this.autoRestartBox.Location = new System.Drawing.Point(281, 176);
+            this.autoRestartBox.Name = "autoRestartBox";
+            this.autoRestartBox.Size = new System.Drawing.Size(85, 17);
+            this.autoRestartBox.TabIndex = 37;
+            this.autoRestartBox.Text = "Auto Restart";
+            this.autoRestartBox.UseVisualStyleBackColor = true;
+            this.autoRestartBox.CheckedChanged += new System.EventHandler(this.autoRestartBox_CheckedChanged);
+            // 
+            // cycleMonitorButton
+            // 
+            this.cycleMonitorButton.Location = new System.Drawing.Point(159, 155);
+            this.cycleMonitorButton.Name = "cycleMonitorButton";
+            this.cycleMonitorButton.Size = new System.Drawing.Size(105, 35);
+            this.cycleMonitorButton.TabIndex = 38;
+            this.cycleMonitorButton.Text = "Cycle Monitor";
+            this.cycleMonitorButton.UseVisualStyleBackColor = true;
+            this.cycleMonitorButton.Click += new System.EventHandler(this.cycleMonitorButton_Click);
+            // 
             // ProxyPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.cycleMonitorButton);
+            this.Controls.Add(this.autoRestartBox);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.workingDirectoryBox);
             this.Controls.Add(this.controlCamera);
@@ -362,5 +388,7 @@ namespace Chimera.OpenSim.GUI {
         private System.Windows.Forms.CheckBox controlCamera;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox workingDirectoryBox;
+        private System.Windows.Forms.CheckBox autoRestartBox;
+        private System.Windows.Forms.Button cycleMonitorButton;
     }
 }

@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using OpenMetaverse;
 using Chimera.Util;
 using Chimera.GUI.Controls;
+using System.Threading;
 
 namespace Chimera.GUI.Forms {
     public partial class CoordinatorForm : Form {
@@ -30,6 +31,7 @@ namespace Chimera.GUI.Forms {
 
             mCoordinator.CameraUpdated += new Action<Coordinator,CameraUpdateEventArgs>(mCoordinator_CameraUpdated);
             mCoordinator.EyeUpdated += new Action<Coordinator,EventArgs>(mCoordinator_EyeUpdated);
+            mCoordinator.Closed += new Action<Coordinator,KeyEventArgs>(mCoordinator_Closed);
 
             foreach (var window in mCoordinator.Windows) {
                 // 
@@ -66,8 +68,7 @@ namespace Chimera.GUI.Forms {
                 virtualRotationPanel.Yaw = args.rotation.Yaw;
                 mEventUpdate = false;
             }
-        }
-
+        }
         private void mCoordinator_EyeUpdated(Coordinator coordinator, EventArgs args) {
             if (!mGuiUpdate) {
                 mEventUpdate = true;
@@ -102,17 +103,33 @@ namespace Chimera.GUI.Forms {
 
         private void testButton_Click(object sender, EventArgs e) {
             if (mCoordinator != null) {
-                mCoordinator.Update(
-                    mCoordinator.Position + new Vector3(5f, 5f, 5f),
-                    Vector3.Zero,
-                    new Rotation(mCoordinator.Rotation.Pitch + 5, mCoordinator.Rotation.Yaw + 5),
-                    new Rotation());
+                throw new Exception("Test Exception");
+                //mCoordinator.Update(
+                    //mCoordinator.Position + new Vector3(5f, 5f, 5f),
+                    //Vector3.Zero,
+                    //new Rotation(mCoordinator.Rotation.Pitch + 5, mCoordinator.Rotation.Yaw + 5),
+                    //new Rotation());
+            }
+        }
+
+        private void button1_Click(object sender, EventArgs e) {
+            new Thread(() => { throw new Exception("Crashy crashy. Not from GUI."); }).Start();
+        }
+
+        private void mCoordinator_Closed(Coordinator coordinator, EventArgs args) {
+            if (!mGuiUpdate) {
+                mEventUpdate = true;
+                Close();
+                mEventUpdate = false;
             }
         }
 
         private void CoordinatorForm_FormClosing(object sender, FormClosingEventArgs e) {
-            if (mCoordinator != null)
+            if (mCoordinator != null) {
+                mGuiUpdate = true;
                 mCoordinator.Close();
+                mGuiUpdate = false;
+            }
         }
 
         private void CoordinatorForm_KeyDown(object sender, KeyEventArgs e) {

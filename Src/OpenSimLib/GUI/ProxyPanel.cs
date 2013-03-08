@@ -43,6 +43,7 @@ namespace Chimera.OpenSim.GUI {
 
                 proxy.OnProxyStarted += (source, args) => ProxyStarted() ;
                 proxy.OnClientLoggedIn += (source, args) => ClientLoggedIn();
+                proxy.OnViewerExit += (source, args) => ViewerExit();
 
                 Action init = () => {
                     portBox.Text = proxy.ProxyConfig.ProxyPort.ToString();
@@ -54,6 +55,8 @@ namespace Chimera.OpenSim.GUI {
                     gridBox.Text = proxy.ProxyConfig.LoginGrid;
                     gridBox.Enabled = proxy.ProxyConfig.UseGrid;
                     gridCheck.Checked = proxy.ProxyConfig.UseGrid;
+                    autoRestartBox.Checked = proxy.AutoRestart;
+                    controlCamera.Checked = proxy.ControlCamera;
 
                 };
                 if (InvokeRequired)
@@ -96,6 +99,26 @@ namespace Chimera.OpenSim.GUI {
                 workingDirectoryBox.Enabled = false;
                 gridBox.Enabled = false;
                 gridCheck.Enabled = false;
+            });
+
+            if (InvokeRequired)
+                Invoke(a);
+            else
+                a();
+        }
+
+        private void ViewerExit() {
+            Action a = new Action(() => {
+                clientStatusLabel.Text = "Exited";
+                viewerLaunchButton.Text = "Launch Viewer";
+                proxyStatusLabel.Text = "Started";
+                firstNameBox.Enabled = true;
+                lastNameBox.Enabled = true;
+                passwordBox.Enabled = true;
+                viewerExeBox.Enabled = true;
+                workingDirectoryBox.Enabled = true;
+                gridBox.Enabled = true;
+                gridCheck.Enabled = true;
             });
 
             if (InvokeRequired)
@@ -158,20 +181,22 @@ namespace Chimera.OpenSim.GUI {
 
                 proxy.Launch();
             } else {
+                /*
                 clientStatusLabel.Text = "Stopped";
                 viewerLaunchButton.Text = "Launch Viewer";
                 firstNameBox.Enabled = true;
                 lastNameBox.Enabled = true;
                 passwordBox.Enabled = true;
                 viewerExeBox.Enabled = true;
+                workingDirectoryBox.Enabled = true;
                 gridCheck.Enabled = true;
                 gridBox.Enabled = proxy.ProxyConfig.UseGrid;
+                */
+                if (proxy != null)
+                    proxy.CloseViewer();
                 //SendMEssage(proxyAddress.Id, 
             }
         }
-
-        [DllImport("User32.dll", EntryPoint = "SendMessage")]
-        public static extern int SendMEssage(int hWnd, int Msg, int wParam, int lParam);
 
         public string FirstName {
             get { return firstNameBox.Text; }
@@ -246,6 +271,16 @@ namespace Chimera.OpenSim.GUI {
         private void controlCamera_CheckedChanged(object sender, EventArgs e) {
             if (proxy != null)
                 proxy.ControlCamera = controlCamera.Checked;
+        }
+
+        private void autoRestartBox_CheckedChanged(object sender, EventArgs e) {
+            if (proxy != null)
+                proxy.AutoRestart = autoRestartBox.Checked;
+        }
+
+        private void cycleMonitorButton_Click(object sender, EventArgs e) {
+            if (proxy != null)
+                proxy.CycleMonitor();
         }
 
     }

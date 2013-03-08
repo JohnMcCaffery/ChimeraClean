@@ -16,11 +16,6 @@ namespace Chimera.OpenSim {
             : base(name, args) {
         }
 
-        public override void Init(Window window) {
-            window.Coordinator.CameraUpdated += new Action<Coordinator,CameraUpdateEventArgs>(Coordinator_CameraUpdated);
-            base.Init(window);
-        }
-
         public override void ClearCamera() {
             if (ProxyRunning)
                 InjectPacket(new ClearFollowCamPropertiesPacket());
@@ -31,9 +26,11 @@ namespace Chimera.OpenSim {
                 InjectPacket(MakePacket());
         }
 
-        private void Coordinator_CameraUpdated(Coordinator coordinator, CameraUpdateEventArgs args) {
+        protected override void ProcessChange (Coordinator coordinator, CameraUpdateEventArgs args) {
             SetCamera();
         }
+
+        protected override void ProcessEyeUpdate(Coordinator coordinator, EventArgs args) { }
 
         private SetFollowCamPropertiesPacket MakePacket() {
             SetFollowCamPropertiesPacket cameraPacket = new SetFollowCamPropertiesPacket();

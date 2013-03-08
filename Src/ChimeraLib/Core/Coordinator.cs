@@ -6,8 +6,29 @@ using OpenMetaverse;
 using Chimera.Util;
 using System.Drawing;
 using System.Windows.Forms;
+using System.Reflection;
+using Chimera.Interfaces;
+using System.IO;
 
 namespace Chimera {
+    /// <summary>
+    /// Which perspective to render.
+    /// </summary>
+    public enum Perspective { 
+        /// <summary>
+        /// View down the X axis.
+        /// </summary>
+        X, 
+        /// <summary>
+        /// View down the Y axis.
+        /// </summary>
+        Y, 
+        /// <summary>
+        /// View down the Z axis.
+        /// </summary>
+        Z 
+    }
+
     public class CameraUpdateEventArgs {
         /// <summary>
         /// The new position for the camera.
@@ -38,23 +59,23 @@ namespace Chimera {
         }
     }
 
-    public class Coordinator {
+    public class Coordinator : ICrashable {
         /// <summary>
-        /// The position of the eye in the real world, in mm.
+        /// The authoratitive orientation of the camera in virtual space. This is read-only. To update it use the 'Update' method.
         /// </summary>
-        private Vector3 mEyePosition;
+        private readonly Rotation mRotation;
         /// <summary>
         /// The authoratitive position of the camera in virtual space.
         /// </summary>
         private Vector3 mPosition;
         /// <summary>
+        /// The position of the eye in the real world, in mm.
+        /// </summary>
+        private Vector3 mEyePosition;
+        /// <summary>
         /// Lock object to ensure only this object can update the rotation.
         /// </summary>
         private readonly object mRotationLock = new object();
-        /// <summary>
-        /// The authoratitive orientation of the camera in virtual space. This is read-only. To update it use the 'Update' method.
-        /// </summary>
-        private readonly Rotation mRotation;
         /// <summary>
         /// The inputs which can control the virtual position and lookAt of the view and the real world eye position to calculate views from.
         /// </summary>
@@ -63,41 +84,37 @@ namespace Chimera {
         /// The windows which define where, in real space, each 'window' onto the virtual space is located.
         /// </summary>
         private readonly List<Window> mWindows = new List<Window>();
-        /// <summary>
-        /// Scale that the horizontal output window is currently set to.
-        /// </summary>
-        private double mScaleH;
-        /// <summary>
-        /// Point on the horizontal output window that is to be used as the origin.
-        /// </summary>
-        private Point mOriginH;
-        /// <summary>
-        /// The size of the clip rectangle that bounds the horizontal output window.
-        /// </summary>
-        private Size mClipH;
 
         /// <summary>
-        /// The size of the clip rectangle that bounds the vertical output window.
+        /// Scales that the various output window is currently set to.
         /// </summary>
-        private Size mClipV;
-
+        private double[] mScales = new double[3];
         /// <summary>
-        /// Point on the vertical output window that is to be used as the origin.
+        /// Point on the various output windows that is to be used as the origin.
         /// </summary>
-        private Point mOriginV;
-
+        private Point[] mOrigins = new Point[3];
         /// <summary>
-        /// Scale that the vertical output window is currently set to.
+        /// The sizes of the clip rectangles that bounds the horizontal output window.
         /// </summary>
-        private double mScaleV;
+        private Size[] mSizes = new Size[3];
+
         /// <summary>
         /// True if the main menu is active.
         /// </summary>
-        private bool mMainMenuActive;
+        private bool mMainMenuActive = true;
         /// <summary>
         /// The currently active main menu item.
         /// </summary>
         private IOutput mCurrentSelection;
+        /// <summary>
+        /// The currently active overlay area.
+        /// </summary>
+        private IOverlayArea mActiveArea;
+
+        /// <summary>
+        /// File to log information about any crash to.
+        /// </summary>
+        private string mCrashLogFile;
 
         /// <summary>
         /// Triggered whenever a new window is added.
@@ -130,6 +147,11 @@ namespace Chimera {
         public event Action<Coordinator, KeyEventArgs> KeyUp;
 
         /// <summary>
+        /// Triggered whenever a key is pressed or released on the keyboard.
+        /// </summary>
+        public event Action<Coordinator, KeyEventArgs> Closed;
+
+        /// <summary>
         /// Triggered when the user selects a specific overlay area.
         /// </summary>
         public event Action<IOverlayArea, EventArgs> OverlayAreaActivated;
@@ -146,6 +168,9 @@ namespace Chimera {
         public Coordinator(params IInput[] inputs) {
             mInputs = new List<IInput>(inputs);
             mRotation = new Rotation(mRotationLock);
+
+            CoordinatorConfig cfg = new CoordinatorConfig();
+            mCrashLogFile = cfg.CrashLogFile;
         }
 
         /// <summary>
@@ -210,6 +235,17 @@ namespace Chimera {
         }
 
         /// <summary>
+        /// The currently active overlay area.
+        /// </summary>
+        public IOverlayArea ActiveArea {
+            get {
+                throw new System.NotImplementedException();
+            }
+            set {
+            }
+        }
+
+        /// <summary>
         /// Update the position of the camera.
         /// </summary>
         /// <param name="position">The new position for the camera.</param>
@@ -217,14 +253,15 @@ namespace Chimera {
         /// <param name="orientation">The look at vector for the camera orientation.</param>
         /// <param name="orientationDelta">The delta to be applied to the look at vector for interpolation.</param>
         public void Update(Vector3 position, Vector3 postionDelta, Rotation orientation, Rotation orientationDelta) {
-            if (!mMainMenuActive) {
+            //TODO put this back in when menus are set up
+            //if (!mMainMenuActive) {
                 mPosition = position;
                 mRotation.Update(mRotationLock, orientation);
                 if (CameraUpdated != null) {
                     CameraUpdateEventArgs args = new CameraUpdateEventArgs(position, postionDelta, orientation, orientationDelta);
                     CameraUpdated(this, args);
                 }
-            }
+            //}
         }
 
         /// <summary>
@@ -248,13 +285,34 @@ namespace Chimera {
         }
 
         /// <summary>
-        /// DrawH any relevant information about this input onto a diagram.
+        /// Draw any relevant information about this input onto a diagram.
         /// </summary>
+        /// <param name="perspective">The perspective to render along.</param>
         /// <param name="graphics">The graphics object to draw with.</param>
         /// <param name="clipRectangle">The bounds of the area being drawn on.</param>
-        /// <param name="scale">Scale values for X and Y.</param>
+        /// <param name="scale">The value to control how large or small the diagram is rendered.</param>
         /// <param name="origin">The origin on the panel to draw from.</param>
-        public void Draw(Graphics graphics, System.ResolveEventArgs clipRectangle, Vector2 scale, System.Version origin) {
+        public void Draw(Perspective perspective, Graphics graphics, Size clipRectangle, double scale, Point origin) {
+            mScales[(int) perspective] = scale;
+            mSizes[(int) perspective] = clipRectangle;
+            mOrigins[(int) perspective] = origin;
+
+
+            //Draw stuff
+
+            foreach (var input in mInputs)
+                input.Draw(perspective, graphics);
+
+            foreach (var window in mWindows)
+                window.Draw(perspective, graphics);
+        }
+
+        /// <summary>
+        /// Get a point on the horizontal output window that corresponds to a point in real space.
+        /// </summary>
+        /// <param name="perspective">The perspective to render along.</param>
+        /// <param name="realPoint">The real point to translate into 2D coordinates.</param>
+        public Point GetPoint(Perspective perspective, Vector3 realPoint) {
             throw new System.NotImplementedException();
         }
 
@@ -263,30 +321,19 @@ namespace Chimera {
         /// </summary>
         /// <param name="mainMenuArea">The overlay area which was activated</param>
         public void ActivateOverlayArea(IOverlayArea overlayArea) {
-            throw new System.NotImplementedException();
-        }
-
-        /// <summary>
-        /// Get a point on the horizontal output window that corresponds to a point in real space.
-        /// </summary>
-        /// <param name="realPoint">The real point to translate into 2D coordinates.</param>
-        public Point GetPointH(Vector3 realPoint) {
-            throw new System.NotImplementedException();
-        }
-
-        /// <summary>
-        /// Get a point on the vertical output window that corresponds to a point in real space.
-        /// </summary>
-        /// <param name="realPoint">The real point to translate into 2D coordinates.</param>
-        public Point GetPointV(Vector3 realPoint) {
-            throw new System.NotImplementedException();
+            mActiveArea = overlayArea;
+            mMainMenuActive = false;
+            if (OverlayAreaActivated != null)
+                OverlayAreaActivated(overlayArea, null);
         }
 
         /// <summary>
         /// Used to put the system into main menu mode.
         /// </summary>
         public void ActivateMainMenu() {
-            throw new System.NotImplementedException();
+            mMainMenuActive = false;
+            if (MainMenuActivated != null)
+                MainMenuActivated(this, null);
         }
 
         /// <summary>
@@ -297,6 +344,47 @@ namespace Chimera {
                 input.Close();
             foreach (var window in mWindows)
                 window.Close();
+            if (Closed != null)
+                Closed(this, null);
+        }
+
+        public void OnCrash(Exception e) {
+            string dump = "Crash: " + DateTime.Now.ToString("u") + Environment.NewLine;
+            dump += String.Format("{1}{0}{2}{0}{0}", Environment.NewLine, e.Message, e.StackTrace);
+            dump += String.Format("-----------Coordinator-----------{0}", Environment.NewLine);
+            dump += "Virtual Position: " + mPosition + Environment.NewLine;
+            dump += "Virtual Orientation | Yaw: " + mRotation.Yaw + ", Pitch: " + mRotation.Pitch + Environment.NewLine;
+            dump += "Eye Position: " + mEyePosition + Environment.NewLine;
+
+            if (mMainMenuActive)
+                dump += "Main Menu Up";
+            else {
+                dump += Environment.NewLine + "--------------" + mActiveArea.Mode.Type + " Active-------------------" + Environment.NewLine;
+                dump += "Instance: " + mActiveArea.Mode.Name + Environment.NewLine;
+                dump += "Window: " + mActiveArea.Window.Name + Environment.NewLine;
+                dump += mActiveArea.Mode.State;
+            }
+
+            if (mWindows.Count > 0) {
+                dump += String.Format("{0}{0}--------Windows--------{0}", Environment.NewLine);
+                foreach (var window in mWindows)
+                    dump += Environment.NewLine + window.State;
+            }
+
+            if (mInputs.Count > 0) {
+                dump += String.Format("{0}{0}--------Inputs--------{0}", Environment.NewLine);
+                foreach (var input in mInputs)
+                    if (input.Enabled)
+                        dump += Environment.NewLine + input.State;
+                    else
+                        dump += Environment.NewLine + "--------" + input.Name + "--------" + Environment.NewLine + "Disabled";
+            }
+
+            dump += String.Format("{0}{0}------------------------End of Crash Report------------------------{0}{0}", Environment.NewLine);
+
+            File.AppendAllText(mCrashLogFile, dump);
+
+            Close();
         }
     }
 }

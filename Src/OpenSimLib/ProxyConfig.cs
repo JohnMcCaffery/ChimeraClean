@@ -23,10 +23,13 @@ namespace Chimera.OpenSim {
         public string LoginPassword;
         public string LoginGrid;
         public string ViewerWorkingDirectory;
+        public string CrashLogFile;
         public bool UseGrid;
         public bool AutoLoginClient;
         public bool AutoStartProxy;
         public bool AutoStartViewer;
+        public bool AutoRestartViewer;
+        public bool ControlCamera;
         public int ProxyPort;
 
         public ProxyConfig(params string[] args) {
@@ -60,6 +63,8 @@ namespace Chimera.OpenSim {
             argConfig.AddSwitch("General", "WorldPosition", "cw");
             argConfig.AddSwitch("General", "WorldPitch", "pw");
             argConfig.AddSwitch("General", "WorldYaw", "yw");
+            argConfig.AddSwitch("General", "AutoRestart", "r");
+            argConfig.AddSwitch("General", "CrashLogFile", "l");
             argConfig.AddSwitch(Name, "ControlCamera", "c");
             argConfig.AddSwitch(Name, "AutoStartProxy", "ap");
             argConfig.AddSwitch(Name, "AutoStartViewer", "av");
@@ -77,6 +82,8 @@ namespace Chimera.OpenSim {
             ProxyLoginURI = Init.Get(generalConfig, "LoginURI", DEFAULT_LOGINURI);
             UseGrid = Init.Get(generalConfig, "UseGrid", false);
 
+            CrashLogFile = Init.Get(generalConfig, "CrashLogFile", "CrashLog.log");
+
             LoginFirstName = Init.Get(sectionConfig, "FirstName", null);
             LoginLastName = Init.Get(sectionConfig, "LastName", null);
             LoginPassword = Init.Get(sectionConfig, "Password", null);
@@ -84,8 +91,10 @@ namespace Chimera.OpenSim {
             LoginGrid = Init.Get(sectionConfig, "ProxyGrid", ProxyPort.ToString());
             AutoLoginClient = LoginFirstName != null && LoginLastName != null && LoginPassword != null;
 
-            AutoStartProxy = Init.Get(sectionConfig, "AutostartProxy", false);
-            AutoStartViewer = Init.Get(sectionConfig, "AutostartViewer", false);
+            AutoStartProxy = Init.Get(sectionConfig, "AutoStartProxy", false);
+            AutoStartViewer = Init.Get(sectionConfig, "AutoStartViewer", false);
+            AutoRestartViewer = Init.Get(generalConfig, "AutoRestart", false);
+            ControlCamera = Init.Get(sectionConfig, "ControlCamera", true);
 
             //EnableWindowPackets = Init.Get(generalConfig, "EnableWindowPackets", true);
             //UseSetFollowCamPackets = !enableWindowPackets || Get(generalConfig, "UseSetFollowCamPackets", false);

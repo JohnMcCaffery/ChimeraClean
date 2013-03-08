@@ -5,13 +5,14 @@ using System.Text;
 using OpenMetaverse;
 using System.Drawing;
 using Chimera.Util;
+using System.IO;
 
 namespace Chimera {
     public class Window {
         /// <summary>
         /// The system which this window is registered with.
         /// </summary>
-        private Coordinator mMaster;
+        private Coordinator mCoordinator;
         /// <summary>
         /// Output object used to actually render the view 'through' the window. Can be null.
         /// </summary>
@@ -43,7 +44,7 @@ namespace Chimera {
         /// <summary>
         /// The orientation of the window in real space.
         /// </summary>
-        private Rotation mRotation;
+        private Rotation mRotation = new Rotation();
         /// <summary>
         /// The position of the window in real space, in mm.
         /// </summary>
@@ -94,8 +95,8 @@ namespace Chimera {
         /// The system which this window is registered with.
         /// </summary>
         public Coordinator Coordinator {
-            get { return mMaster ; }
-            set { mMaster  = value; }
+            get { return mCoordinator ; }
+            set { mCoordinator  = value; }
         }
 
         /// <summary>
@@ -169,34 +170,33 @@ namespace Chimera {
         }
 
         /// <summary>
+        /// A multi line string that can be printed to file to store a record of state in the event of a crash.
+        /// </summary>
+        public string State {
+            get {
+                string dump = "----" + Name + "----" + Environment.NewLine;
+                Vector3 centre = new Vector3(0f, (float) mWidth, (float) mHeight) * mRotation.Quaternion;
+                dump += "Centre: " + centre + Environment.NewLine;
+                dump += "Orientation | Yaw: " + mRotation.Yaw + ", Pitch: " + mRotation.Pitch + Environment.NewLine;
+                dump += "Distance: " + (centre - mCoordinator.EyePosition).Length() + Environment.NewLine;
+                dump += "Width: " + mWidth + ", Height: " + mHeight + Environment.NewLine;
+
+                if (mOutput != null) 
+                    dump += mOutput.State;
+
+                return dump;
+            }
+        }
+
+        /// <summary>
         /// Initialise the window, giving it a reference to the coordinator it is linked to.
         /// </summary>
         /// <param name="coordinator">The coordinator object the input can control.</param>
         public void Init(Coordinator coordinator) {
-            mMaster = coordinator;
+            mCoordinator = coordinator;
             mOutput.Init(this);
             foreach (var area in mOverlayAreas)
                 area.Init(this);
-        }
-
-        /// <summary>
-        /// Draw any relevant information about this input onto a diagram from a top down perspective.
-        /// </summary>
-        /// <param name="graphics">The graphics object to draw with.</param>
-        /// <param name="clipRectangle">The bounds of the area being drawn on.</param>
-        /// <param name="origin">The point on the panel that represents the origin for all real world coordinates.</param>
-        /// <param name="scale">Factor to scale values by.</param>
-        public void DrawH(Graphics graphics, System.ResolveEventArgs clipRectangle, System.Version origin, double scale) {
-        }
-
-        /// <summary>
-        /// Draw any relevant information about this input onto a diagram from a side on perspective.
-        /// </summary>
-        /// <param name="graphics">The graphics object to draw with.</param>
-        /// <param name="clipRectangle">The bounds of the area being drawn on.</param>
-        /// <param name="origin">The point on the panel that represents the origin for all real world coordinates.</param>
-        /// <param name="scale">Factor to scale values by.</param>
-        public void DrawV(Graphics graphics, System.ResolveEventArgs clipRectangle, System.Version origin, double scale) {
         }
 
         /// <summary>
@@ -219,6 +219,15 @@ namespace Chimera {
                 area.Mode.Close();
             if (mOutput != null)
                 mOutput.Close();
+        }
+
+        /// <summary>
+        /// Draw any relevant information about this input onto a diagram.
+        /// </summary>
+        /// <param name="perspective">The perspective to render along.</param>
+        /// <param name="graphics">The graphics object to draw with.</param>
+        public void Draw(Chimera.Perspective perspective, Graphics graphics) {
+            throw new System.NotImplementedException();
         }
     }
 }

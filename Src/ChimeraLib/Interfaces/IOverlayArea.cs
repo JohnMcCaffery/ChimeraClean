@@ -17,6 +17,14 @@ namespace Chimera {
         }
 
         /// <summary>
+        /// A multi line string that can be printed to file to store a record of state in the event of a crash.
+        /// </summary>
+        string State {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// Initialise the overlay area, giving it a reference to the window it is linked to.
         /// </summary>
         /// <param name="window">The window object area is on.</param>

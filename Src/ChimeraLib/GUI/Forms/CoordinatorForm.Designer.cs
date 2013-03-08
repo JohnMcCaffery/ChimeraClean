@@ -29,18 +29,18 @@
             this.diagSplit = new System.Windows.Forms.SplitContainer();
             this.hGroup = new System.Windows.Forms.GroupBox();
             this.testButton = new System.Windows.Forms.Button();
-            this.testLabel = new System.Windows.Forms.Label();
             this.vGroup = new System.Windows.Forms.GroupBox();
             this.globalBox = new System.Windows.Forms.GroupBox();
+            this.eyePositionPanel = new ProxyTestGUI.VectorPanel();
+            this.virtualRotationPanel = new ProxyTestGUI.RotationPanel();
+            this.virtualPositionPanel = new ProxyTestGUI.VectorPanel();
             this.windowsPluginsSplit = new System.Windows.Forms.SplitContainer();
             this.windowsGroup = new System.Windows.Forms.GroupBox();
             this.windowsTab = new System.Windows.Forms.TabControl();
             this.inputsGroup = new System.Windows.Forms.GroupBox();
             this.inputsTab = new System.Windows.Forms.TabControl();
             this.inputTab = new System.Windows.Forms.TabPage();
-            this.eyePositionPanel = new ProxyTestGUI.VectorPanel();
-            this.virtualRotationPanel = new ProxyTestGUI.RotationPanel();
-            this.virtualPositionPanel = new ProxyTestGUI.VectorPanel();
+            this.button1 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.hSplit)).BeginInit();
             this.hSplit.Panel1.SuspendLayout();
             this.hSplit.Panel2.SuspendLayout();
@@ -121,8 +121,8 @@
             // 
             // hGroup
             // 
+            this.hGroup.Controls.Add(this.button1);
             this.hGroup.Controls.Add(this.testButton);
-            this.hGroup.Controls.Add(this.testLabel);
             this.hGroup.Dock = System.Windows.Forms.DockStyle.Fill;
             this.hGroup.Location = new System.Drawing.Point(0, 0);
             this.hGroup.Name = "hGroup";
@@ -133,22 +133,13 @@
             // 
             // testButton
             // 
-            this.testButton.Location = new System.Drawing.Point(44, 119);
+            this.testButton.Location = new System.Drawing.Point(6, 19);
             this.testButton.Name = "testButton";
-            this.testButton.Size = new System.Drawing.Size(75, 23);
+            this.testButton.Size = new System.Drawing.Size(91, 23);
             this.testButton.TabIndex = 1;
-            this.testButton.Text = "testButton";
+            this.testButton.Text = "Crash - GUI";
             this.testButton.UseVisualStyleBackColor = true;
             this.testButton.Click += new System.EventHandler(this.testButton_Click);
-            // 
-            // testLabel
-            // 
-            this.testLabel.AutoSize = true;
-            this.testLabel.Location = new System.Drawing.Point(13, 51);
-            this.testLabel.Name = "testLabel";
-            this.testLabel.Size = new System.Drawing.Size(50, 13);
-            this.testLabel.TabIndex = 0;
-            this.testLabel.Text = "testLabel";
             // 
             // vGroup
             // 
@@ -173,6 +164,58 @@
             this.globalBox.TabIndex = 0;
             this.globalBox.TabStop = false;
             this.globalBox.Text = "Global";
+            // 
+            // eyePositionPanel
+            // 
+            this.eyePositionPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.eyePositionPanel.DisplayName = "Eye Position";
+            this.eyePositionPanel.Location = new System.Drawing.Point(3, 195);
+            this.eyePositionPanel.Max = 5000D;
+            this.eyePositionPanel.Min = -5000D;
+            this.eyePositionPanel.MinimumSize = new System.Drawing.Size(103, 95);
+            this.eyePositionPanel.Name = "eyePositionPanel";
+            this.eyePositionPanel.Size = new System.Drawing.Size(255, 95);
+            this.eyePositionPanel.TabIndex = 1;
+            this.eyePositionPanel.Value = ((OpenMetaverse.Vector3)(resources.GetObject("eyePositionPanel.Value")));
+            this.eyePositionPanel.X = 0F;
+            this.eyePositionPanel.Y = 0F;
+            this.eyePositionPanel.Z = 0F;
+            this.eyePositionPanel.OnChange += new System.EventHandler(this.eyePositionPanel_OnChange);
+            // 
+            // virtualRotationPanel
+            // 
+            this.virtualRotationPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.virtualRotationPanel.DisplayName = "Name";
+            this.virtualRotationPanel.Location = new System.Drawing.Point(3, 105);
+            this.virtualRotationPanel.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("virtualRotationPanel.LookAtVector")));
+            this.virtualRotationPanel.MinimumSize = new System.Drawing.Size(252, 95);
+            this.virtualRotationPanel.Name = "virtualRotationPanel";
+            this.virtualRotationPanel.Pitch = 0D;
+            this.virtualRotationPanel.Rotation = ((OpenMetaverse.Quaternion)(resources.GetObject("virtualRotationPanel.Rotation")));
+            this.virtualRotationPanel.Size = new System.Drawing.Size(255, 95);
+            this.virtualRotationPanel.TabIndex = 2;
+            this.virtualRotationPanel.Yaw = 0D;
+            this.virtualRotationPanel.OnChange += new System.EventHandler(this.virtualRotation_OnChange);
+            // 
+            // virtualPositionPanel
+            // 
+            this.virtualPositionPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.virtualPositionPanel.DisplayName = "Name";
+            this.virtualPositionPanel.Location = new System.Drawing.Point(3, 12);
+            this.virtualPositionPanel.Max = 1024D;
+            this.virtualPositionPanel.Min = -1024D;
+            this.virtualPositionPanel.MinimumSize = new System.Drawing.Size(103, 95);
+            this.virtualPositionPanel.Name = "virtualPositionPanel";
+            this.virtualPositionPanel.Size = new System.Drawing.Size(255, 95);
+            this.virtualPositionPanel.TabIndex = 0;
+            this.virtualPositionPanel.Value = ((OpenMetaverse.Vector3)(resources.GetObject("virtualPositionPanel.Value")));
+            this.virtualPositionPanel.X = 0F;
+            this.virtualPositionPanel.Y = 0F;
+            this.virtualPositionPanel.Z = 0F;
+            this.virtualPositionPanel.OnChange += new System.EventHandler(this.virtualPositionPanel_OnChange);
             // 
             // windowsPluginsSplit
             // 
@@ -246,57 +289,15 @@
             this.inputTab.Text = "Input Y";
             this.inputTab.UseVisualStyleBackColor = true;
             // 
-            // eyePositionPanel
+            // button1
             // 
-            this.eyePositionPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.eyePositionPanel.DisplayName = "Eye Position";
-            this.eyePositionPanel.Location = new System.Drawing.Point(3, 195);
-            this.eyePositionPanel.Max = 5000D;
-            this.eyePositionPanel.Min = -5000D;
-            this.eyePositionPanel.MinimumSize = new System.Drawing.Size(103, 95);
-            this.eyePositionPanel.Name = "eyePositionPanel";
-            this.eyePositionPanel.Size = new System.Drawing.Size(255, 95);
-            this.eyePositionPanel.TabIndex = 1;
-            this.eyePositionPanel.Value = ((OpenMetaverse.Vector3)(resources.GetObject("eyePositionPanel.Value")));
-            this.eyePositionPanel.X = 0F;
-            this.eyePositionPanel.Y = 0F;
-            this.eyePositionPanel.Z = 0F;
-            this.eyePositionPanel.OnChange += new System.EventHandler(this.eyePositionPanel_OnChange);
-            // 
-            // virtualRotationPanel
-            // 
-            this.virtualRotationPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.virtualRotationPanel.DisplayName = "Name";
-            this.virtualRotationPanel.Location = new System.Drawing.Point(3, 105);
-            this.virtualRotationPanel.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("virtualRotationPanel.LookAtVector")));
-            this.virtualRotationPanel.MinimumSize = new System.Drawing.Size(252, 95);
-            this.virtualRotationPanel.Name = "virtualRotationPanel";
-            this.virtualRotationPanel.Pitch = 0D;
-            this.virtualRotationPanel.Rotation = ((OpenMetaverse.Quaternion)(resources.GetObject("virtualRotationPanel.Rotation")));
-            this.virtualRotationPanel.Size = new System.Drawing.Size(255, 95);
-            this.virtualRotationPanel.TabIndex = 2;
-            this.virtualRotationPanel.Yaw = 0D;
-            this.virtualRotationPanel.OnChange += new System.EventHandler(this.virtualRotation_OnChange);
-            // 
-            // virtualPositionPanel
-            // 
-            this.virtualPositionPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.virtualPositionPanel.DisplayName = "Name";
-            this.virtualPositionPanel.Location = new System.Drawing.Point(3, 12);
-            this.virtualPositionPanel.Max = 1024D;
-            this.virtualPositionPanel.Min = -1024D;
-            this.virtualPositionPanel.MinimumSize = new System.Drawing.Size(103, 95);
-            this.virtualPositionPanel.Name = "virtualPositionPanel";
-            this.virtualPositionPanel.Size = new System.Drawing.Size(255, 95);
-            this.virtualPositionPanel.TabIndex = 0;
-            this.virtualPositionPanel.Value = ((OpenMetaverse.Vector3)(resources.GetObject("virtualPositionPanel.Value")));
-            this.virtualPositionPanel.X = 0F;
-            this.virtualPositionPanel.Y = 0F;
-            this.virtualPositionPanel.Z = 0F;
-            this.virtualPositionPanel.OnChange += new System.EventHandler(this.virtualPositionPanel_OnChange);
+            this.button1.Location = new System.Drawing.Point(6, 48);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(91, 23);
+            this.button1.TabIndex = 2;
+            this.button1.Text = "Crash - Thread";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // CoordinatorForm
             // 
@@ -322,7 +323,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.diagSplit)).EndInit();
             this.diagSplit.ResumeLayout(false);
             this.hGroup.ResumeLayout(false);
-            this.hGroup.PerformLayout();
             this.globalBox.ResumeLayout(false);
             this.windowsPluginsSplit.Panel1.ResumeLayout(false);
             this.windowsPluginsSplit.Panel2.ResumeLayout(false);
@@ -352,7 +352,7 @@
         private ProxyTestGUI.VectorPanel virtualPositionPanel;
         private ProxyTestGUI.VectorPanel eyePositionPanel;
         private ProxyTestGUI.RotationPanel virtualRotationPanel;
-        private System.Windows.Forms.Label testLabel;
         private System.Windows.Forms.Button testButton;
+        private System.Windows.Forms.Button button1;
     }
 }

@@ -100,6 +100,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\CoordinatorConfig.cs" />
     <Compile Include="Inputs\KBMouseInput.cs" />
     <Compile Include="Inputs\KBMousePanel.cs">
       <SubType>UserControl</SubType>
@@ -107,7 +108,9 @@
     <Compile Include="Inputs\KBMousePanel.Designer.cs">
       <DependentUpon>KBMousePanel.cs</DependentUpon>
     </Compile>
+    <Compile Include="Interfaces\ICrashable.cs" />
     <Compile Include="Util\Init.cs" />
+    <Compile Include="Util\ProcessWrangler.cs" />
     <Compile Include="Util\Rotation.cs" />
     <Compile Include="GUI\Controls\RotationPanel.cs">
       <SubType>UserControl</SubType>
@@ -145,7 +148,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="ClassDiagram1.cd" />
+    <None Include="Core.cd" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

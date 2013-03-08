@@ -40,32 +40,28 @@ namespace Chimera {
         }
 
         /// <summary>
+        /// A multi line string that can be printed to file to store a record of state in the event of a crash.
+        /// </summary>
+        string State {
+            get;
+        }
+
+        /// <summary>
         /// Initialise the input, giving it a reference to the coordinator it is to control.
         /// </summary>
         /// <param name="coordinator">The coordinator object the input can control.</param>
         void Init(Coordinator coordinator);
 
         /// <summary>
-        /// Draw any relevant information about this input onto a diagram from a top down perspective.
-        /// </summary>
-        /// <param name="graphics">The graphics object to draw with.</param>
-        /// <param name="clipRectangle">The bounds of the area being drawn on.</param>
-        /// <param name="origin">The point on the panel that represents the origin for all real world coordinates.</param>
-        /// <param name="scale">Factor to scale values by.</param>
-        void DrawH(Graphics graphics, System.ResolveEventArgs clipRectangle, System.Version origin, double scale);
-
-        /// <summary>
-        /// Draw any relevant information about this input onto a diagram from a side on perspective.
-        /// </summary>
-        /// <param name="graphics">The graphics object to draw with.</param>
-        /// <param name="clipRectangle">The bounds of the area being drawn on.</param>
-        /// <param name="origin">The point on the panel that represents the origin for all real world coordinates.</param>
-        /// <param name="scale">Factor to scale values by.</param>
-        void DrawV(Graphics graphics, System.ResolveEventArgs clipRectangle, System.Version origin, double scale);
-
-        /// <summary>
         /// Called when the input is to be disposed of.
         /// </summary>
         void Close();
+
+        /// <summary>
+        /// Draw any relevant information about this input onto a diagram.
+        /// </summary>
+        /// <param name="perspective">The perspective to render along.</param>
+        /// <param name="graphics">The graphics object to draw with.</param>
+        void Draw(Chimera.Perspective perspective, System.Drawing.Graphics graphics);
     }
 }

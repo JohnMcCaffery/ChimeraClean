@@ -5,7 +5,34 @@ using System.Text;
 
 namespace Chimera {
     public interface IMode {
+        /// <summary>
+        /// The overlay area that this mode is triggered by.
+        /// </summary>
         IOverlayArea OverlayArea {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// A multi line string that can be printed to file to store a record of state in the event of a crash.
+        /// </summary>
+        string State {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// The unique name by which the mode is known.
+        /// </summary>
+        string Name {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// The type of mode this is.
+        /// </summary>
+        string Type {
             get;
             set;
         }
