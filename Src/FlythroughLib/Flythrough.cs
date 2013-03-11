@@ -30,9 +30,9 @@ namespace Chimera.FlythroughLib {
         private Coordinator mCoordinator;
         private FlythroughPanel mPanel;
         private bool mEnabled = true;
-        private bool mPlaying;
-        private bool mLoop;
-        private bool mAutoStep;
+        private bool mPlaying = false;
+        private bool mLoop = false;
+        private bool mAutoStep = true;
 
         /// <summary>
         /// Triggered whenever the sequence gets to the end, even if looping.
@@ -113,6 +113,8 @@ namespace Chimera.FlythroughLib {
         }
 
         public Flythrough() {
+            Start = new Camera(new Vector3(128f, 128f, 60f), new Rotation());
+            mEvents.Start = Start;
             mEvents.CurrentEventChange += new Action<FlythroughEvent<Camera>,FlythroughEvent<Camera>>(mEvents_CurrentEventChange);
             mEvents.LengthChange += new Action<EventSequence<Camera>,int>(mEvents_LengthChange);
         }
@@ -180,8 +182,11 @@ namespace Chimera.FlythroughLib {
         }
 
         private void mEvents_CurrentEventChange(FlythroughEvent<Camera> oldEvent, FlythroughEvent<Camera> newEvent) {
-            if (!mAutoStep)
+            if (!mAutoStep) {
                 mPlaying = false;
+                if (SequenceFinished != null)
+                    SequenceFinished(this, null);
+            }
         }
 
         private void mEvents_LengthChange(EventSequence<Camera> sequence, int length) {
@@ -219,7 +224,7 @@ namespace Chimera.FlythroughLib {
             mEvents.Time = time;
             Camera n = mEvents.CurrentEvent.Value;
             if (mEnabled && mPlaying)
-                mCoordinator.Update(n.Position, Vector3.Zero, n.Orientation, new Rotation());
+                mCoordinator.Update(n.Position, n.Position - o.Position, n.Orientation, n.Orientation - o.Orientation);
             if (Tick != null)
                 Tick(time);
         }

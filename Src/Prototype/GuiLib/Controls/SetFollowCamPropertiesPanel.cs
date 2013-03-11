@@ -76,8 +76,8 @@ namespace UtilLib {
             set { rawPositionPanel.Value = value; }
         }
         public Quaternion Rotation {
-            get { return rawRotationPanel.Rotation; }
-            set { rawRotationPanel.Rotation = value; }
+            get { return rawRotationPanel.Quaternion; }
+            set { rawRotationPanel.Quaternion = value; }
         }
         public Vector3 Acceleration { get; set; }
         public Vector3 AngularAcceleration { get; set; }

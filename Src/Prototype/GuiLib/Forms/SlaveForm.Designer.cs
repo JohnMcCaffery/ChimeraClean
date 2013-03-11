@@ -81,7 +81,7 @@
             this.rotationPanel.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("rotationPanel.LookAtVector")));
             this.rotationPanel.Name = "rotationPanel";
             this.rotationPanel.Pitch = 0F;
-            this.rotationPanel.Rotation = ((OpenMetaverse.Quaternion)(resources.GetObject("rotationPanel.Rotation")));
+            this.rotationPanel.Quaternion = ((OpenMetaverse.Quaternion)(resources.GetObject("rotationPanel.Rotation")));
             this.rotationPanel.Size = new System.Drawing.Size(632, 147);
             this.rotationPanel.TabIndex = 2;
             this.rotationPanel.Yaw = 0F;

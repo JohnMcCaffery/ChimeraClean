@@ -91,7 +91,7 @@ namespace Chimera.FlythroughLib {
         /// How long the full sequence is, in ms.
         /// </summary>
         public int Length {
-            get { return mEvents.Aggregate(0, (current, evt) => current + evt.Length); }
+            get { return mEvents.Aggregate(0, (current, evt) => current + evt.Length) + 1; }
         }
         /// <summary>
         /// How many elemts there are in the full sequence.

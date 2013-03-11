@@ -20,18 +20,7 @@ namespace Chimera.FlythroughLib.GUI {
             : this() {
             mEvent = evt;
 
-            if (mEvent.PitchTarget == 0f && mEvent.YawTarget == 0f) {
-                mEvent.PitchTarget = (float)pitchValue.Value;
-                mEvent.YawTarget = (float)yawValue.Value;
-                mEvent.Length = (int)lengthValue.Value;
-            } else {
-                pitchValue.Value = new decimal(mEvent.PitchTarget);
-                yawValue.Value = new decimal(mEvent.YawTarget);
-                lengthValue.Value = mEvent.Length;
-            }
-
-            pitchValue.ValueChanged += (source, args) => mEvent.PitchTarget = (float)pitchValue.Value;
-            yawValue.ValueChanged += (source, args) => mEvent.YawTarget = (float)yawValue.Value;
+            rotationPanel.Rotation = mEvent.Target;
             lengthValue.ValueChanged += (source, args) => mEvent.Length = (int)lengthValue.Value;
             evt.TimeChange += (source, args) => {
                 Invoke(new Action(() => {
@@ -43,10 +32,8 @@ namespace Chimera.FlythroughLib.GUI {
 
         private void rotateToTakeCurrentButton_Click(object sender, EventArgs e) {
             Rotation rot = new Rotation(mEvent.Container.Coordinator.Orientation);
-            mEvent.PitchTarget = rot.Pitch;
-            mEvent.YawTarget = rot.Yaw;
-            pitchValue.Value = new decimal(mEvent.PitchTarget);
-            yawValue.Value = new decimal(mEvent.YawTarget);
+            mEvent.Target.Pitch = rot.Pitch;
+            mEvent.Target.Yaw = rot.Yaw;
         }
     }
 }

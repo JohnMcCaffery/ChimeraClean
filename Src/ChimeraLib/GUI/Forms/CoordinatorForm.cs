@@ -104,9 +104,11 @@ namespace Chimera.GUI.Forms {
         private void mCoordinator_CameraUpdated(Coordinator coordinator, CameraUpdateEventArgs args) {
             if (!mGuiUpdate) {
                 mEventUpdate = true;
-                virtualPositionPanel.Value = args.position;
-                virtualOrientationPanel.Pitch = args.rotation.Pitch;
-                virtualOrientationPanel.Yaw = args.rotation.Yaw;
+                Invoke(new Action(() => {
+                    virtualPositionPanel.Value = args.position;
+                    virtualOrientationPanel.Pitch = args.rotation.Pitch;
+                    virtualOrientationPanel.Yaw = args.rotation.Yaw;
+                }));
                 mEventUpdate = false;
             }
         }

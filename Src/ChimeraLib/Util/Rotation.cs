@@ -53,6 +53,34 @@ namespace Chimera.Util {
                 return new Rotation(r1);
             return new Rotation(r1.Pitch - r2.Pitch, r1.Yaw - r2.Yaw);
         }
+        public static Rotation operator *(Rotation r1, Rotation r2) {
+            if (r1 == null && r2 == null)
+                return new Rotation();
+            if (r1 == null)
+                return new Rotation(r2);
+            if (r2 == null)
+                return new Rotation(r1);
+            return new Rotation(r1.Pitch * r2.Pitch, r1.Yaw * r2.Yaw);
+        }
+        public static Rotation operator *(Rotation r1, int r2) {
+            if (r1 == null)
+                return new Rotation(r2, r2);
+            return new Rotation(r1.Pitch * r2, r1.Yaw * r2);
+        }
+        public static Rotation operator /(Rotation r1, Rotation r2) {
+            if (r1 == null && r2 == null)
+                return new Rotation();
+            if (r1 == null)
+                return new Rotation(r2);
+            if (r2 == null)
+                return new Rotation(r1);
+            return new Rotation(r1.Pitch / r2.Pitch, r1.Yaw / r2.Yaw);
+        }
+        public static Rotation operator /(Rotation r1, int r2) {
+            if (r1 == null)
+                return new Rotation(0, 0);
+            return new Rotation(r1.Pitch / r2, r1.Yaw / r2);
+        }
 
         public static readonly double RAD2DEG = 180.0 / Math.PI;
         public static readonly double DEG2RAD = Math.PI / 180.0;

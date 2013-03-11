@@ -31,6 +31,9 @@ namespace Chimera.FlythroughLib.GUI {
             mContainer.Tick += new Action<int>(mContainer_Tick);
             mContainer.LengthChange += new Action<int>(mContainer_LengthChange);
             mContainer.SequenceFinished += new EventHandler(mContainer_SequenceFinished);
+
+            autoStepCheck.Checked = mContainer.AutoStep;
+            loopCheck.Checked = mContainer.Loop;
         }
 
         void mContainer_SequenceFinished(object sender, EventArgs e) {
@@ -66,7 +69,7 @@ namespace Chimera.FlythroughLib.GUI {
         }
 
         private void autoStepBox_CheckedChanged(object sender, EventArgs e) {
-            mContainer.AutoStep = autoStepBox.Checked;
+            mContainer.AutoStep = autoStepCheck.Checked;
         }
 
         private void loopCheck_CheckedChanged(object sender, EventArgs e) {

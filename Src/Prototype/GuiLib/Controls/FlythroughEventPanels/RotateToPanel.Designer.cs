@@ -24,16 +24,16 @@
         /// </summary>
         private void InitializeComponent() {
             this.rotateToTakeCurrentButton = new System.Windows.Forms.Button();
-            this.label2 = new System.Windows.Forms.Label();
-            this.pitchLabel = new System.Windows.Forms.Label();
-            this.yawValue = new System.Windows.Forms.NumericUpDown();
-            this.pitchValue = new System.Windows.Forms.NumericUpDown();
             this.lengthValue = new System.Windows.Forms.NumericUpDown();
             this.Length = new System.Windows.Forms.Label();
             this.progressBar = new System.Windows.Forms.ProgressBar();
+            this.yawValue = new System.Windows.Forms.NumericUpDown();
+            this.label2 = new System.Windows.Forms.Label();
+            this.pitchValue = new System.Windows.Forms.NumericUpDown();
+            this.pitchLabel = new System.Windows.Forms.Label();
+            ((System.ComponentModel.ISupportInitialize)(this.lengthValue)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.yawValue)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pitchValue)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.lengthValue)).BeginInit();
             this.SuspendLayout();
             // 
             // rotateToTakeCurrentButton
@@ -47,58 +47,6 @@
             this.rotateToTakeCurrentButton.Text = "Take Current";
             this.rotateToTakeCurrentButton.UseVisualStyleBackColor = true;
             this.rotateToTakeCurrentButton.Click += new System.EventHandler(this.rotateToTakeCurrentButton_Click);
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(111, 5);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(28, 13);
-            this.label2.TabIndex = 19;
-            this.label2.Text = "Yaw";
-            // 
-            // pitchLabel
-            // 
-            this.pitchLabel.AutoSize = true;
-            this.pitchLabel.Location = new System.Drawing.Point(3, 5);
-            this.pitchLabel.Name = "pitchLabel";
-            this.pitchLabel.Size = new System.Drawing.Size(31, 13);
-            this.pitchLabel.TabIndex = 18;
-            this.pitchLabel.Text = "Pitch";
-            // 
-            // yawValue
-            // 
-            this.yawValue.Location = new System.Drawing.Point(145, 3);
-            this.yawValue.Maximum = new decimal(new int[] {
-            360,
-            0,
-            0,
-            0});
-            this.yawValue.Minimum = new decimal(new int[] {
-            360,
-            0,
-            0,
-            -2147483648});
-            this.yawValue.Name = "yawValue";
-            this.yawValue.Size = new System.Drawing.Size(65, 20);
-            this.yawValue.TabIndex = 17;
-            // 
-            // pitchValue
-            // 
-            this.pitchValue.Location = new System.Drawing.Point(40, 3);
-            this.pitchValue.Maximum = new decimal(new int[] {
-            360,
-            0,
-            0,
-            0});
-            this.pitchValue.Minimum = new decimal(new int[] {
-            360,
-            0,
-            0,
-            -2147483648});
-            this.pitchValue.Name = "pitchValue";
-            this.pitchValue.Size = new System.Drawing.Size(65, 20);
-            this.pitchValue.TabIndex = 16;
             // 
             // lengthValue
             // 
@@ -141,6 +89,58 @@
             this.progressBar.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
             this.progressBar.TabIndex = 23;
             // 
+            // yawValue
+            // 
+            this.yawValue.Location = new System.Drawing.Point(145, 3);
+            this.yawValue.Maximum = new decimal(new int[] {
+            360,
+            0,
+            0,
+            0});
+            this.yawValue.Minimum = new decimal(new int[] {
+            360,
+            0,
+            0,
+            -2147483648});
+            this.yawValue.Name = "yawValue";
+            this.yawValue.Size = new System.Drawing.Size(65, 20);
+            this.yawValue.TabIndex = 17;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(111, 5);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(28, 13);
+            this.label2.TabIndex = 19;
+            this.label2.Text = "Yaw";
+            // 
+            // pitchValue
+            // 
+            this.pitchValue.Location = new System.Drawing.Point(40, 3);
+            this.pitchValue.Maximum = new decimal(new int[] {
+            360,
+            0,
+            0,
+            0});
+            this.pitchValue.Minimum = new decimal(new int[] {
+            360,
+            0,
+            0,
+            -2147483648});
+            this.pitchValue.Name = "pitchValue";
+            this.pitchValue.Size = new System.Drawing.Size(65, 20);
+            this.pitchValue.TabIndex = 16;
+            // 
+            // pitchLabel
+            // 
+            this.pitchLabel.AutoSize = true;
+            this.pitchLabel.Location = new System.Drawing.Point(3, 5);
+            this.pitchLabel.Name = "pitchLabel";
+            this.pitchLabel.Size = new System.Drawing.Size(31, 13);
+            this.pitchLabel.TabIndex = 18;
+            this.pitchLabel.Text = "Pitch";
+            // 
             // RotateToPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -156,9 +156,9 @@
             this.MinimumSize = new System.Drawing.Size(325, 176);
             this.Name = "RotateToPanel";
             this.Size = new System.Drawing.Size(325, 176);
+            ((System.ComponentModel.ISupportInitialize)(this.lengthValue)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.yawValue)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pitchValue)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.lengthValue)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -167,12 +167,12 @@
         #endregion
 
         private System.Windows.Forms.Button rotateToTakeCurrentButton;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label pitchLabel;
-        private System.Windows.Forms.NumericUpDown yawValue;
-        private System.Windows.Forms.NumericUpDown pitchValue;
         private System.Windows.Forms.NumericUpDown lengthValue;
         private System.Windows.Forms.Label Length;
         private System.Windows.Forms.ProgressBar progressBar;
+        private System.Windows.Forms.NumericUpDown yawValue;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.NumericUpDown pitchValue;
+        private System.Windows.Forms.Label pitchLabel;
     }
 }

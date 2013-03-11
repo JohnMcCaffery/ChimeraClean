@@ -34,7 +34,7 @@
             this.loopCheck = new System.Windows.Forms.CheckBox();
             this.playButton = new System.Windows.Forms.Button();
             this.eventPanel = new System.Windows.Forms.Panel();
-            this.autoStepBox = new System.Windows.Forms.CheckBox();
+            this.autoStepCheck = new System.Windows.Forms.CheckBox();
             this.timeSlider = new System.Windows.Forms.TrackBar();
             this.lengthLabel = new System.Windows.Forms.Label();
             this.timeLabel = new System.Windows.Forms.Label();
@@ -132,15 +132,15 @@
             // 
             // autoStepBox
             // 
-            this.autoStepBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.autoStepBox.AutoSize = true;
-            this.autoStepBox.Location = new System.Drawing.Point(286, 326);
-            this.autoStepBox.Name = "autoStepBox";
-            this.autoStepBox.Size = new System.Drawing.Size(73, 17);
-            this.autoStepBox.TabIndex = 15;
-            this.autoStepBox.Text = "Auto Step";
-            this.autoStepBox.UseVisualStyleBackColor = true;
-            this.autoStepBox.CheckedChanged += new System.EventHandler(this.autoStepBox_CheckedChanged);
+            this.autoStepCheck.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.autoStepCheck.AutoSize = true;
+            this.autoStepCheck.Location = new System.Drawing.Point(286, 326);
+            this.autoStepCheck.Name = "autoStepBox";
+            this.autoStepCheck.Size = new System.Drawing.Size(73, 17);
+            this.autoStepCheck.TabIndex = 15;
+            this.autoStepCheck.Text = "Auto Step";
+            this.autoStepCheck.UseVisualStyleBackColor = true;
+            this.autoStepCheck.CheckedChanged += new System.EventHandler(this.autoStepBox_CheckedChanged);
             // 
             // timeSlider
             // 
@@ -194,7 +194,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.timeLabel);
             this.Controls.Add(this.lengthLabel);
-            this.Controls.Add(this.autoStepBox);
+            this.Controls.Add(this.autoStepCheck);
             this.Controls.Add(this.eventPanel);
             this.Controls.Add(this.eventsList);
             this.Controls.Add(this.playButton);
@@ -223,7 +223,7 @@
         private System.Windows.Forms.CheckBox loopCheck;
         private System.Windows.Forms.Button playButton;
         private System.Windows.Forms.Panel eventPanel;
-        private System.Windows.Forms.CheckBox autoStepBox;
+        private System.Windows.Forms.CheckBox autoStepCheck;
         private System.Windows.Forms.TrackBar timeSlider;
         private System.Windows.Forms.Label lengthLabel;
         private System.Windows.Forms.Label timeLabel;

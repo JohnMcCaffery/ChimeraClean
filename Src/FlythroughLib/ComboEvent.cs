@@ -116,7 +116,7 @@ namespace Chimera.FlythroughLib {
                 } else {
                     FlythroughEvent<Rotation> evt = null;
                     switch (node.Name) {
-                        case "RotateToEvent": evt = new RotateToEvent(Container, 0, 0, 0); break;
+                        case "RotateToEvent": evt = new RotateToEvent(Container, 0, new Rotation()); break;
                         case "BlankEvent": evt = new BlankEvent<Rotation>(Container, 0); break;
                     }
                     evt.Load(node);

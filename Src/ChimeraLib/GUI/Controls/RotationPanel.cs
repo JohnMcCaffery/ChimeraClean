@@ -31,10 +31,25 @@ using Chimera.Util;
 
 namespace ProxyTestGUI {
     public partial class RotationPanel : UserControl {
-        private readonly Rotation rotation = new Rotation();
+        private Rotation rotation = new Rotation();
         public event EventHandler OnChange;
 
-        public Quaternion Rotation {
+        public Rotation Rotation {
+            get { return rotation; }
+            set {
+                rotation = value;
+                rotation.OnChange += (src, args) => {
+                    vectorPanel.Value = rotation.LookAtVector;
+                    pitchValue.Value = new decimal(rotation.Pitch);
+                    pitchSlider.Value = (int)rotation.Pitch;
+                    yawValue.Value = new decimal(rotation.Yaw);
+                    yawSlider.Value = (int)rotation.Yaw;
+                    if (OnChange != null)
+                        OnChange(this, null);
+                };
+            }
+        }
+        public Quaternion Quaternion {
             get { return rotation.Quaternion; }
             set { rotation.Quaternion = value; }
         }
@@ -53,16 +68,7 @@ namespace ProxyTestGUI {
 
         public RotationPanel() {
             InitializeComponent();
-
-            rotation.OnChange += (src, args) => {
-                vectorPanel.Value = rotation.LookAtVector;
-                pitchValue.Value = new decimal (rotation.Pitch);
-                pitchSlider.Value = (int)rotation.Pitch;
-                yawValue.Value = new decimal (rotation.Yaw);
-                yawSlider.Value = (int)rotation.Yaw;
-                if (OnChange != null)
-                    OnChange(this, null);
-            };
+            Rotation = new Rotation();
         }
 
 

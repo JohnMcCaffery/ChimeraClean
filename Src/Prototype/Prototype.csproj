@@ -266,6 +266,12 @@
     <None Include="Flythrough\FlythroughDiagram.cd" />
     <None Include="Lib\ClassDiagram1.cd" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ChimeraLib\ChimeraLib.csproj">
+      <Project>{58E39BFE-20D5-4C8D-BCFC-6B5E641C2DFF}</Project>
+      <Name>ChimeraLib</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

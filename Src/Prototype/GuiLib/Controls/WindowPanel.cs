@@ -94,7 +94,7 @@ namespace Chimera.Controls {
                 }
                 screenPositionPanel.Value = window.ScreenPosition / 10f;
                 eyeOffsetPanel.Value = window.EyePosition / 10f;
-                rotationOffsetPanel.Rotation = window.RotationOffset.Quaternion;
+                rotationOffsetPanel.Quaternion = window.RotationOffset.Quaternion;
                 widthLabel.Text = "2 * Offset H / Width: " + Math.Round((2 * window.FrustumOffsetH) / window.Width, 5);
                 heightLabel.Text = "2 * Offset V / Height: " + Math.Round((2 * window.FrustumOffsetV) / window.Height, 5);
 

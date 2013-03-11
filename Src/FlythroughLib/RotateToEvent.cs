@@ -14,33 +14,17 @@ namespace Chimera.FlythroughLib {
         /// </summary>
         private static int COUNT = 0;
         /// <summary>
-        /// How much to change pitch by every step.
+        /// How much the orientation should change every ms.
         /// </summary>
-        private double mPitchShift;
+        private Rotation mShift;
         /// <summary>
-        /// How much to change pitch by ever step.
+        /// The orientation the camera should end up at.
         /// </summary>
-        private double mYawShift;
-        /// <summary>
-        /// How many degrees around the pitch axis to start at.
-        /// </summary>
-        private double mPitchStart;
-        /// <summary>
-        /// How many degrees around the yaw axis to start at.
-        /// </summary>
-        private double mYawStart;
-        /// <summary>
-        /// How many degrees around the yaw axis to finish at
-        /// </summary>
-        private double mYawTarget;
+        private Rotation mTarget = new Rotation();
         /// <summary>
         /// The panel used to control the event.
         /// </summary>
         private RotateToPanel mControl;
-        /// <summary>
-        /// How many degrees around the pitch axis to end at.
-        /// </summary>
-        private double mPitchTarget;
 
         /// <summary>
         /// Create the event specifying pitch and pitch.
@@ -49,11 +33,10 @@ namespace Chimera.FlythroughLib {
         /// <param name="length">The length of time the event will run (ms).</param>
         /// <param name="pitch">How far the event should rotate the camera around the pitch axis (degrees).</param>
         /// <param name="yaw">How far the event should rotate the camera around the yaw axis (degrees).</param>
-        public RotateToEvent(Flythrough container, int length, double pitch, double yaw)
+        public RotateToEvent(Flythrough container, int length, Rotation target)
             : this(container, length) {
 
-            PitchTarget = pitch;
-            YawTarget = yaw;
+            Target = target;
         }
 
         /// <summary>
@@ -65,51 +48,23 @@ namespace Chimera.FlythroughLib {
             : base(container, length) {
 
             Name = "Rotate To " + (++COUNT);
-        }
-
-        /// <summary>
-        /// How many degrees around the pitch axis to start at.
-        /// </summary>
-        public double PitchStart {
-            get { return mPitchStart; }
-            set {
-                mPitchStart = value;
-                mPitchShift = (mPitchTarget - value) / Length;
-            }
-        }
-
-        /// <summary>
-        /// How many degrees around the yaw axis to start at.
-        /// </summary>
-        public double YawStart {
-            get { return mYawStart; }
-            set {
-                mYawStart = value;
-                mYawShift = (mYawTarget - value) / Length;
-            }
+            Start = new Rotation();
+            Target = new Rotation();
         }
 
         /// <summary>
         /// How many degrees around the pitch axis to end at.
         /// </summary>
-        public double PitchTarget {
-            get { return mPitchTarget; }
+        public Rotation Target {
+            get { return mTarget; }
             set {
-                mPitchTarget = value;
-                mPitchShift = (value - mPitchStart) / Length;
+                mTarget = value;
+                mShift = (value - Start) / Length;
+                TriggerFinishChange(value);
+                value.OnChange += new EventHandler(value_OnChange);
             }
         }
 
-        /// <summary>
-        /// How many degrees around the yaw axis to finish at
-        /// </summary>
-        public double YawTarget {
-            get { return mYawTarget; }
-            set {
-                mYawTarget = value;
-                mYawShift = (value - mYawStart) / Length;
-            }
-        }
         public override UserControl ControlPanel {
             get {
                 if (mControl == null)
@@ -118,10 +73,10 @@ namespace Chimera.FlythroughLib {
             }
         }
         public override Rotation this[int time] {
-            get { return new Rotation(mPitchStart + (mPitchShift * time), mYawStart + (mYawShift * time)); }
+            get { return Start + (mShift * time); }
         }
         public override Rotation Finish {
-            get { return this[Length]; }
+            get { return mTarget; }
         }
         public override Rotation Value {
             get { return this[Time]; }
@@ -129,18 +84,16 @@ namespace Chimera.FlythroughLib {
 
         protected override void TimeChanged(int time) { }
 
-        protected override void StartChanged(Rotation value) { }
+        protected override void StartChanged(Rotation value) { Recalculate(); }
 
-        protected override void LengthChanged(int length) {
-            mPitchShift = (mPitchTarget - mPitchStart) / Length;
-            mYawShift = (mYawTarget - mYawStart) / Length;
-        }
+        protected override void LengthChanged(int length) { Recalculate(); }
 
         public override void Load(XmlNode node) {
             Name = node.Attributes["Name"].Value;
-            PitchTarget = double.Parse(node.Attributes["Pitch"].Value);
-            YawTarget = double.Parse(node.Attributes["Yaw"].Value);
+            double PitchTarget = double.Parse(node.Attributes["Pitch"].Value);
+            double YawTarget = double.Parse(node.Attributes["Yaw"].Value);
             Length = int.Parse(node.Attributes["Length"].Value);
+            Target = new Rotation(PitchTarget, YawTarget);
         }
 
         public override XmlNode Save(XmlDocument doc) {
@@ -152,8 +105,8 @@ namespace Chimera.FlythroughLib {
             XmlAttribute length = doc.CreateAttribute("Length");
             
             name.Value = Name;
-            pitch.Value = mPitchTarget.ToString();
-            yaw.Value = mYawTarget.ToString();
+            pitch.Value = mTarget.Pitch.ToString();
+            yaw.Value = mTarget.Yaw.ToString();
             length.Value = Length.ToString();
 
             node.Attributes.Append(name);
@@ -162,6 +115,14 @@ namespace Chimera.FlythroughLib {
             node.Attributes.Append(length);
 
             return node;
+        }
+
+        void value_OnChange(object sender, EventArgs e) {
+            Recalculate();
+            TriggerFinishChange(Finish);
+        }
+        private void Recalculate() {
+            mShift = (Finish - Start) / Length;
         }
     }
 }
