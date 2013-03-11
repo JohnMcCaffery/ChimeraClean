@@ -400,6 +400,14 @@ namespace ConsoleTest {
         private float pitch, yaw;
         private bool mouseDown;
 
+        private Point GetCentre(Control c) {
+            if (c.Parent == null)
+                return c.Location;
+
+            Point parentLoc = GetCentre(c.Parent);
+            return new Point(c.Location.X + parentLoc.X, c.Location.Y + parentLoc.Y);
+        }
+
         private void mouseTab_MouseDown(object sender, MouseEventArgs e) {
             x = e.X;
             y = e.Y;
@@ -408,14 +416,6 @@ namespace ConsoleTest {
             pitch = rawRotation.Pitch;
             yaw = rawRotation.Yaw;
             mouseDown = true;
-        }
-
-        private Point GetCentre(Control c) {
-            if (c.Parent == null)
-                return c.Location;
-
-            Point parentLoc = GetCentre(c.Parent);
-            return new Point(c.Location.X + parentLoc.X, c.Location.Y + parentLoc.Y);
         }
 
         private void mouseTab_MouseUp(object sender, MouseEventArgs e) {

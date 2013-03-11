@@ -33,6 +33,13 @@ namespace Chimera {
         }
 
         /// <summary>
+        /// The type of output this is.
+        /// </summary>
+        string Type {
+            get;
+        }
+
+        /// <summary>
         /// Initialise the input, giving it a reference to the window it is to render.
         /// </summary>
         /// <param name="window">The window which this output is supposed to render the view through.</param>

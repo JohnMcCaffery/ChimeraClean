@@ -36,7 +36,22 @@ namespace Chimera.Util {
             return !rot1.Equals(null) && !rot2.Equals(null) && rot1.Yaw == rot2.Yaw && rot1.Pitch == rot2.Pitch;
         }*/
         public static Rotation operator +(Rotation r1, Rotation r2) {
+            if (r1 == null && r2 == null)
+                return new Rotation();
+            if (r1 == null)
+                return new Rotation(r2);
+            if (r2 == null)
+                return new Rotation(r1);
             return new Rotation(r1.Pitch + r2.Pitch, r1.Yaw + r2.Yaw);
+        }
+        public static Rotation operator -(Rotation r1, Rotation r2) {
+            if (r1 == null && r2 == null)
+                return new Rotation();
+            if (r1 == null)
+                return new Rotation(r2);
+            if (r2 == null)
+                return new Rotation(r1);
+            return new Rotation(r1.Pitch - r2.Pitch, r1.Yaw - r2.Yaw);
         }
 
         public static readonly double RAD2DEG = 180.0 / Math.PI;

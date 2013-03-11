@@ -115,6 +115,10 @@ namespace Chimera {
         /// File to log information about any crash to.
         /// </summary>
         private string mCrashLogFile;
+        /// <summary>
+        /// The length of each tick for any input that has an event loop.
+        /// </summary>
+        private int mTickLength;
 
         /// <summary>
         /// Triggered whenever a new window is added.
@@ -171,6 +175,10 @@ namespace Chimera {
 
             CoordinatorConfig cfg = new CoordinatorConfig();
             mCrashLogFile = cfg.CrashLogFile;
+            mTickLength = cfg.TickLength;
+
+            foreach (var input in mInputs)
+                input.Init(this);
         }
 
         /// <summary>
@@ -246,6 +254,13 @@ namespace Chimera {
         }
 
         /// <summary>
+        /// How long every tick should be, in ms, for any input that has a refresh loop.
+        /// </summary>
+        public int TickLength {
+            get { return mTickLength; }
+        }
+
+        /// <summary>
         /// Update the position of the camera.
         /// </summary>
         /// <param name="position">The new position for the camera.</param>
@@ -271,7 +286,7 @@ namespace Chimera {
             if (down && KeyDown != null)
                 KeyDown(this, args);
             else if (!down && KeyUp != null)
-                KeyDown(this, args);
+                KeyUp(this, args);
         }
 
         /// <summary>
@@ -362,21 +377,35 @@ namespace Chimera {
                 dump += Environment.NewLine + "--------------" + mActiveArea.Mode.Type + " Active-------------------" + Environment.NewLine;
                 dump += "Instance: " + mActiveArea.Mode.Name + Environment.NewLine;
                 dump += "Window: " + mActiveArea.Window.Name + Environment.NewLine;
-                dump += mActiveArea.Mode.State;
+                try {
+                    dump += mActiveArea.Mode.State;
+                } catch (Exception ex) {
+                    dump += "Unable to get stats for the active menu item. " + ex.Message + Environment.NewLine;
+                    dump += ex.StackTrace;
+                }
             }
 
             if (mWindows.Count > 0) {
                 dump += String.Format("{0}{0}--------Windows--------{0}", Environment.NewLine);
                 foreach (var window in mWindows)
-                    dump += Environment.NewLine + window.State;
+                    try {
+                        dump += Environment.NewLine + window.State;
+                    } catch (Exception ex) {
+                        dump += "Unable to get stats for window " + window.Name + ". " + ex.Message + Environment.NewLine;
+                        dump += ex.StackTrace;
+                    }
             }
 
             if (mInputs.Count > 0) {
                 dump += String.Format("{0}{0}--------Inputs--------{0}", Environment.NewLine);
                 foreach (var input in mInputs)
                     if (input.Enabled)
-                        dump += Environment.NewLine + input.State;
-                    else
+                        try {
+                            dump += Environment.NewLine + input.State;
+                        } catch (Exception ex) {
+                            dump += "Unable to get stats for window " + input.Name + ". " + ex.Message + Environment.NewLine;
+                            dump += ex.StackTrace;
+                        } else
                         dump += Environment.NewLine + "--------" + input.Name + "--------" + Environment.NewLine + "Disabled";
             }
 
@@ -385,6 +414,17 @@ namespace Chimera {
             File.AppendAllText(mCrashLogFile, dump);
 
             Close();
+        }
+
+        /// <summary>
+        /// Get the input instance of the specified type. Throws an ArgumentException if no such input found.
+        /// </summary>
+        public T GetInput<T> () where T : IInput {
+            Type t = typeof(T);
+            IInput ret = mInputs.FirstOrDefault(input => input.GetType() == t);
+            if (ret == null)
+                throw new ArgumentException("Unable to get input. No input of the specified type (" + t.FullName + ") found.");
+            return (T)ret;
         }
     }
 }

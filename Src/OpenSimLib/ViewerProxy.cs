@@ -120,11 +120,18 @@ namespace Chimera.OpenSim {
                         lock (processLock)
                             Monitor.PulseAll(processLock);
 
+                        ProcessWrangler.SetMonitor(mClient, mWindow.Monitor);
+                        ProcessWrangler.SetBorder(mClient, false);
+                        ProcessWrangler.PressKey("{F1}", true, true, false);
+
                         new Thread(() => {
                             if (mControlCamera)
                                 SetCamera();
                             if (OnClientLoggedIn != null)
                                 OnClientLoggedIn(mProxy, null);
+
+                            Thread.Sleep(5000);
+                            ProcessWrangler.PressKey(mClient, "{F1}", true, true, false);
                         }).Start();
                     } else {
                     }
@@ -174,14 +181,16 @@ namespace Chimera.OpenSim {
         }
 
         private void mClient_Exited(object sender, EventArgs e) {
-            if (!mClosing) {
+            bool unexpected = !mClosing;
+            if (unexpected) {
                 Console.WriteLine("Viewer shutdown unexpectedly");
                 string dump = "Viewer crashed at " + DateTime.Now.ToString("u") + Environment.NewLine;
                 dump += " Login: " + mFirstName + " " + mLastName + Environment.NewLine;
                 dump += " Exe: " + mConfig.ViewerExecutable + Environment.NewLine;
                 dump += " Dir: " + mConfig.ViewerWorkingDirectory + Environment.NewLine + Environment.NewLine;
                 dump += "Log: " + Environment.NewLine;
-                foreach (string line in File.ReadAllLines("C:\\Users\\Iain\\AppData\\Roaming\\Firestorm\\logs\\Firestorm.log"))
+                string username = Environment.UserName;
+                foreach (string line in File.ReadAllLines("C:\\Users\\" + username + "\\AppData\\Roaming\\Firestorm\\logs\\Firestorm.log"))
                     dump += line + Environment.NewLine;
                 dump += Environment.NewLine + Environment.NewLine + "---------------- End of Viewer Crash report -------------" + Environment.NewLine + Environment.NewLine;
 
@@ -193,8 +202,13 @@ namespace Chimera.OpenSim {
                 OnViewerExit(this, null);
             lock (processLock)
                 Monitor.PulseAll(processLock);
-            if (mAutoRestart)
+            if (mAutoRestart && unexpected)
                 Launch();
+        }
+
+        private void mWindow_MonitorChanged(Window window, Screen monitor) {
+            if (mClientLoggedIn)
+                ProcessWrangler.SetMonitor(mClient, monitor);
         }
 
         /// <summary>
@@ -243,6 +257,11 @@ namespace Chimera.OpenSim {
             get { return mAutoRestart; }
             set { mAutoRestart = value; }
         }
+
+        public string Type {
+            get { return "Virtual World Viewer"; }
+        }
+
         public Window Window {
             get { return mWindow; }
         }
@@ -290,6 +309,7 @@ namespace Chimera.OpenSim {
             mWindow = window;
             mWindow.Coordinator.CameraUpdated += ProcessChange;
             mWindow.Coordinator.EyeUpdated += ProcessEyeUpdate;
+            mWindow.MonitorChanged += new Action<Chimera.Window,Screen>(mWindow_MonitorChanged);
 
             if (mConfig.AutoStartViewer)
                 Launch();
@@ -342,10 +362,5 @@ namespace Chimera.OpenSim {
         }
 
         #endregion
-
-        internal void CycleMonitor() {
-            if (mClientLoggedIn)
-                ProcessWrangler.SwitchWindowMonitor(mClient);
-        }
     }
 }

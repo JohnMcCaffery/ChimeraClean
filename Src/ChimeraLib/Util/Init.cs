@@ -491,7 +491,7 @@ namespace Chimera.Util {
                 Thread t = new Thread(() => {
                     f = createForm();
                     lock (createLock)
-                        Monitor.PulseAll(createLock);
+                        MonitorChanged.PulseAll(createLock);
                     started = true;
                     StartProxyClient(config, manager, f);
                     f.ShowDialog();
@@ -500,7 +500,7 @@ namespace Chimera.Util {
                 t.Start();
                 if (!started)
                     lock (createLock)
-                        Monitor.Wait(createLock);
+                        MonitorChanged.Wait(createLock);
                 return f;
             }
         }

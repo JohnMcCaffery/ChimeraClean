@@ -6,6 +6,7 @@ using OpenMetaverse;
 using System.Drawing;
 using Chimera.Util;
 using System.IO;
+using System.Windows.Forms;
 
 namespace Chimera {
     public class Window {
@@ -53,6 +54,10 @@ namespace Chimera {
         /// The width of the screen, in mm.
         /// </summary>
         private double mWidth;
+        /// <summary>
+        /// The monitor this window should display on.
+        /// </summary>
+        private Screen mMonitor;
 
         /// <summary>
         /// Triggered whenever the position of this window changes.
@@ -65,6 +70,11 @@ namespace Chimera {
         public event Action<Window, EventArgs> CursorMove;
 
         /// <summary>
+        /// Triggered whenever the monitor that the window is to display on changes.
+        /// </summary>
+        public event Action<Window, Screen> MonitorChanged;
+
+        /// <summary>
         /// Create a window. It is necessary to specify a unique name for the window.
         /// </summary>
         /// <param name="name">The name this window is known by within the system.</param>
@@ -72,6 +82,11 @@ namespace Chimera {
         public Window(string name, params IOverlayArea[] overlayAreas) {
             mName = name;
             mOverlayAreas = new List<IOverlayArea>(overlayAreas);
+
+            WindowConfig cfg = new WindowConfig(name);
+            mMonitor = Screen.AllScreens.FirstOrDefault(s => s.DeviceName.Equals(cfg.Monitor));
+            if (mMonitor == null)
+                mMonitor = Screen.PrimaryScreen;
         }
 
         /// <summary>
@@ -181,10 +196,29 @@ namespace Chimera {
                 dump += "Distance: " + (centre - mCoordinator.EyePosition).Length() + Environment.NewLine;
                 dump += "Width: " + mWidth + ", Height: " + mHeight + Environment.NewLine;
 
-                if (mOutput != null) 
-                    dump += mOutput.State;
+                if (mOutput != null)
+                    try {
+                        dump += mOutput.State;
+                    } catch (Exception ex) {
+                        dump += "Unable to get stats for window " + mOutput.Type + ". " + ex.Message + Environment.NewLine;
+                        dump += ex.StackTrace;
+                    }
 
                 return dump;
+            }
+        }
+
+        /// <summary>
+        /// The monitor which this window should display on.
+        /// </summary>
+        public Screen Monitor {
+            get { return mMonitor; }
+            set {
+                if (mMonitor != value) {
+                    mMonitor = value;
+                    if (MonitorChanged != null)
+                        MonitorChanged(this, value);
+                }
             }
         }
 

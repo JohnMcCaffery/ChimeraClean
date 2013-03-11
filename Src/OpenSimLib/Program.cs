@@ -6,6 +6,7 @@ using Chimera.GUI.Forms;
 using Chimera;
 using Chimera.OpenSim;
 using Chimera.Util;
+using Chimera.Inputs;
 
 namespace TestProject {
     static class Program {
@@ -17,8 +18,9 @@ namespace TestProject {
             Application.SetCompatibleTextRenderingDefault(false);
 
             IOutput output = new SetFollowCamPropertiesViewerOutput("Main Window");
+            IInput kbMouseInput = new KBMouseInput();
             Window[] windows = new Window[] { new Window("Main Window", output) };
-            Coordinator coordinator = new Coordinator(windows);
+            Coordinator coordinator = new Coordinator(windows, kbMouseInput);
             CoordinatorForm form = new CoordinatorForm(coordinator);
 
             CoordinatorConfig cfg = new CoordinatorConfig();

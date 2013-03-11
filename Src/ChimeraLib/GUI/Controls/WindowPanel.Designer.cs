@@ -26,7 +26,9 @@
             this.mainTab = new System.Windows.Forms.TabControl();
             this.configTab = new System.Windows.Forms.TabPage();
             this.overlayTab = new System.Windows.Forms.TabPage();
+            this.monitorPulldown = new System.Windows.Forms.ComboBox();
             this.mainTab.SuspendLayout();
+            this.overlayTab.SuspendLayout();
             this.SuspendLayout();
             // 
             // mainTab
@@ -54,6 +56,7 @@
             // 
             // overlayTab
             // 
+            this.overlayTab.Controls.Add(this.monitorPulldown);
             this.overlayTab.Location = new System.Drawing.Point(4, 22);
             this.overlayTab.Name = "overlayTab";
             this.overlayTab.Padding = new System.Windows.Forms.Padding(3);
@@ -61,6 +64,16 @@
             this.overlayTab.TabIndex = 1;
             this.overlayTab.Text = "Overlay";
             this.overlayTab.UseVisualStyleBackColor = true;
+            // 
+            // screenPulldown
+            // 
+            this.monitorPulldown.DisplayMember = "DeviceName";
+            this.monitorPulldown.FormattingEnabled = true;
+            this.monitorPulldown.Location = new System.Drawing.Point(8, 8);
+            this.monitorPulldown.Name = "screenPulldown";
+            this.monitorPulldown.Size = new System.Drawing.Size(121, 21);
+            this.monitorPulldown.TabIndex = 0;
+            this.monitorPulldown.SelectedIndexChanged += new System.EventHandler(this.screenPulldown_SelectedIndexChanged);
             // 
             // WindowPanel
             // 
@@ -70,6 +83,7 @@
             this.Name = "WindowPanel";
             this.Size = new System.Drawing.Size(419, 315);
             this.mainTab.ResumeLayout(false);
+            this.overlayTab.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -79,5 +93,6 @@
         private System.Windows.Forms.TabControl mainTab;
         private System.Windows.Forms.TabPage configTab;
         private System.Windows.Forms.TabPage overlayTab;
+        private System.Windows.Forms.ComboBox monitorPulldown;
     }
 }

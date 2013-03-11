@@ -277,11 +277,5 @@ namespace Chimera.OpenSim.GUI {
             if (proxy != null)
                 proxy.AutoRestart = autoRestartBox.Checked;
         }
-
-        private void cycleMonitorButton_Click(object sender, EventArgs e) {
-            if (proxy != null)
-                proxy.CycleMonitor();
-        }
-
     }
 }

@@ -10,9 +10,8 @@ namespace Chimera {
         /// <summary>
         /// The panel which can be added to a form to configure this input.
         /// </summary>
-        UserControl ConfigPanel {
+        UserControl ControlPanel {
             get;
-            set;
         }
 
         /// <summary>
@@ -20,7 +19,6 @@ namespace Chimera {
         /// </summary>
         string Name {
             get;
-            set;
         }
 
         /// <summary>
@@ -36,13 +34,19 @@ namespace Chimera {
         /// </summary>
         string[] ConfigSwitches {
             get;
-            set;
         }
 
         /// <summary>
         /// A multi line string that can be printed to file to store a record of state in the event of a crash.
         /// </summary>
         string State {
+            get;
+        }
+
+        /// <summary>
+        /// The coordinator this input is to control.
+        /// </summary>
+        Coordinator Coordinator {
             get;
         }
 

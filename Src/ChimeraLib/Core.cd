@@ -6,7 +6,7 @@
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>QIRAIAAAJAgEgoAgCQgAgAAAEEACIQAyCBAEAECACik=</HashCode>
+      <HashCode>QYRAIAAAJAgEgoAgCQgAgAAAEEACIQAyCBAEgECACi0=</HashCode>
       <FileName>Core\Coordinator.cs</FileName>
     </TypeIdentifier>
     <ShowAsCollectionAssociation>
@@ -15,7 +15,7 @@
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="Chimera.NetworkMaster" Collapsed="true">
-    <Position X="0.5" Y="6.5" Width="1.5" />
+    <Position X="0.5" Y="7.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Core\NetworkMaster.cs</FileName>
@@ -27,7 +27,7 @@
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>ACgAFAIABABABpAAAAAIA0QAAAAAAAAAQAwCBAiIAQI=</HashCode>
+      <HashCode>ACAAFAoEBABABpAAAACIA0QAAAAAAAABQAwCBAiIAQI=</HashCode>
       <FileName>Core\Window.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -39,7 +39,7 @@
     </ShowAsCollectionAssociation>
   </Class>
   <Class Name="Chimera.NetworkWindow" Collapsed="true">
-    <Position X="0.5" Y="7.25" Width="1.5" />
+    <Position X="0.5" Y="8.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Core\NetworkSlave.cs</FileName>
@@ -52,17 +52,31 @@
       <FileName>Core\Coordinator.cs</FileName>
     </TypeIdentifier>
   </Class>
+  <Class Name="Chimera.Inputs.KBMouseInput">
+    <Position X="9.25" Y="0.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>ICgAqBgGRAABE6AAIAAAAEagAAAAMAKAwABKBACKYAE=</HashCode>
+      <FileName>Inputs\KBMouseInput.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
   <Interface Name="Chimera.IInput">
     <Position X="5.5" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>IAAAAAAAAAAAAoAAAAAAAAQAAAAAAAAAAABCBACAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAoAAAAAAAAQAAAAAAAIAQABCBACAAAA=</HashCode>
       <FileName>Interfaces\IInput.cs</FileName>
     </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Coordinator" />
+    </ShowAsAssociation>
   </Interface>
   <Interface Name="Chimera.IOutput">
     <Position X="6.25" Y="3.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>IAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAABACDACAAAA=</HashCode>
+      <HashCode>IAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAARACDACAAAA=</HashCode>
       <FileName>Interfaces\IOutput.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>

@@ -101,6 +101,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core\CoordinatorConfig.cs" />
+    <Compile Include="Core\WindowConfig.cs" />
     <Compile Include="Inputs\KBMouseInput.cs" />
     <Compile Include="Inputs\KBMousePanel.cs">
       <SubType>UserControl</SubType>

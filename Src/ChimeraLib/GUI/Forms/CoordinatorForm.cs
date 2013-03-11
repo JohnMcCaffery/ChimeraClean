@@ -58,6 +58,47 @@ namespace Chimera.GUI.Forms {
 
                 windowsTab.Controls.Add(windowTab);
             }
+
+            foreach (var input in mCoordinator.Inputs) {
+                TabPage inputTab = new TabPage();
+                CheckBox enableCheck = new CheckBox();
+                // 
+                // inputTab
+                // 
+                inputTab.Controls.Add(input.ControlPanel);
+                inputTab.Controls.Add(enableCheck);
+                inputTab.Location = new System.Drawing.Point(4, 22);
+                inputTab.Name = input.Name + "Tab";
+                inputTab.Padding = new System.Windows.Forms.Padding(3);
+                inputTab.Size = new System.Drawing.Size(419, 239);
+                inputTab.TabIndex = 0;
+                inputTab.Text = input.Name;
+                inputTab.UseVisualStyleBackColor = true;
+                // 
+                // enableCheck
+                // 
+                enableCheck.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+                enableCheck.AutoSize = true;
+                enableCheck.BackColor = System.Drawing.Color.Transparent;
+                enableCheck.Location = new System.Drawing.Point(355, 6);
+                enableCheck.Name = "enableCheck";
+                enableCheck.Size = new System.Drawing.Size(59, 17);
+                enableCheck.TabIndex = 1;
+                enableCheck.Text = "Enable";
+                enableCheck.Checked = input.Enabled;
+                enableCheck.CheckStateChanged += new EventHandler((source, args) => input.Enabled = enableCheck.Checked);
+                //enableCheck.UseVisualStyleBackColor = false;
+                // 
+                // inputPanel
+                // 
+                input.ControlPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+                input.ControlPanel.Location = new System.Drawing.Point(3, 3);
+                input.ControlPanel.Name = input.Name + "Panel";
+                input.ControlPanel.Size = new System.Drawing.Size(413, 233);
+                input.ControlPanel.TabIndex = 0;
+
+                inputsTab.Controls.Add(inputTab);
+            }
         }
 
         private void mCoordinator_CameraUpdated(Coordinator coordinator, CameraUpdateEventArgs args) {
@@ -68,7 +109,8 @@ namespace Chimera.GUI.Forms {
                 virtualRotationPanel.Yaw = args.rotation.Yaw;
                 mEventUpdate = false;
             }
-        }
+        }
+
         private void mCoordinator_EyeUpdated(Coordinator coordinator, EventArgs args) {
             if (!mGuiUpdate) {
                 mEventUpdate = true;

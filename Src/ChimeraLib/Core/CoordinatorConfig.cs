@@ -9,6 +9,7 @@ using System.IO;
 namespace Chimera {
     public class CoordinatorConfig {
         public string CrashLogFile;
+        public int TickLength;
         public bool AutoRestart;
 
         public CoordinatorConfig(params string[] args) {
@@ -29,6 +30,7 @@ namespace Chimera {
             ArgvConfigSource argConfig = Init.InitArgConfig(args);
             argConfig.AddSwitch("General", "AutoRestart", "r");
             argConfig.AddSwitch("General", "CrashLogFile", "l");
+            argConfig.AddSwitch("General", "TickLength", "tl");
             
             IConfigSource config = Init.AddFile(argConfig, file);
             IConfig coordinatorConfig = config.Configs["Coordinator"];
@@ -36,6 +38,7 @@ namespace Chimera {
 
             CrashLogFile = Init.Get(generalConfig, "CrashLogFile", "CrashLog.log");
             AutoRestart = Init.Get(generalConfig, "AutoRestart", false);
+            TickLength = Init.Get(generalConfig, "TickLength", 20);
 
             //EnableWindowPackets = Init.Get(generalConfig, "EnableWindowPackets", true);
             //UseSetFollowCamPackets = !enableWindowPackets || Get(generalConfig, "UseSetFollowCamPackets", false);
