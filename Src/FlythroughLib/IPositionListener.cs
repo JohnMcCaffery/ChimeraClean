@@ -5,7 +5,7 @@ using System.Text;
 using Chimera.FlythroughLib;
 using OpenMetaverse;
 
-namespace FlythroughLib {
+namespace Chimera.FlythroughLib {
     public interface IPositionListener {
         /// <summary>
         /// Create a link to the sequence of positions this listener wishes to track.

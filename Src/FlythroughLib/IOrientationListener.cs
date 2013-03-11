@@ -5,7 +5,7 @@ using System.Text;
 using Chimera.FlythroughLib;
 using Chimera.Util;
 
-namespace FlythroughLib {
+namespace Chimera.FlythroughLib {
     public interface IOrientationListener {
         /// <summary>
         /// Create a link to the sequence of orientations this listener wishes to track.

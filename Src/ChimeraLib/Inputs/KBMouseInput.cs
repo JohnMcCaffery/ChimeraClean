@@ -125,8 +125,8 @@ namespace Chimera.Inputs {
             Y = e.Y;
             CurrentX = e.X;
             CurrentY = e.Y;
-            mStartPitch = mCoordinator.Rotation.Pitch;
-            mStartYaw = mCoordinator.Rotation.Yaw;
+            mStartPitch = mCoordinator.Orientation.Pitch;
+            mStartYaw = mCoordinator.Orientation.Yaw;
             MouseDown = true;
         }
 
@@ -182,7 +182,7 @@ namespace Chimera.Inputs {
             if (mRightDown) move.Y -= (float) mKBShift;
 
             if (mYawLeftDown || mYawRightDown || mPitchUpDown || mPitchDownDown) {
-                mRotation = new Rotation(mCoordinator.Rotation);
+                mRotation = new Rotation(mCoordinator.Orientation);
                 if (mYawLeftDown) mRotation.Yaw += mKBShift;
                 if (mYawRightDown) mRotation.Yaw -= mKBShift;
                 if (mPitchUpDown) mRotation.Pitch -= mKBShift;
@@ -190,7 +190,7 @@ namespace Chimera.Inputs {
             }
 
             if (move != Vector3.Zero || mUpDown || mDownDown || mRotation != mOldRotation) {
-                move *= mCoordinator.Rotation.Quaternion;
+                move *= mCoordinator.Orientation.Quaternion;
                 if (mUpDown) move.Z = (float) mKBShift;
                 if (mDownDown) move.Z = -(float) mKBShift;
 

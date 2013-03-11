@@ -105,8 +105,8 @@ namespace Chimera.GUI.Forms {
             if (!mGuiUpdate) {
                 mEventUpdate = true;
                 virtualPositionPanel.Value = args.position;
-                virtualRotationPanel.Pitch = args.rotation.Pitch;
-                virtualRotationPanel.Yaw = args.rotation.Yaw;
+                virtualOrientationPanel.Pitch = args.rotation.Pitch;
+                virtualOrientationPanel.Yaw = args.rotation.Yaw;
                 mEventUpdate = false;
             }
         }
@@ -122,7 +122,7 @@ namespace Chimera.GUI.Forms {
         private void virtualPositionPanel_OnChange(object sender, EventArgs e) {
             if (!mEventUpdate) {
                 mGuiUpdate = true;
-                mCoordinator.Update(virtualPositionPanel.Value, Vector3.Zero, new Rotation(virtualRotationPanel.Pitch, virtualRotationPanel.Yaw), new Rotation());
+                mCoordinator.Update(virtualPositionPanel.Value, Vector3.Zero, new Rotation(virtualOrientationPanel.Pitch, virtualOrientationPanel.Yaw), new Rotation());
                 mGuiUpdate = false;
             }
         }
@@ -130,7 +130,7 @@ namespace Chimera.GUI.Forms {
         private void virtualRotation_OnChange(object sender, EventArgs e) {
             if (!mEventUpdate) {
                 mGuiUpdate = true;
-                mCoordinator.Update(virtualPositionPanel.Value, Vector3.Zero, new Rotation(virtualRotationPanel.Pitch, virtualRotationPanel.Yaw), new Rotation());
+                mCoordinator.Update(virtualPositionPanel.Value, Vector3.Zero, new Rotation(virtualOrientationPanel.Pitch, virtualOrientationPanel.Yaw), new Rotation());
                 mGuiUpdate = false;
             }
         }

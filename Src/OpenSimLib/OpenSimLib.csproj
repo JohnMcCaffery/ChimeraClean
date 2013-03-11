@@ -81,6 +81,10 @@
       <Project>{58E39BFE-20D5-4C8D-BCFC-6B5E641C2DFF}</Project>
       <Name>ChimeraLib</Name>
     </ProjectReference>
+    <ProjectReference Include="..\FlythroughLib\FlythroughLib.csproj">
+      <Project>{D0708045-6CCA-4764-B438-A2D6E8635978}</Project>
+      <Name>FlythroughLib</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="GUI\ProxyPanel.resx">

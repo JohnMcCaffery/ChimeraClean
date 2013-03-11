@@ -7,6 +7,7 @@ using Chimera;
 using Chimera.OpenSim;
 using Chimera.Util;
 using Chimera.Inputs;
+using Chimera.FlythroughLib;
 
 namespace TestProject {
     static class Program {
@@ -19,8 +20,9 @@ namespace TestProject {
 
             IOutput output = new SetFollowCamPropertiesViewerOutput("Main Window");
             IInput kbMouseInput = new KBMouseInput();
+            IInput flythrough = new Flythrough();
             Window[] windows = new Window[] { new Window("Main Window", output) };
-            Coordinator coordinator = new Coordinator(windows, kbMouseInput);
+            Coordinator coordinator = new Coordinator(windows, kbMouseInput, flythrough);
             CoordinatorForm form = new CoordinatorForm(coordinator);
 
             CoordinatorConfig cfg = new CoordinatorConfig();

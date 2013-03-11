@@ -40,7 +40,7 @@ namespace Chimera.OpenSim {
                 cameraPacket.CameraProperty[i].Type = i + 1;
             }
 
-            Vector3 focus = Window.Coordinator.Position + Window.Coordinator.Rotation.LookAtVector;
+            Vector3 focus = Window.Coordinator.Position + Window.Coordinator.Orientation.LookAtVector;
             cameraPacket.CameraProperty[0].Value = 0;
             cameraPacket.CameraProperty[1].Value = 0f;
             cameraPacket.CameraProperty[2].Value = 0f;

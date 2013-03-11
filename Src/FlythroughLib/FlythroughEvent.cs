@@ -5,6 +5,7 @@ using System.Text;
 using OpenMetaverse;
 using System.Xml;
 using System.Threading;
+using System.Windows.Forms;
 
 namespace Chimera.FlythroughLib {
     public abstract class FlythroughEvent<T> : IComparable<FlythroughEvent<T>> {
@@ -32,26 +33,34 @@ namespace Chimera.FlythroughLib {
         /// The name this event is known by.
         /// </summary>
         private string mName;
+        /// <summary>
+        /// The value the event starts at.
+        /// </summary>
+        private T mStart;
         
         /// <summary>
-        /// Triggered every time the next step is triggered.
+        /// Triggered every time time through the sequence is changed.
         /// </summary>
-        public event EventHandler TimeChange;
+        public event Action<FlythroughEvent<T>, int> TimeChange;
         /// <summary>
-        /// Triggered every time the length of the event is changed.
+        /// Triggered every value the length of the event is changed.
         /// </summary>
         public event EventHandler LengthChange;
         /// <summary>
         /// Triggered whenever the position of the camera when the event finishes changes.
         /// </summary>
         public event Action<FlythroughEvent<T>, T> FinishChange;
+        /// <summary>
+        /// Triggered whenever the position of the camera when the event finishes changes.
+        /// </summary>
+        public event Action<FlythroughEvent<T>, T> StartChange;
 
         /// <summary>
         /// Initialise this event with no parent, next or previous events.
         /// </summary>
         /// <param name="flythrough">The flythrough this event is part of.</param>
         /// 
-        /// <param name="length">The length of time the event will run (ms).</param>
+        /// <param name="length">The length of value the event will run (ms).</param>
         public FlythroughEvent(Flythrough flythrough, int length) {
             mFlythrough = flythrough;
             mStartTime = 0;
@@ -61,7 +70,7 @@ namespace Chimera.FlythroughLib {
         /// <summary>
         /// When this event starts, used for sorting the sequence of events.
         /// </summary>
-        public virtual int StartTime {
+        public int StartTime {
             get { return mStartTime; }
             set { mStartTime = value; }
         }
@@ -74,8 +83,9 @@ namespace Chimera.FlythroughLib {
             set {
                 if (value > Length || value < 0)
                     throw new ArgumentException("Time must be between 0 and Length.");
-                CurrentStep = value / mFlythrough.Coordinator.TickLength;
                 TimeChanged(value);
+                if (TimeChange != null)
+                    TimeChange(this, value);
             }
         }
 
@@ -90,31 +100,10 @@ namespace Chimera.FlythroughLib {
                     mSteps = 1;
                 else
                     mSteps = value / mFlythrough.Coordinator.TickLength;
+                LengthChanged(value);
                 if (LengthChange != null)
                     LengthChange(this, null);
             }
-        }
-
-        /// <summary>
-        /// How many steps it will take to complete the event.
-        /// </summary> public int Steps } 
-        /// </summary>
-        public int CurrentStep {
-            get { return mCurrentStep; }
-            set {
-                if (value != mCurrentStep) {
-                    mCurrentStep = value;
-                    if (TimeChange != null)
-                        TimeChange(this, null);
-                }
-            }
-        }
-
-        /// <summary>
-        /// How many steps the event will take.
-        /// </summary>
-        public int TotalSteps {
-            get { return mSteps; }
         }
 
         /// <summary>
@@ -131,44 +120,59 @@ namespace Chimera.FlythroughLib {
             get { return mName; }
             set { mName = value; }
         }
+        /// <summary>
+        /// What the camera is doing at the start of the sequence.
+        /// </summary>
+        public T Start {
+            get { return mStart; }
+            set { 
+                mStart = value;
+                StartChanged(value);
+                if (StartChange != null)
+                    StartChange(this, value);
+            }
+        }
 
+        /// <summary>
+        /// Get the value of a specific value through the event.
+        /// </summary>
+        /// <param name="value">The value through the event to get the value for.</param>
+        public abstract T this[int time] {
+            get;
+        }
         /// <summary>
         /// Where the camera is at the end of the sequence.
         /// </summary>
         public abstract T Finish {
             get;
-            set;
         }
-
-        /// <summary>
-        /// What the camera is doing at the start of the sequence.
-        /// </summary>
-        public abstract T Start {
-            get;
-            set;
-        }
-
         /// <summary>
         /// The value this event is currently at.
         /// </summary>
         public abstract T Value {
             get;
         }
+        /// <summary>
+        /// The panel which can control the event.
+        /// </summary>
+        public abstract UserControl ControlPanel { get; }
 
         /// <summary>
-        /// Called whenver the time is updated for this event.
-        /// CurrentEvent will already have been updated before this is called.
+        /// Called whenver the length of this event is changed.
         /// </summary>
-        /// <param name="time"></param>
-        public abstract void TimeChanged(int time);
-
+        /// <param name="length">The new length of the event.</param>
+        protected abstract void LengthChanged(int length);
+        /// <summary>
+        /// Called whenver the value is updated for this event.
+        /// </summary>
+        /// <param name="value"></param>
+        protected abstract void TimeChanged(int time);
         /// <summary>
         /// Save this event as an XML node from the specified document.
         /// </summary>
         /// <param name="doc">The document the new node should be part of.</param>
         /// <returns>A node which can be used to instantiate a new instance of this event.</returns>
         public abstract XmlNode Save(XmlDocument doc);
-
         /// <summary>
         /// Instantiate an instance of this event from an XML node.
         /// </summary>
@@ -183,10 +187,20 @@ namespace Chimera.FlythroughLib {
             return StartTime.CompareTo(other.StartTime);
         }
 
+        /// <summary>
+        /// Trigger the finish change event.
+        /// </summary>
         protected void TriggerFinishChange(T finish) {
             if (FinishChange != null)
                 FinishChange(this, finish);
         }
+
+        /// <summary>
+        /// Called whenver the value is updated for this event.
+        /// CurrentEvent will already have been updated before this is called.
+        /// </summary>
+        /// <param name="value">The new value of start.</param>
+        protected abstract void StartChanged(T value);
 
         #endregion
     }

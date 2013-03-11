@@ -6,10 +6,10 @@ using Chimera;
 using System.Xml;
 using System.IO;
 using System.Windows.Forms;
-using FlythroughLib;
 using OpenMetaverse;
 using Chimera.Util;
 using System.Threading;
+using Chimera.FlythroughLib.GUI;
 
 namespace Chimera.FlythroughLib {
     public struct Camera {
@@ -28,11 +28,25 @@ namespace Chimera.FlythroughLib {
     public class Flythrough : IInput {
         private EventSequence<Camera> mEvents = new EventSequence<Camera>();
         private Coordinator mCoordinator;
+        private FlythroughPanel mPanel;
         private bool mEnabled = true;
         private bool mPlaying;
         private bool mLoop;
         private bool mAutoStep;
 
+        /// <summary>
+        /// Triggered whenever the sequence gets to the end, even if looping.
+        /// </summary>
+        public event EventHandler SequenceFinished;
+        /// <summary>
+        /// Triggered whenever playback moves value forward one tick.
+        /// Not triggered when value is set directly.
+        /// </summary>
+        public event Action<int> Tick;
+        /// <summary>
+        /// Triggered every value the length of the event is changed.
+        /// </summary>
+        public event Action<int> LengthChange;
         /// <summary>
         /// Triggered whenever the currently executing event changes.
         /// </summary>
@@ -40,25 +54,12 @@ namespace Chimera.FlythroughLib {
             add { mEvents.CurrentEventChange += value; }
             remove { mEvents.CurrentEventChange -= value; }
         }
-        /// <summary>
-        /// Triggered whenever the sequence gets to the end, even if looping.
-        /// </summary>
-        public event EventHandler SequenceFinished;
-        /// <summary>
-        /// Triggered whenever playback moves time forward one tick.
-        /// Not triggered when time is set directly.
-        /// </summary>
-        public event EventHandler Tick;
-        /// <summary>
-        /// Triggered every time the length of the event is changed.
-        /// </summary>
-        public event Action<int> LengthChange;
 
         /// <summary>
         /// All the events queued up to play.
         /// </summary>
         public FlythroughEvent<Camera>[] Events {
-            get { return mEvents.Events; }
+            get { return mEvents.ToArray(); }
         }
         /// <summary>
         /// Where in the current sequence playback has reached.
@@ -68,8 +69,9 @@ namespace Chimera.FlythroughLib {
             get { return mEvents.Time; }
             set { 
                 mEvents.Time = value;
-                if (mEnabled)
-                    mCoordinator.Update(mEvents[value].Position, Vector3.Zero, mEvents[value].Orientation, new Rotation());
+                FlythroughEvent<Camera> evt = mEvents[value];
+                if (mEnabled && evt != null)
+                    mCoordinator.Update(evt.Value.Position, Vector3.Zero, evt.Value.Orientation, new Rotation());
             }
         }
         /// <summary>
@@ -124,6 +126,23 @@ namespace Chimera.FlythroughLib {
             t.Start();
         }
 
+        internal void AddEvent(ComboEvent evt) {
+            mEvents.AddEvent(evt);
+            if (mEvents.Count == 1)
+                evt.Start = Start;
+        }
+
+        internal void RemoveEvent(ComboEvent evt) {
+            mEvents.AddEvent(evt);
+            mEvents[0].Start = Start;
+        }
+
+        public void MoveUp(ComboEvent evt) {
+            mEvents.MoveUp(evt);
+            if (evt.StartTime == 0)
+                evt.Start = Start;
+        }
+
         /// <summary>
         /// Initialise the flythrough from an xml file.
         /// </summary>
@@ -138,7 +157,7 @@ namespace Chimera.FlythroughLib {
             doc.Load(file);
             int start = 0;
             foreach (XmlNode node in doc.GetElementsByTagName("Events")[0].ChildNodes) {
-                ComboEvent evt = new ComboEvent(this, 1);
+                ComboEvent evt = new ComboEvent(this);
                 evt.Load(node);
                 mEvents.AddEvent(evt);
                 start = evt.StartTime + evt.Length;
@@ -152,7 +171,7 @@ namespace Chimera.FlythroughLib {
         public void Save(string file) {
             XmlDocument doc = new XmlDocument();
             XmlNode root = doc.CreateElement("Events");
-            foreach (var evt in mEvents.Events) {
+            foreach (var evt in mEvents) {
                 root.AppendChild(evt.Save(doc));
             }
 
@@ -202,13 +221,17 @@ namespace Chimera.FlythroughLib {
             if (mEnabled && mPlaying)
                 mCoordinator.Update(n.Position, Vector3.Zero, n.Orientation, new Rotation());
             if (Tick != null)
-                Tick(this, null);
+                Tick(time);
         }
 
         #region IInput Members
 
         public UserControl ControlPanel {
-            get { throw new NotImplementedException(); }
+            get {
+                if (mPanel == null)
+                    mPanel = new FlythroughPanel(this);
+                return mPanel;
+            }
         }
 
         public string Name {

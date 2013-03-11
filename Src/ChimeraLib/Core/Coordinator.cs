@@ -216,7 +216,7 @@ namespace Chimera {
         /// <summary>
         /// The authoratitive orientation of the camera in virtual space. This is read-only. To update it use the 'Update' method.
         /// </summary>
-        public Rotation Rotation {
+        public Rotation Orientation {
             get { return mRotation ; }
         } 
         /// <summary>

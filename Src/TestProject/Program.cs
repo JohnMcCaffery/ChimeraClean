@@ -5,6 +5,9 @@ using System.Windows.Forms;
 using Chimera.GUI.Forms;
 using Chimera;
 using Chimera.OpenSim;
+using Chimera.Inputs;
+using Chimera.Util;
+using Chimera.FlythroughLib;
 
 namespace TestProject {
     static class Program {
@@ -13,12 +16,18 @@ namespace TestProject {
         /// </summary>
         [STAThread]
         static void Main() {
-            IOutput output = new SetFollowCamPropertiesViewerOutput("Main Window");
-            Window[] windows = new Window[] { new Window("Main Window", output) };
-            Coordinator c = new Coordinator(windows);
-            Application.EnableVisualStyles();
+
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new CoordinatorForm());
+
+            IOutput output = new SetFollowCamPropertiesViewerOutput("Main Window");
+            IInput kbMouseInput = new KBMouseInput();
+            IInput flythrough = new Flythrough();
+            Window[] windows = new Window[] { new Window("Main Window", output) };
+            Coordinator coordinator = new Coordinator(windows, kbMouseInput, flythrough);
+            CoordinatorForm form = new CoordinatorForm(coordinator);
+
+            CoordinatorConfig cfg = new CoordinatorConfig();
+            ProcessWrangler.BlockingRunForm(form, coordinator, cfg.AutoRestart);
         }
     }
 }

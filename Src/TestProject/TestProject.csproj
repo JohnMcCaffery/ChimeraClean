@@ -50,9 +50,6 @@
     <Reference Include="OpenMetaverse">
       <HintPath>..\..\Lib\OpenMetaverse.dll</HintPath>
     </Reference>
-    <Reference Include="OpenMetaverse.StructuredData">
-      <HintPath>..\..\Lib\OpenMetaverse.StructuredData.dll</HintPath>
-    </Reference>
     <Reference Include="OpenMetaverseTypes, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Lib\OpenMetaverseTypes.dll</HintPath>
@@ -97,6 +94,10 @@
     <ProjectReference Include="..\ChimeraLib\ChimeraLib.csproj">
       <Project>{58E39BFE-20D5-4C8D-BCFC-6B5E641C2DFF}</Project>
       <Name>ChimeraLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FlythroughLib\FlythroughLib.csproj">
+      <Project>{D0708045-6CCA-4764-B438-A2D6E8635978}</Project>
+      <Name>FlythroughLib</Name>
     </ProjectReference>
     <ProjectReference Include="..\OpenSimLib\OpenSimLib.csproj">
       <Project>{EC16291E-4217-4054-8E2D-E8C953ACE6F8}</Project>

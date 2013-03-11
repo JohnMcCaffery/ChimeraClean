@@ -2,15 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Chimera.FlythroughLib;
 using OpenMetaverse;
 using Chimera.Util;
 using System.Xml;
+using Chimera.FlythroughLib.GUI;
+using System.Windows.Forms;
 
-namespace FlythroughLib {
+namespace Chimera.FlythroughLib {
     public class ComboEvent : FlythroughEvent<Camera> {
+        private static int COUNT = 1;
         private readonly EventSequence<Vector3> mPositionSequence = new EventSequence<Vector3>();
         private readonly EventSequence<Rotation> mOrientationSequence = new EventSequence<Rotation>();
+        private ComboPanel mControl;
 
         /// <summary>
         /// Triggered whenever the current position event changes.
@@ -29,48 +32,109 @@ namespace FlythroughLib {
             remove { mOrientationSequence.CurrentEventChange -= value; }
         }
 
+        public EventSequence<Vector3> Positions {
+            get { return mPositionSequence; }
+        }
+        public EventSequence<Rotation> Orientations {
+            get { return mOrientationSequence; }
+        }
+
         /// <summary>
         /// </summary>
         /// <param name="flythrough">The flythrough this event is part of.</param>
-        /// <param name="length">The length of time the event will run (ms).</param>
-        public ComboEvent(Flythrough flythrough, int length)
-            : base(flythrough, length) {
+        /// <param name="length">The length of value the event will run (ms).</param>
+        public ComboEvent(Flythrough flythrough)
+            : base(flythrough, 0) {
 
             mPositionSequence.LengthChange += new Action<EventSequence<Vector3>,int>(mPositionSequence_LengthChange);
             mPositionSequence.FinishChange += new EventHandler(FinishChanged);
 
             mOrientationSequence.LengthChange += new Action<EventSequence<Rotation>,int>(mOrientationSequence_LengthChange);
             mOrientationSequence.FinishChange += new EventHandler(FinishChanged);
+
+            Name = "Step " + COUNT++;
         }
 
-        public override Camera Start {
-            get { return new Camera(mPositionSequence.Start, mOrientationSequence.Start); }
-            set {
-                mPositionSequence.Start = value.Position;
-                mOrientationSequence.Start = value.Orientation;
+        public override Camera this[int time] {
+            get { return new Camera(mPositionSequence[time].Value, mOrientationSequence[time].Value); }
+        }
+
+        public override UserControl ControlPanel {
+            get {
+                if (mControl == null)
+                    mControl = new ComboPanel(this);
+                return mControl;
             }
         }
 
         public override Camera Finish {
             get { return new Camera(mPositionSequence.Finish, mOrientationSequence.Finish); }
-            set { /*Do Nothing*/ }
         }
 
         public override Camera Value {
-            get { return new Camera(mPositionSequence[Time], mOrientationSequence[Time]); }
+            get {
+                Vector3 pos = mPositionSequence.Count == 0 ? Container.Coordinator.Position : mPositionSequence[Time].Value;
+                Rotation rot = mOrientationSequence.Count == 0 ? Container.Coordinator.Orientation : mOrientationSequence[Time].Value;
+                return new Camera(pos, rot); 
+            }
         }
 
-        public override void TimeChanged(int time) {
+        protected override void StartChanged(Camera value) {
+            mPositionSequence.Start = value.Position;
+            mOrientationSequence.Start = value.Orientation;
+        }
+
+        protected override void TimeChanged(int time) {
             mPositionSequence.Time = Math.Min(mPositionSequence.Length, time);
             mOrientationSequence.Time = Math.Min(mOrientationSequence.Length, time);
         }
 
+        protected override void LengthChanged(int length) { }
+
         public override void Load(XmlNode node) {
-            throw new NotImplementedException();
+            if (node.FirstChild != null) {
+                LoadNode<Vector3>(node.FirstChild);
+                if (node.FirstChild.NextSibling != null)
+                    LoadNode<Rotation>(node.FirstChild.NextSibling);
+            }
         }
 
-        public override System.Xml.XmlNode Save(System.Xml.XmlDocument doc) {
-            throw new NotImplementedException();
+        private void LoadNode<T>(XmlNode root) {
+            foreach (XmlNode node in root.ChildNodes) {
+                if (typeof(T) == typeof(Vector3)) {
+                    FlythroughEvent<Vector3> evt = null;
+                    switch (node.Name) {
+                        case "MoveToEvent": evt = new MoveToEvent(Container, 0, Vector3.Zero); break;
+                        case "BlankEvent": evt = new BlankEvent<Vector3>(Container, 0); break;
+                    }
+                    evt.Load(node);
+                    mPositionSequence.AddEvent(evt);
+                } else {
+                    FlythroughEvent<Rotation> evt = null;
+                    switch (node.Name) {
+                        case "RotateToEvent": evt = new RotateToEvent(Container, 0, 0, 0); break;
+                        case "BlankEvent": evt = new BlankEvent<Rotation>(Container, 0); break;
+                    }
+                    evt.Load(node);
+                    mOrientationSequence.AddEvent(evt);
+                }
+            }
+        }
+
+        public override XmlNode Save(XmlDocument doc) {
+            XmlNode root = doc.CreateElement("ComboEvent");
+            XmlNode stream1 = doc.CreateElement("PositionSequence");
+            XmlNode stream2 = doc.CreateElement("OrientationSequence");
+
+            foreach(var evt in mPositionSequence)
+                root.AppendChild(evt.Save(root.OwnerDocument));
+
+            foreach(var evt in mOrientationSequence)
+                root.AppendChild(evt.Save(root.OwnerDocument));
+
+            root.AppendChild(stream1);
+            root.AppendChild(stream2);
+            return root;
         }
 
         public void AddEvent(FlythroughEvent<Vector3> evt) {
