@@ -30,6 +30,7 @@ namespace Chimera.OpenSim {
         public bool AutoStartViewer;
         public bool AutoRestartViewer;
         public bool ControlCamera;
+        public bool Border;
         public int ProxyPort;
 
         public ProxyConfig(params string[] args) {
@@ -72,6 +73,7 @@ namespace Chimera.OpenSim {
             argConfig.AddSwitch(Name, "FirstName", "fn");
             argConfig.AddSwitch(Name, "LastName", "l");
             argConfig.AddSwitch(Name, "Password", "pw");
+            argConfig.AddSwitch(Name, "Border", "pw");
             
             IConfigSource config = Init.AddFile(argConfig, file);
             IConfig sectionConfig = config.Configs[Name];
@@ -95,6 +97,7 @@ namespace Chimera.OpenSim {
             AutoStartViewer = Init.Get(sectionConfig, "AutoStartViewer", false);
             AutoRestartViewer = Init.Get(generalConfig, "AutoRestart", false);
             ControlCamera = Init.Get(sectionConfig, "ControlCamera", true);
+            Border = Init.Get(sectionConfig, "Border", false);
 
             //EnableWindowPackets = Init.Get(generalConfig, "EnableWindowPackets", true);
             //UseSetFollowCamPackets = !enableWindowPackets || Get(generalConfig, "UseSetFollowCamPackets", false);

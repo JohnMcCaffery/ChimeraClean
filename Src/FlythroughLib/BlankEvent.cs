@@ -41,7 +41,7 @@ namespace Chimera.FlythroughLib {
         }
 
         public override T this[int time] {
-            get { return Start; }
+            get { return StartValue; }
         }
 
         public override System.Windows.Forms.UserControl ControlPanel {
@@ -52,18 +52,20 @@ namespace Chimera.FlythroughLib {
             }
         }
 
-        public override T Finish {
-            get { return Start; }
+        public override T FinishValue {
+            get { return StartValue; }
         }
 
         public override T Value {
-            get { return Start; }
+            get { return StartValue; }
         }
+
+        protected override void StartChanged(T value) { }
 
         protected override void LengthChanged(int length) { }
 
-        protected override void TimeChanged(int time) { }
+        protected override void StartTimeChanged(int startTime) { }
 
-        protected override void StartChanged(T value) { }
+        protected override void TimeChanged(int time) { }
     }
 }

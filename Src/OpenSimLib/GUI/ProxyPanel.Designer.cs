@@ -67,6 +67,8 @@ namespace Chimera.OpenSim.GUI {
             this.label2 = new System.Windows.Forms.Label();
             this.workingDirectoryBox = new System.Windows.Forms.TextBox();
             this.autoRestartBox = new System.Windows.Forms.CheckBox();
+            this.borderCheck = new System.Windows.Forms.CheckBox();
+            this.hudButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // loginURIBox
@@ -127,7 +129,7 @@ namespace Chimera.OpenSim.GUI {
             | System.Windows.Forms.AnchorStyles.Right)));
             this.viewerLaunchButton.Location = new System.Drawing.Point(3, 133);
             this.viewerLaunchButton.Name = "viewerLaunchButton";
-            this.viewerLaunchButton.Size = new System.Drawing.Size(376, 23);
+            this.viewerLaunchButton.Size = new System.Drawing.Size(291, 23);
             this.viewerLaunchButton.TabIndex = 19;
             this.viewerLaunchButton.Text = "Launch Viewer";
             this.viewerLaunchButton.UseVisualStyleBackColor = true;
@@ -315,10 +317,36 @@ namespace Chimera.OpenSim.GUI {
             this.autoRestartBox.UseVisualStyleBackColor = true;
             this.autoRestartBox.CheckedChanged += new System.EventHandler(this.autoRestartBox_CheckedChanged);
             // 
+            // borderCheck
+            // 
+            this.borderCheck.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.borderCheck.AutoSize = true;
+            this.borderCheck.Location = new System.Drawing.Point(176, 159);
+            this.borderCheck.Name = "borderCheck";
+            this.borderCheck.Size = new System.Drawing.Size(99, 17);
+            this.borderCheck.TabIndex = 38;
+            this.borderCheck.Text = "Window Border";
+            this.borderCheck.UseVisualStyleBackColor = true;
+            this.borderCheck.CheckedChanged += new System.EventHandler(this.borderCheck_CheckedChanged);
+            // 
+            // hudButton
+            // 
+            this.hudButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.hudButton.Location = new System.Drawing.Point(300, 133);
+            this.hudButton.Name = "hudButton";
+            this.hudButton.Size = new System.Drawing.Size(82, 23);
+            this.hudButton.TabIndex = 39;
+            this.hudButton.Text = "Toggle HUD";
+            this.hudButton.UseVisualStyleBackColor = true;
+            this.hudButton.Click += new System.EventHandler(this.hudButton_Click);
+            // 
             // ProxyPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.hudButton);
+            this.Controls.Add(this.borderCheck);
             this.Controls.Add(this.autoRestartBox);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.workingDirectoryBox);
@@ -377,5 +405,7 @@ namespace Chimera.OpenSim.GUI {
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox workingDirectoryBox;
         private System.Windows.Forms.CheckBox autoRestartBox;
+        private System.Windows.Forms.CheckBox borderCheck;
+        private System.Windows.Forms.Button hudButton;
     }
 }

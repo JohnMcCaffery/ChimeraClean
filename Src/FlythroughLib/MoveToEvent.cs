@@ -43,7 +43,7 @@ namespace Chimera.FlythroughLib {
             get { return mTarget;  }
             set { 
                 mTarget = value; 
-                mShift = (mTarget - Start) / Length;
+                mShift = (mTarget - StartValue) / Length;
                 TriggerFinishChange(value);
             }
         }
@@ -56,24 +56,26 @@ namespace Chimera.FlythroughLib {
             }
         }
         public override Vector3 this[int time] {
-            get { return Start + (mShift * time); }
+            get { return StartValue + (mShift * time); }
         }
-        public override Vector3 Finish {
+        public override Vector3 FinishValue {
             get { return mTarget; }
         }
         public override Vector3 Value {
-            get { return Start + (mShift * Time); }
+            get { return StartValue + (mShift * Time); }
         }
 
         protected override void StartChanged(Vector3 value) {
             mShift = (mTarget - value) / Length;
         }
 
-        protected override void TimeChanged(int value) { }
-
         protected override void LengthChanged(int time) {
-            mShift = (Start - mTarget) / Length;
+            mShift = (StartValue - mTarget) / Length;
         }
+
+        protected override void StartTimeChanged(int startTime) { }
+
+        protected override void TimeChanged(int value) { }
 
         public override void Load(XmlNode node) {
             Target = Vector3.Parse(node.Attributes["Target"].Value);

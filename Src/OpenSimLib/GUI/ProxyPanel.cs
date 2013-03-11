@@ -277,5 +277,15 @@ namespace Chimera.OpenSim.GUI {
             if (proxy != null)
                 proxy.AutoRestart = autoRestartBox.Checked;
         }
+
+        private void hudButton_Click(object sender, EventArgs e) {
+            if (proxy != null)
+                proxy.ToggleHUD();
+        }
+
+        private void borderCheck_CheckedChanged(object sender, EventArgs e) {
+            if (proxy != null)
+                proxy.Borders = borderCheck.Checked;
+        }
     }
 }

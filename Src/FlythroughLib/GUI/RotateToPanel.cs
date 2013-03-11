@@ -22,6 +22,7 @@ namespace Chimera.FlythroughLib.GUI {
 
             rotationPanel.Rotation = mEvent.Target;
             lengthValue.ValueChanged += (source, args) => mEvent.Length = (int)lengthValue.Value;
+            rotationPanel.OnChange += (sender, args) => mEvent.Container.Time = mEvent.GlobalFinishTime;
             evt.TimeChange += (source, args) => {
                 Invoke(new Action(() => {
                     progressBar.Maximum = evt.Length;

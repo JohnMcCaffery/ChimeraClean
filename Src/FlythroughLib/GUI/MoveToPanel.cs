@@ -28,7 +28,10 @@ namespace Chimera.FlythroughLib.GUI {
                 lengthValue.Value = mEvent.Length;
             }
 
-            targetVectorPanel.OnChange += (source, args) => mEvent.Target = targetVectorPanel.Value;
+            targetVectorPanel.OnChange += (source, args) => {
+                mEvent.Target = targetVectorPanel.Value;
+                mEvent.Container.Time = evt.GlobalFinishTime;
+            };
             lengthValue.ValueChanged += (source, args) => mEvent.Length = (int)lengthValue.Value;
             evt.TimeChange += (source, args) => {
                 if (!IsDisposed)

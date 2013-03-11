@@ -25,7 +25,11 @@ namespace Chimera.FlythroughLib {
         /// <summary>
         /// Where the camera is at the start of the sequence.
         /// </summary>
-        private T mStart;
+        private T mStartValue;
+        /// <summary>
+        /// The time when the first event in the sequence should start.
+        /// </summary>
+        private int mStartTime;
 
         /// <summary>
         /// Triggered every value the length of the event is changed.
@@ -51,7 +55,7 @@ namespace Chimera.FlythroughLib {
                     throw new ArgumentException("Unable to fetch event. Time must be between 0 and Length");
                 if (mEvents.Count == 0)
                     return null;
-                return mEvents.First(evt => evt.StartTime + evt.Length >= time);
+                return time == Length ? mLastEvent : mEvents.First(evt => evt.SequenceFinishTime >= time);
             }
         }
         /// <summary>
@@ -76,22 +80,22 @@ namespace Chimera.FlythroughLib {
         /// How far through the sequence playback has reached.
         /// </summary>
         public int Time {
-            get { return mEvents.Count == 0 ? 0 : mCurrentEvent.StartTime + mCurrentEvent.Time; }
+            get { return mEvents.Count == 0 ? 0 : mCurrentEvent.SequenceStartTime + mCurrentEvent.Time; }
             set {
                 if (value < 0 || value > Length)
                     throw new ArgumentException("Unable to set value. Value must be between 0 and Length");
                 if (mEvents.Count == 0)
                     return;
 
-                CurrentEvent = mEvents.First(e => e.StartTime + e.Length >= value);
-                mCurrentEvent.Time = value - mCurrentEvent.StartTime;
+                CurrentEvent = value == Length ? mLastEvent : mEvents.First(e => e.SequenceFinishTime >= value);
+                mCurrentEvent.Time = value - mCurrentEvent.SequenceStartTime;
             }
         }
         /// <summary>
         /// How long the full sequence is, in ms.
         /// </summary>
         public int Length {
-            get { return mEvents.Aggregate(0, (current, evt) => current + evt.Length) + 1; }
+            get { return mEvents.Aggregate(0, (current, evt) => current + evt.Length); }
         }
         /// <summary>
         /// How many elemts there are in the full sequence.
@@ -102,27 +106,40 @@ namespace Chimera.FlythroughLib {
         /// <summary>
         /// Where the camera is at the end of the sequence.
         /// </summary>
-        public T Finish {
-            get { return mEvents.Count == 0 ? default(T) : mEvents[mEvents.Count-1].Finish; }
+        public T FinishValue {
+            get { return mEvents.Count == 0 ? default(T) : mEvents[mEvents.Count-1].FinishValue; }
         }
         /// <summary>
         /// Where the camera is at the start of the sequence.
         /// </summary>
         public T Start {
-            get { return mStart; }
+            get { return mStartValue; }
             set {
-                mStart = value;
+                mStartValue = value;
                 T start = value;
                 foreach (var evt in mEvents) {
-                    evt.Start = start;
-                    start = evt.Finish;
+                    evt.StartValue = start;
+                    start = evt.FinishValue;
                 }
             }
         }
 
+        /// <summary>
+        /// The time when the first event in the sequence should start.
+        /// </summary>
+        public int StartTime {
+            get { return mStartTime; }
+            set { mStartTime = value; }
+        }
+
+        private int NextStart(FlythroughEvent<T> prev) {
+            return prev == null ? 0 : prev.SequenceFinishTime + 1;
+        }
+
         public virtual void AddEvent(FlythroughEvent<T> evt) {
-            evt.StartTime = mLastEvent == null ? 0 : mLastEvent.StartTime + mLastEvent.Length + 1;
-            evt.Start = mLastEvent == null ? mStart : mLastEvent.Start;
+            evt.SetSequence(this);
+            evt.SequenceStartTime = NextStart(mLastEvent); ;
+            evt.StartValue = mLastEvent == null ? mStartValue : mLastEvent.StartValue;
             mLastEvent = evt;
             mEvents.Add(evt);
 
@@ -130,10 +147,10 @@ namespace Chimera.FlythroughLib {
                 mCurrentEvent = evt;
 
             evt.LengthChange += (source, args) => {
-                int time = evt.StartTime + evt.Length + 1;
-                foreach (var after in mEvents.Where(e => e.StartTime > evt.StartTime)) {
-                    after.StartTime = time;
-                    time += after.Length;
+                FlythroughEvent<T> prev = evt;
+                foreach (var after in mEvents.Where(e => e.SequenceStartTime > evt.SequenceStartTime)) {
+                    after.SequenceStartTime = NextStart(prev);
+                    prev = after;
                 }
                 if (LengthChange != null)
                     LengthChange(this, Length);
@@ -148,8 +165,8 @@ namespace Chimera.FlythroughLib {
             int time = Time;
             mEvents.Remove(evt);
             //Shift all events back by the length of the removed event.
-            foreach (var after in mEvents.Where(e => e.StartTime > evt.StartTime))
-                after.StartTime -= evt.Length;
+            foreach (var after in mEvents.Where(e => e.SequenceStartTime > evt.SequenceStartTime))
+                after.SequenceStartTime -= evt.Length;
 
             //Set value to take account the change to the chronology.
             Time = time < Length ? time : Length;
@@ -167,26 +184,26 @@ namespace Chimera.FlythroughLib {
                 prev = current;
             }
 
-            evt.StartTime = prev == null ? 0 : prev.StartTime;
+            evt.SequenceStartTime = NextStart(prev);
             if (prev != null)
-                prev.StartTime = evt.StartTime + evt.Length;
+                prev.SequenceStartTime = NextStart(evt);
 
             if (evt == mLastEvent && prev != null)
                 mLastEvent = prev;
 
             mEvents.Sort();
 
-            T finish = evt.Finish;
-            foreach (var e in mEvents.Where(e => e.StartTime > evt.StartTime)) {
-                e.Start = finish;
-                finish = e.Finish;
+            T finish = evt.FinishValue;
+            foreach (var e in mEvents.Where(e => e.SequenceStartTime > evt.SequenceStartTime)) {
+                e.StartValue = finish;
+                finish = e.FinishValue;
             }
         }
 
         private void evt_FinishChange(FlythroughEvent<T> modifiedEvent, T finish) {
-            foreach (var evt in mEvents.Where(e => e.StartTime > modifiedEvent.StartTime)) {
-                evt.Start = finish;
-                finish = evt.Finish;
+            foreach (var evt in mEvents.Where(e => e.SequenceStartTime > modifiedEvent.SequenceStartTime)) {
+                evt.StartValue = finish;
+                finish = evt.FinishValue;
             }
             if (FinishChange != null)
                 FinishChange(this, null);

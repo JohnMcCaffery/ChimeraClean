@@ -99,7 +99,7 @@ namespace Chimera.FlythroughLib.GUI {
         private void positionsList_SelectedValueChanged(object sender, EventArgs e) {
             if (positionsList.SelectedItem != null && !mTickUpdate) {
                 mGuiUpdate = true;
-                mEvent.Container.Time = ((FlythroughEvent<Vector3>)positionsList.SelectedItem).StartTime;
+                mEvent.Container.Time = mEvent.SequenceStartTime + ((FlythroughEvent<Vector3>)positionsList.SelectedItem).SequenceStartTime;
                 UserControl panel = ((FlythroughEvent<Vector3>)positionsList.SelectedItem).ControlPanel;
                 if (mCurrentPositionPanel != panel) {
                     if (mCurrentPositionPanel != null)
@@ -138,7 +138,7 @@ namespace Chimera.FlythroughLib.GUI {
         private void orientationsList_SelectedValueChanged(object sender, EventArgs e) {
             if (orientationsList.SelectedItem != null && !mTickUpdate) {
                 mGuiUpdate = true;
-                mEvent.Container.Time = ((FlythroughEvent<Rotation>)orientationsList.SelectedItem).StartTime;
+                mEvent.Container.Time = mEvent.SequenceStartTime + ((FlythroughEvent<Rotation>)orientationsList.SelectedItem).SequenceStartTime;
                 UserControl panel = ((FlythroughEvent<Rotation>)orientationsList.SelectedItem).ControlPanel;
                 if (mCurrentOrientationPanel != panel) {
                     if (mCurrentOrientationPanel != null)

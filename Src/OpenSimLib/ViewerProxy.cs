@@ -34,6 +34,7 @@ namespace Chimera.OpenSim {
         private UUID mAgentID = UUID.Zero;
         private string mFirstName = "NotLoggedIn";
         private string mLastName = "NotLoggedIn";
+        private bool mBorders;
 
         private object processLock = new object();
 
@@ -58,6 +59,11 @@ namespace Chimera.OpenSim {
 
         internal ProxyConfig ProxyConfig {
             get { return mConfig; }
+        }
+
+        internal bool Borders {
+            get { return mBorders; }
+            set { mBorders = value; }
         }
 
         public bool ProxyRunning {
@@ -87,6 +93,10 @@ namespace Chimera.OpenSim {
         protected ILog Logger {
             get { return mLogger; }
             set { mLogger = value; }
+        }
+
+        internal void ToggleHUD() {
+            ProcessWrangler.PressKey(mClient, "{F1}", true, true, false);
         }
 
         internal bool StartProxy() {
@@ -121,8 +131,7 @@ namespace Chimera.OpenSim {
                             Monitor.PulseAll(processLock);
 
                         ProcessWrangler.SetMonitor(mClient, mWindow.Monitor);
-                        ProcessWrangler.SetBorder(mClient, false);
-                        ProcessWrangler.PressKey("{F1}", true, true, false);
+                        ProcessWrangler.SetBorder(mClient, mBorders);
 
                         new Thread(() => {
                             if (mControlCamera)
@@ -131,7 +140,7 @@ namespace Chimera.OpenSim {
                                 OnClientLoggedIn(mProxy, null);
 
                             Thread.Sleep(5000);
-                            ProcessWrangler.PressKey(mClient, "{F1}", true, true, false);
+                            ToggleHUD();
                         }).Start();
                     } else {
                     }
@@ -310,6 +319,7 @@ namespace Chimera.OpenSim {
             mWindow.Coordinator.CameraUpdated += ProcessChange;
             mWindow.Coordinator.EyeUpdated += ProcessEyeUpdate;
             mWindow.MonitorChanged += new Action<Chimera.Window,Screen>(mWindow_MonitorChanged);
+            mBorders = mConfig.Border;
 
             if (mConfig.AutoStartViewer)
                 Launch();

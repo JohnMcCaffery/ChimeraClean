@@ -42,7 +42,7 @@ namespace Chimera.FlythroughLib {
         /// Triggered whenever playback moves value forward one tick.
         /// Not triggered when value is set directly.
         /// </summary>
-        public event Action<int> Tick;
+        public event Action<int> TimeChange;
         /// <summary>
         /// Triggered every value the length of the event is changed.
         /// </summary>
@@ -72,6 +72,8 @@ namespace Chimera.FlythroughLib {
                 FlythroughEvent<Camera> evt = mEvents[value];
                 if (mEnabled && evt != null)
                     mCoordinator.Update(evt.Value.Position, Vector3.Zero, evt.Value.Orientation, new Rotation());
+                if (TimeChange != null)
+                    TimeChange(value);
             }
         }
         /// <summary>
@@ -131,18 +133,18 @@ namespace Chimera.FlythroughLib {
         internal void AddEvent(ComboEvent evt) {
             mEvents.AddEvent(evt);
             if (mEvents.Count == 1)
-                evt.Start = Start;
+                evt.StartValue = Start;
         }
 
         internal void RemoveEvent(ComboEvent evt) {
             mEvents.AddEvent(evt);
-            mEvents[0].Start = Start;
+            mEvents[0].StartValue = Start;
         }
 
         public void MoveUp(ComboEvent evt) {
             mEvents.MoveUp(evt);
-            if (evt.StartTime == 0)
-                evt.Start = Start;
+            if (evt.SequenceStartTime == 0)
+                evt.StartValue = Start;
         }
 
         /// <summary>
@@ -162,7 +164,7 @@ namespace Chimera.FlythroughLib {
                 ComboEvent evt = new ComboEvent(this);
                 evt.Load(node);
                 mEvents.AddEvent(evt);
-                start = evt.StartTime + evt.Length;
+                start = evt.SequenceStartTime + evt.Length;
             }
         }
 
@@ -210,8 +212,10 @@ namespace Chimera.FlythroughLib {
                     else {
                         if (mLoop)
                             DoTick(0, mEvents.Start);
-                        else
+                        else {
+                            DoTick(mEvents.Length, mEvents.CurrentEvent.Value);
                             mPlaying = false;
+                        }
 
                         if (SequenceFinished != null)
                             SequenceFinished(this, null);
@@ -225,8 +229,8 @@ namespace Chimera.FlythroughLib {
             Camera n = mEvents.CurrentEvent.Value;
             if (mEnabled && mPlaying)
                 mCoordinator.Update(n.Position, n.Position - o.Position, n.Orientation, n.Orientation - o.Orientation);
-            if (Tick != null)
-                Tick(time);
+            if (TimeChange != null)
+                TimeChange(time);
         }
 
         #region IInput Members

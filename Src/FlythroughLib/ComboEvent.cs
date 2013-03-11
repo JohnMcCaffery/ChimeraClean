@@ -44,7 +44,7 @@ namespace Chimera.FlythroughLib {
         /// <param name="flythrough">The flythrough this event is part of.</param>
         /// <param name="length">The length of value the event will run (ms).</param>
         public ComboEvent(Flythrough flythrough)
-            : base(flythrough, 0) {
+            : base(flythrough, 1) {
 
             mPositionSequence.LengthChange += new Action<EventSequence<Vector3>,int>(mPositionSequence_LengthChange);
             mPositionSequence.FinishChange += new EventHandler(FinishChanged);
@@ -67,8 +67,8 @@ namespace Chimera.FlythroughLib {
             }
         }
 
-        public override Camera Finish {
-            get { return new Camera(mPositionSequence.Finish, mOrientationSequence.Finish); }
+        public override Camera FinishValue {
+            get { return new Camera(mPositionSequence.FinishValue, mOrientationSequence.FinishValue); }
         }
 
         public override Camera Value {
@@ -91,6 +91,11 @@ namespace Chimera.FlythroughLib {
         protected override void TimeChanged(int time) {
             mPositionSequence.Time = Math.Min(mPositionSequence.Length, time);
             mOrientationSequence.Time = Math.Min(mOrientationSequence.Length, time);
+        }
+
+        protected override void StartTimeChanged(int startTime) {
+            mPositionSequence.StartTime = startTime;
+            mOrientationSequence.StartTime = startTime;
         }
 
         protected override void LengthChanged(int length) { }
@@ -162,7 +167,7 @@ namespace Chimera.FlythroughLib {
         }
 
         private void FinishChanged(object source, EventArgs args) {
-            TriggerFinishChange(Finish);
+            TriggerFinishChange(FinishValue);
         }
 
         private void mPositionSequence_LengthChange(EventSequence<Vector3> evt, int length) {

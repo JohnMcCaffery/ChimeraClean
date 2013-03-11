@@ -48,7 +48,7 @@ namespace Chimera.FlythroughLib {
             : base(container, length) {
 
             Name = "Rotate To " + (++COUNT);
-            Start = new Rotation();
+            StartValue = new Rotation();
             Target = new Rotation();
         }
 
@@ -59,7 +59,7 @@ namespace Chimera.FlythroughLib {
             get { return mTarget; }
             set {
                 mTarget = value;
-                mShift = (value - Start) / Length;
+                mShift = (value - StartValue) / Length;
                 TriggerFinishChange(value);
                 value.OnChange += new EventHandler(value_OnChange);
             }
@@ -73,20 +73,22 @@ namespace Chimera.FlythroughLib {
             }
         }
         public override Rotation this[int time] {
-            get { return Start + (mShift * time); }
+            get { return StartValue + (mShift * time); }
         }
-        public override Rotation Finish {
+        public override Rotation FinishValue {
             get { return mTarget; }
         }
         public override Rotation Value {
             get { return this[Time]; }
         }
 
-        protected override void TimeChanged(int time) { }
-
         protected override void StartChanged(Rotation value) { Recalculate(); }
 
         protected override void LengthChanged(int length) { Recalculate(); }
+
+        protected override void StartTimeChanged(int startTime) { }
+
+        protected override void TimeChanged(int time) { }
 
         public override void Load(XmlNode node) {
             Name = node.Attributes["Name"].Value;
@@ -119,10 +121,10 @@ namespace Chimera.FlythroughLib {
 
         void value_OnChange(object sender, EventArgs e) {
             Recalculate();
-            TriggerFinishChange(Finish);
+            TriggerFinishChange(FinishValue);
         }
         private void Recalculate() {
-            mShift = (Finish - Start) / Length;
+            mShift = (FinishValue - StartValue) / Length;
         }
     }
 }

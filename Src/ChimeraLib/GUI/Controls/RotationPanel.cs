@@ -98,11 +98,11 @@ namespace ProxyTestGUI {
         }
 
         private void pitchValue_ValueChanged(object sender, EventArgs e) {
-            rotation.Pitch = (float) decimal.ToDouble(pitchValue.Value);
+            rotation.Pitch = decimal.ToDouble(pitchValue.Value);
         }
 
         private void yawValue_ValueChanged(object sender, EventArgs e) {
-            rotation.Yaw = (float) decimal.ToDouble(yawValue.Value);
+            rotation.Yaw = decimal.ToDouble(yawValue.Value);
         }
 
         private void vectorPanel_OnChange(object sender, EventArgs e) {

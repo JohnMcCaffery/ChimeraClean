@@ -28,7 +28,7 @@ namespace Chimera.FlythroughLib.GUI {
 
         public void Init(Flythrough container) {
             mContainer = container;
-            mContainer.Tick += new Action<int>(mContainer_Tick);
+            mContainer.TimeChange += new Action<int>(mContainer_Tick);
             mContainer.LengthChange += new Action<int>(mContainer_LengthChange);
             mContainer.SequenceFinished += new EventHandler(mContainer_SequenceFinished);
 
@@ -107,9 +107,11 @@ namespace Chimera.FlythroughLib.GUI {
         private void eventsList_SelectedValueChanged(object sender, EventArgs e) {
             if (eventsList.SelectedItem != null && !TickUpdate) {
                 GUIUpdate = true;
-                mContainer.Time = ((ComboEvent)eventsList.SelectedItem).StartTime;
+                ComboEvent evt = (ComboEvent) eventsList.SelectedItem;
+                mContainer.Time = evt.GlobalStartTime;
                 timeLabel.Text = "Time: " + Math.Round((double) mContainer.Time / 1000.0, 2);
-                UserControl panel = ((ComboEvent)eventsList.SelectedItem).ControlPanel;
+                timeSlider.Value = mContainer.Time;
+                UserControl panel = evt.ControlPanel;
                 if (mCurrentPanel != panel) {
                     if (mCurrentPanel != null)
                         mCurrentPanel.Visible = false;

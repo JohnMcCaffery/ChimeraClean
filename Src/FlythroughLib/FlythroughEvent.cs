@@ -14,6 +14,10 @@ namespace Chimera.FlythroughLib {
         /// </summary>
         private readonly Flythrough mFlythrough;
         /// <summary>
+        /// The flythrough this event is part of.
+        /// </summary>
+        private EventSequence<T> mSequence;
+        /// <summary>
         /// The current time through the event.
         /// </summary>
         private int mTime = 0;
@@ -70,9 +74,49 @@ namespace Chimera.FlythroughLib {
         /// <summary>
         /// When this event starts, used for sorting the sequence of events.
         /// </summary>
-        public int StartTime {
+        public int SequenceStartTime {
             get { return mStartTime; }
-            set { mStartTime = value; }
+            set { 
+                mStartTime = value;
+                StartTimeChanged(value);
+            }
+        }
+        /// <summary>
+        /// When the event will finish.
+        /// </summary>
+        public int SequenceFinishTime {
+            get { return (mStartTime + mLength) -1; }
+        }
+        /// <summary>
+        /// When the event will finish.
+        /// </summary>
+        public int GlobalFinishTime {
+            get { return mSequence.StartTime + SequenceFinishTime; }
+        }
+        /// <summary>
+        /// When the event will finish.
+        /// </summary>
+        public int GlobalStartTime {
+            get { return mSequence.StartTime + SequenceStartTime; }
+        }
+
+        /// <summary>
+        /// How long the event will run for.
+        /// </summary>
+        public virtual int Length {
+            get { return mLength; }
+            set {
+                if (value < 1)
+                    throw new ArgumentException("Event length cannot be less than 1");
+                mLength = value;
+                if (value < mFlythrough.Coordinator.TickLength)
+                    mSteps = 1;
+                else
+                    mSteps = value / mFlythrough.Coordinator.TickLength;
+                LengthChanged(value);
+                if (LengthChange != null)
+                    LengthChange(this, null);
+            }
         }
 
         /// <summary>
@@ -87,23 +131,6 @@ namespace Chimera.FlythroughLib {
                 TimeChanged(value);
                 if (TimeChange != null)
                     TimeChange(this, value);
-            }
-        }
-
-        /// <summary>
-        /// How long the event will run for.
-        /// </summary>
-        public virtual int Length {
-            get { return mLength; }
-            set {
-                mLength = value;
-                if (value < mFlythrough.Coordinator.TickLength)
-                    mSteps = 1;
-                else
-                    mSteps = value / mFlythrough.Coordinator.TickLength;
-                LengthChanged(value);
-                if (LengthChange != null)
-                    LengthChange(this, null);
             }
         }
 
@@ -124,7 +151,7 @@ namespace Chimera.FlythroughLib {
         /// <summary>
         /// What the camera is doing at the start of the sequence.
         /// </summary>
-        public T Start {
+        public T StartValue {
             get { return mStart; }
             set { 
                 mStart = value;
@@ -144,7 +171,7 @@ namespace Chimera.FlythroughLib {
         /// <summary>
         /// Where the camera is at the end of the sequence.
         /// </summary>
-        public abstract T Finish {
+        public abstract T FinishValue {
             get;
         }
         /// <summary>
@@ -158,6 +185,11 @@ namespace Chimera.FlythroughLib {
         /// </summary>
         public abstract UserControl ControlPanel { get; }
 
+        /// <summary>
+        /// Called whenever the start time for this event changes.
+        /// </summary>
+        /// <param name="startTime">The new start time.</param>
+        protected abstract void StartTimeChanged(int startTime);
         /// <summary>
         /// Called whenver the length of this event is changed.
         /// </summary>
@@ -185,7 +217,7 @@ namespace Chimera.FlythroughLib {
         public int CompareTo(FlythroughEvent<T> other) {
             if (other == null)
                 return 1;
-            return StartTime.CompareTo(other.StartTime);
+            return SequenceStartTime.CompareTo(other.SequenceStartTime);
         }
 
         /// <summary>
@@ -204,5 +236,9 @@ namespace Chimera.FlythroughLib {
         protected abstract void StartChanged(T value);
 
         #endregion
+
+        internal void SetSequence(EventSequence<T> eventSequence) {
+            mSequence = eventSequence;
+        }
     }
 }
