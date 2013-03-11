@@ -30,6 +30,11 @@ namespace Chimera.FlythroughLib.GUI {
             mContainer = container;
             mContainer.Tick += new Action<int>(mContainer_Tick);
             mContainer.LengthChange += new Action<int>(mContainer_LengthChange);
+            mContainer.SequenceFinished += new EventHandler(mContainer_SequenceFinished);
+        }
+
+        void mContainer_SequenceFinished(object sender, EventArgs e) {
+            Invoke(new Action(() => playButton.Text = "Play"));
         }
 
         void mContainer_Tick(int time) {
@@ -75,8 +80,8 @@ namespace Chimera.FlythroughLib.GUI {
             eventsList.Items.Add(evt);
             eventsList.EndUpdate();
             evt.TimeChange += (e, time) => {
-                if (!GUIUpdate)
-                    Invoke(new Action(() => eventsList.SelectedItem = evt));
+                if (!GUIUpdate && !IsDisposed && Created)
+                    Invoke(new Action(() => { if (eventsList.SelectedItem != evt) eventsList.SelectedItem = evt; }));
             };
             evt.ControlPanel.Dock = DockStyle.Fill;
             evt.ControlPanel.Visible = false;

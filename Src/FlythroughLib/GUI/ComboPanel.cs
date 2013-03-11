@@ -50,7 +50,7 @@ namespace Chimera.FlythroughLib.GUI {
             list.EndUpdate();
             evt.TimeChange += (e, time) => {
                 if (!mGuiUpdate && !IsDisposed && Created)
-                    Invoke(new Action(() => list.SelectedItem = evt));
+                Invoke(new Action(() => { if (list.SelectedItem != evt) list.SelectedItem = evt; }));
             };
             evt.ControlPanel.Dock = DockStyle.Fill;
             evt.ControlPanel.Visible = false;
@@ -75,7 +75,7 @@ namespace Chimera.FlythroughLib.GUI {
         // ----- Positions -----
 
         private void Positions_CurrentEventChange(FlythroughEvent<Vector3> o, FlythroughEvent<Vector3> n) {
-            positionsList.SelectedItem = n;
+            Invoke(new Action(() => positionsList.SelectedItem = n));
         }
 
         private void moveToEventToolStripMenuItem_Click(object sender, EventArgs e) {
@@ -114,7 +114,7 @@ namespace Chimera.FlythroughLib.GUI {
         // ----- Orientations -----
 
         private void Orientations_CurrentEventChange(FlythroughEvent<Rotation> o, FlythroughEvent<Rotation> n) {
-            orientationsList.SelectedItem = n;
+            Invoke(new Action(() => orientationsList.SelectedItem = n));
         }
 
         private void rotateToEventToolStripMenuItem_Click(object sender, EventArgs e) {

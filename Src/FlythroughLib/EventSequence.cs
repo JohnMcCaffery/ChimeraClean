@@ -122,6 +122,7 @@ namespace Chimera.FlythroughLib {
 
         public virtual void AddEvent(FlythroughEvent<T> evt) {
             evt.StartTime = mLastEvent == null ? 0 : mLastEvent.StartTime + mLastEvent.Length + 1;
+            evt.Start = mLastEvent == null ? mStart : mLastEvent.Start;
             mLastEvent = evt;
             mEvents.Add(evt);
 
@@ -174,11 +175,17 @@ namespace Chimera.FlythroughLib {
                 mLastEvent = prev;
 
             mEvents.Sort();
+
+            T finish = evt.Finish;
+            foreach (var e in mEvents.Where(e => e.StartTime > evt.StartTime)) {
+                e.Start = finish;
+                finish = e.Finish;
+            }
         }
 
         private void evt_FinishChange(FlythroughEvent<T> modifiedEvent, T finish) {
             foreach (var evt in mEvents.Where(e => e.StartTime > modifiedEvent.StartTime)) {
-                modifiedEvent.Start = finish;
+                evt.Start = finish;
                 finish = evt.Finish;
             }
             if (FinishChange != null)

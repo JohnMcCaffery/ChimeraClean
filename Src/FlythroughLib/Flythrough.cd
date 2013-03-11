@@ -6,7 +6,7 @@
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>BiEggIhMBCAQAoAAEAAAAARAAiAQAAIAwABihACAQQA=</HashCode>
+      <HashCode>BiEggIhMBCAQAsBAEAAAAARAAiAQAAIAwABihACAQQA=</HashCode>
       <FileName>Flythrough.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
@@ -20,7 +20,6 @@
       <HashCode>AACAgIQEICAAAAQAiAAQAARAJAABABMAAAggAIAAgSg=</HashCode>
       <FileName>FlythroughEvent.cs</FileName>
     </TypeIdentifier>
-    <Lollipop Position="0.2" />
   </Class>
   <Class Name="Chimera.FlythroughLib.EventSequence&lt;T&gt;">
     <Position X="3.25" Y="0.5" Width="1.75" />
@@ -31,19 +30,18 @@
       <HashCode>AIGAAACEACAQAhBACEAAAARAACAAAAAEAAAAAAAAASg=</HashCode>
       <FileName>EventSequence.cs</FileName>
     </TypeIdentifier>
-    <Lollipop Position="0.2" />
   </Class>
   <Class Name="Chimera.FlythroughLib.ComboEvent">
     <Position X="3.5" Y="6" Width="2.5" />
     <TypeIdentifier>
-      <HashCode>AAAEgKAAAQACAoBgCAAAAAgADICAIAMAAAAgAAAAgAg=</HashCode>
+      <HashCode>AAAEgKAAAQACAoBgCAAAAAgADMCAIAMAAAAgAAAAgAg=</HashCode>
       <FileName>ComboEvent.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Chimera.FlythroughLib.RotateToEvent">
     <Position X="8.25" Y="6" Width="2.25" />
     <TypeIdentifier>
-      <HashCode>EAAAgIAAIAACgAAACAAACAAABkAAgAMAAAgiEAACgAg=</HashCode>
+      <HashCode>EAAAgIAAIAACgAAACAAACAAABkAAgAMAAAAiEAACgAg=</HashCode>
       <FileName>RotateToEvent.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -57,7 +55,7 @@
   <Class Name="Chimera.FlythroughLib.BlankEvent&lt;T&gt;">
     <Position X="10.75" Y="6" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAgIAAAAAAAAAACAAAAAAABEAAAAEAAAAgAAAAgAg=</HashCode>
+      <HashCode>AAAAgIAAAAAAAEAACAAAAAAABEAAAAMAAAAgAAAAgAg=</HashCode>
       <FileName>BlankEvent.cs</FileName>
     </TypeIdentifier>
   </Class>

@@ -284,7 +284,7 @@ namespace Chimera.Util {
             mPitchChanging = true;
             mYawChanging = true;
             if (!mRotationChanging)
-                Quaternion = CalculateRotation();
+                Set(CalculateRotation());
             mPitchChanging = false;
             mYawChanging = false;
         }

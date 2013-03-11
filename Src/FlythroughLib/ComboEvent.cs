@@ -73,8 +73,12 @@ namespace Chimera.FlythroughLib {
 
         public override Camera Value {
             get {
-                Vector3 pos = mPositionSequence.Count == 0 ? Container.Coordinator.Position : mPositionSequence[Time].Value;
-                Rotation rot = mOrientationSequence.Count == 0 ? Container.Coordinator.Orientation : mOrientationSequence[Time].Value;
+                Vector3 pos = mPositionSequence.Count == 0 ? 
+                    Container.Coordinator.Position : 
+                    mPositionSequence[Math.Min(Time, mPositionSequence.Length)].Value;
+                Rotation rot = mOrientationSequence.Count == 0 ? 
+                    Container.Coordinator.Orientation : 
+                    mOrientationSequence[Math.Min(Time, mOrientationSequence.Length)].Value;
                 return new Camera(pos, rot); 
             }
         }

@@ -14,9 +14,9 @@ namespace Chimera.FlythroughLib {
         /// </summary>
         private readonly Flythrough mFlythrough;
         /// <summary>
-        /// The current step being processed.
+        /// The current time through the event.
         /// </summary>
-        private int mCurrentStep = 0;
+        private int mTime = 0;
         /// <summary>
         /// The total number of steps in the event.
         /// </summary>
@@ -79,10 +79,11 @@ namespace Chimera.FlythroughLib {
         /// How far through the event playback has got. Should be between 0 and Length.
         /// </summary>
         public int Time {
-            get { return mCurrentStep * mFlythrough.Coordinator.TickLength; }
+            get { return mTime; }
             set {
                 if (value > Length || value < 0)
                     throw new ArgumentException("Time must be between 0 and Length.");
+                mTime = value;
                 TimeChanged(value);
                 if (TimeChange != null)
                     TimeChange(this, value);

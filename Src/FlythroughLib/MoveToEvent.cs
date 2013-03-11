@@ -22,10 +22,6 @@ namespace Chimera.FlythroughLib {
         /// </summary>
         private Vector3 mShift;
         /// <summary>
-        /// The position the camera started at.
-        /// </summary>
-        private Vector3 mStartPosition;
-        /// <summary>
         /// The panel used to control the event.
         /// </summary>
         private MoveToPanel mControl;
@@ -36,7 +32,7 @@ namespace Chimera.FlythroughLib {
         /// <param name="target">The position the camera will end up in.</param>
         public MoveToEvent(Flythrough container, int length, Vector3 target)
             : base(container, length) {
-            mTarget = target;
+            Target = target;
             Name = "Move To " + (++COUNT);
         }
 
@@ -47,7 +43,7 @@ namespace Chimera.FlythroughLib {
             get { return mTarget;  }
             set { 
                 mTarget = value; 
-                mShift = (mTarget - mStartPosition) / Length;
+                mShift = (mTarget - Start) / Length;
                 TriggerFinishChange(value);
             }
         }
@@ -69,12 +65,14 @@ namespace Chimera.FlythroughLib {
             get { return Start + (mShift * Time); }
         }
 
-        protected override void StartChanged(Vector3 value) { }
+        protected override void StartChanged(Vector3 value) {
+            mShift = (mTarget - value) / Length;
+        }
 
         protected override void TimeChanged(int value) { }
 
         protected override void LengthChanged(int time) {
-            mShift = (mTarget - mStartPosition) / Length;
+            mShift = (Start - mTarget) / Length;
         }
 
         public override void Load(XmlNode node) {
