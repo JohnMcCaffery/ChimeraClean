@@ -11,7 +11,7 @@ using OpenMetaverse;
 namespace Chimera.FlythroughLib.GUI {
     public partial class FlythroughPanel : UserControl {
         private Flythrough mContainer;
-        private UserControl mCurrentPanel;
+        private Control mCurrentPanel;
         private bool GUIUpdate;
         private bool TickUpdate;
 
@@ -34,6 +34,11 @@ namespace Chimera.FlythroughLib.GUI {
 
             autoStepCheck.Checked = mContainer.AutoStep;
             loopCheck.Checked = mContainer.Loop;
+
+            ComboEvent startEvt = new ComboEvent(mContainer);
+            startEvt.Name = "Start";
+            eventsList.Items.Add(startEvt);
+            mCurrentPanel = startPanel;
         }
 
         void mContainer_SequenceFinished(object sender, EventArgs e) {
@@ -58,6 +63,20 @@ namespace Chimera.FlythroughLib.GUI {
             }));
         }
 
+        private void AddEvent(FlythroughEvent<Camera> evt) {
+            mContainer.AddEvent(evt);
+            eventsList.BeginUpdate();
+            eventsList.Items.Add(evt);
+            eventsList.EndUpdate();
+            evt.TimeChange += (e, time) => {
+                if (!GUIUpdate && !IsDisposed && Created && mContainer.Time > 0)
+                    Invoke(new Action(() => { if (eventsList.SelectedItem != evt) eventsList.SelectedItem = evt; }));
+            };
+            evt.ControlPanel.Dock = DockStyle.Fill;
+            evt.ControlPanel.Visible = false;
+            eventPanel.Controls.Add(evt.ControlPanel);
+        }
+
         private void playButton_Click(object sender, EventArgs e) {
             if (playButton.Text == "Play") {
                 playButton.Text = "Pause";
@@ -77,22 +96,11 @@ namespace Chimera.FlythroughLib.GUI {
         }
 
         private void addToolStripMenuItem_Click(object sender, EventArgs args) {
-            ComboEvent evt = new ComboEvent(mContainer);
-            mContainer.AddEvent(evt);
-            eventsList.BeginUpdate();
-            eventsList.Items.Add(evt);
-            eventsList.EndUpdate();
-            evt.TimeChange += (e, time) => {
-                if (!GUIUpdate && !IsDisposed && Created)
-                    Invoke(new Action(() => { if (eventsList.SelectedItem != evt) eventsList.SelectedItem = evt; }));
-            };
-            evt.ControlPanel.Dock = DockStyle.Fill;
-            evt.ControlPanel.Visible = false;
-            eventPanel.Controls.Add(evt.ControlPanel);
+            AddEvent(new ComboEvent(mContainer));
         }
 
         private void removeToolStripMenuItem_Click(object sender, EventArgs e) {
-            if (eventsList.SelectedItem != null) {
+            if (eventsList.SelectedIndex > 0) {
                 ComboEvent evt = (ComboEvent)eventsList.SelectedItem;
                 mContainer.RemoveEvent(evt);
                 eventsList.Items.Remove(evt);
@@ -101,12 +109,12 @@ namespace Chimera.FlythroughLib.GUI {
         }
 
         private void moveUpToolStripMenuItem_Click(object sender, EventArgs e) {
-            if (eventsList.SelectedItem != null)
+            if (eventsList.SelectedIndex > 1)
                 mContainer.MoveUp((ComboEvent)eventsList.SelectedItem);
         }
 
         private void eventsList_SelectedValueChanged(object sender, EventArgs e) {
-            if (eventsList.SelectedItem != null && !TickUpdate) {
+            if (eventsList.SelectedIndex > 0 && !TickUpdate) {
                 GUIUpdate = true;
                 ComboEvent evt = (ComboEvent) eventsList.SelectedItem;
                 mContainer.Time = evt.GlobalStartTime;
@@ -120,6 +128,12 @@ namespace Chimera.FlythroughLib.GUI {
                     mCurrentPanel.Visible = true;
                 }
                 GUIUpdate = false;
+            } else if (!TickUpdate && mCurrentPanel != startPanel) {
+                if (mCurrentPanel != null)
+                    mCurrentPanel.Visible = false;
+                mCurrentPanel = startPanel;
+                mCurrentPanel.Visible = true;
+                timeSlider.Value = 0;
             }
         }
 
@@ -132,6 +146,46 @@ namespace Chimera.FlythroughLib.GUI {
             mContainer.Time = 0;
             mContainer.Play();
             playButton.Text = "Pause";
+        }
+
+        private void startPositionPanel_OnChange(object sender, EventArgs e) {
+            mContainer.Start = new Camera(startPositionPanel.Value, startOrientationPanel.Value);
+            mContainer.Time = 0;
+        }
+
+        private void startOrientationPanel_OnChange(object sender, EventArgs e) {
+            mContainer.Start = new Camera(startPositionPanel.Value, startOrientationPanel.Value);
+            mContainer.Time = 0;
+        }
+
+        private void saveButton_Click(object sender, EventArgs e) {
+            if (saveSequenceDialog.ShowDialog(this) == DialogResult.OK) {
+                mContainer.Save(saveSequenceDialog.FileName);
+            }
+        }
+
+        private void loadButton_Click(object sender, EventArgs e) {
+            if (loadSequenceDialog.ShowDialog(this) == DialogResult.OK) {
+                int i = 1;
+                foreach (var evt in mContainer.Events) {
+                    eventsList.Items.RemoveAt(i);
+                    eventPanel.Controls.Remove(evt.ControlPanel);
+                    i++;
+                }
+                mContainer.Load(loadSequenceDialog.FileName);
+                foreach (var evt in mContainer.Events)
+                    AddEvent((ComboEvent) evt);
+            }
+        }
+
+        private void stepBackButton_Click(object sender, EventArgs e) {
+            if (mContainer.Time > 0)
+                mContainer.Time--;
+        }
+
+        private void stepForwardButton_Click(object sender, EventArgs e) {
+            if (mContainer.Time < mContainer.Length - 1)
+                mContainer.Time++;
         }
     }
 }

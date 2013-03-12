@@ -111,12 +111,12 @@ namespace ProxyTestGUI {
             this.pitchValue.DecimalPlaces = 2;
             this.pitchValue.Location = new System.Drawing.Point(23, 42);
             this.pitchValue.Maximum = new decimal(new int[] {
-            360,
+            90,
             0,
             0,
             0});
             this.pitchValue.Minimum = new decimal(new int[] {
-            360,
+            90,
             0,
             0,
             -2147483648});
@@ -130,8 +130,8 @@ namespace ProxyTestGUI {
             this.pitchSlider.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pitchSlider.Location = new System.Drawing.Point(83, 42);
-            this.pitchSlider.Maximum = 180;
-            this.pitchSlider.Minimum = -180;
+            this.pitchSlider.Maximum = 90;
+            this.pitchSlider.Minimum = -90;
             this.pitchSlider.Name = "pitchSlider";
             this.pitchSlider.Size = new System.Drawing.Size(513, 42);
             this.pitchSlider.TabIndex = 86;
@@ -172,7 +172,7 @@ namespace ProxyTestGUI {
             | System.Windows.Forms.AnchorStyles.Right)));
             this.yawSlider.Location = new System.Drawing.Point(83, 68);
             this.yawSlider.Maximum = 180;
-            this.yawSlider.Minimum = -180;
+            this.yawSlider.Minimum = -179;
             this.yawSlider.Name = "yawSlider";
             this.yawSlider.Size = new System.Drawing.Size(513, 42);
             this.yawSlider.TabIndex = 92;

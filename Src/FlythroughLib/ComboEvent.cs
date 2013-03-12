@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace Chimera.FlythroughLib {
     public class ComboEvent : FlythroughEvent<Camera> {
-        private static int COUNT = 1;
+        private static int COUNT = 0;
         private readonly EventSequence<Vector3> mPositionSequence = new EventSequence<Vector3>();
         private readonly EventSequence<Rotation> mOrientationSequence = new EventSequence<Rotation>();
         private ComboPanel mControl;
@@ -52,6 +52,9 @@ namespace Chimera.FlythroughLib {
             mOrientationSequence.LengthChange += new Action<EventSequence<Rotation>,int>(mOrientationSequence_LengthChange);
             mOrientationSequence.FinishChange += new EventHandler(FinishChanged);
 
+            mPositionSequence.Start = StartValue.Position;
+            mOrientationSequence.Start = StartValue.Orientation;
+
             Name = "Step " + COUNT++;
         }
 
@@ -74,10 +77,10 @@ namespace Chimera.FlythroughLib {
         public override Camera Value {
             get {
                 Vector3 pos = mPositionSequence.Count == 0 ? 
-                    Container.Coordinator.Position : 
+                    StartValue.Position : 
                     mPositionSequence[Math.Min(Time, mPositionSequence.Length)].Value;
                 Rotation rot = mOrientationSequence.Count == 0 ? 
-                    Container.Coordinator.Orientation : 
+                    StartValue.Orientation : 
                     mOrientationSequence[Math.Min(Time, mOrientationSequence.Length)].Value;
                 return new Camera(pos, rot); 
             }

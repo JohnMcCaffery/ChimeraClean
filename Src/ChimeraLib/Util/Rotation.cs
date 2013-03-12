@@ -349,5 +349,9 @@ namespace Chimera.Util {
             }
             mVectorChanging = false;
         }
+
+        public override string ToString() {
+            return String.Format("P: {0;.00} - Y: {1;.00}", mPitch, mYaw);
+        }
     }
 }

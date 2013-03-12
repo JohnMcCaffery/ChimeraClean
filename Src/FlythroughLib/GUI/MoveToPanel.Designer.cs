@@ -34,8 +34,8 @@
             // 
             // moveToTakeCurrentButton
             // 
-            this.moveToTakeCurrentButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.moveToTakeCurrentButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.moveToTakeCurrentButton.Location = new System.Drawing.Point(134, 99);
             this.moveToTakeCurrentButton.Name = "moveToTakeCurrentButton";
             this.moveToTakeCurrentButton.Size = new System.Drawing.Size(80, 23);
@@ -77,13 +77,15 @@
             // 
             // targetVectorPanel
             // 
-            this.targetVectorPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.targetVectorPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.targetVectorPanel.DisplayName = "Move To Target";
             this.targetVectorPanel.Location = new System.Drawing.Point(0, 0);
-            this.targetVectorPanel.Max = 12800D;
-            this.targetVectorPanel.Min = -1024D;
+            this.targetVectorPanel.Max = 20489D;
+            this.targetVectorPanel.MaxV = ((OpenMetaverse.Vector3)(resources.GetObject("targetVectorPanel.MaxV")));
+            this.targetVectorPanel.Min = -2048D;
             this.targetVectorPanel.MinimumSize = new System.Drawing.Size(103, 95);
+            this.targetVectorPanel.MinV = ((OpenMetaverse.Vector3)(resources.GetObject("targetVectorPanel.MinV")));
             this.targetVectorPanel.Name = "targetVectorPanel";
             this.targetVectorPanel.Size = new System.Drawing.Size(214, 98);
             this.targetVectorPanel.TabIndex = 10;
@@ -94,8 +96,8 @@
             // 
             // progressBar
             // 
-            this.progressBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.progressBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.progressBar.Location = new System.Drawing.Point(3, 125);
             this.progressBar.Name = "progressBar";
             this.progressBar.Size = new System.Drawing.Size(211, 23);

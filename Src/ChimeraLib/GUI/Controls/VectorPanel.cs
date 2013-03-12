@@ -107,26 +107,55 @@ namespace ProxyTestGUI {
         public double Min {
             get { return decimal.ToDouble(xValue.Minimum); }
             set {
-                xValue.Minimum = new decimal(value);
-                yValue.Minimum = new decimal(value);
-                zValue.Minimum = new decimal(value);
+                xValue.Minimum = Math.Min(xValue.Minimum, new decimal(value));
+                yValue.Minimum = Math.Min(xValue.Minimum, new decimal(value));
+                zValue.Minimum = Math.Min(xValue.Minimum, new decimal(value));
 
                 xSlider.Minimum = (int)(value * trackerScale);
                 ySlider.Minimum = (int)(value * trackerScale);
                 zSlider.Minimum = (int)(value * trackerScale);
             }
+        }
+        public Vector3 MinV {
+            get { return new Vector3(
+                (float) decimal.ToDouble(xValue.Minimum), 
+                (float) decimal.ToDouble(yValue.Minimum), 
+                (float) decimal.ToDouble(zValue.Minimum)); }
+            set {
+                xValue.Minimum = Math.Min(xValue.Minimum, new decimal(value.X));
+                yValue.Minimum = Math.Min(xValue.Minimum, new decimal(value.Y));
+                zValue.Minimum = Math.Min(xValue.Minimum, new decimal(value.Z));
 
+                xSlider.Minimum = (int)(value.X * trackerScale);
+                ySlider.Minimum = (int)(value.Y * trackerScale);
+                zSlider.Minimum = (int)(value.Z * trackerScale);
+            }
         }
         public double Max {
             get { return decimal.ToDouble(xValue.Maximum); }
             set {
-                xValue.Maximum = new decimal(value);
-                yValue.Maximum = new decimal(value);
-                zValue.Maximum = new decimal(value);
+                xValue.Maximum = Math.Max(xValue.Maximum, new decimal(value));
+                yValue.Maximum = Math.Max(yValue.Maximum, new decimal(value));
+                zValue.Maximum = Math.Max(zValue.Maximum, new decimal(value));
 
                 xSlider.Maximum = (int)(value * trackerScale);
                 ySlider.Maximum = (int)(value * trackerScale);
                 zSlider.Maximum = (int)(value * trackerScale);
+            }
+        }
+        public Vector3 MaxV {
+            get { return new Vector3(
+                (float) decimal.ToDouble(xValue.Maximum), 
+                (float) decimal.ToDouble(yValue.Maximum), 
+                (float) decimal.ToDouble(zValue.Maximum)); }
+            set {
+                xValue.Maximum = Math.Max(xValue.Maximum, new decimal(value.X));
+                yValue.Maximum = Math.Max(yValue.Maximum, new decimal(value.Y));
+                zValue.Maximum = Math.Max(zValue.Maximum, new decimal(value.Z));
+
+                xSlider.Maximum = (int)(value.X * trackerScale);
+                ySlider.Maximum = (int)(value.Y * trackerScale);
+                zSlider.Maximum = (int)(value.Z * trackerScale);
             }
         }
 

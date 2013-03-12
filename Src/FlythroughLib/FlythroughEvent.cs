@@ -240,5 +240,9 @@ namespace Chimera.FlythroughLib {
         internal void SetSequence(EventSequence<T> eventSequence) {
             mSequence = eventSequence;
         }
+
+        public override string ToString() {
+            return mName;
+        }
     }
 }

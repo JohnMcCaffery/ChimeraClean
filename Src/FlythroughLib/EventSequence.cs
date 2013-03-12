@@ -107,7 +107,7 @@ namespace Chimera.FlythroughLib {
         /// Where the camera is at the end of the sequence.
         /// </summary>
         public T FinishValue {
-            get { return mEvents.Count == 0 ? default(T) : mEvents[mEvents.Count-1].FinishValue; }
+            get { return mEvents.Count == 0 ? mStartValue : mEvents[mEvents.Count-1].FinishValue; }
         }
         /// <summary>
         /// Where the camera is at the start of the sequence.
