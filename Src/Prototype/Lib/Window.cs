@@ -70,12 +70,12 @@ namespace Chimera {
         }
 
         /// <summary>
-        /// Triggered whenever any of the properties of the window changes.
+        /// Selected whenever any of the properties of the coordinator changes.
         /// </summary>
         public event EventHandler OnChange;
 
         /// <summary>
-        /// Triggered whenever any the eye offset property changes.
+        /// Selected whenever any the eye offset property changes.
         /// Useful for having other screens automatically adjust to this screens positioning.
         /// Supplies the difference between the old eye position and the new one that can be added to frustum position to keep it in one place.
         /// </summary>

@@ -81,12 +81,16 @@ namespace Chimera {
         /// </summary>
         private readonly List<IInput> mInputs = new List<IInput>();
         /// <summary>
-        /// The windows which define where, in real space, each 'window' onto the virtual space is located.
+        /// The windows which define where, in real space, each 'coordinator' onto the virtual space is located.
         /// </summary>
         private readonly List<Window> mWindows = new List<Window>();
+        /// <summary>
+        /// The windows which define where, in real space, each 'coordinator' onto the virtual space is located.
+        /// </summary>
+        private readonly List<IOverlayState> mStates = new List<IOverlayState>();
 
         /// <summary>
-        /// Scales that the various output window is currently set to.
+        /// Scales that the various output coordinator is currently set to.
         /// </summary>
         private double[] mScales = new double[3];
         /// <summary>
@@ -94,22 +98,13 @@ namespace Chimera {
         /// </summary>
         private Point[] mOrigins = new Point[3];
         /// <summary>
-        /// The sizes of the clip rectangles that bounds the horizontal output window.
+        /// The sizes of the clip rectangles that bounds the horizontal output coordinator.
         /// </summary>
         private Size[] mSizes = new Size[3];
-
         /// <summary>
-        /// True if the main menu is active.
+        /// The state the system is currently in.
         /// </summary>
-        private bool mMainMenuActive = true;
-        /// <summary>
-        /// The currently active main menu item.
-        /// </summary>
-        private IOutput mCurrentSelection;
-        /// <summary>
-        /// The currently active overlay area.
-        /// </summary>
-        private IOverlayArea mActiveArea;
+        private IOverlayState mActiveState;
 
         /// <summary>
         /// File to log information about any crash to.
@@ -121,47 +116,47 @@ namespace Chimera {
         private int mTickLength;
 
         /// <summary>
-        /// Triggered whenever a new window is added.
+        /// Selected whenever a new coordinator is added.
         /// </summary>
         public event Action<Window, EventArgs> WindowAdded;
 
         /// <summary>
-        /// Triggered whenever a window is removed.
+        /// Selected whenever a coordinator is removed.
         /// </summary>
         public event Action<IOverlayArea, EventArgs> WindowRemoved;
 
         /// <summary>
-        /// Triggered whenever the virtual camera position/orientation is changed.
+        /// Selected whenever the virtual camera position/orientation is changed.
         /// </summary>
         public event Action<Coordinator, CameraUpdateEventArgs> CameraUpdated;
 
         /// <summary>
-        /// Triggered whenever the location of the eye in real space is updated.
+        /// Selected whenever the location of the eye in real space is updated.
         /// </summary>
         public event Action<Coordinator, EventArgs> EyeUpdated;
 
         /// <summary>
-        /// Triggered whenever a key is pressed or released on the keyboard.
+        /// Selected whenever a key is pressed or released on the keyboard.
         /// </summary>
         public event Action<Coordinator, KeyEventArgs> KeyDown;
 
         /// <summary>
-        /// Triggered whenever a key is pressed or released on the keyboard.
+        /// Selected whenever a key is pressed or released on the keyboard.
         /// </summary>
         public event Action<Coordinator, KeyEventArgs> KeyUp;
 
         /// <summary>
-        /// Triggered whenever a key is pressed or released on the keyboard.
+        /// Selected whenever a key is pressed or released on the keyboard.
         /// </summary>
         public event Action<Coordinator, KeyEventArgs> Closed;
 
         /// <summary>
-        /// Triggered when the user selects a specific overlay area.
+        /// Selected when the user selects a specific overlay area.
         /// </summary>
-        public event Action<IOverlayArea, EventArgs> OverlayAreaActivated;
+        public event Action<IOverlayState, EventArgs> StateActivated;
 
         /// <summary>
-        /// Triggered whenever the main menu is activated.
+        /// Selected whenever the main menu is activated.
         /// </summary>
         public event EventHandler MainMenuActivated;
 
@@ -194,7 +189,7 @@ namespace Chimera {
         }
 
         /// <summary>
-        /// The windows which define where, in real space, each 'window' onto the virtual space is located.
+        /// The windows which define where, in real space, each 'coordinator' onto the virtual space is located.
         /// </summary>
         public Window[] Windows {
             get { return mWindows.ToArray() ; }
@@ -232,25 +227,10 @@ namespace Chimera {
         }
 
         /// <summary>
-        /// True if the main menu is currently active.
-        /// </summary>
-        public bool MainMenuActive {
-            get {
-                throw new System.NotImplementedException();
-            }
-            set {
-            }
-        }
-
-        /// <summary>
         /// The currently active overlay area.
         /// </summary>
-        public IOverlayArea ActiveArea {
-            get {
-                throw new System.NotImplementedException();
-            }
-            set {
-            }
+        public IOverlayState ActiveState {
+            get { return mActiveState; }
         }
 
         /// <summary>
@@ -258,6 +238,13 @@ namespace Chimera {
         /// </summary>
         public int TickLength {
             get { return mTickLength; }
+        }
+
+        /// <summary>
+        /// The states which the system can be in.
+        /// </summary>
+        public IOverlayState[] States {
+            get { return mStates.ToArray(); }
         }
 
         /// <summary>
@@ -290,9 +277,9 @@ namespace Chimera {
         }
 
         /// <summary>
-        /// Add a window to the system.
+        /// Add a coordinator to the system.
         /// </summary>
-        /// <param name="window">The window to add.</param>
+        /// <param name="coordinator">The coordinator to add.</param>
         public void AddWindow(Window window) {
             mWindows.Add(window);
             if (WindowAdded != null)
@@ -323,7 +310,7 @@ namespace Chimera {
         }
 
         /// <summary>
-        /// Get a point on the horizontal output window that corresponds to a point in real space.
+        /// Get a point on the horizontal output coordinator that corresponds to a point in real space.
         /// </summary>
         /// <param name="perspective">The perspective to render along.</param>
         /// <param name="realPoint">The real point to translate into 2D coordinates.</param>
@@ -334,21 +321,11 @@ namespace Chimera {
         /// <summary>
         /// Notifies the system that an overlay area has been activated.
         /// </summary>
-        /// <param name="mainMenuArea">The overlay area which was activated</param>
-        public void ActivateOverlayArea(IOverlayArea overlayArea) {
-            mActiveArea = overlayArea;
-            mMainMenuActive = false;
-            if (OverlayAreaActivated != null)
-                OverlayAreaActivated(overlayArea, null);
-        }
-
-        /// <summary>
-        /// Used to put the system into main menu mode.
-        /// </summary>
-        public void ActivateMainMenu() {
-            mMainMenuActive = false;
-            if (MainMenuActivated != null)
-                MainMenuActivated(this, null);
+        /// <param name="coordinator">The overlay area which was activated</param>
+        public void ActivateState(IOverlayState overlayArea) {
+            mActiveState = overlayArea;
+            if (StateActivated != null)
+                StateActivated(overlayArea, null);
         }
 
         /// <summary>
@@ -371,14 +348,11 @@ namespace Chimera {
             dump += "Virtual Orientation | Yaw: " + mRotation.Yaw + ", Pitch: " + mRotation.Pitch + Environment.NewLine;
             dump += "Eye Position: " + mEyePosition + Environment.NewLine;
 
-            if (mMainMenuActive)
-                dump += "Main Menu Up";
-            else {
-                dump += Environment.NewLine + "--------------" + mActiveArea.Mode.Type + " Active-------------------" + Environment.NewLine;
-                dump += "Instance: " + mActiveArea.Mode.Name + Environment.NewLine;
-                dump += "Window: " + mActiveArea.Window.Name + Environment.NewLine;
+            if (mActiveState != null) {
+                dump += Environment.NewLine + "--------------" + mActiveState.Type + " Active-------------------" + Environment.NewLine;
+                dump += "Instance: " + mActiveState.Name + Environment.NewLine;
                 try {
-                    dump += mActiveArea.Mode.State;
+                    dump += mActiveState.State;
                 } catch (Exception ex) {
                     dump += "Unable to get stats for the active menu item. " + ex.Message + Environment.NewLine;
                     dump += ex.StackTrace;
@@ -391,7 +365,7 @@ namespace Chimera {
                     try {
                         dump += Environment.NewLine + window.State;
                     } catch (Exception ex) {
-                        dump += "Unable to get stats for window " + window.Name + ". " + ex.Message + Environment.NewLine;
+                        dump += "Unable to get stats for coordinator " + window.Name + ". " + ex.Message + Environment.NewLine;
                         dump += ex.StackTrace;
                     }
             }
@@ -403,7 +377,7 @@ namespace Chimera {
                         try {
                             dump += Environment.NewLine + input.State;
                         } catch (Exception ex) {
-                            dump += "Unable to get stats for window " + input.Name + ". " + ex.Message + Environment.NewLine;
+                            dump += "Unable to get stats for coordinator " + input.Name + ". " + ex.Message + Environment.NewLine;
                             dump += ex.StackTrace;
                         } else
                         dump += Environment.NewLine + "--------" + input.Name + "--------" + Environment.NewLine + "Disabled";

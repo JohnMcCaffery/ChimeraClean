@@ -56,7 +56,7 @@ namespace UtilLib {
             }
 
             /// <summary>
-            /// The window object that represents where the slave is in real space.
+            /// The coordinator object that represents where the slave is in real space.
             /// </summary>
             public Window Window {
                 get { return window; }
@@ -74,7 +74,7 @@ namespace UtilLib {
         protected readonly InterProxyServer masterServer = new InterProxyServer();
 
         /// <summary>
-        /// Triggered whenever a slave disconnects.
+        /// Selected whenever a slave disconnects.
         /// </summary>
         public event Action<string> OnSlaveDisconnected {
             add { masterServer.OnSlaveDisconnected += value; }
@@ -82,12 +82,12 @@ namespace UtilLib {
         }
 
         /// <summary>
-        /// Triggered whenever a slave connects.
+        /// Selected whenever a slave connects.
         /// </summary>
         public event Action<Slave> OnSlaveConnected;
 
         /// <summary>
-        /// Triggered whenever the master is bound to a socket.
+        /// Selected whenever the master is bound to a socket.
         /// </summary>
         public event EventHandler OnMasterBound;
 

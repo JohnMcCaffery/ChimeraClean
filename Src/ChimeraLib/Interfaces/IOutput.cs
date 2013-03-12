@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using System.Diagnostics;
 
 namespace Chimera {
     public interface IOutput {
 
         /// <summary>
-        /// The window which this output is rendering the view through.
+        /// The coordinator which this output is rendering the view through.
         /// </summary>
         Window Window { get; }
 
@@ -40,9 +41,19 @@ namespace Chimera {
         }
 
         /// <summary>
-        /// Initialise the input, giving it a reference to the window it is to render.
+        /// Whether the output has started.
         /// </summary>
-        /// <param name="window">The window which this output is supposed to render the view through.</param>
+        bool Active { get; }
+
+        /// <summary>
+        /// The process which is running this output.
+        /// </summary>
+        Process Process { get; }
+
+        /// <summary>
+        /// Initialise the input, giving it a reference to the coordinator it is to render.
+        /// </summary>
+        /// <param name="coordinator">The coordinator which this output is supposed to render the view through.</param>
         void Init(Window window);
 
         /// <summary>

@@ -51,12 +51,12 @@ namespace UtilLib {
         private string lastName = "NotLoggedIn";
 
         /// <summary>
-        /// Triggered whenever the client proxy starts up.
+        /// Selected whenever the client proxy starts up.
         /// </summary>
         public event EventHandler OnProxyStarted;
 
         /// <summary>
-        /// Triggered whenever a client logs in to the proxy.
+        /// Selected whenever a client logs in to the proxy.
         /// </summary>
         public event EventHandler OnClientLoggedIn;
 

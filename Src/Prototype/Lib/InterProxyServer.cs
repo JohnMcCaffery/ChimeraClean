@@ -41,12 +41,12 @@ namespace UtilLib {
         private Dictionary<IPEndPoint, string> slaves = new Dictionary<IPEndPoint, string>();
 
         /// <summary>
-        /// Triggered whenever a slave connected to the master. Source is the name of the slave.
+        /// Selected whenever a slave connected to the master. Source is the name of the slave.
         /// </summary>
         public event Action<string, IPEndPoint> OnSlaveConnected;
 
         /// <summary>
-        /// Triggered whenever a slave disconnects from the master. Source is the name of the slave.
+        /// Selected whenever a slave disconnects from the master. Source is the name of the slave.
         /// </summary>
         public event Action<string> OnSlaveDisconnected;
 

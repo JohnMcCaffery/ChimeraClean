@@ -39,19 +39,19 @@ namespace Chimera.FlythroughLib {
         private T mStart;
         
         /// <summary>
-        /// Triggered every time time through the sequence is changed.
+        /// Selected every time time through the sequence is changed.
         /// </summary>
         public event Action<FlythroughEvent<T>, int> TimeChange;
         /// <summary>
-        /// Triggered every value the length of the event is changed.
+        /// Selected every value the length of the event is changed.
         /// </summary>
         public event EventHandler LengthChange;
         /// <summary>
-        /// Triggered whenever the position of the camera when the event finishes changes.
+        /// Selected whenever the position of the camera when the event finishes changes.
         /// </summary>
         public event Action<FlythroughEvent<T>, T> FinishChange;
         /// <summary>
-        /// Triggered whenever the position of the camera when the event finishes changes.
+        /// Selected whenever the position of the camera when the event finishes changes.
         /// </summary>
         public event Action<FlythroughEvent<T>, T> StartChange;
 

@@ -97,7 +97,7 @@ namespace Chimera.Inputs {
         }
 
         /// <summary>
-        /// The system which this window is registered with.
+        /// The system which this coordinator is registered with.
         /// </summary>
         public Coordinator Coordinator {
             get { return mCoordinator; }

@@ -43,7 +43,7 @@ namespace UtilLib {
         public static readonly double DEG2RAD = Math.PI / 180.0;
 
         /// <summary>
-        /// Triggered whenever any of the values change.
+        /// Selected whenever any of the values change.
         /// </summary>
         public event EventHandler OnChange;
 

@@ -36,27 +36,27 @@ namespace UtilLib {
         private Window window;
 
         /// <summary>
-        /// Triggered whenever a camera update is received from the master.
+        /// Selected whenever a camera update is received from the master.
         /// </summary>
         public event Action<Vector3, Vector3> OnUpdateReceivedFromMaster;
 
         /// <summary>
-        /// Triggered whenever a camera update is sent to the client.
+        /// Selected whenever a camera update is sent to the client.
         /// </summary>
         public event Action<Vector3, Vector3> OnUpdateSentToViewer;
 
         /// <summary>
-        /// Triggered whenever the slave connects to the master.
+        /// Selected whenever the slave connects to the master.
         /// </summary>
         public event EventHandler OnConnectedToMaster;
 
         /// <summary>
-        /// Triggered if the slave is unable to connect to the master.
+        /// Selected if the slave is unable to connect to the master.
         /// </summary>
         public event EventHandler OnUnableToConnectToMaster;
 
         /// <summary>
-        /// Triggered whenever the master signals for the client to disconnect.
+        /// Selected whenever the master signals for the client to disconnect.
         /// </summary>
         public event Action OnDisconnectedFromMaster;
 
@@ -195,7 +195,7 @@ namespace UtilLib {
         }
 
         /// <summary>
-        /// The window which defines the position of the screen this slave projects onto in real space.
+        /// The coordinator which defines the position of the screen this slave projects onto in real space.
         /// </summary>
         public Window Window {
             get { return window; }

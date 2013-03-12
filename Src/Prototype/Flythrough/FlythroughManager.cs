@@ -53,22 +53,22 @@ namespace FlythroughLib {
         private FlythroughEvent mLastEvent;
 
         /// <summary>
-        /// Triggered whenever the rotation changes.
+        /// Selected whenever the rotation changes.
         /// </summary>
         public event EventHandler<FlythroughChangeEvent> OnChange;
 
         /// <summary>
-        /// Triggered whenever the flythrough completes.
+        /// Selected whenever the flythrough completes.
         /// </summary>
         public event EventHandler OnComplete;
 
         /// <summary>
-        /// Triggered whenever the flythrough starts.
+        /// Selected whenever the flythrough starts.
         /// </summary>
         public event EventHandler OnStart;
 
         /// <summary>
-        /// Triggered whenever position is updated.
+        /// Selected whenever position is updated.
         /// </summary>
         public event EventHandler OnPositionChange;
         /// <summary>

@@ -16,7 +16,7 @@ namespace Chimera.FlythroughLib {
         private ComboPanel mControl;
 
         /// <summary>
-        /// Triggered whenever the current position event changes.
+        /// Selected whenever the current position event changes.
         /// Supplies the old current event and the new one.
         /// </summary>
         public event Action<FlythroughEvent<Vector3>, FlythroughEvent<Vector3>> CurrentPositionEventChange {
@@ -24,7 +24,7 @@ namespace Chimera.FlythroughLib {
             remove { mPositionSequence.CurrentEventChange -= value; }
         }
         /// <summary>
-        /// Triggered whenever the current position event changes.
+        /// Selected whenever the current position event changes.
         /// Supplies the old current event and the new one.
         /// </summary>
         public event Action<FlythroughEvent<Rotation>, FlythroughEvent<Rotation>> CurrentOrientationEventChange {

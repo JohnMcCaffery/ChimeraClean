@@ -44,17 +44,17 @@ namespace Chimera.OpenSim {
         private ProxyConfig mConfig;
 
         /// <summary>
-        /// Triggered whenever the client proxy starts up.
+        /// Selected whenever the client proxy starts up.
         /// </summary>
         public event EventHandler OnProxyStarted;
 
         /// <summary>
-        /// Triggered whenever a client logs in to the proxy.
+        /// Selected whenever a client logs in to the proxy.
         /// </summary>
         public event EventHandler OnClientLoggedIn;
 
         /// <summary>
-        /// Triggered whenever a viewer exits.
+        /// Selected whenever a viewer exits.
         /// </summary>
         public event EventHandler OnViewerExit;
 
@@ -272,6 +272,14 @@ namespace Chimera.OpenSim {
         protected virtual Packet ReceiveIncomingPacket(Packet p, IPEndPoint ep) { return p; }
 
         #region IOutput Members
+
+        public bool Active {
+            get { return mClientLoggedIn; }
+        }
+
+        public Process Process {
+            get { return mClient; }
+        }
 
         public bool AutoRestart {
             get { return mAutoRestart; }

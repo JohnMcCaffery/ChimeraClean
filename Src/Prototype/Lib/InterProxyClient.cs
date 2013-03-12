@@ -97,12 +97,12 @@ namespace UtilLib {
         }
 
         /// <summary>
-        /// Triggered whenever the slave connects to the master.
+        /// Selected whenever the slave connects to the master.
         /// </summary>
         public event EventHandler OnConnected;
 
         /// <summary>
-        /// Triggered whenever the slave disconnects from the master.
+        /// Selected whenever the slave disconnects from the master.
         /// </summary>
         public event EventHandler OnDisconnected;
 

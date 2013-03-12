@@ -39,20 +39,20 @@ namespace Chimera.FlythroughLib {
         private int mTime;
 
         /// <summary>
-        /// Triggered whenever the sequence gets to the end, even if looping.
+        /// Selected whenever the sequence gets to the end, even if looping.
         /// </summary>
         public event EventHandler SequenceFinished;
         /// <summary>
-        /// Triggered whenever playback moves value forward one tick.
+        /// Selected whenever playback moves value forward one tick.
         /// Not triggered when value is set directly.
         /// </summary>
         public event Action<int> TimeChange;
         /// <summary>
-        /// Triggered every value the length of the event is changed.
+        /// Selected every value the length of the event is changed.
         /// </summary>
         public event Action<int> LengthChange;
         /// <summary>
-        /// Triggered whenever the currently executing event changes.
+        /// Selected whenever the currently executing event changes.
         /// </summary>
         public event Action<FlythroughEvent<Camera>, FlythroughEvent<Camera>> CurrentEventChange {
             add { mEvents.CurrentEventChange += value; }

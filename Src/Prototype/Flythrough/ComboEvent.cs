@@ -55,17 +55,17 @@ namespace FlythroughLib {
         private readonly string mName;
 
         /// <summary>
-        /// Triggered whenever a new event is started. The bool is true if the event is from sequence one.
+        /// Selected whenever a new event is started. The bool is true if the event is from sequence one.
         /// </summary>
         public event System.Action<FlythroughEvent, bool> OnNextEvent;
 
         /// <summary>
-        /// Triggered whenever this event starts playing.
+        /// Selected whenever this event starts playing.
         /// </summary>
         public event EventHandler OnStart;
 
         /// <summary>
-        /// Triggered whenever this event finishes playing. True if sequence one is finishing, false if sequence two is finishing.
+        /// Selected whenever this event finishes playing. True if sequence one is finishing, false if sequence two is finishing.
         /// </summary>
         public event System.Action<bool> OnComplete;
 

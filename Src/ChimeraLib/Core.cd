@@ -6,54 +6,55 @@
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>QYRAIAAAJAgEgoAgCQgAgAAAEEACIQAyCBAEgECACi0=</HashCode>
+      <HashCode>AYRAIAAABQgQggAgAQgAgAAAEEACIQAyABQAhECICg0=</HashCode>
       <FileName>Core\Coordinator.cs</FileName>
     </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="ActiveState" />
+    </ShowAsAssociation>
     <ShowAsCollectionAssociation>
       <Property Name="Windows" />
     </ShowAsCollectionAssociation>
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="Chimera.NetworkMaster" Collapsed="true">
-    <Position X="0.5" Y="7.75" Width="1.5" />
+    <Position X="0.75" Y="8.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Core\NetworkMaster.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Chimera.Window">
-    <Position X="3.75" Y="3" Width="1.5" />
+    <Position X="4" Y="3" Width="1.75" />
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>ACAAFAoEBABABpAAAACIA0QAAAAAAAABQAwCBAiIAQI=</HashCode>
+      <HashCode>AAAAEAgEBAAAB5AABACIA0QAAAAAAAABQgwCBAiIAQI=</HashCode>
       <FileName>Core\Window.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
+      <Field Name="mOverlayWindow" />
       <Property Name="Coordinator" />
       <Property Name="Output" />
     </ShowAsAssociation>
-    <ShowAsCollectionAssociation>
-      <Property Name="MainMenuAreas" />
-    </ShowAsCollectionAssociation>
   </Class>
   <Class Name="Chimera.NetworkWindow" Collapsed="true">
-    <Position X="0.5" Y="8.5" Width="1.5" />
+    <Position X="2.75" Y="8.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Core\NetworkSlave.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Chimera.CameraUpdateEventArgs">
-    <Position X="3.25" Y="0.5" Width="2" />
+    <Position X="6.75" Y="0.5" Width="2" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAACAIAAAAAAAAIAgAAAAAAAAAAA=</HashCode>
       <FileName>Core\Coordinator.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Chimera.Inputs.KBMouseInput">
-    <Position X="9.25" Y="0.5" Width="1.5" />
+    <Position X="11.5" Y="0.5" Width="1.75" />
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
@@ -63,8 +64,34 @@
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
+  <Class Name="Chimera.GUI.Forms.OverlayWindow">
+    <Position X="7.25" Y="5.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAAAACAAAAAAAACAAAACAAAAAAIEAABCQAAAAAA=</HashCode>
+      <FileName>GUI\Forms\OverlayWindow.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="mWindow" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Chimera.MainMenu">
+    <Position X="12.75" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAgAAAgAAAAQAAAAAAAAgAQACBAAAAAA=</HashCode>
+      <FileName>MainMenu.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Chimera.ImageArea">
+    <Position X="10.75" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAoAgAAAAAAAAAAAAAAAAAAACAAABAAI=</HashCode>
+      <FileName>ImageArea.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
   <Interface Name="Chimera.IInput">
-    <Position X="5.5" Y="0.5" Width="1.5" />
+    <Position X="4" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAoAAAAAAAAQAAAAAAAIAQABCBACAAAA=</HashCode>
       <FileName>Interfaces\IInput.cs</FileName>
@@ -74,38 +101,37 @@
     </ShowAsAssociation>
   </Interface>
   <Interface Name="Chimera.IOutput">
-    <Position X="6.25" Y="3.75" Width="1.5" />
+    <Position X="6.75" Y="3" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>IAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAARACDACAAAA=</HashCode>
+      <HashCode>IAAAAAAAQAAAAAAAAgAAAAAAAAAAAAAgARACDACAAAA=</HashCode>
       <FileName>Interfaces\IOutput.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="Window" />
     </ShowAsAssociation>
   </Interface>
-  <Interface Name="Chimera.IMode">
-    <Position X="6.5" Y="8.25" Width="1.5" />
+  <Interface Name="Chimera.IOverlayState">
+    <Position X="1.75" Y="9.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAgAAAAQAAAAAAAAAAQAiRACAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAgAAAgAAAAQAAAAAAAAgAQACBAAAAAA=</HashCode>
       <FileName>Interfaces\IMode.cs</FileName>
     </TypeIdentifier>
-    <ShowAsAssociation>
-      <Property Name="OverlayArea" />
-    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="OverlayAreas" />
+    </ShowAsCollectionAssociation>
   </Interface>
   <Interface Name="Chimera.IOverlayArea">
-    <Position X="3.75" Y="8.25" Width="1.5" />
+    <Position X="4.5" Y="9.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAIAAAgAAAAAAAAAAAAAAAAAAAAACDAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAoAgAAAAAAAAAAAAAAAAAAACAAABAAI=</HashCode>
       <FileName>Interfaces\IOverlayArea.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
-      <Property Name="Mode" />
-      <Property Name="Window" />
+      <Property Name="OverlayState" />
     </ShowAsAssociation>
   </Interface>
   <Enum Name="Chimera.Perspective" Collapsed="true">
-    <Position X="7.5" Y="0.5" Width="1.5" />
+    <Position X="9" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAYAE=</HashCode>
       <FileName>Core\Coordinator.cs</FileName>

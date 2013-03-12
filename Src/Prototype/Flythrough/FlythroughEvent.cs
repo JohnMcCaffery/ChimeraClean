@@ -38,17 +38,17 @@ namespace FlythroughLib {
         private int mLength;
 
         /// <summary>
-        /// Triggered whenever the event completes.
+        /// Selected whenever the event completes.
         /// </summary>
         public event EventHandler OnComplete;
 
         /// <summary>
-        /// Triggered whenever the event starts.
+        /// Selected whenever the event starts.
         /// </summary>
         public event EventHandler OnStart;
 
         /// <summary>
-        /// Triggered every time the next step is triggered.
+        /// Selected every time the next step is triggered.
         /// </summary>
         public event EventHandler OnStep;
 

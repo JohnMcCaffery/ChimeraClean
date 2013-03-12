@@ -32,16 +32,16 @@ namespace Chimera.FlythroughLib {
         private int mStartTime;
 
         /// <summary>
-        /// Triggered every value the length of the event is changed.
+        /// Selected every value the length of the event is changed.
         /// </summary>
         public event Action<EventSequence<T>, int> LengthChange;
         /// <summary>
-        /// Triggered whenever the current event changes.
+        /// Selected whenever the current event changes.
         /// Supplies the old current event and the new one.
         /// </summary>
         public event Action<FlythroughEvent<T>, FlythroughEvent<T>> CurrentEventChange;
         /// <summary>
-        /// Triggered whenever the position of the camera when the sequence finishes changes.
+        /// Selected whenever the position of the camera when the sequence finishes changes.
         /// </summary>
         public event EventHandler FinishChange;
 

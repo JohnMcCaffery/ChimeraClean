@@ -62,8 +62,8 @@ namespace ConsoleTest {
             kinectManager.SurfaceAdded += surface => {
                 InputWindow frame = new InputWindow();
                 frame.Init(kinectManager, surface);
-                foreach (ActiveArea.Data area in kinectManager.ActiveAreas)
-                    frame.AddActiveArea(new ActiveArea(surface, area, frame));
+                foreach (ActiveState.Data area in kinectManager.ActiveAreas)
+                    frame.AddActiveArea(new ActiveState(surface, area, frame));
 
                 Thread t = new Thread(() => Application.Run(frame));
                 t.Name = "Frame Thread";
@@ -76,10 +76,10 @@ namespace ConsoleTest {
                 flythrough.Load("../TimespanFlythrough.xml");
                 flythrough.Play();
             };
-            kinectManager.AddActiveArea(new ActiveArea.Data("C:\\Users\\Iain\\Desktop\\Helmsdale Demo - 18-2-2013\\100_2345.JPG", new RectangleF(.1f, .1f, .3f, .3f), evt1));
-            kinectManager.AddActiveArea(new ActiveArea.Data("C:\\Users\\Iain\\Desktop\\Helmsdale Demo - 18-2-2013\\100_2344.JPG", new RectangleF(.6f, .1f, .3f, .3f), evt1));
-            kinectManager.AddActiveArea(new ActiveArea.Data("C:\\Users\\Iain\\Desktop\\Helmsdale Demo - 18-2-2013\\BroraSEW.jpg", new RectangleF(.1f, .6f, .3f, .3f), evt1));
-            kinectManager.AddActiveArea(new ActiveArea.Data("C:\\Users\\Iain\\Desktop\\Helmsdale Demo - 18-2-2013\\s_BBB11_Aug-17-11_Brora-day 16 074.jpg", new RectangleF(.6f, .6f, .3f, .3f), evt1));
+            kinectManager.AddActiveArea(new ActiveState.Data("C:\\Users\\Iain\\Desktop\\Helmsdale Demo - 18-2-2013\\100_2345.JPG", new RectangleF(.1f, .1f, .3f, .3f), evt1));
+            kinectManager.AddActiveArea(new ActiveState.Data("C:\\Users\\Iain\\Desktop\\Helmsdale Demo - 18-2-2013\\100_2344.JPG", new RectangleF(.6f, .1f, .3f, .3f), evt1));
+            kinectManager.AddActiveArea(new ActiveState.Data("C:\\Users\\Iain\\Desktop\\Helmsdale Demo - 18-2-2013\\BroraSEW.jpg", new RectangleF(.1f, .6f, .3f, .3f), evt1));
+            kinectManager.AddActiveArea(new ActiveState.Data("C:\\Users\\Iain\\Desktop\\Helmsdale Demo - 18-2-2013\\s_BBB11_Aug-17-11_Brora-day 16 074.jpg", new RectangleF(.6f, .6f, .3f, .3f), evt1));
              */
 
             externalUpdate = true;

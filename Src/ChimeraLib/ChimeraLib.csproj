@@ -102,6 +102,13 @@
   <ItemGroup>
     <Compile Include="Core\CoordinatorConfig.cs" />
     <Compile Include="Core\WindowConfig.cs" />
+    <Compile Include="GUI\Forms\OverlayWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\Forms\OverlayWindow.Designer.cs">
+      <DependentUpon>OverlayWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ImageArea.cs" />
     <Compile Include="Inputs\KBMouseInput.cs" />
     <Compile Include="Inputs\KBMousePanel.cs">
       <SubType>UserControl</SubType>
@@ -110,6 +117,7 @@
       <DependentUpon>KBMousePanel.cs</DependentUpon>
     </Compile>
     <Compile Include="Interfaces\ICrashable.cs" />
+    <Compile Include="MainMenu.cs" />
     <Compile Include="Util\Init.cs" />
     <Compile Include="Util\ProcessWrangler.cs" />
     <Compile Include="Util\Rotation.cs" />
@@ -164,6 +172,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\Forms\CoordinatorForm.resx">
       <DependentUpon>CoordinatorForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\Forms\OverlayWindow.resx">
+      <DependentUpon>OverlayWindow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Inputs\KBMousePanel.resx">
       <DependentUpon>KBMousePanel.cs</DependentUpon>

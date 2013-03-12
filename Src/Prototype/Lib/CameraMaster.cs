@@ -52,27 +52,27 @@ namespace UtilLib {
         private readonly HashSet<PacketType> packetTypesToForward = new HashSet<PacketType>();
 
         /// <summary>
-        /// Triggered whenever a packet is received from the connected proxyAddress.
+        /// Selected whenever a packet is received from the connected proxyAddress.
         /// </summary>
         public event PacketDelegate OnPacketReceived;
 
         /// <summary>
-        /// Triggered whenever a packet is received and processed from the connected proxyAddress.
+        /// Selected whenever a packet is received and processed from the connected proxyAddress.
         /// </summary>
         public event EventHandler OnPacketProcessed;
 
         /// <summary>
-        /// Triggered whenever a packet is created and sent to all connected slaves.
+        /// Selected whenever a packet is created and sent to all connected slaves.
         /// </summary>
         public event EventHandler OnSlavesUpdated;
 
         /// <summary>
-        /// Triggered whenever a packet from the connected proxyAddress is forwarded to all connected slaves.
+        /// Selected whenever a packet from the connected proxyAddress is forwarded to all connected slaves.
         /// </summary>
         public event EventHandler OnPacketForwarded;
 
         /// <summary>
-        /// Triggered whenever the camera is updated, either by a received packet or by a direct change in value.
+        /// Selected whenever the camera is updated, either by a received packet or by a direct change in value.
         /// </summary>
         public event EventHandler OnCameraUpdated;
 
@@ -391,7 +391,7 @@ namespace UtilLib {
                 uint localID = Utils.BytesToUInt(block.Data, 0);
                 if (localID != this.localID)
                     continue;
-                // State
+                // DebugState
                 byte point = block.Data[i++];
                 // Avatar boolean
                 bool isAvatar = (block.Data[i++] != 0);

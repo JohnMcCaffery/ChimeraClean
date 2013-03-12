@@ -111,7 +111,7 @@ namespace UtilLib {
         }
 
         /// <summary>
-        /// Triggered whenever the back channel binds itself to a port.
+        /// Selected whenever the back channel binds itself to a port.
         /// </summary>
         public event EventHandler OnBound;
 
@@ -121,7 +121,7 @@ namespace UtilLib {
         public event DataDelegate OnDataReceived;
 
         /// <summary>
-        /// Triggered when a connection to a given end point is lost.
+        /// Selected when a connection to a given end point is lost.
         /// </summary>
         public event Action<IPEndPoint> OnConnectionLost;
 
@@ -347,7 +347,7 @@ namespace UtilLib {
         /// </summary>
         /// <param name="position">The position in the virtual world to send.</param>
         /// <param name="rotation">The rotation in the virtual world to send.</param>
-        /// <param name="window">Information about the window to send.</param>
+        /// <param name="coordinator">Information about the coordinator to send.</param>
         /// <param name="destination">The end point to send the packet to.</param>
         public void Send(Vector3 position, Vector3 positionDelta, Rotation rotation, Vector3 rotationDelta, Window window, IPEndPoint destination) {
             byte[] bytes = new byte[93];

@@ -185,13 +185,13 @@ namespace Chimera.OpenSim.GUI {
                 /*
                 clientStatusLabel.Text = "Stopped";
                 viewerLaunchButton.Text = "Launch Viewer";
-                firstNameBox.Enabled = true;
-                lastNameBox.Enabled = true;
-                passwordBox.Enabled = true;
-                viewerExeBox.Enabled = true;
-                workingDirectoryBox.Enabled = true;
-                gridCheck.Enabled = true;
-                gridBox.Enabled = proxy.ProxyConfig.UseGrid;
+                firstNameBox.Active = true;
+                lastNameBox.Active = true;
+                passwordBox.Active = true;
+                viewerExeBox.Active = true;
+                workingDirectoryBox.Active = true;
+                gridCheck.Active = true;
+                gridBox.Active = proxy.ProxyConfig.UseGrid;
                 */
                 if (proxy != null)
                     proxy.CloseViewer();
