@@ -26,7 +26,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CoordinatorForm));
             Chimera.Util.Rotation rotation1 = new Chimera.Util.Rotation();
             this.hSplit = new System.Windows.Forms.SplitContainer();
-            this.diagWorldSplit = new System.Windows.Forms.SplitContainer();
+            this.diagramWorldSplit = new System.Windows.Forms.SplitContainer();
             this.diagSplit = new System.Windows.Forms.SplitContainer();
             this.hGroup = new System.Windows.Forms.GroupBox();
             this.button1 = new System.Windows.Forms.Button();
@@ -45,10 +45,10 @@
             this.hSplit.Panel1.SuspendLayout();
             this.hSplit.Panel2.SuspendLayout();
             this.hSplit.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.diagWorldSplit)).BeginInit();
-            this.diagWorldSplit.Panel1.SuspendLayout();
-            this.diagWorldSplit.Panel2.SuspendLayout();
-            this.diagWorldSplit.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.diagramWorldSplit)).BeginInit();
+            this.diagramWorldSplit.Panel1.SuspendLayout();
+            this.diagramWorldSplit.Panel2.SuspendLayout();
+            this.diagramWorldSplit.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.diagSplit)).BeginInit();
             this.diagSplit.Panel1.SuspendLayout();
             this.diagSplit.Panel2.SuspendLayout();
@@ -73,33 +73,35 @@
             // 
             // hSplit.Panel1
             // 
-            this.hSplit.Panel1.Controls.Add(this.diagWorldSplit);
+            this.hSplit.Panel1.Controls.Add(this.diagramWorldSplit);
             // 
             // hSplit.Panel2
             // 
             this.hSplit.Panel2.Controls.Add(this.windowsPluginsSplit);
-            this.hSplit.Size = new System.Drawing.Size(1556, 784);
-            this.hSplit.SplitterDistance = 395;
+            this.hSplit.Size = new System.Drawing.Size(858, 581);
+            this.hSplit.SplitterDistance = 85;
             this.hSplit.TabIndex = 0;
+            this.hSplit.KeyDown += new System.Windows.Forms.KeyEventHandler(this.CoordinatorForm_KeyDown);
+            this.hSplit.KeyUp += new System.Windows.Forms.KeyEventHandler(this.CoordinatorForm_KeyUp);
             // 
-            // diagWorldSplit
+            // diagramWorldSplit
             // 
-            this.diagWorldSplit.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.diagWorldSplit.FixedPanel = System.Windows.Forms.FixedPanel.Panel2;
-            this.diagWorldSplit.Location = new System.Drawing.Point(0, 0);
-            this.diagWorldSplit.Name = "diagWorldSplit";
+            this.diagramWorldSplit.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.diagramWorldSplit.FixedPanel = System.Windows.Forms.FixedPanel.Panel2;
+            this.diagramWorldSplit.Location = new System.Drawing.Point(0, 0);
+            this.diagramWorldSplit.Name = "diagramWorldSplit";
             // 
-            // diagWorldSplit.Panel1
+            // diagramWorldSplit.Panel1
             // 
-            this.diagWorldSplit.Panel1.Controls.Add(this.diagSplit);
+            this.diagramWorldSplit.Panel1.Controls.Add(this.diagSplit);
             // 
-            // diagWorldSplit.Panel2
+            // diagramWorldSplit.Panel2
             // 
-            this.diagWorldSplit.Panel2.AutoScroll = true;
-            this.diagWorldSplit.Panel2.Controls.Add(this.globalBox);
-            this.diagWorldSplit.Size = new System.Drawing.Size(1556, 395);
-            this.diagWorldSplit.SplitterDistance = 1291;
-            this.diagWorldSplit.TabIndex = 0;
+            this.diagramWorldSplit.Panel2.AutoScroll = true;
+            this.diagramWorldSplit.Panel2.Controls.Add(this.globalBox);
+            this.diagramWorldSplit.Size = new System.Drawing.Size(858, 85);
+            this.diagramWorldSplit.SplitterDistance = 593;
+            this.diagramWorldSplit.TabIndex = 0;
             // 
             // diagSplit
             // 
@@ -114,9 +116,11 @@
             // diagSplit.Panel2
             // 
             this.diagSplit.Panel2.Controls.Add(this.vGroup);
-            this.diagSplit.Size = new System.Drawing.Size(1291, 395);
-            this.diagSplit.SplitterDistance = 624;
+            this.diagSplit.Size = new System.Drawing.Size(593, 85);
+            this.diagSplit.SplitterDistance = 286;
             this.diagSplit.TabIndex = 0;
+            this.diagSplit.KeyDown += new System.Windows.Forms.KeyEventHandler(this.CoordinatorForm_KeyDown);
+            this.diagSplit.KeyUp += new System.Windows.Forms.KeyEventHandler(this.CoordinatorForm_KeyUp);
             // 
             // hGroup
             // 
@@ -125,7 +129,7 @@
             this.hGroup.Dock = System.Windows.Forms.DockStyle.Fill;
             this.hGroup.Location = new System.Drawing.Point(0, 0);
             this.hGroup.Name = "hGroup";
-            this.hGroup.Size = new System.Drawing.Size(624, 395);
+            this.hGroup.Size = new System.Drawing.Size(286, 85);
             this.hGroup.TabIndex = 0;
             this.hGroup.TabStop = false;
             this.hGroup.Text = "Top Down";
@@ -155,7 +159,7 @@
             this.vGroup.Dock = System.Windows.Forms.DockStyle.Fill;
             this.vGroup.Location = new System.Drawing.Point(0, 0);
             this.vGroup.Name = "vGroup";
-            this.vGroup.Size = new System.Drawing.Size(663, 395);
+            this.vGroup.Size = new System.Drawing.Size(303, 85);
             this.vGroup.TabIndex = 0;
             this.vGroup.TabStop = false;
             this.vGroup.Text = "Side On";
@@ -169,7 +173,7 @@
             this.globalBox.Location = new System.Drawing.Point(0, 0);
             this.globalBox.MinimumSize = new System.Drawing.Size(261, 290);
             this.globalBox.Name = "globalBox";
-            this.globalBox.Size = new System.Drawing.Size(261, 395);
+            this.globalBox.Size = new System.Drawing.Size(261, 290);
             this.globalBox.TabIndex = 0;
             this.globalBox.TabStop = false;
             this.globalBox.Text = "Global";
@@ -181,8 +185,10 @@
             this.eyePositionPanel.DisplayName = "Eye Position";
             this.eyePositionPanel.Location = new System.Drawing.Point(3, 195);
             this.eyePositionPanel.Max = 5000D;
+            this.eyePositionPanel.MaxV = ((OpenMetaverse.Vector3)(resources.GetObject("eyePositionPanel.MaxV")));
             this.eyePositionPanel.Min = -5000D;
             this.eyePositionPanel.MinimumSize = new System.Drawing.Size(103, 95);
+            this.eyePositionPanel.MinV = ((OpenMetaverse.Vector3)(resources.GetObject("eyePositionPanel.MinV")));
             this.eyePositionPanel.Name = "eyePositionPanel";
             this.eyePositionPanel.Size = new System.Drawing.Size(255, 95);
             this.eyePositionPanel.TabIndex = 1;
@@ -203,13 +209,13 @@
             this.virtualOrientationPanel.Name = "virtualOrientationPanel";
             this.virtualOrientationPanel.Pitch = 0D;
             this.virtualOrientationPanel.Quaternion = ((OpenMetaverse.Quaternion)(resources.GetObject("virtualOrientationPanel.Quaternion")));
+            this.virtualOrientationPanel.Size = new System.Drawing.Size(255, 95);
+            this.virtualOrientationPanel.TabIndex = 2;
             rotation1.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("rotation1.LookAtVector")));
             rotation1.Pitch = 0D;
             rotation1.Quaternion = ((OpenMetaverse.Quaternion)(resources.GetObject("rotation1.Quaternion")));
             rotation1.Yaw = 0D;
             this.virtualOrientationPanel.Value = rotation1;
-            this.virtualOrientationPanel.Size = new System.Drawing.Size(255, 95);
-            this.virtualOrientationPanel.TabIndex = 2;
             this.virtualOrientationPanel.Yaw = 0D;
             this.virtualOrientationPanel.OnChange += new System.EventHandler(this.virtualRotation_OnChange);
             // 
@@ -217,11 +223,13 @@
             // 
             this.virtualPositionPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.virtualPositionPanel.DisplayName = "Name";
+            this.virtualPositionPanel.DisplayName = "Position";
             this.virtualPositionPanel.Location = new System.Drawing.Point(3, 12);
             this.virtualPositionPanel.Max = 1024D;
+            this.virtualPositionPanel.MaxV = ((OpenMetaverse.Vector3)(resources.GetObject("virtualPositionPanel.MaxV")));
             this.virtualPositionPanel.Min = -1024D;
             this.virtualPositionPanel.MinimumSize = new System.Drawing.Size(103, 95);
+            this.virtualPositionPanel.MinV = ((OpenMetaverse.Vector3)(resources.GetObject("virtualPositionPanel.MinV")));
             this.virtualPositionPanel.Name = "virtualPositionPanel";
             this.virtualPositionPanel.Size = new System.Drawing.Size(255, 95);
             this.virtualPositionPanel.TabIndex = 0;
@@ -244,9 +252,11 @@
             // windowsPluginsSplit.Panel2
             // 
             this.windowsPluginsSplit.Panel2.Controls.Add(this.inputsGroup);
-            this.windowsPluginsSplit.Size = new System.Drawing.Size(1556, 385);
-            this.windowsPluginsSplit.SplitterDistance = 169;
+            this.windowsPluginsSplit.Size = new System.Drawing.Size(858, 492);
+            this.windowsPluginsSplit.SplitterDistance = 651;
             this.windowsPluginsSplit.TabIndex = 0;
+            this.windowsPluginsSplit.KeyDown += new System.Windows.Forms.KeyEventHandler(this.CoordinatorForm_KeyDown);
+            this.windowsPluginsSplit.KeyUp += new System.Windows.Forms.KeyEventHandler(this.CoordinatorForm_KeyUp);
             // 
             // windowsGroup
             // 
@@ -254,7 +264,7 @@
             this.windowsGroup.Dock = System.Windows.Forms.DockStyle.Fill;
             this.windowsGroup.Location = new System.Drawing.Point(0, 0);
             this.windowsGroup.Name = "windowsGroup";
-            this.windowsGroup.Size = new System.Drawing.Size(169, 385);
+            this.windowsGroup.Size = new System.Drawing.Size(651, 492);
             this.windowsGroup.TabIndex = 0;
             this.windowsGroup.TabStop = false;
             this.windowsGroup.Text = "Windows";
@@ -265,7 +275,7 @@
             this.windowsTab.Location = new System.Drawing.Point(3, 16);
             this.windowsTab.Name = "windowsTab";
             this.windowsTab.SelectedIndex = 0;
-            this.windowsTab.Size = new System.Drawing.Size(163, 366);
+            this.windowsTab.Size = new System.Drawing.Size(645, 473);
             this.windowsTab.TabIndex = 0;
             this.windowsTab.KeyDown += new System.Windows.Forms.KeyEventHandler(this.CoordinatorForm_KeyDown);
             this.windowsTab.KeyUp += new System.Windows.Forms.KeyEventHandler(this.CoordinatorForm_KeyUp);
@@ -276,7 +286,7 @@
             this.inputsGroup.Dock = System.Windows.Forms.DockStyle.Fill;
             this.inputsGroup.Location = new System.Drawing.Point(0, 0);
             this.inputsGroup.Name = "inputsGroup";
-            this.inputsGroup.Size = new System.Drawing.Size(1383, 385);
+            this.inputsGroup.Size = new System.Drawing.Size(203, 492);
             this.inputsGroup.TabIndex = 0;
             this.inputsGroup.TabStop = false;
             this.inputsGroup.Text = "Inputs";
@@ -287,7 +297,7 @@
             this.inputsTab.Location = new System.Drawing.Point(3, 16);
             this.inputsTab.Name = "inputsTab";
             this.inputsTab.SelectedIndex = 0;
-            this.inputsTab.Size = new System.Drawing.Size(1377, 366);
+            this.inputsTab.Size = new System.Drawing.Size(197, 473);
             this.inputsTab.TabIndex = 0;
             this.inputsTab.KeyDown += new System.Windows.Forms.KeyEventHandler(this.CoordinatorForm_KeyDown);
             this.inputsTab.KeyUp += new System.Windows.Forms.KeyEventHandler(this.CoordinatorForm_KeyUp);
@@ -296,7 +306,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1556, 784);
+            this.ClientSize = new System.Drawing.Size(848, 412);
             this.Controls.Add(this.hSplit);
             this.Name = "CoordinatorForm";
             this.Text = "CoordinatorForm";
@@ -307,10 +317,10 @@
             this.hSplit.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.hSplit)).EndInit();
             this.hSplit.ResumeLayout(false);
-            this.diagWorldSplit.Panel1.ResumeLayout(false);
-            this.diagWorldSplit.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.diagWorldSplit)).EndInit();
-            this.diagWorldSplit.ResumeLayout(false);
+            this.diagramWorldSplit.Panel1.ResumeLayout(false);
+            this.diagramWorldSplit.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.diagramWorldSplit)).EndInit();
+            this.diagramWorldSplit.ResumeLayout(false);
             this.diagSplit.Panel1.ResumeLayout(false);
             this.diagSplit.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.diagSplit)).EndInit();
@@ -330,7 +340,7 @@
         #endregion
 
         private System.Windows.Forms.SplitContainer hSplit;
-        private System.Windows.Forms.SplitContainer diagWorldSplit;
+        private System.Windows.Forms.SplitContainer diagramWorldSplit;
         private System.Windows.Forms.SplitContainer windowsPluginsSplit;
         private System.Windows.Forms.GroupBox globalBox;
         private System.Windows.Forms.SplitContainer diagSplit;

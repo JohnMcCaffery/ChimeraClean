@@ -348,40 +348,47 @@ namespace Chimera.Util {
 
         [DllImport("user32.dll")]
         private extern static long GetWindowLong(IntPtr hWnd, int nIndex);
- 
+
         [DllImport("user32.dll")]
         private extern static bool SetWindowLong(IntPtr hWnd, int nIndex, long dwNewLong);
 
         public static void SetBorder(Process window, bool enableBorder) {
+            Process foreground = Process.GetCurrentProcess();
             long lStyle = GetWindowLong(window.MainWindowHandle, GWL_STYLE);
-            lStyle &= enableBorder ?
-                WS_CAPTION | WS_THICKFRAME | WS_MINIMIZE | WS_MAXIMIZE | WS_SYSMENU :
-                ~(WS_CAPTION | WS_THICKFRAME | WS_MINIMIZE | WS_MAXIMIZE | WS_SYSMENU);
+            if (enableBorder) lStyle |= WS_CAPTION | WS_THICKFRAME | WS_SYSMENU;
+            else lStyle &= ~(WS_CAPTION | WS_THICKFRAME | WS_MINIMIZE | WS_MAXIMIZE | WS_SYSMENU);
+
 
             long lExStyle = GetWindowLong(window.MainWindowHandle, GWL_EXSTYLE);
-            lExStyle &= enableBorder ?
-                WS_EX_DLGMODALFRAME | WS_EX_CLIENTEDGE | WS_EX_STATICEDGE :
-                ~(WS_EX_DLGMODALFRAME | WS_EX_CLIENTEDGE | WS_EX_STATICEDGE);
+            if (enableBorder) lExStyle |= WS_EX_DLGMODALFRAME | WS_EX_CLIENTEDGE;
+            else lExStyle &= ~(WS_EX_DLGMODALFRAME | WS_EX_CLIENTEDGE | WS_EX_STATICEDGE);
 
             SetWindowLong(window.MainWindowHandle, GWL_STYLE, lStyle);
             SetWindowLong(window.MainWindowHandle, GWL_EXSTYLE, lExStyle);
-            SetWindowPos(window.MainWindowHandle, IntPtr.Zero, 0,0,0,0, SWP_FRAMECHANGED | SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER | SWP_NOOWNERZORDER);
+            SetWindowPos(window.MainWindowHandle, IntPtr.Zero, 0, 0, 0, 0, SWP_FRAMECHANGED | SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER | SWP_NOOWNERZORDER);
+            SetForegroundWindow(foreground.MainWindowHandle);
         }
 
         public static void SetMonitor (Process proc, Screen monitor) {
             SetWindowPos(
                 proc.MainWindowHandle, 
-                new IntPtr(0), 
+                IntPtr.Zero, 
                 monitor.Bounds.X, 
                 monitor.Bounds.Y, 
                 monitor.Bounds.Width, 
                 monitor.Bounds.Height, 
-                0x0004);
+                SWP_NOZORDER);
         }
 
         public static void SwitchWindowMonitor(Process proc) {
             Screen screen = Screen.AllScreens[sCurrentScreen++%Screen.AllScreens.Count()];
-            SetWindowPos(proc.MainWindowHandle, new IntPtr(0), screen.Bounds.X, screen.Bounds.Y, screen.Bounds.Width, screen.Bounds.Height, 0x0004);
+            SetWindowPos(
+                proc.MainWindowHandle, 
+                IntPtr.Zero, 
+                screen.Bounds.X, 
+                screen.Bounds.Y, 
+                screen.Bounds.Width, 
+                screen.Bounds.Height, SWP_NOZORDER);
         }
 
         public static void PressKey(Process app, string key) {
@@ -390,8 +397,10 @@ namespace Chimera.Util {
 
         public static void PressKey(Process app, string key, bool ctrl, bool alt, bool shift) {
             if (!app.HasExited) {
+                Process foreground = Process.GetCurrentProcess();
                 SetForegroundWindow(app.MainWindowHandle);
                 PressKey(key, ctrl, alt, shift);
+                SetForegroundWindow(foreground.MainWindowHandle);
             }
         }
 

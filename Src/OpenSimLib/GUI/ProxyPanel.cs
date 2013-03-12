@@ -56,6 +56,7 @@ namespace Chimera.OpenSim.GUI {
                     gridBox.Enabled = proxy.ProxyConfig.UseGrid;
                     gridCheck.Checked = proxy.ProxyConfig.UseGrid;
                     autoRestartBox.Checked = proxy.AutoRestart;
+                    fullscreenCheck.Checked = proxy.Fullscreen;
                     controlCamera.Checked = proxy.ControlCamera;
 
                 };
@@ -150,7 +151,7 @@ namespace Chimera.OpenSim.GUI {
         private void connectButton_Click(object sender, EventArgs e) {
             if (proxy == null)
                 return;
-            if (proxyStartButton.Text.Equals("Plane Proxy")) {
+            if (proxyStartButton.Text.Equals("Start Proxy")) {
                 if (proxy.ProxyRunning)
                     proxy.Close();
                 string file = AppDomain.CurrentDomain.SetupInformation.ConfigurationFile;
@@ -166,7 +167,7 @@ namespace Chimera.OpenSim.GUI {
             } else if (proxy != null) {
                 proxy.Close();
 
-                proxyStartButton.Text = "Plane Proxy";
+                proxyStartButton.Text = "Start Proxy";
                 proxyStatusLabel.Text = "Stopped";
 
                 portBox.Enabled = true;
@@ -285,7 +286,7 @@ namespace Chimera.OpenSim.GUI {
 
         private void borderCheck_CheckedChanged(object sender, EventArgs e) {
             if (proxy != null)
-                proxy.Borders = borderCheck.Checked;
+                proxy.Fullscreen = fullscreenCheck.Checked;
         }
     }
 }

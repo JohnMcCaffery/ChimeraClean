@@ -17,6 +17,7 @@ using System.Net;
 using GridProxyConfig = GridProxy.ProxyConfig;
 using Chimera.Util;
 using System.IO;
+using Nwc.XmlRpc;
 
 namespace Chimera.OpenSim {
     public abstract class ViewerProxy : IOutput {
@@ -34,7 +35,7 @@ namespace Chimera.OpenSim {
         private UUID mAgentID = UUID.Zero;
         private string mFirstName = "NotLoggedIn";
         private string mLastName = "NotLoggedIn";
-        private bool mBorders;
+        private bool mFullscreen;
 
         private object processLock = new object();
 
@@ -61,9 +62,15 @@ namespace Chimera.OpenSim {
             get { return mConfig; }
         }
 
-        internal bool Borders {
-            get { return mBorders; }
-            set { mBorders = value; }
+        internal bool Fullscreen {
+            get { return mFullscreen; }
+            set { 
+                mFullscreen = value;
+                if (mClientLoggedIn) {
+                    ProcessWrangler.SetBorder(mClient, !value);
+                    ToggleHUD();
+                }
+            }
         }
 
         public bool ProxyRunning {
@@ -96,7 +103,7 @@ namespace Chimera.OpenSim {
         }
 
         internal void ToggleHUD() {
-            ProcessWrangler.PressKey(mClient, "{F1}", true, true, false);
+            ProcessWrangler.PressKey(mClient, mConfig.ViewerToggleHUDKey);
         }
 
         internal bool StartProxy() {
@@ -116,35 +123,7 @@ namespace Chimera.OpenSim {
             GridProxyConfig config = new GridProxyConfig("Routing God", "jm726@st-andrews.ac.uk", args);
             try {
                 mProxy = new Proxy(config);
-                mProxy.AddLoginResponseDelegate(response => {
-                    mClientLoggedIn = true;
-                    Hashtable t = (Hashtable)response.Value;
-
-                    if (bool.Parse(t["login"].ToString())) {
-                        mSessionID = UUID.Parse(t["session_id"].ToString());
-                        mSecureSessionID = UUID.Parse(t["secure_session_id"].ToString());
-                        mAgentID = UUID.Parse(t["agent_id"].ToString());
-                        mFirstName = t["first_name"].ToString();
-                        mLastName = t["last_name"].ToString();
-
-                        lock (processLock)
-                            Monitor.PulseAll(processLock);
-
-                        ProcessWrangler.SetMonitor(mClient, mWindow.Monitor);
-                        ProcessWrangler.SetBorder(mClient, mBorders);
-
-                        new Thread(() => {
-                            if (mControlCamera)
-                                SetCamera();
-                            if (OnClientLoggedIn != null)
-                                OnClientLoggedIn(mProxy, null);
-
-                            Thread.Sleep(5000);
-                            ToggleHUD();
-                        }).Start();
-                    } else {
-                    }
-                });
+                mProxy.AddLoginResponseDelegate(mProxy_LoginResponse);
                 foreach (PacketType pt in Enum.GetValues(typeof(PacketType))) {
                     mProxy.AddDelegate(pt, Direction.Incoming, ReceiveIncomingPacket);
                     mProxy.AddDelegate(pt, Direction.Outgoing, ReceiveOutgoingPacket);
@@ -186,6 +165,38 @@ namespace Chimera.OpenSim {
                 });
                 shutdownThread.Name = "Viewer Shutdown Thread.";
                 shutdownThread.Start();
+            }
+        }
+
+        private void mProxy_LoginResponse(XmlRpcResponse response) {
+            mClientLoggedIn = true;
+            Hashtable t = (Hashtable)response.Value;
+
+            if (bool.Parse(t["login"].ToString())) {
+                mSessionID = UUID.Parse(t["session_id"].ToString());
+                mSecureSessionID = UUID.Parse(t["secure_session_id"].ToString());
+                mAgentID = UUID.Parse(t["agent_id"].ToString());
+                mFirstName = t["first_name"].ToString();
+                mLastName = t["last_name"].ToString();
+
+                lock (processLock)
+                    Monitor.PulseAll(processLock);
+
+                ProcessWrangler.SetMonitor(mClient, mWindow.Monitor);
+                if (mFullscreen)
+                    ProcessWrangler.SetBorder(mClient, !mFullscreen);
+
+                new Thread(() => {
+                    if (mControlCamera)
+                        SetCamera();
+                    if (OnClientLoggedIn != null)
+                        OnClientLoggedIn(mProxy, null);
+
+                    Thread.Sleep(5000);
+                    if (mFullscreen)
+                        ToggleHUD();
+                }).Start();
+            } else {
             }
         }
 
@@ -319,7 +330,7 @@ namespace Chimera.OpenSim {
             mWindow.Coordinator.CameraUpdated += ProcessChange;
             mWindow.Coordinator.EyeUpdated += ProcessEyeUpdate;
             mWindow.MonitorChanged += new Action<Chimera.Window,Screen>(mWindow_MonitorChanged);
-            mBorders = mConfig.Border;
+            mFullscreen = mConfig.Fullscreen;
 
             if (mConfig.AutoStartViewer)
                 Launch();
@@ -339,7 +350,7 @@ namespace Chimera.OpenSim {
                 StartProxy();
 
             mClient = new Process();
-            string args = "--channel \"Firestorm-Release\" --settings settings_firestorm_release_v4.xml --set InstallLanguage en ";
+            string args = mConfig.ViewerArguments + " ";
             if (mConfig.UseGrid)
                 args += "--grid " + mConfig.LoginGrid;
             else
@@ -364,8 +375,10 @@ namespace Chimera.OpenSim {
 
         public void Close() {
             mAutoRestart = false;
-            if (mProxyStarted)
+            if (mProxyStarted) {
                 mProxy.Stop();
+                mProxy = null;
+            }
             if (mClientLoggedIn)
                 CloseViewer();
             mProxyStarted = false;

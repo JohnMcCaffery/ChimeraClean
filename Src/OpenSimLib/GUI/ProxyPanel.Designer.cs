@@ -67,7 +67,7 @@ namespace Chimera.OpenSim.GUI {
             this.label2 = new System.Windows.Forms.Label();
             this.workingDirectoryBox = new System.Windows.Forms.TextBox();
             this.autoRestartBox = new System.Windows.Forms.CheckBox();
-            this.borderCheck = new System.Windows.Forms.CheckBox();
+            this.fullscreenCheck = new System.Windows.Forms.CheckBox();
             this.hudButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
@@ -119,7 +119,7 @@ namespace Chimera.OpenSim.GUI {
             this.proxyStartButton.Name = "proxyStartButton";
             this.proxyStartButton.Size = new System.Drawing.Size(373, 20);
             this.proxyStartButton.TabIndex = 18;
-            this.proxyStartButton.Text = "Plane Proxy";
+            this.proxyStartButton.Text = "Start Proxy";
             this.proxyStartButton.UseVisualStyleBackColor = true;
             this.proxyStartButton.Click += new System.EventHandler(this.connectButton_Click);
             // 
@@ -317,22 +317,21 @@ namespace Chimera.OpenSim.GUI {
             this.autoRestartBox.UseVisualStyleBackColor = true;
             this.autoRestartBox.CheckedChanged += new System.EventHandler(this.autoRestartBox_CheckedChanged);
             // 
-            // borderCheck
+            // fullscreenCheck
             // 
-            this.borderCheck.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.borderCheck.AutoSize = true;
-            this.borderCheck.Location = new System.Drawing.Point(176, 159);
-            this.borderCheck.Name = "borderCheck";
-            this.borderCheck.Size = new System.Drawing.Size(99, 17);
-            this.borderCheck.TabIndex = 38;
-            this.borderCheck.Text = "Window Border";
-            this.borderCheck.UseVisualStyleBackColor = true;
-            this.borderCheck.CheckedChanged += new System.EventHandler(this.borderCheck_CheckedChanged);
+            this.fullscreenCheck.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.fullscreenCheck.AutoSize = true;
+            this.fullscreenCheck.Location = new System.Drawing.Point(201, 172);
+            this.fullscreenCheck.Name = "fullscreenCheck";
+            this.fullscreenCheck.Size = new System.Drawing.Size(74, 17);
+            this.fullscreenCheck.TabIndex = 38;
+            this.fullscreenCheck.Text = "Fullscreen";
+            this.fullscreenCheck.UseVisualStyleBackColor = true;
+            this.fullscreenCheck.CheckedChanged += new System.EventHandler(this.borderCheck_CheckedChanged);
             // 
             // hudButton
             // 
-            this.hudButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.hudButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.hudButton.Location = new System.Drawing.Point(300, 133);
             this.hudButton.Name = "hudButton";
             this.hudButton.Size = new System.Drawing.Size(82, 23);
@@ -346,7 +345,7 @@ namespace Chimera.OpenSim.GUI {
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.hudButton);
-            this.Controls.Add(this.borderCheck);
+            this.Controls.Add(this.fullscreenCheck);
             this.Controls.Add(this.autoRestartBox);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.workingDirectoryBox);
@@ -405,7 +404,7 @@ namespace Chimera.OpenSim.GUI {
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox workingDirectoryBox;
         private System.Windows.Forms.CheckBox autoRestartBox;
-        private System.Windows.Forms.CheckBox borderCheck;
+        private System.Windows.Forms.CheckBox fullscreenCheck;
         private System.Windows.Forms.Button hudButton;
     }
 }

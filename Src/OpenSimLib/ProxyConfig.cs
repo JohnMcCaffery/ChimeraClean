@@ -24,13 +24,15 @@ namespace Chimera.OpenSim {
         public string LoginGrid;
         public string ViewerWorkingDirectory;
         public string CrashLogFile;
+        public string ViewerArguments;
+        public string ViewerToggleHUDKey;
         public bool UseGrid;
         public bool AutoLoginClient;
         public bool AutoStartProxy;
         public bool AutoStartViewer;
         public bool AutoRestartViewer;
         public bool ControlCamera;
-        public bool Border;
+        public bool Fullscreen;
         public int ProxyPort;
 
         public ProxyConfig(params string[] args) {
@@ -54,6 +56,8 @@ namespace Chimera.OpenSim {
             ArgvConfigSource argConfig = Init.InitArgConfig(args);
             argConfig.AddSwitch("General", "ViewerExe", "v");
             argConfig.AddSwitch("General", "WorkingDirectory", "d");
+            argConfig.AddSwitch("General", "ViewerArguments", "a");
+            argConfig.AddSwitch("General", "ViewerToggleHUDKey", "k");
             argConfig.AddSwitch("General", "UseGrid", "ug");
             argConfig.AddSwitch("General", "UseSetFollowCamPackets", "uf");
             argConfig.AddSwitch("General", "EnableWindowPackets", "ew");
@@ -73,7 +77,7 @@ namespace Chimera.OpenSim {
             argConfig.AddSwitch(Name, "FirstName", "fn");
             argConfig.AddSwitch(Name, "LastName", "l");
             argConfig.AddSwitch(Name, "Password", "pw");
-            argConfig.AddSwitch(Name, "Border", "pw");
+            argConfig.AddSwitch(Name, "Fullscreen", "pw");
             
             IConfigSource config = Init.AddFile(argConfig, file);
             IConfig sectionConfig = config.Configs[Name];
@@ -81,6 +85,8 @@ namespace Chimera.OpenSim {
 
             ViewerExecutable = Init.Get(generalConfig, "ViewerExe", DEFAULT_CLIENT_EXE);
             ViewerWorkingDirectory = Init.Get(generalConfig, "WorkingDirectory", Path.GetDirectoryName(ViewerExecutable));
+            ViewerArguments = Init.Get(generalConfig, "ViewerArguments", "");
+            ViewerToggleHUDKey= Init.Get(generalConfig, "ViewerToggleHUDKey", "%^{F1}");
             ProxyLoginURI = Init.Get(generalConfig, "LoginURI", DEFAULT_LOGINURI);
             UseGrid = Init.Get(generalConfig, "UseGrid", false);
 
@@ -97,7 +103,7 @@ namespace Chimera.OpenSim {
             AutoStartViewer = Init.Get(sectionConfig, "AutoStartViewer", false);
             AutoRestartViewer = Init.Get(generalConfig, "AutoRestart", false);
             ControlCamera = Init.Get(sectionConfig, "ControlCamera", true);
-            Border = Init.Get(sectionConfig, "Border", false);
+            Fullscreen = Init.Get(sectionConfig, "Fullscreen", true);
 
             //EnableWindowPackets = Init.Get(generalConfig, "EnableWindowPackets", true);
             //UseSetFollowCamPackets = !enableWindowPackets || Get(generalConfig, "UseSetFollowCamPackets", false);
