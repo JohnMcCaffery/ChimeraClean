@@ -91,7 +91,7 @@ namespace Chimera.FlythroughLib {
             get { return mEvents.Start; }
             set { mEvents.Start = value; }
         }
-        public bool Pause {
+        public bool Paused {
             get { return !mPlaying; }
             set {
                 if (value)

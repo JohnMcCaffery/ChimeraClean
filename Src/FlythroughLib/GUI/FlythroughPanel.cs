@@ -83,7 +83,7 @@ namespace Chimera.FlythroughLib.GUI {
                 mContainer.Play();
             } else {
                 playButton.Text = "Play";
-                mContainer.Pause = true;
+                mContainer.Paused = true;
             }
         }
 
@@ -138,8 +138,10 @@ namespace Chimera.FlythroughLib.GUI {
         }
 
         private void timeSlider_Scroll(object sender, EventArgs e) {
+            mContainer.Paused = true;
             mContainer.Time = timeSlider.Value;
             timeLabel.Text = "Time: " + Math.Round((double)timeSlider.Value / 1000.0, 2);
+            playButton.Text = "Play";
         }
 
         private void startButton_Click(object sender, EventArgs e) {
