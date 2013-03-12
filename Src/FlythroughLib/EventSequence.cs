@@ -80,7 +80,7 @@ namespace Chimera.FlythroughLib {
         /// How far through the sequence playback has reached.
         /// </summary>
         public int Time {
-            get { return mEvents.Count == 0 ? 0 : mCurrentEvent.SequenceStartTime + mCurrentEvent.Time; }
+            get { return mCurrentEvent == null ? 0 : mCurrentEvent.SequenceStartTime + mCurrentEvent.Time; }
             set {
                 if (value < 0 || value > Length)
                     throw new ArgumentException("Unable to set value. Value must be between 0 and Length");

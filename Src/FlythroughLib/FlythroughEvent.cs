@@ -22,10 +22,6 @@ namespace Chimera.FlythroughLib {
         /// </summary>
         private int mTime = 0;
         /// <summary>
-        /// The total number of steps in the event.
-        /// </summary>
-        private int mSteps = 1;
-        /// <summary>
         /// How long the event will last.
         /// </summary>
         private int mLength;
@@ -109,10 +105,6 @@ namespace Chimera.FlythroughLib {
                 //if (value < 1)
                     //throw new ArgumentException("Event length cannot be less than 1");
                 mLength = value;
-                if (value < mFlythrough.Coordinator.TickLength)
-                    mSteps = 1;
-                else
-                    mSteps = value / mFlythrough.Coordinator.TickLength;
                 LengthChanged(value);
                 if (LengthChange != null)
                     LengthChange(this, null);
@@ -212,6 +204,12 @@ namespace Chimera.FlythroughLib {
         /// <param name="doc">The node to load details from.</param>
         public abstract void Load(XmlNode node);
 
+        /// <summary>
+        /// The state of the event specific to the subclass.
+        /// </summary>
+        /// <returns>A string with information about this event's state.</returns>
+        protected abstract string GetSpecificState();
+
         #region IComparable<FlythroughEvent> Members
 
         public int CompareTo(FlythroughEvent<T> other) {
@@ -243,6 +241,22 @@ namespace Chimera.FlythroughLib {
 
         public override string ToString() {
             return mName;
+        }
+
+        /// <summary>
+        /// String format printout of the current state of the event. Will be written out in the event of a crash.
+        /// </summary>
+        public virtual string State {
+            get {
+                string dump = "";
+                dump += String.Format("  {1:-30} {2}{0}", Environment.NewLine, "Start Time:", mStartTime);
+                dump += String.Format("  {1:-30} {2}{0}", Environment.NewLine, "Length:", mLength);
+                dump += String.Format("  {1:-30} {2}{0}", Environment.NewLine, "Finish Time:", SequenceFinishTime);
+                dump += String.Format("  {1:-30} {2}{0}", Environment.NewLine, "Step Start Time:", mSequence == null ? 0 : mSequence.Length);
+                dump += String.Format("  {1:-30} {2}{0}", Environment.NewLine, "Current Time:", mTime);
+                dump += GetSpecificState();
+                return dump;
+            }
         }
     }
 }

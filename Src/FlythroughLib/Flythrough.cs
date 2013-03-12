@@ -33,6 +33,10 @@ namespace Chimera.FlythroughLib {
         private bool mPlaying = false;
         private bool mLoop = false;
         private bool mAutoStep = true;
+        /// <summary>
+        /// The time, as it was last set. Used for debugging only.
+        /// </summary>
+        private int mTime;
 
         /// <summary>
         /// Triggered whenever the sequence gets to the end, even if looping.
@@ -67,7 +71,8 @@ namespace Chimera.FlythroughLib {
         /// </summary>
         public int Time {
             get { return mEvents.Time; }
-            set { 
+            set {
+                mTime = value;
                 mEvents.Time = value;
                 FlythroughEvent<Camera> evt = mEvents[value];
                 if (value == 0)
@@ -91,6 +96,10 @@ namespace Chimera.FlythroughLib {
             get { return mEvents.Start; }
             set { mEvents.Start = value; }
         }
+        /// <summary>
+        /// Whether auto playback is enabled.
+        /// If false time will be continually incremented by the tick length specified in the coordinator.
+        /// </summary>
         public bool Paused {
             get { return !mPlaying; }
             set {
@@ -288,7 +297,28 @@ namespace Chimera.FlythroughLib {
         }
 
         public string State {
-            get { return "-Flythrough-" + Environment.NewLine; }
+            get {
+                string dump = "----Flythrough----" + Environment.NewLine;
+                dump += String.Format("{1:-20} {2}{0}", Environment.NewLine, "# Steps:", mEvents.Count);
+                dump += String.Format("{1:-20} {2}{0}", Environment.NewLine, "Length:", mEvents.Length);
+                dump += String.Format("{1:-20} {2}{0}", Environment.NewLine, "Playing:", mPlaying);
+                dump += String.Format("{1:-20} {2}{0}", Environment.NewLine, "Loop:", mLoop);
+                dump += String.Format("{1:-20} {2}{0}", Environment.NewLine, "Set Time:", mTime);
+                dump += String.Format("{1:-20} {2}{0}{0}", Environment.NewLine, "Event List Time:", mEvents.Time);
+
+                if (mEvents.CurrentEvent != null) {
+                    try {
+                        dump += "--Current Event: " + mEvents.CurrentEvent.Name + Environment.NewLine;
+                        dump += mEvents.CurrentEvent.State;
+                    } catch (Exception e) {
+                        dump += "Unable to record state of " + mEvents.CurrentEvent.Name + "." + Environment.NewLine;
+                        dump += e.Message + Environment.NewLine;
+                        dump += e.StackTrace;
+                    }
+                } else
+                    dump += "No current step";
+                return dump;
+            }
         }
 
         public Coordinator Coordinator {

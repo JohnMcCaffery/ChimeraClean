@@ -128,5 +128,17 @@ namespace Chimera.FlythroughLib {
         public void Init(EventSequence<Vector3> positions) {
             mPositions = positions;
         }
+
+        protected override string GetSpecificState() {
+            string dump = "";
+            dump += String.Format("  {1:-30} {2}{0}", Environment.NewLine, "Target:", mTarget.ToString());
+            if (mPositions != null) {
+                dump += String.Format("  {1:-30} {2}{0}", Environment.NewLine, "Positions Sequence length:", mPositions.Length);
+                dump += String.Format("  {1:-30} {2}{0}", Environment.NewLine, "# Parallel Positions:", mPositions.Count);
+            } else
+                dump += String.Format("  No position sequence set{0}", Environment.NewLine);
+
+            return dump;
+        }
     }
 }

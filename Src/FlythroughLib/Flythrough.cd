@@ -6,7 +6,7 @@
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>BiEggIhMJCAQAsBAEAAAAARAAiAQAAIAwABihACAAQA=</HashCode>
+      <HashCode>BiEggIhMJCAQAsBAEAAAAARAgiAQAAIAwABihACAAQA=</HashCode>
       <FileName>Flythrough.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
@@ -17,7 +17,7 @@
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>AACAgIYEIACAAEQECCAQAARAhAABABMAIBggAIgAgSA=</HashCode>
+      <HashCode>AACAgIYEIACAAEQECKAQAARAhAABABMAIBggBIgAgSA=</HashCode>
       <FileName>FlythroughEvent.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
@@ -36,7 +36,7 @@
   <Class Name="Chimera.FlythroughLib.ComboEvent">
     <Position X="3" Y="7.5" Width="2.5" />
     <TypeIdentifier>
-      <HashCode>AAAEgKAAAQCCAoBgCAAAAAgADMCAIAMAAAAgAAAAgAA=</HashCode>
+      <HashCode>AAAEgKAAAQCCAoBgCIAAAAgADMCAIAMAAAAgAAAAgAA=</HashCode>
       <FileName>ComboEvent.cs</FileName>
     </TypeIdentifier>
   </Class>

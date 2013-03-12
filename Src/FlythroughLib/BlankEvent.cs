@@ -67,5 +67,9 @@ namespace Chimera.FlythroughLib {
         protected override void StartTimeChanged(int startTime) { }
 
         protected override void TimeChanged(int time) { }
+
+        protected override string GetSpecificState() {
+            return "";
+        }
     }
 }

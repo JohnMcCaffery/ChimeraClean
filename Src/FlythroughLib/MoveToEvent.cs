@@ -100,5 +100,13 @@ namespace Chimera.FlythroughLib {
 
             return node;
         }
+
+        protected override string GetSpecificState() {
+            string dump = "";
+            dump += String.Format("  {1:-30} {2}{0}", Environment.NewLine, "Target:", mTarget.ToString());
+            dump += String.Format("  {1:-30} {2}{0}", Environment.NewLine, "Shift/ms:", mShift.ToString());
+            return dump;
+
+        }
     }
 }

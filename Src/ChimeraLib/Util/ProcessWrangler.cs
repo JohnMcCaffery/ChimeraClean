@@ -326,6 +326,7 @@ namespace Chimera.Util {
         private static ICrashable sRoot;
         private static Form sForm;
         private static int sCurrentScreen = 0;
+        private static bool sAutoRestart;
 
         //Send a keyboard event
         [DllImport("User32.dll", EntryPoint = "SendMessage")]
@@ -428,17 +429,15 @@ namespace Chimera.Util {
             Application.EnableVisualStyles();
             sForm = form;
             sRoot = root;
-            if (autoRestart) {
-                AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
-                Application.ThreadException += new System.Threading.ThreadExceptionEventHandler(Application_ThreadException);
-                try {
-                    Application.Run(form);
-                } catch (Exception e) {
-                    Console.WriteLine("Exception caught from GUI thread.");
-                    HandleException(e);
-                }
-            } else
+            sAutoRestart = autoRestart;
+            AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
+            Application.ThreadException += new System.Threading.ThreadExceptionEventHandler(Application_ThreadException);
+            try {
                 Application.Run(form);
+            } catch (Exception e) {
+                Console.WriteLine("Exception caught from GUI thread.");
+                HandleException(e);
+            }
         }
 
         static void Application_ThreadException(object sender, System.Threading.ThreadExceptionEventArgs e) {
@@ -456,9 +455,12 @@ namespace Chimera.Util {
         static void HandleException(Exception e) {
             Console.WriteLine(e.Message);
             Console.WriteLine(e.StackTrace);
-            Console.WriteLine("Program crashed starting, a new instance.");
             sRoot.OnCrash(e);
-            ProcessWrangler.InitProcess(Assembly.GetEntryAssembly().Location).Start();
+            if (sAutoRestart) {
+                Console.WriteLine("Program crashed starting, a new instance.");
+                ProcessWrangler.InitProcess(Assembly.GetEntryAssembly().Location).Start();
+            }
+            throw e;
         }
     }
 }

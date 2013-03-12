@@ -185,5 +185,30 @@ namespace Chimera.FlythroughLib {
         private void mOrientationSequence_LengthChange(EventSequence<Rotation> evt, int length) {
             Length = Math.Max(mPositionSequence.Length, mOrientationSequence.Length);
         }
+
+        protected override string GetSpecificState() {
+            string dump = String.Format("  {1:-30} {2}{0}", Environment.NewLine, "# Position Events:", mPositionSequence.Count);
+            dump += String.Format("  {1:-30} {2}{0}", Environment.NewLine, "# Orientation Events:", mOrientationSequence.Count);
+            dump += GetSequenceState(mPositionSequence, "Position");
+            dump += GetSequenceState(mOrientationSequence, "Orientation");
+            return dump;
+        }
+
+        private string GetSequenceState<T>(EventSequence<T> sequence, string name) {
+            string dump = "";
+            dump += String.Format("{0}  --{1} Sequence{0}", Environment.NewLine, name);
+            if (sequence.CurrentEvent != null) {
+                try {
+                    dump += "  Current Event: " + sequence.CurrentEvent.Name + Environment.NewLine;
+                    dump += sequence.CurrentEvent.State;
+                } catch (Exception e) {
+                    dump += "  Unable to record state of " + sequence.CurrentEvent.Name + "." + Environment.NewLine;
+                    dump += e.Message + Environment.NewLine;
+                    dump += e.StackTrace;
+                }
+            } else
+                dump += "  No current event";
+            return dump;
+        }
     }
 }

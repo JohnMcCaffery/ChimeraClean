@@ -8,7 +8,7 @@ using System.Windows.Forms;
 using Chimera.FlythroughLib.GUI;
 
 namespace Chimera.FlythroughLib {
-    public class RotateToEvent : FlythroughEvent<Rotation> {
+    public class RotateToEvent : Chimera.FlythroughLib.FlythroughEvent<Rotation> {
         /// <summary>
         /// How many RotateToEvents have been created.
         /// </summary>
@@ -125,6 +125,21 @@ namespace Chimera.FlythroughLib {
         }
         private void Recalculate() {
             mShift = (FinishValue - StartValue) / Length;
+        }
+
+        protected override string GetSpecificState() {
+            string dump = "";
+            if (mTarget != null)
+                dump += String.Format("  {1:-30}  Pitch: {2} - Yaw: {3}{0}", Environment.NewLine, "Target Orientation:", mTarget.Pitch, mTarget.Yaw);
+            else
+                dump += String.Format("  No target set{0}", Environment.NewLine);
+
+            if (mShift != null)
+                dump += String.Format("  {1:-30}  Pitch: {2} - Yaw: {3}{0}", Environment.NewLine, "Shift/ms:", mShift.Pitch, mShift.Yaw);
+            else
+                dump += String.Format("  No shift calculated{0}", Environment.NewLine);
+
+            return dump;
         }
     }
 }
