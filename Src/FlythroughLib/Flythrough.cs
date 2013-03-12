@@ -71,9 +71,9 @@ namespace Chimera.FlythroughLib {
                 mEvents.Time = value;
                 FlythroughEvent<Camera> evt = mEvents[value];
                 if (value == 0)
-                    mCoordinator.Update(mEvents.Start.Position, Vector3.Zero, mEvents.Start.Orientation, new Rotation());
+                    mCoordinator.Update(mEvents.Start.Position, Vector3.Zero, mEvents.Start.Orientation, Rotation.Zero);
                 if (mEnabled && evt != null)
-                    mCoordinator.Update(evt.Value.Position, Vector3.Zero, evt.Value.Orientation, new Rotation());
+                    mCoordinator.Update(evt.Value.Position, Vector3.Zero, evt.Value.Orientation, Rotation.Zero);
                 if (TimeChange != null)
                     TimeChange(value);
             }
@@ -117,7 +117,7 @@ namespace Chimera.FlythroughLib {
         }
 
         public Flythrough() {
-            Start = new Camera(new Vector3(128f, 128f, 60f), new Rotation());
+            Start = new Camera(new Vector3(128f, 128f, 60f), Rotation.Zero);
             mEvents.Start = Start;
             mEvents.CurrentEventChange += new Action<FlythroughEvent<Camera>,FlythroughEvent<Camera>>(mEvents_CurrentEventChange);
             mEvents.LengthChange += new Action<EventSequence<Camera>,int>(mEvents_LengthChange);
@@ -185,7 +185,7 @@ namespace Chimera.FlythroughLib {
                 start = evt.SequenceStartTime + evt.Length;
             }
 
-            mCoordinator.Update(Start.Position, Vector3.Zero, Start.Orientation, new Rotation());
+            mCoordinator.Update(Start.Position, Vector3.Zero, Start.Orientation, Rotation.Zero);
         }
 
         /// <summary>
@@ -232,7 +232,7 @@ namespace Chimera.FlythroughLib {
 
             if (mEnabled) {
                 Camera n = mEvents.CurrentEvent.Value;
-                mCoordinator.Update(n.Position, Vector3.Zero, n.Orientation, new Rotation());
+                mCoordinator.Update(n.Position, Vector3.Zero, n.Orientation, Rotation.Zero);
             }
 
             while (mPlaying) {

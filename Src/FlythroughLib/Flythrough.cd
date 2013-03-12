@@ -6,7 +6,7 @@
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>BiEggIhMBCAQAsBAEAAAAARAAiAQAAIAwABihACAQQA=</HashCode>
+      <HashCode>BiEggIhMJCAQAsBAEAAAAARAAiAQAAIAwABihACAAQA=</HashCode>
       <FileName>Flythrough.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
@@ -17,47 +17,57 @@
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>AACAgIQEICAAAAQAiAAQAARAJAABABMAAAggAIAAgSg=</HashCode>
+      <HashCode>AACAgIYEIACAAEQECCAQAARAhAABABMAIBggAIgAgSA=</HashCode>
       <FileName>FlythroughEvent.cs</FileName>
     </TypeIdentifier>
+    <Lollipop Position="0.2" />
   </Class>
   <Class Name="Chimera.FlythroughLib.EventSequence&lt;T&gt;">
-    <Position X="3.25" Y="0.5" Width="1.75" />
+    <Position X="3.25" Y="0.5" Width="2" />
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>AIGAAACEACAQAhBACEAAAARAACAAAAAEAAAAAAAAASg=</HashCode>
+      <HashCode>AIGAAACEACAQAhBACEAAAARAICAAAAEEAABAAIAAAQg=</HashCode>
       <FileName>EventSequence.cs</FileName>
     </TypeIdentifier>
+    <Lollipop Position="0.2" />
   </Class>
   <Class Name="Chimera.FlythroughLib.ComboEvent">
-    <Position X="3.5" Y="6" Width="2.5" />
+    <Position X="3" Y="7.5" Width="2.5" />
     <TypeIdentifier>
-      <HashCode>AAAEgKAAAQACAoBgCAAAAAgADMCAIAMAAAAgAAAAgAg=</HashCode>
+      <HashCode>AAAEgKAAAQCCAoBgCAAAAAgADMCAIAMAAAAgAAAAgAA=</HashCode>
       <FileName>ComboEvent.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Chimera.FlythroughLib.RotateToEvent">
-    <Position X="8.25" Y="6" Width="2.25" />
+    <Position X="7.75" Y="7.5" Width="2.25" />
     <TypeIdentifier>
-      <HashCode>EAAAgIAAIAACgAAACAAACAAABkAAgAMAAAAiEAACgAg=</HashCode>
+      <HashCode>AAAAgIgAAACCAAAACAAAACAABEAAAAMAAAAgABAAgAA=</HashCode>
       <FileName>RotateToEvent.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Chimera.FlythroughLib.MoveToEvent">
-    <Position X="6.25" Y="6" Width="1.75" />
+    <Position X="5.75" Y="7.5" Width="1.75" />
     <TypeIdentifier>
-      <HashCode>AAAAgIAAAAACAAAACAAAACAAFEAAAAMAAAAgABAAgAg=</HashCode>
+      <HashCode>AAAAgIAAAACCAAAACAAAACAABEAAAAMAAAAgABAAgAA=</HashCode>
       <FileName>MoveToEvent.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Chimera.FlythroughLib.BlankEvent&lt;T&gt;">
-    <Position X="10.75" Y="6" Width="1.5" />
+    <Position X="12.5" Y="7.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAgIAAAAAAAEAACAAAAAAABEAAAAMAAAAgAAAAgAg=</HashCode>
+      <HashCode>AAAAgIAAAACAAEAACAAAAAAABEAAAAMAAAAgAAAAgAA=</HashCode>
       <FileName>BlankEvent.cs</FileName>
     </TypeIdentifier>
+  </Class>
+  <Class Name="Chimera.FlythroughLib.LookAtEvent">
+    <Position X="10.25" Y="7.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAgIgAAACCAAAACAAAACAABEAAAAMAAQAiABAAgAA=</HashCode>
+      <FileName>LookAtEvent.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
   </Class>
   <Interface Name="Chimera.FlythroughLib.IPositionListener">
     <Position X="10" Y="0.5" Width="1.5" />

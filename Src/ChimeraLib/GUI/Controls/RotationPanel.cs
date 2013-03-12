@@ -31,7 +31,7 @@ using Chimera.Util;
 
 namespace ProxyTestGUI {
     public partial class RotationPanel : UserControl {
-        private Rotation rotation = new Rotation();
+        private Rotation rotation = Rotation.Zero;
         public event EventHandler OnChange;
 
         public Rotation Value {
@@ -72,7 +72,7 @@ namespace ProxyTestGUI {
 
         public RotationPanel() {
             InitializeComponent();
-            Value = new Rotation();
+            Value = Rotation.Zero;
         }
 
 

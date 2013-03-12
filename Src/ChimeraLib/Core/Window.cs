@@ -45,7 +45,7 @@ namespace Chimera {
         /// <summary>
         /// The orientation of the window in real space.
         /// </summary>
-        private Rotation mRotation = new Rotation();
+        private Rotation mRotation = Rotation.Zero;
         /// <summary>
         /// The position of the window in real space, in mm.
         /// </summary>

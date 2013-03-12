@@ -23,22 +23,23 @@
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent() {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MoveToPanel));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(LookAtPanel));
             this.moveToTakeCurrentButton = new System.Windows.Forms.Button();
             this.lengthValue = new System.Windows.Forms.NumericUpDown();
             this.Length = new System.Windows.Forms.Label();
             this.targetVectorPanel = new ProxyTestGUI.VectorPanel();
             this.progressBar = new System.Windows.Forms.ProgressBar();
+            this.goToTargetButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.lengthValue)).BeginInit();
             this.SuspendLayout();
             // 
             // moveToTakeCurrentButton
             // 
-            this.moveToTakeCurrentButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.moveToTakeCurrentButton.Location = new System.Drawing.Point(134, 99);
+            this.moveToTakeCurrentButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.moveToTakeCurrentButton.Location = new System.Drawing.Point(219, 99);
             this.moveToTakeCurrentButton.Name = "moveToTakeCurrentButton";
-            this.moveToTakeCurrentButton.Size = new System.Drawing.Size(80, 23);
+            this.moveToTakeCurrentButton.Size = new System.Drawing.Size(106, 23);
             this.moveToTakeCurrentButton.TabIndex = 11;
             this.moveToTakeCurrentButton.Text = "Take Current";
             this.moveToTakeCurrentButton.UseVisualStyleBackColor = true;
@@ -77,17 +78,17 @@
             // 
             // targetVectorPanel
             // 
-            this.targetVectorPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.targetVectorPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.targetVectorPanel.DisplayName = "Move To Target";
             this.targetVectorPanel.Location = new System.Drawing.Point(0, 0);
-            this.targetVectorPanel.Max = 2048D;
+            this.targetVectorPanel.Max = 20489D;
             this.targetVectorPanel.MaxV = ((OpenMetaverse.Vector3)(resources.GetObject("targetVectorPanel.MaxV")));
             this.targetVectorPanel.Min = -2048D;
             this.targetVectorPanel.MinimumSize = new System.Drawing.Size(103, 95);
             this.targetVectorPanel.MinV = ((OpenMetaverse.Vector3)(resources.GetObject("targetVectorPanel.MinV")));
             this.targetVectorPanel.Name = "targetVectorPanel";
-            this.targetVectorPanel.Size = new System.Drawing.Size(214, 98);
+            this.targetVectorPanel.Size = new System.Drawing.Size(325, 98);
             this.targetVectorPanel.TabIndex = 10;
             this.targetVectorPanel.Value = ((OpenMetaverse.Vector3)(resources.GetObject("targetVectorPanel.Value")));
             this.targetVectorPanel.X = 128F;
@@ -96,26 +97,37 @@
             // 
             // progressBar
             // 
-            this.progressBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.progressBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.progressBar.Location = new System.Drawing.Point(3, 125);
             this.progressBar.Name = "progressBar";
-            this.progressBar.Size = new System.Drawing.Size(211, 23);
+            this.progressBar.Size = new System.Drawing.Size(322, 23);
             this.progressBar.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
             this.progressBar.TabIndex = 14;
             // 
-            // MoveToPanel
+            // goToTargetButton
+            // 
+            this.goToTargetButton.Location = new System.Drawing.Point(134, 99);
+            this.goToTargetButton.Name = "goToTargetButton";
+            this.goToTargetButton.Size = new System.Drawing.Size(79, 23);
+            this.goToTargetButton.TabIndex = 15;
+            this.goToTargetButton.Text = "Go To Target";
+            this.goToTargetButton.UseVisualStyleBackColor = true;
+            this.goToTargetButton.Click += new System.EventHandler(this.goToTargetButton_Click);
+            // 
+            // LookAtPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.goToTargetButton);
             this.Controls.Add(this.progressBar);
             this.Controls.Add(this.lengthValue);
             this.Controls.Add(this.Length);
             this.Controls.Add(this.moveToTakeCurrentButton);
             this.Controls.Add(this.targetVectorPanel);
             this.MinimumSize = new System.Drawing.Size(214, 149);
-            this.Name = "MoveToPanel";
-            this.Size = new System.Drawing.Size(214, 149);
+            this.Name = "LookAtPanel";
+            this.Size = new System.Drawing.Size(325, 149);
             ((System.ComponentModel.ISupportInitialize)(this.lengthValue)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -129,5 +141,6 @@
         private System.Windows.Forms.NumericUpDown lengthValue;
         private System.Windows.Forms.Label Length;
         private System.Windows.Forms.ProgressBar progressBar;
+        private System.Windows.Forms.Button goToTargetButton;
     }
 }

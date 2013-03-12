@@ -50,7 +50,7 @@ namespace Chimera.FlythroughLib {
             : base(container, length) {
 
             Name = "Look At " + (++COUNT);
-            StartValue = new Rotation();
+            StartValue = Rotation.Zero;
             Target = Vector3.Zero;
         }
 
@@ -75,7 +75,7 @@ namespace Chimera.FlythroughLib {
         public override Rotation this[int time] {
             get {
                 if (mPositions == null)
-                    return new Rotation();
+                    return Rotation.Zero;
 
                 time += GlobalStartTime;
                 Vector3 pos = mPositions.Length >= time ?

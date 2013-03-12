@@ -32,7 +32,7 @@ namespace Chimera.FlythroughLib.GUI {
             targetVectorPanel.OnChange += (source, args) => {
                 mEvent.Target = targetVectorPanel.Value;
                 //mEvent.Container.Time = evt.GlobalFinishTime;
-                mEvent.Container.Coordinator.Update(mEvent.Target, Vector3.Zero, mEvent.Container.Coordinator.Orientation, new Rotation());
+                mEvent.Container.Coordinator.Update(mEvent.Target, Vector3.Zero, mEvent.Container.Coordinator.Orientation, Rotation.Zero);
             };
             lengthValue.ValueChanged += (source, args) => mEvent.Length = (int)lengthValue.Value;
             evt.TimeChange += (source, args) => {

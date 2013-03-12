@@ -25,6 +25,9 @@ using OpenMetaverse;
 
 namespace Chimera.Util {
     public class Rotation {
+        public static Rotation Zero {
+            get { return new Rotation(); }
+        }
         /*public static bool operator!=(Rotation rot1, Rotation rot2) {
             return  !(rot1.Equals(null) && rot2.Equals(null)) &&
                    (rot1.Equals(null) ||
@@ -37,7 +40,7 @@ namespace Chimera.Util {
         }*/
         public static Rotation operator +(Rotation r1, Rotation r2) {
             if (r1 == null && r2 == null)
-                return new Rotation();
+                return Rotation.Zero;
             if (r1 == null)
                 return new Rotation(r2);
             if (r2 == null)
@@ -46,7 +49,7 @@ namespace Chimera.Util {
         }
         public static Rotation operator -(Rotation r1, Rotation r2) {
             if (r1 == null && r2 == null)
-                return new Rotation();
+                return Rotation.Zero;
             if (r1 == null)
                 return new Rotation(r2);
             if (r2 == null)
@@ -55,7 +58,7 @@ namespace Chimera.Util {
         }
         public static Rotation operator *(Rotation r1, Rotation r2) {
             if (r1 == null && r2 == null)
-                return new Rotation();
+                return Rotation.Zero;
             if (r1 == null)
                 return new Rotation(r2);
             if (r2 == null)
@@ -69,7 +72,7 @@ namespace Chimera.Util {
         }
         public static Rotation operator /(Rotation r1, Rotation r2) {
             if (r1 == null && r2 == null)
-                return new Rotation();
+                return Rotation.Zero;
             if (r1 == null)
                 return new Rotation(r2);
             if (r2 == null)

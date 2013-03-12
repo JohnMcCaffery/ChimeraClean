@@ -10,7 +10,7 @@ namespace Chimera.Inputs {
     public class KBMouseInput : Chimera.IInput {
         internal int X, Y, CurrentX, CurrentY;
         internal bool MouseDown;
-        private Rotation mRotation = new Rotation(), mOldRotation;
+        private Rotation mRotation = Rotation.Zero, mOldRotation;
         private double mStartPitch, mStartYaw;
         private bool mLeftDown, mRightDown, mForwardDown, mBackwardDown;
         private bool mUpDown, mDownDown;

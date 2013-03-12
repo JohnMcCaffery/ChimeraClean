@@ -25,7 +25,7 @@ namespace Chimera.FlythroughLib.GUI {
             lengthValue.ValueChanged += (source, args) => mEvent.Length = (int)lengthValue.Value;
             rotationPanel.OnChange += (sender, args) => {
                 mEvent.Target = rotationPanel.Value;
-                mEvent.Container.Coordinator.Update(mEvent.Container.Coordinator.Position, Vector3.Zero, rotationPanel.Value, new Rotation());
+                mEvent.Container.Coordinator.Update(mEvent.Container.Coordinator.Position, Vector3.Zero, rotationPanel.Value, Rotation.Zero);
             };
             evt.TimeChange += (source, args) => {
                 Invoke(new Action(() => {

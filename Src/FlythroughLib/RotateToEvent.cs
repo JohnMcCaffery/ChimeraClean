@@ -20,7 +20,7 @@ namespace Chimera.FlythroughLib {
         /// <summary>
         /// The orientation the camera should end up at.
         /// </summary>
-        private Rotation mTarget = new Rotation();
+        private Rotation mTarget = Rotation.Zero;
         /// <summary>
         /// The panel used to control the event.
         /// </summary>
@@ -48,8 +48,8 @@ namespace Chimera.FlythroughLib {
             : base(container, length) {
 
             Name = "Rotate To " + (++COUNT);
-            StartValue = new Rotation();
-            Target = new Rotation();
+            StartValue = Rotation.Zero;
+            Target = Rotation.Zero;
         }
 
         /// <summary>
