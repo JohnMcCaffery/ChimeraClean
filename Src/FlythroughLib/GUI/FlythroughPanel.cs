@@ -94,6 +94,7 @@ namespace Chimera.FlythroughLib.GUI {
         private void removeToolStripMenuItem_Click(object sender, EventArgs e) {
             if (eventsList.SelectedItem != null) {
                 ComboEvent evt = (ComboEvent)eventsList.SelectedItem;
+                mContainer.RemoveEvent(evt);
                 eventsList.Items.Remove(evt);
                 eventPanel.Controls.Remove(evt.ControlPanel);
             }
@@ -125,6 +126,12 @@ namespace Chimera.FlythroughLib.GUI {
         private void timeSlider_Scroll(object sender, EventArgs e) {
             mContainer.Time = timeSlider.Value;
             timeLabel.Text = "Time: " + Math.Round((double)timeSlider.Value / 1000.0, 2);
+        }
+
+        private void startButton_Click(object sender, EventArgs e) {
+            mContainer.Time = 0;
+            mContainer.Play();
+            playButton.Text = "Pause";
         }
     }
 }

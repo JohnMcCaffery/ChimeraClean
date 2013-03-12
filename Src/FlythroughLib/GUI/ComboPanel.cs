@@ -88,7 +88,7 @@ namespace Chimera.FlythroughLib.GUI {
 
         private void removePositionToolStripMenuItem_Click(object sender, EventArgs e) {
             if (positionsList.SelectedItem != null)
-                RemoveEvent((FlythroughEvent<Vector3>) positionsList.SelectedItem, positionsList, positionPanel);
+                RemoveEvent((FlythroughEvent<Vector3>) positionsList.SelectedItem);
         }
 
         private void moveUpPositionToolStripMenuItem_Click(object sender, EventArgs e) {
@@ -127,7 +127,7 @@ namespace Chimera.FlythroughLib.GUI {
 
         private void removeOrientationToolStripItem_Click(object sender, EventArgs e) {
             if (orientationsList.SelectedItem != null)
-                RemoveEvent((FlythroughEvent<Rotation>)orientationsList.SelectedItem, orientationsList, orientationPanel);
+                RemoveEvent((FlythroughEvent<Rotation>)orientationsList.SelectedItem);
         }
 
         private void moveUpOrientationToolStripItem_Click(object sender, EventArgs e) {

@@ -27,7 +27,9 @@
             this.saveSequenceDialog = new System.Windows.Forms.SaveFileDialog();
             this.eventsList = new System.Windows.Forms.ListBox();
             this.eventsContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.addToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.removeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.moveUpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.loadSequenceDialog = new System.Windows.Forms.OpenFileDialog();
             this.loadButton = new System.Windows.Forms.Button();
             this.saveButton = new System.Windows.Forms.Button();
@@ -38,16 +40,15 @@
             this.timeSlider = new System.Windows.Forms.TrackBar();
             this.lengthLabel = new System.Windows.Forms.Label();
             this.timeLabel = new System.Windows.Forms.Label();
-            this.addToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.moveUpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.startButton = new System.Windows.Forms.Button();
             this.eventsContextMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.timeSlider)).BeginInit();
             this.SuspendLayout();
             // 
             // eventsList
             // 
-            this.eventsList.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)));
+            this.eventsList.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
             this.eventsList.ContextMenuStrip = this.eventsContextMenu;
             this.eventsList.DisplayMember = "Name";
             this.eventsList.FormattingEnabled = true;
@@ -66,12 +67,26 @@
             this.eventsContextMenu.Name = "eventsContextMenu";
             this.eventsContextMenu.Size = new System.Drawing.Size(120, 70);
             // 
+            // addToolStripMenuItem
+            // 
+            this.addToolStripMenuItem.Name = "addToolStripMenuItem";
+            this.addToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.addToolStripMenuItem.Text = "Add";
+            this.addToolStripMenuItem.Click += new System.EventHandler(this.addToolStripMenuItem_Click);
+            // 
             // removeToolStripMenuItem
             // 
             this.removeToolStripMenuItem.Name = "removeToolStripMenuItem";
             this.removeToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.removeToolStripMenuItem.Text = "Remove";
             this.removeToolStripMenuItem.Click += new System.EventHandler(this.removeToolStripMenuItem_Click);
+            // 
+            // moveUpToolStripMenuItem
+            // 
+            this.moveUpToolStripMenuItem.Name = "moveUpToolStripMenuItem";
+            this.moveUpToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.moveUpToolStripMenuItem.Text = "MoveUp";
+            this.moveUpToolStripMenuItem.Click += new System.EventHandler(this.moveUpToolStripMenuItem_Click);
             // 
             // loadSequenceDialog
             // 
@@ -80,7 +95,7 @@
             // loadButton
             // 
             this.loadButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.loadButton.Location = new System.Drawing.Point(129, 322);
+            this.loadButton.Location = new System.Drawing.Point(184, 322);
             this.loadButton.Name = "loadButton";
             this.loadButton.Size = new System.Drawing.Size(40, 23);
             this.loadButton.TabIndex = 10;
@@ -90,7 +105,7 @@
             // saveButton
             // 
             this.saveButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.saveButton.Location = new System.Drawing.Point(175, 322);
+            this.saveButton.Location = new System.Drawing.Point(230, 322);
             this.saveButton.Name = "saveButton";
             this.saveButton.Size = new System.Drawing.Size(43, 23);
             this.saveButton.TabIndex = 11;
@@ -101,7 +116,7 @@
             // 
             this.loopCheck.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.loopCheck.AutoSize = true;
-            this.loopCheck.Location = new System.Drawing.Point(365, 326);
+            this.loopCheck.Location = new System.Drawing.Point(420, 326);
             this.loopCheck.Name = "loopCheck";
             this.loopCheck.Size = new System.Drawing.Size(50, 17);
             this.loopCheck.TabIndex = 12;
@@ -112,7 +127,7 @@
             // playButton
             // 
             this.playButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.playButton.Location = new System.Drawing.Point(224, 322);
+            this.playButton.Location = new System.Drawing.Point(279, 322);
             this.playButton.Name = "playButton";
             this.playButton.Size = new System.Drawing.Size(56, 23);
             this.playButton.TabIndex = 13;
@@ -122,20 +137,20 @@
             // 
             // eventPanel
             // 
-            this.eventPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.eventPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.eventPanel.Location = new System.Drawing.Point(129, 0);
             this.eventPanel.Name = "eventPanel";
-            this.eventPanel.Size = new System.Drawing.Size(289, 287);
+            this.eventPanel.Size = new System.Drawing.Size(344, 287);
             this.eventPanel.TabIndex = 14;
             // 
-            // autoStepBox
+            // autoStepCheck
             // 
             this.autoStepCheck.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.autoStepCheck.AutoSize = true;
-            this.autoStepCheck.Location = new System.Drawing.Point(286, 326);
-            this.autoStepCheck.Name = "autoStepBox";
+            this.autoStepCheck.Location = new System.Drawing.Point(341, 326);
+            this.autoStepCheck.Name = "autoStepCheck";
             this.autoStepCheck.Size = new System.Drawing.Size(73, 17);
             this.autoStepCheck.TabIndex = 15;
             this.autoStepCheck.Text = "Auto Step";
@@ -144,12 +159,12 @@
             // 
             // timeSlider
             // 
-            this.timeSlider.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.timeSlider.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.timeSlider.Location = new System.Drawing.Point(123, 293);
             this.timeSlider.Maximum = 0;
             this.timeSlider.Name = "timeSlider";
-            this.timeSlider.Size = new System.Drawing.Size(295, 45);
+            this.timeSlider.Size = new System.Drawing.Size(350, 42);
             this.timeSlider.TabIndex = 0;
             this.timeSlider.TickStyle = System.Windows.Forms.TickStyle.None;
             this.timeSlider.Scroll += new System.EventHandler(this.timeSlider_Scroll);
@@ -174,24 +189,22 @@
             this.timeLabel.TabIndex = 16;
             this.timeLabel.Text = "Time";
             // 
-            // addToolStripMenuItem
+            // startButton
             // 
-            this.addToolStripMenuItem.Name = "addToolStripMenuItem";
-            this.addToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.addToolStripMenuItem.Text = "Add";
-            this.addToolStripMenuItem.Click += new System.EventHandler(this.addToolStripMenuItem_Click);
-            // 
-            // moveUpToolStripMenuItem
-            // 
-            this.moveUpToolStripMenuItem.Name = "moveUpToolStripMenuItem";
-            this.moveUpToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.moveUpToolStripMenuItem.Text = "MoveUp";
-            this.moveUpToolStripMenuItem.Click += new System.EventHandler(this.moveUpToolStripMenuItem_Click);
+            this.startButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.startButton.Location = new System.Drawing.Point(138, 322);
+            this.startButton.Name = "startButton";
+            this.startButton.Size = new System.Drawing.Size(40, 23);
+            this.startButton.TabIndex = 17;
+            this.startButton.Text = "Start";
+            this.startButton.UseVisualStyleBackColor = true;
+            this.startButton.Click += new System.EventHandler(this.startButton_Click);
             // 
             // FlythroughPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.startButton);
             this.Controls.Add(this.timeLabel);
             this.Controls.Add(this.lengthLabel);
             this.Controls.Add(this.autoStepCheck);
@@ -203,7 +216,7 @@
             this.Controls.Add(this.saveButton);
             this.Controls.Add(this.timeSlider);
             this.Name = "FlythroughPanel";
-            this.Size = new System.Drawing.Size(418, 348);
+            this.Size = new System.Drawing.Size(473, 348);
             this.eventsContextMenu.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.timeSlider)).EndInit();
             this.ResumeLayout(false);
@@ -229,5 +242,6 @@
         private System.Windows.Forms.Label timeLabel;
         private System.Windows.Forms.ToolStripMenuItem addToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem moveUpToolStripMenuItem;
+        private System.Windows.Forms.Button startButton;
     }
 }

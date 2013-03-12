@@ -168,9 +168,13 @@ namespace Chimera.FlythroughLib {
             foreach (var after in mEvents.Where(e => e.SequenceStartTime > evt.SequenceStartTime))
                 after.SequenceStartTime -= evt.Length;
 
+            mLastEvent = mEvents.Count > 0 ? mEvents[mEvents.Count - 1] : null;
+
             //Set value to take account the change to the chronology.
             Time = time < Length ? time : Length;
             evt.FinishChange -= evt_FinishChange;
+            if (LengthChange != null)
+                LengthChange(this, Length);
         }
 
         public void MoveUp(FlythroughEvent<T> evt) {

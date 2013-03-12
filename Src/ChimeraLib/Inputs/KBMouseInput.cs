@@ -189,7 +189,8 @@ namespace Chimera.Inputs {
                 if (mPitchDownDown) mRotation.Pitch += mKBShift;
             }
 
-            if (move != Vector3.Zero || mUpDown || mDownDown || (mOldRotation != null && (mRotation.Pitch != mOldRotation.Pitch || mRotation.Yaw != mOldRotation.Yaw))) {
+            //TODO - handle keyboard rotation
+            if (move != Vector3.Zero || mUpDown || mDownDown) {
                 move *= mCoordinator.Orientation.Quaternion;
                 if (mUpDown) move.Z = (float) mKBShift;
                 if (mDownDown) move.Z = -(float) mKBShift;

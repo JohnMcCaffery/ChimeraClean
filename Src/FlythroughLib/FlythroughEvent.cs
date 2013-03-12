@@ -106,8 +106,8 @@ namespace Chimera.FlythroughLib {
         public virtual int Length {
             get { return mLength; }
             set {
-                if (value < 1)
-                    throw new ArgumentException("Event length cannot be less than 1");
+                //if (value < 1)
+                    //throw new ArgumentException("Event length cannot be less than 1");
                 mLength = value;
                 if (value < mFlythrough.Coordinator.TickLength)
                     mSteps = 1;
