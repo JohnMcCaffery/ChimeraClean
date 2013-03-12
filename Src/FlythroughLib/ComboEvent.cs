@@ -119,33 +119,38 @@ namespace Chimera.FlythroughLib {
                         case "MoveToEvent": evt = new MoveToEvent(Container, 0, Vector3.Zero); break;
                         case "BlankEvent": evt = new BlankEvent<Vector3>(Container, 0); break;
                     }
-                    evt.Load(node);
-                    mPositionSequence.AddEvent(evt);
+                    if (evt != null) {
+                        evt.Load(node);
+                        AddEvent(evt);
+                    }
                 } else {
                     FlythroughEvent<Rotation> evt = null;
                     switch (node.Name) {
-                        case "RotateToEvent": evt = new RotateToEvent(Container, 0, new Rotation()); break;
+                        case "RotateToEvent": evt = new RotateToEvent(Container, 0); break;
+                        case "LookAtEvent": evt = new LookAtEvent(Container, 0); break;
                         case "BlankEvent": evt = new BlankEvent<Rotation>(Container, 0); break;
                     }
-                    evt.Load(node);
-                    mOrientationSequence.AddEvent(evt);
+                    if (evt != null) {
+                        evt.Load(node);
+                        AddEvent(evt);
+                    }
                 }
             }
         }
 
         public override XmlNode Save(XmlDocument doc) {
             XmlNode root = doc.CreateElement("ComboEvent");
-            XmlNode stream1 = doc.CreateElement("PositionSequence");
-            XmlNode stream2 = doc.CreateElement("OrientationSequence");
+            XmlNode positionStream = doc.CreateElement("PositionSequence");
+            XmlNode orientationStream = doc.CreateElement("OrientationSequence");
 
             foreach(var evt in mPositionSequence)
-                root.AppendChild(evt.Save(root.OwnerDocument));
+                positionStream.AppendChild(evt.Save(root.OwnerDocument));
 
             foreach(var evt in mOrientationSequence)
-                root.AppendChild(evt.Save(root.OwnerDocument));
+                orientationStream.AppendChild(evt.Save(root.OwnerDocument));
 
-            root.AppendChild(stream1);
-            root.AppendChild(stream2);
+            root.AppendChild(positionStream);
+            root.AppendChild(orientationStream);
             return root;
         }
 

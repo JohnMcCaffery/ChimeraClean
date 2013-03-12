@@ -10,6 +10,7 @@ using System.Windows.Forms;
 namespace Chimera.Inputs {
     public partial class KBMousePanel : UserControl {
         private KBMouseInput mInput;
+        private bool mCleared;
 
         public KBMousePanel() {
             InitializeComponent();
@@ -42,15 +43,19 @@ namespace Chimera.Inputs {
         }
 
         private void mousePanel_MouseMove(object sender, MouseEventArgs e) {
+            if (mInput != null && (mInput.MouseDown || !mCleared)) {
                 mousePanel.Refresh();
+                mCleared = true;
+            }
         }
 
         private void mousePanel_Paint(object sender, PaintEventArgs e) {
             if (mInput != null) {
-                if (mInput.MouseDown)
+                if (mInput.MouseDown) {
                     e.Graphics.DrawLine(new Pen(Color.Black), mInput.X, mInput.Y, mInput.CurrentX, mInput.IgnorePitch ? mInput.Y : mInput.CurrentY);
-                else {
-                    e.Graphics.Clear(mousePanel.BackColor);
+                    mCleared = false;
+                } else {
+                    //e.Graphics.Clear();
                     string text = "Click and Drag to Mouselook";
                     Point pos = new Point((e.ClipRectangle.Width / 2) - 70, e.ClipRectangle.Height / 2);
                     e.Graphics.DrawString(text, Form.DefaultFont, Brushes.Black, pos);

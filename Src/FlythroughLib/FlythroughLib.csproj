@@ -85,6 +85,13 @@
   <ItemGroup>
     <Compile Include="BlankEvent.cs" />
     <Compile Include="ComboEvent.cs" />
+    <Compile Include="GUI\LookAtPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\LookAtPanel.Designer.cs">
+      <DependentUpon>LookAtPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="LookAtEvent.cs" />
     <Compile Include="EventSequence.cs" />
     <Compile Include="Flythrough.cs" />
     <Compile Include="FlythroughEvent.cs" />
@@ -140,6 +147,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\ComboPanel.resx">
       <DependentUpon>ComboPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\LookAtPanel.resx">
+      <DependentUpon>LookAtPanel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\MoveToPanel.resx">
       <DependentUpon>MoveToPanel.cs</DependentUpon>

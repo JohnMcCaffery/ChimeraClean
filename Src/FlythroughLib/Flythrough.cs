@@ -159,6 +159,9 @@ namespace Chimera.FlythroughLib {
                 return;
             }
             mEvents = new EventSequence<Camera>();
+            mEvents.CurrentEventChange += new Action<FlythroughEvent<Camera>,FlythroughEvent<Camera>>(mEvents_CurrentEventChange);
+            mEvents.LengthChange += new Action<EventSequence<Camera>,int>(mEvents_LengthChange);
+
             XmlDocument doc = new XmlDocument();
             doc.Load(file);
             int start = 0;
@@ -181,6 +184,8 @@ namespace Chimera.FlythroughLib {
                 mEvents.AddEvent(evt);
                 start = evt.SequenceStartTime + evt.Length;
             }
+
+            mCoordinator.Update(Start.Position, Vector3.Zero, Start.Orientation, new Rotation());
         }
 
         /// <summary>

@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using Chimera.Util;
+using OpenMetaverse;
 
 namespace Chimera.FlythroughLib.GUI {
     public partial class RotateToPanel : UserControl {
@@ -22,7 +23,10 @@ namespace Chimera.FlythroughLib.GUI {
 
             rotationPanel.Value = mEvent.Target;
             lengthValue.ValueChanged += (source, args) => mEvent.Length = (int)lengthValue.Value;
-            rotationPanel.OnChange += (sender, args) => mEvent.Container.Time = mEvent.GlobalFinishTime;
+            rotationPanel.OnChange += (sender, args) => {
+                mEvent.Target = rotationPanel.Value;
+                mEvent.Container.Coordinator.Update(mEvent.Container.Coordinator.Position, Vector3.Zero, rotationPanel.Value, new Rotation());
+            };
             evt.TimeChange += (source, args) => {
                 Invoke(new Action(() => {
                     progressBar.Maximum = evt.Length;
@@ -32,9 +36,7 @@ namespace Chimera.FlythroughLib.GUI {
         }
 
         private void rotateToTakeCurrentButton_Click(object sender, EventArgs e) {
-            Rotation rot = new Rotation(mEvent.Container.Coordinator.Orientation);
-            mEvent.Target.Pitch = rot.Pitch;
-            mEvent.Target.Yaw = rot.Yaw;
+            rotationPanel.Value = new Rotation(mEvent.Container.Coordinator.Orientation);
         }
     }
 }

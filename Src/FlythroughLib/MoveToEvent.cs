@@ -78,9 +78,9 @@ namespace Chimera.FlythroughLib {
         protected override void TimeChanged(int value) { }
 
         public override void Load(XmlNode node) {
-            Target = Vector3.Parse(node.Attributes["Target"].Value);
-            Length = int.Parse(node.Attributes["Length"].Value);
             Name = node.Attributes["Name"].Value;
+            Length = int.Parse(node.Attributes["Length"].Value);
+            Target = Vector3.Parse(node.Attributes["Target"].Value);
         }
 
         public override XmlNode Save(XmlDocument doc) {
@@ -94,7 +94,7 @@ namespace Chimera.FlythroughLib {
             target.Value = mTarget.ToString();
             length.Value = Length.ToString();
 
-            name.Attributes.Append(name);
+            node.Attributes.Append(name);
             node.Attributes.Append(target);
             node.Attributes.Append(length);
 

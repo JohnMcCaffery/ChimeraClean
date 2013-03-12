@@ -139,7 +139,7 @@ namespace Chimera.FlythroughLib {
         public virtual void AddEvent(FlythroughEvent<T> evt) {
             evt.SetSequence(this);
             evt.SequenceStartTime = NextStart(mLastEvent); ;
-            evt.StartValue = mLastEvent == null ? mStartValue : mLastEvent.StartValue;
+            evt.StartValue = mLastEvent == null ? mStartValue : mLastEvent.FinishValue;
             mLastEvent = evt;
             mEvents.Add(evt);
 

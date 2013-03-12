@@ -10,14 +10,14 @@ using OpenMetaverse;
 using Chimera.Util;
 
 namespace Chimera.FlythroughLib.GUI {
-    public partial class MoveToPanel : UserControl {
-        private MoveToEvent mEvent;
+    public partial class LookAtPanel : UserControl {
+        private LookAtEvent mEvent;
 
-        public MoveToPanel() {
+        public LookAtPanel() {
             InitializeComponent();
         }
 
-        public MoveToPanel(MoveToEvent evt)
+        public LookAtPanel(LookAtEvent evt)
             : this() {
             mEvent = evt;
 
@@ -31,8 +31,7 @@ namespace Chimera.FlythroughLib.GUI {
 
             targetVectorPanel.OnChange += (source, args) => {
                 mEvent.Target = targetVectorPanel.Value;
-                //mEvent.Container.Time = evt.GlobalFinishTime;
-                mEvent.Container.Coordinator.Update(mEvent.Target, Vector3.Zero, mEvent.Container.Coordinator.Orientation, new Rotation());
+                mEvent.Container.Coordinator.Update(mEvent.Container.Coordinator.Position, Vector3.Zero, mEvent.Value, new Rotation());
             };
             lengthValue.ValueChanged += (source, args) => mEvent.Length = (int)lengthValue.Value;
             evt.TimeChange += (source, args) => {

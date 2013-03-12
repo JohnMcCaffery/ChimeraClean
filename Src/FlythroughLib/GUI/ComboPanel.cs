@@ -15,7 +15,6 @@ namespace Chimera.FlythroughLib.GUI {
         private UserControl mCurrentPositionPanel;
         private UserControl mCurrentOrientationPanel;
         private bool mGuiUpdate;
-        private bool mTickUpdate;
 
         public ComboPanel() {
             InitializeComponent();
@@ -28,9 +27,9 @@ namespace Chimera.FlythroughLib.GUI {
             mEvent.Orientations.CurrentEventChange += new Action<FlythroughEvent<Rotation>,FlythroughEvent<Rotation>>(Orientations_CurrentEventChange);
 
             foreach (var e in mEvent.Positions) {
-                AddEvent(e);
+                AddEvent(e, positionsList, positionPanel);
             } foreach (var e in mEvent.Orientations) {
-                AddEvent(e);
+                AddEvent(e, orientationsList, orientationPanel);
             }
         }
 
@@ -45,16 +44,16 @@ namespace Chimera.FlythroughLib.GUI {
         }
 
         private void AddEvent<T>(FlythroughEvent<T> evt, ListBox list, Panel panel) {
-            list.BeginUpdate();
-            list.Items.Add(evt);
-            list.EndUpdate();
             evt.TimeChange += (e, time) => {
                 if (!mGuiUpdate && !IsDisposed && Created)
                 Invoke(new Action(() => { if (list.SelectedItem != evt) list.SelectedItem = evt; }));
             };
             evt.ControlPanel.Dock = DockStyle.Fill;
-            evt.ControlPanel.Visible = false;
             panel.Controls.Add(evt.ControlPanel);
+            list.BeginUpdate();
+            list.Items.Add(evt);
+            list.SelectedIndex = list.Items.Count - 1;
+            list.EndUpdate();
         }
 
         private void RemoveEvent(FlythroughEvent<Vector3> evt) {
@@ -97,9 +96,8 @@ namespace Chimera.FlythroughLib.GUI {
         }
 
         private void positionsList_SelectedValueChanged(object sender, EventArgs e) {
-            if (positionsList.SelectedItem != null && !mTickUpdate) {
+            if (positionsList.SelectedItem != null) {
                 mGuiUpdate = true;
-                mEvent.Container.Time = mEvent.SequenceStartTime + ((FlythroughEvent<Vector3>)positionsList.SelectedItem).SequenceStartTime;
                 UserControl panel = ((FlythroughEvent<Vector3>)positionsList.SelectedItem).ControlPanel;
                 if (mCurrentPositionPanel != panel) {
                     if (mCurrentPositionPanel != null)
@@ -121,6 +119,10 @@ namespace Chimera.FlythroughLib.GUI {
             AddEvent(new RotateToEvent(mEvent.Container, 5000));
         }
 
+        private void lookAtEventToolStripMenuItem_Click(object sender, EventArgs e) {
+            AddEvent(new LookAtEvent(mEvent.Container, 5000));
+        }
+
         private void blankOrientationEventToolStripItem_Click(object sender, EventArgs e) {
             AddEvent(new BlankEvent<Rotation>(mEvent.Container, 5000));
         }
@@ -136,9 +138,8 @@ namespace Chimera.FlythroughLib.GUI {
         }
 
         private void orientationsList_SelectedValueChanged(object sender, EventArgs e) {
-            if (orientationsList.SelectedItem != null && !mTickUpdate) {
+            if (orientationsList.SelectedItem != null) {
                 mGuiUpdate = true;
-                mEvent.Container.Time = mEvent.SequenceStartTime + ((FlythroughEvent<Rotation>)orientationsList.SelectedItem).SequenceStartTime;
                 UserControl panel = ((FlythroughEvent<Rotation>)orientationsList.SelectedItem).ControlPanel;
                 if (mCurrentOrientationPanel != panel) {
                     if (mCurrentOrientationPanel != null)
@@ -148,6 +149,49 @@ namespace Chimera.FlythroughLib.GUI {
                 }
                 mGuiUpdate = false;
             }
+        }
+
+        private void positionStartButton_Click(object sender, EventArgs e) {
+            if (positionsList.SelectedItem != null)
+                mEvent.Container.Time = ((FlythroughEvent<Vector3>)positionsList.SelectedItem).GlobalStartTime;
+        }
+
+        private void positionEndButton_Click(object sender, EventArgs e) {
+            if (positionsList.SelectedItem != null)
+                mEvent.Container.Time = ((FlythroughEvent<Vector3>)positionsList.SelectedItem).GlobalFinishTime;
+        }
+
+        private void orientationStartButton_Click(object sender, EventArgs e) {
+            if (orientationsList.SelectedItem != null)
+                mEvent.Container.Time = ((FlythroughEvent<Rotation>)orientationsList.SelectedItem).GlobalStartTime;
+        }
+
+        private void orientationFinishButton_Click(object sender, EventArgs e) {
+            if (orientationsList.SelectedItem != null)
+                mEvent.Container.Time = ((FlythroughEvent<Rotation>)orientationsList.SelectedItem).GlobalFinishTime;
+        }
+
+        private void positionsList_DoubleClick(object sender, EventArgs e) {
+            if (positionsList.SelectedItem != null)
+                mEvent.Container.Time = ((FlythroughEvent<Vector3>)positionsList.SelectedItem).GlobalStartTime;
+        }
+
+        private void orientationsList_DoubleClick(object sender, EventArgs e) {
+            if (orientationsList.SelectedItem != null)
+                mEvent.Container.Time = ((FlythroughEvent<Rotation>)orientationsList.SelectedItem).GlobalStartTime;
+        }
+
+        private void copyCurrentPositionButton_Click(object sender, EventArgs e) {
+            AddEvent(new MoveToEvent(mEvent.Container, 5000, mEvent.Container.Coordinator.Position));
+        }
+
+        private void copyCurrentOrientationButton_Click(object sender, EventArgs e) {
+            AddEvent(new RotateToEvent(mEvent.Container, 5000, mEvent.Container.Coordinator.Orientation));
+        }
+
+        private void copyCurrentPairButton_Click(object sender, EventArgs e) {
+            AddEvent(new MoveToEvent(mEvent.Container, 5000, mEvent.Container.Coordinator.Position));
+            AddEvent(new RotateToEvent(mEvent.Container, 5000, new Rotation(mEvent.Container.Coordinator.Orientation)));
         }
     }
 }

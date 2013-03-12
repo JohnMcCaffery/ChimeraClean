@@ -37,17 +37,21 @@ namespace ProxyTestGUI {
         public Rotation Value {
             get { return rotation; }
             set {
+                if (rotation != null)
+                    rotation.OnChange -= RotationChanged;
                 rotation = value;
-                rotation.OnChange += (src, args) => {
-                    vectorPanel.Value = rotation.LookAtVector;
-                    pitchValue.Value = Math.Max(pitchValue.Minimum, Math.Min(pitchValue.Maximum, new decimal(rotation.Pitch)));
-                    pitchSlider.Value = Math.Max(pitchSlider.Minimum, Math.Min(pitchSlider.Maximum, (int) rotation.Pitch));
-                    yawValue.Value = Math.Max(yawValue.Minimum, Math.Min(yawValue.Maximum, new decimal(rotation.Yaw)));
-                    yawSlider.Value = Math.Max(yawSlider.Minimum, Math.Min(yawSlider.Maximum, (int) rotation.Yaw));
-                    if (OnChange != null)
-                        OnChange(this, null);
-                };
+                rotation.OnChange += RotationChanged;
+                RotationChanged(this, null);
             }
+        }
+        private void RotationChanged(object source, EventArgs args) {
+            vectorPanel.Value = rotation.LookAtVector;
+            pitchValue.Value = Math.Max(pitchValue.Minimum, Math.Min(pitchValue.Maximum, new decimal(rotation.Pitch)));
+            pitchSlider.Value = Math.Max(pitchSlider.Minimum, Math.Min(pitchSlider.Maximum, (int)rotation.Pitch));
+            yawValue.Value = Math.Max(yawValue.Minimum, Math.Min(yawValue.Maximum, new decimal(rotation.Yaw)));
+            yawSlider.Value = Math.Max(yawSlider.Minimum, Math.Min(yawSlider.Maximum, (int)rotation.Yaw));
+            if (OnChange != null)
+                OnChange(this, null);
         }
         public Quaternion Quaternion {
             get { return rotation.Quaternion; }

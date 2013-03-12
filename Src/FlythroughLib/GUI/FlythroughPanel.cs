@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using OpenMetaverse;
+using Chimera.Util;
 
 namespace Chimera.FlythroughLib.GUI {
     public partial class FlythroughPanel : UserControl {
@@ -63,8 +64,7 @@ namespace Chimera.FlythroughLib.GUI {
             }));
         }
 
-        private void AddEvent(FlythroughEvent<Camera> evt) {
-            mContainer.AddEvent(evt);
+        private void AddEventToGUI(FlythroughEvent<Camera> evt) {
             eventsList.BeginUpdate();
             eventsList.Items.Add(evt);
             eventsList.EndUpdate();
@@ -96,7 +96,9 @@ namespace Chimera.FlythroughLib.GUI {
         }
 
         private void addToolStripMenuItem_Click(object sender, EventArgs args) {
-            AddEvent(new ComboEvent(mContainer));
+            ComboEvent evt = new ComboEvent(mContainer);
+            mContainer.AddEvent(evt);
+            AddEventToGUI(evt);
         }
 
         private void removeToolStripMenuItem_Click(object sender, EventArgs e) {
@@ -117,7 +119,7 @@ namespace Chimera.FlythroughLib.GUI {
             if (eventsList.SelectedIndex > 0 && !TickUpdate) {
                 GUIUpdate = true;
                 ComboEvent evt = (ComboEvent) eventsList.SelectedItem;
-                mContainer.Time = evt.GlobalStartTime;
+                //mContainer.Time = evt.GlobalStartTime;
                 timeLabel.Text = "Time: " + Math.Round((double) mContainer.Time / 1000.0, 2);
                 timeSlider.Value = mContainer.Time;
                 UserControl panel = evt.ControlPanel;
@@ -151,12 +153,12 @@ namespace Chimera.FlythroughLib.GUI {
         }
 
         private void startPositionPanel_OnChange(object sender, EventArgs e) {
-            mContainer.Start = new Camera(startPositionPanel.Value, startOrientationPanel.Value);
+            mContainer.Start = new Camera(startPositionPanel.Value, new Rotation(mContainer.Coordinator.Orientation));
             mContainer.Time = 0;
         }
 
         private void startOrientationPanel_OnChange(object sender, EventArgs e) {
-            mContainer.Start = new Camera(startPositionPanel.Value, startOrientationPanel.Value);
+            mContainer.Start = new Camera(mContainer.Coordinator.Position, startOrientationPanel.Value);
             mContainer.Time = 0;
         }
 
@@ -175,8 +177,11 @@ namespace Chimera.FlythroughLib.GUI {
                     i++;
                 }
                 mContainer.Load(loadSequenceDialog.FileName);
+                //timeSlider.Maximum = mContainer.Length;
+                startPositionPanel.Value = mContainer.Start.Position;
+                startOrientationPanel.Value = mContainer.Start.Orientation;
                 foreach (var evt in mContainer.Events)
-                    AddEvent((ComboEvent) evt);
+                    AddEventToGUI((ComboEvent) evt);
             }
         }
 
@@ -188,6 +193,30 @@ namespace Chimera.FlythroughLib.GUI {
         private void stepForwardButton_Click(object sender, EventArgs e) {
             if (mContainer.Time < mContainer.Length - 1)
                 mContainer.Time++;
+        }
+
+        private void currentPositionButton_Click(object sender, EventArgs e) {
+            if (mContainer != null)
+                startPositionPanel.Value = mContainer.Coordinator.Position;
+        }
+
+        private void takeOrientationButton_Click(object sender, EventArgs e) {
+            if (mContainer != null)
+                startOrientationPanel.Value = new Rotation(mContainer.Coordinator.Orientation);
+        }
+
+        private void takeCurrentCameraButton_Click(object sender, EventArgs e) {
+            if (mContainer != null) {
+                startPositionPanel.Value = mContainer.Coordinator.Position;
+                startOrientationPanel.Value = new Rotation(mContainer.Coordinator.Orientation);
+            }
+        }
+
+        private void eventsList_DoubleClick(object sender, EventArgs e) {
+            if (eventsList.SelectedIndex > 0)
+                mContainer.Time = ((FlythroughEvent<Camera>)eventsList.SelectedItem).SequenceStartTime;
+            else if (eventsList.SelectedIndex == 0)
+                mContainer.Time = 0;
         }
     }
 }
