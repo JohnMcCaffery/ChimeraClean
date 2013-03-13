@@ -108,7 +108,7 @@
     <Compile Include="GUI\Forms\OverlayWindow.Designer.cs">
       <DependentUpon>OverlayWindow.cs</DependentUpon>
     </Compile>
-    <Compile Include="ImageArea.cs" />
+    <Compile Include="Overlay\ImageArea.cs" />
     <Compile Include="Inputs\CameraControlForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -123,11 +123,13 @@
       <DependentUpon>KBMousePanel.cs</DependentUpon>
     </Compile>
     <Compile Include="Interfaces\ICrashable.cs" />
-    <Compile Include="IOverlay.cs" />
-    <Compile Include="ISelectionRenderer.cs" />
-    <Compile Include="MainMenu.cs" />
-    <Compile Include="MainMenuArea.cs" />
-    <Compile Include="NumberSelectionRenderer.cs" />
+    <Compile Include="Interfaces\IOverlay.cs" />
+    <Compile Include="Interfaces\ISelectionRenderer.cs" />
+    <Compile Include="Overlay\MainMenu.cs" />
+    <Compile Include="Overlay\MainMenuItem.cs" />
+    <Compile Include="Overlay\NumberSelectionRenderer.cs" />
+    <Compile Include="Overlay\TestState.cs" />
+    <Compile Include="Overlay\WindowOverlay.cs" />
     <Compile Include="Util\Init.cs" />
     <Compile Include="Util\ProcessWrangler.cs" />
     <Compile Include="Util\Rotation.cs" />

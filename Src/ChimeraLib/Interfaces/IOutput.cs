@@ -27,7 +27,7 @@ namespace Chimera {
         }
 
         /// <summary>
-        /// A multi line string that can be printed to file to store a record of state in the event of a crash.
+        /// A multi line string that can be printed to file to store a record of window in the event of a crash.
         /// </summary>
         string State {
             get;

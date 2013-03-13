@@ -6,7 +6,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using System.Threading;
 
-namespace Chimera {
+namespace Chimera.Overlay {
     public class ImageArea : ISelectable {
         private readonly double mSelectTime = 1500;
 
@@ -17,19 +17,31 @@ namespace Chimera {
         private Bitmap mScaledImage;
         private Rectangle mBounds;
         private DateTime mHoverStart;
-        private string mWindowName = "Main Window";
         private double x, y;
         private double w, h;
         private bool mHovering;
         private bool mSelected;
         private bool mVisible;
+        private bool mActive = true;
 
         public Bitmap ScaledImage {
             get { return mScaledImage; }
+            set {
+            }
         }
 
-        public ImageArea(string imageFile, double x, double y, double w, double h) {
-            mImage = new Bitmap(imageFile);
+        public Bitmap Image {
+            get { return mImage; }
+            set {
+                mImage = value;
+                window_MonitorChanged(mWindow, mWindow.Monitor);
+                if (ImageChanged != null)
+                    ImageChanged(this, null);
+            }
+        }
+
+        public ImageArea(Bitmap image, double x, double y, double w, double h) {
+            mImage = image;
             mRenderer = new NumberSelectionRenderer();
             mRenderer.Init(this);
             
@@ -39,18 +51,21 @@ namespace Chimera {
             this.h = h;
         }
 
-        public ImageArea(Window window, Bitmap image, double x, double y, double w, double h) {
-            mImage = image;
-            this.x = x;
-            this.y = y;
-            this.w = w;
-            this.h = h;
-            SetWindow(window);
+        public ImageArea(string imageFile, double x, double y, double w, double h)
+            : this(new Bitmap(imageFile), x, y, w, h) {
+        }
+
+        public ImageArea(Window window, Bitmap image, double x, double y, double w, double h)
+            : this(image, x, y, w, h) {
+            Init(window);
+        }
+
+        public ImageArea(Window window, string imageFile, double x, double y, double w, double h)
+            : this(window, new Bitmap(imageFile), x, y, w, h) {
         }
 
         private void CheckState() {
-            if (mWindow.CursorX >= mBounds.Left && mWindow.CursorX <= mBounds.Right &&
-                mWindow.CursorY >= mBounds.Top  && mWindow.CursorY <= mBounds.Bottom) {
+            if (mBounds.Contains(mWindow.Cursor) && mActive) {
                 if (!mHovering) {
                     mHovering = true;
                     mHoverStart = DateTime.Now;
@@ -65,12 +80,6 @@ namespace Chimera {
                 mHovering = false;
                 mSelected = false;
             }
-        }
-
-        private void updateThread_Update() {
-            Thread.Sleep(20);
-            mWindow.RedrawOverlay();
-            CheckState();
         }
 
         private void window_CursorMoved(Window window, EventArgs args) {
@@ -94,10 +103,6 @@ namespace Chimera {
 
         public event Action<ISelectable> Hidden;
 
-        public string WindowName {
-            get { return mWindowName; }
-        }
-
         public string DebugState {
             get { return ""; }
         }
@@ -113,12 +118,13 @@ namespace Chimera {
             }
         }
 
-        public bool CurrentlySelected {
-            get { return mSelected; }
+        public bool Active {
+            get { return mActive; }
+            set { mActive = value; }
         }
 
-        public IOverlayState OverlayState {
-            get { return mState; }
+        public bool CurrentlySelected {
+            get { return mSelected; }
         }
 
         public ISelectionRenderer SelectionRenderer {
@@ -129,12 +135,7 @@ namespace Chimera {
             get { return mBounds; }
         }
 
-        public void Init(IOverlayState state) {
-            mState = state;
-            SetWindow(state.Coordinator.Windows.First(w => w.Name.Equals(mWindowName)));
-        }
-
-        private void SetWindow(Window window) {
+        public void Init(Window window) {
             mWindow = window;
 
             mWindow.MonitorChanged += new Action<Window, Screen>(window_MonitorChanged);
@@ -143,14 +144,15 @@ namespace Chimera {
             window_MonitorChanged(mWindow, mWindow.Monitor);
         }
 
-        public void Draw(Graphics graphics, Rectangle clipRectangle) {
+        public void DrawDynamic(Graphics graphics, Rectangle clipRectangle) {
             CheckState();
-            if (mHovering && !mSelected) {
+            if (mSelected)
+                mRenderer.DrawSelected(graphics, clipRectangle);
+            else if (mHovering)
                 mRenderer.DrawHover(graphics, clipRectangle, mHoverStart, mSelectTime);
-            }
         }
 
-        public void DrawBG(Graphics graphics, Rectangle clipRectangle) {
+        public void DrawStatic(Graphics graphics, Rectangle clipRectangle) {
             graphics.DrawImage(mScaledImage, mBounds.Location);
         }
 
@@ -163,5 +165,10 @@ namespace Chimera {
         }
 
         #endregion
+
+        /// <summary>
+        /// Triggered when the image this area renders as its selectable area changes.
+        /// </summary>
+        public event EventHandler ImageChanged;
     }
 }

@@ -205,9 +205,9 @@ namespace Chimera.FlythroughLib {
         public abstract void Load(XmlNode node);
 
         /// <summary>
-        /// The state of the event specific to the subclass.
+        /// The window of the event specific to the subclass.
         /// </summary>
-        /// <returns>A string with information about this event's state.</returns>
+        /// <returns>A string with information about this event's window.</returns>
         protected abstract string GetSpecificState();
 
         #region IComparable<FlythroughEvent> Members
@@ -244,7 +244,7 @@ namespace Chimera.FlythroughLib {
         }
 
         /// <summary>
-        /// String format printout of the current state of the event. Will be written out in the event of a crash.
+        /// String format printout of the current window of the event. Will be written out in the event of a crash.
         /// </summary>
         public virtual string State {
             get {

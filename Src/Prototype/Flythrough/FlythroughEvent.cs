@@ -234,7 +234,7 @@ namespace FlythroughLib {
         public abstract void Load(XmlNode node);
 
         /// <summary>
-        /// Save the state of the event to an XML node which can later be written to file.
+        /// Save the window of the event to an XML node which can later be written to file.
         /// </summary>
         /// <param name="doc">The document that the node is to be part of.</param>
         /// <returns>An XML node storing all relevant information about the event.</returns>

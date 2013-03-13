@@ -20,11 +20,11 @@ namespace Chimera {
         /// </summary>
         private IOutput mOutput;
         /// <summary>
-        /// Where on the coordinator the cursor is.
+        /// Where on the window the cursor is.
         /// </summary>
         private double mCursorX;
         /// <summary>
-        /// Where on the coordinator the cursor is.
+        /// Where on the window the cursor is.
         /// </summary>
         private double mCursorY;
         /// <summary>
@@ -159,6 +159,13 @@ namespace Chimera {
         }
 
         /// <summary>
+        /// Where on the monitor the cursor is.
+        /// </summary>
+        public Point Cursor {
+            get { return new Point((int) mCursorX, (int) mCursorY) ; }
+        }
+
+        /// <summary>
         /// The position of the coordinator in real space, in mm.
         /// </summary>
         public Vector3 TopLeft {
@@ -207,7 +214,7 @@ namespace Chimera {
         }
 
         /// <summary>
-        /// A multi line string that can be printed to file to store a record of state in the event of a crash.
+        /// A multi line string that can be printed to file to store a record of window in the event of a crash.
         /// </summary>
         public string State {
             get {

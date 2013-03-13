@@ -210,7 +210,7 @@ namespace Chimera.FlythroughLib {
                     dump += "  Current Event: " + sequence.CurrentEvent.Name + Environment.NewLine;
                     dump += sequence.CurrentEvent.State;
                 } catch (Exception e) {
-                    dump += "  Unable to record state of " + sequence.CurrentEvent.Name + "." + Environment.NewLine;
+                    dump += "  Unable to record window of " + sequence.CurrentEvent.Name + "." + Environment.NewLine;
                     dump += e.Message + Environment.NewLine;
                     dump += e.StackTrace;
                 }

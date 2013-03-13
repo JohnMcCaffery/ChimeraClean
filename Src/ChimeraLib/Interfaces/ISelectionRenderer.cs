@@ -14,7 +14,7 @@ namespace Chimera {
         }
 
         /// <summary>
-        /// Draw on the overlay to indicate the selectable area is being hovered over.
+        /// DrawDynamic on the overlay to indicate the selectable area is being hovered over.
         /// </summary>
         /// <param name="graphics">The graphics object to draw with.</param>
         /// <param name="clipRectangle">The bounds of the area being drawn on.</param>
@@ -23,7 +23,7 @@ namespace Chimera {
         void DrawHover(Graphics graphics, Rectangle clipRectangle, DateTime mHoverStart, double selectTime);
 
         /// <summary>
-        /// Draw on the overlay to indicate the selectable area is selected.
+        /// DrawDynamic on the overlay to indicate the selectable area is selected.
         /// </summary>
         /// <param name="graphics">The graphics object to draw with.</param>
         /// <param name="clipRectangle">The bounds of the area being drawn on.</param>

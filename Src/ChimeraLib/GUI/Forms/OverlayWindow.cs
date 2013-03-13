@@ -42,7 +42,11 @@ namespace Chimera.GUI.Forms {
         /// </summary>
         public bool Fullscreen {
             get { return FormBorderStyle == FormBorderStyle.None; }
-            set { FormBorderStyle = value ? FormBorderStyle.None : FormBorderStyle.Sizable; }
+            set { 
+                FormBorderStyle = value ? FormBorderStyle.None : FormBorderStyle.Sizable;
+                Location = mWindow.Monitor.Bounds.Location;
+                Size = mWindow.Monitor.Bounds.Size;
+            }
         }
 
         /// <summary>

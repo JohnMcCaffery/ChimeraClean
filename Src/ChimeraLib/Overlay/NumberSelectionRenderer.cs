@@ -5,7 +5,7 @@ using System.Text;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace Chimera {
+namespace Chimera.Overlay {
     public class NumberSelectionRenderer : ISelectionRenderer {
         private ISelectable mSelectable;
 
@@ -18,8 +18,8 @@ namespace Chimera {
             double hoverTime = DateTime.Now.Subtract(mHoverStart).TotalMilliseconds;
             int tick = (int)(hoverTime / tickLength) + 1;
             double progress = hoverTime % tickLength;
-            int fontSize = (int)((progress / tickLength) * (mSelectable.Bounds.Height / 2.0));
-            using (Font font = new Font(FontFamily.GenericMonospace, fontSize, FontStyle.Bold)) {
+            int s = (int)((progress / tickLength) * (mSelectable.Bounds.Height / 2.0));
+            using (Font font = new Font(FontFamily.GenericMonospace, Math.Max(1, s), FontStyle.Bold)) {
                 string str = tick.ToString();
                 SizeF size = graphics.MeasureString(str, font);
                 //SizeF size = TextRenderer.MeasureText(str, font);
@@ -32,7 +32,8 @@ namespace Chimera {
         }
 
         public void DrawSelected(Graphics graphics, Rectangle clipRectangle) {
-            throw new NotImplementedException();
+            using (Pen pen = new Pen(Brushes.Red, 20f))
+                graphics.DrawRectangle(pen, mSelectable.Bounds);
         }
 
         public void Init(ISelectable selectable) {
