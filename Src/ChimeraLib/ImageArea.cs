@@ -8,24 +8,44 @@ using System.Threading;
 
 namespace Chimera {
     public class ImageArea : ISelectable {
-        private readonly double mSelectTime = 3000;
-        private readonly double mTickLength;
+        private readonly double mSelectTime = 1500;
 
         private IOverlayState mState;
+        private ISelectionRenderer mRenderer;
         private Window mWindow;
         private Bitmap mImage;
         private Bitmap mScaledImage;
         private Rectangle mBounds;
         private DateTime mHoverStart;
+        private string mWindowName = "Main Window";
         private double x, y;
         private double w, h;
         private bool mHovering;
         private bool mSelected;
         private bool mVisible;
 
-        public ImageArea(string imageFile) {
+        public Bitmap ScaledImage {
+            get { return mScaledImage; }
+        }
+
+        public ImageArea(string imageFile, double x, double y, double w, double h) {
             mImage = new Bitmap(imageFile);
-            mTickLength = mSelectTime / 3;
+            mRenderer = new NumberSelectionRenderer();
+            mRenderer.Init(this);
+            
+            this.x = x;
+            this.y = y;
+            this.w = w;
+            this.h = h;
+        }
+
+        public ImageArea(Window window, Bitmap image, double x, double y, double w, double h) {
+            mImage = image;
+            this.x = x;
+            this.y = y;
+            this.w = w;
+            this.h = h;
+            SetWindow(window);
         }
 
         private void CheckState() {
@@ -40,9 +60,7 @@ namespace Chimera {
                     if (Selected != null)
                         Selected(this);
                     mSelected = true;
-                } else
-                    new Thread(updateThread_Update).Start();
-
+                }
             } else {
                 mHovering = false;
                 mSelected = false;
@@ -68,13 +86,17 @@ namespace Chimera {
             mScaledImage = new Bitmap(mImage, mBounds.Width, mBounds.Height);
         }
 
-        #region Selectable Members
+        #region ISelectable Members
 
         public event Action<ISelectable> Selected;
 
         public event Action<ISelectable> Shown;
 
         public event Action<ISelectable> Hidden;
+
+        public string WindowName {
+            get { return mWindowName; }
+        }
 
         public string DebugState {
             get { return ""; }
@@ -99,26 +121,37 @@ namespace Chimera {
             get { return mState; }
         }
 
-        public void Init(Window window, IOverlayState state) {
-            mWindow = window;
-            mState = state;
-
-            window.MonitorChanged += new Action<Window, Screen>(window_MonitorChanged);
-            window.CursorMoved += new Action<Window,EventArgs>(window_CursorMoved);
+        public ISelectionRenderer SelectionRenderer {
+            get { return mRenderer; }
         }
 
-        public void Draw(Graphics graphics, Rectangle clipRectangle, Color transparentColour) {
-            graphics.DrawImage(mScaledImage, mBounds.Location);
+        public Rectangle Bounds {
+            get { return mBounds; }
+        }
+
+        public void Init(IOverlayState state) {
+            mState = state;
+            SetWindow(state.Coordinator.Windows.First(w => w.Name.Equals(mWindowName)));
+        }
+
+        private void SetWindow(Window window) {
+            mWindow = window;
+
+            mWindow.MonitorChanged += new Action<Window, Screen>(window_MonitorChanged);
+            mWindow.CursorMoved += new Action<Window,EventArgs>(window_CursorMoved);
+
+            window_MonitorChanged(mWindow, mWindow.Monitor);
+        }
+
+        public void Draw(Graphics graphics, Rectangle clipRectangle) {
+            CheckState();
             if (mHovering && !mSelected) {
-                double hoverTime = DateTime.Now.Subtract(mHoverStart).TotalMilliseconds;
-                int tick = (int) (hoverTime / mTickLength) + 1;
-                double progress = hoverTime % mTickLength;
-                int fontSize = (int) (progress * (mBounds.Height / 2.0));
-                Font font = new Font(FontFamily.GenericMonospace, 30f, FontStyle.Bold);
-                float x = mBounds.X + ((mBounds.Width / 2) - (fontSize / 2));
-                float y = mBounds.Y + ((mBounds.Height / 2) - (fontSize / 2));
-                graphics.DrawString(tick.ToString(), font, Brushes.Black, x, y);
+                mRenderer.DrawHover(graphics, clipRectangle, mHoverStart, mSelectTime);
             }
+        }
+
+        public void DrawBG(Graphics graphics, Rectangle clipRectangle) {
+            graphics.DrawImage(mScaledImage, mBounds.Location);
         }
 
         public void Show() {
@@ -130,15 +163,5 @@ namespace Chimera {
         }
 
         #endregion
-
-
-        public ISelectionRenderer SelectionRenderer {
-            get {
-                throw new NotImplementedException();
-            }
-            set {
-                throw new NotImplementedException();
-            }
-        }
     }
 }

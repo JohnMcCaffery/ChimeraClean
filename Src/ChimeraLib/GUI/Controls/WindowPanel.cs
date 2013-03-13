@@ -24,6 +24,9 @@ namespace Chimera.GUI.Controls {
         public void Init(Window window) {
             mWindow = window;
 
+            mWindow.OverlayClosed += new EventHandler(mWindow_OverlayClosed);
+            mWindow.OverlayLaunched += new EventHandler(mWindow_OverlayLaunched);
+
             foreach (var screen in Screen.AllScreens) {
                 monitorPulldown.Items.Add(screen);
                 if (screen.DeviceName.Equals(window.Monitor.DeviceName))
@@ -41,6 +44,20 @@ namespace Chimera.GUI.Controls {
 
                 mainTab.Controls.Add(tab);
             }
+
+            mouseControlCheck.Checked = mWindow.MouseControl;
+            if (mWindow.OverlayVisible) {
+                launchOverlayButton.Text =  "Close Overlay";
+                mWindow.LaunchOverlay();
+            }
+        }
+
+        void mWindow_OverlayLaunched(object sender, EventArgs e) {
+            launchOverlayButton.Text = "Close Overlay";
+        }
+
+        void mWindow_OverlayClosed(object sender, EventArgs e) {
+            launchOverlayButton.Text = "Launch Overlay";
         }
 
         private void mainTab_KeyDown(object sender, KeyEventArgs e) {
@@ -56,6 +73,23 @@ namespace Chimera.GUI.Controls {
         private void screenPulldown_SelectedIndexChanged(object sender, EventArgs e) {
             if (mWindow != null)
                 mWindow.Monitor = (Screen)monitorPulldown.SelectedItem;
+        }
+
+        private void launchOverlayButton_Click(object sender, EventArgs e) {
+            mWindow.LaunchOverlay();
+            launchOverlayButton.Text = "Close Overlay";
+        }
+
+        private void bringToFrontButtin_Click(object sender, EventArgs e) {
+            mWindow.ForegroundOverlay();
+        }
+
+        private void showBordersTextBox_CheckedChanged(object sender, EventArgs e) {
+            mWindow.OverlayFullscreen = fullscreenCheck.Checked;
+        }
+
+        private void mouseControlCheck_CheckedChanged(object sender, EventArgs e) {
+            mWindow.MouseControl = mouseControlCheck.Checked;
         }
     }
 }

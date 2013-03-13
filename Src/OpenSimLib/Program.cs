@@ -22,7 +22,9 @@ namespace TestProject {
             IInput kbMouseInput = new KBMouseInput();
             IInput flythrough = new Flythrough();
             Window[] windows = new Window[] { new Window("Main Window", output) };
-            Coordinator coordinator = new Coordinator(windows, kbMouseInput, flythrough);
+            MainMenuItem item1 = new MainMenuItem("C:\\Users\\Iain\\Desktop\\Helmsdale Demo - 18-2-2013\\100_2344.JPG", .1, .1, .3, .3);
+            Chimera.MainMenu mainMenu = new Chimera.MainMenu(item1);
+            Coordinator coordinator = new Coordinator(windows, mainMenu, kbMouseInput, flythrough);
             CoordinatorForm form = new CoordinatorForm(coordinator);
 
             CoordinatorConfig cfg = new CoordinatorConfig();

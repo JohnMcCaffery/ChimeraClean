@@ -115,6 +115,8 @@ namespace Chimera {
         /// </summary>
         private int mTickLength;
 
+        private MainMenu mMainMenu;
+
         /// <summary>
         /// Selected whenever a new coordinator is added.
         /// </summary>
@@ -172,6 +174,8 @@ namespace Chimera {
             mCrashLogFile = cfg.CrashLogFile;
             mTickLength = cfg.TickLength;
 
+            mMainMenu = new MainMenu();
+
             foreach (var input in mInputs)
                 input.Init(this);
         }
@@ -186,6 +190,18 @@ namespace Chimera {
             mWindows = new List<Window>(windows);
             foreach (var window in mWindows)
                 window.Init(this);
+        }
+
+        /// <summary>
+        /// Initialise this coordinator, specifying a collection of inputs to work with and a collection of windows coordinated by this coordinator.
+        /// </summary>
+        /// <param name="windows">The windows which are coordinated by this coordinator.</param>
+        /// <param name="inputs">The inputs which control the camera through this coordinator.</param>
+        public Coordinator(IEnumerable<Window> windows, MainMenu mainMenu, params IInput[] inputs)
+            : this(windows, inputs) {
+
+            mMainMenu = mainMenu;
+            mMainMenu.Init(this);
         }
 
         /// <summary>
@@ -234,21 +250,10 @@ namespace Chimera {
         }
 
         /// <summary>
-        /// The states which the system can be in.
-        /// </summary>
-        public IOverlayState[] States {
-            get { return mStates.ToArray(); }
-        }
-
-        /// <summary>
         /// The overlay which is controlling the system.
         /// </summary>
         public IOverlay Overlay {
-            get {
-                throw new System.NotImplementedException();
-            }
-            set {
-            }
+            get { return mMainMenu; }
         }
 
         /// <summary>

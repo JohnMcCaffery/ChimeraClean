@@ -56,24 +56,50 @@ namespace Chimera {
         /// </summary>
         private Screen mMonitor;
         /// <summary>
+        /// Whether to launch the overlay window at startup.
+        /// </summary>
+        private bool mOverlayActive;
+        /// <summary>
+        /// Whether to launch the overlay window fullscreen at startup.
+        /// </summary>
+        private bool mOverlayFullscreen;
+        /// <summary>
+        /// Whether to use mouse control when the window first starts up.
+        /// </summary>
+        private bool mMouseControl = false;
+        /// <summary>
         /// The window which will render the overlay.
         /// </summary>
         private OverlayWindow mOverlayWindow;
+        /// <summary>
+        /// The colour that will show up as transparent on this window's overlay.
+        /// </summary>
+        private Color mTransparentColour = Color.Purple;
 
         /// <summary>
-        /// Selected whenever the position of this coordinator changes.
+        /// Triggered whenever the position of this coordinator changes.
         /// </summary>
         public event Action<Window, EventArgs> Changed;
 
         /// <summary>
-        /// Selected whenever the position of the cursor on this coordinator changes.
+        /// Triggered whenever the position of the cursor on this coordinator changes.
         /// </summary>
         public event Action<Window, EventArgs> CursorMoved;
 
         /// <summary>
-        /// Selected whenever the monitor that the coordinator is to display on changes.
+        /// Triggered whenever the monitor that the coordinator is to display on changes.
         /// </summary>
         public event Action<Window, Screen> MonitorChanged;
+
+        /// <summary>
+        /// Triggered when the overlay window is launched.
+        /// </summary>
+        public event EventHandler OverlayLaunched;
+
+        /// <summary>
+        /// Triggered when the overlay form for this window is closed.
+        /// </summary>
+        public event EventHandler OverlayClosed;
 
         /// <summary>
         /// Create a coordinator. It is necessary to specify a unique name for the coordinator.
@@ -85,6 +111,9 @@ namespace Chimera {
 
             WindowConfig cfg = new WindowConfig(name);
             mMonitor = Screen.AllScreens.FirstOrDefault(s => s.DeviceName.Equals(cfg.Monitor));
+            mOverlayActive = cfg.LaunchOverlay;
+            mMouseControl = cfg.MouseControl;
+            mOverlayFullscreen = cfg.Fullscreen;
             if (mMonitor == null)
                 mMonitor = Screen.PrimaryScreen;
         }
@@ -116,14 +145,14 @@ namespace Chimera {
         }
 
         /// <summary>
-        /// Where on the coordinator the cursor is.
+        /// Where on the monitor the cursor is.
         /// </summary>
         public double CursorX {
             get { return mCursorX ; }
         }
 
         /// <summary>
-        /// Where on the coordinator the cursor is.
+        /// Where on the monitor the cursor is.
         /// </summary>
         public double CursorY {
             get { return mCursorY ; }
@@ -216,6 +245,57 @@ namespace Chimera {
         }
 
         /// <summary>
+        /// Where on the physical window the cursor is.
+        /// </summary>
+        public double WindowX {
+            get { return mCursorX; }
+        }
+
+        /// <summary>
+        /// Where on the physical window the cursor is.
+        /// </summary>
+        public double WindowY {
+            get { return mCursorY; }
+        }
+
+        /// <summary>
+        /// True if the overlay has been launched.
+        /// </summary>
+        public bool OverlayVisible {
+            get { return mOverlayActive; }
+        }
+
+        /// <summary>
+        /// Whether the overlay window is currently fullscreen.
+        /// </summary>
+        public bool OverlayFullscreen {
+            get { return mOverlayFullscreen; }
+            set {
+                mOverlayFullscreen = value;
+                if (mOverlayWindow != null)
+                    mOverlayWindow.Fullscreen = value;
+            }
+        }
+
+        /// <summary>
+        /// Whether moving the mouse over the window will cause the cursor to move.
+        /// </summary>
+        public bool MouseControl {
+            get { return mMouseControl; }
+            set {
+                mMouseControl = value;
+                if (mOverlayWindow != null)
+                    mOverlayWindow.MouseControl = value; }
+        }
+
+        /// <summary>
+        /// Colour that can be used to make things transparent on this window's overlay.
+        /// </summary>
+        public Color TransparentColour {
+            get { return mTransparentColour; }
+        }
+
+        /// <summary>
         /// Initialise the coordinator, giving it a reference to the coordinator it is linked to.
         /// </summary>
         /// <param name="coordinator">The coordinator object the input can control.</param>
@@ -232,6 +312,7 @@ namespace Chimera {
         public void PositionCursor(double x, double y) {
             mCursorX = x;
             mCursorY = y;
+            RedrawOverlay();
             if (CursorMoved != null)
                 CursorMoved(this, null);
         }
@@ -242,6 +323,7 @@ namespace Chimera {
         public void Close() {
             if (mOutput != null)
                 mOutput.Close();
+            CloseOverlay();
         }
 
         /// <summary>
@@ -265,14 +347,47 @@ namespace Chimera {
         /// Force the overlay window to the top of the Z buffer.
         /// </summary>
         public void ForegroundOverlay() {
-            throw new System.NotImplementedException();
+            if (mOverlayWindow != null)
+                mOverlayWindow.Invoke(new Action(() => mOverlayWindow.BringToFront()));
         }
 
         /// <summary>
         /// Force the output window to the top of the Z buffer.
         /// </summary>
         public void ForegroundOutput() {
-            throw new System.NotImplementedException();
+            if (mOutput != null && mOutput.Active)
+                ProcessWrangler.BringToFront(mOutput.Process);
+        }
+
+        /// <summary>
+        /// Create and show the overlay window if it is not already created.
+        /// </summary>
+        public void LaunchOverlay() {
+            if (mOverlayWindow == null) {
+                mOverlayActive = true;
+                mOverlayWindow = new OverlayWindow(this, mTransparentColour);
+                mOverlayWindow.Show();
+                mOverlayWindow.FormClosed += new FormClosedEventHandler(mOverlayWindow_FormClosed);
+                mOverlayActive = false;
+                if (OverlayLaunched != null)
+                    OverlayLaunched(this, null);
+            }
+        }
+
+        void mOverlayWindow_FormClosed(object sender, FormClosedEventArgs e) {
+            mOverlayActive = false;
+            if (OverlayClosed != null)
+                OverlayClosed(this, null);
+        }
+
+        /// <summary>
+        /// Close the overlay window, if it has been created.
+        /// </summary>
+        public void CloseOverlay() {
+            if (mOverlayWindow != null) {
+                mOverlayWindow.Close();
+                mOverlayWindow = null;
+            }
         }
     }
 }

@@ -126,6 +126,7 @@
     <Compile Include="IOverlay.cs" />
     <Compile Include="ISelectionRenderer.cs" />
     <Compile Include="MainMenu.cs" />
+    <Compile Include="MainMenuArea.cs" />
     <Compile Include="NumberSelectionRenderer.cs" />
     <Compile Include="Util\Init.cs" />
     <Compile Include="Util\ProcessWrangler.cs" />
