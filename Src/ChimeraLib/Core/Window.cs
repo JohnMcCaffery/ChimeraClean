@@ -80,7 +80,7 @@ namespace Chimera {
         /// </summary>
         /// <param name="name">The name this coordinator is known by within the system.</param>
         /// <param name="overlayAreas">The overlay areas mapped to this coordinator.</param>
-        public Window(string name, params IOverlayArea[] overlayAreas) {
+        public Window(string name, params ISelectable[] overlayAreas) {
             mName = name;
 
             WindowConfig cfg = new WindowConfig(name);
@@ -94,7 +94,7 @@ namespace Chimera {
         /// </summary>
         /// <param name="name">The name this coordinator is known by within the system.</param>
         /// <param name="overlayAreas">The overlay areas mapped to this coordinator.</param>
-        public Window(string name, IOutput output, params IOverlayArea[] overlayAreas)
+        public Window(string name, IOutput output, params ISelectable[] overlayAreas)
             : this(name, overlayAreas) {
             mOutput = output;
         }
@@ -245,7 +245,7 @@ namespace Chimera {
         }
 
         /// <summary>
-        /// Draw any relevant information about this input onto a diagram.
+        /// DrawSelected any relevant information about this input onto a diagram.
         /// </summary>
         /// <param name="perspective">The perspective to render along.</param>
         /// <param name="graphics">The graphics object to draw with.</param>
@@ -259,6 +259,20 @@ namespace Chimera {
         public void RedrawOverlay() {
             if (mOverlayWindow != null)
                 mOverlayWindow.Redraw();
+        }
+
+        /// <summary>
+        /// Force the overlay window to the top of the Z buffer.
+        /// </summary>
+        public void ForegroundOverlay() {
+            throw new System.NotImplementedException();
+        }
+
+        /// <summary>
+        /// Force the output window to the top of the Z buffer.
+        /// </summary>
+        public void ForegroundOutput() {
+            throw new System.NotImplementedException();
         }
     }
 }

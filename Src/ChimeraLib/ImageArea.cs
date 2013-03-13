@@ -7,7 +7,7 @@ using System.Windows.Forms;
 using System.Threading;
 
 namespace Chimera {
-    public class ImageArea : IOverlayArea {
+    public class ImageArea : ISelectable {
         private readonly double mSelectTime = 3000;
         private readonly double mTickLength;
 
@@ -21,6 +21,7 @@ namespace Chimera {
         private double w, h;
         private bool mHovering;
         private bool mSelected;
+        private bool mVisible;
 
         public ImageArea(string imageFile) {
             mImage = new Bitmap(imageFile);
@@ -67,12 +68,27 @@ namespace Chimera {
             mScaledImage = new Bitmap(mImage, mBounds.Width, mBounds.Height);
         }
 
-        #region IOverlayArea Members
+        #region Selectable Members
 
-        public event Action<IOverlayArea> Selected;
+        public event Action<ISelectable> Selected;
+
+        public event Action<ISelectable> Shown;
+
+        public event Action<ISelectable> Hidden;
 
         public string DebugState {
             get { return ""; }
+        }
+
+        public bool Visible {
+            get { return mVisible; }
+            set {
+                mVisible = value;
+                if (value && Shown != null)
+                    Shown(this);
+                else if (!value && Hidden != null)
+                    Hidden(this);
+            }
         }
 
         public bool CurrentlySelected {
@@ -105,6 +121,24 @@ namespace Chimera {
             }
         }
 
+        public void Show() {
+            Visible = true;
+        }
+
+        public void Hide() {
+            Visible = false;
+        }
+
         #endregion
+
+
+        public ISelectionRenderer SelectionRenderer {
+            get {
+                throw new NotImplementedException();
+            }
+            set {
+                throw new NotImplementedException();
+            }
+        }
     }
 }

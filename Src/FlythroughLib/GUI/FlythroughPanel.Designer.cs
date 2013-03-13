@@ -25,7 +25,7 @@
         private void InitializeComponent() {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FlythroughPanel));
-            Chimera.Util.Rotation rotation1 = new Chimera.Util.Rotation();
+            Chimera.Util.Rotation rotation5 = new Chimera.Util.Rotation();
             this.saveSequenceDialog = new System.Windows.Forms.SaveFileDialog();
             this.eventsList = new System.Windows.Forms.ListBox();
             this.eventsContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -42,6 +42,8 @@
             this.takeCurrentCameraButton = new System.Windows.Forms.Button();
             this.takeOrientationButton = new System.Windows.Forms.Button();
             this.currentPositionButton = new System.Windows.Forms.Button();
+            this.startOrientationPanel = new ProxyTestGUI.RotationPanel();
+            this.startPositionPanel = new ProxyTestGUI.VectorPanel();
             this.autoStepCheck = new System.Windows.Forms.CheckBox();
             this.timeSlider = new System.Windows.Forms.TrackBar();
             this.lengthLabel = new System.Windows.Forms.Label();
@@ -51,8 +53,7 @@
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.stepBackButton = new System.Windows.Forms.Button();
             this.stepForwardButton = new System.Windows.Forms.Button();
-            this.startOrientationPanel = new ProxyTestGUI.RotationPanel();
-            this.startPositionPanel = new ProxyTestGUI.VectorPanel();
+            this.stepButton = new System.Windows.Forms.Button();
             this.eventsContextMenu.SuspendLayout();
             this.eventPanel.SuspendLayout();
             this.startPanel.SuspendLayout();
@@ -110,7 +111,7 @@
             // loadButton
             // 
             this.loadButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.loadButton.Location = new System.Drawing.Point(184, 322);
+            this.loadButton.Location = new System.Drawing.Point(213, 322);
             this.loadButton.Name = "loadButton";
             this.loadButton.Size = new System.Drawing.Size(40, 23);
             this.loadButton.TabIndex = 10;
@@ -121,9 +122,9 @@
             // saveButton
             // 
             this.saveButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.saveButton.Location = new System.Drawing.Point(230, 322);
+            this.saveButton.Location = new System.Drawing.Point(259, 322);
             this.saveButton.Name = "saveButton";
-            this.saveButton.Size = new System.Drawing.Size(43, 23);
+            this.saveButton.Size = new System.Drawing.Size(40, 23);
             this.saveButton.TabIndex = 11;
             this.saveButton.Text = "Save";
             this.saveButton.UseVisualStyleBackColor = true;
@@ -133,7 +134,7 @@
             // 
             this.loopCheck.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.loopCheck.AutoSize = true;
-            this.loopCheck.Location = new System.Drawing.Point(420, 326);
+            this.loopCheck.Location = new System.Drawing.Point(478, 326);
             this.loopCheck.Name = "loopCheck";
             this.loopCheck.Size = new System.Drawing.Size(50, 17);
             this.loopCheck.TabIndex = 12;
@@ -144,9 +145,9 @@
             // playButton
             // 
             this.playButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.playButton.Location = new System.Drawing.Point(279, 322);
+            this.playButton.Location = new System.Drawing.Point(305, 322);
             this.playButton.Name = "playButton";
-            this.playButton.Size = new System.Drawing.Size(56, 23);
+            this.playButton.Size = new System.Drawing.Size(45, 23);
             this.playButton.TabIndex = 13;
             this.playButton.Text = "Play";
             this.playButton.UseVisualStyleBackColor = true;
@@ -160,7 +161,7 @@
             this.eventPanel.Controls.Add(this.startPanel);
             this.eventPanel.Location = new System.Drawing.Point(129, 0);
             this.eventPanel.Name = "eventPanel";
-            this.eventPanel.Size = new System.Drawing.Size(344, 287);
+            this.eventPanel.Size = new System.Drawing.Size(402, 287);
             this.eventPanel.TabIndex = 14;
             // 
             // startPanel
@@ -173,7 +174,7 @@
             this.startPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.startPanel.Location = new System.Drawing.Point(0, 0);
             this.startPanel.Name = "startPanel";
-            this.startPanel.Size = new System.Drawing.Size(344, 287);
+            this.startPanel.Size = new System.Drawing.Size(402, 287);
             this.startPanel.TabIndex = 0;
             // 
             // takeCurrentCameraButton
@@ -182,7 +183,7 @@
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.takeCurrentCameraButton.Location = new System.Drawing.Point(0, 263);
             this.takeCurrentCameraButton.Name = "takeCurrentCameraButton";
-            this.takeCurrentCameraButton.Size = new System.Drawing.Size(344, 23);
+            this.takeCurrentCameraButton.Size = new System.Drawing.Size(402, 23);
             this.takeCurrentCameraButton.TabIndex = 4;
             this.takeCurrentCameraButton.Text = "Take Current Camera";
             this.takeCurrentCameraButton.UseVisualStyleBackColor = true;
@@ -194,7 +195,7 @@
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.takeOrientationButton.Location = new System.Drawing.Point(0, 234);
             this.takeOrientationButton.Name = "takeOrientationButton";
-            this.takeOrientationButton.Size = new System.Drawing.Size(344, 23);
+            this.takeOrientationButton.Size = new System.Drawing.Size(402, 23);
             this.takeOrientationButton.TabIndex = 3;
             this.takeOrientationButton.Text = "Take Current Orientation";
             this.takeOrientationButton.UseVisualStyleBackColor = true;
@@ -206,17 +207,58 @@
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.currentPositionButton.Location = new System.Drawing.Point(0, 104);
             this.currentPositionButton.Name = "currentPositionButton";
-            this.currentPositionButton.Size = new System.Drawing.Size(344, 23);
+            this.currentPositionButton.Size = new System.Drawing.Size(402, 23);
             this.currentPositionButton.TabIndex = 2;
             this.currentPositionButton.Text = "Take Current Position";
             this.currentPositionButton.UseVisualStyleBackColor = true;
             this.currentPositionButton.Click += new System.EventHandler(this.currentPositionButton_Click);
             // 
+            // startOrientationPanel
+            // 
+            this.startOrientationPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.startOrientationPanel.DisplayName = "Start Orientation";
+            this.startOrientationPanel.Location = new System.Drawing.Point(0, 133);
+            this.startOrientationPanel.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("startOrientationPanel.LookAtVector")));
+            this.startOrientationPanel.MinimumSize = new System.Drawing.Size(252, 95);
+            this.startOrientationPanel.Name = "startOrientationPanel";
+            this.startOrientationPanel.Pitch = 0D;
+            this.startOrientationPanel.Quaternion = ((OpenMetaverse.Quaternion)(resources.GetObject("startOrientationPanel.Quaternion")));
+            this.startOrientationPanel.Size = new System.Drawing.Size(402, 95);
+            this.startOrientationPanel.TabIndex = 1;
+            rotation5.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("rotation5.LookAtVector")));
+            rotation5.Pitch = 0D;
+            rotation5.Quaternion = ((OpenMetaverse.Quaternion)(resources.GetObject("rotation5.Quaternion")));
+            rotation5.Yaw = 0D;
+            this.startOrientationPanel.Value = rotation5;
+            this.startOrientationPanel.Yaw = 0D;
+            this.startOrientationPanel.OnChange += new System.EventHandler(this.startOrientationPanel_OnChange);
+            // 
+            // startPositionPanel
+            // 
+            this.startPositionPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.startPositionPanel.DisplayName = "Start Position";
+            this.startPositionPanel.Location = new System.Drawing.Point(0, 3);
+            this.startPositionPanel.Max = 1024D;
+            this.startPositionPanel.MaxV = ((OpenMetaverse.Vector3)(resources.GetObject("startPositionPanel.MaxV")));
+            this.startPositionPanel.Min = -1024D;
+            this.startPositionPanel.MinimumSize = new System.Drawing.Size(103, 95);
+            this.startPositionPanel.MinV = ((OpenMetaverse.Vector3)(resources.GetObject("startPositionPanel.MinV")));
+            this.startPositionPanel.Name = "startPositionPanel";
+            this.startPositionPanel.Size = new System.Drawing.Size(399, 95);
+            this.startPositionPanel.TabIndex = 0;
+            this.startPositionPanel.Value = ((OpenMetaverse.Vector3)(resources.GetObject("startPositionPanel.Value")));
+            this.startPositionPanel.X = 0F;
+            this.startPositionPanel.Y = 0F;
+            this.startPositionPanel.Z = 0F;
+            this.startPositionPanel.OnChange += new System.EventHandler(this.startPositionPanel_OnChange);
+            // 
             // autoStepCheck
             // 
             this.autoStepCheck.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.autoStepCheck.AutoSize = true;
-            this.autoStepCheck.Location = new System.Drawing.Point(341, 326);
+            this.autoStepCheck.Location = new System.Drawing.Point(399, 326);
             this.autoStepCheck.Name = "autoStepCheck";
             this.autoStepCheck.Size = new System.Drawing.Size(73, 17);
             this.autoStepCheck.TabIndex = 15;
@@ -231,7 +273,7 @@
             this.timeSlider.Location = new System.Drawing.Point(138, 293);
             this.timeSlider.Maximum = 0;
             this.timeSlider.Name = "timeSlider";
-            this.timeSlider.Size = new System.Drawing.Size(322, 45);
+            this.timeSlider.Size = new System.Drawing.Size(380, 45);
             this.timeSlider.TabIndex = 0;
             this.timeSlider.TickStyle = System.Windows.Forms.TickStyle.None;
             this.timeSlider.Scroll += new System.EventHandler(this.timeSlider_Scroll);
@@ -259,9 +301,9 @@
             // startButton
             // 
             this.startButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.startButton.Location = new System.Drawing.Point(138, 322);
+            this.startButton.Location = new System.Drawing.Point(170, 322);
             this.startButton.Name = "startButton";
-            this.startButton.Size = new System.Drawing.Size(40, 23);
+            this.startButton.Size = new System.Drawing.Size(37, 23);
             this.startButton.TabIndex = 17;
             this.startButton.Text = "Start";
             this.startButton.UseVisualStyleBackColor = true;
@@ -285,7 +327,7 @@
             // stepForwardButton
             // 
             this.stepForwardButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.stepForwardButton.Location = new System.Drawing.Point(456, 293);
+            this.stepForwardButton.Location = new System.Drawing.Point(514, 293);
             this.stepForwardButton.Name = "stepForwardButton";
             this.stepForwardButton.Size = new System.Drawing.Size(14, 23);
             this.stepForwardButton.TabIndex = 18;
@@ -293,66 +335,37 @@
             this.stepForwardButton.UseVisualStyleBackColor = true;
             this.stepForwardButton.Click += new System.EventHandler(this.stepForwardButton_Click);
             // 
-            // startOrientationPanel
+            // stepButton
             // 
-            this.startOrientationPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.startOrientationPanel.DisplayName = "Start Orientation";
-            this.startOrientationPanel.Location = new System.Drawing.Point(0, 133);
-            this.startOrientationPanel.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("startOrientationPanel.LookAtVector")));
-            this.startOrientationPanel.MinimumSize = new System.Drawing.Size(252, 95);
-            this.startOrientationPanel.Name = "startOrientationPanel";
-            this.startOrientationPanel.Pitch = 0D;
-            this.startOrientationPanel.Quaternion = ((OpenMetaverse.Quaternion)(resources.GetObject("startOrientationPanel.Quaternion")));
-            this.startOrientationPanel.Size = new System.Drawing.Size(344, 95);
-            this.startOrientationPanel.TabIndex = 1;
-            rotation1.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("rotation1.LookAtVector")));
-            rotation1.Pitch = 0D;
-            rotation1.Quaternion = ((OpenMetaverse.Quaternion)(resources.GetObject("rotation1.Quaternion")));
-            rotation1.Yaw = 0D;
-            this.startOrientationPanel.Value = rotation1;
-            this.startOrientationPanel.Yaw = 0D;
-            this.startOrientationPanel.OnChange += new System.EventHandler(this.startOrientationPanel_OnChange);
-            // 
-            // startPositionPanel
-            // 
-            this.startPositionPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.startPositionPanel.DisplayName = "Start Position";
-            this.startPositionPanel.Location = new System.Drawing.Point(0, 3);
-            this.startPositionPanel.Max = 1024D;
-            this.startPositionPanel.MaxV = ((OpenMetaverse.Vector3)(resources.GetObject("startPositionPanel.MaxV")));
-            this.startPositionPanel.Min = -1024D;
-            this.startPositionPanel.MinimumSize = new System.Drawing.Size(103, 95);
-            this.startPositionPanel.MinV = ((OpenMetaverse.Vector3)(resources.GetObject("startPositionPanel.MinV")));
-            this.startPositionPanel.Name = "startPositionPanel";
-            this.startPositionPanel.Size = new System.Drawing.Size(341, 95);
-            this.startPositionPanel.TabIndex = 0;
-            this.startPositionPanel.Value = ((OpenMetaverse.Vector3)(resources.GetObject("startPositionPanel.Value")));
-            this.startPositionPanel.X = 0F;
-            this.startPositionPanel.Y = 0F;
-            this.startPositionPanel.Z = 0F;
-            this.startPositionPanel.OnChange += new System.EventHandler(this.startPositionPanel_OnChange);
+            this.stepButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.stepButton.Location = new System.Drawing.Point(356, 322);
+            this.stepButton.Name = "stepButton";
+            this.stepButton.Size = new System.Drawing.Size(37, 23);
+            this.stepButton.TabIndex = 19;
+            this.stepButton.Text = "Step";
+            this.stepButton.UseVisualStyleBackColor = true;
+            this.stepButton.Click += new System.EventHandler(this.stepButton_Click);
             // 
             // FlythroughPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.loadButton);
+            this.Controls.Add(this.saveButton);
+            this.Controls.Add(this.stepButton);
             this.Controls.Add(this.stepForwardButton);
             this.Controls.Add(this.stepBackButton);
-            this.Controls.Add(this.startButton);
             this.Controls.Add(this.timeLabel);
+            this.Controls.Add(this.startButton);
             this.Controls.Add(this.lengthLabel);
             this.Controls.Add(this.autoStepCheck);
             this.Controls.Add(this.eventPanel);
             this.Controls.Add(this.eventsList);
-            this.Controls.Add(this.playButton);
             this.Controls.Add(this.loopCheck);
-            this.Controls.Add(this.loadButton);
-            this.Controls.Add(this.saveButton);
+            this.Controls.Add(this.playButton);
             this.Controls.Add(this.timeSlider);
             this.Name = "FlythroughPanel";
-            this.Size = new System.Drawing.Size(473, 348);
+            this.Size = new System.Drawing.Size(531, 348);
             this.eventsContextMenu.ResumeLayout(false);
             this.eventPanel.ResumeLayout(false);
             this.startPanel.ResumeLayout(false);
@@ -391,5 +404,6 @@
         private System.Windows.Forms.Button currentPositionButton;
         private System.Windows.Forms.Button takeOrientationButton;
         private System.Windows.Forms.Button takeCurrentCameraButton;
+        private System.Windows.Forms.Button stepButton;
     }
 }

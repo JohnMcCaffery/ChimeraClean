@@ -18,6 +18,15 @@ namespace Chimera.Inputs {
         private bool mIgnorePitch;
 
         /// <summary>
+        /// Triggered whenever the keyboard scale changes.
+        /// </summary>
+        public event Action<int> KBScaleChange;
+        /// <summary>
+        /// Triggered whenever the mouse scale changes.
+        /// </summary>
+        public event Action<int> MouseScaleChange;
+
+        /// <summary>
         /// Amount to scale keyboard values by.
         /// </summary>
         private double mKBShift = 1.0;
@@ -44,7 +53,11 @@ namespace Chimera.Inputs {
         /// </summary>
         public int KBScale {
             get { return (int) (mKBShift / .002); }
-            set { mKBShift = .002 * value; }
+            set { 
+                mKBShift = .002 * value;
+                if (KBScaleChange != null)
+                    KBScaleChange(KBScale);
+            }
         }
 
         /// <summary>
@@ -53,7 +66,11 @@ namespace Chimera.Inputs {
         /// </summary>
         public int MouseScale {
             get { return (int) (mMouseScale / .01) * 5; }
-            set { mMouseScale = ((double) value / 5.0) * .01; }
+            set { 
+                mMouseScale = ((double) value / 5.0) * .01;
+                if (MouseScaleChange != null)
+                    MouseScaleChange(KBScale);
+            }
         }
 
         #region IInput Members

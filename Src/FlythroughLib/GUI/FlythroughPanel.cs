@@ -13,6 +13,7 @@ namespace Chimera.FlythroughLib.GUI {
     public partial class FlythroughPanel : UserControl {
         private Flythrough mContainer;
         private Control mCurrentPanel;
+        private ComboEvent mStartEvt;
         private bool GUIUpdate;
         private bool TickUpdate;
 
@@ -36,9 +37,9 @@ namespace Chimera.FlythroughLib.GUI {
             autoStepCheck.Checked = mContainer.AutoStep;
             loopCheck.Checked = mContainer.Loop;
 
-            ComboEvent startEvt = new ComboEvent(mContainer);
-            startEvt.Name = "Start";
-            eventsList.Items.Add(startEvt);
+            mStartEvt = new ComboEvent(mContainer);
+            mStartEvt.Name = "Start";
+            eventsList.Items.Add(mStartEvt);
             mCurrentPanel = startPanel;
         }
 
@@ -170,12 +171,9 @@ namespace Chimera.FlythroughLib.GUI {
 
         private void loadButton_Click(object sender, EventArgs e) {
             if (loadSequenceDialog.ShowDialog(this) == DialogResult.OK) {
-                int i = 1;
-                foreach (var evt in mContainer.Events) {
-                    eventsList.Items.RemoveAt(i);
-                    eventPanel.Controls.Remove(evt.ControlPanel);
-                    i++;
-                }
+                foreach (var evt in mContainer.Events)
+                    eventsList.Items.Remove(evt);
+
                 mContainer.Load(loadSequenceDialog.FileName);
                 //timeSlider.Maximum = mContainer.Length;
                 startPositionPanel.Value = mContainer.Start.Position;
@@ -217,6 +215,10 @@ namespace Chimera.FlythroughLib.GUI {
                 mContainer.Time = ((FlythroughEvent<Camera>)eventsList.SelectedItem).SequenceStartTime;
             else if (eventsList.SelectedIndex == 0)
                 mContainer.Time = 0;
+        }
+
+        private void stepButton_Click(object sender, EventArgs e) {
+            mContainer.Step();
         }
     }
 }

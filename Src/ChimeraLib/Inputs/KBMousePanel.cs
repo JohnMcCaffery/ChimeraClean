@@ -81,5 +81,21 @@ namespace Chimera.Inputs {
             if (mInput != null)
                 mInput.IgnorePitch = ignorePitchCheck.Checked;
         }
+
+        private CameraControlForm mForm;
+
+        private void showWindowButton_Click(object sender, EventArgs e) {
+            if (mInput != null && showWindowButton.Text == "Show Window") {
+                mForm = new CameraControlForm(mInput);
+                mForm.FormClosed += (source, args) => showWindowButton.Text = "Show Window";
+                mForm.Show(this);
+                    showWindowButton.Text = "Hide Window";
+            } else {
+                if (mForm != null)
+                    mForm.Close();
+                else
+                    showWindowButton.Text = "Show Window";
+            }
+        }
     }
 }

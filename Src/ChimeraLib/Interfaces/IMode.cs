@@ -6,6 +6,15 @@ using System.Drawing;
 
 namespace Chimera {
     public interface IOverlayState {
+        /// <summary>
+        /// Triggered when this overlay state is activated.
+        /// </summary>
+        event System.Action<IOverlayState> Activated;
+
+        /// <summary>
+        /// Triggered when this overlay state is de-activated. May be some time after the 'Deactivate' method is called.
+        /// </summary>
+        event Action<IOverlayState> Deactivated;
 
         /// <summary>
         /// A multi line string that can be printed to file to store a record of state in the event of a crash.
@@ -15,7 +24,7 @@ namespace Chimera {
         }
 
         /// <summary>
-        /// The unique name by which the mode is known.
+        /// The unique name by which the state is known.
         /// </summary>
         string Name {
             get;
@@ -30,7 +39,7 @@ namespace Chimera {
         }
 
         /// <summary>
-        /// Whether this state is currently active.
+        /// Whether this state is currently active. Setting this to false will instantly de-activate the state, without running through any de-activation routine/animation that the Deactivate method would have triggered.
         /// </summary>
         bool Active {
             get;
@@ -38,9 +47,9 @@ namespace Chimera {
         }
 
         /// <summary>
-        /// The overlay areas this state renders.
+        /// The selection areas this state renders.
         /// </summary>
-        IOverlayArea[] OverlayAreas {
+        ISelectable[] SelectionAreas {
             get;
         }
 
@@ -51,12 +60,22 @@ namespace Chimera {
         void Init(Coordinator coordinator);
 
         /// <summary>
-        /// DrawH the overlay area on its parent container's surface.
+        /// DrawSelected the overlay area on its parent container's surface.
         /// </summary>
         /// <param name="graphics">The graphics object to draw with.</param>
         /// <param name="clipRectangle">The bounds of the area being drawn on.</param>
         /// <param name="transparentColour">The colour that can be used to make the surface transparent.</param>
         /// <param name="window">The overlay window to draw this state on.</param>
         void Draw(Graphics graphics, Rectangle clipRectangle, Color transparentColour, Window window);
+
+        /// <summary>
+        /// De-activate this overlay window. Doesn't guarantee that the state is de-activated when it returns. The state is only officially de-activated when the Active property is false and the Hidden event fires. Use this method to implement any fade out style effects.
+        /// </summary>
+        void Deactivate();
+
+        /// <summary>
+        /// Show this overlay window. Will instantly activate the state. Has the same effect as setting Active to true.
+        /// </summary>
+        void Activate();
     }
 }

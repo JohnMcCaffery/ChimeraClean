@@ -124,6 +124,12 @@ namespace Chimera.FlythroughLib {
             get { return mLoop; }
             set { mLoop = value; }
         }
+        /// <summary>
+        /// The event which is currently playing.
+        /// </summary>
+        public FlythroughEvent<Camera> CurrentEvent {
+            get { return mEvents.Count == 0 ? null : mEvents.CurrentEvent; }
+        }
 
         public Flythrough() {
             Start = new Camera(new Vector3(128f, 128f, 60f), Rotation.Zero);
@@ -156,6 +162,11 @@ namespace Chimera.FlythroughLib {
             mEvents.MoveUp(evt);
             if (evt.SequenceStartTime == 0)
                 evt.StartValue = Start;
+        }
+
+        public void Step() {
+            if (mEvents.CurrentEvent != null && mEvents.CurrentEvent.GlobalFinishTime + 1< Length)
+                Time = CurrentEvent.GlobalFinishTime + 1;
         }
 
         /// <summary>
@@ -255,14 +266,14 @@ namespace Chimera.FlythroughLib {
                         else {
                             DoTick(mEvents.Length, mEvents.CurrentEvent.Value);
                             mPlaying = false;
-                        }
 
-                        if (SequenceFinished != null)
-                            SequenceFinished(this, null);
+                            if (SequenceFinished != null)
+                                SequenceFinished(this, null);
+                        }
                     }
                 }
             }
-         }
+        }
 
         private void DoTick(int time, Camera o) {
             mEvents.Time = time;

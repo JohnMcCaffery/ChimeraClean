@@ -109,6 +109,12 @@
       <DependentUpon>OverlayWindow.cs</DependentUpon>
     </Compile>
     <Compile Include="ImageArea.cs" />
+    <Compile Include="Inputs\CameraControlForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Inputs\CameraControlForm.Designer.cs">
+      <DependentUpon>CameraControlForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Inputs\KBMouseInput.cs" />
     <Compile Include="Inputs\KBMousePanel.cs">
       <SubType>UserControl</SubType>
@@ -117,7 +123,10 @@
       <DependentUpon>KBMousePanel.cs</DependentUpon>
     </Compile>
     <Compile Include="Interfaces\ICrashable.cs" />
+    <Compile Include="IOverlay.cs" />
+    <Compile Include="ISelectionRenderer.cs" />
     <Compile Include="MainMenu.cs" />
+    <Compile Include="NumberSelectionRenderer.cs" />
     <Compile Include="Util\Init.cs" />
     <Compile Include="Util\ProcessWrangler.cs" />
     <Compile Include="Util\Rotation.cs" />
@@ -175,6 +184,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\Forms\OverlayWindow.resx">
       <DependentUpon>OverlayWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Inputs\CameraControlForm.resx">
+      <DependentUpon>CameraControlForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Inputs\KBMousePanel.resx">
       <DependentUpon>KBMousePanel.cs</DependentUpon>

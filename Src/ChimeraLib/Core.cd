@@ -6,11 +6,11 @@
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>AYRAIAAABQgQggAgAQgAgAAAEEACIQAyABQAhECICg0=</HashCode>
+      <HashCode>AYRAIAAABQgQggAgEQgAgAAAEEACIQAyABQAhECICg0=</HashCode>
       <FileName>Core\Coordinator.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
-      <Property Name="ActiveState" />
+      <Property Name="Overlay" />
     </ShowAsAssociation>
     <ShowAsCollectionAssociation>
       <Property Name="Windows" />
@@ -30,7 +30,7 @@
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>AAAAEAgEBAAAB5AABACIA0QAAAAAAAABQgwCBAiIAQI=</HashCode>
+      <HashCode>AAAAEAgEBAAAB5AABACIA0QAAAAACAABQgwCBAiIAQI=</HashCode>
       <FileName>Core\Window.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -77,18 +77,28 @@
   <Class Name="Chimera.MainMenu">
     <Position X="12.75" Y="7" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAgAAAgAAAAQAAAAAAAAgAQACBAAAAAA=</HashCode>
+      <HashCode>AAAACAAAAABAAgBAAAAAAAQAAAQAAAAgAQACBAAAAAA=</HashCode>
       <FileName>MainMenu.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="Chimera.ImageArea">
     <Position X="10.75" Y="7" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAoAgAAAAAAAAAAAAAAAAAAACAAABAAI=</HashCode>
+      <HashCode>AwgBACAECQYAAgAiEAAABAAAAAAEAAQIRApiABAFAAY=</HashCode>
       <FileName>ImageArea.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Chimera.NumberSelectionRenderer">
+    <Position X="9.5" Y="13" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>NumberSelectionRenderer.cs</FileName>
+    </TypeIdentifier>
   </Class>
   <Interface Name="Chimera.IInput">
     <Position X="4" Y="0.5" Width="1.5" />
@@ -111,23 +121,41 @@
     </ShowAsAssociation>
   </Interface>
   <Interface Name="Chimera.IOverlayState">
-    <Position X="1.75" Y="9.75" Width="1.5" />
+    <Position X="1.75" Y="11.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAgAAAgAAAAQAAAAAAAAgAQACBAAAAAA=</HashCode>
+      <HashCode>AAAACAAAAABAAgBAAAAAAAQAAAQAAAAgAQACBAAAAAA=</HashCode>
       <FileName>Interfaces\IMode.cs</FileName>
     </TypeIdentifier>
     <ShowAsCollectionAssociation>
-      <Property Name="OverlayAreas" />
+      <Property Name="SelectionAreas" />
     </ShowAsCollectionAssociation>
   </Interface>
-  <Interface Name="Chimera.IOverlayArea">
-    <Position X="4.5" Y="9.75" Width="1.5" />
+  <Interface Name="Chimera.ISelectable">
+    <Position X="4.5" Y="11.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAoAgAAAAAAAAAAAAAAAAAAACAAABAAI=</HashCode>
+      <HashCode>AAABAAAAAAACAgAgEAAABAAAAAAEAAAIAAACAAAFAAI=</HashCode>
       <FileName>Interfaces\IOverlayArea.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="OverlayState" />
+      <Property Name="SelectionRenderer" />
+    </ShowAsAssociation>
+  </Interface>
+  <Interface Name="Chimera.IOverlay">
+    <Position X="2.5" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>IOverlay.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Chimera.ISelectionRenderer">
+    <Position X="7" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAFAAAABAAAAAAAAAAAAAAAAAAAACAAAAAAA=</HashCode>
+      <FileName>ISelectionRenderer.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Selectable" />
     </ShowAsAssociation>
   </Interface>
   <Enum Name="Chimera.Perspective" Collapsed="true">

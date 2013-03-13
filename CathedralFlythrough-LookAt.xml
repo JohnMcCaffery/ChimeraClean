@@ -1,5 +1,5 @@
 <Events StartPosition="&lt;0, 0, 181.9995&gt;" StartPitch="10.0000005628666" StartYaw="57.9999788466998">
-  <ComboEvent>
+  <ComboEvent Name="Step1" >
     <PositionSequence>
       <MoveToEvent Name="Move To 1" Target="&lt;-30.32252, 356.6359, 109.226&gt;" Length="5000" />
       <MoveToEvent Name="Move To 2" Target="&lt;-52.55875, 444.7221, 157.4903&gt;" Length="5000" />

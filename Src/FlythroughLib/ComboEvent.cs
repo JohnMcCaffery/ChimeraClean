@@ -104,6 +104,9 @@ namespace Chimera.FlythroughLib {
         protected override void LengthChanged(int length) { }
 
         public override void Load(XmlNode node) {
+            if (node.Attributes["Name"] != null)
+                Name = node.Attributes["Name"].Value;
+
             if (node.FirstChild != null) {
                 LoadNode<Vector3>(node.FirstChild);
                 if (node.FirstChild.NextSibling != null)
@@ -140,6 +143,11 @@ namespace Chimera.FlythroughLib {
 
         public override XmlNode Save(XmlDocument doc) {
             XmlNode root = doc.CreateElement("ComboEvent");
+
+            XmlAttribute name = doc.CreateAttribute("Name");
+            name.Value = Name;
+            root.Attributes.Append(name);
+
             XmlNode positionStream = doc.CreateElement("PositionSequence");
             XmlNode orientationStream = doc.CreateElement("OrientationSequence");
 

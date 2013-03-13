@@ -62,7 +62,7 @@ namespace Chimera {
         void Close();
 
         /// <summary>
-        /// Draw any relevant information about this input onto a diagram.
+        /// DrawSelected any relevant information about this input onto a diagram.
         /// </summary>
         /// <param name="perspective">The perspective to render along.</param>
         /// <param name="graphics">The graphics object to draw with.</param>

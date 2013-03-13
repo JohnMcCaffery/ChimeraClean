@@ -7,6 +7,10 @@ namespace Chimera {
     public class MainMenu : IOverlayState {
         #region IOverlayState Members
 
+        public event Action<IOverlayState> Activated;
+
+        public event Action<IOverlayState> Deactivated;
+
         public string State {
             get {
                 throw new NotImplementedException();
@@ -43,7 +47,7 @@ namespace Chimera {
             }
         }
 
-        public IOverlayArea[] OverlayAreas {
+        public ISelectable[] SelectionAreas {
             get {
                 throw new NotImplementedException();
             }
@@ -57,6 +61,14 @@ namespace Chimera {
         }
 
         public void Draw(System.Drawing.Graphics graphics, System.Drawing.Rectangle clipRectangle, System.Drawing.Color transparentColour, Window window) {
+            throw new NotImplementedException();
+        }
+
+        public void Deactivate() {
+            throw new NotImplementedException();
+        }
+
+        public void Activate() {
             throw new NotImplementedException();
         }
 

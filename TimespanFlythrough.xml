@@ -1,5 +1,5 @@
 <Events>
-  <ComboEvent>
+  <ComboEvent Name="Step1">
     <Stream1>
       <MoveToEvent Target="&lt;650.6523, 448.153, 65.62142&gt;" Length="1" />
       <MoveToEvent Target="&lt;675.5707, 574.3356, 47.35487&gt;" Length="5000" />

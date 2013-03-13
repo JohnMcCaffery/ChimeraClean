@@ -123,7 +123,7 @@ namespace Chimera {
         /// <summary>
         /// Selected whenever a coordinator is removed.
         /// </summary>
-        public event Action<IOverlayArea, EventArgs> WindowRemoved;
+        public event Action<ISelectable, EventArgs> WindowRemoved;
 
         /// <summary>
         /// Selected whenever the virtual camera position/orientation is changed.
@@ -227,13 +227,6 @@ namespace Chimera {
         }
 
         /// <summary>
-        /// The currently active overlay area.
-        /// </summary>
-        public IOverlayState ActiveState {
-            get { return mActiveState; }
-        }
-
-        /// <summary>
         /// How long every tick should be, in ms, for any input that has a refresh loop.
         /// </summary>
         public int TickLength {
@@ -245,6 +238,17 @@ namespace Chimera {
         /// </summary>
         public IOverlayState[] States {
             get { return mStates.ToArray(); }
+        }
+
+        /// <summary>
+        /// The overlay which is controlling the system.
+        /// </summary>
+        public IOverlay Overlay {
+            get {
+                throw new System.NotImplementedException();
+            }
+            set {
+            }
         }
 
         /// <summary>
@@ -287,7 +291,7 @@ namespace Chimera {
         }
 
         /// <summary>
-        /// Draw any relevant information about this input onto a diagram.
+        /// DrawSelected any relevant information about this input onto a diagram.
         /// </summary>
         /// <param name="perspective">The perspective to render along.</param>
         /// <param name="graphics">The graphics object to draw with.</param>
@@ -300,7 +304,7 @@ namespace Chimera {
             mOrigins[(int) perspective] = origin;
 
 
-            //Draw stuff
+            //DrawSelected stuff
 
             foreach (var input in mInputs)
                 input.Draw(perspective, graphics);

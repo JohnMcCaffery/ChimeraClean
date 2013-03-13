@@ -340,7 +340,7 @@ namespace Chimera.Util {
         [DllImport("USER32.DLL", CharSet = CharSet.Unicode)]
         public static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
 
-        // Activate an application coordinator.
+        // Show an application coordinator.
         [DllImport("USER32.DLL")]
         public static extern bool SetForegroundWindow(IntPtr hWnd);
 
@@ -464,7 +464,7 @@ namespace Chimera.Util {
                 Console.WriteLine("Program crashed starting, a new instance.");
                 ProcessWrangler.InitProcess(Assembly.GetEntryAssembly().Location).Start();
             }
-            throw e;
+            //throw e;
         }
     }
 }

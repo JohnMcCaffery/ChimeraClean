@@ -50,8 +50,8 @@ namespace Chimera.GUI.Forms {
         }
 
         private void drawPanel_Paint(object sender, PaintEventArgs e) {
-            if (mWindow.Coordinator.ActiveState != null)
-                mWindow.Coordinator.ActiveState.Draw(e.Graphics, e.ClipRectangle, TransparencyKey, mWindow);
+            //if (mWindow.Coordinator.ActiveState != null)
+                //mWindow.Coordinator.ActiveState.Draw(e.Graphics, e.ClipRectangle, TransparencyKey, mWindow);
         }
     }
 }
