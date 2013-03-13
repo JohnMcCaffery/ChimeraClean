@@ -434,14 +434,17 @@ namespace Chimera.Util {
             sForm = form;
             sRoot = root;
             sAutoRestart = autoRestart;
-            AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
-            Application.ThreadException += new System.Threading.ThreadExceptionEventHandler(Application_ThreadException);
-            try {
-                Application.Run(form);
-            } catch (Exception e) {
-                Console.WriteLine("Exception caught from GUI thread.");
-                HandleException(e);
+            if (sAutoRestart) {
+                AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
+                Application.ThreadException += new System.Threading.ThreadExceptionEventHandler(Application_ThreadException);
+                try {
+                    Application.Run(form);
+                } catch (Exception e) {
+                    Console.WriteLine("Exception caught from GUI thread.");
+                    HandleException(e);
+                }
             }
+            Application.Run(form);
         }
 
         static void Application_ThreadException(object sender, System.Threading.ThreadExceptionEventArgs e) {

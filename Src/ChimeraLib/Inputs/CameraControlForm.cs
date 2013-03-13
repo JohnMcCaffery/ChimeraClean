@@ -30,8 +30,9 @@ namespace Chimera.Inputs {
         }
 
         void CameraControlForm_MouseWheel(object sender, MouseEventArgs e) {
-            if (mInput != null && mInput.KBScale + e.Delta > 0 && mInput.KBScale + e.Delta <= 1000)
-                mInput.KBScale += e.Delta;
+            int newVal = Math.Max(1, Math.Min(1000, mInput.KBScale + (e.Delta / 6)));
+            if (mInput != null)
+                mInput.KBScale = newVal;
         }
 
         private void CameraControlForm_KeyDown(object sender, KeyEventArgs e) {

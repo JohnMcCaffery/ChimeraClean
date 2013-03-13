@@ -31,7 +31,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(284, 262);
             this.Name = "CameraControlForm";
-            this.Text = "CameraControlForm";
+            this.Text = "Camera";
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.CameraControlForm_Paint);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.CameraControlForm_KeyDown);
             this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.CameraControlForm_KeyUp);
