@@ -81,7 +81,7 @@
             this.rotationPanel.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("rotationPanel.LookAtVector")));
             this.rotationPanel.Name = "rotationPanel";
             this.rotationPanel.Pitch = 0F;
-            this.rotationPanel.Quaternion = ((OpenMetaverse.Quaternion)(resources.GetObject("rotationPanel.Rotation")));
+            this.rotationPanel.Rotation = ((OpenMetaverse.Quaternion)(resources.GetObject("rotationPanel.Rotation")));
             this.rotationPanel.Size = new System.Drawing.Size(632, 147);
             this.rotationPanel.TabIndex = 2;
             this.rotationPanel.Yaw = 0F;
@@ -102,7 +102,7 @@
             this.positionPanel.X = 0F;
             this.positionPanel.Y = 0F;
             this.positionPanel.Z = 0F;
-            this.positionPanel.ValueChanged += new System.EventHandler(this.position_OnChange);
+            this.positionPanel.OnChange += new System.EventHandler(this.position_OnChange);
             // 
             // screenTab
             // 

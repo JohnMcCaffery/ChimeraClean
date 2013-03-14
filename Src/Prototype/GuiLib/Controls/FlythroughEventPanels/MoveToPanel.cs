@@ -32,7 +32,7 @@ namespace ChimeraGUILib.Controls.FlythroughEventPanels {
                 lengthValue.Value = mEvent.Length;
             }
 
-            targetVectorPanel.ValueChanged += (source, args) => mEvent.Target = targetVectorPanel.Value;
+            targetVectorPanel.OnChange += (source, args) => mEvent.Target = targetVectorPanel.Value;
             lengthValue.ValueChanged += (source, args) => mEvent.Length = (int)lengthValue.Value;
             evt.OnStep += (source, args) => {
                 if (!IsDisposed)

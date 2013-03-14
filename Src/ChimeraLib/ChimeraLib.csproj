@@ -102,12 +102,34 @@
   <ItemGroup>
     <Compile Include="Core\CoordinatorConfig.cs" />
     <Compile Include="Core\WindowConfig.cs" />
+    <Compile Include="GUI\Controls\ConditionalCheck.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="GUI\Controls\ScalarPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\Controls\ScalarPanel.Designer.cs">
+      <DependentUpon>ScalarPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\Controls\UpdatedScalarPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\Controls\UpdatedScalarPanel.Designer.cs">
+      <DependentUpon>UpdatedScalarPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\Controls\UpdatedVectorPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\Controls\UpdatedVectorPanel.Designer.cs">
+      <DependentUpon>UpdatedVectorPanel.cs</DependentUpon>
+    </Compile>
     <Compile Include="GUI\Forms\OverlayWindow.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="GUI\Forms\OverlayWindow.Designer.cs">
       <DependentUpon>OverlayWindow.cs</DependentUpon>
     </Compile>
+    <Compile Include="Interfaces\IUpdater.cs" />
     <Compile Include="Overlay\ImageArea.cs" />
     <Compile Include="Inputs\CameraControlForm.cs">
       <SubType>Form</SubType>
@@ -173,8 +195,14 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <EmbeddedResource Include="GUI\Controls\ScalarPanel.resx">
+      <DependentUpon>ScalarPanel.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="GUI\Controls\RotationPanel.resx">
       <DependentUpon>RotationPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\Controls\UpdatedScalarPanel.resx">
+      <DependentUpon>UpdatedScalarPanel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\Controls\VectorPanel.resx">
       <DependentUpon>VectorPanel.cs</DependentUpon>

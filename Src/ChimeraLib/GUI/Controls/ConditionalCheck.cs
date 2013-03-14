@@ -6,30 +6,28 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using NuiLibDotNet;
+using Chimera.Interfaces;
 
 namespace KinectLib.GUI {
     public class ConditionalCheck : CheckBox {
-        private Condition mCondition = Condition.Create(false);
+        private IUpdater<bool> mCondition;
         private bool mGuiChanged;
         private bool mExternalChanged;
 
         public ConditionalCheck()
             : base() {
 
-            Condition = mCondition;
             CheckedChanged += ConditionalCheck_CheckedChanged;
         }
 
-        public Condition Condition {
+        public IUpdater<bool> Condition {
             get { return mCondition; }
             set {
-                if (mCondition == null)
-                    throw new ArgumentException("Unable to set Condition. Value cannot be null.");
                 if (mCondition != null)
-                    mCondition.OnChange -= mCondition_OnChange;
+                    mCondition.Changed -= mCondition_OnChange;
                 mCondition = value;
-                mCondition.OnChange += mCondition_OnChange;
+                if (mCondition != null)
+                    mCondition.Changed += mCondition_OnChange;
             }
         }
 
@@ -41,10 +39,10 @@ namespace KinectLib.GUI {
             }
         }
 
-        void mCondition_OnChange() {
+        void mCondition_OnChange(bool val) {
             if (!mGuiChanged) {
                 mExternalChanged = true;
-                Checked = mCondition.Value;
+                Checked = val;
                 mExternalChanged = false;
             }
         }

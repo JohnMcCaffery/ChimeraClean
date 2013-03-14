@@ -117,14 +117,35 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="rotationPanel1.LookAtVector" mimetype="application/x-microsoft.net.object.binary.base64">
+  <data name="pointDirPanel.MaxV" mimetype="application/x-microsoft.net.object.binary.base64">
+    <value>
+        AAEAAAD/////AQAAAAAAAAAMAgAAAElPcGVuTWV0YXZlcnNlVHlwZXMsIFZlcnNpb249MC4wLjAuMCwg
+        Q3VsdHVyZT1uZXV0cmFsLCBQdWJsaWNLZXlUb2tlbj1udWxsBQEAAAAVT3Blbk1ldGF2ZXJzZS5WZWN0
+        b3IzAwAAAAFYAVkBWgAAAAsLCwIAAAAAAIBEAACARAAAgEQL
+</value>
+  </data>
+  <data name="pointDirPanel.MinV" mimetype="application/x-microsoft.net.object.binary.base64">
+    <value>
+        AAEAAAD/////AQAAAAAAAAAMAgAAAElPcGVuTWV0YXZlcnNlVHlwZXMsIFZlcnNpb249MC4wLjAuMCwg
+        Q3VsdHVyZT1uZXV0cmFsLCBQdWJsaWNLZXlUb2tlbj1udWxsBQEAAAAVT3Blbk1ldGF2ZXJzZS5WZWN0
+        b3IzAwAAAAFYAVkBWgAAAAsLCwIAAAAAAIDEAACAxAAAgMQL
+</value>
+  </data>
+  <data name="pointDirPanel.Value" mimetype="application/x-microsoft.net.object.binary.base64">
+    <value>
+        AAEAAAD/////AQAAAAAAAAAMAgAAAElPcGVuTWV0YXZlcnNlVHlwZXMsIFZlcnNpb249MC4wLjAuMCwg
+        Q3VsdHVyZT1uZXV0cmFsLCBQdWJsaWNLZXlUb2tlbj1udWxsBQEAAAAVT3Blbk1ldGF2ZXJzZS5WZWN0
+        b3IzAwAAAAFYAVkBWgAAAAsLCwIAAAAAAAAAAAAAAAAAAAAL
+</value>
+  </data>
+  <data name="orientationPanel.LookAtVector" mimetype="application/x-microsoft.net.object.binary.base64">
     <value>
         AAEAAAD/////AQAAAAAAAAAMAgAAAElPcGVuTWV0YXZlcnNlVHlwZXMsIFZlcnNpb249MC4wLjAuMCwg
         Q3VsdHVyZT1uZXV0cmFsLCBQdWJsaWNLZXlUb2tlbj1udWxsBQEAAAAVT3Blbk1ldGF2ZXJzZS5WZWN0
         b3IzAwAAAAFYAVkBWgAAAAsLCwIAAAAAAIA/AAAAAAAAAAAL
 </value>
   </data>
-  <data name="rotationPanel1.Quaternion" mimetype="application/x-microsoft.net.object.binary.base64">
+  <data name="orientationPanel.Quaternion" mimetype="application/x-microsoft.net.object.binary.base64">
     <value>
         AAEAAAD/////AQAAAAAAAAAMAgAAAElPcGVuTWV0YXZlcnNlVHlwZXMsIFZlcnNpb249MC4wLjAuMCwg
         Q3VsdHVyZT1uZXV0cmFsLCBQdWJsaWNLZXlUb2tlbj1udWxsBQEAAAAYT3Blbk1ldGF2ZXJzZS5RdWF0
@@ -145,21 +166,42 @@
         ZXJuaW9uBAAAAAFYAVkBWgFXAAAAAAsLCwsCAAAAAAAAAAAAAAAAAAAAAACAPws=
 </value>
   </data>
-  <data name="vectorPanel1.MaxV" mimetype="application/x-microsoft.net.object.binary.base64">
+  <data name="positionPanel.MaxV" mimetype="application/x-microsoft.net.object.binary.base64">
     <value>
         AAEAAAD/////AQAAAAAAAAAMAgAAAElPcGVuTWV0YXZlcnNlVHlwZXMsIFZlcnNpb249MC4wLjAuMCwg
         Q3VsdHVyZT1uZXV0cmFsLCBQdWJsaWNLZXlUb2tlbj1udWxsBQEAAAAVT3Blbk1ldGF2ZXJzZS5WZWN0
         b3IzAwAAAAFYAVkBWgAAAAsLCwIAAAAAAIBEAACARAAAgEQL
 </value>
   </data>
-  <data name="vectorPanel1.MinV" mimetype="application/x-microsoft.net.object.binary.base64">
+  <data name="positionPanel.MinV" mimetype="application/x-microsoft.net.object.binary.base64">
     <value>
         AAEAAAD/////AQAAAAAAAAAMAgAAAElPcGVuTWV0YXZlcnNlVHlwZXMsIFZlcnNpb249MC4wLjAuMCwg
         Q3VsdHVyZT1uZXV0cmFsLCBQdWJsaWNLZXlUb2tlbj1udWxsBQEAAAAVT3Blbk1ldGF2ZXJzZS5WZWN0
         b3IzAwAAAAFYAVkBWgAAAAsLCwIAAAAAAIDEAACAxAAAgMQL
 </value>
   </data>
-  <data name="vectorPanel1.Value" mimetype="application/x-microsoft.net.object.binary.base64">
+  <data name="positionPanel.Value" mimetype="application/x-microsoft.net.object.binary.base64">
+    <value>
+        AAEAAAD/////AQAAAAAAAAAMAgAAAElPcGVuTWV0YXZlcnNlVHlwZXMsIFZlcnNpb249MC4wLjAuMCwg
+        Q3VsdHVyZT1uZXV0cmFsLCBQdWJsaWNLZXlUb2tlbj1udWxsBQEAAAAVT3Blbk1ldGF2ZXJzZS5WZWN0
+        b3IzAwAAAAFYAVkBWgAAAAsLCwIAAAAAAAAAAAAAAAAAAAAL
+</value>
+  </data>
+  <data name="pointStartPanel.MaxV" mimetype="application/x-microsoft.net.object.binary.base64">
+    <value>
+        AAEAAAD/////AQAAAAAAAAAMAgAAAElPcGVuTWV0YXZlcnNlVHlwZXMsIFZlcnNpb249MC4wLjAuMCwg
+        Q3VsdHVyZT1uZXV0cmFsLCBQdWJsaWNLZXlUb2tlbj1udWxsBQEAAAAVT3Blbk1ldGF2ZXJzZS5WZWN0
+        b3IzAwAAAAFYAVkBWgAAAAsLCwIAAAAAAIBEAACARAAAgEQL
+</value>
+  </data>
+  <data name="pointStartPanel.MinV" mimetype="application/x-microsoft.net.object.binary.base64">
+    <value>
+        AAEAAAD/////AQAAAAAAAAAMAgAAAElPcGVuTWV0YXZlcnNlVHlwZXMsIFZlcnNpb249MC4wLjAuMCwg
+        Q3VsdHVyZT1uZXV0cmFsLCBQdWJsaWNLZXlUb2tlbj1udWxsBQEAAAAVT3Blbk1ldGF2ZXJzZS5WZWN0
+        b3IzAwAAAAFYAVkBWgAAAAsLCwIAAAAAAIDEAACAxAAAgMQL
+</value>
+  </data>
+  <data name="pointStartPanel.Value" mimetype="application/x-microsoft.net.object.binary.base64">
     <value>
         AAEAAAD/////AQAAAAAAAAAMAgAAAElPcGVuTWV0YXZlcnNlVHlwZXMsIFZlcnNpb249MC4wLjAuMCwg
         Q3VsdHVyZT1uZXV0cmFsLCBQdWJsaWNLZXlUb2tlbj1udWxsBQEAAAAVT3Blbk1ldGF2ZXJzZS5WZWN0

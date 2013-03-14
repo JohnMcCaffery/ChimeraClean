@@ -187,9 +187,9 @@ namespace Chimera {
         /// <param name="inputs">The inputs which control the camera through this coordinator.</param>
         public Coordinator(IEnumerable<Window> windows, params IInput[] inputs)
             : this(inputs) {
-            mWindows = new List<Window>(windows);
-            foreach (var window in mWindows)
-                window.Init(this);
+
+            foreach (var window in windows)
+                AddWindow(window);
         }
 
         /// <summary>
@@ -291,6 +291,7 @@ namespace Chimera {
         /// <param name="coordinator">The coordinator to add.</param>
         public void AddWindow(Window window) {
             mWindows.Add(window);
+            window.Init(this);
             if (WindowAdded != null)
                 WindowAdded(window, null);
         }

@@ -216,7 +216,7 @@
             this.pointDirPanel.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("pointDirPanel.LookAtVector")));
             this.pointDirPanel.Name = "pointDirPanel";
             this.pointDirPanel.Pitch = 90F;
-            this.pointDirPanel.Quaternion = ((OpenMetaverse.Quaternion)(resources.GetObject("pointDirPanel.Rotation")));
+            //this.pointDirPanel.Quaternion = ((OpenMetaverse.Quaternion)(resources.GetObject("pointDirPanel.Rotation")));
             this.pointDirPanel.Size = new System.Drawing.Size(437, 147);
             this.pointDirPanel.TabIndex = 7;
             this.pointDirPanel.Yaw = 0F;
@@ -244,7 +244,7 @@
             this.kinectRotationPanel.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("kinectRotationPanel.LookAtVector")));
             this.kinectRotationPanel.Name = "kinectRotationPanel";
             this.kinectRotationPanel.Pitch = 0F;
-            this.kinectRotationPanel.Quaternion = ((OpenMetaverse.Quaternion)(resources.GetObject("kinectRotationPanel.Rotation")));
+            //this.kinectRotationPanel.Quaternion = ((OpenMetaverse.Quaternion)(resources.GetObject("kinectRotationPanel.Rotation")));
             this.kinectRotationPanel.Size = new System.Drawing.Size(179, 147);
             this.kinectRotationPanel.TabIndex = 2;
             this.kinectRotationPanel.Yaw = 180F;

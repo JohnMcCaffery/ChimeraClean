@@ -23,15 +23,20 @@
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent() {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(WindowPanel));
+            Chimera.Util.Rotation rotation1 = new Chimera.Util.Rotation();
             this.mainTab = new System.Windows.Forms.TabControl();
             this.configTab = new System.Windows.Forms.TabPage();
             this.overlayTab = new System.Windows.Forms.TabPage();
+            this.mouseControlCheck = new System.Windows.Forms.CheckBox();
             this.bringToFrontButtin = new System.Windows.Forms.Button();
             this.fullscreenCheck = new System.Windows.Forms.CheckBox();
             this.launchOverlayButton = new System.Windows.Forms.Button();
             this.monitorPulldown = new System.Windows.Forms.ComboBox();
-            this.mouseControlCheck = new System.Windows.Forms.CheckBox();
+            this.vectorPanel1 = new ProxyTestGUI.VectorPanel();
+            this.rotationPanel1 = new ProxyTestGUI.RotationPanel();
             this.mainTab.SuspendLayout();
+            this.configTab.SuspendLayout();
             this.overlayTab.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -50,6 +55,8 @@
             // 
             // configTab
             // 
+            this.configTab.Controls.Add(this.rotationPanel1);
+            this.configTab.Controls.Add(this.vectorPanel1);
             this.configTab.Location = new System.Drawing.Point(4, 22);
             this.configTab.Name = "configTab";
             this.configTab.Padding = new System.Windows.Forms.Padding(3);
@@ -72,6 +79,17 @@
             this.overlayTab.TabIndex = 1;
             this.overlayTab.Text = "Overlay";
             this.overlayTab.UseVisualStyleBackColor = true;
+            // 
+            // mouseControlCheck
+            // 
+            this.mouseControlCheck.AutoSize = true;
+            this.mouseControlCheck.Location = new System.Drawing.Point(6, 116);
+            this.mouseControlCheck.Name = "mouseControlCheck";
+            this.mouseControlCheck.Size = new System.Drawing.Size(94, 17);
+            this.mouseControlCheck.TabIndex = 4;
+            this.mouseControlCheck.Text = "Mouse Control";
+            this.mouseControlCheck.UseVisualStyleBackColor = true;
+            this.mouseControlCheck.CheckedChanged += new System.EventHandler(this.mouseControlCheck_CheckedChanged);
             // 
             // bringToFrontButtin
             // 
@@ -114,16 +132,40 @@
             this.monitorPulldown.TabIndex = 0;
             this.monitorPulldown.SelectedIndexChanged += new System.EventHandler(this.screenPulldown_SelectedIndexChanged);
             // 
-            // mouseControlCheck
+            // vectorPanel1
             // 
-            this.mouseControlCheck.AutoSize = true;
-            this.mouseControlCheck.Location = new System.Drawing.Point(6, 116);
-            this.mouseControlCheck.Name = "mouseControlCheck";
-            this.mouseControlCheck.Size = new System.Drawing.Size(94, 17);
-            this.mouseControlCheck.TabIndex = 4;
-            this.mouseControlCheck.Text = "Mouse Control";
-            this.mouseControlCheck.UseVisualStyleBackColor = true;
-            this.mouseControlCheck.CheckedChanged += new System.EventHandler(this.mouseControlCheck_CheckedChanged);
+            this.vectorPanel1.DisplayName = "Name";
+            this.vectorPanel1.Location = new System.Drawing.Point(0, 0);
+            this.vectorPanel1.Max = 1024D;
+            this.vectorPanel1.MaxV = ((OpenMetaverse.Vector3)(resources.GetObject("vectorPanel1.MaxV")));
+            this.vectorPanel1.Min = -1024D;
+            this.vectorPanel1.MinimumSize = new System.Drawing.Size(103, 95);
+            this.vectorPanel1.MinV = ((OpenMetaverse.Vector3)(resources.GetObject("vectorPanel1.MinV")));
+            this.vectorPanel1.Name = "vectorPanel1";
+            this.vectorPanel1.Size = new System.Drawing.Size(411, 95);
+            this.vectorPanel1.TabIndex = 0;
+            this.vectorPanel1.Value = ((OpenMetaverse.Vector3)(resources.GetObject("vectorPanel1.Value")));
+            this.vectorPanel1.X = 0F;
+            this.vectorPanel1.Y = 0F;
+            this.vectorPanel1.Z = 0F;
+            // 
+            // rotationPanel1
+            // 
+            this.rotationPanel1.DisplayName = "Name";
+            this.rotationPanel1.Location = new System.Drawing.Point(3, 91);
+            this.rotationPanel1.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("rotationPanel1.LookAtVector")));
+            this.rotationPanel1.MinimumSize = new System.Drawing.Size(252, 95);
+            this.rotationPanel1.Name = "rotationPanel1";
+            this.rotationPanel1.Pitch = 0D;
+            this.rotationPanel1.Quaternion = ((OpenMetaverse.Quaternion)(resources.GetObject("rotationPanel1.Quaternion")));
+            this.rotationPanel1.Size = new System.Drawing.Size(408, 95);
+            this.rotationPanel1.TabIndex = 1;
+            rotation1.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("rotation1.LookAtVector")));
+            rotation1.Pitch = 0D;
+            rotation1.Quaternion = ((OpenMetaverse.Quaternion)(resources.GetObject("rotation1.Quaternion")));
+            rotation1.Yaw = 0D;
+            this.rotationPanel1.Value = rotation1;
+            this.rotationPanel1.Yaw = 0D;
             // 
             // WindowPanel
             // 
@@ -133,6 +175,7 @@
             this.Name = "WindowPanel";
             this.Size = new System.Drawing.Size(419, 315);
             this.mainTab.ResumeLayout(false);
+            this.configTab.ResumeLayout(false);
             this.overlayTab.ResumeLayout(false);
             this.overlayTab.PerformLayout();
             this.ResumeLayout(false);
@@ -149,5 +192,7 @@
         private System.Windows.Forms.CheckBox fullscreenCheck;
         private System.Windows.Forms.Button bringToFrontButtin;
         private System.Windows.Forms.CheckBox mouseControlCheck;
+        private ProxyTestGUI.VectorPanel vectorPanel1;
+        private ProxyTestGUI.RotationPanel rotationPanel1;
     }
 }

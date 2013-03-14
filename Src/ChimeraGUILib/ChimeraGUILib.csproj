@@ -100,20 +100,6 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\ChimeraLib\ChimeraLib.csproj">
-      <Project>{58E39BFE-20D5-4C8D-BCFC-6B5E641C2DFF}</Project>
-      <Name>ChimeraLib</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\FlythroughLib\FlythroughLib.csproj">
-      <Project>{D0708045-6CCA-4764-B438-A2D6E8635978}</Project>
-      <Name>FlythroughLib</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\KinectLib\KinectLib.csproj">
-      <Project>{D9D475BF-C0EE-4DF6-89A3-55199BB32ABE}</Project>
-      <Name>KinectLib</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

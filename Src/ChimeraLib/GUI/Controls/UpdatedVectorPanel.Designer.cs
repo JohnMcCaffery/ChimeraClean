@@ -1,5 +1,5 @@
 ﻿namespace KinectLib.GUI {
-    partial class NuiVectorPanel {
+    partial class UpdatedVectorPanel {
         /// <summary> 
         /// Required designer variable.
         /// </summary>

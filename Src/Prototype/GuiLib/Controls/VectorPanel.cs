@@ -68,8 +68,8 @@ namespace ProxyTestGUI {
 
                     vector = new Vector3((float)xValue.Value, (float)yValue.Value, (float)zValue.Value);
 
-                    if (ValueChanged != null)
-                        ValueChanged(this, null);
+                    if (OnChange != null)
+                        OnChange(this, null);
                 });
                 if (InvokeRequired)
                     Invoke(change);

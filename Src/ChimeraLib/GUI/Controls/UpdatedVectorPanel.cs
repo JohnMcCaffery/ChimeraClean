@@ -7,46 +7,44 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using ProxyTestGUI;
-using NuiLibDotNet;
 using OpenMetaverse;
+using Chimera.Interfaces;
 
 namespace KinectLib.GUI {
-    public partial class NuiVectorPanel : VectorPanel {
-        private Vector mVector = Vector.Create(0f, 0f, 0f);
+    public partial class UpdatedVectorPanel : VectorPanel {
+        private IUpdater<Vector3> mVector;
         private bool mGuiChanged;
         private bool mExternalChanged;
 
-        public NuiVectorPanel()
+        public UpdatedVectorPanel()
             : base() {
 
-            Vector = mVector;
             ValueChanged += NuiVectorPanel_ValueChanged;
         }
 
-        public Vector Vector {
+        public IUpdater<Vector3> Vector {
             get { return mVector; }
             set {
-                if (mVector == null)
-                    throw new ArgumentException("Unable to set Vector. Value cannot be null.");
                 if ((object) mVector != null)
-                    mVector.OnChange -= mVector_OnChange;
+                    mVector.Changed -= mVector_OnChange;
                 mVector = value;
-                mVector.OnChange += mVector_OnChange;
+                if ((object) mVector != null)
+                    mVector.Changed += mVector_OnChange;
             }
         }
 
         void NuiVectorPanel_ValueChanged(object sender, EventArgs e) {
             if (!mExternalChanged) {
                 mGuiChanged = true;
-                mVector.Set(X, Y, Z);
+                mVector.Value = Value;
                 mGuiChanged = false;
             }
         }
 
-        void mVector_OnChange() {
+        void mVector_OnChange(Vector3 val) {
             if (!mGuiChanged) {
                 mExternalChanged = true;
-                Value = new Vector3(mVector.X, mVector.Y, mVector.Z);
+                Value = val;
                 mExternalChanged = false;
             }
         }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using NuiLibDotNet;
 using OpenMetaverse;
+using Chimera.Kinect.GUI;
 
 namespace Chimera.Kinect {
     public class WindowInput {
@@ -13,10 +14,11 @@ namespace Chimera.Kinect {
         private KinectInput mInput;
         private Vector mPlaneTopLeft, mPlaneNormal;
         private Vector mPointDir, mPointStart;
-        private Vector intersection;
+        private Vector mIntersection;
         private Scalar mW, mH;
         private Vector mSide, mTop;
         private Scalar mX, mY;
+        private KinectWindowPanel mPanel;
 
         private double mOldX, mOldY;
 
@@ -25,6 +27,20 @@ namespace Chimera.Kinect {
         }
         public Window Window {
             get { return mWindow; }
+        }
+        public KinectWindowPanel Panel {
+            get {
+                if (mPanel == null) {
+                    mPanel = new KinectWindowPanel();
+                    mPanel.TopLeft = new VectorUpdater(mPlaneTopLeft);
+                    mPanel.Top = new VectorUpdater(mTop);
+                    mPanel.Side = new VectorUpdater(mSide);
+                    mPanel.Intersection = new VectorUpdater(mIntersection);
+                    mPanel.X = new ScalarUpdater(mX);
+                    mPanel.Y = new ScalarUpdater(mY);
+                }
+                return mPanel;
+            }
         }
 
         public float X {
@@ -41,8 +57,8 @@ namespace Chimera.Kinect {
         }
         public Vector3 Intersection {
             get { 
-                if ((object) intersection != null)
-                    return new Vector3(intersection.X, intersection.Y, intersection.Z);
+                if ((object) mIntersection != null)
+                    return new Vector3(mIntersection.X, mIntersection.Y, mIntersection.Z);
                 return Vector3.Zero;
             }
         }
@@ -102,14 +118,14 @@ namespace Chimera.Kinect {
 
             Vector vertical = Vector.Create(0f, 1f, 0f); // Vertical
             //Calculate the intersection of the plane defined by the point mPlaneTopLeft and the normal mPlaneNormal and the line defined by the point mPointStart and the direction mPointDir.
-            intersection = Nui.intersect(mPlaneTopLeft, Nui.normalize(mPlaneNormal), mPointStart, Nui.normalize(mPointDir)); 
+            mIntersection = Nui.intersect(mPlaneTopLeft, Nui.normalize(mPlaneNormal), mPointStart, Nui.normalize(mPointDir)); 
             //Calculate a vector that represents the orientation of the top of the coordinator.
             mTop = Nui.scale(Nui.cross(vertical, mPlaneNormal), mW);
             //Calculate a vector that represents the orientation of the side of the coordinator.
             mSide = Nui.scale(Nui.cross(mPlaneNormal, mTop), mH);
 
             //Calculate the vector (running along the plane) between the top left corner and the point of intersection.
-            Vector diff = intersection - mPlaneTopLeft;
+            Vector diff = mIntersection - mPlaneTopLeft;
 
             //Project the diff line onto the top and side vectors to get x and y values.
             mX = Nui.project(diff, mTop) / mW;
@@ -140,6 +156,15 @@ namespace Chimera.Kinect {
 
             mPlaneTopLeft.Set(topLeft.Y / SCALE, topLeft.Z / SCALE, topLeft.X / SCALE);
             mPlaneNormal.Set(normal.Y, normal.Z, normal.X);
+
+            if (mPanel != null) {
+                mPanel.TopLeft = new VectorUpdater(mPlaneTopLeft);
+                mPanel.Top = new VectorUpdater(mTop);
+                mPanel.Side = new VectorUpdater(mSide);
+                mPanel.Intersection = new VectorUpdater(mIntersection);
+                mPanel.X = new ScalarUpdater(mX);
+                mPanel.Y = new ScalarUpdater(mY);
+            }
 
             mWindow_Change();
         }

@@ -512,7 +512,7 @@ namespace ConsoleTest {
             }
 
             if (move != Vector3.Zero || upDown || downDown || mLookAt != mOldLookAt) {
-                move *= rawRotation.Quaternion;
+                move *= rawRotation.Rotation;
                 if (upDown) move.Z = shift;
                 if (downDown) move.Z = -shift;
 

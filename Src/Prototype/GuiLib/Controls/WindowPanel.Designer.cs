@@ -98,7 +98,7 @@
             this.eyeOffsetPanel.X = -100F;
             this.eyeOffsetPanel.Y = 0F;
             this.eyeOffsetPanel.Z = 0F;
-            this.eyeOffsetPanel.ValueChanged += new System.EventHandler(this.eyeOffsetPanel_OnChange);
+            this.eyeOffsetPanel.OnChange += new System.EventHandler(this.eyeOffsetPanel_OnChange);
             // 
             // rotationOffsetPanel
             // 
@@ -109,7 +109,7 @@
             this.rotationOffsetPanel.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("rotationOffsetPanel.LookAtVector")));
             this.rotationOffsetPanel.Name = "rotationOffsetPanel";
             this.rotationOffsetPanel.Pitch = 0F;
-            this.rotationOffsetPanel.Quaternion = ((OpenMetaverse.Quaternion)(resources.GetObject("rotationOffsetPanel.Rotation")));
+            //this.rotationOffsetPanel.Quaternion = ((OpenMetaverse.Quaternion)(resources.GetObject("rotationOffsetPanel.Rotation")));
             this.rotationOffsetPanel.Size = new System.Drawing.Size(246, 147);
             this.rotationOffsetPanel.TabIndex = 25;
             this.rotationOffsetPanel.Yaw = 0F;
@@ -146,7 +146,7 @@
             this.screenPositionPanel.X = 0F;
             this.screenPositionPanel.Y = 0F;
             this.screenPositionPanel.Z = 0F;
-            this.screenPositionPanel.ValueChanged += new System.EventHandler(this.screenPositionPanel_OnChange);
+            this.screenPositionPanel.OnChange += new System.EventHandler(this.screenPositionPanel_OnChange);
             // 
             // label7
             // 

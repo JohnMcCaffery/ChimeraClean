@@ -40,7 +40,7 @@ namespace Chimera.Overlay {
 
         public WindowOverlay(IEnumerable<MainMenuItem> items) {
             mItems = new List<MainMenuItem>(items);
-            mMainMenuBG = new Bitmap("MenuBG.jpeg");
+            mMainMenuBG = new Bitmap("../MenuBG.jpeg");
         }
 
         public MainMenuItem[] MenuItems {

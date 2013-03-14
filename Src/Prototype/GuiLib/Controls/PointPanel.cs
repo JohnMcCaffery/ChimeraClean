@@ -38,9 +38,9 @@ namespace KinectLib {
             Vector3 lookat = pointDirPanel.LookAtVector;
             Vector3 start = pointStartPanel.Value;
 
-            pointStartPanel.ValueChanged += GuiChange;
+            pointStartPanel.OnChange += GuiChange;
             pointDirPanel.OnChange += GuiChange;
-            kinectPositionPanel.ValueChanged += GuiChange;
+            kinectPositionPanel.OnChange += GuiChange;
             kinectRotationPanel.OnChange += GuiChange;
             manager.PositionChange += () => GuiChange(manager, null);
             manager.KinectRotation.OnChange += GuiChange;
@@ -48,7 +48,7 @@ namespace KinectLib {
             mSurface = surface;
 
             guiChange = true;
-            Nui.OnChange += () => {
+            Nui.Tick += () => {
                 if (!guiChange && !Disposing && !IsDisposed && Created) {
                     nuiChange = true;
                     Console.WriteLine(mManager.PointStart.X + ", " + mManager.PointStart.Y + "," + mManager.PointStart.Z + " --- " + "X: " + mSurface.X + " Y: " + mSurface.Y);
