@@ -29,7 +29,7 @@ namespace Chimera.FlythroughLib.GUI {
                 lengthValue.Value = mEvent.Length;
             }
 
-            targetVectorPanel.OnChange += (source, args) => {
+            targetVectorPanel.ValueChanged += (source, args) => {
                 mEvent.Target = targetVectorPanel.Value;
                 mEvent.Container.Coordinator.Update(mEvent.Container.Coordinator.Position, Vector3.Zero, mEvent.Value, Rotation.Zero);
             };

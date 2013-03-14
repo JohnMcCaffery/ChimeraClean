@@ -2,35 +2,36 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Chimera;
-using OpenMetaverse;
 using NuiLibDotNet;
+using OpenMetaverse;
 
-namespace KinectLib {
-    public class PointSurface {
-        public static readonly float SCALE = 1000f;
+namespace Chimera.Kinect {
+    public class WindowInput {
+        public static float SCALE = 1000f;
+
         private Window mWindow;
-        private KinectManager mManager;
+        private KinectInput mInput;
         private Vector mPlaneTopLeft, mPlaneNormal;
         private Vector mPointDir, mPointStart;
         private Vector intersection;
         private Scalar mW, mH;
         private Vector mSide, mTop;
         private Scalar mX, mY;
-        private float mOldX, mOldY;
 
-        private float mManualX, mManualY;
-        private bool mUseManual;
+        private double mOldX, mOldY;
 
-        public event Action<PointSurface> OnChange;
-
-        public Window Window { get { return mWindow; } }
-        public float X {
-            get { return mUseManual ? mManualX : mX.Value; }
+        public KinectInput Input {
+            get { return mInput; }
+        }
+        public Window Window {
+            get { return mWindow; }
         }
 
+        public float X {
+            get { return mX.Value; }
+        }
         public float Y {
-            get { return mUseManual ? mManualY : mY.Value; }
+            get { return mY.Value; }
         }
         public float W {
             get { return mW.Value; }
@@ -78,22 +79,21 @@ namespace KinectLib {
             get { return X > 0f && X < 1f && Y > 0f && Y < 1f; }
         }
 
-        public void OverridePosition(float x, float y) {
-            mManualX = x;
-            mManualY = y;
-            mUseManual = true;
-            Change();
+        public WindowInput(KinectInput input, Window window) {
+            mWindow = window;
+            mInput = input;
+
+            mWindow.Changed += (win, args) => ConfigureFromWindow();
+            mInput.PositionChanged += pos => ConfigureFromWindow();
+            mInput.OrientationChanged += rot => ConfigureFromWindow();
+            mInput.VectorsAssigned += InitVectors;
+
+            InitVectors(mInput.PointStart, mInput.PointDir);
         }
 
-        public PointSurface(KinectManager manager, Window window) {
-            mWindow = window;
-            mManager = manager;
-            mPointDir = manager.PointDir;
-            mPointStart = manager.PointStart;
-
-            window.OnChange += ConfigureFromWindow;
-            manager.KinectRotation.OnChange += ConfigureFromWindow;
-            manager.PositionChange += () => ConfigureFromWindow(window, null);
+        private void InitVectors(Vector pointStart, Vector pointDir) {
+            mPointDir = pointDir;
+            mPointStart = pointStart;
 
             mPlaneTopLeft = Vector.Create("PlanePoint", 1f, 1f, 0f);
             mPlaneNormal = Vector.Create("PlaneNormal", 0f, 0f, 1f);
@@ -115,35 +115,34 @@ namespace KinectLib {
             mX = Nui.project(diff, mTop) / mW;
             mY = Nui.project(diff, mSide) / mH;
 
-            ConfigureFromWindow(window, null);
+            ConfigureFromWindow();
 
-            Nui.Tick += Change;
+            Nui.Tick += mWindow_Change;
         }
 
-        private void Change() {
-            if (OnChange != null && (mOldX != X || mOldY != Y)) {
+        private void mWindow_Change() {
+            if (mOldX != X || mOldY != Y) {
                 mOldX = X;
                 mOldY = Y;
-                if (OnChange != null)
-                    OnChange(this);
+                mWindow.PositionCursor(X, Y);
             }
         }
 
-        private void ConfigureFromWindow(object source, EventArgs args) {
+        private void ConfigureFromWindow() {
             mW.Value = (float) mWindow.Width;
             mH.Value = (float) mWindow.Height;
 
-            Vector3 diagonal = new Vector3(0f, (float) (mWindow.Width / -2.0), (float) (mWindow.Height / 2.0)) * mWindow.RotationOffset.Quaternion;
-            Vector3 topLeft = mWindow.ScreenPosition + diagonal;
-            topLeft -= mManager.KinectPosition;
-            topLeft *= mManager.KinectRotation.Quaternion;
+            Vector3 topLeft = mWindow.TopLeft;
+            topLeft -= mInput.Position;
+            topLeft *= mInput.Orientation.Quaternion;
 
-            Vector3 normal = mWindow.RotationOffset.LookAtVector * mManager.KinectRotation.Quaternion;
+            Vector3 normal = mWindow.Rotation.LookAtVector * mInput.Orientation.Quaternion;
 
             mPlaneTopLeft.Set(topLeft.Y / SCALE, topLeft.Z / SCALE, topLeft.X / SCALE);
             mPlaneNormal.Set(normal.Y, normal.Z, normal.X);
 
-            Change();
+            mWindow_Change();
         }
+
     }
 }

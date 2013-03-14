@@ -449,7 +449,7 @@ namespace UtilLib {
             this.rawPositionPanel.X = 128F;
             this.rawPositionPanel.Y = 128F;
             this.rawPositionPanel.Z = 128F;
-            this.rawPositionPanel.OnChange += new System.EventHandler(this.onChange);
+            this.rawPositionPanel.ValueChanged += new System.EventHandler(this.onChange);
             // 
             // offSetsTab
             // 
@@ -493,7 +493,7 @@ namespace UtilLib {
             this.positionPanel.X = 0F;
             this.positionPanel.Y = 0F;
             this.positionPanel.Z = 0F;
-            this.positionPanel.OnChange += new System.EventHandler(this.onChange);
+            this.positionPanel.ValueChanged += new System.EventHandler(this.onChange);
             // 
             // finalTab
             // 

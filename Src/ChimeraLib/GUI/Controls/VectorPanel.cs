@@ -30,7 +30,7 @@ using OpenMetaverse;
 
 namespace ProxyTestGUI {
     public partial class VectorPanel : UserControl {
-        public event EventHandler OnChange;
+        public event EventHandler ValueChanged;
         private float trackerScale = 100.0f;
         private bool externalSet = false;
         private bool valueChange = false;
@@ -68,8 +68,8 @@ namespace ProxyTestGUI {
 
                     vector = new Vector3((float)xValue.Value, (float)yValue.Value, (float)zValue.Value);
 
-                    if (OnChange != null)
-                        OnChange(this, null);
+                    if (ValueChanged != null)
+                        ValueChanged(this, null);
                 });
                 if (InvokeRequired)
                     Invoke(change);

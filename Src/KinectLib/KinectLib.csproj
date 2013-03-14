@@ -8,7 +8,7 @@
     <ProjectGuid>{D9D475BF-C0EE-4DF6-89A3-55199BB32ABE}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>KinectLib</RootNamespace>
+    <RootNamespace>Chimera.Kinect</RootNamespace>
     <AssemblyName>KinectLib</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -75,9 +75,8 @@
       <HintPath>..\..\Bin\Microsoft.Kinect.dll</HintPath>
     </Reference>
     <Reference Include="NuiLib-DotNet_dv">
-      <HintPath>..\..\..\NuiLib\Bin\x86\vc10\NuiLib-DotNet_dv.dll</HintPath>
+      <HintPath>..\..\Lib\NuiLib-DotNet_dv.dll</HintPath>
     </Reference>
-    <Reference Include="OpenMetaverse, Version=0.0.0.33123, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="OpenMetaverseTypes">
       <HintPath>..\..\Lib\OpenMetaverseTypes.dll</HintPath>
     </Reference>
@@ -94,6 +93,21 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GUI\ConditionalCheck.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="GUI\NuiVectorPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\NuiVectorPanel.Designer.cs">
+      <DependentUpon>NuiVectorPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\ScalarPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\ScalarPanel.Designer.cs">
+      <DependentUpon>ScalarPanel.cs</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -108,6 +122,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="GUI\ScalarPanel.resx">
+      <DependentUpon>ScalarPanel.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

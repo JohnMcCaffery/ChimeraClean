@@ -98,7 +98,7 @@
             this.eyeOffsetPanel.X = -100F;
             this.eyeOffsetPanel.Y = 0F;
             this.eyeOffsetPanel.Z = 0F;
-            this.eyeOffsetPanel.OnChange += new System.EventHandler(this.eyeOffsetPanel_OnChange);
+            this.eyeOffsetPanel.ValueChanged += new System.EventHandler(this.eyeOffsetPanel_OnChange);
             // 
             // rotationOffsetPanel
             // 
@@ -146,7 +146,7 @@
             this.screenPositionPanel.X = 0F;
             this.screenPositionPanel.Y = 0F;
             this.screenPositionPanel.Z = 0F;
-            this.screenPositionPanel.OnChange += new System.EventHandler(this.screenPositionPanel_OnChange);
+            this.screenPositionPanel.ValueChanged += new System.EventHandler(this.screenPositionPanel_OnChange);
             // 
             // label7
             // 

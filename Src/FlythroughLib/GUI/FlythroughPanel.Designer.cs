@@ -252,7 +252,7 @@
             this.startPositionPanel.X = 0F;
             this.startPositionPanel.Y = 0F;
             this.startPositionPanel.Z = 0F;
-            this.startPositionPanel.OnChange += new System.EventHandler(this.startPositionPanel_OnChange);
+            this.startPositionPanel.ValueChanged += new System.EventHandler(this.startPositionPanel_OnChange);
             // 
             // autoStepCheck
             // 

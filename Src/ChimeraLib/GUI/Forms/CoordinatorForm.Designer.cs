@@ -196,7 +196,7 @@
             this.eyePositionPanel.X = 0F;
             this.eyePositionPanel.Y = 0F;
             this.eyePositionPanel.Z = 0F;
-            this.eyePositionPanel.OnChange += new System.EventHandler(this.eyePositionPanel_OnChange);
+            this.eyePositionPanel.ValueChanged += new System.EventHandler(this.eyePositionPanel_OnChange);
             // 
             // virtualOrientationPanel
             // 
@@ -237,7 +237,7 @@
             this.virtualPositionPanel.X = 0F;
             this.virtualPositionPanel.Y = 0F;
             this.virtualPositionPanel.Z = 0F;
-            this.virtualPositionPanel.OnChange += new System.EventHandler(this.virtualPositionPanel_OnChange);
+            this.virtualPositionPanel.ValueChanged += new System.EventHandler(this.virtualPositionPanel_OnChange);
             // 
             // windowsPluginsSplit
             // 

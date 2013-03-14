@@ -38,9 +38,9 @@ namespace KinectLib {
             Vector3 lookat = pointDirPanel.LookAtVector;
             Vector3 start = pointStartPanel.Value;
 
-            pointStartPanel.OnChange += GuiChange;
+            pointStartPanel.ValueChanged += GuiChange;
             pointDirPanel.OnChange += GuiChange;
-            kinectPositionPanel.OnChange += GuiChange;
+            kinectPositionPanel.ValueChanged += GuiChange;
             kinectRotationPanel.OnChange += GuiChange;
             manager.PositionChange += () => GuiChange(manager, null);
             manager.KinectRotation.OnChange += GuiChange;

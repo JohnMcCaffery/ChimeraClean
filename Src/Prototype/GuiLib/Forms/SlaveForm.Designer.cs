@@ -102,7 +102,7 @@
             this.positionPanel.X = 0F;
             this.positionPanel.Y = 0F;
             this.positionPanel.Z = 0F;
-            this.positionPanel.OnChange += new System.EventHandler(this.position_OnChange);
+            this.positionPanel.ValueChanged += new System.EventHandler(this.position_OnChange);
             // 
             // screenTab
             // 
