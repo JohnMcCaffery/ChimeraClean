@@ -108,7 +108,9 @@
     <Compile Include="GUI\ScalarPanel.Designer.cs">
       <DependentUpon>ScalarPanel.cs</DependentUpon>
     </Compile>
+    <Compile Include="KinectInput.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WindowInput.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ChimeraLib\ChimeraLib.csproj">
