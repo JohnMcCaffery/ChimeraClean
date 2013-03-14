@@ -22,10 +22,10 @@ namespace KinectLib.GUI {
                 if (!mGuiChanged) {
                     mExternalChanged = true;
                     this.value.Value = new decimal(value);
-                    if (Changed != null)
-                        Changed(value);
                     mExternalChanged = false;
                 }
+                if (Changed != null)
+                    Changed(value);
             }
         }
 
@@ -56,7 +56,7 @@ namespace KinectLib.GUI {
                 mGuiChanged = false;
             }
             if (!mSliderChanged)
-                value.Value = new decimal(Value * 100.0);
+                valueSlider.Value = (int) (Value * 100.0);
         }
 
         private void valueSlider_Scroll(object sender, EventArgs e) {

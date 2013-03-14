@@ -128,8 +128,16 @@ namespace Chimera.Kinect {
             Vector diff = mIntersection - mPlaneTopLeft;
 
             //Project the diff line onto the top and side vectors to get x and y values.
-            mX = Nui.project(diff, mTop) / mW;
-            mY = Nui.project(diff, mSide) / mH;
+            mX = Nui.project(diff, mTop);
+            mY = Nui.project(diff, mSide);
+
+            mH.OnChange += () => {
+                Console.WriteLine("H changed.");
+            };
+
+            mTop.OnChange += () => {
+                Console.WriteLine("Top changed.");
+            };
 
             ConfigureFromWindow();
 
@@ -145,18 +153,21 @@ namespace Chimera.Kinect {
         }
 
         private void ConfigureFromWindow() {
-            mW.Value = (float) mWindow.Width;
-            mH.Value = (float) mWindow.Height;
+            mW.Value = (float) mWindow.Width / SCALE;
+            mH.Value = (float) mWindow.Height / SCALE;
 
             Vector3 topLeft = mWindow.TopLeft;
             topLeft -= mInput.Position;
             topLeft *= mInput.Orientation.Quaternion;
 
-            Vector3 normal = mWindow.Rotation.LookAtVector * mInput.Orientation.Quaternion;
+            Vector3 normal = mWindow.Orientation.LookAtVector * mInput.Orientation.Quaternion;
 
             mPlaneTopLeft.Set(topLeft.Y / SCALE, topLeft.Z / SCALE, topLeft.X / SCALE);
             mPlaneNormal.Set(normal.Y, normal.Z, normal.X);
 
+            Nui.Poll();
+
+            /*
             if (mPanel != null) {
                 mPanel.TopLeft = new VectorUpdater(mPlaneTopLeft);
                 mPanel.Top = new VectorUpdater(mTop);
@@ -165,6 +176,7 @@ namespace Chimera.Kinect {
                 mPanel.X = new ScalarUpdater(mX);
                 mPanel.Y = new ScalarUpdater(mY);
             }
+            */
 
             mWindow_Change();
         }

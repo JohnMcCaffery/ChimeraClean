@@ -50,6 +50,8 @@ namespace Chimera.GUI.Controls {
                 launchOverlayButton.Text =  "Close Overlay";
                 mWindow.LaunchOverlay();
             }
+
+            orientationPanel.Value = window.Orientation;
         }
 
         void mWindow_OverlayLaunched(object sender, EventArgs e) {
@@ -90,6 +92,18 @@ namespace Chimera.GUI.Controls {
 
         private void mouseControlCheck_CheckedChanged(object sender, EventArgs e) {
             mWindow.MouseControl = mouseControlCheck.Checked;
+        }
+
+        private void positionPanel_ValueChanged(object sender, EventArgs e) {
+            mWindow.TopLeft = positionPanel.Value * 10f;
+        }
+
+        private void widthPanel_Changed(float obj) {
+            mWindow.Width = widthPanel.Value * 10.0;
+        }
+
+        private void heighPanel_Changed(float obj) {
+            mWindow.Height = heighPanel.Value * 10.0;
         }
     }
 }

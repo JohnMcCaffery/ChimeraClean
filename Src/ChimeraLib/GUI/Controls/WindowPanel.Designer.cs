@@ -27,14 +27,18 @@
             Chimera.Util.Rotation rotation1 = new Chimera.Util.Rotation();
             this.mainTab = new System.Windows.Forms.TabControl();
             this.configTab = new System.Windows.Forms.TabPage();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
             this.overlayTab = new System.Windows.Forms.TabPage();
             this.mouseControlCheck = new System.Windows.Forms.CheckBox();
             this.bringToFrontButtin = new System.Windows.Forms.Button();
             this.fullscreenCheck = new System.Windows.Forms.CheckBox();
             this.launchOverlayButton = new System.Windows.Forms.Button();
             this.monitorPulldown = new System.Windows.Forms.ComboBox();
-            this.vectorPanel1 = new ProxyTestGUI.VectorPanel();
-            this.rotationPanel1 = new ProxyTestGUI.RotationPanel();
+            this.heighPanel = new KinectLib.GUI.ScalarPanel();
+            this.widthPanel = new KinectLib.GUI.ScalarPanel();
+            this.orientationPanel = new ProxyTestGUI.RotationPanel();
+            this.positionPanel = new ProxyTestGUI.VectorPanel();
             this.mainTab.SuspendLayout();
             this.configTab.SuspendLayout();
             this.overlayTab.SuspendLayout();
@@ -55,8 +59,12 @@
             // 
             // configTab
             // 
-            this.configTab.Controls.Add(this.rotationPanel1);
-            this.configTab.Controls.Add(this.vectorPanel1);
+            this.configTab.Controls.Add(this.label2);
+            this.configTab.Controls.Add(this.label1);
+            this.configTab.Controls.Add(this.heighPanel);
+            this.configTab.Controls.Add(this.widthPanel);
+            this.configTab.Controls.Add(this.orientationPanel);
+            this.configTab.Controls.Add(this.positionPanel);
             this.configTab.Location = new System.Drawing.Point(4, 22);
             this.configTab.Name = "configTab";
             this.configTab.Padding = new System.Windows.Forms.Padding(3);
@@ -64,6 +72,24 @@
             this.configTab.TabIndex = 0;
             this.configTab.Text = "Configuration";
             this.configTab.UseVisualStyleBackColor = true;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(3, 221);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(15, 13);
+            this.label2.TabIndex = 5;
+            this.label2.Text = "H";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(3, 194);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(18, 13);
+            this.label1.TabIndex = 4;
+            this.label1.Text = "W";
             // 
             // overlayTab
             // 
@@ -132,40 +158,73 @@
             this.monitorPulldown.TabIndex = 0;
             this.monitorPulldown.SelectedIndexChanged += new System.EventHandler(this.screenPulldown_SelectedIndexChanged);
             // 
-            // vectorPanel1
+            // heighPanel
             // 
-            this.vectorPanel1.DisplayName = "Name";
-            this.vectorPanel1.Location = new System.Drawing.Point(0, 0);
-            this.vectorPanel1.Max = 1024D;
-            this.vectorPanel1.MaxV = ((OpenMetaverse.Vector3)(resources.GetObject("vectorPanel1.MaxV")));
-            this.vectorPanel1.Min = -1024D;
-            this.vectorPanel1.MinimumSize = new System.Drawing.Size(103, 95);
-            this.vectorPanel1.MinV = ((OpenMetaverse.Vector3)(resources.GetObject("vectorPanel1.MinV")));
-            this.vectorPanel1.Name = "vectorPanel1";
-            this.vectorPanel1.Size = new System.Drawing.Size(411, 95);
-            this.vectorPanel1.TabIndex = 0;
-            this.vectorPanel1.Value = ((OpenMetaverse.Vector3)(resources.GetObject("vectorPanel1.Value")));
-            this.vectorPanel1.X = 0F;
-            this.vectorPanel1.Y = 0F;
-            this.vectorPanel1.Z = 0F;
+            this.heighPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.heighPanel.Location = new System.Drawing.Point(23, 218);
+            this.heighPanel.Max = 500;
+            this.heighPanel.Min = 0;
+            this.heighPanel.MinimumSize = new System.Drawing.Size(95, 20);
+            this.heighPanel.Name = "heighPanel";
+            this.heighPanel.Size = new System.Drawing.Size(388, 20);
+            this.heighPanel.TabIndex = 3;
+            this.heighPanel.Value = 0F;
+            this.heighPanel.Changed += new System.Action<float>(this.heighPanel_Changed);
             // 
-            // rotationPanel1
+            // widthPanel
             // 
-            this.rotationPanel1.DisplayName = "Name";
-            this.rotationPanel1.Location = new System.Drawing.Point(3, 91);
-            this.rotationPanel1.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("rotationPanel1.LookAtVector")));
-            this.rotationPanel1.MinimumSize = new System.Drawing.Size(252, 95);
-            this.rotationPanel1.Name = "rotationPanel1";
-            this.rotationPanel1.Pitch = 0D;
-            this.rotationPanel1.Quaternion = ((OpenMetaverse.Quaternion)(resources.GetObject("rotationPanel1.Quaternion")));
-            this.rotationPanel1.Size = new System.Drawing.Size(408, 95);
-            this.rotationPanel1.TabIndex = 1;
+            this.widthPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.widthPanel.Location = new System.Drawing.Point(23, 192);
+            this.widthPanel.Max = 500;
+            this.widthPanel.Min = 0;
+            this.widthPanel.MinimumSize = new System.Drawing.Size(95, 20);
+            this.widthPanel.Name = "widthPanel";
+            this.widthPanel.Size = new System.Drawing.Size(388, 20);
+            this.widthPanel.TabIndex = 2;
+            this.widthPanel.Value = 0F;
+            this.widthPanel.Changed += new System.Action<float>(this.widthPanel_Changed);
+            // 
+            // orientationPanel
+            // 
+            this.orientationPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.orientationPanel.DisplayName = "Orientation (cm)";
+            this.orientationPanel.Location = new System.Drawing.Point(3, 91);
+            this.orientationPanel.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("orientationPanel.LookAtVector")));
+            this.orientationPanel.MinimumSize = new System.Drawing.Size(252, 95);
+            this.orientationPanel.Name = "orientationPanel";
+            this.orientationPanel.Pitch = 0D;
+            this.orientationPanel.Quaternion = ((OpenMetaverse.Quaternion)(resources.GetObject("orientationPanel.Quaternion")));
+            this.orientationPanel.Size = new System.Drawing.Size(408, 95);
+            this.orientationPanel.TabIndex = 1;
             rotation1.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("rotation1.LookAtVector")));
             rotation1.Pitch = 0D;
             rotation1.Quaternion = ((OpenMetaverse.Quaternion)(resources.GetObject("rotation1.Quaternion")));
             rotation1.Yaw = 0D;
-            this.rotationPanel1.Value = rotation1;
-            this.rotationPanel1.Yaw = 0D;
+            this.orientationPanel.Value = rotation1;
+            this.orientationPanel.Yaw = 0D;
+            // 
+            // positionPanel
+            // 
+            this.positionPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.positionPanel.DisplayName = "Top Left (cm)";
+            this.positionPanel.Location = new System.Drawing.Point(0, 0);
+            this.positionPanel.Max = 1024D;
+            this.positionPanel.MaxV = ((OpenMetaverse.Vector3)(resources.GetObject("positionPanel.MaxV")));
+            this.positionPanel.Min = -1024D;
+            this.positionPanel.MinimumSize = new System.Drawing.Size(103, 95);
+            this.positionPanel.MinV = ((OpenMetaverse.Vector3)(resources.GetObject("positionPanel.MinV")));
+            this.positionPanel.Name = "positionPanel";
+            this.positionPanel.Size = new System.Drawing.Size(411, 95);
+            this.positionPanel.TabIndex = 0;
+            this.positionPanel.Value = ((OpenMetaverse.Vector3)(resources.GetObject("positionPanel.Value")));
+            this.positionPanel.X = 0F;
+            this.positionPanel.Y = 0F;
+            this.positionPanel.Z = 0F;
+            this.positionPanel.ValueChanged += new System.EventHandler(this.positionPanel_ValueChanged);
             // 
             // WindowPanel
             // 
@@ -176,6 +235,7 @@
             this.Size = new System.Drawing.Size(419, 315);
             this.mainTab.ResumeLayout(false);
             this.configTab.ResumeLayout(false);
+            this.configTab.PerformLayout();
             this.overlayTab.ResumeLayout(false);
             this.overlayTab.PerformLayout();
             this.ResumeLayout(false);
@@ -192,7 +252,11 @@
         private System.Windows.Forms.CheckBox fullscreenCheck;
         private System.Windows.Forms.Button bringToFrontButtin;
         private System.Windows.Forms.CheckBox mouseControlCheck;
-        private ProxyTestGUI.VectorPanel vectorPanel1;
-        private ProxyTestGUI.RotationPanel rotationPanel1;
+        private ProxyTestGUI.VectorPanel positionPanel;
+        private ProxyTestGUI.RotationPanel orientationPanel;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label1;
+        private KinectLib.GUI.ScalarPanel heighPanel;
+        private KinectLib.GUI.ScalarPanel widthPanel;
     }
 }

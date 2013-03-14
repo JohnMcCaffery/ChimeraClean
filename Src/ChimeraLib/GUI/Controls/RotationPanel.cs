@@ -38,9 +38,9 @@ namespace ProxyTestGUI {
             get { return rotation; }
             set {
                 if (rotation != null)
-                    rotation.OnChange -= RotationChanged;
+                    rotation.Changed -= RotationChanged;
                 rotation = value;
-                rotation.OnChange += RotationChanged;
+                rotation.Changed += RotationChanged;
                 RotationChanged(this, null);
             }
         }

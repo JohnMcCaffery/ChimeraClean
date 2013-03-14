@@ -31,6 +31,7 @@
             // 
             // value
             // 
+            this.value.DecimalPlaces = 2;
             this.value.Location = new System.Drawing.Point(0, 0);
             this.value.Name = "value";
             this.value.Size = new System.Drawing.Size(63, 20);

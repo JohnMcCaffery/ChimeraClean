@@ -72,6 +72,7 @@ namespace Chimera.Overlay {
             //mThumbnailSelectable = new ImageArea(mWindow, mStaticBG, 1 - s, 0, 1, s);
             mThumbnailSelectable = new ImageArea(mWindow, mStaticBG, 0, 0, 1, s);
             mThumbnailSelectable.Selected += new Action<ISelectable>(mThumbnailSelectable_Selected);
+            mThumbnailSelectable.Active = false;
         }
 
         public void Init(MainMenu menu, Window window) {

@@ -28,8 +28,10 @@ namespace KinectLib.GUI {
                 if ((object) mVector != null)
                     mVector.Changed -= mVector_OnChange;
                 mVector = value;
-                if ((object) mVector != null)
+                if ((object)mVector != null) {
+                    Value = value.Value;
                     mVector.Changed += mVector_OnChange;
+                }
             }
         }
 

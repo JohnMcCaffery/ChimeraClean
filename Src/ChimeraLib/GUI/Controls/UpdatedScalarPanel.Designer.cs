@@ -35,7 +35,6 @@
             this.value.Name = "value";
             this.value.Size = new System.Drawing.Size(63, 20);
             this.value.TabIndex = 0;
-            //this.value.ValueChanged += new System.EventHandler(this.value_ValueChanged);
             // 
             // valueSlider
             // 
@@ -51,17 +50,17 @@
             this.valueSlider.TabIndex = 1;
             this.valueSlider.TickFrequency = 100;
             this.valueSlider.TickStyle = System.Windows.Forms.TickStyle.None;
-            //this.valueSlider.Scroll += new System.EventHandler(this.valueSlider_Scroll);
             // 
-            // ScalarPanel
+            // UpdatedScalarPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.value);
             this.Controls.Add(this.valueSlider);
-            this.MinimumSize = new System.Drawing.Size(95, 20);
-            this.Name = "ScalarPanel";
-            this.Size = new System.Drawing.Size(356, 20);
+            this.Name = "UpdatedScalarPanel";
+            this.Changed += new System.Action<float>(this.UpdatedScalarPanel_Changed);
+            this.Controls.SetChildIndex(this.valueSlider, 0);
+            this.Controls.SetChildIndex(this.value, 0);
             ((System.ComponentModel.ISupportInitialize)(this.value)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.valueSlider)).EndInit();
             this.ResumeLayout(false);

@@ -26,8 +26,8 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(KinectWindowPanel));
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.yPanel = new KinectLib.GUI.ScalarPanel();
-            this.xPanel = new KinectLib.GUI.ScalarPanel();
+            this.yPanel = new KinectLib.GUI.UpdatedScalarPanel();
+            this.xPanel = new KinectLib.GUI.UpdatedScalarPanel();
             this.sidePanel = new KinectLib.GUI.UpdatedVectorPanel();
             this.topPanel = new KinectLib.GUI.UpdatedVectorPanel();
             this.topLeftPanel = new KinectLib.GUI.UpdatedVectorPanel();
@@ -181,8 +181,8 @@
         private KinectLib.GUI.UpdatedVectorPanel topLeftPanel;
         private KinectLib.GUI.UpdatedVectorPanel topPanel;
         private KinectLib.GUI.UpdatedVectorPanel sidePanel;
-        private KinectLib.GUI.ScalarPanel xPanel;
-        private KinectLib.GUI.ScalarPanel yPanel;
+        private KinectLib.GUI.UpdatedScalarPanel xPanel;
+        private KinectLib.GUI.UpdatedScalarPanel yPanel;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private KinectLib.GUI.UpdatedVectorPanel intersectionPanel;

@@ -58,6 +58,10 @@ namespace Chimera.Kinect {
             get { return mKinectOrientation; }
         }
 
+        public KinectInput() {
+            mKinectOrientation.Changed += (source, args) => OrientationChanged(mKinectOrientation.Quaternion);
+        }
+
         public void StartKinect() {
             if (!mKinectStarted) {
                 Nui.Init();

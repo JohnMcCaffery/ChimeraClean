@@ -42,7 +42,7 @@ namespace Chimera {
         /// <summary>
         /// The orientation of the coordinator in real space.
         /// </summary>
-        private Rotation mRotation = Rotation.Zero;
+        private Rotation mOrientation = Rotation.Zero;
         /// <summary>
         /// The position of the coordinator in real space, in mm.
         /// </summary>
@@ -114,6 +114,7 @@ namespace Chimera {
             mOverlayActive = cfg.LaunchOverlay;
             mMouseControl = cfg.MouseControl;
             mOverlayFullscreen = cfg.Fullscreen;
+            mOrientation.Changed += mOrientation_Changed;
             if (mMonitor == null)
                 mMonitor = Screen.PrimaryScreen;
         }
@@ -170,15 +171,26 @@ namespace Chimera {
         /// </summary>
         public Vector3 TopLeft {
             get { return mTopLeft ; }
-            set { mTopLeft  = value; }
+            set { 
+                mTopLeft  = value;
+                if (Changed != null)
+                    Changed(this, null);
+            }
         }
 
         /// <summary>
         /// The orientation of the coordinator in real space.
         /// </summary>
-        public Rotation Rotation {
-            get { return mRotation ; }
-            set { mRotation  = value; }
+        public Rotation Orientation {
+            get { return mOrientation ; }
+            set {
+                if (mOrientation != null)
+                    mOrientation.Changed -= mOrientation_Changed;
+                mOrientation  = value;
+                mOrientation.Changed += mOrientation_Changed;
+                if (Changed != null)
+                    Changed(this, null);
+            }
         }
 
         /// <summary>
@@ -186,7 +198,11 @@ namespace Chimera {
         /// </summary>
         public double Width {
             get { return mWidth ; }
-            set { mWidth  = value; }
+            set { 
+                mWidth  = value;
+                if (Changed != null)
+                    Changed(this, null);
+            }
         }
 
         /// <summary>
@@ -194,7 +210,11 @@ namespace Chimera {
         /// </summary>
         public double Height {
             get { return mHeight ; }
-            set { mHeight  = value; }
+            set {
+                mHeight = value;
+                if (Changed != null)
+                    Changed(this, null);
+            }
         }
 
         /// <summary>
@@ -219,9 +239,9 @@ namespace Chimera {
         public string State {
             get {
                 string dump = "----" + Name + "----" + Environment.NewLine;
-                Vector3 centre = new Vector3(0f, (float) mWidth, (float) mHeight) * mRotation.Quaternion;
+                Vector3 centre = new Vector3(0f, (float) mWidth, (float) mHeight) * mOrientation.Quaternion;
                 dump += "Centre: " + centre + Environment.NewLine;
-                dump += "Orientation | Yaw: " + mRotation.Yaw + ", Pitch: " + mRotation.Pitch + Environment.NewLine;
+                dump += "Orientation | Yaw: " + mOrientation.Yaw + ", Pitch: " + mOrientation.Pitch + Environment.NewLine;
                 dump += "Distance: " + (centre - mCoordinator.EyePosition).Length() + Environment.NewLine;
                 dump += "Width: " + mWidth + ", Height: " + mHeight + Environment.NewLine;
 
@@ -381,12 +401,6 @@ namespace Chimera {
             }
         }
 
-        void mOverlayWindow_FormClosed(object sender, FormClosedEventArgs e) {
-            mOverlayActive = false;
-            if (OverlayClosed != null)
-                OverlayClosed(this, null);
-        }
-
         /// <summary>
         /// Close the overlay window, if it has been created.
         /// </summary>
@@ -395,6 +409,17 @@ namespace Chimera {
                 mOverlayWindow.Close();
                 mOverlayWindow = null;
             }
+        }
+
+        void mOverlayWindow_FormClosed(object sender, FormClosedEventArgs e) {
+            mOverlayActive = false;
+            if (OverlayClosed != null)
+                OverlayClosed(this, null);
+        }
+
+        void mOrientation_Changed(object sender, EventArgs e) {
+            if (Changed != null)
+                Changed(this, null);
         }
     }
 }

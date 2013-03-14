@@ -91,7 +91,7 @@ namespace Chimera.Util {
         /// <summary>
         /// Selected whenever any of the values change.
         /// </summary>
-        public event EventHandler OnChange;
+        public event EventHandler Changed;
 
         private Quaternion mRotation = Quaternion.Identity;
         private Vector3 mLookAtVector = Vector3.UnitX;
@@ -334,8 +334,8 @@ namespace Chimera.Util {
             if (!mVectorChanging)
                 mLookAtVector = Vector3.UnitX * value;
 
-                if (OnChange != null)
-                    OnChange(this, null);
+                if (Changed != null)
+                    Changed(this, null);
                 mRotationChanging = false;
         }
 
