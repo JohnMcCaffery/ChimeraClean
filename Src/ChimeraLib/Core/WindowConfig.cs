@@ -5,6 +5,7 @@ using System.Text;
 using Nini.Config;
 using Chimera.Util;
 using System.IO;
+using OpenMetaverse;
 
 namespace Chimera {
     public class WindowConfig {
@@ -13,6 +14,11 @@ namespace Chimera {
         public bool LaunchOverlay;
         public bool Fullscreen;
         public bool MouseControl;
+        public double Width;
+        public double Height;
+        public Vector3 TopLeft;
+        public double Pitch;
+        public double Yaw;
 
         public WindowConfig(params string[] args) {
             ArgvConfigSource argConfig = Init.InitArgConfig(args);
@@ -46,6 +52,12 @@ namespace Chimera {
             LaunchOverlay = Init.Get(specificConfig, "LaunchOverlay", false);
             Fullscreen = Init.Get(specificConfig, "Fullscreen", false);
             MouseControl = Init.Get(specificConfig, "MouseControl", false);
+
+            TopLeft = Init.GetV(specificConfig, "TopLeft", Vector3.Zero);
+            Yaw = Init.Get(specificConfig, "Yaw", 0.0);
+            Pitch = Init.Get(specificConfig, "Pitch", 0.0);
+            Width = Init.Get(specificConfig, "Width", 0.0);
+            Height = Init.Get(specificConfig, "Height", 0.0);
         }
     }
 }

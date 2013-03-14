@@ -23,20 +23,20 @@
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent() {
-            this.value = new System.Windows.Forms.NumericUpDown();
+            this.spinner = new System.Windows.Forms.NumericUpDown();
             this.valueSlider = new System.Windows.Forms.TrackBar();
-            ((System.ComponentModel.ISupportInitialize)(this.value)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.spinner)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.valueSlider)).BeginInit();
             this.SuspendLayout();
             // 
             // value
             // 
-            this.value.DecimalPlaces = 2;
-            this.value.Location = new System.Drawing.Point(0, 0);
-            this.value.Name = "value";
-            this.value.Size = new System.Drawing.Size(63, 20);
-            this.value.TabIndex = 0;
-            this.value.ValueChanged += new System.EventHandler(this.value_ValueChanged);
+            this.spinner.DecimalPlaces = 2;
+            this.spinner.Location = new System.Drawing.Point(0, 0);
+            this.spinner.Name = "value";
+            this.spinner.Size = new System.Drawing.Size(63, 20);
+            this.spinner.TabIndex = 0;
+            this.spinner.ValueChanged += new System.EventHandler(this.value_ValueChanged);
             // 
             // valueSlider
             // 
@@ -58,12 +58,12 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.value);
+            this.Controls.Add(this.spinner);
             this.Controls.Add(this.valueSlider);
             this.MinimumSize = new System.Drawing.Size(95, 20);
             this.Name = "ScalarPanel";
             this.Size = new System.Drawing.Size(356, 20);
-            ((System.ComponentModel.ISupportInitialize)(this.value)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.spinner)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.valueSlider)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -72,7 +72,7 @@
 
         #endregion
 
-        private System.Windows.Forms.NumericUpDown value;
+        private System.Windows.Forms.NumericUpDown spinner;
         private System.Windows.Forms.TrackBar valueSlider;
     }
 }

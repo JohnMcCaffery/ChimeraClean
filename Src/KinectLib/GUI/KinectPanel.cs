@@ -29,11 +29,11 @@ namespace Chimera.Kinect.GUI {
         }
 
         public Vector3 Position {
-            get { return positionPanel.Value; }
+            get { return positionPanel.Value * 10f; }
             set {
                 if (!mGuiUpdate) {
                     mExternalUpdate = true;
-                    positionPanel.Value = value;
+                    positionPanel.Value = value / 10f;
                     mExternalUpdate = true;
                 }
             }
@@ -85,6 +85,7 @@ namespace Chimera.Kinect.GUI {
             windowTab.TabIndex = 2;
             windowTab.Text = name;
             windowTab.UseVisualStyleBackColor = true;
+            windowTab.AutoScroll = true;
             // 
             // kinectWindowPanel
             // 

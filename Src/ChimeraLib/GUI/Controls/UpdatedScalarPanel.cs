@@ -17,10 +17,10 @@ namespace KinectLib.GUI {
         public IUpdater<float> Scalar {
             get { return mScalar; }
             set {
-                if ((object) mScalar != null)
+                if ( mScalar != null)
                     mScalar.Changed -= mScalar_OnChange;
                 mScalar = value;
-                if ((object)mScalar != null) {
+                if (mScalar != null) {
                     Value = value.Value;
                     mScalar.Changed += mScalar_OnChange;
                 }

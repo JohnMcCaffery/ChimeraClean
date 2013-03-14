@@ -97,6 +97,8 @@ namespace Chimera.Overlay {
 
         #region ISelectable Members
 
+        public event Action<ISelectable> StaticChanged;
+
         public event Action<ISelectable> Selected;
 
         public event Action<ISelectable> Shown;

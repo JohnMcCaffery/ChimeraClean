@@ -89,7 +89,7 @@ namespace Chimera.Overlay {
 
             foreach (var item in mItems) {
                 item.Init(mMenu, window);
-                item.Menu.ImageChanged += (source, args) => RecalculateStatic();
+                item.Menu.StaticChanged += source => RecalculateStatic();
                 item.Menu.Selected += selectable => ItemSelected(item);
                 item.State.Activated += state => ItemActivated(item);
             }
@@ -121,12 +121,16 @@ namespace Chimera.Overlay {
         }
 
         private void Draw(Graphics graphics, Rectangle clipRectangle, Action<Graphics> draw) {
-            Bitmap staticImg = new Bitmap(mStaticBG);
-            Graphics overlayGraphics = Graphics.FromImage(staticImg);
+            try {
+                Bitmap staticImg = new Bitmap(mStaticBG);
+                Graphics overlayGraphics = Graphics.FromImage(staticImg);
 
-            draw(overlayGraphics);
+                draw(overlayGraphics);
 
-            graphics.DrawImage(staticImg, 0, 0);
+                graphics.DrawImage(staticImg, 0, 0);
+            } catch (Exception e) {
+                Console.WriteLine("Unable to draw." + e.Message);
+            }
         }
 
         public void DrawCursor(Graphics graphics, Rectangle clipRectangle) {

@@ -25,10 +25,10 @@ namespace KinectLib.GUI {
         public IUpdater<Vector3> Vector {
             get { return mVector; }
             set {
-                if ((object) mVector != null)
+                if ( mVector != null)
                     mVector.Changed -= mVector_OnChange;
                 mVector = value;
-                if ((object)mVector != null) {
+                if (mVector != null) {
                     Value = value.Value;
                     mVector.Changed += mVector_OnChange;
                 }

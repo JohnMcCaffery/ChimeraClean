@@ -17,11 +17,20 @@ namespace KinectLib.GUI {
         public event Action<float> Changed;
 
         public float Value {
-            get { return (float)decimal.ToDouble(value.Value); }
+            get { return (float)decimal.ToDouble(spinner.Value); }
             set {
                 if (!mGuiChanged) {
                     mExternalChanged = true;
-                    this.value.Value = new decimal(value);
+                    decimal val = 
+                        float.IsInfinity(value) ? spinner.Maximum : 
+                        float.IsNaN(value) ? decimal.Zero : 
+                        float.IsNegativeInfinity(value) ? spinner.Minimum : 
+                        new decimal(value);
+
+                    spinner.Maximum = Math.Max(val, spinner.Maximum);
+                    spinner.Minimum = Math.Min(val, spinner.Minimum);
+                    spinner.Value = val;
+
                     mExternalChanged = false;
                 }
                 if (Changed != null)
@@ -33,7 +42,7 @@ namespace KinectLib.GUI {
             get { return valueSlider.Maximum / 100; }
             set {
                 valueSlider.Maximum = value * 100;
-                this.value.Maximum = new Decimal(value);
+                this.spinner.Maximum = new Decimal(value);
             }
         }
 
@@ -41,7 +50,7 @@ namespace KinectLib.GUI {
             get { return valueSlider.Minimum / 100; }
             set {
                 valueSlider.Minimum = value * 100;
-                this.value.Minimum = new Decimal(value);
+                this.spinner.Minimum = new Decimal(value);
             }
         }
 
@@ -52,23 +61,27 @@ namespace KinectLib.GUI {
         private void value_ValueChanged(object sender, EventArgs e) {
             if (!mExternalChanged) {
                 mGuiChanged = true;
-                Value = (float) decimal.ToDouble(value.Value);
+                Value = (float) decimal.ToDouble(spinner.Value);
                 mGuiChanged = false;
             }
-            if (!mSliderChanged)
-                valueSlider.Value = (int) (Value * 100.0);
+            if (!mSliderChanged) {
+                int val = (int)(Value * 100.0);
+                valueSlider.Maximum = Math.Max(val, valueSlider.Maximum);
+                valueSlider.Minimum = Math.Min(val, valueSlider.Minimum);
+                valueSlider.Value = val;
+            }
         }
 
         private void valueSlider_Scroll(object sender, EventArgs e) {
             mSliderChanged = true;
-            value.Value = new decimal(valueSlider.Value / 100.0);
+            spinner.Value = new decimal(valueSlider.Value / 100.0);
             mSliderChanged = false;
         }
 
         void mScalar_OnChange(float val) {
             if (!mGuiChanged) {
                 mExternalChanged = true;
-                value.Value = new decimal(val);
+                spinner.Value = new decimal(val);
                 mExternalChanged = false;
             }
         }

@@ -16,8 +16,8 @@ namespace Chimera.Kinect.GUI {
             set { xPanel.Scalar = value; }
         }
         public IUpdater<float> Y {
-            get { return xPanel.Scalar; }
-            set { xPanel.Scalar = value; }
+            get { return yPanel.Scalar; }
+            set { yPanel.Scalar = value; }
         }
 
         public IUpdater<Vector3> TopLeft {

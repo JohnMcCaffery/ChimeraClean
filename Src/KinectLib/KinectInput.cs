@@ -20,7 +20,7 @@ namespace Chimera.Kinect {
         private Vector mPointStart = Vector.Create(0f, 0f, 0f);
         private Vector mPointDir = Vector.Create(0f, 0f, 0f);
         private Vector3 mKinectPosition;
-        private Rotation mKinectOrientation = new Rotation();
+        private Rotation mKinectOrientation;
         private KinectPanel mPanel;
 
         public event Action<Vector3> PositionChanged;
@@ -59,6 +59,11 @@ namespace Chimera.Kinect {
         }
 
         public KinectInput() {
+            KinectConfig cfg = new KinectConfig();
+
+            mKinectPosition = cfg.Position;
+            mKinectOrientation = new Rotation(cfg.Pitch, cfg.Yaw);
+
             mKinectOrientation.Changed += (source, args) => OrientationChanged(mKinectOrientation.Quaternion);
         }
 

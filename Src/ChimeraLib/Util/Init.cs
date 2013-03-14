@@ -460,6 +460,9 @@ namespace Chimera.Util {
         public static float Get(IConfig cfg, string key, float defalt) {
             return cfg == null ? defalt : cfg.GetFloat(key, defalt);
         }
+        public static double Get(IConfig cfg, string key, double defalt) {
+            return cfg == null ? defalt : cfg.GetDouble(key, defalt);
+        }
         public static Vector3 GetV(IConfig cfg, string key, Vector3 defalt) {
             string raw = cfg.Get(key, null);
             Vector3 ret;

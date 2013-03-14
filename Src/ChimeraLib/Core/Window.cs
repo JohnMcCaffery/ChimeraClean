@@ -114,7 +114,14 @@ namespace Chimera {
             mOverlayActive = cfg.LaunchOverlay;
             mMouseControl = cfg.MouseControl;
             mOverlayFullscreen = cfg.Fullscreen;
+
+            mWidth = cfg.Width;
+            mHeight = cfg.Height;
+            mTopLeft = cfg.TopLeft;
+            mOrientation = new Rotation(cfg.Pitch, cfg.Yaw);
+
             mOrientation.Changed += mOrientation_Changed;
+
             if (mMonitor == null)
                 mMonitor = Screen.PrimaryScreen;
         }
@@ -332,16 +339,25 @@ namespace Chimera {
         }
 
         /// <summary>
-        /// Set the position of the cursor on the coordinator.
+        /// Set the position of the cursor on the window, specifying the position of the cursor on the monitor in pixels.
         /// </summary>
         /// <param name="x">The X coordinate of the cursor.</param>
         /// <param name="y">The Y coordinate of the cursor.</param>
-        public void PositionCursor(double x, double y) {
+        public void UpdateCursorPx(double x, double y) {
             mCursorX = x;
             mCursorY = y;
             RedrawOverlay();
             if (CursorMoved != null)
                 CursorMoved(this, null);
+        }
+
+        /// <summary>
+        /// Set the position of the cursor on the window, specifying the position of the cursor on the physical screen in cm.
+        /// </summary>
+        /// <param name="x">The X coordinate of the cursor.</param>
+        /// <param name="y">The Y coordinate of the cursor.</param>
+        public void UpdateCursorCm(double x, double y) {
+            UpdateCursorPx((x / mWidth) * mMonitor.Bounds.Width, (y / mHeight) * mMonitor.Bounds.Height);
         }
 
         /// <summary>

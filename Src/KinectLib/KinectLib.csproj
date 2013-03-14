@@ -103,6 +103,7 @@
       <DependentUpon>KinectWindowPanel.cs</DependentUpon>
     </Compile>
     <Compile Include="GUI\Updaters.cs" />
+    <Compile Include="KinectConfig.cs" />
     <Compile Include="KinectInput.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WindowInput.cs" />

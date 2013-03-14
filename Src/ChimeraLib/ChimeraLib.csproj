@@ -152,6 +152,7 @@
     <Compile Include="Overlay\NumberSelectionRenderer.cs" />
     <Compile Include="Overlay\TestState.cs" />
     <Compile Include="Overlay\WindowOverlay.cs" />
+    <Compile Include="Util\ConfigBase.cs" />
     <Compile Include="Util\Init.cs" />
     <Compile Include="Util\ProcessWrangler.cs" />
     <Compile Include="Util\Rotation.cs" />

@@ -93,10 +93,10 @@ namespace Chimera.GUI.Forms {
             if (Bounds.Contains(Cursor.Position) || mMouseOnScreen) {
                 mMouseOnScreen = true;
                 if (mLastMouse.X != Cursor.Position.X || mLastMouse.Y != Cursor.Position.Y) {
-                    mWindow.PositionCursor(Cursor.Position.X - Bounds.Left, Cursor.Position.Y - Bounds.Top);
+                    mWindow.UpdateCursorPx(Cursor.Position.X - Bounds.Left, Cursor.Position.Y - Bounds.Top);
                     mLastMouse = Cursor.Position;
                 } else {
-                    mWindow.PositionCursor(mLastMouse.X - Bounds.Left + mJitter, Cursor.Position.Y - Bounds.Top);
+                    mWindow.UpdateCursorPx(mLastMouse.X - Bounds.Left + mJitter, Cursor.Position.Y - Bounds.Top);
                     mJitter *= -1;
                 }
             } else

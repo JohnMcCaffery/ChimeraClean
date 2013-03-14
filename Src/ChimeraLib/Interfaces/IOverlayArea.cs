@@ -7,9 +7,13 @@ using System.Drawing;
 namespace Chimera {
     public interface ISelectable {
         /// <summary>
-        /// Selected whenever this overlay area is select.
+        /// Triggered whenever this overlay area is selected.
         /// </summary>
         event Action<ISelectable> Selected;
+        /// <summary>
+        /// Triggered whenever the static portion of what this selectable renders changes.
+        /// </summary>
+        event Action<ISelectable> StaticChanged;
 
         /// <summary>
         /// Triggered when this overlay window is made visible. May be some time after the 'Show' method is called. Will be triggered after any fade in style effects complete.

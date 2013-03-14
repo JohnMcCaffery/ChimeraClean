@@ -7,9 +7,9 @@ namespace Chimera.Overlay {
     public class MainMenuItem {
         private string mWindowName = "Main Window";
         private IOverlayState mState;
-        private ImageArea mOverlay;
+        private ISelectable mOverlay;
 
-        public MainMenuItem(IOverlayState state, ImageArea overlay) {
+        public MainMenuItem(IOverlayState state, ISelectable overlay) {
             mState = state;
             mOverlay = overlay;
         }
@@ -17,7 +17,7 @@ namespace Chimera.Overlay {
         /// <summary>
         /// The overlay area which will trigger this item.
         /// </summary>
-        public ImageArea Menu {
+        public ISelectable Menu {
             get { return mOverlay; }
         }
 

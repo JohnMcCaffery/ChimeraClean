@@ -36,7 +36,9 @@ namespace Chimera.Kinect {
                     mPanel.Top = new VectorUpdater(mTop);
                     mPanel.Side = new VectorUpdater(mSide);
                     mPanel.Intersection = new VectorUpdater(mIntersection);
-                    mPanel.X = new ScalarUpdater(mX);
+                    xUpdater = new ScalarUpdater(mX);
+                    mPanel.X = xUpdater;
+                    //mPanel.X = new ScalarUpdater(mX);
                     mPanel.Y = new ScalarUpdater(mY);
                 }
                 return mPanel;
@@ -104,17 +106,17 @@ namespace Chimera.Kinect {
             mInput.OrientationChanged += rot => ConfigureFromWindow();
             mInput.VectorsAssigned += InitVectors;
 
+            mPlaneTopLeft = Vector.Create("PlanePoint", 1f, 1f, 0f);
+            mPlaneNormal = Vector.Create("PlaneNormal", 0f, 0f, 1f);
+            mW = Scalar.Create("W", 1f);
+            mH = Scalar.Create("H", 1f);
+
             InitVectors(mInput.PointStart, mInput.PointDir);
         }
 
         private void InitVectors(Vector pointStart, Vector pointDir) {
             mPointDir = pointDir;
             mPointStart = pointStart;
-
-            mPlaneTopLeft = Vector.Create("PlanePoint", 1f, 1f, 0f);
-            mPlaneNormal = Vector.Create("PlaneNormal", 0f, 0f, 1f);
-            mW = Scalar.Create(1f);
-            mH = Scalar.Create(1f);
 
             Vector vertical = Vector.Create(0f, 1f, 0f); // Vertical
             //Calculate the intersection of the plane defined by the point mPlaneTopLeft and the normal mPlaneNormal and the line defined by the point mPointStart and the direction mPointDir.
@@ -127,28 +129,35 @@ namespace Chimera.Kinect {
             //Calculate the vector (running along the plane) between the top left corner and the point of intersection.
             Vector diff = mIntersection - mPlaneTopLeft;
 
+            mIntersection.OnChange += () => {
+                Nui.Poll();
+            };
+
             //Project the diff line onto the top and side vectors to get x and y values.
             mX = Nui.project(diff, mTop);
             mY = Nui.project(diff, mSide);
 
-            mH.OnChange += () => {
-                Console.WriteLine("H changed.");
-            };
-
-            mTop.OnChange += () => {
-                Console.WriteLine("Top changed.");
-            };
+            if (mPanel != null) {
+                mPanel.TopLeft = new VectorUpdater(mPlaneTopLeft);
+                mPanel.Top = new VectorUpdater(mTop);
+                mPanel.Side = new VectorUpdater(mSide);
+                mPanel.Intersection = new VectorUpdater(mIntersection);
+                mPanel.X = new ScalarUpdater(mX);
+                mPanel.Y = new ScalarUpdater(mY);
+            }
 
             ConfigureFromWindow();
 
             Nui.Tick += mWindow_Change;
         }
 
+        private ScalarUpdater xUpdater;
+
         private void mWindow_Change() {
             if (mOldX != X || mOldY != Y) {
                 mOldX = X;
                 mOldY = Y;
-                mWindow.PositionCursor(X, Y);
+                mWindow.UpdateCursorCm(mOldX * SCALE, mOldY * SCALE);
             }
         }
 
@@ -166,17 +175,6 @@ namespace Chimera.Kinect {
             mPlaneNormal.Set(normal.Y, normal.Z, normal.X);
 
             Nui.Poll();
-
-            /*
-            if (mPanel != null) {
-                mPanel.TopLeft = new VectorUpdater(mPlaneTopLeft);
-                mPanel.Top = new VectorUpdater(mTop);
-                mPanel.Side = new VectorUpdater(mSide);
-                mPanel.Intersection = new VectorUpdater(mIntersection);
-                mPanel.X = new ScalarUpdater(mX);
-                mPanel.Y = new ScalarUpdater(mY);
-            }
-            */
 
             mWindow_Change();
         }

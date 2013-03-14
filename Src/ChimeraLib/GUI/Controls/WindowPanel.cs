@@ -24,6 +24,13 @@ namespace Chimera.GUI.Controls {
         public void Init(Window window) {
             mWindow = window;
 
+            mouseControlCheck.Checked = mWindow.MouseControl;
+
+            widthPanel.Value = (float) window.Width / 10f;
+            heightPanel.Value = (float) window.Height / 10f;
+            topLeftPanel.Value = window.TopLeft / 10f;
+            orientationPanel.Value = window.Orientation;
+
             mWindow.OverlayClosed += new EventHandler(mWindow_OverlayClosed);
             mWindow.OverlayLaunched += new EventHandler(mWindow_OverlayLaunched);
 
@@ -44,14 +51,10 @@ namespace Chimera.GUI.Controls {
 
                 mainTab.Controls.Add(tab);
             }
-
-            mouseControlCheck.Checked = mWindow.MouseControl;
             if (mWindow.OverlayVisible) {
                 launchOverlayButton.Text =  "Close Overlay";
                 mWindow.LaunchOverlay();
             }
-
-            orientationPanel.Value = window.Orientation;
         }
 
         void mWindow_OverlayLaunched(object sender, EventArgs e) {
@@ -95,15 +98,15 @@ namespace Chimera.GUI.Controls {
         }
 
         private void positionPanel_ValueChanged(object sender, EventArgs e) {
-            mWindow.TopLeft = positionPanel.Value * 10f;
+            mWindow.TopLeft = topLeftPanel.Value * 10f;
         }
 
         private void widthPanel_Changed(float obj) {
             mWindow.Width = widthPanel.Value * 10.0;
         }
 
-        private void heighPanel_Changed(float obj) {
-            mWindow.Height = heighPanel.Value * 10.0;
+        private void heightPanel_Changed(float obj) {
+            mWindow.Height = heightPanel.Value * 10.0;
         }
     }
 }
