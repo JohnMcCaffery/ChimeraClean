@@ -31,8 +31,12 @@ namespace ChimeraOutput {
             MainMenuItem item1 = new MainMenuItem(mState, mOverlay);
             Chimera.Overlay.MainMenu mainMenu = new Chimera.Overlay.MainMenu(item1);
             Coordinator coordinator = new Coordinator(windows, mainMenu, kinect, kbMouseInput, flythrough);
-            CoordinatorForm form = new CoordinatorForm(coordinator);
 
+            //Window[] windows = new Window[] { new Window("Main Window") };
+            //Chimera.Overlay.MainMenu mainMenu = new Chimera.Overlay.MainMenu();
+            //Coordinator coordinator = new Coordinator(windows, mainMenu, kinect);
+
+            CoordinatorForm form = new CoordinatorForm(coordinator);
             CoordinatorConfig cfg = new CoordinatorConfig();
             ProcessWrangler.BlockingRunForm(form, coordinator, cfg.AutoRestart);
         }

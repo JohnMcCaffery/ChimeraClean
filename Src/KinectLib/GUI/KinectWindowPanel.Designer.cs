@@ -32,12 +32,17 @@
             this.topPanel = new KinectLib.GUI.UpdatedVectorPanel();
             this.topLeftPanel = new KinectLib.GUI.UpdatedVectorPanel();
             this.intersectionPanel = new KinectLib.GUI.UpdatedVectorPanel();
+            this.normalPanel = new KinectLib.GUI.UpdatedVectorPanel();
+            this.label3 = new System.Windows.Forms.Label();
+            this.wPanel = new KinectLib.GUI.UpdatedScalarPanel();
+            this.label4 = new System.Windows.Forms.Label();
+            this.hPanel = new KinectLib.GUI.UpdatedScalarPanel();
             this.SuspendLayout();
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(2, 303);
+            this.label1.Location = new System.Drawing.Point(3, 274);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(14, 13);
             this.label1.TabIndex = 5;
@@ -46,7 +51,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(2, 329);
+            this.label2.Location = new System.Drawing.Point(3, 300);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(14, 13);
             this.label2.TabIndex = 6;
@@ -54,37 +59,38 @@
             // 
             // yPanel
             // 
-            this.yPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.yPanel.Location = new System.Drawing.Point(22, 329);
+            this.yPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.yPanel.Location = new System.Drawing.Point(23, 300);
             this.yPanel.Max = 1000;
             this.yPanel.Min = -1000;
             this.yPanel.MinimumSize = new System.Drawing.Size(95, 20);
             this.yPanel.Name = "yPanel";
             this.yPanel.Scalar = null;
-            this.yPanel.Size = new System.Drawing.Size(285, 20);
+            this.yPanel.Size = new System.Drawing.Size(127, 20);
             this.yPanel.TabIndex = 4;
             this.yPanel.Value = 0F;
             // 
             // xPanel
             // 
-            this.xPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.xPanel.Location = new System.Drawing.Point(22, 303);
+            this.xPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.xPanel.Location = new System.Drawing.Point(23, 274);
             this.xPanel.Max = 1000;
             this.xPanel.Min = -1000;
             this.xPanel.MinimumSize = new System.Drawing.Size(95, 20);
             this.xPanel.Name = "xPanel";
             this.xPanel.Scalar = null;
-            this.xPanel.Size = new System.Drawing.Size(285, 20);
+            this.xPanel.Size = new System.Drawing.Size(127, 20);
             this.xPanel.TabIndex = 3;
             this.xPanel.Value = 0F;
             // 
             // sidePanel
             // 
-            this.sidePanel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.sidePanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.sidePanel.DisplayName = "Side";
-            this.sidePanel.Location = new System.Drawing.Point(155, 101);
+            this.sidePanel.Location = new System.Drawing.Point(0, 91);
             this.sidePanel.Max = 1024D;
             this.sidePanel.MaxV = ((OpenMetaverse.Vector3)(resources.GetObject("sidePanel.MaxV")));
             this.sidePanel.Min = -1024D;
@@ -101,10 +107,10 @@
             // 
             // topPanel
             // 
-            this.topPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.topPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.topPanel.DisplayName = "Top";
-            this.topPanel.Location = new System.Drawing.Point(0, 101);
+            this.topPanel.Location = new System.Drawing.Point(0, 0);
             this.topPanel.Max = 1024D;
             this.topPanel.MaxV = ((OpenMetaverse.Vector3)(resources.GetObject("topPanel.MaxV")));
             this.topPanel.Min = -1024D;
@@ -121,17 +127,16 @@
             // 
             // topLeftPanel
             // 
-            this.topLeftPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.topLeftPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.topLeftPanel.DisplayName = "Top Left";
-            this.topLeftPanel.Location = new System.Drawing.Point(0, 0);
+            this.topLeftPanel.Location = new System.Drawing.Point(155, 91);
             this.topLeftPanel.Max = 1024D;
             this.topLeftPanel.MaxV = ((OpenMetaverse.Vector3)(resources.GetObject("topLeftPanel.MaxV")));
             this.topLeftPanel.Min = -1024D;
             this.topLeftPanel.MinimumSize = new System.Drawing.Size(103, 95);
             this.topLeftPanel.MinV = ((OpenMetaverse.Vector3)(resources.GetObject("topLeftPanel.MinV")));
             this.topLeftPanel.Name = "topLeftPanel";
-            this.topLeftPanel.Size = new System.Drawing.Size(307, 95);
+            this.topLeftPanel.Size = new System.Drawing.Size(149, 95);
             this.topLeftPanel.TabIndex = 0;
             this.topLeftPanel.Value = ((OpenMetaverse.Vector3)(resources.GetObject("topLeftPanel.Value")));
             this.topLeftPanel.Vector = null;
@@ -141,10 +146,10 @@
             // 
             // intersectionPanel
             // 
-            this.intersectionPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.intersectionPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.intersectionPanel.DisplayName = "Intersection";
-            this.intersectionPanel.Location = new System.Drawing.Point(0, 205);
+            this.intersectionPanel.Location = new System.Drawing.Point(0, 180);
             this.intersectionPanel.Max = 1024D;
             this.intersectionPanel.MaxV = ((OpenMetaverse.Vector3)(resources.GetObject("intersectionPanel.MaxV")));
             this.intersectionPanel.Min = -1024D;
@@ -159,21 +164,92 @@
             this.intersectionPanel.Y = 0F;
             this.intersectionPanel.Z = 0F;
             // 
+            // normalPanel
+            // 
+            this.normalPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.normalPanel.DisplayName = "Normal";
+            this.normalPanel.Location = new System.Drawing.Point(155, 3);
+            this.normalPanel.Max = 1024D;
+            this.normalPanel.MaxV = ((OpenMetaverse.Vector3)(resources.GetObject("normalPanel.MaxV")));
+            this.normalPanel.Min = -1024D;
+            this.normalPanel.MinimumSize = new System.Drawing.Size(103, 95);
+            this.normalPanel.MinV = ((OpenMetaverse.Vector3)(resources.GetObject("normalPanel.MinV")));
+            this.normalPanel.Name = "normalPanel";
+            this.normalPanel.Size = new System.Drawing.Size(149, 95);
+            this.normalPanel.TabIndex = 8;
+            this.normalPanel.Value = ((OpenMetaverse.Vector3)(resources.GetObject("normalPanel.Value")));
+            this.normalPanel.Vector = null;
+            this.normalPanel.X = 0F;
+            this.normalPanel.Y = 0F;
+            this.normalPanel.Z = 0F;
+            // 
+            // label3
+            // 
+            this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(161, 274);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(18, 13);
+            this.label3.TabIndex = 10;
+            this.label3.Text = "W";
+            // 
+            // wPanel
+            // 
+            this.wPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.wPanel.Location = new System.Drawing.Point(181, 274);
+            this.wPanel.Max = 1000;
+            this.wPanel.Min = -1000;
+            this.wPanel.MinimumSize = new System.Drawing.Size(95, 20);
+            this.wPanel.Name = "wPanel";
+            this.wPanel.Scalar = null;
+            this.wPanel.Size = new System.Drawing.Size(127, 20);
+            this.wPanel.TabIndex = 9;
+            this.wPanel.Value = 0F;
+            // 
+            // label4
+            // 
+            this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(160, 300);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(15, 13);
+            this.label4.TabIndex = 12;
+            this.label4.Text = "H";
+            // 
+            // hPanel
+            // 
+            this.hPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.hPanel.Location = new System.Drawing.Point(181, 300);
+            this.hPanel.Max = 1000;
+            this.hPanel.Min = -1000;
+            this.hPanel.MinimumSize = new System.Drawing.Size(95, 20);
+            this.hPanel.Name = "hPanel";
+            this.hPanel.Scalar = null;
+            this.hPanel.Size = new System.Drawing.Size(127, 20);
+            this.hPanel.TabIndex = 11;
+            this.hPanel.Value = 0F;
+            // 
             // KinectWindowPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScroll = true;
+            this.Controls.Add(this.xPanel);
+            this.Controls.Add(this.topLeftPanel);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.hPanel);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.wPanel);
+            this.Controls.Add(this.normalPanel);
             this.Controls.Add(this.intersectionPanel);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.yPanel);
-            this.Controls.Add(this.xPanel);
             this.Controls.Add(this.sidePanel);
             this.Controls.Add(this.topPanel);
-            this.Controls.Add(this.topLeftPanel);
-            this.MinimumSize = new System.Drawing.Size(307, 355);
+            this.MinimumSize = new System.Drawing.Size(307, 325);
             this.Name = "KinectWindowPanel";
-            this.Size = new System.Drawing.Size(307, 355);
+            this.Size = new System.Drawing.Size(307, 325);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -189,5 +265,10 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private KinectLib.GUI.UpdatedVectorPanel intersectionPanel;
+        private KinectLib.GUI.UpdatedVectorPanel normalPanel;
+        private System.Windows.Forms.Label label3;
+        private KinectLib.GUI.UpdatedScalarPanel wPanel;
+        private System.Windows.Forms.Label label4;
+        private KinectLib.GUI.UpdatedScalarPanel hPanel;
     }
 }

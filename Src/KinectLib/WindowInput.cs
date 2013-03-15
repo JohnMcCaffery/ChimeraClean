@@ -22,6 +22,8 @@ namespace Chimera.Kinect {
 
         private double mOldX, mOldY;
 
+        public event Action VectorsRecalculated;
+
         public KinectInput Input {
             get { return mInput; }
         }
@@ -30,71 +32,38 @@ namespace Chimera.Kinect {
         }
         public KinectWindowPanel Panel {
             get {
-                if (mPanel == null) {
-                    mPanel = new KinectWindowPanel();
-                    mPanel.TopLeft = new VectorUpdater(mPlaneTopLeft);
-                    mPanel.Top = new VectorUpdater(mTop);
-                    mPanel.Side = new VectorUpdater(mSide);
-                    mPanel.Intersection = new VectorUpdater(mIntersection);
-                    xUpdater = new ScalarUpdater(mX);
-                    mPanel.X = xUpdater;
-                    //mPanel.X = new ScalarUpdater(mX);
-                    mPanel.Y = new ScalarUpdater(mY);
-                }
+                if (mPanel == null)
+                    mPanel = new KinectWindowPanel(this);
                 return mPanel;
             }
         }
 
-        public float X {
-            get { return mX.Value; }
+        public Scalar X {
+            get { return mX; }
         }
-        public float Y {
-            get { return mY.Value; }
+        public Scalar Y {
+            get { return mY; }
         }
-        public float W {
-            get { return mW.Value; }
+        public Scalar W {
+            get { return mW; }
         }
-        public float H {
-            get { return mH.Value; }
+        public Scalar H {
+            get { return mH; }
         }
-        public Vector3 Intersection {
-            get { 
-                if ((object) mIntersection != null)
-                    return new Vector3(mIntersection.X, mIntersection.Y, mIntersection.Z);
-                return Vector3.Zero;
-            }
+        public Vector Intersection {
+            get { return mIntersection; }
         }
-        public Vector3 Top {
-            get { 
-                if ((object) mTop != null)
-                    return new Vector3(mTop.X, mTop.Y, mTop.Z);
-                return Vector3.Zero;
-            }
+        public Vector Top {
+            get { return mTop; }
         }
-        public Vector3 Side {
-            get { 
-                if ((object) mSide != null)
-                    return new Vector3(mSide.X, mSide.Y, mSide.Z);
-                return Vector3.Zero;
-            }
+        public Vector Side {
+            get { return mSide; }
         }
-        public Vector3 TopLeft {
-            get { 
-                if ((object) mPlaneTopLeft != null)
-                    return new Vector3(mPlaneTopLeft.X, mPlaneTopLeft.Y, mPlaneTopLeft.Z);
-                return Vector3.Zero;
-            }
+        public Vector TopLeft {
+            get { return mPlaneTopLeft; }
         }
-        public Vector3 Normal {
-            get { 
-                if ((object) mPlaneNormal != null)
-                    return new Vector3(mPlaneNormal.X, mPlaneNormal.Y, mPlaneNormal.Z);
-                return Vector3.Zero;
-            }
-        }
-
-        public bool Active {
-            get { return X > 0f && X < 1f && Y > 0f && Y < 1f; }
+        public Vector Normal {
+            get { return mPlaneNormal; }
         }
 
         public WindowInput(KinectInput input, Window window) {
@@ -129,35 +98,29 @@ namespace Chimera.Kinect {
             //Calculate the vector (running along the plane) between the top left corner and the point of intersection.
             Vector diff = mIntersection - mPlaneTopLeft;
 
-            mIntersection.OnChange += () => {
-                Nui.Poll();
-            };
-
             //Project the diff line onto the top and side vectors to get x and y values.
             mX = Nui.project(diff, mTop);
             mY = Nui.project(diff, mSide);
 
-            if (mPanel != null) {
-                mPanel.TopLeft = new VectorUpdater(mPlaneTopLeft);
-                mPanel.Top = new VectorUpdater(mTop);
-                mPanel.Side = new VectorUpdater(mSide);
-                mPanel.Intersection = new VectorUpdater(mIntersection);
-                mPanel.X = new ScalarUpdater(mX);
-                mPanel.Y = new ScalarUpdater(mY);
-            }
+            mIntersection.Name = "Intersection";
+            mTop.Name = "Top";
+            mSide.Name = "Side";
+            mX.Name = "X";
+            mY.Name = "Y";
+
+            if (VectorsRecalculated != null)
+                VectorsRecalculated();
 
             ConfigureFromWindow();
 
             Nui.Tick += mWindow_Change;
         }
 
-        private ScalarUpdater xUpdater;
-
         private void mWindow_Change() {
-            if (mOldX != X || mOldY != Y) {
-                mOldX = X;
-                mOldY = Y;
-                mWindow.UpdateCursorCm(mOldX * SCALE, mOldY * SCALE);
+            if (mOldX != mX.Value || mOldY != mY.Value) {
+                mOldX = mX.Value;
+                mOldY = mY.Value;
+                mWindow.UpdateCursorCm(mWindow.Width - (mOldX * SCALE), mOldY * SCALE);
             }
         }
 

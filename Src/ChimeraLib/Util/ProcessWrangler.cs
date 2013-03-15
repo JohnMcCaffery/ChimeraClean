@@ -43,105 +43,105 @@ namespace Chimera.Util {
         /// <summary>
         /// The coordinator has a thin-line border.
         /// </summary>
-        private static readonly long WS_BORDER = 0x00800000L;
+        private static readonly Int32 WS_BORDER = 0x00800000;
         /// <summary>
         /// The coordinator has a title bar (includes the WS_BORDER style).
         /// </summary>
-        private static readonly long WS_CAPTION = 0x00C00000L;
+        private static readonly Int32 WS_CAPTION = 0x00C00000;
         /// <summary>
         ///The coordinator is a child coordinator. A coordinator with this style cannot have a menu bar. This style cannot be used with the WS_POPUP style.
         /// </summary>
-        private static readonly long WS_CHILD = 0x40000000L;
+        private static readonly Int32 WS_CHILD = 0x40000000;
         /// <summary>
         /// Same as the WS_CHILD style.
         /// </summary>
-        private static readonly long WS_CHILDWINDOW = 0x40000000L;
+        private static readonly Int32 WS_CHILDWINDOW = 0x40000000;
         /// <summary>
         /// Excludes the area occupied by child windows when drawing occurs within the parent coordinator. This style is used when creating the parent coordinator.
         /// </summary>
-        private static readonly long WS_CLIPCHILDREN = 0x02000000L;
+        private static readonly Int32 WS_CLIPCHILDREN = 0x02000000;
         /// <summary>
         /// Clips child windows relative to each other; that is, when a particular child coordinator receives a WM_PAINT message, the WS_CLIPSIBLINGS style clips all other overlapping child windows out of the region of the child coordinator to be updated. If WS_CLIPSIBLINGS is not specified and child windows overlap, it is possible, when drawing within the client area of a child coordinator, to draw within the client area of a neighboring child coordinator.
         /// </summary>
-        private static readonly long WS_CLIPSIBLINGS = 0x04000000L;
+        private static readonly Int32 WS_CLIPSIBLINGS = 0x04000000;
         /// <summary>
         /// The coordinator is initially disabled. A disabled coordinator cannot receive input from the user. To change this after a coordinator has been created, use the EnableWindow function.
         /// </summary>
-        private static readonly long WS_DISABLED = 0x08000000L;
+        private static readonly Int32 WS_DISABLED = 0x08000000;
         /// <summary>
         /// The coordinator has a border of a style typically used with dialog boxes. A coordinator with this style cannot have a title bar.
         /// </summary>
-        private static readonly long WS_DLGFRAME = 0x00400000L;
+        private static readonly Int32 WS_DLGFRAME = 0x00400000;
         /// <summary>
         /// The coordinator is the first control of a group of controls. The group consists of this first control and all controls defined after it, up to the next control with the WS_GROUP style. The first control in each group usually has the WS_TABSTOP style so that the user can move from group to group. The user can subsequently change the keyboard focus from one control in the group to the next control in the group by using the direction keys.
         /// You can turn this style on and off to change dialog box navigation. To change this style after a coordinator has been created, use the SetWindowLong function.
         /// </summary>
-        private static readonly long WS_GROUP = 0x00020000L;
+        private static readonly Int32 WS_GROUP = 0x00020000;
         /// <summary>
         /// The coordinator has a horizontal scroll bar.
         /// </summary>
-        private static readonly long WS_HSCROLL = 0x00100000L;
+        private static readonly Int32 WS_HSCROLL = 0x00100000;
         /// <summary>
         /// The coordinator is initially minimized. Same as the WS_MINIMIZE style.
         /// </summary>
-        private static readonly long WS_ICONIC = 0x20000000L;
+        private static readonly Int32 WS_ICONIC = 0x20000000;
         /// <summary>
         /// The coordinator is initially maximized.
         /// </summary>
-        private static readonly long WS_MAXIMIZE = 0x01000000L;
+        private static readonly Int32 WS_MAXIMIZE = 0x01000000;
         /// <summary>
         /// The coordinator has a maximize button. Cannot be combined with the WS_EX_CONTEXTHELP style. The WS_SYSMENU style must also be specified.
         /// </summary>
-        private static readonly long WS_MAXIMIZEBOX = 0x00010000L;
+        private static readonly Int32 WS_MAXIMIZEBOX = 0x00010000;
         /// <summary>
         /// The coordinator is initially minimized. Same as the WS_ICONIC style.
         /// </summary>
-        private static readonly long WS_MINIMIZE = 0x20000000L;
+        private static readonly Int32 WS_MINIMIZE = 0x20000000;
         /// <summary>
         /// The coordinator has a minimize button. Cannot be combined with the WS_EX_CONTEXTHELP style. The WS_SYSMENU style must also be specified.
         /// </summary>
-        private static readonly long WS_MINIMIZEBOX = 0x00020000L;
+        private static readonly Int32 WS_MINIMIZEBOX = 0x00020000;
         /// <summary>
         /// The coordinator is an overlapped coordinator. An overlapped coordinator has a title bar and a border. Same as the WS_TILED style.
         /// </summary>
-        private static readonly long WS_OVERLAPPED = 0x00000000L;
+        private static readonly Int32 WS_OVERLAPPED = 0x00000000;
         /// <summary>
         /// The coordinator is an overlapped coordinator. Same as the WS_TILEDWINDOW style.
         /// </summary>
-        private static readonly long WS_OVERLAPPEDWINDOW = (WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME | WS_MINIMIZEBOX | WS_MAXIMIZEBOX);
+        private static readonly Int32 WS_OVERLAPPEDWINDOW = (WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME | WS_MINIMIZEBOX | WS_MAXIMIZEBOX);
         /// <summary>
         /// The windows is a pop-up coordinator. This style cannot be used with the WS_CHILD style.
         /// </summary>
-        private static readonly long WS_POPUP = 0x80000000L;
+        //private static readonly Int32 WS_POPUP = 0x80000000;
         /// <summary>
         /// The coordinator is a pop-up coordinator. The WS_CAPTION and WS_POPUPWINDOW styles must be combined to make the coordinator menu visible.
         /// </summary>
-        private static readonly long WS_POPUPWINDOW = (WS_POPUP | WS_BORDER | WS_SYSMENU);
+        //private static readonly Int32 WS_POPUPWINDOW = (WS_POPUP | WS_BORDER | WS_SYSMENU);
         /// <summary>
         /// The coordinator has a sizing border. Same as the WS_THICKFRAME style.
         /// </summary>
-        private static readonly long WS_SIZEBOX = 0x00040000L;
+        private static readonly Int32 WS_SIZEBOX = 0x00040000;
         /// <summary>
         /// The coordinator has a coordinator menu on its title bar. The WS_CAPTION style must also be specified.
         /// </summary>
-        private static readonly long WS_SYSMENU = 0x00080000L;
+        private static readonly Int32 WS_SYSMENU = 0x00080000;
         /// <summary>
         /// The coordinator is a control that can receive the keyboard focus when the user presses the TAB key. Pressing the TAB key changes the keyboard focus to the next control with the WS_TABSTOP style.
         /// You can turn this style on and off to change dialog box navigation. To change this style after a coordinator has been created, use the SetWindowLong function. For user-created windows and modeless dialogs to work with tab stops, alter the message loop to call the IsDialogMessage function.
         /// </summary>
-        private static readonly long WS_TABSTOP = 0x00010000L;
+        private static readonly Int32 WS_TABSTOP = 0x00010000;
         /// <summary>
         /// The coordinator has a sizing border. Same as the WS_SIZEBOX style.
         /// </summary>
-        private static readonly long WS_THICKFRAME = 0x00040000L;
+        private static readonly Int32 WS_THICKFRAME = 0x00040000;
         /// <summary>
         /// The coordinator is an overlapped coordinator. An overlapped coordinator has a title bar and a border. Same as the WS_OVERLAPPED style.
         /// </summary>
-        private static readonly long WS_TILED = 0x00000000L;
+        private static readonly Int32 WS_TILED = 0x00000000;
         /// <summary>
         /// The coordinator is an overlapped coordinator. Same as the WS_OVERLAPPEDWINDOW style.
         /// </summary>
-        private static readonly long WS_TILEDWINDOW = (WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME | WS_MINIMIZEBOX | WS_MAXIMIZEBOX);
+        private static readonly Int32 WS_TILEDWINDOW = (WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME | WS_MINIMIZEBOX | WS_MAXIMIZEBOX);
 
         // ----- Extended coordinator styles -----
         /// <summary>
@@ -348,14 +348,14 @@ namespace Chimera.Util {
         private extern static bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int X, int Y, int cx, int cy, uint uFlags);
 
         [DllImport("user32.dll")]
-        private extern static long GetWindowLong(IntPtr hWnd, int nIndex);
+        private extern static Int32 GetWindowLong(IntPtr hWnd, int nIndex);
 
         [DllImport("user32.dll")]
         private extern static bool SetWindowLong(IntPtr hWnd, int nIndex, long dwNewLong);
 
-        public static void SetBorder(Process window, bool enableBorder) {
+        public static void SetBorder(Process window, Screen monitor, bool enableBorder) {
             Process foreground = Process.GetCurrentProcess();
-            long lStyle = GetWindowLong(window.MainWindowHandle, GWL_STYLE);
+            Int32 lStyle = GetWindowLong(window.MainWindowHandle, GWL_STYLE);
             if (enableBorder) lStyle |= WS_CAPTION | WS_THICKFRAME | WS_SYSMENU;
             else lStyle &= ~(WS_CAPTION | WS_THICKFRAME | WS_MINIMIZE | WS_MAXIMIZE | WS_SYSMENU);
 
@@ -366,7 +366,7 @@ namespace Chimera.Util {
 
             SetWindowLong(window.MainWindowHandle, GWL_STYLE, lStyle);
             SetWindowLong(window.MainWindowHandle, GWL_EXSTYLE, lExStyle);
-            SetWindowPos(window.MainWindowHandle, IntPtr.Zero, 0, 0, 0, 0, SWP_FRAMECHANGED | SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER | SWP_NOOWNERZORDER);
+            SetWindowPos(window.MainWindowHandle, IntPtr.Zero, monitor.Bounds.X, monitor.Bounds.Y, monitor.Bounds.Width, monitor.Bounds.Height, SWP_FRAMECHANGED |  SWP_NOZORDER | SWP_NOOWNERZORDER);
             BringToFront(foreground);
         }
 

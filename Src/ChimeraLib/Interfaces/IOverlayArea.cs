@@ -40,6 +40,13 @@ namespace Chimera {
         }
 
         /// <summary>
+        /// Whether the mouse is currently hovering over the area.
+        /// </summary>
+        bool CurrentlyHovering {
+            get;
+        }
+
+        /// <summary>
         /// Whether this area is currently visible. Setting this will instantly hide or show the area, without running through any fade in/out routine/animations.
         /// </summary>
         bool Visible {

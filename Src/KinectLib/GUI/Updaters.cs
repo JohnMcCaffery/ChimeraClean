@@ -7,7 +7,7 @@ using OpenMetaverse;
 using Chimera.Interfaces;
 
 namespace Chimera.Kinect.GUI {
-    class ScalarUpdater : IUpdater<float> {
+    public class ScalarUpdater : IUpdater<float> {
         private Scalar mScalar = Scalar.Create(0f);
 
         public Scalar Scalar {
@@ -26,7 +26,7 @@ namespace Chimera.Kinect.GUI {
             get { return mScalar.Value; }
             set { 
                 mScalar.Value = value;
-                Nui.Poll();
+                //Nui.Poll();
             }
         }
 
@@ -44,7 +44,7 @@ namespace Chimera.Kinect.GUI {
         }
     }
 
-    class VectorUpdater : IUpdater<Vector3> {
+    public class VectorUpdater : IUpdater<Vector3> {
         private Vector mVector = Vector.Create(0f, 0f, 0f);
 
         public Vector Vector {
@@ -63,7 +63,7 @@ namespace Chimera.Kinect.GUI {
             get { return new Vector3(mVector.X, mVector.Y, mVector.Z); }
             set { 
                 mVector.Set(value.X, value.Y, value.Z);
-                Nui.Poll();
+                //Nui.Poll();
             }
         }
 
@@ -81,7 +81,7 @@ namespace Chimera.Kinect.GUI {
         }
     }
 
-    class ConditionUpdater : IUpdater<bool> {
+    public class ConditionUpdater : IUpdater<bool> {
         private Condition mCondition = Condition.Create(false);
 
         public Condition Condition {
@@ -100,7 +100,7 @@ namespace Chimera.Kinect.GUI {
             get { return mCondition.Value; }
             set { 
                 mCondition.Value = value;
-                Nui.Poll();
+                //Nui.Poll();
             }
         }
 

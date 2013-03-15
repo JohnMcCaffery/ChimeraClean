@@ -52,10 +52,19 @@ namespace Chimera.Kinect {
 
         public Vector3 Position {
             get { return mKinectPosition; }
+            set {
+                mKinectPosition = value;
+                if (PositionChanged != null)
+                    PositionChanged(value);
+            }
         }
 
         public Rotation Orientation {
             get { return mKinectOrientation; }
+        }
+
+        public bool KinectStarted {
+            get { return mKinectStarted; }
         }
 
         public KinectInput() {
@@ -65,6 +74,9 @@ namespace Chimera.Kinect {
             mKinectOrientation = new Rotation(cfg.Pitch, cfg.Yaw);
 
             mKinectOrientation.Changed += (source, args) => OrientationChanged(mKinectOrientation.Quaternion);
+
+            if (cfg.Autostart)
+                StartKinect();
         }
 
         public void StartKinect() {
@@ -72,14 +84,9 @@ namespace Chimera.Kinect {
                 Nui.Init();
                 Nui.SetAutoPoll(true);
                 Vector pointEnd = Nui.joint(Nui.Hand_Right);
-                mPointStart = Nui.joint(Nui.Shoulder_Right);
+                mPointStart = Nui.joint(Nui.Elbow_Right);
                 mPointDir = mPointStart - pointEnd;
                 mKinectStarted = true;
-
-                if (mPanel != null) {
-                    mPanel.PointDir = new VectorUpdater(mPointDir);
-                    mPanel.PointStart = new VectorUpdater(mPointStart);
-                }
 
                 if (VectorsAssigned != null)
                     VectorsAssigned(mPointStart, mPointDir);
@@ -91,7 +98,8 @@ namespace Chimera.Kinect {
         public UserControl ControlPanel {
             get {
                 if (mPanel == null) {
-                    mPanel = new KinectPanel();
+                    mPanel = new KinectPanel(this);
+                    /*
                     mPanel.Position = mKinectPosition;
                     mPanel.Orientation = mKinectOrientation;
                     mPanel.PointStart = new VectorUpdater(mPointStart);
@@ -107,6 +115,7 @@ namespace Chimera.Kinect {
                     };
 
                     mPanel.Started += () => StartKinect();
+                    */
                 }
                 return mPanel;
             }

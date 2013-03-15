@@ -335,7 +335,8 @@ namespace Chimera {
         /// <param name="coordinator">The coordinator object the input can control.</param>
         public void Init(Coordinator coordinator) {
             mCoordinator = coordinator;
-            mOutput.Init(this);
+            if (mOutput != null)
+                mOutput.Init(this);
         }
 
         /// <summary>

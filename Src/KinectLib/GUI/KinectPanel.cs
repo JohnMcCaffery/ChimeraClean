@@ -9,13 +9,16 @@ using System.Windows.Forms;
 using Chimera.Interfaces;
 using OpenMetaverse;
 using Chimera.Util;
+using NuiLibDotNet;
 
 namespace Chimera.Kinect.GUI {
     public partial class KinectPanel : UserControl {
         private bool mGuiUpdate;
         private bool mExternalUpdate;
         private bool mStarted;
+        private KinectInput mInput;
 
+        /*
         public event Action<Vector3> PositionChanged;
 
         public event Action Started;
@@ -53,24 +56,54 @@ namespace Chimera.Kinect.GUI {
             get { return pointDirPanel.Vector; }
             set { pointDirPanel.Vector = value; }
         }
+        */
 
         public KinectPanel() {
             InitializeComponent();
         }
 
+        public KinectPanel(KinectInput input)
+            : this() {
+
+            mInput = input;
+
+            orientationPanel.Value = input.Orientation;
+            positionPanel.Value = input.Position;
+            pointStartPanel.Vector = new VectorUpdater(mInput.PointStart);
+            pointDirPanel.Vector = new VectorUpdater(mInput.PointDir);
+            startButton.Enabled = !mInput.KinectStarted;
+
+            foreach (var window in input.WindowInputs)
+                AddWindow(new KinectWindowPanel(window), window.Window.Name);
+
+            mInput.PositionChanged += new Action<Vector3>(mInput_PositionChanged);
+            mInput.VectorsAssigned += new Action<Vector,Vector>(mInput_VectorsAssigned);
+        }
+
+        private void mInput_VectorsAssigned(Vector start, Vector dir) {
+            pointStartPanel.Vector = new VectorUpdater(mInput.PointStart);
+            pointDirPanel.Vector = new VectorUpdater(mInput.PointDir);
+        }
+
+        private void mInput_PositionChanged(Vector3 value) {
+            if (!mGuiUpdate) {
+                mExternalUpdate = true;
+                positionPanel.Value = value;
+                mExternalUpdate = false;
+            }
+        }
+
         private void positionPanel_ValueChanged(object sender, EventArgs e) {
-            if (!mExternalUpdate && PositionChanged != null) {
+            if (!mExternalUpdate) {
                 mGuiUpdate = true;
-                PositionChanged(positionPanel.Value);
+                mInput.Position = positionPanel.Value;
                 mGuiUpdate = false;
             }
         }
 
         private void startButton_Click(object sender, EventArgs e) {
-            if (Started != null)
-                Started();
-            mStarted = true;
-            startButton.Enabled = !mStarted;
+            mInput.StartKinect();
+            startButton.Enabled = false;
         }
 
         public void AddWindow(KinectWindowPanel windowPanel, string name) {

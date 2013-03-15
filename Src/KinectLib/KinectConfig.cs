@@ -10,15 +10,17 @@ namespace Chimera.Kinect {
         public Vector3 Position;
         public double Pitch;
         public double Yaw;
+        public bool Autostart;
 
         protected override void InitConfig() {
             AddKey(true, "KinectPosition");
             AddKey(true, "KinectPitch");
             AddKey(true, "KinectYaw");
 
-            Position = Get(true, "KinectPosition", Vector3.Zero);
+            Position = GetV(true, "KinectPosition", Vector3.Zero);
             Pitch = Get(true, "KinectPitch", 0.0);
             Yaw = Get(true, "KinectYaw", 0.0);
+            Autostart = Get(true, "KinectAutostart", false);
         }
     }
 }

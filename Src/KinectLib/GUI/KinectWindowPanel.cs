@@ -11,38 +11,29 @@ using OpenMetaverse;
 
 namespace Chimera.Kinect.GUI {
     public partial class KinectWindowPanel : UserControl {
-        public IUpdater<float> X {
-            get { return xPanel.Scalar; }
-            set { xPanel.Scalar = value; }
-        }
-        public IUpdater<float> Y {
-            get { return yPanel.Scalar; }
-            set { yPanel.Scalar = value; }
-        }
-
-        public IUpdater<Vector3> TopLeft {
-            get { return topLeftPanel.Vector; }
-            set { topLeftPanel.Vector = value; }
-        }
-
-        public IUpdater<Vector3> Top {
-            get { return topPanel.Vector; }
-            set { topPanel.Vector = value; }
-        }
-
-        public IUpdater<Vector3> Side {
-            get { return sidePanel.Vector; }
-            set { sidePanel.Vector = value; }
-        }
-
-        public IUpdater<Vector3> Intersection {
-            get { return intersectionPanel.Vector; }
-            set { intersectionPanel.Vector = value; }
-        }
-
+        private WindowInput mInput;
 
         public KinectWindowPanel() {
             InitializeComponent();
+        }
+
+        public KinectWindowPanel(WindowInput input)
+            : this() {
+            mInput = input;
+            mInput.VectorsRecalculated += Init;
+            Init();
+        }
+
+        public void Init() {
+            topLeftPanel.Vector = new VectorUpdater(mInput.TopLeft);
+            topPanel.Vector = new VectorUpdater(mInput.Top);
+            sidePanel.Vector = new VectorUpdater(mInput.Side);
+            intersectionPanel.Vector = new VectorUpdater(mInput.Intersection);
+            normalPanel.Vector = new VectorUpdater(mInput.Normal);
+            xPanel.Scalar = new ScalarUpdater(mInput.X);
+            yPanel.Scalar = new ScalarUpdater(mInput.Y);
+            wPanel.Scalar = new ScalarUpdater(mInput.W);
+            hPanel.Scalar = new ScalarUpdater(mInput.H);
         }
     }
 }

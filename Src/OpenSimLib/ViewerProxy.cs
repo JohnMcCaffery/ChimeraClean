@@ -67,7 +67,7 @@ namespace Chimera.OpenSim {
             set { 
                 mFullscreen = value;
                 if (mClientLoggedIn) {
-                    ProcessWrangler.SetBorder(mClient, !value);
+                    ProcessWrangler.SetBorder(mClient, mWindow.Monitor, !value);
                     ToggleHUD();
                 }
             }
@@ -184,7 +184,7 @@ namespace Chimera.OpenSim {
 
                 ProcessWrangler.SetMonitor(mClient, mWindow.Monitor);
                 if (mFullscreen)
-                    ProcessWrangler.SetBorder(mClient, !mFullscreen);
+                    ProcessWrangler.SetBorder(mClient, mWindow.Monitor, !mFullscreen);
 
                 new Thread(() => {
                     if (mControlCamera)

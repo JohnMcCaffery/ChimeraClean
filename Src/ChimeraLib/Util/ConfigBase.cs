@@ -51,7 +51,7 @@ namespace Chimera.Util {
             argConfig.AddSwitch(general ? "General" : Name, key);
         }
 
-        protected Vector3 Get(bool general, string key, Vector3 defalt) {
+        protected Vector3 GetV(bool general, string key, Vector3 defalt) {
             if (!configLoaded)
                 LoadConfig();
             return Init.GetV(general ? generalConfig : specificConfig, key, defalt);
@@ -72,6 +72,11 @@ namespace Chimera.Util {
             return Init.Get(general ? generalConfig : specificConfig, key, defalt);
         }
         protected int Get(bool general, string key, int defalt) {
+            if (!configLoaded)
+                LoadConfig();
+            return Init.Get(general ? generalConfig : specificConfig, key, defalt);
+        }
+        protected bool Get(bool general, string key, bool defalt) {
             if (!configLoaded)
                 LoadConfig();
             return Init.Get(general ? generalConfig : specificConfig, key, defalt);

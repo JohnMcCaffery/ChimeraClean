@@ -13,6 +13,7 @@ namespace KinectLib.GUI {
         private bool mGuiChanged;
         private bool mExternalChanged;
         private bool mSliderChanged;
+        private int mScale = 100;
 
         public event Action<float> Changed;
 
@@ -27,9 +28,11 @@ namespace KinectLib.GUI {
                         float.IsNegativeInfinity(value) ? spinner.Minimum : 
                         new decimal(value);
 
-                    spinner.Maximum = Math.Max(val, spinner.Maximum);
-                    spinner.Minimum = Math.Min(val, spinner.Minimum);
-                    spinner.Value = val;
+                    Invoke(() => {
+                        spinner.Maximum = Math.Max(val, spinner.Maximum);
+                        spinner.Minimum = Math.Min(val, spinner.Minimum);
+                        spinner.Value = val;
+                    });
 
                     mExternalChanged = false;
                 }
@@ -38,19 +41,31 @@ namespace KinectLib.GUI {
             }
         }
 
-        public int Max {
-            get { return valueSlider.Maximum / 100; }
+        public double Max {
+            get { return valueSlider.Maximum / mScale; }
             set {
-                valueSlider.Maximum = value * 100;
-                this.spinner.Maximum = new Decimal(value);
+                Invoke(() => {
+                    if (value > 10) {
+                        spinner.DecimalPlaces = 2;
+                        mScale = 100;
+                    }
+                    valueSlider.Maximum = (int) (value * mScale);
+                    spinner.Maximum = new Decimal(value);
+                });
             }
         }
 
-        public int Min {
-            get { return valueSlider.Minimum / 100; }
+        public double Min {
+            get { return valueSlider.Minimum / mScale; }
             set {
-                valueSlider.Minimum = value * 100;
-                this.spinner.Minimum = new Decimal(value);
+                Invoke(() => {
+                    if (value <= 1) {
+                        spinner.DecimalPlaces = 4;
+                        mScale = 1000;
+                    }
+                    valueSlider.Minimum = (int) (value * mScale);
+                    spinner.Minimum = new Decimal(value);
+                });
             }
         }
 
@@ -61,20 +76,22 @@ namespace KinectLib.GUI {
         private void value_ValueChanged(object sender, EventArgs e) {
             if (!mExternalChanged) {
                 mGuiChanged = true;
-                Value = (float) decimal.ToDouble(spinner.Value);
+                Invoke(() => Value = (float)decimal.ToDouble(spinner.Value));
                 mGuiChanged = false;
             }
             if (!mSliderChanged) {
-                int val = (int)(Value * 100.0);
-                valueSlider.Maximum = Math.Max(val, valueSlider.Maximum);
-                valueSlider.Minimum = Math.Min(val, valueSlider.Minimum);
-                valueSlider.Value = val;
+                int val = (int)(Value * mScale);
+                Invoke(() => {
+                    valueSlider.Maximum = Math.Max(val, valueSlider.Maximum);
+                    valueSlider.Minimum = Math.Min(val, valueSlider.Minimum);
+                    valueSlider.Value = val;
+                });
             }
         }
 
         private void valueSlider_Scroll(object sender, EventArgs e) {
             mSliderChanged = true;
-            spinner.Value = new decimal(valueSlider.Value / 100.0);
+            spinner.Value = new decimal(valueSlider.Value / mScale);
             mSliderChanged = false;
         }
 
@@ -84,6 +101,13 @@ namespace KinectLib.GUI {
                 spinner.Value = new decimal(val);
                 mExternalChanged = false;
             }
+        }
+
+        private void Invoke(Action a) {
+            if (InvokeRequired)
+                base.Invoke(a);
+            else
+                a();
         }
     }
 }

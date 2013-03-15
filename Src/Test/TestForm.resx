@@ -117,6 +117,69 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="intersectionPanel.MaxV" mimetype="application/x-microsoft.net.object.binary.base64">
+    <value>
+        AAEAAAD/////AQAAAAAAAAAMAgAAAElPcGVuTWV0YXZlcnNlVHlwZXMsIFZlcnNpb249MC4wLjAuMCwg
+        Q3VsdHVyZT1uZXV0cmFsLCBQdWJsaWNLZXlUb2tlbj1udWxsBQEAAAAVT3Blbk1ldGF2ZXJzZS5WZWN0
+        b3IzAwAAAAFYAVkBWgAAAAsLCwIAAAAAAIBEAACARAAAgEQL
+</value>
+  </data>
+  <data name="intersectionPanel.MinV" mimetype="application/x-microsoft.net.object.binary.base64">
+    <value>
+        AAEAAAD/////AQAAAAAAAAAMAgAAAElPcGVuTWV0YXZlcnNlVHlwZXMsIFZlcnNpb249MC4wLjAuMCwg
+        Q3VsdHVyZT1uZXV0cmFsLCBQdWJsaWNLZXlUb2tlbj1udWxsBQEAAAAVT3Blbk1ldGF2ZXJzZS5WZWN0
+        b3IzAwAAAAFYAVkBWgAAAAsLCwIAAAAAAIDEAACAxAAAgMQL
+</value>
+  </data>
+  <data name="intersectionPanel.Value" mimetype="application/x-microsoft.net.object.binary.base64">
+    <value>
+        AAEAAAD/////AQAAAAAAAAAMAgAAAElPcGVuTWV0YXZlcnNlVHlwZXMsIFZlcnNpb249MC4wLjAuMCwg
+        Q3VsdHVyZT1uZXV0cmFsLCBQdWJsaWNLZXlUb2tlbj1udWxsBQEAAAAVT3Blbk1ldGF2ZXJzZS5WZWN0
+        b3IzAwAAAAFYAVkBWgAAAAsLCwIAAAAAAAAAAAAAAAAAAAAL
+</value>
+  </data>
+  <data name="pointDirPanel.MaxV" mimetype="application/x-microsoft.net.object.binary.base64">
+    <value>
+        AAEAAAD/////AQAAAAAAAAAMAgAAAElPcGVuTWV0YXZlcnNlVHlwZXMsIFZlcnNpb249MC4wLjAuMCwg
+        Q3VsdHVyZT1uZXV0cmFsLCBQdWJsaWNLZXlUb2tlbj1udWxsBQEAAAAVT3Blbk1ldGF2ZXJzZS5WZWN0
+        b3IzAwAAAAFYAVkBWgAAAAsLCwIAAAAAAIBEAACARAAAgEQL
+</value>
+  </data>
+  <data name="pointDirPanel.MinV" mimetype="application/x-microsoft.net.object.binary.base64">
+    <value>
+        AAEAAAD/////AQAAAAAAAAAMAgAAAElPcGVuTWV0YXZlcnNlVHlwZXMsIFZlcnNpb249MC4wLjAuMCwg
+        Q3VsdHVyZT1uZXV0cmFsLCBQdWJsaWNLZXlUb2tlbj1udWxsBQEAAAAVT3Blbk1ldGF2ZXJzZS5WZWN0
+        b3IzAwAAAAFYAVkBWgAAAAsLCwIAAAAAAIDEAACAxAAAgMQL
+</value>
+  </data>
+  <data name="pointDirPanel.Value" mimetype="application/x-microsoft.net.object.binary.base64">
+    <value>
+        AAEAAAD/////AQAAAAAAAAAMAgAAAElPcGVuTWV0YXZlcnNlVHlwZXMsIFZlcnNpb249MC4wLjAuMCwg
+        Q3VsdHVyZT1uZXV0cmFsLCBQdWJsaWNLZXlUb2tlbj1udWxsBQEAAAAVT3Blbk1ldGF2ZXJzZS5WZWN0
+        b3IzAwAAAAFYAVkBWgAAAAsLCwIAAAAAAAAAAAAAAAAAAAAL
+</value>
+  </data>
+  <data name="pointStartPanel.MaxV" mimetype="application/x-microsoft.net.object.binary.base64">
+    <value>
+        AAEAAAD/////AQAAAAAAAAAMAgAAAElPcGVuTWV0YXZlcnNlVHlwZXMsIFZlcnNpb249MC4wLjAuMCwg
+        Q3VsdHVyZT1uZXV0cmFsLCBQdWJsaWNLZXlUb2tlbj1udWxsBQEAAAAVT3Blbk1ldGF2ZXJzZS5WZWN0
+        b3IzAwAAAAFYAVkBWgAAAAsLCwIAAAAAAIBEAACARAAAgEQL
+</value>
+  </data>
+  <data name="pointStartPanel.MinV" mimetype="application/x-microsoft.net.object.binary.base64">
+    <value>
+        AAEAAAD/////AQAAAAAAAAAMAgAAAElPcGVuTWV0YXZlcnNlVHlwZXMsIFZlcnNpb249MC4wLjAuMCwg
+        Q3VsdHVyZT1uZXV0cmFsLCBQdWJsaWNLZXlUb2tlbj1udWxsBQEAAAAVT3Blbk1ldGF2ZXJzZS5WZWN0
+        b3IzAwAAAAFYAVkBWgAAAAsLCwIAAAAAAIDEAACAxAAAgMQL
+</value>
+  </data>
+  <data name="pointStartPanel.Value" mimetype="application/x-microsoft.net.object.binary.base64">
+    <value>
+        AAEAAAD/////AQAAAAAAAAAMAgAAAElPcGVuTWV0YXZlcnNlVHlwZXMsIFZlcnNpb249MC4wLjAuMCwg
+        Q3VsdHVyZT1uZXV0cmFsLCBQdWJsaWNLZXlUb2tlbj1udWxsBQEAAAAVT3Blbk1ldGF2ZXJzZS5WZWN0
+        b3IzAwAAAAFYAVkBWgAAAAsLCwIAAAAAAAAAAAAAAAAAAAAL
+</value>
+  </data>
   <data name="sidePanel.MaxV" mimetype="application/x-microsoft.net.object.binary.base64">
     <value>
         AAEAAAD/////AQAAAAAAAAAMAgAAAElPcGVuTWV0YXZlcnNlVHlwZXMsIFZlcnNpb249MC4wLjAuMCwg
@@ -159,48 +222,6 @@
         b3IzAwAAAAFYAVkBWgAAAAsLCwIAAAAAAAAAAAAAAAAAAAAL
 </value>
   </data>
-  <data name="topLeftPanel.MaxV" mimetype="application/x-microsoft.net.object.binary.base64">
-    <value>
-        AAEAAAD/////AQAAAAAAAAAMAgAAAElPcGVuTWV0YXZlcnNlVHlwZXMsIFZlcnNpb249MC4wLjAuMCwg
-        Q3VsdHVyZT1uZXV0cmFsLCBQdWJsaWNLZXlUb2tlbj1udWxsBQEAAAAVT3Blbk1ldGF2ZXJzZS5WZWN0
-        b3IzAwAAAAFYAVkBWgAAAAsLCwIAAAAAAIBEAACARAAAgEQL
-</value>
-  </data>
-  <data name="topLeftPanel.MinV" mimetype="application/x-microsoft.net.object.binary.base64">
-    <value>
-        AAEAAAD/////AQAAAAAAAAAMAgAAAElPcGVuTWV0YXZlcnNlVHlwZXMsIFZlcnNpb249MC4wLjAuMCwg
-        Q3VsdHVyZT1uZXV0cmFsLCBQdWJsaWNLZXlUb2tlbj1udWxsBQEAAAAVT3Blbk1ldGF2ZXJzZS5WZWN0
-        b3IzAwAAAAFYAVkBWgAAAAsLCwIAAAAAAIDEAACAxAAAgMQL
-</value>
-  </data>
-  <data name="topLeftPanel.Value" mimetype="application/x-microsoft.net.object.binary.base64">
-    <value>
-        AAEAAAD/////AQAAAAAAAAAMAgAAAElPcGVuTWV0YXZlcnNlVHlwZXMsIFZlcnNpb249MC4wLjAuMCwg
-        Q3VsdHVyZT1uZXV0cmFsLCBQdWJsaWNLZXlUb2tlbj1udWxsBQEAAAAVT3Blbk1ldGF2ZXJzZS5WZWN0
-        b3IzAwAAAAFYAVkBWgAAAAsLCwIAAAAAAAAAAAAAAAAAAAAL
-</value>
-  </data>
-  <data name="intersectionPanel.MaxV" mimetype="application/x-microsoft.net.object.binary.base64">
-    <value>
-        AAEAAAD/////AQAAAAAAAAAMAgAAAElPcGVuTWV0YXZlcnNlVHlwZXMsIFZlcnNpb249MC4wLjAuMCwg
-        Q3VsdHVyZT1uZXV0cmFsLCBQdWJsaWNLZXlUb2tlbj1udWxsBQEAAAAVT3Blbk1ldGF2ZXJzZS5WZWN0
-        b3IzAwAAAAFYAVkBWgAAAAsLCwIAAAAAAIBEAACARAAAgEQL
-</value>
-  </data>
-  <data name="intersectionPanel.MinV" mimetype="application/x-microsoft.net.object.binary.base64">
-    <value>
-        AAEAAAD/////AQAAAAAAAAAMAgAAAElPcGVuTWV0YXZlcnNlVHlwZXMsIFZlcnNpb249MC4wLjAuMCwg
-        Q3VsdHVyZT1uZXV0cmFsLCBQdWJsaWNLZXlUb2tlbj1udWxsBQEAAAAVT3Blbk1ldGF2ZXJzZS5WZWN0
-        b3IzAwAAAAFYAVkBWgAAAAsLCwIAAAAAAIDEAACAxAAAgMQL
-</value>
-  </data>
-  <data name="intersectionPanel.Value" mimetype="application/x-microsoft.net.object.binary.base64">
-    <value>
-        AAEAAAD/////AQAAAAAAAAAMAgAAAElPcGVuTWV0YXZlcnNlVHlwZXMsIFZlcnNpb249MC4wLjAuMCwg
-        Q3VsdHVyZT1uZXV0cmFsLCBQdWJsaWNLZXlUb2tlbj1udWxsBQEAAAAVT3Blbk1ldGF2ZXJzZS5WZWN0
-        b3IzAwAAAAFYAVkBWgAAAAsLCwIAAAAAAAAAAAAAAAAAAAAL
-</value>
-  </data>
   <data name="normalPanel.MaxV" mimetype="application/x-microsoft.net.object.binary.base64">
     <value>
         AAEAAAD/////AQAAAAAAAAAMAgAAAElPcGVuTWV0YXZlcnNlVHlwZXMsIFZlcnNpb249MC4wLjAuMCwg
@@ -216,6 +237,27 @@
 </value>
   </data>
   <data name="normalPanel.Value" mimetype="application/x-microsoft.net.object.binary.base64">
+    <value>
+        AAEAAAD/////AQAAAAAAAAAMAgAAAElPcGVuTWV0YXZlcnNlVHlwZXMsIFZlcnNpb249MC4wLjAuMCwg
+        Q3VsdHVyZT1uZXV0cmFsLCBQdWJsaWNLZXlUb2tlbj1udWxsBQEAAAAVT3Blbk1ldGF2ZXJzZS5WZWN0
+        b3IzAwAAAAFYAVkBWgAAAAsLCwIAAAAAAAAAAAAAAAAAAAAL
+</value>
+  </data>
+  <data name="topLeftPanel.MaxV" mimetype="application/x-microsoft.net.object.binary.base64">
+    <value>
+        AAEAAAD/////AQAAAAAAAAAMAgAAAElPcGVuTWV0YXZlcnNlVHlwZXMsIFZlcnNpb249MC4wLjAuMCwg
+        Q3VsdHVyZT1uZXV0cmFsLCBQdWJsaWNLZXlUb2tlbj1udWxsBQEAAAAVT3Blbk1ldGF2ZXJzZS5WZWN0
+        b3IzAwAAAAFYAVkBWgAAAAsLCwIAAAAAAIBEAACARAAAgEQL
+</value>
+  </data>
+  <data name="topLeftPanel.MinV" mimetype="application/x-microsoft.net.object.binary.base64">
+    <value>
+        AAEAAAD/////AQAAAAAAAAAMAgAAAElPcGVuTWV0YXZlcnNlVHlwZXMsIFZlcnNpb249MC4wLjAuMCwg
+        Q3VsdHVyZT1uZXV0cmFsLCBQdWJsaWNLZXlUb2tlbj1udWxsBQEAAAAVT3Blbk1ldGF2ZXJzZS5WZWN0
+        b3IzAwAAAAFYAVkBWgAAAAsLCwIAAAAAAIDEAACAxAAAgMQL
+</value>
+  </data>
+  <data name="topLeftPanel.Value" mimetype="application/x-microsoft.net.object.binary.base64">
     <value>
         AAEAAAD/////AQAAAAAAAAAMAgAAAElPcGVuTWV0YXZlcnNlVHlwZXMsIFZlcnNpb249MC4wLjAuMCwg
         Q3VsdHVyZT1uZXV0cmFsLCBQdWJsaWNLZXlUb2tlbj1udWxsBQEAAAAVT3Blbk1ldGF2ZXJzZS5WZWN0
