@@ -89,7 +89,7 @@
             // 
             this.rotationPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.rotationPanel.DisplayName = "Name";
+            this.rotationPanel.Text = "Name";
             this.rotationPanel.Location = new System.Drawing.Point(0, 0);
             this.rotationPanel.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("rotationPanel.LookAtVector")));
             this.rotationPanel.MinimumSize = new System.Drawing.Size(252, 95);

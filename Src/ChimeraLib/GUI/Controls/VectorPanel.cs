@@ -100,7 +100,7 @@ namespace ProxyTestGUI {
             }
         }
 
-        public string DisplayName {
+        public override string Text {
             get { return nameLabel.Text; }
             set { nameLabel.Text = value; }
         }

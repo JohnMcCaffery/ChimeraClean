@@ -80,7 +80,7 @@
             // 
             this.pointDirPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.pointDirPanel.DisplayName = "Point Direction";
+            this.pointDirPanel.Text = "Point Direction";
             this.pointDirPanel.Location = new System.Drawing.Point(0, 332);
             this.pointDirPanel.Max = 1024D;
             this.pointDirPanel.MaxV = ((OpenMetaverse.Vector3)(resources.GetObject("pointDirPanel.MaxV")));
@@ -100,7 +100,7 @@
             // 
             this.orientationPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.orientationPanel.DisplayName = "Orientation";
+            this.orientationPanel.Text = "Orientation";
             this.orientationPanel.Location = new System.Drawing.Point(0, 130);
             this.orientationPanel.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("orientationPanel.LookAtVector")));
             this.orientationPanel.MinimumSize = new System.Drawing.Size(252, 95);
@@ -120,7 +120,7 @@
             // 
             this.positionPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.positionPanel.DisplayName = "Position (cm)";
+            this.positionPanel.Text = "Position (cm)";
             this.positionPanel.Location = new System.Drawing.Point(0, 29);
             this.positionPanel.Max = 1024D;
             this.positionPanel.MaxV = ((OpenMetaverse.Vector3)(resources.GetObject("positionPanel.MaxV")));
@@ -140,7 +140,7 @@
             // 
             this.pointStartPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.pointStartPanel.DisplayName = "Point Start";
+            this.pointStartPanel.Text = "Point Start";
             this.pointStartPanel.Location = new System.Drawing.Point(0, 231);
             this.pointStartPanel.Max = 1024D;
             this.pointStartPanel.MaxV = ((OpenMetaverse.Vector3)(resources.GetObject("pointStartPanel.MaxV")));

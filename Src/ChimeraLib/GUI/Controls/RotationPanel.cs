@@ -76,10 +76,10 @@ namespace ProxyTestGUI {
         }
 
 
-        public string DisplayName {
+        public override string Text {
             get { return nameLabel.Text; }
             set { 
-                vectorPanel.DisplayName = value;
+                vectorPanel.Text = value;
                 nameLabel.Text = value;
             }
         }

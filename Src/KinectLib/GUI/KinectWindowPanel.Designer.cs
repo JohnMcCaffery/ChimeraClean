@@ -89,7 +89,7 @@
             // 
             this.sidePanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.sidePanel.DisplayName = "Side";
+            this.sidePanel.Text = "Side";
             this.sidePanel.Location = new System.Drawing.Point(0, 91);
             this.sidePanel.Max = 1024D;
             this.sidePanel.MaxV = ((OpenMetaverse.Vector3)(resources.GetObject("sidePanel.MaxV")));
@@ -109,7 +109,7 @@
             // 
             this.topPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.topPanel.DisplayName = "Top";
+            this.topPanel.Text = "Top";
             this.topPanel.Location = new System.Drawing.Point(0, 0);
             this.topPanel.Max = 1024D;
             this.topPanel.MaxV = ((OpenMetaverse.Vector3)(resources.GetObject("topPanel.MaxV")));
@@ -128,7 +128,7 @@
             // topLeftPanel
             // 
             this.topLeftPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.topLeftPanel.DisplayName = "Top Left";
+            this.topLeftPanel.Text = "Top Left";
             this.topLeftPanel.Location = new System.Drawing.Point(155, 91);
             this.topLeftPanel.Max = 1024D;
             this.topLeftPanel.MaxV = ((OpenMetaverse.Vector3)(resources.GetObject("topLeftPanel.MaxV")));
@@ -148,7 +148,7 @@
             // 
             this.intersectionPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.intersectionPanel.DisplayName = "Intersection";
+            this.intersectionPanel.Text = "Intersection";
             this.intersectionPanel.Location = new System.Drawing.Point(0, 180);
             this.intersectionPanel.Max = 1024D;
             this.intersectionPanel.MaxV = ((OpenMetaverse.Vector3)(resources.GetObject("intersectionPanel.MaxV")));
@@ -167,7 +167,7 @@
             // normalPanel
             // 
             this.normalPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.normalPanel.DisplayName = "Normal";
+            this.normalPanel.Text = "Normal";
             this.normalPanel.Location = new System.Drawing.Point(155, 3);
             this.normalPanel.Max = 1024D;
             this.normalPanel.MaxV = ((OpenMetaverse.Vector3)(resources.GetObject("normalPanel.MaxV")));

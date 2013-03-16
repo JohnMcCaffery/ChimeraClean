@@ -87,7 +87,7 @@
             // 
             this.eyeOffsetPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.eyeOffsetPanel.DisplayName = "Eye Offset (cm)";
+            this.eyeOffsetPanel.Text = "Eye Offset (cm)";
             this.eyeOffsetPanel.Location = new System.Drawing.Point(391, 156);
             this.eyeOffsetPanel.Max = 1000D;
             this.eyeOffsetPanel.Min = -1000D;
@@ -104,7 +104,7 @@
             // 
             this.rotationOffsetPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.rotationOffsetPanel.DisplayName = "Rotation Offset";
+            this.rotationOffsetPanel.Text = "Rotation Offset";
             this.rotationOffsetPanel.Location = new System.Drawing.Point(391, 3);
             this.rotationOffsetPanel.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("rotationOffsetPanel.LookAtVector")));
             this.rotationOffsetPanel.Name = "rotationOffsetPanel";
@@ -135,7 +135,7 @@
             // 
             // screenPositionPanel
             // 
-            this.screenPositionPanel.DisplayName = "Screen Position (cm)";
+            this.screenPositionPanel.Text = "Screen Position (cm)";
             this.screenPositionPanel.Location = new System.Drawing.Point(3, 3);
             this.screenPositionPanel.Max = 1000D;
             this.screenPositionPanel.Min = -1000D;

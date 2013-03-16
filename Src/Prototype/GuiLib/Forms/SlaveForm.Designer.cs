@@ -76,7 +76,7 @@
             // 
             this.rotationPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.rotationPanel.DisplayName = "Master VirtualRotationOffset";
+            this.rotationPanel.Text = "Master VirtualRotationOffset";
             this.rotationPanel.Location = new System.Drawing.Point(0, 0);
             this.rotationPanel.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("rotationPanel.LookAtVector")));
             this.rotationPanel.Name = "rotationPanel";
@@ -91,7 +91,7 @@
             // 
             this.positionPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.positionPanel.DisplayName = "Master VirtualPositionOffset";
+            this.positionPanel.Text = "Master VirtualPositionOffset";
             this.positionPanel.Location = new System.Drawing.Point(0, 153);
             this.positionPanel.Max = 2048D;
             this.positionPanel.Min = -2048D;

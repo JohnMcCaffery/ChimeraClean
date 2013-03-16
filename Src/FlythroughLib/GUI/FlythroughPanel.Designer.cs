@@ -217,7 +217,7 @@
             // 
             this.startOrientationPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.startOrientationPanel.DisplayName = "Start Orientation";
+            this.startOrientationPanel.Text = "Start Orientation";
             this.startOrientationPanel.Location = new System.Drawing.Point(0, 133);
             this.startOrientationPanel.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("startOrientationPanel.LookAtVector")));
             this.startOrientationPanel.MinimumSize = new System.Drawing.Size(252, 95);
@@ -238,7 +238,7 @@
             // 
             this.startPositionPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.startPositionPanel.DisplayName = "Start Position";
+            this.startPositionPanel.Text = "Start Position";
             this.startPositionPanel.Location = new System.Drawing.Point(0, 3);
             this.startPositionPanel.Max = 1024D;
             this.startPositionPanel.MaxV = ((OpenMetaverse.Vector3)(resources.GetObject("startPositionPanel.MaxV")));

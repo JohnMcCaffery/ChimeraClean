@@ -79,7 +79,7 @@
             // 
             this.targetVectorPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.targetVectorPanel.DisplayName = "Move To Target";
+            this.targetVectorPanel.Text = "Move To Target";
             this.targetVectorPanel.Location = new System.Drawing.Point(0, 0);
             this.targetVectorPanel.Max = 12800D;
             this.targetVectorPanel.Min = -1024D;

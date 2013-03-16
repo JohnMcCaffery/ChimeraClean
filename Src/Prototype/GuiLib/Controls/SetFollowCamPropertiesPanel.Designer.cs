@@ -423,7 +423,7 @@ namespace UtilLib {
             // 
             this.rawRotationPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.rawRotationPanel.DisplayName = "MasterRotation";
+            this.rawRotationPanel.Text = "MasterRotation";
             this.rawRotationPanel.Location = new System.Drawing.Point(0, 107);
             this.rawRotationPanel.Name = "rawRotationPanel";
             this.rawRotationPanel.Pitch = 0F;
@@ -438,7 +438,7 @@ namespace UtilLib {
             // 
             this.rawPositionPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.rawPositionPanel.DisplayName = "LookAt";
+            this.rawPositionPanel.Text = "LookAt";
             this.rawPositionPanel.Location = new System.Drawing.Point(0, 3);
             this.rawPositionPanel.Max = 255D;
             this.rawPositionPanel.Min = 0D;
@@ -467,7 +467,7 @@ namespace UtilLib {
             // 
             this.focusPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.focusPanel.DisplayName = "MasterRotation Offset";
+            this.focusPanel.Text = "MasterRotation Offset";
             this.focusPanel.Location = new System.Drawing.Point(0, 107);
             this.focusPanel.Name = "focusPanel";
             this.focusPanel.Pitch = 0F;
@@ -482,7 +482,7 @@ namespace UtilLib {
             // 
             this.positionPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.positionPanel.DisplayName = "LookAt Offset";
+            this.positionPanel.Text = "LookAt Offset";
             this.positionPanel.Location = new System.Drawing.Point(0, 3);
             this.positionPanel.Max = 5D;
             this.positionPanel.Min = -5D;
@@ -511,7 +511,7 @@ namespace UtilLib {
             // 
             this.finalFocusPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.finalFocusPanel.DisplayName = "MasterRotation";
+            this.finalFocusPanel.Text = "MasterRotation";
             this.finalFocusPanel.Enabled = false;
             this.finalFocusPanel.Location = new System.Drawing.Point(0, 107);
             this.finalFocusPanel.Name = "finalFocusPanel";
@@ -526,7 +526,7 @@ namespace UtilLib {
             // 
             this.finalPositionPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.finalPositionPanel.DisplayName = "LookAt";
+            this.finalPositionPanel.Text = "LookAt";
             this.finalPositionPanel.Enabled = false;
             this.finalPositionPanel.Location = new System.Drawing.Point(0, 3);
             this.finalPositionPanel.Max = 255D;
@@ -554,7 +554,7 @@ namespace UtilLib {
             // 
             this.focusOffsetPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.focusOffsetPanel.DisplayName = "Focus Offset Vector";
+            this.focusOffsetPanel.Text = "Focus Offset Vector";
             this.focusOffsetPanel.Location = new System.Drawing.Point(0, 3);
             this.focusOffsetPanel.Max = 10D;
             this.focusOffsetPanel.Min = -10D;

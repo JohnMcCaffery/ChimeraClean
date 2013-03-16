@@ -123,7 +123,7 @@
             // 
             this.orientationPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.orientationPanel.DisplayName = "Orientation (cm)";
+            this.orientationPanel.Text = "Orientation (cm)";
             this.orientationPanel.Location = new System.Drawing.Point(3, 91);
             this.orientationPanel.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("orientationPanel.LookAtVector")));
             this.orientationPanel.MinimumSize = new System.Drawing.Size(252, 95);
@@ -143,7 +143,7 @@
             // 
             this.topLeftPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.topLeftPanel.DisplayName = "Top Left (cm)";
+            this.topLeftPanel.Text = "Top Left (cm)";
             this.topLeftPanel.Location = new System.Drawing.Point(0, 0);
             this.topLeftPanel.Max = 1024D;
             this.topLeftPanel.MaxV = ((OpenMetaverse.Vector3)(resources.GetObject("topLeftPanel.MaxV")));

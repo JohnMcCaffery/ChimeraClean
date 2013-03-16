@@ -67,8 +67,8 @@ namespace ProxyTestGUI {
 
 
         public string DisplayName {
-            get { return vectorPanel.DisplayName; }
-            set { vectorPanel.DisplayName = value; }
+            get { return vectorPanel.Text; }
+            set { vectorPanel.Text = value; }
         }
 
         private void yawSlider_Scroll(object sender, EventArgs e) {

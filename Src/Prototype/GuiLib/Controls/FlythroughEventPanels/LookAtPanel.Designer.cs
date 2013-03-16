@@ -48,7 +48,7 @@
             // 
             this.targetVectorPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.targetVectorPanel.DisplayName = "Look At Target";
+            this.targetVectorPanel.Text = "Look At Target";
             this.targetVectorPanel.Location = new System.Drawing.Point(0, 0);
             this.targetVectorPanel.Max = 1024D;
             this.targetVectorPanel.Min = -1024D;

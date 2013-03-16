@@ -211,7 +211,7 @@
             // 
             this.pointDirPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.pointDirPanel.DisplayName = "Point Direction";
+            this.pointDirPanel.Text = "Point Direction";
             this.pointDirPanel.Location = new System.Drawing.Point(385, 279);
             this.pointDirPanel.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("pointDirPanel.LookAtVector")));
             this.pointDirPanel.Name = "pointDirPanel";
@@ -223,7 +223,7 @@
             // 
             // pointStartPanel
             // 
-            this.pointStartPanel.DisplayName = "Point Start";
+            this.pointStartPanel.Text = "Point Start";
             this.pointStartPanel.Location = new System.Drawing.Point(3, 257);
             this.pointStartPanel.Max = 1024D;
             this.pointStartPanel.Min = -1024D;
@@ -239,7 +239,7 @@
             // 
             this.kinectRotationPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.kinectRotationPanel.DisplayName = "KinectRotation";
+            this.kinectRotationPanel.Text = "KinectRotation";
             this.kinectRotationPanel.Location = new System.Drawing.Point(0, 104);
             this.kinectRotationPanel.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("kinectRotationPanel.LookAtVector")));
             this.kinectRotationPanel.Name = "kinectRotationPanel";
@@ -253,7 +253,7 @@
             // 
             this.kinectPositionPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.kinectPositionPanel.DisplayName = "Kinect Position";
+            this.kinectPositionPanel.Text = "Kinect Position";
             this.kinectPositionPanel.Location = new System.Drawing.Point(0, 0);
             this.kinectPositionPanel.Max = 1024D;
             this.kinectPositionPanel.Min = -1024D;
