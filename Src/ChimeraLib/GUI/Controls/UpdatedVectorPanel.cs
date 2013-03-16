@@ -19,7 +19,7 @@ namespace KinectLib.GUI {
         public UpdatedVectorPanel()
             : base() {
 
-            ValueChanged += NuiVectorPanel_ValueChanged;
+            ValueChanged += UpdatedVectorPanel_ValueChanged;
         }
 
         public IUpdater<Vector3> Vector {
@@ -35,8 +35,8 @@ namespace KinectLib.GUI {
             }
         }
 
-        void NuiVectorPanel_ValueChanged(object sender, EventArgs e) {
-            if (!mExternalChanged) {
+        void UpdatedVectorPanel_ValueChanged(object sender, EventArgs e) {
+            if (!mExternalChanged && (object) mVector != null) {
                 mGuiChanged = true;
                 mVector.Value = Value;
                 mGuiChanged = false;

@@ -77,7 +77,7 @@ namespace Chimera.Util {
                 MakeHelpLine("General", "MasterAddress", "ma", "The address the master is running at for distributing packets between master/slaves.", "localhost"),
                 MakeHelpLine("General", "MasterPort", "mp", "The port the master is running/will be run on for distributing packets between master/slaves.", Config.DEFAULT_MASTER_PORT),
                 MakeHelpLine("General", "UseGrid", "ug", "Whether to use the '--grid' flag when launching the client. Will only work with OpenSim enabled viewers.", "false"),
-                MakeHelpLine("General", "UseSetFollowCamPackets", "uf", "Whether to use SetFollowCamProperties packets to control the client or SetWindowPackets. Set false to allow the view frame to be dictated by the size and shape of the coordinator.", "false"),
+                MakeHelpLine("General", "UseSetFollowCamPackets", "uf", "Whether to use SetFollowCamProperties packets to control the client or SetWindowPackets. Set false to allow the view frame to be dictated by the size and shape of the input.", "false"),
                 MakeHelpLine("General", "EnableWindowPackets", "ew", "Whether to allow the proxy to inject Window packets. Set false for backward compatibility with unmodified viewers.", "true"),
                 MakeHelpLine("General", "WorldPosition", "cw", "The position the camera should start at in the world.", "true"),
                 MakeHelpLine("General", "WorldPitch", "pw", "The pitch the camera should start at.", "true"),

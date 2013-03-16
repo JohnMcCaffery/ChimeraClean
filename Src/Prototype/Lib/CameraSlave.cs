@@ -195,7 +195,7 @@ namespace UtilLib {
         }
 
         /// <summary>
-        /// The coordinator which defines the position of the screen this slave projects onto in real space.
+        /// The input which defines the position of the screen this slave projects onto in real space.
         /// </summary>
         public Window Window {
             get { return window; }

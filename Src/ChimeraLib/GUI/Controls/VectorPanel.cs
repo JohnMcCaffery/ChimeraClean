@@ -33,6 +33,7 @@ namespace ProxyTestGUI {
         public event EventHandler ValueChanged;
         private float trackerScale = 100.0f;
         private bool externalSet = false;
+        private bool guiSet = false;
         private bool valueChange = false;
         private Vector3 vector;
 
@@ -42,31 +43,15 @@ namespace ProxyTestGUI {
                 if (vector.X == value.X && vector.Y == value.Y && vector.Z == value.Z)
                     return;
                 Action change = new Action(() => {
-                    externalSet = true;
+                    vector = value;
 
-                    if (!float.IsInfinity(value.X) && value.X > decimal.ToDouble(xValue.Maximum))
-                        xValue.Maximum = new decimal(value.X);
-                    if (!float.IsNegativeInfinity(value.X) && value.X < decimal.ToDouble(xValue.Minimum))
-                        xValue.Minimum = new decimal(value.X);
-
-                    if (!float.IsInfinity(value.Y) && value.Y > decimal.ToDouble(yValue.Maximum))
-                        yValue.Maximum = new decimal(value.Y);
-                    if (!float.IsNegativeInfinity(value.Y) && value.Y < decimal.ToDouble(yValue.Minimum))
-                        yValue.Minimum = new decimal(value.Y);
-
-                    if (!float.IsInfinity(value.Z) && value.Z > decimal.ToDouble(zValue.Maximum))
-                        zValue.Maximum = new decimal(value.Z);
-                    if (!float.IsNegativeInfinity(value.Z) && value.Z < decimal.ToDouble(zValue.Minimum))
-                        zValue.Minimum = new decimal(value.Z);
-
-                    if (!valueChange) {
-                        xValue.Value = float.IsInfinity(value.X) ? xValue.Maximum : float.IsNaN(value.X) ? decimal.Zero : float.IsNegativeInfinity(value.X) ? xValue.Minimum : new decimal(value.X);
-                        yValue.Value = float.IsInfinity(value.Y) ? yValue.Maximum : float.IsNaN(value.Y) ? decimal.Zero : float.IsNegativeInfinity(value.Y) ? xValue.Minimum : new decimal(value.Y);
-                        zValue.Value = float.IsInfinity(value.Z) ? zValue.Maximum : float.IsNaN(value.Z) ? decimal.Zero : float.IsNegativeInfinity(value.Z) ? xValue.Minimum : new decimal(value.Z);
+                    if (!guiSet) {
+                        externalSet = true;
+                        xPanel.Value = vector.X;
+                        yPanel.Value = vector.Y;
+                        zPanel.Value = vector.X;
+                        externalSet = false;
                     }
-                    externalSet = false;
-
-                    vector = new Vector3((float)xValue.Value, (float)yValue.Value, (float)zValue.Value);
 
                     if (ValueChanged != null)
                         ValueChanged(this, null);
@@ -79,164 +64,77 @@ namespace ProxyTestGUI {
         }
 
         public float X {
-            get { return (float)xValue.Value; }
-            set { 
-                xValue.Value = new decimal(value);
-                xSlider.Value = (int)(value * trackerScale);
-            }
+            get { return (float)xPanel.Value; }
+            set { xPanel.Value = value; }
         }
         public float Y {
-            get { return (float)yValue.Value; }
-            set { 
-                yValue.Value = new decimal(value);
-                ySlider.Value = (int)(value * trackerScale);
-            }
+            get { return (float)yPanel.Value; }
+            set { yPanel.Value = value; }
         }
         public float Z {
-            get { return (float)zValue.Value; }
-            set { 
-                zValue.Value = new decimal(value);
-                zSlider.Value = (int)(value * trackerScale);
-            }
+            get { return (float)zPanel.Value; }
+            set { zPanel.Value = value; }
         }
 
         public override string Text {
             get { return nameLabel.Text; }
             set { nameLabel.Text = value; }
         }
-        public double Min {
-            get { return decimal.ToDouble(xValue.Minimum); }
+        public float Min {
+            get { return xPanel.Min; }
             set {
-                xValue.Minimum = Math.Min(xValue.Minimum, new decimal(value));
-                yValue.Minimum = Math.Min(xValue.Minimum, new decimal(value));
-                zValue.Minimum = Math.Min(xValue.Minimum, new decimal(value));
-
-                xSlider.Minimum = (int)(value * trackerScale);
-                ySlider.Minimum = (int)(value * trackerScale);
-                zSlider.Minimum = (int)(value * trackerScale);
+                xPanel.Min = value;
+                yPanel.Min = value;
+                zPanel.Min = value;
             }
         }
         public Vector3 MinV {
-            get { return new Vector3(
-                (float) decimal.ToDouble(xValue.Minimum), 
-                (float) decimal.ToDouble(yValue.Minimum), 
-                (float) decimal.ToDouble(zValue.Minimum)); }
+            get { return new Vector3( xPanel.Min, yPanel.Min, zPanel.Min); }
             set {
-                xValue.Minimum = Math.Min(xValue.Minimum, new decimal(value.X));
-                yValue.Minimum = Math.Min(xValue.Minimum, new decimal(value.Y));
-                zValue.Minimum = Math.Min(xValue.Minimum, new decimal(value.Z));
-
-                xSlider.Minimum = (int)(value.X * trackerScale);
-                ySlider.Minimum = (int)(value.Y * trackerScale);
-                zSlider.Minimum = (int)(value.Z * trackerScale);
+                xPanel.Min = value.X;
+                yPanel.Min = value.Y;
+                zPanel.Min = value.Z;
             }
-        }
-        public double Max {
-            get { return decimal.ToDouble(xValue.Maximum); }
+        }        public float Max {
+            get { return xPanel.Max; }
             set {
-                xValue.Maximum = Math.Max(xValue.Maximum, new decimal(value));
-                yValue.Maximum = Math.Max(yValue.Maximum, new decimal(value));
-                zValue.Maximum = Math.Max(zValue.Maximum, new decimal(value));
-
-                xSlider.Maximum = (int)(value * trackerScale);
-                ySlider.Maximum = (int)(value * trackerScale);
-                zSlider.Maximum = (int)(value * trackerScale);
+                xPanel.Max = value;
+                yPanel.Max = value;
+                zPanel.Max = value;
             }
         }
         public Vector3 MaxV {
-            get { return new Vector3(
-                (float) decimal.ToDouble(xValue.Maximum), 
-                (float) decimal.ToDouble(yValue.Maximum), 
-                (float) decimal.ToDouble(zValue.Maximum)); }
+            get { return new Vector3( xPanel.Max, yPanel.Max, zPanel.Max); }
             set {
-                xValue.Maximum = Math.Max(xValue.Maximum, new decimal(value.X));
-                yValue.Maximum = Math.Max(yValue.Maximum, new decimal(value.Y));
-                zValue.Maximum = Math.Max(zValue.Maximum, new decimal(value.Z));
-
-                xSlider.Maximum = (int)(value.X * trackerScale);
-                ySlider.Maximum = (int)(value.Y * trackerScale);
-                zSlider.Maximum = (int)(value.Z * trackerScale);
+                xPanel.Max = value.X;
+                yPanel.Max = value.Y;
+                zPanel.Max = value.Z;
             }
         }
+
 
         public VectorPanel() {
             InitializeComponent();
         }
 
-        private void xValue_ValueChanged(object sender, EventArgs e) {
-            float v = (float)decimal.ToDouble(xValue.Value);
-            int value = (v < Int32.MaxValue / trackerScale) ?
-                Convert.ToInt32(v * trackerScale) :
-                int.MaxValue;
-            if (v == vector.X)
-                return;
-
-            valueChange = true;
-
-            if (!externalSet)
-                Value = new Vector3(value, vector.Y, vector.Z);
-            xSlider.Value = Math.Max(xSlider.Minimum, Math.Min(xSlider.Maximum, value));
-
-            valueChange = false;
-        }
-
-        private void yValue_ValueChanged(object sender, EventArgs e) {
-            float v = (float)decimal.ToDouble(yValue.Value);
-            int value = (v < Int32.MaxValue / trackerScale) ?
-                Convert.ToInt32(v * trackerScale) :
-                int.MaxValue;
-            if (v == vector.Y)
-                return;
-
-            valueChange = true;
-
-            if (!externalSet)
-                Value = new Vector3(vector.X, value, vector.Z);
-            ySlider.Value = Math.Max(ySlider.Minimum, Math.Min(ySlider.Maximum, value));
-
-            valueChange = false;
-        }
-
-        private void zValue_ValueChanged(object sender, EventArgs e) {
-            float v = (float)decimal.ToDouble(zValue.Value);
-            int value = (v < Int32.MaxValue / trackerScale) ?
-                Convert.ToInt32(v * trackerScale) :
-                int.MaxValue;
-            if (v == vector.Z)
-                return;
-
-            valueChange = true;
-
-            if (!externalSet)
-                Value = new Vector3(vector.X, vector.Y, value);
-            zSlider.Value = Math.Max(zSlider.Minimum, Math.Min(zSlider.Maximum, value));
-
-            valueChange = false;
-        }
-
-        private void xSlider_Scroll(object sender, EventArgs e) {
-            if (!valueChange)
-                xValue.Value = new decimal(xSlider.Value / trackerScale);
-        }
-
-        private void ySlider_Scroll(object sender, EventArgs e) {
-            if (!valueChange)
-                yValue.Value = new decimal(ySlider.Value / trackerScale);
-
-        }
-
-        private void zSlider_Scroll(object sender, EventArgs e) {
-            if (!valueChange)
-                zValue.Value = new decimal(zSlider.Value / trackerScale);
-        }
-
         private void VectorPanel_EnabledChanged(object sender, EventArgs e) {
+            /*
             xValue.Enabled = Enabled;
             yValue.Enabled = Enabled;
             zValue.Enabled = Enabled;
             xSlider.Enabled = Enabled;
             ySlider.Enabled = Enabled;
             zSlider.Enabled = Enabled;
+            */
+        }
+
+        private void panel_Changed(float obj) {
+            if (!externalSet) {
+                guiSet = true;
+                Value = new Vector3(xPanel.Value, yPanel.Value, zPanel.Value);
+                guiSet = false;
+            }
+
         }
     }
 }

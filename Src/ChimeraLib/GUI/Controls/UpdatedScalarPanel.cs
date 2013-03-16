@@ -14,6 +14,12 @@ namespace KinectLib.GUI {
         private bool mGuiChanged;
         private bool mExternalChanged;
 
+        public UpdatedScalarPanel()
+            : base() {
+
+            ValueChanged += UpdatedScalarPanel_ValueChanged;
+        }
+
         public IUpdater<float> Scalar {
             get { return mScalar; }
             set {
@@ -27,8 +33,8 @@ namespace KinectLib.GUI {
             }
         }
 
-        private void UpdatedScalarPanel_Changed(float obj) {
-            if (!mExternalChanged) {
+        private void UpdatedScalarPanel_ValueChanged(float obj) {
+            if (!mExternalChanged && (object) mScalar != null) {
                 mGuiChanged = true;
                 mScalar.Value = Value;
                 mGuiChanged = false;

@@ -220,8 +220,8 @@ namespace ProxyTestGUI {
             | System.Windows.Forms.AnchorStyles.Right)));
             this.vectorPanel.Text = "Name";
             this.vectorPanel.Location = new System.Drawing.Point(0, 0);
-            this.vectorPanel.Max = 1D;
-            this.vectorPanel.Min = -1D;
+            this.vectorPanel.Max = 1f;
+            this.vectorPanel.Min = -1f;
             this.vectorPanel.MinimumSize = new System.Drawing.Size(103, 95);
             this.vectorPanel.Name = "vectorPanel";
             this.vectorPanel.Size = new System.Drawing.Size(596, 95);

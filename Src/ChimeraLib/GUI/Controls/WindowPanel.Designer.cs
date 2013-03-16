@@ -103,7 +103,7 @@
             this.heightPanel.Size = new System.Drawing.Size(388, 20);
             this.heightPanel.TabIndex = 3;
             this.heightPanel.Value = 0F;
-            this.heightPanel.Changed += new System.Action<float>(this.heightPanel_Changed);
+            this.heightPanel.ValueChanged += new System.Action<float>(this.heightPanel_Changed);
             // 
             // widthPanel
             // 
@@ -117,7 +117,7 @@
             this.widthPanel.Size = new System.Drawing.Size(388, 20);
             this.widthPanel.TabIndex = 2;
             this.widthPanel.Value = 0F;
-            this.widthPanel.Changed += new System.Action<float>(this.widthPanel_Changed);
+            this.widthPanel.ValueChanged += new System.Action<float>(this.widthPanel_Changed);
             // 
             // orientationPanel
             // 
@@ -145,9 +145,9 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.topLeftPanel.Text = "Top Left (cm)";
             this.topLeftPanel.Location = new System.Drawing.Point(0, 0);
-            this.topLeftPanel.Max = 1024D;
+            this.topLeftPanel.Max = 1024f;
             this.topLeftPanel.MaxV = ((OpenMetaverse.Vector3)(resources.GetObject("topLeftPanel.MaxV")));
-            this.topLeftPanel.Min = -1024D;
+            this.topLeftPanel.Min = -1024f;
             this.topLeftPanel.MinimumSize = new System.Drawing.Size(103, 95);
             this.topLeftPanel.MinV = ((OpenMetaverse.Vector3)(resources.GetObject("topLeftPanel.MinV")));
             this.topLeftPanel.Name = "topLeftPanel";

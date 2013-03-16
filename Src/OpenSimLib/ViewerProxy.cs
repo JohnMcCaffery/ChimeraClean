@@ -238,21 +238,21 @@ namespace Chimera.OpenSim {
         public abstract void ClearCamera();
 
         /// <summary>
-        /// Take control of the camera and set it to the position specified by the coordinator.
+        /// Take control of the camera and set it to the position specified by the input.
         /// </summary>
         public abstract void SetCamera();
 
         /// <summary>
         /// Called whenever the camera position is updated.
         /// </summary>
-        /// <param name="coordinator">The coordinator which triggered the camera change.</param>
+        /// <param name="input">The input which triggered the camera change.</param>
         /// <param name="args">The arguments about the change that was made.</param>
         protected abstract void ProcessChange(Coordinator coordinator, CameraUpdateEventArgs args);
 
         /// <summary>
         /// Called whenever the eye position is updated.
         /// </summary>
-        /// <param name="coordinator">The coordinator which triggered the eye change.</param>
+        /// <param name="input">The input which triggered the eye change.</param>
         /// <param name="args">The arguments about the change that was made.</param>
         protected abstract void ProcessEyeUpdate(Coordinator coordinator, EventArgs args);
 

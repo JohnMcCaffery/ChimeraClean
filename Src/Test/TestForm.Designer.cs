@@ -111,9 +111,9 @@
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.intersectionPanel.Text = "Name";
             this.intersectionPanel.Location = new System.Drawing.Point(13, 215);
-            this.intersectionPanel.Max = 1024D;
+            this.intersectionPanel.Max = 1024f;
             this.intersectionPanel.MaxV = ((OpenMetaverse.Vector3)(resources.GetObject("intersectionPanel.MaxV")));
-            this.intersectionPanel.Min = -1024D;
+            this.intersectionPanel.Min = -1024f;
             this.intersectionPanel.MinimumSize = new System.Drawing.Size(103, 95);
             this.intersectionPanel.MinV = ((OpenMetaverse.Vector3)(resources.GetObject("intersectionPanel.MinV")));
             this.intersectionPanel.Name = "intersectionPanel";
@@ -131,9 +131,9 @@
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.pointDirPanel.Text = "Point Direction";
             this.pointDirPanel.Location = new System.Drawing.Point(478, 114);
-            this.pointDirPanel.Max = 1024D;
+            this.pointDirPanel.Max = 1024f;
             this.pointDirPanel.MaxV = ((OpenMetaverse.Vector3)(resources.GetObject("pointDirPanel.MaxV")));
-            this.pointDirPanel.Min = -1024D;
+            this.pointDirPanel.Min = -1024f;
             this.pointDirPanel.MinimumSize = new System.Drawing.Size(103, 95);
             this.pointDirPanel.MinV = ((OpenMetaverse.Vector3)(resources.GetObject("pointDirPanel.MinV")));
             this.pointDirPanel.Name = "pointDirPanel";
@@ -151,9 +151,9 @@
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.pointStartPanel.Text = "Point Start";
             this.pointStartPanel.Location = new System.Drawing.Point(478, 12);
-            this.pointStartPanel.Max = 1024D;
+            this.pointStartPanel.Max = 1024f;
             this.pointStartPanel.MaxV = ((OpenMetaverse.Vector3)(resources.GetObject("pointStartPanel.MaxV")));
-            this.pointStartPanel.Min = -1024D;
+            this.pointStartPanel.Min = -1024f;
             this.pointStartPanel.MinimumSize = new System.Drawing.Size(103, 95);
             this.pointStartPanel.MinV = ((OpenMetaverse.Vector3)(resources.GetObject("pointStartPanel.MinV")));
             this.pointStartPanel.Name = "pointStartPanel";
@@ -169,9 +169,9 @@
             // 
             this.sidePanel.Text = "Side";
             this.sidePanel.Location = new System.Drawing.Point(234, 114);
-            this.sidePanel.Max = 1024D;
+            this.sidePanel.Max = 1024f;
             this.sidePanel.MaxV = ((OpenMetaverse.Vector3)(resources.GetObject("sidePanel.MaxV")));
-            this.sidePanel.Min = -1024D;
+            this.sidePanel.Min = -1024f;
             this.sidePanel.MinimumSize = new System.Drawing.Size(103, 95);
             this.sidePanel.MinV = ((OpenMetaverse.Vector3)(resources.GetObject("sidePanel.MinV")));
             this.sidePanel.Name = "sidePanel";
@@ -187,9 +187,9 @@
             // 
             this.topPanel.Text = "Top";
             this.topPanel.Location = new System.Drawing.Point(234, 12);
-            this.topPanel.Max = 1024D;
+            this.topPanel.Max = 1024f;
             this.topPanel.MaxV = ((OpenMetaverse.Vector3)(resources.GetObject("topPanel.MaxV")));
-            this.topPanel.Min = -1024D;
+            this.topPanel.Min = -1024f;
             this.topPanel.MinimumSize = new System.Drawing.Size(103, 95);
             this.topPanel.MinV = ((OpenMetaverse.Vector3)(resources.GetObject("topPanel.MinV")));
             this.topPanel.Name = "topPanel";
@@ -205,9 +205,9 @@
             // 
             this.normalPanel.Text = "Normal";
             this.normalPanel.Location = new System.Drawing.Point(13, 114);
-            this.normalPanel.Max = 1024D;
+            this.normalPanel.Max = 1024f;
             this.normalPanel.MaxV = ((OpenMetaverse.Vector3)(resources.GetObject("normalPanel.MaxV")));
-            this.normalPanel.Min = -1024D;
+            this.normalPanel.Min = -1024f;
             this.normalPanel.MinimumSize = new System.Drawing.Size(103, 95);
             this.normalPanel.MinV = ((OpenMetaverse.Vector3)(resources.GetObject("normalPanel.MinV")));
             this.normalPanel.Name = "normalPanel";
@@ -237,9 +237,9 @@
             // 
             this.topLeftPanel.Text = "Top Left";
             this.topLeftPanel.Location = new System.Drawing.Point(12, 12);
-            this.topLeftPanel.Max = 1024D;
+            this.topLeftPanel.Max = 1024f;
             this.topLeftPanel.MaxV = ((OpenMetaverse.Vector3)(resources.GetObject("topLeftPanel.MaxV")));
-            this.topLeftPanel.Min = -1024D;
+            this.topLeftPanel.Min = -1024f;
             this.topLeftPanel.MinimumSize = new System.Drawing.Size(103, 95);
             this.topLeftPanel.MinV = ((OpenMetaverse.Vector3)(resources.GetObject("topLeftPanel.MinV")));
             this.topLeftPanel.Name = "topLeftPanel";

@@ -79,7 +79,7 @@ namespace Chimera {
         /// <summary>
         /// Initialise the overlay area, giving it a reference to the window it is linked to.
         /// </summary>
-        /// <param name="coordinator">The coordinator object area is on.</param>
+        /// <param name="input">The input object area is on.</param>
         /// <param name="window">The window this overlay is part of.</param>
         void Init(Window window);
 

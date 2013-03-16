@@ -4,6 +4,10 @@ using System.Linq;
 using System.Text;
 using NuiLibDotNet;
 using Chimera.Util;
+using System.Windows.Forms;
+using Chimera;
+using OpenMetaverse;
+using Chimera.Kinect;
 
 namespace Test {
     public class Program {
@@ -24,11 +28,25 @@ namespace Test {
             mPointStart = Vector.Create("PointStart", 0f, 0f, 0f);
             mPointDir = Vector.Create("PointDir", 0f, 0f, 0f);
 
-            Init();
+            //Init();
+			Nui.Init();
+            Nui.SetAutoPoll(true);
 
-            GC.Collect();
+            GC.Collect();
 
-            ProcessWrangler.BlockingRunForm(new TestForm(mPlaneTopLeft, mPlaneNormal, mTop, mSide, mPointStart, mPointDir, mIntersection, mW, mH, mX, mY), null, false);
+            Window window = new Window("Test Window");
+            window.Width = 2000;
+            window.Height = 1500;
+            window.TopLeft = new Vector3(0f, -1000f, 750f);
+
+            //IKinectCursorWindow cursor = new PointCursor();
+            IKinectCursorWindow cursor = new SimpleCursor();
+
+            //Form = new TestForm(mPlaneTopLeft, mPlaneNormal, mTop, mSide, mPointStart, mPointDir, mIntersection, mW, mH, mX, mY);
+            //Form form = new KinectMovementForm();
+            //form.Start();
+            Form form = new KinectCursorForm(cursor, window);
+            ProcessWrangler.BlockingRunForm(form, null, false);
         }
 
         private static void Init() {
@@ -46,9 +64,9 @@ namespace Test {
             Vector vertical = Vector.Create(0f, 1f, 0f); // Vertical
             //Calculate the intersection of the plane defined by the point mPlaneTopLeft and the normal mPlaneNormal and the line defined by the point mPointStart and the direction mPointDir.
             mIntersection = Nui.intersect(mPlaneTopLeft, Nui.normalize(mPlaneNormal), mPointStart, Nui.normalize(mPointDir));
-            //Calculate a vector that represents the orientation of the top of the coordinator.
+            //Calculate a vector that represents the orientation of the top of the input.
             mTop = Nui.scale(Nui.cross(vertical, mPlaneNormal), mW);
-            //Calculate a vector that represents the orientation of the side of the coordinator.
+            //Calculate a vector that represents the orientation of the side of the input.
             mSide = Nui.scale(Nui.cross(mPlaneNormal, mTop), mH);
 
             //Calculate the vector (running along the plane) between the top left corner and the point of intersection.
@@ -64,12 +82,6 @@ namespace Test {
             };
 
             mPointStart.Set(1f, 0f, 0f);
-
-            Nui.Tick += new ChangeDelegate(Nui_Tick);
-        }
-
-        static void Nui_Tick() {
-            Console.WriteLine("Tick");
         }
     }
 }

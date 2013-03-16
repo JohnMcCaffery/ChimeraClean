@@ -90,23 +90,38 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DolphinMovementInput.cs" />
+    <Compile Include="GUI\DolphinMovementPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\DolphinMovementPanel.Designer.cs">
+      <DependentUpon>DolphinMovementPanel.cs</DependentUpon>
+    </Compile>
     <Compile Include="GUI\KinectPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="GUI\KinectPanel.Designer.cs">
       <DependentUpon>KinectPanel.cs</DependentUpon>
     </Compile>
-    <Compile Include="GUI\KinectWindowPanel.cs">
+    <Compile Include="GUI\PointCursorPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="GUI\KinectWindowPanel.Designer.cs">
-      <DependentUpon>KinectWindowPanel.cs</DependentUpon>
+    <Compile Include="GUI\PointCursorPanel.Designer.cs">
+      <DependentUpon>PointCursorPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\SimpleCursorPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\SimpleCursorPanel.Designer.cs">
+      <DependentUpon>SimpleCursorPanel.cs</DependentUpon>
     </Compile>
     <Compile Include="GUI\Updaters.cs" />
+    <Compile Include="IKinectCursor.cs" />
     <Compile Include="KinectConfig.cs" />
     <Compile Include="KinectInput.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="WindowInput.cs" />
+    <Compile Include="PointCursor.cs" />
+    <Compile Include="SimpleCursor.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ChimeraLib\ChimeraLib.csproj">
@@ -122,11 +137,17 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="GUI\DolphinMovementPanel.resx">
+      <DependentUpon>DolphinMovementPanel.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="GUI\KinectPanel.resx">
       <DependentUpon>KinectPanel.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="GUI\KinectWindowPanel.resx">
-      <DependentUpon>KinectWindowPanel.cs</DependentUpon>
+    <EmbeddedResource Include="GUI\PointCursorPanel.resx">
+      <DependentUpon>PointCursorPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\SimpleCursorPanel.resx">
+      <DependentUpon>SimpleCursorPanel.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

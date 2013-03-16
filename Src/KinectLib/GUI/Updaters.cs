@@ -8,12 +8,12 @@ using Chimera.Interfaces;
 
 namespace Chimera.Kinect.GUI {
     public class ScalarUpdater : IUpdater<float> {
-        private Scalar mScalar = Scalar.Create(0f);
+        private Scalar mScalar;
 
         public Scalar Scalar {
             get { return mScalar; }
             set {
-                if ((object)mScalar == null)
+                if ((object)value == null)
                     throw new ArgumentException("Unable to set Scalar. Value cannot be null.");
                 if ((object)mScalar != null)
                     mScalar.OnChange -= mScalar_OnChange;
@@ -37,20 +37,18 @@ namespace Chimera.Kinect.GUI {
                 Changed(mScalar.Value);
         }
 
-        public ScalarUpdater() { }
-
         public ScalarUpdater(Scalar scalar) {
             Scalar = scalar;
         }
     }
 
     public class VectorUpdater : IUpdater<Vector3> {
-        private Vector mVector = Vector.Create(0f, 0f, 0f);
+        private Vector mVector;
 
         public Vector Vector {
             get { return mVector; }
             set {
-                if ((object)mVector == null)
+                if ((object)value == null)
                     throw new ArgumentException("Unable to set Vector. Value cannot be null.");
                 if ((object)mVector != null)
                     mVector.OnChange -= mVector_OnChange;
@@ -74,20 +72,18 @@ namespace Chimera.Kinect.GUI {
                 Changed(Value);
         }
 
-        public VectorUpdater() { }
-
         public VectorUpdater(Vector vector) {
             Vector = vector;
         }
     }
 
     public class ConditionUpdater : IUpdater<bool> {
-        private Condition mCondition = Condition.Create(false);
+        private Condition mCondition;
 
         public Condition Condition {
             get { return mCondition; }
             set {
-                if ((object)mCondition == null)
+                if ((object)value == null)
                     throw new ArgumentException("Unable to set Condition. Value cannot be null.");
                 if ((object)mCondition != null)
                     mCondition.OnChange -= mCondition_OnChange;
@@ -110,8 +106,6 @@ namespace Chimera.Kinect.GUI {
             if (Changed != null)
                 Changed(mCondition.Value);
         }
-
-        public ConditionUpdater() { }
 
         public ConditionUpdater(Condition condition) {
             Condition = condition;

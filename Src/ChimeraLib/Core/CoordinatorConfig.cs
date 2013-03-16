@@ -2,47 +2,46 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Nini.Config;
 using Chimera.Util;
 using System.IO;
+using OpenMetaverse;
 
 namespace Chimera {
-    public class CoordinatorConfig {
+    public class CoordinatorConfig : ConfigBase {
         public string CrashLogFile;
         public int TickLength;
         public bool AutoRestart;
+        public Vector3 Position;
+        public Vector3 EyePosition;
+        public double Pitch;
+        public double Yaw;
 
-        public CoordinatorConfig(params string[] args) {
-            ArgvConfigSource argConfig = Init.InitArgConfig(args);
-            argConfig.AddSwitch("General", "File", "f");
-
-            string file;
-            IConfigSource config = Init.AddFile(argConfig, out file);
-
-            InitConfig(file, args);
+        public CoordinatorConfig(params string[] args)
+            : base(args) {
         }
 
-        public CoordinatorConfig(string file, string[] args) {
-            InitConfig(file, args);
+        public CoordinatorConfig(string file, string[] args)
+            : base("Coordinator", file, args) {
         }
 
-        private void InitConfig(string file, string[] args) {
-            ArgvConfigSource argConfig = Init.InitArgConfig(args);
-            argConfig.AddSwitch("General", "AutoRestart", "r");
-            argConfig.AddSwitch("General", "CrashLogFile", "l");
-            argConfig.AddSwitch("General", "TickLength", "tl");
-            
-            IConfigSource config = Init.AddFile(argConfig, file);
-            IConfig coordinatorConfig = config.Configs["Coordinator"];
-            IConfig generalConfig = config.Configs["General"];
+        public override string Group {
+            get { return "Core"; }
+        }
 
-            CrashLogFile = Init.Get(generalConfig, "CrashLogFile", "CrashLog.log");
-            AutoRestart = Init.Get(generalConfig, "AutoRestart", false);
-            TickLength = Init.Get(generalConfig, "TickLength", 20);
+        protected override void InitConfig() {
+            AddCommandLineKey(true, "AutoRestart", "r");
+            AddCommandLineKey(true, "CrashLogFile", "l");
+            AddCommandLineKey(true, "TickLength", "tl");
 
-            //EnableWindowPackets = Init.Get(generalConfig, "EnableWindowPackets", true);
-            //UseSetFollowCamPackets = !enableWindowPackets || Get(generalConfig, "UseSetFollowCamPackets", false);
-            //ControlCamera = Init.Get(sectionConfig, "ControlCamera", true);
+            CrashLogFile = Get(true, "CrashLogFile", "CrashLog.log", "The file to log any crashes to.");
+            AutoRestart = Get(true, "AutoRestart", false, "Whether to automatically restart the system any time it crashes.");
+
+            TickLength = Get(true, "TickLength", 20, "How long each tick should be for any system that uses ticks.");
+
+            EyePosition = GetV(true, "CameraPosition", new Vector3(-1000f, 0, 0), "The position of the eye in real world coordinates (mm).");
+            Position = GetV(true, "CameraPosition", new Vector3(128f, 128f, 60f), "The position of the camera in virtual space coordinates.");
+            Pitch = Get(true, "CameraPitch", 0.0, "The pitch of the virtual camera.");
+            Yaw = Get(true, "CameraYaw", 0.0, "The yaw of the virtual camera.");
         }
     }
 }

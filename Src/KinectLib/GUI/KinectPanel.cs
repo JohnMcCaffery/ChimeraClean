@@ -74,7 +74,7 @@ namespace Chimera.Kinect.GUI {
             startButton.Enabled = !mInput.KinectStarted;
 
             foreach (var window in input.WindowInputs)
-                AddWindow(new KinectWindowPanel(window), window.Window.Name);
+                AddWindow(new PointCursorPanel(window), window.Window.Name);
 
             mInput.PositionChanged += new Action<Vector3>(mInput_PositionChanged);
             mInput.VectorsAssigned += new Action<Vector,Vector>(mInput_VectorsAssigned);
@@ -106,7 +106,7 @@ namespace Chimera.Kinect.GUI {
             startButton.Enabled = false;
         }
 
-        public void AddWindow(KinectWindowPanel windowPanel, string name) {
+        public void AddWindow(UserControl windowPanel, string name) {
             // 
             // windowTab
             // 

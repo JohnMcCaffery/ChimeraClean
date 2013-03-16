@@ -6,7 +6,7 @@
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>AYRAIAAABQgQggAgEQgAgAAAEEACIQAyABQAgECICg0=</HashCode>
+      <HashCode>AYRAIAAABQgQggAgEQgAgAAAEEACIQA6ABQAgECISg0=</HashCode>
       <FileName>Core\Coordinator.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -30,13 +30,14 @@
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>QBgAEAgEBQAAJ5AABAKIA0QQkAAACMBBUgwCBAyIAQI=</HashCode>
+      <HashCode>QBgAEAgEBQAAJxEABAKIg0QQkAAAiMBBUwwCBAyIAQI=</HashCode>
       <FileName>Core\Window.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Field Name="mOverlayWindow" />
       <Property Name="Coordinator" />
       <Property Name="Output" />
+      <Property Name="OverlayController" />
     </ShowAsAssociation>
   </Class>
   <Class Name="Chimera.NetworkWindow" Collapsed="true">
@@ -47,7 +48,7 @@
     </TypeIdentifier>
   </Class>
   <Class Name="Chimera.CameraUpdateEventArgs">
-    <Position X="6.75" Y="0.5" Width="2" />
+    <Position X="10.25" Y="8.5" Width="2" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAACAIAAAAAAAAIAgAAAAAAAAAAA=</HashCode>
       <FileName>Core\Coordinator.cs</FileName>
@@ -59,7 +60,7 @@
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>ICgAqRgGRAABE6AAKAAAAEagAAAAMAKAwABKBACKYAE=</HashCode>
+      <HashCode>ICgAqRgGRgABE6AAKAAAAEagAAAAMAKAwAAKBACKYAE=</HashCode>
       <FileName>Inputs\KBMouseInput.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
@@ -92,7 +93,7 @@
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>AwgBBCAACQYCACAyEAAABEAAAAAEgBQoRApiABAEAgI=</HashCode>
+      <HashCode>AwAAQAAAAQAAACAyEAAAAAAAAAAEgBAAAAACABAAAAA=</HashCode>
       <FileName>Overlay\ImageArea.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
@@ -106,9 +107,9 @@
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="Chimera.Overlay.WindowOverlay">
-    <Position X="15.5" Y="3.75" Width="2" />
+    <Position X="17" Y="4" Width="2" />
     <TypeIdentifier>
-      <HashCode>QgAAAAAAAAAAAhAgiAAAIgAggACAAAQAAAACAADEQAA=</HashCode>
+      <HashCode>QgAAAAAAAgAAAhAgiAAAIgAggACAAAQAAAACAADEQAA=</HashCode>
       <FileName>Overlay\WindowOverlay.cs</FileName>
     </TypeIdentifier>
     <ShowAsCollectionAssociation>
@@ -134,10 +135,25 @@
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
-  <Interface Name="Chimera.IInput">
-    <Position X="4" Y="0.5" Width="1.5" />
+  <Class Name="Chimera.Inputs.DeltaBasedInput">
+    <Position X="8.75" Y="3.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAoAAAAAAAAQAAAAAAAIAQABCBACAAAA=</HashCode>
+      <HashCode>AAAAAAgEAgAAAoAAAAAAAAQAIACAAAIAQAACBACAAAA=</HashCode>
+      <FileName>Inputs\DeltaBasedInput.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Chimera.OverlayController">
+    <Position X="21.5" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>OverlayController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="Chimera.ISystemInput">
+    <Position X="4.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAACAAAAAAA=</HashCode>
       <FileName>Interfaces\IInput.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -164,7 +180,7 @@
   <Interface Name="Chimera.ISelectable">
     <Position X="5.75" Y="10.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAABBAAAAAACAAAwEAAABAAAAAAEAAAoAAACAAAEAgI=</HashCode>
+      <HashCode>AAABRAAAAAACAAAwEAAABAAAAAAEAAAoAAAGAAAEAgI=</HashCode>
       <FileName>Interfaces\IOverlayArea.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -191,8 +207,29 @@
       <Property Name="Selectable" />
     </ShowAsAssociation>
   </Interface>
+  <Interface Name="Chimera.IDeltaInput">
+    <Position X="8.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAABAAAAAAAAAAAAAACAAAAEAAAACAAAAAAA=</HashCode>
+      <FileName>Interfaces\IDeltaInput.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Chimera.IInput">
+    <Position X="6.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAgAAAoAAAAAAAAQAAAAAAAIAAAAABACAAAA=</HashCode>
+      <FileName>IInput.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Chimera.IInputSource">
+    <Position X="2.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAgAAAAAgAAAAAAAAAAAAAAAAAAAAAQAA=</HashCode>
+      <FileName>ITicker.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
   <Enum Name="Chimera.Perspective" Collapsed="true">
-    <Position X="9" Y="0.5" Width="1.5" />
+    <Position X="12" Y="5.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAYAE=</HashCode>
       <FileName>Core\Coordinator.cs</FileName>

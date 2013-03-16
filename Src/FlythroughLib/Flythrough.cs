@@ -25,7 +25,7 @@ namespace Chimera.FlythroughLib {
         }
     }
 
-    public class Flythrough : IInput {
+    public class Flythrough : ISystemInput {
         private EventSequence<Camera> mEvents = new EventSequence<Camera>();
         private Coordinator mCoordinator;
         private FlythroughPanel mPanel;
@@ -98,7 +98,7 @@ namespace Chimera.FlythroughLib {
         }
         /// <summary>
         /// Whether auto playback is enabled.
-        /// If false time will be continually incremented by the tick length specified in the coordinator.
+        /// If false time will be continually incremented by the tick length specified in the input.
         /// </summary>
         public bool Paused {
             get { return !mPlaying; }
@@ -284,7 +284,7 @@ namespace Chimera.FlythroughLib {
                 TimeChange(time);
         }
 
-        #region IInput Members
+        #region ISystemInput Members
 
         public UserControl ControlPanel {
             get {
@@ -303,7 +303,7 @@ namespace Chimera.FlythroughLib {
             set { mEnabled = value; }
         }
 
-        public string[] ConfigSwitches {
+        public ConfigBase Config {
             get { throw new NotImplementedException(); }
         }
 

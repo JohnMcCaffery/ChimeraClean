@@ -81,9 +81,9 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.targetVectorPanel.Text = "Move To Target";
             this.targetVectorPanel.Location = new System.Drawing.Point(0, 0);
-            this.targetVectorPanel.Max = 2048D;
+            this.targetVectorPanel.Max = 2048f;
             this.targetVectorPanel.MaxV = ((OpenMetaverse.Vector3)(resources.GetObject("targetVectorPanel.MaxV")));
-            this.targetVectorPanel.Min = -2048D;
+            this.targetVectorPanel.Min = -2048f;
             this.targetVectorPanel.MinimumSize = new System.Drawing.Size(103, 95);
             this.targetVectorPanel.MinV = ((OpenMetaverse.Vector3)(resources.GetObject("targetVectorPanel.MinV")));
             this.targetVectorPanel.Name = "targetVectorPanel";

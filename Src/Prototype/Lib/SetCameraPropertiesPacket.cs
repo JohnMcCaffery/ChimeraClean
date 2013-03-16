@@ -356,7 +356,7 @@ namespace Chimera {
             Vector3 diff = window.ScreenPosition - window.EyePosition;
 
             diff *= -window.RotationOffset.Quaternion;
-            //diff *= coordinator.RotationOffset.Quaternion;
+            //diff *= input.RotationOffset.Quaternion;
 
             upperRight += diff;
             lowerLeft += diff;
@@ -374,7 +374,7 @@ namespace Chimera {
             float df = (512f * 100f) * dn;
 
             /*
-            SetFrustumPacket fp = coordinator.CreateFrustumPacket(512f);
+            SetFrustumPacket fp = input.CreateFrustumPacket(512f);
             float x1 = fp.Frustum.x1;
             float x2 = fp.Frustum.x2;
             float y1 = fp.Frustum.y1;
@@ -413,8 +413,8 @@ namespace Chimera {
             double fovH = Math.Atan2(x2 - x1, 2) * 2.0 * Rotation.RAD2DEG;
             double fovV = Math.Atan2(y1 - y2, 2) * 2.0 * Rotation.RAD2DEG;
 
-            double frustumOffsetH = (x2 + x1) / (x2 - x1) * coordinator.Height;
-            double frustumOffsetV = (y1 + y2) / (y1 - y2) * coordinator.Height;
+            double frustumOffsetH = (x2 + x1) / (x2 - x1) * input.Height;
+            double frustumOffsetV = (y1 + y2) / (y1 - y2) * input.Height;
 
             Matrix4 projectionPaper = new Matrix4(
                 (2*dn)/(x2-x1),     0,              (x2+x1)/(x2-x1),    0,
@@ -422,11 +422,11 @@ namespace Chimera {
                 0,                  0,              -(df+dn)/(df-dn),   -(2*df*dn)/(df-dn),
                 0,                  0,              -1,                 0);
 
-            float f = (float)(1.0 / Math.Tan(coordinator.FieldOfView / 2.0));
-            float aspect = (float) coordinator.AspectRatio;
+            float f = (float)(1.0 / Math.Tan(input.FieldOfView / 2.0));
+            float aspect = (float) input.AspectRatio;
 
-            float hOffset = (float)((2 * coordinator.FrustumOffsetH) / coordinator.Width);
-            float vOffset = (float)((2 * coordinator.FrustumOffsetV) / coordinator.Height);
+            float hOffset = (float)((2 * input.FrustumOffsetH) / input.Width);
+            float vOffset = (float)((2 * input.FrustumOffsetV) / input.Height);
 
             Matrix4 projectionMine = new Matrix4(
                 f/aspect,     0,    hOffset,            0,

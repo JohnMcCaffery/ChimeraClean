@@ -240,9 +240,9 @@
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.startPositionPanel.Text = "Start Position";
             this.startPositionPanel.Location = new System.Drawing.Point(0, 3);
-            this.startPositionPanel.Max = 1024D;
+            this.startPositionPanel.Max = 1024f;
             this.startPositionPanel.MaxV = ((OpenMetaverse.Vector3)(resources.GetObject("startPositionPanel.MaxV")));
-            this.startPositionPanel.Min = -1024D;
+            this.startPositionPanel.Min = -1024f;
             this.startPositionPanel.MinimumSize = new System.Drawing.Size(103, 95);
             this.startPositionPanel.MinV = ((OpenMetaverse.Vector3)(resources.GetObject("startPositionPanel.MinV")));
             this.startPositionPanel.Name = "startPositionPanel";

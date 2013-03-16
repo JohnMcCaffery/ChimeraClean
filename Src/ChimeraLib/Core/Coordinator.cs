@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using System.Reflection;
 using Chimera.Interfaces;
 using System.IO;
+using System.Threading;
 
 namespace Chimera {
     /// <summary>
@@ -59,7 +60,7 @@ namespace Chimera {
         }
     }
 
-    public class Coordinator : ICrashable {
+    public class Coordinator : ICrashable, IInputSource {
         /// <summary>
         /// The authoratitive orientation of the camera in virtual space. This is read-only. To update it use the 'Update' method.
         /// </summary>
@@ -79,18 +80,18 @@ namespace Chimera {
         /// <summary>
         /// The inputs which can control the virtual position and lookAt of the view and the real world eye position to calculate views from.
         /// </summary>
-        private readonly List<IInput> mInputs = new List<IInput>();
+        private readonly List<ISystemInput> mInputs = new List<ISystemInput>();
         /// <summary>
-        /// The windows which define where, in real space, each 'coordinator' onto the virtual space is located.
+        /// The windows which define where, in real space, each 'input' onto the virtual space is located.
         /// </summary>
         private readonly List<Window> mWindows = new List<Window>();
         /// <summary>
-        /// The windows which define where, in real space, each 'coordinator' onto the virtual space is located.
+        /// The windows which define where, in real space, each 'input' onto the virtual space is located.
         /// </summary>
         private readonly List<IOverlayState> mStates = new List<IOverlayState>();
 
         /// <summary>
-        /// Scales that the various output coordinator is currently set to.
+        /// Scales that the various output input is currently set to.
         /// </summary>
         private double[] mScales = new double[3];
         /// <summary>
@@ -98,7 +99,7 @@ namespace Chimera {
         /// </summary>
         private Point[] mOrigins = new Point[3];
         /// <summary>
-        /// The sizes of the clip rectangles that bounds the horizontal output coordinator.
+        /// The sizes of the clip rectangles that bounds the horizontal output input.
         /// </summary>
         private Size[] mSizes = new Size[3];
         /// <summary>
@@ -118,12 +119,12 @@ namespace Chimera {
         private Chimera.Overlay.MainMenu mMainMenu;
 
         /// <summary>
-        /// Selected whenever a new coordinator is added.
+        /// Selected whenever a new input is added.
         /// </summary>
         public event Action<Window, EventArgs> WindowAdded;
 
         /// <summary>
-        /// Selected whenever a coordinator is removed.
+        /// Selected whenever a input is removed.
         /// </summary>
         public event Action<ISelectable, EventArgs> WindowRemoved;
 
@@ -163,14 +164,26 @@ namespace Chimera {
         public event EventHandler MainMenuActivated;
 
         /// <summary>
-        /// Initialise this coordinator, specifying a collection of inputs to work with.
+        /// Triggered every tick. Listen for this to keep time across the system.
         /// </summary>
-        /// <param name="inputs">The inputs which control the camera through this coordinator.</param>
-        public Coordinator(params IInput[] inputs) {
-            mInputs = new List<IInput>(inputs);
-            mRotation = new Rotation(mRotationLock);
+        public event Action Tick;
 
+        /// <summary>
+        /// Whether the tick thread should continue running.
+        /// </summary>
+        private bool mAlive;
+
+        /// <summary>
+        /// Initialise this input, specifying a collection of inputs to work with.
+        /// </summary>
+        /// <param name="inputs">The inputs which control the camera through this input.</param>
+        public Coordinator(params ISystemInput[] inputs) {
             CoordinatorConfig cfg = new CoordinatorConfig();
+
+            mInputs = new List<ISystemInput>(inputs);
+            mRotation = new Rotation(mRotationLock, cfg.Pitch, cfg.Yaw);
+            mPosition = cfg.Position;
+            mEyePosition = cfg.EyePosition;
             mCrashLogFile = cfg.CrashLogFile;
             mTickLength = cfg.TickLength;
 
@@ -178,14 +191,25 @@ namespace Chimera {
 
             foreach (var input in mInputs)
                 input.Init(this);
+
+            Thread tickThread = new Thread(() => {
+                mAlive = true;
+                while (mAlive) {
+                    if (Tick != null)
+                        Tick();
+                    Thread.Sleep(mTickLength);
+                }
+            });
+            tickThread.Name = "Tick Thread";
+            tickThread.Start();
         }
 
         /// <summary>
-        /// Initialise this coordinator, specifying a collection of inputs to work with and a collection of windows coordinated by this coordinator.
+        /// Initialise this input, specifying a collection of inputs to work with and a collection of windows coordinated by this input.
         /// </summary>
-        /// <param name="windows">The windows which are coordinated by this coordinator.</param>
-        /// <param name="inputs">The inputs which control the camera through this coordinator.</param>
-        public Coordinator(IEnumerable<Window> windows, params IInput[] inputs)
+        /// <param name="windows">The windows which are coordinated by this input.</param>
+        /// <param name="inputs">The inputs which control the camera through this input.</param>
+        public Coordinator(IEnumerable<Window> windows, params ISystemInput[] inputs)
             : this(inputs) {
 
             foreach (var window in windows)
@@ -193,11 +217,11 @@ namespace Chimera {
         }
 
         /// <summary>
-        /// Initialise this coordinator, specifying a collection of inputs to work with and a collection of windows coordinated by this coordinator.
+        /// Initialise this input, specifying a collection of inputs to work with and a collection of windows coordinated by this input.
         /// </summary>
-        /// <param name="windows">The windows which are coordinated by this coordinator.</param>
-        /// <param name="inputs">The inputs which control the camera through this coordinator.</param>
-        public Coordinator(IEnumerable<Window> windows, Chimera.Overlay.MainMenu mainMenu, params IInput[] inputs)
+        /// <param name="windows">The windows which are coordinated by this input.</param>
+        /// <param name="inputs">The inputs which control the camera through this input.</param>
+        public Coordinator(IEnumerable<Window> windows, Chimera.Overlay.MainMenu mainMenu, params ISystemInput[] inputs)
             : this(windows, inputs) {
 
             mMainMenu = mainMenu;
@@ -205,7 +229,7 @@ namespace Chimera {
         }
 
         /// <summary>
-        /// The windows which define where, in real space, each 'coordinator' onto the virtual space is located.
+        /// The windows which define where, in real space, each 'input' onto the virtual space is located.
         /// </summary>
         public Window[] Windows {
             get { return mWindows.ToArray() ; }
@@ -214,7 +238,7 @@ namespace Chimera {
         /// <summary>
         /// The inputs which can control the virtual position and lookAt of the view and the real world eye position to calculate views from.
         /// </summary>
-        public IInput[] Inputs {
+        public ISystemInput[] Inputs {
             get { return mInputs.ToArray() ; }
         }
 
@@ -268,7 +292,7 @@ namespace Chimera {
             //if (!mMainMenuActive) {
                 mPosition = position;
                 mRotation.Update(mRotationLock, orientation);
-                if (CameraUpdated != null) {
+                if (CameraUpdated != null && mAlive) {
                     CameraUpdateEventArgs args = new CameraUpdateEventArgs(position, postionDelta, orientation, orientationDelta);
                     CameraUpdated(this, args);
                 }
@@ -286,9 +310,9 @@ namespace Chimera {
         }
 
         /// <summary>
-        /// Add a coordinator to the system.
+        /// Add a input to the system.
         /// </summary>
-        /// <param name="coordinator">The coordinator to add.</param>
+        /// <param name="input">The input to add.</param>
         public void AddWindow(Window window) {
             mWindows.Add(window);
             window.Init(this);
@@ -320,7 +344,7 @@ namespace Chimera {
         }
 
         /// <summary>
-        /// Get a point on the horizontal output coordinator that corresponds to a point in real space.
+        /// Get a point on the horizontal output input that corresponds to a point in real space.
         /// </summary>
         /// <param name="perspective">The perspective to render along.</param>
         /// <param name="realPoint">The real point to translate into 2D coordinates.</param>
@@ -331,7 +355,7 @@ namespace Chimera {
         /// <summary>
         /// Notifies the system that an overlay area has been activated.
         /// </summary>
-        /// <param name="coordinator">The overlay area which was activated</param>
+        /// <param name="input">The overlay area which was activated</param>
         public void ActivateState(IOverlayState overlayArea) {
             mActiveState = overlayArea;
             if (StateActivated != null)
@@ -339,13 +363,14 @@ namespace Chimera {
         }
 
         /// <summary>
-        /// Called when the coordinator is to be disposed of.
+        /// Called when the input is to be disposed of.
         /// </summary>
         public void Close() {
             foreach (var input in mInputs)
                 input.Close();
             foreach (var window in mWindows)
                 window.Close();
+            mAlive = false;
             if (Closed != null)
                 Closed(this, null);
         }
@@ -375,7 +400,7 @@ namespace Chimera {
                     try {
                         dump += Environment.NewLine + window.State;
                     } catch (Exception ex) {
-                        dump += "Unable to get stats for coordinator " + window.Name + ". " + ex.Message + Environment.NewLine;
+                        dump += "Unable to get stats for input " + window.Name + ". " + ex.Message + Environment.NewLine;
                         dump += ex.StackTrace;
                     }
             }
@@ -387,7 +412,7 @@ namespace Chimera {
                         try {
                             dump += Environment.NewLine + input.State;
                         } catch (Exception ex) {
-                            dump += "Unable to get stats for coordinator " + input.Name + ". " + ex.Message + Environment.NewLine;
+                            dump += "Unable to get stats for input " + input.Name + ". " + ex.Message + Environment.NewLine;
                             dump += ex.StackTrace;
                         } else
                         dump += Environment.NewLine + "--------" + input.Name + "--------" + Environment.NewLine + "Disabled";
@@ -403,9 +428,9 @@ namespace Chimera {
         /// <summary>
         /// Get the input instance of the specified type. Throws an ArgumentException if no such input found.
         /// </summary>
-        public T GetInput<T> () where T : IInput {
+        public T GetInput<T> () where T : ISystemInput {
             Type t = typeof(T);
-            IInput ret = mInputs.FirstOrDefault(input => input.GetType() == t);
+            ISystemInput ret = mInputs.FirstOrDefault(input => input.GetType() == t);
             if (ret == null)
                 throw new ArgumentException("Unable to get input. No input of the specified type (" + t.FullName + ") found.");
             return (T)ret;

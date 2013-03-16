@@ -231,10 +231,10 @@ namespace Chimera.Util {
         /// <param name="mPitch">The mPitch value for this VirtualRotationOffset to start with.</param>
         /// <param name="mYaw">The mYaw value for this VirtualRotationOffset to start with.</param>
         /// <param name="readonlyLock">Initialise the rotation with a lock object. The only way to update this rotation will be to use an Update method and pass in the same lock object.</param>
-        public Rotation(object readonlyLock, float pitch, float yaw)
+        public Rotation(object readonlyLock, double pitch, double yaw)
             : this(readonlyLock) {
-            Pitch = pitch;
-            Yaw = yaw;
+
+            Set(pitch, yaw);
         }
 
         private Quaternion CalculateRotation() {

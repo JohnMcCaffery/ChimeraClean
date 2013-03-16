@@ -10,8 +10,8 @@ using Chimera.Kinect.GUI;
 using C = NuiLibDotNet.Condition;
 
 namespace Chimera.Kinect {
-    public class KinectInput : IInput {
-        private readonly List<WindowInput> mWindowInputs = new List<WindowInput>();
+    public class KinectInput : ISystemInput {
+        private readonly List<PointCursor> mWindowInputs = new List<PointCursor>();
 
         private Coordinator mCoordinator;
         private bool mEnabled;
@@ -34,13 +34,13 @@ namespace Chimera.Kinect {
         /// </summary>
         /// <param name="window">The name of the window to get the input for.</param>
         /// <returns>The WindowInput object which is calculating whether the user is pointing at the specified window.</returns>
-        public WindowInput this[string window] {
+        public PointCursor this[string window] {
             get { return mWindowInputs.FirstOrDefault(i => i.Window.Name.Equals(window)); }
         }
         /// <summary>
         /// All the window inputs this input associates with the windows the system renders to.
         /// </summary>
-        public WindowInput[] WindowInputs {
+        public PointCursor[] WindowInputs {
             get { return mWindowInputs.ToArray(); }
         }
 
@@ -97,71 +97,12 @@ namespace Chimera.Kinect {
 
 
 
-                //Get the primary vectors.
-                Vector shoulderR = Nui.joint(Nui.Shoulder_Right);
-                Vector shoulderL = Nui.joint(Nui.Shoulder_Left);
-                Vector elbowR = Nui.joint(Nui.Elbow_Right);
-                Vector elbowL = Nui.joint(Nui.Elbow_Left);
-                Vector wristR = Nui.joint(Nui.Wrist_Right);
-                Vector wristL = Nui.joint(Nui.Wrist_Left);
-                Vector handR = Nui.joint(Nui.Hand_Right);
-                Vector handL = Nui.joint(Nui.Hand_Left);
-                Vector hipC = Nui.joint(Nui.Hip_Centre);
-                Vector head = Nui.joint(Nui.Head);
-                //Condition guard = closeGuard();
-
-                Vector armR = handR - shoulderR;
-                Vector armL = handL - shoulderL;
-
-                //----------- Walk----------- 
-                //Scalar walkThreshold = Nui.tracker("WalkStart", 40, .65f / 40f, 0f, 20);
-                Scalar walkThreshold = Scalar.Create(.65f);
-                //Left and right
-                Scalar walkDiffR = Nui.z(armR);
-                Scalar walkDiffL = Nui.z(armL);
-                //Active
-                Condition walkActiveR = C.Or(C.And(Nui.abs(walkDiffR) > walkThreshold,  walkDiffR < 0f), (walkDiffR > walkThreshold / 5f));
-                Condition walkActiveL = C.Or(C.And(Nui.abs(walkDiffL) > walkThreshold,  walkDiffL < 0f), (walkDiffL > walkThreshold / 5f));
-                mWalkActive = C.Or(walkActiveR, walkActiveL);
-                //Direction
-                mForward = C.Or(C.And(walkActiveR,  walkDiffR < 0f), C.And(walkActiveL,  walkDiffL < 0f));
-
-                //----------- Fly----------- 
-                //Scalar flyThreshold = .2f - Nui.tracker("FlyStart", 40, .2f / 40f, 0f, 20);
-                //Scalar flyMax = Nui.tracker("FlyMax", 40, .2f / 40f, .2f, 20);
-                Scalar flyThreshold = Scalar.Create(0f);
-                Scalar flyMax = Scalar.Create(.2f);
-                Scalar flyAngleR = Nui.constrain(Nui.dot(Vector.Create(0f, 1f, 0f), armR), flyThreshold, flyMax, 0f, true);
-                Scalar flyAngleL = Nui.constrain(Nui.dot(Vector.Create(0f, 1f, 0f), armL), flyThreshold, flyMax, 0f, true);
-                Condition flyActiveR = C.And(flyAngleR != 0f,  Nui.magnitude(armR) - Nui.magnitude(Nui.limit(armR, true, true, false)) < .1f);
-                Condition flyActiveL = C.And(flyAngleL != 0f,  Nui.magnitude(armL) - Nui.magnitude(Nui.limit(armL, true, true, false)) < .1f);
-                mFlyActive = C.And(C.Or(flyActiveR, flyActiveL),  C.And(Nui.z(armR) < 0f,  Nui.z(armR) < 0f));
-                mFlyUp = C.Or(C.And(flyActiveR,  flyAngleR > 0f), C.And(flyActiveL,  flyAngleL > 0f));
-                //mFlyActive = flyActiveR;
-                //mFlyUp = (flyActiveR,  flyAngleR > 0f);
-
-                //----------- Yaw----------- 
-                //Scalar yawD = .1f - Nui.tracker("YawStart", 40, .1f / 40f, 0f, 20);
-                //Scalar yawSpeed = 10f - Nui.tracker("YawSpeed", 40, 15f / 40f, 0f, 20);
-                Scalar yawD = Scalar.Create(0f);
-                Scalar yawSpeed = Scalar.Create(0f);
-                Vector yawCore = Nui.limit(head - hipC, true, true, false);
-                // Yaw is how far the user is leaning horizontally. This is calculated the angle between vertical and the vector between the hip centre and the head.
-                Scalar yawLean = Nui.dot(Nui.normalize(yawCore), Vector.Create(1f, 0f, 0f));
-                // Constrain the value, deadzone is provided by a slider.
-                mYaw = Nui.constrain(yawLean, yawD, .2f, .3f, true) / yawSpeed;
-                mYawActive = mYaw != 0f;
-
-                mMoveActive = C.Or(C.Or(mWalkActive, mFlyActive), mYawActive);
-
-
-
                 if (VectorsAssigned != null)
                     VectorsAssigned(mPointStart, mPointDir);
             }
         }
 
-        #region IInput Members
+        #region ISystemInput Members
 
         public UserControl ControlPanel {
             get {
@@ -200,7 +141,7 @@ namespace Chimera.Kinect {
             }
         }
 
-        public string[] ConfigSwitches {
+        public ConfigBase Config {
             get { throw new NotImplementedException(); }
         }
 
@@ -215,8 +156,9 @@ namespace Chimera.Kinect {
         public void Init(Coordinator coordinator) {
             mCoordinator = coordinator;
 
-            foreach(var window in mCoordinator.Windows)
-                mWindowInputs.Add(new WindowInput(this, window));
+            foreach (var window in mCoordinator.Windows) {
+                mCoordinator_WindowAdded(window, null);
+            }
 
             mCoordinator.WindowAdded += new Action<Window,EventArgs>(mCoordinator_WindowAdded);
         }
@@ -232,7 +174,8 @@ namespace Chimera.Kinect {
         #endregion
 
         private void mCoordinator_WindowAdded(Window window, EventArgs args) {
-            WindowInput input = new WindowInput(this, window);
+            PointCursor input = new PointCursor();
+            input.Init(window, mKinectPosition, mKinectOrientation);
             mWindowInputs.Add(input);
             if (mPanel != null)
                 mPanel.AddWindow(input.Panel, window.Name);

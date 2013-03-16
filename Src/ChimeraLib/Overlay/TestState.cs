@@ -62,7 +62,7 @@ namespace Chimera.Overlay {
 
         public void DrawStatic(Graphics graphics, Rectangle clipRectangle, Window window) {
             //Bitmap bg = new Bitmap("D:\\Pictures\\My Photos\\g.jpg");
-            //bg = new Bitmap(bg, window.Monitor.Bounds.Width, window.Monitor.Bounds.Height);
+            //bg = new Bitmap(bg, window.Monitor.PhysicalBounds.Width, window.Monitor.PhysicalBounds.Height);
             //graphics.DrawImage(bg, Point.Empty);
         }
 

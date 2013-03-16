@@ -10,7 +10,7 @@ using System.Windows.Forms;
 namespace Chimera.GUI.Forms {
     public partial class OverlayWindow : Form {
         /// <summary>
-        /// The coordinator this overlay covers.
+        /// The input this overlay covers.
         /// </summary>
         private Window mWindow;
         /// <summary>
@@ -58,16 +58,16 @@ namespace Chimera.GUI.Forms {
         }
 
         /// <summary>
-        /// Redraw the coordinator.
+        /// Redraw the input.
         /// </summary>
         public void Redraw() {
             Invoke(new Action(() => drawPanel.Invalidate()));
         }
 
         /// <summary>
-        /// Link this form with a logical coordinator.
+        /// Link this form with a logical input.
         /// </summary>
-        /// <param name="coordinator">The coordinator to link this form with.</param>
+        /// <param name="input">The input to link this form with.</param>
         public void Init(Window window) {
             mWindow = window;
             mWindow.MonitorChanged += new Action<Window,Screen>(mWindow_MonitorChanged);
@@ -93,10 +93,10 @@ namespace Chimera.GUI.Forms {
             if (Bounds.Contains(Cursor.Position) || mMouseOnScreen) {
                 mMouseOnScreen = true;
                 if (mLastMouse.X != Cursor.Position.X || mLastMouse.Y != Cursor.Position.Y) {
-                    mWindow.UpdateCursorPx(Cursor.Position.X - Bounds.Left, Cursor.Position.Y - Bounds.Top);
+                    mWindow.UpdateCursor(Cursor.Position.X - Bounds.Left, Cursor.Position.Y - Bounds.Top);
                     mLastMouse = Cursor.Position;
                 } else {
-                    mWindow.UpdateCursorPx(mLastMouse.X - Bounds.Left + mJitter, Cursor.Position.Y - Bounds.Top);
+                    mWindow.UpdateCursor(mLastMouse.X - Bounds.Left + mJitter, Cursor.Position.Y - Bounds.Top);
                     mJitter *= -1;
                 }
             } else

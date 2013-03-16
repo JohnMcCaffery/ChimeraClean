@@ -12,11 +12,11 @@ using Chimera.GUI.Forms;
 namespace Chimera {
     public class Window {
         /// <summary>
-        /// The system which this coordinator is registered with.
+        /// The system which this input is registered with.
         /// </summary>
         private Coordinator mCoordinator;
         /// <summary>
-        /// Output object used to actually render the view 'through' the coordinator. Can be null.
+        /// Output object used to actually render the view 'through' the input. Can be null.
         /// </summary>
         private IOutput mOutput;
         /// <summary>
@@ -32,19 +32,19 @@ namespace Chimera {
         /// </summary>
         private double mHeight;
         /// <summary>
-        /// The unique name by which the coordinator is known.
+        /// The unique name by which the input is known.
         /// </summary>
         private string mName;
         /// <summary>
-        /// The matrix which will project objects in virtual space onto the flat coordinator.
+        /// The matrix which will project objects in virtual space onto the flat input.
         /// </summary>
         private Matrix4 mProjectionMatrix;
         /// <summary>
-        /// The orientation of the coordinator in real space.
+        /// The orientation of the input in real space.
         /// </summary>
         private Rotation mOrientation = Rotation.Zero;
         /// <summary>
-        /// The position of the coordinator in real space, in mm.
+        /// The position of the input in real space, in mm.
         /// </summary>
         private Vector3 mTopLeft;
         /// <summary>
@@ -52,7 +52,7 @@ namespace Chimera {
         /// </summary>
         private double mWidth;
         /// <summary>
-        /// The monitor this coordinator should display on.
+        /// The monitor this input should display on.
         /// </summary>
         private Screen mMonitor;
         /// <summary>
@@ -77,17 +77,17 @@ namespace Chimera {
         private Color mTransparentColour = Color.Purple;
 
         /// <summary>
-        /// Triggered whenever the position of this coordinator changes.
+        /// Triggered whenever the position of this input changes.
         /// </summary>
         public event Action<Window, EventArgs> Changed;
 
         /// <summary>
-        /// Triggered whenever the position of the cursor on this coordinator changes.
+        /// Triggered whenever the position of the cursor on this input changes.
         /// </summary>
         public event Action<Window, EventArgs> CursorMoved;
 
         /// <summary>
-        /// Triggered whenever the monitor that the coordinator is to display on changes.
+        /// Triggered whenever the monitor that the input is to display on changes.
         /// </summary>
         public event Action<Window, Screen> MonitorChanged;
 
@@ -102,10 +102,10 @@ namespace Chimera {
         public event EventHandler OverlayClosed;
 
         /// <summary>
-        /// Create a coordinator. It is necessary to specify a unique name for the coordinator.
+        /// Create a input. It is necessary to specify a unique name for the input.
         /// </summary>
-        /// <param name="name">The name this coordinator is known by within the system.</param>
-        /// <param name="overlayAreas">The overlay areas mapped to this coordinator.</param>
+        /// <param name="name">The name this input is known by within the system.</param>
+        /// <param name="overlayAreas">The overlay areas mapped to this input.</param>
         public Window(string name, params ISelectable[] overlayAreas) {
             mName = name;
 
@@ -127,17 +127,17 @@ namespace Chimera {
         }
 
         /// <summary>
-        /// Create a coordinator. It is necessary to specify a unique name for the coordinator.
+        /// Create a input. It is necessary to specify a unique name for the input.
         /// </summary>
-        /// <param name="name">The name this coordinator is known by within the system.</param>
-        /// <param name="overlayAreas">The overlay areas mapped to this coordinator.</param>
+        /// <param name="name">The name this input is known by within the system.</param>
+        /// <param name="overlayAreas">The overlay areas mapped to this input.</param>
         public Window(string name, IOutput output, params ISelectable[] overlayAreas)
             : this(name, overlayAreas) {
             mOutput = output;
         }
 
         /// <summary>
-        /// The system which this coordinator is registered with.
+        /// The system which this input is registered with.
         /// </summary>
         public Coordinator Coordinator {
             get { return mCoordinator ; }
@@ -145,7 +145,7 @@ namespace Chimera {
         }
 
         /// <summary>
-        /// Output object used to actually render the view 'through' the coordinator. Can be null.
+        /// Output object used to actually render the view 'through' the input. Can be null.
         /// </summary>
         public IOutput Output {
             get { return mOutput ; }
@@ -174,7 +174,7 @@ namespace Chimera {
         }
 
         /// <summary>
-        /// The position of the coordinator in real space, in mm.
+        /// The position of the input in real space, in mm.
         /// </summary>
         public Vector3 TopLeft {
             get { return mTopLeft ; }
@@ -186,7 +186,7 @@ namespace Chimera {
         }
 
         /// <summary>
-        /// The orientation of the coordinator in real space.
+        /// The orientation of the input in real space.
         /// </summary>
         public Rotation Orientation {
             get { return mOrientation ; }
@@ -225,7 +225,7 @@ namespace Chimera {
         }
 
         /// <summary>
-        /// The matrix which will project objects in virtual space onto the flat coordinator.
+        /// The matrix which will project objects in virtual space onto the flat input.
         /// </summary>
         public Matrix4 ProjectionMatrix {
             get { return mProjectionMatrix ; }
@@ -233,7 +233,7 @@ namespace Chimera {
         }
 
         /// <summary>
-        /// The unique name by which the coordinator is known.
+        /// The unique name by which the input is known.
         /// </summary>
         public string Name {
             get { return mName ; }
@@ -256,7 +256,7 @@ namespace Chimera {
                     try {
                         dump += mOutput.State;
                     } catch (Exception ex) {
-                        dump += "Unable to get stats for coordinator " + mOutput.Type + ". " + ex.Message + Environment.NewLine;
+                        dump += "Unable to get stats for input " + mOutput.Type + ". " + ex.Message + Environment.NewLine;
                         dump += ex.StackTrace;
                     }
 
@@ -265,7 +265,7 @@ namespace Chimera {
         }
 
         /// <summary>
-        /// The monitor which this coordinator should display on.
+        /// The monitor which this input should display on.
         /// </summary>
         public Screen Monitor {
             get { return mMonitor; }
@@ -329,10 +329,18 @@ namespace Chimera {
             get { return mTransparentColour; }
         }
 
+        public OverlayController OverlayController {
+            get {
+                throw new System.NotImplementedException();
+            }
+            set {
+            }
+        }
+
         /// <summary>
-        /// Initialise the coordinator, giving it a reference to the coordinator it is linked to.
+        /// Initialise the input, giving it a reference to the input it is linked to.
         /// </summary>
-        /// <param name="coordinator">The coordinator object the input can control.</param>
+        /// <param name="input">The input object the input can control.</param>
         public void Init(Coordinator coordinator) {
             mCoordinator = coordinator;
             if (mOutput != null)
@@ -344,7 +352,7 @@ namespace Chimera {
         /// </summary>
         /// <param name="x">The X coordinate of the cursor.</param>
         /// <param name="y">The Y coordinate of the cursor.</param>
-        public void UpdateCursorPx(double x, double y) {
+        public void UpdateCursor(double x, double y) {
             mCursorX = x;
             mCursorY = y;
             RedrawOverlay();
@@ -353,16 +361,7 @@ namespace Chimera {
         }
 
         /// <summary>
-        /// Set the position of the cursor on the window, specifying the position of the cursor on the physical screen in cm.
-        /// </summary>
-        /// <param name="x">The X coordinate of the cursor.</param>
-        /// <param name="y">The Y coordinate of the cursor.</param>
-        public void UpdateCursorCm(double x, double y) {
-            UpdateCursorPx((x / mWidth) * mMonitor.Bounds.Width, (y / mHeight) * mMonitor.Bounds.Height);
-        }
-
-        /// <summary>
-        /// Called when the coordinator is to be disposed of.
+        /// Called when the input is to be disposed of.
         /// </summary>
         public void Close() {
             if (mOutput != null)
@@ -380,7 +379,7 @@ namespace Chimera {
         }
 
         /// <summary>
-        /// Force the overlay coordinator to redraw, if it is visible.
+        /// Force the overlay input to redraw, if it is visible.
         /// </summary>
         public void RedrawOverlay() {
             if (mOverlayWindow != null)

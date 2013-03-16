@@ -184,9 +184,9 @@
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.eyePositionPanel.Text = "Eye Position";
             this.eyePositionPanel.Location = new System.Drawing.Point(3, 195);
-            this.eyePositionPanel.Max = 5000D;
+            this.eyePositionPanel.Max = 5000f;
             this.eyePositionPanel.MaxV = ((OpenMetaverse.Vector3)(resources.GetObject("eyePositionPanel.MaxV")));
-            this.eyePositionPanel.Min = -5000D;
+            this.eyePositionPanel.Min = -5000f;
             this.eyePositionPanel.MinimumSize = new System.Drawing.Size(103, 95);
             this.eyePositionPanel.MinV = ((OpenMetaverse.Vector3)(resources.GetObject("eyePositionPanel.MinV")));
             this.eyePositionPanel.Name = "eyePositionPanel";
@@ -225,9 +225,9 @@
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.virtualPositionPanel.Text = "Position";
             this.virtualPositionPanel.Location = new System.Drawing.Point(3, 12);
-            this.virtualPositionPanel.Max = 1024D;
+            this.virtualPositionPanel.Max = 1024f;
             this.virtualPositionPanel.MaxV = ((OpenMetaverse.Vector3)(resources.GetObject("virtualPositionPanel.MaxV")));
-            this.virtualPositionPanel.Min = -1024D;
+            this.virtualPositionPanel.Min = -1024f;
             this.virtualPositionPanel.MinimumSize = new System.Drawing.Size(103, 95);
             this.virtualPositionPanel.MinV = ((OpenMetaverse.Vector3)(resources.GetObject("virtualPositionPanel.MinV")));
             this.virtualPositionPanel.Name = "virtualPositionPanel";

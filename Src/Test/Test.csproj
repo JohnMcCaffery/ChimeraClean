@@ -52,6 +52,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="KinectMovementForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="KinectMovementForm.Designer.cs">
+      <DependentUpon>KinectMovementForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="KinectCursorForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="KinectCursorForm.Designer.cs">
+      <DependentUpon>KinectCursorForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestForm.cs">
@@ -72,6 +84,12 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="KinectMovementForm.resx">
+      <DependentUpon>KinectMovementForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="KinectCursorForm.resx">
+      <DependentUpon>KinectCursorForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="TestForm.resx">
       <DependentUpon>TestForm.cs</DependentUpon>
     </EmbeddedResource>

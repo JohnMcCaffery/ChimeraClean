@@ -9,7 +9,7 @@ namespace Chimera {
     public interface IOutput {
 
         /// <summary>
-        /// The coordinator which this output is rendering the view through.
+        /// The input which this output is rendering the view through.
         /// </summary>
         Window Window { get; }
 
@@ -51,9 +51,9 @@ namespace Chimera {
         Process Process { get; }
 
         /// <summary>
-        /// Initialise the input, giving it a reference to the coordinator it is to render.
+        /// Initialise the input, giving it a reference to the input it is to render.
         /// </summary>
-        /// <param name="coordinator">The coordinator which this output is supposed to render the view through.</param>
+        /// <param name="input">The input which this output is supposed to render the view through.</param>
         void Init(Window window);
 
         /// <summary>

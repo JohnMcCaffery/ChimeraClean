@@ -7,7 +7,7 @@ using OpenMetaverse;
 using Chimera.Util;
 
 namespace Chimera.Inputs {
-    public class KBMouseInput : Chimera.IInput {
+    public class KBMouseInput : Chimera.ISystemInput {
         internal int X, Y, CurrentX, CurrentY;
         internal bool MouseDown;
         private Rotation mRotation = Rotation.Zero, mOldRotation;
@@ -43,7 +43,7 @@ namespace Chimera.Inputs {
         /// </summary>
         private bool mEnabled = true;
         /// <summary>
-        /// The coordinator which this input controls.
+        /// The input which this input controls.
         /// </summary>
         private Coordinator mCoordinator;
 
@@ -73,7 +73,7 @@ namespace Chimera.Inputs {
             }
         }
 
-        #region IInput Members
+        #region ISystemInput Members
 
         public UserControl ControlPanel {
             get {
@@ -92,7 +92,7 @@ namespace Chimera.Inputs {
             set { mEnabled = value; }
         }
 
-        public string[] ConfigSwitches {
+        public ConfigBase Config {
             get { throw new NotImplementedException(); }
         }
 
@@ -114,7 +114,7 @@ namespace Chimera.Inputs {
         }
 
         /// <summary>
-        /// The system which this coordinator is registered with.
+        /// The system which this input is registered with.
         /// </summary>
         public Coordinator Coordinator {
             get { return mCoordinator; }

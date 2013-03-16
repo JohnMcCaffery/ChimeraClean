@@ -56,7 +56,7 @@ namespace UtilLib {
             }
 
             /// <summary>
-            /// The coordinator object that represents where the slave is in real space.
+            /// The input object that represents where the slave is in real space.
             /// </summary>
             public Window Window {
                 get { return window; }

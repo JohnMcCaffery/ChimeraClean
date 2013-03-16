@@ -82,9 +82,9 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pointDirPanel.Text = "Point Direction";
             this.pointDirPanel.Location = new System.Drawing.Point(0, 332);
-            this.pointDirPanel.Max = 1024D;
+            this.pointDirPanel.Max = 1024f;
             this.pointDirPanel.MaxV = ((OpenMetaverse.Vector3)(resources.GetObject("pointDirPanel.MaxV")));
-            this.pointDirPanel.Min = -1024D;
+            this.pointDirPanel.Min = -1024f;
             this.pointDirPanel.MinimumSize = new System.Drawing.Size(103, 95);
             this.pointDirPanel.MinV = ((OpenMetaverse.Vector3)(resources.GetObject("pointDirPanel.MinV")));
             this.pointDirPanel.Name = "pointDirPanel";
@@ -122,9 +122,9 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.positionPanel.Text = "Position (cm)";
             this.positionPanel.Location = new System.Drawing.Point(0, 29);
-            this.positionPanel.Max = 1024D;
+            this.positionPanel.Max = 1024f;
             this.positionPanel.MaxV = ((OpenMetaverse.Vector3)(resources.GetObject("positionPanel.MaxV")));
-            this.positionPanel.Min = -1024D;
+            this.positionPanel.Min = -1024f;
             this.positionPanel.MinimumSize = new System.Drawing.Size(103, 95);
             this.positionPanel.MinV = ((OpenMetaverse.Vector3)(resources.GetObject("positionPanel.MinV")));
             this.positionPanel.Name = "positionPanel";
@@ -142,9 +142,9 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pointStartPanel.Text = "Point Start";
             this.pointStartPanel.Location = new System.Drawing.Point(0, 231);
-            this.pointStartPanel.Max = 1024D;
+            this.pointStartPanel.Max = 1024f;
             this.pointStartPanel.MaxV = ((OpenMetaverse.Vector3)(resources.GetObject("pointStartPanel.MaxV")));
-            this.pointStartPanel.Min = -1024D;
+            this.pointStartPanel.Min = -1024f;
             this.pointStartPanel.MinimumSize = new System.Drawing.Size(103, 95);
             this.pointStartPanel.MinV = ((OpenMetaverse.Vector3)(resources.GetObject("pointStartPanel.MinV")));
             this.pointStartPanel.Name = "pointStartPanel";

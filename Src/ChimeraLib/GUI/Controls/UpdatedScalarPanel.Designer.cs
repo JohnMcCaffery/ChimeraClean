@@ -58,7 +58,7 @@
             this.Controls.Add(this.value);
             this.Controls.Add(this.valueSlider);
             this.Name = "UpdatedScalarPanel";
-            this.Changed += new System.Action<float>(this.UpdatedScalarPanel_Changed);
+            this.ValueChanged += new System.Action<float>(this.UpdatedScalarPanel_ValueChanged);
             this.Controls.SetChildIndex(this.valueSlider, 0);
             this.Controls.SetChildIndex(this.value, 0);
             ((System.ComponentModel.ISupportInitialize)(this.value)).EndInit();

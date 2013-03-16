@@ -12,15 +12,19 @@ namespace Chimera.Kinect {
         public double Yaw;
         public bool Autostart;
 
-        protected override void InitConfig() {
-            AddKey(true, "KinectPosition");
-            AddKey(true, "KinectPitch");
-            AddKey(true, "KinectYaw");
+        public override string Group {
+            get { return "Kinect"; }
+        }
 
-            Position = GetV(true, "KinectPosition", Vector3.Zero);
-            Pitch = Get(true, "KinectPitch", 0.0);
-            Yaw = Get(true, "KinectYaw", 0.0);
-            Autostart = Get(true, "KinectAutostart", false);
+        protected override void InitConfig() {
+            AddArgvKey(true, "KinectPosition");
+            AddArgvKey(true, "KinectPitch");
+            AddArgvKey(true, "KinectYaw");
+
+            Position = GetV(true, "KinectPosition", Vector3.Zero, "The position of the kinect in real world coordinates (mm).");
+            Pitch = Get(true, "KinectPitch", 0.0, "The pitch of where the kinect is looking in real space.");
+            Yaw = Get(true, "KinectYaw", 0.0, "the yaw of where the kinect is looking in real space.");
+            Autostart = Get(true, "KinectAutostart", false, "Whether to start the kinect when the system starts.");
         }
     }
 }

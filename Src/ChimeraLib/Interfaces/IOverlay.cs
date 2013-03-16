@@ -31,9 +31,9 @@ namespace Chimera {
         void Draw(Graphics graphics, Rectangle clipRectangle, Window window);
 
         /// <summary>
-        /// Initialise this overlay with a reference to the coordinator it is part of.
+        /// Initialise this overlay with a reference to the input it is part of.
         /// </summary>
-        /// <param name="coordinator">The coordinator this overlay is part of.</param>
+        /// <param name="input">The input this overlay is part of.</param>
         void Init(Coordinator coordinator);
 
         /// <summary>

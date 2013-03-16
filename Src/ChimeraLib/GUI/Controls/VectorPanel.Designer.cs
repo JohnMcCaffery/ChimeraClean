@@ -43,37 +43,14 @@ namespace ProxyTestGUI {
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent() {
-            this.xSlider = new System.Windows.Forms.TrackBar();
             this.nameLabel = new System.Windows.Forms.Label();
-            this.xValue = new System.Windows.Forms.NumericUpDown();
-            this.yValue = new System.Windows.Forms.NumericUpDown();
-            this.zValue = new System.Windows.Forms.NumericUpDown();
-            this.ySlider = new System.Windows.Forms.TrackBar();
-            this.zSlider = new System.Windows.Forms.TrackBar();
             this.xLabel = new System.Windows.Forms.Label();
             this.yLabel = new System.Windows.Forms.Label();
             this.zLabel = new System.Windows.Forms.Label();
-            ((System.ComponentModel.ISupportInitialize)(this.xSlider)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.xValue)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.yValue)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.zValue)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ySlider)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.zSlider)).BeginInit();
+            this.xPanel = new KinectLib.GUI.ScalarPanel();
+            this.yPanel = new KinectLib.GUI.ScalarPanel();
+            this.zPanel = new KinectLib.GUI.ScalarPanel();
             this.SuspendLayout();
-            // 
-            // xSlider
-            // 
-            this.xSlider.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.xSlider.Location = new System.Drawing.Point(83, 16);
-            this.xSlider.Maximum = 512;
-            this.xSlider.Minimum = -512;
-            this.xSlider.Name = "xSlider";
-            this.xSlider.Size = new System.Drawing.Size(262, 42);
-            this.xSlider.TabIndex = 1;
-            this.xSlider.TickFrequency = 80;
-            this.xSlider.TickStyle = System.Windows.Forms.TickStyle.None;
-            this.xSlider.Scroll += new System.EventHandler(this.xSlider_Scroll);
             // 
             // nameLabel
             // 
@@ -83,104 +60,6 @@ namespace ProxyTestGUI {
             this.nameLabel.Size = new System.Drawing.Size(35, 13);
             this.nameLabel.TabIndex = 3;
             this.nameLabel.Text = "Name";
-            // 
-            // xValue
-            // 
-            this.xValue.DecimalPlaces = 2;
-            this.xValue.Increment = new decimal(new int[] {
-            1,
-            0,
-            0,
-            65536});
-            this.xValue.Location = new System.Drawing.Point(23, 16);
-            this.xValue.Maximum = new decimal(new int[] {
-            1024,
-            0,
-            0,
-            0});
-            this.xValue.Minimum = new decimal(new int[] {
-            1024,
-            0,
-            0,
-            -2147483648});
-            this.xValue.Name = "xValue";
-            this.xValue.Size = new System.Drawing.Size(63, 20);
-            this.xValue.TabIndex = 6;
-            this.xValue.ValueChanged += new System.EventHandler(this.xValue_ValueChanged);
-            // 
-            // yValue
-            // 
-            this.yValue.DecimalPlaces = 2;
-            this.yValue.Increment = new decimal(new int[] {
-            1,
-            0,
-            0,
-            65536});
-            this.yValue.Location = new System.Drawing.Point(23, 42);
-            this.yValue.Maximum = new decimal(new int[] {
-            1024,
-            0,
-            0,
-            0});
-            this.yValue.Minimum = new decimal(new int[] {
-            1024,
-            0,
-            0,
-            -2147483648});
-            this.yValue.Name = "yValue";
-            this.yValue.Size = new System.Drawing.Size(63, 20);
-            this.yValue.TabIndex = 7;
-            this.yValue.ValueChanged += new System.EventHandler(this.yValue_ValueChanged);
-            // 
-            // zValue
-            // 
-            this.zValue.DecimalPlaces = 2;
-            this.zValue.Increment = new decimal(new int[] {
-            1,
-            0,
-            0,
-            65536});
-            this.zValue.Location = new System.Drawing.Point(23, 68);
-            this.zValue.Maximum = new decimal(new int[] {
-            1024,
-            0,
-            0,
-            0});
-            this.zValue.Minimum = new decimal(new int[] {
-            1024,
-            0,
-            0,
-            -2147483648});
-            this.zValue.Name = "zValue";
-            this.zValue.Size = new System.Drawing.Size(63, 20);
-            this.zValue.TabIndex = 8;
-            this.zValue.ValueChanged += new System.EventHandler(this.zValue_ValueChanged);
-            // 
-            // ySlider
-            // 
-            this.ySlider.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.ySlider.Location = new System.Drawing.Point(83, 42);
-            this.ySlider.Maximum = 25500;
-            this.ySlider.Name = "ySlider";
-            this.ySlider.Size = new System.Drawing.Size(262, 42);
-            this.ySlider.TabIndex = 9;
-            this.ySlider.TickFrequency = 80;
-            this.ySlider.TickStyle = System.Windows.Forms.TickStyle.None;
-            this.ySlider.Scroll += new System.EventHandler(this.ySlider_Scroll);
-            // 
-            // zSlider
-            // 
-            this.zSlider.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.zSlider.Location = new System.Drawing.Point(83, 68);
-            this.zSlider.Maximum = 25500;
-            this.zSlider.Name = "zSlider";
-            this.zSlider.Size = new System.Drawing.Size(262, 42);
-            this.zSlider.TabIndex = 10;
-            this.zSlider.TickFrequency = 80;
-            this.zSlider.TickStyle = System.Windows.Forms.TickStyle.None;
-            this.zSlider.Scroll += new System.EventHandler(this.zSlider_Scroll);
             // 
             // xLabel
             // 
@@ -209,30 +88,63 @@ namespace ProxyTestGUI {
             this.zLabel.TabIndex = 13;
             this.zLabel.Text = "Z";
             // 
+            // xPanel
+            // 
+            this.xPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.xPanel.Location = new System.Drawing.Point(19, 15);
+            this.xPanel.Max = 10F;
+            this.xPanel.Min = -10F;
+            this.xPanel.MinimumSize = new System.Drawing.Size(95, 20);
+            this.xPanel.Name = "xPanel";
+            this.xPanel.Size = new System.Drawing.Size(326, 20);
+            this.xPanel.TabIndex = 14;
+            this.xPanel.Value = 0F;
+            this.xPanel.ValueChanged += new System.Action<float>(this.panel_Changed);
+            // 
+            // yPanel
+            // 
+            this.yPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.yPanel.Location = new System.Drawing.Point(19, 41);
+            this.yPanel.Max = 10F;
+            this.yPanel.Min = -10F;
+            this.yPanel.MinimumSize = new System.Drawing.Size(95, 20);
+            this.yPanel.Name = "yPanel";
+            this.yPanel.Size = new System.Drawing.Size(326, 20);
+            this.yPanel.TabIndex = 15;
+            this.yPanel.Value = 0F;
+            this.yPanel.ValueChanged += new System.Action<float>(this.panel_Changed);
+            // 
+            // zPanel
+            // 
+            this.zPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.zPanel.Location = new System.Drawing.Point(19, 67);
+            this.zPanel.Max = 10F;
+            this.zPanel.Min = -10F;
+            this.zPanel.MinimumSize = new System.Drawing.Size(95, 20);
+            this.zPanel.Name = "zPanel";
+            this.zPanel.Size = new System.Drawing.Size(326, 20);
+            this.zPanel.TabIndex = 16;
+            this.zPanel.Value = 0F;
+            this.zPanel.ValueChanged += new System.Action<float>(this.panel_Changed);
+            // 
             // VectorPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.zValue);
-            this.Controls.Add(this.yValue);
-            this.Controls.Add(this.xValue);
+            this.Controls.Add(this.zPanel);
+            this.Controls.Add(this.yPanel);
+            this.Controls.Add(this.xPanel);
             this.Controls.Add(this.zLabel);
             this.Controls.Add(this.yLabel);
             this.Controls.Add(this.xLabel);
-            this.Controls.Add(this.zSlider);
-            this.Controls.Add(this.ySlider);
             this.Controls.Add(this.nameLabel);
-            this.Controls.Add(this.xSlider);
             this.MinimumSize = new System.Drawing.Size(103, 95);
             this.Name = "VectorPanel";
             this.Size = new System.Drawing.Size(345, 95);
             this.EnabledChanged += new System.EventHandler(this.VectorPanel_EnabledChanged);
-            ((System.ComponentModel.ISupportInitialize)(this.xSlider)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.xValue)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.yValue)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.zValue)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ySlider)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.zSlider)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -240,15 +152,12 @@ namespace ProxyTestGUI {
 
         #endregion
 
-        private System.Windows.Forms.TrackBar xSlider;
         private System.Windows.Forms.Label nameLabel;
-        private System.Windows.Forms.NumericUpDown xValue;
-        private System.Windows.Forms.NumericUpDown yValue;
-        private System.Windows.Forms.NumericUpDown zValue;
-        private System.Windows.Forms.TrackBar ySlider;
-        private System.Windows.Forms.TrackBar zSlider;
         private System.Windows.Forms.Label xLabel;
         private System.Windows.Forms.Label yLabel;
         private System.Windows.Forms.Label zLabel;
+        private KinectLib.GUI.ScalarPanel xPanel;
+        private KinectLib.GUI.ScalarPanel yPanel;
+        private KinectLib.GUI.ScalarPanel zPanel;
     }
 }

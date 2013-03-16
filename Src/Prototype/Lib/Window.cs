@@ -70,7 +70,7 @@ namespace Chimera {
         }
 
         /// <summary>
-        /// Selected whenever any of the properties of the coordinator changes.
+        /// Selected whenever any of the properties of the input changes.
         /// </summary>
         public event EventHandler OnChange;
 

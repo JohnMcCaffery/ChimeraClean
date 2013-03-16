@@ -2,13 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Nini.Config;
 using Chimera.Util;
 using System.IO;
 using OpenMetaverse;
 
 namespace Chimera {
-    public class WindowConfig {
+    public class WindowConfig : ConfigBase {
         public string Monitor;
         public string Name;
         public bool LaunchOverlay;
@@ -20,44 +19,34 @@ namespace Chimera {
         public double Pitch;
         public double Yaw;
 
-        public WindowConfig(params string[] args) {
-            ArgvConfigSource argConfig = Init.InitArgConfig(args);
-            argConfig.AddSwitch("General", "File", "f");
-            argConfig.AddSwitch("General", "Name", "n");
 
-            string file;
-            IConfigSource config = Init.AddFile(argConfig, out file);
-            Name = Init.Get(config.Configs["General"], "Name", "MainWindow");
+        public WindowConfig(params string[] args) : base(args) { }
 
-            InitConfig(file, args);
+        public WindowConfig(string name, string file, string[] args)
+            : base(name, file, args) {
         }
 
-        public WindowConfig(string name, string file, string[] args) {
-            Name = name;
-            InitConfig(file, args);
+        public override string Group {
+            get { return "Window"; }
         }
 
-        private void InitConfig(string file, string[] args) {
-            ArgvConfigSource argConfig = Init.InitArgConfig(args);
-            argConfig.AddSwitch(Name, "Monitor", "m");
-            argConfig.AddSwitch(Name, "LaunchOverlay", "l");
-            argConfig.AddSwitch(Name, "Fullscreen", "f");
-            argConfig.AddSwitch(Name, "MouseControl", "mc");
-            
-            IConfigSource config = Init.AddFile(argConfig, file);
-            IConfig specificConfig = config.Configs[Name];
-            IConfig generalConfig = config.Configs["General"];
+        protected override void InitConfig() {
+            AddCommandLineKey(false, "Monitor", "m");
+            AddCommandLineKey(false, "LaunchOverlay", "l");
+            AddCommandLineKey(false, "Fullscreen", "f");
+            AddCommandLineKey(false, "MouseControl", "mc");
+           
 
-            Monitor = Init.Get(specificConfig, "Monitor", "CrashLog.log");
-            LaunchOverlay = Init.Get(specificConfig, "LaunchOverlay", false);
-            Fullscreen = Init.Get(specificConfig, "Fullscreen", false);
-            MouseControl = Init.Get(specificConfig, "MouseControl", false);
+            Monitor = Get(false, "Monitor", "CrashLog.log", "The monitor on which this window should render.");
+            LaunchOverlay = Get(false, "LaunchOverlay", false, "Whether to launch an overlay for this window at startup.");
+            Fullscreen = Get(false, "Fullscreen", false, "Whether to launch the overlay fullscreen.");
+            MouseControl = Get(false, "MouseControl", false, "Whether moving the mouse over the monitor controls the cursor for this window.");
 
-            TopLeft = Init.GetV(specificConfig, "TopLeft", Vector3.Zero);
-            Yaw = Init.Get(specificConfig, "Yaw", 0.0);
-            Pitch = Init.Get(specificConfig, "Pitch", 0.0);
-            Width = Init.Get(specificConfig, "Width", 0.0);
-            Height = Init.Get(specificConfig, "Height", 0.0);
+            TopLeft = GetV(false, "TopLeft", Vector3.Zero, "The position of the top left corner of the window in real world coordinates (mm).");
+            Yaw = Get(false, "Yaw", 0.0, "The yaw for the direction the monitor faces in the real world.");
+            Pitch = Get(false, "Pitch", 0.0, "The pitch for the direction the monitor faces in the real world.");
+            Width = Get(false, "Width", 0.0, "The width of the window in the real world (mm).");
+            Height = Get(false, "Height", 0.0, "The height of the window in the real world (mm).");
         }
     }
 }

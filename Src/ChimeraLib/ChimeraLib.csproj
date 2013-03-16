@@ -129,7 +129,12 @@
     <Compile Include="GUI\Forms\OverlayWindow.Designer.cs">
       <DependentUpon>OverlayWindow.cs</DependentUpon>
     </Compile>
+    <Compile Include="IInput.cs" />
+    <Compile Include="Inputs\DeltaBasedInput.cs" />
+    <Compile Include="Interfaces\IDeltaInput.cs" />
     <Compile Include="Interfaces\IUpdater.cs" />
+    <Compile Include="ITicker.cs" />
+    <Compile Include="OverlayController.cs" />
     <Compile Include="Overlay\BoxArea.cs" />
     <Compile Include="Overlay\ImageArea.cs" />
     <Compile Include="Inputs\CameraControlForm.cs">
@@ -206,6 +211,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\Controls\UpdatedScalarPanel.resx">
       <DependentUpon>UpdatedScalarPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\Controls\UpdatedVectorPanel.resx">
+      <DependentUpon>UpdatedVectorPanel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\Controls\VectorPanel.resx">
       <DependentUpon>VectorPanel.cs</DependentUpon>
