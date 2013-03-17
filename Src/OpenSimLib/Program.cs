@@ -24,7 +24,8 @@ namespace ChimeraOutput {
             SimpleCursorFactory simpleFactory = new SimpleCursorFactory();
             PointCursorFactory pointFactory = new PointCursorFactory();
 
-            IOutput output = new SetFollowCamPropertiesViewerOutput("Main Window");
+            //IOutput output = new SetFollowCamPropertiesViewerOutput("Main Window");
+            IOutput output = new SetWindowViewerOutput("Main Window");
             ISystemInput kbMouseInput = new KBMouseInput();
             ISystemInput flythrough = new Flythrough();
             ISystemInput mouse = new MouseInput();

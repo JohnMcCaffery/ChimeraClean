@@ -46,7 +46,7 @@ namespace Chimera.GUI.Forms {
         /// <summary>
         /// The help image.
         /// </summary>
-        private Bitmap MainMenuImage = new Bitmap("../Images/CathedralHelp.png");
+        private Bitmap CathedralHelpImage = new Bitmap("../Images/CathedralHelp.png");
 
         /// <summary>
         /// Whether to go full screen.
@@ -73,6 +73,8 @@ namespace Chimera.GUI.Forms {
             Cursor = new Cursor("../Cursors/cursor.cur");
 
             drawPanel.BackColor = transparentColour;
+
+            mGoInWorld = new InvisibleSelection(new NumberSelectionRenderer(), 265f / 1920f, 255f / 1080f, (675f-255f) / 1920, (900f - 255f) / 1080f);
         }
 
         /// <summary>
@@ -86,6 +88,7 @@ namespace Chimera.GUI.Forms {
             StartPosition = FormStartPosition.Manual;
             Location = mController.Window.Monitor.Bounds.Location;
             Size = mController.Window.Monitor.Bounds.Size;
+            mGoInWorld.Init(mController.Window);
         }
 
         public void Foreground() {
@@ -104,9 +107,7 @@ namespace Chimera.GUI.Forms {
         }
 
         private void drawPanel_Paint(object sender, PaintEventArgs e) {
-            using (Pen pen = new Pen(Color.Red, 50f)) {
-                e.Graphics.DrawEllipse(pen, e.ClipRectangle);
-            }
+
         }
     }
 }

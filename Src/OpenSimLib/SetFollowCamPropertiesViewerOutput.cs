@@ -32,8 +32,7 @@ namespace Chimera.OpenSim {
 
         protected override void ProcessEyeUpdate(Coordinator coordinator, EventArgs args) { }
 
-        private SetFollowCamPropertiesPacket MakePacket() {
-            SetFollowCamPropertiesPacket cameraPacket = new SetFollowCamPropertiesPacket();
+        private SetFollowCamPropertiesPacket MakePacket() {            SetFollowCamPropertiesPacket cameraPacket = new SetFollowCamPropertiesPacket();
             cameraPacket.CameraProperty = new SetFollowCamPropertiesPacket.CameraPropertyBlock[22];
             for (int i = 0; i < 22; i++) {
                 cameraPacket.CameraProperty[i] = new SetFollowCamPropertiesPacket.CameraPropertyBlock();
