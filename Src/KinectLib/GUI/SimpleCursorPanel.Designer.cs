@@ -32,6 +32,18 @@
             this.YLable = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
+            this.label11 = new System.Windows.Forms.Label();
+            this.HeightScale = new KinectLib.GUI.UpdatedScalarPanel();
+            this.WidthScale = new KinectLib.GUI.UpdatedScalarPanel();
+            this.RawY = new KinectLib.GUI.UpdatedScalarPanel();
+            this.RawX = new KinectLib.GUI.UpdatedScalarPanel();
+            this.ConstrainedY = new KinectLib.GUI.UpdatedScalarPanel();
+            this.ConstrainedX = new KinectLib.GUI.UpdatedScalarPanel();
             this.Anchor = new KinectLib.GUI.UpdatedVectorPanel();
             this.TopLeftY = new KinectLib.GUI.UpdatedScalarPanel();
             this.TopLeftX = new KinectLib.GUI.UpdatedScalarPanel();
@@ -42,18 +54,7 @@
             this.UpShift = new KinectLib.GUI.UpdatedScalarPanel();
             this.LeftShift = new KinectLib.GUI.UpdatedScalarPanel();
             this.HandR = new KinectLib.GUI.UpdatedVectorPanel();
-            this.label6 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
-            this.ConstrainedY = new KinectLib.GUI.UpdatedScalarPanel();
-            this.ConstrainedX = new KinectLib.GUI.UpdatedScalarPanel();
-            this.label8 = new System.Windows.Forms.Label();
-            this.label9 = new System.Windows.Forms.Label();
-            this.RawY = new KinectLib.GUI.UpdatedScalarPanel();
-            this.RawX = new KinectLib.GUI.UpdatedScalarPanel();
-            this.label10 = new System.Windows.Forms.Label();
-            this.label11 = new System.Windows.Forms.Label();
-            this.HeightScale = new KinectLib.GUI.UpdatedScalarPanel();
-            this.WidthScale = new KinectLib.GUI.UpdatedScalarPanel();
+            this.enabledCheck = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // label1
@@ -129,6 +130,144 @@
             this.label5.Size = new System.Drawing.Size(57, 13);
             this.label5.TabIndex = 15;
             this.label5.Text = "Top Left X";
+            // 
+            // label6
+            // 
+            this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(415, 238);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(73, 13);
+            this.label6.TabIndex = 21;
+            this.label6.Text = "Constrained Y";
+            // 
+            // label7
+            // 
+            this.label7.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(415, 212);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(73, 13);
+            this.label7.TabIndex = 20;
+            this.label7.Text = "Constrained X";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(3, 238);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(39, 13);
+            this.label8.TabIndex = 25;
+            this.label8.Text = "Raw Y";
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(3, 212);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(39, 13);
+            this.label9.TabIndex = 24;
+            this.label9.Text = "Raw X";
+            // 
+            // label10
+            // 
+            this.label10.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(415, 182);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(68, 13);
+            this.label10.TabIndex = 29;
+            this.label10.Text = "Height Scale";
+            // 
+            // label11
+            // 
+            this.label11.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(415, 156);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(65, 13);
+            this.label11.TabIndex = 28;
+            this.label11.Text = "Width Scale";
+            // 
+            // HeightScale
+            // 
+            this.HeightScale.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.HeightScale.Location = new System.Drawing.Point(494, 179);
+            this.HeightScale.Max = 4F;
+            this.HeightScale.Min = 0F;
+            this.HeightScale.MinimumSize = new System.Drawing.Size(95, 20);
+            this.HeightScale.Name = "HeightScale";
+            this.HeightScale.Scalar = null;
+            this.HeightScale.Size = new System.Drawing.Size(249, 20);
+            this.HeightScale.TabIndex = 27;
+            this.HeightScale.Value = 0F;
+            // 
+            // WidthScale
+            // 
+            this.WidthScale.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.WidthScale.Location = new System.Drawing.Point(494, 153);
+            this.WidthScale.Max = 4F;
+            this.WidthScale.Min = 0F;
+            this.WidthScale.MinimumSize = new System.Drawing.Size(95, 20);
+            this.WidthScale.Name = "WidthScale";
+            this.WidthScale.Scalar = null;
+            this.WidthScale.Size = new System.Drawing.Size(249, 20);
+            this.WidthScale.TabIndex = 26;
+            this.WidthScale.Value = 0F;
+            // 
+            // RawY
+            // 
+            this.RawY.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.RawY.Location = new System.Drawing.Point(48, 231);
+            this.RawY.Max = 1F;
+            this.RawY.Min = -1F;
+            this.RawY.MinimumSize = new System.Drawing.Size(95, 20);
+            this.RawY.Name = "RawY";
+            this.RawY.Scalar = null;
+            this.RawY.Size = new System.Drawing.Size(361, 20);
+            this.RawY.TabIndex = 23;
+            this.RawY.Value = 0F;
+            // 
+            // RawX
+            // 
+            this.RawX.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.RawX.Location = new System.Drawing.Point(48, 205);
+            this.RawX.Max = 1F;
+            this.RawX.Min = -1F;
+            this.RawX.MinimumSize = new System.Drawing.Size(95, 20);
+            this.RawX.Name = "RawX";
+            this.RawX.Scalar = null;
+            this.RawX.Size = new System.Drawing.Size(361, 20);
+            this.RawX.TabIndex = 22;
+            this.RawX.Value = 0F;
+            // 
+            // ConstrainedY
+            // 
+            this.ConstrainedY.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.ConstrainedY.Location = new System.Drawing.Point(494, 235);
+            this.ConstrainedY.Max = 1F;
+            this.ConstrainedY.Min = 0F;
+            this.ConstrainedY.MinimumSize = new System.Drawing.Size(95, 20);
+            this.ConstrainedY.Name = "ConstrainedY";
+            this.ConstrainedY.Scalar = null;
+            this.ConstrainedY.Size = new System.Drawing.Size(249, 20);
+            this.ConstrainedY.TabIndex = 19;
+            this.ConstrainedY.Value = 0F;
+            // 
+            // ConstrainedX
+            // 
+            this.ConstrainedX.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.ConstrainedX.Location = new System.Drawing.Point(494, 209);
+            this.ConstrainedX.Max = 1F;
+            this.ConstrainedX.Min = 0F;
+            this.ConstrainedX.MinimumSize = new System.Drawing.Size(95, 20);
+            this.ConstrainedX.Name = "ConstrainedX";
+            this.ConstrainedX.Scalar = null;
+            this.ConstrainedX.Size = new System.Drawing.Size(249, 20);
+            this.ConstrainedX.TabIndex = 18;
+            this.ConstrainedX.Value = 0F;
             // 
             // Anchor
             // 
@@ -277,148 +416,23 @@
             this.HandR.Y = 0F;
             this.HandR.Z = 0F;
             // 
-            // label6
+            // enabledCheck
             // 
-            this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(415, 238);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(73, 13);
-            this.label6.TabIndex = 21;
-            this.label6.Text = "Constrained Y";
-            // 
-            // label7
-            // 
-            this.label7.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(415, 212);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(73, 13);
-            this.label7.TabIndex = 20;
-            this.label7.Text = "Constrained X";
-            // 
-            // ConstrainedY
-            // 
-            this.ConstrainedY.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.ConstrainedY.Location = new System.Drawing.Point(494, 235);
-            this.ConstrainedY.Max = 1F;
-            this.ConstrainedY.Min = 0F;
-            this.ConstrainedY.MinimumSize = new System.Drawing.Size(95, 20);
-            this.ConstrainedY.Name = "ConstrainedY";
-            this.ConstrainedY.Scalar = null;
-            this.ConstrainedY.Size = new System.Drawing.Size(249, 20);
-            this.ConstrainedY.TabIndex = 19;
-            this.ConstrainedY.Value = 0F;
-            // 
-            // ConstrainedX
-            // 
-            this.ConstrainedX.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.ConstrainedX.Location = new System.Drawing.Point(494, 209);
-            this.ConstrainedX.Max = 1F;
-            this.ConstrainedX.Min = 0F;
-            this.ConstrainedX.MinimumSize = new System.Drawing.Size(95, 20);
-            this.ConstrainedX.Name = "ConstrainedX";
-            this.ConstrainedX.Scalar = null;
-            this.ConstrainedX.Size = new System.Drawing.Size(249, 20);
-            this.ConstrainedX.TabIndex = 18;
-            this.ConstrainedX.Value = 0F;
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(3, 238);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(39, 13);
-            this.label8.TabIndex = 25;
-            this.label8.Text = "Raw Y";
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(3, 212);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(39, 13);
-            this.label9.TabIndex = 24;
-            this.label9.Text = "Raw X";
-            // 
-            // RawY
-            // 
-            this.RawY.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.RawY.Location = new System.Drawing.Point(48, 231);
-            this.RawY.Max = 1F;
-            this.RawY.Min = -1F;
-            this.RawY.MinimumSize = new System.Drawing.Size(95, 20);
-            this.RawY.Name = "RawY";
-            this.RawY.Scalar = null;
-            this.RawY.Size = new System.Drawing.Size(361, 20);
-            this.RawY.TabIndex = 23;
-            this.RawY.Value = 0F;
-            // 
-            // RawX
-            // 
-            this.RawX.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.RawX.Location = new System.Drawing.Point(48, 205);
-            this.RawX.Max = 1F;
-            this.RawX.Min = -1F;
-            this.RawX.MinimumSize = new System.Drawing.Size(95, 20);
-            this.RawX.Name = "RawX";
-            this.RawX.Scalar = null;
-            this.RawX.Size = new System.Drawing.Size(361, 20);
-            this.RawX.TabIndex = 22;
-            this.RawX.Value = 0F;
-            // 
-            // label10
-            // 
-            this.label10.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(415, 182);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(68, 13);
-            this.label10.TabIndex = 29;
-            this.label10.Text = "Height Scale";
-            // 
-            // label11
-            // 
-            this.label11.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(415, 156);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(65, 13);
-            this.label11.TabIndex = 28;
-            this.label11.Text = "Width Scale";
-            // 
-            // HeightScale
-            // 
-            this.HeightScale.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.HeightScale.Location = new System.Drawing.Point(494, 179);
-            this.HeightScale.Max = 4F;
-            this.HeightScale.Min = 0F;
-            this.HeightScale.MinimumSize = new System.Drawing.Size(95, 20);
-            this.HeightScale.Name = "HeightScale";
-            this.HeightScale.Scalar = null;
-            this.HeightScale.Size = new System.Drawing.Size(249, 20);
-            this.HeightScale.TabIndex = 27;
-            this.HeightScale.Value = 0F;
-            // 
-            // WidthScale
-            // 
-            this.WidthScale.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.WidthScale.Location = new System.Drawing.Point(494, 153);
-            this.WidthScale.Max = 4F;
-            this.WidthScale.Min = 0F;
-            this.WidthScale.MinimumSize = new System.Drawing.Size(95, 20);
-            this.WidthScale.Name = "WidthScale";
-            this.WidthScale.Scalar = null;
-            this.WidthScale.Size = new System.Drawing.Size(249, 20);
-            this.WidthScale.TabIndex = 26;
-            this.WidthScale.Value = 0F;
+            this.enabledCheck.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.enabledCheck.AutoSize = true;
+            this.enabledCheck.Location = new System.Drawing.Point(675, 3);
+            this.enabledCheck.Name = "enabledCheck";
+            this.enabledCheck.Size = new System.Drawing.Size(65, 17);
+            this.enabledCheck.TabIndex = 30;
+            this.enabledCheck.Text = "Enabled";
+            this.enabledCheck.UseVisualStyleBackColor = true;
+            this.enabledCheck.CheckedChanged += new System.EventHandler(this.enabledCheck_CheckedChanged);
             // 
             // SimpleCursorPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.enabledCheck);
             this.Controls.Add(this.label10);
             this.Controls.Add(this.label11);
             this.Controls.Add(this.HeightScale);
@@ -488,5 +502,6 @@
         private System.Windows.Forms.Label label11;
         private KinectLib.GUI.UpdatedScalarPanel HeightScale;
         private KinectLib.GUI.UpdatedScalarPanel WidthScale;
+        private System.Windows.Forms.CheckBox enabledCheck;
     }
 }

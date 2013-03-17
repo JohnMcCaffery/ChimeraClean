@@ -61,11 +61,15 @@ namespace Chimera.GUI.Forms {
         /// Redraw the input.
         /// </summary>
         public void Redraw() {
-            Invoke(new Action(() => drawPanel.Invalidate()));
+            if (!IsDisposed && Created)
+                Invoke(new Action(() => {
+                    if (!IsDisposed && Created)
+                        drawPanel.Invalidate();
+                }));
         }
 
-        /// <summary>
-        /// Link this form with a logical input.
+    /// <summary>
+    /// Link this form with a logical input.
         /// </summary>
         /// <param name="input">The input to link this form with.</param>
         public void Init(Window window) {
@@ -90,6 +94,7 @@ namespace Chimera.GUI.Forms {
         }
 
         private void mouseTimer_Tick(object sender, EventArgs e) {
+            return;
             if (Bounds.Contains(Cursor.Position) || mMouseOnScreen) {
                 mMouseOnScreen = true;
                 if (mLastMouse.X != Cursor.Position.X || mLastMouse.Y != Cursor.Position.Y) {
@@ -105,6 +110,9 @@ namespace Chimera.GUI.Forms {
 
         private void OverlayWindow_Load(object sender, EventArgs e) {
             Text = mWindow.Name + " Overlay";
+        }
+
+        protected override void OnFormClosing(FormClosingEventArgs e) {
         }
     }
 }

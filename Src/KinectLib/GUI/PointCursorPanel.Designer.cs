@@ -43,6 +43,7 @@
             this.yPanel = new KinectLib.GUI.UpdatedScalarPanel();
             this.sidePanel = new KinectLib.GUI.UpdatedVectorPanel();
             this.topPanel = new KinectLib.GUI.UpdatedVectorPanel();
+            this.enabledCheck = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // label1
@@ -120,9 +121,9 @@
             this.intersectionPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.intersectionPanel.Location = new System.Drawing.Point(0, 180);
-            this.intersectionPanel.Max = 1024f;
+            this.intersectionPanel.Max = 1024F;
             this.intersectionPanel.MaxV = ((OpenMetaverse.Vector3)(resources.GetObject("intersectionPanel.MaxV")));
-            this.intersectionPanel.Min = -1024f;
+            this.intersectionPanel.Min = -1024F;
             this.intersectionPanel.MinimumSize = new System.Drawing.Size(103, 95);
             this.intersectionPanel.MinV = ((OpenMetaverse.Vector3)(resources.GetObject("intersectionPanel.MinV")));
             this.intersectionPanel.Name = "intersectionPanel";
@@ -139,9 +140,9 @@
             this.pointDirPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.pointDirPanel.Location = new System.Drawing.Point(0, 91);
-            this.pointDirPanel.Max = 1024f;
+            this.pointDirPanel.Max = 1024F;
             this.pointDirPanel.MaxV = ((OpenMetaverse.Vector3)(resources.GetObject("pointDirPanel.MaxV")));
-            this.pointDirPanel.Min = -1024f;
+            this.pointDirPanel.Min = -1024F;
             this.pointDirPanel.MinimumSize = new System.Drawing.Size(103, 95);
             this.pointDirPanel.MinV = ((OpenMetaverse.Vector3)(resources.GetObject("pointDirPanel.MinV")));
             this.pointDirPanel.Name = "pointDirPanel";
@@ -158,9 +159,9 @@
             this.pointStartPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.pointStartPanel.Location = new System.Drawing.Point(0, 0);
-            this.pointStartPanel.Max = 1024f;
+            this.pointStartPanel.Max = 1024F;
             this.pointStartPanel.MaxV = ((OpenMetaverse.Vector3)(resources.GetObject("pointStartPanel.MaxV")));
-            this.pointStartPanel.Min = -1024f;
+            this.pointStartPanel.Min = -1024F;
             this.pointStartPanel.MinimumSize = new System.Drawing.Size(103, 95);
             this.pointStartPanel.MinV = ((OpenMetaverse.Vector3)(resources.GetObject("pointStartPanel.MinV")));
             this.pointStartPanel.Name = "pointStartPanel";
@@ -202,9 +203,9 @@
             // 
             this.topLeftPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.topLeftPanel.Location = new System.Drawing.Point(313, 91);
-            this.topLeftPanel.Max = 1024f;
+            this.topLeftPanel.Max = 1024F;
             this.topLeftPanel.MaxV = ((OpenMetaverse.Vector3)(resources.GetObject("topLeftPanel.MaxV")));
-            this.topLeftPanel.Min = -1024f;
+            this.topLeftPanel.Min = -1024F;
             this.topLeftPanel.MinimumSize = new System.Drawing.Size(103, 95);
             this.topLeftPanel.MinV = ((OpenMetaverse.Vector3)(resources.GetObject("topLeftPanel.MinV")));
             this.topLeftPanel.Name = "topLeftPanel";
@@ -248,9 +249,9 @@
             // 
             this.normalPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.normalPanel.Location = new System.Drawing.Point(313, 3);
-            this.normalPanel.Max = 1024f;
+            this.normalPanel.Max = 1024F;
             this.normalPanel.MaxV = ((OpenMetaverse.Vector3)(resources.GetObject("normalPanel.MaxV")));
-            this.normalPanel.Min = -1024f;
+            this.normalPanel.Min = -1024F;
             this.normalPanel.MinimumSize = new System.Drawing.Size(103, 95);
             this.normalPanel.MinV = ((OpenMetaverse.Vector3)(resources.GetObject("normalPanel.MinV")));
             this.normalPanel.Name = "normalPanel";
@@ -280,9 +281,9 @@
             // 
             this.sidePanel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.sidePanel.Location = new System.Drawing.Point(167, 91);
-            this.sidePanel.Max = 1024f;
+            this.sidePanel.Max = 1024F;
             this.sidePanel.MaxV = ((OpenMetaverse.Vector3)(resources.GetObject("sidePanel.MaxV")));
-            this.sidePanel.Min = -1024f;
+            this.sidePanel.Min = -1024F;
             this.sidePanel.MinimumSize = new System.Drawing.Size(103, 95);
             this.sidePanel.MinV = ((OpenMetaverse.Vector3)(resources.GetObject("sidePanel.MinV")));
             this.sidePanel.Name = "sidePanel";
@@ -298,9 +299,9 @@
             // 
             this.topPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.topPanel.Location = new System.Drawing.Point(167, 0);
-            this.topPanel.Max = 1024f;
+            this.topPanel.Max = 1024F;
             this.topPanel.MaxV = ((OpenMetaverse.Vector3)(resources.GetObject("topPanel.MaxV")));
-            this.topPanel.Min = -1024f;
+            this.topPanel.Min = -1024F;
             this.topPanel.MinimumSize = new System.Drawing.Size(103, 95);
             this.topPanel.MinV = ((OpenMetaverse.Vector3)(resources.GetObject("topPanel.MinV")));
             this.topPanel.Name = "topPanel";
@@ -312,11 +313,24 @@
             this.topPanel.Y = 0F;
             this.topPanel.Z = 0F;
             // 
+            // enabledCheck
+            // 
+            this.enabledCheck.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.enabledCheck.AutoSize = true;
+            this.enabledCheck.Location = new System.Drawing.Point(397, 0);
+            this.enabledCheck.Name = "enabledCheck";
+            this.enabledCheck.Size = new System.Drawing.Size(65, 17);
+            this.enabledCheck.TabIndex = 19;
+            this.enabledCheck.Text = "Enabled";
+            this.enabledCheck.UseVisualStyleBackColor = true;
+            this.enabledCheck.CheckedChanged += new System.EventHandler(this.enabledCheck_CheckedChanged);
+            // 
             // PointCursorPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
+            this.Controls.Add(this.enabledCheck);
             this.Controls.Add(this.xPanel);
             this.Controls.Add(this.intersectionPanel);
             this.Controls.Add(this.pointDirPanel);
@@ -365,5 +379,6 @@
         private KinectLib.GUI.UpdatedScalarPanel screenWPanel;
         private KinectLib.GUI.UpdatedVectorPanel pointDirPanel;
         private KinectLib.GUI.UpdatedVectorPanel pointStartPanel;
+        private System.Windows.Forms.CheckBox enabledCheck;
     }
 }

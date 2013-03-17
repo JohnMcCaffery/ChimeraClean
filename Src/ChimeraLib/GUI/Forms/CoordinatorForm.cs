@@ -65,8 +65,8 @@ namespace Chimera.GUI.Forms {
                 // 
                 // inputTab
                 // 
-                inputTab.Controls.Add(input.ControlPanel);
                 inputTab.Controls.Add(enableCheck);
+                inputTab.Controls.Add(input.ControlPanel);
                 inputTab.Location = new System.Drawing.Point(4, 22);
                 inputTab.Name = input.Name + "Tab";
                 inputTab.Padding = new System.Windows.Forms.Padding(3);
@@ -81,12 +81,13 @@ namespace Chimera.GUI.Forms {
                 enableCheck.AutoSize = true;
                 enableCheck.BackColor = System.Drawing.Color.Transparent;
                 enableCheck.Location = new System.Drawing.Point(355, 6);
-                enableCheck.Name = "enableCheck";
+                enableCheck.Name = "enable" + input.Name + "Check";
                 enableCheck.Size = new System.Drawing.Size(59, 17);
                 enableCheck.TabIndex = 1;
-                enableCheck.Text = "Enable";
+                enableCheck.Text = input.Name;
                 enableCheck.Checked = input.Enabled;
-                enableCheck.CheckStateChanged += new EventHandler((source, args) => input.Enabled = enableCheck.Checked);
+                enableCheck.CheckStateChanged += new EventHandler((source, args) => 
+                    mCoordinator.Inputs.First(i => enableCheck.Name.Equals("enable" + i.Name + "Check")).Enabled = enableCheck.Checked);
                 //enableCheck.UseVisualStyleBackColor = false;
                 // 
                 // inputPanel

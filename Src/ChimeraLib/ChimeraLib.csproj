@@ -105,6 +105,12 @@
     <Compile Include="GUI\Controls\ConditionalCheck.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="GUI\Controls\Inputs\MouseInputPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\Controls\Inputs\MouseInputPanel.Designer.cs">
+      <DependentUpon>MouseInputPanel.cs</DependentUpon>
+    </Compile>
     <Compile Include="GUI\Controls\ScalarPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -129,25 +135,26 @@
     <Compile Include="GUI\Forms\OverlayWindow.Designer.cs">
       <DependentUpon>OverlayWindow.cs</DependentUpon>
     </Compile>
-    <Compile Include="IInput.cs" />
+    <Compile Include="Interfaces\IInput.cs" />
     <Compile Include="Inputs\DeltaBasedInput.cs" />
+    <Compile Include="Inputs\MouseInput.cs" />
     <Compile Include="Interfaces\IDeltaInput.cs" />
     <Compile Include="Interfaces\IUpdater.cs" />
-    <Compile Include="ITicker.cs" />
+    <Compile Include="Interfaces\ITicker.cs" />
     <Compile Include="OverlayController.cs" />
     <Compile Include="Overlay\BoxArea.cs" />
     <Compile Include="Overlay\ImageArea.cs" />
-    <Compile Include="Inputs\CameraControlForm.cs">
+    <Compile Include="GUI\Forms\Inputs\CameraControlForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Inputs\CameraControlForm.Designer.cs">
+    <Compile Include="GUI\Forms\Inputs\CameraControlForm.Designer.cs">
       <DependentUpon>CameraControlForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Inputs\KBMouseInput.cs" />
-    <Compile Include="Inputs\KBMousePanel.cs">
+    <Compile Include="GUI\Controls\Inputs\KBMousePanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Inputs\KBMousePanel.Designer.cs">
+    <Compile Include="GUI\Controls\Inputs\KBMousePanel.Designer.cs">
       <DependentUpon>KBMousePanel.cs</DependentUpon>
     </Compile>
     <Compile Include="Interfaces\ICrashable.cs" />
@@ -187,7 +194,7 @@
     <Compile Include="GUI\Forms\CoordinatorForm.Designer.cs">
       <DependentUpon>CoordinatorForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Interfaces\IInput.cs" />
+    <Compile Include="Interfaces\ISystemInput.cs" />
     <Compile Include="Interfaces\IMode.cs" />
     <Compile Include="Interfaces\IOutput.cs" />
     <Compile Include="Core\Coordinator.cs" />
@@ -203,6 +210,9 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <EmbeddedResource Include="GUI\Controls\Inputs\MouseInputPanel.resx">
+      <DependentUpon>MouseInputPanel.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="GUI\Controls\ScalarPanel.resx">
       <DependentUpon>ScalarPanel.cs</DependentUpon>
     </EmbeddedResource>
@@ -227,10 +237,10 @@
     <EmbeddedResource Include="GUI\Forms\OverlayWindow.resx">
       <DependentUpon>OverlayWindow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Inputs\CameraControlForm.resx">
+    <EmbeddedResource Include="GUI\Forms\Inputs\CameraControlForm.resx">
       <DependentUpon>CameraControlForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Inputs\KBMousePanel.resx">
+    <EmbeddedResource Include="GUI\Controls\Inputs\KBMousePanel.resx">
       <DependentUpon>KBMousePanel.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>

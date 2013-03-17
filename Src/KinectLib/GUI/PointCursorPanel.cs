@@ -41,6 +41,7 @@ namespace Chimera.Kinect.GUI {
 
             xPanel.Max = mInput.ScreenW.Value;
             yPanel.Max = mInput.ScreenH.Value;
+            enabledCheck.Checked = mInput.Enabled;
 
             pointStartPanel.Text = "Point Start";
             pointDirPanel.Text = "Point Dir";
@@ -49,7 +50,10 @@ namespace Chimera.Kinect.GUI {
             topPanel.Text = "Top";
             sidePanel.Text = "Side";
             intersectionPanel.Text = "Intersection";
-            
+        }
+
+        private void enabledCheck_CheckedChanged(object sender, EventArgs e) {
+            mInput.Enabled = enabledCheck.Checked;
         }
     }
 }

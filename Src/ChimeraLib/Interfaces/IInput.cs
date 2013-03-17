@@ -7,19 +7,53 @@ using System.Drawing;
 using Chimera.Util;
 
 namespace Chimera {
-    public interface ISystemInput : IInput {
-
+    public interface IInput {
         /// <summary>
-        /// The input this input is to control.
+        /// The panel which can be added to a form to configure this input.
         /// </summary>
-        Coordinator Coordinator {
+        UserControl ControlPanel {
             get;
         }
 
         /// <summary>
-        /// Initialise the input, giving it a reference to the input it is to control.
+        /// Whether this input should control the virtual camera.
         /// </summary>
-        /// <param name="input">The input object the input can control.</param>
-        void Init(Coordinator coordinator);
+        bool Enabled {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// The unique name by which this input can be identified.
+        /// </summary>
+        string Name {
+            get;
+        }
+
+        /// <summary>
+        /// A multi line string that can be printed to file to store a record of window in the event of a crash.
+        /// </summary>
+        string State {
+            get;
+        }
+
+        /// <summary>
+        /// The configuration object used by this input.
+        /// </summary>
+        ConfigBase Config {
+            get;
+        }
+
+        /// <summary>
+        /// Called when the input is to be disposed of.
+        /// </summary>
+        void Close();
+
+        /// <summary>
+        /// DrawSelected any relevant information about this input onto a diagram.
+        /// </summary>
+        /// <param name="perspective">The perspective to render along.</param>
+        /// <param name="graphics">The graphics object to draw with.</param>
+        void Draw(Perspective perspective, Graphics graphics);
     }
 }

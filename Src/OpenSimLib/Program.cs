@@ -29,6 +29,7 @@ namespace ChimeraOutput {
             IOutput output = new SetFollowCamPropertiesViewerOutput("Main Window");
             ISystemInput kbMouseInput = new KBMouseInput();
             ISystemInput flythrough = new Flythrough();
+            ISystemInput mouse = new MouseInput();
             ISystemInput kinect = new KinectInput(new IDeltaInput[] { dolphin }, simpleFactory, pointFactory);
             //ISystemInput kinectDolphin = new DeltaBasedInput(dolphin);
 
@@ -37,7 +38,7 @@ namespace ChimeraOutput {
             IOverlayState mState = new TestState();
             MainMenuItem item1 = new MainMenuItem(mState, mOverlay);
             Chimera.Overlay.MainMenu mainMenu = new Chimera.Overlay.MainMenu(item1);
-            Coordinator coordinator = new Coordinator(windows, mainMenu, kinect, kbMouseInput, flythrough);
+            Coordinator coordinator = new Coordinator(windows, mainMenu, kinect, kbMouseInput, mouse, flythrough);
 
             //Window[] windows = new Window[] { new Window("Main Window") };
             //Chimera.Overlay.MainMenu mainMenu = new Chimera.Overlay.MainMenu();
