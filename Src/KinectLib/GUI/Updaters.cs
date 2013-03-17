@@ -22,6 +22,10 @@ namespace Chimera.Kinect.GUI {
             }
         }
 
+        public string Name {
+            get { return (object)mScalar == null ? "Not Set" : mScalar.Name; }
+        }
+
         public float Value {
             get { return mScalar.Value; }
             set { 
@@ -57,6 +61,10 @@ namespace Chimera.Kinect.GUI {
             }
         }
 
+        public string Name {
+            get { return (object)mVector == null ? "Not Set" : mVector.Name; }
+        }
+
         public Vector3 Value {
             get { return new Vector3(mVector.X, mVector.Y, mVector.Z); }
             set { 
@@ -90,6 +98,10 @@ namespace Chimera.Kinect.GUI {
                 mCondition = value;
                 mCondition.OnChange += mCondition_OnChange;
             }
+        }
+
+        public string Name {
+            get { return (object)mCondition == null ? "Not Set" : mCondition.Name; }
         }
 
         public bool Value {

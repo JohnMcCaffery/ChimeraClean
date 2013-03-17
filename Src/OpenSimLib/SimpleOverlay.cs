@@ -8,6 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using Chimera.Interfaces;
 using Chimera.Overlay;
+using NuiLibDotNet;
 
 namespace Chimera.GUI.Forms {
     public class SimpleOverlayWindowFactory : IOverlayWindowFactory {

@@ -37,6 +37,7 @@ namespace KinectLib.GUI {
                 if (mVector != null) {
                     Value = value.Value;
                     mVector.Changed += mVector_OnChange;
+                    Text = mVector.Name;
                 }
             }
         }
