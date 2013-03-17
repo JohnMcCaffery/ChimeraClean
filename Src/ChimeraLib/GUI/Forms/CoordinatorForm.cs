@@ -186,5 +186,11 @@ namespace Chimera.GUI.Forms {
             if (mCoordinator != null)
                 mCoordinator.TriggerKeyboard(false, e);
         }
+
+        private void triggerHelpButton_Click(object sender, EventArgs e) {
+            if (mCoordinator != null)
+                foreach (var window in mCoordinator.Windows)
+                    window.Overlay.TriggerHelp();
+        }
     }
 }

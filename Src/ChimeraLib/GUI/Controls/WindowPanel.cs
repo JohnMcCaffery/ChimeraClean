@@ -28,7 +28,7 @@ namespace Chimera.GUI.Controls {
             heightPanel.Value = (float) window.Height / 10f;
             topLeftPanel.Value = window.TopLeft / 10f;
             orientationPanel.Value = window.Orientation;
-            controlCursor.Checked = mWindow.Overlay.ControlCursor;
+            controlCursor.Checked = mWindow.Overlay.ControlPointer;
 
             mWindow.Overlay.OverlayClosed += new EventHandler(mWindow_OverlayClosed);
             mWindow.Overlay.OverlayLaunched += new EventHandler(mWindow_OverlayLaunched);
@@ -110,7 +110,7 @@ namespace Chimera.GUI.Controls {
         }
 
         private void controlCursor_CheckedChanged(object sender, EventArgs e) {
-            mWindow.Overlay.ControlCursor = controlCursor.Checked;
+            mWindow.Overlay.ControlPointer = controlCursor.Checked;
         }
     }
 }

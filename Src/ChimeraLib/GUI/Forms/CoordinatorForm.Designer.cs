@@ -41,6 +41,7 @@
             this.windowsTab = new System.Windows.Forms.TabControl();
             this.inputsGroup = new System.Windows.Forms.GroupBox();
             this.inputsTab = new System.Windows.Forms.TabControl();
+            this.triggerHelpButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.hSplit)).BeginInit();
             this.hSplit.Panel1.SuspendLayout();
             this.hSplit.Panel2.SuspendLayout();
@@ -166,6 +167,7 @@
             // 
             // globalBox
             // 
+            this.globalBox.Controls.Add(this.triggerHelpButton);
             this.globalBox.Controls.Add(this.eyePositionPanel);
             this.globalBox.Controls.Add(this.virtualOrientationPanel);
             this.globalBox.Controls.Add(this.virtualPositionPanel);
@@ -182,11 +184,10 @@
             // 
             this.eyePositionPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.eyePositionPanel.Text = "Eye Position";
             this.eyePositionPanel.Location = new System.Drawing.Point(3, 195);
-            this.eyePositionPanel.Max = 5000f;
+            this.eyePositionPanel.Max = 5000F;
             this.eyePositionPanel.MaxV = ((OpenMetaverse.Vector3)(resources.GetObject("eyePositionPanel.MaxV")));
-            this.eyePositionPanel.Min = -5000f;
+            this.eyePositionPanel.Min = -5000F;
             this.eyePositionPanel.MinimumSize = new System.Drawing.Size(103, 95);
             this.eyePositionPanel.MinV = ((OpenMetaverse.Vector3)(resources.GetObject("eyePositionPanel.MinV")));
             this.eyePositionPanel.Name = "eyePositionPanel";
@@ -202,7 +203,6 @@
             // 
             this.virtualOrientationPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.virtualOrientationPanel.Text = "Orientation";
             this.virtualOrientationPanel.Location = new System.Drawing.Point(3, 105);
             this.virtualOrientationPanel.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("virtualOrientationPanel.LookAtVector")));
             this.virtualOrientationPanel.MinimumSize = new System.Drawing.Size(252, 95);
@@ -223,11 +223,10 @@
             // 
             this.virtualPositionPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.virtualPositionPanel.Text = "Position";
             this.virtualPositionPanel.Location = new System.Drawing.Point(3, 12);
-            this.virtualPositionPanel.Max = 1024f;
+            this.virtualPositionPanel.Max = 1024F;
             this.virtualPositionPanel.MaxV = ((OpenMetaverse.Vector3)(resources.GetObject("virtualPositionPanel.MaxV")));
-            this.virtualPositionPanel.Min = -1024f;
+            this.virtualPositionPanel.Min = -1024F;
             this.virtualPositionPanel.MinimumSize = new System.Drawing.Size(103, 95);
             this.virtualPositionPanel.MinV = ((OpenMetaverse.Vector3)(resources.GetObject("virtualPositionPanel.MinV")));
             this.virtualPositionPanel.Name = "virtualPositionPanel";
@@ -302,6 +301,18 @@
             this.inputsTab.KeyDown += new System.Windows.Forms.KeyEventHandler(this.CoordinatorForm_KeyDown);
             this.inputsTab.KeyUp += new System.Windows.Forms.KeyEventHandler(this.CoordinatorForm_KeyUp);
             // 
+            // triggerHelpButton
+            // 
+            this.triggerHelpButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.triggerHelpButton.Location = new System.Drawing.Point(7, 288);
+            this.triggerHelpButton.Name = "triggerHelpButton";
+            this.triggerHelpButton.Size = new System.Drawing.Size(248, 23);
+            this.triggerHelpButton.TabIndex = 3;
+            this.triggerHelpButton.Text = "Trigger Help";
+            this.triggerHelpButton.UseVisualStyleBackColor = true;
+            this.triggerHelpButton.Click += new System.EventHandler(this.triggerHelpButton_Click);
+            // 
             // CoordinatorForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -355,5 +366,6 @@
         private ProxyTestGUI.RotationPanel virtualOrientationPanel;
         private System.Windows.Forms.Button testButton;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button triggerHelpButton;
     }
 }

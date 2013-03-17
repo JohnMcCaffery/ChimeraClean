@@ -95,7 +95,8 @@ namespace ProxyTestGUI {
                 yPanel.Min = value.Y;
                 zPanel.Min = value.Z;
             }
-        }        public float Max {
+        }
+        public float Max {
             get { return xPanel.Max; }
             set {
                 xPanel.Max = value;

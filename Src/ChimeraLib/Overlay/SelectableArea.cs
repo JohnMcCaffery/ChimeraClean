@@ -34,7 +34,7 @@ namespace Chimera.Overlay {
         }
 
         private void CheckState() {
-            if (mBounds.Contains(mWindow.Overlay.Cursor) && mActive) {
+            if (mActive && mBounds.Contains(mWindow.Overlay.Cursor)) {
                 if (!mHovering) {
                     mHovering = true;
                     mHoverStart = DateTime.Now;
@@ -46,7 +46,6 @@ namespace Chimera.Overlay {
                     mSelected = true;
                 }
             } else {
-                mHovering = false;
                 mSelected = false;
             }
         }
@@ -131,6 +130,8 @@ namespace Chimera.Overlay {
         }
 
         public virtual void DrawDynamic(Graphics graphics, Rectangle clipRectangle) {
+            if (mActive && !mBounds.Contains(mWindow.Overlay.Cursor))
+                mHovering = false;
             if (mSelected)
                 mRenderer.DrawSelected(graphics, clipRectangle);
             else if (mHovering)

@@ -58,6 +58,24 @@ namespace Chimera.GUI.Forms {
         private ISelectionRenderer mGoInWorldRender;
 
         /// <summary>
+        /// Selection which triggers when the user is to go in world.
+        /// </summary>
+        private InvisibleSelection mGoInWorldHelp;
+        /// <summary>
+        /// The renderer which will let the user know when they are hovering over go in world.
+        /// </summary>
+        private ISelectionRenderer mGoInWorldHelpRender;
+
+        /// <summary>
+        /// Selection which triggers when the user is to go in world.
+        /// </summary>
+        private InvisibleSelection mGoMainMenu;
+        /// <summary>
+        /// The renderer which will let the user know when they are hovering over go in world.
+        /// </summary>
+        private ISelectionRenderer mGoMainMenuRender;
+
+        /// <summary>
         /// The main menu image.
         /// </summary>
         private Bitmap mMainMenuImage = new Bitmap("../Images/CathedralSplashScreen.png");
@@ -95,6 +113,16 @@ namespace Chimera.GUI.Forms {
             mGoInWorld = new InvisibleSelection(mGoInWorldRender, 265f / 1920f, 255f / 1080f, (675f-255f) / 1920, (900f - 255f) / 1080f);
             mGoInWorld.Selected += new Action<ISelectable>(mGoInWorld_Selected);
 
+            mGoMainMenuRender = new NumberSelectionRenderer();
+            mGoMainMenu = new InvisibleSelection(mGoMainMenuRender, 70f / 1920f, 65f / 1080f, (490f-70f) / 1920, (300f - 65f) / 1080f);
+            mGoMainMenu.Selected += new Action<ISelectable>(mGoMainMenu_Selected);
+            mGoMainMenu.Active = false;
+
+            mGoInWorldHelpRender = new NumberSelectionRenderer();
+            mGoInWorldHelp = new InvisibleSelection(mGoInWorldHelpRender, 60f / 1920f, 520f / 1080f, (335f-60f) / 1920, (945f - 520f) / 1080f);
+            mGoInWorldHelp.Selected += new Action<ISelectable>(mGoInWorld_Selected);
+            mGoInWorldHelp.Active = false;
+
             Init(controller);
         }
 
@@ -109,9 +137,14 @@ namespace Chimera.GUI.Forms {
             StartPosition = FormStartPosition.Manual;
             Location = mController.Window.Monitor.Bounds.Location;
             Size = mController.Window.Monitor.Bounds.Size;
+
             mGoInWorld.Init(mController.Window);
+            mGoInWorldHelp.Init(mController.Window);
+            mGoMainMenu.Init(mController.Window);
 
             mController.Window.Coordinator.Tick += new Action(Coordinator_Tick);
+            mController.HelpTriggered += new Action(mController_HelpTriggered);
+            mController.Window.Coordinator.EnableUpdates = false;
         }
 
         public void Foreground() {
@@ -137,26 +170,62 @@ namespace Chimera.GUI.Forms {
             }
             if (mGoInWorld.Active && mGoInWorld.CurrentlyHovering)
                 mGoInWorld.DrawDynamic(e.Graphics, e.ClipRectangle);
+            if (mGoInWorldHelp.Active && mGoInWorldHelp.CurrentlyHovering)
+                mGoInWorldHelp.DrawDynamic(e.Graphics, e.ClipRectangle);
+            if (mGoMainMenu.Active && mGoMainMenu.CurrentlyHovering)
+                mGoMainMenu.DrawDynamic(e.Graphics, e.ClipRectangle);
         }
 
         private void mGoInWorld_Selected(ISelectable source) {
             mGoInWorld.Active = false;
+            mGoInWorldHelp.Active = false;
             mCurrentStep = mSteps;
             mMinimizing = true;
+            mController.ControlPointer = false;        }
+        private void mGoMainMenu_Selected(ISelectable source) {
+            mGoInWorldHelp.Active = false;
+            mGoMainMenu.Active = false;
+            mGoInWorld.Active = true;
+            mState = State.MainMenu;
+            Redraw();
+        }
+
+        void mController_HelpTriggered() {
+            if (mMaximising || mMinimizing)
+                return;
+
+            if (mState == State.Explore) {
+                mController.Window.Coordinator.EnableUpdates = false;
+                mState = State.Help;
+                mCurrentStep = 0;
+                mMaximising = true;
+                Redraw();
+            } else {
+                mCurrentStep = mSteps;
+                mMinimizing = true;
+                mController.ControlPointer = false;
+            }
         }
 
         void Coordinator_Tick() {
             if (mGoInWorld.Active && mGoInWorld.CurrentlyHovering)
+                Redraw();
+            if (mGoInWorldHelp.Active && mGoInWorldHelp.CurrentlyHovering)
+                Redraw();
+            if (mGoMainMenu.Active && mGoMainMenu.CurrentlyHovering)
                 Redraw();
             if (mMinimizing || mMaximising) {
                 mCurrentStep += mMinimizing ? -1 : 1;
                 if (mCurrentStep < 0) {
                     mMinimizing = false;
                     mState = State.Explore;
+                    mController.Window.Coordinator.EnableUpdates = true;
                 } else if (mCurrentStep > mSteps) {
                     mMaximising = false;
-                    mState = State.MainMenu;
-                }else {
+                    mGoMainMenu.Active = true;
+                    mGoInWorldHelp.Active = true;
+                    mController.ControlPointer = true;
+                } else {
                     Invoke(new Action(() => Opacity = (double)mCurrentStep / (double)mSteps));
                 }
             } 

@@ -102,7 +102,8 @@ namespace Chimera.Kinect {
                     mCurrentMovementController = movement;
                 else
                     movement.Enabled = false;
-            }
+            }
+
             foreach (var helpTrigger in helpTriggers) {
                 mHelpTriggers.Add(helpTrigger.Name, helpTrigger);
                 helpTrigger.Init(mCoordinator);
@@ -155,6 +156,21 @@ namespace Chimera.Kinect {
                 mCurrentHelpTrigger = mHelpTriggers[helpTriggerName];
                 mCurrentHelpTrigger.Enabled = true;
             }
+        }
+
+        public bool FlyEnabled {
+            get { return mCurrentMovementController.FlyEnabled; }
+            set { mCurrentMovementController.FlyEnabled = value; }
+        }
+
+        public bool WalkEnabled {
+            get { return mCurrentMovementController.WalkEnabled; }
+            set { mCurrentMovementController.WalkEnabled = value; }
+        }
+
+        public bool YawEnabled {
+            get { return mCurrentMovementController.YawEnabled; }
+            set { mCurrentMovementController.YawEnabled = value; }
         }
 
         #region ISystemInput Members
@@ -235,7 +251,7 @@ namespace Chimera.Kinect {
             Vector3 move = input.PositionDelta;
 
             //TODO - handle keyboard rotation
-            if (input.Enabled && move != Vector3.Zero || input.OrientationDelta.Pitch != 0.0 || input.OrientationDelta.Yaw != 0.0) {
+            if (input.Enabled && Nui.HasSkeleton && move != Vector3.Zero || input.OrientationDelta.Pitch != 0.0 || input.OrientationDelta.Yaw != 0.0) {
                 float fly = move.Z;
                 move.Z = 0f;
                 move *= mCoordinator.Orientation.Quaternion;
@@ -248,7 +264,7 @@ namespace Chimera.Kinect {
         }
 
         private void cursor_CursorMove(IKinectCursor cursor, float x, float y) {
-            if (mEnabled && cursor.OnScreen)
+            if (mEnabled && Nui.HasSkeleton)
                 cursor.Window.Overlay.UpdateCursor(x, y);
         }
     }

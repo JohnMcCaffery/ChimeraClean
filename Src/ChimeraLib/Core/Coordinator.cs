@@ -301,12 +301,14 @@ namespace Chimera {
         public void Update(Vector3 position, Vector3 postionDelta, Rotation orientation, Rotation orientationDelta) {
             //TODO put this back in when menus are set up
             //if (!mMainMenuActive) {
+            if (mEnableUpdates) {
                 mPosition = position;
                 mRotation.Update(mRotationLock, orientation);
                 if (CameraUpdated != null && mAlive) {
                     CameraUpdateEventArgs args = new CameraUpdateEventArgs(position, postionDelta, orientation, orientationDelta);
                     CameraUpdated(this, args);
                 }
+            }
             //}
         }
 

@@ -31,7 +31,7 @@ namespace ChimeraOutput {
             ISystemInput kbMouseInput = new KBMouseInput();
             ISystemInput flythrough = new Flythrough();
             ISystemInput mouse = new MouseInput();
-            ISystemInput kinect = new KinectInput(new IDeltaInput[] { dolphin }, new IHelpTrigger[] { trigger }, simpleFactory, pointFactory);
+            KinectInput kinect = new KinectInput(new IDeltaInput[] { dolphin }, new IHelpTrigger[] { trigger }, simpleFactory, pointFactory);
             //ISystemInput kinectDolphin = new DeltaBasedInput(dolphin);
 
             Window[] windows = new Window[] { new Window("Main Window", output) };
@@ -48,6 +48,9 @@ namespace ChimeraOutput {
 
             CoordinatorForm form = new CoordinatorForm(coordinator);
             CoordinatorConfig cfg = new CoordinatorConfig();
+            kinect.FlyEnabled = true;
+            kinect.WalkEnabled = true;
+            kinect.YawEnabled = true;
             ProcessWrangler.BlockingRunForm(form, coordinator, cfg.AutoRestart);
         }
     }

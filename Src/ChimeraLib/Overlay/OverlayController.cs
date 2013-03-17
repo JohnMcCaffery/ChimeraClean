@@ -94,12 +94,12 @@ namespace Chimera {
         /// <summary>
         /// Whether the overlay should control the position of the cursor in the wider system.
         /// </summary>
-        public bool ControlCursor {
+        public bool ControlPointer {
             get { return mControlPointer; }
             set { 
                 mControlPointer = value;
                 if (!value)
-                    SystemCursor.Position = new Point(-1, -1);
+                    MoveCursorOffScreen();
             }
         }
         /// <summary>
@@ -175,11 +175,15 @@ namespace Chimera {
         /// <param name="x">The percentage across the screen the cursor is (1 = all the way across).</param>
         /// <param name="y">The percentage down the screen the cursor is (1 = all the way down).</param>
         public void UpdateCursor(double x, double y) {
+            bool wasOn = mWindow.Monitor.Bounds.Contains(MonitorCursor);
             mCursorX = x;
             mCursorY = y;
             if (mControlPointer && mWindow.Monitor.Bounds.Contains(MonitorCursor))
                 SystemCursor.Position = MonitorCursor;
-            if (CursorMoved != null)
+            else if (wasOn && mControlPointer)
+                MoveCursorOffScreen();
+
+            if (CursorMoved != null && (mWindow.Monitor.Bounds.Contains(MonitorCursor) || wasOn))
                 CursorMoved(this, null);
         }
 
@@ -202,6 +206,8 @@ namespace Chimera {
                 mOverlayWindow.Show();
                 mOverlayWindow.FormClosed += new FormClosedEventHandler(mOverlayWindow_FormClosed);
                 mOverlayActive = false;
+                if (mOverlayFullscreen)
+                    mOverlayWindow.Fullscreen = true;
                 if (OverlayLaunched != null)
                     OverlayLaunched(this, null);
             }
@@ -245,8 +251,12 @@ namespace Chimera {
             mOverlayFullscreen = cfg.Fullscreen;
             mControlPointer = cfg.ControlPointer;
 
-            if (mOverlayFullscreen)
+            if (cfg.LaunchOverlay)
                 Launch();
+        }
+
+        private void MoveCursorOffScreen() {
+                SystemCursor.Position = new Point(mWindow.Monitor.Bounds.X-10, mWindow.Monitor.Bounds.Y-10);
         }
 
         void mOverlayWindow_FormClosed(object sender, FormClosedEventArgs e) {
