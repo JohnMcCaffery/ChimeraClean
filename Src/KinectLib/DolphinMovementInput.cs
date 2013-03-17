@@ -142,7 +142,7 @@ namespace Chimera.Kinect {
                 
 
             if (mEnabled && Change != null)
-                Change();
+                Change(this);
         }
 
         private void Init() {
@@ -196,7 +196,7 @@ namespace Chimera.Kinect {
 
         #region IDeltaInput Members 
 
-        public event Action Change;
+        public event Action<IDeltaInput> Change;
 
         public Vector3 PositionDelta {
             get { return mDelta; }

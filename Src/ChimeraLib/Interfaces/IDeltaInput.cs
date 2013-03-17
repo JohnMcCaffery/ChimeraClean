@@ -11,7 +11,7 @@ namespace Chimera {
         /// <summary>
         /// Triggered whenever the values are updated.
         /// </summary>
-        event Action Change;
+        event Action<IDeltaInput> Change;
 
         /// <summary>
         /// The changes to position.
@@ -33,7 +33,8 @@ namespace Chimera {
         bool WalkEnabled {
             get;
             set;
-        }        /// <summary>
+        }
+        /// <summary>
         /// Whether this input should control y position.
         /// </summary>
         bool StrafeEnabled {

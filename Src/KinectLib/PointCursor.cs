@@ -37,16 +37,6 @@ namespace Chimera.Kinect {
         private bool mOnScreen;
         private bool mTest = false;
 
-        public Window Window {
-            get { return mWindow; }
-        }
-        public UserControl Panel {
-            get {
-                if (mPanel == null)
-                    mPanel = new PointCursorPanel(this);
-                return mPanel;
-            }
-        }
         public Scalar X { get { return mX; } }
         public Scalar Y { get { return mY; } }
         public Scalar WorldW { get { return mWorldW; } }
@@ -74,19 +64,16 @@ namespace Chimera.Kinect {
 
                 if (mBounds.Contains(mLocation) && !mOnScreen) {
                     mOnScreen = true;
-                    if (CursorEnter != null)
-                        CursorEnter();
+                    if (CursorEnter != null && mEnabled)
+                        CursorEnter(this);
                 } else if (!mBounds.Contains(mLocation) && mOnScreen) {
                     mOnScreen = false;
-                    if (CursorLeave != null)
-                        CursorLeave();
+                    if (CursorLeave != null && mEnabled)
+                        CursorLeave(this);
                 }
 
-                if (CursorMove != null)
-                    CursorMove(x, y);
-
-                if (mEnabled)
-                    mWindow.UpdateCursor(mLocation.X, mLocation.Y);
+                if (CursorMove != null && mEnabled)
+                    CursorMove(this, x, y);
             }
         }
 
@@ -116,11 +103,11 @@ namespace Chimera.Kinect {
 
         #region IKinectCursor
 
-        public event Action CursorEnter;
+        public event Action<IKinectCursor> CursorEnter;
 
-        public event Action CursorLeave;
+        public event Action<IKinectCursor> CursorLeave;
 
-        public event Action<float, float> CursorMove;
+        public event Action<IKinectCursor, float, float> CursorMove;
 
         public event Action<bool> EnabledChanged;
 
@@ -134,6 +121,10 @@ namespace Chimera.Kinect {
                     mPanel = new PointCursorPanel(this);
                 return mPanel;
             }
+        }
+
+        public Window Window {
+            get { return mWindow; }
         }
 
         public string State {

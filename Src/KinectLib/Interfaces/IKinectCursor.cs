@@ -19,15 +19,15 @@ namespace Chimera.Kinect.Interfaces {
         /// <summary>
         /// Triggered whenever the cursor enters the window controlled by this object.
         /// </summary>
-        event Action CursorEnter;
+        event Action<IKinectCursor> CursorEnter;
         /// <summary>
         /// Triggered whenever the cursor leaves the window controlled by this object.
         /// </summary>
-        event Action CursorLeave;
+        event Action<IKinectCursor> CursorLeave;
         /// <summary>
         /// Triggered whenever the cursor is on the screen and moves.
         /// </summary>
-        event Action<float, float> CursorMove;
+        event Action<IKinectCursor, float, float> CursorMove;
         /// <summary>
         /// Triggered whenever this controller is enabled or disabled.
         /// </summary>
@@ -42,6 +42,10 @@ namespace Chimera.Kinect.Interfaces {
         /// A panel which can be used to control the cursor.
         /// </summary>
         UserControl ControlPanel { get; }
+        /// <summary>
+        /// The window this cursor updates.
+        /// </summary>
+        Window Window { get; }
         /// <summary>
         /// The state of the cursor control. Will be used to compile crash reports in the event of a crash.
         /// </summary>

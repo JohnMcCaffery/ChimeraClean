@@ -51,7 +51,7 @@ namespace Chimera.Kinect.GUI {
             flyEnabled.Checked = mInput.FlyEnabled;
             yawEnabled.Checked = mInput.YawEnabled;
 
-            mInput.Change += () => {
+            mInput.Change += source => {
                 Vector3 delta = mInput.PositionDelta;
                 delta.Y = (float) mInput.OrientationDelta.Yaw;
                 valuePanel.Value = delta;

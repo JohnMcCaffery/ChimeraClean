@@ -16,10 +16,10 @@ namespace Chimera.Inputs {
         public DeltaBasedInput(IDeltaInput input) {
             mInput = input;
 
-            mInput.Change += new Action(mInput_Change);
+            mInput.Change += new Action<IDeltaInput>(mInput_Change);
         }
 
-        void mInput_Change() {
+        void mInput_Change(IDeltaInput input) {
             Vector3 move = mInput.PositionDelta;
 
             //TODO - handle keyboard rotation
@@ -33,7 +33,6 @@ namespace Chimera.Inputs {
                 Rotation orientation = mCoordinator.Orientation + mInput.OrientationDelta;
                 mCoordinator.Update(pos, move, orientation, mInput.OrientationDelta);
             }
-
         }
 
         #region ISystemInput Members

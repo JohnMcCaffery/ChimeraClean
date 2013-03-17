@@ -103,18 +103,15 @@ namespace Chimera.Kinect {
                 if (mBounds.Contains(mLocation) && !OnScreen) {
                     mOnScreen = true;
                     if (CursorEnter != null)
-                        CursorEnter();
+                        CursorEnter(this);
                 } else if (!mBounds.Contains(mLocation) && OnScreen) {
                     mOnScreen = false;
                     if (CursorLeave != null)
-                        CursorLeave();
+                        CursorLeave(this);
                 }
 
                 if (CursorMove != null)
-                    CursorMove(x, y);
-
-                if (OnScreen)
-                    mWindow.UpdateCursor(mLocation.X, mLocation.Y);
+                    CursorMove(this, x, y);
             }
         }
 
@@ -130,11 +127,11 @@ namespace Chimera.Kinect {
 
         #region IKinectCursorWindow Members
 
-        public event Action CursorEnter;
+        public event Action<IKinectCursor> CursorEnter;
 
-        public event Action CursorLeave;
+        public event Action<IKinectCursor> CursorLeave;
 
-        public event Action<float, float> CursorMove;
+        public event Action<IKinectCursor, float, float> CursorMove;
 
         public event Action<bool> EnabledChanged;
 
@@ -148,6 +145,10 @@ namespace Chimera.Kinect {
                     mPanel = new SimpleCursorPanel(this);
                 return mPanel; 
             }
+        }
+
+        public Window Window {
+            get { return mWindow; }
         }
 
         public string State {

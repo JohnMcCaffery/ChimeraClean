@@ -89,6 +89,7 @@ namespace Chimera.Kinect {
             foreach (var movement in movementInputs) {
                 mMovementControllers.Add(movement.Name, movement);
                 movement.Init(mCoordinator);
+                movement.Change += new Action<IDeltaInput>(movement_Change);
                 if (mCurrentMoventController == null)
                     mCurrentMoventController = movement;
                 else
@@ -106,7 +107,6 @@ namespace Chimera.Kinect {
             if (cfg.Autostart)
                 StartKinect();
         }
-
         public void StartKinect() {
             if (!mKinectStarted) {
                 Nui.Init();
@@ -187,6 +187,7 @@ namespace Chimera.Kinect {
             foreach (var factory in mCursorFactories) {
                 IKinectCursor cursor = factory.Make();
                 cursor.Init(this, window);
+                cursor.CursorMove += new Action<IKinectCursor, float,float>(cursor_CursorMove);
                 mCursors[factory.Name].Add(window.Name, cursor);
 
                 if (mCurrentCursors == null)
@@ -194,6 +195,30 @@ namespace Chimera.Kinect {
                 else
                     cursor.Enabled = false;
             }
+        }
+
+        private void movement_Change(IDeltaInput input) {
+            if (!mEnabled)
+                return;
+
+            Vector3 move = input.PositionDelta;
+
+            //TODO - handle keyboard rotation
+            if (input.Enabled && move != Vector3.Zero || input.OrientationDelta.Pitch != 0.0 || input.OrientationDelta.Yaw != 0.0) {
+                float fly = move.Z;
+                move.Z = 0f;
+                move *= mCoordinator.Orientation.Quaternion;
+                move.Z = fly;
+
+                Vector3 pos = mCoordinator.Position + move;
+                Rotation orientation = mCoordinator.Orientation + input.OrientationDelta;
+                mCoordinator.Update(pos, move, orientation, input.OrientationDelta);
+            }
+        }
+
+        private void cursor_CursorMove(IKinectCursor cursor, float x, float y) {
+            if (mEnabled)
+                cursor.Window.UpdateCursor(x, y);
         }
     }
 }
