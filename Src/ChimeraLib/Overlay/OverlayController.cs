@@ -7,6 +7,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using Chimera.Util;
 using SystemCursor = System.Windows.Forms.Cursor;
+using Chimera.Interfaces;
 
 namespace Chimera {
     public class OverlayController {
@@ -36,7 +37,7 @@ namespace Chimera {
         /// <summary>
         /// The window used to render the overlay.
         /// </summary>
-        private OverlayWindow mOverlayWindow;
+        private IOverlayWindow mOverlayWindow;
         /// <summary>
         /// The window this overlay covers.
         /// </summary>
@@ -86,6 +87,7 @@ namespace Chimera {
         /// </summary>
         public bool ControlCursor {
             get { return mControlPointer; }
+            set { mControlPointer = value; }
         }
         /// <summary>
         /// Where on the monitor the cursor is.
@@ -180,10 +182,11 @@ namespace Chimera {
         /// <summary>
         /// Create and show the overlay window if it is not already created.
         /// </summary>
-        public void LaunchOverlay() {
+        public void Launch() {
             if (mOverlayWindow == null) {
                 mOverlayActive = true;
-                mOverlayWindow = new OverlayWindow(this, mTransparentColour);
+                mOverlayWindow = new SimpleOverlay(this, mTransparentColour);
+                //mOverlayWindow = new OverlayWindow(this, mTransparentColour);
                 mOverlayWindow.Show();
                 mOverlayWindow.FormClosed += new FormClosedEventHandler(mOverlayWindow_FormClosed);
                 mOverlayActive = false;
@@ -197,7 +200,7 @@ namespace Chimera {
         /// </summary>
         public void ForegroundOverlay() {
             if (mOverlayWindow != null)
-                mOverlayWindow.Invoke(new Action(() => mOverlayWindow.BringToFront()));
+                mOverlayWindow.Foreground();
         }
 
         /// <summary>
@@ -211,7 +214,7 @@ namespace Chimera {
         /// <summary>
         /// Close the overlay window, if it has been created.
         /// </summary>
-        public void CloseOverlay() {
+        public void Close() {
             if (mOverlayWindow != null) {
                 mOverlayWindow.Close();
                 mOverlayWindow = null;

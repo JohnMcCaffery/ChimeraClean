@@ -20,6 +20,12 @@ namespace KinectLib.GUI {
             : base() {
 
             ValueChanged += UpdatedVectorPanel_ValueChanged;
+            Disposed += new EventHandler(UpdatedScalarPanel_Disposed);
+        }
+
+        void UpdatedScalarPanel_Disposed(object sender, EventArgs e) {
+            if (mVector != null)
+                mVector.Changed -= mVector_OnChange;
         }
 
         public IUpdater<Vector3> Vector {

@@ -64,12 +64,13 @@
   <Class Name="Chimera.GUI.Forms.OverlayWindow">
     <Position X="23.5" Y="0.5" Width="2.25" />
     <TypeIdentifier>
-      <HashCode>AAAgAAAAACAAAAAAwACAAACCAEAAAAIFAABCQAAAAIA=</HashCode>
+      <HashCode>AAAgAAAAACAAAAAAwACAAACCAEAAAAIFAABCwAAAAIA=</HashCode>
       <FileName>GUI\Forms\OverlayWindow.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Field Name="mController" />
     </ShowAsAssociation>
+    <Lollipop Position="0.2" />
   </Class>
   <Class Name="Chimera.Overlay.MainMenu">
     <Position X="28.5" Y="12" Width="2" />
@@ -142,11 +143,10 @@
   <Class Name="Chimera.OverlayController">
     <Position X="20.75" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>QhkAEAAAAQAAI4AABAIAAwAAkAAACMBEAgAACAwAAQA=</HashCode>
-      <FileName>OverlayController.cs</FileName>
+      <HashCode>QhkAEAAAEQAAIwAABAIAAwAAkAAACMBEAgAACAwAAQA=</HashCode>
+      <FileName>Overlay\OverlayController.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
-      <Field Name="mOverlayWindow" />
       <Property Name="Window" />
     </ShowAsAssociation>
   </Class>

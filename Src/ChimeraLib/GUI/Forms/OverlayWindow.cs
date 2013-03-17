@@ -6,9 +6,10 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using Chimera.Interfaces;
 
 namespace Chimera.GUI.Forms {
-    public partial class OverlayWindow : Form {
+    public partial class OverlayWindow : Form , IOverlayWindow {
         /// <summary>
         /// The last position the mouse was at.
         /// </summary>
@@ -35,6 +36,7 @@ namespace Chimera.GUI.Forms {
             : this() {
             Init(controller);
             TransparencyKey = transparentColour;
+            // http://www.cursor.cc/
             Cursor = new Cursor("../Cursors/cursor.cur");
         }
         
@@ -61,18 +63,22 @@ namespace Chimera.GUI.Forms {
                 }));
         }
 
-    /// <summary>
-    /// Link this form with a logical input.
+        /// <summary>
+        /// Link this form with a logical input.
         /// </summary>
         /// <param name="input">The input to link this form with.</param>
         public void Init(OverlayController controller) {
             mController = controller;
-            mController.Window.MonitorChanged += new Action<Window,Screen>(mWindow_MonitorChanged);
+            mController.Window.MonitorChanged += new Action<Window, Screen>(mWindow_MonitorChanged);
 
             TopMost = true;
             StartPosition = FormStartPosition.Manual;
             Location = mController.Window.Monitor.Bounds.Location;
             Size = mController.Window.Monitor.Bounds.Size;
+        }
+
+        public void Foreground() {
+            Invoke(new Action(() => BringToFront()));
         }
 
         private void mWindow_MonitorChanged(Window window, Screen screen) {

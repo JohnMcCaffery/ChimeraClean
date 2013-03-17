@@ -18,6 +18,12 @@ namespace KinectLib.GUI {
             : base() {
 
             ValueChanged += UpdatedScalarPanel_ValueChanged;
+            Disposed += new EventHandler(UpdatedScalarPanel_Disposed);
+        }
+
+        void UpdatedScalarPanel_Disposed(object sender, EventArgs e) {
+            if (mScalar != null)
+                mScalar.Changed -= mScalar_OnChange;
         }
 
         public IUpdater<float> Scalar {

@@ -28,6 +28,7 @@ namespace Chimera.GUI.Controls {
             heightPanel.Value = (float) window.Height / 10f;
             topLeftPanel.Value = window.TopLeft / 10f;
             orientationPanel.Value = window.Orientation;
+            controlCursor.Checked = mWindow.Overlay.ControlCursor;
 
             mWindow.Overlay.OverlayClosed += new EventHandler(mWindow_OverlayClosed);
             mWindow.Overlay.OverlayLaunched += new EventHandler(mWindow_OverlayLaunched);
@@ -51,7 +52,7 @@ namespace Chimera.GUI.Controls {
             }
             if (mWindow.Overlay.OverlayVisible) {
                 launchOverlayButton.Text =  "Close Overlay";
-                mWindow.Overlay.LaunchOverlay();
+                mWindow.Overlay.Launch();
             }
         }
 
@@ -79,8 +80,13 @@ namespace Chimera.GUI.Controls {
         }
 
         private void launchOverlayButton_Click(object sender, EventArgs e) {
-            mWindow.Overlay.LaunchOverlay();
-            launchOverlayButton.Text = "Close Overlay";
+            if (launchOverlayButton.Text == "Launch Overlay") {
+                mWindow.Overlay.Launch();
+                launchOverlayButton.Text = "Close Overlay";
+            } else {
+                mWindow.Overlay.Close();
+                launchOverlayButton.Text = "Launch Overlay";
+            }
         }
 
         private void bringToFrontButtin_Click(object sender, EventArgs e) {
@@ -101,6 +107,10 @@ namespace Chimera.GUI.Controls {
 
         private void heightPanel_Changed(float obj) {
             mWindow.Height = heightPanel.Value * 10.0;
+        }
+
+        private void controlCursor_CheckedChanged(object sender, EventArgs e) {
+            mWindow.Overlay.ControlCursor = controlCursor.Checked;
         }
     }
 }

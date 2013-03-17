@@ -24,7 +24,7 @@
         /// </summary>
         private void InitializeComponent() {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(WindowPanel));
-            Chimera.Util.Rotation rotation1 = new Chimera.Util.Rotation();
+            Chimera.Util.Rotation rotation2 = new Chimera.Util.Rotation();
             this.mainTab = new System.Windows.Forms.TabControl();
             this.configTab = new System.Windows.Forms.TabPage();
             this.monitorPulldown = new System.Windows.Forms.ComboBox();
@@ -38,6 +38,7 @@
             this.bringToFrontButtin = new System.Windows.Forms.Button();
             this.fullscreenCheck = new System.Windows.Forms.CheckBox();
             this.launchOverlayButton = new System.Windows.Forms.Button();
+            this.controlCursor = new System.Windows.Forms.CheckBox();
             this.mainTab.SuspendLayout();
             this.configTab.SuspendLayout();
             this.overlayTab.SuspendLayout();
@@ -143,11 +144,11 @@
             this.orientationPanel.Quaternion = ((OpenMetaverse.Quaternion)(resources.GetObject("orientationPanel.Quaternion")));
             this.orientationPanel.Size = new System.Drawing.Size(408, 95);
             this.orientationPanel.TabIndex = 1;
-            rotation1.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("rotation1.LookAtVector")));
-            rotation1.Pitch = 0D;
-            rotation1.Quaternion = ((OpenMetaverse.Quaternion)(resources.GetObject("rotation1.Quaternion")));
-            rotation1.Yaw = 0D;
-            this.orientationPanel.Value = rotation1;
+            rotation2.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("rotation2.LookAtVector")));
+            rotation2.Pitch = 0D;
+            rotation2.Quaternion = ((OpenMetaverse.Quaternion)(resources.GetObject("rotation2.Quaternion")));
+            rotation2.Yaw = 0D;
+            this.orientationPanel.Value = rotation2;
             this.orientationPanel.Yaw = 0D;
             // 
             // topLeftPanel
@@ -171,6 +172,7 @@
             // 
             // overlayTab
             // 
+            this.overlayTab.Controls.Add(this.controlCursor);
             this.overlayTab.Controls.Add(this.bringToFrontButtin);
             this.overlayTab.Controls.Add(this.fullscreenCheck);
             this.overlayTab.Controls.Add(this.launchOverlayButton);
@@ -213,6 +215,17 @@
             this.launchOverlayButton.UseVisualStyleBackColor = true;
             this.launchOverlayButton.Click += new System.EventHandler(this.launchOverlayButton_Click);
             // 
+            // controlCursor
+            // 
+            this.controlCursor.AutoSize = true;
+            this.controlCursor.Location = new System.Drawing.Point(7, 88);
+            this.controlCursor.Name = "controlCursor";
+            this.controlCursor.Size = new System.Drawing.Size(92, 17);
+            this.controlCursor.TabIndex = 4;
+            this.controlCursor.Text = "Control Cursor";
+            this.controlCursor.UseVisualStyleBackColor = true;
+            this.controlCursor.CheckedChanged += new System.EventHandler(this.controlCursor_CheckedChanged);
+            // 
             // WindowPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -244,5 +257,6 @@
         private KinectLib.GUI.ScalarPanel heightPanel;
         private KinectLib.GUI.ScalarPanel widthPanel;
         private System.Windows.Forms.ComboBox monitorPulldown;
+        private System.Windows.Forms.CheckBox controlCursor;
     }
 }

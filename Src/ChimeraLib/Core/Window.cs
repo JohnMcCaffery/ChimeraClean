@@ -240,7 +240,7 @@ namespace Chimera {
         public void Close() {
             if (mOutput != null)
                 mOutput.Close();
-            mOverlayController.CloseOverlay();
+            mOverlayController.Close();
         }
 
         /// <summary>
