@@ -35,7 +35,7 @@ namespace Chimera.GUI.Forms {
             : this() {
             Init(controller);
             TransparencyKey = transparentColour;
-            Cursor = new Cursor("../Images/Cursor.bmp");
+            Cursor = new Cursor("../Cursors/cursor.cur");
         }
         
         /// <summary>
