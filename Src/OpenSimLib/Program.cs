@@ -10,6 +10,7 @@ using Chimera.Inputs;
 using Chimera.FlythroughLib;
 using Chimera.Overlay;
 using Chimera.Kinect;
+using Chimera.Kinect.Interfaces;
 
 namespace ChimeraOutput {
     public static class RunChimera {
@@ -21,6 +22,7 @@ namespace ChimeraOutput {
             Application.SetCompatibleTextRenderingDefault(false);
 
             DolphinMovementInput dolphin = new DolphinMovementInput();
+            RaiseArmHelpTrigger trigger = new RaiseArmHelpTrigger();
             SimpleCursorFactory simpleFactory = new SimpleCursorFactory();
             PointCursorFactory pointFactory = new PointCursorFactory();
 
@@ -29,7 +31,7 @@ namespace ChimeraOutput {
             ISystemInput kbMouseInput = new KBMouseInput();
             ISystemInput flythrough = new Flythrough();
             ISystemInput mouse = new MouseInput();
-            ISystemInput kinect = new KinectInput(new IDeltaInput[] { dolphin }, simpleFactory, pointFactory);
+            ISystemInput kinect = new KinectInput(new IDeltaInput[] { dolphin }, new IHelpTrigger[] { trigger }, simpleFactory, pointFactory);
             //ISystemInput kinectDolphin = new DeltaBasedInput(dolphin);
 
             Window[] windows = new Window[] { new Window("Main Window", output) };

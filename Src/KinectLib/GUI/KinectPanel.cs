@@ -36,11 +36,16 @@ namespace Chimera.Kinect.GUI {
             foreach (var window in input.Coordinator.Windows)
                 AddWindow(window.Name);
 
-            foreach (string movementController in mInput.MovementNames) {
-                movementControllerPulldown.Items.Add(movementController);
-                AddMovement(mInput.MovementController);
+            foreach (var movementController in mInput.MovementControllers) {
+                movementControllerPulldown.Items.Add(movementController.Name);
+                AddMovement(movementController);
                 if (movementControllerPulldown.SelectedIndex == -1)
                     movementControllerPulldown.SelectedIndex = 0;
+            }            foreach (var helpTrigger in mInput.HelpTriggers) {
+                helpTriggerPulldown.Items.Add(helpTrigger.Name);
+                AddHelpTrigger(helpTrigger);
+                if (helpTriggerPulldown.SelectedIndex == -1)
+                    helpTriggerPulldown.SelectedIndex = 0;
             }
             foreach (string cursorController in mInput.CursorNames) {
                 cursorControllerPulldown.Items.Add(cursorController);
@@ -81,6 +86,11 @@ namespace Chimera.Kinect.GUI {
             mInput.MovementController.ControlPanel.Visible = false;
             mInput.SetMovement(movementControllerPulldown.SelectedItem.ToString());
             mInput.MovementController.ControlPanel.Visible = true;
+        }
+        private void helpTriggerPulldown_SelectedIndexChanged(object sender, EventArgs e) {
+            mInput.HelpTrigger.ControlPanel.Visible = false;
+            mInput.SetHelpTrigger(helpTriggerPulldown.SelectedItem.ToString());
+            mInput.HelpTrigger.ControlPanel.Visible = true;
         }
 
         private void cursorControllerPulldown_SelectedIndexChanged(object sender, EventArgs e) {
@@ -112,6 +122,21 @@ namespace Chimera.Kinect.GUI {
             movementTab.Controls.Add(controlPanel);
         }
 
+        private void AddHelpTrigger(IHelpTrigger input) {
+            // 
+            // controlPanel
+            // 
+            UserControl controlPanel = input.ControlPanel;
+            controlPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            controlPanel.Location = new System.Drawing.Point(3, 3);
+            controlPanel.Name = input.Name + "ControlPanel";
+            controlPanel.Size = new System.Drawing.Size(695, 488);
+            controlPanel.TabIndex = 0;
+            controlPanel.Visible = false;
+
+            triggerTab.Controls.Add(controlPanel);
+        }
+
         private void AddWindow(string windowName) {
             // 
             // windowTab
@@ -131,7 +156,8 @@ namespace Chimera.Kinect.GUI {
             AddCursor(windowName);
         }
 
-        private void AddCursor(string windowName) {            // 
+        private void AddCursor(string windowName) {
+            // 
             // kinectWindowPanel
             // 
             UserControl windowPanel = mInput[windowName].ControlPanel;

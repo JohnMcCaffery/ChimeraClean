@@ -11,7 +11,7 @@ using C = NuiLibDotNet.Condition;
 namespace Chimera.Kinect {
     public class RaiseArmHelpTrigger : IHelpTrigger {
         private RaiseArmHelpTriggerPanel mPanel;
-        private bool mActive = true;
+        private bool mEnabled = true;
 
         private Vector mArmR;
         private Vector mArmL;
@@ -32,7 +32,7 @@ namespace Chimera.Kinect {
         public Scalar AngleThreshold { get { return mAngleThreshold; } }
         public Scalar HeightThreshold { get { return mHeightThreshold; } }
 
-        public event Action HelpTriggered;
+        public event Action<IHelpTrigger> Triggered;
 
         public UserControl ControlPanel {
             get {
@@ -42,28 +42,33 @@ namespace Chimera.Kinect {
             }
         }
 
-        public bool Active {
-            get { return mActive; }
-            set { mActive = value; }
+        public string Name { get { return "Raise Arm Help Trigger"; } }
+
+        public bool Enabled {
+            get { return mEnabled; }
+            set { mEnabled = value; }
         }
 
-        public void Init(IKinectController controller) { 
+        public void Init(Coordinator coordinator) {
+            mHeightThreshold = Scalar.Create(.4f);
+            mAngleThreshold = Scalar.Create(.48f);
+
             Vector up = Vector.Create(0f, 1f, 0f);
             mArmR = Nui.joint(Nui.Hand_Right) - Nui.joint(Nui.Shoulder_Right);
-            mArmL = Nui.joint(Nui.Hand_Right) - Nui.joint(Nui.Shoulder_Right);
+            mArmL = Nui.joint(Nui.Hand_Left) - Nui.joint(Nui.Shoulder_Left);
             mAngleR = Nui.dot(up, mArmR);
             mAngleL = Nui.dot(up, mArmL);
 
-            mTriggerR = C.And(Nui.y(mArmR) > mHeightThreshold, mAngleR < mAngleThreshold);
-            mTriggerL = C.And(Nui.y(mArmL) > mHeightThreshold, mAngleL < mAngleThreshold);
-            mTrigger = C.Or(mTrigger, mTriggerL);
+            mTriggerR = C.And(Nui.y(mArmR) > mHeightThreshold, mAngleR > mAngleThreshold);
+            mTriggerL = C.And(Nui.y(mArmL) > mHeightThreshold, mAngleL > mAngleThreshold);
+            mTrigger = C.Or(mTriggerR, mTriggerL);
 
             mTrigger.OnChange += new ChangeDelegate(mTrigger_OnChange);
         }
 
         void mTrigger_OnChange() {
-            if (mActive && HelpTriggered != null && mTrigger.Value)
-                HelpTriggered();
+            if (mEnabled && Triggered != null && mTrigger.Value)
+                Triggered(this);
 
         }
     }

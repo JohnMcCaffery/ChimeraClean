@@ -19,16 +19,18 @@ namespace Chimera.Kinect.GUI {
         public RaiseArmHelpTriggerPanel(RaiseArmHelpTrigger input)
             : this() {
 
+            mInput = input;
 
-        ArmR.Vector = new VectorUpdater(mInput.ArmR);
-        ArmL.Vector = new VectorUpdater(mInput.ArmL);
-        AngleR.Scalar = new ScalarUpdater(mInput.AngleR);
-        AngleL.Scalar = new ScalarUpdater(mInput.AngleL);
-        TriggerR.Condition = new ConditionUpdater(mInput.TriggerR);
-        TriggerL.Condition = new ConditionUpdater(mInput.TriggerL);
-        Trigger.Condition = new ConditionUpdater(mInput.Trigger);
-        AngleThreshold.Scalar = new ScalarUpdater(mInput.AngleThreshold);
-        HeightThreshold.Scalar = new ScalarUpdater(mInput.HeightThreshold);
+
+            ArmR.Vector = new VectorUpdater(mInput.ArmR);
+            ArmL.Vector = new VectorUpdater(mInput.ArmL);
+            AngleR.Scalar = new ScalarUpdater(mInput.AngleR);
+            AngleL.Scalar = new ScalarUpdater(mInput.AngleL);
+            TriggerR.Condition = new ConditionUpdater(mInput.TriggerR);
+            TriggerL.Condition = new ConditionUpdater(mInput.TriggerL);
+            Trigger.Condition = new ConditionUpdater(mInput.Trigger);
+            AngleThreshold.Scalar = new ScalarUpdater(mInput.AngleThreshold);
+            HeightThreshold.Scalar = new ScalarUpdater(mInput.HeightThreshold);
         }
     }
 }

@@ -6,11 +6,12 @@ using System.Windows.Forms;
 
 namespace Chimera.Kinect.Interfaces {
     public interface IHelpTrigger {
-        event Action HelpTriggered;
+        event Action<IHelpTrigger> Triggered;
 
         UserControl ControlPanel { get; }
-        bool Active { get; }
+        bool Enabled { get; set; }
+        string Name { get; }
 
-        void Init(IKinectController controller);
+        void Init(Coordinator controller);
     }
 }

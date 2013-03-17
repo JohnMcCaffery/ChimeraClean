@@ -18,6 +18,12 @@ namespace KinectLib.GUI {
             : base() {
 
             CheckedChanged += ConditionalCheck_CheckedChanged;
+            Disposed += new EventHandler(ConditionalCheck_Disposed);
+        }
+
+        void ConditionalCheck_Disposed(object sender, EventArgs e) {
+            if (mCondition != null)
+                mCondition.Changed -= mCondition_OnChange;
         }
 
         public IUpdater<bool> Condition {
@@ -42,9 +48,15 @@ namespace KinectLib.GUI {
         void mCondition_OnChange(bool val) {
             if (!mGuiChanged) {
                 mExternalChanged = true;
-                Checked = val;
+                Invoke(() => Checked = val);
                 mExternalChanged = false;
             }
         }
-    }
+
+        private void Invoke(Action a) {
+            if (InvokeRequired && !IsDisposed && Created)
+                base.Invoke(a);
+            else
+                a();
+        }    }
 }

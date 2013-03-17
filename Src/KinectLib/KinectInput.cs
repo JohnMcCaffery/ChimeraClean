@@ -14,6 +14,7 @@ using System.Drawing;
 namespace Chimera.Kinect {
     public class KinectInput : ISystemInput, IKinectController {
         private readonly Dictionary<string, IDeltaInput> mMovementControllers = new Dictionary<string, IDeltaInput>();
+        private readonly Dictionary<string, IHelpTrigger> mHelpTriggers = new Dictionary<string, IHelpTrigger>();
         private readonly List<IKinectCursorFactory> mCursorFactories = new List<IKinectCursorFactory>();
         private readonly Dictionary<string, Dictionary<string, IKinectCursor>> mCursors = new Dictionary<string, Dictionary<string, IKinectCursor>>();
 
@@ -24,7 +25,8 @@ namespace Chimera.Kinect {
         private Rotation mKinectOrientation;
         private KinectPanel mPanel;
 
-        private IDeltaInput mCurrentMoventController;
+        private IDeltaInput mCurrentMovementController;
+        private IHelpTrigger mCurrentHelpTrigger;
         private Dictionary<string, IKinectCursor> mCurrentCursors = null;
 
         public event Action<Vector3> PositionChanged;
@@ -38,21 +40,28 @@ namespace Chimera.Kinect {
         public IKinectCursor this[string window] {
             get { return mCurrentCursors.ContainsKey(window) ? mCurrentCursors[window] : null; }
         }
+
+        public string[] CursorNames {
+            get { return mCursors.Keys.ToArray(); }
+        }
+        public IDeltaInput[] MovementControllers {
+            get { return mMovementControllers.Values.ToArray(); }
+        }
+        public IHelpTrigger[] HelpTriggers {
+            get { return mHelpTriggers.Values.ToArray(); }
+        }
+
         /// <summary>
         /// All the window inputs this input associates with the windows the system renders to.
         /// </summary>
         public IKinectCursor[] Cursors {
             get { return mCurrentCursors.Values.ToArray(); }
         }
-        public string[] CursorNames {
-            get { return mCursorFactories.Select(factory => factory.Name).ToArray(); }
-        }
-        public string[] MovementNames {
-            get { return mMovementControllers.Keys.ToArray(); }
-        }
-
         public IDeltaInput MovementController {
-            get { return mCurrentMoventController; }
+            get { return mCurrentMovementController; }
+        }
+        public IHelpTrigger HelpTrigger {
+            get { return mCurrentHelpTrigger; }
         }
 
         public Vector3 Position {
@@ -77,7 +86,7 @@ namespace Chimera.Kinect {
             get { return mKinectStarted; }
         }
 
-        public KinectInput(IEnumerable<IDeltaInput> movementInputs, params IKinectCursorFactory[] cursors) {
+        public KinectInput(IEnumerable<IDeltaInput> movementControllers, IEnumerable<IHelpTrigger> helpTriggers, params IKinectCursorFactory[] cursors) {
             KinectConfig cfg = new KinectConfig();
 
             mKinectPosition = cfg.Position;
@@ -85,19 +94,27 @@ namespace Chimera.Kinect {
             mCursorFactories = new List<IKinectCursorFactory>(cursors);
             mEnabled = cfg.Enabled;
 
-            foreach (var movement in movementInputs) {
+            foreach (var movement in movementControllers) {
                 mMovementControllers.Add(movement.Name, movement);
                 movement.Init(mCoordinator);
                 movement.Change += new Action<IDeltaInput>(movement_Change);
-                if (mCurrentMoventController == null)
-                    mCurrentMoventController = movement;
+                if (mCurrentMovementController == null)
+                    mCurrentMovementController = movement;
                 else
                     movement.Enabled = false;
+            }
+            foreach (var helpTrigger in helpTriggers) {
+                mHelpTriggers.Add(helpTrigger.Name, helpTrigger);
+                helpTrigger.Init(mCoordinator);
+                helpTrigger.Triggered += new Action<IHelpTrigger>(helpTrigger_Triggered);
+                if (mCurrentHelpTrigger == null)
+                    mCurrentHelpTrigger = helpTrigger;
+                else
+                    helpTrigger.Enabled = false;
             }
 
             foreach (var factory in mCursorFactories) {
-                if (!mCursors.ContainsKey(factory.Name))
-                    mCursors.Add(factory.Name, new Dictionary<string, IKinectCursor>());
+                mCursors.Add(factory.Name, new Dictionary<string, IKinectCursor>());
 
                 if (mCurrentCursors == null)
                     mCurrentCursors = mCursors[factory.Name];
@@ -126,9 +143,17 @@ namespace Chimera.Kinect {
 
         public void SetMovement(string controllerName) {
             if (mMovementControllers.ContainsKey(controllerName)) {
-                mCurrentMoventController.Enabled = false;
-                mCurrentMoventController = mMovementControllers[controllerName];
-                mCurrentMoventController.Enabled = true;
+                mCurrentMovementController.Enabled = false;
+                mCurrentMovementController = mMovementControllers[controllerName];
+                mCurrentMovementController.Enabled = true;
+            }
+        }
+
+        public void SetHelpTrigger(string helpTriggerName) {
+            if (mHelpTriggers.ContainsKey(helpTriggerName)) {
+                mCurrentHelpTrigger.Enabled = false;
+                mCurrentHelpTrigger = mHelpTriggers[helpTriggerName];
+                mCurrentHelpTrigger.Enabled = true;
             }
         }
 
@@ -195,6 +220,12 @@ namespace Chimera.Kinect {
                 else
                     cursor.Enabled = false;
             }
+        }
+
+        private void helpTrigger_Triggered(IHelpTrigger trigger) {
+            if (trigger.Enabled)
+                foreach (var window in mCoordinator.Windows)
+                    window.Overlay.TriggerHelp();
         }
 
         private void movement_Change(IDeltaInput input) {
