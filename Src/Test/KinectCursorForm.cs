@@ -40,21 +40,26 @@ namespace Test {
             pointCursorPanel.Size = new System.Drawing.Size(732, 544);
             pointCursorPanel.TabIndex = 0;
 
-            this.tabPage2.Controls.Add(pointCursorPanel);
+            splitContainer1.Panel2.Controls.Add(pointCursorPanel);
 
-            mWindow.Overlay.CursorMoved += mCursor_CursorMove;
+            mCursor.CursorMove += new Action<IKinectCursor,float,float>(mCursor_CursorMove);
+            mWindow.Overlay.CursorMoved += mWindow_CursorMove;
         }
 
-        private void mCursor_CursorMove(OverlayController window, EventArgs args) {
+        private void mCursor_CursorMove(IKinectCursor cursor, float x, float y) {
+            mWindow.Overlay.UpdateCursor(x, y);
+        }
+
+        private void mWindow_CursorMove(OverlayController window, EventArgs args) {
             if (mCursor.OnScreen && !IsDisposed && Created)
                 Invoke(new Action(() => {
                     cursorPanel.Refresh();
-                    tabPage1.Refresh();
+                    splitContainer1.Panel1.Refresh();
                     Refresh();
                 }));
 
             Invalidate();
-            tabPage1.Invalidate();
+            splitContainer1.Panel1.Invalidate();
             cursorPanel.Invalidate();
         }
 

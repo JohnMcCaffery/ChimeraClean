@@ -107,7 +107,7 @@
             this.xPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.xPanel.Location = new System.Drawing.Point(23, 274);
-            this.xPanel.Max = 1024F;
+            this.xPanel.Max = 1F;
             this.xPanel.Min = 0F;
             this.xPanel.MinimumSize = new System.Drawing.Size(95, 20);
             this.xPanel.Name = "xPanel";
@@ -268,7 +268,7 @@
             this.yPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.yPanel.Location = new System.Drawing.Point(23, 300);
-            this.yPanel.Max = 768F;
+            this.yPanel.Max = 1F;
             this.yPanel.Min = 0F;
             this.yPanel.MinimumSize = new System.Drawing.Size(95, 20);
             this.yPanel.Name = "yPanel";

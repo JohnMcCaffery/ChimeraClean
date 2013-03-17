@@ -76,12 +76,12 @@ namespace Chimera {
 
             WindowConfig cfg = new WindowConfig(name);
             mMonitor = Screen.AllScreens.FirstOrDefault(s => s.DeviceName.Equals(cfg.Monitor));
-            mMouseControl = cfg.MouseControl;
-
+            mMouseControl = cfg.ControlPointer;
             mWidth = cfg.Width;
             mHeight = cfg.Height;
             mTopLeft = cfg.TopLeft;
             mOrientation = new Rotation(cfg.Pitch, cfg.Yaw);
+            mOverlayController = new OverlayController(this);
 
             mOrientation.Changed += mOrientation_Changed;
 
@@ -230,7 +230,6 @@ namespace Chimera {
         /// <param name="input">The input object the input can control.</param>
         public void Init(Coordinator coordinator) {
             mCoordinator = coordinator;
-            mOverlayController = new OverlayController(this);
             if (mOutput != null)
                 mOutput.Init(this);
         }

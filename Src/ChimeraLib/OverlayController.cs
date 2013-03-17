@@ -6,6 +6,7 @@ using Chimera.GUI.Forms;
 using System.Drawing;
 using System.Windows.Forms;
 using Chimera.Util;
+using SystemCursor = System.Windows.Forms.Cursor;
 
 namespace Chimera {
     public class OverlayController {
@@ -28,6 +29,10 @@ namespace Chimera {
         /// Whether to launch the overlay window fullscreen at startup.
         /// </summary>
         private bool mOverlayFullscreen;
+        /// <summary>
+        /// Whether the overlay should control the cursor position.
+        /// </summary>
+        private bool mControlPointer;
         /// <summary>
         /// The window used to render the overlay.
         /// </summary>
@@ -56,14 +61,32 @@ namespace Chimera {
         /// Triggered whenever the position of the cursor on this input changes.
         /// </summary>
         public event Action<OverlayController, EventArgs> CursorMoved;
+
         /// <summary>
-        /// Where on the monitor the cursor is. Specifeid as percentages.
+        /// Where on the monitor the cursor is. Specified as percentages.
         /// 0,0 = top left, 1,1 = bottom right.
         /// </summary>
         public PointF Cursor {
             get { return new PointF((float)mCursorX, (float)mCursorY); }
         }
+        /// <summary>
+        /// Where on the monitor the cursor is, specified in pixels.
+        /// </summary>
+        public Point MonitorCursor {
+            get {
+                Rectangle b = mWindow.Monitor.Bounds;
+                int x = (int)(mCursorX * b.Width) + b.X;
+                int y = (int)(mCursorY * b.Height) + b.Y;
+                return new Point(x, y); 
+            }
+        }
 
+        /// <summary>
+        /// Whether the overlay should control the position of the cursor in the wider system.
+        /// </summary>
+        public bool ControlCursor {
+            get { return mControlPointer; }
+        }
         /// <summary>
         /// Where on the monitor the cursor is.
         /// Specified as a percentage. 1 is at the left, 0 is at the left.
@@ -71,47 +94,12 @@ namespace Chimera {
         public double CursorX {
             get { return mCursorX; }
         }
-
         /// <summary>
         /// Where on the screen the cursor is.
         /// Specified as a percentage. 1 is at the bottom, 0 is at the top.
         /// </summary>
         public double CursorY {
             get { return mCursorY; }
-        }
-
-        public OverlayController(Window window) {
-            mWindow = window;
-
-            WindowConfig cfg = new WindowConfig(mWindow.Name);
-            mOverlayActive = cfg.LaunchOverlay;
-            mOverlayFullscreen = cfg.Fullscreen;
-        }
-
-        /// <summary>
-        /// Whether the overlay window is currently fullscreen.
-        /// </summary>
-        public bool OverlayFullscreen {
-            get { return mOverlayFullscreen; }
-            set {
-                mOverlayFullscreen = value;
-                if (mOverlayWindow != null)
-                    mOverlayWindow.Fullscreen = value;
-            }
-        }
-
-        /// <summary>
-        /// True if the overlay has been launched.
-        /// </summary>
-        public bool OverlayVisible {
-            get { return mOverlayActive; }
-        }
-
-        /// <summary>
-        /// Colour that can be used to make things transparent on this window's overlay.
-        /// </summary>
-        public Color TransparentColour {
-            get { return mTransparentColour; }
         }
 
         /// <summary>
@@ -129,13 +117,43 @@ namespace Chimera {
         }
 
         public Window Window {
-            get {
-                throw new System.NotImplementedException();
-            }
-            set {
-            }
+            get { return mWindow; }
+        }
+        /// <summary>
+        /// True if the overlay has been launched.
+        /// </summary>
+        public bool OverlayVisible {
+            get { return mOverlayActive; }
         }
 
+        /// <summary>
+        /// Colour that can be used to make things transparent on this window's overlay.
+        /// </summary>
+        public Color TransparentColour {
+            get { return mTransparentColour; }
+        }
+
+
+        public OverlayController(Window window) {
+            mWindow = window;
+
+            WindowConfig cfg = new WindowConfig(mWindow.Name);
+            mOverlayActive = cfg.LaunchOverlay;
+            mOverlayFullscreen = cfg.Fullscreen;
+            mControlPointer = cfg.ControlPointer;
+        }
+
+        /// <summary>
+        /// Whether the overlay window is currently fullscreen.
+        /// </summary>
+        public bool OverlayFullscreen {
+            get { return mOverlayFullscreen; }
+            set {
+                mOverlayFullscreen = value;
+                if (mOverlayWindow != null)
+                    mOverlayWindow.Fullscreen = value;
+            }
+        }
         /// <summary>
         /// Force the overlay input to redraw, if it is visible.
         /// </summary>
@@ -153,7 +171,8 @@ namespace Chimera {
         public void UpdateCursor(double x, double y) {
             mCursorX = x;
             mCursorY = y;
-            RedrawOverlay();
+            if (mControlPointer && mWindow.Monitor.Bounds.Contains(MonitorCursor))
+                SystemCursor.Position = MonitorCursor;
             if (CursorMoved != null)
                 CursorMoved(this, null);
         }

@@ -27,7 +27,7 @@
   <Class Name="Chimera.Window">
     <Position X="17.5" Y="0.5" Width="2.25" />
     <TypeIdentifier>
-      <HashCode>AAAAAAgEBQAABhAAFACIgEQAAAAAgABBUAwCBAiIAQI=</HashCode>
+      <HashCode>AAAAAAgEBQAABhAAFACIgEQAAAAAgAABUAwCBAiMAQI=</HashCode>
       <FileName>Core\Window.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -64,7 +64,7 @@
   <Class Name="Chimera.GUI.Forms.OverlayWindow">
     <Position X="23.5" Y="0.5" Width="2.25" />
     <TypeIdentifier>
-      <HashCode>AAAgAAAAACAAAAAAwgCAAACSAEAAAAIFAABCQAAAAIA=</HashCode>
+      <HashCode>AAAgAAAAACAAAAAAwACAAACCAEAAAAIFAABCQAAAAIA=</HashCode>
       <FileName>GUI\Forms\OverlayWindow.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -142,7 +142,7 @@
   <Class Name="Chimera.OverlayController">
     <Position X="20.75" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>QhkAEAAAAQAAIwAABAIAAwAAkAAACMAAAgAACAwAAQA=</HashCode>
+      <HashCode>QhkAEAAAAQAAI4AABAIAAwAAkAAACMBEAgAACAwAAQA=</HashCode>
       <FileName>OverlayController.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>

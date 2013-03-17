@@ -70,7 +70,7 @@ namespace Chimera.Kinect {
             mHeightScale = Scalar.Create("Height Scale", 1.5f);
 
             mLeftShift = Scalar.Create("Left Shift", .0f);
-            mUpShift = Scalar.Create("Up Shift", .75f);
+            mUpShift = Scalar.Create("Up Shift", .0f);
 
             mWidth = Scalar.Create("Width", .5f);
             mHeight = Scalar.Create("Height", .5f);
@@ -116,8 +116,10 @@ namespace Chimera.Kinect {
         }
 
         private void Init() {
-            mX = mConstrainedX * (float)mWindow.Monitor.Bounds.Width;
-            mY = (float) mWindow.Monitor.Bounds.Height - (mConstrainedY * (float)mWindow.Monitor.Bounds.Height);
+            //mX = mConstrainedX * (float)mWindow.Monitor.Bounds.Width;
+            //mY = (float) mWindow.Monitor.Bounds.Height - (mConstrainedY * (float)mWindow.Monitor.Bounds.Height);
+            mX = mConstrainedX;
+            mY = 1f - mConstrainedY;
 
             if (!mListening) {
                 mListening = true;

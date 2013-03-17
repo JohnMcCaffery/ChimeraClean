@@ -9,10 +9,9 @@ using OpenMetaverse;
 namespace Chimera {
     public class WindowConfig : ConfigBase {
         public string Monitor;
-        public string Name;
         public bool LaunchOverlay;
         public bool Fullscreen;
-        public bool MouseControl;
+        public bool ControlPointer;
         public double Width;
         public double Height;
         public Vector3 TopLeft;
@@ -40,7 +39,7 @@ namespace Chimera {
             Monitor = Get(false, "Monitor", "CrashLog.log", "The monitor on which this window should render.");
             LaunchOverlay = Get(false, "LaunchOverlay", false, "Whether to launch an overlay for this window at startup.");
             Fullscreen = Get(false, "Fullscreen", false, "Whether to launch the overlay fullscreen.");
-            MouseControl = Get(false, "MouseControl", false, "Whether moving the mouse over the monitor controls the cursor for this window.");
+            ControlPointer = Get(false, "ControlPointer", false, "Whether the overlay should take control of the pointer and move it when the pointer is over the window.");
 
             TopLeft = GetV(false, "TopLeft", Vector3.Zero, "The position of the top left corner of the window in real world coordinates (mm).");
             Yaw = Get(false, "Yaw", 0.0, "The yaw for the direction the monitor faces in the real world.");

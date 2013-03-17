@@ -320,8 +320,8 @@
             this.Y.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.Y.Location = new System.Drawing.Point(24, 283);
-            this.Y.Max = 10F;
-            this.Y.Min = -10F;
+            this.Y.Max = 1F;
+            this.Y.Min = 0F;
             this.Y.MinimumSize = new System.Drawing.Size(95, 20);
             this.Y.Name = "Y";
             this.Y.Scalar = null;
@@ -334,8 +334,8 @@
             this.X.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.X.Location = new System.Drawing.Point(24, 257);
-            this.X.Max = 10F;
-            this.X.Min = -10F;
+            this.X.Max = 1F;
+            this.X.Min = 0F;
             this.X.MinimumSize = new System.Drawing.Size(95, 20);
             this.X.Name = "X";
             this.X.Scalar = null;

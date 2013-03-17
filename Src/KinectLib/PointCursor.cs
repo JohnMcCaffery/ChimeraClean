@@ -33,7 +33,7 @@ namespace Chimera.Kinect {
         private PointCursorPanel mPanel;
         private PointF mLocation;
         private RectangleF mBounds = new RectangleF(0f, 0f, 1f, 1f);
-        private bool mEnabled;
+        private bool mEnabled = true;
         private bool mOnScreen;
         private bool mTest = false;
 
@@ -56,11 +56,11 @@ namespace Chimera.Kinect {
         public PointCursor(bool test) { mTest = test; }
 
         private void Tick() {
-            int x = (int) mX.Value;
-            int y = (int) mY.Value;
+            float x =  mX.Value;
+            float y =  mY.Value;
 
             if (mLocation.X != y || mLocation.Y != y) {
-                mLocation = new Point(x, y);
+                mLocation = new PointF(x, y);
 
                 if (mBounds.Contains(mLocation) && !mOnScreen) {
                     mOnScreen = true;
@@ -193,8 +193,8 @@ namespace Chimera.Kinect {
             Scalar x = (mWorldW - kinectCoordX) / mWorldW;
             Scalar y = (mWorldH - kinectCoordY) / mWorldH;
 
-            mX = Nui.ifScalar(C.And(mIntersects, C.And(x >= 0f, x <= mScreenW)), x, -1f);
-            mY = Nui.ifScalar(C.And(mIntersects, C.And(y >= 0f, y <= mScreenH)), y, -1f);
+            mX = Nui.ifScalar(C.And(mIntersects, C.And(x >= 0f, x <= 1f)), x, -1f);
+            mY = Nui.ifScalar(C.And(mIntersects, C.And(y >= 0f, y <= 1f)), y, -1f);
 
             mIntersection.Name = "Intersection";
             mTop.Name = "Top";
