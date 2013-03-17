@@ -64,6 +64,11 @@ namespace Chimera {
         public event Action<OverlayController, EventArgs> CursorMoved;
 
         /// <summary>
+        /// Way for user to signal help.
+        /// </summary>
+        public event Action HelpTriggered;
+
+        /// <summary>
         /// Where on the monitor the cursor is. Specified as percentages.
         /// 0,0 = top left, 1,1 = bottom right.
         /// </summary>
@@ -124,7 +129,8 @@ namespace Chimera {
 
         public Window Window {
             get { return mWindow; }
-        }
+        }
+
         /// <summary>
         /// True if the overlay has been launched.
         /// </summary>
@@ -140,13 +146,7 @@ namespace Chimera {
         }
 
 
-        public OverlayController(Window window) {
-            mWindow = window;
-
-            WindowConfig cfg = new WindowConfig(mWindow.Name);
-            mOverlayActive = cfg.LaunchOverlay;
-            mOverlayFullscreen = cfg.Fullscreen;
-            mControlPointer = cfg.ControlPointer;
+        public OverlayController() {
         }
 
         /// <summary>
@@ -181,6 +181,14 @@ namespace Chimera {
                 SystemCursor.Position = MonitorCursor;
             if (CursorMoved != null)
                 CursorMoved(this, null);
+        }
+
+        /// <summary>
+        /// Trigger the HelpTriggered event
+        /// </summary>
+        public void TriggerHelp() {
+            if (HelpTriggered != null)
+                HelpTriggered();
         }
 
         /// <summary>
@@ -223,6 +231,18 @@ namespace Chimera {
                 mOverlayWindow.Close();
                 mOverlayWindow = null;
             }
+        }
+
+        public void Init(Window window) {
+            mWindow = window;
+
+            WindowConfig cfg = new WindowConfig(mWindow.Name);
+            mOverlayActive = cfg.LaunchOverlay;
+            mOverlayFullscreen = cfg.Fullscreen;
+            mControlPointer = cfg.ControlPointer;
+
+            if (mOverlayFullscreen)
+                Launch();
         }
 
         void mOverlayWindow_FormClosed(object sender, FormClosedEventArgs e) {

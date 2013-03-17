@@ -26,6 +26,7 @@ namespace Chimera.Overlay {
             : this(x, y, w, h) {
 
             mRenderer = selector;
+            mRenderer.Init(this);
         }
 
         protected void SetRenderer(ISelectionRenderer renderer) {
@@ -52,6 +53,11 @@ namespace Chimera.Overlay {
 
         private void window_CursorMoved(OverlayController window, EventArgs args) {
             CheckState();
+        }
+
+        private void Coordinator_Tick() {
+            if (mHovering)
+                CheckState();
         }
 
         private void window_MonitorChanged(Window window, Screen screen) {
@@ -119,6 +125,7 @@ namespace Chimera.Overlay {
 
             mWindow.MonitorChanged += new Action<Window, Screen>(window_MonitorChanged);
             mWindow.Overlay.CursorMoved += new Action<OverlayController,EventArgs>(window_CursorMoved);
+            mWindow.Coordinator.Tick += new Action(Coordinator_Tick);
 
             window_MonitorChanged(mWindow, mWindow.Monitor);
         }

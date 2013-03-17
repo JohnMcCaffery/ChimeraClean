@@ -33,10 +33,10 @@ namespace ChimeraOutput {
             //ISystemInput kinectDolphin = new DeltaBasedInput(dolphin);
 
             Window[] windows = new Window[] { new Window("Main Window", output) };
-            ImageSelection mOverlay = new ImageSelection("../Select1.jpg", .1f, .1f, .3f, .3f);
-            IOverlayState mState = new TestState();
-            MainMenuItem item1 = new MainMenuItem(mState, mOverlay);
-            Chimera.Overlay.MainMenu mainMenu = new Chimera.Overlay.MainMenu(item1);
+            //ImageSelection mOverlay = new ImageSelection("../Select1.jpg", .1f, .1f, .3f, .3f);
+            //IOverlayState mState = new TestState();
+            //MainMenuItem item1 = new MainMenuItem(mState, mOverlay);
+            Chimera.Overlay.MainMenu mainMenu = new Chimera.Overlay.MainMenu();
             Coordinator coordinator = new Coordinator(windows, mainMenu, kinect, kbMouseInput, mouse, flythrough);
 
             //Window[] windows = new Window[] { new Window("Main Window") };

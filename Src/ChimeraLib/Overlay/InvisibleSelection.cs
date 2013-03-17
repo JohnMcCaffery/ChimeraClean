@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Drawing;
 
 namespace Chimera.Overlay {
     class InvisibleSelection : SelectableArea {
@@ -15,7 +16,7 @@ namespace Chimera.Overlay {
             : base(x, y, w, h) {
         }
 
-        public override void DrawStatic(System.Drawing.Graphics graphics, System.Drawing.Rectangle clipRectangle) { }
+        public override void DrawStatic(Graphics graphics, Rectangle clipRectangle) { }
 
         public override void Show() {
             Active = false;

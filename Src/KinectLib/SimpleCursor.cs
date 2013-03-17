@@ -158,7 +158,7 @@ namespace Chimera.Kinect {
         }
 
         public bool OnScreen {
-            get { return mOnScreenCondition.Value; }
+            get { return Nui.HasSkeleton && mOnScreenCondition.Value; }
         }
 
         public bool Enabled {

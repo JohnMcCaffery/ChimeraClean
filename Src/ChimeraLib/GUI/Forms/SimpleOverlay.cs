@@ -18,13 +18,21 @@ namespace Chimera.GUI.Forms {
         /// </summary>
         private Point mLastMouse = new Point(-1, -1);
         /// <summary>
-        /// how much to jitter the mouse by next tick.
+        /// The step that the current minimize/maximise step has got to.
         /// </summary>
-        private int mJitter = 1;
+        private int mCurrentStep;
         /// <summary>
-        /// True if the mouse has been on the screen, used to do one extra refresh when the mouse leaves the screen.
+        /// How many steps minimising/maximising should take.
         /// </summary>
-        private bool mMouseOnScreen;
+        private int mSteps = 50;
+        /// <summary>
+        /// Whether the overlay is currently maximising.
+        /// </summary>
+        private bool mMaximising;
+        /// <summary>
+        /// Whether the overlay is currently minimizing.
+        /// </summary>
+        private bool mMinimizing;
         /// <summary>
         /// The controller which controls this overlay.
         /// </summary>
@@ -32,21 +40,25 @@ namespace Chimera.GUI.Forms {
         /// <summary>
         /// What state the system is currently in.
         /// </summary>
-        private State mState;
+        private State mState = State.MainMenu;
 
         /// <summary>
         /// Selection which triggers when the user is to go in world.
         /// </summary>
         private InvisibleSelection mGoInWorld;
+        /// <summary>
+        /// The renderer which will let the user know when they are hovering over go in world.
+        /// </summary>
+        private ISelectionRenderer mGoInWorldRender;
 
         /// <summary>
         /// The main menu image.
         /// </summary>
-        private Bitmap MainMenuImage = new Bitmap("../Images/CathedralSplashScreen.png");
+        private Bitmap mMainMenuImage = new Bitmap("../Images/CathedralSplashScreen.png");
         /// <summary>
         /// The help image.
         /// </summary>
-        private Bitmap CathedralHelpImage = new Bitmap("../Images/CathedralHelp.png");
+        private Bitmap mCathedralHelpImage = new Bitmap("../Images/CathedralHelp.png");
 
         /// <summary>
         /// Whether to go full screen.
@@ -67,14 +79,17 @@ namespace Chimera.GUI.Forms {
         /// <param name="window">The window this overlay covers.</param>
         public SimpleOverlay(OverlayController controller, Color transparentColour)
             : this() {
-            Init(controller);
             TransparencyKey = transparentColour;
             // http://www.cursor.cc/
             Cursor = new Cursor("../Cursors/cursor.cur");
 
             drawPanel.BackColor = transparentColour;
 
-            mGoInWorld = new InvisibleSelection(new NumberSelectionRenderer(), 265f / 1920f, 255f / 1080f, (675f-255f) / 1920, (900f - 255f) / 1080f);
+            mGoInWorldRender = new NumberSelectionRenderer();
+            mGoInWorld = new InvisibleSelection(mGoInWorldRender, 265f / 1920f, 255f / 1080f, (675f-255f) / 1920, (900f - 255f) / 1080f);
+            mGoInWorld.Selected += new Action<ISelectable>(mGoInWorld_Selected);
+
+            Init(controller);
         }
 
         /// <summary>
@@ -89,6 +104,8 @@ namespace Chimera.GUI.Forms {
             Location = mController.Window.Monitor.Bounds.Location;
             Size = mController.Window.Monitor.Bounds.Size;
             mGoInWorld.Init(mController.Window);
+
+            mController.Window.Coordinator.Tick += new Action(Coordinator_Tick);
         }
 
         public void Foreground() {
@@ -107,7 +124,36 @@ namespace Chimera.GUI.Forms {
         }
 
         private void drawPanel_Paint(object sender, PaintEventArgs e) {
+            if (mState == State.MainMenu) {
+                e.Graphics.DrawImage(mMainMenuImage, new Point(0, 0));
+            } else if (mState == State.Help) {
+                e.Graphics.DrawImage(mCathedralHelpImage, new Point(0, 0));
+            }
+            if (mGoInWorld.Active && mGoInWorld.CurrentlyHovering)
+                mGoInWorld.DrawDynamic(e.Graphics, e.ClipRectangle);
+        }
 
+        private void mGoInWorld_Selected(ISelectable source) {
+            mGoInWorld.Active = false;
+            mCurrentStep = mSteps;
+            mMinimizing = true;
+        }
+
+        void Coordinator_Tick() {
+            if (mGoInWorld.Active && mGoInWorld.CurrentlyHovering)
+                Redraw();
+            if (mMinimizing || mMaximising) {
+                mCurrentStep += mMinimizing ? -1 : 1;
+                if (mCurrentStep < 0) {
+                    mMinimizing = false;
+                    mState = State.Explore;
+                } else if (mCurrentStep > mSteps) {
+                    mMaximising = false;
+                    mState = State.MainMenu;
+                }else {
+                    Invoke(new Action(() => Opacity = (double)mCurrentStep / (double)mSteps));
+                }
+            } 
         }
     }
 }

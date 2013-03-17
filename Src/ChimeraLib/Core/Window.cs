@@ -81,7 +81,7 @@ namespace Chimera {
             mHeight = cfg.Height;
             mTopLeft = cfg.TopLeft;
             mOrientation = new Rotation(cfg.Pitch, cfg.Yaw);
-            mOverlayController = new OverlayController(this);
+            mOverlayController = new OverlayController();
 
             mOrientation.Changed += mOrientation_Changed;
 
@@ -232,6 +232,8 @@ namespace Chimera {
             mCoordinator = coordinator;
             if (mOutput != null)
                 mOutput.Init(this);
+
+            mOverlayController.Init(this);
         }
 
         /// <summary>

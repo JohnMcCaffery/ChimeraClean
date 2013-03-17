@@ -27,19 +27,14 @@ namespace Chimera.Inputs {
 
             foreach (var window in mCoordinator.Windows) {
                 Rectangle bounds = window.Monitor.Bounds;
-                if (bounds.Contains(Cursor.Position) || mMouseOnScreen) {
-                    mMouseOnScreen = true;
+                if (bounds.Contains(Cursor.Position)) {
                     if (mLastMouse.X != Cursor.Position.X || mLastMouse.Y != Cursor.Position.Y) {
                         Update(window, bounds, Cursor.Position.X - bounds.Left, Cursor.Position.Y - bounds.Top);
                         mLastMouse = Cursor.Position;
-                    } else {
-                        Update(window, bounds, mLastMouse.X - bounds.Left + mJitter, Cursor.Position.Y - bounds.Top);
-                        mJitter *= -1;
-                    }
+                    } 
                     return;
                 } 
             }
-            mMouseOnScreen = false;
         }
 
         private void Update(Window window, Rectangle bounds, int x, int y) {

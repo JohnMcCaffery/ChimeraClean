@@ -18,14 +18,14 @@ namespace Chimera.Overlay {
             double hoverTime = DateTime.Now.Subtract(mHoverStart).TotalMilliseconds;
             int tick = (int)(hoverTime / tickLength) + 1;
             double progress = hoverTime % tickLength;
-            int s = (int)((progress / tickLength) * (mSelectable.Bounds.Height / 2.0));
+            int s = (int)((progress / tickLength) * (mSelectable.ScaledBounds.Height / 2.0));
             using (Font font = new Font(FontFamily.GenericMonospace, Math.Max(1, s), FontStyle.Bold)) {
                 string str = tick.ToString();
                 SizeF size = graphics.MeasureString(str, font);
                 //SizeF size = TextRenderer.MeasureText(str, font);
 
-                float x = mSelectable.Bounds.X + ((mSelectable.Bounds.Width / 2) - (size.Width / 2));
-                float y = mSelectable.Bounds.Y + ((mSelectable.Bounds.Height / 2) - (size.Height / 2));
+                float x = mSelectable.ScaledBounds.X + ((mSelectable.ScaledBounds.Width / 2) - (size.Width / 2));
+                float y = mSelectable.ScaledBounds.Y + ((mSelectable.ScaledBounds.Height / 2) - (size.Height / 2));
 
                 graphics.DrawString(str, font, Brushes.Red, x, y);
             }
