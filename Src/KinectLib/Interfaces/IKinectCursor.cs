@@ -7,11 +7,15 @@ using System.Windows.Forms;
 using OpenMetaverse;
 using Chimera.Util;
 
-namespace Chimera.Kinect {
-    public interface IKinectCursorWindowFactory {
-        IKinectCursorWindow Make();
+namespace Chimera.Kinect.Interfaces {
+    public interface IKinectCursorFactory {
+        IKinectCursor Make();
+        /// <summary>
+        /// The name of this type of cursor.
+        /// </summary>
+        string Name { get; }
     }
-    public interface IKinectCursorWindow {
+    public interface IKinectCursor {
         /// <summary>
         /// Triggered whenever the cursor enters the window controlled by this object.
         /// </summary>
@@ -23,7 +27,7 @@ namespace Chimera.Kinect {
         /// <summary>
         /// Triggered whenever the cursor is on the screen and moves.
         /// </summary>
-        event Action<int, int> CursorMove;
+        event Action<float, float> CursorMove;
         /// <summary>
         /// Triggered whenever this controller is enabled or disabled.
         /// </summary>
@@ -31,8 +35,9 @@ namespace Chimera.Kinect {
 
         /// <summary>
         /// The location of the cursor on screen.
+        /// Specified as percentages. 0,0 = top left, 1,1 = top right.
         /// </summary>
-        Point Location { get; }
+        PointF Location { get; }
         /// <summary>
         /// A panel which can be used to control the cursor.
         /// </summary>
@@ -48,24 +53,16 @@ namespace Chimera.Kinect {
         /// <summary>
         /// Whether this instance is allowed to control the cursor.
         /// </summary>
-        bool Enabled { get; }
+        bool Enabled {
+            get;
+            set;
+        }
 
         /// <summary>
         /// Initialise the instance, linking it with a window it is to control.
         /// </summary>
+        /// <param name="controller">The kinect controller which this cursor works from.</param>
         /// <param name="window">The window this cursor appears on.</param>
-        /// <param name="position">The position of the device.</param>
-        /// <param name="orientation">The position of the device.</param>
-        void Init(Window window, Vector3 position, Rotation orientation);
-        /// <summary>
-        /// Set where the physical device is in the real world (mm).
-        /// </summary>
-        /// <param name="position">The position of the device.</param>
-        void SetPosition(Vector3 position);
-        /// <summary>
-        /// Set where the physical device is pointed in the real world (mm).
-        /// </summary>
-        /// <param name="orientation">The position of the device.</param>
-        void SetOrientation(Rotation orientation);
+        void Init(IKinectController controller, Window window);
     }
 }

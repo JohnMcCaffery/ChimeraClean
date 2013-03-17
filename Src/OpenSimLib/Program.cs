@@ -23,19 +23,21 @@ namespace ChimeraOutput {
             NuiLibDotNet.Nui.SetAutoPoll(true);
 
             DolphinMovementInput dolphin = new DolphinMovementInput();
+            SimpleCursorFactory simpleFactory = new SimpleCursorFactory();
+            PointCursorFactory pointFactory = new PointCursorFactory();
 
             IOutput output = new SetFollowCamPropertiesViewerOutput("Main Window");
             ISystemInput kbMouseInput = new KBMouseInput();
             ISystemInput flythrough = new Flythrough();
-            ISystemInput kinect = new KinectInput();
-            ISystemInput kinectDolphin = new DeltaBasedInput(dolphin);
+            ISystemInput kinect = new KinectInput(new IDeltaInput[] { dolphin }, simpleFactory, pointFactory);
+            //ISystemInput kinectDolphin = new DeltaBasedInput(dolphin);
 
             Window[] windows = new Window[] { new Window("Main Window", output) };
-            ImageArea mOverlay = new ImageArea("../Select1.jpg", .1, .1, .3, .3);
+            ImageArea mOverlay = new ImageArea("../Select1.jpg", .1f, .1f, .3f, .3f);
             IOverlayState mState = new TestState();
             MainMenuItem item1 = new MainMenuItem(mState, mOverlay);
             Chimera.Overlay.MainMenu mainMenu = new Chimera.Overlay.MainMenu(item1);
-            Coordinator coordinator = new Coordinator(windows, mainMenu, kinectDolphin, kbMouseInput, flythrough);
+            Coordinator coordinator = new Coordinator(windows, mainMenu, kinect, kbMouseInput, flythrough);
 
             //Window[] windows = new Window[] { new Window("Main Window") };
             //Chimera.Overlay.MainMenu mainMenu = new Chimera.Overlay.MainMenu();

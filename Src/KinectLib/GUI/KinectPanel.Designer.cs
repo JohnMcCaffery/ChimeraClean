@@ -28,11 +28,13 @@
             this.mainTab = new System.Windows.Forms.TabControl();
             this.controlTab = new System.Windows.Forms.TabPage();
             this.startButton = new System.Windows.Forms.Button();
-            this.pointDirPanel = new KinectLib.GUI.UpdatedVectorPanel();
             this.orientationPanel = new ProxyTestGUI.RotationPanel();
             this.positionPanel = new ProxyTestGUI.VectorPanel();
-            this.pointStartPanel = new KinectLib.GUI.UpdatedVectorPanel();
             this.movementTab = new System.Windows.Forms.TabPage();
+            this.movementControllerPulldown = new System.Windows.Forms.ComboBox();
+            this.cursorControllerPulldown = new System.Windows.Forms.ComboBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
             this.mainTab.SuspendLayout();
             this.controlTab.SuspendLayout();
             this.SuspendLayout();
@@ -51,11 +53,13 @@
             // controlTab
             // 
             this.controlTab.AutoScroll = true;
+            this.controlTab.Controls.Add(this.label2);
+            this.controlTab.Controls.Add(this.label1);
+            this.controlTab.Controls.Add(this.cursorControllerPulldown);
+            this.controlTab.Controls.Add(this.movementControllerPulldown);
             this.controlTab.Controls.Add(this.startButton);
-            this.controlTab.Controls.Add(this.pointDirPanel);
             this.controlTab.Controls.Add(this.orientationPanel);
             this.controlTab.Controls.Add(this.positionPanel);
-            this.controlTab.Controls.Add(this.pointStartPanel);
             this.controlTab.Location = new System.Drawing.Point(4, 22);
             this.controlTab.Name = "controlTab";
             this.controlTab.Padding = new System.Windows.Forms.Padding(3);
@@ -66,8 +70,8 @@
             // 
             // startButton
             // 
-            this.startButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.startButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.startButton.Location = new System.Drawing.Point(0, 0);
             this.startButton.Name = "startButton";
             this.startButton.Size = new System.Drawing.Size(705, 23);
@@ -76,31 +80,10 @@
             this.startButton.UseVisualStyleBackColor = true;
             this.startButton.Click += new System.EventHandler(this.startButton_Click);
             // 
-            // pointDirPanel
-            // 
-            this.pointDirPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.pointDirPanel.Text = "Point Direction";
-            this.pointDirPanel.Location = new System.Drawing.Point(0, 332);
-            this.pointDirPanel.Max = 1024f;
-            this.pointDirPanel.MaxV = ((OpenMetaverse.Vector3)(resources.GetObject("pointDirPanel.MaxV")));
-            this.pointDirPanel.Min = -1024f;
-            this.pointDirPanel.MinimumSize = new System.Drawing.Size(103, 95);
-            this.pointDirPanel.MinV = ((OpenMetaverse.Vector3)(resources.GetObject("pointDirPanel.MinV")));
-            this.pointDirPanel.Name = "pointDirPanel";
-            this.pointDirPanel.Size = new System.Drawing.Size(701, 95);
-            this.pointDirPanel.TabIndex = 3;
-            this.pointDirPanel.Value = ((OpenMetaverse.Vector3)(resources.GetObject("pointDirPanel.Value")));
-            this.pointDirPanel.Vector = null;
-            this.pointDirPanel.X = 0F;
-            this.pointDirPanel.Y = 0F;
-            this.pointDirPanel.Z = 0F;
-            // 
             // orientationPanel
             // 
-            this.orientationPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.orientationPanel.Text = "Orientation";
+            this.orientationPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.orientationPanel.Location = new System.Drawing.Point(0, 130);
             this.orientationPanel.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("orientationPanel.LookAtVector")));
             this.orientationPanel.MinimumSize = new System.Drawing.Size(252, 95);
@@ -118,13 +101,12 @@
             // 
             // positionPanel
             // 
-            this.positionPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.positionPanel.Text = "Position (cm)";
+            this.positionPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.positionPanel.Location = new System.Drawing.Point(0, 29);
-            this.positionPanel.Max = 1024f;
+            this.positionPanel.Max = 1024F;
             this.positionPanel.MaxV = ((OpenMetaverse.Vector3)(resources.GetObject("positionPanel.MaxV")));
-            this.positionPanel.Min = -1024f;
+            this.positionPanel.Min = -1024F;
             this.positionPanel.MinimumSize = new System.Drawing.Size(103, 95);
             this.positionPanel.MinV = ((OpenMetaverse.Vector3)(resources.GetObject("positionPanel.MinV")));
             this.positionPanel.Name = "positionPanel";
@@ -136,26 +118,6 @@
             this.positionPanel.Z = 0F;
             this.positionPanel.ValueChanged += new System.EventHandler(this.positionPanel_ValueChanged);
             // 
-            // pointStartPanel
-            // 
-            this.pointStartPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.pointStartPanel.Text = "Point Start";
-            this.pointStartPanel.Location = new System.Drawing.Point(0, 231);
-            this.pointStartPanel.Max = 1024f;
-            this.pointStartPanel.MaxV = ((OpenMetaverse.Vector3)(resources.GetObject("pointStartPanel.MaxV")));
-            this.pointStartPanel.Min = -1024f;
-            this.pointStartPanel.MinimumSize = new System.Drawing.Size(103, 95);
-            this.pointStartPanel.MinV = ((OpenMetaverse.Vector3)(resources.GetObject("pointStartPanel.MinV")));
-            this.pointStartPanel.Name = "pointStartPanel";
-            this.pointStartPanel.Size = new System.Drawing.Size(701, 95);
-            this.pointStartPanel.TabIndex = 0;
-            this.pointStartPanel.Value = ((OpenMetaverse.Vector3)(resources.GetObject("pointStartPanel.Value")));
-            this.pointStartPanel.Vector = null;
-            this.pointStartPanel.X = 0F;
-            this.pointStartPanel.Y = 0F;
-            this.pointStartPanel.Z = 0F;
-            // 
             // movementTab
             // 
             this.movementTab.Location = new System.Drawing.Point(4, 22);
@@ -166,6 +128,46 @@
             this.movementTab.Text = "Movement";
             this.movementTab.UseVisualStyleBackColor = true;
             // 
+            // movementControllerPulldown
+            // 
+            this.movementControllerPulldown.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.movementControllerPulldown.FormattingEnabled = true;
+            this.movementControllerPulldown.Location = new System.Drawing.Point(116, 231);
+            this.movementControllerPulldown.Name = "movementControllerPulldown";
+            this.movementControllerPulldown.Size = new System.Drawing.Size(579, 21);
+            this.movementControllerPulldown.TabIndex = 5;
+            this.movementControllerPulldown.SelectedIndexChanged += new System.EventHandler(this.movementPulldown_SelectedIndexChanged);
+            // 
+            // cursorControllerPulldown
+            // 
+            this.cursorControllerPulldown.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.cursorControllerPulldown.FormattingEnabled = true;
+            this.cursorControllerPulldown.Location = new System.Drawing.Point(116, 258);
+            this.cursorControllerPulldown.Name = "cursorControllerPulldown";
+            this.cursorControllerPulldown.Size = new System.Drawing.Size(579, 21);
+            this.cursorControllerPulldown.TabIndex = 6;
+            this.cursorControllerPulldown.SelectedIndexChanged += new System.EventHandler(this.cursorControllerPulldown_SelectedIndexChanged);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(6, 234);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(104, 13);
+            this.label1.TabIndex = 7;
+            this.label1.Text = "Movement Controller";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(6, 261);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(84, 13);
+            this.label2.TabIndex = 8;
+            this.label2.Text = "Cursor Controller";
+            // 
             // KinectPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -175,6 +177,7 @@
             this.Size = new System.Drawing.Size(709, 520);
             this.mainTab.ResumeLayout(false);
             this.controlTab.ResumeLayout(false);
+            this.controlTab.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -184,10 +187,12 @@
         private System.Windows.Forms.TabControl mainTab;
         private System.Windows.Forms.TabPage controlTab;
         private System.Windows.Forms.TabPage movementTab;
-        private KinectLib.GUI.UpdatedVectorPanel pointDirPanel;
         private ProxyTestGUI.RotationPanel orientationPanel;
         private ProxyTestGUI.VectorPanel positionPanel;
-        private KinectLib.GUI.UpdatedVectorPanel pointStartPanel;
         private System.Windows.Forms.Button startButton;
+        private System.Windows.Forms.ComboBox cursorControllerPulldown;
+        private System.Windows.Forms.ComboBox movementControllerPulldown;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label1;
     }
 }

@@ -10,6 +10,7 @@ using Chimera.Interfaces;
 using OpenMetaverse;
 using Chimera.Util;
 using NuiLibDotNet;
+using Chimera.Kinect.Interfaces;
 
 namespace Chimera.Kinect.GUI {
     public partial class KinectPanel : UserControl {
@@ -17,46 +18,7 @@ namespace Chimera.Kinect.GUI {
         private bool mExternalUpdate;
         private bool mStarted;
         private KinectInput mInput;
-
-        /*
-        public event Action<Vector3> PositionChanged;
-
-        public event Action Started;
-
-        public bool HasStarted {
-            get { return mStarted; }
-            set {
-                mStarted = value;
-                startButton.Enabled = !value;
-            }
-        }
-
-        public Vector3 Position {
-            get { return positionPanel.Value * 10f; }
-            set {
-                if (!mGuiUpdate) {
-                    mExternalUpdate = true;
-                    positionPanel.Value = value / 10f;
-                    mExternalUpdate = true;
-                }
-            }
-        }
-
-        public Rotation Orientation {
-            get { return orientationPanel.Value; }
-            set { orientationPanel.Value = value; }
-        }
-
-        public IUpdater<Vector3> PointStart {
-            get { return pointStartPanel.Vector; }
-            set { pointStartPanel.Vector = value; }
-        }
-
-        public IUpdater<Vector3> PointDir {
-            get { return pointDirPanel.Vector; }
-            set { pointDirPanel.Vector = value; }
-        }
-        */
+        private Dictionary<string, TabPage> mTabs = new Dictionary<string, TabPage>();
 
         public KinectPanel() {
             InitializeComponent();
@@ -69,20 +31,29 @@ namespace Chimera.Kinect.GUI {
 
             orientationPanel.Value = input.Orientation;
             positionPanel.Value = input.Position;
-            pointStartPanel.Vector = new VectorUpdater(mInput.PointStart);
-            pointDirPanel.Vector = new VectorUpdater(mInput.PointDir);
             startButton.Enabled = !mInput.KinectStarted;
 
-            foreach (var window in input.WindowInputs)
-                AddWindow(new PointCursorPanel(window), window.Window.Name);
+            foreach (var window in input.Coordinator.Windows)
+                AddWindow(window.Name);
+
+            foreach (string movementController in mInput.MovementNames) {
+                movementControllerPulldown.Items.Add(movementController);
+                AddMovement(mInput.MovementController);
+                if (movementControllerPulldown.SelectedIndex == -1)
+                    movementControllerPulldown.SelectedIndex = 0;
+            }
+            foreach (string cursorController in mInput.CursorNames) {
+                cursorControllerPulldown.Items.Add(cursorController);
+                if (cursorControllerPulldown.SelectedIndex == -1)
+                    cursorControllerPulldown.SelectedIndex = 0;
+            }
 
             mInput.PositionChanged += new Action<Vector3>(mInput_PositionChanged);
-            mInput.VectorsAssigned += new Action<Vector,Vector>(mInput_VectorsAssigned);
+            mInput.Coordinator.WindowAdded += new Action<Window,EventArgs>(Coordinator_WindowAdded);
         }
 
-        private void mInput_VectorsAssigned(Vector start, Vector dir) {
-            pointStartPanel.Vector = new VectorUpdater(mInput.PointStart);
-            pointDirPanel.Vector = new VectorUpdater(mInput.PointDir);
+        private void Coordinator_WindowAdded(Window window, EventArgs args) {
+            AddWindow(window.Name);
         }
 
         private void mInput_PositionChanged(Vector3 value) {
@@ -106,30 +77,71 @@ namespace Chimera.Kinect.GUI {
             startButton.Enabled = false;
         }
 
-        public void AddWindow(UserControl windowPanel, string name) {
+        private void movementPulldown_SelectedIndexChanged(object sender, EventArgs e) {
+            mInput.MovementController.ControlPanel.Visible = false;
+            mInput.SetMovement(movementControllerPulldown.SelectedItem.ToString());
+            mInput.MovementController.ControlPanel.Visible = true;
+        }
+
+        private void cursorControllerPulldown_SelectedIndexChanged(object sender, EventArgs e) {
+            foreach (var window in mInput.Coordinator.Windows)
+                mInput[window.Name].ControlPanel.Visible = false;
+
+            mInput.SetCursor(cursorControllerPulldown.SelectedItem.ToString());
+
+            foreach (var window in mInput.Coordinator.Windows) {
+                if (mTabs[window.Name].Controls.Contains(mInput[window.Name].ControlPanel))
+                    mInput[window.Name].ControlPanel.Visible = true;
+                else
+                    AddCursor(window.Name);
+            }
+        }
+
+        private void AddMovement(IDeltaInput input) {
+            // 
+            // controlPanel
+            // 
+            UserControl controlPanel = input.ControlPanel;
+            controlPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            controlPanel.Location = new System.Drawing.Point(3, 3);
+            controlPanel.Name = input.Name + "ControlPanel";
+            controlPanel.Size = new System.Drawing.Size(695, 488);
+            controlPanel.TabIndex = 0;
+            controlPanel.Visible = false;
+
+            movementTab.Controls.Add(controlPanel);
+        }
+
+        private void AddWindow(string windowName) {
             // 
             // windowTab
             // 
             TabPage windowTab = new TabPage();
             windowTab.Location = new System.Drawing.Point(4, 22);
-            windowTab.Name = name + " Tab";
+            windowTab.Name = windowName + " Tab";
             windowTab.Padding = new System.Windows.Forms.Padding(3);
             windowTab.Size = new System.Drawing.Size(701, 494);
             windowTab.TabIndex = 2;
-            windowTab.Text = name;
+            windowTab.Text = windowName;
             windowTab.UseVisualStyleBackColor = true;
             windowTab.AutoScroll = true;
-            // 
+            mainTab.Controls.Add(windowTab);
+
+            mTabs.Add(windowName, windowTab);
+            AddCursor(windowName);
+        }
+
+        private void AddCursor(string windowName) {            // 
             // kinectWindowPanel
             // 
+            UserControl windowPanel = mInput[windowName].ControlPanel;
             windowPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             windowPanel.Location = new System.Drawing.Point(3, 3);
-            windowPanel.Name = name + "WindowPanel";
+            windowPanel.Name = windowName + "WindowPanel";
             windowPanel.Size = new System.Drawing.Size(695, 488);
             windowPanel.TabIndex = 0;
 
-            windowTab.Controls.Add(windowPanel);
-            mainTab.Controls.Add(windowTab);
+            mTabs[windowName].Controls.Add(windowPanel);
         }
     }
 }

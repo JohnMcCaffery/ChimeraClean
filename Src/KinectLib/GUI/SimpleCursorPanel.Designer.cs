@@ -32,7 +32,7 @@
             this.YLable = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
-            this.ShoulderR = new KinectLib.GUI.UpdatedVectorPanel();
+            this.Anchor = new KinectLib.GUI.UpdatedVectorPanel();
             this.TopLeftY = new KinectLib.GUI.UpdatedScalarPanel();
             this.TopLeftX = new KinectLib.GUI.UpdatedScalarPanel();
             this.Y = new KinectLib.GUI.UpdatedScalarPanel();
@@ -130,23 +130,23 @@
             this.label5.TabIndex = 15;
             this.label5.Text = "Top Left X";
             // 
-            // ShoulderR
+            // Anchor
             // 
-            this.ShoulderR.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.ShoulderR.Location = new System.Drawing.Point(331, 0);
-            this.ShoulderR.Max = 10F;
-            this.ShoulderR.MaxV = ((OpenMetaverse.Vector3)(resources.GetObject("ShoulderR.MaxV")));
-            this.ShoulderR.Min = -10F;
-            this.ShoulderR.MinimumSize = new System.Drawing.Size(103, 95);
-            this.ShoulderR.MinV = ((OpenMetaverse.Vector3)(resources.GetObject("ShoulderR.MinV")));
-            this.ShoulderR.Name = "ShoulderR";
-            this.ShoulderR.Size = new System.Drawing.Size(412, 95);
-            this.ShoulderR.TabIndex = 17;
-            this.ShoulderR.Value = ((OpenMetaverse.Vector3)(resources.GetObject("ShoulderR.Value")));
-            this.ShoulderR.Vector = null;
-            this.ShoulderR.X = 0F;
-            this.ShoulderR.Y = 0F;
-            this.ShoulderR.Z = 0F;
+            this.Anchor.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.Anchor.Location = new System.Drawing.Point(331, 0);
+            this.Anchor.Max = 10F;
+            this.Anchor.MaxV = ((OpenMetaverse.Vector3)(resources.GetObject("Anchor.MaxV")));
+            this.Anchor.Min = -10F;
+            this.Anchor.MinimumSize = new System.Drawing.Size(103, 95);
+            this.Anchor.MinV = ((OpenMetaverse.Vector3)(resources.GetObject("Anchor.MinV")));
+            this.Anchor.Name = "Anchor";
+            this.Anchor.Size = new System.Drawing.Size(412, 95);
+            this.Anchor.TabIndex = 17;
+            this.Anchor.Value = ((OpenMetaverse.Vector3)(resources.GetObject("Anchor.Value")));
+            this.Anchor.Vector = null;
+            this.Anchor.X = 0F;
+            this.Anchor.Y = 0F;
+            this.Anchor.Z = 0F;
             // 
             // TopLeftY
             // 
@@ -236,8 +236,8 @@
             // 
             this.UpShift.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.UpShift.Location = new System.Drawing.Point(470, 127);
-            this.UpShift.Max = 1F;
-            this.UpShift.Min = 0F;
+            this.UpShift.Max = 2F;
+            this.UpShift.Min = -2F;
             this.UpShift.MinimumSize = new System.Drawing.Size(95, 20);
             this.UpShift.Name = "UpShift";
             this.UpShift.Scalar = null;
@@ -249,8 +249,8 @@
             // 
             this.LeftShift.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.LeftShift.Location = new System.Drawing.Point(470, 101);
-            this.LeftShift.Max = 1F;
-            this.LeftShift.Min = 0F;
+            this.LeftShift.Max = 2F;
+            this.LeftShift.Min = -2F;
             this.LeftShift.MinimumSize = new System.Drawing.Size(95, 20);
             this.LeftShift.Name = "LeftShift";
             this.LeftShift.Scalar = null;
@@ -431,7 +431,7 @@
             this.Controls.Add(this.label7);
             this.Controls.Add(this.ConstrainedY);
             this.Controls.Add(this.ConstrainedX);
-            this.Controls.Add(this.ShoulderR);
+            this.Controls.Add(this.Anchor);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.TopLeftY);
@@ -475,7 +475,7 @@
         private System.Windows.Forms.Label label5;
         private KinectLib.GUI.UpdatedScalarPanel TopLeftY;
         private KinectLib.GUI.UpdatedScalarPanel TopLeftX;
-        private KinectLib.GUI.UpdatedVectorPanel ShoulderR;
+        private KinectLib.GUI.UpdatedVectorPanel Anchor;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label7;
         private KinectLib.GUI.UpdatedScalarPanel ConstrainedY;

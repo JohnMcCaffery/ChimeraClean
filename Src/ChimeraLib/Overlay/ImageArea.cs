@@ -30,27 +30,27 @@ namespace Chimera.Overlay {
             }
         }
 
-        public ImageArea(Bitmap image, double x, double y, double w, double h)
+        public ImageArea(Bitmap image, float x, float y, float w, float h)
             : base(x, y, w, h) {
             mImage = image;
         }
 
 
-        public ImageArea(string imageFile, double x, double y, double w, double h)
+        public ImageArea(string imageFile, float x, float y, float w, float h)
             : this(new Bitmap(imageFile), x, y, w, h) {
         }
 
-        public ImageArea(Window window, Bitmap image, double x, double y, double w, double h)
+        public ImageArea(Window window, Bitmap image, float x, float y, float w, float h)
             : this(image, x, y, w, h) {
             Init(window);
         }
 
-        public ImageArea(Window window, string imageFile, double x, double y, double w, double h)
+        public ImageArea(Window window, string imageFile, float x, float y, float w, float h)
             : this(window, new Bitmap(imageFile), x, y, w, h) {
         }
 
         private void window_MonitorChanged(Window window, Screen screen) {
-            mScaledImage = new Bitmap(mImage, Bounds.Width, Bounds.Height);
+            mScaledImage = new Bitmap(mImage, (int) (Bounds.Width * screen.Bounds.Width), (int) (Bounds.Height * screen.Bounds.Height));
         }
 
         #region ISelectable Members

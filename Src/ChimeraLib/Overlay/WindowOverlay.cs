@@ -68,9 +68,9 @@ namespace Chimera.Overlay {
         }
 
         private void RecalculateThumbnail() {
-            double s = mMenu.MainMenuSelectableSize;
+            float s = (float) mMenu.MainMenuSelectableSize;
             //mThumbnailSelectable = new ImageArea(mWindow, mStaticBG, 1 - s, 0, 1, s);
-            mThumbnailSelectable = new ImageArea(mWindow, mStaticBG, 0, 0, 1, s);
+            mThumbnailSelectable = new ImageArea(mWindow, mStaticBG, 0f, 0f, 1f, s);
             mThumbnailSelectable.Selected += new Action<ISelectable>(mThumbnailSelectable_Selected);
             mThumbnailSelectable.Active = false;
         }
@@ -134,9 +134,11 @@ namespace Chimera.Overlay {
         }
 
         public void DrawCursor(Graphics graphics, Rectangle clipRectangle) {
-            float r = 10f;
-            if (clipRectangle.Contains(mWindow.Cursor))
-                graphics.FillEllipse(Brushes.Red, (float)mWindow.CursorX - r, (float)mWindow.CursorY - r, r * 2, r * 2);
+            int r = 10;
+            int x = (int) (clipRectangle.Width * mWindow.CursorX);
+            int y = (int) (clipRectangle.Height * mWindow.CursorY);
+            if (clipRectangle.Contains(new Point(x, y)))
+                graphics.FillEllipse(Brushes.Red, x - r, y - r, r * 2, r * 2);
         }
 
         private void mThumbnailSelectable_Selected(ISelectable selectable) {

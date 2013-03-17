@@ -154,23 +154,26 @@ namespace Chimera {
 
         /// <summary>
         /// Where on the monitor the cursor is.
+        /// Specified as a percentage. 1 is at the left, 0 is at the left.
         /// </summary>
         public double CursorX {
             get { return mCursorX ; }
         }
 
         /// <summary>
-        /// Where on the monitor the cursor is.
+        /// Where on the screen the cursor is.
+        /// Specified as a percentage. 1 is at the bottom, 0 is at the top.
         /// </summary>
         public double CursorY {
             get { return mCursorY ; }
         }
 
         /// <summary>
-        /// Where on the monitor the cursor is.
+        /// Where on the monitor the cursor is. Specifeid as percentages.
+        /// 0,0 = top left, 1,1 = bottom right.
         /// </summary>
-        public Point Cursor {
-            get { return new Point((int) mCursorX, (int) mCursorY) ; }
+        public PointF Cursor {
+            get { return new PointF((float) mCursorX, (float) mCursorY) ; }
         }
 
         /// <summary>
@@ -348,10 +351,11 @@ namespace Chimera {
         }
 
         /// <summary>
-        /// Set the position of the cursor on the window, specifying the position of the cursor on the monitor in pixels.
+        /// Set the position of the cursor on the window, specified as values percentages of the width and height.
+        /// 0,0 is top left, 1,1 is bottom right.
         /// </summary>
-        /// <param name="x">The X coordinate of the cursor.</param>
-        /// <param name="y">The Y coordinate of the cursor.</param>
+        /// <param name="x">The percentage across the screen the cursor is (1 = all the way across).</param>
+        /// <param name="y">The percentage down the screen the cursor is (1 = all the way down).</param>
         public void UpdateCursor(double x, double y) {
             mCursorX = x;
             mCursorY = y;

@@ -8,6 +8,7 @@ using System.Windows.Forms;
 using Chimera;
 using OpenMetaverse;
 using Chimera.Kinect;
+using Chimera.Kinect.Interfaces;
 
 namespace Test {
     public class Program {
@@ -32,15 +33,16 @@ namespace Test {
 			Nui.Init();
             Nui.SetAutoPoll(true);
 
-            GC.Collect();
+            GC.Collect();
+
 
             Window window = new Window("Test Window");
             window.Width = 2000;
             window.Height = 1500;
             window.TopLeft = new Vector3(0f, -1000f, 750f);
 
-            //IKinectCursorWindow cursor = new PointCursor();
-            IKinectCursorWindow cursor = new SimpleCursor();
+            IKinectCursor cursor = new PointCursor();
+            //IKinectCursor cursor = new SimpleCursor();
 
             //Form = new TestForm(mPlaneTopLeft, mPlaneNormal, mTop, mSide, mPointStart, mPointDir, mIntersection, mW, mH, mX, mY);
             //Form form = new KinectMovementForm();

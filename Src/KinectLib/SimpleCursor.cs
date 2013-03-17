@@ -9,12 +9,17 @@ using System.Windows.Forms;
 using Chimera.Kinect.GUI;
 using Chimera.Util;
 using OpenMetaverse;
+using Chimera.Kinect.Interfaces;
 
 namespace Chimera.Kinect {
-    public class SimpleCursor : IKinectCursorWindow {
+    public class SimpleCursorFactory : IKinectCursorFactory {
+        public IKinectCursor Make() { return new SimpleCursor(); }
+        public string Name { get { return "Simple X/Y Cursor"; } }
+    }
+    public class SimpleCursor : IKinectCursor {
         private SimpleCursorPanel mPanel;
         private Vector mHandR;
-        private Vector mShoulderR;
+        private Vector mAnchor;
         private Scalar mWidth;
         private Scalar mHeight;
         private Scalar mWidthScale;
@@ -31,12 +36,13 @@ namespace Chimera.Kinect {
         private Scalar mConstrainedY;
         private Condition mOnScreenCondition;
         private Window mWindow;
-        private Point mLocation = new Point(-1, -1);
+        private PointF mLocation = new PointF(-1f, -1f);
+        private RectangleF mBounds = new RectangleF(0f, 0f, 1f, 1f);
         private bool mOnScreen;
         private bool mEnabled;
         private bool mListening;
 
-        public Vector ShoulderR { get { return mShoulderR; } }
+        public Vector Anchor { get { return mAnchor; } }
         public Vector HandR { get { return mHandR; } }
         public Scalar Width { get { return mWidth; } }
         public Scalar Height { get { return mHeight; } }
@@ -56,21 +62,23 @@ namespace Chimera.Kinect {
         public SimpleCursor() : this (false) { }
         public SimpleCursor(bool test) {
             mHandR = test ? Vector.Create("HandR", 0f, 0f, 0f) : Nui.joint(Nui.Hand_Right);
-            mShoulderR = test ? Vector.Create("ShoulderR", 0f, 0f, 0f) : Nui.joint(Nui.Shoulder_Right);
-            Vector shoulderL = test ? Vector.Create("ShoulderL", -1f, 0f, 0f) : Nui.joint(Nui.Shoulder_Left);
-            Scalar shoulderW = Nui.magnitude(shoulderL - mShoulderR);
+            mAnchor = test ? Vector.Create("Anchor", 0f, 0f, 0f) : Nui.joint(Nui.Hip_Centre);
+            Vector head = test ? Vector.Create("Head", -1f, 0f, 0f) : Nui.joint(Nui.Head);
+            Scalar headShoulderDiff = Nui.magnitude(mAnchor - head);
 
             mWidthScale = Scalar.Create("Width Scale", 1.5f);
             mHeightScale = Scalar.Create("Height Scale", 1.5f);
 
-            mLeftShift = Scalar.Create("Left Shift", .25f);
+            mLeftShift = Scalar.Create("Left Shift", .0f);
             mUpShift = Scalar.Create("Up Shift", .75f);
 
-            mWidth = shoulderW * mWidthScale;
-            mHeight = shoulderW * mHeightScale;
+            mWidth = Scalar.Create("Width", .5f);
+            mHeight = Scalar.Create("Height", .5f);
+            //mWidth = headShoulderDiff * mWidthScale;
+            //mHeight = headShoulderDiff * mHeightScale;
 
-            mTopLeftX = Nui.x(mShoulderR) - (mWidth * mLeftShift);
-            mTopLeftY = Nui.y(mShoulderR) - (mHeight * mUpShift);
+            mTopLeftX = Nui.x(mAnchor) - (mWidth * mLeftShift);
+            mTopLeftY = Nui.y(mAnchor) + (mHeight * mUpShift);
 
             mRawX = Nui.x(mHandR) - mTopLeftX;
             mRawY = Nui.y(mHandR) - mTopLeftY;
@@ -86,17 +94,17 @@ namespace Chimera.Kinect {
         }
 
         void Nui_Tick() {
-            int x = (int) mX.Value;
-            int y = (int) mY.Value;
+            float x = mX.Value;
+            float y = mY.Value;
 
             if (mLocation.X != y || mLocation.Y != y) {
-                mLocation = new Point(x, y);
+                mLocation = new PointF(x, y);
 
-                if (mWindow.Monitor.Bounds.Contains(mLocation) && !OnScreen) {
+                if (mBounds.Contains(mLocation) && !OnScreen) {
                     mOnScreen = true;
                     if (CursorEnter != null)
                         CursorEnter();
-                } else if (!mWindow.Monitor.Bounds.Contains(mLocation) && OnScreen) {
+                } else if (!mBounds.Contains(mLocation) && OnScreen) {
                     mOnScreen = false;
                     if (CursorLeave != null)
                         CursorLeave();
@@ -126,11 +134,11 @@ namespace Chimera.Kinect {
 
         public event Action CursorLeave;
 
-        public event Action<int, int> CursorMove;
+        public event Action<float, float> CursorMove;
 
         public event Action<bool> EnabledChanged;
 
-        public Point Location {
+        public PointF Location {
             get { return mLocation; }
         }
 
@@ -152,17 +160,20 @@ namespace Chimera.Kinect {
 
         public bool Enabled {
             get { return mEnabled; }
+            set {
+                if (value != mEnabled) {
+                    mEnabled = value;
+                    if (EnabledChanged != null)
+                        EnabledChanged(value);
+                }
+            }
         }
 
-        public void Init(Window window, Vector3 position, Rotation orientation) {
+        public void Init(IKinectController controller, Window window) {
             mWindow = window;
             mWindow.MonitorChanged += (win, monitor) => Init();
             Init();
         }
-
-        public void SetPosition(Vector3 position) { }
-
-        public void SetOrientation(Rotation orientation) { }
 
         #endregion
     }

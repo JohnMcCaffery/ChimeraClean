@@ -9,17 +9,19 @@ using System.Windows.Forms;
 using System.Drawing;
 using Chimera.Util;
 using C = NuiLibDotNet.Condition;
+using Chimera.Kinect.Interfaces;
 
 namespace Chimera.Kinect {
-    public class PointCursorFactory : IKinectCursorWindowFactory {
-        public IKinectCursorWindow Make() {
-            return new PointCursor();
-        }
+    public class PointCursorFactory : IKinectCursorFactory {
+        public IKinectCursor Make() { return new PointCursor(); }
+        public string Name { get { return "Ray Tracing Pointer"; } }
     }
-    public class PointCursor : IKinectCursorWindow {
+    public class PointCursor : IKinectCursor {
         public static float SCALE = 1000f;
 
+        private IKinectController mController;
         private Window mWindow;
+        private Rotation mOrientation;
         private Vector mPlaneTopLeft, mPlaneNormal;
         private Vector mPointDir, mPointStart;
         private Vector mIntersection;
@@ -29,9 +31,8 @@ namespace Chimera.Kinect {
         private Scalar mX, mY;
         private Condition mIntersects;
         private PointCursorPanel mPanel;
-        private Vector3 mPosition;
-        private Rotation mOrientation;
-        private Point mLocation;
+        private PointF mLocation;
+        private RectangleF mBounds = new RectangleF(0f, 0f, 1f, 1f);
         private bool mEnabled;
         private bool mOnScreen;
         private bool mTest = false;
@@ -71,11 +72,11 @@ namespace Chimera.Kinect {
             if (mLocation.X != y || mLocation.Y != y) {
                 mLocation = new Point(x, y);
 
-                if (mWindow.Monitor.Bounds.Contains(mLocation) && !mOnScreen) {
+                if (mBounds.Contains(mLocation) && !mOnScreen) {
                     mOnScreen = true;
                     if (CursorEnter != null)
                         CursorEnter();
-                } else if (!mWindow.Monitor.Bounds.Contains(mLocation) && mOnScreen) {
+                } else if (!mBounds.Contains(mLocation) && mOnScreen) {
                     mOnScreen = false;
                     if (CursorLeave != null)
                         CursorLeave();
@@ -84,7 +85,8 @@ namespace Chimera.Kinect {
                 if (CursorMove != null)
                     CursorMove(x, y);
 
-                mWindow.UpdateCursor(mLocation.X, mLocation.Y);
+                if (mEnabled)
+                    mWindow.UpdateCursor(mLocation.X, mLocation.Y);
             }
         }
 
@@ -99,7 +101,7 @@ namespace Chimera.Kinect {
             mScreenH.Value = mWindow.Monitor.Bounds.Height;
 
             Vector3 topLeft = mWindow.TopLeft;
-            topLeft -= mPosition;
+            topLeft -= mController.Position;
             topLeft *= mOrientation.Quaternion;
 
             Vector3 normal = mWindow.Orientation.LookAtVector * mOrientation.Quaternion;
@@ -118,11 +120,11 @@ namespace Chimera.Kinect {
 
         public event Action CursorLeave;
 
-        public event Action<int, int> CursorMove;
+        public event Action<float, float> CursorMove;
 
         public event Action<bool> EnabledChanged;
 
-        public Point Location {
+        public PointF Location {
             get { return mLocation; }
         }
 
@@ -139,19 +141,26 @@ namespace Chimera.Kinect {
         }
 
         public bool OnScreen {
-            get { return mWindow.Monitor.Bounds.Contains(Location); }
+            get { return mBounds.Contains(Location); }
         }
 
         public bool Enabled {
             get { return mEnabled; }
+            set {
+                if (value != mEnabled) {
+                    mEnabled = value;
+                    if (EnabledChanged != null)
+                        EnabledChanged(value);
+                }
+            }
         }
 
-        public void Init(Window window, Vector3 position, Rotation orientation) {
+        public void Init(IKinectController controller, Window window) {
+            mController = controller;
             mWindow = window;
-            mOrientation = orientation;
-            mPosition = position;
+            mOrientation = controller.Orientation;
 
-            orientation.Changed += orientation_Changed;
+            mOrientation.Changed += orientation_Changed;
             mWindow.Changed += (win, args) => ConfigureFromWindow();
 
             mPlaneTopLeft = Vector.Create("PlanePoint", 1f, 1f, 0f);
@@ -169,8 +178,6 @@ namespace Chimera.Kinect {
                 mPointStart = Nui.joint(Nui.Elbow_Right) * SCALE;
                 mPointDir = Nui.normalize(mPointStart - pointEnd);
             }
-
-            //mIntersection = Nui.intersect(mPlaneTopLeft, Nui.normalize(mPlaneNormal), mPointStart, Nui.normalize(mPointDir));
 
 
             //Calculate the intersection of the plane defined by the point mPlaneTopLeft and the normal mPlaneNormal and the line defined by the point mPointStart and the direction mPointDir.
@@ -192,8 +199,8 @@ namespace Chimera.Kinect {
             Scalar kinectCoordX = Nui.project(diff, mTop);
             Scalar kinectCoordY = Nui.project(diff, mSide);
 
-            Scalar x = ((mWorldW - kinectCoordX) / mWorldW) * mScreenW;
-            Scalar y = (kinectCoordY / mWorldH) * mScreenH;
+            Scalar x = (mWorldW - kinectCoordX) / mWorldW;
+            Scalar y = (mWorldH - kinectCoordY) / mWorldH;
 
             mX = Nui.ifScalar(C.And(mIntersects, C.And(x >= 0f, x <= mScreenW)), x, -1f);
             mY = Nui.ifScalar(C.And(mIntersects, C.And(y >= 0f, y <= mScreenH)), y, -1f);
@@ -205,18 +212,19 @@ namespace Chimera.Kinect {
             mY.Name = "Y";
 
             ConfigureFromWindow();
+            mController.PositionChanged += SetPosition;
+            mController.OrientationChanged += SetOrientation;
 
             Nui.Tick += Tick;
         }
 
         public void SetPosition(Vector3 position) {
-            mPosition = position;
             ConfigureFromWindow();
         }
 
         public void SetOrientation(Rotation orientation) {
             if (mOrientation != null)
-                mOrientation.Changed += orientation_Changed;
+                mOrientation.Changed -= orientation_Changed;
             mOrientation = orientation;
             orientation.Changed += orientation_Changed;
         }

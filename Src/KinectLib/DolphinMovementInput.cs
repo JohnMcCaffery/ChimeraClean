@@ -74,6 +74,10 @@ namespace Chimera.Kinect {
                     EnabledChanged();
             }
         }
+        public bool StrafeEnabled {
+            get { return false; }
+            set { }
+        }
         public bool FlyEnabled {
             get { return mFlyEnabled; }
             set { 
@@ -81,6 +85,10 @@ namespace Chimera.Kinect {
                 if (EnabledChanged != null)
                     EnabledChanged();
             }
+        }
+        public bool PitchEnabled {
+            get { return false; }
+            set { }
         }
         public bool YawEnabled {
             get { return mYawEnabled; }
@@ -197,8 +205,6 @@ namespace Chimera.Kinect {
         public Rotation OrientationDelta {
             get { return new Rotation(mPitchDelta, mYawDelta); }
         }
-
-
 
         public void Init(IInputSource input) { }
 

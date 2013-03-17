@@ -64,8 +64,6 @@ namespace Chimera.Kinect.GUI {
             mInput.FlyEnabled = flyEnabled.Checked;
             mInput.WalkEnabled = walkEnabled.Checked;
             mInput.YawEnabled = yawEnabled.Checked;
-
-            walkEnabled.Enabled = flyEnabled.Enabled = yawEnabled.Enabled = enabled.Checked;
         }
     }
 }

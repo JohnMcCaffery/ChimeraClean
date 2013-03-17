@@ -11,23 +11,18 @@ namespace Chimera.Overlay {
 
         private ISelectionRenderer mRenderer;
         private Window mWindow;
-        private Rectangle mBounds;
+        private RectangleF mBounds;
         private DateTime mHoverStart;
-        private double x, y;
-        private double w, h;
         private bool mHovering;
         private bool mSelected;
         private bool mVisible;
         private bool mActive = true;
 
-        public SelectableArea(double x, double y, double w, double h) {
-            this.x = x;
-            this.y = y;
-            this.w = w;
-            this.h = h;
+        public SelectableArea(float x, float y, float w, float h) {
+            mBounds = new RectangleF(x, y, w, h);
         }
 
-        public SelectableArea(ISelectionRenderer selector, double x, double y, double w, double h)
+        public SelectableArea(ISelectionRenderer selector, float x, float y, float w, float h)
             : this(x, y, w, h) {
 
             mRenderer = selector;
@@ -60,11 +55,7 @@ namespace Chimera.Overlay {
         }
 
         private void window_MonitorChanged(Window window, Screen screen) {
-            mBounds = new Rectangle(
-                (int) (x * screen.Bounds.Width),
-                (int) (y * screen.Bounds.Height),
-                (int) (w * screen.Bounds.Width),
-                (int) (h * screen.Bounds.Height));
+            //What should happen when the window changes? Re-calculate?
         }
 
         #region ISelectable Members
@@ -109,8 +100,17 @@ namespace Chimera.Overlay {
             get { return mRenderer; }
         }
 
-        public virtual Rectangle Bounds {
+        public virtual RectangleF Bounds {
             get { return mBounds; }
+        }
+        public virtual Rectangle ScaledBounds {
+            get {
+                return new Rectangle(
+                    (int)(mWindow.Monitor.Bounds.Width * mBounds.X),
+                    (int)(mWindow.Monitor.Bounds.Height * mBounds.Y),
+                    (int)(mWindow.Monitor.Bounds.Width * mBounds.Width),
+                    (int)(mWindow.Monitor.Bounds.Height * mBounds.Height));
+                }
         }
 
         public virtual void Init(Window window) {

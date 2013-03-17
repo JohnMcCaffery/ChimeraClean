@@ -62,9 +62,16 @@ namespace Chimera {
         }
 
         /// <summary>
-        /// The bounding box around the area.
+        /// The bounding box around the area, specified as percentages.
         /// </summary>
-        Rectangle Bounds {
+        RectangleF Bounds {
+            get;
+        }
+
+        /// <summary>
+        /// The bounding box around the area, in pixels.
+        /// </summary>
+        Rectangle ScaledBounds {
             get;
         }
 

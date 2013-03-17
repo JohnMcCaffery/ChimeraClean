@@ -6,8 +6,9 @@ using System.Drawing;
 
 namespace Chimera.Overlay {
     class BoxArea : ISelectable {
-        private Rectangle mBounds;
+        private RectangleF mBounds;
         private bool mVisible;
+        private Window mWindow;
 
         public event Action<ISelectable> Selected;
 
@@ -42,8 +43,18 @@ namespace Chimera.Overlay {
             get { throw new NotImplementedException(); }
         }
 
-        public System.Drawing.Rectangle Bounds {
+        public System.Drawing.RectangleF Bounds {
             get { throw new NotImplementedException(); }
+        }
+
+        public virtual Rectangle ScaledBounds {
+            get {
+                return new Rectangle(
+                    (int)(mWindow.Monitor.Bounds.Width * mBounds.X),
+                    (int)(mWindow.Monitor.Bounds.Height * mBounds.Y),
+                    (int)(mWindow.Monitor.Bounds.Width * mBounds.Width),
+                    (int)(mWindow.Monitor.Bounds.Height * mBounds.Height));
+                }
         }
 
         public bool Active {

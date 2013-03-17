@@ -33,7 +33,7 @@ namespace Chimera.Overlay {
 
         public void DrawSelected(Graphics graphics, Rectangle clipRectangle) {
             using (Pen pen = new Pen(Brushes.Red, 20f))
-                graphics.DrawRectangle(pen, mSelectable.Bounds);
+                graphics.DrawRectangle(pen, mSelectable.ScaledBounds);
         }
 
         public void Init(ISelectable selectable) {

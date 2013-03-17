@@ -11,21 +11,22 @@ using NuiLibDotNet;
 using OpenMetaverse;
 using Chimera.Kinect;
 using Chimera.Util;
+using Chimera.Kinect.Interfaces;
 
 namespace Test {
-    public partial class KinectCursorForm : Form {
+    public partial class KinectCursorForm : Form, IKinectController {
         private Window mWindow;
-        private IKinectCursorWindow mCursor;
+        private IKinectCursor mCursor;
 
         public KinectCursorForm() {
             InitializeComponent();
         }
 
-        public KinectCursorForm(IKinectCursorWindow cursor, Window window)
+        public KinectCursorForm(IKinectCursor cursor, Window window)
             : this() {
             mWindow = window;
             mCursor = cursor;
-            mCursor.Init(window, Vector3.Zero, new Rotation(0.0, 180.0));
+            mCursor.Init(this, window);
 
             // 
             // pointCursorPanel
@@ -41,10 +42,10 @@ namespace Test {
 
             this.tabPage2.Controls.Add(pointCursorPanel);
 
-            mCursor.CursorMove += new Action<int, int>(mCursor_CursorMove);
+            mWindow.CursorMoved += mCursor_CursorMove;
         }
 
-        private void mCursor_CursorMove(int x, int y) {
+        private void mCursor_CursorMove(Window window, EventArgs args) {
             if (mCursor.OnScreen && !IsDisposed && Created)
                 Invoke(new Action(() => {
                     cursorPanel.Refresh();
@@ -59,12 +60,24 @@ namespace Test {
 
         private void cursorPanel_Paint(object sender, PaintEventArgs e) {
             if (mCursor.OnScreen) {
-                int x = (int) (((double) mCursor.Location.X / (double) mWindow.Monitor.Bounds.Width) * (double) e.ClipRectangle.Width);
-                int y = (int) (((double) mCursor.Location.Y / (double) mWindow.Monitor.Bounds.Height) * (double) e.ClipRectangle.Height);
+                int x = (int) (mWindow.CursorX * e.ClipRectangle.Width);
+                int y = (int) (mWindow.CursorY * e.ClipRectangle.Height);
 
                 int r = 5;
                 e.Graphics.FillEllipse(Brushes.Red, x - r, y - r, r * 2, r * 2);
             }
         }
+
+        public Vector3 Position {
+            get { return Vector3.Zero; }
+        }
+
+        public Rotation Orientation {
+            get { return new Rotation(); }
+        }
+
+        public event Action<Vector3> PositionChanged;
+
+        public event Action<Rotation> OrientationChanged;
     }
 }

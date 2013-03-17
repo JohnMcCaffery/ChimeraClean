@@ -24,7 +24,10 @@ namespace Chimera.Kinect.GUI {
         public void Init(SimpleCursor cursor) {
             mCursor = cursor;
 
-            ShoulderR.Vector = new VectorUpdater(mCursor.ShoulderR);
+            Anchor.Text = "Anchor";
+            HandR.Text = "Hand";
+
+            Anchor.Vector = new VectorUpdater(mCursor.Anchor);
             HandR.Vector = new VectorUpdater(mCursor.HandR);
             Width.Scalar = new ScalarUpdater(mCursor.Width);
             Height.Scalar = new ScalarUpdater(mCursor.Height);

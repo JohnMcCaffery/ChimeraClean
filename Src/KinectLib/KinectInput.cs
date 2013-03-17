@@ -8,48 +8,53 @@ using Chimera.Util;
 using OpenMetaverse;
 using Chimera.Kinect.GUI;
 using C = NuiLibDotNet.Condition;
+using Chimera.Kinect.Interfaces;
+using System.Drawing;
 
 namespace Chimera.Kinect {
-    public class KinectInput : ISystemInput {
-        private readonly List<PointCursor> mWindowInputs = new List<PointCursor>();
+    public class KinectInput : ISystemInput, IKinectController {
+        private readonly Dictionary<string, IDeltaInput> mMovementControllers = new Dictionary<string, IDeltaInput>();
+        private readonly List<IKinectCursorFactory> mCursorFactories = new List<IKinectCursorFactory>();
+        private readonly Dictionary<string, Dictionary<string, IKinectCursor>> mCursors = new Dictionary<string, Dictionary<string, IKinectCursor>>();
 
         private Coordinator mCoordinator;
         private bool mEnabled;
         private bool mPointEnabled;
         private bool mMoveEnabled;
         private bool mKinectStarted;
-        private Vector mPointEnd = Vector.Create(0f, 0f, 0f);
-        private Vector mPointStart = Vector.Create(0f, 0f, 0f);
-        private Vector mPointDir = Vector.Create(0f, 0f, 0f);
         private Vector3 mKinectPosition;
         private Rotation mKinectOrientation;
         private KinectPanel mPanel;
 
+        private IDeltaInput mCurrentMoventController;
+        private Dictionary<string, IKinectCursor> mCurrentCursors = null;
+
         public event Action<Vector3> PositionChanged;
-        public event Action<Quaternion> OrientationChanged;
-        public event Action<Vector, Vector> VectorsAssigned;
+        public event Action<Rotation> OrientationChanged;
 
         /// <summary>
-        /// Get the window input associated with a specific window.
+        /// Get the cursor input associated with a specific window.
         /// </summary>
         /// <param name="window">The name of the window to get the input for.</param>
         /// <returns>The WindowInput object which is calculating whether the user is pointing at the specified window.</returns>
-        public PointCursor this[string window] {
-            get { return mWindowInputs.FirstOrDefault(i => i.Window.Name.Equals(window)); }
+        public IKinectCursor this[string window] {
+            get { return mCurrentCursors.ContainsKey(window) ? mCurrentCursors[window] : null; }
         }
         /// <summary>
         /// All the window inputs this input associates with the windows the system renders to.
         /// </summary>
-        public PointCursor[] WindowInputs {
-            get { return mWindowInputs.ToArray(); }
+        public IKinectCursor[] Cursors {
+            get { return mCurrentCursors.Values.ToArray(); }
+        }
+        public string[] CursorNames {
+            get { return mCursorFactories.Select(factory => factory.Name).ToArray(); }
+        }
+        public string[] MovementNames {
+            get { return mMovementControllers.Keys.ToArray(); }
         }
 
-        public Vector PointStart {
-            get { return mPointStart; }
-        }
-
-        public Vector PointDir {
-            get { return mPointDir; }
+        public IDeltaInput MovementController {
+            get { return mCurrentMoventController; }
         }
 
         public Vector3 Position {
@@ -63,42 +68,67 @@ namespace Chimera.Kinect {
 
         public Rotation Orientation {
             get { return mKinectOrientation; }
+            set {
+                mKinectOrientation = value;
+                if (OrientationChanged != null)
+                    OrientationChanged(value);
+            }
         }
 
         public bool KinectStarted {
             get { return mKinectStarted; }
         }
 
-        public KinectInput() {
+        public KinectInput(IEnumerable<IDeltaInput> movementInputs, params IKinectCursorFactory[] cursors) {
             KinectConfig cfg = new KinectConfig();
 
             mKinectPosition = cfg.Position;
             mKinectOrientation = new Rotation(cfg.Pitch, cfg.Yaw);
+            mCursorFactories = new List<IKinectCursorFactory>(cursors);
 
-            mKinectOrientation.Changed += (source, args) => OrientationChanged(mKinectOrientation.Quaternion);
+            foreach (var movement in movementInputs) {
+                mMovementControllers.Add(movement.Name, movement);
+                movement.Init(mCoordinator);
+                if (mCurrentMoventController == null)
+                    mCurrentMoventController = movement;
+                else
+                    movement.Enabled = false;
+            }
+
+            foreach (var factory in mCursorFactories) {
+                if (!mCursors.ContainsKey(factory.Name))
+                    mCursors.Add(factory.Name, new Dictionary<string, IKinectCursor>());
+
+                if (mCurrentCursors == null)
+                    mCurrentCursors = mCursors[factory.Name];
+            }
 
             if (cfg.Autostart)
                 StartKinect();
         }
 
-        private Condition mWalkActive, mFlyActive, mYawActive;
-        private Scalar mYaw;
-        private Condition mFy, mFlyUp;
-        private Condition mMoveActive, mForward;
-
         public void StartKinect() {
             if (!mKinectStarted) {
                 Nui.Init();
                 Nui.SetAutoPoll(true);
-                mPointEnd = Nui.joint(Nui.Hand_Right);
-                mPointStart = Nui.joint(Nui.Elbow_Right);
-                mPointDir = mPointStart - mPointEnd;
-                mKinectStarted = true;
+            }
+        }
 
+        public void SetCursor(string cursorName) {
+            if (mCursors.ContainsKey(cursorName)) {
+                foreach (var cursor in Cursors)
+                    cursor.Enabled = false;
+                mCurrentCursors = mCursors[cursorName];
+                foreach (var cursor in Cursors)
+                    cursor.Enabled = true;
+            }
+        }
 
-
-                if (VectorsAssigned != null)
-                    VectorsAssigned(mPointStart, mPointDir);
+        public void SetMovement(string controllerName) {
+            if (mMovementControllers.ContainsKey(controllerName)) {
+                mCurrentMoventController.Enabled = false;
+                mCurrentMoventController = mMovementControllers[controllerName];
+                mCurrentMoventController.Enabled = true;
             }
         }
 
@@ -106,26 +136,8 @@ namespace Chimera.Kinect {
 
         public UserControl ControlPanel {
             get {
-                if (mPanel == null) {
+                if (mPanel == null)
                     mPanel = new KinectPanel(this);
-                    /*
-                    mPanel.Position = mKinectPosition;
-                    mPanel.Orientation = mKinectOrientation;
-                    mPanel.PointStart = new VectorUpdater(mPointStart);
-                    mPanel.PointDir = new VectorUpdater(mPointDir);
-
-                    foreach (var window in mWindowInputs)
-                        mPanel.AddWindow(window.Panel, window.Window.Name);
-
-                    mPanel.PositionChanged += newPos => {
-                        mKinectPosition = newPos;
-                        if (PositionChanged != null)
-                            PositionChanged(newPos);
-                    };
-
-                    mPanel.Started += () => StartKinect();
-                    */
-                }
                 return mPanel;
             }
         }
@@ -136,9 +148,7 @@ namespace Chimera.Kinect {
 
         public bool Enabled {
             get { return mMoveEnabled; }
-            set {
-                mMoveEnabled = value;
-            }
+            set { mMoveEnabled = value; }
         }
 
         public ConfigBase Config {
@@ -167,18 +177,23 @@ namespace Chimera.Kinect {
             Nui.Close();
         }
 
-        public void Draw(Perspective perspective, System.Drawing.Graphics graphics) {
+        public void Draw(Perspective perspective, Graphics graphics) {
             throw new NotImplementedException();
         }
 
         #endregion
 
         private void mCoordinator_WindowAdded(Window window, EventArgs args) {
-            PointCursor input = new PointCursor();
-            input.Init(window, mKinectPosition, mKinectOrientation);
-            mWindowInputs.Add(input);
-            if (mPanel != null)
-                mPanel.AddWindow(input.Panel, window.Name);
+            foreach (var factory in mCursorFactories) {
+                IKinectCursor cursor = factory.Make();
+                cursor.Init(this, window);
+                mCursors[factory.Name].Add(window.Name, cursor);
+
+                if (mCurrentCursors == null)
+                    mCurrentCursors = mCursors[factory.Name];
+                else
+                    cursor.Enabled = false;
+            }
         }
     }
 }
