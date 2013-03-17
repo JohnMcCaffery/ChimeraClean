@@ -75,7 +75,7 @@ namespace Chimera.GUI.Controls {
                 mWindow.Coordinator.TriggerKeyboard(false, e);
         }
 
-        private void screenPulldown_SelectedIndexChanged(object sender, EventArgs e) {
+        private void monitorPulldown_SelectedIndexChanged(object sender, EventArgs e) {
             if (mWindow != null)
                 mWindow.Monitor = (Screen)monitorPulldown.SelectedItem;
         }
