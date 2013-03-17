@@ -24,6 +24,8 @@ namespace Chimera.Kinect {
         private Scalar mFlyScale;
         private Scalar mFlyThreshold;
         private Scalar mFlyMax;
+        private Scalar mFlyTimer;
+        private Scalar mFlyMin;
 
         private Scalar mYawLean;
         private Scalar mYaw;
@@ -58,6 +60,8 @@ namespace Chimera.Kinect {
         public Scalar FlyScale { get { return mFlyScale; } }
         public Scalar FlyThreshold { get { return mFlyThreshold; } }
         public Scalar FlyMax { get { return mFlyMax; } }
+        public Scalar FlyTimer { get { return mFlyTimer; } }
+        public Scalar FlyMin { get { return mFlyMin; } }
 
         public Scalar YawLean { get { return mYawLean; } }
         public Scalar Yaw { get { return mYaw; } }
@@ -131,19 +135,25 @@ namespace Chimera.Kinect {
 
             mDelta.X = mWalkEnabled ? mWalkVal.Value : 0f;
 
-            //Put a .5s timer on flying
+            //Put a timer on flying so that fly input greater than x will be ignored until the user has stayed in the position for y ms.
             if (mFlyVal.Value != 0f && !mFlying) {
                 mFlying = true;
-                mFlyStart = DateTime.Now;
-            } else if (DateTime.Now.Subtract(mFlyStart).TotalMilliseconds > 500)
+                if (mFlyVal.Value < mFlyMin.Value) {
+                    mFlyAllowed = true;
+                    mDelta.Z = mFlyEnabled ? mFlyVal.Value : 0f;
+                } else 
+                    mFlyStart = DateTime.Now;
+            } else if (mFlyAllowed || DateTime.Now.Subtract(mFlyStart).TotalMilliseconds > mFlyTimer.Value)
                 mDelta.Z = mFlyEnabled ? mFlyVal.Value : 0f;
-            else if (mFlyVal.Value == 0f)
+            else if (mFlyVal.Value == 0f) {
                 mFlying = false;
-                
+                mFlyAllowed = true;
+            }
 
             if (mEnabled && Change != null)
                 Change(this);
         }
+        private bool mFlyAllowed;
 
         private void Init() {
             //Get the primary vectors.
@@ -185,6 +195,8 @@ namespace Chimera.Kinect {
             Condition flyActiveL = C.And(mFlyAngleL != 0f,  Nui.magnitude(armL) - Nui.magnitude(Nui.limit(armL, true, true, false)) < .1f);
             Condition flyActive = C.And(C.Or(flyActiveR, flyActiveL),  C.And(Nui.z(armR) < 0f,  Nui.z(armR) < 0f));
             mFlyVal = Nui.ifScalar(flyActive, flyVal, 0f);
+            mFlyTimer = Scalar.Create("Fly Timer", 0f);
+            mFlyMin = Scalar.Create("Fly Minimum", .01f);
 
             //----------- Yaw----------- 
             Vector yawCore = Nui.limit(head - hipC, true, true, false);

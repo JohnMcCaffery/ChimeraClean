@@ -40,6 +40,8 @@ namespace Chimera.Kinect.GUI {
             flyScale.Scalar = new ScalarUpdater(mInput.FlyScale);
             flyThreshold.Scalar = new ScalarUpdater(mInput.FlyThreshold);
             flyMax.Scalar = new ScalarUpdater(mInput.FlyMax);
+            flyTimer.Scalar = new ScalarUpdater(mInput.FlyTimer);
+            flyMin.Scalar = new ScalarUpdater(mInput.FlyMin);
 
             yawLean.Scalar = new ScalarUpdater(mInput.YawLean * (float) (180 / Math.PI));
             yawValue.Scalar = new ScalarUpdater(mInput.Yaw);

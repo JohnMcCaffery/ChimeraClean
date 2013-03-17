@@ -74,6 +74,10 @@
             this.yawThreshold = new KinectLib.GUI.UpdatedScalarPanel();
             this.yawScale = new KinectLib.GUI.UpdatedScalarPanel();
             this.yawLean = new KinectLib.GUI.UpdatedScalarPanel();
+            this.label9 = new System.Windows.Forms.Label();
+            this.label11 = new System.Windows.Forms.Label();
+            this.flyMin = new KinectLib.GUI.UpdatedScalarPanel();
+            this.flyTimer = new KinectLib.GUI.UpdatedScalarPanel();
             this.mainTab.SuspendLayout();
             this.controlTab.SuspendLayout();
             this.walkTab.SuspendLayout();
@@ -134,9 +138,9 @@
             this.valuePanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.valuePanel.Location = new System.Drawing.Point(3, 3);
-            this.valuePanel.Max = 1024f;
+            this.valuePanel.Max = 1024F;
             this.valuePanel.MaxV = ((OpenMetaverse.Vector3)(resources.GetObject("valuePanel.MaxV")));
-            this.valuePanel.Min = -1024f;
+            this.valuePanel.Min = -1024F;
             this.valuePanel.MinimumSize = new System.Drawing.Size(103, 95);
             this.valuePanel.MinV = ((OpenMetaverse.Vector3)(resources.GetObject("valuePanel.MinV")));
             this.valuePanel.Name = "valuePanel";
@@ -386,6 +390,10 @@
             // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.label9);
+            this.tabPage2.Controls.Add(this.label11);
+            this.tabPage2.Controls.Add(this.flyMin);
+            this.tabPage2.Controls.Add(this.flyTimer);
             this.tabPage2.Controls.Add(this.flyEnabled);
             this.tabPage2.Controls.Add(this.label14);
             this.tabPage2.Controls.Add(this.label13);
@@ -407,7 +415,7 @@
             // flyEnabled
             // 
             this.flyEnabled.AutoSize = true;
-            this.flyEnabled.Location = new System.Drawing.Point(7, 160);
+            this.flyEnabled.Location = new System.Drawing.Point(6, 212);
             this.flyEnabled.Name = "flyEnabled";
             this.flyEnabled.Size = new System.Drawing.Size(65, 17);
             this.flyEnabled.TabIndex = 10;
@@ -418,7 +426,7 @@
             // label14
             // 
             this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(4, 138);
+            this.label14.Location = new System.Drawing.Point(5, 193);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(34, 13);
             this.label14.TabIndex = 8;
@@ -544,7 +552,7 @@
             // 
             this.flyVal.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.flyVal.Location = new System.Drawing.Point(61, 134);
+            this.flyVal.Location = new System.Drawing.Point(61, 186);
             this.flyVal.Max = 1F;
             this.flyVal.Min = -1F;
             this.flyVal.MinimumSize = new System.Drawing.Size(95, 20);
@@ -718,6 +726,52 @@
             this.yawLean.TabIndex = 0;
             this.yawLean.Value = 0F;
             // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(4, 164);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(48, 13);
+            this.label9.TabIndex = 14;
+            this.label9.Text = "Minimum";
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(4, 138);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(33, 13);
+            this.label11.TabIndex = 12;
+            this.label11.Text = "Timer";
+            // 
+            // flyMin
+            // 
+            this.flyMin.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.flyMin.Location = new System.Drawing.Point(61, 160);
+            this.flyMin.Max = 1F;
+            this.flyMin.Min = 0F;
+            this.flyMin.MinimumSize = new System.Drawing.Size(95, 20);
+            this.flyMin.Name = "flyMin";
+            this.flyMin.Scalar = null;
+            this.flyMin.Size = new System.Drawing.Size(599, 20);
+            this.flyMin.TabIndex = 13;
+            this.flyMin.Value = 0F;
+            // 
+            // flyTimer
+            // 
+            this.flyTimer.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.flyTimer.Location = new System.Drawing.Point(61, 134);
+            this.flyTimer.Max = 1000F;
+            this.flyTimer.Min = 0F;
+            this.flyTimer.MinimumSize = new System.Drawing.Size(95, 20);
+            this.flyTimer.Name = "flyTimer";
+            this.flyTimer.Scalar = null;
+            this.flyTimer.Size = new System.Drawing.Size(599, 20);
+            this.flyTimer.TabIndex = 11;
+            this.flyTimer.Value = 500F;
+            // 
             // DolphinMovementPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -806,5 +860,9 @@
         private System.Windows.Forms.CheckBox enabled;
         private System.Windows.Forms.CheckBox flyEnabled;
         private System.Windows.Forms.CheckBox yawEnabled;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Label label11;
+        private KinectLib.GUI.UpdatedScalarPanel flyMin;
+        private KinectLib.GUI.UpdatedScalarPanel flyTimer;
     }
 }
