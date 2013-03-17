@@ -42,10 +42,10 @@ namespace Test {
 
             this.tabPage2.Controls.Add(pointCursorPanel);
 
-            mWindow.CursorMoved += mCursor_CursorMove;
+            mWindow.Overlay.CursorMoved += mCursor_CursorMove;
         }
 
-        private void mCursor_CursorMove(Window window, EventArgs args) {
+        private void mCursor_CursorMove(OverlayController window, EventArgs args) {
             if (mCursor.OnScreen && !IsDisposed && Created)
                 Invoke(new Action(() => {
                     cursorPanel.Refresh();
@@ -60,8 +60,8 @@ namespace Test {
 
         private void cursorPanel_Paint(object sender, PaintEventArgs e) {
             if (mCursor.OnScreen) {
-                int x = (int) (mWindow.CursorX * e.ClipRectangle.Width);
-                int y = (int) (mWindow.CursorY * e.ClipRectangle.Height);
+                int x = (int) (mWindow.Overlay.CursorX * e.ClipRectangle.Width);
+                int y = (int) (mWindow.Overlay.CursorY * e.ClipRectangle.Height);
 
                 int r = 5;
                 e.Graphics.FillEllipse(Brushes.Red, x - r, y - r, r * 2, r * 2);

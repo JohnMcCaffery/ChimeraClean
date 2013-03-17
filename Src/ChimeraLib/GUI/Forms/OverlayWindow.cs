@@ -10,10 +10,6 @@ using System.Windows.Forms;
 namespace Chimera.GUI.Forms {
     public partial class OverlayWindow : Form {
         /// <summary>
-        /// The input this overlay covers.
-        /// </summary>
-        private Window mWindow;
-        /// <summary>
         /// The last position the mouse was at.
         /// </summary>
         private Point mLastMouse = new Point(-1, -1);
@@ -25,15 +21,19 @@ namespace Chimera.GUI.Forms {
         /// True if the mouse has been on the screen, used to do one extra refresh when the mouse leaves the screen.
         /// </summary>
         private bool mMouseOnScreen;
+        /// <summary>
+        /// The controller which controls this overlay.
+        /// </summary>
+        private OverlayController mController;
 
         public OverlayWindow() {
             InitializeComponent();
         }
 
         /// <param name="window">The window this overlay covers.</param>
-        public OverlayWindow(Window window, Color transparentColour)
+        public OverlayWindow(OverlayController controller, Color transparentColour)
             : this() {
-            Init(window);
+            Init(controller);
             TransparencyKey = transparentColour;
         }
         
@@ -44,17 +44,9 @@ namespace Chimera.GUI.Forms {
             get { return FormBorderStyle == FormBorderStyle.None; }
             set { 
                 FormBorderStyle = value ? FormBorderStyle.None : FormBorderStyle.Sizable;
-                Location = mWindow.Monitor.Bounds.Location;
-                Size = mWindow.Monitor.Bounds.Size;
+                Location = mController.Window.Monitor.Bounds.Location;
+                Size = mController.Window.Monitor.Bounds.Size;
             }
-        }
-
-        /// <summary>
-        /// Whether moving the mouse over this overlay should control the cursor.
-        /// </summary>
-        public bool MouseControl {
-            get { return mouseTimer.Enabled; }
-            set { mouseTimer.Enabled = value; }
         }
 
         /// <summary>
@@ -72,15 +64,14 @@ namespace Chimera.GUI.Forms {
     /// Link this form with a logical input.
         /// </summary>
         /// <param name="input">The input to link this form with.</param>
-        public void Init(Window window) {
-            mWindow = window;
-            mWindow.MonitorChanged += new Action<Window,Screen>(mWindow_MonitorChanged);
+        public void Init(OverlayController controller) {
+            mController = controller;
+            mController.Window.MonitorChanged += new Action<Window,Screen>(mWindow_MonitorChanged);
 
             TopMost = true;
             StartPosition = FormStartPosition.Manual;
-            Location = window.Monitor.Bounds.Location;
-            Size = window.Monitor.Bounds.Size;
-            mouseTimer.Enabled = mWindow.MouseControl;
+            Location = mController.Window.Monitor.Bounds.Location;
+            Size = mController.Window.Monitor.Bounds.Size;
         }
 
         private void mWindow_MonitorChanged(Window window, Screen screen) {
@@ -89,27 +80,12 @@ namespace Chimera.GUI.Forms {
         }
 
         private void drawPanel_Paint(object sender, PaintEventArgs e) {
-            if (mWindow.Coordinator.Overlay != null)
-                mWindow.Coordinator.Overlay.Draw(e.Graphics, e.ClipRectangle, mWindow);
-        }
-
-        private void mouseTimer_Tick(object sender, EventArgs e) {
-            return;
-            if (Bounds.Contains(Cursor.Position) || mMouseOnScreen) {
-                mMouseOnScreen = true;
-                if (mLastMouse.X != Cursor.Position.X || mLastMouse.Y != Cursor.Position.Y) {
-                    mWindow.UpdateCursor(Cursor.Position.X - Bounds.Left, Cursor.Position.Y - Bounds.Top);
-                    mLastMouse = Cursor.Position;
-                } else {
-                    mWindow.UpdateCursor(mLastMouse.X - Bounds.Left + mJitter, Cursor.Position.Y - Bounds.Top);
-                    mJitter *= -1;
-                }
-            } else
-                mMouseOnScreen = false;
+            if (mController.Window.Coordinator.Overlay != null)
+                mController.Window.Coordinator.Overlay.Draw(e.Graphics, e.ClipRectangle, mController.Window);
         }
 
         private void OverlayWindow_Load(object sender, EventArgs e) {
-            Text = mWindow.Name + " Overlay";
+            Text = mController.Window.Name + " Overlay";
         }
 
         protected override void OnFormClosing(FormClosingEventArgs e) {

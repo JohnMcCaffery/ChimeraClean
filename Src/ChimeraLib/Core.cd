@@ -19,12 +19,6 @@
   </Class>
   <Class Name="Chimera.NetworkMaster" Collapsed="true">
     <Position X="14.75" Y="7.5" Width="1.5" />
-    <InheritanceLine Type="Chimera.Coordinator" FixedFromPoint="true">
-      <Path>
-        <Point X="15.5" Y="6.13" />
-        <Point X="15.5" Y="7.5" />
-      </Path>
-    </InheritanceLine>
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Core\NetworkMaster.cs</FileName>
@@ -32,28 +26,18 @@
   </Class>
   <Class Name="Chimera.Window">
     <Position X="17.5" Y="0.5" Width="2.25" />
-    <Compartments>
-      <Compartment Name="Fields" Collapsed="true" />
-    </Compartments>
     <TypeIdentifier>
-      <HashCode>QBkAEAgEBQAAJxAABAKIg0QQkAAAiMBBUgwCBAyIAQI=</HashCode>
+      <HashCode>AAAAAAgEBQAABhAAFACIgEQAAAAAgABBUAwCBAiIAQI=</HashCode>
       <FileName>Core\Window.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
-      <Field Name="mOverlayWindow" />
       <Property Name="Coordinator" />
       <Property Name="Output" />
-      <Property Name="OverlayController" />
+      <Property Name="Overlay" />
     </ShowAsAssociation>
   </Class>
   <Class Name="Chimera.NetworkWindow" Collapsed="true">
     <Position X="17.75" Y="8.75" Width="1.5" />
-    <InheritanceLine Type="Chimera.Window" FixedFromPoint="true">
-      <Path>
-        <Point X="18.5" Y="7.609" />
-        <Point X="18.5" Y="8.75" />
-      </Path>
-    </InheritanceLine>
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Core\NetworkSlave.cs</FileName>
@@ -78,13 +62,13 @@
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="Chimera.GUI.Forms.OverlayWindow">
-    <Position X="23" Y="2.25" Width="2.25" />
+    <Position X="23.5" Y="0.5" Width="2.25" />
     <TypeIdentifier>
-      <HashCode>AgAgAAAAACAAAAAAwgCAAACSAAAAAAIEAABCQAAAAIA=</HashCode>
+      <HashCode>AAAgAAAAACAAAAAAwgCAAACSAEAAAAIFAABCQAAAAIA=</HashCode>
       <FileName>GUI\Forms\OverlayWindow.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
-      <Field Name="mWindow" />
+      <Field Name="mController" />
     </ShowAsAssociation>
   </Class>
   <Class Name="Chimera.Overlay.MainMenu">
@@ -156,16 +140,20 @@
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="Chimera.OverlayController">
-    <Position X="21.25" Y="0.5" Width="1.5" />
+    <Position X="20.75" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>QhkAEAAAAQAAIwAABAIAAwAAkAAACMAAAgAACAwAAQA=</HashCode>
       <FileName>OverlayController.cs</FileName>
     </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="mOverlayWindow" />
+      <Property Name="Window" />
+    </ShowAsAssociation>
   </Class>
   <Class Name="Chimera.Inputs.MouseInput">
     <Position X="0.75" Y="4.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAgAAAoAAAAAAAAQAAAAAAAIAQAACBACAAAA=</HashCode>
+      <HashCode>AAQgAAgEAgAAAsAAgAAAAAQAAAAAAAIAQAAGBACAAIA=</HashCode>
       <FileName>Inputs\MouseInput.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />

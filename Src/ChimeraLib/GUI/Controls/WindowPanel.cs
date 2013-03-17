@@ -24,15 +24,13 @@ namespace Chimera.GUI.Controls {
         public void Init(Window window) {
             mWindow = window;
 
-            mouseControlCheck.Checked = mWindow.MouseControl;
-
             widthPanel.Value = (float) window.Width / 10f;
             heightPanel.Value = (float) window.Height / 10f;
             topLeftPanel.Value = window.TopLeft / 10f;
             orientationPanel.Value = window.Orientation;
 
-            mWindow.OverlayClosed += new EventHandler(mWindow_OverlayClosed);
-            mWindow.OverlayLaunched += new EventHandler(mWindow_OverlayLaunched);
+            mWindow.Overlay.OverlayClosed += new EventHandler(mWindow_OverlayClosed);
+            mWindow.Overlay.OverlayLaunched += new EventHandler(mWindow_OverlayLaunched);
 
             foreach (var screen in Screen.AllScreens) {
                 monitorPulldown.Items.Add(screen);
@@ -51,9 +49,9 @@ namespace Chimera.GUI.Controls {
 
                 mainTab.Controls.Add(tab);
             }
-            if (mWindow.OverlayVisible) {
+            if (mWindow.Overlay.OverlayVisible) {
                 launchOverlayButton.Text =  "Close Overlay";
-                mWindow.LaunchOverlay();
+                mWindow.Overlay.LaunchOverlay();
             }
         }
 
@@ -81,20 +79,16 @@ namespace Chimera.GUI.Controls {
         }
 
         private void launchOverlayButton_Click(object sender, EventArgs e) {
-            mWindow.LaunchOverlay();
+            mWindow.Overlay.LaunchOverlay();
             launchOverlayButton.Text = "Close Overlay";
         }
 
         private void bringToFrontButtin_Click(object sender, EventArgs e) {
-            mWindow.ForegroundOverlay();
+            mWindow.Overlay.ForegroundOverlay();
         }
 
         private void showBordersTextBox_CheckedChanged(object sender, EventArgs e) {
-            mWindow.OverlayFullscreen = fullscreenCheck.Checked;
-        }
-
-        private void mouseControlCheck_CheckedChanged(object sender, EventArgs e) {
-            mWindow.MouseControl = mouseControlCheck.Checked;
+            mWindow.Overlay.OverlayFullscreen = fullscreenCheck.Checked;
         }
 
         private void positionPanel_ValueChanged(object sender, EventArgs e) {

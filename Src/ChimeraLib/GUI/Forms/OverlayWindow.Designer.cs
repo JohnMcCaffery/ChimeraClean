@@ -23,16 +23,9 @@
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent() {
-            this.components = new System.ComponentModel.Container();
-            this.mouseTimer = new System.Windows.Forms.Timer(this.components);
             this.drawPanel = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.drawPanel)).BeginInit();
             this.SuspendLayout();
-            // 
-            // mouseTimer
-            // 
-            this.mouseTimer.Interval = 10;
-            this.mouseTimer.Tick += new System.EventHandler(this.mouseTimer_Tick);
             // 
             // drawPanel
             // 
@@ -63,7 +56,6 @@
 
         #endregion
 
-        private System.Windows.Forms.Timer mouseTimer;
         private System.Windows.Forms.PictureBox drawPanel;
     }
 }

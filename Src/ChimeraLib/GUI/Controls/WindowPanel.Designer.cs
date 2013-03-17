@@ -35,7 +35,6 @@
             this.orientationPanel = new ProxyTestGUI.RotationPanel();
             this.topLeftPanel = new ProxyTestGUI.VectorPanel();
             this.overlayTab = new System.Windows.Forms.TabPage();
-            this.mouseControlCheck = new System.Windows.Forms.CheckBox();
             this.bringToFrontButtin = new System.Windows.Forms.Button();
             this.fullscreenCheck = new System.Windows.Forms.CheckBox();
             this.launchOverlayButton = new System.Windows.Forms.Button();
@@ -172,7 +171,6 @@
             // 
             // overlayTab
             // 
-            this.overlayTab.Controls.Add(this.mouseControlCheck);
             this.overlayTab.Controls.Add(this.bringToFrontButtin);
             this.overlayTab.Controls.Add(this.fullscreenCheck);
             this.overlayTab.Controls.Add(this.launchOverlayButton);
@@ -183,17 +181,6 @@
             this.overlayTab.TabIndex = 1;
             this.overlayTab.Text = "Overlay";
             this.overlayTab.UseVisualStyleBackColor = true;
-            // 
-            // mouseControlCheck
-            // 
-            this.mouseControlCheck.AutoSize = true;
-            this.mouseControlCheck.Location = new System.Drawing.Point(6, 87);
-            this.mouseControlCheck.Name = "mouseControlCheck";
-            this.mouseControlCheck.Size = new System.Drawing.Size(94, 17);
-            this.mouseControlCheck.TabIndex = 4;
-            this.mouseControlCheck.Text = "Mouse Control";
-            this.mouseControlCheck.UseVisualStyleBackColor = true;
-            this.mouseControlCheck.CheckedChanged += new System.EventHandler(this.mouseControlCheck_CheckedChanged);
             // 
             // bringToFrontButtin
             // 
@@ -250,7 +237,6 @@
         private System.Windows.Forms.Button launchOverlayButton;
         private System.Windows.Forms.CheckBox fullscreenCheck;
         private System.Windows.Forms.Button bringToFrontButtin;
-        private System.Windows.Forms.CheckBox mouseControlCheck;
         private ProxyTestGUI.VectorPanel topLeftPanel;
         private ProxyTestGUI.RotationPanel orientationPanel;
         private System.Windows.Forms.Label label2;

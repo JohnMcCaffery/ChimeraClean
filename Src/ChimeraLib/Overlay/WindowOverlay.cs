@@ -135,8 +135,8 @@ namespace Chimera.Overlay {
 
         public void DrawCursor(Graphics graphics, Rectangle clipRectangle) {
             int r = 10;
-            int x = (int) (clipRectangle.Width * mWindow.CursorX);
-            int y = (int) (clipRectangle.Height * mWindow.CursorY);
+            int x = (int) (clipRectangle.Width * mWindow.Overlay.CursorX);
+            int y = (int) (clipRectangle.Height * mWindow.Overlay.CursorY);
             if (clipRectangle.Contains(new Point(x, y)))
                 graphics.FillEllipse(Brushes.Red, x - r, y - r, r * 2, r * 2);
         }

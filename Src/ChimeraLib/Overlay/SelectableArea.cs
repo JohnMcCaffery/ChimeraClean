@@ -33,7 +33,7 @@ namespace Chimera.Overlay {
         }
 
         private void CheckState() {
-            if (mBounds.Contains(mWindow.Cursor) && mActive) {
+            if (mBounds.Contains(mWindow.Overlay.Cursor) && mActive) {
                 if (!mHovering) {
                     mHovering = true;
                     mHoverStart = DateTime.Now;
@@ -50,7 +50,7 @@ namespace Chimera.Overlay {
             }
         }
 
-        private void window_CursorMoved(Window window, EventArgs args) {
+        private void window_CursorMoved(OverlayController window, EventArgs args) {
             CheckState();
         }
 
@@ -102,7 +102,8 @@ namespace Chimera.Overlay {
 
         public virtual RectangleF Bounds {
             get { return mBounds; }
-        }
+        }
+
         public virtual Rectangle ScaledBounds {
             get {
                 return new Rectangle(
@@ -117,7 +118,7 @@ namespace Chimera.Overlay {
             mWindow = window;
 
             mWindow.MonitorChanged += new Action<Window, Screen>(window_MonitorChanged);
-            mWindow.CursorMoved += new Action<Window,EventArgs>(window_CursorMoved);
+            mWindow.Overlay.CursorMoved += new Action<OverlayController,EventArgs>(window_CursorMoved);
 
             window_MonitorChanged(mWindow, mWindow.Monitor);
         }

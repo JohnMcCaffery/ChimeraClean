@@ -218,7 +218,7 @@ namespace Chimera.Kinect {
 
         private void cursor_CursorMove(IKinectCursor cursor, float x, float y) {
             if (mEnabled)
-                cursor.Window.UpdateCursor(x, y);
+                cursor.Window.Overlay.UpdateCursor(x, y);
         }
     }
 }
