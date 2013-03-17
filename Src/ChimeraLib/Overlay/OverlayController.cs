@@ -42,6 +42,10 @@ namespace Chimera {
         /// The window this overlay covers.
         /// </summary>
         private Window mWindow;
+        /// <summary>
+        /// Factory for creating the overlay window.
+        /// </summary>
+        private IOverlayWindowFactory mOverlayWindowFactory = new OverlayWindowFactory();
 
         /// <summary>
         /// The colour that will show up as transparent on this window's overlay.
@@ -145,10 +149,6 @@ namespace Chimera {
             get { return mTransparentColour; }
         }
 
-
-        public OverlayController() {
-        }
-
         /// <summary>
         /// Whether the overlay window is currently fullscreen.
         /// </summary>
@@ -197,7 +197,7 @@ namespace Chimera {
         public void Launch() {
             if (mOverlayWindow == null) {
                 mOverlayActive = true;
-                mOverlayWindow = new SimpleOverlay(this, mTransparentColour);
+                mOverlayWindow = mOverlayWindowFactory.Make(this);
                 //mOverlayWindow = new OverlayWindow(this, mTransparentColour);
                 mOverlayWindow.Show();
                 mOverlayWindow.FormClosed += new FormClosedEventHandler(mOverlayWindow_FormClosed);
@@ -205,6 +205,10 @@ namespace Chimera {
                 if (OverlayLaunched != null)
                     OverlayLaunched(this, null);
             }
+        }
+
+        public void SetOverlayWindowFactory(IOverlayWindowFactory overlayWindowFactory) {
+            mOverlayWindowFactory = overlayWindowFactory;
         }
 
         /// <summary>

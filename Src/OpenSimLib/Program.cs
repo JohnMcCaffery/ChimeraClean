@@ -33,6 +33,7 @@ namespace ChimeraOutput {
             //ISystemInput kinectDolphin = new DeltaBasedInput(dolphin);
 
             Window[] windows = new Window[] { new Window("Main Window", output) };
+            windows[0].Overlay.SetOverlayWindowFactory(new SimpleOverlayWindowFactory());
             //ImageSelection mOverlay = new ImageSelection("../Select1.jpg", .1f, .1f, .3f, .3f);
             //IOverlayState mState = new TestState();
             //MainMenuItem item1 = new MainMenuItem(mState, mOverlay);

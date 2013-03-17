@@ -8,6 +8,7 @@ using Chimera.Util;
 using System.IO;
 using System.Windows.Forms;
 using Chimera.GUI.Forms;
+using Chimera.Interfaces;
 
 namespace Chimera {
     public class Window {
@@ -234,6 +235,10 @@ namespace Chimera {
                 mOutput.Init(this);
 
             mOverlayController.Init(this);
+        }
+
+        public void SetWindow(IOverlayWindow window) {
+            mOverlayController = new OverlayController();
         }
 
         /// <summary>

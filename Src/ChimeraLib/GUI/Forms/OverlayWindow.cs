@@ -9,6 +9,11 @@ using System.Windows.Forms;
 using Chimera.Interfaces;
 
 namespace Chimera.GUI.Forms {
+    public class OverlayWindowFactory : IOverlayWindowFactory {
+        public IOverlayWindow Make(OverlayController controller) {
+            return new OverlayWindow(controller);
+        }
+    }
     public partial class OverlayWindow : Form , IOverlayWindow {
         /// <summary>
         /// The last position the mouse was at.
@@ -32,10 +37,10 @@ namespace Chimera.GUI.Forms {
         }
 
         /// <param name="window">The window this overlay covers.</param>
-        public OverlayWindow(OverlayController controller, Color transparentColour)
+        public OverlayWindow(OverlayController controller)
             : this() {
             Init(controller);
-            TransparencyKey = transparentColour;
+            TransparencyKey = controller.TransparentColour;
             // http://www.cursor.cc/
             Cursor = new Cursor("../Cursors/cursor.cur");
         }

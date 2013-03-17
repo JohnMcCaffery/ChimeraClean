@@ -135,12 +135,6 @@
     <Compile Include="GUI\Forms\OverlayWindow.Designer.cs">
       <DependentUpon>OverlayWindow.cs</DependentUpon>
     </Compile>
-    <Compile Include="GUI\Forms\SimpleOverlay.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="GUI\Forms\SimpleOverlay.Designer.cs">
-      <DependentUpon>SimpleOverlay.cs</DependentUpon>
-    </Compile>
     <Compile Include="Inputs\InputConfig.cs" />
     <Compile Include="Interfaces\IInput.cs" />
     <Compile Include="Inputs\DeltaBasedInput.cs" />
@@ -251,9 +245,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\Controls\Inputs\KBMousePanel.resx">
       <DependentUpon>KBMousePanel.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="GUI\Forms\SimpleOverlay.resx">
-      <DependentUpon>SimpleOverlay.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

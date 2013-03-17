@@ -126,8 +126,8 @@
     <Compile Include="GUI\FlythroughPanel.Designer.cs">
       <DependentUpon>FlythroughPanel.cs</DependentUpon>
     </Compile>
-    <Compile Include="IOrientationListener.cs" />
-    <Compile Include="IPositionListener.cs" />
+    <Compile Include="Interfaces\IOrientationListener.cs" />
+    <Compile Include="Interfaces\IPositionListener.cs" />
     <Compile Include="MoveToEvent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RotateToEvent.cs" />

@@ -112,6 +112,12 @@
     </Compile>
     <Compile Include="ProxyConfig.cs" />
     <Compile Include="SetFollowCamPropertiesViewerOutput.cs" />
+    <Compile Include="SimpleOverlay.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SimpleOverlay.Designer.cs">
+      <DependentUpon>SimpleOverlay.cs</DependentUpon>
+    </Compile>
     <Compile Include="ViewerProxy.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -131,6 +137,9 @@
   <ItemGroup>
     <EmbeddedResource Include="GUI\ProxyPanel.resx">
       <DependentUpon>ProxyPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SimpleOverlay.resx">
+      <DependentUpon>SimpleOverlay.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

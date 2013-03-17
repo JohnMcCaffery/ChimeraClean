@@ -5,7 +5,7 @@ using System.Text;
 using System.Drawing;
 
 namespace Chimera.Overlay {
-    class InvisibleSelection : SelectableArea {
+    public class InvisibleSelection : SelectableArea {
         public override event Action<ISelectable> StaticChanged;
 
         public InvisibleSelection(ISelectionRenderer renderer, float x, float y, float w, float h)

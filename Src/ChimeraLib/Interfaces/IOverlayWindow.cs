@@ -3,9 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using System.Drawing;
 
 namespace Chimera.Interfaces {
-    interface IOverlayWindow {
+    public interface IOverlayWindowFactory {
+        IOverlayWindow Make(OverlayController controller);
+    }
+    public interface IOverlayWindow {
         event FormClosedEventHandler FormClosed;
 
         /// <summary>
@@ -19,7 +23,8 @@ namespace Chimera.Interfaces {
         /// <summary>
         /// Redraw the input.
         /// </summary>
-        void Redraw();
+        void Redraw();
+
         /// <summary>
         /// Link this form with a logical input.
         /// </summary>
