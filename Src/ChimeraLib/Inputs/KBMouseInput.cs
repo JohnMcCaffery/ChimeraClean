@@ -47,6 +47,11 @@ namespace Chimera.Inputs {
         /// </summary>
         private Coordinator mCoordinator;
 
+        public KBMouseInput() {
+            InputConfig cfg = new InputConfig();
+            mEnabled = cfg.KeyboardEnabled;
+        }
+
         /// <summary>
         /// How much to scale Keyboard inputs by.
         /// Should be a value between 1 and 1000.

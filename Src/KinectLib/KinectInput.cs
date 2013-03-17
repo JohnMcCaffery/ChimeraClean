@@ -19,8 +19,6 @@ namespace Chimera.Kinect {
 
         private Coordinator mCoordinator;
         private bool mEnabled;
-        private bool mPointEnabled;
-        private bool mMoveEnabled;
         private bool mKinectStarted;
         private Vector3 mKinectPosition;
         private Rotation mKinectOrientation;
@@ -85,6 +83,7 @@ namespace Chimera.Kinect {
             mKinectPosition = cfg.Position;
             mKinectOrientation = new Rotation(cfg.Pitch, cfg.Yaw);
             mCursorFactories = new List<IKinectCursorFactory>(cursors);
+            mEnabled = cfg.Enabled;
 
             foreach (var movement in movementInputs) {
                 mMovementControllers.Add(movement.Name, movement);
@@ -111,6 +110,7 @@ namespace Chimera.Kinect {
             if (!mKinectStarted) {
                 Nui.Init();
                 Nui.SetAutoPoll(true);
+                mKinectStarted = true;
             }
         }
 
@@ -147,8 +147,8 @@ namespace Chimera.Kinect {
         }
 
         public bool Enabled {
-            get { return mMoveEnabled; }
-            set { mMoveEnabled = value; }
+            get { return mEnabled; }
+            set { mEnabled = value; }
         }
 
         public ConfigBase Config {

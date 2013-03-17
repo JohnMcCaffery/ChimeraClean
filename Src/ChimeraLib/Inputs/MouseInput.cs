@@ -16,6 +16,11 @@ namespace Chimera.Inputs {
         private bool mMouseOnScreen;
         private int mJitter = 1;
 
+        public MouseInput() {
+            InputConfig cfg = new InputConfig();
+            mEnabled = cfg.MouseEnabled;
+        }
+
         void coordinator_Tick() {
             if (!mEnabled)
                 return;

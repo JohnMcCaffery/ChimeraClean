@@ -19,8 +19,6 @@ namespace ChimeraOutput {
         [STAThread]
         public static void Main() {
             Application.SetCompatibleTextRenderingDefault(false);
-            NuiLibDotNet.Nui.Init();
-            NuiLibDotNet.Nui.SetAutoPoll(true);
 
             DolphinMovementInput dolphin = new DolphinMovementInput();
             SimpleCursorFactory simpleFactory = new SimpleCursorFactory();

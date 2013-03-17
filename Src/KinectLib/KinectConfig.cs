@@ -11,6 +11,7 @@ namespace Chimera.Kinect {
         public double Pitch;
         public double Yaw;
         public bool Autostart;
+        public bool Enabled;
 
         public override string Group {
             get { return "Kinect"; }
@@ -25,6 +26,7 @@ namespace Chimera.Kinect {
             Pitch = Get(true, "KinectPitch", 0.0, "The pitch of where the kinect is looking in real space.");
             Yaw = Get(true, "KinectYaw", 0.0, "the yaw of where the kinect is looking in real space.");
             Autostart = Get(true, "KinectAutostart", false, "Whether to start the kinect when the system starts.");
+            Enabled = Get(true, "KinectEnabled", true, "Whether to start with kinect input controlling the system.");
         }
     }
 }

@@ -135,6 +135,7 @@
     <Compile Include="GUI\Forms\OverlayWindow.Designer.cs">
       <DependentUpon>OverlayWindow.cs</DependentUpon>
     </Compile>
+    <Compile Include="Inputs\InputConfig.cs" />
     <Compile Include="Interfaces\IInput.cs" />
     <Compile Include="Inputs\DeltaBasedInput.cs" />
     <Compile Include="Inputs\MouseInput.cs" />

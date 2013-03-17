@@ -85,6 +85,7 @@
   <ItemGroup>
     <Compile Include="BlankEvent.cs" />
     <Compile Include="ComboEvent.cs" />
+    <Compile Include="FlythroughConfig.cs" />
     <Compile Include="GUI\LookAtPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>

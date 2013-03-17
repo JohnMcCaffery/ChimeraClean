@@ -10,6 +10,7 @@ using OpenMetaverse;
 using Chimera.Util;
 using System.Threading;
 using Chimera.FlythroughLib.GUI;
+using FlythroughLib;
 
 namespace Chimera.FlythroughLib {
     public struct Camera {
@@ -136,6 +137,9 @@ namespace Chimera.FlythroughLib {
             mEvents.Start = Start;
             mEvents.CurrentEventChange += new Action<FlythroughEvent<Camera>,FlythroughEvent<Camera>>(mEvents_CurrentEventChange);
             mEvents.LengthChange += new Action<EventSequence<Camera>,int>(mEvents_LengthChange);
+
+            FlythroughConfig cfg = new FlythroughConfig();
+            mEnabled = cfg.Enabled;
         }
 
         public void Play() {
