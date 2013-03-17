@@ -149,9 +149,10 @@
     <Compile Include="Interfaces\IOverlayWindow.cs" />
     <Compile Include="Interfaces\IUpdater.cs" />
     <Compile Include="Interfaces\ITicker.cs" />
+    <Compile Include="Overlay\InvisibleSelection.cs" />
     <Compile Include="Overlay\OverlayController.cs" />
-    <Compile Include="Overlay\BoxArea.cs" />
-    <Compile Include="Overlay\ImageArea.cs" />
+    <Compile Include="Overlay\BoxSelection.cs" />
+    <Compile Include="Overlay\ImageSelection.cs" />
     <Compile Include="GUI\Forms\Inputs\CameraControlForm.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -87,7 +87,11 @@ namespace Chimera {
         /// </summary>
         public bool ControlCursor {
             get { return mControlPointer; }
-            set { mControlPointer = value; }
+            set { 
+                mControlPointer = value;
+                if (!value)
+                    SystemCursor.Position = new Point(-1, -1);
+            }
         }
         /// <summary>
         /// Where on the monitor the cursor is.

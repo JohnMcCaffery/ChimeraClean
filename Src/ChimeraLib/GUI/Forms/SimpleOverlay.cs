@@ -7,9 +7,13 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using Chimera.Interfaces;
+using Chimera.Overlay;
 
 namespace Chimera.GUI.Forms {
-    public partial class SimpleOverlay : Form, IOverlayWindow {        /// <summary>
+    public partial class SimpleOverlay : Form, IOverlayWindow {
+        private enum State { Help, Explore, MainMenu }
+
+        /// <summary>
         /// The last position the mouse was at.
         /// </summary>
         private Point mLastMouse = new Point(-1, -1);
@@ -25,6 +29,24 @@ namespace Chimera.GUI.Forms {
         /// The controller which controls this overlay.
         /// </summary>
         private OverlayController mController;
+        /// <summary>
+        /// What state the system is currently in.
+        /// </summary>
+        private State mState;
+
+        /// <summary>
+        /// Selection which triggers when the user is to go in world.
+        /// </summary>
+        private InvisibleSelection mGoInWorld;
+
+        /// <summary>
+        /// The main menu image.
+        /// </summary>
+        private Bitmap MainMenuImage = new Bitmap("../Images/CathedralSplashScreen.png");
+        /// <summary>
+        /// The help image.
+        /// </summary>
+        private Bitmap MainMenuImage = new Bitmap("../Images/CathedralHelp.png");
 
         /// <summary>
         /// Whether to go full screen.
@@ -40,7 +62,8 @@ namespace Chimera.GUI.Forms {
 
         public SimpleOverlay() {
             InitializeComponent();
-        }
+        }
+
         /// <param name="window">The window this overlay covers.</param>
         public SimpleOverlay(OverlayController controller, Color transparentColour)
             : this() {
@@ -63,7 +86,8 @@ namespace Chimera.GUI.Forms {
             StartPosition = FormStartPosition.Manual;
             Location = mController.Window.Monitor.Bounds.Location;
             Size = mController.Window.Monitor.Bounds.Size;
-        }
+        }
+
         public void Foreground() {
             Invoke(new Action(() => BringToFront()));
         }

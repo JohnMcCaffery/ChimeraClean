@@ -1,22 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
-  <Class Name="Chimera.Coordinator">
-    <Position X="14.25" Y="0.5" Width="2" />
-    <Compartments>
-      <Compartment Name="Fields" Collapsed="true" />
-    </Compartments>
-    <TypeIdentifier>
-      <HashCode>AYRAIAAABQgQggAgEQgAgAAAEEACIQA6ABQAgECISg0=</HashCode>
-      <FileName>Core\Coordinator.cs</FileName>
-    </TypeIdentifier>
-    <ShowAsAssociation>
-      <Property Name="Overlay" />
-    </ShowAsAssociation>
-    <ShowAsCollectionAssociation>
-      <Property Name="Windows" />
-    </ShowAsCollectionAssociation>
-    <Lollipop Position="0.2" />
-  </Class>
   <Class Name="Chimera.NetworkMaster" Collapsed="true">
     <Position X="14.75" Y="7.5" Width="1.5" />
     <TypeIdentifier>
@@ -31,7 +14,6 @@
       <FileName>Core\Window.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
-      <Property Name="Coordinator" />
       <Property Name="Output" />
       <Property Name="Overlay" />
     </ShowAsAssociation>
@@ -41,13 +23,6 @@
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Core\NetworkSlave.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="Chimera.CameraUpdateEventArgs">
-    <Position X="12" Y="0.5" Width="2" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAACAIAAAAAAAAIAgAAAAAAAAAAA=</HashCode>
-      <FileName>Core\Coordinator.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Chimera.Inputs.KBMouseInput">
@@ -64,7 +39,7 @@
   <Class Name="Chimera.GUI.Forms.OverlayWindow">
     <Position X="23.5" Y="0.5" Width="2.25" />
     <TypeIdentifier>
-      <HashCode>AAAgAAAAACAAAAAAwACAAACCAEAAAAIFAABCwAAAAIA=</HashCode>
+      <HashCode>AAAgACAAACAAAAAAwACAAACCAEAAAAIFAABCQAAAAIA=</HashCode>
       <FileName>GUI\Forms\OverlayWindow.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -84,14 +59,14 @@
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
-  <Class Name="Chimera.Overlay.ImageArea">
+  <Class Name="Chimera.Overlay.ImageSelection">
     <Position X="26" Y="12" Width="2" />
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
       <HashCode>AwAAQAAAAQAAACAyEAAAAAAAAAAEgBAAAAACABAAAAA=</HashCode>
-      <FileName>Overlay\ImageArea.cs</FileName>
+      <FileName>Overlay\ImageSelection.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
@@ -143,7 +118,7 @@
   <Class Name="Chimera.OverlayController">
     <Position X="20.75" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>QhkAEAAAEQAAIwAABAIAAwAAkAAACMBEAgAACAwAAQA=</HashCode>
+      <HashCode>QhkAEAAAUQAAIwAABAIAAwAAAAAACMBEAgAACAyAAQA=</HashCode>
       <FileName>Overlay\OverlayController.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -158,15 +133,36 @@
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
+  <Class Name="Chimera.Coordinator">
+    <Position X="14.25" Y="0.5" Width="2" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AYRAIAAABQhQggAgEQgAgAAAEEACIQA6ABQAgECYSg0=</HashCode>
+      <FileName>Core\Coordinator.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Overlay" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="Windows" />
+    </ShowAsCollectionAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Chimera.CameraUpdateEventArgs">
+    <Position X="12" Y="0.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAACAIAAAAAAAAIAgAAAAAAAAAAA=</HashCode>
+      <FileName>Core\Coordinator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
   <Interface Name="Chimera.ISystemInput">
     <Position X="9.5" Y="4.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAACAAAAAAA=</HashCode>
       <FileName>Interfaces\ISystemInput.cs</FileName>
     </TypeIdentifier>
-    <ShowAsAssociation>
-      <Property Name="Coordinator" />
-    </ShowAsAssociation>
   </Interface>
   <Interface Name="Chimera.IOutput">
     <Position X="21.5" Y="6.75" Width="1.5" />

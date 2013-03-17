@@ -74,6 +74,14 @@ namespace Chimera {
         /// </summary>
         private Vector3 mEyePosition;
         /// <summary>
+        /// Whether to accept updates to the camera position.
+        /// </summary>
+        private bool mEnableUpdates;
+        /// <summary>
+        /// Whether the tick thread should continue running.
+        /// </summary>
+        private bool mAlive;
+        /// <summary>
         /// Lock object to ensure only this object can update the rotation.
         /// </summary>
         private readonly object mRotationLock = new object();
@@ -169,11 +177,6 @@ namespace Chimera {
         public event Action Tick;
 
         /// <summary>
-        /// Whether the tick thread should continue running.
-        /// </summary>
-        private bool mAlive;
-
-        /// <summary>
         /// Initialise this input, specifying a collection of inputs to work with.
         /// </summary>
         /// <param name="inputs">The inputs which control the camera through this input.</param>
@@ -226,6 +229,14 @@ namespace Chimera {
 
             mMainMenu = mainMenu;
             mMainMenu.Init(this);
+        }
+
+        /// <summary>
+        /// Whether to accept updates to the camera position.
+        /// </summary>
+        public bool EnableUpdates {
+            get { return mEnableUpdates; }
+            set { mEnableUpdates = value; }
         }
 
         /// <summary>

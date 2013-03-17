@@ -7,7 +7,7 @@ using System.Windows.Forms;
 using System.Threading;
 
 namespace Chimera.Overlay {
-    public class ImageArea : SelectableArea, ISelectable {
+    public class ImageSelection : SelectableArea, ISelectable {
         private readonly double mSelectTime = 1500;
 
         private Window mWindow;
@@ -30,22 +30,22 @@ namespace Chimera.Overlay {
             }
         }
 
-        public ImageArea(Bitmap image, float x, float y, float w, float h)
+        public ImageSelection(Bitmap image, float x, float y, float w, float h)
             : base(x, y, w, h) {
             mImage = image;
         }
 
 
-        public ImageArea(string imageFile, float x, float y, float w, float h)
+        public ImageSelection(string imageFile, float x, float y, float w, float h)
             : this(new Bitmap(imageFile), x, y, w, h) {
         }
 
-        public ImageArea(Window window, Bitmap image, float x, float y, float w, float h)
+        public ImageSelection(Window window, Bitmap image, float x, float y, float w, float h)
             : this(image, x, y, w, h) {
             Init(window);
         }
 
-        public ImageArea(Window window, string imageFile, float x, float y, float w, float h)
+        public ImageSelection(Window window, string imageFile, float x, float y, float w, float h)
             : this(window, new Bitmap(imageFile), x, y, w, h) {
         }
 
