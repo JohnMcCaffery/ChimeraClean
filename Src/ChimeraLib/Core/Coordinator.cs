@@ -76,7 +76,7 @@ namespace Chimera {
         /// <summary>
         /// Whether to accept updates to the camera position.
         /// </summary>
-        private bool mEnableUpdates;
+        private bool mEnableUpdates = true;
         /// <summary>
         /// Whether the tick thread should continue running.
         /// </summary>
@@ -302,6 +302,10 @@ namespace Chimera {
             //TODO put this back in when menus are set up
             //if (!mMainMenuActive) {
             if (mEnableUpdates) {
+                if (position.Z < 0f) {
+                    position.Z = 0f;
+                    postionDelta.Z = 0f;
+                }
                 mPosition = position;
                 mRotation.Update(mRotationLock, orientation);
                 if (CameraUpdated != null && mAlive) {

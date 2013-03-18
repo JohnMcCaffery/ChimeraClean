@@ -109,20 +109,6 @@ namespace Chimera.GUI.Forms {
 
             drawPanel.BackColor = controller.TransparentColour;
 
-            mGoInWorldRender = new NumberSelectionRenderer();
-            mGoInWorld = new InvisibleSelection(mGoInWorldRender, 265f / 1920f, 255f / 1080f, (675f-255f) / 1920, (900f - 255f) / 1080f);
-            mGoInWorld.Selected += new Action<ISelectable>(mGoInWorld_Selected);
-
-            mGoMainMenuRender = new NumberSelectionRenderer();
-            mGoMainMenu = new InvisibleSelection(mGoMainMenuRender, 70f / 1920f, 65f / 1080f, (490f-70f) / 1920, (300f - 65f) / 1080f);
-            mGoMainMenu.Selected += new Action<ISelectable>(mGoMainMenu_Selected);
-            mGoMainMenu.Active = false;
-
-            mGoInWorldHelpRender = new NumberSelectionRenderer();
-            mGoInWorldHelp = new InvisibleSelection(mGoInWorldHelpRender, 60f / 1920f, 520f / 1080f, (335f-60f) / 1920, (945f - 520f) / 1080f);
-            mGoInWorldHelp.Selected += new Action<ISelectable>(mGoInWorld_Selected);
-            mGoInWorldHelp.Active = false;
-
             Init(controller);
         }
 
@@ -132,11 +118,31 @@ namespace Chimera.GUI.Forms {
         /// <param name="input">The input to link this form with.</param>
         public void Init(OverlayController controller) {
             mController = controller;
+            mController.Window.Coordinator.EnableUpdates = false;
 
             TopMost = true;
             StartPosition = FormStartPosition.Manual;
             Location = mController.Window.Monitor.Bounds.Location;
             Size = mController.Window.Monitor.Bounds.Size;
+
+            Size s = mController.Window.Monitor.Bounds.Size;
+
+            mMainMenuImage = new Bitmap(mMainMenuImage, s);
+            mCathedralHelpImage = new Bitmap(mCathedralHelpImage, s);
+
+            mGoInWorldRender = new NumberSelectionRenderer();
+            mGoInWorld = new InvisibleSelection(mGoInWorldRender, 265f / s.Width, 255f / s.Height, (675f-255f) / s.Width, (900f - 255f) / s.Height);
+            mGoInWorld.Selected += new Action<ISelectable>(mGoInWorld_Selected);
+
+            mGoMainMenuRender = new NumberSelectionRenderer();
+            mGoMainMenu = new InvisibleSelection(mGoMainMenuRender, 70f / s.Width, 65f / s.Height, (490f-70f) / s.Width, (300f - 65f) / s.Height);
+            mGoMainMenu.Selected += new Action<ISelectable>(mGoMainMenu_Selected);
+            mGoMainMenu.Active = false;
+
+            mGoInWorldHelpRender = new NumberSelectionRenderer();
+            mGoInWorldHelp = new InvisibleSelection(mGoInWorldHelpRender, 60f / s.Width, 520f / s.Height, (335f-60f) / s.Width, (945f - 520f) / s.Height);
+            mGoInWorldHelp.Selected += new Action<ISelectable>(mGoInWorld_Selected);
+            mGoInWorldHelp.Active = false;
 
             mGoInWorld.Init(mController.Window);
             mGoInWorldHelp.Init(mController.Window);
@@ -181,7 +187,9 @@ namespace Chimera.GUI.Forms {
             mGoInWorldHelp.Active = false;
             mCurrentStep = mSteps;
             mMinimizing = true;
-            mController.ControlPointer = false;        }
+            mController.ControlPointer = false;
+        }
+
         private void mGoMainMenu_Selected(ISelectable source) {
             mGoInWorldHelp.Active = false;
             mGoMainMenu.Active = false;

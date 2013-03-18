@@ -11,6 +11,7 @@ using Chimera.FlythroughLib;
 using Chimera.Overlay;
 using Chimera.Kinect;
 using Chimera.Kinect.Interfaces;
+using NuiLibDotNet;
 
 namespace ChimeraOutput {
     public static class RunChimera {
@@ -51,6 +52,10 @@ namespace ChimeraOutput {
             kinect.FlyEnabled = true;
             kinect.WalkEnabled = true;
             kinect.YawEnabled = true;
+
+            Nui.Init();
+            Nui.SetAutoPoll(true);
+
             ProcessWrangler.BlockingRunForm(form, coordinator, cfg.AutoRestart);
         }
     }

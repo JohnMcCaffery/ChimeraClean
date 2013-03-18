@@ -18,7 +18,7 @@ namespace Chimera.OpenSim {
 
         public override void ClearCamera() {
             if (ProxyRunning)
-                InjectPacket(new ClearFollowCamPropertiesPacket());
+                InjectPacket(new ClearWindowPacket());
         }
 
         public override void SetCamera() {
