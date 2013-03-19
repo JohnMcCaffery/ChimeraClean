@@ -68,14 +68,14 @@ namespace Chimera.Kinect {
         public Scalar YawScale { get { return mYawScale; } }
         public Scalar YawThreshold { get { return mYawThreshold; } }
 
-        public event Action EnabledChanged;
+        public event Action<IInput, bool> EnabledChanged;
 
         public bool WalkEnabled {
             get { return mWalkEnabled; }
             set { 
                 mWalkEnabled = value;
                 if (EnabledChanged != null)
-                    EnabledChanged();
+                    EnabledChanged(this, mEnabled);
             }
         }
         public bool StrafeEnabled {
@@ -87,7 +87,7 @@ namespace Chimera.Kinect {
             set { 
                 mFlyEnabled = value;
                 if (EnabledChanged != null)
-                    EnabledChanged();
+                    EnabledChanged(this, mEnabled);
             }
         }
         public bool PitchEnabled {
@@ -99,7 +99,7 @@ namespace Chimera.Kinect {
             set {
                 mYawEnabled = value;
                 if (EnabledChanged != null)
-                    EnabledChanged();
+                    EnabledChanged(this, mEnabled);
             }
         }
 
@@ -233,7 +233,7 @@ namespace Chimera.Kinect {
             set { 
                 mEnabled = value;
                 if (EnabledChanged != null)
-                    EnabledChanged();
+                    EnabledChanged(this, mEnabled);
             }
         }
 

@@ -175,6 +175,8 @@ namespace Chimera.Kinect {
 
         #region ISystemInput Members
 
+        public event Action<IInput, bool> EnabledChanged;
+
         public UserControl ControlPanel {
             get {
                 if (mPanel == null)
@@ -189,7 +191,11 @@ namespace Chimera.Kinect {
 
         public bool Enabled {
             get { return mEnabled; }
-            set { mEnabled = value; }
+            set { 
+                mEnabled = value;
+                if (EnabledChanged != null)
+                    EnabledChanged(this, value);
+            }
         }
 
         public ConfigBase Config {
