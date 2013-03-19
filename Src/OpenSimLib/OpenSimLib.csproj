@@ -100,6 +100,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GUI\HeightmapInputPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\HeightmapInputPanel.Designer.cs">
+      <DependentUpon>HeightmapInputPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="HeightmapConfig.cs" />
+    <Compile Include="HeightmapInput.cs" />
     <Compile Include="SetWindowPacket.cs" />
     <Compile Include="SetWindowViewerOutput.cs" />
     <Compile Include="Program.cs" />
@@ -135,6 +143,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="GUI\HeightmapInputPanel.resx">
+      <DependentUpon>HeightmapInputPanel.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="GUI\ProxyPanel.resx">
       <DependentUpon>ProxyPanel.cs</DependentUpon>
     </EmbeddedResource>

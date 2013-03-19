@@ -129,9 +129,6 @@ namespace Chimera.OpenSim {
                     //mProxy.AddDelegate(pt, Direction.Outgoing, ReceiveOutgoingPacket);
                 //}
 
-                mProxy.AddDelegate(PacketType.LayerData, Direction.Outgoing, LayerDataHandler);
-                mProxy.AddDelegate(PacketType.LayerData, Direction.Incoming, LayerDataHandler);
-
                 mProxy.Start();
                 mProxyStarted = true;
             } catch (NullReferenceException e) {
@@ -235,98 +232,8 @@ namespace Chimera.OpenSim {
                 ProcessWrangler.SetMonitor(mClient, monitor);
         }
 
-
-        private IPEndPoint mSource = null;
-        private int mLayerDataPacketsReceived = 0;
-
-        private Packet LayerDataHandler(Packet packet, IPEndPoint ep) {
-            mLayerDataPacketsReceived++;
-            LayerDataPacket layer = (LayerDataPacket)packet;
-            BitPack bitpack = new BitPack(layer.LayerData.Data, 0);
-            TerrainPatch.GroupHeader header = new TerrainPatch.GroupHeader();
-            TerrainPatch.LayerType type = (TerrainPatch.LayerType)layer.LayerID.Type;
-
-            // Stride
-            header.Stride = bitpack.UnpackBits(16);
-            // Patch size
-            header.PatchSize = bitpack.UnpackBits(8);
-            // Layer type
-            header.Type = (TerrainPatch.LayerType)bitpack.UnpackBits(8);
-
-            switch (type) {
-                case TerrainPatch.LayerType.Land:
-                    DecompressLand(bitpack, header, ep);
-                    break;
-                default:
-                    break;
-            }
-
-            return packet;
-        }
-
-        private void DecompressLand(BitPack bitpack, TerrainPatch.GroupHeader group, IPEndPoint ep) {
-            Console.WriteLine("Received: {0:000} Layer Data Packets", mLayerDataPacketsReceived ++);
-            if (mSource == null)
-                mSource = ep;
-            else if (ep.Port != mSource.Port) {
-                Console.WriteLine("Switched source to " + ep.Port);
-                mSource = ep;
-            }
-
-            int x;
-            int y;
-            int[] patches = new int[32 * 32];
-            int count = 0;
-
-            TerrainPatch.Header header = TerrainCompressor.DecodePatchHeader(bitpack);
-            x = header.X;
-            y = header.Y;
-            //Console.WriteLine(String.Format("Packet x={0:000}, y={1:000}, patchIDs={2:000}, dc_offset={3:000}, range={4}", x, y, header.PatchIDs, header.DCOffset, header.Range));
-            while (header.QuantWBits != TerrainCompressor.END_OF_PATCHES) {
-                x = header.X;
-                y = header.Y;
-
-                if (x >= TerrainCompressor.PATCHES_PER_EDGE || y >= TerrainCompressor.PATCHES_PER_EDGE) {
-                    Console.WriteLine(String.Format("Invalid LayerData land packet, x={0}, y={1}, dc_offset={2}, range={3}, quant_wbits={4}, patchids={5}, count={6}", x, y, header.DCOffset, header.Range, header.QuantWBits, header.PatchIDs, count));
-                    return;
-                }
-
-                // Decode this patch
-                TerrainCompressor.DecodePatch(patches, bitpack, header, group.PatchSize);
-
-                // Decompress this patch
-                float[] heightmap = TerrainCompressor.DecompressPatch(patches, header, group);
-
-                count++;
-
-                TerrainPatch patch = new TerrainPatch();
-                patch.Data = heightmap;
-                patch.X = x;
-                patch.Y = y;
-                Terrain[y * 16 + x] = patch;
-
-                for (int j = 0; j < 16; j++) {
-                    for (int i = 0; i < 16; i++) {
-                        terrainHeight[x * 16 + i, y * 16 + j] = heightmap[j * 16 + i];
-                        if (heightmap[j * 16 + 1] < 10f)
-                            Console.WriteLine("This tile is not in the bottom left region. " + x + "," + y);
-                    }
-                }
-                header = TerrainCompressor.DecodePatchHeader(bitpack);
-            }
-        }
-
-        TerrainPatch[] Terrain = new TerrainPatch[1024*1024];
-        float[,] terrainHeight = new float[256 * 12, 256 * 12];
-
         private void ProcessChangeViewer(Coordinator coordinator, CameraUpdateEventArgs args) {
-            float height = terrainHeight[(int)args.position.X, (int)args.position.Y] + .5f;
-            if (args.position.Z < height) {
-                args.position.Z = height;
-                args.positionDelta.Z = 0f;
-                mWindow.Coordinator.Update(args.position, args.positionDelta, args.rotation, args.rotationDelta);
-            } else
-                ProcessChange(coordinator, args);
+            ProcessChange(coordinator, args);
         }
 
         /// <summary>

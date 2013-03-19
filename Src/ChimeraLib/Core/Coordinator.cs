@@ -82,6 +82,14 @@ namespace Chimera {
         /// </summary>
         private bool mAlive;
         /// <summary>
+        /// The heightmap for the region. Camera positions below this will be ignored.
+        /// </summary>
+        private readonly float[,] mHeightmap;
+        /// <summary>
+        /// The default height below which the camera should go. Used if heightmap data is not available.
+        /// </summary>
+        private readonly float mDefaultHeight;
+        /// <summary>
         /// Lock object to ensure only this object can update the rotation.
         /// </summary>
         private readonly object mRotationLock = new object();
@@ -167,9 +175,9 @@ namespace Chimera {
         public event Action<IOverlayState, EventArgs> StateActivated;
 
         /// <summary>
-        /// Selected whenever the main menu is activated.
+        /// Triggered whenever the heightmap changes.
         /// </summary>
-        public event EventHandler MainMenuActivated;
+        public event Action HeightmapChanged;
 
         /// <summary>
         /// Triggered every tick. Listen for this to keep time across the system.
@@ -189,6 +197,14 @@ namespace Chimera {
             mEyePosition = cfg.EyePosition;
             mCrashLogFile = cfg.CrashLogFile;
             mTickLength = cfg.TickLength;
+            mDefaultHeight = cfg.HeightmapDefault;
+            mHeightmap = new float[cfg.XRegions * 256, cfg.YRegions * 256];
+            
+            for (int i = 0; i < mHeightmap.GetLength(0); i++) {
+                for (int j = 0; j < mHeightmap.GetLength(1); j++) {
+                    mHeightmap[i, j] = mDefaultHeight;
+                }
+            }
 
             mMainMenu = new Chimera.Overlay.MainMenu();
 
@@ -229,6 +245,14 @@ namespace Chimera {
 
             mMainMenu = mainMenu;
             mMainMenu.Init(this);
+        }
+
+        /// <summary>
+        /// The heightmap the coordinator is working with. Any attempted input value below the heightmap value will be set to the heightmap value.
+        /// Stops the camera going through the floor.
+        /// </summary>
+        public float[,] Heightmap {
+            get { return mHeightmap; }
         }
 
         /// <summary>
@@ -291,6 +315,25 @@ namespace Chimera {
             get { return mMainMenu; }
         }
 
+        public void SetHeightmapSection(float[,] section, int startX, int startY, bool regionCompleted) {
+            for (int i = 0; i < section.GetLength(0); i++) {
+                for (int j = 0; j < section.GetLength(1); j++)
+                    mHeightmap[startX + i, startY + j] = section[i, j];
+            }
+            if (regionCompleted && HeightmapChanged != null)
+                HeightmapChanged();
+        }
+
+        public void SetHeightmapSection(float[] section, int step, int startX, int startY) {
+            for (int j = 0; j < step; j++) {
+                for (int i = 0; i < step; i++) {
+                    mHeightmap[startX * step + i, startY * step + j] = section[j * step + i];
+                }
+            }
+            if (HeightmapChanged != null)
+                HeightmapChanged();
+        }
+
         /// <summary>
         /// Update the position of the camera.
         /// </summary>
@@ -302,8 +345,16 @@ namespace Chimera {
             //TODO put this back in when menus are set up
             //if (!mMainMenuActive) {
             if (mEnableUpdates) {
-                if (position.Z < 0f) {
-                    position.Z = 0f;
+                int x = (int)position.X;
+                int y = (int)position.Y;
+                float height = 
+                    x >= 0 && x < mHeightmap.GetLength(0) && 
+                    y >= 0 && y < mHeightmap.GetLength(1) ? 
+                        mHeightmap[x, y] : 
+                        mDefaultHeight;
+                height += .5f;
+                if (position.Z < height) {
+                    position.Z = height;
                     postionDelta.Z = 0f;
                 }
                 mPosition = position;

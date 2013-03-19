@@ -31,10 +31,8 @@ using OpenMetaverse;
 namespace ProxyTestGUI {
     public partial class VectorPanel : UserControl {
         public event EventHandler ValueChanged;
-        private float trackerScale = 100.0f;
         private bool externalSet = false;
         private bool guiSet = false;
-        private bool valueChange = false;
         private Vector3 vector;
 
         public Vector3 Value {
@@ -49,7 +47,7 @@ namespace ProxyTestGUI {
                         externalSet = true;
                         xPanel.Value = vector.X;
                         yPanel.Value = vector.Y;
-                        zPanel.Value = vector.X;
+                        zPanel.Value = vector.Z;
                         externalSet = false;
                     }
 

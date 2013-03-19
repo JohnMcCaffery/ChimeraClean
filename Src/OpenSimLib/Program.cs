@@ -32,6 +32,7 @@ namespace ChimeraOutput {
             ISystemInput kbMouseInput = new KBMouseInput();
             ISystemInput flythrough = new Flythrough();
             ISystemInput mouse = new MouseInput();
+            ISystemInput heightmap = new HeightmapInput();
             KinectInput kinect = new KinectInput(new IDeltaInput[] { dolphin }, new IHelpTrigger[] { trigger }, simpleFactory, pointFactory);
             //ISystemInput kinectDolphin = new DeltaBasedInput(dolphin);
 
@@ -41,7 +42,7 @@ namespace ChimeraOutput {
             //IOverlayState mState = new TestState();
             //MainMenuItem item1 = new MainMenuItem(mState, mOverlay);
             Chimera.Overlay.MainMenu mainMenu = new Chimera.Overlay.MainMenu();
-            Coordinator coordinator = new Coordinator(windows, mainMenu, kinect, kbMouseInput, mouse, flythrough);
+            Coordinator coordinator = new Coordinator(windows, mainMenu, kinect, kbMouseInput, mouse, heightmap, flythrough);
 
             //Window[] windows = new Window[] { new Window("Main Window") };
             //Chimera.Overlay.MainMenu mainMenu = new Chimera.Overlay.MainMenu();

@@ -27,12 +27,17 @@
             Chimera.Util.Rotation rotation1 = new Chimera.Util.Rotation();
             this.hSplit = new System.Windows.Forms.SplitContainer();
             this.diagramWorldSplit = new System.Windows.Forms.SplitContainer();
+            this.diagramHeightmapTab = new System.Windows.Forms.TabControl();
+            this.diagramTab = new System.Windows.Forms.TabPage();
             this.diagSplit = new System.Windows.Forms.SplitContainer();
             this.hGroup = new System.Windows.Forms.GroupBox();
             this.button1 = new System.Windows.Forms.Button();
             this.testButton = new System.Windows.Forms.Button();
             this.vGroup = new System.Windows.Forms.GroupBox();
+            this.heightmapTab = new System.Windows.Forms.TabPage();
+            this.heightmapPanel = new System.Windows.Forms.PictureBox();
             this.globalBox = new System.Windows.Forms.GroupBox();
+            this.triggerHelpButton = new System.Windows.Forms.Button();
             this.eyePositionPanel = new ProxyTestGUI.VectorPanel();
             this.virtualOrientationPanel = new ProxyTestGUI.RotationPanel();
             this.virtualPositionPanel = new ProxyTestGUI.VectorPanel();
@@ -41,7 +46,6 @@
             this.windowsTab = new System.Windows.Forms.TabControl();
             this.inputsGroup = new System.Windows.Forms.GroupBox();
             this.inputsTab = new System.Windows.Forms.TabControl();
-            this.triggerHelpButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.hSplit)).BeginInit();
             this.hSplit.Panel1.SuspendLayout();
             this.hSplit.Panel2.SuspendLayout();
@@ -50,11 +54,15 @@
             this.diagramWorldSplit.Panel1.SuspendLayout();
             this.diagramWorldSplit.Panel2.SuspendLayout();
             this.diagramWorldSplit.SuspendLayout();
+            this.diagramHeightmapTab.SuspendLayout();
+            this.diagramTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.diagSplit)).BeginInit();
             this.diagSplit.Panel1.SuspendLayout();
             this.diagSplit.Panel2.SuspendLayout();
             this.diagSplit.SuspendLayout();
             this.hGroup.SuspendLayout();
+            this.heightmapTab.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.heightmapPanel)).BeginInit();
             this.globalBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.windowsPluginsSplit)).BeginInit();
             this.windowsPluginsSplit.Panel1.SuspendLayout();
@@ -94,7 +102,7 @@
             // 
             // diagramWorldSplit.Panel1
             // 
-            this.diagramWorldSplit.Panel1.Controls.Add(this.diagSplit);
+            this.diagramWorldSplit.Panel1.Controls.Add(this.diagramHeightmapTab);
             // 
             // diagramWorldSplit.Panel2
             // 
@@ -104,10 +112,34 @@
             this.diagramWorldSplit.SplitterDistance = 646;
             this.diagramWorldSplit.TabIndex = 0;
             // 
+            // diagramHeightmapTab
+            // 
+            this.diagramHeightmapTab.Controls.Add(this.diagramTab);
+            this.diagramHeightmapTab.Controls.Add(this.heightmapTab);
+            this.diagramHeightmapTab.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.diagramHeightmapTab.Location = new System.Drawing.Point(0, 0);
+            this.diagramHeightmapTab.Name = "diagramHeightmapTab";
+            this.diagramHeightmapTab.SelectedIndex = 0;
+            this.diagramHeightmapTab.Size = new System.Drawing.Size(646, 297);
+            this.diagramHeightmapTab.TabIndex = 3;
+            this.diagramHeightmapTab.KeyDown += new System.Windows.Forms.KeyEventHandler(this.CoordinatorForm_KeyDown);
+            this.diagramHeightmapTab.KeyUp += new System.Windows.Forms.KeyEventHandler(this.CoordinatorForm_KeyUp);
+            // 
+            // diagramTab
+            // 
+            this.diagramTab.Controls.Add(this.diagSplit);
+            this.diagramTab.Location = new System.Drawing.Point(4, 22);
+            this.diagramTab.Name = "diagramTab";
+            this.diagramTab.Padding = new System.Windows.Forms.Padding(3);
+            this.diagramTab.Size = new System.Drawing.Size(638, 271);
+            this.diagramTab.TabIndex = 0;
+            this.diagramTab.Text = "Diagram";
+            this.diagramTab.UseVisualStyleBackColor = true;
+            // 
             // diagSplit
             // 
             this.diagSplit.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.diagSplit.Location = new System.Drawing.Point(0, 0);
+            this.diagSplit.Location = new System.Drawing.Point(3, 3);
             this.diagSplit.Name = "diagSplit";
             // 
             // diagSplit.Panel1
@@ -117,8 +149,8 @@
             // diagSplit.Panel2
             // 
             this.diagSplit.Panel2.Controls.Add(this.vGroup);
-            this.diagSplit.Size = new System.Drawing.Size(646, 297);
-            this.diagSplit.SplitterDistance = 311;
+            this.diagSplit.Size = new System.Drawing.Size(632, 265);
+            this.diagSplit.SplitterDistance = 304;
             this.diagSplit.TabIndex = 0;
             this.diagSplit.KeyDown += new System.Windows.Forms.KeyEventHandler(this.CoordinatorForm_KeyDown);
             this.diagSplit.KeyUp += new System.Windows.Forms.KeyEventHandler(this.CoordinatorForm_KeyUp);
@@ -130,7 +162,7 @@
             this.hGroup.Dock = System.Windows.Forms.DockStyle.Fill;
             this.hGroup.Location = new System.Drawing.Point(0, 0);
             this.hGroup.Name = "hGroup";
-            this.hGroup.Size = new System.Drawing.Size(311, 297);
+            this.hGroup.Size = new System.Drawing.Size(304, 265);
             this.hGroup.TabIndex = 0;
             this.hGroup.TabStop = false;
             this.hGroup.Text = "Top Down";
@@ -160,10 +192,31 @@
             this.vGroup.Dock = System.Windows.Forms.DockStyle.Fill;
             this.vGroup.Location = new System.Drawing.Point(0, 0);
             this.vGroup.Name = "vGroup";
-            this.vGroup.Size = new System.Drawing.Size(331, 297);
+            this.vGroup.Size = new System.Drawing.Size(324, 265);
             this.vGroup.TabIndex = 0;
             this.vGroup.TabStop = false;
             this.vGroup.Text = "Side On";
+            // 
+            // heightmapTab
+            // 
+            this.heightmapTab.Controls.Add(this.heightmapPanel);
+            this.heightmapTab.Location = new System.Drawing.Point(4, 22);
+            this.heightmapTab.Name = "heightmapTab";
+            this.heightmapTab.Padding = new System.Windows.Forms.Padding(3);
+            this.heightmapTab.Size = new System.Drawing.Size(638, 271);
+            this.heightmapTab.TabIndex = 1;
+            this.heightmapTab.Text = "Heightmap";
+            this.heightmapTab.UseVisualStyleBackColor = true;
+            // 
+            // heightmapPanel
+            // 
+            this.heightmapPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.heightmapPanel.Location = new System.Drawing.Point(3, 3);
+            this.heightmapPanel.Name = "heightmapPanel";
+            this.heightmapPanel.Size = new System.Drawing.Size(632, 265);
+            this.heightmapPanel.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.heightmapPanel.TabIndex = 0;
+            this.heightmapPanel.TabStop = false;
             // 
             // globalBox
             // 
@@ -179,6 +232,18 @@
             this.globalBox.TabIndex = 0;
             this.globalBox.TabStop = false;
             this.globalBox.Text = "Global";
+            // 
+            // triggerHelpButton
+            // 
+            this.triggerHelpButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.triggerHelpButton.Location = new System.Drawing.Point(7, 288);
+            this.triggerHelpButton.Name = "triggerHelpButton";
+            this.triggerHelpButton.Size = new System.Drawing.Size(248, 23);
+            this.triggerHelpButton.TabIndex = 3;
+            this.triggerHelpButton.Text = "Trigger Help";
+            this.triggerHelpButton.UseVisualStyleBackColor = true;
+            this.triggerHelpButton.Click += new System.EventHandler(this.triggerHelpButton_Click);
             // 
             // eyePositionPanel
             // 
@@ -301,18 +366,6 @@
             this.inputsTab.KeyDown += new System.Windows.Forms.KeyEventHandler(this.CoordinatorForm_KeyDown);
             this.inputsTab.KeyUp += new System.Windows.Forms.KeyEventHandler(this.CoordinatorForm_KeyUp);
             // 
-            // triggerHelpButton
-            // 
-            this.triggerHelpButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.triggerHelpButton.Location = new System.Drawing.Point(7, 288);
-            this.triggerHelpButton.Name = "triggerHelpButton";
-            this.triggerHelpButton.Size = new System.Drawing.Size(248, 23);
-            this.triggerHelpButton.TabIndex = 3;
-            this.triggerHelpButton.Text = "Trigger Help";
-            this.triggerHelpButton.UseVisualStyleBackColor = true;
-            this.triggerHelpButton.Click += new System.EventHandler(this.triggerHelpButton_Click);
-            // 
             // CoordinatorForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -332,11 +385,15 @@
             this.diagramWorldSplit.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.diagramWorldSplit)).EndInit();
             this.diagramWorldSplit.ResumeLayout(false);
+            this.diagramHeightmapTab.ResumeLayout(false);
+            this.diagramTab.ResumeLayout(false);
             this.diagSplit.Panel1.ResumeLayout(false);
             this.diagSplit.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.diagSplit)).EndInit();
             this.diagSplit.ResumeLayout(false);
             this.hGroup.ResumeLayout(false);
+            this.heightmapTab.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.heightmapPanel)).EndInit();
             this.globalBox.ResumeLayout(false);
             this.windowsPluginsSplit.Panel1.ResumeLayout(false);
             this.windowsPluginsSplit.Panel2.ResumeLayout(false);
@@ -367,5 +424,9 @@
         private System.Windows.Forms.Button testButton;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button triggerHelpButton;
+        private System.Windows.Forms.TabControl diagramHeightmapTab;
+        private System.Windows.Forms.TabPage diagramTab;
+        private System.Windows.Forms.TabPage heightmapTab;
+        private System.Windows.Forms.PictureBox heightmapPanel;
     }
 }

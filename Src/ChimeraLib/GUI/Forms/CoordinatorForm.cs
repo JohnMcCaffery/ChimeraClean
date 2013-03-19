@@ -16,6 +16,7 @@ namespace Chimera.GUI.Forms {
         private bool mGuiUpdate;
         private bool mEventUpdate;
         private Coordinator mCoordinator;
+        private Bitmap mHeightmap;
 
         public CoordinatorForm() {
             InitializeComponent();
@@ -29,9 +30,18 @@ namespace Chimera.GUI.Forms {
         public void Init(Coordinator coordinator) {
             mCoordinator = coordinator;
 
-            mCoordinator.CameraUpdated += new Action<Coordinator,CameraUpdateEventArgs>(mCoordinator_CameraUpdated);
-            mCoordinator.EyeUpdated += new Action<Coordinator,EventArgs>(mCoordinator_EyeUpdated);
-            mCoordinator.Closed += new Action<Coordinator,KeyEventArgs>(mCoordinator_Closed);
+            Disposed += new EventHandler(CoordinatorForm_Disposed);
+
+            mCoordinator.CameraUpdated += mCoordinator_CameraUpdated;
+            mCoordinator.EyeUpdated += mCoordinator_EyeUpdated;
+            mCoordinator.Closed += mCoordinator_Closed;
+            mCoordinator.HeightmapChanged += mCoordinator_HeightmapChanged;
+
+            virtualPositionPanel.Value = mCoordinator.Position;
+            virtualOrientationPanel.Quaternion = mCoordinator.Orientation.Quaternion;
+            eyePositionPanel.Value = mCoordinator.EyePosition;
+
+            mHeightmap = new Bitmap(mCoordinator.Heightmap.GetLength(0), mCoordinator.Heightmap.GetLength(1));
 
             foreach (var window in mCoordinator.Windows) {
                 // 
@@ -100,6 +110,30 @@ namespace Chimera.GUI.Forms {
 
                 inputsTab.Controls.Add(inputTab);
             }
+        }
+
+        void CoordinatorForm_Disposed(object sender, EventArgs e) {
+            mCoordinator.CameraUpdated -= mCoordinator_CameraUpdated;
+            mCoordinator.EyeUpdated -= mCoordinator_EyeUpdated;
+            mCoordinator.Closed -= mCoordinator_Closed;
+            mCoordinator.HeightmapChanged -= mCoordinator_HeightmapChanged;
+        }
+
+        private void mCoordinator_HeightmapChanged() {
+            Bitmap heightmap = new Bitmap(mCoordinator.Heightmap.GetLength(0), mCoordinator.Heightmap.GetLength(1));
+            Graphics g = Graphics.FromImage(heightmap);
+            for (int i = 0; i < mCoordinator.Heightmap.GetLength(0); i++) {
+                for (int j = 0; j < mCoordinator.Heightmap.GetLength(1); j++) {
+                    float height = mCoordinator.Heightmap[i, j];
+                    int val = (int) (255f / height > 0f ? height : 0f);
+                    heightmap.SetPixel(i, (mCoordinator.Heightmap.GetLength(1)-1)-j, Color.FromArgb(val, val, val));
+                }
+            }
+            mHeightmap = heightmap;
+            if (!IsDisposed && Created)
+                Invoke(new Action(() => {
+                    heightmapPanel.Image = heightmap;
+                }));
         }
 
         private void mCoordinator_CameraUpdated(Coordinator coordinator, CameraUpdateEventArgs args) {
