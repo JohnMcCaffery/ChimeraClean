@@ -47,7 +47,7 @@ namespace Chimera {
             Yaw = Get(true, "CameraYaw", 0.0, "The yaw of the virtual camera.");
 
             XRegions = Get(true, "XRegions", 1, "The number of contiguous regions along the X axis that make up the environment.");
-            YRegions = Get(true, "XRegions", 1, "The number of contiguous regions along the Y axis that make up the environment.");
+            YRegions = Get(true, "YRegions", 1, "The number of contiguous regions along the Y axis that make up the environment.");
             HeightmapDefault = Get(true, "HeightmapDefault", 0f, "The default heightmap height. Any square that does not have heightmap data set will revert to this.");
         }
     }

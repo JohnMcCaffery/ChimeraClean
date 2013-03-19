@@ -68,7 +68,7 @@ namespace Chimera.OpenSim {
 
         private int mPacketCount = 1;
         private void UpdateHeightmap(LandPatchReceivedEventArgs e) {
-            Console.WriteLine("Processing LayerData packet {0:000}", mPacketCount++);            string simName = e.Simulator.Name;
+            string simName = e.Simulator.Name;
 
             if (!mMappedParcels.ContainsKey(simName))
                 mMappedParcels.Add(simName, new HashSet<string>());
@@ -77,7 +77,6 @@ namespace Chimera.OpenSim {
             int x = e.X * 16;
             int y = e.Y * 16;
 
-            Console.WriteLine(e.Simulator.Handle);
             uint globalX, globalY;
             Utils.LongToUInts(e.Simulator.Handle, out globalX, out globalY);
 

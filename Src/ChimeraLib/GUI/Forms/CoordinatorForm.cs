@@ -112,7 +112,7 @@ namespace Chimera.GUI.Forms {
             }
         }
 
-        void CoordinatorForm_Disposed(object sender, EventArgs e) {
+        private void CoordinatorForm_Disposed(object sender, EventArgs e) {
             mCoordinator.CameraUpdated -= mCoordinator_CameraUpdated;
             mCoordinator.EyeUpdated -= mCoordinator_EyeUpdated;
             mCoordinator.Closed -= mCoordinator_Closed;
@@ -137,12 +137,17 @@ namespace Chimera.GUI.Forms {
         }
 
         private void mCoordinator_CameraUpdated(Coordinator coordinator, CameraUpdateEventArgs args) {
+            if (heightmapTab == diagramHeightmapTab.SelectedTab) {
+            }
             if (!mGuiUpdate) {
                 mEventUpdate = true;
                 Invoke(new Action(() => {
                     virtualPositionPanel.Value = args.position;
                     virtualOrientationPanel.Pitch = args.rotation.Pitch;
                     virtualOrientationPanel.Yaw = args.rotation.Yaw;
+                    if (heightmapTab == diagramHeightmapTab.SelectedTab) {
+                        heightmapPanel.Invalidate();
+                    }
                 }));
                 mEventUpdate = false;
             }
@@ -225,6 +230,19 @@ namespace Chimera.GUI.Forms {
             if (mCoordinator != null)
                 foreach (var window in mCoordinator.Windows)
                     window.Overlay.TriggerHelp();
+        }
+
+        private void heightmapPanel_Paint(object sender, PaintEventArgs e) {
+            if (mCoordinator != null) {
+                int x = (int)((mCoordinator.Position.X / (float)mCoordinator.Heightmap.GetLength(0)) * e.ClipRectangle.Width);
+                int y = e.ClipRectangle.Height - (int)((mCoordinator.Position.Y / (float)mCoordinator.Heightmap.GetLength(1)) * e.ClipRectangle.Height);
+                int r = 5;
+                Vector3 p2 = mCoordinator.Position + (mCoordinator.Orientation.LookAtVector * 20);
+                int x2 = (int)((p2.X / (float)mCoordinator.Heightmap.GetLength(0)) * e.ClipRectangle.Width);
+                int y2 = e.ClipRectangle.Height - (int)((p2.Y / (float)mCoordinator.Heightmap.GetLength(1)) * e.ClipRectangle.Height);
+                e.Graphics.FillEllipse(Brushes.Red, x - r, y - r, r * 2, r * 2);
+                e.Graphics.DrawLine(Pens.Red, x, y, x2, y2);
+            }
         }
     }
 }
