@@ -80,6 +80,8 @@ namespace Chimera.Inputs {
 
         #region ISystemInput Members
 
+        public event Action<IInput, bool> EnabledChanged;
+
         public UserControl ControlPanel {
             get {
                 if (mControlPanel == null)
@@ -92,9 +94,13 @@ namespace Chimera.Inputs {
             get { return "Keyboard + Mouse"; }
         }
 
-        public bool Enabled {
+        public virtual bool Enabled {
             get { return mEnabled; }
-            set { mEnabled = value; }
+            set { 
+                mEnabled = value;
+                if (EnabledChanged != null)
+                    EnabledChanged(this, value);
+            }
         }
 
         public ConfigBase Config {

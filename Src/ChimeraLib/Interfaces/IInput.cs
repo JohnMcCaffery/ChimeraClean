@@ -9,6 +9,11 @@ using Chimera.Util;
 namespace Chimera {
     public interface IInput {
         /// <summary>
+        /// Triggered whenever this input is enabled or disabled;
+        /// </summary>
+        event Action<IInput, bool> EnabledChanged;
+
+        /// <summary>
         /// The panel which can be added to a form to configure this input.
         /// </summary>
         UserControl ControlPanel {

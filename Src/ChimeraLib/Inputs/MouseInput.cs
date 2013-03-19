@@ -43,6 +43,8 @@ namespace Chimera.Inputs {
 
         #region ISystemInputMembers
 
+        public event Action<IInput, bool> EnabledChanged;
+
         public Coordinator Coordinator {
             get { return mCoordinator; }
         }
@@ -64,9 +66,13 @@ namespace Chimera.Inputs {
 
         #region IInput Members
 
-        public bool Enabled {
+        public virtual bool Enabled {
             get { return mEnabled; }
-            set { mEnabled = value; }
+            set { 
+                mEnabled = value;
+                if (EnabledChanged != null)
+                    EnabledChanged(this, value);
+            }
         }
 
         public string Name {

@@ -37,6 +37,8 @@ namespace Chimera.Inputs {
 
         #region ISystemInput Members
 
+        public event Action<IInput, bool> EnabledChanged;
+
         public virtual UserControl ControlPanel {
             get { return mInput.ControlPanel; }
         }
@@ -47,7 +49,11 @@ namespace Chimera.Inputs {
 
         public virtual bool Enabled {
             get { return mEnabled; }
-            set { mEnabled = value; }
+            set { 
+                mEnabled = value;
+                if (EnabledChanged != null)
+                    EnabledChanged(this, value);
+            }
         }
 
         public virtual ConfigBase Config {
