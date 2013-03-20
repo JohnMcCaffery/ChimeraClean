@@ -30,7 +30,7 @@ namespace Test {
             mPointDir = Vector.Create("PointDir", 0f, 0f, 0f);
 
             //Init();
-			Nui.Init();
+            Nui.Init();
             Nui.SetAutoPoll(true);
 
             GC.Collect();
@@ -48,7 +48,7 @@ namespace Test {
             //Form form = new KinectMovementForm();
             //form.Start();
             Form form = new KinectCursorForm(cursor, window);
-            ProcessWrangler.BlockingRunForm(form, null, false);
+            ProcessWrangler.BlockingRunForm(form, null);
         }
 
         private static void Init() {

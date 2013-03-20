@@ -13,8 +13,8 @@ using Chimera.Kinect;
 using Chimera.Kinect.Interfaces;
 using NuiLibDotNet;
 
-namespace ChimeraOutput {
-    public static class RunChimera {
+namespace Chimera {
+    public static class ChimeraLauncher {
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
@@ -41,8 +41,7 @@ namespace ChimeraOutput {
             //ImageSelection mOverlay = new ImageSelection("../Select1.jpg", .1f, .1f, .3f, .3f);
             //IOverlayState mState = new TestState();
             //MainMenuItem item1 = new MainMenuItem(mState, mOverlay);
-            Chimera.Overlay.MainMenu mainMenu = new Chimera.Overlay.MainMenu();
-            Coordinator coordinator = new Coordinator(windows, mainMenu, kinect, kbMouseInput, mouse, heightmap, flythrough);
+            Coordinator coordinator = new Coordinator(windows, kinect, kbMouseInput, mouse, heightmap, flythrough);
 
             //Window[] windows = new Window[] { new Window("Main Window") };
             //Chimera.Overlay.MainMenu mainMenu = new Chimera.Overlay.MainMenu();
@@ -53,8 +52,10 @@ namespace ChimeraOutput {
             kinect.WalkEnabled = true;
             kinect.YawEnabled = true;
 
+            /*
             Nui.Init();
             Nui.SetAutoPoll(true);
+            */
 
             ProcessWrangler.BlockingRunForm(form, coordinator);
         }

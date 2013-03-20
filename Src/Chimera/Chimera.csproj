@@ -34,11 +34,15 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>ArmadilloProxy.ArmadilloProxy</StartupObject>
+    <StartupObject>Chimera.ChimeraLauncher</StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Nini">
       <HintPath>..\..\Lib\Nini.dll</HintPath>
+    </Reference>
+    <Reference Include="NuiLib-DotNet_dv, Version=1.0.4822.29802, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Lib\NuiLib-DotNet_dv.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -49,16 +53,25 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ChimeraGUILib\ChimeraGUILib.csproj">
-      <Project>{E30ACDAE-ACED-4D3A-BFA8-625F4C119E5F}</Project>
-      <Name>ChimeraGUILib</Name>
-    </ProjectReference>
     <ProjectReference Include="..\ChimeraLib\ChimeraLib.csproj">
       <Project>{58E39BFE-20D5-4C8D-BCFC-6B5E641C2DFF}</Project>
       <Name>ChimeraLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FlythroughLib\FlythroughLib.csproj">
+      <Project>{D0708045-6CCA-4764-B438-A2D6E8635978}</Project>
+      <Name>FlythroughLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\KinectLib\KinectLib.csproj">
+      <Project>{D9D475BF-C0EE-4DF6-89A3-55199BB32ABE}</Project>
+      <Name>KinectLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OpenSimLib\OpenSimLib.csproj">
+      <Project>{EC16291E-4217-4054-8E2D-E8C953ACE6F8}</Project>
+      <Name>OpenSimLib</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

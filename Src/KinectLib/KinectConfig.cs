@@ -18,9 +18,9 @@ namespace Chimera.Kinect {
         }
 
         protected override void InitConfig() {
-            AddArgvKey(true, "KinectPosition");
-            AddArgvKey(true, "KinectPitch");
-            AddArgvKey(true, "KinectYaw");
+            AddCommandLineKey(true, "KinectPosition");
+            AddCommandLineKey(true, "KinectPitch");
+            AddCommandLineKey(true, "KinectYaw");
 
             Position = GetV(true, "KinectPosition", Vector3.Zero, "The position of the kinect in real world coordinates (mm).");
             Pitch = Get(true, "KinectPitch", 0.0, "The pitch of where the kinect is looking in real space.");

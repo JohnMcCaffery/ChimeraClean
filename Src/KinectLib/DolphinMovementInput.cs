@@ -242,7 +242,10 @@ namespace Chimera.Kinect {
         }
 
         public string State {
-            get { return ""; }
+            get {
+                string dump = "----Dolphin Config Kinect Input----";
+                return ""; 
+            }
         }
 
         public ConfigBase Config {

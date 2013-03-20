@@ -14,7 +14,6 @@ namespace Chimera.Inputs {
         private Point mLastMouse;
         private bool mEnabled;
         private bool mMouseOnScreen;
-        private int mJitter = 1;
 
         public MouseInput() {
             InputConfig cfg = new InputConfig();
@@ -80,7 +79,12 @@ namespace Chimera.Inputs {
         }
 
         public string State {
-            get { throw new NotImplementedException(); }
+            get { 
+                string dump = "-KB/Mouse Input-" + Environment.NewLine;
+                dump += "LastPosition" + mLastMouse + Environment.NewLine;
+                dump += "Onscreen: " + mMouseOnScreen + Environment.NewLine;
+                return dump;
+            }
         }
 
         public ConfigBase Config {

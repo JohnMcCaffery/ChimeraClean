@@ -429,12 +429,11 @@ namespace Chimera.Util {
             return process;
         }
 
-        public static void BlockingRunForm(Form form, ICrashable root, bool autoRestart) {
+        public static void BlockingRunForm(Form form, ICrashable root) {
             Application.EnableVisualStyles();
             sForm = form;
             sRoot = root;
-            sAutoRestart = autoRestart;
-            if (sAutoRestart) {
+            if (!System.Diagnostics.Debugger.IsAttached) {
                 AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
                 Application.ThreadException += new System.Threading.ThreadExceptionEventHandler(Application_ThreadException);
                 try {
@@ -463,10 +462,6 @@ namespace Chimera.Util {
             Console.WriteLine(e.Message);
             Console.WriteLine(e.StackTrace);
             sRoot.OnCrash(e);
-            if (sAutoRestart) {
-                Console.WriteLine("Program crashed starting, a new instance.");
-                ProcessWrangler.InitProcess(Assembly.GetEntryAssembly().Location).Start();
-            }
             //throw e;
         }
     }

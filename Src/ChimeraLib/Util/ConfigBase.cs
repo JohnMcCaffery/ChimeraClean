@@ -118,6 +118,15 @@ namespace Chimera.Util {
             InitConfig();
         }
 
+        public ConfigBase(string name, string[] args) {
+            Name = name;
+            argConfig = Init.InitArgConfig(args);
+            argConfig.AddSwitch("General", "File", "f");
+
+            IConfigSource config = Init.AddFile(argConfig, out file);
+            InitConfig();
+        }
+
         public ConfigBase(string name, string file, string[] args) {
             Name = name;
             this.file = file;
@@ -158,7 +167,7 @@ namespace Chimera.Util {
         /// </summary>
         /// <param name="general">Whether to add it to the general config or Name.</param>
         /// <param name="key">The key to add.</param>
-        protected void AddArgvKey(bool general, string key) {
+        protected void AddCommandLineKey(bool general, string key) {
             argConfig.AddSwitch(general ? "General" : Name, key);
             if (general) generalCommandLineKeys.Add(key);
             else specificCommandLineKeys.Add(key);
