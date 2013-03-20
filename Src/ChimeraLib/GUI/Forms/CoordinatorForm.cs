@@ -119,7 +119,51 @@ namespace Chimera.GUI.Forms {
             mCoordinator.HeightmapChanged -= mCoordinator_HeightmapChanged;
         }
 
-        private void mCoordinator_HeightmapChanged() {
+        private Thread mHeightmapUpdateThread;
+        private readonly Queue<HeightmapChangedEventArgs> mHeightmapUpdates = new Queue<HeightmapChangedEventArgs>();
+
+        private void mCoordinator_HeightmapChanged(object source, HeightmapChangedEventArgs args) {
+            lock (mHeightmapUpdates) {
+                //If there's no thread
+                if (mHeightmapUpdateThread == null) {
+                    mHeightmapUpdateThread = new Thread(() => {
+                        while (true) {
+                            HeightmapChangedEventArgs e;
+                            lock (mHeightmapUpdates) {
+                                if (mHeightmapUpdates.Count == 0) {
+                                    mHeightmapUpdateThread = null;
+                                    break;
+                                } else
+                                    e = mHeightmapUpdates.Dequeue();
+                            }
+
+                            for (int x = 0; x < e.Heights.GetLength(0); x++) {
+                                for (int y = 0; y < e.Heights.GetLength(1); y++) {
+                                    float height = e.Heights[x, y];
+                                    int val = (int)(100f / height > 0f ? height : 0f);
+                                    mHeightmap.SetPixel(x + e.StartX, (mHeightmap.Height - 1) - (y + e.StartY), Color.FromArgb(val, val, val));
+                                }
+                            }
+                            if (!IsDisposed && Created)
+                                Invoke(new Action(() => heightmapPanel.Image = new Bitmap(mHeightmap)));
+                        }
+                    });
+                    mHeightmapUpdateThread.Name = "Heightmap update thread.";
+                    mHeightmapUpdateThread.Start();
+                } else
+                    mHeightmapUpdates.Enqueue(args);
+            }
+
+            /*
+            int hmW = mCoordinator.Heightmap.GetLength(0);
+            int hmH = mCoordinator.Heightmap.GetLength(1);
+            bool resized = false;
+            if (heightmap.Width != hmW || heightmap.Height != hmH) {
+                heightmap = new Bitmap(hmW, hmH);
+                resized = true;
+            }
+            if (resized)
+                heightmapPanel.Image = heightmap;
             Bitmap heightmap = new Bitmap(mCoordinator.Heightmap.GetLength(0), mCoordinator.Heightmap.GetLength(1));
             Graphics g = Graphics.FromImage(heightmap);
             for (int i = 0; i < mCoordinator.Heightmap.GetLength(0); i++) {
@@ -134,6 +178,7 @@ namespace Chimera.GUI.Forms {
                 Invoke(new Action(() => {
                     heightmapPanel.Image = heightmap;
                 }));
+            */
         }
 
         private void mCoordinator_CameraUpdated(Coordinator coordinator, CameraUpdateEventArgs args) {

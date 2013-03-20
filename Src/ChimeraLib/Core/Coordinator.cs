@@ -60,6 +60,12 @@ namespace Chimera {
         }
     }
 
+    public class HeightmapChangedEventArgs : EventArgs {
+        public float[,] Heights;
+        public int StartX;
+        public int StartY;
+    }
+
     public class Coordinator : ICrashable, IInputSource {
         /// <summary>
         /// The authoratitive orientation of the camera in virtual space. This is read-only. To update it use the 'Update' method.
@@ -177,7 +183,7 @@ namespace Chimera {
         /// <summary>
         /// Triggered whenever the heightmap changes.
         /// </summary>
-        public event Action HeightmapChanged;
+        public event EventHandler<HeightmapChangedEventArgs> HeightmapChanged;
 
         /// <summary>
         /// Triggered every tick. Listen for this to keep time across the system.
@@ -320,18 +326,14 @@ namespace Chimera {
                 for (int j = 0; j < section.GetLength(1); j++)
                     mHeightmap[startX + i, startY + j] = section[i, j];
             }
-            if (regionCompleted && HeightmapChanged != null)
-                HeightmapChanged();
-        }
-
-        public void SetHeightmapSection(float[] section, int step, int startX, int startY) {
-            for (int j = 0; j < step; j++) {
-                for (int i = 0; i < step; i++) {
-                    mHeightmap[startX * step + i, startY * step + j] = section[j * step + i];
-                }
+            //if (regionCompleted && HeightmapChanged != null)
+            if (HeightmapChanged != null) {
+                HeightmapChangedEventArgs args = new HeightmapChangedEventArgs();
+                args.Heights = section;
+                args.StartX = startX;
+                args.StartY = startY;
+                HeightmapChanged(this, args);
             }
-            if (HeightmapChanged != null)
-                HeightmapChanged();
         }
 
         /// <summary>

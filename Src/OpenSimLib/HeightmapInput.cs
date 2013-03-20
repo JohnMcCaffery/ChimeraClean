@@ -11,11 +11,8 @@ using System.Drawing;
 
 namespace Chimera.OpenSim {
     public class HeightmapInput : ISystemInput {
-        private readonly Dictionary<string, Point> mLocations = new Dictionary<string,Point>();
-        private readonly Dictionary<string, HashSet<string>> mMappedParcels = new Dictionary<string, HashSet<string>>();
-        private readonly HashSet<string> mFinishedRegions = new HashSet<string>();
-        private readonly Dictionary<string, Thread> mRegionThreads = new Dictionary<string, Thread>();
-        private readonly Dictionary<string, Queue<LandPatchReceivedEventArgs>> mQueuedUpdates = new Dictionary<string, Queue<LandPatchReceivedEventArgs>>();
+        private readonly Dictionary<ulong, HashSet<string>> mMappedParcels = new Dictionary<ulong, HashSet<string>>();
+        private readonly HashSet<ulong> mFinishedRegions = new HashSet<ulong>();
 
         private  GridClient Client = new GridClient();
         private Coordinator mCoordinator;
@@ -23,7 +20,7 @@ namespace Chimera.OpenSim {
         private HeightmapInputPanel mPanel;
         private bool mLoggedIn;
         private bool mEnabled;
-        private bool mStartSet;
+        private bool mLoggingOut;
         private Point mStartLocation;
         private object mGridLayerWait = new object();
         private string mCurrentRegion;
@@ -47,6 +44,11 @@ namespace Chimera.OpenSim {
                 Login();
         }
 
+        void Network_LoggedOut(object sender, LoggedOutEventArgs e) {
+            mLoggedIn = false;
+            mLoggingOut = false;
+        }
+
         void Terrain_LandPatchReceived(object sender, LandPatchReceivedEventArgs e) {
             DateTime start = DateTime.Now;
             if (e.X >= 16 || e.Y >= 16) {
@@ -62,23 +64,20 @@ namespace Chimera.OpenSim {
             string simName = e.Simulator.Name;
 
             UpdateHeightmap(e);
-
-            //Console.WriteLine("Callback ran in: {0:00000}ms", DateTime.Now.Subtract(start).TotalMilliseconds);
         }
 
-        private int mPacketCount = 1;
         private void UpdateHeightmap(LandPatchReceivedEventArgs e) {
-            string simName = e.Simulator.Name;
+            ulong handle = e.Simulator.Handle;
 
-            if (!mMappedParcels.ContainsKey(simName))
-                mMappedParcels.Add(simName, new HashSet<string>());
-            mMappedParcels[simName].Add(e.X + "," + e.Y);
+            if (!mMappedParcels.ContainsKey(handle))
+                mMappedParcels.Add(handle, new HashSet<string>());
+            mMappedParcels[handle].Add(e.X + "," + e.Y);
 
             int x = e.X * 16;
             int y = e.Y * 16;
 
             uint globalX, globalY;
-            Utils.LongToUInts(e.Simulator.Handle, out globalX, out globalY);
+            Utils.LongToUInts(handle, out globalX, out globalY);
 
 
             float[,] terrainHeight = new float[16, 16];
@@ -93,11 +92,15 @@ namespace Chimera.OpenSim {
 
             x += (int) globalX - mStartLocation.X;
             y += (int) globalY - mStartLocation.Y;
-            mCoordinator.SetHeightmapSection(terrainHeight, x, y, mMappedParcels[simName].Count > 250);
+            mCoordinator.SetHeightmapSection(terrainHeight, x, y, mMappedParcels[handle].Count > 250);
 
-            if (mMappedParcels[simName].Count == 256)
-                mFinishedRegions.Add(simName);
-            if (mFinishedRegions.Count == mMappedParcels.Count && mConfig.AutoLogout)
+            int w = mCoordinator.Heightmap.GetLength(0) / 256;
+            int h = mCoordinator.Heightmap.GetLength(1) / 256;
+            int numRegions = w * h;
+
+            if (mMappedParcels[handle].Count == 256)
+                mFinishedRegions.Add(handle);
+            if (mFinishedRegions.Count ==  numRegions && mConfig.AutoLogout)
                 Logout();
         }
 
@@ -105,7 +108,8 @@ namespace Chimera.OpenSim {
             Thread t = new Thread(() => {
                 string startLocation = NetworkManager.StartLocation(mConfig.StartIsland, (int)mConfig.StartLocation.X, (int)mConfig.StartLocation.Y, (int)mConfig.StartLocation.Z);
                 Client.Settings.LOGIN_SERVER = mConfig.LoginURI;
-                Client.Terrain.LandPatchReceived += new EventHandler<LandPatchReceivedEventArgs>(Terrain_LandPatchReceived);
+                Client.Terrain.LandPatchReceived += Terrain_LandPatchReceived;
+                Client.Network.LoggedOut += Network_LoggedOut;
                 if (Client.Network.Login(mConfig.FirstName, mConfig.LastName, mConfig.Password, "Monitor", startLocation, "1.0")) {
                     mCurrentRegion = Client.Network.CurrentSim.Name;
                     uint globalX, globalY;
@@ -125,9 +129,11 @@ namespace Chimera.OpenSim {
         }
 
         public void Logout() {
-            if (mLoggedIn) {
+            if (mLoggedIn && !mLoggingOut) {
+                mLoggingOut = true;
                 Client.Network.Logout();
-                Client.Terrain.LandPatchReceived -= new EventHandler<LandPatchReceivedEventArgs>(Terrain_LandPatchReceived);
+                Client.Terrain.LandPatchReceived -= Terrain_LandPatchReceived;
+                Client.Network.LoggedOut -= Network_LoggedOut;
                 if (LoggedInChanged != null)
                     LoggedInChanged(false);
             }        }
