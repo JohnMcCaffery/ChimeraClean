@@ -388,13 +388,13 @@ namespace Chimera.OpenSim {
 
         public void Close() {
             mAutoRestart = false;
+            mProxyStarted = false;
             if (mProxyStarted) {
                 mProxy.Stop();
                 mProxy = null;
             }
             if (mClientLoggedIn)
                 CloseViewer();
-            mProxyStarted = false;
         }
 
         #endregion

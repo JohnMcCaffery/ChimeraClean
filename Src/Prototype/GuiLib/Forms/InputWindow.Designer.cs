@@ -25,7 +25,7 @@
         private void InitializeComponent() {
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.configPanel = new KinectLib.PointPanel();
+            this.configPanel = new Chimera.PointPanel();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.drawPanel = new System.Windows.Forms.Panel();
             this.tabControl1.SuspendLayout();

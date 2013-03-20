@@ -904,7 +904,7 @@
         #endregion
 
         private System.Windows.Forms.TabControl slavesTabContainer;
-        private ProxyTestGUI.VectorPanel rawPosition;
+        private Chimera.GUI.VectorPanel rawPosition;
         private System.Windows.Forms.SplitContainer visualSlavesSplit;
         private System.Windows.Forms.TabControl displayTab;
         private System.Windows.Forms.TabPage bothTab;
@@ -951,15 +951,15 @@
         private System.Windows.Forms.TabControl inputTabContainer;
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.TabPage tabPage2;
-        private ProxyTestGUI.RotationPanel rawRotation;
+        private Chimera.GUI.RotationPanel rawRotation;
         //private ChimeraLib.Controls.WindowPanel masterWindowPanel;
-        private ProxyTestGUI.VectorPanel cameraOffsetPanel;
+        private Chimera.GUI.VectorPanel cameraOffsetPanel;
         private System.Windows.Forms.CheckBox viewerControlCheck;
-        private ProxyTestGUI.VectorPanel kinectPositionPanel;
-        private ProxyTestGUI.RotationPanel kinectRotationPanel;
+        private Chimera.GUI.VectorPanel kinectPositionPanel;
+        private Chimera.GUI.RotationPanel kinectRotationPanel;
         private System.Windows.Forms.TabPage kinectFrameTab;
         private System.Windows.Forms.PictureBox kinectFramePanel;
-        private ProxyTestGUI.VectorPanel kinectValuePanel;
+        private Chimera.GUI.VectorPanel kinectValuePanel;
         private Chimera.Controls.WindowPanel masterWindowPanel;
         private System.Windows.Forms.CheckBox kinectImageCheck;
         private System.Windows.Forms.Label label10;
@@ -975,7 +975,7 @@
         private System.Windows.Forms.GroupBox cameraControlGroup;
         private System.Windows.Forms.CheckBox aspectRatioCheck;
         private System.Windows.Forms.TabPage flythroughTab;
-        private FlythroughLib.Panels.FlythroughPanel flythroughPanel;
-        private ProxyTestGUI.RotationPanel rotationOffsetPanel;
+        private Chimera.Flythrough.Panels.FlythroughPanel flythroughPanel;
+        private Chimera.GUI.RotationPanel rotationOffsetPanel;
     }
 }

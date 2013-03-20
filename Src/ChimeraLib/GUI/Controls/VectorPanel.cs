@@ -28,7 +28,7 @@ using System.Text;
 using System.Windows.Forms;
 using OpenMetaverse;
 
-namespace ProxyTestGUI {
+namespace Chimera.GUI {
     public partial class VectorPanel : UserControl {
         public event EventHandler ValueChanged;
         private bool externalSet = false;

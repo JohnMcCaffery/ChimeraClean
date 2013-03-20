@@ -37,12 +37,12 @@ namespace Chimera.Inputs {
 
         private void CameraControlForm_KeyDown(object sender, KeyEventArgs e) {
             if (mInput != null)
-                mInput.Coordinator.TriggerKeyboard(true, e);
+                mInput.Source.TriggerKeyboard(true, e);
         }
 
         private void CameraControlForm_KeyUp(object sender, KeyEventArgs e) {
             if (mInput != null)
-                mInput.Coordinator.TriggerKeyboard(false, e);
+                mInput.Source.TriggerKeyboard(false, e);
         }
 
         private void CameraControlForm_MouseUp(object sender, MouseEventArgs e) {

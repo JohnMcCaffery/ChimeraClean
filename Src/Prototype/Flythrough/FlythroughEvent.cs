@@ -6,7 +6,7 @@ using OpenMetaverse;
 using UtilLib;
 using System.Xml;
 
-namespace FlythroughLib {
+namespace Chimera.Flythrough {
     public abstract class FlythroughEvent {
         /// <summary>
         /// The flythroughmanager which contains all the events.

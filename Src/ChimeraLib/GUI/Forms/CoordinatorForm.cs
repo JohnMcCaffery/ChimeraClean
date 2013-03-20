@@ -144,7 +144,7 @@ namespace Chimera.GUI.Forms {
                                     mHeightmap.SetPixel(x + e.StartX, (mHeightmap.Height - 1) - (y + e.StartY), Color.FromArgb(val, val, val));
                                 }
                             }
-                            if (!IsDisposed && Created)
+                            if (!IsDisposed && !Disposing && Created)
                                 Invoke(new Action(() => heightmapPanel.Image = new Bitmap(mHeightmap)));
                         }
                     });
@@ -182,9 +182,7 @@ namespace Chimera.GUI.Forms {
         }
 
         private void mCoordinator_CameraUpdated(Coordinator coordinator, CameraUpdateEventArgs args) {
-            if (heightmapTab == diagramHeightmapTab.SelectedTab) {
-            }
-            if (!mGuiUpdate) {
+            if (!mGuiUpdate && Created && !IsDisposed && !Disposing) {
                 mEventUpdate = true;
                 Invoke(new Action(() => {
                     virtualPositionPanel.Value = args.position;

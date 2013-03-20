@@ -8,7 +8,7 @@ using System.Threading;
 using System.Xml;
 using System.IO;
 
-namespace FlythroughLib {
+namespace Chimera.Flythrough {
     public class FlythroughChangeEvent : EventArgs {
         public Vector3 Position;
         public Vector3 PositionDelta;

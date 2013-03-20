@@ -6,7 +6,7 @@ using System.Diagnostics;
 using Chimera.Util;
 using System.Threading;
 
-namespace Launcher {
+namespace Chimera.Launcher {
     class Program {
         private static string sServerExe;
         private static string sProxyExe;

@@ -6,11 +6,11 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using ProxyTestGUI;
+using Chimera.GUI;
 using OpenMetaverse;
 using Chimera.Interfaces;
 
-namespace KinectLib.GUI {
+namespace Chimera.GUI {
     public partial class UpdatedVectorPanel : VectorPanel {
         private IUpdater<Vector3> mVector;
         private bool mGuiChanged;

@@ -38,22 +38,22 @@
             this.label9 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
-            this.HeightScale = new KinectLib.GUI.UpdatedScalarPanel();
-            this.WidthScale = new KinectLib.GUI.UpdatedScalarPanel();
-            this.RawY = new KinectLib.GUI.UpdatedScalarPanel();
-            this.RawX = new KinectLib.GUI.UpdatedScalarPanel();
-            this.ConstrainedY = new KinectLib.GUI.UpdatedScalarPanel();
-            this.ConstrainedX = new KinectLib.GUI.UpdatedScalarPanel();
-            this.Anchor = new KinectLib.GUI.UpdatedVectorPanel();
-            this.TopLeftY = new KinectLib.GUI.UpdatedScalarPanel();
-            this.TopLeftX = new KinectLib.GUI.UpdatedScalarPanel();
-            this.Y = new KinectLib.GUI.UpdatedScalarPanel();
-            this.X = new KinectLib.GUI.UpdatedScalarPanel();
-            this.Height = new KinectLib.GUI.UpdatedScalarPanel();
-            this.Width = new KinectLib.GUI.UpdatedScalarPanel();
-            this.UpShift = new KinectLib.GUI.UpdatedScalarPanel();
-            this.LeftShift = new KinectLib.GUI.UpdatedScalarPanel();
-            this.HandR = new KinectLib.GUI.UpdatedVectorPanel();
+            this.HeightScale = new Chimera.GUI.UpdatedScalarPanel();
+            this.WidthScale = new Chimera.GUI.UpdatedScalarPanel();
+            this.RawY = new Chimera.GUI.UpdatedScalarPanel();
+            this.RawX = new Chimera.GUI.UpdatedScalarPanel();
+            this.ConstrainedY = new Chimera.GUI.UpdatedScalarPanel();
+            this.ConstrainedX = new Chimera.GUI.UpdatedScalarPanel();
+            this.Anchor = new Chimera.GUI.UpdatedVectorPanel();
+            this.TopLeftY = new Chimera.GUI.UpdatedScalarPanel();
+            this.TopLeftX = new Chimera.GUI.UpdatedScalarPanel();
+            this.Y = new Chimera.GUI.UpdatedScalarPanel();
+            this.X = new Chimera.GUI.UpdatedScalarPanel();
+            this.Height = new Chimera.GUI.UpdatedScalarPanel();
+            this.Width = new Chimera.GUI.UpdatedScalarPanel();
+            this.UpShift = new Chimera.GUI.UpdatedScalarPanel();
+            this.LeftShift = new Chimera.GUI.UpdatedScalarPanel();
+            this.HandR = new Chimera.GUI.UpdatedVectorPanel();
             this.enabledCheck = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
@@ -472,13 +472,13 @@
 
         #endregion
 
-        private KinectLib.GUI.UpdatedVectorPanel HandR;
-        private KinectLib.GUI.UpdatedScalarPanel LeftShift;
-        private KinectLib.GUI.UpdatedScalarPanel UpShift;
-        private KinectLib.GUI.UpdatedScalarPanel Width;
-        private KinectLib.GUI.UpdatedScalarPanel Height;
-        private KinectLib.GUI.UpdatedScalarPanel X;
-        private KinectLib.GUI.UpdatedScalarPanel Y;
+        private Chimera.GUI.UpdatedVectorPanel HandR;
+        private Chimera.GUI.UpdatedScalarPanel LeftShift;
+        private Chimera.GUI.UpdatedScalarPanel UpShift;
+        private Chimera.GUI.UpdatedScalarPanel Width;
+        private Chimera.GUI.UpdatedScalarPanel Height;
+        private Chimera.GUI.UpdatedScalarPanel X;
+        private Chimera.GUI.UpdatedScalarPanel Y;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label lab3;
@@ -487,21 +487,21 @@
         private System.Windows.Forms.Label YLable;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label5;
-        private KinectLib.GUI.UpdatedScalarPanel TopLeftY;
-        private KinectLib.GUI.UpdatedScalarPanel TopLeftX;
-        private KinectLib.GUI.UpdatedVectorPanel Anchor;
+        private Chimera.GUI.UpdatedScalarPanel TopLeftY;
+        private Chimera.GUI.UpdatedScalarPanel TopLeftX;
+        private Chimera.GUI.UpdatedVectorPanel Anchor;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label7;
-        private KinectLib.GUI.UpdatedScalarPanel ConstrainedY;
-        private KinectLib.GUI.UpdatedScalarPanel ConstrainedX;
+        private Chimera.GUI.UpdatedScalarPanel ConstrainedY;
+        private Chimera.GUI.UpdatedScalarPanel ConstrainedX;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label9;
-        private KinectLib.GUI.UpdatedScalarPanel RawY;
-        private KinectLib.GUI.UpdatedScalarPanel RawX;
+        private Chimera.GUI.UpdatedScalarPanel RawY;
+        private Chimera.GUI.UpdatedScalarPanel RawX;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label11;
-        private KinectLib.GUI.UpdatedScalarPanel HeightScale;
-        private KinectLib.GUI.UpdatedScalarPanel WidthScale;
+        private Chimera.GUI.UpdatedScalarPanel HeightScale;
+        private Chimera.GUI.UpdatedScalarPanel WidthScale;
         private System.Windows.Forms.CheckBox enabledCheck;
     }
 }

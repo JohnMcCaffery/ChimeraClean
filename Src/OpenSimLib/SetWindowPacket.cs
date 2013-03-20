@@ -24,7 +24,7 @@ using System.Text;
 using OpenMetaverse.Packets;
 using OpenMetaverse;
 
-namespace Chimera {
+namespace Chimera.OpenSim {
     /// <exclude/>
     public sealed class SetWindowPacket: Packet {
         /// <exclude/>

@@ -5,10 +5,10 @@ using System.Text;
 using System.Xml;
 using Chimera.Util;
 using System.Windows.Forms;
-using Chimera.FlythroughLib.GUI;
+using Chimera.Flythrough.GUI;
 using OpenMetaverse;
 
-namespace Chimera.FlythroughLib {
+namespace Chimera.Flythrough {
     public class LookAtEvent : FlythroughEvent<Rotation>, IPositionListener {
         /// <summary>
         /// How many RotateToEvents have been created.

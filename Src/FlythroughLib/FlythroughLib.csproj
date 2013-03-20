@@ -8,7 +8,7 @@
     <ProjectGuid>{D0708045-6CCA-4764-B438-A2D6E8635978}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>FlythroughLib</RootNamespace>
+    <RootNamespace>Chimera.Flythrough</RootNamespace>
     <AssemblyName>FlythroughLib</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>

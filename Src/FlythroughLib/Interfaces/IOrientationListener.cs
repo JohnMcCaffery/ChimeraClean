@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Chimera.FlythroughLib;
+using Chimera.Flythrough;
 using Chimera.Util;
 
-namespace Chimera.FlythroughLib {
+namespace Chimera.Flythrough {
     public interface IOrientationListener {
         /// <summary>
         /// Create a link to the sequence of orientations this listener wishes to track.

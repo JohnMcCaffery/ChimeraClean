@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using OpenMetaverse;
-using KinectLib.GUI;
+using Chimera.GUI;
 
 namespace Chimera.Kinect.GUI {
     public partial class DolphinMovementPanel : UserControl {

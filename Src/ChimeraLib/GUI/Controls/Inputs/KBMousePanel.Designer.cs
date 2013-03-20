@@ -23,14 +23,12 @@
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent() {
-            this.components = new System.ComponentModel.Container();
             this.mousePanel = new System.Windows.Forms.Panel();
+            this.showWindowButton = new System.Windows.Forms.Button();
             this.keyboardScaleSlider = new System.Windows.Forms.TrackBar();
             this.mouseScaleSlider = new System.Windows.Forms.TrackBar();
             this.ignorePitchCheck = new System.Windows.Forms.CheckBox();
             this.mouseContainer = new System.Windows.Forms.GroupBox();
-            this.moveTimer = new System.Windows.Forms.Timer(this.components);
-            this.showWindowButton = new System.Windows.Forms.Button();
             this.mousePanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.keyboardScaleSlider)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.mouseScaleSlider)).BeginInit();
@@ -53,6 +51,17 @@
             this.mousePanel.Paint += new System.Windows.Forms.PaintEventHandler(this.mousePanel_Paint);
             this.mousePanel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.mousePanel_MouseMove);
             this.mousePanel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.mousePanel_MouseUp);
+            // 
+            // showWindowButton
+            // 
+            this.showWindowButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.showWindowButton.Location = new System.Drawing.Point(716, 7);
+            this.showWindowButton.Name = "showWindowButton";
+            this.showWindowButton.Size = new System.Drawing.Size(92, 23);
+            this.showWindowButton.TabIndex = 12;
+            this.showWindowButton.Text = "Show Window";
+            this.showWindowButton.UseVisualStyleBackColor = true;
+            this.showWindowButton.Click += new System.EventHandler(this.showWindowButton_Click);
             // 
             // keyboardScaleSlider
             // 
@@ -105,21 +114,6 @@
             this.mouseContainer.TabStop = false;
             this.mouseContainer.Text = "Mouselook";
             // 
-            // moveTimer
-            // 
-            this.moveTimer.Enabled = true;
-            // 
-            // showWindowButton
-            // 
-            this.showWindowButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.showWindowButton.Location = new System.Drawing.Point(716, 7);
-            this.showWindowButton.Name = "showWindowButton";
-            this.showWindowButton.Size = new System.Drawing.Size(92, 23);
-            this.showWindowButton.TabIndex = 12;
-            this.showWindowButton.Text = "Show Window";
-            this.showWindowButton.UseVisualStyleBackColor = true;
-            this.showWindowButton.Click += new System.EventHandler(this.showWindowButton_Click);
-            // 
             // KBMousePanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -143,7 +137,6 @@
         private System.Windows.Forms.TrackBar mouseScaleSlider;
         private System.Windows.Forms.GroupBox mouseContainer;
         private System.Windows.Forms.TrackBar keyboardScaleSlider;
-        private System.Windows.Forms.Timer moveTimer;
         private System.Windows.Forms.Button showWindowButton;
     }
 }

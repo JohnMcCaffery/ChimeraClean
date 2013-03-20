@@ -43,9 +43,9 @@
             this.windowsTab = new System.Windows.Forms.TabControl();
             this.inputsGroup = new System.Windows.Forms.GroupBox();
             this.inputsTab = new System.Windows.Forms.TabControl();
-            this.eyePositionPanel = new ProxyTestGUI.VectorPanel();
-            this.virtualOrientationPanel = new ProxyTestGUI.RotationPanel();
-            this.virtualPositionPanel = new ProxyTestGUI.VectorPanel();
+            this.eyePositionPanel = new Chimera.GUI.VectorPanel();
+            this.virtualOrientationPanel = new Chimera.GUI.RotationPanel();
+            this.virtualPositionPanel = new Chimera.GUI.VectorPanel();
             ((System.ComponentModel.ISupportInitialize)(this.hSplit)).BeginInit();
             this.hSplit.Panel1.SuspendLayout();
             this.hSplit.Panel2.SuspendLayout();
@@ -419,9 +419,9 @@
         private System.Windows.Forms.GroupBox inputsGroup;
         private System.Windows.Forms.TabControl windowsTab;
         private System.Windows.Forms.TabControl inputsTab;
-        private ProxyTestGUI.VectorPanel virtualPositionPanel;
-        private ProxyTestGUI.VectorPanel eyePositionPanel;
-        private ProxyTestGUI.RotationPanel virtualOrientationPanel;
+        private Chimera.GUI.VectorPanel virtualPositionPanel;
+        private Chimera.GUI.VectorPanel eyePositionPanel;
+        private Chimera.GUI.RotationPanel virtualOrientationPanel;
         private System.Windows.Forms.Button testButton;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button triggerHelpButton;

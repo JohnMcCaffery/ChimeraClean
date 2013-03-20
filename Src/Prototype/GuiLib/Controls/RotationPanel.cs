@@ -29,7 +29,7 @@ using System.Windows.Forms;
 using OpenMetaverse;
 using UtilLib;
 
-namespace ProxyTestGUI {
+namespace Chimera.GUI {
     public partial class RotationPanel : UserControl {
         private readonly Rotation rotation = new Rotation();
         public event EventHandler OnChange;

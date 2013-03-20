@@ -326,8 +326,8 @@ namespace Chimera {
                 for (int j = 0; j < section.GetLength(1); j++)
                     mHeightmap[startX + i, startY + j] = section[i, j];
             }
-            //if (regionCompleted && HeightmapChanged != null)
-            if (HeightmapChanged != null) {
+            if (regionCompleted && HeightmapChanged != null) {
+            //if (HeightmapChanged != null) {
                 HeightmapChangedEventArgs args = new HeightmapChangedEventArgs();
                 args.Heights = section;
                 args.StartX = startX;

@@ -28,17 +28,17 @@
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
-            this.yPanel = new KinectLib.GUI.UpdatedScalarPanel();
-            this.xPanel = new KinectLib.GUI.UpdatedScalarPanel();
-            this.intersectionPanel = new KinectLib.GUI.UpdatedVectorPanel();
-            this.pointDirPanel = new KinectLib.GUI.UpdatedVectorPanel();
-            this.pointStartPanel = new KinectLib.GUI.UpdatedVectorPanel();
-            this.sidePanel = new KinectLib.GUI.UpdatedVectorPanel();
-            this.topPanel = new KinectLib.GUI.UpdatedVectorPanel();
-            this.normalPanel = new KinectLib.GUI.UpdatedVectorPanel();
-            this.hPanel = new KinectLib.GUI.UpdatedScalarPanel();
-            this.topLeftPanel = new KinectLib.GUI.UpdatedVectorPanel();
-            this.wPanel = new KinectLib.GUI.UpdatedScalarPanel();
+            this.yPanel = new Chimera.GUI.UpdatedScalarPanel();
+            this.xPanel = new Chimera.GUI.UpdatedScalarPanel();
+            this.intersectionPanel = new Chimera.GUI.UpdatedVectorPanel();
+            this.pointDirPanel = new Chimera.GUI.UpdatedVectorPanel();
+            this.pointStartPanel = new Chimera.GUI.UpdatedVectorPanel();
+            this.sidePanel = new Chimera.GUI.UpdatedVectorPanel();
+            this.topPanel = new Chimera.GUI.UpdatedVectorPanel();
+            this.normalPanel = new Chimera.GUI.UpdatedVectorPanel();
+            this.hPanel = new Chimera.GUI.UpdatedScalarPanel();
+            this.topLeftPanel = new Chimera.GUI.UpdatedVectorPanel();
+            this.wPanel = new Chimera.GUI.UpdatedScalarPanel();
             this.SuspendLayout();
             // 
             // W
@@ -294,20 +294,20 @@
 
         #endregion
 
-        private KinectLib.GUI.UpdatedScalarPanel wPanel;
-        private KinectLib.GUI.UpdatedVectorPanel topLeftPanel;
-        private KinectLib.GUI.UpdatedScalarPanel hPanel;
-        private KinectLib.GUI.UpdatedVectorPanel normalPanel;
-        private KinectLib.GUI.UpdatedVectorPanel topPanel;
-        private KinectLib.GUI.UpdatedVectorPanel sidePanel;
-        private KinectLib.GUI.UpdatedVectorPanel pointStartPanel;
-        private KinectLib.GUI.UpdatedVectorPanel pointDirPanel;
-        private KinectLib.GUI.UpdatedVectorPanel intersectionPanel;
+        private Chimera.GUI.UpdatedScalarPanel wPanel;
+        private Chimera.GUI.UpdatedVectorPanel topLeftPanel;
+        private Chimera.GUI.UpdatedScalarPanel hPanel;
+        private Chimera.GUI.UpdatedVectorPanel normalPanel;
+        private Chimera.GUI.UpdatedVectorPanel topPanel;
+        private Chimera.GUI.UpdatedVectorPanel sidePanel;
+        private Chimera.GUI.UpdatedVectorPanel pointStartPanel;
+        private Chimera.GUI.UpdatedVectorPanel pointDirPanel;
+        private Chimera.GUI.UpdatedVectorPanel intersectionPanel;
         private System.Windows.Forms.Label W;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
-        private KinectLib.GUI.UpdatedScalarPanel yPanel;
-        private KinectLib.GUI.UpdatedScalarPanel xPanel;
+        private Chimera.GUI.UpdatedScalarPanel yPanel;
+        private Chimera.GUI.UpdatedScalarPanel xPanel;
     }
 }

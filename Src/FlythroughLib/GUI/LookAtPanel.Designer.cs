@@ -1,4 +1,4 @@
-﻿namespace Chimera.FlythroughLib.GUI {
+﻿namespace Chimera.Flythrough.GUI {
     partial class LookAtPanel {
         /// <summary> 
         /// Required designer variable.
@@ -27,7 +27,7 @@
             this.moveToTakeCurrentButton = new System.Windows.Forms.Button();
             this.lengthValue = new System.Windows.Forms.NumericUpDown();
             this.Length = new System.Windows.Forms.Label();
-            this.targetVectorPanel = new ProxyTestGUI.VectorPanel();
+            this.targetVectorPanel = new Chimera.GUI.VectorPanel();
             this.progressBar = new System.Windows.Forms.ProgressBar();
             this.goToTargetButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.lengthValue)).BeginInit();
@@ -137,7 +137,7 @@
         #endregion
 
         private System.Windows.Forms.Button moveToTakeCurrentButton;
-        private ProxyTestGUI.VectorPanel targetVectorPanel;
+        private Chimera.GUI.VectorPanel targetVectorPanel;
         private System.Windows.Forms.NumericUpDown lengthValue;
         private System.Windows.Forms.Label Length;
         private System.Windows.Forms.ProgressBar progressBar;

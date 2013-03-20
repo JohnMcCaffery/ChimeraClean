@@ -18,7 +18,7 @@ along with Routing Project.  If not, see <http://www.gnu.org/licenses/>.
 
 **************************************************************************/
 
-namespace ProxyTestGUI {
+namespace Chimera.GUI {
     partial class RotationPanel {
         /// <summary> 
         /// Required designer variable.
@@ -55,7 +55,7 @@ namespace ProxyTestGUI {
             this.yawLabel = new System.Windows.Forms.Label();
             this.rpyButton = new System.Windows.Forms.RadioButton();
             this.lookAtButton = new System.Windows.Forms.RadioButton();
-            this.vectorPanel = new ProxyTestGUI.VectorPanel();
+            this.vectorPanel = new Chimera.GUI.VectorPanel();
             this.nameLabel = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.rollValue)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.rollSlider)).BeginInit();

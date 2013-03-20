@@ -25,7 +25,7 @@
         private void InitializeComponent() {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(LookAtPanel));
             this.lookAtTakeCurrentButton = new System.Windows.Forms.Button();
-            this.targetVectorPanel = new ProxyTestGUI.VectorPanel();
+            this.targetVectorPanel = new Chimera.GUI.VectorPanel();
             this.lengthValue = new System.Windows.Forms.NumericUpDown();
             this.Length = new System.Windows.Forms.Label();
             this.progressBar = new System.Windows.Forms.ProgressBar();
@@ -122,7 +122,7 @@
         #endregion
 
         private System.Windows.Forms.Button lookAtTakeCurrentButton;
-        private ProxyTestGUI.VectorPanel targetVectorPanel;
+        private Chimera.GUI.VectorPanel targetVectorPanel;
         private System.Windows.Forms.NumericUpDown lengthValue;
         private System.Windows.Forms.Label Length;
         private System.Windows.Forms.ProgressBar progressBar;

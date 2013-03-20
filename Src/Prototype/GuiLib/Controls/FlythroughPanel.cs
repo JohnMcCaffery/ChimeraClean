@@ -10,7 +10,7 @@ using UtilLib;
 using OpenMetaverse;
 using ChimeraGUILib.Controls.FlythroughEventPanels;
 
-namespace FlythroughLib.Panels {
+namespace Chimera.Flythrough.Panels {
     public partial class FlythroughPanel : UserControl {
         private readonly Dictionary<string, FlythroughEvent> mEvents = new Dictionary<string, FlythroughEvent>();
         private readonly Dictionary<string, UserControl> mPanels = new Dictionary<string, UserControl>();

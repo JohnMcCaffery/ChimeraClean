@@ -5,7 +5,7 @@ using System.Text;
 using OpenMetaverse;
 using System.Xml;
 
-namespace FlythroughLib {
+namespace Chimera.Flythrough {
     public class LookAtEvent : FlythroughEvent {
         /// <summary>
         /// How many LookAtEvents have been created.
@@ -25,7 +25,7 @@ namespace FlythroughLib {
         /// </summary>
         /// <param name="container">The container which this event is part of.</param>
         /// <param name="length">The length of time the event will run (ms).</param>
-        public LookAtEvent(FlythroughLib.FlythroughManager container, int length)
+        public LookAtEvent(Chimera.Flythrough.FlythroughManager container, int length)
             : base(container, length) {
 
             mName = "Look At " + (++COUNT);

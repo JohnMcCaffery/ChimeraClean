@@ -300,13 +300,14 @@ namespace Chimera.Util {
         /// <param name="lookAt">Pitch to set to.</param>
         public void Update(object readonlyLock, Rotation rotation) {
             if (readonlyLock == mReadOnlyLock)
-                Set(rotation.Quaternion);
+                Set(rotation.Pitch, rotation.Yaw);
             else 
                 throw new Exception("Unable to update readonly rotation, wrong authentication object.");
         }
 
         private void Set(double pitch, double yaw) {
-            pitch = constrain(pitch);
+            pitch = Math.Min(90, Math.Max(-90, pitch));
+            //pitch = constrain(pitch);
             yaw = constrain(yaw);
             if (mPitch == pitch && mYaw == yaw)
                 return;
@@ -354,7 +355,7 @@ namespace Chimera.Util {
         }
 
         public override string ToString() {
-            return String.Format("P: {0;.00} - Y: {1;.00}", mPitch, mYaw);
+            return String.Format("P: {0:.00} - Y: {1:.00}", mPitch, mYaw);
         }
     }
 }

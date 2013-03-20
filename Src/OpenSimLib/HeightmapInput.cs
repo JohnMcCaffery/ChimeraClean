@@ -136,7 +136,9 @@ namespace Chimera.OpenSim {
                 Client.Network.LoggedOut -= Network_LoggedOut;
                 if (LoggedInChanged != null)
                     LoggedInChanged(false);
-            }        }
+            }
+        }
+
         #region IInput Members
 
         public event Action<IInput, bool> EnabledChanged;

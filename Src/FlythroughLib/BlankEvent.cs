@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Xml;
 using OpenMetaverse;
-using Chimera.FlythroughLib.GUI;
+using Chimera.Flythrough.GUI;
 
-namespace Chimera.FlythroughLib {
+namespace Chimera.Flythrough {
     public class BlankEvent<T> : FlythroughEvent<T> {
         /// <summary>
         /// How many Blank have been created.

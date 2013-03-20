@@ -5,9 +5,9 @@ using System.Text;
 using OpenMetaverse;
 using System.Xml;
 using System.Windows.Forms;
-using Chimera.FlythroughLib.GUI;
+using Chimera.Flythrough.GUI;
 
-namespace Chimera.FlythroughLib {
+namespace Chimera.Flythrough {
     public class MoveToEvent : FlythroughEvent<Vector3> {
         /// <summary>
         /// How many MoveToEvents have been created.

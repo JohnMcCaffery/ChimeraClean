@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using Chimera.Util;
 
-namespace Launcher {
+namespace Chimera.Launcher {
     class LauncherConfig : ConfigBase {
         public string ServerExe;
         public bool LaunchServer;

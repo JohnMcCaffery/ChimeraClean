@@ -26,15 +26,15 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using UtilLib;
-using ProxyTestGUI;
+using Chimera.GUI;
 using OpenMetaverse;
 using Chimera;
 using Chimera.Controls;
 using OpenMetaverse.Packets;
 using GridProxy;
-using KinectLib;
+using Chimera;
 using System.Threading;
-using FlythroughLib;
+using Chimera.Flythrough;
 
 namespace ConsoleTest {
     public partial class MasterForm : Form {

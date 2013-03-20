@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Xml;
 
-namespace FlythroughLib {
+namespace Chimera.Flythrough {
     public class RotateToEvent : FlythroughEvent {
         /// <summary>
         /// How many RotateToEvents have been created.

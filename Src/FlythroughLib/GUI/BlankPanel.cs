@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Chimera.FlythroughLib.GUI {
+namespace Chimera.Flythrough.GUI {
     public partial class BlankPanel<T> : UserControl {
         private BlankEvent<T> mEvent;
 

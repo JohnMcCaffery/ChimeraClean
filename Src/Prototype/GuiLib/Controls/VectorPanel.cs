@@ -28,7 +28,7 @@ using System.Text;
 using System.Windows.Forms;
 using OpenMetaverse;
 
-namespace ProxyTestGUI {
+namespace Chimera.GUI {
     public partial class VectorPanel : UserControl {
         public event EventHandler OnChange;
         private float trackerScale = 100.0f;

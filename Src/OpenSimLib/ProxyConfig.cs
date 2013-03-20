@@ -2,12 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Nini.Config;
 using Chimera.Util;
 using System.IO;
 
 namespace Chimera.OpenSim {
-    internal class ProxyConfig {
+    internal class ProxyConfig : ConfigBase {
         public static readonly string DEFAULT_LOGINURI = "http://localhost:9000";
         public static readonly string DEFAULT_CLIENT_EXE = "C:\\Program Files (x86)\\Firestorm-Release\\Firestorm-Release.exe";
         public static readonly string DEFAULT_MASTER_ADDRESS = "127.0.0.1";
@@ -16,7 +15,6 @@ namespace Chimera.OpenSim {
         public static int CURRENT_PORT = DEFAULT_PROXY_PORT;
 
         public string ProxyLoginURI;
-        public string Name;
         public string ViewerExecutable;
         public string LoginFirstName;
         public string LoginLastName;
@@ -35,75 +33,68 @@ namespace Chimera.OpenSim {
         public bool Fullscreen;
         public int ProxyPort;
 
-        public ProxyConfig(params string[] args) {
-            ArgvConfigSource argConfig = Init.InitArgConfig(args);
-            argConfig.AddSwitch("General", "Name", "n");
-            argConfig.AddSwitch("General", "File", "f");
-
-            string file;
-            IConfigSource config = Init.AddFile(argConfig, out file);
-            Name = Init.Get(config.Configs["General"], "Name", "MainWindow");
-
-            InitConfig(file, args);
+        public override string Group {
+            get { return "SecondLifeViewer"; }
         }
 
-        public ProxyConfig(string name, string file, string[] args) {
-            Name = name;
-            InitConfig(file, args);
+        public ProxyConfig(params string[] args)
+            : base(args) {
         }
 
-        private void InitConfig(string file, string[] args) {
-            ArgvConfigSource argConfig = Init.InitArgConfig(args);
-            argConfig.AddSwitch("General", "ViewerExe", "v");
-            argConfig.AddSwitch("General", "WorkingDirectory", "d");
-            argConfig.AddSwitch("General", "ViewerArguments", "a");
-            argConfig.AddSwitch("General", "ViewerToggleHUDKey", "k");
-            argConfig.AddSwitch("General", "UseGrid", "ug");
-            argConfig.AddSwitch("General", "UseSetFollowCamPackets", "uf");
-            argConfig.AddSwitch("General", "EnableWindowPackets", "ew");
-            argConfig.AddSwitch("General", "ProxyGrid", "g");
-            argConfig.AddSwitch("General", "LoginURI", "u");
-            argConfig.AddSwitch("General", "MasterAddress", "ma");
-            argConfig.AddSwitch("General", "MasterPort", "mp");
-            argConfig.AddSwitch("General", "WorldPosition", "cw");
-            argConfig.AddSwitch("General", "WorldPitch", "pw");
-            argConfig.AddSwitch("General", "WorldYaw", "yw");
-            argConfig.AddSwitch("General", "AutoRestart", "r");
-            argConfig.AddSwitch("General", "CrashLogFile", "l");
-            argConfig.AddSwitch(Name, "ControlCamera", "c");
-            argConfig.AddSwitch(Name, "AutoStartProxy", "ap");
-            argConfig.AddSwitch(Name, "AutoStartViewer", "av");
-            argConfig.AddSwitch(Name, "ProxyPort", "p");
-            argConfig.AddSwitch(Name, "FirstName", "fn");
-            argConfig.AddSwitch(Name, "LastName", "l");
-            argConfig.AddSwitch(Name, "Password", "pw");
-            argConfig.AddSwitch(Name, "Fullscreen", "pw");
+        public ProxyConfig(string name, string file, params string[] args)
+            : base(name, file, args) {
+        }
+
+        protected override void InitConfig() {
+            /*
+            AddCommandLineParam("General", "ViewerExe", "v");
+            AddCommandLineParam("General", "WorkingDirectory", "d");
+            AddCommandLineParam("General", "ViewerArguments", "a");
+            AddCommandLineParam("General", "ViewerToggleHUDKey", "k");
+            AddCommandLineParam("General", "UseGrid", "ug");
+            AddCommandLineParam("General", "UseSetFollowCamPackets", "uf");
+            AddCommandLineParam("General", "EnableWindowPackets", "ew");
+            AddCommandLineParam("General", "ProxyGrid", "g");
+            AddCommandLineParam("General", "LoginURI", "u");
+            AddCommandLineParam("General", "MasterAddress", "ma");
+            AddCommandLineParam("General", "MasterPort", "mp");
+            AddCommandLineParam("General", "WorldPosition", "cw");
+            AddCommandLineParam("General", "WorldPitch", "pw");
+            AddCommandLineParam("General", "WorldYaw", "yw");
+            AddCommandLineParam("General", "AutoRestart", "r");
+            AddCommandLineParam("General", "CrashLogFile", "l");
+            AddCommandLineParam(Name, "ControlCamera", "c");
+            AddCommandLineParam(Name, "AutoStartProxy", "ap");
+            AddCommandLineParam(Name, "AutoStartViewer", "av");
+            AddCommandLineParam(Name, "ProxyPort", "p");
+            AddCommandLineParam(Name, "FirstName", "fn");
+            AddCommandLineParam(Name, "LastName", "l");
+            AddCommandLineParam(Name, "Password", "pw");
+            AddCommandLineParam(Name, "Fullscreen", "pw");
+            */
             
-            IConfigSource config = Init.AddFile(argConfig, file);
-            IConfig sectionConfig = config.Configs[Name];
-            IConfig generalConfig = config.Configs["General"];
 
-            ViewerExecutable = Init.Get(generalConfig, "ViewerExe", DEFAULT_CLIENT_EXE);
-            ViewerWorkingDirectory = Init.Get(generalConfig, "WorkingDirectory", Path.GetDirectoryName(ViewerExecutable));
-            ViewerArguments = Init.Get(generalConfig, "ViewerArguments", "");
-            ViewerToggleHUDKey= Init.Get(generalConfig, "ViewerToggleHUDKey", "%^{F1}");
-            ProxyLoginURI = Init.Get(generalConfig, "LoginURI", DEFAULT_LOGINURI);
-            UseGrid = Init.Get(generalConfig, "UseGrid", false);
+            ViewerExecutable = Get(true, "ViewerExe", DEFAULT_CLIENT_EXE, "The executable that runs the viewer.");
+            ViewerWorkingDirectory = Get(true, "WorkingDirectory", Path.GetDirectoryName(ViewerExecutable), "The workign directory for the viewer executable.");
+            ViewerArguments = Get(true, "ViewerArguments", "", "Any arguments to be passed to the viewer when it starts.");
+            ViewerToggleHUDKey= Get(true, "ViewerToggleHUDKey", "%^{F1}", "The key press that will toggle the HUD on and off in the viewer.");
+            ProxyLoginURI = Get(true, "LoginURI", DEFAULT_LOGINURI, "The URI of the server the proxy should proxy.");
+            UseGrid = Get(true, "UseGrid", false, "Whether to login using the --grid or --loginuri command line parameter to specify the login target.");
 
-            CrashLogFile = Init.Get(generalConfig, "CrashLogFile", "CrashLog.log");
+            CrashLogFile = Get(true, "CrashLogFile", "CrashLog.log", "The log file to record crashes to.");
 
-            LoginFirstName = Init.Get(sectionConfig, "FirstName", null);
-            LoginLastName = Init.Get(sectionConfig, "LastName", null);
-            LoginPassword = Init.Get(sectionConfig, "Password", null);
-            ProxyPort = Init.Get(sectionConfig, "ProxyPort", CURRENT_PORT++);
-            LoginGrid = Init.Get(sectionConfig, "ProxyGrid", ProxyPort.ToString());
+            LoginFirstName = Get(false, "FirstName", null, "The first name to log the viewer in with.");
+            LoginLastName = Get(false, "LastName", null, "The last name to log the viewer in with.");
+            LoginPassword = Get(false, "Password", null, "The password to log the viewer in with.");
+            ProxyPort = Get(false, "ProxyPort", CURRENT_PORT++, "The port to run the proxy on.");
+            LoginGrid = Get(false, "ProxyGrid", ProxyPort.ToString(), "The name of the grid the proxy will appear as.");
             AutoLoginClient = LoginFirstName != null && LoginLastName != null && LoginPassword != null;
 
-            AutoStartProxy = Init.Get(sectionConfig, "AutoStartProxy", false);
-            AutoStartViewer = Init.Get(sectionConfig, "AutoStartViewer", false);
-            AutoRestartViewer = Init.Get(generalConfig, "AutoRestart", false);
-            ControlCamera = Init.Get(sectionConfig, "ControlCamera", true);
-            Fullscreen = Init.Get(sectionConfig, "Fullscreen", true);
+            AutoStartProxy = Get(false, "AutoStartProxy", false, "Whether to automatically start the proxy when the system start.");
+            AutoStartViewer = Get(false, "AutoStartViewer", false, "Whether to automatically start the viewer when the system start.");
+            AutoRestartViewer = Get(true, "AutoRestart", false, "Whether to automatically restart the viewer if the process exits.");
+            ControlCamera = Get(false, "ControlCamera", true, "Whether to start the viewer in avatar control or proxy control mode.");
+            Fullscreen = Get(false, "Fullscreen", true, "Whether to start the viewer fullscreen.");
 
             //EnableWindowPackets = Init.Get(generalConfig, "EnableWindowPackets", true);
             //UseSetFollowCamPackets = !enableWindowPackets || Get(generalConfig, "UseSetFollowCamPackets", false);

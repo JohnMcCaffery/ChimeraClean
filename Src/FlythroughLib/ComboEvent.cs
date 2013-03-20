@@ -5,10 +5,10 @@ using System.Text;
 using OpenMetaverse;
 using Chimera.Util;
 using System.Xml;
-using Chimera.FlythroughLib.GUI;
+using Chimera.Flythrough.GUI;
 using System.Windows.Forms;
 
-namespace Chimera.FlythroughLib {
+namespace Chimera.Flythrough {
     public class ComboEvent : FlythroughEvent<Camera> {
         private static int COUNT = 0;
         private readonly EventSequence<Vector3> mPositionSequence = new EventSequence<Vector3>();

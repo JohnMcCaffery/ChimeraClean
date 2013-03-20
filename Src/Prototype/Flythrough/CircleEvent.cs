@@ -5,7 +5,7 @@ using System.Text;
 using UtilLib;
 using OpenMetaverse;
 
-namespace FlythroughLib {
+namespace Chimera.Flythrough {
     public class CircleEvent : FlythroughEvent {
         /// <summary>
         /// How many LookAtEvents have been created.

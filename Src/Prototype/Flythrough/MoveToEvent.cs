@@ -5,7 +5,7 @@ using System.Text;
 using OpenMetaverse;
 using System.Xml;
 
-namespace FlythroughLib {
+namespace Chimera.Flythrough {
     public class MoveToEvent : FlythroughEvent {
         /// <summary>
         /// How many MoveToEvents have been created.

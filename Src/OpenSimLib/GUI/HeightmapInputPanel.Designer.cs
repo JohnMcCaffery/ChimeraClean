@@ -31,7 +31,7 @@
             this.lastNameBox = new System.Windows.Forms.TextBox();
             this.firstNameLabel = new System.Windows.Forms.Label();
             this.firstNameBox = new System.Windows.Forms.TextBox();
-            this.startPositionPanel = new ProxyTestGUI.VectorPanel();
+            this.startPositionPanel = new Chimera.GUI.VectorPanel();
             this.regionBox = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.teleportButton = new System.Windows.Forms.Button();
@@ -198,7 +198,7 @@
         private System.Windows.Forms.TextBox lastNameBox;
         private System.Windows.Forms.Label firstNameLabel;
         private System.Windows.Forms.TextBox firstNameBox;
-        private ProxyTestGUI.VectorPanel startPositionPanel;
+        private Chimera.GUI.VectorPanel startPositionPanel;
         private System.Windows.Forms.TextBox regionBox;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button teleportButton;

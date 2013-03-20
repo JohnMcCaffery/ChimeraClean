@@ -18,7 +18,7 @@ along with Routing Project.  If not, see <http://www.gnu.org/licenses/>.
 
 **************************************************************************/
 
-namespace ProxyTestGUI {
+namespace Chimera.GUI {
     partial class VectorPanel {
         /// <summary> 
         /// Required designer variable.
@@ -47,9 +47,9 @@ namespace ProxyTestGUI {
             this.xLabel = new System.Windows.Forms.Label();
             this.yLabel = new System.Windows.Forms.Label();
             this.zLabel = new System.Windows.Forms.Label();
-            this.xPanel = new KinectLib.GUI.ScalarPanel();
-            this.yPanel = new KinectLib.GUI.ScalarPanel();
-            this.zPanel = new KinectLib.GUI.ScalarPanel();
+            this.xPanel = new Chimera.GUI.ScalarPanel();
+            this.yPanel = new Chimera.GUI.ScalarPanel();
+            this.zPanel = new Chimera.GUI.ScalarPanel();
             this.SuspendLayout();
             // 
             // nameLabel
@@ -156,8 +156,8 @@ namespace ProxyTestGUI {
         private System.Windows.Forms.Label xLabel;
         private System.Windows.Forms.Label yLabel;
         private System.Windows.Forms.Label zLabel;
-        private KinectLib.GUI.ScalarPanel xPanel;
-        private KinectLib.GUI.ScalarPanel yPanel;
-        private KinectLib.GUI.ScalarPanel zPanel;
+        private Chimera.GUI.ScalarPanel xPanel;
+        private Chimera.GUI.ScalarPanel yPanel;
+        private Chimera.GUI.ScalarPanel zPanel;
     }
 }

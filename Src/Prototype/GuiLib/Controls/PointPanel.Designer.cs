@@ -42,10 +42,10 @@
             this.topLeftZLabel = new System.Windows.Forms.Label();
             this.topLeftYLabel = new System.Windows.Forms.Label();
             this.topLeftXLabel = new System.Windows.Forms.Label();
-            this.pointDirPanel = new ProxyTestGUI.RotationPanel();
-            this.pointStartPanel = new ProxyTestGUI.VectorPanel();
-            this.kinectRotationPanel = new ProxyTestGUI.RotationPanel();
-            this.kinectPositionPanel = new ProxyTestGUI.VectorPanel();
+            this.pointDirPanel = new Chimera.GUI.RotationPanel();
+            this.pointStartPanel = new Chimera.GUI.VectorPanel();
+            this.kinectRotationPanel = new Chimera.GUI.RotationPanel();
+            this.kinectPositionPanel = new Chimera.GUI.VectorPanel();
             this.windowPanel = new Chimera.Controls.WindowPanel();
             this.intersectionZLabel = new System.Windows.Forms.Label();
             this.intersectionYLabel = new System.Windows.Forms.Label();
@@ -353,12 +353,12 @@
         #endregion
 
         private Chimera.Controls.WindowPanel windowPanel;
-        private ProxyTestGUI.VectorPanel kinectPositionPanel;
-        private ProxyTestGUI.RotationPanel kinectRotationPanel;
-        private ProxyTestGUI.VectorPanel pointStartPanel;
+        private Chimera.GUI.VectorPanel kinectPositionPanel;
+        private Chimera.GUI.RotationPanel kinectRotationPanel;
+        private Chimera.GUI.VectorPanel pointStartPanel;
         private System.Windows.Forms.Label xLabel;
         private System.Windows.Forms.Label yLabel;
-        private ProxyTestGUI.RotationPanel pointDirPanel;
+        private Chimera.GUI.RotationPanel pointDirPanel;
         private System.Windows.Forms.Label topYLabel;
         private System.Windows.Forms.Label topXLabel;
         private System.Windows.Forms.Label topZLabel;

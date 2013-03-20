@@ -26,10 +26,6 @@ namespace Chimera.Inputs {
         public void Init(KBMouseInput input) {
             mInput = input;
 
-            moveTimer.Interval = input.Coordinator.TickLength;
-            moveTimer.Enabled = true;
-            moveTimer.Tick += new EventHandler(input.panel_Tick);
-
             mousePanel.MouseDown += new MouseEventHandler(mInput.panel_MouseDown);
             mousePanel.MouseUp += new MouseEventHandler(mInput.panel_MouseUp);
             mousePanel.MouseMove += new MouseEventHandler(mInput.panel_MouseMove);
@@ -83,9 +79,7 @@ namespace Chimera.Inputs {
             }
         }
 
-        internal void Stop() {
-            moveTimer.Enabled = false;
-        }
+        internal void Stop() { }
 
         private void mouseScaleSlider_Scroll(object sender, EventArgs e) {
             if (mInput != null) {

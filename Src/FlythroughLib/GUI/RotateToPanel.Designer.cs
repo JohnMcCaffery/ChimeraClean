@@ -1,4 +1,4 @@
-﻿namespace Chimera.FlythroughLib.GUI {
+﻿namespace Chimera.Flythrough.GUI {
     partial class RotateToPanel {
         /// <summary> 
         /// Required designer variable.
@@ -28,7 +28,7 @@
             this.lengthValue = new System.Windows.Forms.NumericUpDown();
             this.Length = new System.Windows.Forms.Label();
             this.progressBar = new System.Windows.Forms.ProgressBar();
-            this.rotationPanel = new ProxyTestGUI.RotationPanel();
+            this.rotationPanel = new Chimera.GUI.RotationPanel();
             ((System.ComponentModel.ISupportInitialize)(this.lengthValue)).BeginInit();
             this.SuspendLayout();
             // 
@@ -124,6 +124,6 @@
         private System.Windows.Forms.NumericUpDown lengthValue;
         private System.Windows.Forms.Label Length;
         private System.Windows.Forms.ProgressBar progressBar;
-        private ProxyTestGUI.RotationPanel rotationPanel;
+        private Chimera.GUI.RotationPanel rotationPanel;
     }
 }

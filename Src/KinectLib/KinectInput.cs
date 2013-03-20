@@ -221,7 +221,7 @@ namespace Chimera.Kinect {
         }
 
         public void Close() {
-            Nui.Close();
+            //Nui.Close();
         }
 
         public void Draw(Perspective perspective, Graphics graphics) {

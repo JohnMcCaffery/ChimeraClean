@@ -1,4 +1,4 @@
-﻿namespace FlythroughLib.Panels {
+﻿namespace Chimera.Flythrough.Panels {
     partial class FlythroughPanel {
         /// <summary> 
         /// Required designer variable.

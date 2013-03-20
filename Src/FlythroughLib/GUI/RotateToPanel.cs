@@ -9,7 +9,7 @@ using System.Windows.Forms;
 using Chimera.Util;
 using OpenMetaverse;
 
-namespace Chimera.FlythroughLib.GUI {
+namespace Chimera.Flythrough.GUI {
     public partial class RotateToPanel : UserControl {
         private RotateToEvent mEvent;
 

@@ -1,4 +1,4 @@
-﻿namespace Chimera.FlythroughLib.GUI {
+﻿namespace Chimera.Flythrough.GUI {
     partial class FlythroughPanel {
         /// <summary> 
         /// Required designer variable.
@@ -42,8 +42,8 @@
             this.takeCurrentCameraButton = new System.Windows.Forms.Button();
             this.takeOrientationButton = new System.Windows.Forms.Button();
             this.currentPositionButton = new System.Windows.Forms.Button();
-            this.startOrientationPanel = new ProxyTestGUI.RotationPanel();
-            this.startPositionPanel = new ProxyTestGUI.VectorPanel();
+            this.startOrientationPanel = new Chimera.GUI.RotationPanel();
+            this.startPositionPanel = new Chimera.GUI.VectorPanel();
             this.autoStepCheck = new System.Windows.Forms.CheckBox();
             this.timeSlider = new System.Windows.Forms.TrackBar();
             this.lengthLabel = new System.Windows.Forms.Label();
@@ -395,8 +395,8 @@
         private System.Windows.Forms.ToolStripMenuItem moveUpToolStripMenuItem;
         private System.Windows.Forms.Button startButton;
         private System.Windows.Forms.Panel startPanel;
-        private ProxyTestGUI.VectorPanel startPositionPanel;
-        private ProxyTestGUI.RotationPanel startOrientationPanel;
+        private Chimera.GUI.VectorPanel startPositionPanel;
+        private Chimera.GUI.RotationPanel startOrientationPanel;
         private System.Windows.Forms.SaveFileDialog saveFileDialog1;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
         private System.Windows.Forms.Button stepBackButton;

@@ -1,4 +1,4 @@
-﻿namespace Chimera.FlythroughLib.GUI {
+﻿namespace Chimera.Flythrough.GUI {
     partial class BlankPanel<T> {
         /// <summary> 
         /// Required designer variable.

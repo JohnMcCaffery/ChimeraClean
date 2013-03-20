@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Xml;
 
-namespace FlythroughLib {
+namespace Chimera.Flythrough {
     public class BlankEvent : FlythroughEvent {
         /// <summary>
         /// How many LookAtEvents have been created.

@@ -32,8 +32,8 @@
             this.cursorControllerPulldown = new System.Windows.Forms.ComboBox();
             this.movementControllerPulldown = new System.Windows.Forms.ComboBox();
             this.startButton = new System.Windows.Forms.Button();
-            this.orientationPanel = new ProxyTestGUI.RotationPanel();
-            this.positionPanel = new ProxyTestGUI.VectorPanel();
+            this.orientationPanel = new Chimera.GUI.RotationPanel();
+            this.positionPanel = new Chimera.GUI.VectorPanel();
             this.movementTab = new System.Windows.Forms.TabPage();
             this.label3 = new System.Windows.Forms.Label();
             this.helpTriggerPulldown = new System.Windows.Forms.ComboBox();
@@ -223,8 +223,8 @@
         private System.Windows.Forms.TabControl mainTab;
         private System.Windows.Forms.TabPage controlTab;
         private System.Windows.Forms.TabPage movementTab;
-        private ProxyTestGUI.RotationPanel orientationPanel;
-        private ProxyTestGUI.VectorPanel positionPanel;
+        private Chimera.GUI.RotationPanel orientationPanel;
+        private Chimera.GUI.VectorPanel positionPanel;
         private System.Windows.Forms.Button startButton;
         private System.Windows.Forms.ComboBox cursorControllerPulldown;
         private System.Windows.Forms.ComboBox movementControllerPulldown;

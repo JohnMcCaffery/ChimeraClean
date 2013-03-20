@@ -176,37 +176,37 @@ namespace Chimera.Util {
         protected Vector3 GetV(bool general, string key, Vector3 defalt, string description) {
             if (!configLoaded)
                 LoadConfig();
-            AddParam(key, description, defalt.GetType().Name, general, defalt.ToString());
+            AddParam(key, description, "Vector3", general, defalt.ToString());
             return Init.GetV(general ? generalConfig : specificConfig, key, defalt);
         }
         protected double Get(bool general, string key, double defalt, string description) {
             if (!configLoaded)
                 LoadConfig();
-            AddParam(key, description, defalt.GetType().Name, general, defalt.ToString());
+            AddParam(key, description, "double", general, defalt.ToString());
             return Init.Get(general ? generalConfig : specificConfig, key, defalt);
         }
         protected string Get(bool general, string key, string defalt, string description) {
             if (!configLoaded)
                 LoadConfig();
-            AddParam(key, description, defalt.GetType().Name, general, defalt.ToString());
+            AddParam(key, description, "string", general, defalt);
             return Init.Get(general ? generalConfig : specificConfig, key, defalt);
         }
         protected float Get(bool general, string key, float defalt, string description) {
             if (!configLoaded)
                 LoadConfig();
-            AddParam(key, description, defalt.GetType().Name, general, defalt.ToString());
+            AddParam(key, description, "float", general, defalt.ToString());
             return Init.Get(general ? generalConfig : specificConfig, key, defalt);
         }
         protected int Get(bool general, string key, int defalt, string description) {
             if (!configLoaded)
                 LoadConfig();
-            AddParam(key, description, defalt.GetType().Name, general, defalt.ToString());
+            AddParam(key, description, "int", general, defalt.ToString());
             return Init.Get(general ? generalConfig : specificConfig, key, defalt);
         }
         protected bool Get(bool general, string key, bool defalt, string description) {
             if (!configLoaded)
                 LoadConfig();
-            AddParam(key, description, defalt.GetType().Name, general, defalt.ToString());
+            AddParam(key, description, "bool", general, defalt.ToString());
             return Init.Get(general ? generalConfig : specificConfig, key, defalt);
         }
 

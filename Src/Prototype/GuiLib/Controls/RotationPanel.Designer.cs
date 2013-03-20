@@ -18,7 +18,7 @@ along with Routing Project.  If not, see <http://www.gnu.org/licenses/>.
 
 **************************************************************************/
 
-namespace ProxyTestGUI {
+namespace Chimera.GUI {
     partial class RotationPanel {
         /// <summary> 
         /// Required designer variable.
@@ -44,7 +44,7 @@ namespace ProxyTestGUI {
         /// </summary>
         private void InitializeComponent() {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RotationPanel));
-            this.vectorPanel = new ProxyTestGUI.VectorPanel();
+            this.vectorPanel = new Chimera.GUI.VectorPanel();
             this.yawValue = new System.Windows.Forms.NumericUpDown();
             this.yawSlider = new System.Windows.Forms.TrackBar();
             this.pitchValue = new System.Windows.Forms.NumericUpDown();

@@ -28,7 +28,7 @@ using System.Text;
 using System.Windows.Forms;
 using OpenMetaverse.Packets;
 using OpenMetaverse;
-using ProxyTestGUI;
+using Chimera.GUI;
 
 /*
 1   FOLLOWCAM_PITCH = 0,

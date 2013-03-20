@@ -8,7 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using Chimera.Interfaces;
 
-namespace KinectLib.GUI {
+namespace Chimera.GUI {
     public class ConditionalCheck : CheckBox {
         private IUpdater<bool> mCondition;
         private bool mGuiChanged;
@@ -58,5 +58,6 @@ namespace KinectLib.GUI {
                 base.Invoke(a);
             else
                 a();
-        }    }
+        }
+    }
 }

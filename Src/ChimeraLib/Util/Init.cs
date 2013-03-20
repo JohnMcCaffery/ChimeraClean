@@ -464,7 +464,7 @@ namespace Chimera.Util {
             return cfg == null ? defalt : cfg.GetDouble(key, defalt);
         }
         public static Vector3 GetV(IConfig cfg, string key, Vector3 defalt) {
-            string raw = cfg.Get(key, null);
+            string raw = Get(cfg, key, null);
             Vector3 ret;
             if (raw == null || !Vector3.TryParse(raw, out ret))
                 return defalt;

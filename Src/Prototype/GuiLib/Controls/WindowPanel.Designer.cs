@@ -9,11 +9,11 @@
             this.widthLabel = new System.Windows.Forms.Label();
             this.heightLabel = new System.Windows.Forms.Label();
             this.lockScreenCheck = new System.Windows.Forms.CheckBox();
-            this.eyeOffsetPanel = new ProxyTestGUI.VectorPanel();
-            this.rotationOffsetPanel = new ProxyTestGUI.RotationPanel();
+            this.eyeOffsetPanel = new Chimera.GUI.VectorPanel();
+            this.rotationOffsetPanel = new Chimera.GUI.RotationPanel();
             this.vOffsetLabel = new System.Windows.Forms.Label();
             this.hOffsetLabel = new System.Windows.Forms.Label();
-            this.screenPositionPanel = new ProxyTestGUI.VectorPanel();
+            this.screenPositionPanel = new Chimera.GUI.VectorPanel();
             this.label7 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.aspectRatioValue = new System.Windows.Forms.NumericUpDown();
@@ -488,11 +488,11 @@
         private System.Windows.Forms.Label fovLabel;
         private System.Windows.Forms.Label heightLabel;
         private System.Windows.Forms.Label widthLabel;
-        private ProxyTestGUI.VectorPanel screenPositionPanel;
+        private Chimera.GUI.VectorPanel screenPositionPanel;
         private System.Windows.Forms.Label vOffsetLabel;
         private System.Windows.Forms.Label hOffsetLabel;
         private System.Windows.Forms.CheckBox lockScreenCheck;
-        private ProxyTestGUI.VectorPanel eyeOffsetPanel;
-        private ProxyTestGUI.RotationPanel rotationOffsetPanel;
+        private Chimera.GUI.VectorPanel eyeOffsetPanel;
+        private Chimera.GUI.RotationPanel rotationOffsetPanel;
     }
 }

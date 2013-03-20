@@ -142,7 +142,7 @@
     <Compile Include="Interfaces\IDeltaInput.cs" />
     <Compile Include="Interfaces\IOverlayWindow.cs" />
     <Compile Include="Interfaces\IUpdater.cs" />
-    <Compile Include="Interfaces\ITicker.cs" />
+    <Compile Include="Interfaces\IInputSource.cs" />
     <Compile Include="Overlay\InvisibleSelection.cs" />
     <Compile Include="Overlay\OverlayController.cs" />
     <Compile Include="Overlay\BoxSelection.cs" />

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using UtilLib;
-using FlythroughLib;
+using Chimera.Flythrough;
 using OpenMetaverse;
 using NuiLibDotNet;
 using C = NuiLibDotNet.Condition;

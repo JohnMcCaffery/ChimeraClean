@@ -9,10 +9,10 @@ using System.Windows.Forms;
 using OpenMetaverse;
 using Chimera.Util;
 using System.Threading;
-using Chimera.FlythroughLib.GUI;
-using FlythroughLib;
+using Chimera.Flythrough.GUI;
+using Chimera.Flythrough;
 
-namespace Chimera.FlythroughLib {
+namespace Chimera.Flythrough {
     public struct Camera {
         private Vector3 mPosition;
         private Rotation mOrientation;

@@ -30,19 +30,19 @@
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
-            this.xPanel = new KinectLib.GUI.UpdatedScalarPanel();
-            this.intersectionPanel = new KinectLib.GUI.UpdatedVectorPanel();
-            this.pointDirPanel = new KinectLib.GUI.UpdatedVectorPanel();
-            this.pointStartPanel = new KinectLib.GUI.UpdatedVectorPanel();
-            this.screenHPanel = new KinectLib.GUI.UpdatedScalarPanel();
-            this.screenWPanel = new KinectLib.GUI.UpdatedScalarPanel();
-            this.topLeftPanel = new KinectLib.GUI.UpdatedVectorPanel();
-            this.worldHPanel = new KinectLib.GUI.UpdatedScalarPanel();
-            this.worldWPanel = new KinectLib.GUI.UpdatedScalarPanel();
-            this.normalPanel = new KinectLib.GUI.UpdatedVectorPanel();
-            this.yPanel = new KinectLib.GUI.UpdatedScalarPanel();
-            this.sidePanel = new KinectLib.GUI.UpdatedVectorPanel();
-            this.topPanel = new KinectLib.GUI.UpdatedVectorPanel();
+            this.xPanel = new Chimera.GUI.UpdatedScalarPanel();
+            this.intersectionPanel = new Chimera.GUI.UpdatedVectorPanel();
+            this.pointDirPanel = new Chimera.GUI.UpdatedVectorPanel();
+            this.pointStartPanel = new Chimera.GUI.UpdatedVectorPanel();
+            this.screenHPanel = new Chimera.GUI.UpdatedScalarPanel();
+            this.screenWPanel = new Chimera.GUI.UpdatedScalarPanel();
+            this.topLeftPanel = new Chimera.GUI.UpdatedVectorPanel();
+            this.worldHPanel = new Chimera.GUI.UpdatedScalarPanel();
+            this.worldWPanel = new Chimera.GUI.UpdatedScalarPanel();
+            this.normalPanel = new Chimera.GUI.UpdatedVectorPanel();
+            this.yPanel = new Chimera.GUI.UpdatedScalarPanel();
+            this.sidePanel = new Chimera.GUI.UpdatedVectorPanel();
+            this.topPanel = new Chimera.GUI.UpdatedVectorPanel();
             this.enabledCheck = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
@@ -360,25 +360,25 @@
 
         #endregion
 
-        private KinectLib.GUI.UpdatedVectorPanel topLeftPanel;
-        private KinectLib.GUI.UpdatedVectorPanel topPanel;
-        private KinectLib.GUI.UpdatedVectorPanel sidePanel;
-        private KinectLib.GUI.UpdatedScalarPanel xPanel;
-        private KinectLib.GUI.UpdatedScalarPanel yPanel;
+        private Chimera.GUI.UpdatedVectorPanel topLeftPanel;
+        private Chimera.GUI.UpdatedVectorPanel topPanel;
+        private Chimera.GUI.UpdatedVectorPanel sidePanel;
+        private Chimera.GUI.UpdatedScalarPanel xPanel;
+        private Chimera.GUI.UpdatedScalarPanel yPanel;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
-        private KinectLib.GUI.UpdatedVectorPanel intersectionPanel;
-        private KinectLib.GUI.UpdatedVectorPanel normalPanel;
+        private Chimera.GUI.UpdatedVectorPanel intersectionPanel;
+        private Chimera.GUI.UpdatedVectorPanel normalPanel;
         private System.Windows.Forms.Label label3;
-        private KinectLib.GUI.UpdatedScalarPanel worldWPanel;
+        private Chimera.GUI.UpdatedScalarPanel worldWPanel;
         private System.Windows.Forms.Label label4;
-        private KinectLib.GUI.UpdatedScalarPanel worldHPanel;
+        private Chimera.GUI.UpdatedScalarPanel worldHPanel;
         private System.Windows.Forms.Label label5;
-        private KinectLib.GUI.UpdatedScalarPanel screenHPanel;
+        private Chimera.GUI.UpdatedScalarPanel screenHPanel;
         private System.Windows.Forms.Label label6;
-        private KinectLib.GUI.UpdatedScalarPanel screenWPanel;
-        private KinectLib.GUI.UpdatedVectorPanel pointDirPanel;
-        private KinectLib.GUI.UpdatedVectorPanel pointStartPanel;
+        private Chimera.GUI.UpdatedScalarPanel screenWPanel;
+        private Chimera.GUI.UpdatedVectorPanel pointDirPanel;
+        private Chimera.GUI.UpdatedVectorPanel pointStartPanel;
         private System.Windows.Forms.CheckBox enabledCheck;
     }
 }

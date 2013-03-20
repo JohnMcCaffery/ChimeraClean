@@ -5,10 +5,10 @@ using System.Text;
 using System.Xml;
 using Chimera.Util;
 using System.Windows.Forms;
-using Chimera.FlythroughLib.GUI;
+using Chimera.Flythrough.GUI;
 
-namespace Chimera.FlythroughLib {
-    public class RotateToEvent : Chimera.FlythroughLib.FlythroughEvent<Rotation> {
+namespace Chimera.Flythrough {
+    public class RotateToEvent : Chimera.Flythrough.FlythroughEvent<Rotation> {
         /// <summary>
         /// How many RotateToEvents have been created.
         /// </summary>

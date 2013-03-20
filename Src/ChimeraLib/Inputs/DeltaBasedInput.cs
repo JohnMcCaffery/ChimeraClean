@@ -27,7 +27,7 @@ namespace Chimera.Inputs {
                 float fly = move.Z;
                 move.Z = 0f;
                 move *= mCoordinator.Orientation.Quaternion;
-                move.Z = fly;
+                move.Z += fly;
 
                 Vector3 pos = mCoordinator.Position + move;
                 Rotation orientation = mCoordinator.Orientation + mInput.OrientationDelta;

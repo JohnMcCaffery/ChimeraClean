@@ -27,8 +27,8 @@
             Chimera.Window window1 = new Chimera.Window();
             UtilLib.Rotation rotation1 = new UtilLib.Rotation();
             this.rawTab = new System.Windows.Forms.TabPage();
-            this.rotationPanel = new ProxyTestGUI.RotationPanel();
-            this.positionPanel = new ProxyTestGUI.VectorPanel();
+            this.rotationPanel = new Chimera.GUI.RotationPanel();
+            this.positionPanel = new Chimera.GUI.VectorPanel();
             this.screenTab = new System.Windows.Forms.TabPage();
             this.screenWindowPanel = new Chimera.Controls.WindowPanel();
             this.mainTabContainer = new System.Windows.Forms.TabControl();
@@ -397,8 +397,8 @@
         private System.Windows.Forms.TabPage rawTab;
         private System.Windows.Forms.TabPage screenTab;
         private System.Windows.Forms.TabControl mainTabContainer;
-        private ProxyTestGUI.RotationPanel rotationPanel;
-        private ProxyTestGUI.VectorPanel positionPanel;
+        private Chimera.GUI.RotationPanel rotationPanel;
+        private Chimera.GUI.VectorPanel positionPanel;
         private System.Windows.Forms.TabPage proxyTab;
         private UtilLib.ProxyPanel proxyPanel;
         private System.Windows.Forms.TabPage networkTab;

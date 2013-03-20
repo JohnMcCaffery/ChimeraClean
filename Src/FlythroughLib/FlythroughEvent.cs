@@ -7,7 +7,7 @@ using System.Xml;
 using System.Threading;
 using System.Windows.Forms;
 
-namespace Chimera.FlythroughLib {
+namespace Chimera.Flythrough {
     public abstract class FlythroughEvent<T> : IComparable<FlythroughEvent<T>> {
         /// <summary>
         /// The flythrough this event is part of.

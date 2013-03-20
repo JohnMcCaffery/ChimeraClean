@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using Chimera.Util;
 
-namespace FlythroughLib {
+namespace Chimera.Flythrough {
     class FlythroughConfig : ConfigBase {
         public bool Enabled;
 

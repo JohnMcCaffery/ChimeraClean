@@ -18,7 +18,7 @@ along with Routing Project.  If not, see <http://www.gnu.org/licenses/>.
 
 **************************************************************************/
 
-namespace ProxyTestGUI {
+namespace Chimera.GUI {
     partial class VectorPanel {
         /// <summary> 
         /// Required designer variable.

@@ -8,7 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using Chimera.Interfaces;
 
-namespace KinectLib.GUI {
+namespace Chimera.GUI {
     public partial class ScalarPanel : UserControl {
         private bool mGuiChanged;
         private bool mExternalChanged;

@@ -3,7 +3,7 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following 
-// set of attributes. Changed these attribute values to modify the information
+// set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("OpenSimLib")]
 [assembly: AssemblyDescription("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("30d2f41b-ffa2-4a7e-a6e2-afe709feb6da")]
+[assembly: Guid("6c1d4a3c-1e98-4808-a3dc-26c15bea3230")]
 
 // Version information for an assembly consists of the following four values:
 //

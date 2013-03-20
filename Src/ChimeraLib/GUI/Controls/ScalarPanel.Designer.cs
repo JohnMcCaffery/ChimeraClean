@@ -1,4 +1,4 @@
-﻿namespace KinectLib.GUI {
+﻿namespace Chimera.GUI {
     partial class ScalarPanel {
         /// <summary> 
         /// Required designer variable.

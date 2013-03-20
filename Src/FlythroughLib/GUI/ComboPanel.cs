@@ -9,7 +9,7 @@ using System.Windows.Forms;
 using OpenMetaverse;
 using Chimera.Util;
 
-namespace Chimera.FlythroughLib.GUI {
+namespace Chimera.Flythrough.GUI {
     public partial class ComboPanel : UserControl {
         private ComboEvent mEvent;
         private UserControl mCurrentPositionPanel;

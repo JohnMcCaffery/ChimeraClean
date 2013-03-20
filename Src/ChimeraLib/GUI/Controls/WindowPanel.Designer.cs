@@ -30,10 +30,10 @@
             this.monitorPulldown = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.heightPanel = new KinectLib.GUI.ScalarPanel();
-            this.widthPanel = new KinectLib.GUI.ScalarPanel();
-            this.orientationPanel = new ProxyTestGUI.RotationPanel();
-            this.topLeftPanel = new ProxyTestGUI.VectorPanel();
+            this.heightPanel = new Chimera.GUI.ScalarPanel();
+            this.widthPanel = new Chimera.GUI.ScalarPanel();
+            this.orientationPanel = new Chimera.GUI.RotationPanel();
+            this.topLeftPanel = new Chimera.GUI.VectorPanel();
             this.overlayTab = new System.Windows.Forms.TabPage();
             this.bringToFrontButtin = new System.Windows.Forms.Button();
             this.fullscreenCheck = new System.Windows.Forms.CheckBox();
@@ -250,12 +250,12 @@
         private System.Windows.Forms.Button launchOverlayButton;
         private System.Windows.Forms.CheckBox fullscreenCheck;
         private System.Windows.Forms.Button bringToFrontButtin;
-        private ProxyTestGUI.VectorPanel topLeftPanel;
-        private ProxyTestGUI.RotationPanel orientationPanel;
+        private Chimera.GUI.VectorPanel topLeftPanel;
+        private Chimera.GUI.RotationPanel orientationPanel;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
-        private KinectLib.GUI.ScalarPanel heightPanel;
-        private KinectLib.GUI.ScalarPanel widthPanel;
+        private Chimera.GUI.ScalarPanel heightPanel;
+        private Chimera.GUI.ScalarPanel widthPanel;
         private System.Windows.Forms.ComboBox monitorPulldown;
         private System.Windows.Forms.CheckBox controlCursor;
     }

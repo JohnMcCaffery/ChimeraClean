@@ -24,16 +24,16 @@
         /// </summary>
         private void InitializeComponent() {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RaiseArmHelpTriggerPanel));
-            this.ArmR = new KinectLib.GUI.UpdatedVectorPanel();
-            this.ArmL = new KinectLib.GUI.UpdatedVectorPanel();
-            this.AngleL = new KinectLib.GUI.UpdatedScalarPanel();
-            this.AngleR = new KinectLib.GUI.UpdatedScalarPanel();
-            this.AngleThreshold = new KinectLib.GUI.UpdatedScalarPanel();
-            this.HeightThreshold = new KinectLib.GUI.UpdatedScalarPanel();
+            this.ArmR = new Chimera.GUI.UpdatedVectorPanel();
+            this.ArmL = new Chimera.GUI.UpdatedVectorPanel();
+            this.AngleL = new Chimera.GUI.UpdatedScalarPanel();
+            this.AngleR = new Chimera.GUI.UpdatedScalarPanel();
+            this.AngleThreshold = new Chimera.GUI.UpdatedScalarPanel();
+            this.HeightThreshold = new Chimera.GUI.UpdatedScalarPanel();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.TriggerL = new KinectLib.GUI.ConditionalCheck();
-            this.TriggerR = new KinectLib.GUI.ConditionalCheck();
-            this.Trigger = new KinectLib.GUI.ConditionalCheck();
+            this.TriggerL = new Chimera.GUI.ConditionalCheck();
+            this.TriggerR = new Chimera.GUI.ConditionalCheck();
+            this.Trigger = new Chimera.GUI.ConditionalCheck();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.label1 = new System.Windows.Forms.Label();
@@ -283,20 +283,20 @@
 
         #endregion
 
-        private KinectLib.GUI.UpdatedVectorPanel ArmR;
-        private KinectLib.GUI.UpdatedVectorPanel ArmL;
-        private KinectLib.GUI.UpdatedScalarPanel AngleL;
-        private KinectLib.GUI.UpdatedScalarPanel AngleR;
-        private KinectLib.GUI.UpdatedScalarPanel AngleThreshold;
-        private KinectLib.GUI.UpdatedScalarPanel HeightThreshold;
+        private Chimera.GUI.UpdatedVectorPanel ArmR;
+        private Chimera.GUI.UpdatedVectorPanel ArmL;
+        private Chimera.GUI.UpdatedScalarPanel AngleL;
+        private Chimera.GUI.UpdatedScalarPanel AngleR;
+        private Chimera.GUI.UpdatedScalarPanel AngleThreshold;
+        private Chimera.GUI.UpdatedScalarPanel HeightThreshold;
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Label label1;
-        private KinectLib.GUI.ConditionalCheck TriggerL;
+        private Chimera.GUI.ConditionalCheck TriggerL;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Label label2;
-        private KinectLib.GUI.ConditionalCheck TriggerR;
-        private KinectLib.GUI.ConditionalCheck Trigger;
+        private Chimera.GUI.ConditionalCheck TriggerR;
+        private Chimera.GUI.ConditionalCheck Trigger;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
     }
