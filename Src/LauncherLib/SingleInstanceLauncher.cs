@@ -50,7 +50,7 @@ namespace Chimera.Launcher {
             //ImageSelection mOverlay = new ImageSelection("../Select1.jpg", .1f, .1f, .3f, .3f);
             //IOverlayState mState = new TestState();
             //MainMenuItem item1 = new MainMenuItem(mState, mOverlay);
-            mCoordinator = new Coordinator(windows, mKinect, kbMouseInput, mouse, heightmap, flythrough);
+            mCoordinator = new Coordinator(windows, kbMouseInput, mKinect, mouse, heightmap, flythrough);
 
             //Window[] windows = new Window[] { new Window("Main Window") };
             //Chimera.Overlay.MainMenu mainMenu = new Chimera.Overlay.MainMenu();

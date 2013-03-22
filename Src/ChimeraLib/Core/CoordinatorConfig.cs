@@ -41,7 +41,7 @@ namespace Chimera {
 
             TickLength = Get(true, "TickLength", 20, "How long each tick should be for any system that uses ticks.");
 
-            EyePosition = GetV(true, "CameraPosition", new Vector3(-1000f, 0, 0), "The position of the eye in real world coordinates (mm).");
+            EyePosition = GetV(true, "EyePosition", new Vector3(-1000f, 0, 0), "The position of the eye in real world coordinates (mm).");
             Position = GetV(true, "CameraPosition", new Vector3(128f, 128f, 60f), "The position of the camera in virtual space coordinates.");
             Pitch = Get(true, "CameraPitch", 0.0, "The pitch of the virtual camera.");
             Yaw = Get(true, "CameraYaw", 0.0, "The yaw of the virtual camera.");

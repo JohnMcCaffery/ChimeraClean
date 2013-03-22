@@ -37,8 +37,9 @@ namespace Chimera.GUI.Forms {
             mCoordinator.Closed += mCoordinator_Closed;
             mCoordinator.HeightmapChanged += mCoordinator_HeightmapChanged;
 
+            Rotation orientation = new Rotation(mCoordinator.Orientation);
             virtualPositionPanel.Value = mCoordinator.Position;
-            virtualOrientationPanel.Quaternion = mCoordinator.Orientation.Quaternion;
+            virtualOrientationPanel.Value = orientation;
             eyePositionPanel.Value = mCoordinator.EyePosition;
 
             mHeightmap = new Bitmap(mCoordinator.Heightmap.GetLength(0), mCoordinator.Heightmap.GetLength(1));

@@ -389,7 +389,7 @@ namespace Chimera.OpenSim {
         public void Close() {
             mAutoRestart = false;
             mProxyStarted = false;
-            if (mProxyStarted) {
+            if (mProxy != null) {
                 mProxy.Stop();
                 mProxy = null;
             }

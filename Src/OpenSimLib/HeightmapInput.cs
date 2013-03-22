@@ -99,8 +99,10 @@ namespace Chimera.OpenSim {
             int numRegions = w * h;
 
             if (mMappedParcels[handle].Count == 256)
+            {
                 mFinishedRegions.Add(handle);
-            if (mFinishedRegions.Count ==  numRegions && mConfig.AutoLogout)
+                Console.WriteLine("Finished mapping " + e.Simulator.Name);
+            } if (mFinishedRegions.Count == numRegions && mConfig.AutoLogout)
                 Logout();
         }
 

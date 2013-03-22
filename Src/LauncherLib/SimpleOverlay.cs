@@ -9,13 +9,10 @@ using System.Windows.Forms;
 using Chimera.Interfaces;
 using Chimera.Overlay;
 using NuiLibDotNet;
+using OpenMetaverse;
+using Chimera.Util;
 
 namespace Chimera.GUI.Forms {
-    public class SimpleOverlayWindowFactory : IOverlayWindowFactory {
-        public IOverlayWindow Make(OverlayController controller) {
-            return new SimpleOverlay(controller);
-        }
-    }
     public partial class SimpleOverlay : Form, IOverlayWindow {
         private enum State { Help, Explore, MainMenu }
 
@@ -47,6 +44,16 @@ namespace Chimera.GUI.Forms {
         /// What state the system is currently in.
         /// </summary>
         private State mState = State.MainMenu;
+
+        /// <summary>
+        /// The default position to put the camera back to.
+        /// </summary>
+        private Vector3 mDefaultPosition;
+        /// <summary>
+        /// The default orientation to put the camera back to.
+        /// </summary>
+        private Rotation mDefaultOrientation;
+
 
         /// <summary>
         /// Selection which triggers when the user is to go in world.
@@ -111,6 +118,10 @@ namespace Chimera.GUI.Forms {
 
             drawPanel.BackColor = controller.TransparentColour;
 
+            CoordinatorConfig cfg = new CoordinatorConfig();
+            mDefaultPosition = cfg.Position;
+            mDefaultOrientation = new Rotation(cfg.Pitch, cfg.Yaw);
+
             Init(controller);
         }
 
@@ -133,26 +144,33 @@ namespace Chimera.GUI.Forms {
             mCathedralHelpImage = new Bitmap(mCathedralHelpImage, s);
 
             mGoInWorldRender = new NumberSelectionRenderer();
-            mGoInWorld = new InvisibleSelection(mGoInWorldRender, 265f / s.Width, 255f / s.Height, (675f-255f) / s.Width, (900f - 255f) / s.Height);
+            mGoInWorld = new InvisibleSelection(mGoInWorldRender, 155f / 1920, 220f / 1080, (555f-155f) / 1920, (870f - 220f) / 1080);
             mGoInWorld.Selected += new Action<ISelectable>(mGoInWorld_Selected);
 
             mGoMainMenuRender = new NumberSelectionRenderer();
-            mGoMainMenu = new InvisibleSelection(mGoMainMenuRender, 70f / s.Width, 65f / s.Height, (490f-70f) / s.Width, (300f - 65f) / s.Height);
+            mGoMainMenu = new InvisibleSelection(mGoMainMenuRender, 70f / 1920, 65f / 1080, (490f-70f) / 1920, (300f - 65f) / 1080);
             mGoMainMenu.Selected += new Action<ISelectable>(mGoMainMenu_Selected);
             mGoMainMenu.Active = false;
 
             mGoInWorldHelpRender = new NumberSelectionRenderer();
-            mGoInWorldHelp = new InvisibleSelection(mGoInWorldHelpRender, 60f / s.Width, 520f / s.Height, (335f-60f) / s.Width, (945f - 520f) / s.Height);
-            mGoInWorldHelp.Selected += new Action<ISelectable>(mGoInWorld_Selected);
+            mGoInWorldHelp = new InvisibleSelection(mGoInWorldHelpRender, 55f / 1920, 515f / 1080, (330f-55f) / 1920, (950f - 515f) / 1080);
+            mGoInWorldHelp.Selected += new Action<ISelectable>(mGoInWorldHelp_Selected);
             mGoInWorldHelp.Active = false;
 
             mGoInWorld.Init(mController.Window);
             mGoInWorldHelp.Init(mController.Window);
             mGoMainMenu.Init(mController.Window);
 
-            mController.Window.Coordinator.Tick += new Action(Coordinator_Tick);
-            mController.HelpTriggered += new Action(mController_HelpTriggered);
+            mController.Window.Coordinator.Tick += Coordinator_Tick;
+            mController.HelpTriggered += mController_HelpTriggered;
             mController.Window.Coordinator.EnableUpdates = false;
+
+            Disposed += new EventHandler(SimpleOverlay_Disposed);
+        }
+
+        void SimpleOverlay_Disposed(object sender, EventArgs e) {
+            mController.Window.Coordinator.Tick -= Coordinator_Tick;
+            mController.HelpTriggered -= mController_HelpTriggered;
         }
 
         public void Foreground() {
@@ -183,13 +201,20 @@ namespace Chimera.GUI.Forms {
             if (mGoMainMenu.Active && mGoMainMenu.CurrentlyHovering)
                 mGoMainMenu.DrawDynamic(e.Graphics, e.ClipRectangle);
         }
-
         private void mGoInWorld_Selected(ISelectable source) {
+            mGoInWorld.Active = false;
+            mGoInWorldHelp.Active = true;
+            mGoMainMenu.Active = true;
+            mState = State.Help;
+            Redraw();
+        }
+        private void mGoInWorldHelp_Selected(ISelectable source) {
             mGoInWorld.Active = false;
             mGoInWorldHelp.Active = false;
             mCurrentStep = mSteps;
             mMinimizing = true;
             mController.ControlPointer = false;
+            Redraw();
         }
 
         private void mGoMainMenu_Selected(ISelectable source) {
@@ -197,6 +222,7 @@ namespace Chimera.GUI.Forms {
             mGoMainMenu.Active = false;
             mGoInWorld.Active = true;
             mState = State.MainMenu;
+            mController.Window.Coordinator.Update(mDefaultPosition, Vector3.Zero, mDefaultOrientation, Rotation.Zero);
             Redraw();
         }
 
@@ -239,6 +265,22 @@ namespace Chimera.GUI.Forms {
                     Invoke(new Action(() => Opacity = (double)mCurrentStep / (double)mSteps));
                 }
             } 
+        }
+
+        private void SimpleOverlay_KeyDown(object sender, KeyEventArgs e)
+        {
+            mController.Window.Coordinator.TriggerKeyboard(true, e);
+        }
+
+        private void SimpleOverlay_KeyUp(object sender, KeyEventArgs e)
+        {
+            mController.Window.Coordinator.TriggerKeyboard(false, e);
+
+        }
+    }
+    public class SimpleOverlayWindowFactory : IOverlayWindowFactory {
+        public IOverlayWindow Make(OverlayController controller) {
+            return new SimpleOverlay(controller);
         }
     }
 }

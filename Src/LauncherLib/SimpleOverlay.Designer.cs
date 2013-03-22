@@ -46,6 +46,8 @@
             this.Controls.Add(this.drawPanel);
             this.Name = "SimpleOverlay";
             this.Text = "SimpleOverlay";
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.SimpleOverlay_KeyDown);
+            this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.SimpleOverlay_KeyUp);
             ((System.ComponentModel.ISupportInitialize)(this.drawPanel)).EndInit();
             this.ResumeLayout(false);
 
