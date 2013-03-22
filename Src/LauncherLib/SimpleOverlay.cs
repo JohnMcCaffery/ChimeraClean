@@ -14,7 +14,7 @@ using Chimera.Util;
 
 namespace Chimera.GUI.Forms {
     public partial class SimpleOverlay : Form, IOverlayWindow {
-        private enum State { Help, Explore, MainMenu }
+        private enum State { Help, Explore, MainMenu, Flythrough }
 
         /// <summary>
         /// The last position the mouse was at.
@@ -81,6 +81,30 @@ namespace Chimera.GUI.Forms {
         /// The renderer which will let the user know when they are hovering over go in world.
         /// </summary>
         private ISelectionRenderer mGoMainMenuRender;
+        /// <summary>
+        /// The colour the current skeleton will be drawn. Changes every time the skeleton changes.
+        /// </summary>
+        private Color mSkeletonColour = Color.Red;
+        /// <summary>
+        /// The count of the skeleton currently being drawn. Used to decide which colour the skeleton should be.
+        /// </summary>
+        private int mSkeletonCount = 0;
+        /// <summary>
+        /// The time when the last skeleton was lost.
+        /// </summary>
+        private DateTime mSkeletonLost = DateTime.Now;
+        /// <summary>
+        /// The flythrough to load whilst nothing else is happening.
+        /// </summary>
+        private string mIntroFlythrough = "../Caen-long.xml";
+        /// <summary>
+        /// The flythrough controller.
+        /// </summary>
+        private Flythrough.Flythrough mFlythrough;
+        /// <summary>
+        /// How many milliseconds after the skeleton is lost the system reverts to the flythrough.
+        /// </summary>
+        private int mSkeletonTimeoutms = 15000;
 
         /// <summary>
         /// The main menu image.
@@ -165,10 +189,59 @@ namespace Chimera.GUI.Forms {
             mController.HelpTriggered += mController_HelpTriggered;
             mController.Window.Coordinator.EnableUpdates = false;
 
-            Disposed += new EventHandler(SimpleOverlay_Disposed);
+            Disposed += new EventHandler(SimpleOverlay_Disposed);
+            mLeftHand = Nui.joint(Nui.Hand_Left);
+            mRightHand = Nui.joint(Nui.Hand_Right);
+            mLeftElbow = Nui.joint(Nui.Elbow_Left);
+            mRightElbow = Nui.joint(Nui.Elbow_Right);
+            mLeftShoulder = Nui.joint(Nui.Shoulder_Left);
+            mRightShoulder = Nui.joint(Nui.Shoulder_Right);
+            mLeftHip = Nui.joint(Nui.Hip_Left);
+            mRightHip = Nui.joint(Nui.Hip_Right);
+            mLeftKnee = Nui.joint(Nui.Knee_Left);
+            mRightKnee = Nui.joint(Nui.Knee_Right);
+            mLeftAnkle = Nui.joint(Nui.Ankle_Left);
+            mRightAnkle = Nui.joint(Nui.Ankle_Right);
+            mLeftFoot = Nui.joint(Nui.Foot_Left);
+            mRightFoot = Nui.joint(Nui.Foot_Right);
+            mCentreHip = Nui.joint(Nui.Hip_Centre);
+            mCentreShoulder = Nui.joint(Nui.Shoulder_Centre);
+            mHead = Nui.joint(Nui.Head);
+
+            Nui.Tick += Nui_Tick;
+            Nui.SkeletonSwitched += new SkeletonTrackDelegate(Nui_SkeletonSwitched);
+            Nui.SkeletonLost += new SkeletonTrackDelegate(Nui_SkeletonLost);
+            Nui.SkeletonFound += new SkeletonTrackDelegate(Nui_SkeletonFound);
+
+            mFlythrough = mController.Window.Coordinator.GetInput<Flythrough.Flythrough>();
         }
 
+        void Nui_SkeletonFound() {
+            if (mState == State.Flythrough) {
+                FadeToMainMenu();
+            }
+        }
+
+        void Nui_SkeletonLost() {
+            mSkeletonLost = DateTime.Now;
+        }
+
+        void Nui_SkeletonSwitched() {
+            switch (mSkeletonCount++ % 3) {
+                case 0: mSkeletonColour = Color.Red; break;
+                case 1: mSkeletonColour = Color.Green; break;
+                case 2: mSkeletonColour = Color.Blue; break;
+            }
+        }
+
+        void Nui_Tick() {
+            if (mState == State.Help || mState == State.Explore)
+                Redraw();
+
+        }        
+
         void SimpleOverlay_Disposed(object sender, EventArgs e) {
+            Nui.Tick -= Nui_Tick;
             mController.Window.Coordinator.Tick -= Coordinator_Tick;
             mController.HelpTriggered -= mController_HelpTriggered;
         }
@@ -181,18 +254,30 @@ namespace Chimera.GUI.Forms {
         /// Redraw the input.
         /// </summary>
         public void Redraw() {
-            if (!IsDisposed && Created)
+            if (!IsDisposed && Created && !Disposing)
                 Invoke(new Action(() => {
                     if (!IsDisposed && Created)
                         drawPanel.Invalidate();
                 }));
         }
 
+        #region Draw
+
         private void drawPanel_Paint(object sender, PaintEventArgs e) {
             if (mState == State.MainMenu) {
                 e.Graphics.DrawImage(mMainMenuImage, new Point(0, 0));
             } else if (mState == State.Help) {
                 e.Graphics.DrawImage(mCathedralHelpImage, new Point(0, 0));
+                float scale = 225f;
+                Point centreP = new Point(1650, 800);
+                DrawSkeleton(e.Graphics, e.ClipRectangle, scale, centreP);
+            } else if (mState == State.Explore) {
+                if (Nui.HasSkeleton) {
+                    int x = (int)(e.ClipRectangle.Width * ((mCentreHip.X + mRoomW/2f) / mRoomW));
+                    //Console.WriteLine("Centre: " + mCentreHip.X);
+                    Point centreP = new Point(x, 150);
+                    DrawSkeleton(e.Graphics, e.ClipRectangle, 100f, centreP);
+                }
             }
             if (mGoInWorld.Active && mGoInWorld.CurrentlyHovering)
                 mGoInWorld.DrawDynamic(e.Graphics, e.ClipRectangle);
@@ -201,46 +286,122 @@ namespace Chimera.GUI.Forms {
             if (mGoMainMenu.Active && mGoMainMenu.CurrentlyHovering)
                 mGoMainMenu.DrawDynamic(e.Graphics, e.ClipRectangle);
         }
-        private void mGoInWorld_Selected(ISelectable source) {
-            mGoInWorld.Active = false;
-            mGoInWorldHelp.Active = true;
-            mGoMainMenu.Active = true;
-            mState = State.Help;
-            Redraw();
+
+        private Vector mLeftHand, mRightHand;
+        private Vector mLeftElbow, mRightElbow;
+        private Vector mLeftShoulder, mRightShoulder;
+        private Vector mLeftHip, mRightHip;
+        private Vector mLeftKnee, mRightKnee;
+        private Vector mLeftAnkle, mRightAnkle;
+        private Vector mLeftFoot, mRightFoot;
+        private Vector mCentreHip;
+        private Vector mCentreShoulder;
+        private Vector mHead;
+
+        private double mExploreOverlayOpacity = .3;
+        private float mRoomW = 3f;
+
+        private void DrawSkeleton(Graphics graphics, Rectangle rectangle, float scale, Point centreP) {
+            if (!Nui.HasSkeleton)
+                return;
+
+            Vector3 centre = V3toVector(mCentreHip);
+            float lineW = 16f;
+            using (Pen p = new Pen(mSkeletonColour, lineW)) {
+                int r = (int) (scale / 5f);
+
+                Point leftHand = Vector2Point(centre, mLeftHand, centreP, scale);
+                Point leftElbow = Vector2Point(centre, mLeftElbow, centreP, scale);
+                Point leftShoulder = Vector2Point(centre, mLeftShoulder, centreP, scale);
+                Point leftHip = Vector2Point(centre, mLeftHip, centreP, scale);
+                Point leftKnee = Vector2Point(centre, mLeftKnee, centreP, scale);
+                Point leftAnkle = Vector2Point(centre, mLeftAnkle, centreP, scale);
+                Point leftFoot = Vector2Point(centre, mLeftFoot, centreP, scale);
+
+                Point head = Vector2Point(centre, mHead, centreP, scale);
+                Point centreShoulder = Vector2Point(centre, mCentreShoulder, centreP, scale);
+                Point centreHip = Vector2Point(centre, mCentreHip, centreP, scale);
+
+                Point rightHand = Vector2Point(centre, mRightHand, centreP, scale);
+                Point rightElbow = Vector2Point(centre, mRightElbow, centreP, scale);
+                Point rightShoulder = Vector2Point(centre, mRightShoulder, centreP, scale);
+                Point rightHip = Vector2Point(centre, mRightHip, centreP, scale);
+                Point rightKnee = Vector2Point(centre, mRightKnee, centreP, scale);
+                Point rightAnkle = Vector2Point(centre, mRightAnkle, centreP, scale);
+                Point rightFoot = Vector2Point(centre, mRightFoot, centreP, scale);
+
+                graphics.DrawLine(p, head, Vector2Point(centre, mCentreShoulder, centreP, scale));
+                graphics.DrawLine(p, Vector2Point(centre, mCentreHip, centreP, scale), Vector2Point(centre, mCentreShoulder, centreP, scale));
+
+                graphics.DrawLine(p, leftHand, leftElbow);
+                graphics.DrawLine(p, leftElbow, leftShoulder);
+                graphics.DrawLine(p, leftShoulder, centreShoulder);
+                graphics.DrawLine(p, leftHip, centreHip);
+                graphics.DrawLine(p, leftHip, leftKnee);
+                graphics.DrawLine(p, leftKnee, leftAnkle);
+                graphics.DrawLine(p, leftAnkle, leftFoot);
+
+                graphics.DrawLine(p, rightHand, rightElbow);
+                graphics.DrawLine(p, rightElbow, rightShoulder);
+                graphics.DrawLine(p, rightShoulder, centreShoulder);
+                graphics.DrawLine(p, rightHip, centreHip);
+                graphics.DrawLine(p, rightHip, rightKnee);
+                graphics.DrawLine(p, rightKnee, rightAnkle);
+                graphics.DrawLine(p, rightAnkle, rightFoot);
+
+
+                using (Brush b = new SolidBrush(mSkeletonColour)) {
+                    graphics.FillEllipse(b, head.X - r, head.Y - r, r * 2, r * 2);
+
+                    int jointR = (int) (lineW / 2f);
+
+                    graphics.FillEllipse(b, centreShoulder.X - jointR, centreShoulder.Y - jointR, lineW, lineW);
+                    graphics.FillEllipse(b, centreHip.X - jointR, centreHip.Y - jointR, lineW, lineW);
+
+                    graphics.FillEllipse(b, leftElbow.X - jointR, leftElbow.Y - jointR, lineW, lineW);
+                    graphics.FillEllipse(b, leftShoulder.X - jointR, leftShoulder.Y - jointR, lineW, lineW);
+                    graphics.FillEllipse(b, leftHip.X - jointR, leftHip.Y - jointR, lineW, lineW);
+                    graphics.FillEllipse(b, leftAnkle.X - jointR, leftAnkle.Y - jointR, lineW, lineW);
+
+                    graphics.FillEllipse(b, rightElbow.X - jointR, rightElbow.Y - jointR, lineW, lineW);
+                    graphics.FillEllipse(b, rightShoulder.X - jointR, rightShoulder.Y - jointR, lineW, lineW);
+                    graphics.FillEllipse(b, rightHip.X - jointR, rightHip.Y - jointR, lineW, lineW);
+                    graphics.FillEllipse(b, rightAnkle.X - jointR, rightAnkle.Y - jointR, lineW, lineW);
+
+                }
+            }
         }
+        private Vector3 V3toVector(Vector vector) {
+            return new Vector3(vector.X, vector.Y, vector.Z);
+        }
+        private Point Vector2Point(Vector3 skeletonCentre, Vector vector, Point centre, float scale) {
+            Vector3 diff = skeletonCentre - V3toVector(vector);
+            diff *= scale;
+            return new Point(centre.X - (int)diff.X, centre.Y + (int)diff.Y);
+        }
+
+        #endregion
+         
+        private void mGoInWorld_Selected(ISelectable source) {
+            LoadHelp();
+        }
+
         private void mGoInWorldHelp_Selected(ISelectable source) {
-            mGoInWorld.Active = false;
-            mGoInWorldHelp.Active = false;
-            mCurrentStep = mSteps;
-            mMinimizing = true;
-            mController.ControlPointer = false;
-            Redraw();
+            FadeToExplore();
         }
 
         private void mGoMainMenu_Selected(ISelectable source) {
-            mGoInWorldHelp.Active = false;
-            mGoMainMenu.Active = false;
-            mGoInWorld.Active = true;
-            mState = State.MainMenu;
-            mController.Window.Coordinator.Update(mDefaultPosition, Vector3.Zero, mDefaultOrientation, Rotation.Zero);
-            Redraw();
+            LoadMainMenu();
         }
 
         void mController_HelpTriggered() {
             if (mMaximising || mMinimizing)
                 return;
 
-            if (mState == State.Explore) {
-                mController.Window.Coordinator.EnableUpdates = false;
-                mState = State.Help;
-                mCurrentStep = 0;
-                mMaximising = true;
-                Redraw();
-            } else {
-                mCurrentStep = mSteps;
-                mMinimizing = true;
-                mController.ControlPointer = false;
-            }
+            if (mState == State.Explore)
+                FadeToHelp();
+            else
+                FadeToExplore();
         }
 
         void Coordinator_Tick() {
@@ -250,30 +411,103 @@ namespace Chimera.GUI.Forms {
                 Redraw();
             if (mGoMainMenu.Active && mGoMainMenu.CurrentlyHovering)
                 Redraw();
+
+            if (mState != State.Flythrough && !Nui.HasSkeleton && DateTime.Now.Subtract(mSkeletonLost).TotalMilliseconds > mSkeletonTimeoutms)
+                FadeToFlythrough();
+
             if (mMinimizing || mMaximising) {
                 mCurrentStep += mMinimizing ? -1 : 1;
-                if (mCurrentStep < 0) {
+
+                if (mCurrentStep < 0) { //Fully Minimized
                     mMinimizing = false;
-                    mState = State.Explore;
-                    mController.Window.Coordinator.EnableUpdates = true;
-                } else if (mCurrentStep > mSteps) {
+                    if (mState != State.Flythrough)
+                        LoadExplore();
+                } else if (mCurrentStep > mSteps) { //Fully maximised
                     mMaximising = false;
-                    mGoMainMenu.Active = true;
-                    mGoInWorldHelp.Active = true;
-                    mController.ControlPointer = true;
-                } else {
+                    if (mState == State.Flythrough)
+                        LoadMainMenu();
+                    else
+                        LoadHelp();
+                } else { //Somewhere in between
                     Invoke(new Action(() => Opacity = (double)mCurrentStep / (double)mSteps));
                 }
             } 
         }
 
-        private void SimpleOverlay_KeyDown(object sender, KeyEventArgs e)
-        {
+        private void FadeToMainMenu() {
+            mCurrentStep = 0;
+            mMaximising = true;
+        }
+
+        private void FadeToHelp() {
+            mController.Window.Coordinator.EnableUpdates = false;
+            mState = State.Help;
+
+            mCurrentStep = 0;
+            mMaximising = true;
+            Redraw();
+        }
+
+        private void FadeToExplore() {
+            mGoInWorld.Active = false;
+            mGoMainMenu.Active = false;
+            mGoInWorldHelp.Active = false;
+            mController.ControlPointer = false;
+
+            mCurrentStep = mSteps;
+            mMinimizing = true;
+
+            Redraw();
+        }
+
+        private void FadeToFlythrough() {
+            mController.Window.Coordinator.EnableUpdates = true;            mFlythrough.Enabled = true;            mState = State.Flythrough;            mFlythrough.Load(mIntroFlythrough);            mFlythrough.Loop = true;
+            mFlythrough.Time = 0;            mFlythrough.Play();
+
+            mCurrentStep = mSteps;            mMinimizing = true;        }
+        private void LoadMainMenu() {
+            mFlythrough.Enabled = false;
+            mFlythrough.Paused = true;
+            mController.Window.Coordinator.EnableUpdates = false;
+            mController.ControlPointer = true;
+            mGoInWorldHelp.Active = false;
+            mGoMainMenu.Active = false;
+            mGoInWorld.Active = true;
+            mState = State.MainMenu;
+
+            mController.Window.Coordinator.EnableUpdates = true;
+            mController.Window.Coordinator.Update(mDefaultPosition, Vector3.Zero, mDefaultOrientation, Rotation.Zero);
+            mController.Window.Coordinator.EnableUpdates = false;
+
+            Redraw();
+        }
+        private void LoadHelp() {
+            mGoInWorldHelp.Active = true;
+            mGoMainMenu.Active = true;
+            mGoInWorld.Active = false;
+            mController.ControlPointer = true;
+            mState = State.Help;
+
+            Redraw();
+        }
+
+        private void LoadExplore() {
+            Invoke(new Action(() => Opacity = mExploreOverlayOpacity));
+
+            mState = State.Explore;
+            
+            mController.Window.Coordinator.EnableUpdates = true;
+        }
+
+        private void LoadFlythrough() {
+        }
+
+
+        private void SimpleOverlay_KeyDown(object sender, KeyEventArgs e) {
             mController.Window.Coordinator.TriggerKeyboard(true, e);
         }
 
-        private void SimpleOverlay_KeyUp(object sender, KeyEventArgs e)
-        {
+        private void SimpleOverlay_KeyUp(object sender, KeyEventArgs e) {
             mController.Window.Coordinator.TriggerKeyboard(false, e);
 
         }

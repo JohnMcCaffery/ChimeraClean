@@ -85,6 +85,14 @@ namespace Chimera.Inputs {
             get { return mInput; }
         }
 
+        /// <summary>
+        /// If set to true pitch will always be left at zero.
+        /// </summary>
+        public bool IgnorePitch {
+            get { return mIgnorePitch; }
+            set { mIgnorePitch = value; }
+        }
+
         #region ISystemInput Members
 
         public event Action<IInput, bool> EnabledChanged;
@@ -116,24 +124,11 @@ namespace Chimera.Inputs {
 
         public string State {
             get { 
-                string dump = "-KB/Mouse Input-" + Environment.NewLine;
+                string dump = "----------KB/Mouse Input----------" + Environment.NewLine;
                 dump += "Mouse Scale: " + mMouseScale + Environment.NewLine;
                 dump += "Keyboard Scale: " + mKBShift + Environment.NewLine;
                 return dump;
             }
-        }
-
-        /// <summary>
-        /// If set to true pitch will always be left at zero.
-        /// </summary>
-        public bool IgnorePitch {
-            get { return mIgnorePitch; }
-            set { mIgnorePitch = value; }
-        }
-
-        void mCoordinator_Tick() {
-            if (Change != null && (mDeltas != Vector3.Zero || mOrientation.Pitch != 0.0 || mOrientation.Yaw != 0.0))
-                Change(this);
         }
 
         public void Close() {
@@ -147,63 +142,7 @@ namespace Chimera.Inputs {
 
         #endregion
 
-        internal void panel_MouseDown(object sender, MouseEventArgs e) {
-            CurrentX = e.X;
-            CurrentY = e.Y;
-            X = CurrentX;
-            Y = CurrentY;
-            MouseDown = true;
-        }
-
-        internal void panel_MouseUp(object sender, MouseEventArgs e) {
-            MouseDown = false;
-            mOrientation.Pitch = 0.0;
-            mOrientation.Yaw = 0.0;
-        }
-
-        internal void panel_MouseMove(object sender, MouseEventArgs e) {
-            if (MouseDown) {
-                int xDiff = e.X - CurrentX;
-                int yDiff = e.Y - CurrentY;
-                mOrientation.Pitch = mIgnorePitch ? 0.0 : (yDiff * mMouseScale);
-                mOrientation.Yaw = xDiff * -mMouseScale;
-                if (Change != null && (mDeltas != Vector3.Zero || mOrientation.Pitch != 0.0 || mOrientation.Yaw != 0.0))
-                    Change(this);
-                mOrientation.Pitch = 0;
-                mOrientation.Yaw = 0;
-                CurrentX = e.X;
-                CurrentY = e.Y;
-            }
-        }
-
-        private void mCoordinator_KeyDown(Coordinator coord, KeyEventArgs args) {
-            switch (args.KeyData) {
-                case Keys.W: mDeltas.X = mWalkEnabled ? (float) mKBShift : 0f; break;
-                case Keys.S: mDeltas.X = mWalkEnabled ? (float) -mKBShift : 0f; break;
-                case Keys.D: mDeltas.Y = mStrafeEnabled ? (float) -mKBShift : 0f; break;
-                case Keys.A: mDeltas.Y = mStrafeEnabled ? (float) mKBShift : 0f; break;
-                case Keys.E: mDeltas.Z = mFlyEnabled ? (float) mKBShift : 0f; break;
-                case Keys.Q: mDeltas.Z = mFlyEnabled ? (float) -mKBShift : 0f; break;
-                case Keys.Left: mOrientation.Yaw = mYawEnabled ? mKBShift * 2.0 : 0.0; break;
-                case Keys.Right: mOrientation.Yaw = mYawEnabled ? -mKBShift * 2.0 : 0.0; break;
-                case Keys.Up: mOrientation.Pitch = mPitchEnabled ? -mKBShift * 2.0 : 0.0; break;
-                case Keys.Down: mOrientation.Pitch = mPitchEnabled ? mKBShift * 2.0 : 0.0; break;
-            }
-        }
-
-        private void mCoordinator_KeyUp(Coordinator coord, KeyEventArgs args) {
-            switch (args.KeyData) {                case Keys.W: mDeltas.X = 0f; break;
-                case Keys.S: mDeltas.X = 0f; break;
-                case Keys.D: mDeltas.Y = 0f; break;
-                case Keys.A: mDeltas.Y = 0f; break;
-                case Keys.E: mDeltas.Z = 0f; break;
-                case Keys.Q: mDeltas.Z = 0f; break;
-                case Keys.Left: mOrientation.Yaw = 0.0; break;
-                case Keys.Right: mOrientation.Yaw = 0.0; break;
-                case Keys.Up: mOrientation.Pitch = 0.0; break;
-                case Keys.Down: mOrientation.Pitch = 0.0; break;
-            }
-        }
+        #region IDeltaInput
 
         public event Action<IDeltaInput> Change;
 
@@ -245,6 +184,74 @@ namespace Chimera.Inputs {
             input.KeyDown += new Action<Coordinator,KeyEventArgs>(mCoordinator_KeyDown);
             input.KeyUp += new Action<Coordinator,KeyEventArgs>(mCoordinator_KeyUp);
             input.Tick += new Action(mCoordinator_Tick);
+        }
+
+        #endregion
+
+        internal void panel_MouseDown(object sender, MouseEventArgs e) {
+            CurrentX = e.X;
+            CurrentY = e.Y;
+            X = CurrentX;
+            Y = CurrentY;
+            MouseDown = true;
+        }
+
+        internal void panel_MouseUp(object sender, MouseEventArgs e) {
+            MouseDown = false;
+            mOrientation.Pitch = 0.0;
+            mOrientation.Yaw = 0.0;
+        }
+
+        internal void panel_MouseMove(object sender, MouseEventArgs e) {
+            if (MouseDown) {
+                int xDiff = e.X - CurrentX;
+                int yDiff = e.Y - CurrentY;
+                mOrientation.Pitch = mIgnorePitch ? 0.0 : (yDiff * mMouseScale);
+                mOrientation.Yaw = xDiff * -mMouseScale;
+                //if (Change != null && (mDeltas != Vector3.Zero || mOrientation.Pitch != 0.0 || mOrientation.Yaw != 0.0))
+                    //Change(this);
+                //mOrientation.Pitch = 0;
+                //mOrientation.Yaw = 0;
+                CurrentX = e.X;
+                CurrentY = e.Y;
+            }
+        }
+
+        private void mCoordinator_KeyDown(Coordinator coord, KeyEventArgs args) {
+            switch (args.KeyData) {
+                case Keys.W: mDeltas.X = mWalkEnabled ? (float) mKBShift : 0f; break;
+                case Keys.S: mDeltas.X = mWalkEnabled ? (float) -mKBShift : 0f; break;
+                case Keys.D: mDeltas.Y = mStrafeEnabled ? (float) -mKBShift : 0f; break;
+                case Keys.A: mDeltas.Y = mStrafeEnabled ? (float) mKBShift : 0f; break;
+                case Keys.E: mDeltas.Z = mFlyEnabled ? (float) mKBShift : 0f; break;
+                case Keys.Q: mDeltas.Z = mFlyEnabled ? (float) -mKBShift : 0f; break;
+                case Keys.Left: mOrientation.Yaw = mYawEnabled ? mKBShift * 2.0 : 0.0; break;
+                case Keys.Right: mOrientation.Yaw = mYawEnabled ? -mKBShift * 2.0 : 0.0; break;
+                case Keys.Up: mOrientation.Pitch = mPitchEnabled ? -mKBShift * 2.0 : 0.0; break;
+                case Keys.Down: mOrientation.Pitch = mPitchEnabled ? mKBShift * 2.0 : 0.0; break;
+            }
+        }
+
+        private void mCoordinator_KeyUp(Coordinator coord, KeyEventArgs args) {
+            switch (args.KeyData) {
+                case Keys.W: mDeltas.X = 0f; break;
+                case Keys.S: mDeltas.X = 0f; break;
+                case Keys.D: mDeltas.Y = 0f; break;
+                case Keys.A: mDeltas.Y = 0f; break;
+                case Keys.E: mDeltas.Z = 0f; break;
+                case Keys.Q: mDeltas.Z = 0f; break;
+                case Keys.Left: mOrientation.Yaw = 0.0; break;
+                case Keys.Right: mOrientation.Yaw = 0.0; break;
+                case Keys.Up: mOrientation.Pitch = 0.0; break;
+                case Keys.Down: mOrientation.Pitch = 0.0; break;
+            }
+        }
+
+        private void mCoordinator_Tick() {
+            if (Change != null && (mDeltas != Vector3.Zero || mOrientation.Pitch != 0.0 || mOrientation.Yaw != 0.0))
+                Change(this);
+            if (MouseDown)
+                mOrientation = Rotation.Zero;
         }
     }
 }

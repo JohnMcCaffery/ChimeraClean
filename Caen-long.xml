@@ -38,7 +38,8 @@
       <MoveToEvent Name="Move To 21" Target="&lt;421.9641, 287.0842, 47.50795&gt;" Length="5000" />
     </PositionSequence>
     <OrientationSequence>
-      <RotateToEvent Name="Rotate To 9" Pitch="1.60000190859652" Yaw="-18.7999778696969" Length="5000" />
+      <BlankEvent Name="Blank 1" Length="4000" />
+      <RotateToEvent Name="Rotate To 9" Pitch="1.60000190859652" Yaw="-18.7999778696969" Length="1000" />
       <RotateToEvent Name="Rotate To 10" Pitch="32.0000031672108" Yaw="-100.799986412562" Length="5000" />
       <RotateToEvent Name="Rotate To 11" Pitch="4.00000338410912" Yaw="-23.1999959783029" Length="5000" />
       <RotateToEvent Name="Rotate To 12" Pitch="5.60000081039399" Yaw="-158.00000667348" Length="5000" />

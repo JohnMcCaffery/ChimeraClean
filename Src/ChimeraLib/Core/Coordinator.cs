@@ -466,18 +466,20 @@ namespace Chimera {
 
             if (mWindows.Count > 0) {
                 dump += String.Format("{0}{0}--------Windows--------{0}", Environment.NewLine);
-                foreach (var window in mWindows)
+                foreach (var window in mWindows) {
                     try {
                         dump += Environment.NewLine + window.State;
                     } catch (Exception ex) {
                         dump += "Unable to get stats for input " + window.Name + ". " + ex.Message + Environment.NewLine;
                         dump += ex.StackTrace;
                     }
+                }
+                dump += Environment.NewLine;
             }
 
             if (mInputs.Count > 0) {
                 dump += String.Format("{0}{0}--------Inputs--------{0}", Environment.NewLine);
-                foreach (var input in mInputs)
+                foreach (var input in mInputs) {
                     if (input.Enabled)
                         try {
                             dump += Environment.NewLine + input.State;
@@ -486,6 +488,8 @@ namespace Chimera {
                             dump += ex.StackTrace;
                         } else
                         dump += Environment.NewLine + "--------" + input.Name + "--------" + Environment.NewLine + "Disabled";
+                }
+                dump += Environment.NewLine;
             }
 
             dump += String.Format("{0}{0}------------------------End of Crash Report------------------------{0}{0}", Environment.NewLine);

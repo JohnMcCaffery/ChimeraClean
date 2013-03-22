@@ -156,9 +156,9 @@ namespace Chimera.OpenSim {
 
                 Thread shutdownThread = new Thread(() => {
                     int i = 0;
-                    while (mClientLoggedIn && i++ < 10) {
+                    while (mClientLoggedIn && i++ < 5) {
                         lock (processLock)
-                            Monitor.Wait(processLock, 1000);
+                            Monitor.Wait(processLock, 3000);
                         if (mClientLoggedIn)
                             ProcessWrangler.PressKey(mClient, "q", true, false, false);
                     }

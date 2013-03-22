@@ -22,6 +22,8 @@ namespace Chimera.Flythrough.GUI {
             mEvent = evt;
 
             rotationPanel.Value = mEvent.Target;
+            lengthValue.Value = mEvent.Length;
+
             lengthValue.ValueChanged += (source, args) => mEvent.Length = (int)lengthValue.Value;
             rotationPanel.OnChange += (sender, args) => {
                 mEvent.Target = rotationPanel.Value;

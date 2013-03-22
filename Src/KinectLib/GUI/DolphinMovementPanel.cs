@@ -58,7 +58,26 @@ namespace Chimera.Kinect.GUI {
                 delta.Y = (float) mInput.OrientationDelta.Yaw;
                 valuePanel.Value = delta;
             };
+
+            HandleCreated += new EventHandler(DolphinMovementPanel_HandleCreated);
         }
+
+        void DolphinMovementPanel_HandleCreated(object sender, EventArgs e) {
+            enabled.Checked = mInput.Enabled;
+            flyEnabled.Checked = mInput.FlyEnabled;
+            walkEnabled.Checked = mInput.WalkEnabled;
+            yawEnabled.Checked = mInput.YawEnabled;
+            mInput.EnabledChanged += (source, value) => {
+                BeginInvoke(new Action(() => {
+                    enabled.Checked = source.Enabled;
+                    flyEnabled.Checked = mInput.FlyEnabled;
+                    walkEnabled.Checked = mInput.WalkEnabled;
+                    yawEnabled.Checked = mInput.YawEnabled;
+                }));
+            };
+        }
+
+
 
         private void CheckedChanged(object sender, EventArgs e) {
             mInput.Enabled = enabled.Checked;

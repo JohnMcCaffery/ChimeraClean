@@ -254,12 +254,12 @@ namespace Chimera.Flythrough {
         private void PlayThread() {
             mPlaying = true;
 
-            if (mEnabled) {
+            if (mEnabled && mEvents.Length > 0) {
                 Camera n = mEvents.CurrentEvent.Value;
                 mCoordinator.Update(n.Position, Vector3.Zero, n.Orientation, Rotation.Zero);
             }
 
-            while (mPlaying) {
+            while (mPlaying && mEvents.Length > 0) {
                 Thread.Sleep(mCoordinator.TickLength);
                 if (mPlaying) {
                     if (mEvents.Time + mCoordinator.TickLength < mEvents.Length)

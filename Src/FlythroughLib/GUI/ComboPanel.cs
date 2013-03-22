@@ -91,8 +91,13 @@ namespace Chimera.Flythrough.GUI {
         }
 
         private void moveUpPositionToolStripMenuItem_Click(object sender, EventArgs e) {
-            if (positionsList.SelectedItem != null)
-                mEvent.Positions.MoveUp((FlythroughEvent<Vector3>)positionsList.SelectedItem);
+            if (positionsList.SelectedItem != null && positionsList.SelectedIndex > 0) {
+                FlythroughEvent<Vector3> up = (FlythroughEvent<Vector3>)positionsList.SelectedItem;
+                positionsList.Items[positionsList.SelectedIndex] = positionsList.Items[positionsList.SelectedIndex - 1];
+                positionsList.Items[positionsList.SelectedIndex - 1] = up;
+                mEvent.Positions.MoveUp(up);
+                positionsList.SelectedIndex--;
+            }
         }
 
         private void positionsList_SelectedValueChanged(object sender, EventArgs e) {
@@ -133,8 +138,13 @@ namespace Chimera.Flythrough.GUI {
         }
 
         private void moveUpOrientationToolStripItem_Click(object sender, EventArgs e) {
-            if (orientationsList.SelectedItem != null)
-                mEvent.Orientations.MoveUp((FlythroughEvent<Rotation>)orientationsList.SelectedItem);
+            if (orientationsList.SelectedItem != null) {
+                FlythroughEvent<Rotation> up = (FlythroughEvent<Rotation>)orientationsList.SelectedItem;
+                orientationsList.Items[orientationsList.SelectedIndex] = orientationsList.Items[orientationsList.SelectedIndex - 1];
+                orientationsList.Items[orientationsList.SelectedIndex - 1] = up;
+                mEvent.Orientations.MoveUp(up);
+                orientationsList.SelectedIndex--;
+            }
         }
 
         private void orientationsList_SelectedValueChanged(object sender, EventArgs e) {

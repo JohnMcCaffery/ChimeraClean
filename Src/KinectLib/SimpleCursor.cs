@@ -102,15 +102,15 @@ namespace Chimera.Kinect {
 
                 if (mBounds.Contains(mLocation) && !OnScreen) {
                     mOnScreen = true;
-                    if (CursorEnter != null)
+                    if (CursorEnter != null && mEnabled)
                         CursorEnter(this);
                 } else if (!mBounds.Contains(mLocation) && OnScreen) {
                     mOnScreen = false;
-                    if (CursorLeave != null)
+                    if (CursorLeave != null && mEnabled)
                         CursorLeave(this);
                 }
 
-                if (CursorMove != null)
+                if (CursorMove != null && mEnabled)
                     CursorMove(this, x, y);
             }
         }
