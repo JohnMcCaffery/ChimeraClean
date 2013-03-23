@@ -58,12 +58,12 @@
   <ComboEvent Name="Step 3">
     <PositionSequence>
       <MoveToEvent Name="Move To 22" Target="&lt;421.1867, 284.6153, 61.94117&gt;" Length="5000" />
-      <MoveToEvent Name="Move To 23" Target="&lt;589.6331, 15.96597, 33.69909&gt;" Length="5000" />
+      <MoveToEvent Name="Move To 23" Target="&lt;589.6331, 15.96597, 33.69909&gt;" Length="15000" />
     </PositionSequence>
     <OrientationSequence>
       <RotateToEvent Name="Rotate To 22" Pitch="31.2000070153894" Yaw="-110.799998074486" Length="5000" />
-      <RotateToEvent Name="Rotate To 23" Pitch="10.4000029076455" Yaw="127.200006271738" Length="2000" />
-      <BlankEvent Length="3000" />
+      <RotateToEvent Name="Rotate To 23" Pitch="10.4000029076455" Yaw="127.200006271738" Length="6000" />
+      <BlankEvent Length="9000" />
     </OrientationSequence>
   </ComboEvent>
 </Events>

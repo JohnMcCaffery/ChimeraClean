@@ -12,6 +12,7 @@ using Chimera.GUI;
 namespace Chimera.Kinect.GUI {
     public partial class DolphinMovementPanel : UserControl {
         private DolphinMovementInput mInput;
+        private bool mGuiInput, mExternalInput;
 
         public DolphinMovementPanel() {
             InitializeComponent();
@@ -37,6 +38,8 @@ namespace Chimera.Kinect.GUI {
             flyVal.Scalar = new ScalarUpdater(mInput.FlyVal);
             flyAngleR.Scalar = new ScalarUpdater(mInput.FlyAngleR * (float) (180 / Math.PI));
             flyAngleL.Scalar = new ScalarUpdater(mInput.FlyAngleL * (float) (180 / Math.PI));
+            constrainedFlyAngleR.Scalar = new ScalarUpdater(mInput.ConstrainedFlyAngleR * (float) (180 / Math.PI));
+            constrainedFlyAngleL.Scalar = new ScalarUpdater(mInput.ConstrainedFlyAngleL * (float) (180 / Math.PI));
             flyScale.Scalar = new ScalarUpdater(mInput.FlyScale);
             flyThreshold.Scalar = new ScalarUpdater(mInput.FlyThreshold);
             flyMax.Scalar = new ScalarUpdater(mInput.FlyMax);
@@ -48,10 +51,12 @@ namespace Chimera.Kinect.GUI {
             yawScale.Scalar = new ScalarUpdater(mInput.YawScale);
             yawThreshold.Scalar = new ScalarUpdater(mInput.YawThreshold);
 
+            mExternalInput = true;
             enabled.Checked = mInput.Enabled;
             walkEnabled.Checked = mInput.WalkEnabled;
             flyEnabled.Checked = mInput.FlyEnabled;
             yawEnabled.Checked = mInput.YawEnabled;
+            mExternalInput = false;
 
             mInput.Change += source => {
                 Vector3 delta = mInput.PositionDelta;
@@ -69,22 +74,28 @@ namespace Chimera.Kinect.GUI {
             yawEnabled.Checked = mInput.YawEnabled;
             mInput.EnabledChanged += (source, value) => {
                 BeginInvoke(new Action(() => {
-                    enabled.Checked = source.Enabled;
-                    flyEnabled.Checked = mInput.FlyEnabled;
-                    walkEnabled.Checked = mInput.WalkEnabled;
-                    yawEnabled.Checked = mInput.YawEnabled;
+                    if (!mGuiInput) {
+                        mExternalInput = true;
+                        enabled.Checked = source.Enabled;
+                        flyEnabled.Checked = mInput.FlyEnabled;
+                        walkEnabled.Checked = mInput.WalkEnabled;
+                        yawEnabled.Checked = mInput.YawEnabled;
+                        mExternalInput = false;
+                    }
                 }));
             };
         }
 
-
-
         private void CheckedChanged(object sender, EventArgs e) {
-            mInput.Enabled = enabled.Checked;
+            if (!mExternalInput) {
+                mGuiInput = true;
+                mInput.Enabled = enabled.Checked;
 
-            mInput.FlyEnabled = flyEnabled.Checked;
-            mInput.WalkEnabled = walkEnabled.Checked;
-            mInput.YawEnabled = yawEnabled.Checked;
+                mInput.FlyEnabled = flyEnabled.Checked;
+                mInput.WalkEnabled = walkEnabled.Checked;
+                mInput.YawEnabled = yawEnabled.Checked;
+                mGuiInput = false;
+            }
         }
     }
 }

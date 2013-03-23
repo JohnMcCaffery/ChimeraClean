@@ -11,10 +11,16 @@ using Chimera.Overlay;
 using NuiLibDotNet;
 using OpenMetaverse;
 using Chimera.Util;
+using Chimera.Launcher;
 
 namespace Chimera.GUI.Forms {
     public partial class SimpleOverlay : Form, IOverlayWindow {
         private enum State { Help, Explore, MainMenu, Flythrough }
+
+        /// <summary>
+        /// The configuration to use for the overlay.
+        /// </summary>
+        private SimpleOverlayConfig mConfig;
 
         /// <summary>
         /// The last position the mouse was at.
@@ -145,6 +151,7 @@ namespace Chimera.GUI.Forms {
             CoordinatorConfig cfg = new CoordinatorConfig();
             mDefaultPosition = cfg.Position;
             mDefaultOrientation = new Rotation(cfg.Pitch, cfg.Yaw);
+            mConfig = new SimpleOverlayConfig();
 
             Init(controller);
         }
@@ -189,7 +196,8 @@ namespace Chimera.GUI.Forms {
             mController.HelpTriggered += mController_HelpTriggered;
             mController.Window.Coordinator.EnableUpdates = false;
 
-            Disposed += new EventHandler(SimpleOverlay_Disposed);
+            Disposed += new EventHandler(SimpleOverlay_Disposed);
+
             mLeftHand = Nui.joint(Nui.Hand_Left);
             mRightHand = Nui.joint(Nui.Hand_Right);
             mLeftElbow = Nui.joint(Nui.Elbow_Left);
@@ -212,18 +220,30 @@ namespace Chimera.GUI.Forms {
             Nui.SkeletonSwitched += new SkeletonTrackDelegate(Nui_SkeletonSwitched);
             Nui.SkeletonLost += new SkeletonTrackDelegate(Nui_SkeletonLost);
             Nui.SkeletonFound += new SkeletonTrackDelegate(Nui_SkeletonFound);
+            HandleCreated += new EventHandler(SimpleOverlay_HandleCreated);
 
             mFlythrough = mController.Window.Coordinator.GetInput<Flythrough.Flythrough>();
         }
 
+        void SimpleOverlay_HandleCreated(object sender, EventArgs e) {
+            if (mConfig.EnableMenus)
+                LoadMainMenu();
+            else
+                LoadExplore();
+        }
+
         void Nui_SkeletonFound() {
-            if (mState == State.Flythrough) {
+            if (mState == State.Flythrough)
                 FadeToMainMenu();
-            }
         }
 
         void Nui_SkeletonLost() {
-            mSkeletonLost = DateTime.Now;
+            mSkeletonLost = DateTime.Now;
+            switch (mSkeletonCount++ % 3) {
+                case 0: mSkeletonColour = Color.Red; break;
+                case 1: mSkeletonColour = Color.Green; break;
+                case 2: mSkeletonColour = Color.Blue; break;
+            }
         }
 
         void Nui_SkeletonSwitched() {
@@ -395,7 +415,7 @@ namespace Chimera.GUI.Forms {
         }
 
         void mController_HelpTriggered() {
-            if (mMaximising || mMinimizing)
+            if (mMaximising || mMinimizing || !mConfig.EnableMenus)
                 return;
 
             if (mState == State.Explore)
@@ -412,10 +432,10 @@ namespace Chimera.GUI.Forms {
             if (mGoMainMenu.Active && mGoMainMenu.CurrentlyHovering)
                 Redraw();
 
-            if (mState != State.Flythrough && !Nui.HasSkeleton && DateTime.Now.Subtract(mSkeletonLost).TotalMilliseconds > mSkeletonTimeoutms)
+            if (mConfig.EnableFlythrough && mState != State.Flythrough && !Nui.HasSkeleton && DateTime.Now.Subtract(mSkeletonLost).TotalMilliseconds > mSkeletonTimeoutms)
                 FadeToFlythrough();
 
-            if (mMinimizing || mMaximising) {
+            if ((mMinimizing || mMaximising) && mConfig.EnableMenus) {
                 mCurrentStep += mMinimizing ? -1 : 1;
 
                 if (mCurrentStep < 0) { //Fully Minimized
@@ -461,10 +481,19 @@ namespace Chimera.GUI.Forms {
         }
 
         private void FadeToFlythrough() {
-            mController.Window.Coordinator.EnableUpdates = true;            mFlythrough.Enabled = true;            mState = State.Flythrough;            mFlythrough.Load(mIntroFlythrough);            mFlythrough.Loop = true;
-            mFlythrough.Time = 0;            mFlythrough.Play();
+            mController.Window.Coordinator.EnableUpdates = true;
 
-            mCurrentStep = mSteps;            mMinimizing = true;        }
+            mFlythrough.Enabled = true;
+            mState = State.Flythrough;
+            mFlythrough.Load(mIntroFlythrough);
+            mFlythrough.Loop = true;
+            mFlythrough.Time = 0;
+            mFlythrough.Play();
+
+            mCurrentStep = mSteps;
+            mMinimizing = true;
+        }
+
         private void LoadMainMenu() {
             mFlythrough.Enabled = false;
             mFlythrough.Paused = true;
@@ -492,6 +521,11 @@ namespace Chimera.GUI.Forms {
         }
 
         private void LoadExplore() {
+            mGoInWorldHelp.Active = false;
+            mGoMainMenu.Active = false;
+            mGoInWorld.Active = false;
+            mController.ControlPointer = false;
+
             Invoke(new Action(() => Opacity = mExploreOverlayOpacity));
 
             mState = State.Explore;

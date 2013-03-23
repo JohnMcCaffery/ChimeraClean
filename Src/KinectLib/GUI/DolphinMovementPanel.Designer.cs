@@ -48,6 +48,10 @@
             this.walkVal = new Chimera.GUI.UpdatedScalarPanel();
             this.walkScale = new Chimera.GUI.UpdatedScalarPanel();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.label9 = new System.Windows.Forms.Label();
+            this.label11 = new System.Windows.Forms.Label();
+            this.flyMin = new Chimera.GUI.UpdatedScalarPanel();
+            this.flyTimer = new Chimera.GUI.UpdatedScalarPanel();
             this.flyEnabled = new System.Windows.Forms.CheckBox();
             this.label14 = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
@@ -55,10 +59,9 @@
             this.label8 = new System.Windows.Forms.Label();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.label10 = new System.Windows.Forms.Label();
-            this.flyAngleL = new Chimera.GUI.UpdatedScalarPanel();
+            this.constrainedFlyAngleL = new Chimera.GUI.UpdatedScalarPanel();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.flyAngleR = new Chimera.GUI.UpdatedScalarPanel();
+            this.constrainedFlyAngleR = new Chimera.GUI.UpdatedScalarPanel();
             this.label12 = new System.Windows.Forms.Label();
             this.flyVal = new Chimera.GUI.UpdatedScalarPanel();
             this.flyMax = new Chimera.GUI.UpdatedScalarPanel();
@@ -74,10 +77,11 @@
             this.yawThreshold = new Chimera.GUI.UpdatedScalarPanel();
             this.yawScale = new Chimera.GUI.UpdatedScalarPanel();
             this.yawLean = new Chimera.GUI.UpdatedScalarPanel();
-            this.label9 = new System.Windows.Forms.Label();
-            this.label11 = new System.Windows.Forms.Label();
-            this.flyMin = new Chimera.GUI.UpdatedScalarPanel();
-            this.flyTimer = new Chimera.GUI.UpdatedScalarPanel();
+            this.label20 = new System.Windows.Forms.Label();
+            this.flyAngleL = new Chimera.GUI.UpdatedScalarPanel();
+            this.flyAngleR = new Chimera.GUI.UpdatedScalarPanel();
+            this.label21 = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
             this.mainTab.SuspendLayout();
             this.controlTab.SuspendLayout();
             this.walkTab.SuspendLayout();
@@ -412,10 +416,56 @@
             this.tabPage2.Text = "Fly";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(4, 194);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(48, 13);
+            this.label9.TabIndex = 14;
+            this.label9.Text = "Minimum";
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(4, 168);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(33, 13);
+            this.label11.TabIndex = 12;
+            this.label11.Text = "Timer";
+            // 
+            // flyMin
+            // 
+            this.flyMin.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.flyMin.Location = new System.Drawing.Point(61, 190);
+            this.flyMin.Max = 1F;
+            this.flyMin.Min = 0F;
+            this.flyMin.MinimumSize = new System.Drawing.Size(95, 20);
+            this.flyMin.Name = "flyMin";
+            this.flyMin.Scalar = null;
+            this.flyMin.Size = new System.Drawing.Size(599, 20);
+            this.flyMin.TabIndex = 13;
+            this.flyMin.Value = 0F;
+            // 
+            // flyTimer
+            // 
+            this.flyTimer.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.flyTimer.Location = new System.Drawing.Point(61, 164);
+            this.flyTimer.Max = 1000F;
+            this.flyTimer.Min = 0F;
+            this.flyTimer.MinimumSize = new System.Drawing.Size(95, 20);
+            this.flyTimer.Name = "flyTimer";
+            this.flyTimer.Scalar = null;
+            this.flyTimer.Size = new System.Drawing.Size(599, 20);
+            this.flyTimer.TabIndex = 11;
+            this.flyTimer.Value = 500F;
+            // 
             // flyEnabled
             // 
             this.flyEnabled.AutoSize = true;
-            this.flyEnabled.Location = new System.Drawing.Point(6, 212);
+            this.flyEnabled.Location = new System.Drawing.Point(6, 242);
             this.flyEnabled.Name = "flyEnabled";
             this.flyEnabled.Size = new System.Drawing.Size(65, 17);
             this.flyEnabled.TabIndex = 10;
@@ -426,7 +476,7 @@
             // label14
             // 
             this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(5, 193);
+            this.label14.Location = new System.Drawing.Point(5, 223);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(34, 13);
             this.label14.TabIndex = 8;
@@ -435,7 +485,7 @@
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(4, 112);
+            this.label13.Location = new System.Drawing.Point(4, 142);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(51, 13);
             this.label13.TabIndex = 6;
@@ -444,7 +494,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(5, 59);
+            this.label7.Location = new System.Drawing.Point(5, 89);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(34, 13);
             this.label7.TabIndex = 4;
@@ -453,7 +503,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(4, 86);
+            this.label8.Location = new System.Drawing.Point(4, 116);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(54, 13);
             this.label8.TabIndex = 3;
@@ -474,85 +524,80 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.groupBox2);
-            this.splitContainer1.Size = new System.Drawing.Size(657, 47);
+            this.splitContainer1.Size = new System.Drawing.Size(657, 77);
             this.splitContainer1.SplitterDistance = 315;
             this.splitContainer1.TabIndex = 0;
             // 
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.label10);
+            this.groupBox1.Controls.Add(this.label20);
             this.groupBox1.Controls.Add(this.flyAngleL);
+            this.groupBox1.Controls.Add(this.constrainedFlyAngleL);
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox1.Location = new System.Drawing.Point(0, 0);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(315, 47);
+            this.groupBox1.Size = new System.Drawing.Size(315, 77);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Left";
             // 
-            // label10
+            // constrainedFlyAngleL
             // 
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(6, 23);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(34, 13);
-            this.label10.TabIndex = 2;
-            this.label10.Text = "Angle";
-            // 
-            // flyAngleL
-            // 
-            this.flyAngleL.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.constrainedFlyAngleL.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.flyAngleL.Location = new System.Drawing.Point(69, 19);
-            this.flyAngleL.Max = 90F;
-            this.flyAngleL.Min = -90F;
-            this.flyAngleL.MinimumSize = new System.Drawing.Size(95, 20);
-            this.flyAngleL.Name = "flyAngleL";
-            this.flyAngleL.Scalar = null;
-            this.flyAngleL.Size = new System.Drawing.Size(240, 20);
-            this.flyAngleL.TabIndex = 0;
-            this.flyAngleL.Value = 0F;
+            this.constrainedFlyAngleL.Location = new System.Drawing.Point(105, 42);
+            this.constrainedFlyAngleL.Max = 90F;
+            this.constrainedFlyAngleL.Min = -90F;
+            this.constrainedFlyAngleL.MinimumSize = new System.Drawing.Size(95, 20);
+            this.constrainedFlyAngleL.Name = "constrainedFlyAngleL";
+            this.constrainedFlyAngleL.Scalar = null;
+            this.constrainedFlyAngleL.Size = new System.Drawing.Size(204, 20);
+            this.constrainedFlyAngleL.TabIndex = 0;
+            this.constrainedFlyAngleL.Value = 0F;
             // 
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.flyAngleR);
+            this.groupBox2.Controls.Add(this.label21);
+            this.groupBox2.Controls.Add(this.constrainedFlyAngleR);
             this.groupBox2.Controls.Add(this.label12);
             this.groupBox2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox2.Location = new System.Drawing.Point(0, 0);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(338, 47);
+            this.groupBox2.Size = new System.Drawing.Size(338, 77);
             this.groupBox2.TabIndex = 1;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Right";
             // 
-            // flyAngleR
+            // constrainedFlyAngleR
             // 
-            this.flyAngleR.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.constrainedFlyAngleR.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.flyAngleR.Location = new System.Drawing.Point(75, 19);
-            this.flyAngleR.Max = 90F;
-            this.flyAngleR.Min = -90F;
-            this.flyAngleR.MinimumSize = new System.Drawing.Size(95, 20);
-            this.flyAngleR.Name = "flyAngleR";
-            this.flyAngleR.Scalar = null;
-            this.flyAngleR.Size = new System.Drawing.Size(257, 20);
-            this.flyAngleR.TabIndex = 4;
-            this.flyAngleR.Value = 0F;
+            this.constrainedFlyAngleR.Location = new System.Drawing.Point(108, 42);
+            this.constrainedFlyAngleR.Max = 90F;
+            this.constrainedFlyAngleR.Min = -90F;
+            this.constrainedFlyAngleR.MinimumSize = new System.Drawing.Size(95, 20);
+            this.constrainedFlyAngleR.Name = "constrainedFlyAngleR";
+            this.constrainedFlyAngleR.Scalar = null;
+            this.constrainedFlyAngleR.Size = new System.Drawing.Size(224, 20);
+            this.constrainedFlyAngleR.TabIndex = 4;
+            this.constrainedFlyAngleR.Value = 0F;
             // 
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(9, 23);
+            this.label12.Location = new System.Drawing.Point(6, 46);
             this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(34, 13);
+            this.label12.Size = new System.Drawing.Size(93, 13);
             this.label12.TabIndex = 6;
-            this.label12.Text = "Angle";
+            this.label12.Text = "Constrained Angle";
             // 
             // flyVal
             // 
             this.flyVal.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.flyVal.Location = new System.Drawing.Point(61, 186);
+            this.flyVal.Location = new System.Drawing.Point(61, 216);
             this.flyVal.Max = 1F;
             this.flyVal.Min = -1F;
             this.flyVal.MinimumSize = new System.Drawing.Size(95, 20);
@@ -566,7 +611,7 @@
             // 
             this.flyMax.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.flyMax.Location = new System.Drawing.Point(61, 108);
+            this.flyMax.Location = new System.Drawing.Point(61, 138);
             this.flyMax.Max = 1F;
             this.flyMax.Min = 1F;
             this.flyMax.MinimumSize = new System.Drawing.Size(95, 20);
@@ -580,7 +625,7 @@
             // 
             this.flyThreshold.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.flyThreshold.Location = new System.Drawing.Point(61, 82);
+            this.flyThreshold.Location = new System.Drawing.Point(61, 112);
             this.flyThreshold.Max = 1F;
             this.flyThreshold.Min = 0F;
             this.flyThreshold.MinimumSize = new System.Drawing.Size(95, 20);
@@ -594,7 +639,7 @@
             // 
             this.flyScale.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.flyScale.Location = new System.Drawing.Point(61, 56);
+            this.flyScale.Location = new System.Drawing.Point(61, 86);
             this.flyScale.Max = 5F;
             this.flyScale.Min = 0F;
             this.flyScale.MinimumSize = new System.Drawing.Size(95, 20);
@@ -726,51 +771,60 @@
             this.yawLean.TabIndex = 0;
             this.yawLean.Value = 0F;
             // 
-            // label9
+            // label20
             // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(4, 164);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(48, 13);
-            this.label9.TabIndex = 14;
-            this.label9.Text = "Minimum";
+            this.label20.AutoSize = true;
+            this.label20.Location = new System.Drawing.Point(6, 20);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(34, 13);
+            this.label20.TabIndex = 4;
+            this.label20.Text = "Angle";
             // 
-            // label11
+            // flyAngleL
             // 
-            this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(4, 138);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(33, 13);
-            this.label11.TabIndex = 12;
-            this.label11.Text = "Timer";
-            // 
-            // flyMin
-            // 
-            this.flyMin.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.flyAngleL.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.flyMin.Location = new System.Drawing.Point(61, 160);
-            this.flyMin.Max = 1F;
-            this.flyMin.Min = 0F;
-            this.flyMin.MinimumSize = new System.Drawing.Size(95, 20);
-            this.flyMin.Name = "flyMin";
-            this.flyMin.Scalar = null;
-            this.flyMin.Size = new System.Drawing.Size(599, 20);
-            this.flyMin.TabIndex = 13;
-            this.flyMin.Value = 0F;
+            this.flyAngleL.Location = new System.Drawing.Point(105, 16);
+            this.flyAngleL.Max = 90F;
+            this.flyAngleL.Min = -90F;
+            this.flyAngleL.MinimumSize = new System.Drawing.Size(95, 20);
+            this.flyAngleL.Name = "flyAngleL";
+            this.flyAngleL.Scalar = null;
+            this.flyAngleL.Size = new System.Drawing.Size(204, 20);
+            this.flyAngleL.TabIndex = 3;
+            this.flyAngleL.Value = 0F;
             // 
-            // flyTimer
+            // flyAngleR
             // 
-            this.flyTimer.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.flyAngleR.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.flyTimer.Location = new System.Drawing.Point(61, 134);
-            this.flyTimer.Max = 1000F;
-            this.flyTimer.Min = 0F;
-            this.flyTimer.MinimumSize = new System.Drawing.Size(95, 20);
-            this.flyTimer.Name = "flyTimer";
-            this.flyTimer.Scalar = null;
-            this.flyTimer.Size = new System.Drawing.Size(599, 20);
-            this.flyTimer.TabIndex = 11;
-            this.flyTimer.Value = 500F;
+            this.flyAngleR.Location = new System.Drawing.Point(108, 16);
+            this.flyAngleR.Max = 90F;
+            this.flyAngleR.Min = -90F;
+            this.flyAngleR.MinimumSize = new System.Drawing.Size(95, 20);
+            this.flyAngleR.Name = "flyAngleR";
+            this.flyAngleR.Scalar = null;
+            this.flyAngleR.Size = new System.Drawing.Size(224, 20);
+            this.flyAngleR.TabIndex = 7;
+            this.flyAngleR.Value = 0F;
+            // 
+            // label21
+            // 
+            this.label21.AutoSize = true;
+            this.label21.Location = new System.Drawing.Point(6, 20);
+            this.label21.Name = "label21";
+            this.label21.Size = new System.Drawing.Size(34, 13);
+            this.label21.TabIndex = 8;
+            this.label21.Text = "Angle";
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(6, 46);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(93, 13);
+            this.label10.TabIndex = 7;
+            this.label10.Text = "Constrained Angle";
             // 
             // DolphinMovementPanel
             // 
@@ -828,10 +882,9 @@
         private Chimera.GUI.UpdatedScalarPanel flyScale;
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.Label label10;
-        private Chimera.GUI.UpdatedScalarPanel flyAngleL;
+        private Chimera.GUI.UpdatedScalarPanel constrainedFlyAngleL;
         private System.Windows.Forms.GroupBox groupBox2;
-        private Chimera.GUI.UpdatedScalarPanel flyAngleR;
+        private Chimera.GUI.UpdatedScalarPanel constrainedFlyAngleR;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.TabPage tabPage1;
         private Chimera.GUI.UpdatedScalarPanel yawValue;
@@ -864,5 +917,10 @@
         private System.Windows.Forms.Label label11;
         private Chimera.GUI.UpdatedScalarPanel flyMin;
         private Chimera.GUI.UpdatedScalarPanel flyTimer;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Label label20;
+        private Chimera.GUI.UpdatedScalarPanel flyAngleL;
+        private Chimera.GUI.UpdatedScalarPanel flyAngleR;
+        private System.Windows.Forms.Label label21;
     }
 }

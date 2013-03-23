@@ -21,6 +21,8 @@ namespace Chimera.Kinect {
         private Scalar mFlyVal;
         private Scalar mFlyAngleR;
         private Scalar mFlyAngleL;
+        private Scalar mConstrainedFlyAngleR;
+        private Scalar mConstrainedFlyAngleL;
         private Scalar mFlyScale;
         private Scalar mFlyThreshold;
         private Scalar mFlyMax;
@@ -57,6 +59,8 @@ namespace Chimera.Kinect {
         public Scalar FlyVal { get { return mFlyVal; } }
         public Scalar FlyAngleR { get { return mFlyAngleR; } }
         public Scalar FlyAngleL { get { return mFlyAngleL; } }
+        public Scalar ConstrainedFlyAngleR { get { return mConstrainedFlyAngleR; } }
+        public Scalar ConstrainedFlyAngleL { get { return mConstrainedFlyAngleL; } }
         public Scalar FlyScale { get { return mFlyScale; } }
         public Scalar FlyThreshold { get { return mFlyThreshold; } }
         public Scalar FlyMax { get { return mFlyMax; } }
@@ -114,9 +118,9 @@ namespace Chimera.Kinect {
 
             //Scalar flyThreshold = .2f - Nui.tracker("FlyStart", 40, .2f / 40f, 0f, 20);
             //Scalar flyMax = Nui.tracker("FlyMax", 40, .2f / 40f, .2f, 20);
-            mFlyThreshold = Scalar.Create(.1f);
-            mFlyMax = Scalar.Create(.3f);
-            mFlyScale = Scalar.Create(.25f);
+            mFlyThreshold = Scalar.Create(.05f);
+            mFlyMax = Scalar.Create(.4f);
+            mFlyScale = Scalar.Create(.5f);
 
             //Scalar yawD = .1f - Nui.tracker("YawStart", 40, .1f / 40f, 0f, 20);
             //Scalar yawSpeed = 10f - Nui.tracker("YawSpeed", 40, 15f / 40f, 0f, 20);
@@ -128,7 +132,12 @@ namespace Chimera.Kinect {
             Nui.Tick += new ChangeDelegate(Nui_Tick);
         }
 
+        bool sw = false;
+
         void Nui_Tick() {
+            if (!Nui.HasSkeleton)
+                return;
+
             mDelta = Vector3.Zero;
             mYawDelta = mYawEnabled ? -mYaw.Value : 0f;
             mPitchDelta = 0.0;
@@ -138,14 +147,17 @@ namespace Chimera.Kinect {
             //Put a timer on flying so that fly input greater than x will be ignored until the user has stayed in the position for y ms.
             if (mFlyVal.Value != 0f && !mFlying) {
                 mFlying = true;
-                if (mFlyVal.Value < mFlyMin.Value) {
+                if (!mFlyAllowed && mFlyVal.Value < mFlyMin.Value) {
                     mFlyAllowed = true;
                     mDelta.Z = mFlyEnabled ? mFlyVal.Value : 0f;
+                    Console.WriteLine("Below Threshold");
                 } else 
                     mFlyStart = DateTime.Now;
-            } else if (mFlyAllowed || DateTime.Now.Subtract(mFlyStart).TotalMilliseconds > mFlyTimer.Value)
+            } else if (mFlyAllowed || DateTime.Now.Subtract(mFlyStart).TotalMilliseconds > mFlyTimer.Value) {
                 mDelta.Z = mFlyEnabled ? mFlyVal.Value : 0f;
-            else if (mFlyVal.Value == 0f) {
+                //Console.WriteLine("Time trigger " + (sw ? "+" : "-"));
+                sw = !sw;
+            }else if (mFlyVal.Value == 0f) {
                 mFlying = false;
                 mFlyAllowed = true;
             }
@@ -188,9 +200,11 @@ namespace Chimera.Kinect {
 
 
             //----------- Fly----------- 
-            mFlyAngleR = Nui.constrain(Nui.dot(Vector.Create(0f, 1f, 0f), armR), mFlyThreshold, mFlyMax, 0f, true);
-            mFlyAngleL = Nui.constrain(Nui.dot(Vector.Create(0f, 1f, 0f), armL), mFlyThreshold, mFlyMax, 0f, true);
-            Scalar flyVal = (mFlyAngleR + mFlyAngleL) * mFlyScale;
+            mFlyAngleR = Nui.dot(Vector.Create(0f, 1f, 0f), armR);
+            mFlyAngleL = Nui.dot(Vector.Create(0f, 1f, 0f), armL);
+            mConstrainedFlyAngleR = Nui.constrain(mFlyAngleR, mFlyThreshold, mFlyMax, 0f, true);
+            mConstrainedFlyAngleL = Nui.constrain(mFlyAngleL, mFlyThreshold, mFlyMax, 0f, true);
+            Scalar flyVal = (mConstrainedFlyAngleR + mConstrainedFlyAngleL) * mFlyScale;
             Condition flyActiveR = C.And(mFlyAngleR != 0f,  Nui.magnitude(armR) - Nui.magnitude(Nui.limit(armR, true, true, false)) < .1f);
             Condition flyActiveL = C.And(mFlyAngleL != 0f,  Nui.magnitude(armL) - Nui.magnitude(Nui.limit(armL, true, true, false)) < .1f);
             Condition flyActive = C.And(C.Or(flyActiveR, flyActiveL),  C.And(Nui.z(armR) < 0f,  Nui.z(armR) < 0f));
@@ -203,7 +217,7 @@ namespace Chimera.Kinect {
             // Yaw is how far the user is leaning horizontally. This is calculated the angle between vertical and the vector between the hip centre and the head.
             mYawLean = Nui.dot(Nui.normalize(yawCore), Vector.Create(1f, 0f, 0f));
             // Constrain the value, deadzone is provided by a slider.
-            mYaw = Nui.constrain(mYawLean, mYawThreshold, .2f, .3f, true) * mYawScale;
+            mYaw = Nui.constrain(mYawLean, mYawThreshold, .4f, .3f, true) * mYawScale;
         }
 
         #region IDeltaInput Members 

@@ -72,6 +72,7 @@
     <Compile Include="SimpleOverlay.Designer.cs">
       <DependentUpon>SimpleOverlay.cs</DependentUpon>
     </Compile>
+    <Compile Include="SimpleOverlayConfig.cs" />
     <Compile Include="SingleInstanceLauncher.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

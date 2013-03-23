@@ -159,8 +159,10 @@ namespace Chimera.OpenSim {
                     while (mClientLoggedIn && i++ < 5) {
                         lock (processLock)
                             Monitor.Wait(processLock, 3000);
-                        if (mClientLoggedIn)
+                        if (mClientLoggedIn) {
+                            ProcessWrangler.PressKey(mClient, "{ENTER}");
                             ProcessWrangler.PressKey(mClient, "q", true, false, false);
+                        }
                     }
                 });
                 shutdownThread.Name = "Viewer Shutdown Thread.";
@@ -342,6 +344,7 @@ namespace Chimera.OpenSim {
             mWindow = window;
             mWindow.Coordinator.CameraUpdated += ProcessChangeViewer;
             mWindow.Coordinator.EyeUpdated += ProcessEyeUpdate;
+            mWindow.Coordinator.Tick += new Action(Coordinator_Tick);
             mWindow.MonitorChanged += new Action<Chimera.Window,Screen>(mWindow_MonitorChanged);
             mFullscreen = mConfig.Fullscreen;
 
@@ -352,6 +355,11 @@ namespace Chimera.OpenSim {
 
             AutoRestart = mConfig.AutoRestartViewer;
             ControlCamera = mConfig.ControlCamera;
+        }
+
+        void Coordinator_Tick() {
+            if (mClientLoggedIn && DateTime.Now.Minute % 5 == 0 && DateTime.Now.Second % 60 == 0)
+                ProcessWrangler.PressKey(mClient, "{ENTER}");
         }
 
         public bool Launch() {
@@ -395,6 +403,31 @@ namespace Chimera.OpenSim {
             }
             if (mClientLoggedIn)
                 CloseViewer();
+        }
+
+        public void Restart() {
+            if (mClientLoggedIn) {
+                /*
+                ProcessWrangler.PressKey(mClient, "q", true, false, false);
+
+                Thread shutdownThread = new Thread(() => {
+                    int i = 0;
+                    while (mClientLoggedIn && i++ < 5) {
+                        lock (processLock)
+                            Monitor.Wait(processLock, 3000);
+                        if (mClientLoggedIn) {
+                            ProcessWrangler.PressKey(mClient, "{ENTER}");
+                            ProcessWrangler.PressKey(mClient, "q", true, false, false);
+                        }
+                    }
+                });*/
+                CloseViewer();
+                Thread.Sleep(1000);
+                mProxy.Stop();
+                mProxy = null;
+                Thread.Sleep(1000);
+                Launch();
+            }
         }
 
         #endregion
