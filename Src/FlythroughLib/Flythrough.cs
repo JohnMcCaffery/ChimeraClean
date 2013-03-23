@@ -53,6 +53,14 @@ namespace Chimera.Flythrough {
         /// </summary>
         public event Action<int> LengthChange;
         /// <summary>
+        /// Triggered whenever a flythrough is loaded.
+        /// </summary>
+        public event Action FlythroughLoaded;
+        /// <summary>
+        /// Triggered whenever a flythrough is loading.
+        /// </summary>
+        public event Action FlythroughLoading;
+        /// <summary>
         /// Selected whenever the currently executing event changes.
         /// </summary>
         public event Action<FlythroughEvent<Camera>, FlythroughEvent<Camera>> CurrentEventChange {
@@ -144,11 +152,13 @@ namespace Chimera.Flythrough {
 
         public void Play() {
             if (mPlaying)
-                return;
+                return;
+            if (mEnabled && mEvents.Length > 0) {
+                Camera n = mEvents.CurrentEvent.Value;
+                mCoordinator.Update(n.Position, Vector3.Zero, n.Orientation, Rotation.Zero);
+            }
 
-            Thread t = new Thread(PlayThread);
-            t.Name = "Flythrough Playback Thread";
-            t.Start();
+            mPlaying = true;
         }
 
         internal void AddEvent(FlythroughEvent<Camera> evt) {
@@ -182,6 +192,10 @@ namespace Chimera.Flythrough {
                 Console.WriteLine("Unable to load " + file + ". Ignoring load request.");
                 return;
             }
+
+            if (FlythroughLoading != null)
+                FlythroughLoading();
+
             mEvents = new EventSequence<Camera>();
             mEvents.CurrentEventChange += new Action<FlythroughEvent<Camera>,FlythroughEvent<Camera>>(mEvents_CurrentEventChange);
             mEvents.LengthChange += new Action<EventSequence<Camera>,int>(mEvents_LengthChange);
@@ -210,6 +224,9 @@ namespace Chimera.Flythrough {
             }
 
             mCoordinator.Update(Start.Position, Vector3.Zero, Start.Orientation, Rotation.Zero);
+
+            if (FlythroughLoaded != null)
+                FlythroughLoaded();
         }
 
         /// <summary>
@@ -251,6 +268,7 @@ namespace Chimera.Flythrough {
                 LengthChange(length);
         }
 
+        /*
         private void PlayThread() {
             mPlaying = true;
 
@@ -277,7 +295,9 @@ namespace Chimera.Flythrough {
                     }
                 }
             }
+
         }
+        */
 
         private void DoTick(int time, Camera o) {
             mEvents.Time = time;
@@ -286,6 +306,23 @@ namespace Chimera.Flythrough {
                 mCoordinator.Update(n.Position, n.Position - o.Position, n.Orientation, n.Orientation - o.Orientation);
             if (TimeChange != null)
                 TimeChange(time);
+        }
+
+        void mCoordinator_Tick() {
+            if (mPlaying && mEvents.Length > 0) {
+                if (mEvents.Time + mCoordinator.TickLength < mEvents.Length)
+                    DoTick(mEvents.Time + mCoordinator.TickLength, mEvents.CurrentEvent.Value);
+                else {
+                    if (mLoop)
+                        DoTick(0, mEvents.Start);
+                    else {
+                        DoTick(mEvents.Length, mEvents.CurrentEvent.Value);
+                        mPlaying = false;
+                        if (SequenceFinished != null)
+                            SequenceFinished(this, null);
+                    }
+                }
+            }
         }
 
         #region ISystemInput Members
@@ -348,6 +385,7 @@ namespace Chimera.Flythrough {
 
         public void Init(Coordinator coordinator) {
             mCoordinator = coordinator;
+            mCoordinator.Tick += new Action(mCoordinator_Tick);
         }
 
         public void Close() { }

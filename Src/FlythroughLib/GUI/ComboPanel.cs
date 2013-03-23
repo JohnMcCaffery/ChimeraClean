@@ -183,12 +183,12 @@ namespace Chimera.Flythrough.GUI {
 
         private void positionsList_DoubleClick(object sender, EventArgs e) {
             if (positionsList.SelectedItem != null)
-                mEvent.Container.Time = ((FlythroughEvent<Vector3>)positionsList.SelectedItem).GlobalStartTime;
+                mEvent.Container.Time = ((FlythroughEvent<Vector3>)positionsList.SelectedItem).GlobalFinishTime;
         }
 
         private void orientationsList_DoubleClick(object sender, EventArgs e) {
             if (orientationsList.SelectedItem != null)
-                mEvent.Container.Time = ((FlythroughEvent<Rotation>)orientationsList.SelectedItem).GlobalStartTime;
+                mEvent.Container.Time = ((FlythroughEvent<Rotation>)orientationsList.SelectedItem).GlobalFinishTime;
         }
 
         private void copyCurrentPositionButton_Click(object sender, EventArgs e) {
