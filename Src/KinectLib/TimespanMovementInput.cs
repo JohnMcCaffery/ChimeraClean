@@ -10,7 +10,7 @@ using Chimera.Util;
 using Chimera.Kinect.GUI;
 
 namespace Chimera.Kinect {
-    public class DolphinMovementInput : IDeltaInput {
+    public class TimespanMovementInput : IDeltaInput {
         private Scalar mWalkDiffR;
         private Scalar mWalkDiffL;
         private Scalar mWalkValR;
@@ -46,7 +46,7 @@ namespace Chimera.Kinect {
         private DateTime mFlyStart;
         private bool mFlying;
 
-        private DolphinMovementPanel mPanel;
+        private TimespanMovementPanel mPanel;
 
         public Scalar WalkVal { get { return mWalkVal; } }
         public Scalar WalkDiffR { get { return mWalkDiffR; } }
@@ -107,7 +107,7 @@ namespace Chimera.Kinect {
             }
         }
 
-        public DolphinMovementInput () {
+        public TimespanMovementInput () {
             mWalkEnabled = true;
             mFlyEnabled = true;
             mYawEnabled = true;
@@ -181,13 +181,10 @@ namespace Chimera.Kinect {
             Vector head = Nui.joint(Nui.Head);
             //Condition guard = closeGuard();
 
-            Vector armR = handR - shoulderR;
-            Vector armL = handL - shoulderL;
-
             //----------- Walk----------- 
             //Left and right
-            mWalkDiffR = Nui.z(armR);
-            mWalkDiffL = Nui.z(armL);
+            mWalkDiffR = Nui.z(handR - hipC);
+            mWalkDiffL = Nui.z(handL - hipC);
             //Active
             Condition walkActiveR = C.Or(C.And(Nui.abs(mWalkDiffR) > mWalkThreshold,  mWalkDiffR < 0f), (mWalkDiffR > mWalkThreshold / 5f));
             Condition walkActiveL = C.Or(C.And(Nui.abs(mWalkDiffL) > mWalkThreshold,  mWalkDiffL < 0f), (mWalkDiffL > mWalkThreshold / 5f));
@@ -200,6 +197,8 @@ namespace Chimera.Kinect {
 
 
             //----------- Fly----------- 
+            Vector armR = handR - shoulderR;
+            Vector armL = handL - shoulderL;
             mFlyAngleR = Nui.dot(Vector.Create(0f, 1f, 0f), armR);
             mFlyAngleL = Nui.dot(Vector.Create(0f, 1f, 0f), armL);
             mConstrainedFlyAngleR = Nui.constrain(mFlyAngleR, mFlyThreshold, mFlyMax, 0f, true);
@@ -237,7 +236,7 @@ namespace Chimera.Kinect {
         public UserControl ControlPanel {
             get {
                 if (mPanel == null)
-                    mPanel = new DolphinMovementPanel(this);
+                    mPanel = new TimespanMovementPanel(this);
                 return mPanel;
             }
         }
@@ -252,12 +251,12 @@ namespace Chimera.Kinect {
         }
 
         public string Name {
-            get { return "Kinect Movement - Dolphin Configuration"; }
+            get { return "Kinect Movement - Timespan Configuration"; }
         }
 
         public string State {
             get {
-                string dump = "----Dolphin Config Kinect Input----";
+                string dump = "----Timespan Config Kinect Input----";
                 return ""; 
             }
         }

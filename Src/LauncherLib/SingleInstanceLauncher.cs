@@ -31,6 +31,7 @@ namespace Chimera.Launcher {
             }
         }
         public SingleInstanceLauncher(params string[] args) {
+            TimespanMovementInput timespan = new TimespanMovementInput();
             DolphinMovementInput dolphin = new DolphinMovementInput();
             RaiseArmHelpTrigger trigger = new RaiseArmHelpTrigger();
             SimpleCursorFactory simpleFactory = new SimpleCursorFactory();
@@ -42,7 +43,7 @@ namespace Chimera.Launcher {
             ISystemInput flythrough = new Chimera.Flythrough.Flythrough();
             ISystemInput mouse = new MouseInput();
             ISystemInput heightmap = new HeightmapInput();
-            mKinect = new KinectInput(new IDeltaInput[] { dolphin }, new IHelpTrigger[] { trigger }, simpleFactory, pointFactory);
+            mKinect = new KinectInput(new IDeltaInput[] { timespan, dolphin }, new IHelpTrigger[] { trigger }, simpleFactory, pointFactory);
             //ISystemInput kinectDolphin = new DeltaBasedInput(dolphin);
 
             Window[] windows = new Window[] { new Window("Main Window", output) };
