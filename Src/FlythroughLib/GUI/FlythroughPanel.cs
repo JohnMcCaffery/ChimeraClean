@@ -30,9 +30,12 @@ namespace Chimera.Flythrough.GUI {
 
         public void Init(Flythrough container) {
             mContainer = container;
-            mContainer.TimeChange += new Action<int>(mContainer_Tick);
-            mContainer.LengthChange += new Action<int>(mContainer_LengthChange);
-            mContainer.SequenceFinished += new EventHandler(mContainer_SequenceFinished);
+            mContainer.TimeChange += mContainer_Tick;
+            mContainer.LengthChange += mContainer_LengthChange;
+            mContainer.SequenceFinished += mContainer_SequenceFinished;
+            mContainer.FlythroughLoaded += mContainer_FlythroughLoaded;
+            mContainer.FlythroughLoading += mContainer_FlythroughLoading;
+            Disposed += new EventHandler(FlythroughPanel_Disposed);
 
             autoStepCheck.Checked = mContainer.AutoStep;
             loopCheck.Checked = mContainer.Loop;
@@ -41,6 +44,39 @@ namespace Chimera.Flythrough.GUI {
             mStartEvt.Name = "Start";
             eventsList.Items.Add(mStartEvt);
             mCurrentPanel = startPanel;
+        }
+
+        void FlythroughPanel_Disposed(object sender, EventArgs e) {
+            mContainer.TimeChange -= mContainer_Tick;
+            mContainer.LengthChange -= mContainer_LengthChange;
+            mContainer.SequenceFinished -= mContainer_SequenceFinished;
+            mContainer.FlythroughLoaded -= mContainer_FlythroughLoaded;
+            mContainer.FlythroughLoading -= mContainer_FlythroughLoading;
+        }
+
+        void mContainer_FlythroughLoading() {
+            Action a = () => {
+                foreach (var evt in mContainer.Events)
+                    eventsList.Items.Remove(evt);
+            };
+            if (InvokeRequired)
+                Invoke(a);
+            else
+                a();
+        }
+
+        void mContainer_FlythroughLoaded() {
+            Action a = () => {
+                //timeSlider.Maximum = mContainer.Length;
+                startPositionPanel.Value = mContainer.Start.Position;
+                startOrientationPanel.Value = mContainer.Start.Orientation;
+                foreach (var evt in mContainer.Events)
+                    AddEventToGUI((ComboEvent)evt);
+            };
+            if (InvokeRequired)
+                Invoke(a);
+            else
+                a();
         }
 
         void mContainer_SequenceFinished(object sender, EventArgs e) {
@@ -53,6 +89,9 @@ namespace Chimera.Flythrough.GUI {
                 Invoke(new Action(() => {
                     timeSlider.Value = time;
                     timeLabel.Text = "Time: " + Math.Round((double) time / 1000.0, 2);
+                    playButton.Text = mContainer.Paused ? "Play" : "Pause";
+                    loopCheck.Checked = mContainer.Loop;
+                    autoStepCheck.Checked = mContainer.AutoStep;
                 }));
                 TickUpdate = false;
             }
@@ -170,17 +209,8 @@ namespace Chimera.Flythrough.GUI {
         }
 
         private void loadButton_Click(object sender, EventArgs e) {
-            if (loadSequenceDialog.ShowDialog(this) == DialogResult.OK) {
-                foreach (var evt in mContainer.Events)
-                    eventsList.Items.Remove(evt);
-
+            if (loadSequenceDialog.ShowDialog(this) == DialogResult.OK)
                 mContainer.Load(loadSequenceDialog.FileName);
-                //timeSlider.Maximum = mContainer.Length;
-                startPositionPanel.Value = mContainer.Start.Position;
-                startOrientationPanel.Value = mContainer.Start.Orientation;
-                foreach (var evt in mContainer.Events)
-                    AddEventToGUI((ComboEvent) evt);
-            }
         }
 
         private void stepBackButton_Click(object sender, EventArgs e) {

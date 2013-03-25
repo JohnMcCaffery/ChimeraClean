@@ -31,6 +31,7 @@ namespace Chimera.Launcher {
             }
         }
         public SingleInstanceLauncher(params string[] args) {
+            TimespanMovementInput timespan = new TimespanMovementInput();
             DolphinMovementInput dolphin = new DolphinMovementInput();
             RaiseArmHelpTrigger trigger = new RaiseArmHelpTrigger();
             SimpleCursorFactory simpleFactory = new SimpleCursorFactory();
@@ -42,7 +43,7 @@ namespace Chimera.Launcher {
             ISystemInput flythrough = new Chimera.Flythrough.Flythrough();
             ISystemInput mouse = new MouseInput();
             ISystemInput heightmap = new HeightmapInput();
-            mKinect = new KinectInput(new IDeltaInput[] { dolphin }, new IHelpTrigger[] { trigger }, simpleFactory, pointFactory);
+            mKinect = new KinectInput(new IDeltaInput[] { timespan, dolphin }, new IHelpTrigger[] { trigger }, simpleFactory, pointFactory);
             //ISystemInput kinectDolphin = new DeltaBasedInput(dolphin);
 
             Window[] windows = new Window[] { new Window("Main Window", output) };
@@ -50,7 +51,7 @@ namespace Chimera.Launcher {
             //ImageSelection mOverlay = new ImageSelection("../Select1.jpg", .1f, .1f, .3f, .3f);
             //IOverlayState mState = new TestState();
             //MainMenuItem item1 = new MainMenuItem(mState, mOverlay);
-            mCoordinator = new Coordinator(windows, mKinect, kbMouseInput, mouse, heightmap, flythrough);
+            mCoordinator = new Coordinator(windows, kbMouseInput, mKinect, mouse, heightmap, flythrough);
 
             //Window[] windows = new Window[] { new Window("Main Window") };
             //Chimera.Overlay.MainMenu mainMenu = new Chimera.Overlay.MainMenu();

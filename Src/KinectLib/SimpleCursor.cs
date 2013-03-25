@@ -19,22 +19,27 @@ namespace Chimera.Kinect {
     public class SimpleCursor : IKinectCursor {
         private SimpleCursorPanel mPanel;
         private Vector mHandR;
+        private Vector mHandL;
         private Vector mAnchor;
         private Scalar mWidth;
         private Scalar mHeight;
-        private Scalar mWidthScale;
-        private Scalar mHeightScale;
+        private Scalar mLeftHandShift;
         private Scalar mLeftShift;
         private Scalar mUpShift;
         private Scalar mTopLeftX;
         private Scalar mTopLeftY;
         private Scalar mX;
         private Scalar mY;
-        private Scalar mRawX;
-        private Scalar mRawY;
-        private Scalar mConstrainedX;
-        private Scalar mConstrainedY;
-        private Condition mOnScreenCondition;
+        private Scalar mRawXRight;
+        private Scalar mRawYRight;
+        private Scalar mRawXLeft;
+        private Scalar mRawYLeft;
+        private Scalar mConstrainedXRight;
+        private Scalar mConstrainedYRight;
+        private Scalar mConstrainedXLeft;
+        private Scalar mConstrainedYLeft;
+        private Condition mOnScreenConditionRight;
+        private Condition mOnScreenConditionLeft;
         private Window mWindow;
         private PointF mLocation = new PointF(-1f, -1f);
         private RectangleF mBounds = new RectangleF(0f, 0f, 1f, 1f);
@@ -44,30 +49,32 @@ namespace Chimera.Kinect {
 
         public Vector Anchor { get { return mAnchor; } }
         public Vector HandR { get { return mHandR; } }
+        public Vector HandL { get { return mHandL; } }
         public Scalar Width { get { return mWidth; } }
         public Scalar Height { get { return mHeight; } }
-        public Scalar WidthScale { get { return mWidthScale; } }
-        public Scalar HeightScale { get { return mHeightScale; } }
+        public Scalar LeftHandShift { get { return mLeftHandShift; } }
         public Scalar LeftShift { get { return mLeftShift; } }
         public Scalar UpShift { get { return mUpShift; } }
         public Scalar TopLeftX { get { return mTopLeftX; } }
         public Scalar TopLeftY { get { return mTopLeftY; } }
-        public Scalar RawX { get { return mRawX; } }
-        public Scalar RawY { get { return mRawY; } }
-        public Scalar ConstrainedX { get { return mConstrainedX; } }
-        public Scalar ConstrainedY { get { return mConstrainedY; } }
+        public Scalar RawXRight { get { return mRawXRight; } }
+        public Scalar RawYRight { get { return mRawYRight; } }
+        public Scalar RawXLeft { get { return mRawXLeft; } }
+        public Scalar RawYLeft { get { return mRawYLeft; } }
+        public Scalar ConstrainedXRight { get { return mConstrainedXRight; } }
+        public Scalar ConstrainedYRight { get { return mConstrainedYRight; } }
+        public Scalar ConstrainedXLeft { get { return mConstrainedXLeft; } }
+        public Scalar ConstrainedYLeft { get { return mConstrainedYLeft; } }
         public Scalar X { get { return mX; } }
         public Scalar Y { get { return mY; } }
 
         public SimpleCursor() : this (false) { }
         public SimpleCursor(bool test) {
             mHandR = test ? Vector.Create("HandR", 0f, 0f, 0f) : Nui.joint(Nui.Hand_Right);
+            mHandL = test ? Vector.Create("HandL", 0f, 0f, 0f) : Nui.joint(Nui.Hand_Left);
             mAnchor = test ? Vector.Create("Anchor", 0f, 0f, 0f) : Nui.joint(Nui.Hip_Centre);
             Vector head = test ? Vector.Create("Head", -1f, 0f, 0f) : Nui.joint(Nui.Head);
             Scalar headShoulderDiff = Nui.magnitude(mAnchor - head);
-
-            mWidthScale = Scalar.Create("Width Scale", 1.5f);
-            mHeightScale = Scalar.Create("Height Scale", 1.5f);
 
             mLeftShift = Scalar.Create("Left Shift", .0f);
             mUpShift = Scalar.Create("Up Shift", .0f);
@@ -80,17 +87,22 @@ namespace Chimera.Kinect {
             mTopLeftX = Nui.x(mAnchor) - (mWidth * mLeftShift);
             mTopLeftY = Nui.y(mAnchor) + (mHeight * mUpShift);
 
-            mRawX = Nui.x(mHandR) - mTopLeftX;
-            mRawY = Nui.y(mHandR) - mTopLeftY;
+            mRawXRight = Nui.x(mHandR) - mTopLeftX;
+            mRawYRight = Nui.y(mHandR) - mTopLeftY;
+            Condition xActiveRight = C.And(mRawXRight >= 0f, mRawXRight <= mWidth);
+            Condition yActiveRight = C.And(mRawYRight >= 0f, mRawYRight <= mHeight);
+            mConstrainedXRight = Nui.constrain(mRawXRight, .01f, mWidth, .10f, false);
+            mConstrainedYRight = Nui.constrain(mRawYRight, .01f, mHeight, .10f, false);
+            mOnScreenConditionRight = C.And(xActiveRight, yActiveRight);
 
-
-            Condition xActive = C.And(mRawX >= 0f, mRawX <= mWidth);
-            Condition yActive = C.And(mRawY >= 0f, mRawY <= mHeight);
-
-            mConstrainedX = Nui.constrain(mRawX, .01f, mWidth, .10f, false);
-            mConstrainedY = Nui.constrain(mRawY, .01f, mHeight, .10f, false);
-
-            mOnScreenCondition = C.And(xActive, yActive);
+            mLeftHandShift = Scalar.Create("LeftHandShift", .5f);
+            mRawXLeft = (Nui.x(mHandL) + mLeftHandShift) - mTopLeftX;
+            mRawYLeft = Nui.y(mHandL) - mTopLeftY;
+            Condition xActiveLeft = C.And(mRawXLeft >= 0f, mRawXLeft <= mWidth);
+            Condition yActiveLeft = C.And(mRawYLeft >= 0f, mRawYLeft <= mHeight);
+            mConstrainedXLeft = Nui.constrain(mRawXLeft, .01f, mWidth, .10f, false);
+            mConstrainedYLeft = Nui.constrain(mRawYLeft, .01f, mHeight, .10f, false);
+            mOnScreenConditionLeft = C.And(xActiveLeft, yActiveLeft);
         }
 
         void Nui_Tick() {
@@ -102,15 +114,15 @@ namespace Chimera.Kinect {
 
                 if (mBounds.Contains(mLocation) && !OnScreen) {
                     mOnScreen = true;
-                    if (CursorEnter != null)
+                    if (CursorEnter != null && mEnabled)
                         CursorEnter(this);
                 } else if (!mBounds.Contains(mLocation) && OnScreen) {
                     mOnScreen = false;
-                    if (CursorLeave != null)
+                    if (CursorLeave != null && mEnabled)
                         CursorLeave(this);
                 }
 
-                if (CursorMove != null)
+                if (CursorMove != null && mEnabled)
                     CursorMove(this, x, y);
             }
         }
@@ -118,8 +130,9 @@ namespace Chimera.Kinect {
         private void Init() {
             //mX = mConstrainedX * (float)mWindow.Monitor.Bounds.Width;
             //mY = (float) mWindow.Monitor.Bounds.Height - (mConstrainedY * (float)mWindow.Monitor.Bounds.Height);
-            mX = mConstrainedX;
-            mY = 1f - mConstrainedY;
+            mX = Nui.ifScalar(C.And(mOnScreenConditionLeft, !mOnScreenConditionRight), mConstrainedXLeft, mConstrainedXRight);
+            mY = 1f - Nui.ifScalar(C.And(mOnScreenConditionLeft, !mOnScreenConditionRight), mConstrainedYLeft, mConstrainedYRight);
+            //mY = 1f - mConstrainedYRight;
 
             if (!mListening) {
                 mListening = true;
@@ -158,7 +171,7 @@ namespace Chimera.Kinect {
         }
 
         public bool OnScreen {
-            get { return Nui.HasSkeleton && mOnScreenCondition.Value; }
+            get { return Nui.HasSkeleton && mOnScreenConditionRight.Value; }
         }
 
         public bool Enabled {

@@ -10,7 +10,7 @@ using Chimera.Util;
 using Chimera.Kinect.GUI;
 
 namespace Chimera.Kinect {
-    public class DolphinMovementInput : IDeltaInput {
+    public class TimespanMovementInput : IDeltaInput {
         private Scalar mWalkDiffR;
         private Scalar mWalkDiffL;
         private Scalar mWalkValR;
@@ -18,6 +18,8 @@ namespace Chimera.Kinect {
         private Scalar mWalkScale;
         private Scalar mWalkThreshold;
 
+        private Vector mArmR;
+        private Vector mArmL;
         private Scalar mFlyVal;
         private Scalar mFlyAngleR;
         private Scalar mFlyAngleL;
@@ -30,6 +32,7 @@ namespace Chimera.Kinect {
         private Scalar mFlyMin;
 
         private Scalar mYawLean;
+        private Scalar mYawTwist;
         private Scalar mYaw;
         private Scalar mYawScale;
         private Scalar mYawThreshold;
@@ -46,7 +49,7 @@ namespace Chimera.Kinect {
         private DateTime mFlyStart;
         private bool mFlying;
 
-        private DolphinMovementPanel mPanel;
+        private TimespanMovementPanel mPanel;
 
         public Scalar WalkVal { get { return mWalkVal; } }
         public Scalar WalkDiffR { get { return mWalkDiffR; } }
@@ -56,6 +59,8 @@ namespace Chimera.Kinect {
         public Scalar WalkScale { get { return mWalkScale; } }
         public Scalar WalkThreshold { get { return mWalkThreshold; } }
 
+        public Vector ArmR { get { return mArmR; } }
+        public Vector ArmL { get { return mArmL; } }
         public Scalar FlyVal { get { return mFlyVal; } }
         public Scalar FlyAngleR { get { return mFlyAngleR; } }
         public Scalar FlyAngleL { get { return mFlyAngleL; } }
@@ -68,6 +73,7 @@ namespace Chimera.Kinect {
         public Scalar FlyMin { get { return mFlyMin; } }
 
         public Scalar YawLean { get { return mYawLean; } }
+        public Scalar YawTwist { get { return mYawTwist; } }
         public Scalar Yaw { get { return mYaw; } }
         public Scalar YawScale { get { return mYawScale; } }
         public Scalar YawThreshold { get { return mYawThreshold; } }
@@ -107,7 +113,7 @@ namespace Chimera.Kinect {
             }
         }
 
-        public DolphinMovementInput () {
+        public TimespanMovementInput () {
             mWalkEnabled = true;
             mFlyEnabled = true;
             mYawEnabled = true;
@@ -169,6 +175,7 @@ namespace Chimera.Kinect {
 
         private void Init() {
             //Get the primary vectors.
+            Vector shoulderC = Nui.joint(Nui.Shoulder_Centre);
             Vector shoulderR = Nui.joint(Nui.Shoulder_Right);
             Vector shoulderL = Nui.joint(Nui.Shoulder_Left);
             Vector elbowR = Nui.joint(Nui.Elbow_Right);
@@ -178,37 +185,71 @@ namespace Chimera.Kinect {
             Vector handR = Nui.joint(Nui.Hand_Right);
             Vector handL = Nui.joint(Nui.Hand_Left);
             Vector hipC = Nui.joint(Nui.Hip_Centre);
+            Vector hipR = Nui.joint(Nui.Hip_Right);
+            Vector hipL = Nui.joint(Nui.Hip_Left);
             Vector head = Nui.joint(Nui.Head);
             //Condition guard = closeGuard();
 
-            Vector armR = handR - shoulderR;
-            Vector armL = handL - shoulderL;
+            Condition heightThresholdR = Nui.y(handR) > Nui.y(hipC);
+            Condition heightThresholdL = Nui.y(handL) > Nui.y(hipC);
+            Condition heightThreshold = C.Or(heightThresholdL, heightThresholdR);
+
+            Scalar dist = Nui.magnitude(shoulderC - hipC);
+            Condition distanceThresholdR = Nui.x(handR - hipR) > dist;
+            Condition distanceThresholdL = Nui.x(hipL - handL) > dist;
+            //Condition distanceThresholdR = Nui.magnitude(handR - hipR) > dist;
+            //Condition distanceThresholdL = Nui.magnitude(hipL - handL) > dist;
+            Condition distanceThreshold = C.Or(distanceThresholdL, distanceThresholdR);
+
+            Condition activeConditionR = C.Or(heightThresholdR, distanceThresholdR);
+            Condition activeConditionL = C.Or(heightThresholdL, distanceThresholdL);
+            Condition mActiveCondition = C.Or(heightThreshold, distanceThreshold);
 
             //----------- Walk----------- 
             //Left and right
-            mWalkDiffR = Nui.z(armR);
-            mWalkDiffL = Nui.z(armL);
+            mWalkDiffR = Nui.z(handR - hipC) - .15f;
+            mWalkDiffL = Nui.z(handL - hipC) - .15f;
+            Scalar backwardThresh = mWalkThreshold / 5f;
             //Active
-            Condition walkActiveR = C.Or(C.And(Nui.abs(mWalkDiffR) > mWalkThreshold,  mWalkDiffR < 0f), (mWalkDiffR > mWalkThreshold / 5f));
-            Condition walkActiveL = C.Or(C.And(Nui.abs(mWalkDiffL) > mWalkThreshold,  mWalkDiffL < 0f), (mWalkDiffL > mWalkThreshold / 5f));
+            Condition walkActiveR = C.Or(C.And(Nui.abs(mWalkDiffR) > mWalkThreshold,  mWalkDiffR < 0f), (mWalkDiffR > backwardThresh));
+            Condition walkActiveL = C.Or(C.And(Nui.abs(mWalkDiffL) > mWalkThreshold,  mWalkDiffL < 0f), (mWalkDiffL > backwardThresh));
+            walkActiveR = C.And(activeConditionR, walkActiveR);
+            walkActiveL = C.And(activeConditionL, walkActiveL);
             //Value
-            Scalar moveValR = Nui.ifScalar(mWalkDiffR < 0f, mWalkDiffR + mWalkThreshold, mWalkDiffR - (mWalkThreshold / 5f));
-            Scalar moveValL = Nui.ifScalar(mWalkDiffL < 0f, mWalkDiffL + mWalkThreshold, mWalkDiffL - (mWalkThreshold / 5f));
+            Scalar moveValR = Nui.ifScalar(mWalkDiffR < 0f, mWalkDiffR + mWalkThreshold, mWalkDiffR - backwardThresh);
+            Scalar moveValL = Nui.ifScalar(mWalkDiffL < 0f, mWalkDiffL + mWalkThreshold, mWalkDiffL - backwardThresh);
             mWalkValR = Nui.ifScalar(walkActiveR, moveValR, 0f);
             mWalkValL = Nui.ifScalar(walkActiveL, moveValL, 0f);
             mWalkVal = (mWalkValL + mWalkValR) * -1f * mWalkScale;
+            //mWalkVal = Nui.ifScalar(mActiveCondition, mWalkVal, 0f);
 
 
             //----------- Fly----------- 
-            mFlyAngleR = Nui.dot(Vector.Create(0f, 1f, 0f), armR);
-            mFlyAngleL = Nui.dot(Vector.Create(0f, 1f, 0f), armL);
+            mArmR = handR - shoulderR;
+            mArmL = handL - shoulderL;
+            Vector up = Vector.Create(0f, 1f, 0f);
+            mFlyAngleR = Nui.dot(up, mArmR);
+            mFlyAngleL = Nui.dot(up, mArmL);
             mConstrainedFlyAngleR = Nui.constrain(mFlyAngleR, mFlyThreshold, mFlyMax, 0f, true);
             mConstrainedFlyAngleL = Nui.constrain(mFlyAngleL, mFlyThreshold, mFlyMax, 0f, true);
             Scalar flyVal = (mConstrainedFlyAngleR + mConstrainedFlyAngleL) * mFlyScale;
-            Condition flyActiveR = C.And(mFlyAngleR != 0f,  Nui.magnitude(armR) - Nui.magnitude(Nui.limit(armR, true, true, false)) < .1f);
-            Condition flyActiveL = C.And(mFlyAngleL != 0f,  Nui.magnitude(armL) - Nui.magnitude(Nui.limit(armL, true, true, false)) < .1f);
-            Condition flyActive = C.And(C.Or(flyActiveR, flyActiveL),  C.And(Nui.z(armR) < 0f,  Nui.z(armR) < 0f));
+
+            //Condition flyActiveR = C.And(mFlyAngleR != 0f,  Nui.magnitude(armR) - Nui.magnitude(Nui.limit(armR, true, true, false)) < .1f);
+            //Condition flyActiveL = C.And(mFlyAngleL != 0f,  Nui.magnitude(armL) - Nui.magnitude(Nui.limit(armL, true, true, false)) < .1f);
+            Scalar magShoulder = Nui.magnitude(shoulderL - shoulderR);
+            Scalar magR = Nui.magnitude(mArmR);
+            Scalar magL = Nui.magnitude(mArmL);
+            Condition flyActiveR = C.And(magR > magShoulder, Nui.abs(Nui.x(mArmR)) > Nui.abs(Nui.z(mArmR)));
+            Condition flyActiveL = C.And(magL > magShoulder, Nui.abs(Nui.x(mArmL)) > Nui.abs(Nui.z(mArmL)));
+            flyActiveR = C.And(mConstrainedFlyAngleR != 0f, flyActiveR);
+            flyActiveL = C.And(mConstrainedFlyAngleL != 0f, flyActiveL);
+            flyActiveR = C.And(activeConditionR, flyActiveR);
+            flyActiveL = C.And(activeConditionL, flyActiveL);
+            Condition flyActive = C.Or(flyActiveR, flyActiveL);
+            //Condition flyActive = C.And(C.Or(flyActiveR, flyActiveL),  C.And(Nui.z(armR) < 0f,  Nui.z(armR) < 0f));
+
             mFlyVal = Nui.ifScalar(flyActive, flyVal, 0f);
+            mFlyVal = Nui.ifScalar(mActiveCondition, mFlyVal, 0f);
             mFlyTimer = Scalar.Create("Fly Timer", 0f);
             mFlyMin = Scalar.Create("Fly Minimum", .01f);
 
@@ -218,6 +259,11 @@ namespace Chimera.Kinect {
             mYawLean = Nui.dot(Nui.normalize(yawCore), Vector.Create(1f, 0f, 0f));
             // Constrain the value, deadzone is provided by a slider.
             mYaw = Nui.constrain(mYawLean, mYawThreshold, .4f, .3f, true) * mYawScale;
+
+            mYawTwist = Nui.z(shoulderR) - Nui.z(shoulderL);
+            mYawTwist = Nui.constrain(mYawTwist, .05f, Nui.magnitude(shoulderL - shoulderR), 5f, true);
+
+            mYaw = mYawTwist + mYawLean;
         }
 
         #region IDeltaInput Members 
@@ -237,7 +283,7 @@ namespace Chimera.Kinect {
         public UserControl ControlPanel {
             get {
                 if (mPanel == null)
-                    mPanel = new DolphinMovementPanel(this);
+                    mPanel = new TimespanMovementPanel(this);
                 return mPanel;
             }
         }
@@ -252,12 +298,12 @@ namespace Chimera.Kinect {
         }
 
         public string Name {
-            get { return "Kinect Movement - Dolphin Configuration"; }
+            get { return "Kinect Movement - Timespan Configuration"; }
         }
 
         public string State {
             get {
-                string dump = "----Dolphin Config Kinect Input----";
+                string dump = "----Timespan Config Kinect Input----";
                 return ""; 
             }
         }

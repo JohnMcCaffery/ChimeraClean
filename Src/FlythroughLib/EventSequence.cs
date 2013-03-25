@@ -72,7 +72,8 @@ namespace Chimera.Flythrough {
                     FlythroughEvent<T> old = mCurrentEvent;
                     mCurrentEvent = value;
                     mCurrentEvent.Time = 0;
-                    CurrentEventChange(old, value);
+                    if (CurrentEventChange != null)
+                        CurrentEventChange(old, value);
                 }
             }
         }

@@ -112,5 +112,10 @@ namespace Chimera.GUI.Controls {
         private void controlCursor_CheckedChanged(object sender, EventArgs e) {
             mWindow.Overlay.ControlPointer = controlCursor.Checked;
         }
+
+        private void restartButton_Click(object sender, EventArgs e) {
+            if (mWindow.Output != null)
+                mWindow.Output.Restart();
+        }
     }
 }

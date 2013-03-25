@@ -61,6 +61,14 @@ namespace Chimera {
         /// </summary>
         bool Launch();
 
+        /// <summary>
+        /// Close down the output.
+        /// </summary>
         void Close();
+
+        /// <summary>
+        /// Restart the output.
+        /// </summary>
+        void Restart();
     }
 }

@@ -252,13 +252,10 @@ namespace Chimera {
             mOverlayActive = cfg.LaunchOverlay;
             mOverlayFullscreen = cfg.Fullscreen;
             mControlPointer = cfg.ControlPointer;
-
-            if (cfg.LaunchOverlay)
-                Launch();
         }
 
         private void MoveCursorOffScreen() {
-                SystemCursor.Position = new Point(mWindow.Monitor.Bounds.X-10, mWindow.Monitor.Bounds.Y-10);
+                SystemCursor.Position = new Point(mWindow.Monitor.Bounds.X+mWindow.Monitor.Bounds.Width, mWindow.Monitor.Bounds.Y+mWindow.Monitor.Bounds.Height);
         }
 
         void mOverlayWindow_FormClosed(object sender, FormClosedEventArgs e) {

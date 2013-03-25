@@ -24,7 +24,7 @@
         /// </summary>
         private void InitializeComponent() {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(WindowPanel));
-            Chimera.Util.Rotation rotation2 = new Chimera.Util.Rotation();
+            Chimera.Util.Rotation rotation3 = new Chimera.Util.Rotation();
             this.mainTab = new System.Windows.Forms.TabControl();
             this.configTab = new System.Windows.Forms.TabPage();
             this.monitorPulldown = new System.Windows.Forms.ComboBox();
@@ -35,10 +35,11 @@
             this.orientationPanel = new Chimera.GUI.RotationPanel();
             this.topLeftPanel = new Chimera.GUI.VectorPanel();
             this.overlayTab = new System.Windows.Forms.TabPage();
+            this.controlCursor = new System.Windows.Forms.CheckBox();
             this.bringToFrontButtin = new System.Windows.Forms.Button();
             this.fullscreenCheck = new System.Windows.Forms.CheckBox();
             this.launchOverlayButton = new System.Windows.Forms.Button();
-            this.controlCursor = new System.Windows.Forms.CheckBox();
+            this.restartButton = new System.Windows.Forms.Button();
             this.mainTab.SuspendLayout();
             this.configTab.SuspendLayout();
             this.overlayTab.SuspendLayout();
@@ -52,13 +53,14 @@
             this.mainTab.Location = new System.Drawing.Point(0, 0);
             this.mainTab.Name = "mainTab";
             this.mainTab.SelectedIndex = 0;
-            this.mainTab.Size = new System.Drawing.Size(419, 315);
+            this.mainTab.Size = new System.Drawing.Size(474, 386);
             this.mainTab.TabIndex = 0;
             this.mainTab.KeyDown += new System.Windows.Forms.KeyEventHandler(this.mainTab_KeyDown);
             this.mainTab.KeyUp += new System.Windows.Forms.KeyEventHandler(this.mainTab_KeyUp);
             // 
             // configTab
             // 
+            this.configTab.Controls.Add(this.restartButton);
             this.configTab.Controls.Add(this.monitorPulldown);
             this.configTab.Controls.Add(this.label2);
             this.configTab.Controls.Add(this.label1);
@@ -69,7 +71,7 @@
             this.configTab.Location = new System.Drawing.Point(4, 22);
             this.configTab.Name = "configTab";
             this.configTab.Padding = new System.Windows.Forms.Padding(3);
-            this.configTab.Size = new System.Drawing.Size(411, 289);
+            this.configTab.Size = new System.Drawing.Size(466, 360);
             this.configTab.TabIndex = 0;
             this.configTab.Text = "Configuration";
             this.configTab.UseVisualStyleBackColor = true;
@@ -82,7 +84,7 @@
             this.monitorPulldown.FormattingEnabled = true;
             this.monitorPulldown.Location = new System.Drawing.Point(6, 244);
             this.monitorPulldown.Name = "monitorPulldown";
-            this.monitorPulldown.Size = new System.Drawing.Size(405, 21);
+            this.monitorPulldown.Size = new System.Drawing.Size(460, 21);
             this.monitorPulldown.TabIndex = 6;
             this.monitorPulldown.SelectedIndexChanged += new System.EventHandler(this.monitorPulldown_SelectedIndexChanged);
             // 
@@ -113,7 +115,7 @@
             this.heightPanel.Min = 0F;
             this.heightPanel.MinimumSize = new System.Drawing.Size(95, 20);
             this.heightPanel.Name = "heightPanel";
-            this.heightPanel.Size = new System.Drawing.Size(388, 20);
+            this.heightPanel.Size = new System.Drawing.Size(443, 20);
             this.heightPanel.TabIndex = 3;
             this.heightPanel.Value = 0F;
             this.heightPanel.ValueChanged += new System.Action<float>(this.heightPanel_Changed);
@@ -127,7 +129,7 @@
             this.widthPanel.Min = 0F;
             this.widthPanel.MinimumSize = new System.Drawing.Size(95, 20);
             this.widthPanel.Name = "widthPanel";
-            this.widthPanel.Size = new System.Drawing.Size(388, 20);
+            this.widthPanel.Size = new System.Drawing.Size(443, 20);
             this.widthPanel.TabIndex = 2;
             this.widthPanel.Value = 0F;
             this.widthPanel.ValueChanged += new System.Action<float>(this.widthPanel_Changed);
@@ -142,13 +144,13 @@
             this.orientationPanel.Name = "orientationPanel";
             this.orientationPanel.Pitch = 0D;
             this.orientationPanel.Quaternion = ((OpenMetaverse.Quaternion)(resources.GetObject("orientationPanel.Quaternion")));
-            this.orientationPanel.Size = new System.Drawing.Size(408, 95);
+            this.orientationPanel.Size = new System.Drawing.Size(463, 95);
             this.orientationPanel.TabIndex = 1;
-            rotation2.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("rotation2.LookAtVector")));
-            rotation2.Pitch = 0D;
-            rotation2.Quaternion = ((OpenMetaverse.Quaternion)(resources.GetObject("rotation2.Quaternion")));
-            rotation2.Yaw = 0D;
-            this.orientationPanel.Value = rotation2;
+            rotation3.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("rotation3.LookAtVector")));
+            rotation3.Pitch = 0D;
+            rotation3.Quaternion = ((OpenMetaverse.Quaternion)(resources.GetObject("rotation3.Quaternion")));
+            rotation3.Yaw = 0D;
+            this.orientationPanel.Value = rotation3;
             this.orientationPanel.Yaw = 0D;
             // 
             // topLeftPanel
@@ -162,7 +164,7 @@
             this.topLeftPanel.MinimumSize = new System.Drawing.Size(103, 95);
             this.topLeftPanel.MinV = ((OpenMetaverse.Vector3)(resources.GetObject("topLeftPanel.MinV")));
             this.topLeftPanel.Name = "topLeftPanel";
-            this.topLeftPanel.Size = new System.Drawing.Size(411, 95);
+            this.topLeftPanel.Size = new System.Drawing.Size(466, 95);
             this.topLeftPanel.TabIndex = 0;
             this.topLeftPanel.Value = ((OpenMetaverse.Vector3)(resources.GetObject("topLeftPanel.Value")));
             this.topLeftPanel.X = 0F;
@@ -183,6 +185,17 @@
             this.overlayTab.TabIndex = 1;
             this.overlayTab.Text = "Overlay";
             this.overlayTab.UseVisualStyleBackColor = true;
+            // 
+            // controlCursor
+            // 
+            this.controlCursor.AutoSize = true;
+            this.controlCursor.Location = new System.Drawing.Point(7, 88);
+            this.controlCursor.Name = "controlCursor";
+            this.controlCursor.Size = new System.Drawing.Size(92, 17);
+            this.controlCursor.TabIndex = 4;
+            this.controlCursor.Text = "Control Cursor";
+            this.controlCursor.UseVisualStyleBackColor = true;
+            this.controlCursor.CheckedChanged += new System.EventHandler(this.controlCursor_CheckedChanged);
             // 
             // bringToFrontButtin
             // 
@@ -215,16 +228,20 @@
             this.launchOverlayButton.UseVisualStyleBackColor = true;
             this.launchOverlayButton.Click += new System.EventHandler(this.launchOverlayButton_Click);
             // 
-            // controlCursor
+            // restartButton
             // 
-            this.controlCursor.AutoSize = true;
-            this.controlCursor.Location = new System.Drawing.Point(7, 88);
-            this.controlCursor.Name = "controlCursor";
-            this.controlCursor.Size = new System.Drawing.Size(92, 17);
-            this.controlCursor.TabIndex = 4;
-            this.controlCursor.Text = "Control Cursor";
-            this.controlCursor.UseVisualStyleBackColor = true;
-            this.controlCursor.CheckedChanged += new System.EventHandler(this.controlCursor_CheckedChanged);
+            this.restartButton.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.restartButton.BackColor = System.Drawing.Color.Red;
+            this.restartButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 27.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.restartButton.Location = new System.Drawing.Point(6, 271);
+            this.restartButton.Name = "restartButton";
+            this.restartButton.Size = new System.Drawing.Size(454, 83);
+            this.restartButton.TabIndex = 7;
+            this.restartButton.Text = "Restart";
+            this.restartButton.UseVisualStyleBackColor = false;
+            this.restartButton.Click += new System.EventHandler(this.restartButton_Click);
             // 
             // WindowPanel
             // 
@@ -232,7 +249,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.mainTab);
             this.Name = "WindowPanel";
-            this.Size = new System.Drawing.Size(419, 315);
+            this.Size = new System.Drawing.Size(474, 386);
             this.mainTab.ResumeLayout(false);
             this.configTab.ResumeLayout(false);
             this.configTab.PerformLayout();
@@ -258,5 +275,6 @@
         private Chimera.GUI.ScalarPanel widthPanel;
         private System.Windows.Forms.ComboBox monitorPulldown;
         private System.Windows.Forms.CheckBox controlCursor;
+        private System.Windows.Forms.Button restartButton;
     }
 }

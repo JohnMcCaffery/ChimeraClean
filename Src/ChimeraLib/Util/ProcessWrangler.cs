@@ -326,7 +326,6 @@ namespace Chimera.Util {
         private static ICrashable sRoot;
         private static Form sForm;
         private static int sCurrentScreen = 0;
-        private static bool sAutoRestart;
 
         //Send a keyboard event
         [DllImport("User32.dll", EntryPoint = "SendMessage")]
@@ -434,17 +433,19 @@ namespace Chimera.Util {
             Application.EnableVisualStyles();
             sForm = form;
             sRoot = root;
-            if (!System.Diagnostics.Debugger.IsAttached) {
+            if (!Debugger.IsAttached) {
+            //if (true) {
+                Console.WriteLine("Listening for crashes.");
                 AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
-                Application.ThreadException += new System.Threading.ThreadExceptionEventHandler(Application_ThreadException);
+                Application.ThreadException += new ThreadExceptionEventHandler(Application_ThreadException);
                 try {
                     Application.Run(form);
                 } catch (Exception e) {
                     Console.WriteLine("Exception caught from GUI thread.");
                     HandleException(e);
                 }
-            }
-            Application.Run(form);
+            } else
+                Application.Run(form);
         }
 
         static void Application_ThreadException(object sender, System.Threading.ThreadExceptionEventArgs e) {
@@ -463,6 +464,12 @@ namespace Chimera.Util {
             Console.WriteLine(e.Message);
             Console.WriteLine(e.StackTrace);
             sRoot.OnCrash(e);
+            if (sRoot.AutoRestart) {
+                string entry = Assembly.GetEntryAssembly().Location;
+                string call = Assembly.GetCallingAssembly().Location;
+                string exe = Assembly.GetExecutingAssembly().Location;
+                InitProcess(Assembly.GetEntryAssembly().Location).Start();
+            }
             //throw e;
         }
     }

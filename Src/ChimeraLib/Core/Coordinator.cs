@@ -137,6 +137,10 @@ namespace Chimera {
         /// The length of each tick for any input that has an event loop.
         /// </summary>
         private int mTickLength;
+        /// <summary>
+        /// The object containing the configuration for the system.
+        /// </summary>
+        private CoordinatorConfig mConfig;
 
         private Chimera.Overlay.MainMenu mMainMenu;
 
@@ -189,22 +193,21 @@ namespace Chimera {
         /// Triggered every tick. Listen for this to keep time across the system.
         /// </summary>
         public event Action Tick;
-
         /// <summary>
         /// Initialise this input, specifying a collection of inputs to work with.
         /// </summary>
         /// <param name="inputs">The inputs which control the camera through this input.</param>
         public Coordinator(params ISystemInput[] inputs) {
-            CoordinatorConfig cfg = new CoordinatorConfig();
+            mConfig = new CoordinatorConfig();
 
             mInputs = new List<ISystemInput>(inputs);
-            mRotation = new Rotation(mRotationLock, cfg.Pitch, cfg.Yaw);
-            mPosition = cfg.Position;
-            mEyePosition = cfg.EyePosition;
-            mCrashLogFile = cfg.CrashLogFile;
-            mTickLength = cfg.TickLength;
-            mDefaultHeight = cfg.HeightmapDefault;
-            mHeightmap = new float[cfg.XRegions * 256, cfg.YRegions * 256];
+            mRotation = new Rotation(mRotationLock, mConfig.Pitch, mConfig.Yaw);
+            mPosition = mConfig.Position;
+            mEyePosition = mConfig.EyePosition;
+            mCrashLogFile = mConfig.CrashLogFile;
+            mTickLength = mConfig.TickLength;
+            mDefaultHeight = mConfig.HeightmapDefault;
+            mHeightmap = new float[mConfig.XRegions * 256, mConfig.YRegions * 256];
             
             for (int i = 0; i < mHeightmap.GetLength(0); i++) {
                 for (int j = 0; j < mHeightmap.GetLength(1); j++) {
@@ -436,13 +439,20 @@ namespace Chimera {
         /// Called when the input is to be disposed of.
         /// </summary>
         public void Close() {
-            foreach (var input in mInputs)
+            mAlive = false;
+            foreach (var input in mInputs) {
+                input.Enabled = false;
                 input.Close();
+            }
             foreach (var window in mWindows)
                 window.Close();
-            mAlive = false;
+
             if (Closed != null)
                 Closed(this, null);
+        }
+
+        public bool AutoRestart {
+            get { return mConfig.AutoRestart; }
         }
 
         public void OnCrash(Exception e) {
@@ -466,18 +476,20 @@ namespace Chimera {
 
             if (mWindows.Count > 0) {
                 dump += String.Format("{0}{0}--------Windows--------{0}", Environment.NewLine);
-                foreach (var window in mWindows)
+                foreach (var window in mWindows) {
                     try {
                         dump += Environment.NewLine + window.State;
                     } catch (Exception ex) {
                         dump += "Unable to get stats for input " + window.Name + ". " + ex.Message + Environment.NewLine;
                         dump += ex.StackTrace;
                     }
+                }
+                dump += Environment.NewLine;
             }
 
             if (mInputs.Count > 0) {
                 dump += String.Format("{0}{0}--------Inputs--------{0}", Environment.NewLine);
-                foreach (var input in mInputs)
+                foreach (var input in mInputs) {
                     if (input.Enabled)
                         try {
                             dump += Environment.NewLine + input.State;
@@ -486,6 +498,8 @@ namespace Chimera {
                             dump += ex.StackTrace;
                         } else
                         dump += Environment.NewLine + "--------" + input.Name + "--------" + Environment.NewLine + "Disabled";
+                }
+                dump += Environment.NewLine;
             }
 
             dump += String.Format("{0}{0}------------------------End of Crash Report------------------------{0}{0}", Environment.NewLine);

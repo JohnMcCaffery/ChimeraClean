@@ -48,9 +48,9 @@ namespace Chimera.Inputs {
         }
 
         public virtual bool Enabled {
-            get { return mEnabled; }
+            get { return mInput.Enabled; }
             set { 
-                mEnabled = value;
+                mInput.Enabled = value;
                 if (EnabledChanged != null)
                     EnabledChanged(this, value);
             }

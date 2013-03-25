@@ -90,7 +90,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="TimespanMovementInput.cs" />
     <Compile Include="DolphinMovementInput.cs" />
+    <Compile Include="GUI\TimespanMovementPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\TimespanMovementPanel.Designer.cs">
+      <DependentUpon>TimespanMovementPanel.cs</DependentUpon>
+    </Compile>
     <Compile Include="GUI\DolphinMovementPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -147,6 +154,9 @@
     <None Include="ClassDiagram1.cd" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="GUI\TimespanMovementPanel.resx">
+      <DependentUpon>TimespanMovementPanel.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="GUI\DolphinMovementPanel.resx">
       <DependentUpon>DolphinMovementPanel.cs</DependentUpon>
     </EmbeddedResource>

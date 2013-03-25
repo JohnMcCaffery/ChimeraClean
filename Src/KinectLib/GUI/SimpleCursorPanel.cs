@@ -26,20 +26,24 @@ namespace Chimera.Kinect.GUI {
 
             Anchor.Vector = new VectorUpdater(mInput.Anchor);
             HandR.Vector = new VectorUpdater(mInput.HandR);
+            HandL.Vector = new VectorUpdater(mInput.HandL);
             Width.Scalar = new ScalarUpdater(mInput.Width);
             Height.Scalar = new ScalarUpdater(mInput.Height);
-            WidthScale.Scalar = new ScalarUpdater(mInput.WidthScale);
-            HeightScale.Scalar = new ScalarUpdater(mInput.HeightScale);
+            LeftHandShift.Scalar = new ScalarUpdater(mInput.LeftHandShift);
             LeftShift.Scalar = new ScalarUpdater(mInput.LeftShift);
             UpShift.Scalar = new ScalarUpdater(mInput.UpShift);
             TopLeftX.Scalar = new ScalarUpdater(mInput.TopLeftX);
             TopLeftY.Scalar = new ScalarUpdater(mInput.TopLeftY);
             X.Scalar = new ScalarUpdater(mInput.X);
             Y.Scalar = new ScalarUpdater(mInput.Y);
-            ConstrainedX.Scalar = new ScalarUpdater(mInput.ConstrainedX);
-            ConstrainedY.Scalar = new ScalarUpdater(mInput.ConstrainedY);
-            RawX.Scalar = new ScalarUpdater(mInput.RawX);
-            RawY.Scalar = new ScalarUpdater(mInput.RawY);
+            ConstrainedXRight.Scalar = new ScalarUpdater(mInput.ConstrainedXRight);
+            ConstrainedYRight.Scalar = new ScalarUpdater(mInput.ConstrainedYRight);
+            ConstrainedXLeft.Scalar = new ScalarUpdater(mInput.ConstrainedXLeft);
+            ConstrainedYLeft.Scalar = new ScalarUpdater(mInput.ConstrainedYLeft);
+            RawXLeft.Scalar = new ScalarUpdater(mInput.RawXLeft);
+            RawYRight.Scalar = new ScalarUpdater(mInput.RawYRight);
+            RawXLeft.Scalar = new ScalarUpdater(mInput.RawXLeft);
+            RawYLeft.Scalar = new ScalarUpdater(mInput.RawYLeft);
 
             enabledCheck.Checked = mInput.Enabled;
 

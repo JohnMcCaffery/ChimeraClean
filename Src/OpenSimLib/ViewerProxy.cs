@@ -27,7 +27,6 @@ namespace Chimera.OpenSim {
         private ILog mLogger;
         protected Proxy mProxy;
         private bool mClientLoggedIn;
-        private bool mProxyStarted;
         private bool mControlCamera;
         private bool mAutoRestart;
         private UUID mSecureSessionID = UUID.Zero;
@@ -74,7 +73,7 @@ namespace Chimera.OpenSim {
         }
 
         public bool ProxyRunning {
-            get { return mProxyStarted; }
+            get { return mProxy != null; }
         }
 
         public bool ClientLoggedIn {
@@ -112,7 +111,7 @@ namespace Chimera.OpenSim {
             if (mConfig.ProxyLoginURI == null)
                 throw new Exception("Unable to start proxy. No login URI specified in the configuration.");
             if (mProxy != null)
-                mProxy.Stop();
+                CloseProxy();
             string file = AppDomain.CurrentDomain.SetupInformation.ConfigurationFile;
 
             string portArg = "--proxy-login-port=" + mConfig.ProxyPort;
@@ -130,16 +129,16 @@ namespace Chimera.OpenSim {
                 //}
 
                 mProxy.Start();
-                mProxyStarted = true;
             } catch (NullReferenceException e) {
                 Logger.Info("Unable to start proxy. " + e.Message);
+                mProxy = null;
                 return false;
             }
 
             if (OnProxyStarted != null)
                 OnProxyStarted(mProxy, null);
 
-            return mProxyStarted;
+            return true;
         }
 
         protected void InjectPacket(Packet p) {
@@ -156,11 +155,13 @@ namespace Chimera.OpenSim {
 
                 Thread shutdownThread = new Thread(() => {
                     int i = 0;
-                    while (mClientLoggedIn && i++ < 10) {
+                    while (mClientLoggedIn && i++ < 5) {
                         lock (processLock)
-                            Monitor.Wait(processLock, 1000);
-                        if (mClientLoggedIn)
+                            Monitor.Wait(processLock, 10000);
+                        if (mClientLoggedIn) {
+                            //ProcessWrangler.PressKey(mClient, "{ENTER}");
                             ProcessWrangler.PressKey(mClient, "q", true, false, false);
+                        }
                     }
                 });
                 shutdownThread.Name = "Viewer Shutdown Thread.";
@@ -310,7 +311,7 @@ namespace Chimera.OpenSim {
         public string State {
             get {
                 string dump = "-Viewer Proxy-" + Environment.NewLine;
-                if (mProxyStarted) {
+                if (mProxy != null) {
                     dump += "Running:" + Environment.NewLine;
                     dump += " Proxy: localhost:" + mConfig.ProxyPort + Environment.NewLine;
                     dump += " Endpoint: " + mConfig.ProxyLoginURI + Environment.NewLine;
@@ -342,6 +343,7 @@ namespace Chimera.OpenSim {
             mWindow = window;
             mWindow.Coordinator.CameraUpdated += ProcessChangeViewer;
             mWindow.Coordinator.EyeUpdated += ProcessEyeUpdate;
+            mWindow.Coordinator.Tick += new Action(Coordinator_Tick);
             mWindow.MonitorChanged += new Action<Chimera.Window,Screen>(mWindow_MonitorChanged);
             mFullscreen = mConfig.Fullscreen;
 
@@ -352,6 +354,11 @@ namespace Chimera.OpenSim {
 
             AutoRestart = mConfig.AutoRestartViewer;
             ControlCamera = mConfig.ControlCamera;
+        }
+
+        void Coordinator_Tick() {
+            if (mClientLoggedIn && DateTime.Now.Minute % 5 == 0 && DateTime.Now.Second % 60 == 0)
+                ProcessWrangler.PressKey(mClient, "{ENTER}");
         }
 
         public bool Launch() {
@@ -388,16 +395,42 @@ namespace Chimera.OpenSim {
 
         public void Close() {
             mAutoRestart = false;
-            bool started = mProxyStarted;
-            mProxyStarted = false;
-            if (started) {
-                mProxy.Stop();
-                mProxy = null;
-            }
+            CloseProxy();
             if (mClientLoggedIn)
                 CloseViewer();
         }
 
+        public void Restart() {
+            if (mClientLoggedIn) {
+                /*
+                ProcessWrangler.PressKey(mClient, "q", true, false, false);
+
+                Thread shutdownThread = new Thread(() => {
+                    int i = 0;
+                    while (mClientLoggedIn && i++ < 5) {
+                        lock (processLock)
+                            Monitor.Wait(processLock, 3000);
+                        if (mClientLoggedIn) {
+                            ProcessWrangler.PressKey(mClient, "{ENTER}");
+                            ProcessWrangler.PressKey(mClient, "q", true, false, false);
+                        }
+                    }
+                });*/
+                CloseViewer();
+                Thread.Sleep(1000);
+                CloseProxy();
+                Thread.Sleep(1000);
+                Launch();
+            }
+        }
+
         #endregion
+
+        private void CloseProxy() {
+            if (mProxy != null) {
+                mProxy.Stop();
+                mProxy = null;
+            }
+        }
     }
 }

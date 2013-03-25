@@ -54,10 +54,12 @@ namespace Chimera.GUI {
                     if (ValueChanged != null)
                         ValueChanged(this, null);
                 });
-                if (InvokeRequired)
-                    Invoke(change);
-                else
-                    change();
+                if (!IsDisposed && !Disposing) {
+                    if (InvokeRequired && Created)
+                        Invoke(change);
+                    else if (!InvokeRequired)
+                        change();
+                }
             }
         }
 

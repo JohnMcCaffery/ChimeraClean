@@ -8,23 +8,24 @@ using System.Text;
 using System.Windows.Forms;
 using OpenMetaverse;
 using Chimera.GUI;
+using NuiLibDotNet;
 
 namespace Chimera.Kinect.GUI {
-    public partial class DolphinMovementPanel : UserControl {
-        private DolphinMovementInput mInput;
+    public partial class TimespanMovementPanel : UserControl {
+        private TimespanMovementInput mInput;
         private bool mGuiInput, mExternalInput;
 
-        public DolphinMovementPanel() {
+        public TimespanMovementPanel() {
             InitializeComponent();
             valuePanel.Text = "Deltas (Y = yaw)";
         }
 
-        public DolphinMovementPanel(DolphinMovementInput input)
+        public TimespanMovementPanel(TimespanMovementInput input)
             : this() {
             Init(input);
         }
 
-        public void Init(DolphinMovementInput input) {
+        public void Init(TimespanMovementInput input) {
             mInput = input;
 
             walkVal.Scalar = new ScalarUpdater(mInput.WalkVal);
@@ -35,18 +36,21 @@ namespace Chimera.Kinect.GUI {
             walkScale.Scalar = new ScalarUpdater(mInput.WalkScale);
             walkThreshold.Scalar = new ScalarUpdater(mInput.WalkThreshold);
 
+            ArmR.Vector = new VectorUpdater(mInput.ArmR);
+            ArmL.Vector = new VectorUpdater(mInput.ArmL);
             flyVal.Scalar = new ScalarUpdater(mInput.FlyVal);
-            flyAngleR.Scalar = new ScalarUpdater(mInput.FlyAngleR * (float) (180 / Math.PI));
-            flyAngleL.Scalar = new ScalarUpdater(mInput.FlyAngleL * (float) (180 / Math.PI));
-            constrainedFlyAngleR.Scalar = new ScalarUpdater(mInput.ConstrainedFlyAngleR * (float) (180 / Math.PI));
-            constrainedFlyAngleL.Scalar = new ScalarUpdater(mInput.ConstrainedFlyAngleL * (float) (180 / Math.PI));
+            flyAngleR.Scalar = new ScalarUpdater(Nui.acos(mInput.FlyAngleR) * (float) (180 / Math.PI));
+            flyAngleL.Scalar = new ScalarUpdater(Nui.acos(mInput.FlyAngleL) * (float) (180 / Math.PI));
+            constrainedFlyAngleR.Scalar = new ScalarUpdater(mInput.ConstrainedFlyAngleR);
+            constrainedFlyAngleL.Scalar = new ScalarUpdater(mInput.ConstrainedFlyAngleL);
             flyScale.Scalar = new ScalarUpdater(mInput.FlyScale);
             flyThreshold.Scalar = new ScalarUpdater(mInput.FlyThreshold);
             flyMax.Scalar = new ScalarUpdater(mInput.FlyMax);
             flyTimer.Scalar = new ScalarUpdater(mInput.FlyTimer);
             flyMin.Scalar = new ScalarUpdater(mInput.FlyMin);
 
-            yawLean.Scalar = new ScalarUpdater(mInput.YawLean * (float) (180 / Math.PI));
+            yawLean.Scalar = new ScalarUpdater(Nui.acos(mInput.YawLean) * (float) (180 / Math.PI));
+            yawTwist.Scalar = new ScalarUpdater(mInput.YawTwist);
             yawValue.Scalar = new ScalarUpdater(mInput.Yaw);
             yawScale.Scalar = new ScalarUpdater(mInput.YawScale);
             yawThreshold.Scalar = new ScalarUpdater(mInput.YawThreshold);
@@ -64,10 +68,10 @@ namespace Chimera.Kinect.GUI {
                 valuePanel.Value = delta;
             };
 
-            HandleCreated += new EventHandler(DolphinMovementPanel_HandleCreated);
+            HandleCreated += new EventHandler(TimespanMovementPanel_HandleCreated);
         }
 
-        void DolphinMovementPanel_HandleCreated(object sender, EventArgs e) {
+        void TimespanMovementPanel_HandleCreated(object sender, EventArgs e) {
             enabled.Checked = mInput.Enabled;
             flyEnabled.Checked = mInput.FlyEnabled;
             walkEnabled.Checked = mInput.WalkEnabled;
