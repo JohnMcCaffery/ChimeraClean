@@ -15,6 +15,7 @@ namespace Chimera.Flythrough.GUI {
 
         public MoveToPanel() {
             InitializeComponent();
+            Disposed += new EventHandler(MoveToPanel_Disposed);
         }
 
         public MoveToPanel(MoveToEvent evt)
@@ -35,13 +36,23 @@ namespace Chimera.Flythrough.GUI {
                 mEvent.Container.Coordinator.Update(mEvent.Target, Vector3.Zero, mEvent.Container.Coordinator.Orientation, Rotation.Zero);
             };
             lengthValue.ValueChanged += (source, args) => mEvent.Length = (int)lengthValue.Value;
-            evt.TimeChange += (source, args) => {
-                if (!IsDisposed)
-                    Invoke(new Action(() => {
-                        progressBar.Maximum = evt.Length;
-                        progressBar.Value = evt.Time;
-                    }));
-            };
+            mChangeListener = new Action<FlythroughEvent<Vector3>,int>(evt_TimeChange);
+            mEvent.TimeChange += mChangeListener;
+        }
+
+        private Action<FlythroughEvent<Vector3>, int> mChangeListener;
+
+        void MoveToPanel_Disposed(object sender, EventArgs e) {
+            //mEvent.TimeChange -= evt_TimeChange;
+            mEvent.TimeChange -= mChangeListener;
+        }
+
+        private void evt_TimeChange(FlythroughEvent<Vector3> evt, int time) {
+            if (!IsDisposed && !Disposing && Created)
+                Invoke(new Action(() => {
+                    progressBar.Maximum = evt.Length;
+                    progressBar.Value = evt.Time;
+                }));
         }
 
         private void moveToTakeCurrentButton_Click(object sender, EventArgs e) {

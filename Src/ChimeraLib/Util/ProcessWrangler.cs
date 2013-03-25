@@ -326,7 +326,6 @@ namespace Chimera.Util {
         private static ICrashable sRoot;
         private static Form sForm;
         private static int sCurrentScreen = 0;
-        private static bool sAutoRestart;
 
         //Send a keyboard event
         [DllImport("User32.dll", EntryPoint = "SendMessage")]
@@ -439,14 +438,12 @@ namespace Chimera.Util {
                 Console.WriteLine("Listening for crashes.");
                 AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
                 Application.ThreadException += new ThreadExceptionEventHandler(Application_ThreadException);
-                //try {
+                try {
                     Application.Run(form);
-                /*
                 } catch (Exception e) {
                     Console.WriteLine("Exception caught from GUI thread.");
                     HandleException(e);
                 }
-                */
             } else
                 Application.Run(form);
         }
@@ -467,6 +464,12 @@ namespace Chimera.Util {
             Console.WriteLine(e.Message);
             Console.WriteLine(e.StackTrace);
             sRoot.OnCrash(e);
+            if (sRoot.AutoRestart) {
+                string entry = Assembly.GetEntryAssembly().Location;
+                string call = Assembly.GetCallingAssembly().Location;
+                string exe = Assembly.GetExecutingAssembly().Location;
+                InitProcess(Assembly.GetEntryAssembly().Location).Start();
+            }
             //throw e;
         }
     }

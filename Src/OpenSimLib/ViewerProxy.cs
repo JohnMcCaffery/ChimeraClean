@@ -27,7 +27,6 @@ namespace Chimera.OpenSim {
         private ILog mLogger;
         protected Proxy mProxy;
         private bool mClientLoggedIn;
-        private bool mProxyStarted;
         private bool mControlCamera;
         private bool mAutoRestart;
         private UUID mSecureSessionID = UUID.Zero;
@@ -74,7 +73,7 @@ namespace Chimera.OpenSim {
         }
 
         public bool ProxyRunning {
-            get { return mProxyStarted; }
+            get { return mProxy != null; }
         }
 
         public bool ClientLoggedIn {
@@ -112,7 +111,7 @@ namespace Chimera.OpenSim {
             if (mConfig.ProxyLoginURI == null)
                 throw new Exception("Unable to start proxy. No login URI specified in the configuration.");
             if (mProxy != null)
-                mProxy.Stop();
+                CloseProxy();
             string file = AppDomain.CurrentDomain.SetupInformation.ConfigurationFile;
 
             string portArg = "--proxy-login-port=" + mConfig.ProxyPort;
@@ -130,16 +129,16 @@ namespace Chimera.OpenSim {
                 //}
 
                 mProxy.Start();
-                mProxyStarted = true;
             } catch (NullReferenceException e) {
                 Logger.Info("Unable to start proxy. " + e.Message);
+                mProxy = null;
                 return false;
             }
 
             if (OnProxyStarted != null)
                 OnProxyStarted(mProxy, null);
 
-            return mProxyStarted;
+            return true;
         }
 
         protected void InjectPacket(Packet p) {
@@ -158,9 +157,9 @@ namespace Chimera.OpenSim {
                     int i = 0;
                     while (mClientLoggedIn && i++ < 5) {
                         lock (processLock)
-                            Monitor.Wait(processLock, 3000);
+                            Monitor.Wait(processLock, 10000);
                         if (mClientLoggedIn) {
-                            ProcessWrangler.PressKey(mClient, "{ENTER}");
+                            //ProcessWrangler.PressKey(mClient, "{ENTER}");
                             ProcessWrangler.PressKey(mClient, "q", true, false, false);
                         }
                     }
@@ -312,7 +311,7 @@ namespace Chimera.OpenSim {
         public string State {
             get {
                 string dump = "-Viewer Proxy-" + Environment.NewLine;
-                if (mProxyStarted) {
+                if (mProxy != null) {
                     dump += "Running:" + Environment.NewLine;
                     dump += " Proxy: localhost:" + mConfig.ProxyPort + Environment.NewLine;
                     dump += " Endpoint: " + mConfig.ProxyLoginURI + Environment.NewLine;
@@ -396,11 +395,7 @@ namespace Chimera.OpenSim {
 
         public void Close() {
             mAutoRestart = false;
-            mProxyStarted = false;
-            if (mProxy != null) {
-                mProxy.Stop();
-                mProxy = null;
-            }
+            CloseProxy();
             if (mClientLoggedIn)
                 CloseViewer();
         }
@@ -423,13 +418,19 @@ namespace Chimera.OpenSim {
                 });*/
                 CloseViewer();
                 Thread.Sleep(1000);
-                mProxy.Stop();
-                mProxy = null;
+                CloseProxy();
                 Thread.Sleep(1000);
                 Launch();
             }
         }
 
         #endregion
+
+        private void CloseProxy() {
+            if (mProxy != null) {
+                mProxy.Stop();
+                mProxy = null;
+            }
+        }
     }
 }

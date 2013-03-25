@@ -15,6 +15,8 @@ namespace Chimera.Inputs {
         private bool mEnabled;
         private bool mMouseOnScreen;
 
+        public event Action<int, int> MouseMoved;
+
         public MouseInput() {
             InputConfig cfg = new InputConfig();
             mEnabled = cfg.MouseEnabled;
@@ -23,6 +25,9 @@ namespace Chimera.Inputs {
         void coordinator_Tick() {
             if (!mEnabled)
                 return;
+
+            if (MouseMoved != null)
+                MouseMoved(Cursor.Position.X, Cursor.Position.Y);
 
             foreach (var window in mCoordinator.Windows) {
                 Rectangle bounds = window.Monitor.Bounds;
@@ -56,7 +61,7 @@ namespace Chimera.Inputs {
         public UserControl ControlPanel {
             get {
                 if (mPanel == null)
-                    mPanel = new MouseInputPanel();
+                    mPanel = new MouseInputPanel(this);
                 return mPanel; 
             }
         }

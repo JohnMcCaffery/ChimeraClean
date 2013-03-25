@@ -16,7 +16,11 @@ namespace Chimera.GUI.Forms {
         private bool mGuiUpdate;
         private bool mEventUpdate;
         private Coordinator mCoordinator;
-        private Bitmap mHeightmap;
+        private Bitmap mHeightmap;
+        private Action<Coordinator, CameraUpdateEventArgs> mCameraUpdated;
+        private Action<Coordinator, EventArgs> mEyeUpdated;
+        private Action<Coordinator, KeyEventArgs> mClosed;
+        private EventHandler<HeightmapChangedEventArgs> mHeightmapChanged;
 
         public CoordinatorForm() {
             InitializeComponent();
@@ -32,10 +36,15 @@ namespace Chimera.GUI.Forms {
 
             Disposed += new EventHandler(CoordinatorForm_Disposed);
 
-            mCoordinator.CameraUpdated += mCoordinator_CameraUpdated;
-            mCoordinator.EyeUpdated += mCoordinator_EyeUpdated;
-            mCoordinator.Closed += mCoordinator_Closed;
-            mCoordinator.HeightmapChanged += mCoordinator_HeightmapChanged;
+            mCameraUpdated = new Action<Coordinator, CameraUpdateEventArgs>(mCoordinator_CameraUpdated);
+            mEyeUpdated = new Action<Coordinator, EventArgs>(mCoordinator_EyeUpdated);
+            mClosed = new Action<Coordinator, KeyEventArgs>(mCoordinator_Closed);
+            mHeightmapChanged = new EventHandler<HeightmapChangedEventArgs>(mCoordinator_HeightmapChanged);
+
+            mCoordinator.CameraUpdated += mCameraUpdated;
+            mCoordinator.EyeUpdated += mEyeUpdated;
+            mCoordinator.Closed += mClosed;
+            mCoordinator.HeightmapChanged += mHeightmapChanged;
 
             Rotation orientation = new Rotation(mCoordinator.Orientation);
             virtualPositionPanel.Value = mCoordinator.Position;
@@ -114,10 +123,10 @@ namespace Chimera.GUI.Forms {
         }
 
         private void CoordinatorForm_Disposed(object sender, EventArgs e) {
-            mCoordinator.CameraUpdated -= mCoordinator_CameraUpdated;
-            mCoordinator.EyeUpdated -= mCoordinator_EyeUpdated;
-            mCoordinator.Closed -= mCoordinator_Closed;
-            mCoordinator.HeightmapChanged -= mCoordinator_HeightmapChanged;
+            mCoordinator.CameraUpdated -= mCameraUpdated;
+            mCoordinator.EyeUpdated -= mEyeUpdated;
+            mCoordinator.Closed -= mClosed;
+            mCoordinator.HeightmapChanged -= mHeightmapChanged;
         }
 
         private Thread mHeightmapUpdateThread;

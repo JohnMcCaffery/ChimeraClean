@@ -8,6 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using OpenMetaverse;
 using Chimera.GUI;
+using NuiLibDotNet;
 
 namespace Chimera.Kinect.GUI {
     public partial class TimespanMovementPanel : UserControl {
@@ -35,18 +36,21 @@ namespace Chimera.Kinect.GUI {
             walkScale.Scalar = new ScalarUpdater(mInput.WalkScale);
             walkThreshold.Scalar = new ScalarUpdater(mInput.WalkThreshold);
 
+            ArmR.Vector = new VectorUpdater(mInput.ArmR);
+            ArmL.Vector = new VectorUpdater(mInput.ArmL);
             flyVal.Scalar = new ScalarUpdater(mInput.FlyVal);
-            flyAngleR.Scalar = new ScalarUpdater(mInput.FlyAngleR * (float) (180 / Math.PI));
-            flyAngleL.Scalar = new ScalarUpdater(mInput.FlyAngleL * (float) (180 / Math.PI));
-            constrainedFlyAngleR.Scalar = new ScalarUpdater(mInput.ConstrainedFlyAngleR * (float) (180 / Math.PI));
-            constrainedFlyAngleL.Scalar = new ScalarUpdater(mInput.ConstrainedFlyAngleL * (float) (180 / Math.PI));
+            flyAngleR.Scalar = new ScalarUpdater(Nui.acos(mInput.FlyAngleR) * (float) (180 / Math.PI));
+            flyAngleL.Scalar = new ScalarUpdater(Nui.acos(mInput.FlyAngleL) * (float) (180 / Math.PI));
+            constrainedFlyAngleR.Scalar = new ScalarUpdater(mInput.ConstrainedFlyAngleR);
+            constrainedFlyAngleL.Scalar = new ScalarUpdater(mInput.ConstrainedFlyAngleL);
             flyScale.Scalar = new ScalarUpdater(mInput.FlyScale);
             flyThreshold.Scalar = new ScalarUpdater(mInput.FlyThreshold);
             flyMax.Scalar = new ScalarUpdater(mInput.FlyMax);
             flyTimer.Scalar = new ScalarUpdater(mInput.FlyTimer);
             flyMin.Scalar = new ScalarUpdater(mInput.FlyMin);
 
-            yawLean.Scalar = new ScalarUpdater(mInput.YawLean * (float) (180 / Math.PI));
+            yawLean.Scalar = new ScalarUpdater(Nui.acos(mInput.YawLean) * (float) (180 / Math.PI));
+            yawTwist.Scalar = new ScalarUpdater(mInput.YawTwist);
             yawValue.Scalar = new ScalarUpdater(mInput.Yaw);
             yawScale.Scalar = new ScalarUpdater(mInput.YawScale);
             yawThreshold.Scalar = new ScalarUpdater(mInput.YawThreshold);

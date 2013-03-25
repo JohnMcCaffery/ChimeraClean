@@ -221,6 +221,7 @@ namespace Chimera.Kinect {
         }
 
         public void Close() {
+            Nui.SetAutoPoll(false);
             //Nui.Close();
         }
 

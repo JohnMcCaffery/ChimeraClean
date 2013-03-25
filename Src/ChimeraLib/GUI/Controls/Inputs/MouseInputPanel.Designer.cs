@@ -23,18 +23,32 @@
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent() {
+            this.positionLabel = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
-            // MouseInput
+            // positionLabel
+            // 
+            this.positionLabel.AutoSize = true;
+            this.positionLabel.Location = new System.Drawing.Point(3, 0);
+            this.positionLabel.Name = "positionLabel";
+            this.positionLabel.Size = new System.Drawing.Size(24, 13);
+            this.positionLabel.TabIndex = 0;
+            this.positionLabel.Text = "X,Y";
+            // 
+            // MouseInputPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Name = "MouseInput";
+            this.Controls.Add(this.positionLabel);
+            this.Name = "MouseInputPanel";
             this.Size = new System.Drawing.Size(460, 432);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
         #endregion
+
+        private System.Windows.Forms.Label positionLabel;
     }
 }

@@ -19,18 +19,18 @@ namespace Chimera.Launcher {
             if (cfg.LaunchServer) {
                 sServerExe = cfg.ServerExe;
                 sServerProcess = ProcessWrangler.InitProcess(sServerExe);
-                if (cfg.AutoRestart)
-                    sServerProcess.Exited += sServerProcess_Exited;
+                //if (cfg.AutoRestart)
+                    //sServerProcess.Exited += sServerProcess_Exited;
                 sServerProcess.Start();
 
-                Thread.Sleep(60 * 1000);
+                Thread.Sleep(15 * 1000);
             }
 
             //sProxyExe = typeof(ChimeraLauncher).Assembly.Location;
             sProxyExe = cfg.ProxyExe;
             sProxyProcess = ProcessWrangler.InitProcess(sProxyExe);
-                if (cfg.AutoRestart)
-                    sProxyProcess.Exited += sProxyProcess_Exited;
+                //if (cfg.AutoRestart)
+                    //sProxyProcess.Exited += sProxyProcess_Exited;
             sProxyProcess.Start();
 
             Thread input = new Thread(() => {
