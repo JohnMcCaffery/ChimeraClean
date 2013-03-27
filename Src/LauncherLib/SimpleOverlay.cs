@@ -575,6 +575,10 @@ namespace Chimera.GUI.Forms {
         internal void SetCursor(Cursor cursor) {
             Invoke(new Action(() => Cursor = cursor));
         }
+
+        private void SimpleOverlay_FormClosing(object sender, FormClosingEventArgs e) {
+            SimpleOverlay_Disposed(sender, e);
+        }
     }
     public class SimpleOverlayWindowFactory : IOverlayWindowFactory {
         public IOverlayWindow Make(OverlayController controller) {

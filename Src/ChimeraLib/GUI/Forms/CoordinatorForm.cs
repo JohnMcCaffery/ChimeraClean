@@ -137,13 +137,13 @@ namespace Chimera.GUI.Forms {
 
         private void mCoordinator_HeightmapChanged(object source, HeightmapChangedEventArgs args) {
             lock (mHeightmapUpdates) {
+                mHeightmapUpdates.Enqueue(args);
                 //If there's no thread
                 if (mHeightmapUpdateThread == null) {
                     mHeightmapUpdateThread = new Thread(HeightmapUpdateThread);
                     mHeightmapUpdateThread.Name = "Heightmap update thread.";
                     mHeightmapUpdateThread.Start();
-                } else
-                    mHeightmapUpdates.Enqueue(args);
+                }
             }
         }
 
@@ -160,7 +160,6 @@ namespace Chimera.GUI.Forms {
 
                 int w = e.Heights.GetLength(0);
                 int h = e.Heights.GetLength(1);
-                //Rectangle affectedRect = new Rectangle(e.StartX, e.StartY, w, h);
                 Rectangle affectedRect = new Rectangle(0, 0, mHeightmap.Width, mHeightmap.Height);
                 BitmapData dat = mHeightmap.LockBits(affectedRect, ImageLockMode.WriteOnly, PixelFormat.Format24bppRgb);
                 int bytesPerPixel = 3;
@@ -175,13 +174,9 @@ namespace Chimera.GUI.Forms {
                         float floatVal = ((float) byte.MaxValue) * (height / 100f);
                         byte val = (byte) floatVal;
 
-                        //int i = (y * w * bytesPerPixel) + (x * bytesPerPixel);
-                        //int i = ((y + e.StartY) * mHeightmap.Width * bytesPerPixel) + ((x + e.StartX) * bytesPerPixel);
                         rgbValues[i++] = val;
                         rgbValues[i++] = val;
                         rgbValues[i++] = val;
-                        Console.WriteLine("{0:0000},{1:0000} ({4:000}) = {2:00.000} / {3:000} / {5}", x + e.StartX, y + e.StartY, height, val, i, i + 2, floatVal);
-                        //mHeightmap.SetPixel(x + e.StartX, (mHeightmap.Height - 1) - (y + e.StartY), Color.FromArgb(val, val, val));
                     }
                 }
                 Marshal.Copy(rgbValues, 0, dat.Scan0, rgbValues.Length);
