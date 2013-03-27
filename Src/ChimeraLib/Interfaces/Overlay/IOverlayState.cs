@@ -2,16 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Chimera.Overlay;
 
-namespace Chimera {
+namespace Chimera.Interfaces.Overlay {
     public interface IState {
 
-        Chimera.IWindowState[] WindowStates {
+        IWindowState[] WindowStates {
             get;
             set;
         }
 
-        Chimera.StateTransition[] Transitions {
+        StateTransition[] Transitions {
             get;
             set;
         }

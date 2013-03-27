@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Chimera.Interfaces.Overlay;
 
-namespace Chimera {
+namespace Chimera.Overlay {
     public abstract class WindowState : IWindowState {
-        public Chimera.IDrawable[] Features {
+        public IDrawable[] Features {
             get {
                 throw new System.NotImplementedException();
             }

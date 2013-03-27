@@ -18,21 +18,18 @@
       <FileName>Core\Window.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Chimera.StateManager">
+  <Class Name="Chimera.Overlay.StateManager">
     <Position X="7" Y="6.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
-      <FileName>OverlayManager.cs</FileName>
+      <FileName>Overlay\OverlayManager.cs</FileName>
     </TypeIdentifier>
-    <ShowAsCollectionAssociation>
-      <Property Name="States" />
-    </ShowAsCollectionAssociation>
   </Class>
-  <Class Name="Chimera.WindowOverlayManager">
+  <Class Name="Chimera.Overlay.WindowOverlayManager">
     <Position X="10.5" Y="6.75" Width="2" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>WindowOverlayManager.cs</FileName>
+      <FileName>Overlay\WindowOverlayManager.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="OverlayWindow" />
@@ -45,100 +42,87 @@
       <FileName>GUI\Forms\OverlayWindow.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Chimera.StateTransition">
+  <Class Name="Chimera.Overlay.StateTransition">
     <Position X="10.75" Y="4.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AgAAAABAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>StateTransition.cs</FileName>
+      <FileName>Overlay\StateTransition.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="From" />
       <Property Name="To" />
     </ShowAsAssociation>
-    <ShowAsCollectionAssociation>
-      <Property Name="WindowTransitions" />
-    </ShowAsCollectionAssociation>
   </Class>
-  <Class Name="Chimera.WindowState">
+  <Class Name="Chimera.Overlay.WindowState">
     <Position X="13" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAEAAAAAAAAAAAAAABAAAAAAAAAAAAAABAAAAAAAA=</HashCode>
-      <FileName>WindowState.cs</FileName>
+      <FileName>Overlay\WindowState.cs</FileName>
     </TypeIdentifier>
-    <ShowAsCollectionAssociation>
-      <Property Name="Features" />
-    </ShowAsCollectionAssociation>
     <Lollipop Position="0.2" />
   </Class>
-  <Class Name="Chimera.State">
+  <Class Name="Chimera.Overlay.State">
     <Position X="15.25" Y="0.5" Width="2" />
     <TypeIdentifier>
       <HashCode>AAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgACAAAAAA=</HashCode>
-      <FileName>State.cs</FileName>
+      <FileName>Overlay\State.cs</FileName>
     </TypeIdentifier>
-    <ShowAsAssociation>
-      <Field Name="mWindowStateFactory" />
-    </ShowAsAssociation>
     <Lollipop Position="0.2" />
   </Class>
-  <Interface Name="Chimera.IState">
+  <Interface Name="Chimera.Interfaces.Overlay.IState">
     <Position X="7.25" Y="4.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgACAAAAAA=</HashCode>
-      <FileName>IOverlayState.cs</FileName>
+      <FileName>Interfaces\Overlay\IOverlayState.cs</FileName>
     </TypeIdentifier>
-    <ShowAsCollectionAssociation>
-      <Property Name="WindowStates" />
-      <Property Name="Transitions" />
-    </ShowAsCollectionAssociation>
   </Interface>
-  <Interface Name="Chimera.IDrawable">
+  <Interface Name="Chimera.Interfaces.Overlay.IDrawable">
     <Position X="9" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>IDrawable.cs</FileName>
+      <FileName>Interfaces\Overlay\IDrawable.cs</FileName>
     </TypeIdentifier>
   </Interface>
-  <Interface Name="Chimera.ITrigger">
+  <Interface Name="Chimera.Interfaces.Overlay.ITrigger">
     <Position X="13.25" Y="4.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>ITrigger.cs</FileName>
+      <FileName>Interfaces\Overlay\ITrigger.cs</FileName>
     </TypeIdentifier>
   </Interface>
-  <Interface Name="Chimera.IWindowState">
+  <Interface Name="Chimera.Interfaces.Overlay.IWindowState">
     <Position X="7.25" Y="2.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>IWindowState.cs</FileName>
+      <FileName>Interfaces\Overlay\IWindowState.cs</FileName>
     </TypeIdentifier>
   </Interface>
-  <Interface Name="Chimera.IWindowTransition">
+  <Interface Name="Chimera.Interfaces.Overlay.IWindowTransition">
     <Position X="10.75" Y="2.25" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>IWindowTransition.cs</FileName>
+      <FileName>Interfaces\Overlay\IWindowTransition.cs</FileName>
     </TypeIdentifier>
   </Interface>
-  <Interface Name="Chimera.IStateFactory">
+  <Interface Name="Chimera.Interfaces.Overlay.IStateFactory">
     <Position X="15.5" Y="2.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>IStateFactory.cs</FileName>
+      <FileName>Interfaces\Overlay\IStateFactory.cs</FileName>
     </TypeIdentifier>
   </Interface>
-  <Interface Name="Chimera.IStateTransitionFactory">
+  <Interface Name="Chimera.Interfaces.Overlay.IStateTransitionFactory">
     <Position X="15.25" Y="4" Width="2" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>IStateTransitionFactory.cs</FileName>
+      <FileName>Interfaces\Overlay\IStateTransitionFactory.cs</FileName>
     </TypeIdentifier>
   </Interface>
-  <Interface Name="Chimera.IWindowStateFactory">
+  <Interface Name="Chimera.Interfaces.Overlay.IWindowStateFactory">
     <Position X="13" Y="2.25" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>IWindowStateFactory.cs</FileName>
+      <FileName>Interfaces\Overlay\IWindowStateFactory.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Font Name="Segoe UI" Size="9" />

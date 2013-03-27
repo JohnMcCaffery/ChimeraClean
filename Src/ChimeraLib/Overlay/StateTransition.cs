@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Chimera.Interfaces.Overlay;
 
-namespace Chimera {
+namespace Chimera.Overlay {
     public interface IStateTransition {
         IState From {
             get;
@@ -15,7 +16,7 @@ namespace Chimera {
             set;
         }
 
-        Chimera.IWindowTransition[] WindowTransitions {
+        IWindowTransition[] WindowTransitions {
             get;
             set;
         }
@@ -27,7 +28,7 @@ namespace Chimera {
     }
 
     public class StateTransition {
-        public Chimera.IWindowTransition[] WindowTransitions {
+        public IWindowTransition[] WindowTransitions {
             get {
                 throw new System.NotImplementedException();
             }

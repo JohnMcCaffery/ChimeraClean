@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Chimera {
-    public interface IDrawable {
+namespace Chimera.Interfaces.Overlay {
+    public interface IStateFactory {
     }
 }

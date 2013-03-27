@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Chimera.Interfaces.Overlay;
 
-namespace Chimera {
+namespace Chimera.Overlay {
     public abstract class State : IState {
         /// <summary>
         /// Factory used to create new WindowState objects for each window in the system.

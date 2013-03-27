@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Chimera.Interfaces.Overlay;
 
-namespace Chimera {
-    public class WindowOverlayManager {
-        public Chimera.GUI.Forms.OverlayWindow OverlayWindow {
+namespace Chimera.Overlay {
+    public class StateManager {
+        public IState[] States {
             get {
                 throw new System.NotImplementedException();
             }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Chimera {
-    public interface IStateFactory {
+namespace Chimera.Interfaces.Overlay {
+    public interface IWindowStateFactory {
     }
 }
