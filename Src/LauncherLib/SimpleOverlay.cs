@@ -12,6 +12,7 @@ using NuiLibDotNet;
 using OpenMetaverse;
 using Chimera.Util;
 using Chimera.Launcher;
+using Chimera.Overlay.Selectors;
 
 namespace Chimera.GUI.Forms {
     public partial class SimpleOverlay : Form, IOverlayWindow {
@@ -124,6 +125,8 @@ namespace Chimera.GUI.Forms {
         //private Bitmap mCathedralHelpImage = new Bitmap("../Images/CaenHelp.png");
         private Bitmap mCathedralHelpImage = new Bitmap("../Images/CathedralHelp.png");
 
+        private ISelectionRenderer mClickRenderer;
+
         /// <summary>
         /// Whether to go full screen.
         /// </summary>
@@ -163,7 +166,7 @@ namespace Chimera.GUI.Forms {
         /// <param name="input">The input to link this form with.</param>
         public void Init(OverlayController controller) {
             mController = controller;
-            mController.Window.Coordinator.EnableUpdates = false;
+            mController.ControlPointer = true;
 
             TopMost = true;
             StartPosition = FormStartPosition.Manual;
@@ -192,15 +195,23 @@ namespace Chimera.GUI.Forms {
             mGoInWorldHelp.Selected += new Action<ISelectable>(mGoInWorldHelp_Selected);
             mGoInWorldHelp.Active = false;
 
+            mClickRenderer = new CursorSelector(this, mController.Window);
+
             mGoInWorld.Init(mController.Window);
             mGoInWorldHelp.Init(mController.Window);
             mGoMainMenu.Init(mController.Window);
 
-            mController.Window.Coordinator.Tick += Coordinator_Tick;
-            mController.HelpTriggered += mController_HelpTriggered;
-            mController.Window.Coordinator.EnableUpdates = false;
+            mCoordinatorTick = new Action(Coordinator_Tick);
+            mHelpTriggered = new Action(mController_HelpTriggered);
+            mNuiTick = new ChangeDelegate(Nui_Tick);
+
+            Nui.Tick += mNuiTick;
+            mController.Window.Coordinator.Tick += mCoordinatorTick;
+            mController.HelpTriggered += mHelpTriggered;
 
             Disposed += new EventHandler(SimpleOverlay_Disposed);
+
+            mController.Window.Coordinator.EnableUpdates = false;
 
             mLeftHand = Nui.joint(Nui.Hand_Left);
             mRightHand = Nui.joint(Nui.Hand_Right);
@@ -220,7 +231,6 @@ namespace Chimera.GUI.Forms {
             mCentreShoulder = Nui.joint(Nui.Shoulder_Centre);
             mHead = Nui.joint(Nui.Head);
 
-            Nui.Tick += Nui_Tick;
             Nui.SkeletonSwitched += new SkeletonTrackDelegate(Nui_SkeletonSwitched);
             Nui.SkeletonLost += new SkeletonTrackDelegate(Nui_SkeletonLost);
             Nui.SkeletonFound += new SkeletonTrackDelegate(Nui_SkeletonFound);
@@ -228,6 +238,10 @@ namespace Chimera.GUI.Forms {
 
             mFlythrough = mController.Window.Coordinator.GetInput<Flythrough.Flythrough>();
         }
+
+        private Action mCoordinatorTick;
+        private Action mHelpTriggered;
+        private ChangeDelegate mNuiTick;
 
         void SimpleOverlay_HandleCreated(object sender, EventArgs e) {
             if (mConfig.EnableMenus)
@@ -266,9 +280,9 @@ namespace Chimera.GUI.Forms {
         }        
 
         void SimpleOverlay_Disposed(object sender, EventArgs e) {
-            Nui.Tick -= Nui_Tick;
-            mController.Window.Coordinator.Tick -= Coordinator_Tick;
-            mController.HelpTriggered -= mController_HelpTriggered;
+            Nui.Tick -= mNuiTick;
+            mController.Window.Coordinator.Tick -= mCoordinatorTick;
+            mController.HelpTriggered -= mHelpTriggered;
         }
 
         public void Foreground() {
@@ -310,6 +324,9 @@ namespace Chimera.GUI.Forms {
                 mGoInWorldHelp.DrawDynamic(e.Graphics, e.ClipRectangle);
             if (mGoMainMenu.Active && mGoMainMenu.CurrentlyHovering)
                 mGoMainMenu.DrawDynamic(e.Graphics, e.ClipRectangle);
+
+            if (mClickRenderer != null)
+                mClickRenderer.DrawHover(e.Graphics, e.ClipRectangle, DateTime.Now, 100);
         }
 
         private Vector mLeftHand, mRightHand;
@@ -477,7 +494,7 @@ namespace Chimera.GUI.Forms {
             mGoInWorld.Active = false;
             mGoMainMenu.Active = false;
             mGoInWorldHelp.Active = false;
-            mController.ControlPointer = false;
+            //mController.ControlPointer = false;
 
             mCurrentStep = mSteps;
             mMinimizing = true;
@@ -529,7 +546,7 @@ namespace Chimera.GUI.Forms {
             mGoInWorldHelp.Active = false;
             mGoMainMenu.Active = false;
             mGoInWorld.Active = false;
-            mController.ControlPointer = false;
+            //mController.ControlPointer = false;
 
             Invoke(new Action(() => Opacity = mExploreOverlayOpacity));
 
@@ -549,6 +566,14 @@ namespace Chimera.GUI.Forms {
         private void SimpleOverlay_KeyUp(object sender, KeyEventArgs e) {
             mController.Window.Coordinator.TriggerKeyboard(false, e);
 
+        }
+
+        private void drawPanel_Click(object sender, EventArgs e) {
+            Console.WriteLine("Clicked");
+        }
+
+        internal void SetCursor(Cursor cursor) {
+            Invoke(new Action(() => Cursor = cursor));
         }
     }
     public class SimpleOverlayWindowFactory : IOverlayWindowFactory {

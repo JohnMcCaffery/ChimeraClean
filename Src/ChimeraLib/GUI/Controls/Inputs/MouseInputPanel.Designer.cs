@@ -24,6 +24,7 @@
         /// </summary>
         private void InitializeComponent() {
             this.positionLabel = new System.Windows.Forms.Label();
+            this.cursorHandleLabel = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // positionLabel
@@ -35,10 +36,20 @@
             this.positionLabel.TabIndex = 0;
             this.positionLabel.Text = "X,Y";
             // 
+            // cursorHandleLabel
+            // 
+            this.cursorHandleLabel.AutoSize = true;
+            this.cursorHandleLabel.Location = new System.Drawing.Point(6, 40);
+            this.cursorHandleLabel.Name = "cursorHandleLabel";
+            this.cursorHandleLabel.Size = new System.Drawing.Size(74, 13);
+            this.cursorHandleLabel.TabIndex = 1;
+            this.cursorHandleLabel.Text = "Cursor Handle";
+            // 
             // MouseInputPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.cursorHandleLabel);
             this.Controls.Add(this.positionLabel);
             this.Name = "MouseInputPanel";
             this.Size = new System.Drawing.Size(460, 432);
@@ -50,5 +61,6 @@
         #endregion
 
         private System.Windows.Forms.Label positionLabel;
+        private System.Windows.Forms.Label cursorHandleLabel;
     }
 }

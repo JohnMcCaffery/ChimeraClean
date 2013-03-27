@@ -36,6 +36,7 @@
             this.drawPanel.Size = new System.Drawing.Size(735, 595);
             this.drawPanel.TabIndex = 1;
             this.drawPanel.TabStop = false;
+            this.drawPanel.Click += new System.EventHandler(this.drawPanel_Click);
             this.drawPanel.Paint += new System.Windows.Forms.PaintEventHandler(this.drawPanel_Paint);
             // 
             // SimpleOverlay

@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using Chimera.Inputs;
+using Chimera.Util;
 
 namespace Chimera.GUI.Controls.Inputs {
     public partial class MouseInputPanel : UserControl {
@@ -38,7 +39,9 @@ namespace Chimera.GUI.Controls.Inputs {
         }
 
         private void mInput_MouseMoved(int x, int y) {
-            Invoke(new Action(() => positionLabel.Text = string.Format("{0,-4},{1,-4}", x, y)));
+            Invoke(new Action(() => {
+                positionLabel.Text = string.Format("{0,-4},{1,-4}", x, y);
+            }));
         }
     }
 }

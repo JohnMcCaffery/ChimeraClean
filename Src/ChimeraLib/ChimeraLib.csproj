@@ -165,7 +165,7 @@
     <Compile Include="Interfaces\ISelectionRenderer.cs" />
     <Compile Include="Overlay\MainMenu.cs" />
     <Compile Include="Overlay\MainMenuItem.cs" />
-    <Compile Include="Overlay\NumberSelectionRenderer.cs" />
+    <Compile Include="Overlay\Selectors\NumberSelectionRenderer.cs" />
     <Compile Include="Overlay\SelectableArea.cs" />
     <Compile Include="Overlay\TestState.cs" />
     <Compile Include="Overlay\WindowOverlay.cs" />
