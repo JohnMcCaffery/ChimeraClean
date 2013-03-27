@@ -102,7 +102,8 @@ namespace Chimera.GUI.Forms {
         /// <summary>
         /// The flythrough to load whilst nothing else is happening.
         /// </summary>
-        private string mIntroFlythrough = "../Caen-long.xml";
+        //private string mIntroFlythrough = "../Caen-long.xml";
+        private string mIntroFlythrough = "../CathedralFlythrough-LookAt.xml";
         /// <summary>
         /// The flythrough controller.
         /// </summary>
@@ -115,13 +116,13 @@ namespace Chimera.GUI.Forms {
         /// <summary>
         /// The main menu image.
         /// </summary>
-        private Bitmap mMainMenuImage = new Bitmap("../Images/CaenSplashScreen.png");
-        //private Bitmap mMainMenuImage = new Bitmap("../Images/CathedralSplashScreen.png");
+        //private Bitmap mMainMenuImage = new Bitmap("../Images/CaenSplashScreen.png");
+        private Bitmap mMainMenuImage = new Bitmap("../Images/CathedralSplashScreen.png");
         /// <summary>
         /// The help image.
         /// </summary>
-        private Bitmap mCathedralHelpImage = new Bitmap("../Images/CaenHelp.png");
-        //private Bitmap mCathedralHelpImage = new Bitmap("../Images/CathedralHelp.png");
+        //private Bitmap mCathedralHelpImage = new Bitmap("../Images/CaenHelp.png");
+        private Bitmap mCathedralHelpImage = new Bitmap("../Images/CathedralHelp.png");
 
         /// <summary>
         /// Whether to go full screen.
@@ -175,16 +176,19 @@ namespace Chimera.GUI.Forms {
             mCathedralHelpImage = new Bitmap(mCathedralHelpImage, s);
 
             mGoInWorldRender = new NumberSelectionRenderer();
-            mGoInWorld = new InvisibleSelection(mGoInWorldRender, 155f / 1920, 220f / 1080, (555f-155f) / 1920, (870f - 220f) / 1080);
+            //mGoInWorld = new InvisibleSelection(mGoInWorldRender, 155f / 1920, 220f / 1080, (555f - 155f) / 1920, (870f - 220f) / 1080);
+            mGoInWorld = new InvisibleSelection(mGoInWorldRender, 265f / 1920, 255f / 1080, (675f - 255f) / 1920, (900f - 255f) / 1080);
             mGoInWorld.Selected += new Action<ISelectable>(mGoInWorld_Selected);
 
             mGoMainMenuRender = new NumberSelectionRenderer();
-            mGoMainMenu = new InvisibleSelection(mGoMainMenuRender, 70f / 1920, 65f / 1080, (490f-70f) / 1920, (300f - 65f) / 1080);
+            //mGoMainMenu = new InvisibleSelection(mGoMainMenuRender, 70f / 1920, 65f / 1080, (490f - 70f) / 1920, (300f - 65f) / 1080);
+            mGoMainMenu = new InvisibleSelection(mGoMainMenuRender, 70f / 1920, 65f / 1080, (490f - 70f) / 1920, (300f - 65f) / 1080);
             mGoMainMenu.Selected += new Action<ISelectable>(mGoMainMenu_Selected);
             mGoMainMenu.Active = false;
 
             mGoInWorldHelpRender = new NumberSelectionRenderer();
-            mGoInWorldHelp = new InvisibleSelection(mGoInWorldHelpRender, 55f / 1920, 515f / 1080, (330f-55f) / 1920, (950f - 515f) / 1080);
+            //mGoInWorldHelp = new InvisibleSelection(mGoInWorldHelpRender, 55f / 1920, 515f / 1080, (330f - 55f) / 1920, (950f - 515f) / 1080);
+            mGoInWorldHelp = new InvisibleSelection(mGoInWorldHelpRender, 60f / 1920, 520f / 1080, (335f - 60f) / 1920, (945f - 520f) / 1080);
             mGoInWorldHelp.Selected += new Action<ISelectable>(mGoInWorldHelp_Selected);
             mGoInWorldHelp.Active = false;
 
@@ -238,7 +242,8 @@ namespace Chimera.GUI.Forms {
         }
 
         void Nui_SkeletonLost() {
-            mSkeletonLost = DateTime.Now;
+            mSkeletonLost = DateTime.Now;
+
             switch (mSkeletonCount++ % 3) {
                 case 0: mSkeletonColour = Color.Red; break;
                 case 1: mSkeletonColour = Color.Green; break;
