@@ -151,7 +151,7 @@ namespace Chimera.OpenSim.GUI {
         private void connectButton_Click(object sender, EventArgs e) {
             if (proxy == null)
                 return;
-            if (proxyStartButton.Text.Equals("Start Proxy")) {
+            if (proxyStartButton.Text.Equals("Begin Proxy")) {
                 if (proxy.ProxyRunning)
                     proxy.Close();
                 string file = AppDomain.CurrentDomain.SetupInformation.ConfigurationFile;
@@ -167,7 +167,7 @@ namespace Chimera.OpenSim.GUI {
             } else if (proxy != null) {
                 proxy.Close();
 
-                proxyStartButton.Text = "Start Proxy";
+                proxyStartButton.Text = "Begin Proxy";
                 proxyStatusLabel.Text = "Stopped";
 
                 portBox.Enabled = true;

@@ -12,5 +12,13 @@ namespace Chimera.GUI.Forms {
         public OverlayWindow() {
             InitializeComponent();
         }
+
+        public Chimera.Overlay.WindowOverlayManager WindowOverlayManager {
+            get {
+                throw new System.NotImplementedException();
+            }
+            set {
+            }
+        }
     }
 }

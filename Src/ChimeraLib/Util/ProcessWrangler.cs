@@ -878,7 +878,7 @@ namespace Chimera.Util {
             ///</summary>
             BROWSER_FAVORITES = 0xAB,
             ///<summary>
-            ///Windows 2000/XP: Browser Start and Home key
+            ///Windows 2000/XP: Browser Begin and Home key
             ///</summary>
             BROWSER_HOME = 0xAC,
             ///<summary>
@@ -910,7 +910,7 @@ namespace Chimera.Util {
             ///</summary>
             MEDIA_PLAY_PAUSE = 0xB3,
             ///<summary>
-            ///Windows 2000/XP: Start Mail key
+            ///Windows 2000/XP: Begin Mail key
             ///</summary>
             LAUNCH_MAIL = 0xB4,
             ///<summary>
@@ -918,11 +918,11 @@ namespace Chimera.Util {
             ///</summary>
             LAUNCH_MEDIA_SELECT = 0xB5,
             ///<summary>
-            ///Windows 2000/XP: Start Application 1 key
+            ///Windows 2000/XP: Begin Application 1 key
             ///</summary>
             LAUNCH_APP1 = 0xB6,
             ///<summary>
-            ///Windows 2000/XP: Start Application 2 key
+            ///Windows 2000/XP: Begin Application 2 key
             ///</summary>
             LAUNCH_APP2 = 0xB7,
             ///<summary>
@@ -1208,7 +1208,7 @@ namespace Chimera.Util {
         [DllImport("User32.dll", EntryPoint = "SendMessage")]
         public static extern int SendMEssage(int hWnd, int Msg, int wParam, int lParam);
 
-        //Trigger keyboard event
+        //CustomTrigger keyboard event
         [DllImport("user32.dll")]
         public static extern void keybd_event(byte bVk, byte bScan, uint dwFlags, uint dwExtraInfo);
 

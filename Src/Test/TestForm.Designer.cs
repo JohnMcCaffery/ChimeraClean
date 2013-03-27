@@ -149,7 +149,7 @@
             // 
             this.pointStartPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.pointStartPanel.Text = "Point Start";
+            this.pointStartPanel.Text = "Point Begin";
             this.pointStartPanel.Location = new System.Drawing.Point(478, 12);
             this.pointStartPanel.Max = 1024f;
             this.pointStartPanel.MaxV = ((OpenMetaverse.Vector3)(resources.GetObject("pointStartPanel.MaxV")));

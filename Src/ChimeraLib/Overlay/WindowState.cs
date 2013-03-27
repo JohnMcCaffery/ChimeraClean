@@ -6,6 +6,9 @@ using Chimera.Interfaces.Overlay;
 
 namespace Chimera.Overlay {
     public abstract class WindowState : IWindowState {
+        /// <summary>
+        /// Features which need to be drawn in the window.
+        /// </summary>
         public IDrawable[] Features {
             get {
                 throw new System.NotImplementedException();

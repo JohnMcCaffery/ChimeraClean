@@ -68,7 +68,7 @@ namespace ConsoleTest {
                 Thread t = new Thread(() => Application.Run(frame));
                 t.Name = "Frame Thread";
                 t.SetApartmentState(ApartmentState.STA);
-                t.Start();
+                t.Begin();
             };
 
             Action<Form, PointSurface> evt1 = (form, surface) => {

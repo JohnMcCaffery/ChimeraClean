@@ -242,7 +242,7 @@
             this.triggerHelpButton.Name = "triggerHelpButton";
             this.triggerHelpButton.Size = new System.Drawing.Size(248, 23);
             this.triggerHelpButton.TabIndex = 3;
-            this.triggerHelpButton.Text = "Trigger Help";
+            this.triggerHelpButton.Text = "CustomTrigger Help";
             this.triggerHelpButton.UseVisualStyleBackColor = true;
             this.triggerHelpButton.Click += new System.EventHandler(this.triggerHelpButton_Click);
             // 

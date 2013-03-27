@@ -89,7 +89,7 @@ namespace KinectLib {
             Vector pointEnd = Nui.joint(Nui.Hand_Right);
             mPointStart = Nui.joint(Nui.Shoulder_Right);
             mPointDir = mPointStart - pointEnd;
-            //mPointStart = Vector.Create("Point Start", 0f, 0f, 10f);
+            //mPointStart = Vector.Create("Point Begin", 0f, 0f, 10f);
             //mPointDir = Vector.Create("Point Dir", 0f, 0f, 1f);
         }
 

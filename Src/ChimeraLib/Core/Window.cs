@@ -217,6 +217,17 @@ namespace Chimera {
         }
 
         /// <summary>
+        /// The manager for the overlay for this window.
+        /// </summary>
+        public Chimera.Overlay.WindowOverlayManager OverlayManager {
+            get {
+                throw new System.NotImplementedException();
+            }
+            set {
+            }
+        }
+
+        /// <summary>
         /// Initialise the input, giving it a reference to the input it is linked to.
         /// </summary>
         /// <param name="input">The input object the input can control.</param>

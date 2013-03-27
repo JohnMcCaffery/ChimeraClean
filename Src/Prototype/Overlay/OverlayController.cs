@@ -190,7 +190,7 @@ namespace Chimera {
         }
 
         /// <summary>
-        /// Trigger the HelpTriggered event
+        /// CustomTrigger the HelpTriggered event
         /// </summary>
         public void TriggerHelp() {
             if (HelpTriggered != null)

@@ -218,7 +218,7 @@ namespace UtilLib {
         private object startLock = new object();
 
         /// <summary>
-        /// Start a client process to connect to the proxy. If the proxy is not already running it is started.
+        /// Begin a client process to connect to the proxy. If the proxy is not already running it is started.
         /// </summary>
         /// <returns>True if the client was successfully started</returns>
         public bool StartClient() {

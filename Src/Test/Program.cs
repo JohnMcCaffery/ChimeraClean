@@ -46,7 +46,7 @@ namespace Test {
 
             //Form = new TestForm(mPlaneTopLeft, mPlaneNormal, mTop, mSide, mPointStart, mPointDir, mIntersection, mW, mH, mX, mY);
             //Form form = new KinectMovementForm();
-            //form.Start();
+            //form.Begin();
             Form form = new KinectCursorForm(cursor, window);
             ProcessWrangler.BlockingRunForm(form, null);
         }

@@ -184,7 +184,7 @@
             this.positionStartButton.Name = "positionStartButton";
             this.positionStartButton.Size = new System.Drawing.Size(75, 23);
             this.positionStartButton.TabIndex = 20;
-            this.positionStartButton.Text = "Go To Start";
+            this.positionStartButton.Text = "Go To Begin";
             this.positionStartButton.UseVisualStyleBackColor = true;
             this.positionStartButton.Click += new System.EventHandler(this.positionStartButton_Click);
             // 
@@ -239,7 +239,7 @@
             this.orientationStartButton.Name = "orientationStartButton";
             this.orientationStartButton.Size = new System.Drawing.Size(75, 23);
             this.orientationStartButton.TabIndex = 22;
-            this.orientationStartButton.Text = "Go To Start";
+            this.orientationStartButton.Text = "Go To Begin";
             this.orientationStartButton.UseVisualStyleBackColor = true;
             this.orientationStartButton.Click += new System.EventHandler(this.orientationStartButton_Click);
             // 

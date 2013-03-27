@@ -122,7 +122,7 @@
             this.startButton.Name = "startButton";
             this.startButton.Size = new System.Drawing.Size(705, 23);
             this.startButton.TabIndex = 4;
-            this.startButton.Text = "Start";
+            this.startButton.Text = "Begin";
             this.startButton.UseVisualStyleBackColor = true;
             this.startButton.Click += new System.EventHandler(this.startButton_Click);
             // 
@@ -201,7 +201,7 @@
             this.triggerTab.Padding = new System.Windows.Forms.Padding(3);
             this.triggerTab.Size = new System.Drawing.Size(701, 494);
             this.triggerTab.TabIndex = 2;
-            this.triggerTab.Text = "Trigger";
+            this.triggerTab.Text = "CustomTrigger";
             this.triggerTab.UseVisualStyleBackColor = true;
             // 
             // KinectPanel

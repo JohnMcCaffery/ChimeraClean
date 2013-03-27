@@ -119,7 +119,7 @@ namespace Chimera.OpenSim.GUI {
             this.proxyStartButton.Name = "proxyStartButton";
             this.proxyStartButton.Size = new System.Drawing.Size(373, 20);
             this.proxyStartButton.TabIndex = 18;
-            this.proxyStartButton.Text = "Start Proxy";
+            this.proxyStartButton.Text = "Begin Proxy";
             this.proxyStartButton.UseVisualStyleBackColor = true;
             this.proxyStartButton.Click += new System.EventHandler(this.connectButton_Click);
             // 

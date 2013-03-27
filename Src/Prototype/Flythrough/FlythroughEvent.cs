@@ -170,7 +170,7 @@ namespace Chimera.Flythrough {
         }
 
         /// <summary>
-        /// Trigger the OnStart event.
+        /// CustomTrigger the OnStart event.
         /// </summary>
         private void TriggerOnStart() {
             if (OnStart != null)
@@ -178,7 +178,7 @@ namespace Chimera.Flythrough {
         }
 
         /// <summary>
-        /// Trigger the OnComplete event.
+        /// CustomTrigger the OnComplete event.
         /// </summary>
         private void TriggerOnComplete() {
             if (OnComplete != null)
@@ -186,7 +186,7 @@ namespace Chimera.Flythrough {
         }
 
         /// <summary>
-        /// Trigger the next step to happen. Returns true if there is another event to come. False otherwise.
+        /// CustomTrigger the next step to happen. Returns true if there is another event to come. False otherwise.
         /// </summary>
         public abstract bool Step();
 

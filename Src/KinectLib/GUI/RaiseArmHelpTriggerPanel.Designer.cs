@@ -180,13 +180,13 @@
             this.TriggerR.Text = "Right Triggered";
             this.TriggerR.UseVisualStyleBackColor = true;
             // 
-            // Trigger
+            // CustomTrigger
             // 
             this.Trigger.AutoSize = true;
             this.Trigger.Condition = null;
             this.Trigger.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Trigger.Location = new System.Drawing.Point(6, 227);
-            this.Trigger.Name = "Trigger";
+            this.Trigger.Name = "CustomTrigger";
             this.Trigger.Size = new System.Drawing.Size(80, 17);
             this.Trigger.TabIndex = 9;
             this.Trigger.Text = "Triggered";

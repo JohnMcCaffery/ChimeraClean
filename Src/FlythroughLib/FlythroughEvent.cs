@@ -219,7 +219,7 @@ namespace Chimera.Flythrough {
         }
 
         /// <summary>
-        /// Trigger the finish change event.
+        /// CustomTrigger the finish change event.
         /// </summary>
         protected void TriggerFinishChange(T finish) {
             if (FinishChange != null)
@@ -249,10 +249,10 @@ namespace Chimera.Flythrough {
         public virtual string State {
             get {
                 string dump = "";
-                dump += String.Format("  {1:-30} {2}{0}", Environment.NewLine, "Start Time:", mStartTime);
+                dump += String.Format("  {1:-30} {2}{0}", Environment.NewLine, "Begin Time:", mStartTime);
                 dump += String.Format("  {1:-30} {2}{0}", Environment.NewLine, "Length:", mLength);
                 dump += String.Format("  {1:-30} {2}{0}", Environment.NewLine, "Finish Time:", SequenceFinishTime);
-                dump += String.Format("  {1:-30} {2}{0}", Environment.NewLine, "Step Start Time:", mSequence == null ? 0 : mSequence.Length);
+                dump += String.Format("  {1:-30} {2}{0}", Environment.NewLine, "Step Begin Time:", mSequence == null ? 0 : mSequence.Length);
                 dump += String.Format("  {1:-30} {2}{0}", Environment.NewLine, "Current Time:", mTime);
                 dump += GetSpecificState();
                 return dump;

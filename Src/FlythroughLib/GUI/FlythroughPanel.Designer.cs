@@ -217,7 +217,7 @@
             // 
             this.startOrientationPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.startOrientationPanel.Text = "Start Orientation";
+            this.startOrientationPanel.Text = "Begin Orientation";
             this.startOrientationPanel.Location = new System.Drawing.Point(0, 133);
             this.startOrientationPanel.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("startOrientationPanel.LookAtVector")));
             this.startOrientationPanel.MinimumSize = new System.Drawing.Size(252, 95);
@@ -238,7 +238,7 @@
             // 
             this.startPositionPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.startPositionPanel.Text = "Start Position";
+            this.startPositionPanel.Text = "Begin Position";
             this.startPositionPanel.Location = new System.Drawing.Point(0, 3);
             this.startPositionPanel.Max = 1024f;
             this.startPositionPanel.MaxV = ((OpenMetaverse.Vector3)(resources.GetObject("startPositionPanel.MaxV")));
@@ -305,7 +305,7 @@
             this.startButton.Name = "startButton";
             this.startButton.Size = new System.Drawing.Size(37, 23);
             this.startButton.TabIndex = 17;
-            this.startButton.Text = "Start";
+            this.startButton.Text = "Begin";
             this.startButton.UseVisualStyleBackColor = true;
             this.startButton.Click += new System.EventHandler(this.startButton_Click);
             // 

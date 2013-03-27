@@ -20,6 +20,9 @@ namespace Chimera.Overlay {
             }
         }
 
+        /// <summary>
+        /// All the transitions for the state.
+        /// </summary>
         public StateTransition[] Transitions {
             get {
                 throw new NotImplementedException();

@@ -43,7 +43,7 @@ namespace Chimera.Kinect.GUI {
             yPanel.Max = mInput.ScreenH.Value;
             enabledCheck.Checked = mInput.Enabled;
 
-            pointStartPanel.Text = "Point Start";
+            pointStartPanel.Text = "Point Begin";
             pointDirPanel.Text = "Point Dir";
             topLeftPanel.Text = "Top Left";
             normalPanel.Text = "Normal";

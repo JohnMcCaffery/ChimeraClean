@@ -57,7 +57,7 @@ namespace Chimera {
         void Init(Window window);
 
         /// <summary>
-        /// Trigger the output application to launch.
+        /// CustomTrigger the output application to launch.
         /// </summary>
         bool Launch();
 

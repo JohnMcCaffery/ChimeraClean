@@ -5,5 +5,9 @@ using System.Text;
 
 namespace Chimera.Interfaces.Overlay {
     public interface IWindowState : IDrawable {
+        Chimera.Overlay.WindowOverlayManager WindowOverlayManager {
+            get;
+            set;
+        }
     }
 }

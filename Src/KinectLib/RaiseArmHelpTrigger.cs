@@ -42,7 +42,7 @@ namespace Chimera.Kinect {
             }
         }
 
-        public string Name { get { return "Raise Arm Help Trigger"; } }
+        public string Name { get { return "Raise Arm Help CustomTrigger"; } }
 
         public bool Enabled {
             get { return mEnabled; }

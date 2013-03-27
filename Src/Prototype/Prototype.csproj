@@ -316,6 +316,7 @@
     </None>
     <None Include="Flythrough\FlythroughDiagram.cd" />
     <None Include="Lib\ClassDiagram1.cd" />
+    <None Include="Overlay.cd" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ChimeraLib\ChimeraLib.csproj">

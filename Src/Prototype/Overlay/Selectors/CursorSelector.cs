@@ -36,7 +36,7 @@ namespace Chimera.Overlay.Selectors {
                 if (!mHovering) {
                     mHovering = true;
                     mEnter = DateTime.Now;
-                    Console.WriteLine("Hover Start");
+                    Console.WriteLine("Hover Begin");
                 }
                 mOverlay.Redraw();
                 if (DateTime.Now.Subtract(mEnter).TotalMilliseconds > mSelectMS) {

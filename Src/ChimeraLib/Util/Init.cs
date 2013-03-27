@@ -372,7 +372,7 @@ namespace Chimera.Util {
                     new Thread(() => {
                         Thread.Sleep(500);
                         m.StartMaster();
-                    }).Start();
+                    }).Begin();
             } else {
                 if (autostartMaster)
                     m.StartMaster();
@@ -432,7 +432,7 @@ namespace Chimera.Util {
                     new Thread(() => {
                         Thread.Sleep(500);
                         s.Connect();
-                    }).Start();
+                    }).Begin();
             } else {
                 if (autostartSlave)
                     s.Connect();
@@ -500,7 +500,7 @@ namespace Chimera.Util {
                     f.ShowDialog();
                 });
                 t.SetApartmentState(ApartmentState.STA);
-                t.Start();
+                t.Begin();
                 if (!started)
                     lock (createLock)
                         MonitorChanged.Wait(createLock);

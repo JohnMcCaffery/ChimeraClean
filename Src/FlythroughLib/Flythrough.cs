@@ -284,7 +284,7 @@ namespace Chimera.Flythrough {
                         DoTick(mEvents.Time + mCoordinator.TickLength, mEvents.CurrentEvent.Value);
                     else {
                         if (mLoop)
-                            DoTick(0, mEvents.Start);
+                            DoTick(0, mEvents.Begin);
                         else {
                             DoTick(mEvents.Length, mEvents.CurrentEvent.Value);
                             mPlaying = false;

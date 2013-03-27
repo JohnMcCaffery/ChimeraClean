@@ -135,7 +135,7 @@ namespace Chimera {
         private CoordinatorConfig mConfig;
 
         /// <summary>
-        /// Selected whenever a new input is added.
+        /// Triggered whenever a window is added.
         /// </summary>
         public event Action<Window, EventArgs> WindowAdded;
 
@@ -150,12 +150,12 @@ namespace Chimera {
         public event Action<Coordinator, EventArgs> EyeUpdated;
 
         /// <summary>
-        /// Selected whenever a key is pressed or released on the keyboard.
+        /// Triggered whenever a key is pressed or released on the keyboard.
         /// </summary>
         public event Action<Coordinator, KeyEventArgs> KeyDown;
 
         /// <summary>
-        /// Selected whenever a key is pressed or released on the keyboard.
+        /// Triggered whenever a key is pressed or released on the keyboard.
         /// </summary>
         public event Action<Coordinator, KeyEventArgs> KeyUp;
 
@@ -283,6 +283,9 @@ namespace Chimera {
             get { return mTickLength; }
         }
 
+        /// <summary>
+        /// Update a section of the heightmap.
+        /// </summary>
         public void SetHeightmapSection(float[,] section, int startX, int startY, bool regionCompleted) {
             for (int i = 0; i < section.GetLength(0); i++) {
                 for (int j = 0; j < section.GetLength(1); j++)
@@ -404,6 +407,9 @@ namespace Chimera {
             get { return mConfig.AutoRestart; }
         }
 
+        /// <summary>
+        /// Handle a crash event,
+        /// </summary>
         public void OnCrash(Exception e) {
             string dump = "Crash: " + DateTime.Now.ToString("u") + Environment.NewLine;
             dump += String.Format("{1}{0}{2}{0}{0}", Environment.NewLine, e.Message, e.StackTrace);
@@ -472,8 +478,21 @@ namespace Chimera {
         }
 
         /// <summary>
-        /// Selected whenever a new input is added.
+        /// Triggered whenever a window is removed.
         /// </summary>
         public event Action<Window, EventArgs> WindowRemoved;
+
+        /// <summary>
+        /// Generic mechanism for triggering events.
+        /// </summary>
+        public event System.Action<string> CustomTrigger;
+
+        /// <summary>
+        /// Trigger a custom event.
+        /// </summary>
+        /// <param name="custom">The string tied to the custom event.</param>
+        public void TriggerCustom(string custom) {
+            throw new System.NotImplementedException();
+        }
     }
 }

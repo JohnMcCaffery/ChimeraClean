@@ -223,7 +223,7 @@
             // 
             // pointStartPanel
             // 
-            this.pointStartPanel.Text = "Point Start";
+            this.pointStartPanel.Text = "Point Begin";
             this.pointStartPanel.Location = new System.Drawing.Point(3, 257);
             this.pointStartPanel.Max = 1024D;
             this.pointStartPanel.Min = -1024D;

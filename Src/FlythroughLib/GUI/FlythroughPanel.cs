@@ -41,7 +41,7 @@ namespace Chimera.Flythrough.GUI {
             loopCheck.Checked = mContainer.Loop;
 
             mStartEvt = new ComboEvent(mContainer);
-            mStartEvt.Name = "Start";
+            mStartEvt.Name = "Begin";
             eventsList.Items.Add(mStartEvt);
             mCurrentPanel = startPanel;
         }

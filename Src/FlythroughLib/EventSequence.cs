@@ -7,7 +7,7 @@ using System.Collections;
 namespace Chimera.Flythrough {
     /// <summary>
     /// Collection of events. Can be iterated over to play the sequence.
-    /// Iteration can involve the whole sequence of only events starting from Start.
+    /// Iteration can involve the whole sequence of only events starting from Begin.
     /// </summary>
     public class EventSequence<T> : IEnumerable<FlythroughEvent<T>> {
         /// <summary>

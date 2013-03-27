@@ -22,7 +22,7 @@ namespace Chimera {
         event Action<Coordinator, KeyEventArgs> KeyDown;
 
         /// <summary>
-        /// Trigger a key event.
+        /// CustomTrigger a key event.
         /// </summary>
         /// <param name="down">Whether the key is being pressed or released.</param>
         /// <param name="args">The argument for the key press.</param>
