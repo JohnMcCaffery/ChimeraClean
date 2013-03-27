@@ -6,10 +6,10 @@ using System.Text;
 namespace Chimera.Overlay {
     public class MainMenuItem {
         private string mWindowName = "Main Window";
-        private IOverlayState mState;
+        private IState mState;
         private ISelectable mOverlay;
 
-        public MainMenuItem(IOverlayState state, ISelectable overlay) {
+        public MainMenuItem(IState state, ISelectable overlay) {
             mState = state;
             mOverlay = overlay;
         }
@@ -24,7 +24,7 @@ namespace Chimera.Overlay {
         /// <summary>
         /// The state which this menu item launches.
         /// </summary>
-        public IOverlayState State {
+        public IState State {
             get { return mState; }
         }
 

@@ -18,7 +18,7 @@ namespace Chimera.Overlay {
         /// <summary>
         /// The state which has been selected.
         /// </summary>
-        private IOverlayState mSelectedState;
+        private IState mSelectedState;
         /// <summary>
         /// True if the main menu active. False if some other state has been entered.
         /// </summary>
@@ -50,9 +50,9 @@ namespace Chimera.Overlay {
 
         #region IOverlay Members
 
-        public event Action<IOverlayState> StateSelected;
+        public event Action<IState> StateSelected;
 
-        public IOverlayState SelectedState {
+        public IState SelectedState {
             get { return mSelectedState; }
         }
 
@@ -89,7 +89,7 @@ namespace Chimera.Overlay {
             mWindowOverlays[window.Name].DrawCursor(graphics, clipRectangle);
         }
 
-        public void SelectState(IOverlayState newState) {
+        public void SelectState(IState newState) {
             mMenuActive = false;
             mMinimizing = true;
             mCurrentStep = mSteps;
@@ -99,14 +99,14 @@ namespace Chimera.Overlay {
         }
 
         public void SelectMainMenu() {
-            mSelectedState.Deactivated += new Action<IOverlayState>(mSelectedState_Deactivated);
+            mSelectedState.Deactivated += new Action<IState>(mSelectedState_Deactivated);
             mSelectedState.Deactivate();
         }
 
-        private void mSelectedState_Deactivated(IOverlayState state) {
+        private void mSelectedState_Deactivated(IState state) {
             mMaximising = true;
             mCurrentStep = 0;
-            mSelectedState.Deactivated -= new Action<IOverlayState>(mSelectedState_Deactivated);
+            mSelectedState.Deactivated -= new Action<IState>(mSelectedState_Deactivated);
         }
 
 

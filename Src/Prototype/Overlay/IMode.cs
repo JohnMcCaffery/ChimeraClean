@@ -9,12 +9,12 @@ namespace Chimera {
         /// <summary>
         /// Triggered when this overlay window is activated.
         /// </summary>
-        event System.Action<IOverlayState> Activated;
+        event System.Action<IState> Activated;
 
         /// <summary>
         /// Triggered when this overlay window is de-activated. May be some time after the 'Deactivate' method is called.
         /// </summary>
-        event Action<IOverlayState> Deactivated;
+        event Action<IState> Deactivated;
 
         /// <summary>
         /// A multi line string that can be printed to file to store a record of window in the event of a crash.

@@ -5,15 +5,15 @@ using System.Text;
 using System.Drawing;
 
 namespace Chimera.Overlay {
-    public class TestState : Chimera.IOverlayState {
+    public class TestState : Chimera.IState {
         private int mXShift = 20, mYShift = 20;
         private bool mActive;
 
-        #region IOverlayState Members
+        #region From Members
 
-        public event Action<IOverlayState> Activated;
+        public event Action<IState> Activated;
 
-        public event Action<IOverlayState> Deactivated;
+        public event Action<IState> Deactivated;
 
         public string State {
             get { throw new NotImplementedException(); }

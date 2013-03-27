@@ -9,11 +9,11 @@ namespace Chimera {
         /// <summary>
         /// Triggered whenever the active window changes. First argument is the old window, second the new one.
         /// </summary>
-        event System.Action<Chimera.IOverlayState> StateSelected;
+        event System.Action<Chimera.IState> StateSelected;
         /// <summary>
         /// The current window the overlay is in.
         /// </summary>
-        IOverlayState SelectedState {
+        IState SelectedState {
             get;
         }
 
@@ -40,6 +40,6 @@ namespace Chimera {
         /// Set the currently active window.
         /// </summary>
         /// <param name="newState">The new window.</param>
-        void SelectState(IOverlayState newState);
+        void SelectState(IState newState);
     }
 }

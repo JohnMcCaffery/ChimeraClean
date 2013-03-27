@@ -104,14 +104,14 @@ namespace Chimera.Overlay {
             });
         }
 
-        public  void DrawState(IOverlayState state, Graphics graphics, Rectangle clipRectangle) {
+        public  void DrawState(IState state, Graphics graphics, Rectangle clipRectangle) {
             Draw(graphics, clipRectangle, overlayGraphics => {
                 state.DrawDynamic(overlayGraphics, clipRectangle, mWindow);
                 mThumbnailSelectable.DrawDynamic(overlayGraphics, clipRectangle);
             });
         }
 
-        public  void DrawInBetween(IOverlayState state, double scale, Graphics graphics, Rectangle clipRectangle) {
+        public  void DrawInBetween(IState state, double scale, Graphics graphics, Rectangle clipRectangle) {
             Draw(graphics, clipRectangle, overlayGraphics => {
                 Size s = new Size(clipRectangle.Width, (int) (clipRectangle.Height * scale));
                 //Point p = new Point(clipRectangle.Width - s.Width, 0);

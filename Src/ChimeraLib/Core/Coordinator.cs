@@ -470,5 +470,10 @@ namespace Chimera {
                 throw new ArgumentException("Unable to get input. No input of the specified type (" + t.FullName + ") found.");
             return (T)ret;
         }
+
+        /// <summary>
+        /// Selected whenever a new input is added.
+        /// </summary>
+        public event Action<Window, EventArgs> WindowRemoved;
     }
 }
