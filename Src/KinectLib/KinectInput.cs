@@ -246,9 +246,9 @@ namespace Chimera.Kinect {
         }
 
         private void helpTrigger_Triggered(IHelpTrigger trigger) {
-            if (trigger.Enabled)
-                foreach (var window in mCoordinator.Windows)
-                    window.Overlay.TriggerHelp();
+            //if (trigger.Enabled)
+                //foreach (var window in mCoordinator.Windows)
+                    //window.Overlay.TriggerHelp();
         }
 
         private void movement_Change(IDeltaInput input) {
@@ -271,8 +271,8 @@ namespace Chimera.Kinect {
         }
 
         private void cursor_CursorMove(IKinectCursor cursor, float x, float y) {
-            if (mEnabled && Nui.HasSkeleton)
-                cursor.Window.Overlay.UpdateCursor(x, y);
+            //if (mEnabled && Nui.HasSkeleton)
+                //cursor.Window.Overlay.UpdateCursor(x, y);
         }
     }
 }

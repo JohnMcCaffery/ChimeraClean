@@ -52,10 +52,6 @@ namespace Chimera {
         /// Whether to use mouse control when the window first starts up.
         /// </summary>
         private bool mMouseControl = false;
-        /// <summary>
-        /// The object that handles all details of how the overlay works.
-        /// </summary>
-        private OverlayController mOverlayController;
 
         /// <summary>
         /// Triggered whenever the position of this input changes.
@@ -72,7 +68,7 @@ namespace Chimera {
         /// </summary>
         /// <param name="name">The name this input is known by within the system.</param>
         /// <param name="overlayAreas">The overlay areas mapped to this input.</param>
-        public Window(string name, params ISelectable[] overlayAreas) {
+        public Window(string name) {
             mName = name;
 
             WindowConfig cfg = new WindowConfig(name);
@@ -82,7 +78,6 @@ namespace Chimera {
             mHeight = cfg.Height;
             mTopLeft = cfg.TopLeft;
             mOrientation = new Rotation(cfg.Pitch, cfg.Yaw);
-            mOverlayController = new OverlayController();
 
             mOrientation.Changed += mOrientation_Changed;
 
@@ -95,8 +90,8 @@ namespace Chimera {
         /// </summary>
         /// <param name="name">The name this input is known by within the system.</param>
         /// <param name="overlayAreas">The overlay areas mapped to this input.</param>
-        public Window(string name, IOutput output, params ISelectable[] overlayAreas)
-            : this(name, overlayAreas) {
+        public Window(string name, IOutput output)
+            : this(name) {
             mOutput = output;
         }
 
@@ -221,10 +216,6 @@ namespace Chimera {
             }
         }
 
-        public OverlayController Overlay {
-            get { return mOverlayController; }
-        }
-
         /// <summary>
         /// Initialise the input, giving it a reference to the input it is linked to.
         /// </summary>
@@ -234,11 +225,6 @@ namespace Chimera {
             if (mOutput != null)
                 mOutput.Init(this);
 
-            mOverlayController.Init(this);
-        }
-
-        public void SetWindow(IOverlayWindow window) {
-            mOverlayController = new OverlayController();
         }
 
         /// <summary>
@@ -247,7 +233,6 @@ namespace Chimera {
         public void Close() {
             if (mOutput != null)
                 mOutput.Close();
-            mOverlayController.Close();
         }
 
         /// <summary>

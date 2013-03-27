@@ -276,9 +276,9 @@ namespace Chimera.GUI.Forms {
         }
 
         private void triggerHelpButton_Click(object sender, EventArgs e) {
-            if (mCoordinator != null)
-                foreach (var window in mCoordinator.Windows)
-                    window.Overlay.TriggerHelp();
+            //if (mCoordinator != null)
+                //foreach (var window in mCoordinator.Windows)
+                    //window.Overlay.TriggerHelp();
         }
 
         private void heightmapPanel_Paint(object sender, PaintEventArgs e) {

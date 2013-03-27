@@ -28,10 +28,10 @@ namespace Chimera.GUI.Controls {
             heightPanel.Value = (float) window.Height / 10f;
             topLeftPanel.Value = window.TopLeft / 10f;
             orientationPanel.Value = window.Orientation;
-            controlCursor.Checked = mWindow.Overlay.ControlPointer;
+            //controlCursor.Checked = mWindow.Overlay.ControlPointer;
 
-            mWindow.Overlay.OverlayClosed += new EventHandler(mWindow_OverlayClosed);
-            mWindow.Overlay.OverlayLaunched += new EventHandler(mWindow_OverlayLaunched);
+            //mWindow.Overlay.OverlayClosed += new EventHandler(mWindow_OverlayClosed);
+            //mWindow.Overlay.OverlayLaunched += new EventHandler(mWindow_OverlayLaunched);
 
             foreach (var screen in Screen.AllScreens) {
                 monitorPulldown.Items.Add(screen);
@@ -50,10 +50,12 @@ namespace Chimera.GUI.Controls {
 
                 mainTab.Controls.Add(tab);
             }
+            /*
             if (mWindow.Overlay.OverlayVisible) {
                 launchOverlayButton.Text =  "Close Overlay";
                 mWindow.Overlay.Launch();
             }
+            */
         }
 
         void mWindow_OverlayLaunched(object sender, EventArgs e) {
@@ -80,6 +82,7 @@ namespace Chimera.GUI.Controls {
         }
 
         private void launchOverlayButton_Click(object sender, EventArgs e) {
+            /*
             if (launchOverlayButton.Text == "Launch Overlay") {
                 mWindow.Overlay.Launch();
                 launchOverlayButton.Text = "Close Overlay";
@@ -87,14 +90,15 @@ namespace Chimera.GUI.Controls {
                 mWindow.Overlay.Close();
                 launchOverlayButton.Text = "Launch Overlay";
             }
+            */
         }
 
         private void bringToFrontButtin_Click(object sender, EventArgs e) {
-            mWindow.Overlay.ForegroundOverlay();
+            //mWindow.Overlay.ForegroundOverlay();
         }
 
         private void showBordersTextBox_CheckedChanged(object sender, EventArgs e) {
-            mWindow.Overlay.OverlayFullscreen = fullscreenCheck.Checked;
+            //mWindow.Overlay.OverlayFullscreen = fullscreenCheck.Checked;
         }
 
         private void positionPanel_ValueChanged(object sender, EventArgs e) {
@@ -110,7 +114,7 @@ namespace Chimera.GUI.Controls {
         }
 
         private void controlCursor_CheckedChanged(object sender, EventArgs e) {
-            mWindow.Overlay.ControlPointer = controlCursor.Checked;
+            //mWindow.Overlay.ControlPointer = controlCursor.Checked;
         }
 
         private void restartButton_Click(object sender, EventArgs e) {

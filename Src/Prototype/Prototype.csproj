@@ -217,6 +217,35 @@
     <Compile Include="Lib\SetCameraPropertiesPacket.cs" />
     <Compile Include="Lib\Window.cs" />
     <Compile Include="Master\ArmadilloMaster.cs" />
+    <Compile Include="Overlay\BoxSelection.cs" />
+    <Compile Include="Overlay\IMode.cs" />
+    <Compile Include="Overlay\IOverlay.cs" />
+    <Compile Include="Overlay\IOverlayArea.cs" />
+    <Compile Include="Overlay\IOverlayWindow.cs" />
+    <Compile Include="Overlay\ISelectionRenderer.cs" />
+    <Compile Include="Overlay\Selectors\CursorSelector.cs" />
+    <Compile Include="Overlay\ImageSelection.cs" />
+    <Compile Include="Overlay\InvisibleSelection.cs" />
+    <Compile Include="Overlay\MainMenu.cs" />
+    <Compile Include="Overlay\MainMenuItem.cs" />
+    <Compile Include="Overlay\OverlayController.cs" />
+    <Compile Include="Overlay\OverlayWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Overlay\OverlayWindow.Designer.cs">
+      <DependentUpon>OverlayWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Overlay\SelectableArea.cs" />
+    <Compile Include="Overlay\Selectors\NumberSelectionRenderer.cs" />
+    <Compile Include="Overlay\SimpleOverlay.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Overlay\SimpleOverlay.Designer.cs">
+      <DependentUpon>SimpleOverlay.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Overlay\SimpleOverlayConfig.cs" />
+    <Compile Include="Overlay\TestState.cs" />
+    <Compile Include="Overlay\WindowOverlay.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Slave\ArmadilloSlave.cs" />
   </ItemGroup>
@@ -273,6 +302,12 @@
     <EmbeddedResource Include="GuiLib\Forms\SlaveForm.resx">
       <DependentUpon>SlaveForm.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Overlay\OverlayWindow.resx">
+      <DependentUpon>OverlayWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Overlay\SimpleOverlay.resx">
+      <DependentUpon>SimpleOverlay.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

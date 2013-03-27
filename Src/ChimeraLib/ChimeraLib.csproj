@@ -129,24 +129,13 @@
     <Compile Include="GUI\Controls\UpdatedVectorPanel.Designer.cs">
       <DependentUpon>UpdatedVectorPanel.cs</DependentUpon>
     </Compile>
-    <Compile Include="GUI\Forms\OverlayWindow.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="GUI\Forms\OverlayWindow.Designer.cs">
-      <DependentUpon>OverlayWindow.cs</DependentUpon>
-    </Compile>
     <Compile Include="Inputs\InputConfig.cs" />
     <Compile Include="Interfaces\IInput.cs" />
     <Compile Include="Inputs\DeltaBasedInput.cs" />
     <Compile Include="Inputs\MouseInput.cs" />
     <Compile Include="Interfaces\IDeltaInput.cs" />
-    <Compile Include="Interfaces\IOverlayWindow.cs" />
     <Compile Include="Interfaces\IUpdater.cs" />
     <Compile Include="Interfaces\IInputSource.cs" />
-    <Compile Include="Overlay\InvisibleSelection.cs" />
-    <Compile Include="Overlay\OverlayController.cs" />
-    <Compile Include="Overlay\BoxSelection.cs" />
-    <Compile Include="Overlay\ImageSelection.cs" />
     <Compile Include="GUI\Forms\Inputs\CameraControlForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -161,14 +150,6 @@
       <DependentUpon>KBMousePanel.cs</DependentUpon>
     </Compile>
     <Compile Include="Interfaces\ICrashable.cs" />
-    <Compile Include="Interfaces\IOverlay.cs" />
-    <Compile Include="Interfaces\ISelectionRenderer.cs" />
-    <Compile Include="Overlay\MainMenu.cs" />
-    <Compile Include="Overlay\MainMenuItem.cs" />
-    <Compile Include="Overlay\Selectors\NumberSelectionRenderer.cs" />
-    <Compile Include="Overlay\SelectableArea.cs" />
-    <Compile Include="Overlay\TestState.cs" />
-    <Compile Include="Overlay\WindowOverlay.cs" />
     <Compile Include="Util\ConfigBase.cs" />
     <Compile Include="Util\Init.cs" />
     <Compile Include="Util\ProcessWrangler.cs" />
@@ -198,12 +179,10 @@
       <DependentUpon>CoordinatorForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Interfaces\ISystemInput.cs" />
-    <Compile Include="Interfaces\IMode.cs" />
     <Compile Include="Interfaces\IOutput.cs" />
     <Compile Include="Core\Coordinator.cs" />
     <Compile Include="Core\NetworkMaster.cs" />
     <Compile Include="Core\NetworkSlave.cs" />
-    <Compile Include="Interfaces\IOverlayArea.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Core\Window.cs" />
   </ItemGroup>
@@ -237,9 +216,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\Forms\CoordinatorForm.resx">
       <DependentUpon>CoordinatorForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="GUI\Forms\OverlayWindow.resx">
-      <DependentUpon>OverlayWindow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\Forms\Inputs\CameraControlForm.resx">
       <DependentUpon>CameraControlForm.cs</DependentUpon>

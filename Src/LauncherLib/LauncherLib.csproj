@@ -65,15 +65,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CursorSelector.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SimpleOverlay.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="SimpleOverlay.Designer.cs">
-      <DependentUpon>SimpleOverlay.cs</DependentUpon>
-    </Compile>
-    <Compile Include="SimpleOverlayConfig.cs" />
     <Compile Include="SingleInstanceLauncher.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -85,9 +77,6 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="SimpleOverlay.resx">
-      <DependentUpon>SimpleOverlay.cs</DependentUpon>
-    </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

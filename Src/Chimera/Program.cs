@@ -6,7 +6,6 @@ using Chimera.GUI.Forms;
 using Chimera;
 using Chimera.Util;
 using Chimera.Inputs;
-using Chimera.Overlay;
 using Chimera.Launcher;
 
 namespace Chimera {

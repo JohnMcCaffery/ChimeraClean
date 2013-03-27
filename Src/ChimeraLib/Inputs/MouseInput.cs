@@ -42,7 +42,7 @@ namespace Chimera.Inputs {
         }
 
         private void Update(Window window, Rectangle bounds, int x, int y) {
-            window.Overlay.UpdateCursor((double)x / (double)bounds.Width, (double)y / (double)bounds.Height);
+            //window.Overlay.UpdateCursor((double)x / (double)bounds.Width, (double)y / (double)bounds.Height);
         }
 
         #region ISystemInputMembers

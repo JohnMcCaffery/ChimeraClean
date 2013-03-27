@@ -107,10 +107,6 @@ namespace Chimera {
         /// The windows which define where, in real space, each 'input' onto the virtual space is located.
         /// </summary>
         private readonly List<Window> mWindows = new List<Window>();
-        /// <summary>
-        /// The windows which define where, in real space, each 'input' onto the virtual space is located.
-        /// </summary>
-        private readonly List<IOverlayState> mStates = new List<IOverlayState>();
 
         /// <summary>
         /// Scales that the various output input is currently set to.
@@ -124,10 +120,6 @@ namespace Chimera {
         /// The sizes of the clip rectangles that bounds the horizontal output input.
         /// </summary>
         private Size[] mSizes = new Size[3];
-        /// <summary>
-        /// The window the system is currently in.
-        /// </summary>
-        private IOverlayState mActiveState;
 
         /// <summary>
         /// File to log information about any crash to.
@@ -142,17 +134,10 @@ namespace Chimera {
         /// </summary>
         private CoordinatorConfig mConfig;
 
-        private Chimera.Overlay.MainMenu mMainMenu;
-
         /// <summary>
         /// Selected whenever a new input is added.
         /// </summary>
         public event Action<Window, EventArgs> WindowAdded;
-
-        /// <summary>
-        /// Selected whenever a input is removed.
-        /// </summary>
-        public event Action<ISelectable, EventArgs> WindowRemoved;
 
         /// <summary>
         /// Selected whenever the virtual camera position/orientation is changed.
@@ -178,11 +163,6 @@ namespace Chimera {
         /// Selected whenever a key is pressed or released on the keyboard.
         /// </summary>
         public event Action<Coordinator, KeyEventArgs> Closed;
-
-        /// <summary>
-        /// Selected when the user selects a specific overlay area.
-        /// </summary>
-        public event Action<IOverlayState, EventArgs> StateActivated;
 
         /// <summary>
         /// Triggered whenever the heightmap changes.
@@ -215,8 +195,6 @@ namespace Chimera {
                 }
             }
 
-            mMainMenu = new Chimera.Overlay.MainMenu();
-
             foreach (var input in mInputs)
                 input.Init(this);
 
@@ -242,18 +220,6 @@ namespace Chimera {
 
             foreach (var window in windows)
                 AddWindow(window);
-        }
-
-        /// <summary>
-        /// Initialise this input, specifying a collection of inputs to work with and a collection of windows coordinated by this input.
-        /// </summary>
-        /// <param name="windows">The windows which are coordinated by this input.</param>
-        /// <param name="inputs">The inputs which control the camera through this input.</param>
-        public Coordinator(IEnumerable<Window> windows, Chimera.Overlay.MainMenu mainMenu, params ISystemInput[] inputs)
-            : this(windows, inputs) {
-
-            mMainMenu = mainMenu;
-            mMainMenu.Init(this);
         }
 
         /// <summary>
@@ -315,13 +281,6 @@ namespace Chimera {
         /// </summary>
         public int TickLength {
             get { return mTickLength; }
-        }
-
-        /// <summary>
-        /// The overlay which is controlling the system.
-        /// </summary>
-        public IOverlay Overlay {
-            get { return mMainMenu; }
         }
 
         public void SetHeightmapSection(float[,] section, int startX, int startY, bool regionCompleted) {
@@ -426,16 +385,6 @@ namespace Chimera {
         }
 
         /// <summary>
-        /// Notifies the system that an overlay area has been activated.
-        /// </summary>
-        /// <param name="input">The overlay area which was activated</param>
-        public void ActivateState(IOverlayState overlayArea) {
-            mActiveState = overlayArea;
-            if (StateActivated != null)
-                StateActivated(overlayArea, null);
-        }
-
-        /// <summary>
         /// Called when the input is to be disposed of.
         /// </summary>
         public void Close() {
@@ -463,6 +412,7 @@ namespace Chimera {
             dump += "Virtual Orientation | Yaw: " + mRotation.Yaw + ", Pitch: " + mRotation.Pitch + Environment.NewLine;
             dump += "Eye Position: " + mEyePosition + Environment.NewLine;
 
+            /*
             if (mActiveState != null) {
                 dump += Environment.NewLine + "--------------" + mActiveState.Type + " Active-------------------" + Environment.NewLine;
                 dump += "Instance: " + mActiveState.Name + Environment.NewLine;
@@ -473,6 +423,7 @@ namespace Chimera {
                     dump += ex.StackTrace;
                 }
             }
+            */
 
             if (mWindows.Count > 0) {
                 dump += String.Format("{0}{0}--------Windows--------{0}", Environment.NewLine);

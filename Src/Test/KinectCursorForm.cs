@@ -43,13 +43,14 @@ namespace Test {
             splitContainer1.Panel2.Controls.Add(pointCursorPanel);
 
             mCursor.CursorMove += new Action<IKinectCursor,float,float>(mCursor_CursorMove);
-            mWindow.Overlay.CursorMoved += mWindow_CursorMove;
+            //mWindow.Overlay.CursorMoved += mWindow_CursorMove;
         }
 
         private void mCursor_CursorMove(IKinectCursor cursor, float x, float y) {
-            mWindow.Overlay.UpdateCursor(x, y);
+            //mWindow.Overlay.UpdateCursor(x, y);
         }
 
+        /*
         private void mWindow_CursorMove(OverlayController window, EventArgs args) {
             if (mCursor.OnScreen && !IsDisposed && Created)
                 Invoke(new Action(() => {
@@ -62,14 +63,15 @@ namespace Test {
             splitContainer1.Panel1.Invalidate();
             cursorPanel.Invalidate();
         }
+        */
 
         private void cursorPanel_Paint(object sender, PaintEventArgs e) {
             if (mCursor.OnScreen) {
-                int x = (int) (mWindow.Overlay.CursorX * e.ClipRectangle.Width);
-                int y = (int) (mWindow.Overlay.CursorY * e.ClipRectangle.Height);
+                //int x = (int) (mWindow.Overlay.CursorX * e.ClipRectangle.Width);
+                //int y = (int) (mWindow.Overlay.CursorY * e.ClipRectangle.Height);
 
-                int r = 5;
-                e.Graphics.FillEllipse(Brushes.Red, x - r, y - r, r * 2, r * 2);
+                //int r = 5;
+                //e.Graphics.FillEllipse(Brushes.Red, x - r, y - r, r * 2, r * 2);
             }
         }
 
