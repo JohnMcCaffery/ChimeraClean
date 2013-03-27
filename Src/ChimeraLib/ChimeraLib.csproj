@@ -209,6 +209,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="Overlay.cd" />
     <None Include="Core.cd" />
   </ItemGroup>
   <ItemGroup />

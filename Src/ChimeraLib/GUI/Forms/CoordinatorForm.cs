@@ -10,13 +10,16 @@ using OpenMetaverse;
 using Chimera.Util;
 using Chimera.GUI.Controls;
 using System.Threading;
+using System.Drawing.Imaging;
+using System.Runtime.InteropServices;
 
 namespace Chimera.GUI.Forms {
     public partial class CoordinatorForm : Form {
         private bool mGuiUpdate;
         private bool mEventUpdate;
         private Coordinator mCoordinator;
-        private Bitmap mHeightmap;
+        private Bitmap mHeightmap;
+
         private Action<Coordinator, CameraUpdateEventArgs> mCameraUpdated;
         private Action<Coordinator, EventArgs> mEyeUpdated;
         private Action<Coordinator, KeyEventArgs> mClosed;
@@ -51,7 +54,7 @@ namespace Chimera.GUI.Forms {
             virtualOrientationPanel.Value = orientation;
             eyePositionPanel.Value = mCoordinator.EyePosition;
 
-            mHeightmap = new Bitmap(mCoordinator.Heightmap.GetLength(0), mCoordinator.Heightmap.GetLength(1));
+            mHeightmap = new Bitmap(mCoordinator.Heightmap.GetLength(0), mCoordinator.Heightmap.GetLength(1), PixelFormat.Format24bppRgb);
 
             foreach (var window in mCoordinator.Windows) {
                 // 
@@ -136,59 +139,57 @@ namespace Chimera.GUI.Forms {
             lock (mHeightmapUpdates) {
                 //If there's no thread
                 if (mHeightmapUpdateThread == null) {
-                    mHeightmapUpdateThread = new Thread(() => {
-                        while (true) {
-                            HeightmapChangedEventArgs e;
-                            lock (mHeightmapUpdates) {
-                                if (mHeightmapUpdates.Count == 0) {
-                                    mHeightmapUpdateThread = null;
-                                    break;
-                                } else
-                                    e = mHeightmapUpdates.Dequeue();
-                            }
-
-                            for (int x = 0; x < e.Heights.GetLength(0); x++) {
-                                for (int y = 0; y < e.Heights.GetLength(1); y++) {
-                                    float height = e.Heights[x, y];
-                                    int val = (int)(100f / height > 0f ? height : 0f);
-                                    mHeightmap.SetPixel(x + e.StartX, (mHeightmap.Height - 1) - (y + e.StartY), Color.FromArgb(val, val, val));
-                                }
-                            }
-                            if (!IsDisposed && !Disposing && Created)
-                                Invoke(new Action(() => heightmapPanel.Image = new Bitmap(mHeightmap)));
-                        }
-                    });
+                    mHeightmapUpdateThread = new Thread(HeightmapUpdateThread);
                     mHeightmapUpdateThread.Name = "Heightmap update thread.";
                     mHeightmapUpdateThread.Start();
                 } else
                     mHeightmapUpdates.Enqueue(args);
             }
+        }
 
-            /*
-            int hmW = mCoordinator.Heightmap.GetLength(0);
-            int hmH = mCoordinator.Heightmap.GetLength(1);
-            bool resized = false;
-            if (heightmap.Width != hmW || heightmap.Height != hmH) {
-                heightmap = new Bitmap(hmW, hmH);
-                resized = true;
-            }
-            if (resized)
-                heightmapPanel.Image = heightmap;
-            Bitmap heightmap = new Bitmap(mCoordinator.Heightmap.GetLength(0), mCoordinator.Heightmap.GetLength(1));
-            Graphics g = Graphics.FromImage(heightmap);
-            for (int i = 0; i < mCoordinator.Heightmap.GetLength(0); i++) {
-                for (int j = 0; j < mCoordinator.Heightmap.GetLength(1); j++) {
-                    float height = mCoordinator.Heightmap[i, j];
-                    int val = (int) (255f / height > 0f ? height : 0f);
-                    heightmap.SetPixel(i, (mCoordinator.Heightmap.GetLength(1)-1)-j, Color.FromArgb(val, val, val));
+        private void HeightmapUpdateThread() {
+            while (true) {
+                HeightmapChangedEventArgs e;
+                lock (mHeightmapUpdates) {
+                    if (mHeightmapUpdates.Count == 0) {
+                        mHeightmapUpdateThread = null;
+                        break;
+                    } else
+                        e = mHeightmapUpdates.Dequeue();
                 }
+
+                int w = e.Heights.GetLength(0);
+                int h = e.Heights.GetLength(1);
+                //Rectangle affectedRect = new Rectangle(e.StartX, e.StartY, w, h);
+                Rectangle affectedRect = new Rectangle(0, 0, mHeightmap.Width, mHeightmap.Height);
+                BitmapData dat = mHeightmap.LockBits(affectedRect, ImageLockMode.WriteOnly, PixelFormat.Format24bppRgb);
+                int bytesPerPixel = 3;
+                byte[] rgbValues = new byte[mHeightmap.Height * dat.Stride];
+
+                Marshal.Copy(dat.Scan0, rgbValues, 0, rgbValues.Length);
+
+                for (int y = 0; y < h; y++) {
+                    int i = ((e.StartY + y) * dat.Stride) + (e.StartX * bytesPerPixel);
+                    for (int x = 0; x < w; x++) {
+                        float height = e.Heights[x, y];
+                        float floatVal = ((float) byte.MaxValue) * (height / 100f);
+                        byte val = (byte) floatVal;
+
+                        //int i = (y * w * bytesPerPixel) + (x * bytesPerPixel);
+                        //int i = ((y + e.StartY) * mHeightmap.Width * bytesPerPixel) + ((x + e.StartX) * bytesPerPixel);
+                        rgbValues[i++] = val;
+                        rgbValues[i++] = val;
+                        rgbValues[i++] = val;
+                        Console.WriteLine("{0:0000},{1:0000} ({4:000}) = {2:00.000} / {3:000} / {5}", x + e.StartX, y + e.StartY, height, val, i, i + 2, floatVal);
+                        //mHeightmap.SetPixel(x + e.StartX, (mHeightmap.Height - 1) - (y + e.StartY), Color.FromArgb(val, val, val));
+                    }
+                }
+                Marshal.Copy(rgbValues, 0, dat.Scan0, rgbValues.Length);
+                mHeightmap.UnlockBits(dat);
+
+                if (!IsDisposed && !Disposing && Created)
+                    Invoke(new Action(() => heightmapPanel.Image = new Bitmap(mHeightmap)));
             }
-            mHeightmap = heightmap;
-            if (!IsDisposed && Created)
-                Invoke(new Action(() => {
-                    heightmapPanel.Image = heightmap;
-                }));
-            */
         }
 
         private void mCoordinator_CameraUpdated(Coordinator coordinator, CameraUpdateEventArgs args) {

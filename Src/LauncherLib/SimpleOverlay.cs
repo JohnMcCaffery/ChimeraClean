@@ -295,7 +295,7 @@ namespace Chimera.GUI.Forms {
         public void Redraw() {
             if (!IsDisposed && Created && !Disposing)
                 Invoke(new Action(() => {
-                    if (!IsDisposed && Created)
+                    if (!IsDisposed && Created && !Disposing)
                         drawPanel.Invalidate();
                 }));
         }

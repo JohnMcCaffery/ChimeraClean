@@ -1,0 +1,158 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Chimera.Coordinator">
+    <Position X="4" Y="5.75" Width="2.25" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AYRAIAAABYhQggAgERgAgAAAEEASIQA4ABQAoUCYSg0=</HashCode>
+      <FileName>Core\Coordinator.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Chimera.Window" Collapsed="true">
+    <Position X="2" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAgEBQAABhAAFACIgEQAAAAAgAABUAwCBAiMAQI=</HashCode>
+      <FileName>Core\Window.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Chimera.OverlayController">
+    <Position X="8.25" Y="1" Width="2.25" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>QhkAEEAAUQAAIwAABAIAAwCAAAAACMBQQgADCAyEAQA=</HashCode>
+      <FileName>Overlay\OverlayController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Chimera.GUI.Forms.OverlayWindowFactory" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="12.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAA=</HashCode>
+      <FileName>GUI\Forms\OverlayWindow.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Chimera.GUI.Forms.OverlayWindow" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="11" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgACAAACAAAAAAwACAAACCAEAAAAIFAABCQAAAAIA=</HashCode>
+      <FileName>GUI\Forms\OverlayWindow.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Chimera.Overlay.BoxSelection" Collapsed="true">
+    <Position X="0.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQAAAAAAABAAQEAAAAAAAAAAMAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Overlay\BoxSelection.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Chimera.Overlay.ImageSelection" Collapsed="true">
+    <Position X="3" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AwAAQAAAAQAAACAyEAAAAAAAAAAEgBAAAAACABAAAAA=</HashCode>
+      <FileName>Overlay\ImageSelection.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Chimera.Overlay.InvisibleSelection" Collapsed="true">
+    <Position X="5.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQAAAAAAAAAAQEAAAAAAAAAAEAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Overlay\InvisibleSelection.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Chimera.Overlay.MainMenu" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="18" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAAAgAJAABAgCAhQACUAAAAAQAAAAgIKACAABAAAA=</HashCode>
+      <FileName>Overlay\MainMenu.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Chimera.Overlay.MainMenuItem" Collapsed="true">
+    <Position X="11" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAACAAAAAAAgCAAAAAAAAAIAAAAAIACBAAAAAA=</HashCode>
+      <FileName>Overlay\MainMenuItem.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Chimera.Overlay.SelectableArea" Collapsed="true">
+    <Position X="3" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AggBRCAAAAYCAAAyEAAABEAAAAAEAAQoBEIGABAEAgI=</HashCode>
+      <FileName>Overlay\SelectableArea.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Chimera.Overlay.NumberSelectionRenderer" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="16.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAFAAAABAAAAAAAAAAAAAgAAAAAACAAAAAAA=</HashCode>
+      <FileName>Overlay\Selectors\NumberSelectionRenderer.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Chimera.Overlay.TestState" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="11" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAABAAAAABAAABQAAAAAEQAAAQAAAAgAQACBAgBAAA=</HashCode>
+      <FileName>Overlay\TestState.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Chimera.Overlay.WindowOverlay" Collapsed="true">
+    <Position X="12.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QgAAAAAAAgAAAhAgiAAAIgAggACAAAQAAAACAADEQAA=</HashCode>
+      <FileName>Overlay\WindowOverlay.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="Chimera.IOverlayState" Collapsed="true">
+    <Position X="18" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAABAAAAABAAABQAAAAAAQAAAQAAAAgAQACBAAAAAA=</HashCode>
+      <FileName>Interfaces\IMode.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Chimera.IOverlay" Collapsed="true">
+    <Position X="16.25" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAABAAAAgAAAAAAEAAAAAAAAAAgIAACAAAAAAA=</HashCode>
+      <FileName>Interfaces\IOverlay.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Chimera.ISelectable" Collapsed="true">
+    <Position X="14.5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABRAAAAAACAAAwEAAABAAAAAAEAAAoAAAGAAAEAgI=</HashCode>
+      <FileName>Interfaces\IOverlayArea.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Chimera.ISelectionRenderer" Collapsed="true">
+    <Position X="16.25" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAFAAAABAAAAAAAAAAAAAAAAAAAACAAAAAAA=</HashCode>
+      <FileName>Interfaces\ISelectionRenderer.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Chimera.Interfaces.IOverlayWindowFactory" Collapsed="true">
+    <Position X="12.75" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAA=</HashCode>
+      <FileName>Interfaces\IOverlayWindow.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Chimera.Interfaces.IOverlayWindow" Collapsed="true">
+    <Position X="11" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAACAAAAAAAAAAAAAAAAAAAAAEAAIAAABCAACAAAA=</HashCode>
+      <FileName>Interfaces\IOverlayWindow.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
