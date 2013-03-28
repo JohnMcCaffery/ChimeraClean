@@ -135,8 +135,7 @@
     <Compile Include="GUI\Forms\OverlayWindow.Designer.cs">
       <DependentUpon>OverlayWindow.cs</DependentUpon>
     </Compile>
-    <Compile Include="IHoverSelector.cs" />
-    <Compile Include="IHoverSelectorRenderer.cs" />
+    <Compile Include="Interfaces\Overlay\IHoverSelectorRenderer.cs" />
     <Compile Include="Interfaces\Overlay\IDrawable.cs" />
     <Compile Include="Inputs\InputConfig.cs" />
     <Compile Include="Interfaces\IInput.cs" />

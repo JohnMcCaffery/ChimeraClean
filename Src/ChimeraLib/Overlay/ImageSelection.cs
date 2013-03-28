@@ -7,7 +7,7 @@ using System.Windows.Forms;
 using System.Threading;
 
 namespace Chimera.Overlay {
-    public class ImageSelection : HoverSelector, ISelectable {
+    public class ImageSelection : HoverSelector {
         private readonly double mSelectTime = 1500;
 
         private Window mWindow;
@@ -55,14 +55,6 @@ namespace Chimera.Overlay {
 
         #region ISelectable Members
 
-        public override event Action<ISelectable> StaticChanged;
-
-        public override string DebugState {
-            get { 
-                return base.DebugState;
-            }
-        }
-
         public override void Init(Window window) {
             base.Init(window);
 
@@ -73,7 +65,8 @@ namespace Chimera.Overlay {
             window_MonitorChanged(mWindow, mWindow.Monitor);
         }
 
-        public override void DrawStatic(Graphics graphics, Rectangle clipRectangle) {
+        public override void ChangeClip(Rectangle clip, Graphics graphics) {
+            base.ChangeClip(clip, graphics);
             graphics.DrawImage(mScaledImage, Bounds.Location);
         }
 

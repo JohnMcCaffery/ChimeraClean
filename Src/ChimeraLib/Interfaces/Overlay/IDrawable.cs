@@ -11,7 +11,6 @@ namespace Chimera.Interfaces.Overlay {
         /// </summary>
         bool NeedsRedrawn {
             get;
-            set;
         }
         /// <summary>
         /// Notify the drawable that the area on which it is to draw has changed. Should draw any elements which only change when the area is resized to the supplied graphics object.

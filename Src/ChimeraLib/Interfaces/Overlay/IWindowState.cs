@@ -9,9 +9,8 @@ namespace Chimera.Interfaces.Overlay {
         /// <summary>
         /// All features which are to be drawn onto the window state.
         /// </summary>
-        Chimera.Interfaces.Overlay.IDrawable[] Features {
+        IDrawable[] Features {
             get;
-            set;
         }
 
         /// <summary>

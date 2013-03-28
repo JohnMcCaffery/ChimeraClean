@@ -86,11 +86,10 @@
       </MemberNameLabel>
     </AssociationLine>
     <TypeIdentifier>
-      <HashCode>QhkAEAAAUQAAIwAABAIAAwAAAAAACMBQQgACCAyEAQA=</HashCode>
+      <HashCode>QhkAEAAAUQAAIwAABAIAAwAAAAAAAMBAQgACCAyEAAA=</HashCode>
       <FileName>Overlay\WindowOverlayManager.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
-      <Property Name="CurrentDisplay" />
       <Property Name="Window" />
       <Property Name="OverlayWindow" />
     </ShowAsAssociation>
@@ -192,15 +191,14 @@
   <Class Name="Chimera.Overlay.ImageSelection">
     <Position X="0.5" Y="17.75" Width="2.5" />
     <TypeIdentifier>
-      <HashCode>AwAAQAAAAQAAACAyEAAAAAAAAAAEgBAAAAACABAAAAA=</HashCode>
+      <HashCode>AwAAQAAAAQAAACACkAAAAAAAAAAEgBAAAAACABAAAAA=</HashCode>
       <FileName>Overlay\ImageSelection.cs</FileName>
     </TypeIdentifier>
-    <Lollipop Position="0.2" />
   </Class>
   <Class Name="Chimera.Overlay.InvisibleSelection">
     <Position X="4.25" Y="17.5" Width="2.5" />
     <TypeIdentifier>
-      <HashCode>AAAAQAAAAAAAAAAQEAAAAAAAAAAEAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAEAAAAAAAAAAEAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Overlay\InvisibleSelection.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -210,7 +208,7 @@
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>AggBRCAAAAYCAAgSkAAABEAAAAAEAAQoBEIGABAEAgI=</HashCode>
+      <HashCode>AggARCAAAAYCAAgCkAgABEAAAAAEAAQoBEIGIBAAAgA=</HashCode>
       <FileName>Overlay\SelectableArea.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -315,7 +313,7 @@
     <Position X="6" Y="13" Width="2" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAEAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>IHoverSelectorRenderer.cs</FileName>
+      <FileName>Interfaces\Overlay\IHoverSelectorRenderer.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Font Name="Segoe UI" Size="9" />
