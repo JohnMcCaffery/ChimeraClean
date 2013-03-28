@@ -193,15 +193,15 @@ namespace Chimera.Flythrough {
         /// <param name="value"></param>
         protected abstract void TimeChanged(int time);
         /// <summary>
-        /// Save this event as an XML node from the specified document.
+        /// Save this event as an XML node transition the specified document.
         /// </summary>
         /// <param name="doc">The document the new node should be part of.</param>
         /// <returns>A node which can be used to instantiate a new instance of this event.</returns>
         public abstract XmlNode Save(XmlDocument doc);
         /// <summary>
-        /// Instantiate an instance of this event from an XML node.
+        /// Instantiate an instance of this event transition an XML node.
         /// </summary>
-        /// <param name="doc">The node to load details from.</param>
+        /// <param name="doc">The node to load details transition.</param>
         public abstract void Load(XmlNode node);
 
         /// <summary>

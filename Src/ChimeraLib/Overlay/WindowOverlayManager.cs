@@ -5,22 +5,11 @@ using System.Text;
 using SystemCursor = System.Windows.Forms.Cursor;
 using System.Drawing;
 using Chimera.GUI.Forms;
+using System.Windows.Forms;
+using Chimera.Interfaces.Overlay;
 
 namespace Chimera.Overlay {
     public class WindowOverlayManager {
-        public Chimera.GUI.Forms.OverlayWindow OverlayWindow {
-            get {
-                throw new System.NotImplementedException();
-            }
-            set {
-            }
-        }
-
-
-
-
-
-
         /// <summary>
         /// Where on the window the cursor is.
         /// </summary>
@@ -47,7 +36,7 @@ namespace Chimera.Overlay {
         /// <summary>
         /// The window used to render the overlay.
         /// </summary>
-        private IOverlayWindow mOverlayWindow;
+        private OverlayWindow mOverlayWindow;
         /// <summary>
         /// The window this overlay covers.
         /// </summary>
@@ -136,6 +125,11 @@ namespace Chimera.Overlay {
             get { return mWindow; }
         }
 
+        public OverlayWindow OverlayWindow {
+            get { return mOverlayWindow; }
+        }
+
+
         /// <summary>
         /// True if the overlay has been launched.
         /// </summary>
@@ -160,13 +154,6 @@ namespace Chimera.Overlay {
                 if (mOverlayWindow != null)
                     mOverlayWindow.Fullscreen = value;
             }
-        }
-        /// <summary>
-        /// Force the overlay input to redraw, if it is visible.
-        /// </summary>
-        public void RedrawOverlay() {
-            if (mOverlayWindow != null)
-                mOverlayWindow.Redraw();
         }
 
         /// <summary>
@@ -208,26 +195,6 @@ namespace Chimera.Overlay {
             }
         }
 
-        public void SetOverlayWindowFactory(IOverlayWindowFactory overlayWindowFactory) {
-            mOverlayWindowFactory = overlayWindowFactory;
-        }
-
-        /// <summary>
-        /// Force the overlay window to the top of the Z buffer.
-        /// </summary>
-        public void ForegroundOverlay() {
-            if (mOverlayWindow != null)
-                mOverlayWindow.Foreground();
-        }
-
-        /// <summary>
-        /// Force the output window to the top of the Z buffer.
-        /// </summary>
-        public void ForegroundOutput() {
-            if (mWindow.Output != null && mWindow.Output.Active)
-                ProcessWrangler.BringToFront(mWindow.Output.Process);
-        }
-
         /// <summary>
         /// Close the overlay window, if it has been created.
         /// </summary>
@@ -257,15 +224,7 @@ namespace Chimera.Overlay {
                 OverlayClosed(this, null);
         }
 
-        public Chimera.Interfaces.Overlay.IDrawable Drawable {
-            get {
-                throw new System.NotImplementedException();
-            }
-            set {
-            }
-        }
-
-        public Chimera.Window Window1 {
+        public IDrawable CurrentDisplay {
             get {
                 throw new System.NotImplementedException();
             }

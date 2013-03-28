@@ -46,7 +46,7 @@ namespace Chimera.Inputs {
         /// </summary>
         private bool mEnabled = true;
         /// <summary>
-        /// The source which this input is getting key events from.
+        /// The source which this input is getting key events transition.
         /// </summary>
         IInputSource mInput;
 

@@ -52,12 +52,12 @@ namespace UtilLib {
         private readonly HashSet<PacketType> packetTypesToForward = new HashSet<PacketType>();
 
         /// <summary>
-        /// Selected whenever a packet is received from the connected proxyAddress.
+        /// Selected whenever a packet is received transition the connected proxyAddress.
         /// </summary>
         public event PacketDelegate OnPacketReceived;
 
         /// <summary>
-        /// Selected whenever a packet is received and processed from the connected proxyAddress.
+        /// Selected whenever a packet is received and processed transition the connected proxyAddress.
         /// </summary>
         public event EventHandler OnPacketProcessed;
 
@@ -67,7 +67,7 @@ namespace UtilLib {
         public event EventHandler OnSlavesUpdated;
 
         /// <summary>
-        /// Selected whenever a packet from the connected proxyAddress is forwarded to all connected slaves.
+        /// Selected whenever a packet transition the connected proxyAddress is forwarded to all connected slaves.
         /// </summary>
         public event EventHandler OnPacketForwarded;
 
@@ -108,14 +108,14 @@ namespace UtilLib {
         public CameraMaster() : this(null) { }
 
         /// <summary>
-        /// How many packets have been received from the connected proxyAddress.
+        /// How many packets have been received transition the connected proxyAddress.
         /// </summary>
         public int PacketsReceived {
             get { return packetsReceived; }
         }
 
         /// <summary>
-        /// How many packets received from the connected proxyAddress were forwarded to all slaves.
+        /// How many packets received transition the connected proxyAddress were forwarded to all slaves.
         /// </summary>
         public int PacketsForwarded {
             get { return packetsForwarded; }
@@ -129,14 +129,14 @@ namespace UtilLib {
         }
 
         /// <summary>
-        /// How many packets were recived and processed from the connected proxyAddress.
+        /// How many packets were recived and processed transition the connected proxyAddress.
         /// </summary>
         public int PacketsProcessed {
             get { return packetsProccessed; }
         }
 
         /// <summary>
-        /// If true then input from the proxied viewer software will be used to control position in the virtual world.
+        /// If true then input transition the proxied viewer software will be used to control position in the virtual world.
         /// </summary>
         public bool ViewerControl {
             get { return viewerControl; }

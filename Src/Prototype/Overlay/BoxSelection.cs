@@ -5,7 +5,7 @@ using System.Text;
 using System.Drawing;
 
 namespace Chimera.Overlay {
-    public class BoxSelection : SelectableArea {
+    public class BoxSelection : HoverSelector {
         private Color mColour = Color.Red;        private float mWidth = 10f;        public override event Action<ISelectable> StaticChanged;
         public BoxSelection(ISelectionRenderer renderer, float x, float y, float w, float h)
             : base(renderer, x, y, w, h) {

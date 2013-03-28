@@ -135,6 +135,8 @@
     <Compile Include="GUI\Forms\OverlayWindow.Designer.cs">
       <DependentUpon>OverlayWindow.cs</DependentUpon>
     </Compile>
+    <Compile Include="IHoverSelector.cs" />
+    <Compile Include="IHoverSelectorRenderer.cs" />
     <Compile Include="Interfaces\Overlay\IDrawable.cs" />
     <Compile Include="Inputs\InputConfig.cs" />
     <Compile Include="Interfaces\IInput.cs" />
@@ -157,14 +159,17 @@
       <DependentUpon>KBMousePanel.cs</DependentUpon>
     </Compile>
     <Compile Include="Interfaces\ICrashable.cs" />
-    <Compile Include="Interfaces\Overlay\IOverlayState.cs" />
+    <Compile Include="Interfaces\Overlay\IState.cs" />
     <Compile Include="Interfaces\Overlay\IStateFactory.cs" />
     <Compile Include="Interfaces\Overlay\IStateTransitionFactory.cs" />
     <Compile Include="Interfaces\Overlay\ITrigger.cs" />
     <Compile Include="Interfaces\Overlay\IWindowState.cs" />
     <Compile Include="Interfaces\Overlay\IWindowStateFactory.cs" />
     <Compile Include="Interfaces\Overlay\IWindowTransition.cs" />
+    <Compile Include="Overlay\ImageSelection.cs" />
+    <Compile Include="Overlay\InvisibleSelection.cs" />
     <Compile Include="Overlay\OverlayManager.cs" />
+    <Compile Include="Overlay\SelectableArea.cs" />
     <Compile Include="Overlay\State.cs" />
     <Compile Include="Overlay\StateTransition.cs" />
     <Compile Include="Util\ConfigBase.cs" />

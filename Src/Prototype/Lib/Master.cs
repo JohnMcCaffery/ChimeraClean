@@ -99,7 +99,7 @@ namespace UtilLib {
         }
 
         /// <summary>
-        /// True if the master is ready to receive connections from slaves.
+        /// True if the master is ready to receive connections transition slaves.
         /// </summary>
         public bool MasterRunning {
             get { return masterServer.Bound; }

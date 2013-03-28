@@ -12,15 +12,13 @@ namespace Chimera.Interfaces.Overlay {
         /// </summary>
         IWindowState[] WindowStates {
             get;
-            set;
         }
 
         /// <summary>
-        /// All the transitions from this state to other states.
+        /// All the transitions transition this state to other states.
         /// </summary>
         StateTransition[] Transitions {
             get;
-            set;
         }
 
         /// <summary>
@@ -28,7 +26,20 @@ namespace Chimera.Interfaces.Overlay {
         /// </summary>
         string Name {
             get;
+        }
+
+        /// <summary>
+        /// Whether the state is currently active.
+        /// </summary>
+        bool Active {
+            get;
             set;
         }
+
+        /// <summary>
+        /// Add a new transition to another state.
+        /// </summary>
+        /// <param name="StateTransition">The new transition to add.</param>
+        void AddTransition(StateTransition transition);
     }
 }

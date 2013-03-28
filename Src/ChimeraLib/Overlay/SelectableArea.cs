@@ -6,7 +6,7 @@ using System.Drawing;
 using System.Windows.Forms;
 
 namespace Chimera.Overlay {
-    public abstract class SelectableArea : ISelectable {
+    public abstract class HoverSelector : ISelectable, Chimera.Interfaces.Overlay.ITrigger, Chimera.Interfaces.Overlay.IDrawable {
         private readonly double mSelectTime = 1500;
 
         private ISelectionRenderer mRenderer;
@@ -18,11 +18,11 @@ namespace Chimera.Overlay {
         private bool mVisible;
         private bool mActive = true;
 
-        public HoverArea(float x, float y, float w, float h) {
+        public HoverSelector(float x, float y, float w, float h) {
             mBounds = new RectangleF(x, y, w, h);
         }
 
-        public HoverArea(ISelectionRenderer selector, float x, float y, float w, float h)
+        public HoverSelector(ISelectionRenderer selector, float x, float y, float w, float h)
             : this(x, y, w, h) {
 
             mRenderer = selector;
@@ -50,7 +50,7 @@ namespace Chimera.Overlay {
             }
         }
 
-        private void window_CursorMoved(OverlayController window, EventArgs args) {
+        private void window_CursorMoved(WindowOverlayManager window, EventArgs args) {
             CheckState();
         }
 
@@ -72,10 +72,6 @@ namespace Chimera.Overlay {
         public virtual event Action<ISelectable> Shown;
 
         public virtual event Action<ISelectable> Hidden;
-
-        public virtual string DebugState {
-            get { return ""; }
-        }
 
         public virtual bool Visible {
             get { return mVisible; }
@@ -101,11 +97,7 @@ namespace Chimera.Overlay {
             get { return mSelected; }
         }
 
-        public virtual ISelectionRenderer SelectionRenderer {
-            get { return mRenderer; }
-        }
-
-        public virtual RectangleF Bounds {
+        protected virtual RectangleF Bounds {
             get { return mBounds; }
         }
 
@@ -145,5 +137,27 @@ namespace Chimera.Overlay {
         public abstract void Hide();
 
         #endregion
+
+        public event Action Triggered;
+
+        public Chimera.IHoverSelectorRenderer HoverSelectorRenderer {
+            get {
+                throw new System.NotImplementedException();
+            }
+            set {
+            }
+        }
+
+        public void ChangeClip() {
+            throw new NotImplementedException();
+        }
+
+        public void DrawDynamic() {
+            throw new NotImplementedException();
+        }
+
+        public void Init(WindowOverlayManager manager) {
+            throw new NotImplementedException();
+        }
     }
 }

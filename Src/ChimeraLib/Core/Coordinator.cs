@@ -100,7 +100,7 @@ namespace Chimera {
         /// </summary>
         private readonly object mRotationLock = new object();
         /// <summary>
-        /// The inputs which can control the virtual position and lookAt of the view and the real world eye position to calculate views from.
+        /// The inputs which can control the virtual position and lookAt of the view and the real world eye position to calculate views transition.
         /// </summary>
         private readonly List<ISystemInput> mInputs = new List<ISystemInput>();
         /// <summary>
@@ -246,7 +246,7 @@ namespace Chimera {
         }
 
         /// <summary>
-        /// The inputs which can control the virtual position and lookAt of the view and the real world eye position to calculate views from.
+        /// The inputs which can control the virtual position and lookAt of the view and the real world eye position to calculate views transition.
         /// </summary>
         public ISystemInput[] Inputs {
             get { return mInputs.ToArray() ; }
@@ -362,7 +362,7 @@ namespace Chimera {
         /// <param name="graphics">The graphics object to draw with.</param>
         /// <param name="clipRectangle">The bounds of the area being drawn on.</param>
         /// <param name="scale">The value to control how large or small the diagram is rendered.</param>
-        /// <param name="origin">The origin on the panel to draw from.</param>
+        /// <param name="origin">The origin on the panel to draw transition.</param>
         public void Draw(Perspective perspective, Graphics graphics, Size clipRectangle, double scale, Point origin) {
             mScales[(int) perspective] = scale;
             mSizes[(int) perspective] = clipRectangle;
@@ -481,18 +481,5 @@ namespace Chimera {
         /// Triggered whenever a window is removed.
         /// </summary>
         public event Action<Window, EventArgs> WindowRemoved;
-
-        /// <summary>
-        /// Generic mechanism for triggering events.
-        /// </summary>
-        public event System.Action<string> CustomTrigger;
-
-        /// <summary>
-        /// Trigger a custom event.
-        /// </summary>
-        /// <param name="custom">The string tied to the custom event.</param>
-        public void TriggerCustom(string custom) {
-            throw new System.NotImplementedException();
-        }
     }
 }

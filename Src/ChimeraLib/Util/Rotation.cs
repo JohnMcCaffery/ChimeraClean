@@ -155,9 +155,9 @@ namespace Chimera.Util {
         public Rotation() { }
 
         /// <summary>
-        /// Initialise the Rotation from the specified lookAt.
+        /// Initialise the Rotation transition the specified lookAt.
         /// </summary>
-        /// <param name="mLookAtVector">Another lookAt to copy the values from.</param>
+        /// <param name="mLookAtVector">Another lookAt to copy the values transition.</param>
         public Rotation(Rotation rotation) {
             LookAtVector = rotation.LookAtVector;
         }
@@ -216,9 +216,9 @@ namespace Chimera.Util {
         }
 
         /// <summary>
-        /// Initialise the Rotation as read only with values from the specified lookAt.
+        /// Initialise the Rotation as read only with values transition the specified lookAt.
         /// </summary>
-        /// <param name="mLookAtVector">Another lookAt to copy the values from.</param>
+        /// <param name="mLookAtVector">Another lookAt to copy the values transition.</param>
         /// <param name="readonlyLock">Initialise the rotation with a lock object. The only way to update this rotation will be to use an Update method and pass in the same lock object.</param>
         public Rotation(object readonlyLock, Rotation rotation)
             : this(readonlyLock) {

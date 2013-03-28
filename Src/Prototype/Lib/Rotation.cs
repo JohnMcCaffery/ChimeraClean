@@ -141,9 +141,9 @@ namespace UtilLib {
         public Rotation() { }
 
         /// <summary>
-        /// Initialise the Rotation from the specified rotation.
+        /// Initialise the Rotation transition the specified rotation.
         /// </summary>
-        /// <param name="lookAtVector">Another rotation to copy the values from.</param>
+        /// <param name="lookAtVector">Another rotation to copy the values transition.</param>
         public Rotation(Rotation rotation) {
             LookAtVector = rotation.LookAtVector;
         }

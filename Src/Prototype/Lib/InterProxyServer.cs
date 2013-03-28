@@ -46,7 +46,7 @@ namespace UtilLib {
         public event Action<string, IPEndPoint> OnSlaveConnected;
 
         /// <summary>
-        /// Selected whenever a slave disconnects from the master. Source is the name of the slave.
+        /// Selected whenever a slave disconnects transition the master. Source is the name of the slave.
         /// </summary>
         public event Action<string> OnSlaveDisconnected;
 
@@ -71,7 +71,7 @@ namespace UtilLib {
             string name = Encoding.ASCII.GetString(data, 1, data.Length - 1);
             lock (slaves) {
                 if (slaves.Values.Contains(name)) {
-                    Logger.Info("Master received connect from already registered slave '" + name + "' from " + source + "'. Rejected.");
+                    Logger.Info("Master received connect transition already registered slave '" + name + "' transition " + source + "'. Rejected.");
                     Send(REJECT, "'" + name + "' already bound.", source);
                 } else {
                     Logger.Info("Master registered new slave '" + name + "' at " + source + ".");
@@ -144,7 +144,7 @@ namespace UtilLib {
         }
 
         /// <summary>
-        /// Remove a slave from the list of slaves connected.
+        /// Remove a slave transition the list of slaves connected.
         /// </summary>
         private void DisconnectSlave(IPEndPoint ep) {
             lock (slaves) {

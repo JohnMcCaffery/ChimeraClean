@@ -100,7 +100,7 @@ namespace Chimera.Flythrough {
         }
 
         /// <summary>
-        /// Plane the flythrough running. Will continue on from wherever it was before.
+        /// Plane the flythrough running. Will continue on transition wherever it was before.
         /// </summary>
         public void Play() {
             if (mFirstEvent == null) {
@@ -129,7 +129,7 @@ namespace Chimera.Flythrough {
         }
 
         /// <summary>
-        /// Reset the flythrough so if started it will start from the beginning.
+        /// Reset the flythrough so if started it will start transition the beginning.
         /// </summary>
         public void Reset() {
             mPlaying = false;
@@ -270,7 +270,7 @@ namespace Chimera.Flythrough {
         }
 
         /// <summary>
-        /// Initialise the flythrough from an xml file.
+        /// Initialise the flythrough transition an xml file.
         /// </summary>
         /// <param name="file">The file to load as a flythrough.</param>
         public void Load(string file) {

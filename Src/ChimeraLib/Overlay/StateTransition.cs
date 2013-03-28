@@ -5,90 +5,149 @@ using System.Text;
 using Chimera.Interfaces.Overlay;
 
 namespace Chimera.Overlay {
-    public interface IStateTransition {
-        IState From {
-            get;
-            set;
-        }
-
-        IState To {
-            get;
-            set;
-        }
-
-        IWindowTransition[] WindowTransitions {
-            get;
-            set;
-        }
-
-        ITrigger Trigger {
-            get;
-            set;
-        }
-    }
-
     public class StateTransition {
+        /// <summary>
+        /// The individual transitions for each window in the system.
+        /// </summary>
+        private System.Collections.Generic.Dictionary<string, Chimera.Interfaces.Overlay.IWindowTransition> mWindowTransitions;
+        /// <summary>
+        /// During a transition, the windows which have completed the transition. The transition as a whole is only complete when all windows have completed.
+        /// </summary>
+        private HashSet<Chimera.Interfaces.Overlay.IWindowTransition> mCompletedWindows;
+        /// <summary>
+        /// Factory for creating new window transitions when new windows are added to the system.
+        /// </summary>
+        private IWindowTransitionFactory mWindowTransitionFactory;
+        /// <summary>
+        /// The manager which this transition works transition.
+        /// </summary>
+        private StateManager mManager;
+        /// <summary>
+        /// The trigger which will start this transition.
+        /// </summary>
+        private ITrigger mTrigger;
+        /// <summary>
+        /// The state the transition starts at.
+        /// </summary>
+        private IState mFrom;
+        /// <summary>
+        /// The state the transition goes to.
+        /// </summary>
+        private IState mTo;
+        /// <summary>
+        /// Whether the transition is in progress.
+        /// </summary>
+        private bool mInProgress;
+        /// <summary>
+        /// Whether the transition is active and should start when triggered.
+        /// </summary>
+        private bool mActive;
+
+        /// <summary>
+        /// Triggered when the transition has started.
+        /// </summary>
+        public event Action<StateTransition> Started;
         /// <summary>
         /// Triggered when the transition has finished.
         /// </summary>
-        public event Action Finished;
+        public event Action<StateTransition> Finished;
+
+        /// <param name="manager">The manager this transition works transition.</param>
+        public StateTransition(StateManager manager, IState from, IState to, ITrigger trigger) {
+            mManager = manager;
+            mFrom = from;
+            mTo = to;
+            mTrigger = trigger;
+
+            mTrigger.Triggered += new Action(mTrigger_Triggered);
+            mManager.Coordinator.WindowAdded += new Action<Window,EventArgs>(Coordinator_WindowAdded);
+
+            foreach (var window in mManager.Coordinator.Windows)
+                Coordinator_WindowAdded(window, null);
+        }
+
         /// <summary>
         /// Transitions for each window.
         /// </summary>
         public IWindowTransition[] WindowTransitions {
-            get {
-                throw new System.NotImplementedException();
-            }
-            set {
-            }
+            get { return mWindowTransitions.Values.ToArray(); }
         }
 
         /// <summary>
-        /// The state the transition goes from.
+        /// The state the transition goes transition.
         /// </summary>
         public IState From {
-            get {
-                throw new System.NotImplementedException();
-            }
-            set {
-            }
+            get { return mFrom; }
         }
 
         /// <summary>
         /// The state the transition goes to.
         /// </summary>
         public IState To {
-            get {
-                throw new System.NotImplementedException();
-            }
-            set {
+            get { return mTo; }
+        }
+
+        /// <summary>
+        /// Trigger which will start the transition.
+        /// </summary>
+        public ITrigger Trigger {
+            get { return mTrigger; }
+        }
+
+        /// <summary>
+        /// Controller object to notify of the transition.
+        /// </summary>
+        public StateManager Manager {
+            get { return mManager; }
+        }
+
+        /// <summary>
+        /// Whether the trigger firing should start this transition.
+        /// </summary>
+        public bool Active {
+            get { return mActive; }
+            set { 
+                mActive = value;
+                mTrigger.Active = false;
             }
         }
 
         /// <summary>
-        /// CustomTrigger which will start the transition.
+        /// Whether the transition is currently in progress.
         /// </summary>
-        public Chimera.Interfaces.Overlay.ITrigger Trigger {
-            get {
-                throw new System.NotImplementedException();
-            }
-            set {
-            }
-        }
-
-        public StateManager StateManager {
-            get {
-                throw new System.NotImplementedException();
-            }
-            set {
-            }
+        public bool InProgress {
+            get { return mInProgress; }
+            set { mInProgress = value; }
         }
 
         /// <summary>
         /// Start the transition.
         /// </summary>
         public void Begin() {
-            throw new System.NotImplementedException();
+            if (mActive) {
+                mFrom.Active = false;
+                mCompletedWindows.Clear();
+                foreach (var windowTrans in mWindowTransitions.Values)
+                    windowTrans.Begin();
+            }
+        }
+        void mTrigger_Triggered() {
+            Begin();
+        }
+
+        void Coordinator_WindowAdded(Window window, EventArgs args) {
+            IWindowTransition transition = mWindowTransitionFactory.Create(this, window);
+            mWindowTransitions.Add(window.Name, transition);
+            transition.Finished += new Action<IWindowTransition>(transition_Finished);
+        }
+
+        void transition_Finished(IWindowTransition transition) {
+            mCompletedWindows.Add(transition);
+            if (mCompletedWindows.Count == mWindowTransitions.Count) {
+                mInProgress = false;
+                if (Finished != null)
+                    Finished(this);
+            }
         }
     }
 }

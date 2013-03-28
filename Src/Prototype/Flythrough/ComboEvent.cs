@@ -55,7 +55,7 @@ namespace Chimera.Flythrough {
         private readonly string mName;
 
         /// <summary>
-        /// Selected whenever a new event is started. The bool is true if the event is from sequence one.
+        /// Selected whenever a new event is started. The bool is true if the event is transition sequence one.
         /// </summary>
         public event System.Action<FlythroughEvent, bool> OnNextEvent;
 

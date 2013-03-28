@@ -10,7 +10,7 @@ using Chimera.Util;
 namespace Chimera.Overlay {
     public class WindowOverlay {
         /// <summary>
-        /// The menu items which render onto/can be triggered from this section of the main menu.
+        /// The menu items which render onto/can be triggered transition this section of the main menu.
         /// </summary>
         private readonly List<MainMenuItem> mItems = new List<MainMenuItem>();
         /// <summary>

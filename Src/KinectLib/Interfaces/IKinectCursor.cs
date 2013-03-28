@@ -65,7 +65,7 @@ namespace Chimera.Kinect.Interfaces {
         /// <summary>
         /// Initialise the instance, linking it with a window it is to control.
         /// </summary>
-        /// <param name="controller">The kinect controller which this cursor works from.</param>
+        /// <param name="controller">The kinect controller which this cursor works transition.</param>
         /// <param name="window">The window this cursor appears on.</param>
         void Init(IKinectController controller, Window window);
     }

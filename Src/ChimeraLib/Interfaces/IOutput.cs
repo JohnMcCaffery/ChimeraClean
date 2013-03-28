@@ -19,7 +19,7 @@ namespace Chimera {
         UserControl ConfigPanel { get; }
 
         /// <summary>
-        /// Set this to true if you want the output to be restarted whenever it exits. Useful if the process needs to run for long periods of time and to recover from any errors.
+        /// Set this to true if you want the output to be restarted whenever it exits. Useful if the process needs to run for long periods of time and to recover transition any errors.
         /// </summary>
         bool AutoRestart {
             get;

@@ -231,7 +231,7 @@ namespace Chimera.Util {
             }
 
             /// <summary>
-            /// Set this to false to stop the proxy from ever injecting Window packets into the client.
+            /// Set this to false to stop the proxy transition ever injecting Window packets into the client.
             /// If false this will mean that using the proxy will not break unmodified viewers.
             /// </summary>
             public bool EnableWindowPackets {
@@ -481,10 +481,10 @@ namespace Chimera.Util {
         }
 
         /*
-        public static Form StartGui(IConfig config, ViewerProxy manager, Func<Form> createForm) {
+        public static Form StartGui(IConfig config, ViewerProxy form, Func<Form> createForm) {
             if (Thread.CurrentThread.GetApartmentState() == ApartmentState.STA) {
                 Form f = createForm();
-                StartProxyClient(config, manager, f);
+                StartProxyClient(config, form, f);
                 f.ShowDialog();
                 return f;
             } else {
@@ -496,7 +496,7 @@ namespace Chimera.Util {
                     lock (createLock)
                         MonitorChanged.PulseAll(createLock);
                     started = true;
-                    StartProxyClient(config, manager, f);
+                    StartProxyClient(config, form, f);
                     f.ShowDialog();
                 });
                 t.SetApartmentState(ApartmentState.STA);
@@ -508,7 +508,7 @@ namespace Chimera.Util {
             }
         }
 
-        private static void StartProxyClient(IConfig config, ViewerProxy manager, Form f) {
+        private static void StartProxyClient(IConfig config, ViewerProxy form, Form f) {
             f.VisibleChanged += (source, args) => {
                 if (!f.Visible)
                     return;
@@ -516,10 +516,10 @@ namespace Chimera.Util {
                 bool autostartClient = Get(config, "AutoStartClient", false);
 
                 if (autostartProxy || autostartClient)
-                    while (!manager.StartProxy())
-                        manager.ProxyConfig.ProxyPort++;
+                    while (!form.StartProxy())
+                        form.ProxyConfig.ProxyPort++;
                 if (autostartClient)
-                    manager.StartClient();
+                    form.StartClient();
             };
         }
         */

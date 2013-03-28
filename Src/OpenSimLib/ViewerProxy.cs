@@ -262,18 +262,18 @@ namespace Chimera.OpenSim {
         protected abstract void ProcessEyeUpdate(Coordinator coordinator, EventArgs args);
 
         /// <summary>
-        /// Called whenever a packet is received from the client.
+        /// Called whenever a packet is received transition the client.
         /// </summary>
         /// <param name="p">The packet that was received.</param>
-        /// <param name="ep">The end point the packet was received from.</param>
+        /// <param name="ep">The end point the packet was received transition.</param>
         /// <returns>The packet which is to be forwarded on to the server.</returns>
         protected virtual Packet ReceiveOutgoingPacket(Packet p, IPEndPoint ep) { return p; }
 
         /// <summary>
-        /// Called whenever a packet is received from the server.
+        /// Called whenever a packet is received transition the server.
         /// </summary>
         /// <param name="p">The packet that was received.</param>
-        /// <param name="ep">The end point the packet was received from.</param>
+        /// <param name="ep">The end point the packet was received transition.</param>
         /// <returns>The packet which is to be forwarded on to the client.</returns>
         protected virtual Packet ReceiveIncomingPacket(Packet p, IPEndPoint ep) { return p; }
 
@@ -388,7 +388,7 @@ namespace Chimera.OpenSim {
                 return mClientLoggedIn;
 
             } catch (Win32Exception e) {
-                Logger.Info("Unable to start client from " + mClient.StartInfo.FileName + ". " + e.Message);
+                Logger.Info("Unable to start client transition " + mClient.StartInfo.FileName + ". " + e.Message);
                 return false;
             }
         }

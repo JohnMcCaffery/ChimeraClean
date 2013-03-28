@@ -231,7 +231,7 @@ namespace UtilLib {
             }
 
             /// <summary>
-            /// Set this to false to stop the proxy from ever injecting Window packets into the client.
+            /// Set this to false to stop the proxy transition ever injecting Window packets into the client.
             /// If false this will mean that using the proxy will not break unmodified viewers.
             /// </summary>
             public bool EnableWindowPackets {

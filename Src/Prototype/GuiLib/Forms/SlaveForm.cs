@@ -63,7 +63,7 @@ namespace ConsoleTest {
                 nameBox.Text = slave.Name;
                 nameBox.Enabled = false;
 
-                connectButton.Text = "Disconnect from Master";
+                connectButton.Text = "Disconnect transition Master";
                 statusLabel.Text = "Connected to " + slave.ProxyConfig.MasterAddress + ":" + slave.ProxyConfig.MasterPort + " as " + slave.Name;
             } else 
                 statusLabel.Text = "Not Connected";
@@ -83,7 +83,7 @@ namespace ConsoleTest {
                     nameBox.Text = slave.Name;
                     nameBox.Enabled = false;
 
-                    connectButton.Text = "Disconnect from Master";
+                    connectButton.Text = "Disconnect transition Master";
                     statusLabel.Text = "Connected to " + slave.MasterAddress + ":" + slave.ProxyConfig.MasterPort + " as " + slave.Name;
                 };
                 if (InvokeRequired)

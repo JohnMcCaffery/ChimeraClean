@@ -184,7 +184,7 @@ namespace Chimera.Flythrough {
         }
 
         /// <summary>
-        /// Initialise the flythrough from an xml file.
+        /// Initialise the flythrough transition an xml file.
         /// </summary>
         /// <param name="file">The file to load as a flythrough.</param>
         public void Load(string file) {

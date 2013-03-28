@@ -217,7 +217,7 @@ namespace Chimera {
         }
 
         /// <summary>
-        /// The manager for the overlay for this window.
+        /// The form for the overlay for this window.
         /// </summary>
         public Chimera.Overlay.WindowOverlayManager OverlayManager {
             get {

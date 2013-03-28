@@ -124,7 +124,7 @@ namespace KinectLib {
             //Condition cameraActive = cameraActiveR;
 
             // Normalize the distance between the shoulder and the right hand against the total length of the arm (armMax).
-            // Once normalized constrain the value between the input from tracker PushD (starting at .8) and 1. 
+            // Once normalized constrain the value between the input transition tracker PushD (starting at .8) and 1. 
             // So if the normalized value is .9 the constrained value is .5. Alternatively if the normalized value is .8 the constrained value is 0.
             //Scalar push = constrain(normalize(magnitude(armR), armMax), tracker("PushD", 25, .04f, 0f, 20), 1f, 0f, false);
             // If the camera is inactive and the push value is > 0 and the forward component is significantly larger than the horizontal and vertical components combined.

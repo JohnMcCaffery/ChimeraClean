@@ -69,7 +69,7 @@ namespace UtilLib {
         }
 
         /// <summary>
-        /// True if the proxy is ready to receive a connection from a client.
+        /// True if the proxy is ready to receive a connection transition a client.
         /// </summary>
         public bool ProxyRunning {
             get { return proxyStarted; }
@@ -139,7 +139,7 @@ namespace UtilLib {
         /// <summary>
         /// Create a ProxyManager specifying a configuration.
         /// </summary>
-        /// <param name="config">The configuration for the proxy manager.</param>
+        /// <param name="config">The configuration for the proxy form.</param>
         public ProxyManager(Init.Config config, ILog logger) {
             proxyConfig = config;
             this.logger = logger;
@@ -249,24 +249,24 @@ namespace UtilLib {
                 return clientLoggedIn;
 
             } catch (Win32Exception e) {
-                Logger.Info("Unable to start client from " + client.StartInfo.FileName + ". " + e.Message);
+                Logger.Info("Unable to start client transition " + client.StartInfo.FileName + ". " + e.Message);
                 return false;
             }
         }
 
         /// <summary>
-        /// Called whenever a packet is received from the client.
+        /// Called whenever a packet is received transition the client.
         /// </summary>
         /// <param name="p">The packet that was received.</param>
-        /// <param name="ep">The end point the packet was received from.</param>
+        /// <param name="ep">The end point the packet was received transition.</param>
         /// <returns>The packet which is to be forwarded on to the server.</returns>
         protected virtual Packet ReceiveOutgoingPacket(Packet p, IPEndPoint ep) { return p; }
 
         /// <summary>
-        /// Called whenever a packet is received from the server.
+        /// Called whenever a packet is received transition the server.
         /// </summary>
         /// <param name="p">The packet that was received.</param>
-        /// <param name="ep">The end point the packet was received from.</param>
+        /// <param name="ep">The end point the packet was received transition.</param>
         /// <returns>The packet which is to be forwarded on to the client.</returns>
         protected virtual Packet ReceiveIncomingPacket(Packet p, IPEndPoint ep) { return p; }
 
@@ -280,7 +280,7 @@ namespace UtilLib {
         }
 
         /// <summary>
-        /// Stop all functionality coming from this proxy manager. Should be overriden by any inheriting classes.
+        /// Stop all functionality coming transition this proxy form. Should be overriden by any inheriting classes.
         /// </summary>
         public virtual void Stop() {
             StopProxy();

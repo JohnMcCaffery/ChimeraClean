@@ -246,7 +246,7 @@ namespace Chimera.GUI.Forms {
         }
 
         private void button1_Click(object sender, EventArgs e) {
-            new Thread(() => { throw new Exception("Crashy crashy. Not from GUI."); }).Start();
+            new Thread(() => { throw new Exception("Crashy crashy. Not transition GUI."); }).Start();
         }
 
         private void mCoordinator_Closed(Coordinator coordinator, EventArgs args) {

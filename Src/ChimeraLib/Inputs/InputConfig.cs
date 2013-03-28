@@ -14,8 +14,8 @@ namespace Chimera.Inputs {
         }
 
         protected override void InitConfig() {
-            KeyboardEnabled = Get(true, "KeyboardEnabled", true, "Whether to take input from the keyboard at the beginning.");
-            MouseEnabled = Get(true, "MouseEnabled", true, "Whether to use the mouse to control the cursor from the beginning.");
+            KeyboardEnabled = Get(true, "KeyboardEnabled", true, "Whether to take input transition the keyboard at the beginning.");
+            MouseEnabled = Get(true, "MouseEnabled", true, "Whether to use the mouse to control the cursor transition the beginning.");
         }
     }
 }

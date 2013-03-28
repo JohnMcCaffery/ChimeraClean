@@ -212,7 +212,7 @@ namespace Chimera.Flythrough {
         /// <summary>
         /// Set how far through the event playback has reached.
         /// </summary>
-        /// <param name="time">The time through the event to play from.</param>
+        /// <param name="time">The time through the event to play transition.</param>
         public void SetTime(int time) {
             if (time < mLength)
                 mCurrentStep = time / FlythroughManager.TICK_LENGTH;
@@ -228,9 +228,9 @@ namespace Chimera.Flythrough {
         }
 
         /// <summary>
-        /// Load parameters from an XML node.
+        /// Load parameters transition an XML node.
         /// </summary>
-        /// <param name="node">The noad to load parameters from.</param>
+        /// <param name="node">The noad to load parameters transition.</param>
         public abstract void Load(XmlNode node);
 
         /// <summary>

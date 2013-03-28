@@ -66,7 +66,7 @@ namespace UtilLib {
         private readonly List<IScreenListener> dataListeners = new List<IScreenListener>();
 
         /// <summary>
-        /// UdpClient to send and receive packets from.
+        /// UdpClient to send and receive packets transition.
         /// </summary>
         private UdpClient socket;
 
@@ -236,7 +236,7 @@ namespace UtilLib {
         }
 
         /// <summary>
-        /// Test which slave has been disconnected and remove it from the list of slaves.
+        /// Test which slave has been disconnected and remove it transition the list of slaves.
         /// </summary>
         /// <param name="ep">The end point to check the connection with.</param>
         /// <param name="count">How many more attempts to make before stopping checking.</param>
@@ -275,7 +275,7 @@ namespace UtilLib {
         }
 
         /// <summary>
-        /// Process incoming packets from slaves. Incoming packets are either connection requests or disconnect notifiers.
+        /// Process incoming packets transition slaves. Incoming packets are either connection requests or disconnect notifiers.
         /// </summary>
         private void PacketReceived(IAsyncResult ar) {
             if (socket == null)
@@ -305,7 +305,7 @@ namespace UtilLib {
 
         private void ProcessPacket(byte[] bytes, IPEndPoint source) {
             try {
-                Logger.Debug("Received data packet from " + source + ".");
+                Logger.Debug("Received data packet transition " + source + ".");
                 receivedPackets++;
 
                 int i = 1;
@@ -337,7 +337,7 @@ namespace UtilLib {
                     listener.Window.AspectRatio = aspectRatio;
                 }
             } catch (Exception e) {
-                Logger.Info("Problem unpacking packet from " + source + ".", e);
+                Logger.Info("Problem unpacking packet transition " + source + ".", e);
             }
         }
 

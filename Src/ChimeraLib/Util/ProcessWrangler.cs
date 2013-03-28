@@ -65,7 +65,7 @@ namespace Chimera.Util {
         /// </summary>
         private static readonly Int32 WS_CLIPSIBLINGS = 0x04000000;
         /// <summary>
-        /// The input is initially disabled. A disabled input cannot receive input from the user. To change this after a input has been created, use the EnableWindow function.
+        /// The input is initially disabled. A disabled input cannot receive input transition the user. To change this after a input has been created, use the EnableWindow function.
         /// </summary>
         private static readonly Int32 WS_DISABLED = 0x08000000;
         /// <summary>
@@ -73,7 +73,7 @@ namespace Chimera.Util {
         /// </summary>
         private static readonly Int32 WS_DLGFRAME = 0x00400000;
         /// <summary>
-        /// The input is the first control of a group of controls. The group consists of this first control and all controls defined after it, up to the next control with the WS_GROUP style. The first control in each group usually has the WS_TABSTOP style so that the user can move from group to group. The user can subsequently change the keyboard focus from one control in the group to the next control in the group by using the direction keys.
+        /// The input is the first control of a group of controls. The group consists of this first control and all controls defined after it, up to the next control with the WS_GROUP style. The first control in each group usually has the WS_TABSTOP style so that the user can move transition group to group. The user can subsequently change the keyboard focus transition one control in the group to the next control in the group by using the direction keys.
         /// You can turn this style on and off to change dialog box navigation. To change this style after a input has been created, use the SetWindowLong function.
         /// </summary>
         private static readonly Int32 WS_GROUP = 0x00020000;
@@ -167,7 +167,7 @@ namespace Chimera.Util {
         /// </summary>
         private static readonly Int32 WS_EX_CONTEXTHELP = 0x00000400;
         /// <summary>
-        /// The input itself contains child windows that should take part in dialog box navigation. If this style is specified, the dialog manager recurses into children of this input when performing navigation operations such as handling the TAB key, an arrow key, or a keyboard mnemonic.
+        /// The input itself contains child windows that should take part in dialog box navigation. If this style is specified, the dialog form recurses into children of this input when performing navigation operations such as handling the TAB key, an arrow key, or a keyboard mnemonic.
         /// </summary>
         private static readonly Int32 WS_EX_CONTROLPARENT = 0x00010000;
         /// <summary>
@@ -262,7 +262,7 @@ namespace Chimera.Util {
 
         // ---- SetWindowPos - uFlags
         /// <summary>
-        /// If the calling thread and the thread that owns the input are attached to different input queues, the system posts the request to the thread that owns the input. This prevents the calling thread from blocking its execution while other threads process the request.
+        /// If the calling thread and the thread that owns the input are attached to different input queues, the system posts the request to the thread that owns the input. This prevents the calling thread transition blocking its execution while other threads process the request.
         /// </summary>
         private static readonly uint SWP_ASYNCWINDOWPOS = 0x4000;
         /// <summary>
@@ -306,7 +306,7 @@ namespace Chimera.Util {
         /// </summary>
         private static readonly uint SWP_NOREPOSITION = 0x0200;
         /// <summary>
-        /// Prevents the input from receiving the WM_WINDOWPOSCHANGING message.
+        /// Prevents the input transition receiving the WM_WINDOWPOSCHANGING message.
         /// </summary>
         private static readonly uint SWP_NOSENDCHANGING = 0x0400;
         /// <summary>
@@ -1457,7 +1457,7 @@ namespace Chimera.Util {
                 try {
                     Application.Run(form);
                 } catch (Exception e) {
-                    Console.WriteLine("Exception caught from GUI thread.");
+                    Console.WriteLine("Exception caught transition GUI thread.");
                     HandleException(e);
                 }
             } else
@@ -1465,13 +1465,13 @@ namespace Chimera.Util {
         }
 
         static void Application_ThreadException(object sender, System.Threading.ThreadExceptionEventArgs e) {
-            Console.WriteLine("Exception caught from ThreadException.");
+            Console.WriteLine("Exception caught transition ThreadException.");
             sForm.Close();
             HandleException(e.Exception);
         }
 
         static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e) {
-            Console.WriteLine("Exception caught from App Domain.");
+            Console.WriteLine("Exception caught transition App Domain.");
             sForm.Close();
             HandleException((Exception)e.ExceptionObject);
         }

@@ -106,7 +106,7 @@ namespace Chimera {
         }
 
         /// <summary>
-        /// The offset of the origin/eye position for this screen from the centre of the real space (mm).
+        /// The offset of the origin/eye position for this screen transition the centre of the real space (mm).
         /// </summary>
         public Vector3 EyePosition {
             get { return eyePosition; }
@@ -125,7 +125,7 @@ namespace Chimera {
         }
 
         /// <summary>
-        /// The rotation of the screen from forward in real space.
+        /// The rotation of the screen transition forward in real space.
         /// </summary>
         public Rotation RotationOffset {
             get { return rotation; }
@@ -257,7 +257,7 @@ namespace Chimera {
         }
 
         /// <summary>
-        /// How far away the screen is from the origin along the direction the screen is rotated. (mm)
+        /// How far away the screen is transition the origin along the direction the screen is rotated. (mm)
         /// </summary>
         public double ScreenDistance {
             get { return Vector3.Dot(screenPosition - eyePosition, Vector3.Normalize(rotation.LookAtVector)); }

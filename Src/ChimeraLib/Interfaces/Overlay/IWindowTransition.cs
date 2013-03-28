@@ -2,20 +2,34 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Chimera.Overlay;
 
 namespace Chimera.Interfaces.Overlay {
     public interface IWindowTransition : IDrawable {
         /// <summary>
         /// Triggered when the transition has finished.
         /// </summary>
-        event System.Action Finished;
+        event Action<IWindowTransition> Finished;
 
         /// <summary>
-        /// The transition for the state as a whole.
+        /// The transition for the states as a whole.
         /// </summary>
-        Chimera.Overlay.StateTransition StateTransition {
+        StateTransition StateTransition {
             get;
-            set;
+        }
+
+        /// <summary>
+        /// The window state the window is transitioning to.
+        /// </summary>
+        IWindowState To {
+            get;
+        }
+
+        /// <summary>
+        /// The window state the window is transitioning from.
+        /// </summary>
+        IWindowState From {
+            get;
         }
 
         /// <summary>

@@ -102,7 +102,7 @@ namespace UtilLib {
         public event EventHandler OnConnected;
 
         /// <summary>
-        /// Selected whenever the slave disconnects from the master.
+        /// Selected whenever the slave disconnects transition the master.
         /// </summary>
         public event EventHandler OnDisconnected;
 
@@ -226,14 +226,14 @@ namespace UtilLib {
         }
 
         /// <summary>
-        /// Disconnect from the master server.
+        /// Disconnect transition the master server.
         /// The port binding will not be released.
         /// </summary>
         public void Disconnect() {
             if (connected) {
                 Send(DISCONNECT, masterEP);
                 DisconnectUtil();
-                Logger.Info("Slave '" + Name + "' disconnected from master at " + masterEP);
+                Logger.Info("Slave '" + Name + "' disconnected transition master at " + masterEP);
             } else {
                 Logger.Info("Slave '" + Name + "' cannot disconnect. Not currently connected.");
             }

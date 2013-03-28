@@ -2,17 +2,28 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Drawing;
 
 namespace Chimera.Interfaces.Overlay {
     public interface IDrawable {
         /// <summary>
-        /// Draw the elements of the drawable that only change when the overlay resizes.
+        /// Whether the dynmic part of the drawable needs to be redrawn.
         /// </summary>
-        void DrawStatic();
+        bool NeedsRedrawn {
+            get;
+            set;
+        }
+        /// <summary>
+        /// Notify the drawable that the area on which it is to draw has changed. Should draw any elements which only change when the area is resized to the supplied graphics object.
+        /// </summary>
+        /// <param name="clip">The area in which this drawable will be drawn.</param>
+        /// <param name="graphics">The object with which to to draw any elements which only change when the area is resized.</param>
+        void ChangeClip(Rectangle clip, Graphics graphics);
 
         /// <summary>
-        /// Draw the elements of the drawable that change dynamically.
+        /// Draw the elements of the drawable that change more frequently than when the drawing area is resized.
         /// </summary>
-        void DrawDynamic();
+        /// <param name="graphics">The object with which to draw the elements.</param>
+        void DrawDynamic(Graphics graphics);
     }
 }

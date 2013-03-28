@@ -36,7 +36,7 @@ namespace UtilLib {
         private Window window;
 
         /// <summary>
-        /// Selected whenever a camera update is received from the master.
+        /// Selected whenever a camera update is received transition the master.
         /// </summary>
         public event Action<Vector3, Vector3> OnUpdateReceivedFromMaster;
 
@@ -135,7 +135,7 @@ namespace UtilLib {
         }
 
         /// <summary>
-        /// How many packets the slave has received from the master.
+        /// How many packets the slave has received transition the master.
         /// </summary>
         public int PacketsReceived {
             get { return interProxyClient.ReceivedPackets; }

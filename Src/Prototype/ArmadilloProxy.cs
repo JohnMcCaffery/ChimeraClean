@@ -48,7 +48,7 @@ namespace ArmadilloProxy {
                 Console.WriteLine("Proxy Help");
                 Console.WriteLine(Init.HelpHeaders);
                 string[] list = new string[] {
-                    Init.MakeHelpLine("General", "File", "f", "The file to load the general configuration from.", "AppDomain ConfigFile"),
+                    Init.MakeHelpLine("General", "File", "f", "The file to load the general configuration transition.", "AppDomain ConfigFile"),
                     Init.MakeHelpLine("General", "Help", "h", "Display this help. Use with -m or -s to see help for master or slave.", "Not Set"),
                     Init.MakeHelpLine("General", "Master", "m", "Launch as a master. Can be used with -s or -sc.", "Not Set"),
                     Init.MakeHelpLine("General", "Slave", "s", "Launch as a slave. Can be used with -m.", "Not Set"),
