@@ -7,109 +7,135 @@ using System.Windows.Forms;
 using Chimera.Interfaces.Overlay;
 
 namespace Chimera.Overlay {
-    public abstract class HoverSelector : ITrigger, IDrawable {
-        private readonly double mSelectTime = 1500;
+    public abstract class HoverTrigger : ITrigger, IDrawable {
+        /// <summary>
+        /// How many ms to the hover must be maintened before the selector is triggered.
+        /// </summary>
+        private readonly double mSelectTimeMS = 1500;
+        /// <summary>
+        /// The manager which will supply the cursor position.
+        /// </summary>
+        private readonly WindowOverlayManager mManager;
 
-        public event Action Triggered;
-
+        /// <summary>
+        /// The render object used to draw a visual representation of how close the selector is to triggering.
+        /// </summary>
         private IHoverSelectorRenderer mRenderer;
-        private Window mWindow;
+        /// <summary>
+        /// The bounds defining the area which the cursor can hover over to trigger this selector. The bounds are specified as scaled values between 0,0 and 1,1. 0,0 is top left. 1,1 bottom right.
+        /// </summary>
         private RectangleF mBounds;
+        /// <summary>
+        /// The time when the cursor started hovering over the area.
+        /// </summary>
         private DateTime mHoverStart;
+        /// <summary>
+        /// The clip rectangle for the area the trigger will be drawn onto.
+        /// </summary>
         private Rectangle mClip;
+        /// <summary>
+        /// Whether the cursor is currently hovering over the area.
+        /// </summary>
         private bool mHovering;
-        private bool mSelected;
-        private bool mVisible;
+        /// <summary>
+        /// Whether the selector has been triggered.
+        /// </summary>
+        private bool mTriggered;
+        /// <summary>
+        /// Whether the area is active. If false it will not draw or trigger.
+        /// </summary>
         private bool mActive = true;
+        /// <summary>
+        /// Controls whether there is any change to the hover which needs to be redrawn on the output.
+        /// </summary>
+        private bool mNeedsRedrawn;
 
-        public bool NeedsRedrawn {
-            get { return mHovering || mSelected; }
-        }
-
-        public HoverSelector(float x, float y, float w, float h) {
+        public HoverTrigger(WindowOverlayManager manager, IHoverSelectorRenderer selector, float x, float y, float w, float h) {
+            mManager = manager;
             mBounds = new RectangleF(x, y, w, h);
-        }
-
-        public HoverSelector(IHoverSelectorRenderer selector, float x, float y, float w, float h)
-            : this(x, y, w, h) {
-
             mRenderer = selector;
+
+            mManager.Window.Coordinator.Tick += new Action(Coordinator_Tick);
         }
 
-        protected void SetRenderer(IHoverSelectorRenderer renderer) {
-            mRenderer = renderer;
+        /// <summary>
+        /// Whether the cursor is currently hovering within the area.
+        /// </summary>
+        public virtual bool CurrentlyHovering {
+            get { return mHovering; }
         }
 
-        private void CheckState() {
-            if (mActive && mBounds.Contains(mWindow.OverlayManager.Cursor)) {
+        /// <summary>
+        /// Whether the selector has been selected.
+        /// </summary>
+        public virtual bool CurrentlySelected {
+            get { return mTriggered; }
+        }
+
+        /// <summary>
+        /// The bounds defining the area which the cursor can hover over to trigger this selector. The bounds are specified as scaled values between 0,0 and 1,1. 0,0 is top left. 1,1 bottom right.
+        /// </summary>
+        protected virtual RectangleF Bounds {
+            get { return mBounds; }
+        }
+
+        /// <summary>
+        /// Bounds in relationship to the full clip.
+        /// </summary>
+        protected virtual Rectangle ScaledBounds {
+            get {
+                return new Rectangle(
+                    (int)(mClip.Width * mBounds.X),
+                    (int)(mClip.Height * mBounds.Y),
+                    (int)(mClip.Width * mBounds.Width),
+                    (int)(mClip.Height * mBounds.Height));
+                }
+        }
+
+        /// <summary>
+        /// Clip boundary of the area on which the selector is being drawn.
+        /// </summary>
+        protected Rectangle Clip {
+            get { return mClip; }
+        }
+
+        private void Coordinator_Tick() {
+            if (mActive && mBounds.Contains(mManager.Cursor)) {
                 if (!mHovering) {
                     mHovering = true;
                     mHoverStart = DateTime.Now;
                 }
 
-                if (!mSelected && DateTime.Now.Subtract(mHoverStart).TotalMilliseconds > mSelectTime) {
+                if (!mTriggered && DateTime.Now.Subtract(mHoverStart).TotalMilliseconds > mSelectTimeMS) {
                     if (Triggered != null)
                         Triggered();
-                    mSelected = true;
+                    mTriggered = true;
+                    mHovering = false;
                 }
-            } else {
-                mSelected = false;
+
+                mNeedsRedrawn = true;
+            } else if (mHovering || mTriggered) {
+                mTriggered = false;
+                mHovering = false;
+                mNeedsRedrawn = true;
             }
         }
 
-        private void window_CursorMoved(WindowOverlayManager window, EventArgs args) {
-            CheckState();
-        }
+        #region ITrigger Members
 
-        private void Coordinator_Tick() {
-            if (mHovering)
-                CheckState();
-        }
-
-        private void window_MonitorChanged(Window window, Screen screen) {
-            //What should happen when the window changes? Re-calculate?
-        }
-
-        #region IHoverSelector Members
-
-        public virtual bool Visible {
-            get { return mVisible; }
-            set { mVisible = value; }
-        }
+        public event Action Triggered;
 
         public virtual bool Active {
             get { return mActive; }
             set { mActive = value; }
         }
 
-        public virtual bool CurrentlyHovering {
-            get { return mHovering; }
-        }
+        #endregion
 
-        public virtual bool CurrentlySelected {
-            get { return mSelected; }
-        }
+        #region IDrawable
 
-        protected virtual RectangleF Bounds {
-            get { return mBounds; }
-        }
-
-        public virtual Rectangle ScaledBounds {
-            get {
-                return new Rectangle(
-                    (int)(mWindow.Monitor.Bounds.Width * mBounds.X),
-                    (int)(mWindow.Monitor.Bounds.Height * mBounds.Y),
-                    (int)(mWindow.Monitor.Bounds.Width * mBounds.Width),
-                    (int)(mWindow.Monitor.Bounds.Height * mBounds.Height));
-                }
-        }
-
-        protected IHoverSelectorRenderer HoverSelectorRenderer {
-            get { return mRenderer; }
-        }
-
-        protected Rectangle Clip {
-            get { return mClip; }
+        public bool NeedsRedrawn {
+            get { return mNeedsRedrawn; }
         }
 
         /// <summary>
@@ -117,12 +143,10 @@ namespace Chimera.Overlay {
         /// </summary>
         /// <param name="graphics">The object with which to draw the elements.</param>
         public virtual void DrawDynamic(Graphics graphics) {
-            if (mActive && !mBounds.Contains(mWindow.OverlayManager.Cursor))
-                mHovering = false;
-            if (mSelected)
+            if (mTriggered)
                 mRenderer.DrawSelected(graphics, mClip);
             else if (mHovering) {
-                mRenderer.DrawHover(graphics, ScaledBounds, mHoverStart, mSelectTime);
+                mRenderer.DrawHover(graphics, ScaledBounds, mHoverStart, mSelectTimeMS);
             }
         }
 
@@ -131,24 +155,21 @@ namespace Chimera.Overlay {
         /// </summary>
         /// <param name="clip">The area in which this drawable will be drawn.</param>
         /// <param name="graphics">The object with which to to draw any elements which only change when the area is resized.</param>
-        public virtual void ChangeClip(Rectangle clip, Graphics graphics) {
+        public virtual void RedrawStatic(Rectangle clip, Graphics graphics) {
             mClip = clip;
         }
 
-        public virtual void Init(Window window) {
-            mWindow = window;
+        #endregion    
 
-            mWindow.MonitorChanged += new Action<Window, Screen>(window_MonitorChanged);
-            mWindow.OverlayManager.CursorMoved += new Action<WindowOverlayManager,EventArgs>(window_CursorMoved);
-            mWindow.Coordinator.Tick += new Action(Coordinator_Tick);
-
-            window_MonitorChanged(mWindow, mWindow.Monitor);
+        /// <summary>
+        /// The manager which controls the window this trigger renders on.
+        /// </summary>
+        protected WindowOverlayManager Manager {
+            get {
+                throw new System.NotImplementedException();
+            }
+            set {
+            }
         }
-
-        public abstract void Show();
-
-        public abstract void Hide();
-
-        #endregion
     }
 }

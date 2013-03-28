@@ -201,7 +201,7 @@ namespace Chimera {
         }
 
         /// <summary>
-        /// The mWindow of view the screen shows, in radians. 
+        /// The mManager of view the screen shows, in radians. 
         /// Changing this will change the height and width of the screen according to the aspect ratio.
         /// Calculated as the tangent of <code>height / (2 * d)</code> where d is distance to the screen.
         /// </summary>

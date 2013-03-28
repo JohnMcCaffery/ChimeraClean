@@ -394,7 +394,7 @@ namespace Chimera.Util {
             ///</summary>
             CAPITAL = 0x14,
             ///<summary>
-            ///Input Method Editor (IME) Kana mode
+            ///Input ForceRedrawStatic Editor (IME) Kana mode
             ///</summary>
             KANA = 0x15,
             ///<summary>

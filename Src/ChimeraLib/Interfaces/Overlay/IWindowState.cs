@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Chimera.Overlay;
 
 namespace Chimera.Interfaces.Overlay {
     public interface IWindowState : IDrawable {
@@ -19,6 +20,13 @@ namespace Chimera.Interfaces.Overlay {
         bool Enabled {
             get;
             set;
+        }
+
+        /// <summary>
+        /// The manager which controls the window state.
+        /// </summary>
+        WindowOverlayManager Manager {
+            get;
         }
 
         /// <summary>

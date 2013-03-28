@@ -196,7 +196,7 @@ namespace Chimera.OpenSim {
                     Thread.Sleep(5000);
                     if (mFullscreen)
                         ToggleHUD();
-                    //mWindow.Overlay.ForegroundOverlay();
+                    //mManager.Overlay.ForegroundOverlay();
                 }).Start();
             } else {
             }

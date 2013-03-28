@@ -9,11 +9,11 @@ namespace Chimera.Overlay {
         /// <summary>
         /// The individual transitions for each window in the system.
         /// </summary>
-        private System.Collections.Generic.Dictionary<string, Chimera.Interfaces.Overlay.IWindowTransition> mWindowTransitions;
+        private readonly Dictionary<string, Chimera.Interfaces.Overlay.IWindowTransition> mWindowTransitions = new Dictionary<string,IWindowTransition>();
         /// <summary>
         /// During a transition, the windows which have completed the transition. The transition as a whole is only complete when all windows have completed.
         /// </summary>
-        private HashSet<Chimera.Interfaces.Overlay.IWindowTransition> mCompletedWindows;
+        private readonly HashSet<IWindowTransition> mCompletedWindows = new HashSet<IWindowTransition>();
         /// <summary>
         /// Factory for creating new window transitions when new windows are added to the system.
         /// </summary>
@@ -53,11 +53,12 @@ namespace Chimera.Overlay {
         public event Action<StateTransition> Finished;
 
         /// <param name="manager">The manager this transition works transition.</param>
-        public StateTransition(StateManager manager, IState from, IState to, ITrigger trigger) {
+        public StateTransition(StateManager manager, IState from, IState to, ITrigger trigger, IWindowTransitionFactory factory) {
             mManager = manager;
             mFrom = from;
             mTo = to;
             mTrigger = trigger;
+            mWindowTransitionFactory = factory;
 
             mTrigger.Triggered += new Action(mTrigger_Triggered);
             mManager.Coordinator.WindowAdded += new Action<Window,EventArgs>(Coordinator_WindowAdded);
@@ -127,8 +128,12 @@ namespace Chimera.Overlay {
             if (mActive) {
                 mFrom.Active = false;
                 mCompletedWindows.Clear();
-                foreach (var windowTrans in mWindowTransitions.Values)
+                foreach (var windowTrans in mWindowTransitions.Values) {
+                    windowTrans.Manager.CurrentDisplay = windowTrans;
                     windowTrans.Begin();
+                }
+                if (Started != null)
+                    Started(this);
             }
         }
         void mTrigger_Triggered() {
@@ -143,6 +148,7 @@ namespace Chimera.Overlay {
 
         void transition_Finished(IWindowTransition transition) {
             mCompletedWindows.Add(transition);
+            transition.Manager.CurrentDisplay = transition.To;
             if (mCompletedWindows.Count == mWindowTransitions.Count) {
                 mInProgress = false;
                 if (Finished != null)

@@ -7,82 +7,39 @@ using System.Windows.Forms;
 using System.Threading;
 
 namespace Chimera.Overlay {
-    public class ImageSelection : HoverSelector {
-        private readonly double mSelectTime = 1500;
-
-        private Window mWindow;
+    public class ImageHoverTrigger : HoverTrigger {
         private Bitmap mImage;
         private Bitmap mScaledImage;
 
         public Bitmap ScaledImage {
             get { return mScaledImage; }
-            set {
-            }
         }
 
         public Bitmap Image {
             get { return mImage; }
             set {
                 mImage = value;
-                window_MonitorChanged(mWindow, mWindow.Monitor);
-                if (ImageChanged != null)
-                    ImageChanged(this, null);
+                Manager.ForceRedrawStatic();
             }
         }
 
-        public ImageSelection(Bitmap image, float x, float y, float w, float h)
-            : base(x, y, w, h) {
+        public ImageHoverTrigger(Bitmap image, WindowOverlayManager manager, IHoverSelectorRenderer render, float x, float y, float w, float h)
+            : base(manager, render, x, y, w, h) {
             mImage = image;
         }
 
-
-        public ImageSelection(string imageFile, float x, float y, float w, float h)
-            : this(new Bitmap(imageFile), x, y, w, h) {
-        }
-
-        public ImageSelection(Window window, Bitmap image, float x, float y, float w, float h)
-            : this(image, x, y, w, h) {
-            Init(window);
-        }
-
-        public ImageSelection(Window window, string imageFile, float x, float y, float w, float h)
-            : this(window, new Bitmap(imageFile), x, y, w, h) {
-        }
-
-        private void window_MonitorChanged(Window window, Screen screen) {
-            mScaledImage = new Bitmap(mImage, (int) (Bounds.Width * screen.Bounds.Width), (int) (Bounds.Height * screen.Bounds.Height));
+        public ImageHoverTrigger(string imageFile, WindowOverlayManager manager, IHoverSelectorRenderer render, float x, float y, float w, float h)
+            : this(new Bitmap(imageFile), manager, render, x, y, w, h) {
         }
 
         #region ISelectable Members
 
-        public override void Init(Window window) {
-            base.Init(window);
-
-            mWindow = window;
-
-            mWindow.MonitorChanged += new Action<Window, Screen>(window_MonitorChanged);
-
-            window_MonitorChanged(mWindow, mWindow.Monitor);
-        }
-
-        public override void ChangeClip(Rectangle clip, Graphics graphics) {
-            base.ChangeClip(clip, graphics);
+        public override void RedrawStatic(Rectangle clip, Graphics graphics) {
+            base.RedrawStatic(clip, graphics);
+            mScaledImage = new Bitmap(mImage, ScaledBounds.Size);
             graphics.DrawImage(mScaledImage, Bounds.Location);
         }
 
-        public override void Show() {
-            Visible = true;
-        }
-
-        public override void Hide() {
-            Visible = false;
-        }
-
         #endregion
-
-        /// <summary>
-        /// Triggered when the image this area renders as its selectable area changes.
-        /// </summary>
-        public event EventHandler ImageChanged;
     }
 }

@@ -28,7 +28,7 @@ namespace Chimera.Overlay {
         /// <summary>
         /// The selectable area which, when triggered, will return to the main menu.
         /// </summary>
-        private ImageSelection mThumbnailSelectable;
+        private ImageHoverTrigger mThumbnailSelectable;
         /// <summary>
         /// The window this section of the main menu renders onto.
         /// </summary>
@@ -69,8 +69,8 @@ namespace Chimera.Overlay {
 
         private void RecalculateThumbnail() {
             float s = (float) mMenu.MainMenuSelectableSize;
-            //mThumbnailSelectable = new ImageArea(mWindow, mStaticBG, 1 - s, 0, 1, s);
-            mThumbnailSelectable = new ImageSelection(mWindow, mStaticBG, 0f, 0f, 1f, s);
+            //mThumbnailSelectable = new ImageArea(mManager, mStaticBG, 1 - s, 0, 1, s);
+            mThumbnailSelectable = new ImageHoverTrigger(mWindow, mStaticBG, 0f, 0f, 1f, s);
             mThumbnailSelectable.Selected += new Action<ISelectable>(mThumbnailSelectable_Selected);
             mThumbnailSelectable.Active = false;
         }

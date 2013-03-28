@@ -10,11 +10,11 @@ namespace Chimera.Overlay {
         /// <summary>
         /// The features which will be drawn on this window state.
         /// </summary>
-        private List<IDrawable> mFeatures;
+        private readonly List<IDrawable> mFeatures = new List<IDrawable>();
         /// <summary>
         /// The overlay form for the window this window state is linked to.
         /// </summary>
-        private WindowOverlayManager mManager;
+        private readonly WindowOverlayManager mManager;
         /// <summary>
         /// True if the state needs to be redrawn.
         /// </summary>
@@ -24,6 +24,11 @@ namespace Chimera.Overlay {
         /// </summary>
         private bool mActive;
 
+        /// <param name="manager">The manager which controls this window state.</param>
+        public WindowState(WindowOverlayManager manager) {
+            mManager = manager;
+        }
+
         /// <summary>
         /// Features which need to be drawn in the window.
         /// </summary>
@@ -31,7 +36,10 @@ namespace Chimera.Overlay {
             get { return mFeatures.ToArray(); }
         }
 
-        protected WindowOverlayManager Controller {
+        /// <summary>
+        /// The manager which controls this window state.
+        /// </summary>
+        public WindowOverlayManager Manager {
             get { return mManager; }
         }
 
@@ -64,9 +72,9 @@ namespace Chimera.Overlay {
         /// </summary>
         /// <param name="clip">The area in which this drawable will be drawn.</param>
         /// <param name="graphics">The object with which to to draw any elements which only change when the area is resized.</param>
-        public virtual void ChangeClip(Rectangle clip, Graphics graphics) {
+        public virtual void RedrawStatic(Rectangle clip, Graphics graphics) {
             foreach (var feature in mFeatures)
-                feature.ChangeClip(clip, graphics);
+                feature.RedrawStatic(clip, graphics);
         }
 
         /// <summary>

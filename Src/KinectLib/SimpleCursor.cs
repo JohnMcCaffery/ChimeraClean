@@ -128,8 +128,8 @@ namespace Chimera.Kinect {
         }
 
         private void Init() {
-            //mX = mConstrainedX * (float)mWindow.Monitor.Bounds.Width;
-            //mY = (float) mWindow.Monitor.Bounds.Height - (mConstrainedY * (float)mWindow.Monitor.Bounds.Height);
+            //mX = mConstrainedX * (float)mManager.Monitor.Bounds.Width;
+            //mY = (float) mManager.Monitor.Bounds.Height - (mConstrainedY * (float)mManager.Monitor.Bounds.Height);
             mX = Nui.ifScalar(C.And(mOnScreenConditionLeft, !mOnScreenConditionRight), mConstrainedXLeft, mConstrainedXRight);
             mY = 1f - Nui.ifScalar(C.And(mOnScreenConditionLeft, !mOnScreenConditionRight), mConstrainedYLeft, mConstrainedYRight);
             //mY = 1f - mConstrainedYRight;

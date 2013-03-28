@@ -5,14 +5,14 @@ using System.Text;
 using System.Drawing;
 
 namespace Chimera.Overlay {
-    public class InvisibleSelection : HoverSelector {
+    public class InvisibleSelection : HoverTrigger {
         public override event Action<ISelectable> StaticChanged;
 
-        public InvisibleSelection(ISelectionRenderer renderer, float x, float y, float w, float h)
+        public InvisibleTrigger(ISelectionRenderer renderer, float x, float y, float w, float h)
             : base(renderer, x, y, w, h) {
         }
 
-        public InvisibleSelection(float x, float y, float w, float h)
+        public InvisibleTrigger(float x, float y, float w, float h)
             : base(x, y, w, h) {
         }
 

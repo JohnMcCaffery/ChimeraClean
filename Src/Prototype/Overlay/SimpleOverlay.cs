@@ -65,7 +65,7 @@ namespace Chimera.GUI.Forms {
         /// <summary>
         /// Selection which triggers when the user is to go in world.
         /// </summary>
-        private InvisibleSelection mGoInWorld;
+        private InvisibleHoverTrigger mGoInWorld;
         /// <summary>
         /// The renderer which will let the user know when they are hovering over go in world.
         /// </summary>
@@ -74,7 +74,7 @@ namespace Chimera.GUI.Forms {
         /// <summary>
         /// Selection which triggers when the user is to go in world.
         /// </summary>
-        private InvisibleSelection mGoInWorldHelp;
+        private InvisibleHoverTrigger mGoInWorldHelp;
         /// <summary>
         /// The renderer which will let the user know when they are hovering over go in world.
         /// </summary>
@@ -83,7 +83,7 @@ namespace Chimera.GUI.Forms {
         /// <summary>
         /// Selection which triggers when the user is to go in world.
         /// </summary>
-        private InvisibleSelection mGoMainMenu;
+        private InvisibleHoverTrigger mGoMainMenu;
         /// <summary>
         /// The renderer which will let the user know when they are hovering over go in world.
         /// </summary>
@@ -179,19 +179,19 @@ namespace Chimera.GUI.Forms {
             mCathedralHelpImage = new Bitmap(mCathedralHelpImage, s);
 
             mGoInWorldRender = new NumberSelectionRenderer();
-            //mGoInWorld = new InvisibleSelection(mGoInWorldRender, 155f / 1920, 220f / 1080, (555f - 155f) / 1920, (870f - 220f) / 1080);
-            mGoInWorld = new InvisibleSelection(mGoInWorldRender, 265f / 1920, 255f / 1080, (675f - 255f) / 1920, (900f - 255f) / 1080);
+            //mGoInWorld = new InvisibleHoverTrigger(mGoInWorldRender, 155f / 1920, 220f / 1080, (555f - 155f) / 1920, (870f - 220f) / 1080);
+            mGoInWorld = new InvisibleHoverTrigger(mGoInWorldRender, 265f / 1920, 255f / 1080, (675f - 255f) / 1920, (900f - 255f) / 1080);
             mGoInWorld.Selected += new Action<ISelectable>(mGoInWorld_Selected);
 
             mGoMainMenuRender = new NumberSelectionRenderer();
-            //mGoMainMenu = new InvisibleSelection(mGoMainMenuRender, 70f / 1920, 65f / 1080, (490f - 70f) / 1920, (300f - 65f) / 1080);
-            mGoMainMenu = new InvisibleSelection(mGoMainMenuRender, 70f / 1920, 65f / 1080, (490f - 70f) / 1920, (300f - 65f) / 1080);
+            //mGoMainMenu = new InvisibleHoverTrigger(mGoMainMenuRender, 70f / 1920, 65f / 1080, (490f - 70f) / 1920, (300f - 65f) / 1080);
+            mGoMainMenu = new InvisibleHoverTrigger(mGoMainMenuRender, 70f / 1920, 65f / 1080, (490f - 70f) / 1920, (300f - 65f) / 1080);
             mGoMainMenu.Selected += new Action<ISelectable>(mGoMainMenu_Selected);
             mGoMainMenu.Active = false;
 
             mGoInWorldHelpRender = new NumberSelectionRenderer();
-            //mGoInWorldHelp = new InvisibleSelection(mGoInWorldHelpRender, 55f / 1920, 515f / 1080, (330f - 55f) / 1920, (950f - 515f) / 1080);
-            mGoInWorldHelp = new InvisibleSelection(mGoInWorldHelpRender, 60f / 1920, 520f / 1080, (335f - 60f) / 1920, (945f - 520f) / 1080);
+            //mGoInWorldHelp = new InvisibleHoverTrigger(mGoInWorldHelpRender, 55f / 1920, 515f / 1080, (330f - 55f) / 1920, (950f - 515f) / 1080);
+            mGoInWorldHelp = new InvisibleHoverTrigger(mGoInWorldHelpRender, 60f / 1920, 520f / 1080, (335f - 60f) / 1920, (945f - 520f) / 1080);
             mGoInWorldHelp.Selected += new Action<ISelectable>(mGoInWorldHelp_Selected);
             mGoInWorldHelp.Active = false;
 
@@ -494,7 +494,7 @@ namespace Chimera.GUI.Forms {
             mGoInWorld.Active = false;
             mGoMainMenu.Active = false;
             mGoInWorldHelp.Active = false;
-            //mController.ControlPointer = false;
+            //mManager.ControlPointer = false;
 
             mCurrentStep = mSteps;
             mMinimizing = true;
@@ -546,7 +546,7 @@ namespace Chimera.GUI.Forms {
             mGoInWorldHelp.Active = false;
             mGoMainMenu.Active = false;
             mGoInWorld.Active = false;
-            //mController.ControlPointer = false;
+            //mManager.ControlPointer = false;
 
             Invoke(new Action(() => Opacity = mExploreOverlayOpacity));
 

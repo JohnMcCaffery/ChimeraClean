@@ -7,7 +7,7 @@ using System.Windows.Forms;
 using System.Threading;
 
 namespace Chimera.Overlay {
-    public class ImageSelection : HoverSelector, ISelectable {
+    public class ImageSelection : HoverTrigger, ISelectable {
         private readonly double mSelectTime = 1500;
 
         private Window mWindow;
@@ -30,22 +30,22 @@ namespace Chimera.Overlay {
             }
         }
 
-        public ImageSelection(Bitmap image, float x, float y, float w, float h)
+        public ImageHoverTrigger(Bitmap image, float x, float y, float w, float h)
             : base(x, y, w, h) {
             mImage = image;
         }
 
 
-        public ImageSelection(string imageFile, float x, float y, float w, float h)
+        public ImageHoverTrigger(string imageFile, float x, float y, float w, float h)
             : this(new Bitmap(imageFile), x, y, w, h) {
         }
 
-        public ImageSelection(Window window, Bitmap image, float x, float y, float w, float h)
+        public ImageHoverTrigger(Window window, Bitmap image, float x, float y, float w, float h)
             : this(image, x, y, w, h) {
             Init(window);
         }
 
-        public ImageSelection(Window window, string imageFile, float x, float y, float w, float h)
+        public ImageHoverTrigger(Window window, string imageFile, float x, float y, float w, float h)
             : this(window, new Bitmap(imageFile), x, y, w, h) {
         }
 

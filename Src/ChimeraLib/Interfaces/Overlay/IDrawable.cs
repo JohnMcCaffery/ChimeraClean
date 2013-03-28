@@ -17,7 +17,7 @@ namespace Chimera.Interfaces.Overlay {
         /// </summary>
         /// <param name="clip">The area in which this drawable will be drawn.</param>
         /// <param name="graphics">The object with which to to draw any elements which only change when the area is resized.</param>
-        void ChangeClip(Rectangle clip, Graphics graphics);
+        void RedrawStatic(Rectangle clip, Graphics graphics);
 
         /// <summary>
         /// Draw the elements of the drawable that change more frequently than when the drawing area is resized.

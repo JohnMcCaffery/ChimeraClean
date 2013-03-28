@@ -246,6 +246,9 @@
     <EmbeddedResource Include="GUI\Controls\Inputs\KBMousePanel.resx">
       <DependentUpon>KBMousePanel.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="GUI\Forms\OverlayWindow.resx">
+      <DependentUpon>OverlayWindow.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

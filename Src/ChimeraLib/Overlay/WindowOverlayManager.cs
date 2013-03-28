@@ -14,17 +14,14 @@ namespace Chimera.Overlay {
         /// Where on the window the cursor is.
         /// </summary>
         private double mCursorX;
-
         /// <summary>
         /// Where on the window the cursor is.
         /// </summary>
         private double mCursorY;
-
         /// <summary>
         /// Whether to launch the overlay window at startup.
         /// </summary>
         private bool mOverlayActive;
-
         /// <summary>
         /// Whether to launch the overlay window fullscreen at startup.
         /// </summary>
@@ -41,22 +38,31 @@ namespace Chimera.Overlay {
         /// The window this overlay covers.
         /// </summary>
         private Window mWindow;
-
         /// <summary>
         /// The colour that will show up as transparent on this window's overlay.
         /// </summary>
         private Color mTransparentColour = Color.Purple;
+        /// <summary>
+        /// The drawable which should currently be drawn to the window.
+        /// </summary>
+        private IDrawable mCurrentDisplay;
+        /// <summary>
+        /// The current opacity for the overlay window.
+        /// </summary>
+        private double mOpacity;
+        /// <summary>
+        /// How long each frame will display for.
+        /// </summary>
+        private int mFrameLength;
 
         /// <summary>
         /// Triggered when the overlay window is launched.
         /// </summary>
         public event EventHandler OverlayLaunched;
-
         /// <summary>
         /// Triggered when the overlay form for this window is closed.
         /// </summary>
         public event EventHandler OverlayClosed;
-
         /// <summary>
         /// Triggered whenever the position of the cursor on this input changes.
         /// </summary>
@@ -129,7 +135,6 @@ namespace Chimera.Overlay {
             get { return mOverlayWindow; }
         }
 
-
         /// <summary>
         /// True if the overlay has been launched.
         /// </summary>
@@ -153,6 +158,31 @@ namespace Chimera.Overlay {
                 mOverlayFullscreen = value;
                 if (mOverlayWindow != null)
                     mOverlayWindow.Fullscreen = value;
+            }
+        }
+        public IDrawable CurrentDisplay {
+            get { return mCurrentDisplay; }
+            set { mCurrentDisplay = value; }
+        }
+
+        public int FrameLength {
+            get { return mFrameLength; }
+            set {
+                mFrameLength = value;
+                if (mOverlayWindow != null)
+                    mOverlayWindow.FrameLength = value;
+            }
+        }
+
+        /// <summary>
+        /// How see through the overlay is.
+        /// </summary>
+        public double Opacity {
+            get { return mOpacity; }
+            set {
+                mOpacity = value;
+                if (mOverlayWindow != null)
+                    mOverlayWindow.Opacity = value;
             }
         }
 
@@ -183,8 +213,7 @@ namespace Chimera.Overlay {
         public void Launch() {
             if (mOverlayWindow == null) {
                 mOverlayActive = true;
-                mOverlayWindow = new OverlayWindow();
-                //mOverlayWindow = new OverlayWindow(this, mTransparentColour);
+                mOverlayWindow = new OverlayWindow(this);
                 mOverlayWindow.Show();
                 mOverlayWindow.FormClosed += new FormClosedEventHandler(mOverlayWindow_FormClosed);
                 mOverlayActive = false;
@@ -205,7 +234,7 @@ namespace Chimera.Overlay {
             }
         }
 
-        public void Init(Window window) {
+        public WindowOverlayManager(Window window) {
             mWindow = window;
 
             WindowConfig cfg = new WindowConfig(mWindow.Name);
@@ -224,12 +253,8 @@ namespace Chimera.Overlay {
                 OverlayClosed(this, null);
         }
 
-        public IDrawable CurrentDisplay {
-            get {
-                throw new System.NotImplementedException();
-            }
-            set {
-            }
+        public void ForceRedrawStatic() {
+            throw new System.NotImplementedException();
         }
     }
 }

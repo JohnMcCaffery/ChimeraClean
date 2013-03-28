@@ -7,6 +7,14 @@ using Chimera.Interfaces.Overlay;
 namespace Chimera.Overlay {
     public abstract class State : IState {
         /// <summary>
+        /// The window states, mapped to the names of the windows.
+        /// </summary>
+        private readonly Dictionary<string, IWindowState> mWindowStates = new Dictionary<string,IWindowState>();
+        /// <summary>
+        /// Transitions transition this state to other states, mapped to the name of the other state.
+        /// </summary>
+        private readonly Dictionary<string, StateTransition> mTransitions = new Dictionary<string,StateTransition>();
+        /// <summary>
         /// Factory used to create new WindowState objects for each window in the system.
         /// </summary>
         private readonly IWindowStateFactory mWindowStateFactory;
@@ -14,14 +22,6 @@ namespace Chimera.Overlay {
         /// The form which will coordinate the state.
         /// </summary>
         private readonly StateManager mManager;
-        /// <summary>
-        /// The window states, mapped to the names of the windows.
-        /// </summary>
-        private readonly Dictionary<string, IWindowState> mWindowStates;
-        /// <summary>
-        /// Transitions transition this state to other states, mapped to the name of the other state.
-        /// </summary>
-        private readonly Dictionary<string, StateTransition> mTransitions;
         /// <summary>
         /// The name for the state.
         /// </summary>
