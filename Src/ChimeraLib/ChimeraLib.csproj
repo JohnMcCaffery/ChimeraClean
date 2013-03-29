@@ -105,6 +105,7 @@
     <Compile Include="Core\WindowConfig.cs" />
     <Compile Include="Overlay\Transitions\OpacityFadeWindowTransition.cs" />
     <Compile Include="Overlay\Transitions\CutWindowTransition.cs" />
+    <Compile Include="Overlay\Triggers\CustomTriggerTrigger.cs" />
     <Compile Include="Overlay\Triggers\DialRenderer.cs" />
     <Compile Include="Overlay\DrawableRoot.cs" />
     <Compile Include="GUI\Controls\ConditionalCheck.cs">

@@ -74,7 +74,7 @@
       </MemberNameLabel>
     </AssociationLine>
     <TypeIdentifier>
-      <HashCode>ShkAEAAAUQAAKgIABAAAAwAAAAAAAMJIQgAACAyECCA=</HashCode>
+      <HashCode>ShkAEAAAUQAAKgIABAAAAwAAIAAAAMJIQgAACAyECCA=</HashCode>
       <FileName>Overlay\WindowOverlayManager.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -215,7 +215,7 @@
   <Class Name="Chimera.Overlay.States.ImageBGWindow">
     <Position X="17.5" Y="7.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAgAAAAAAAAAABAAAAAAAAAAAAAAAQAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAgAAAAAAAAAABAAAAAAAAAAAAAAAQgAAAAAAAAAAA=</HashCode>
       <FileName>Overlay\States\ImageBGWindow.cs</FileName>
     </TypeIdentifier>
   </Class>

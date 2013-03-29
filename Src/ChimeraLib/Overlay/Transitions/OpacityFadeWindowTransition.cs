@@ -101,7 +101,7 @@ namespace Chimera.Overlay.Transitions {
                     Finished(this);
             }
             else
-                Manager.Opacity = (mFadeIn ? 1.0 : 0.0) - time / mLengthMS;
+                Manager.Opacity = (mFadeIn ? 0.0 : 1.0) - time / mLengthMS;
         }
 
         #endregion

@@ -147,7 +147,7 @@ namespace Chimera.Overlay {
         /// <summary>
         /// Colour that can be used to make things transparent on this window's overlay.
         /// </summary>
-        public Color TransparentColour {
+        public Color TransparencyKey {
             get { return mTransparentColour; }
         }
 

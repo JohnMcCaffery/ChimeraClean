@@ -61,6 +61,7 @@ namespace Chimera.Launcher {
 
             IState splashScreen = new ImageBGState("SplashScreen", mCoordinator.StateManager, "../Images/CathedralSplashScreen.png");
             IState helpScreen = new ImageBGState("HelpScreen", mCoordinator.StateManager, "../Images/CathedralHelp.png");
+            IState kinectControl = new KinectControlState("KinectControL", mCoordinator.StateManager);
 
             IHoverSelectorRenderer renderer = new DialRenderer();
             //InvisibleHoverTrigger splashHelpTrigger = new InvisibleHoverTrigger(mainWindow.OverlayManager, renderer, 155f / 1920f, 220f / 1080f, (555f - 155f) / 1920f, (870f - 220f) / 1080);
@@ -70,25 +71,31 @@ namespace Chimera.Launcher {
             InvisibleHoverTrigger helpSplashTrigger = new InvisibleHoverTrigger(mainWindow.OverlayManager, renderer, 70f / 1920f, 65f / 1080f, (490f - 70f) / 1920f, (300f - 65f) / 1080f);
 
             //InvisibleHoverTrigger helpWorldTrigger = new InvisibleHoverTrigger(mainWindow.OverlayManager, renderer, 55f / 1920f, 515f / 1080f, (330f - 55f) / 1920f, (950f - 515f) / 1080f);
-            //InvisibleHoverTrigger helpWorldTrigger = new InvisibleHoverTrigger(mainWindow.OverlayManager, renderer, 60f / 1920f, 520f / 1080f, (335f - 60f) / 1920f, (945f - 520f) / 1080f);
+            InvisibleHoverTrigger helpKinectTrigger = new InvisibleHoverTrigger(mainWindow.OverlayManager, renderer, 60f / 1920f, 520f / 1080f, (335f - 60f) / 1920f, (945f - 520f) / 1080f);
 
             SkeletonFeature helpSkeleton = new SkeletonFeature(1650f / 1920f, 0f, 800f / 1080f, 225f);
 
             CutWindowTransitionFactory cutTransition = new CutWindowTransitionFactory();
             BitmapFadeTransitionFactory fadeTransition = new BitmapFadeTransitionFactory(1500.0);
+            OpacityFadeOutTransitionFactory fadeOutTransition = new OpacityFadeOutTransitionFactory(1500.0);
+
             StateTransition splashHelpTransition = new StateTransition(mCoordinator.StateManager, splashScreen, helpScreen, splashHelpTrigger, fadeTransition);
             StateTransition helpSplashTransition = new StateTransition(mCoordinator.StateManager, helpScreen, splashScreen, helpSplashTrigger, cutTransition);
+            StateTransition helpKinectTransition = new StateTransition(mCoordinator.StateManager, helpScreen, kinectControl, helpKinectTrigger, fadeOutTransition);
 
             splashScreen.AddTransition(splashHelpTransition);
             helpScreen.AddTransition(helpSplashTransition);
+            helpScreen.AddTransition(helpKinectTransition);
 
             splashScreen.AddFeature(mainWindow.Name, splashHelpTrigger);
             helpScreen.AddFeature(mainWindow.Name, helpSplashTrigger);
+            helpScreen.AddFeature(mainWindow.Name, helpKinectTrigger);
 
             helpScreen.AddFeature(mainWindow.Name, helpSkeleton);
 
             mCoordinator.StateManager.AddState(splashScreen);
             mCoordinator.StateManager.AddState(helpScreen);
+            mCoordinator.StateManager.AddState(kinectControl);
             mCoordinator.StateManager.CurrentState = splashScreen;
 
             //Window[] windows = new Window[] { new Window("Main Window") };

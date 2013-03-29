@@ -38,6 +38,7 @@ namespace Chimera.GUI.Forms {
         }
 
         public void Init(WindowOverlayManager manager) {
+            TransparencyKey = manager.TransparencyKey;
             mManager = manager;
             Opacity = manager.Opacity;
             refreshTimer.Interval = manager.FrameLength;
