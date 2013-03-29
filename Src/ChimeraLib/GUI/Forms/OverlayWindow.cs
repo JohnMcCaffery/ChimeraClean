@@ -32,7 +32,8 @@ namespace Chimera.GUI.Forms {
             InitializeComponent();
         }
 
-        public OverlayWindow(WindowOverlayManager manager) {
+        public OverlayWindow(WindowOverlayManager manager)
+            : this() {
             Init(manager);
         }
 
@@ -45,6 +46,7 @@ namespace Chimera.GUI.Forms {
 
         public void RedrawStatic() {
             mRedrawStatic = true;
+            drawPanel.Invalidate();
         }
 
         public int FrameLength {
@@ -96,6 +98,8 @@ namespace Chimera.GUI.Forms {
 
                 e.Graphics.DrawImage(mStaticBG, 0, 0);
                 mManager.CurrentDisplay.DrawDynamic(e.Graphics);
+
+                mStaticBG.Save("../Images/TestImage.png");
             }
         }
 

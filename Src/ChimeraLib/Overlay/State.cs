@@ -40,7 +40,6 @@ namespace Chimera.Overlay {
                 Coordinator_WindowAdded(window, null);
 
             mManager.Coordinator.WindowAdded += new Action<Window,EventArgs>(Coordinator_WindowAdded);
-            mManager.AddState(this);
         }
 
         protected virtual void Coordinator_WindowAdded(Window window, EventArgs args) {
@@ -92,6 +91,15 @@ namespace Chimera.Overlay {
         /// <param name="stateTransition">The new transition to add.</param>
         public void AddTransition(StateTransition stateTransition) {
             mTransitions.Add(stateTransition.To.Name, stateTransition);
+        }
+        
+        /// <summary>
+        /// Add a feature to the be drawn on one of the windows for the state.
+        /// </summary>
+        /// <param name="window">The window to draw the feature on.</param>
+        /// <param name="feature">The feature to draw.</param>
+        public void AddFeature(string window, IDrawable feature) {
+            mWindowStates[window].AddFeature(feature);
         }
 
         /// <summary>

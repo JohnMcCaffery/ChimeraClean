@@ -82,15 +82,13 @@ namespace Chimera.GUI.Controls {
         }
 
         private void launchOverlayButton_Click(object sender, EventArgs e) {
-            /*
             if (launchOverlayButton.Text == "Launch Overlay") {
-                mManager.Overlay.Launch();
+                mWindow.OverlayManager.Launch();
                 launchOverlayButton.Text = "Close Overlay";
             } else {
-                mManager.Overlay.Close();
+                mWindow.OverlayManager.Close();
                 launchOverlayButton.Text = "Launch Overlay";
             }
-            */
         }
 
         private void bringToFrontButtin_Click(object sender, EventArgs e) {

@@ -20,12 +20,9 @@
   <Class Name="Chimera.Window">
     <Position X="20.25" Y="12.25" Width="2" />
     <TypeIdentifier>
-      <HashCode>AAAAAAgEBQAABhAABACIgEQAAAAAgAABUAwCBAiIAwI=</HashCode>
+      <HashCode>AAAAAAgEBQAABhAABACIgEQAAAAAgAABUAwCFAiIAwI=</HashCode>
       <FileName>Core\Window.cs</FileName>
     </TypeIdentifier>
-    <ShowAsAssociation>
-      <Property Name="OverlayManager" />
-    </ShowAsAssociation>
   </Class>
   <Class Name="Chimera.Overlay.StateManager">
     <Position X="9.75" Y="12.25" Width="1.75" />
@@ -35,15 +32,15 @@
     <AssociationLine Name="States" Type="Chimera.Interfaces.Overlay.IState" FixedFromPoint="true" FixedToPoint="true">
       <Path>
         <Point X="11.125" Y="12.25" />
-        <Point X="11.125" Y="8.625" />
-        <Point X="11.75" Y="8.625" />
+        <Point X="11.125" Y="8.804" />
+        <Point X="11.75" Y="8.804" />
       </Path>
     </AssociationLine>
     <AssociationLine Name="CurrentState" Type="Chimera.Interfaces.Overlay.IState" FixedFromPoint="true" FixedToPoint="true">
       <Path>
         <Point X="10.75" Y="12.25" />
-        <Point X="10.75" Y="8.25" />
-        <Point X="11.75" Y="8.25" />
+        <Point X="10.75" Y="8.388" />
+        <Point X="11.75" Y="8.388" />
       </Path>
     </AssociationLine>
     <AssociationLine Name="CurrentTransition" Type="Chimera.Overlay.StateTransition" FixedFromPoint="true" FixedToPoint="true">
@@ -118,8 +115,8 @@
     </AssociationLine>
     <AssociationLine Name="To" Type="Chimera.Interfaces.Overlay.IState" FixedToPoint="true">
       <Path>
-        <Point X="9.75" Y="7.25" />
-        <Point X="11.75" Y="7.25" />
+        <Point X="9.75" Y="7.278" />
+        <Point X="11.75" Y="7.278" />
       </Path>
     </AssociationLine>
     <TypeIdentifier>
@@ -155,13 +152,13 @@
     </Compartments>
     <AssociationLine Name="Manager" Type="Chimera.Overlay.StateManager" FixedFromPoint="true" FixedToPoint="true">
       <Path>
-        <Point X="14.719" Y="9.968" />
+        <Point X="14.719" Y="10.161" />
         <Point X="14.719" Y="12.562" />
         <Point X="11.5" Y="12.562" />
       </Path>
     </AssociationLine>
     <TypeIdentifier>
-      <HashCode>AAAAAAABAAAAAgABAAQAAEQAAAAABAIgAAgACAACAAA=</HashCode>
+      <HashCode>AAAAAAABAAAAAgABAAQAAEQAAAAABAIhAAgACAACAAA=</HashCode>
       <FileName>Overlay\State.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -241,7 +238,7 @@
   <Class Name="Chimera.WindowTransition">
     <Position X="3.5" Y="1.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AgAAAAgBCAAAAAAAAAQAAAAAAAAIBAAAAAAAAAAAgAA=</HashCode>
+      <HashCode>AgAABAgBSAAAAAAAAAwAAAAAAAAIFAQAAAAAAAAAgAA=</HashCode>
       <FileName>WindowTransition.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
@@ -255,7 +252,7 @@
       </Path>
     </AssociationLine>
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAIgAAgACAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAIhAAgACAAAAAA=</HashCode>
       <FileName>Interfaces\Overlay\IState.cs</FileName>
     </TypeIdentifier>
     <ShowAsCollectionAssociation>

@@ -135,7 +135,9 @@ namespace Chimera.Overlay.Triggers {
                 mTriggered = false;
                 mHovering = false;
                 mNeedsRedrawn = true;
-            }
+                mManager.ForceRedrawStatic();
+            } else
+                mNeedsRedrawn = false;
         }
 
         #region ITrigger Members
@@ -161,7 +163,7 @@ namespace Chimera.Overlay.Triggers {
         /// <param name="graphics">The object with which to draw the elements.</param>
         public virtual void DrawDynamic(Graphics graphics) {
             if (mTriggered)
-                mRenderer.DrawSelected(graphics, mClip);
+                mRenderer.DrawSelected(graphics, ScaledBounds);
             else if (mHovering) {
                 mRenderer.DrawHover(graphics, ScaledBounds, mHoverStart, mSelectTimeMS);
             }

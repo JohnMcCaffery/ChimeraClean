@@ -49,11 +49,11 @@ namespace Chimera.Overlay {
         /// <summary>
         /// The current opacity for the overlay window.
         /// </summary>
-        private double mOpacity;
+        private double mOpacity = 1.0;
         /// <summary>
         /// How long each frame will display for.
         /// </summary>
-        private int mFrameLength;
+        private int mFrameLength = 20;
 
         /// <summary>
         /// Triggered when the overlay window is launched.
@@ -75,6 +75,7 @@ namespace Chimera.Overlay {
         public PointF Cursor {
             get { return new PointF((float)mCursorX, (float)mCursorY); }
         }
+
         /// <summary>
         /// Where on the monitor the cursor is, specified in pixels.
         /// </summary>
@@ -105,6 +106,7 @@ namespace Chimera.Overlay {
         public double CursorX {
             get { return mCursorX; }
         }
+
         /// <summary>
         /// Where on the screen the cursor is.
         /// Specified as a percentage. 1 is at the bottom, 0 is at the top.

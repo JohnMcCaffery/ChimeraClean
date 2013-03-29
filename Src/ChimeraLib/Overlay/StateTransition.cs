@@ -109,7 +109,7 @@ namespace Chimera.Overlay {
             get { return mActive; }
             set { 
                 mActive = value;
-                mTrigger.Active = false;
+                mTrigger.Active = value;
             }
         }
 
@@ -138,7 +138,7 @@ namespace Chimera.Overlay {
         }
 
         void mTrigger_Triggered() {
-            Begin();
+            mManager.BeginTransition(this);
         }
 
         void Coordinator_WindowAdded(Window window, EventArgs args) {
@@ -150,6 +150,7 @@ namespace Chimera.Overlay {
         void transition_Finished(IWindowTransition transition) {
             mCompletedWindows.Add(transition);
             transition.Manager.CurrentDisplay = transition.To;
+            transition.Manager.ForceRedrawStatic();
             if (mCompletedWindows.Count == mWindowTransitions.Count) {
                 mInProgress = false;
                 if (Finished != null)

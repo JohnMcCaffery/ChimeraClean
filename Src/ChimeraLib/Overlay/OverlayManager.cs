@@ -31,6 +31,7 @@ namespace Chimera.Overlay {
         /// Generic mechanism for triggering events.
         /// </summary>
         public event Action<string> CustomTrigger;
+
         /// <summary>
         /// Triggered whenever a new state is added.
         /// </summary>

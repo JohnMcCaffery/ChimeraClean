@@ -13,6 +13,7 @@ using Chimera.Overlay.States;
 using Chimera.Overlay.Triggers;
 using Chimera.Overlay;
 using Chimera.Overlay.Transitions;
+using Chimera.Interfaces.Overlay;
 
 namespace Chimera.Launcher {
     public class SimpleSingleInstanceLauncher {
@@ -57,10 +58,10 @@ namespace Chimera.Launcher {
             //MainMenuItem item1 = new MainMenuItem(mState, mOverlay);
             mCoordinator = new Coordinator(windows, kbMouseInput, mKinect, mouse, heightmap, flythrough);
 
-            ImageBGState splashScreen = new ImageBGState("SplashScreen", mCoordinator.StateManager, "../Images/CathedralSplashScreen.png");
-            ImageBGState helpScreen = new ImageBGState("HelpScreen", mCoordinator.StateManager, "../Images/CathedralHelp.png");
+            IState splashScreen = new ImageBGState("SplashScreen", mCoordinator.StateManager, "../Images/CathedralSplashScreen.png");
+            IState helpScreen = new ImageBGState("HelpScreen", mCoordinator.StateManager, "../Images/CathedralHelp.png");
 
-            DialRenderer renderer = new DialRenderer();
+            IHoverSelectorRenderer renderer = new DialRenderer();
             //InvisibleHoverTrigger splashHelpTrigger = new InvisibleHoverTrigger(mainWindow.OverlayManager, renderer, 155f / 1920f, 220f / 1080f, (555f - 155f) / 1920f, (870f - 220f) / 1080);
             InvisibleHoverTrigger splashHelpTrigger = new InvisibleHoverTrigger(mainWindow.OverlayManager, renderer, 265f / 1920f, 255f / 1080f, (675f - 255f) / 1920f, (900f - 255f) / 1080f);
 
@@ -71,15 +72,17 @@ namespace Chimera.Launcher {
             //InvisibleHoverTrigger helpWorldTrigger = new InvisibleHoverTrigger(mainWindow.OverlayManager, renderer, 60f / 1920f, 520f / 1080f, (335f - 60f) / 1920f, (945f - 520f) / 1080f);
 
             CutWindowTransitionFactory cutTransition = new CutWindowTransitionFactory();
-            StateTransition splashHelpTransition = new StateTransition(mCoordinator.StateManager, splashScreen, helpScreen, helpSplashTrigger, cutTransition);
-            StateTransition helpSplashTransition = new StateTransition(mCoordinator.StateManager, splashScreen, helpScreen, helpSplashTrigger, cutTransition);
+            StateTransition splashHelpTransition = new StateTransition(mCoordinator.StateManager, splashScreen, helpScreen, splashHelpTrigger, cutTransition);
+            StateTransition helpSplashTransition = new StateTransition(mCoordinator.StateManager, helpScreen, splashScreen, helpSplashTrigger, cutTransition);
 
             splashScreen.AddTransition(splashHelpTransition);
             helpScreen.AddTransition(helpSplashTransition);
 
+            splashScreen.AddFeature(mainWindow.Name, splashHelpTrigger);
+            helpScreen.AddFeature(mainWindow.Name, helpSplashTrigger);
+
             mCoordinator.StateManager.AddState(splashScreen);
             mCoordinator.StateManager.AddState(helpScreen);
-
             mCoordinator.StateManager.CurrentState = splashScreen;
 
             //Window[] windows = new Window[] { new Window("Main Window") };

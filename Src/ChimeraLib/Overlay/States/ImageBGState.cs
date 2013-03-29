@@ -15,6 +15,8 @@ namespace Chimera.Overlay.States {
         public ImageBGState(string name, StateManager manager, Bitmap defaultBG)
             : base(name, manager) {
             mDefaultBG = defaultBG;
+            foreach (var window in mWindows.Values)
+                window.BackgroundImage = defaultBG;
         }
 
         public ImageBGState(string name, StateManager manager, string defaultBG)

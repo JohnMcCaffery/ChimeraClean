@@ -12,6 +12,7 @@ using OpenMetaverse;
 using Chimera.Kinect;
 using Chimera.Util;
 using Chimera.Kinect.Interfaces;
+using Chimera.Overlay;
 
 namespace Test {
     public partial class KinectCursorForm : Form, IKinectController {
@@ -43,15 +44,14 @@ namespace Test {
             splitContainer1.Panel2.Controls.Add(pointCursorPanel);
 
             mCursor.CursorMove += new Action<IKinectCursor,float,float>(mCursor_CursorMove);
-            //mManager.Overlay.CursorMoved += mWindow_CursorMove;
+            mWindow.OverlayManager.CursorMoved += mWindow_CursorMove;
         }
 
         private void mCursor_CursorMove(IKinectCursor cursor, float x, float y) {
-            //mManager.Overlay.UpdateCursor(x, y);
+            mWindow.OverlayManager.UpdateCursor(x, y);
         }
 
-        /*
-        private void mWindow_CursorMove(OverlayController window, EventArgs args) {
+        private void mWindow_CursorMove(WindowOverlayManager overlay, EventArgs args) {
             if (mCursor.OnScreen && !IsDisposed && Created)
                 Invoke(new Action(() => {
                     cursorPanel.Refresh();
@@ -63,7 +63,6 @@ namespace Test {
             splitContainer1.Panel1.Invalidate();
             cursorPanel.Invalidate();
         }
-        */
 
         private void cursorPanel_Paint(object sender, PaintEventArgs e) {
             if (mCursor.OnScreen) {

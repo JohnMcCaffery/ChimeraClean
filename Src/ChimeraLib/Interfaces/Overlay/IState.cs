@@ -41,5 +41,12 @@ namespace Chimera.Interfaces.Overlay {
         /// </summary>
         /// <param name="StateTransition">The new transition to add.</param>
         void AddTransition(StateTransition transition);
+
+        /// <summary>
+        /// Add a feature to the be drawn on one of the windows for the state.
+        /// </summary>
+        /// <param name="window">The window to draw the feature on.</param>
+        /// <param name="feature">The feature to draw.</param>
+        void AddFeature(string window, IDrawable feature);
     }
 }

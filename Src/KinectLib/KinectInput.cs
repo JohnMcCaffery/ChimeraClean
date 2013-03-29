@@ -271,8 +271,8 @@ namespace Chimera.Kinect {
         }
 
         private void cursor_CursorMove(IKinectCursor cursor, float x, float y) {
-            //if (mEnabled && Nui.HasSkeleton)
-                //cursor.Window.Overlay.UpdateCursor(x, y);
+            if (mEnabled && Nui.HasSkeleton)
+                cursor.Window.OverlayManager.UpdateCursor(x, y);
         }
     }
 }

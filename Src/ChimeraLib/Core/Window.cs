@@ -9,6 +9,7 @@ using System.IO;
 using System.Windows.Forms;
 using Chimera.GUI.Forms;
 using Chimera.Interfaces;
+using Chimera.Overlay;
 
 namespace Chimera {
     public class Window {
@@ -52,6 +53,10 @@ namespace Chimera {
         /// Whether to use mouse control when the window first starts up.
         /// </summary>
         private bool mMouseControl = false;
+        /// <summary>
+        /// The manager for the overlay which can be renderered on this window.
+        /// </summary>
+        private WindowOverlayManager mOverlayManager;
 
         /// <summary>
         /// Triggered whenever the position of this input changes.
@@ -78,6 +83,7 @@ namespace Chimera {
             mHeight = cfg.Height;
             mTopLeft = cfg.TopLeft;
             mOrientation = new Rotation(cfg.Pitch, cfg.Yaw);
+            mOverlayManager = new WindowOverlayManager(this);
 
             mOrientation.Changed += mOrientation_Changed;
 
@@ -217,14 +223,10 @@ namespace Chimera {
         }
 
         /// <summary>
-        /// The form for the overlay for this window.
+        /// The manager for the overlay which sits on top of this window.
         /// </summary>
-        public Chimera.Overlay.WindowOverlayManager OverlayManager {
-            get {
-                throw new System.NotImplementedException();
-            }
-            set {
-            }
+        public WindowOverlayManager OverlayManager {
+            get { return mOverlayManager; }
         }
 
         /// <summary>
