@@ -71,9 +71,18 @@ namespace Chimera.Overlay {
 
         /// <summary>
         /// The current state the manager is in. Will be null during a transition.
+        /// Setting the state directly will immediately skip to the new state without any transition.
         /// </summary>
         public IState CurrentState {
             get { return mCurrentState; }
+            set {
+                if (mCurrentTransition != null)
+                    mCurrentTransition.Cancel();
+                mCurrentState = value;
+                mCurrentState.Active = true;
+                foreach (var windowState in mCurrentState.WindowStates)
+                    windowState.Manager.CurrentDisplay = windowState;
+            }
         }
 
         /// <summary>
@@ -128,8 +137,8 @@ namespace Chimera.Overlay {
         private void transition_Finished(StateTransition transition) {
             lock (this) {
                 transition.Finished -= mTransitionComplete;
-                mCurrentState = transition.To;
                 mCurrentTransition = null;
+                CurrentState = transition.To;
             }
             if (TransitionFinished != null)
                 TransitionFinished(transition);

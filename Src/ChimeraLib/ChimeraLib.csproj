@@ -167,10 +167,10 @@
     <Compile Include="Interfaces\Overlay\IWindowTransition.cs" />
     <Compile Include="Overlay\States\ImageBGState.cs" />
     <Compile Include="Overlay\States\ImageBGWindow.cs" />
-    <Compile Include="Overlay\Triggers\ImageSelection.cs" />
-    <Compile Include="Overlay\Triggers\InvisibleSelection.cs" />
+    <Compile Include="Overlay\Triggers\ImageHoverTrigger.cs" />
+    <Compile Include="Overlay\Triggers\InvisibleHoverTrigger.cs" />
     <Compile Include="Overlay\OverlayManager.cs" />
-    <Compile Include="Overlay\Triggers\SelectableArea.cs" />
+    <Compile Include="Overlay\Triggers\HoverTrigger.cs" />
     <Compile Include="Overlay\State.cs" />
     <Compile Include="Overlay\StateTransition.cs" />
     <Compile Include="Util\ConfigBase.cs" />

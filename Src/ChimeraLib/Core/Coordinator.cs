@@ -223,6 +223,16 @@ namespace Chimera {
         }
 
         /// <summary>
+        /// Look up a window by it's name.
+        /// </summary>
+        /// <param name="windowName">The name of the window to look up.</param>
+        /// <returns>The window called 'windowName'</returns>
+        /// <exception cref="InvalidOperationException">Thrown if there is no window with the given name.</exception>
+        public Window this[string windowName] {
+            get { return mWindows.First(w => w.Name.Equals(windowName)); }
+        }
+
+        /// <summary>
         /// The heightmap the coordinator is working with. Any attempted input value below the heightmap value will be set to the heightmap value.
         /// Stops the camera going through the floor.
         /// </summary>

@@ -32,7 +32,7 @@ namespace Chimera.Interfaces.Overlay {
             get;
         }
 
-        Chimera.Overlay.WindowOverlayManager Manager {
+        WindowOverlayManager Manager {
             get;
             set;
         }
@@ -41,5 +41,10 @@ namespace Chimera.Interfaces.Overlay {
         /// Begin the transition.
         /// </summary>
         void Begin();
+
+        /// <summary>
+        /// Cancel the transition before it has completed.
+        /// </summary>
+        void Cancel();
     }
 }
