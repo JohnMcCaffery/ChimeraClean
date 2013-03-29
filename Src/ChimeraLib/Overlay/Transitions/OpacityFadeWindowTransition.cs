@@ -64,6 +64,23 @@ namespace Chimera.Overlay.Transitions {
             : base(transition, window) {
             mLengthMS = lengthMS;
             mFadeIn = fadeIn;
+            transition.Manager.Coordinator.Tick += new Action(Coordinator_Tick);
+        }
+
+        void Coordinator_Tick() {            if (!mTransitioning)
+                return;
+
+            double time = DateTime.Now.Subtract(mTransitionStart).TotalMilliseconds;
+            if (time > mLengthMS) {
+                mTransitioning = false;
+                Manager.Opacity = mFadeIn ? 1.0 : 0.0;
+                if (Finished != null)
+                    Finished(this);
+            }
+            else {
+                double done = time / mLengthMS;
+                Manager.Opacity = mFadeIn ? done : 1.0 - done;
+            }
         }
 
         #region IWindowTransition Members
@@ -90,24 +107,7 @@ namespace Chimera.Overlay.Transitions {
                 From.RedrawStatic(clip, graphics);
         }
 
-        public override void DrawDynamic(Graphics graphics) {
-            if (!mTransitioning)
-                return;
-
-            double time = DateTime.Now.Subtract(mTransitionStart).TotalMilliseconds;
-            if (time > mLengthMS) {
-                mTransitioning = false;
-                Manager.Opacity = mFadeIn ? 1.0 : 0.0;
-                if (Finished != null)
-                    Finished(this);
-            }
-            else {
-                if (mFadeIn)
-                    Manager.Opacity =  (time / mLengthMS);
-                else
-                    Manager.Opacity =  1.0 - (time / mLengthMS);
-            }
-        }
+        public override void DrawDynamic(Graphics graphics) { }
 
         #endregion
     }
