@@ -30,12 +30,12 @@ namespace Chimera.Kinect.GUI {
         /// Whether the skeleton has been initialised.
         /// </summary>
         private static bool sInitialised;
-
-        private float mRoomW = 3f;
         /// <summary>
         /// True if the skeleton needs to be redrawn.
         /// </summary>
-        private bool mNeedsRedrawn = false;
+        private static bool sNeedsRedrawn = false;
+
+        private float mRoomW = 3f;
         /// <summary>
         /// The clip rectangle for the window as a whole.
         /// </summary>
@@ -65,12 +65,15 @@ namespace Chimera.Kinect.GUI {
         }
 
         public bool NeedsRedrawn {
-            get { return mNeedsRedrawn; }
+            get { return sNeedsRedrawn; }
         }
 
-        public void RedrawStatic(Rectangle clip, Graphics graphics) { }
+        public void RedrawStatic(Rectangle clip, Graphics graphics) {
+            mClip = clip;
+        }
 
         public void DrawDynamic(Graphics graphics) {
+            sNeedsRedrawn = false;
             if (!Nui.HasSkeleton)
                 return;
 
@@ -179,8 +182,14 @@ namespace Chimera.Kinect.GUI {
 
             Nui.SkeletonSwitched += new SkeletonTrackDelegate(Nui_SkeletonSwitched);
             Nui.SkeletonLost += new SkeletonTrackDelegate(Nui_SkeletonLost);
-        }
+            Nui.Tick += new ChangeDelegate(Nui_Tick);
+        }
+
+        static void Nui_Tick() {
+            if (Nui.HasSkeleton)
+                sNeedsRedrawn = true;        }
         static void Nui_SkeletonLost() {
+            sNeedsRedrawn = true;
             switch (sSkeletonCount++ % 3) {
                 case 0: sSkeletonColour = Color.Red; break;
                 case 1: sSkeletonColour = Color.Green; break;
@@ -189,6 +198,7 @@ namespace Chimera.Kinect.GUI {
         }
 
         static void Nui_SkeletonSwitched() {
+            sNeedsRedrawn = true;
             switch (sSkeletonCount++ % 3) {
                 case 0: sSkeletonColour = Color.Red; break;
                 case 1: sSkeletonColour = Color.Green; break;
