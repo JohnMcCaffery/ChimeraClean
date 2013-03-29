@@ -11,7 +11,7 @@ namespace Chimera.Overlay.Triggers {
         /// <summary>
         /// How many ms to the hover must be maintened before the selector is triggered.
         /// </summary>
-        private readonly double mSelectTimeMS = 1500;
+        private readonly float mSelectTimeMS = 1500f;
         /// <summary>
         /// The manager which will supply the cursor position.
         /// </summary>

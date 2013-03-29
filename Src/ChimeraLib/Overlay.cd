@@ -226,7 +226,7 @@
     <Position X="0.5" Y="7.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAEAAAABAAAAAAAAAAAAAAAAAAFAAAAAAAAA=</HashCode>
-      <FileName>DialRenderer.cs</FileName>
+      <FileName>Overlay\Triggers\DialRenderer.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>

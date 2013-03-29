@@ -58,7 +58,7 @@ namespace Chimera.Launcher {
             ImageBGState splashScreen = new ImageBGState("SplashScreen", mCoordinator.StateManager, "../Images/CathedralSplashScreen.png");
             ImageBGState helpScreen = new ImageBGState("HelpScreen", mCoordinator.StateManager, "../Images/CathedralHelp.png");
 
-            DialRenderer renderer;
+            DialRenderer renderer = new DialRenderer();
             //InvisibleHoverTrigger splashHelpTrigger = new InvisibleHoverTrigger(mGoInWorldRender, 155f / 1920, 220f / 1080, (555f - 155f) / 1920, (870f - 220f) / 1080);
             InvisibleHoverTrigger splashHelpTrigger = new InvisibleHoverTrigger(mCoordinator.StateManager, renderer, 265f / 1920, 255f / 1080, (675f - 255f) / 1920, (900f - 255f) / 1080f);
 

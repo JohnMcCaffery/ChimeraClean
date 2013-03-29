@@ -102,7 +102,7 @@
   <ItemGroup>
     <Compile Include="Core\CoordinatorConfig.cs" />
     <Compile Include="Core\WindowConfig.cs" />
-    <Compile Include="DialRenderer.cs" />
+    <Compile Include="Overlay\Triggers\DialRenderer.cs" />
     <Compile Include="Overlay\DrawableRoot.cs" />
     <Compile Include="GUI\Controls\ConditionalCheck.cs">
       <SubType>Component</SubType>
