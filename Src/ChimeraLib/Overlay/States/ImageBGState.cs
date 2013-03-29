@@ -12,7 +12,8 @@ namespace Chimera.Overlay.States {
         private readonly Dictionary<string, ImageBGWindow> mWindows = new Dictionary<string, ImageBGWindow>();
         private Bitmap mDefaultBG;
 
-        public ImageBGState(string name, StateManager manager, Bitmap defaultBG) : base (name, manager) {
+        public ImageBGState(string name, StateManager manager, Bitmap defaultBG)
+            : base(name, manager) {
             mDefaultBG = defaultBG;
         }
 

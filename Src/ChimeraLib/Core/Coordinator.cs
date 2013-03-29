@@ -10,6 +10,7 @@ using System.Reflection;
 using Chimera.Interfaces;
 using System.IO;
 using System.Threading;
+using Chimera.Overlay;
 
 namespace Chimera {
     /// <summary>
@@ -107,6 +108,10 @@ namespace Chimera {
         /// The windows which define where, in real space, each 'input' onto the virtual space is located.
         /// </summary>
         private readonly List<Window> mWindows = new List<Window>();
+        /// <summary>
+        /// The state manager which will control what state the overlay is in.
+        /// </summary>
+        private readonly StateManager mStateManager;
 
         /// <summary>
         /// Scales that the various output input is currently set to.
@@ -137,7 +142,11 @@ namespace Chimera {
         /// <summary>
         /// Triggered whenever a window is added.
         /// </summary>
-        public event Action<Window, EventArgs> WindowAdded;
+        public event Action<Window, EventArgs> WindowAdded;
+        /// <summary>
+        /// Triggered whenever a window is removed.
+        /// </summary>
+        public event Action<Window, EventArgs> WindowRemoved;
 
         /// <summary>
         /// Selected whenever the virtual camera position/orientation is changed.
@@ -179,6 +188,7 @@ namespace Chimera {
         /// <param name="inputs">The inputs which control the camera through this input.</param>
         public Coordinator(params ISystemInput[] inputs) {
             mConfig = new CoordinatorConfig();
+            mStateManager = new StateManager(this);
 
             mInputs = new List<ISystemInput>(inputs);
             mRotation = new Rotation(mRotationLock, mConfig.Pitch, mConfig.Yaw);
@@ -291,6 +301,13 @@ namespace Chimera {
         /// </summary>
         public int TickLength {
             get { return mTickLength; }
+        }
+
+        /// <summary>
+        /// The manager which controls the state of the overlay.
+        /// </summary>
+        public StateManager StateManager {
+            get { return mStateManager; }
         }
 
         /// <summary>
@@ -485,19 +502,6 @@ namespace Chimera {
             if (ret == null)
                 throw new ArgumentException("Unable to get input. No input of the specified type (" + t.FullName + ") found.");
             return (T)ret;
-        }
-
-        /// <summary>
-        /// Triggered whenever a window is removed.
-        /// </summary>
-        public event Action<Window, EventArgs> WindowRemoved;
-
-        public Chimera.Overlay.StateManager StateManager {
-            get {
-                throw new System.NotImplementedException();
-            }
-            set {
-            }
         }
     }
 }
