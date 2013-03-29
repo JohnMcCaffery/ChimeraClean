@@ -13,7 +13,7 @@ namespace Chimera {
         /// <param name="bounds">The area which surrounds the selection.</param>
         /// <param name="hoverStart">When hovering started.</param>
         /// <param name="hoverLength">How long the selector will hover for.</param>
-        void DrawHover(Graphics graphics, Rectangle bounds, DateTime hoverStart, double hoverLength);
+        void DrawHover(Graphics graphics, Rectangle bounds, DateTime hoverStart, float hoverLength);
 
         /// <summary>
         /// Draw the selection after it has been selected.

@@ -222,6 +222,14 @@
       <FileName>Overlay\States\ImageBGWindow.cs</FileName>
     </TypeIdentifier>
   </Class>
+  <Class Name="Chimera.Overlay.Triggers.DialRenderer">
+    <Position X="0.5" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAEAAAABAAAAAAAAAAAAAAAAAAFAAAAAAAAA=</HashCode>
+      <FileName>DialRenderer.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
   <Interface Name="Chimera.Interfaces.Overlay.IState">
     <Position X="11.75" Y="7" Width="1.5" />
     <AssociationLine Name="Transitions" Type="Chimera.Overlay.StateTransition" FixedToPoint="true">
