@@ -28,10 +28,10 @@ namespace Chimera.GUI.Controls {
             heightPanel.Value = (float) window.Height / 10f;
             topLeftPanel.Value = window.TopLeft / 10f;
             orientationPanel.Value = window.Orientation;
-            //controlCursor.Checked = mManager.Overlay.ControlPointer;
+            controlCursor.Checked = mWindow.OverlayManager.ControlPointer;
 
-            //mManager.Overlay.OverlayClosed += new EventHandler(mWindow_OverlayClosed);
-            //mManager.Overlay.OverlayLaunched += new EventHandler(mWindow_OverlayLaunched);
+            mWindow.OverlayManager.OverlayClosed += new EventHandler(mWindow_OverlayClosed);
+            mWindow.OverlayManager.OverlayLaunched += new EventHandler(mWindow_OverlayLaunched);
 
             foreach (var screen in Screen.AllScreens) {
                 monitorPulldown.Items.Add(screen);
@@ -50,12 +50,10 @@ namespace Chimera.GUI.Controls {
 
                 mainTab.Controls.Add(tab);
             }
-            /*
-            if (mManager.Overlay.Visible) {
+            if (mWindow.OverlayManager.Visible) {
                 launchOverlayButton.Text =  "Close Overlay";
-                mManager.Overlay.Launch();
+                mWindow.OverlayManager.Launch();
             }
-            */
         }
 
         void mWindow_OverlayLaunched(object sender, EventArgs e) {
