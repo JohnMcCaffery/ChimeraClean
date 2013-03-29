@@ -7,6 +7,10 @@ using Chimera.Interfaces.Overlay;
 namespace Chimera.Overlay {
     public class StateManager {
         /// <summary>
+        /// All the states this manager manages.
+        /// </summary>
+        private readonly Dictionary<string, IState> mStates = new Dictionary<string,IState>();
+        /// <summary>
         /// The coordinator this state manager is tied to.
         /// </summary>
         private Coordinator mCoordinator;
@@ -18,10 +22,6 @@ namespace Chimera.Overlay {
         /// The current transition the manager is going through. Will be null if no transition is in progress.
         /// </summary>
         private StateTransition mCurrentTransition;
-        /// <summary>
-        /// All the states this manager manages.
-        /// </summary>
-        private Dictionary<string, IState> mStates;
         /// <summary>
         /// Delegate for listening for transition end events.
         /// </summary>
@@ -39,12 +39,17 @@ namespace Chimera.Overlay {
         /// <summary>
         /// Triggered whenever a transition starts.
         /// </summary>
-        public event Action<StateTransition> TransitionStarted;
+        public event Action<StateTransition> TransitionStarting;
 
         /// <summary>
         /// Triggered whenever a transition finishes.
         /// </summary>
         public event Action<StateTransition> TransitionFinished;
+
+        /// <summary>
+        /// Triggered whenever the current state changes.
+        /// </summary>
+        public event Action<IState> StateChanged;
         
         /// <summary>
         /// CreateWindowState the manager. Linking it with a coordinator.
@@ -82,6 +87,8 @@ namespace Chimera.Overlay {
                 mCurrentState.Active = true;
                 foreach (var windowState in mCurrentState.WindowStates)
                     windowState.Manager.CurrentDisplay = windowState;
+                if (StateChanged != null)
+                    StateChanged(value);
             }
         }
 
@@ -113,6 +120,8 @@ namespace Chimera.Overlay {
         /// </summary>
         public void AddState(IState state) {
             mStates.Add(state.Name, state);
+            if (StateAdded != null)
+                StateAdded(state);
         }
 
         /// <summary>
@@ -129,19 +138,19 @@ namespace Chimera.Overlay {
                 mCurrentTransition = transition;
                 transition.Finished += mTransitionComplete;
             }
+            if (TransitionStarting != null)
+                TransitionStarting(transition);
             transition.Begin();
-            if (TransitionStarted != null)
-                TransitionStarted(transition);
         }
 
         private void transition_Finished(StateTransition transition) {
+            if (TransitionFinished != null)
+                TransitionFinished(transition);
             lock (this) {
                 transition.Finished -= mTransitionComplete;
                 mCurrentTransition = null;
                 CurrentState = transition.To;
             }
-            if (TransitionFinished != null)
-                TransitionFinished(transition);
         }
     }
 }
