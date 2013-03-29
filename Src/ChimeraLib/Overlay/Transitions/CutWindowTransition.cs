@@ -9,51 +9,29 @@ using System.Drawing;
 namespace Chimera.Overlay.Transitions {
     public class CutWindowTransitionFactory : IWindowTransitionFactory {
         public IWindowTransition Create(StateTransition transition, Window window) {
-            throw new NotImplementedException();
+            return new CutWindowTransition(transition, window);
         }
     }
-    public class CutWindowTransition : IWindowTransition {
-        public event Action<IWindowTransition> Finished;
+    public class CutWindowTransition : WindowTransition, IWindowTransition {
+        public override event Action<IWindowTransition> Finished;
 
-        public Overlay.StateTransition StateTransition {
-            get { throw new NotImplementedException(); }
+        public CutWindowTransition(StateTransition transition, Window window)
+            : base(transition, window) {
         }
 
-        public IWindowState To {
-            get { throw new NotImplementedException(); }
+        public override void Begin() {
+            if (Finished != null)
+                Finished(this);
         }
 
-        public IWindowState From {
-            get { throw new NotImplementedException(); }
+        public override void Cancel() { }
+
+        public override bool NeedsRedrawn {
+            get { return false; }
         }
 
-        public WindowOverlayManager Manager {
-            get {
-                throw new NotImplementedException();
-            }
-            set {
-                throw new NotImplementedException();
-            }
-        }
+        public override void RedrawStatic(Rectangle clip, Graphics graphics) { }
 
-        public void Begin() {
-            throw new NotImplementedException();
-        }
-
-        public void Cancel() {
-            throw new NotImplementedException();
-        }
-
-        public bool NeedsRedrawn {
-            get { throw new NotImplementedException(); }
-        }
-
-        public void RedrawStatic(Rectangle clip, Graphics graphics) {
-            throw new NotImplementedException();
-        }
-
-        public void DrawDynamic(Graphics graphics) {
-            throw new NotImplementedException();
-        }
+        public override void DrawDynamic(Graphics graphics) { }
     }
 }

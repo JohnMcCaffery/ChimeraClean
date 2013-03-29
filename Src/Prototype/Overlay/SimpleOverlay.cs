@@ -65,7 +65,7 @@ namespace Chimera.GUI.Forms {
         /// <summary>
         /// Selection which triggers when the user is to go in world.
         /// </summary>
-        private InvisibleHoverTrigger mGoInWorld;
+        private ISelectable mGoInWorld;
         /// <summary>
         /// The renderer which will let the user know when they are hovering over go in world.
         /// </summary>
@@ -74,7 +74,7 @@ namespace Chimera.GUI.Forms {
         /// <summary>
         /// Selection which triggers when the user is to go in world.
         /// </summary>
-        private InvisibleHoverTrigger mGoInWorldHelp;
+        private ISelectable mGoInWorldHelp;
         /// <summary>
         /// The renderer which will let the user know when they are hovering over go in world.
         /// </summary>
@@ -83,7 +83,7 @@ namespace Chimera.GUI.Forms {
         /// <summary>
         /// Selection which triggers when the user is to go in world.
         /// </summary>
-        private InvisibleHoverTrigger mGoMainMenu;
+        private ISelectable mGoMainMenu;
         /// <summary>
         /// The renderer which will let the user know when they are hovering over go in world.
         /// </summary>

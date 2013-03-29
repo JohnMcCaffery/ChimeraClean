@@ -32,9 +32,11 @@ namespace Chimera.Interfaces.Overlay {
             get;
         }
 
+        /// <summary>
+        /// The manager for the overlay on the window this state transition is rendered on.
+        /// </summary>
         WindowOverlayManager Manager {
             get;
-            set;
         }
 
         /// <summary>

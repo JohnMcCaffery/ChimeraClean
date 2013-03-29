@@ -231,10 +231,18 @@
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="Chimera.Overlay.Transitions.CutWindowTransition">
-    <Position X="2.5" Y="2.5" Width="1.5" />
+    <Position X="1" Y="1.75" Width="1.75" />
     <TypeIdentifier>
-      <HashCode>AgAABAAAQAAAAAAAAAwAAAAAAAAIFAQAAAAAAAAAgAA=</HashCode>
+      <HashCode>AAAABAAAQAAAAAAAAAwAAAAAAAAAEAQAAAAAAAAAAAA=</HashCode>
       <FileName>Overlay\Transitions\CutWindowTransition.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Chimera.WindowTransition">
+    <Position X="3.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAgBCAAAAAAAAAQAAAAAAAAIBAAAAAAAAAAAgAA=</HashCode>
+      <FileName>WindowTransition.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
