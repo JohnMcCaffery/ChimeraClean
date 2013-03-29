@@ -12,6 +12,15 @@ namespace Chimera.Overlay.States {
         private readonly Dictionary<string, ImageBGWindow> mWindows = new Dictionary<string, ImageBGWindow>();
         private Bitmap mDefaultBG;
 
+        public override bool Active {
+            get { return base.Active; }
+            set {
+                base.Active = value;
+                if (value)
+                    Manager.Coordinator.EnableUpdates = false;
+            }
+        }
+
         public ImageBGState(string name, StateManager manager, Bitmap defaultBG)
             : base(name, manager) {
             mDefaultBG = defaultBG;

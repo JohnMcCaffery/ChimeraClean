@@ -208,7 +208,7 @@
   <Class Name="Chimera.Overlay.States.ImageBGState">
     <Position X="15.25" Y="11.75" Width="2.25" />
     <TypeIdentifier>
-      <HashCode>AABAAIAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAACAAA=</HashCode>
+      <HashCode>AABAAIAAAAAAAAAAQAAAAAAAAAAAAAAgAAAAAAACAAA=</HashCode>
       <FileName>Overlay\States\ImageBGState.cs</FileName>
     </TypeIdentifier>
   </Class>

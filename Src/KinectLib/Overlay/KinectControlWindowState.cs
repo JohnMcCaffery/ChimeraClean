@@ -11,7 +11,8 @@ namespace Chimera.Kinect.Overlay {
             set {
                 base.Active = value;
                 Manager.Opacity = value ? .3 : 1.0;
-                Manager.ControlPointer = !value;
+                if (value)
+                    Manager.ControlPointer = false;
             }
         }
         public KinectControlWindowState(WindowOverlayManager manager)

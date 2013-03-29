@@ -16,6 +16,8 @@ namespace Chimera.Kinect.Overlay {
                 mInput.FlyEnabled = value;
                 mInput.WalkEnabled = value;
                 mInput.YawEnabled = value;
+                if (value)
+                    Manager.Coordinator.EnableUpdates = true;
             }
         }
         public override IWindowState CreateWindowState(Window window) {
