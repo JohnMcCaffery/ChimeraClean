@@ -42,6 +42,7 @@ namespace Chimera.GUI.Forms {
             BackColor = manager.TransparencyKey;
             TransparencyKey = manager.TransparencyKey;
             mManager = manager;
+            TopMost = true;
             Opacity = manager.Opacity;
             refreshTimer.Interval = manager.FrameLength;
             refreshTimer.Enabled = true;
