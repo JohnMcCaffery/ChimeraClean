@@ -50,6 +50,16 @@ namespace Chimera.Overlay.Triggers {
         /// </summary>
         private bool mNeedsRedrawn;
 
+        /// <summary>
+        /// Create the trigger. Specifies the position and size of the area the cursor must hover in to trigger this trigger as values between 0 and 1.
+        /// 0,0 is top left, 1,1 is bottom right.
+        /// </summary>
+        /// <param name="manager">The manager which manages the window this trigger is to draw to.</param>
+        /// <param name="render">The renderer used to draw this trigger being selected.</param>
+        /// <param name="x">The x coordinate for where the image is to be positioned, specified between 0 and 1. 0 is flush to the left, 1 flush to the right.</param>
+        /// <param name="y">The y coordinate for where the image is to be positioned, specified between 0 and 1. 0 is flush to the top, 1 flush to the bottom.</param>
+        /// <param name="x">The width of the image, specified between 0 and 1. 1 will fill the entire width, 0 will be invisible.</param>
+        /// <param name="y">The width of the image, specified between 0 and 1. 1 will fill the entire height, 0 will be invisible.</param>
         public HoverTrigger(WindowOverlayManager manager, IHoverSelectorRenderer selector, float x, float y, float w, float h) {
             mManager = manager;
             mBounds = new RectangleF(x, y, w, h);
@@ -77,6 +87,13 @@ namespace Chimera.Overlay.Triggers {
         /// </summary>
         protected virtual RectangleF Bounds {
             get { return mBounds; }
+        }
+
+        /// <summary>
+        /// The manager which controls the window this trigger renders on.
+        /// </summary>
+        protected WindowOverlayManager Manager {
+            get { return mManager; }
         }
 
         /// <summary>
@@ -160,16 +177,5 @@ namespace Chimera.Overlay.Triggers {
         }
 
         #endregion    
-
-        /// <summary>
-        /// The manager which controls the window this trigger renders on.
-        /// </summary>
-        protected WindowOverlayManager Manager {
-            get {
-                throw new System.NotImplementedException();
-            }
-            set {
-            }
-        }
     }
 }
