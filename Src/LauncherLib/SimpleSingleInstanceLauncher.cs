@@ -14,7 +14,7 @@ using Chimera.Overlay.Triggers;
 using Chimera.Overlay;
 using Chimera.Overlay.Transitions;
 using Chimera.Interfaces.Overlay;
-using Chimera.Kinect.GUI;
+using Chimera.Kinect.Overlay;
 
 namespace Chimera.Launcher {
     public class SimpleSingleInstanceLauncher {

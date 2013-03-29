@@ -7,7 +7,7 @@ using System.Drawing;
 using NuiLibDotNet;
 using OpenMetaverse;
 
-namespace Chimera.Kinect.GUI {
+namespace Chimera.Kinect.Overlay {
     public class SkeletonFeature : IDrawable {
         private static Vector sLeftHand, sRightHand;
         private static Vector sLeftElbow, sRightElbow;
