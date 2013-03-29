@@ -9,6 +9,14 @@ namespace Chimera.Overlay.States {
     public class ImageBGWindow : WindowState {
         private Bitmap mBG;
 
+        public Bitmap BackgroundImage {
+            get { return mBG; }
+            set {
+                mBG = value;
+                Manager.ForceRedrawStatic();
+            }
+        }
+
         public ImageBGWindow(WindowOverlayManager manager, Bitmap BG)
             : base(manager) {
             mBG = BG;

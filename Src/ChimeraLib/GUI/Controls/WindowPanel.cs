@@ -51,7 +51,7 @@ namespace Chimera.GUI.Controls {
                 mainTab.Controls.Add(tab);
             }
             /*
-            if (mManager.Overlay.OverlayVisible) {
+            if (mManager.Overlay.Visible) {
                 launchOverlayButton.Text =  "Close Overlay";
                 mManager.Overlay.Launch();
             }
@@ -98,7 +98,7 @@ namespace Chimera.GUI.Controls {
         }
 
         private void showBordersTextBox_CheckedChanged(object sender, EventArgs e) {
-            //mManager.Overlay.OverlayFullscreen = fullscreenCheck.Checked;
+            //mManager.Overlay.Fullscreen = fullscreenCheck.Checked;
         }
 
         private void positionPanel_ValueChanged(object sender, EventArgs e) {

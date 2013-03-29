@@ -138,7 +138,7 @@ namespace Chimera.Overlay {
         /// <summary>
         /// True if the overlay has been launched.
         /// </summary>
-        public bool OverlayVisible {
+        public bool Visible {
             get { return mOverlayActive; }
         }
 
@@ -152,7 +152,7 @@ namespace Chimera.Overlay {
         /// <summary>
         /// Whether the overlay window is currently fullscreen.
         /// </summary>
-        public bool OverlayFullscreen {
+        public bool Fullscreen {
             get { return mOverlayFullscreen; }
             set {
                 mOverlayFullscreen = value;
@@ -162,7 +162,10 @@ namespace Chimera.Overlay {
         }
         public IDrawable CurrentDisplay {
             get { return mCurrentDisplay; }
-            set { mCurrentDisplay = value; }
+            set { 
+                mCurrentDisplay = value;
+                ForceRedrawStatic();
+            }
         }
 
         public int FrameLength {
@@ -254,7 +257,8 @@ namespace Chimera.Overlay {
         }
 
         public void ForceRedrawStatic() {
-            throw new System.NotImplementedException();
+            if (mOverlayWindow != null)
+                mOverlayWindow.RedrawStatic();
         }
     }
 }
