@@ -21,7 +21,8 @@ namespace Chimera.Kinect {
         private Condition mTriggerL;
         private Condition mTrigger;
         private Scalar mAngleThreshold;
-        private Scalar mHeightThreshold;
+        private Scalar mHeightThreshold;
+
         public Vector ArmR { get { return mArmR; } }
         public Vector ArmL { get { return mArmL; } }
         public Scalar AngleR { get { return mAngleR; } }

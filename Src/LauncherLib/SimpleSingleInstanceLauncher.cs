@@ -73,19 +73,24 @@ namespace Chimera.Launcher {
             //InvisibleHoverTrigger helpWorldTrigger = new InvisibleHoverTrigger(mainWindow.OverlayManager, renderer, 55f / 1920f, 515f / 1080f, (330f - 55f) / 1920f, (950f - 515f) / 1080f);
             InvisibleHoverTrigger helpKinectTrigger = new InvisibleHoverTrigger(mainWindow.OverlayManager, renderer, 60f / 1920f, 520f / 1080f, (335f - 60f) / 1920f, (945f - 520f) / 1080f);
 
+            ITrigger customTriggerHelp = new CustomTriggerTrigger(mCoordinator.StateManager, "Help");
+
             SkeletonFeature helpSkeleton = new SkeletonFeature(1650f / 1920f, 0f, 800f / 1080f, 225f);
 
             CutWindowTransitionFactory cutTransition = new CutWindowTransitionFactory();
             BitmapFadeTransitionFactory fadeTransition = new BitmapFadeTransitionFactory(1500.0);
             OpacityFadeOutTransitionFactory fadeOutTransition = new OpacityFadeOutTransitionFactory(1500.0);
+            OpacityFadeInTransitionFactory fadeInTransition = new OpacityFadeInTransitionFactory(1500.0);
 
             StateTransition splashHelpTransition = new StateTransition(mCoordinator.StateManager, splashScreen, helpScreen, splashHelpTrigger, fadeTransition);
             StateTransition helpSplashTransition = new StateTransition(mCoordinator.StateManager, helpScreen, splashScreen, helpSplashTrigger, cutTransition);
             StateTransition helpKinectTransition = new StateTransition(mCoordinator.StateManager, helpScreen, kinectControl, helpKinectTrigger, fadeOutTransition);
+            StateTransition kinectHelpTransition = new StateTransition(mCoordinator.StateManager, kinectControl, helpScreen, customTriggerHelp, fadeInTransition);
 
             splashScreen.AddTransition(splashHelpTransition);
             helpScreen.AddTransition(helpSplashTransition);
             helpScreen.AddTransition(helpKinectTransition);
+            kinectControl.AddTransition(kinectHelpTransition);
 
             splashScreen.AddFeature(mainWindow.Name, splashHelpTrigger);
             helpScreen.AddFeature(mainWindow.Name, helpSplashTrigger);

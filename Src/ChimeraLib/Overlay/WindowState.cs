@@ -33,7 +33,17 @@ namespace Chimera.Overlay {
         /// </summary>
         public virtual bool Active {
             get { return mActive; }
-            set { mActive = value; }
+            set { 
+                mActive = value;
+                if (value)
+                    OnActivated();
+            }
         }
+
+        /// <summary>
+        /// Do any actions that need to be set as soon as the state is activated.
+        /// Use this to make sure the overlay is set up as expected, e.g. set opacity and cursor control variables.
+        /// </summary>
+        protected abstract void OnActivated();
     }
 }

@@ -90,18 +90,23 @@ namespace Chimera.Overlay.Transitions {
                 From.RedrawStatic(clip, graphics);
         }
 
-        public override void DrawDynamic(System.Drawing.Graphics graphics) {
+        public override void DrawDynamic(Graphics graphics) {
             if (!mTransitioning)
                 return;
 
             double time = DateTime.Now.Subtract(mTransitionStart).TotalMilliseconds;
             if (time > mLengthMS) {
                 mTransitioning = false;
+                Manager.Opacity = mFadeIn ? 1.0 : 0.0;
                 if (Finished != null)
                     Finished(this);
             }
-            else
-                Manager.Opacity = (mFadeIn ? 0.0 : 1.0) - time / mLengthMS;
+            else {
+                if (mFadeIn)
+                    Manager.Opacity =  (time / mLengthMS);
+                else
+                    Manager.Opacity =  1.0 - (time / mLengthMS);
+            }
         }
 
         #endregion

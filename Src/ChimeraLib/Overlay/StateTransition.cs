@@ -129,6 +129,7 @@ namespace Chimera.Overlay {
                 mFrom.Active = false;
                 mCompletedWindows.Clear();
                 foreach (var windowTrans in mWindowTransitions.Values) {
+                    windowTrans.From.Active = false;
                     windowTrans.Manager.CurrentDisplay = windowTrans;
                     windowTrans.Begin();
                 }
@@ -149,6 +150,7 @@ namespace Chimera.Overlay {
 
         void transition_Finished(IWindowTransition transition) {
             mCompletedWindows.Add(transition);
+            transition.To.Active = true;
             transition.Manager.CurrentDisplay = transition.To;
             transition.Manager.ForceRedrawStatic();
             if (mCompletedWindows.Count == mWindowTransitions.Count) {

@@ -13,11 +13,6 @@ namespace Chimera.Kinect.Overlay {
             get { return base.Active; }
             set {
                 base.Active = value;
-                mInput.FlyEnabled = value;
-                mInput.WalkEnabled = value;
-                mInput.YawEnabled = value;
-                if (value)
-                    Manager.Coordinator.EnableUpdates = true;
             }
         }
         public override IWindowState CreateWindowState(Window window) {
@@ -28,6 +23,18 @@ namespace Chimera.Kinect.Overlay {
             : base(name, manager) {
 
             mInput = manager.Coordinator.GetInput<KinectInput>();
+        }
+
+        protected override void OnActivated() {
+            mInput.FlyEnabled = true;
+            mInput.WalkEnabled = true;
+            mInput.YawEnabled = true;
+            Manager.Coordinator.EnableUpdates = true;
+        }
+        protected override void OnDeActivated() { 
+            mInput.FlyEnabled = false;
+            mInput.WalkEnabled = false;
+            mInput.YawEnabled = false;       
         }
     }
 }

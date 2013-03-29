@@ -75,6 +75,10 @@ namespace Chimera.Overlay {
                     transition.Active = value;
                 foreach (var window in mWindowStates.Values)
                     window.Active = false;
+                if (value)
+                    OnActivated();
+                else
+                    OnDeActivated();
             }
         }
 
@@ -107,5 +111,16 @@ namespace Chimera.Overlay {
         /// </summary>
         /// <param name="window">The window the new window state is to draw on.</param>
         public abstract IWindowState CreateWindowState(Window window);
+
+        /// <summary>
+        /// Do any actions that need to be set as soon as the state is activated.
+        /// Use this to make sure the overlay is set up as expected, e.g. set whether the camera should be controlled.
+        /// </summary>
+        protected abstract void OnActivated();
+        /// <summary>
+        /// Do any actions that need to be when the state is de-activated.
+        /// Use this to make sure the overlay is set up as expected, e.g. set whether the camera should be controlled.
+        /// </summary>
+        protected abstract void OnDeActivated();
     }
 }

@@ -13,8 +13,8 @@ namespace Chimera.Overlay.States {
             get { return base.Active; }
             set {
                 base.Active = value;
-                if (value)
-                    Manager.ControlPointer = true;
+                if (value) {
+                }
             }
         }
 
@@ -34,6 +34,11 @@ namespace Chimera.Overlay.States {
         public override void RedrawStatic(Rectangle clip, Graphics graphics) {
             graphics.DrawImage(mBG, clip);
             base.RedrawStatic(clip, graphics);
+        }
+
+        protected override void OnActivated() {
+            Manager.ControlPointer = true;
+            Manager.Opacity = 1.0; ;
         }
     }
 }

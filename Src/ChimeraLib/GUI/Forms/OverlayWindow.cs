@@ -38,6 +38,8 @@ namespace Chimera.GUI.Forms {
         }
 
         public void Init(WindowOverlayManager manager) {
+            drawPanel.BackColor = manager.TransparencyKey;
+            BackColor = manager.TransparencyKey;
             TransparencyKey = manager.TransparencyKey;
             mManager = manager;
             Opacity = manager.Opacity;

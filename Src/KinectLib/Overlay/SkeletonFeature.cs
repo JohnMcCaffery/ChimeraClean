@@ -70,15 +70,15 @@ namespace Chimera.Kinect.Overlay {
 
         public void RedrawStatic(Rectangle clip, Graphics graphics) {
             mClip = clip;
+
+            if (!sInitialised)
+                Init();
         }
 
         public void DrawDynamic(Graphics graphics) {
             sNeedsRedrawn = false;
             if (!Nui.HasSkeleton)
                 return;
-
-            if (!sInitialised)
-                Init();
 
             float scaledPos = ((sCentreHip.X + mRoomW / 2f) / mRoomW);
             float x = mXStart + (mXRange * scaledPos);

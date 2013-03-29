@@ -6,19 +6,16 @@ using Chimera.Overlay;
 
 namespace Chimera.Kinect.Overlay {
     public class KinectControlWindowState : WindowState {
-        public override bool Active {
-            get { return base.Active; }
-            set {
-                base.Active = value;
-                Manager.Opacity = value ? .3 : 1.0;
-                if (value)
-                    Manager.ControlPointer = false;
-            }
-        }
+
         public KinectControlWindowState(WindowOverlayManager manager)
             : base(manager) {
 
             AddFeature(new SkeletonFeature(0f, 1f, 150f / 1080f, 100f));
+        }
+
+        protected override void OnActivated() {
+            Manager.Opacity = .3;
+            Manager.ControlPointer = false;
         }
     }
 }

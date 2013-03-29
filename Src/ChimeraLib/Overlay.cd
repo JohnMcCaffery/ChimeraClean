@@ -137,7 +137,7 @@
   <Class Name="Chimera.Overlay.WindowState">
     <Position X="17.25" Y="4.25" Width="1.75" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAQAAEAAAAAABAAgAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAQAAAAAAQAAEAAAAAABAAgAAAAAAAAAAA=</HashCode>
       <FileName>Overlay\WindowState.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -152,13 +152,13 @@
     </Compartments>
     <AssociationLine Name="Manager" Type="Chimera.Overlay.StateManager" FixedFromPoint="true" FixedToPoint="true">
       <Path>
-        <Point X="14.719" Y="10.161" />
+        <Point X="14.719" Y="10.545" />
         <Point X="14.719" Y="12.562" />
         <Point X="11.5" Y="12.562" />
       </Path>
     </AssociationLine>
     <TypeIdentifier>
-      <HashCode>AAAAAAABAAAAAgABAAQAAEQAAAAABAIhAAgACAACAAA=</HashCode>
+      <HashCode>AAAAAACBAAAQAgABAAQAAEQAAAAABAIhAAgACAACAAA=</HashCode>
       <FileName>Overlay\State.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -208,14 +208,14 @@
   <Class Name="Chimera.Overlay.States.ImageBGState">
     <Position X="15.25" Y="11.75" Width="2.25" />
     <TypeIdentifier>
-      <HashCode>AABAAIAAAAAAAAAAQAAAAAAAAAAAAAAgAAAAAAACAAA=</HashCode>
+      <HashCode>AABAAICAAAAQAAAAQAAAAAAAAAAAAAAAAAAAAAACAAA=</HashCode>
       <FileName>Overlay\States\ImageBGState.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Chimera.Overlay.States.ImageBGWindow">
     <Position X="17.5" Y="7.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAgAAAAAAAAAABAAAAAAAAAAAAAAAQgAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAgAAAAAAAQAABAAAAAAAAAAAAAAAQgAAAAAAAAAAA=</HashCode>
       <FileName>Overlay\States\ImageBGWindow.cs</FileName>
     </TypeIdentifier>
   </Class>

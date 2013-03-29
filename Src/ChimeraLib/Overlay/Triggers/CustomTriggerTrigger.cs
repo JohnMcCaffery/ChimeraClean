@@ -22,7 +22,7 @@ namespace Chimera.Overlay.Triggers {
         }
 
         private void stateManager_CustomTrigger(string key) {
-            if (Triggered != null && key.Equals(this.mKey))
+            if (mActive && Triggered != null && key.Equals(this.mKey))
                 Triggered();
         }
     }
