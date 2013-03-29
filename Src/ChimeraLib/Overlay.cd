@@ -213,9 +213,9 @@
     </TypeIdentifier>
   </Class>
   <Class Name="Chimera.Overlay.States.ImageBGWindow">
-    <Position X="17.5" Y="7.25" Width="1.5" />
+    <Position X="17.5" Y="7.25" Width="1.75" />
     <TypeIdentifier>
-      <HashCode>AAAgAAAAAAAQAABAAAAAAAAAAAAAAAQgAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAgAAAAAAAQAABAAAAAAAAAAAAAAAQAAAAAAAAAAAA=</HashCode>
       <FileName>Overlay\States\ImageBGWindow.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -261,7 +261,7 @@
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>AAAABAAAQAAIAAAAAAwAAAAAAAAAEAQAAQAAAAgIAAA=</HashCode>
+      <HashCode>AAAABAAAQAAIAAAAAAwAAAAAAAAAEAQAAUAAAAgIAAA=</HashCode>
       <FileName>Overlay\Transitions\OpacityFadeWindowTransition.cs</FileName>
     </TypeIdentifier>
   </Class>

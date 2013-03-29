@@ -90,6 +90,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Overlay\SkeletonLostTrigger.cs" />
     <Compile Include="Overlay\KinectControlState.cs" />
     <Compile Include="Overlay\KinectControlWindowState.cs" />
     <Compile Include="Overlay\SkeletonFeature.cs" />

@@ -9,15 +9,6 @@ namespace Chimera.Overlay.States {
     public class ImageBGWindow : WindowState {
         private Bitmap mBG;
 
-        public override bool Active {
-            get { return base.Active; }
-            set {
-                base.Active = value;
-                if (value) {
-                }
-            }
-        }
-
         public Bitmap BackgroundImage {
             get { return mBG; }
             set {

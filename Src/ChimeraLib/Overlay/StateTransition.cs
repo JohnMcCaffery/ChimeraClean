@@ -139,7 +139,8 @@ namespace Chimera.Overlay {
         }
 
         void mTrigger_Triggered() {
-            mManager.BeginTransition(this);
+            if (mActive)
+                mManager.BeginTransition(this);
         }
 
         void Coordinator_WindowAdded(Window window, EventArgs args) {

@@ -152,7 +152,8 @@ namespace Chimera.Flythrough {
 
         public void Play() {
             if (mPlaying)
-                return;
+                return;
+
             if (mEnabled && mEvents.Length > 0) {
                 Camera n = mEvents.CurrentEvent.Value;
                 mCoordinator.Update(n.Position, Vector3.Zero, n.Orientation, Rotation.Zero);
