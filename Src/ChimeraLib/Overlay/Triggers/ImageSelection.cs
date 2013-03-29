@@ -32,12 +32,12 @@ namespace Chimera.Overlay.Triggers {
             : this(new Bitmap(imageFile), manager, render, x, y, w, h) {
         }
 
-        #region ISelectable Members
+        #region IDrawable Members
 
         public override void RedrawStatic(Rectangle clip, Graphics graphics) {
             base.RedrawStatic(clip, graphics);
             mScaledImage = new Bitmap(mImage, ScaledBounds.Size);
-            graphics.DrawImage(mScaledImage, Bounds.Location);
+            graphics.DrawImage(mScaledImage, ScaledBounds);
         }
 
         #endregion
