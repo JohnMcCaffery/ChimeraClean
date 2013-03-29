@@ -12,7 +12,7 @@ namespace Chimera.Overlay.Transitions {
             return new CutWindowTransition(transition, window);
         }
     }
-    public class CutWindowTransition : WindowTransition, IWindowTransition {
+    public class CutWindowTransition : WindowTransition {
         public override event Action<IWindowTransition> Finished;
 
         public CutWindowTransition(StateTransition transition, Window window)

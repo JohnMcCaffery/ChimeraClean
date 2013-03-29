@@ -90,6 +90,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GUI\SkeletonFeature.cs" />
     <Compile Include="TimespanMovementInput.cs" />
     <Compile Include="DolphinMovementInput.cs" />
     <Compile Include="GUI\TimespanMovementPanel.cs">

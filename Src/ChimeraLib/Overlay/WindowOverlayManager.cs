@@ -53,7 +53,7 @@ namespace Chimera.Overlay {
         /// <summary>
         /// How long each frame will display for.
         /// </summary>
-        private int mFrameLength = 20;
+        private int mFrameLength = 10;
 
         /// <summary>
         /// Triggered when the overlay window is launched.

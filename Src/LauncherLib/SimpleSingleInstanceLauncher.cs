@@ -72,7 +72,8 @@ namespace Chimera.Launcher {
             //InvisibleHoverTrigger helpWorldTrigger = new InvisibleHoverTrigger(mainWindow.OverlayManager, renderer, 60f / 1920f, 520f / 1080f, (335f - 60f) / 1920f, (945f - 520f) / 1080f);
 
             CutWindowTransitionFactory cutTransition = new CutWindowTransitionFactory();
-            StateTransition splashHelpTransition = new StateTransition(mCoordinator.StateManager, splashScreen, helpScreen, splashHelpTrigger, cutTransition);
+            BitmapFadeTransitionFactory fadeTransition = new BitmapFadeTransitionFactory(1500.0);
+            StateTransition splashHelpTransition = new StateTransition(mCoordinator.StateManager, splashScreen, helpScreen, splashHelpTrigger, fadeTransition);
             StateTransition helpSplashTransition = new StateTransition(mCoordinator.StateManager, helpScreen, splashScreen, helpSplashTrigger, cutTransition);
 
             splashScreen.AddTransition(splashHelpTransition);

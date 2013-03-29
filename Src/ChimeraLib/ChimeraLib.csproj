@@ -100,8 +100,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Overlay\Transitions\BitmapFadeWindowTransition.cs" />
     <Compile Include="Core\CoordinatorConfig.cs" />
     <Compile Include="Core\WindowConfig.cs" />
+    <Compile Include="Overlay\Transitions\OpacityFadeWindowTransition.cs" />
     <Compile Include="Overlay\Transitions\CutWindowTransition.cs" />
     <Compile Include="Overlay\Triggers\DialRenderer.cs" />
     <Compile Include="Overlay\DrawableRoot.cs" />
@@ -212,7 +214,7 @@
     <Compile Include="Core\Window.cs" />
     <Compile Include="Overlay\WindowOverlayManager.cs" />
     <Compile Include="Overlay\WindowState.cs" />
-    <Compile Include="WindowTransition.cs" />
+    <Compile Include="Overlay\WindowTransition.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
