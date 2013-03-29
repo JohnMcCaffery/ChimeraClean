@@ -17,6 +17,7 @@ namespace Chimera.GUI.Forms {
     public partial class CoordinatorForm : Form {
         private bool mGuiUpdate;
         private bool mEventUpdate;
+        private bool mClosing;
         private Coordinator mCoordinator;
         private Bitmap mHeightmap;
 
@@ -126,6 +127,7 @@ namespace Chimera.GUI.Forms {
         }
 
         private void CoordinatorForm_Disposed(object sender, EventArgs e) {
+            mClosing = true;
             mCoordinator.CameraUpdated -= mCameraUpdated;
             mCoordinator.EyeUpdated -= mEyeUpdated;
             mCoordinator.Closed -= mClosed;
@@ -148,7 +150,7 @@ namespace Chimera.GUI.Forms {
         }
 
         private void HeightmapUpdateThread() {
-            while (true) {
+            while (!mClosing) {
                 HeightmapChangedEventArgs e;
                 lock (mHeightmapUpdates) {
                     if (mHeightmapUpdates.Count == 0) {
@@ -182,22 +184,21 @@ namespace Chimera.GUI.Forms {
                 Marshal.Copy(rgbValues, 0, dat.Scan0, rgbValues.Length);
                 mHeightmap.UnlockBits(dat);
 
-                if (!IsDisposed && !Disposing && Created)
-                    Invoke(new Action(() => heightmapPanel.Image = new Bitmap(mHeightmap)));
+                Invoke(() => heightmapPanel.Image = new Bitmap(mHeightmap));
             }
         }
 
         private void mCoordinator_CameraUpdated(Coordinator coordinator, CameraUpdateEventArgs args) {
             if (!mGuiUpdate && Created && !IsDisposed && !Disposing) {
                 mEventUpdate = true;
-                Invoke(new Action(() => {
+                Invoke(() => {
                     virtualPositionPanel.Value = args.position;
                     virtualOrientationPanel.Pitch = args.rotation.Pitch;
                     virtualOrientationPanel.Yaw = args.rotation.Yaw;
                     if (heightmapTab == diagramHeightmapTab.SelectedTab) {
                         heightmapPanel.Invalidate();
                     }
-                }));
+                });
                 mEventUpdate = false;
             }
         }
@@ -258,6 +259,7 @@ namespace Chimera.GUI.Forms {
         }
 
         private void CoordinatorForm_FormClosing(object sender, FormClosingEventArgs e) {
+            mClosing = true;
             if (mCoordinator != null) {
                 mGuiUpdate = true;
                 mCoordinator.Close();
@@ -276,9 +278,8 @@ namespace Chimera.GUI.Forms {
         }
 
         private void triggerHelpButton_Click(object sender, EventArgs e) {
-            //if (mCoordinator != null)
-                //foreach (var window in mCoordinator.Windows)
-                    //window.Overlay.TriggerHelp();
+            if (mCoordinator != null && mCoordinator.StateManager != null)
+                mCoordinator.StateManager.TriggerCustom("Help");
         }
 
         private void heightmapPanel_Paint(object sender, PaintEventArgs e) {
@@ -291,6 +292,15 @@ namespace Chimera.GUI.Forms {
                 int y2 = e.ClipRectangle.Height - (int)((p2.Y / (float)mCoordinator.Heightmap.GetLength(1)) * e.ClipRectangle.Height);
                 e.Graphics.FillEllipse(Brushes.Red, x - r, y - r, r * 2, r * 2);
                 e.Graphics.DrawLine(Pens.Red, x, y, x2, y2);
+            }
+        }
+
+        private void Invoke(Action a) {
+            if (!mClosing && !IsDisposed && !Disposing && Created) {
+                if (InvokeRequired)
+                    base.Invoke(a);
+                else
+                    a();
             }
         }
     }

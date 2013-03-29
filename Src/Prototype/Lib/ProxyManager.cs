@@ -130,14 +130,14 @@ namespace UtilLib {
         }
 
         /// <summary>
-        /// Create a ProxyManager without specifying a configuration.
+        /// CreateWindowState a ProxyManager without specifying a configuration.
         /// </summary>
         public ProxyManager() {
             proxyConfig = null;
         }
         
         /// <summary>
-        /// Create a ProxyManager specifying a configuration.
+        /// CreateWindowState a ProxyManager specifying a configuration.
         /// </summary>
         /// <param name="config">The configuration for the proxy form.</param>
         public ProxyManager(Init.Config config, ILog logger) {

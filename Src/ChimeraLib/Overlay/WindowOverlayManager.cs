@@ -208,7 +208,7 @@ namespace Chimera.Overlay {
         }
 
         /// <summary>
-        /// Create and show the overlay window if it is not already created.
+        /// CreateWindowState and show the overlay window if it is not already created.
         /// </summary>
         public void Launch() {
             if (mOverlayWindow == null) {

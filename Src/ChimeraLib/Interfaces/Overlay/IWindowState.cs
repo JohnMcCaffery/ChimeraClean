@@ -17,7 +17,7 @@ namespace Chimera.Interfaces.Overlay {
         /// <summary>
         /// Whether or not the window state is currently enabled.
         /// </summary>
-        bool Enabled {
+        bool Active {
             get;
             set;
         }

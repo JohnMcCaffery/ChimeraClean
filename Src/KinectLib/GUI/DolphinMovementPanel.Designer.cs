@@ -133,7 +133,7 @@
             this.enabled.Name = "enabled";
             this.enabled.Size = new System.Drawing.Size(65, 17);
             this.enabled.TabIndex = 9;
-            this.enabled.Text = "Enabled";
+            this.enabled.Text = "Active";
             this.enabled.UseVisualStyleBackColor = true;
             this.enabled.CheckedChanged += new System.EventHandler(this.CheckedChanged);
             // 
@@ -180,7 +180,7 @@
             this.walkEnabled.Name = "walkEnabled";
             this.walkEnabled.Size = new System.Drawing.Size(65, 17);
             this.walkEnabled.TabIndex = 8;
-            this.walkEnabled.Text = "Enabled";
+            this.walkEnabled.Text = "Active";
             this.walkEnabled.UseVisualStyleBackColor = true;
             this.walkEnabled.CheckedChanged += new System.EventHandler(this.CheckedChanged);
             // 
@@ -469,7 +469,7 @@
             this.flyEnabled.Name = "flyEnabled";
             this.flyEnabled.Size = new System.Drawing.Size(65, 17);
             this.flyEnabled.TabIndex = 10;
-            this.flyEnabled.Text = "Enabled";
+            this.flyEnabled.Text = "Active";
             this.flyEnabled.UseVisualStyleBackColor = true;
             this.flyEnabled.CheckedChanged += new System.EventHandler(this.CheckedChanged);
             // 
@@ -675,7 +675,7 @@
             this.yawEnabled.Name = "yawEnabled";
             this.yawEnabled.Size = new System.Drawing.Size(65, 17);
             this.yawEnabled.TabIndex = 10;
-            this.yawEnabled.Text = "Enabled";
+            this.yawEnabled.Text = "Active";
             this.yawEnabled.UseVisualStyleBackColor = true;
             this.yawEnabled.CheckedChanged += new System.EventHandler(this.CheckedChanged);
             // 

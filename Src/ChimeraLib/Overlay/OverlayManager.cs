@@ -47,7 +47,7 @@ namespace Chimera.Overlay {
         public event Action<StateTransition> TransitionFinished;
         
         /// <summary>
-        /// Create the manager. Linking it with a coordinator.
+        /// CreateWindowState the manager. Linking it with a coordinator.
         /// </summary>
         /// <param name="coordinator">The coordinator which this state form manages state for.</param>
         public StateManager(Coordinator coordinator) {

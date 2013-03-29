@@ -13,11 +13,7 @@ namespace Chimera.Overlay {
         /// <summary>
         /// Transitions transition this state to other states, mapped to the name of the other state.
         /// </summary>
-        private readonly Dictionary<string, StateTransition> mTransitions = new Dictionary<string,StateTransition>();
-        /// <summary>
-        /// Factory used to create new WindowState objects for each window in the system.
-        /// </summary>
-        private readonly IWindowStateFactory mWindowStateFactory;
+        private readonly Dictionary<string, StateTransition> mTransitions = new Dictionary<string, StateTransition>();
         /// <summary>
         /// The form which will coordinate the state.
         /// </summary>
@@ -32,15 +28,13 @@ namespace Chimera.Overlay {
         private bool mActive;
 
         /// <summary>
-        /// Create the state, specifying the name, form and the window factory for creating window states.
+        /// CreateWindowState the state, specifying the name, form and the window factory for creating window states.
         /// </summary>
         /// <param name="name">The name of the state. All state names should be unique.</param>
         /// <param name="form">The form which will control this state.</param>
-        /// <param name="windowFactory">The factory which can create window states for any new windows.</param>
-        public State(string name, StateManager manager, IWindowStateFactory windowFactory) {
+        public State(string name, StateManager manager) {
             mName = name;
             mManager = manager;
-            mWindowStateFactory = windowFactory;
 
             foreach (var window in mManager.Coordinator.Windows)
                 Coordinator_WindowAdded(window, null);
@@ -50,7 +44,7 @@ namespace Chimera.Overlay {
         }
 
         protected virtual void Coordinator_WindowAdded(Window window, EventArgs args) {
-            mWindowStates.Add(window.Name, mWindowStateFactory.Create(window));
+            mWindowStates.Add(window.Name, CreateWindowState(window));
         }
     
         public IWindowState[] WindowStates {
@@ -81,7 +75,7 @@ namespace Chimera.Overlay {
                 foreach (var transition in mTransitions.Values)
                     transition.Active = value;
                 foreach (var window in mWindowStates.Values)
-                    window.Enabled = false;
+                    window.Active = false;
             }
         }
 
@@ -99,5 +93,11 @@ namespace Chimera.Overlay {
         public void AddTransition(StateTransition stateTransition) {
             mTransitions.Add(stateTransition.To.Name, stateTransition);
         }
+
+        /// <summary>
+        /// CreateWindowState a window state for drawing this state to the specified window.
+        /// </summary>
+        /// <param name="window">The window the new window state is to draw on.</param>
+        public abstract IWindowState CreateWindowState(Window window);
     }
 }

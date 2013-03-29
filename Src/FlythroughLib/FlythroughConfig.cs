@@ -13,7 +13,7 @@ namespace Chimera.Flythrough {
         }
 
         protected override void InitConfig() {
-            Enabled = Get(true, "Enabled", true, "Whether to allow the flythrough form to control the camera at the start.");
+            Enabled = Get(true, "Active", true, "Whether to allow the flythrough form to control the camera at the start.");
         }
     }
 }

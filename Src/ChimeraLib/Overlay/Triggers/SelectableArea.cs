@@ -6,7 +6,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using Chimera.Interfaces.Overlay;
 
-namespace Chimera.Overlay {
+namespace Chimera.Overlay.Triggers {
     public abstract class HoverTrigger : ITrigger, IDrawable {
         /// <summary>
         /// How many ms to the hover must be maintened before the selector is triggered.

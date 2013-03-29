@@ -246,7 +246,7 @@ namespace Chimera.Kinect {
         }
 
         private void helpTrigger_Triggered(IHelpTrigger trigger) {
-            //if (trigger.Enabled)
+            //if (trigger.Active)
                 //foreach (var window in mCoordinator.Windows)
                     //window.Overlay.TriggerHelp();
         }

@@ -18,7 +18,8 @@ namespace Chimera.GUI.Forms {
         /// <summary>
         /// Clip rectangle defining the drawable area any overlays draw on for this window.
         /// </summary>
-        private Rectangle mClip;        /// <summary>
+        private Rectangle mClip;
+        /// <summary>
         /// The background image which is saved and redrawn as the static portion of the overlay.
         /// </summary>
         private Bitmap mStaticBG;

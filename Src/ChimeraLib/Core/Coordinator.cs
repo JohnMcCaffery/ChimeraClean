@@ -481,5 +481,13 @@ namespace Chimera {
         /// Triggered whenever a window is removed.
         /// </summary>
         public event Action<Window, EventArgs> WindowRemoved;
+
+        public Chimera.Overlay.StateManager StateManager {
+            get {
+                throw new System.NotImplementedException();
+            }
+            set {
+            }
+        }
     }
 }

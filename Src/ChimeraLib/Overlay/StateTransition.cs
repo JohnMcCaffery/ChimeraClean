@@ -135,7 +135,8 @@ namespace Chimera.Overlay {
                 if (Started != null)
                     Started(this);
             }
-        }
+        }
+
         void mTrigger_Triggered() {
             Begin();
         }

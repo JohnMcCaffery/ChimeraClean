@@ -40,7 +40,7 @@ namespace Chimera.Flythrough {
         private readonly string mName;
 
         /// <summary>
-        /// Create the event specifying pitch and pitch.
+        /// CreateWindowState the event specifying pitch and pitch.
         /// </summary>
         /// <param name="container">The container which this event is part of.</param>
         /// <param name="length">The length of time the event will run (ms).</param>
@@ -54,7 +54,7 @@ namespace Chimera.Flythrough {
         }
 
         /// <summary>
-        /// Create the event specifying the bare minimum.
+        /// CreateWindowState the event specifying the bare minimum.
         /// </summary>
         /// <param name="container">The container which this event is part of.</param>
         /// <param name="length">The length of time the event will run (ms).</param>

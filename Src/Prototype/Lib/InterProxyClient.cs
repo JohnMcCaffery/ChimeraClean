@@ -57,7 +57,7 @@ namespace UtilLib {
         public string MasterAddress { get { return masterEP == null ? "Not Connected" : masterEP.Address.ToString(); } }
 
         /// <summary>
-        /// Create a new InterProxyClient
+        /// CreateWindowState a new InterProxyClient
         /// </summary>
         public InterProxyClient(string name) : base (LogManager.GetLogger(name)) {
             Bind();

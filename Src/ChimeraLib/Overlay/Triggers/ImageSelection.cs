@@ -6,7 +6,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using System.Threading;
 
-namespace Chimera.Overlay {
+namespace Chimera.Overlay.Triggers {
     public class ImageHoverTrigger : HoverTrigger {
         private Bitmap mImage;
         private Bitmap mScaledImage;

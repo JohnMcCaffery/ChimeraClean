@@ -64,7 +64,7 @@ namespace Chimera {
         public event Action<Window, Screen> MonitorChanged;
 
         /// <summary>
-        /// Create a input. It is necessary to specify a unique name for the input.
+        /// CreateWindowState a input. It is necessary to specify a unique name for the input.
         /// </summary>
         /// <param name="name">The name this input is known by within the system.</param>
         /// <param name="overlayAreas">The overlay areas mapped to this input.</param>
@@ -86,7 +86,7 @@ namespace Chimera {
         }
 
         /// <summary>
-        /// Create a input. It is necessary to specify a unique name for the input.
+        /// CreateWindowState a input. It is necessary to specify a unique name for the input.
         /// </summary>
         /// <param name="name">The name this input is known by within the system.</param>
         /// <param name="overlayAreas">The overlay areas mapped to this input.</param>

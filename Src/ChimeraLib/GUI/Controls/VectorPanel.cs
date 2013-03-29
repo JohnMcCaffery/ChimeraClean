@@ -120,12 +120,12 @@ namespace Chimera.GUI {
 
         private void VectorPanel_EnabledChanged(object sender, EventArgs e) {
             /*
-            xValue.Enabled = Enabled;
-            yValue.Enabled = Enabled;
-            zValue.Enabled = Enabled;
-            xSlider.Enabled = Enabled;
-            ySlider.Enabled = Enabled;
-            zSlider.Enabled = Enabled;
+            xValue.Active = Active;
+            yValue.Active = Active;
+            zValue.Active = Active;
+            xSlider.Active = Active;
+            ySlider.Active = Active;
+            zSlider.Active = Active;
             */
         }
 

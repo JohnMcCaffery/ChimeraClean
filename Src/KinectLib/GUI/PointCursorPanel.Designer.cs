@@ -321,7 +321,7 @@
             this.enabledCheck.Name = "enabledCheck";
             this.enabledCheck.Size = new System.Drawing.Size(65, 17);
             this.enabledCheck.TabIndex = 19;
-            this.enabledCheck.Text = "Enabled";
+            this.enabledCheck.Text = "Active";
             this.enabledCheck.UseVisualStyleBackColor = true;
             this.enabledCheck.CheckedChanged += new System.EventHandler(this.enabledCheck_CheckedChanged);
             // 
