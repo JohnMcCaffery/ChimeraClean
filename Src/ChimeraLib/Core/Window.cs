@@ -91,6 +91,10 @@ namespace Chimera {
         /// </summary>
         private bool mLinkFoVs = true;
         /// <summary>
+        /// The colour this window will be when drawn onto a diagram.
+        /// </summary>
+        private Color mColour = Color.Red;
+        /// <summary>
         /// The anchor for the window as the width and height change.
         /// </summary>
         private WindowAnchor mWindowAnchor = WindowAnchor.Centre; 
@@ -430,18 +434,36 @@ namespace Chimera {
             Vector3 top = new Vector3(0f, (float)mWidth, 0f) * mOrientation.Quaternion;
             Vector3 side = new Vector3(0f, 0f, (float)-mHeight) * mOrientation.Quaternion;
 
-            graphics.DrawLine(Pens.Red, to2D(mTopLeft), to2D(mTopLeft + top));
-            graphics.DrawLine(Pens.Red, to2D(mTopLeft), to2D(mTopLeft + side));
-            graphics.DrawLine(Pens.Red, to2D(mTopLeft + top), to2D(mTopLeft + top + side));
-            graphics.DrawLine(Pens.Red, to2D(mTopLeft + side), to2D(mTopLeft + top + side));
+            using (Pen p = new Pen(mColour, 3f)) {
+                graphics.DrawLine(p, to2D(mTopLeft), to2D(mTopLeft + top));
+                graphics.DrawLine(p, to2D(mTopLeft), to2D(mTopLeft + side));
+                graphics.DrawLine(p, to2D(mTopLeft + top), to2D(mTopLeft + top + side));
+                graphics.DrawLine(p, to2D(mTopLeft + side), to2D(mTopLeft + top + side));
+            }
 
-            graphics.FillPolygon(Brushes.Red, new Point[] {
-                to2D(mTopLeft),
-                to2D(mTopLeft + top),
-                to2D(mTopLeft + top + side),
-                to2D(mTopLeft + side)
-            });
+            using (Brush b = new SolidBrush(mColour)) {
+                graphics.FillPolygon(Brushes.Red, new Point[] {
+                    to2D(mTopLeft),
+                    to2D(mTopLeft + top),
+                    to2D(mTopLeft + top + side),
+                    to2D(mTopLeft + side)
+                });
+            }
 
+            float perspectiveLineScale = 5f;
+            Vector3 topLeftLine = ((mTopLeft - mCoordinator.EyePosition) * perspectiveLineScale) + mCoordinator.EyePosition;
+            Vector3 topRightLine = (((mTopLeft + top) - mCoordinator.EyePosition) * perspectiveLineScale) + mCoordinator.EyePosition;
+            Vector3 bottomLeftLine = (((mTopLeft + top + side) - mCoordinator.EyePosition) * perspectiveLineScale) + mCoordinator.EyePosition;
+            Vector3 bottomRightLine = (((mTopLeft + side) - mCoordinator.EyePosition) * perspectiveLineScale) + mCoordinator.EyePosition;
+
+            Point eye = to2D(mCoordinator.EyePosition);
+            graphics.DrawLine(Pens.SeaShell, eye, to2D(topLeftLine));
+            graphics.DrawLine(Pens.SeaShell, eye, to2D(topRightLine));
+            graphics.DrawLine(Pens.SeaShell, eye, to2D(bottomLeftLine));
+            graphics.DrawLine(Pens.SeaShell, eye, to2D(bottomRightLine));
+
+            Vector3 look = new Vector3((float)ScreenDistance, 0f, 0f) * mOrientation.Quaternion;
+            graphics.DrawLine(Pens.SeaShell, eye, to2D(look + mCoordinator.EyePosition));
         }
 
         void mCoordinator_EyeUpdated(Coordinator source, EventArgs args) {
