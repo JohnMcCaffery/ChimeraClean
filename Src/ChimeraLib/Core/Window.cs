@@ -247,32 +247,13 @@ namespace Chimera {
         /// Calculated as the tangent of <code>width / (2 * d)</code> where d is distance to the screen.
         /// </summary>
         public double HFieldOfView {
-            get {
-                Vector3 left = new Vector3(0f, (float)(mWidth / 2.0), 0f);
-                Vector3 right = left * -1;
-                Quaternion q = Quaternion.CreateFromEulers(0f, (float)(mOrientation.Pitch * Rotation.DEG2RAD), 0f);
-                left *= q;
-                right *= q;
-
-                Vector3 centre = Centre;
-                left += centre;
-                right += centre;
-
-                float dot = Vector3.Dot(Vector3.Normalize(left - mCoordinator.EyePosition), Vector3.Normalize(right - mCoordinator.EyePosition));
-                //return Math.Acos(dot);
-
-                return Math.Atan2(mHeight, ScreenDistance);
-            }
+            get { return CalculateFOV(mWidth, new Vector3(0f, (float)(mWidth / 2.0), 0f)); }
             set {
                 //if (Math.Abs(fov) < TOLERANCE || value <= 0.0)
                 if (value <= 0.0)
                     return;
-                double aspectRatio = AspectRatio;
-                double width = 2 * ScreenDistance * Math.Cos(value / 2.0);
-                double a = Math.Cos(value / 2);
-                if (a != 0.0)
-                    width /= a;
-                double height = mWidth * aspectRatio;
+                double width = 2 * ScreenDistance * Math.Tan(value / 2.0);
+                double height = mWidth * AspectRatio;
                 ChangeDimesions(width, height);
             }
         }
@@ -283,32 +264,13 @@ namespace Chimera {
         /// Calculated as the tangent of <code>height / (2 * d)</code> where d is distance to the screen.
         /// </summary>
         public double VFieldOfView {
-            get {
-                Vector3 top = new Vector3(0f, 0f, (float)(mHeight / 2.0));
-                Vector3 bottom = top * -1;
-                Quaternion q = Quaternion.CreateFromEulers(0f, (float)(mOrientation.Pitch * Rotation.DEG2RAD), 0f);
-                top *= q;
-                bottom *= q;
-
-                Vector3 centre = Centre;
-                top += centre;
-                bottom += centre;
-
-                float dot = Vector3.Dot(Vector3.Normalize(top - mCoordinator.EyePosition), Vector3.Normalize(bottom - mCoordinator.EyePosition));
-                //return Math.Acos(dot);
-
-                return Math.Atan2(mHeight, ScreenDistance);
-            }
+            get { return CalculateFOV(mWidth, new Vector3(0f, 0f, (float)(mHeight / 2.0))); }
             set {
                 //if (Math.Abs(fov) < TOLERANCE || value <= 0.0)
                 if (value <= 0.0)
                     return;
-                double aspectRatio = AspectRatio;
-                double height = 2 * ScreenDistance * Math.Sin(value / 2.0);
-                double a = Math.Cos(value / 2);
-                if (a != 0.0)
-                    height /= a;
-                double width = mHeight / aspectRatio;
+                double height = 2 * ScreenDistance * Math.Tan(value / 2.0);
+                double width = mHeight / AspectRatio;
                 ChangeDimesions(width, height);
             }
         }
@@ -418,10 +380,26 @@ namespace Chimera {
             if (Changed != null)
                 Changed(this, null);
         }
+
         private void TriggerChanged() {
             if (Changed != null)
                 Changed(this, null);
         }
+        private double CalculateFOV(double o, Vector3 min) {
+                Vector3 max = min * -1;
+                Quaternion q = Quaternion.CreateFromEulers(0f, (float)(mOrientation.Pitch * Rotation.DEG2RAD), 0f);
+                min *= q;
+                max *= q;
+
+                Vector3 centre = Centre;
+                min += centre;
+                max += centre;
+
+                float dot = Vector3.Dot(Vector3.Normalize(min - mCoordinator.EyePosition), Vector3.Normalize(max - mCoordinator.EyePosition));
+                //return Math.Acos(dot);
+
+                return Math.Atan2(o, ScreenDistance);
+        }
         private void ChangeDimesions(double width, double height) {
             Vector3 centre = mWindowAnchor == WindowAnchor.Centre ? Centre : Vector3.Zero;
             mWidth = width;
