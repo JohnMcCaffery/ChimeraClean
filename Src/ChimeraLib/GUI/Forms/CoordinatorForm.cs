@@ -33,7 +33,6 @@ namespace Chimera.GUI.Forms {
             mPerspectives.Add(Perspective.Y, new TwoDPerspective(Perspective.Y));
             mPerspectives.Add(Perspective.Z, new TwoDPerspective(Perspective.Z));
             mCurrentPerspective = mPerspectives[Perspective.Z];
-            mHeightmapPerspective = new TwoDPerspective(Perspective.Z);
         }
 
         public CoordinatorForm(Coordinator coordinator)
@@ -63,6 +62,7 @@ namespace Chimera.GUI.Forms {
             eyePositionPanel.Value = mCoordinator.EyePosition;
 
             mHeightmap = new Bitmap(mCoordinator.Heightmap.GetLength(0), mCoordinator.Heightmap.GetLength(1), PixelFormat.Format24bppRgb);
+            mHeightmapPerspective = new HeightmapPerspective(mCoordinator);
             mHeightmapPerspective.AspectRatio = (float) mHeightmap.Width / (float) mHeightmap.Height;
 
             foreach (var window in mCoordinator.Windows) {
@@ -179,29 +179,32 @@ namespace Chimera.GUI.Forms {
 
                 int w = e.Heights.GetLength(0);
                 int h = e.Heights.GetLength(1);
-                Rectangle affectedRect = new Rectangle(0, 0, mHeightmap.Width, mHeightmap.Height);
-                BitmapData dat = mHeightmap.LockBits(affectedRect, ImageLockMode.WriteOnly, PixelFormat.Format24bppRgb);
-                int bytesPerPixel = 3;
-                byte[] rgbValues = new byte[mHeightmap.Height * dat.Stride];
+                lock (mHeightmap) {
+                    Rectangle affectedRect = new Rectangle(0, 0, mHeightmap.Width, mHeightmap.Height);
+                    BitmapData dat = mHeightmap.LockBits(affectedRect, ImageLockMode.WriteOnly, PixelFormat.Format24bppRgb);
+                    int bytesPerPixel = 3;
+                    byte[] rgbValues = new byte[mHeightmap.Height * dat.Stride];
 
-                Marshal.Copy(dat.Scan0, rgbValues, 0, rgbValues.Length);
+                    Marshal.Copy(dat.Scan0, rgbValues, 0, rgbValues.Length);
 
-                for (int y = 0; y < h; y++) {
-                    int i = ((e.StartY + y) * dat.Stride) + (e.StartX * bytesPerPixel);
-                    for (int x = 0; x < w; x++) {
-                        float height = e.Heights[x, y];
-                        float floatVal = ((float) byte.MaxValue) * (height / 100f);
-                        byte val = (byte) floatVal;
+                    for (int y = 0; y < h; y++) {
+                        int i = ((e.StartY + y) * dat.Stride) + (e.StartX * bytesPerPixel);
+                        for (int x = 0; x < w; x++) {
+                            float height = e.Heights[x, y];
+                            float floatVal = ((float)byte.MaxValue) * (height / 100f);
+                            byte val = (byte)floatVal;
 
-                        rgbValues[i++] = val;
-                        rgbValues[i++] = val;
-                        rgbValues[i++] = val;
+                            rgbValues[i++] = val;
+                            rgbValues[i++] = val;
+                            rgbValues[i++] = val;
+                        }
                     }
+                    Marshal.Copy(rgbValues, 0, dat.Scan0, rgbValues.Length);
+                    mHeightmap.UnlockBits(dat);
                 }
-                Marshal.Copy(rgbValues, 0, dat.Scan0, rgbValues.Length);
-                mHeightmap.UnlockBits(dat);
 
-                Invoke(() => heightmapPanel.Image = new Bitmap(mHeightmap));
+                //Invoke(() => heightmapPanel.Image = new Bitmap(mHeightmap));
+                Invoke(() => heightmapPanel.Invalidate());
             }
         }
 
@@ -222,6 +225,7 @@ namespace Chimera.GUI.Forms {
             if (!mGuiUpdate) {
                 mEventUpdate = true;
                 eyePositionPanel.Value = coordinator.EyePosition;
+                heightmapPanel.Invalidate();
                 mEventUpdate = false;
             }
         }
@@ -230,6 +234,7 @@ namespace Chimera.GUI.Forms {
             if (!mEventUpdate) {
                 mGuiUpdate = true;
                 mCoordinator.Update(virtualPositionPanel.Value, Vector3.Zero, new Rotation(virtualOrientationPanel.Pitch, virtualOrientationPanel.Yaw), Rotation.Zero);
+                heightmapPanel.Invalidate();
                 mGuiUpdate = false;
             }
         }
@@ -238,6 +243,7 @@ namespace Chimera.GUI.Forms {
             if (!mEventUpdate) {
                 mGuiUpdate = true;
                 mCoordinator.Update(virtualPositionPanel.Value, Vector3.Zero, new Rotation(virtualOrientationPanel.Pitch, virtualOrientationPanel.Yaw), Rotation.Zero);
+                heightmapPanel.Invalidate();
                 mGuiUpdate = false;
             }
         }
@@ -307,6 +313,7 @@ namespace Chimera.GUI.Forms {
         }
         private void heightmapPanel_Paint(object sender, PaintEventArgs e) {
             if (mCoordinator != null) {
+                /*
                 int x = (int)((mCoordinator.Position.X / (float)mCoordinator.Heightmap.GetLength(0)) * e.ClipRectangle.Width);
                 int y = e.ClipRectangle.Height - (int)((mCoordinator.Position.Y / (float)mCoordinator.Heightmap.GetLength(1)) * e.ClipRectangle.Height);
                 int r = 5;
@@ -314,7 +321,13 @@ namespace Chimera.GUI.Forms {
                 int x2 = (int)((p2.X / (float)mCoordinator.Heightmap.GetLength(0)) * e.ClipRectangle.Width);
                 int y2 = e.ClipRectangle.Height - (int)((p2.Y / (float)mCoordinator.Heightmap.GetLength(1)) * e.ClipRectangle.Height);
                 e.Graphics.FillEllipse(Brushes.Red, x - r, y - r, r * 2, r * 2);
-                e.Graphics.DrawLine(Pens.Red, x, y, x2, y2);
+                e.Graphics.DrawLine(Pens.Red, x, y, x2, y2);*/
+                Bitmap map;
+                lock (mHeightmap)
+                    map = new Bitmap(mHeightmap, e.ClipRectangle.Width, e.ClipRectangle.Height);
+                e.Graphics.DrawImage(map, mHeightmapTopLeft);
+                mHeightmapPerspective.Clip = e.ClipRectangle;
+                mCoordinator.Draw(mHeightmapPerspective.To2D, e.Graphics, e.ClipRectangle);
             }
         }
 
@@ -372,7 +385,7 @@ namespace Chimera.GUI.Forms {
                 }
             }
 
-            public Point To2D(Vector3 point) {
+            public virtual Point To2D(Vector3 point) {
                 point -= mCentre;
                 Vector2 ret = new Vector2();
                 switch (mPerspective) {
@@ -384,6 +397,37 @@ namespace Chimera.GUI.Forms {
                 ret.X *= mHScale;
                 ret.Y *= mVScale;
                 return new Point((int)ret.X + mCentreX, mCentreY - (int)ret.Y);
+            }
+        }
+
+        private class HeightmapPerspective : TwoDPerspective {
+            private Coordinator mCoordinator;
+
+            public HeightmapPerspective(Coordinator coordinator)
+                : base(Perspective.Z) {
+
+                mCoordinator = coordinator;
+            }
+
+            public override Point To2D(Vector3 point) {
+                point *= mCoordinator.Orientation.Quaternion;
+                point /= 1000f;
+                point += mCoordinator.Position;
+                //return base.To2D(point);
+
+                int x = (int)((point.X / (float)mCoordinator.Heightmap.GetLength(0)) * Clip.Width);
+                int y = Clip.Height - (int)((point.Y / (float)mCoordinator.Heightmap.GetLength(1)) * Clip.Height);
+
+                return new Point(x, y);
+
+                /*
+                int r = 5;
+                Vector3 p2 = mCoordinator.Position + (mCoordinator.Orientation.LookAtVector * 20);
+                int x2 = (int)((p2.X / (float)mCoordinator.Heightmap.GetLength(0)) * Clip.Width);
+                int y2 = Clip.Height - (int)((p2.Y / (float)mCoordinator.Heightmap.GetLength(1)) * Clip.Height);
+                e.Graphics.FillEllipse(Brushes.Red, x - r, y - r, r * 2, r * 2);
+                e.Graphics.DrawLine(Pens.Red, x, y, x2, y2);
+                */
             }
         }
 
@@ -414,6 +458,29 @@ namespace Chimera.GUI.Forms {
             if (zPerspectiveButton.Checked)
                 mCurrentPerspective = mPerspectives[Perspective.Z];
             realSpacePanel.Invalidate();
+        }
+
+        private bool mMouseDown;
+        private Point mMousePosition;
+        private Point mHeightmapTopLeft = new Point(0, 0);
+
+        private void heightmapPanel_MouseDown(object sender, MouseEventArgs e) {
+            mMouseDown = true;
+            mMousePosition = e.Location;
+        }
+
+        private void heightmapPanel_MouseUp(object sender, MouseEventArgs e) {
+            mMouseDown = false;
         }     
+
+        private void heightmapPanel_MouseMove(object sender, MouseEventArgs e) {
+            if (mMouseDown) {
+            int xDelta = e.X - mMousePosition.X;
+            int yDelta = e.Y - mMousePosition.Y;
+            mMousePosition = e.Location;
+            mHeightmapTopLeft.X += xDelta;
+            mHeightmapTopLeft.Y += yDelta;
+                }
+        }
     }
 }

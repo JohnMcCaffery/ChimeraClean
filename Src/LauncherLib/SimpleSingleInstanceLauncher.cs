@@ -96,17 +96,17 @@ namespace Chimera.Launcher {
             SkeletonFeature helpSkeleton = new SkeletonFeature(1650f / 1920f, 0f, 800f / 1080f, 225f);
 
             splashScreen.AddTransition(splashHelpTransition);
-            //splashScreen.AddTransition(splashFlythroughTransition);
+            splashScreen.AddTransition(splashFlythroughTransition);
             splashScreen.AddFeature(mainWindow.Name, splashHelpTrigger);
 
             helpScreen.AddTransition(helpSplashTransition);
             helpScreen.AddTransition(helpKinectTransition);
-            //helpScreen.AddTransition(helpFlythroughTransition);
+            helpScreen.AddTransition(helpFlythroughTransition);
             helpScreen.AddFeature(mainWindow.Name, helpSplashTrigger);
             helpScreen.AddFeature(mainWindow.Name, helpKinectTrigger);
             helpScreen.AddFeature(mainWindow.Name, helpSkeleton);
 
-            //kinectControl.AddTransition(kinectFlythroughTransition);
+            kinectControl.AddTransition(kinectFlythroughTransition);
             kinectControl.AddTransition(kinectHelpTransition);
 
             flythroughState.AddTransition(flythroughSplashTransition);
@@ -115,7 +115,7 @@ namespace Chimera.Launcher {
             mCoordinator.StateManager.AddState(helpScreen);
             mCoordinator.StateManager.AddState(kinectControl);
             mCoordinator.StateManager.AddState(flythroughState);
-            mCoordinator.StateManager.CurrentState = splashScreen;
+            //mCoordinator.StateManager.CurrentState = splashScreen;
 
             //Window[] windows = new Window[] { new Window("Main Window") };
             //Chimera.Overlay.MainMenu mainMenu = new Chimera.Overlay.MainMenu();

@@ -41,7 +41,7 @@ namespace Chimera {
             Fullscreen = Get(false, "Fullscreen", false, "Whether to launch the overlay fullscreen.");
             ControlPointer = Get(false, "ControlPointer", false, "Whether the overlay should take control of the pointer and move it when the pointer is over the window.");
 
-            TopLeft = GetV(false, "TopLeft", Vector3.Zero, "The position of the top left corner of the window in real world coordinates (mm).");
+            TopLeft = GetV(false, "TopLeft", new Vector3(1000f, 0f, 0f), "The position of the top left corner of the window in real world coordinates (mm).");
             Yaw = Get(false, "Yaw", 0.0, "The yaw for the direction the monitor faces in the real world.");
             Pitch = Get(false, "Pitch", 0.0, "The pitch for the direction the monitor faces in the real world.");
             Width = Get(false, "Width", 0.0, "The width of the window in the real world (mm).");
