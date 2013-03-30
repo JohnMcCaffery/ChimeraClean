@@ -313,6 +313,7 @@ namespace Chimera {
             get { 
                 switch (mProjection) {
                     case ProjectionStyle.Simple: return SimpleProjection();
+                    case ProjectionStyle.Skewed: return SkewedProjection();
                     case ProjectionStyle.Calculated: return CalculatedProjection();
                 }
                 throw new NotImplementedException();
