@@ -222,7 +222,7 @@ namespace Chimera {
                 return Math.Atan2(Height, ScreenDistance);
             }
             set {
-                double fov = FieldOfView;
+                double fov = HFieldOfView;
                 if (Math.Abs(fov) < TOLERANCE || value <= 0.0)
                     return;
                 double height = 2 * ScreenDistance * Math.Sin(value / 2.0);

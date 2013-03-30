@@ -118,16 +118,33 @@ namespace Chimera {
         }
 
         /// <summary>
-        /// The position of the input in real space, in mm.
+        /// The position of the top left corner of the window in real space, in mm.
         /// </summary>
         public Vector3 TopLeft {
             get { return mTopLeft ; }
-            set { 
-                mTopLeft  = value;
-                if (Changed != null)
-                    Changed(this, null);
+            set {
+                mTopLeft = value;
+                TriggerChanged();
             }
         }
+
+        /// <summary>
+        /// The position of the centre of the window in real space, in mm.
+        /// </summary>
+        public Vector3 Centre {
+            get {
+                Vector3 diagonal = new Vector3(0f, (float)(mWidth / 2.0), (float)(mHeight / -2.0));
+                diagonal *= mOrientation.Quaternion;
+                return mTopLeft + diagonal;
+            }
+            set {
+                Vector3 diagonal = new Vector3(0f, (float)(mWidth / 2.0), (float)(mHeight / -2.0));
+                diagonal *= mOrientation.Quaternion;
+                mTopLeft = value - diagonal;
+                TriggerChanged();
+            }
+        }
+
 
         /// <summary>
         /// The orientation of the input in real space.
@@ -139,8 +156,7 @@ namespace Chimera {
                     mOrientation.Changed -= mOrientation_Changed;
                 mOrientation  = value;
                 mOrientation.Changed += mOrientation_Changed;
-                if (Changed != null)
-                    Changed(this, null);
+                TriggerChanged();
             }
         }
 
@@ -149,10 +165,9 @@ namespace Chimera {
         /// </summary>
         public double Width {
             get { return mWidth ; }
-            set { 
-                mWidth  = value;
-                if (Changed != null)
-                    Changed(this, null);
+            set {
+                mWidth = value;
+                TriggerChanged();
             }
         }
 
@@ -163,9 +178,118 @@ namespace Chimera {
             get { return mHeight ; }
             set {
                 mHeight = value;
-                if (Changed != null)
-                    Changed(this, null);
+                TriggerChanged();
             }
+        }
+
+        /// <summary>
+        /// The aspect ratio between the height and width of the screen. (h/w).
+        /// Changing this will change the width of the screen.
+        /// Calculated as height / width.
+        /// </summary>
+        public double AspectRatio {
+            get { return mHeight / mWidth; }
+            set {
+                if (AspectRatio == value || value <= 0.0)
+                    return;
+                mWidth = mHeight / value;
+                TriggerChanged();
+            }
+        }
+
+        /// <summary>
+        /// The diagonal size of the screen. Specified in mm.
+        /// This is included for convenience. Most screens are rated in diagonal inches.
+        /// Changing this will change the width and height according to the aspect ratio.
+        /// </summary>
+        public double Diagonal {
+            get { return Math.Sqrt(Math.Pow(mWidth, 2.0) + Math.Pow(mHeight, 2.0)); }
+            set {
+                if (Diagonal == value || value <= 0.0)
+                    return;
+                double tan = Math.Atan(AspectRatio);
+                mHeight = value * Math.Sin(tan);
+                mWidth = value * Math.Cos(tan);
+                TriggerChanged();
+            }
+        }
+
+        /// <summary>
+        /// The horizontal field of view the screen shows, in radians. 
+        /// Changing this will change the height and width of the screen according to the aspect ratio.
+        /// Calculated as the tangent of <code>width / (2 * d)</code> where d is distance to the screen.
+        /// </summary>
+        public double HFieldOfView {
+            get {
+                Vector3 left = new Vector3(0f, (float)(mWidth / 2.0), 0f);
+                Vector3 right = left * -1;
+                Quaternion q = Quaternion.CreateFromEulers(0f, (float)(mOrientation.Pitch * Rotation.DEG2RAD), 0f);
+                left *= q;
+                right *= q;
+
+                left += Centre;
+                right += Centre;
+
+                float dot = Vector3.Dot(Vector3.Normalize(left - mCoordinator.EyePosition), Vector3.Normalize(right - mCoordinator.EyePosition));
+                //return Math.Acos(dot);
+
+                return Math.Atan2(mHeight, ScreenDistance);
+            }
+            set {
+                //if (Math.Abs(fov) < TOLERANCE || value <= 0.0)
+                if (value <= 0.0)
+                    return;
+                double aspectRatio = AspectRatio;
+                mWidth = 2 * ScreenDistance * Math.Cos(value / 2.0);
+                double a = Math.Cos(value / 2);
+                if (a != 0.0)
+                    mWidth /= a;
+                mHeight = mWidth * aspectRatio;
+                TriggerChanged();
+            }
+        }
+
+        /// <summary>
+        /// The vertical field of view the screen shows, in radians. 
+        /// Changing this will change the height and width of the screen according to the aspect ratio.
+        /// Calculated as the tangent of <code>height / (2 * d)</code> where d is distance to the screen.
+        /// </summary>
+        public double VFieldOfView {
+            get {
+                Vector3 top = new Vector3(0f, 0f, (float)(mHeight / 2.0));
+                Vector3 bottom = top * -1;
+                Quaternion q = Quaternion.CreateFromEulers(0f, (float)(mOrientation.Pitch * Rotation.DEG2RAD), 0f);
+                top *= q;
+                bottom *= q;
+
+                top += Centre;
+                bottom += Centre;
+
+                float dot = Vector3.Dot(Vector3.Normalize(top - mCoordinator.EyePosition), Vector3.Normalize(bottom - mCoordinator.EyePosition));
+                //return Math.Acos(dot);
+
+                return Math.Atan2(mHeight, ScreenDistance);
+            }
+            set {
+                //if (Math.Abs(fov) < TOLERANCE || value <= 0.0)
+                if (value <= 0.0)
+                    return;
+                double aspectRatio = AspectRatio;
+                mHeight = 2 * ScreenDistance * Math.Sin(value / 2.0);
+                double a = Math.Cos(value / 2);
+                if (a != 0.0)
+                    mHeight /= a;
+                mWidth = mHeight / aspectRatio;
+                TriggerChanged();
+            }
+        }
+
+        /// <summary>
+        /// How far away the screen is transition the origin along the direction the screen is rotated. (mm)
+        /// </summary>
+        public double ScreenDistance {
+            get { return Vector3.Dot(Centre - mCoordinator.EyePosition, Vector3.Normalize(mOrientation.LookAtVector)); }
+            //get { return (double) (screenPosition - eyePosition).Length(); }
         }
 
         /// <summary>
@@ -258,6 +382,10 @@ namespace Chimera {
         }
 
         void mOrientation_Changed(object sender, EventArgs e) {
+            if (Changed != null)
+                Changed(this, null);
+        }
+        private void TriggerChanged() {
             if (Changed != null)
                 Changed(this, null);
         }

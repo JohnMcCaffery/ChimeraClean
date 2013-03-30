@@ -83,9 +83,9 @@ namespace Chimera.Controls {
                 heightValue.Value = new decimal(window.Height / 10.0);
                 diagonalSlider.Value = (int) Math.Round(diagonal);
                 diagonalValue.Value = new decimal(diagonal / 10.0);
-                if (window.FieldOfView < Math.PI) {
-                    fovSlider.Value = (int)Math.Round(window.FieldOfView * Rotation.RAD2DEG * 100);
-                    fovValue.Value = new decimal(window.FieldOfView * Rotation.RAD2DEG);
+                if (window.HFieldOfView < Math.PI) {
+                    fovSlider.Value = (int)Math.Round(window.HFieldOfView * Rotation.RAD2DEG * 100);
+                    fovValue.Value = new decimal(window.HFieldOfView * Rotation.RAD2DEG);
                 }
                 aspectRatioValue.Value = new decimal(window.AspectRatio);
                 if (Math.Abs(aspectRatio - aspectRatioValue.Value) > ASPECT_RATIO_TOLERANCE) {
@@ -145,12 +145,12 @@ namespace Chimera.Controls {
 
         private void fovSlider_Scroll(object sender, EventArgs e) {
             if (window != null && !init)
-                window.FieldOfView = (fovSlider.Value / 100) * Rotation.DEG2RAD;
+                window.HFieldOfView = (fovSlider.Value / 100) * Rotation.DEG2RAD;
         }
 
         private void fovValue_ValueChanged(object sender, EventArgs e) {
             if (window != null && !init)
-                window.FieldOfView = decimal.ToDouble(fovValue.Value) * Rotation.DEG2RAD;
+                window.HFieldOfView = decimal.ToDouble(fovValue.Value) * Rotation.DEG2RAD;
         }
 
         private void aspectComponent_ValueChanged(object sender, EventArgs e) {

@@ -276,7 +276,7 @@
             window1.AspectRatio = 0.48051948051948051D;
             window1.Diagonal = 427.14166268347088D;
             window1.EyePosition = ((OpenMetaverse.Vector3)(resources.GetObject("window1.EyePosition")));
-            window1.FieldOfView = 1.5707963267948966D;
+            window1.HFieldOfView = 1.5707963267948966D;
             window1.Height = 185.00000000000003D;
             window1.LockScreenPosition = true;
             rotation1.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("rotation1.LookAtVector")));
