@@ -62,7 +62,7 @@ namespace Chimera.GUI.Controls {
             mWindow_Changed(window, null);
         }
 
-        void mWindow_Changed(Window w, EventArgs args) {
+        void mWindow_Changed(Window source, EventArgs args) {
             Action a = () => {
                 mMassUpdated = true;
 
@@ -70,6 +70,8 @@ namespace Chimera.GUI.Controls {
                 centrePanel.Value = mWindow.Centre / (float) mScale;
                 orientationPanel.Value = mWindow.Orientation;
                 distancePanel.Value = (float) (mWindow.ScreenDistance / mScale);
+                skewHPanel.Value = (float)(mWindow.HSkew / mScale);
+                skewVPanel.Value = (float)(mWindow.VSkew / mScale);
                 widthPanel.Value = (float) (mWindow.Width / mScale);
                 heightPanel.Value = (float) (mWindow.Height / mScale);
                 aspectRatioWValue.Value = new decimal(mWindow.Width);

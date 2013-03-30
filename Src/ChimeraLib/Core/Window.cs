@@ -67,9 +67,13 @@ namespace Chimera {
         /// </summary>
         private Rotation mOrientation = Rotation.Zero;
         /// <summary>
-        /// The position of the input in real space, in mm.
+        /// The position of the top left corner of the screen in real space, in mm.
         /// </summary>
         private Vector3 mTopLeft;
+        /// <summary>
+        /// The centre of the window in real space, mm. This value is not cannoninical. Use mTopLeft.
+        /// </summary>
+        private Vector3 mCentre;
         /// <summary>
         /// The width of the screen, in mm.
         /// </summary>
@@ -121,6 +125,7 @@ namespace Chimera {
             mTopLeft = cfg.TopLeft;
             mOrientation = new Rotation(cfg.Pitch, cfg.Yaw);
             mOverlayManager = new WindowOverlayManager(this);
+            mCentre = Centre;
 
             mOrientation.Changed += mOrientation_Changed;
 
@@ -243,6 +248,30 @@ namespace Chimera {
                 double width = value * Math.Cos(tan);
                 ChangeDimesions(width, height);
             }
+        }
+        /// <summary>
+        /// How far away the screen is relative to the origin along the direction the screen is rotated. (mm)
+        /// Calculated as the projection of the distamce from eye to screen centre onto the look at vector for the screen orientation.
+        /// </summary>
+        public double ScreenDistance {
+            get { return Vector3.Dot(Centre - mCoordinator.EyePosition, Vector3.Normalize(mOrientation.LookAtVector)); }
+            set { TopLeftFromSkew(value, HSkew, VSkew); }
+        }
+
+        /// <summary>
+        /// How far the view is skewed away from the direction it is facing along the horizontal axis.
+        /// </summary>
+        public double HSkew {
+            get { return CalculateFrustumOffset(v => new Vector2(v.X, v.Y)); }
+            set { TopLeftFromSkew(ScreenDistance, value, VSkew); }
+        }
+
+        /// <summary>
+        /// How far the view is skewed away from the direction it is facing along the veritcal axis.
+        /// </summary>
+        public double VSkew {
+            get { return CalculateFrustumOffset(v => new Vector2((float) Math.Sqrt(Math.Pow(v.X, 2) + Math.Pow(v.Y, 2)), v.Z)); }
+            set { TopLeftFromSkew(ScreenDistance, HSkew, value); }
         }
 
         /// <summary>
@@ -275,14 +304,6 @@ namespace Chimera {
                 double width = mLinkFoVs ? height / AspectRatio : mWidth;
                 ChangeDimesions(width, height);
             }
-        }
-
-        /// <summary>
-        /// How far away the screen is transition the origin along the direction the screen is rotated. (mm)
-        /// </summary>
-        public double ScreenDistance {
-            get { return Vector3.Dot(Centre - mCoordinator.EyePosition, Vector3.Normalize(mOrientation.LookAtVector)); }
-            //get { return (double) (screenPosition - eyePosition).Length(); }
         }
 
         /// <summary>
@@ -383,6 +404,7 @@ namespace Chimera {
         /// <param name="input">The input object the input can control.</param>
         public void Init(Coordinator coordinator) {
             mCoordinator = coordinator;
+            mCoordinator.EyeUpdated += new Action<Chimera.Coordinator,EventArgs>(mCoordinator_EyeUpdated);
             if (mOutput != null)
                 mOutput.Init(this);
 
@@ -404,16 +426,50 @@ namespace Chimera {
         public void Draw(Chimera.Perspective perspective, Graphics graphics) {
             throw new System.NotImplementedException();
         }
+        void mCoordinator_EyeUpdated(Coordinator source, EventArgs args) {
+            TriggerChanged();
+        }
 
         void mOrientation_Changed(object sender, EventArgs e) {
-            if (Changed != null)
-                Changed(this, null);
+            if (mWindowAnchor == WindowAnchor.Centre) {
+                Vector3 diagonal = new Vector3(0f, (float)(mWidth / 2.0), (float)(mHeight / -2.0));
+                diagonal *= mOrientation.Quaternion;
+                mTopLeft = mCentre - diagonal;
+            }
+            mCentre = Centre;
+            TriggerChanged();
         }
 
         private void TriggerChanged() {
             if (Changed != null)
                 Changed(this, null);
-        }
+        }
+
+        private void TopLeftFromSkew(double distance, double hSkew, double vSkew) {
+            Vector3 topLeft = new Vector3((float) distance, (float)(mWidth / -2.0), (float)(mHeight / 2.0));
+            topLeft.Y += (float) hSkew;            topLeft.Z += (float) vSkew;
+            mTopLeft = topLeft * mOrientation.Quaternion;        }
+
+        private double CalculateFrustumOffset(Func<Vector3, Vector2> to2D) {
+            Vector2 h = to2D(Centre - mCoordinator.EyePosition);
+            Vector2 a = to2D(mOrientation.LookAtVector);
+            float dot = Vector2.Dot(Vector2.Normalize(h), Vector2.Normalize(a));
+            return  Math.Sin(Math.Acos(dot)) * h.Length();
+
+            /*
+            Vector2 h = to2D(Centre - mCoordinator.EyePosition);
+            Vector2 hNormal = Vector2.Normalize(h);
+            Vector2 a = to2D(Vector3.Normalize(mOrientation.LookAtVector));
+            float dot = Vector2.Dot(a, hNormal);
+            double angle = Math.Acos(dot) * Rotation.RAD2DEG;
+            float length = h.Length();
+            //return h.Length() * Math.Sqrt(1 - Math.Pow(Vector2.Dot(a, Vector2.Normalize(h)), 2));
+            Vector2 rot = to2D((Centre - mCoordinator.EyePosition) * Quaternion.Inverse(mOrientation.Quaternion));
+            double component = Math.Sqrt(1 - Math.Pow(Vector2.Dot(a, hNormal), 2));
+            return h.Length() * component * (rot.Y > 0 ? 1.0 : -1.0);
+            */
+        }
+
         private double CalculateFOV(double o, Vector3 min) {
                 Vector3 max = min * -1;
                 Quaternion q = Quaternion.CreateFromEulers(0f, (float)(mOrientation.Pitch * Rotation.DEG2RAD), 0f);
@@ -430,6 +486,7 @@ namespace Chimera {
             //TODO what happens with a skew?
                 return Math.Atan2(o / 2, ScreenDistance) * 2;
         }
+
         private void ChangeDimesions(double width, double height) {
             Vector3 centre = mWindowAnchor == WindowAnchor.Centre ? Centre : Vector3.Zero;
             mWidth = width;
@@ -452,6 +509,36 @@ namespace Chimera {
                 0,          f,  0,                                  0,
                 0,          0,  (zFar + zNear) / (zNear - zFar),    (2f * zFar * zNear) / (zNear - zFar),
                 0,          0,  -1f,                                0);
+        }
+
+        private Matrix4 CalculatedProjection() {
+            Vector3 upperRight = new Vector3(0f, (float)(mWidth / 2.0), (float)(mHeight / 2.0));
+            Vector3 lowerLeft = new Vector3(0f, (float)(mWidth / -2.0), (float)(mHeight / -2.0));
+            Vector3 diff = Centre - mCoordinator.EyePosition;
+
+            diff *= -mOrientation.Quaternion;
+            //diff *= input.RotationOffset.Quaternion;
+
+            upperRight += diff;
+            lowerLeft += diff;
+
+            //upperRight /= (Math.Abs(diff.X) - .01f);
+            //lowerLeft /= (Math.Abs(diff.X) - .01f);
+            upperRight /= (float) (diff.X * 10.0);
+            lowerLeft /= (float) (diff.X * 10.0);
+
+            float x1 = Math.Min(upperRight.Y, lowerLeft.Y);
+            float x2 = Math.Max(upperRight.Y, lowerLeft.Y);
+            float y1 = Math.Max(upperRight.Z, lowerLeft.Z);
+            float y2 = Math.Min(upperRight.Z, lowerLeft.Z);
+            float dn = (diff.Length() / diff.X) * .1f;
+            float df = (512f * 100f) * dn;
+
+		    return new Matrix4(
+    			(2*dn) / (x2-x1),   0,              (x2+x1)/(x2-x1),   0,
+    			0,                  (2*dn)/(y1-y2), (y1+y2)/(y1-y2),   0,
+    			0,                  0,              -(df+dn)/(df-dn),   -(2.0f*df*dn)/(df-dn),
+    			0,                  0,              -1.0f,              0);
         }
     }
 }

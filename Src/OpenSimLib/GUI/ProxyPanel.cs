@@ -49,6 +49,7 @@ namespace Chimera.OpenSim.GUI {
                     portBox.Text = proxy.ProxyConfig.ProxyPort.ToString();
                     loginURIBox.Text = proxy.ProxyConfig.ProxyLoginURI;
                     viewerExeBox.Text = proxy.ProxyConfig.ViewerExecutable;
+                    workingDirectoryBox.Text = proxy.ProxyConfig.ViewerWorkingDirectory;
                     firstNameBox.Text = proxy.ProxyConfig.LoginFirstName;
                     lastNameBox.Text = proxy.ProxyConfig.LoginLastName;
                     passwordBox.Text = proxy.ProxyConfig.LoginPassword;

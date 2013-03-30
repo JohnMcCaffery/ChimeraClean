@@ -65,7 +65,7 @@ namespace Chimera.OpenSim {
             get { return mFullscreen; }
             set { 
                 mFullscreen = value;
-                if (mClientLoggedIn) {
+                if (mClientLoggedIn && mClient != null) {
                     ProcessWrangler.SetBorder(mClient, mWindow.Monitor, !value);
                     ToggleHUD();
                 }
@@ -183,9 +183,12 @@ namespace Chimera.OpenSim {
                 lock (processLock)
                     Monitor.PulseAll(processLock);
 
-                ProcessWrangler.SetMonitor(mClient, mWindow.Monitor);
-                if (mFullscreen)
-                    ProcessWrangler.SetBorder(mClient, mWindow.Monitor, !mFullscreen);
+                //TODO - get client process if not started through GUI
+                if (mClient != null) {
+                    ProcessWrangler.SetMonitor(mClient, mWindow.Monitor);
+                    if (mFullscreen)
+                        ProcessWrangler.SetBorder(mClient, mWindow.Monitor, !mFullscreen);
+                }
 
                 new Thread(() => {
                     if (mControlCamera)
@@ -229,7 +232,7 @@ namespace Chimera.OpenSim {
         }
 
         private void mWindow_MonitorChanged(Window window, Screen monitor) {
-            if (mClientLoggedIn)
+            if (mClientLoggedIn && mClient != null)
                 ProcessWrangler.SetMonitor(mClient, monitor);
         }
 
@@ -345,6 +348,7 @@ namespace Chimera.OpenSim {
             mWindow.Coordinator.EyeUpdated += ProcessEyeUpdate;
             mWindow.Coordinator.Tick += new Action(Coordinator_Tick);
             mWindow.MonitorChanged += new Action<Chimera.Window,Screen>(mWindow_MonitorChanged);
+            mWindow.Changed += new Action<Chimera.Window,EventArgs>(mWindow_Changed);
             mFullscreen = mConfig.Fullscreen;
 
             if (mConfig.AutoStartViewer)
@@ -356,8 +360,12 @@ namespace Chimera.OpenSim {
             ControlCamera = mConfig.ControlCamera;
         }
 
+        void mWindow_Changed(Window w, EventArgs args) {
+            SetCamera();
+        }
+
         void Coordinator_Tick() {
-            if (mClientLoggedIn && DateTime.Now.Minute % 5 == 0 && DateTime.Now.Second % 60 == 0)
+            if (mClientLoggedIn && mClient != null && DateTime.Now.Minute % 5 == 0 && DateTime.Now.Second % 60 == 0)
                 ProcessWrangler.PressKey(mClient, "{ENTER}");
         }
 
