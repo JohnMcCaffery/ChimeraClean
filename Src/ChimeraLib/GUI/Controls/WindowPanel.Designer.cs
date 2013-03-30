@@ -67,6 +67,8 @@
             this.bringToFrontButtin = new System.Windows.Forms.Button();
             this.fullscreenCheck = new System.Windows.Forms.CheckBox();
             this.launchOverlayButton = new System.Windows.Forms.Button();
+            this.diagonalPanel = new Chimera.GUI.ScalarPanel();
+            this.label12 = new System.Windows.Forms.Label();
             this.mainTab.SuspendLayout();
             this.configTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -113,9 +115,9 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.restartButton.BackColor = System.Drawing.Color.Red;
             this.restartButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 27.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.restartButton.Location = new System.Drawing.Point(3, 298);
+            this.restartButton.Location = new System.Drawing.Point(3, 317);
             this.restartButton.Name = "restartButton";
-            this.restartButton.Size = new System.Drawing.Size(830, 295);
+            this.restartButton.Size = new System.Drawing.Size(830, 276);
             this.restartButton.TabIndex = 7;
             this.restartButton.Text = "Restart";
             this.restartButton.UseVisualStyleBackColor = false;
@@ -132,6 +134,8 @@
             // 
             // splitContainer1.Panel1
             // 
+            this.splitContainer1.Panel1.Controls.Add(this.diagonalPanel);
+            this.splitContainer1.Panel1.Controls.Add(this.label12);
             this.splitContainer1.Panel1.Controls.Add(this.linkFOVCheck);
             this.splitContainer1.Panel1.Controls.Add(this.anchorBox);
             this.splitContainer1.Panel1.Controls.Add(this.widthPanel);
@@ -163,7 +167,7 @@
             this.splitContainer1.Panel2.Controls.Add(this.orientationPanel);
             this.splitContainer1.Panel2.Controls.Add(this.centrePanel);
             this.splitContainer1.Panel2.Controls.Add(this.topLeftPanel);
-            this.splitContainer1.Size = new System.Drawing.Size(830, 295);
+            this.splitContainer1.Size = new System.Drawing.Size(830, 311);
             this.splitContainer1.SplitterDistance = 565;
             this.splitContainer1.TabIndex = 8;
             // 
@@ -171,7 +175,7 @@
             // 
             this.linkFOVCheck.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.linkFOVCheck.AutoSize = true;
-            this.linkFOVCheck.Location = new System.Drawing.Point(515, 206);
+            this.linkFOVCheck.Location = new System.Drawing.Point(516, 232);
             this.linkFOVCheck.Name = "linkFOVCheck";
             this.linkFOVCheck.Size = new System.Drawing.Size(46, 17);
             this.linkFOVCheck.TabIndex = 34;
@@ -182,9 +186,9 @@
             // 
             this.anchorBox.Controls.Add(this.centreAnchorButton);
             this.anchorBox.Controls.Add(this.topLeftAnchorButton);
-            this.anchorBox.Location = new System.Drawing.Point(422, 245);
+            this.anchorBox.Location = new System.Drawing.Point(423, 270);
             this.anchorBox.Name = "anchorBox";
-            this.anchorBox.Size = new System.Drawing.Size(139, 47);
+            this.anchorBox.Size = new System.Drawing.Size(139, 41);
             this.anchorBox.TabIndex = 33;
             this.anchorBox.TabStop = false;
             this.anchorBox.Text = "Position Anchor";
@@ -234,9 +238,9 @@
             this.projectionGroup.Controls.Add(this.calculatedProjectionButton);
             this.projectionGroup.Controls.Add(this.skewedProjectionButton);
             this.projectionGroup.Controls.Add(this.simpleProjectionButton);
-            this.projectionGroup.Location = new System.Drawing.Point(7, 245);
+            this.projectionGroup.Location = new System.Drawing.Point(8, 270);
             this.projectionGroup.Name = "projectionGroup";
-            this.projectionGroup.Size = new System.Drawing.Size(409, 47);
+            this.projectionGroup.Size = new System.Drawing.Size(409, 41);
             this.projectionGroup.TabIndex = 32;
             this.projectionGroup.TabStop = false;
             this.projectionGroup.Text = "Projection";
@@ -334,7 +338,7 @@
             // 
             this.fovVPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.fovVPanel.Location = new System.Drawing.Point(78, 218);
+            this.fovVPanel.Location = new System.Drawing.Point(79, 244);
             this.fovVPanel.Max = 179.9F;
             this.fovVPanel.Min = 0.1F;
             this.fovVPanel.MinimumSize = new System.Drawing.Size(95, 20);
@@ -361,7 +365,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(4, 165);
+            this.label6.Location = new System.Drawing.Point(4, 191);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(68, 13);
             this.label6.TabIndex = 20;
@@ -402,7 +406,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(3, 218);
+            this.label3.Location = new System.Drawing.Point(4, 244);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(69, 13);
             this.label3.TabIndex = 7;
@@ -424,7 +428,7 @@
             // 
             // aspectRatioWValue
             // 
-            this.aspectRatioWValue.Location = new System.Drawing.Point(78, 163);
+            this.aspectRatioWValue.Location = new System.Drawing.Point(78, 189);
             this.aspectRatioWValue.Maximum = new decimal(new int[] {
             10000,
             0,
@@ -459,7 +463,7 @@
             this.aspectRatioValue.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.aspectRatioValue.DecimalPlaces = 4;
-            this.aspectRatioValue.Location = new System.Drawing.Point(196, 163);
+            this.aspectRatioValue.Location = new System.Drawing.Point(196, 189);
             this.aspectRatioValue.Maximum = new decimal(new int[] {
             10,
             0,
@@ -474,7 +478,7 @@
             // 
             this.fovHPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.fovHPanel.Location = new System.Drawing.Point(78, 189);
+            this.fovHPanel.Location = new System.Drawing.Point(79, 215);
             this.fovHPanel.Max = 179.9F;
             this.fovHPanel.Min = 0.1F;
             this.fovHPanel.MinimumSize = new System.Drawing.Size(95, 20);
@@ -486,7 +490,7 @@
             // 
             // aspectRatioHValue
             // 
-            this.aspectRatioHValue.Location = new System.Drawing.Point(135, 163);
+            this.aspectRatioHValue.Location = new System.Drawing.Point(135, 189);
             this.aspectRatioHValue.Maximum = new decimal(new int[] {
             10000,
             0,
@@ -510,7 +514,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(3, 191);
+            this.label4.Location = new System.Drawing.Point(4, 217);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(70, 13);
             this.label4.TabIndex = 6;
@@ -520,7 +524,7 @@
             // 
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.Location = new System.Drawing.Point(180, 166);
+            this.label7.Location = new System.Drawing.Point(180, 192);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(22, 13);
             this.label7.TabIndex = 23;
@@ -530,7 +534,7 @@
             // 
             this.label8.AutoSize = true;
             this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label8.Location = new System.Drawing.Point(123, 165);
+            this.label8.Location = new System.Drawing.Point(123, 191);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(19, 13);
             this.label8.TabIndex = 24;
@@ -649,6 +653,28 @@
             this.launchOverlayButton.UseVisualStyleBackColor = true;
             this.launchOverlayButton.Click += new System.EventHandler(this.launchOverlayButton_Click);
             // 
+            // diagonalPanel
+            // 
+            this.diagonalPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.diagonalPanel.Location = new System.Drawing.Point(78, 163);
+            this.diagonalPanel.Max = 500F;
+            this.diagonalPanel.Min = 0F;
+            this.diagonalPanel.MinimumSize = new System.Drawing.Size(95, 20);
+            this.diagonalPanel.Name = "diagonalPanel";
+            this.diagonalPanel.Size = new System.Drawing.Size(484, 20);
+            this.diagonalPanel.TabIndex = 35;
+            this.diagonalPanel.Value = 0F;
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(4, 166);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(72, 13);
+            this.label12.TabIndex = 36;
+            this.label12.Text = "Diagonal (cm)";
+            // 
             // WindowPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -720,5 +746,7 @@
         private System.Windows.Forms.RadioButton calculatedProjectionButton;
         private System.Windows.Forms.RadioButton topLeftAnchorButton;
         private System.Windows.Forms.RadioButton centreAnchorButton;
+        private ScalarPanel diagonalPanel;
+        private System.Windows.Forms.Label label12;
     }
 }

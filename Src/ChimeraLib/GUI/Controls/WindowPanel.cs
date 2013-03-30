@@ -9,6 +9,9 @@ using System.Windows.Forms;
 
 namespace Chimera.GUI.Controls {
     public partial class WindowPanel : UserControl {
+        private bool mGuiUpdated;
+        private bool mMassUpdated;
+        private float mScale = 10f;
         private Window mWindow;
 
         public WindowPanel() {
@@ -27,14 +30,12 @@ namespace Chimera.GUI.Controls {
         public void Init(Window window) {
             mWindow = window;
 
-            widthPanel.Value = (float) window.Width / 10f;
-            heightPanel.Value = (float) window.Height / 10f;
-            topLeftPanel.Value = window.TopLeft / 10f;
-            orientationPanel.Value = window.Orientation;
             controlCursor.Checked = mWindow.OverlayManager.ControlPointer;
 
             mWindow.OverlayManager.OverlayClosed += new EventHandler(mWindow_OverlayClosed);
             mWindow.OverlayManager.OverlayLaunched += new EventHandler(mWindow_OverlayLaunched);
+            mWindow.Changed += new Action<Window,EventArgs>(mWindow_Changed);
+;
 
             foreach (var screen in Screen.AllScreens) {
                 monitorPulldown.Items.Add(screen);
@@ -57,6 +58,47 @@ namespace Chimera.GUI.Controls {
                 launchOverlayButton.Text =  "Close Overlay";
                 mWindow.OverlayManager.Launch();
             }
+
+            mWindow_Changed(window, null);
+        }
+
+        void mWindow_Changed(Window w, EventArgs args) {
+            Action a = () => {
+                mMassUpdated = true;
+
+                topLeftPanel.Value = mWindow.TopLeft / mScale;
+                centrePanel.Value = mWindow.Centre / mScale;
+                orientationPanel.Value = mWindow.Orientation;
+                distancePanel.Value = (float)mWindow.ScreenDistance / mScale;
+                widthPanel.Value = (float)mWindow.Width / mScale;
+                heightPanel.Value = (float)mWindow.Height / mScale;
+                aspectRatioWValue.Value = new decimal(mWindow.Width);
+                aspectRatioHValue.Value = new decimal(mWindow.Height);
+                aspectRatioValue.Value = new decimal(mWindow.AspectRatio);
+                diagonalPanel.Value = (float)mWindow.Diagonal / mScale;
+                fovHPanel.Value = (float)(mWindow.HFieldOfView * (180.0 / Math.PI));
+                fovVPanel.Value = (float)(mWindow.VFieldOfView * (180.0 / Math.PI));
+
+                switch (mWindow.Projection) {
+                    case ProjectionStyle.Simple: simpleProjectionButton.Checked = true; break;
+                    case ProjectionStyle.Skewed: skewedProjectionButton.Checked = true; break;
+                    case ProjectionStyle.Calculated: calculatedProjectionButton.Checked = true; break;
+                }
+
+                if (mWindow.Anchor == WindowAnchor.Centre)
+                    centreAnchorButton.Checked = true;
+                else
+                    topLeftAnchorButton.Checked = true;
+
+                linkFOVCheck.Checked = mWindow.LinkFoVs;
+
+                mMassUpdated = false;
+            };
+
+            if (InvokeRequired)
+                Invoke(a);
+            else
+                a();
         }
 
         void mWindow_OverlayLaunched(object sender, EventArgs e) {
@@ -101,19 +143,22 @@ namespace Chimera.GUI.Controls {
         }
 
         private void topLeftPanel_ValueChanged(object sender, EventArgs e) {
-            mWindow.TopLeft = topLeftPanel.Value * 10f;
+            if (!mMassUpdated)
+                mWindow.TopLeft = topLeftPanel.Value * 10f;
         }
 
         private void widthPanel_Changed(float obj) {
-            mWindow.Width = widthPanel.Value * 10.0;
+            if (!mMassUpdated)
+                mWindow.Width = widthPanel.Value * 10.0;
         }
 
         private void heightPanel_Changed(float obj) {
-            mWindow.Height = heightPanel.Value * 10.0;
+            if (!mMassUpdated)
+                mWindow.Height = heightPanel.Value * 10.0;
         }
 
         private void controlCursor_CheckedChanged(object sender, EventArgs e) {
-            //mManager.Overlay.ControlPointer = controlCursor.Checked;
+            mWindow.OverlayManager.ControlPointer = controlCursor.Checked;
         }
 
         private void restartButton_Click(object sender, EventArgs e) {
@@ -134,39 +179,49 @@ namespace Chimera.GUI.Controls {
         }
 
         private void aspectRatioValue_ValueChanged(object sender, EventArgs e) {
-
+            if (!mMassUpdated)
+                mWindow.AspectRatio = (float)decimal.ToDouble(aspectRatioValue.Value);
         }
 
         private void aspectRatioHValue_ValueChanged(object sender, EventArgs e) {
-
+            if (!mMassUpdated)
+                aspectRatioValue.Value = aspectRatioWValue.Value / aspectRatioHValue.Value;
         }
 
         private void aspectRatioWValue_ValueChanged(object sender, EventArgs e) {
-
+            if (!mMassUpdated)
+                aspectRatioValue.Value = aspectRatioWValue.Value / aspectRatioHValue.Value;
         }
 
         private void fovHPanel_ValueChanged(float obj) {
-
+            if (!mMassUpdated)
+                mWindow.HFieldOfView = fovHPanel.Value * (Math.PI / 180.0);
         }
 
         private void fovVPanel_ValueChanged(float obj) {
-
+            if (!mMassUpdated)
+                mWindow.VFieldOfView = fovVPanel.Value * (Math.PI / 180.0);
         }
 
         private void ProjectionButton_CheckedChanged(object sender, EventArgs e) {
-
+            if (mMassUpdated)
+                return;
+            if (simpleProjectionButton.Checked)
+                mWindow.Projection = ProjectionStyle.Simple;
+            else if (skewedProjectionButton.Checked)
+                mWindow.Projection = ProjectionStyle.Skewed;
+            else if (calculatedProjectionButton.Checked)
+                mWindow.Projection = ProjectionStyle.Calculated;
         }
 
         private void AnchorButton_CheckedChanged(object sender, EventArgs e) {
-
+            if (!mMassUpdated)
+                mWindow.Anchor = topLeftAnchorButton.Checked ? WindowAnchor.TopLeft : WindowAnchor.Centre;
         }
 
         private void centrePanel_ValueChanged(object sender, EventArgs e) {
-
-        }
-
-        private void positionPanel_ValueChanged(object sender, EventArgs e) {
-
+            if (!mMassUpdated)
+                mWindow.Centre = centrePanel.Value * 10f;
         }
     }
 }
