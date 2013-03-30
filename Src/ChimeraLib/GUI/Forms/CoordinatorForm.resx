@@ -142,28 +142,28 @@
     <value>
         AAEAAAD/////AQAAAAAAAAAMAgAAAElPcGVuTWV0YXZlcnNlVHlwZXMsIFZlcnNpb249MC4wLjAuMCwg
         Q3VsdHVyZT1uZXV0cmFsLCBQdWJsaWNLZXlUb2tlbj1udWxsBQEAAAAVT3Blbk1ldGF2ZXJzZS5WZWN0
-        b3IzAwAAAAFYAVkBWgAAAAsLCwIAAAAAAIA/AAAAAAAAAAAL
+        b3IzAwAAAAFYAVkBWgAAAAsLCwIAAAAAAAAAAAAAAAAAAAAL
 </value>
   </data>
   <data name="virtualOrientationPanel.Quaternion" mimetype="application/x-microsoft.net.object.binary.base64">
     <value>
         AAEAAAD/////AQAAAAAAAAAMAgAAAElPcGVuTWV0YXZlcnNlVHlwZXMsIFZlcnNpb249MC4wLjAuMCwg
         Q3VsdHVyZT1uZXV0cmFsLCBQdWJsaWNLZXlUb2tlbj1udWxsBQEAAAAYT3Blbk1ldGF2ZXJzZS5RdWF0
-        ZXJuaW9uBAAAAAFYAVkBWgFXAAAAAAsLCwsCAAAAAAAAAAAAAAAAAAAAAACAPws=
+        ZXJuaW9uBAAAAAFYAVkBWgFXAAAAAAsLCwsCAAAAAAAAAAAAAAAAAAAAAAAAAAs=
 </value>
   </data>
-  <data name="rotation7.LookAtVector" mimetype="application/x-microsoft.net.object.binary.base64">
+  <data name="rotation1.LookAtVector" mimetype="application/x-microsoft.net.object.binary.base64">
     <value>
         AAEAAAD/////AQAAAAAAAAAMAgAAAElPcGVuTWV0YXZlcnNlVHlwZXMsIFZlcnNpb249MC4wLjAuMCwg
         Q3VsdHVyZT1uZXV0cmFsLCBQdWJsaWNLZXlUb2tlbj1udWxsBQEAAAAVT3Blbk1ldGF2ZXJzZS5WZWN0
-        b3IzAwAAAAFYAVkBWgAAAAsLCwIAAAAAAIA/AAAAAAAAAAAL
+        b3IzAwAAAAFYAVkBWgAAAAsLCwIAAAAAAAAAAAAAAAAAAAAL
 </value>
   </data>
-  <data name="rotation7.Quaternion" mimetype="application/x-microsoft.net.object.binary.base64">
+  <data name="rotation1.Quaternion" mimetype="application/x-microsoft.net.object.binary.base64">
     <value>
         AAEAAAD/////AQAAAAAAAAAMAgAAAElPcGVuTWV0YXZlcnNlVHlwZXMsIFZlcnNpb249MC4wLjAuMCwg
         Q3VsdHVyZT1uZXV0cmFsLCBQdWJsaWNLZXlUb2tlbj1udWxsBQEAAAAYT3Blbk1ldGF2ZXJzZS5RdWF0
-        ZXJuaW9uBAAAAAFYAVkBWgFXAAAAAAsLCwsCAAAAAAAAAAAAAAAAAAAAAACAPws=
+        ZXJuaW9uBAAAAAFYAVkBWgFXAAAAAAsLCwsCAAAAAAAAAAAAAAAAAAAAAAAAAAs=
 </value>
   </data>
   <data name="virtualPositionPanel.MaxV" mimetype="application/x-microsoft.net.object.binary.base64">
