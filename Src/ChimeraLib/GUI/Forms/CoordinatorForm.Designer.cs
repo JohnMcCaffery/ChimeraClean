@@ -167,9 +167,7 @@
             this.virtualOrientationPanel.Quaternion = ((OpenMetaverse.Quaternion)(resources.GetObject("virtualOrientationPanel.Quaternion")));
             this.virtualOrientationPanel.Size = new System.Drawing.Size(255, 95);
             this.virtualOrientationPanel.TabIndex = 2;
-            rotation1.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("rotation1.LookAtVector")));
             rotation1.Pitch = 0D;
-            rotation1.Quaternion = ((OpenMetaverse.Quaternion)(resources.GetObject("rotation1.Quaternion")));
             rotation1.Yaw = 0D;
             this.virtualOrientationPanel.Value = rotation1;
             this.virtualOrientationPanel.Yaw = 0D;

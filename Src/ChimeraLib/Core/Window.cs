@@ -427,6 +427,21 @@ namespace Chimera {
         /// <param name="perspective">The perspective to render along.</param>
         /// <param name="graphics">The graphics object to draw with.</param>
         public void Draw(Func<Vector3, Point> to2D, Graphics graphics, Rectangle clipRectangle) {
+            Vector3 top = new Vector3(0f, (float)mWidth, 0f) * mOrientation.Quaternion;
+            Vector3 side = new Vector3(0f, 0f, (float)mHeight) * mOrientation.Quaternion;
+
+            graphics.DrawLine(Pens.Red, to2D(mTopLeft), to2D(mTopLeft + top));
+            graphics.DrawLine(Pens.Red, to2D(mTopLeft), to2D(mTopLeft + side));
+            graphics.DrawLine(Pens.Red, to2D(mTopLeft + top), to2D(mTopLeft + top + side));
+            graphics.DrawLine(Pens.Red, to2D(mTopLeft + side), to2D(mTopLeft + top + side));
+
+            graphics.FillPolygon(Brushes.Red, new Point[] {
+                to2D(mTopLeft),
+                to2D(mTopLeft + top),
+                to2D(mTopLeft + top + side),
+                to2D(mTopLeft + side)
+            });
+
         }
 
         void mCoordinator_EyeUpdated(Coordinator source, EventArgs args) {
@@ -449,12 +464,6 @@ namespace Chimera {
         }
 
         private void TopLeftFromSkew(double distance, double hSkew, double vSkew) {
-            //Vector3 topLeft = new Vector3((float) distance, (float)(mWidth / -2.0), (float)(mHeight / 2.0));
-            //topLeft.Y += (float) hSkew;
-            //topLeft.Z += (float) vSkew;
-            //topLeft *= mOrientation.Quaternion;
-            //topLeft -= mCoordinator.EyePosition;
-            //TopLeft = topLeft;
             Vector3 centre = new Vector3((float) distance, (float)hSkew, (float)vSkew);
             centre *= mOrientation.Quaternion;
             centre += mCoordinator.EyePosition;
@@ -469,7 +478,6 @@ namespace Chimera {
         }
 
         private double ApplySign(double val, Vector3 a, Vector3 b) {
-            //if (CrossProduct(a, b).Z < 0)
             if ((a.X * b.Y) - (a.Y * b.X) > 0.0)
                 return val * -1;
             return val;
@@ -480,19 +488,6 @@ namespace Chimera {
             Vector2 a = to2D(mOrientation.LookAtVector);
             float dot = Vector2.Dot(Vector2.Normalize(h), Vector2.Normalize(a));
             return ApplySign(Math.Sin(Math.Acos(dot)) * h.Length(), Centre - mCoordinator.EyePosition, mOrientation.LookAtVector);
-
-            /*
-            Vector2 h = to2D(Centre - mCoordinator.EyePosition);
-            Vector2 hNormal = Vector2.Normalize(h);
-            Vector2 a = to2D(Vector3.Normalize(mOrientation.LookAtVector));
-            float dot = Vector2.Dot(a, hNormal);
-            double angle = Math.Acos(dot) * Rotation.RAD2DEG;
-            float length = h.Length();
-            //return h.Length() * Math.Sqrt(1 - Math.Pow(Vector2.Dot(a, Vector2.Normalize(h)), 2));
-            Vector2 rot = to2D((Centre - mCoordinator.EyePosition) * Quaternion.Inverse(mOrientation.Quaternion));
-            double component = Math.Sqrt(1 - Math.Pow(Vector2.Dot(a, hNormal), 2));
-            return h.Length() * component * (rot.Y > 0 ? 1.0 : -1.0);
-            */
         }
 
         private double CalculateFOV(double o, Vector3 min) {

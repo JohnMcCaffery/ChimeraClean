@@ -140,6 +140,7 @@ namespace Chimera.GUI.Forms {
         }
 
         private void window_Changed(Window window, EventArgs args) {
+            Invoke(() => realSpacePanel.Invalidate());
         }
 
         private void CoordinatorForm_Disposed(object sender, EventArgs e) {
@@ -332,8 +333,8 @@ namespace Chimera.GUI.Forms {
             private readonly Perspective mPerspective;
             private Vector3 mCentre = Vector3.Zero;
             private float mAspectRatio = 1f;
-            private float mHScale = 1f;
-            private float mVScale = 1f;
+            private float mHScale = .05f;
+            private float mVScale = .05f;
             private int mCentreX;
             private int mCentreY;
 
@@ -378,7 +379,7 @@ namespace Chimera.GUI.Forms {
 
                 ret.X *= mHScale;
                 ret.Y *= mVScale;
-                return new Point((int)ret.X + mCentreX, (int)ret.Y + mCentreY);
+                return new Point((int)ret.X + mCentreX, mCentreY - (int)ret.Y);
             }
         }
 
