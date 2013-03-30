@@ -35,7 +35,6 @@ namespace Chimera.GUI.Controls {
             mWindow.OverlayManager.OverlayClosed += new EventHandler(mWindow_OverlayClosed);
             mWindow.OverlayManager.OverlayLaunched += new EventHandler(mWindow_OverlayLaunched);
             mWindow.Changed += new Action<Window,EventArgs>(mWindow_Changed);
-;
 
             foreach (var screen in Screen.AllScreens) {
                 monitorPulldown.Items.Add(screen);
@@ -71,7 +70,7 @@ namespace Chimera.GUI.Controls {
                 orientationPanel.Value = mWindow.Orientation;
                 distancePanel.Value = (float) (mWindow.ScreenDistance / mScale);
                 skewHPanel.Value = (float)(mWindow.HSkew / mScale);
-                skewVPanel.Value = (float)(mWindow.VSkew / mScale);
+                vSkewPanel.Value = (float)(mWindow.VSkew / mScale);
                 widthPanel.Value = (float) (mWindow.Width / mScale);
                 heightPanel.Value = (float) (mWindow.Height / mScale);
                 aspectRatioWValue.Value = new decimal(mWindow.Width);
@@ -154,15 +153,18 @@ namespace Chimera.GUI.Controls {
         }
 
         private void distancePanel_ValueChanged(float obj) {
-
+            if (!mMassUpdated)
+                mWindow.ScreenDistance = distancePanel.Value * mScale;
         }
 
         private void skewHPanel_ValueChanged(float obj) {
-
+            if (!mMassUpdated)
+                mWindow.HSkew = skewHPanel.Value * mScale;
         }
 
         private void skewVPanel_ValueChanged(float obj) {
-
+            if (!mMassUpdated)
+                mWindow.VSkew = vSkewPanel.Value * mScale;
         }
 
         private void topLeftPanel_ValueChanged(object sender, EventArgs e) {

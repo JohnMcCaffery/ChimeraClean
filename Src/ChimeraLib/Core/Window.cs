@@ -166,6 +166,7 @@ namespace Chimera {
             get { return mTopLeft ; }
             set {
                 mTopLeft = value;
+                mCentre = Centre;
                 TriggerChanged();
             }
         }
@@ -182,8 +183,7 @@ namespace Chimera {
             set {
                 Vector3 diagonal = new Vector3(0f, (float)(mWidth / 2.0), (float)(mHeight / -2.0));
                 diagonal *= mOrientation.Quaternion;
-                mTopLeft = value - diagonal;
-                TriggerChanged();
+                TopLeft = value - diagonal;
             }
         }
 
@@ -449,15 +449,36 @@ namespace Chimera {
         }
 
         private void TopLeftFromSkew(double distance, double hSkew, double vSkew) {
-            Vector3 topLeft = new Vector3((float) distance, (float)(mWidth / -2.0), (float)(mHeight / 2.0));
-            topLeft.Y += (float) hSkew;            topLeft.Z += (float) vSkew;
-            mTopLeft = topLeft * mOrientation.Quaternion;        }
+            //Vector3 topLeft = new Vector3((float) distance, (float)(mWidth / -2.0), (float)(mHeight / 2.0));
+            //topLeft.Y += (float) hSkew;            //topLeft.Z += (float) vSkew;
+            //topLeft *= mOrientation.Quaternion;
+            //topLeft -= mCoordinator.EyePosition;
+            //TopLeft = topLeft;
+            Vector3 centre = new Vector3((float) distance, (float)hSkew, (float)vSkew);
+            centre *= mOrientation.Quaternion;
+            centre += mCoordinator.EyePosition;
+            Centre = centre;
+        }
+
+        private Vector3 CrossProduct(Vector3 a, Vector3 b) {
+            float x = (a.Y * b.Z) - (a.Z * b.Y);
+            float y = (a.Z * b.X) - (a.X * b.Z);
+            float z = (a.X * b.Y) - (a.Y * b.X);
+            return new Vector3(x, y, z);
+        }
+
+        private double ApplySign(double val, Vector3 a, Vector3 b) {
+            //if (CrossProduct(a, b).Z < 0)
+            if ((a.X * b.Y) - (a.Y * b.X) > 0.0)
+                return val * -1;
+            return val;
+        }
 
         private double CalculateFrustumOffset(Func<Vector3, Vector2> to2D) {
             Vector2 h = to2D(Centre - mCoordinator.EyePosition);
             Vector2 a = to2D(mOrientation.LookAtVector);
             float dot = Vector2.Dot(Vector2.Normalize(h), Vector2.Normalize(a));
-            return  Math.Sin(Math.Acos(dot)) * h.Length();
+            return ApplySign(Math.Sin(Math.Acos(dot)) * h.Length(), Centre - mCoordinator.EyePosition, mOrientation.LookAtVector);
 
             /*
             Vector2 h = to2D(Centre - mCoordinator.EyePosition);
@@ -499,6 +520,7 @@ namespace Chimera {
                 diagonal *= mOrientation.Quaternion;
                 mTopLeft = centre - diagonal;
             }
+            mCentre = Centre;
             TriggerChanged();
         }
 
