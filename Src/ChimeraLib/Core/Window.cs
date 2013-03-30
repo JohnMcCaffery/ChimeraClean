@@ -256,7 +256,7 @@ namespace Chimera {
                 if (value <= 0.0)
                     return;
                 double width = 2 * ScreenDistance * Math.Tan(value / 2.0);
-                double height = mLinkFoVs ? mWidth * AspectRatio : mHeight;
+                double height = mLinkFoVs ? width * AspectRatio : mHeight;
                 ChangeDimesions(width, height);
             }
         }
@@ -267,12 +267,12 @@ namespace Chimera {
         /// Calculated as the tangent of <code>height / (2 * d)</code> where d is distance to the screen.
         /// </summary>
         public double VFieldOfView {
-            get { return CalculateFOV(mWidth, new Vector3(0f, 0f, (float)(mHeight / 2.0))); }
+            get { return CalculateFOV(mHeight, new Vector3(0f, 0f, (float)(mHeight / 2.0))); }
             set {
                 if (value <= 0.0)
                     return;
                 double height = 2 * ScreenDistance * Math.Tan(value / 2.0);
-                double width = mLinkFoVs ? mHeight / AspectRatio : mWidth;
+                double width = mLinkFoVs ? height / AspectRatio : mWidth;
                 ChangeDimesions(width, height);
             }
         }
@@ -427,14 +427,15 @@ namespace Chimera {
                 float dot = Vector3.Dot(Vector3.Normalize(min - mCoordinator.EyePosition), Vector3.Normalize(max - mCoordinator.EyePosition));
                 //return Math.Acos(dot);
 
-                return Math.Atan2(o, ScreenDistance);
+            //TODO what happens with a skew?
+                return Math.Atan2(o / 2, ScreenDistance) * 2;
         }
         private void ChangeDimesions(double width, double height) {
             Vector3 centre = mWindowAnchor == WindowAnchor.Centre ? Centre : Vector3.Zero;
             mWidth = width;
             mHeight = height;
             if (mWindowAnchor == WindowAnchor.Centre) {
-                Vector3 diagonal = new Vector3(0f, (float)(mWidth / 2.0), (float)(mHeight / 2.0));
+                Vector3 diagonal = new Vector3(0f, (float)(mWidth / 2.0), (float)(mHeight / -2.0));
                 diagonal *= mOrientation.Quaternion;
                 mTopLeft = centre - diagonal;
             }

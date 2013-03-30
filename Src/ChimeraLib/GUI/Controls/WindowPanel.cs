@@ -9,15 +9,15 @@ using System.Windows.Forms;
 
 namespace Chimera.GUI.Controls {
     public partial class WindowPanel : UserControl {
-        private bool mGuiUpdated;
         private bool mMassUpdated;
-        private float mScale = 10f;
+        private double mScale = 10.0;
         private Window mWindow;
 
         public WindowPanel() {
             InitializeComponent();
 
             topLeftPanel.Text = "Top Left";
+            centrePanel.Text = "Centre";
             orientationPanel.Text = "Orientation";
         }
 
@@ -66,16 +66,16 @@ namespace Chimera.GUI.Controls {
             Action a = () => {
                 mMassUpdated = true;
 
-                topLeftPanel.Value = mWindow.TopLeft / mScale;
-                centrePanel.Value = mWindow.Centre / mScale;
+                topLeftPanel.Value = mWindow.TopLeft / (float) mScale;
+                centrePanel.Value = mWindow.Centre / (float) mScale;
                 orientationPanel.Value = mWindow.Orientation;
-                distancePanel.Value = (float)mWindow.ScreenDistance / mScale;
-                widthPanel.Value = (float)mWindow.Width / mScale;
-                heightPanel.Value = (float)mWindow.Height / mScale;
+                distancePanel.Value = (float) (mWindow.ScreenDistance / mScale);
+                widthPanel.Value = (float) (mWindow.Width / mScale);
+                heightPanel.Value = (float) (mWindow.Height / mScale);
                 aspectRatioWValue.Value = new decimal(mWindow.Width);
                 aspectRatioHValue.Value = new decimal(mWindow.Height);
                 aspectRatioValue.Value = new decimal(mWindow.AspectRatio);
-                diagonalPanel.Value = (float)mWindow.Diagonal / mScale;
+                diagonalPanel.Value = (float) (mWindow.Diagonal / mScale);
                 fovHPanel.Value = (float)(mWindow.HFieldOfView * (180.0 / Math.PI));
                 fovVPanel.Value = (float)(mWindow.VFieldOfView * (180.0 / Math.PI));
 
@@ -142,21 +142,6 @@ namespace Chimera.GUI.Controls {
             //mManager.Overlay.Fullscreen = fullscreenCheck.Checked;
         }
 
-        private void topLeftPanel_ValueChanged(object sender, EventArgs e) {
-            if (!mMassUpdated)
-                mWindow.TopLeft = topLeftPanel.Value * 10f;
-        }
-
-        private void widthPanel_Changed(float obj) {
-            if (!mMassUpdated)
-                mWindow.Width = widthPanel.Value * 10.0;
-        }
-
-        private void heightPanel_Changed(float obj) {
-            if (!mMassUpdated)
-                mWindow.Height = heightPanel.Value * 10.0;
-        }
-
         private void controlCursor_CheckedChanged(object sender, EventArgs e) {
             mWindow.OverlayManager.ControlPointer = controlCursor.Checked;
         }
@@ -176,6 +161,31 @@ namespace Chimera.GUI.Controls {
 
         private void skewVPanel_ValueChanged(float obj) {
 
+        }
+
+        private void topLeftPanel_ValueChanged(object sender, EventArgs e) {
+            if (!mMassUpdated)
+                mWindow.TopLeft = topLeftPanel.Value * (float) mScale;
+        }
+
+        private void centrePanel_ValueChanged(object sender, EventArgs e) {
+            if (!mMassUpdated)
+                mWindow.Centre = centrePanel.Value * (float) mScale;
+        }
+
+        private void widthPanel_Changed(float obj) {
+            if (!mMassUpdated)
+                mWindow.Width = widthPanel.Value * mScale;
+        }
+
+        private void heightPanel_Changed(float obj) {
+            if (!mMassUpdated)
+                mWindow.Height = heightPanel.Value * mScale;
+        }
+
+        private void diagonalPanel_ValueChanged(float obj) {
+            if (!mMassUpdated)
+                mWindow.Diagonal = (float)diagonalPanel.Value * mScale;
         }
 
         private void aspectRatioValue_ValueChanged(object sender, EventArgs e) {
@@ -219,9 +229,9 @@ namespace Chimera.GUI.Controls {
                 mWindow.Anchor = topLeftAnchorButton.Checked ? WindowAnchor.TopLeft : WindowAnchor.Centre;
         }
 
-        private void centrePanel_ValueChanged(object sender, EventArgs e) {
+        private void linkFOVCheck_CheckedChanged(object sender, EventArgs e) {
             if (!mMassUpdated)
-                mWindow.Centre = centrePanel.Value * 10f;
+                mWindow.LinkFoVs = linkFOVCheck.Checked;
         }
     }
 }
