@@ -83,6 +83,10 @@ namespace Chimera {
         /// </summary>
         private bool mMouseControl = false;
         /// <summary>
+        /// Whether to link horizontal and vertical field of view's so that when one changes the aspect ratio is preserved.
+        /// </summary>
+        private bool mLinkFoVs = true;
+        /// <summary>
         /// The anchor for the window as the width and height change.
         /// </summary>
         private WindowAnchor mWindowAnchor = WindowAnchor.TopLeft; 
@@ -249,11 +253,10 @@ namespace Chimera {
         public double HFieldOfView {
             get { return CalculateFOV(mWidth, new Vector3(0f, (float)(mWidth / 2.0), 0f)); }
             set {
-                //if (Math.Abs(fov) < TOLERANCE || value <= 0.0)
                 if (value <= 0.0)
                     return;
                 double width = 2 * ScreenDistance * Math.Tan(value / 2.0);
-                double height = mWidth * AspectRatio;
+                double height = mLinkFoVs ? mWidth * AspectRatio : mHeight;
                 ChangeDimesions(width, height);
             }
         }
@@ -266,11 +269,10 @@ namespace Chimera {
         public double VFieldOfView {
             get { return CalculateFOV(mWidth, new Vector3(0f, 0f, (float)(mHeight / 2.0))); }
             set {
-                //if (Math.Abs(fov) < TOLERANCE || value <= 0.0)
                 if (value <= 0.0)
                     return;
                 double height = 2 * ScreenDistance * Math.Tan(value / 2.0);
-                double width = mHeight / AspectRatio;
+                double width = mLinkFoVs ? mHeight / AspectRatio : mWidth;
                 ChangeDimesions(width, height);
             }
         }
@@ -292,6 +294,33 @@ namespace Chimera {
                     case ProjectionStyle.Simple: return SimpleProjection();
                 }
                 throw new NotImplementedException();
+            }
+        }
+
+        /// <summary>
+        /// Whether to link horizontal and vertical field of view's so that when one changes the aspect ratio is preserved.
+        /// </summary>
+        public bool LinkFoVs {
+            get { return mLinkFoVs; }
+            set { mLinkFoVs = value; }
+        }
+
+        /// <summary>
+        /// Where to anchor the position of the window when the width or height changes.
+        /// </summary>
+        public WindowAnchor Anchor {
+            get { return mWindowAnchor; }
+            set { mWindowAnchor = value; }
+        }
+
+        /// <summary>
+        /// What algorithm should be used to a calculate the projection matrix.
+        /// </summary>
+        public ProjectionStyle Projection {
+            get { return mProjection; }
+            set { 
+                mProjection = value;
+                TriggerChanged();
             }
         }
 

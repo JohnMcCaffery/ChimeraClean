@@ -100,7 +100,7 @@ namespace Chimera.GUI.Controls {
             //mManager.Overlay.Fullscreen = fullscreenCheck.Checked;
         }
 
-        private void positionPanel_ValueChanged(object sender, EventArgs e) {
+        private void topLeftPanel_ValueChanged(object sender, EventArgs e) {
             mWindow.TopLeft = topLeftPanel.Value * 10f;
         }
 
@@ -119,6 +119,54 @@ namespace Chimera.GUI.Controls {
         private void restartButton_Click(object sender, EventArgs e) {
             if (mWindow.Output != null)
                 mWindow.Output.Restart();
+        }
+
+        private void distancePanel_ValueChanged(float obj) {
+
+        }
+
+        private void skewHPanel_ValueChanged(float obj) {
+
+        }
+
+        private void skewVPanel_ValueChanged(float obj) {
+
+        }
+
+        private void aspectRatioValue_ValueChanged(object sender, EventArgs e) {
+
+        }
+
+        private void aspectRatioHValue_ValueChanged(object sender, EventArgs e) {
+
+        }
+
+        private void aspectRatioWValue_ValueChanged(object sender, EventArgs e) {
+
+        }
+
+        private void fovHPanel_ValueChanged(float obj) {
+
+        }
+
+        private void fovVPanel_ValueChanged(float obj) {
+
+        }
+
+        private void ProjectionButton_CheckedChanged(object sender, EventArgs e) {
+
+        }
+
+        private void AnchorButton_CheckedChanged(object sender, EventArgs e) {
+
+        }
+
+        private void centrePanel_ValueChanged(object sender, EventArgs e) {
+
+        }
+
+        private void positionPanel_ValueChanged(object sender, EventArgs e) {
+
         }
     }
 }
