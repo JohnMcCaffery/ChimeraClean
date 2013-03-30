@@ -13,6 +13,9 @@ namespace Chimera.GUI.Controls {
 
         public WindowPanel() {
             InitializeComponent();
+
+            topLeftPanel.Text = "Top Left";
+            orientationPanel.Text = "Orientation";
         }
 
         public WindowPanel(Window window)
