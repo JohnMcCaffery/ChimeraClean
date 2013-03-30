@@ -97,19 +97,6 @@ namespace Chimera {
         private readonly StateManager mStateManager;
 
         /// <summary>
-        /// Scales that the various output input is currently set to.
-        /// </summary>
-        private double[] mScales = new double[3];
-        /// <summary>
-        /// Point on the various output windows that is to be used as the origin.
-        /// </summary>
-        private Point[] mOrigins = new Point[3];
-        /// <summary>
-        /// The sizes of the clip rectangles that bounds the horizontal output input.
-        /// </summary>
-        private Size[] mSizes = new Size[3];
-
-        /// <summary>
         /// File to log information about any crash to.
         /// </summary>
         private string mCrashLogFile;

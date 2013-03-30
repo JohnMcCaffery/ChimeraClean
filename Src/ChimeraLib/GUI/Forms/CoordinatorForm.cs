@@ -28,6 +28,12 @@ namespace Chimera.GUI.Forms {
 
         public CoordinatorForm() {
             InitializeComponent();
+
+            mPerspectives.Add(Perspective.X, new TwoDPerspective(Perspective.X));
+            mPerspectives.Add(Perspective.Y, new TwoDPerspective(Perspective.Y));
+            mPerspectives.Add(Perspective.Z, new TwoDPerspective(Perspective.Z));
+            mCurrentPerspective = mPerspectives[Perspective.Z];
+            mHeightmapPerspective = new TwoDPerspective(Perspective.Z);
         }
 
         public CoordinatorForm(Coordinator coordinator)
@@ -57,6 +63,7 @@ namespace Chimera.GUI.Forms {
             eyePositionPanel.Value = mCoordinator.EyePosition;
 
             mHeightmap = new Bitmap(mCoordinator.Heightmap.GetLength(0), mCoordinator.Heightmap.GetLength(1), PixelFormat.Format24bppRgb);
+            mHeightmapPerspective.AspectRatio = (float) mHeightmap.Width / (float) mHeightmap.Height;
 
             foreach (var window in mCoordinator.Windows) {
                 mCoordinator_WindowAdded(window, null);
@@ -319,11 +326,12 @@ namespace Chimera.GUI.Forms {
 
         private TwoDPerspective mCurrentPerspective;
         private TwoDPerspective mHeightmapPerspective;
-        private Dictionary<int, TwoDPerspective> mPerspectives;
+        private Dictionary<Perspective, TwoDPerspective> mPerspectives = new Dictionary<Perspective,TwoDPerspective>();
 
         private class TwoDPerspective {
             private readonly Perspective mPerspective;
             private Vector3 mCentre = Vector3.Zero;
+            private float mAspectRatio = 1f;
             private float mHScale = 1f;
             private float mVScale = 1f;
             private int mCentreX;
@@ -346,23 +354,17 @@ namespace Chimera.GUI.Forms {
                 }
             }
 
+            public float AspectRatio {
+                get { return mAspectRatio; }
+                set { mAspectRatio = value; }
+            }
+
             public float Scale {
                 get { return mHScale; }
                 set {
-                    mHScale = value;
+                    mHScale = value * mAspectRatio;
                     mVScale = value;
                 }
-            }
-
-            public float HScale {
-                get { return mHScale; }
-                set { mHScale = value; }
-            }
-
-            public float VScale {
-
-                get { return mVScale; }
-                set { mVScale = value; }
             }
 
             public Point To2D(Vector3 point) {
@@ -378,24 +380,25 @@ namespace Chimera.GUI.Forms {
                 ret.Y *= mVScale;
                 return new Point((int)ret.X + mCentreX, (int)ret.Y + mCentreY);
             }
-         
-            /// <summary>
-            /// Which perspective to render.
-            /// </summary>
-            public enum Perspective { 
-                /// <summary>
-                /// View down the X axis.
-                /// </summary>
-                X, 
-                /// <summary>
-                /// View down the Y axis.
-                /// </summary>
-                Y, 
-                /// <summary>
-                /// View down the Z axis.
-                /// </summary>
-                Z 
-            }       
         }
+
+
+        /// <summary>
+        /// Which perspective to render.
+        /// </summary>
+        public enum Perspective {
+            /// <summary>
+            /// View down the X axis.
+            /// </summary>
+            X,
+            /// <summary>
+            /// View down the Y axis.
+            /// </summary>
+            Y,
+            /// <summary>
+            /// View down the Z axis.
+            /// </summary>
+            Z
+        }     
     }
 }
