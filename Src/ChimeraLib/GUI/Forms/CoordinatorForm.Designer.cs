@@ -24,7 +24,7 @@
         /// </summary>
         private void InitializeComponent() {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CoordinatorForm));
-            Chimera.Util.Rotation rotation4 = new Chimera.Util.Rotation();
+            Chimera.Util.Rotation rotation7 = new Chimera.Util.Rotation();
             this.hSplit = new System.Windows.Forms.SplitContainer();
             this.diagramWorldSplit = new System.Windows.Forms.SplitContainer();
             this.diagSplit = new System.Windows.Forms.SplitContainer();
@@ -47,6 +47,7 @@
             this.eyePositionPanel = new Chimera.GUI.VectorPanel();
             this.virtualOrientationPanel = new Chimera.GUI.RotationPanel();
             this.virtualPositionPanel = new Chimera.GUI.VectorPanel();
+            this.virtualZoom = new System.Windows.Forms.TrackBar();
             ((System.ComponentModel.ISupportInitialize)(this.hSplit)).BeginInit();
             this.hSplit.Panel1.SuspendLayout();
             this.hSplit.Panel2.SuspendLayout();
@@ -70,6 +71,7 @@
             this.windowsPluginsSplit.SuspendLayout();
             this.windowsGroup.SuspendLayout();
             this.inputsGroup.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.virtualZoom)).BeginInit();
             this.SuspendLayout();
             // 
             // hSplit
@@ -214,6 +216,7 @@
             // 
             // virtualSpaceGroup
             // 
+            this.virtualSpaceGroup.Controls.Add(this.virtualZoom);
             this.virtualSpaceGroup.Controls.Add(this.heightmapPanel);
             this.virtualSpaceGroup.Dock = System.Windows.Forms.DockStyle.Fill;
             this.virtualSpaceGroup.Location = new System.Drawing.Point(0, 0);
@@ -359,11 +362,11 @@
             this.virtualOrientationPanel.Quaternion = ((OpenMetaverse.Quaternion)(resources.GetObject("virtualOrientationPanel.Quaternion")));
             this.virtualOrientationPanel.Size = new System.Drawing.Size(255, 95);
             this.virtualOrientationPanel.TabIndex = 2;
-            rotation4.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("rotation4.LookAtVector")));
-            rotation4.Pitch = 0D;
-            rotation4.Quaternion = ((OpenMetaverse.Quaternion)(resources.GetObject("rotation4.Quaternion")));
-            rotation4.Yaw = 0D;
-            this.virtualOrientationPanel.Value = rotation4;
+            rotation7.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("rotation7.LookAtVector")));
+            rotation7.Pitch = 0D;
+            rotation7.Quaternion = ((OpenMetaverse.Quaternion)(resources.GetObject("rotation7.Quaternion")));
+            rotation7.Yaw = 0D;
+            this.virtualOrientationPanel.Value = rotation7;
             this.virtualOrientationPanel.Yaw = 0D;
             this.virtualOrientationPanel.OnChange += new System.EventHandler(this.virtualRotation_OnChange);
             // 
@@ -385,6 +388,18 @@
             this.virtualPositionPanel.Y = 0F;
             this.virtualPositionPanel.Z = 0F;
             this.virtualPositionPanel.ValueChanged += new System.EventHandler(this.virtualPositionPanel_OnChange);
+            // 
+            // virtualZoom
+            // 
+            this.virtualZoom.Location = new System.Drawing.Point(6, 288);
+            this.virtualZoom.Maximum = 1000;
+            this.virtualZoom.Minimum = 500;
+            this.virtualZoom.Name = "virtualZoom";
+            this.virtualZoom.Size = new System.Drawing.Size(320, 42);
+            this.virtualZoom.TabIndex = 2;
+            this.virtualZoom.TickStyle = System.Windows.Forms.TickStyle.None;
+            this.virtualZoom.Value = 500;
+            this.virtualZoom.Scroll += new System.EventHandler(this.virtualZoom_Scroll);
             // 
             // CoordinatorForm
             // 
@@ -413,6 +428,7 @@
             this.realSpaceGroup.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.realSpacePanel)).EndInit();
             this.virtualSpaceGroup.ResumeLayout(false);
+            this.virtualSpaceGroup.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.heightmapPanel)).EndInit();
             this.globalBox.ResumeLayout(false);
             this.windowsPluginsSplit.Panel1.ResumeLayout(false);
@@ -421,6 +437,7 @@
             this.windowsPluginsSplit.ResumeLayout(false);
             this.windowsGroup.ResumeLayout(false);
             this.inputsGroup.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.virtualZoom)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -449,5 +466,6 @@
         private System.Windows.Forms.RadioButton yPerspectiveButton;
         private System.Windows.Forms.RadioButton zPerspectiveButton;
         private System.Windows.Forms.RadioButton xPerspectiveButton;
+        private System.Windows.Forms.TrackBar virtualZoom;
     }
 }

@@ -324,7 +324,9 @@ namespace Chimera.GUI.Forms {
                 e.Graphics.DrawLine(Pens.Red, x, y, x2, y2);*/
                 Bitmap map;
                 lock (mHeightmap)
-                    map = new Bitmap(mHeightmap, e.ClipRectangle.Width, e.ClipRectangle.Height);
+                    map = new Bitmap(mHeightmap, 
+                        (int) ((float) e.ClipRectangle.Width / mHeightmapPerspective.Scale), 
+                        (int) ((float) e.ClipRectangle.Height / mHeightmapPerspective.Scale));
                 e.Graphics.DrawImage(map, mHeightmapTopLeft);
                 mHeightmapPerspective.Clip = e.ClipRectangle;
                 mCoordinator.Draw(mHeightmapPerspective.To2D, e.Graphics, e.ClipRectangle);
@@ -378,7 +380,7 @@ namespace Chimera.GUI.Forms {
             }
 
             public float Scale {
-                get { return mHScale; }
+                get { return mVScale; }
                 set {
                     mHScale = value * mAspectRatio;
                     mVScale = value;
@@ -471,16 +473,20 @@ namespace Chimera.GUI.Forms {
 
         private void heightmapPanel_MouseUp(object sender, MouseEventArgs e) {
             mMouseDown = false;
-        }     
+        }
 
         private void heightmapPanel_MouseMove(object sender, MouseEventArgs e) {
             if (mMouseDown) {
-            int xDelta = e.X - mMousePosition.X;
-            int yDelta = e.Y - mMousePosition.Y;
-            mMousePosition = e.Location;
-            mHeightmapTopLeft.X += xDelta;
-            mHeightmapTopLeft.Y += yDelta;
-                }
+                int xDelta = e.X - mMousePosition.X;
+                int yDelta = e.Y - mMousePosition.Y;
+                mMousePosition = e.Location;
+                mHeightmapTopLeft.X += xDelta;
+                mHeightmapTopLeft.Y += yDelta;
+            }
+        }
+
+        private void virtualZoom_Scroll(object sender, EventArgs e) {
+            mHeightmapPerspective.Scale = (float) ((virtualZoom.Maximum - virtualZoom.Value) + virtualZoom.Minimum) / (float) virtualZoom.Maximum;
         }
     }
 }
