@@ -73,8 +73,8 @@ namespace Chimera.GUI.Controls {
                 vSkewPanel.Value = (float)(mWindow.VSkew / mScale);
                 widthPanel.Value = (float) (mWindow.Width / mScale);
                 heightPanel.Value = (float) (mWindow.Height / mScale);
-                aspectRatioWValue.Value = new decimal(Math.Max(0, mWindow.Width));
-                aspectRatioHValue.Value = new decimal(Math.Max(0, mWindow.Height));
+                aspectRatioWValue.Value = new decimal(Math.Max(1, mWindow.Width));
+                aspectRatioHValue.Value = new decimal(Math.Max(1, mWindow.Height));
                 aspectRatioValue.Value = new decimal(mWindow.AspectRatio);
                 diagonalPanel.Value = (float) (mWindow.Diagonal / mScale);
                 fovHPanel.Value = (float)(mWindow.HFieldOfView * (180.0 / Math.PI));

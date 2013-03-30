@@ -321,6 +321,10 @@ namespace Chimera.GUI.Forms {
         private void realSpacePanel_Paint(object sender, PaintEventArgs e) {
             if (mCoordinator != null) {
                 mCurrentPerspective.Clip = e.ClipRectangle;
+                float edge = 100000f;
+                e.Graphics.DrawLine(Pens.Red, mCurrentPerspective.To2D(new Vector3(-edge, 0f, 0f)), mCurrentPerspective.To2D(new Vector3(edge, 0f, 0f)));
+                e.Graphics.DrawLine(Pens.Green, mCurrentPerspective.To2D(new Vector3(0f, -edge, 0f)), mCurrentPerspective.To2D(new Vector3(0f, edge, 0f)));
+                e.Graphics.DrawLine(Pens.Blue, mCurrentPerspective.To2D(new Vector3(0f, 0f, -edge)), mCurrentPerspective.To2D(new Vector3(0f, 0f, edge)));
                 mCoordinator.Draw(mCurrentPerspective.To2D, e.Graphics, e.ClipRectangle);
             }
         }
@@ -372,8 +376,8 @@ namespace Chimera.GUI.Forms {
                 point -= mCentre;
                 Vector2 ret = new Vector2();
                 switch (mPerspective) {
-                    case Perspective.X: ret = new Vector2(point.Z, point.Y); break;
-                    case Perspective.Y: ret = new Vector2(point.Z, point.X); break;
+                    case Perspective.X: ret = new Vector2(point.Y, point.Z); break;
+                    case Perspective.Y: ret = new Vector2(point.X, point.Z); break;
                     case Perspective.Z: ret = new Vector2(point.Y, point.X); break;
                 }
 
@@ -400,6 +404,16 @@ namespace Chimera.GUI.Forms {
             /// View down the Z axis.
             /// </summary>
             Z
+        }
+
+        private void PerspectiveButton_CheckedChanged(object sender, EventArgs e) {
+            if (xPerspectiveButton.Checked)
+                mCurrentPerspective = mPerspectives[Perspective.X];
+            if (yPerspectiveButton.Checked)
+                mCurrentPerspective = mPerspectives[Perspective.Y];
+            if (zPerspectiveButton.Checked)
+                mCurrentPerspective = mPerspectives[Perspective.Z];
+            realSpacePanel.Invalidate();
         }     
     }
 }

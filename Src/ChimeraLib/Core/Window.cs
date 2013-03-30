@@ -93,7 +93,7 @@ namespace Chimera {
         /// <summary>
         /// The anchor for the window as the width and height change.
         /// </summary>
-        private WindowAnchor mWindowAnchor = WindowAnchor.TopLeft; 
+        private WindowAnchor mWindowAnchor = WindowAnchor.Centre; 
         /// <summary>
         /// The method used to calculate the projection matrix.
         /// </summary>
@@ -428,7 +428,7 @@ namespace Chimera {
         /// <param name="graphics">The graphics object to draw with.</param>
         public void Draw(Func<Vector3, Point> to2D, Graphics graphics, Rectangle clipRectangle) {
             Vector3 top = new Vector3(0f, (float)mWidth, 0f) * mOrientation.Quaternion;
-            Vector3 side = new Vector3(0f, 0f, (float)mHeight) * mOrientation.Quaternion;
+            Vector3 side = new Vector3(0f, 0f, (float)-mHeight) * mOrientation.Quaternion;
 
             graphics.DrawLine(Pens.Red, to2D(mTopLeft), to2D(mTopLeft + top));
             graphics.DrawLine(Pens.Red, to2D(mTopLeft), to2D(mTopLeft + side));
