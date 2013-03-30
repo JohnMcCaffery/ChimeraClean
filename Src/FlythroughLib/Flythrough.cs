@@ -11,6 +11,7 @@ using Chimera.Util;
 using System.Threading;
 using Chimera.Flythrough.GUI;
 using Chimera.Flythrough;
+using System.Drawing;
 
 namespace Chimera.Flythrough {
     public struct Camera {
@@ -391,7 +392,7 @@ namespace Chimera.Flythrough {
 
         public void Close() { }
 
-        public void Draw(Perspective perspective, System.Drawing.Graphics graphics) {
+        public void Draw(Func<Vector3, Point> to2D, System.Drawing.Graphics graphics) {
             throw new NotImplementedException();
         }
 

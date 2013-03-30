@@ -115,9 +115,9 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.restartButton.BackColor = System.Drawing.Color.Red;
             this.restartButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 27.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.restartButton.Location = new System.Drawing.Point(3, 317);
+            this.restartButton.Location = new System.Drawing.Point(3, 313);
             this.restartButton.Name = "restartButton";
-            this.restartButton.Size = new System.Drawing.Size(830, 279);
+            this.restartButton.Size = new System.Drawing.Size(827, 283);
             this.restartButton.TabIndex = 7;
             this.restartButton.Text = "Restart";
             this.restartButton.UseVisualStyleBackColor = false;

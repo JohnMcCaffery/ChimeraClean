@@ -184,7 +184,7 @@ namespace Chimera.OpenSim {
             Logout();
         }
 
-        public void Draw(Perspective perspective, System.Drawing.Graphics graphics) {
+        public void Draw(Func<Vector3, Point> to2D, System.Drawing.Graphics graphics) {
             throw new NotImplementedException();
         }
 

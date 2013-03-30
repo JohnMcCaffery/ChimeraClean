@@ -248,7 +248,8 @@ namespace Chimera {
                 double width = value * Math.Cos(tan);
                 ChangeDimesions(width, height);
             }
-        }
+        }
+
         /// <summary>
         /// How far away the screen is relative to the origin along the direction the screen is rotated. (mm)
         /// Calculated as the projection of the distamce from eye to screen centre onto the look at vector for the screen orientation.
@@ -425,8 +426,7 @@ namespace Chimera {
         /// </summary>
         /// <param name="perspective">The perspective to render along.</param>
         /// <param name="graphics">The graphics object to draw with.</param>
-        public void Draw(Chimera.Perspective perspective, Graphics graphics) {
-            throw new System.NotImplementedException();
+        public void Draw(Func<Vector3, Point> to2D, Graphics graphics, Rectangle clipRectangle) {
         }
 
         void mCoordinator_EyeUpdated(Coordinator source, EventArgs args) {
@@ -450,7 +450,8 @@ namespace Chimera {
 
         private void TopLeftFromSkew(double distance, double hSkew, double vSkew) {
             //Vector3 topLeft = new Vector3((float) distance, (float)(mWidth / -2.0), (float)(mHeight / 2.0));
-            //topLeft.Y += (float) hSkew;            //topLeft.Z += (float) vSkew;
+            //topLeft.Y += (float) hSkew;
+            //topLeft.Z += (float) vSkew;
             //topLeft *= mOrientation.Quaternion;
             //topLeft -= mCoordinator.EyePosition;
             //TopLeft = topLeft;
@@ -534,7 +535,8 @@ namespace Chimera {
                 0,          f,  0,                                  0,
                 0,          0,  (zFar + zNear) / (zNear - zFar),    (2f * zFar * zNear) / (zNear - zFar),
                 0,          0,  -1f,                                0);
-        }
+        }
+
         private Matrix4 SkewedProjection() {
             float f = (float) VFieldOfView;
             float aspect = (float) AspectRatio;

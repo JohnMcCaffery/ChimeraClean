@@ -13,23 +13,6 @@ using System.Threading;
 using Chimera.Overlay;
 
 namespace Chimera {
-    /// <summary>
-    /// Which perspective to render.
-    /// </summary>
-    public enum Perspective { 
-        /// <summary>
-        /// View down the X axis.
-        /// </summary>
-        X, 
-        /// <summary>
-        /// View down the Y axis.
-        /// </summary>
-        Y, 
-        /// <summary>
-        /// View down the Z axis.
-        /// </summary>
-        Z 
-    }
 
     public class CameraUpdateEventArgs {
         /// <summary>
@@ -142,7 +125,8 @@ namespace Chimera {
         /// <summary>
         /// Triggered whenever a window is added.
         /// </summary>
-        public event Action<Window, EventArgs> WindowAdded;
+        public event Action<Window, EventArgs> WindowAdded;
+
         /// <summary>
         /// Triggered whenever a window is removed.
         /// </summary>
@@ -387,22 +371,15 @@ namespace Chimera {
         /// </summary>
         /// <param name="perspective">The perspective to render along.</param>
         /// <param name="graphics">The graphics object to draw with.</param>
-        /// <param name="clipRectangle">The bounds of the area being drawn on.</param>
+        /// <param name="clip">The bounds of the area being drawn on.</param>
         /// <param name="scale">The value to control how large or small the diagram is rendered.</param>
         /// <param name="origin">The origin on the panel to draw transition.</param>
-        public void Draw(Perspective perspective, Graphics graphics, Size clipRectangle, double scale, Point origin) {
-            mScales[(int) perspective] = scale;
-            mSizes[(int) perspective] = clipRectangle;
-            mOrigins[(int) perspective] = origin;
-
-
-            //DrawSelected stuff
-
-            foreach (var input in mInputs)
-                input.Draw(perspective, graphics);
+        public void Draw(Func<Vector3, Point> to2D, Graphics graphics, Rectangle clip) {
+            //foreach (var input in mInputs)
+                //input.Draw(perspective, graphics);
 
             foreach (var window in mWindows)
-                window.Draw(perspective, graphics);
+                window.Draw(to2D, graphics, clip);
         }
 
         /// <summary>
@@ -410,7 +387,7 @@ namespace Chimera {
         /// </summary>
         /// <param name="perspective">The perspective to render along.</param>
         /// <param name="realPoint">The real point to translate into 2D coordinates.</param>
-        public Point GetPoint(Perspective perspective, Vector3 realPoint) {
+        public Point GetPoint(Func<Vector3, Point> to2D, Vector3 realPoint) {
             throw new System.NotImplementedException();
         }
 

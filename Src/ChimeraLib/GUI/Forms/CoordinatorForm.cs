@@ -49,6 +49,7 @@ namespace Chimera.GUI.Forms {
             mCoordinator.EyeUpdated += mEyeUpdated;
             mCoordinator.Closed += mClosed;
             mCoordinator.HeightmapChanged += mHeightmapChanged;
+            mCoordinator.WindowAdded += new Action<Window,EventArgs>(mCoordinator_WindowAdded);
 
             Rotation orientation = new Rotation(mCoordinator.Orientation);
             virtualPositionPanel.Value = mCoordinator.Position;
@@ -58,29 +59,7 @@ namespace Chimera.GUI.Forms {
             mHeightmap = new Bitmap(mCoordinator.Heightmap.GetLength(0), mCoordinator.Heightmap.GetLength(1), PixelFormat.Format24bppRgb);
 
             foreach (var window in mCoordinator.Windows) {
-                // 
-                // windowPanel
-                // 
-                WindowPanel windowPanel = new WindowPanel(window);
-                windowPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-                windowPanel.Location = new System.Drawing.Point(3, 3);
-                windowPanel.Name = window.Name + "Panel";
-                windowPanel.Size = new System.Drawing.Size(401, 233);
-                windowPanel.TabIndex = 0;
-                // 
-                // windowTab
-                // 
-                TabPage windowTab = new System.Windows.Forms.TabPage();
-                windowTab.Controls.Add(windowPanel);
-                windowTab.Location = new System.Drawing.Point(4, 22);
-                windowTab.Name = window.Name + "Tab";
-                windowTab.Padding = new System.Windows.Forms.Padding(3);
-                windowTab.Size = new System.Drawing.Size(407, 239);
-                windowTab.TabIndex = 0;
-                windowTab.Text = window.Name;
-                windowTab.UseVisualStyleBackColor = true;
-
-                windowsTab.Controls.Add(windowTab);
+                mCoordinator_WindowAdded(window, null);
             }
 
             foreach (var input in mCoordinator.Inputs) {
@@ -124,6 +103,36 @@ namespace Chimera.GUI.Forms {
 
                 inputsTab.Controls.Add(inputTab);
             }
+        }
+
+        private void mCoordinator_WindowAdded(Window window, EventArgs args) {
+            // 
+            // windowPanel
+            // 
+            WindowPanel windowPanel = new WindowPanel(window);
+            windowPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            windowPanel.Location = new System.Drawing.Point(3, 3);
+            windowPanel.Name = window.Name + "Panel";
+            windowPanel.Size = new System.Drawing.Size(401, 233);
+            windowPanel.TabIndex = 0;
+            // 
+            // windowTab
+            // 
+            TabPage windowTab = new System.Windows.Forms.TabPage();
+            windowTab.Controls.Add(windowPanel);
+            windowTab.Location = new System.Drawing.Point(4, 22);
+            windowTab.Name = window.Name + "Tab";
+            windowTab.Padding = new System.Windows.Forms.Padding(3);
+            windowTab.Size = new System.Drawing.Size(407, 239);
+            windowTab.TabIndex = 0;
+            windowTab.Text = window.Name;
+            windowTab.UseVisualStyleBackColor = true;
+
+            windowsTab.Controls.Add(windowTab);
+            window.Changed += new Action<Window, EventArgs>(window_Changed);
+        }
+
+        private void window_Changed(Window window, EventArgs args) {
         }
 
         private void CoordinatorForm_Disposed(object sender, EventArgs e) {
@@ -195,9 +204,7 @@ namespace Chimera.GUI.Forms {
                     virtualPositionPanel.Value = args.position;
                     virtualOrientationPanel.Pitch = args.rotation.Pitch;
                     virtualOrientationPanel.Yaw = args.rotation.Yaw;
-                    if (heightmapTab == diagramHeightmapTab.SelectedTab) {
-                        heightmapPanel.Invalidate();
-                    }
+                    heightmapPanel.Invalidate();
                 });
                 mEventUpdate = false;
             }
@@ -282,6 +289,14 @@ namespace Chimera.GUI.Forms {
                 mCoordinator.StateManager.TriggerCustom("Help");
         }
 
+        private void Invoke(Action a) {
+            if (!mClosing && !IsDisposed && !Disposing && Created) {
+                if (InvokeRequired)
+                    base.Invoke(a);
+                else
+                    a();
+            }
+        }
         private void heightmapPanel_Paint(object sender, PaintEventArgs e) {
             if (mCoordinator != null) {
                 int x = (int)((mCoordinator.Position.X / (float)mCoordinator.Heightmap.GetLength(0)) * e.ClipRectangle.Width);
@@ -295,13 +310,92 @@ namespace Chimera.GUI.Forms {
             }
         }
 
-        private void Invoke(Action a) {
-            if (!mClosing && !IsDisposed && !Disposing && Created) {
-                if (InvokeRequired)
-                    base.Invoke(a);
-                else
-                    a();
+        private void realSpacePanel_Paint(object sender, PaintEventArgs e) {
+            if (mCoordinator != null) {
+                mCurrentPerspective.Clip = e.ClipRectangle;
+                mCoordinator.Draw(mCurrentPerspective.To2D, e.Graphics, e.ClipRectangle);
             }
+        }
+
+        private TwoDPerspective mCurrentPerspective;
+        private TwoDPerspective mHeightmapPerspective;
+        private Dictionary<int, TwoDPerspective> mPerspectives;
+
+        private class TwoDPerspective {
+            private readonly Perspective mPerspective;
+            private Vector3 mCentre = Vector3.Zero;
+            private float mHScale = 1f;
+            private float mVScale = 1f;
+            private int mCentreX;
+            private int mCentreY;
+
+            public TwoDPerspective(Perspective perspective) {
+                mPerspective = perspective;
+            }
+
+            public Vector3 Centre {
+                get { return mCentre; }
+                set { mCentre = value; }
+            }
+
+            public Rectangle Clip {
+                get { return new Rectangle(0, 0, mCentreX * 2, mCentreY * 2); }
+                set { 
+                    mCentreX = value.Width / 2;
+                    mCentreY = value.Height / 2;
+                }
+            }
+
+            public float Scale {
+                get { return mHScale; }
+                set {
+                    mHScale = value;
+                    mVScale = value;
+                }
+            }
+
+            public float HScale {
+                get { return mHScale; }
+                set { mHScale = value; }
+            }
+
+            public float VScale {
+
+                get { return mVScale; }
+                set { mVScale = value; }
+            }
+
+            public Point To2D(Vector3 point) {
+                point -= mCentre;
+                Vector2 ret = new Vector2();
+                switch (mPerspective) {
+                    case Perspective.X: ret = new Vector2(point.Z, point.Y); break;
+                    case Perspective.Y: ret = new Vector2(point.Z, point.X); break;
+                    case Perspective.Z: ret = new Vector2(point.Y, point.X); break;
+                }
+
+                ret.X *= mHScale;
+                ret.Y *= mVScale;
+                return new Point((int)ret.X + mCentreX, (int)ret.Y + mCentreY);
+            }
+         
+            /// <summary>
+            /// Which perspective to render.
+            /// </summary>
+            public enum Perspective { 
+                /// <summary>
+                /// View down the X axis.
+                /// </summary>
+                X, 
+                /// <summary>
+                /// View down the Y axis.
+                /// </summary>
+                Y, 
+                /// <summary>
+                /// View down the Z axis.
+                /// </summary>
+                Z 
+            }       
         }
     }
 }

@@ -225,7 +225,7 @@ namespace Chimera.Kinect {
             //Nui.Close();
         }
 
-        public void Draw(Perspective perspective, Graphics graphics) {
+        public void Draw(Func<Vector3, Point> to2D, Graphics graphics) {
             throw new NotImplementedException();
         }
 

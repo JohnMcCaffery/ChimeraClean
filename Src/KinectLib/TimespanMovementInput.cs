@@ -8,6 +8,7 @@ using OpenMetaverse;
 using System.Windows.Forms;
 using Chimera.Util;
 using Chimera.Kinect.GUI;
+using System.Drawing;
 
 namespace Chimera.Kinect {
     public class TimespanMovementInput : IDeltaInput {
@@ -314,7 +315,7 @@ namespace Chimera.Kinect {
 
         public void Close() { }
 
-        public void Draw(Perspective perspective, System.Drawing.Graphics graphics) {
+        public void Draw(Func<Vector3, Point> to2D, System.Drawing.Graphics graphics) {
             throw new NotImplementedException();
         }
 

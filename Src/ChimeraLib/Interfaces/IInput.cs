@@ -5,6 +5,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.Drawing;
 using Chimera.Util;
+using OpenMetaverse;
 
 namespace Chimera {
     public interface IInput {
@@ -57,8 +58,8 @@ namespace Chimera {
         /// <summary>
         /// DrawSelected any relevant information about this input onto a diagram.
         /// </summary>
-        /// <param name="perspective">The perspective to render along.</param>
+        /// <param name=" to2D">Lambda to convert a 3D coordinate into a 2D coordinate that can be rendered on the output.</param>
         /// <param name="graphics">The graphics object to draw with.</param>
-        void Draw(Perspective perspective, Graphics graphics);
+        void Draw(Func<Vector3, Point> to2D, Graphics graphics);
     }
 }

@@ -6,6 +6,7 @@ using System.Windows.Forms;
 using Chimera.Util;
 using Chimera.GUI.Controls.Inputs;
 using System.Drawing;
+using OpenMetaverse;
 
 namespace Chimera.Inputs {
     public class MouseInput : ISystemInput {
@@ -98,7 +99,7 @@ namespace Chimera.Inputs {
 
         public void Close() { }
 
-        public void Draw(Perspective perspective, System.Drawing.Graphics graphics) {
+        public void Draw(Func<Vector3, Point> to2D, System.Drawing.Graphics graphics) {
             throw new NotImplementedException();
         }
 

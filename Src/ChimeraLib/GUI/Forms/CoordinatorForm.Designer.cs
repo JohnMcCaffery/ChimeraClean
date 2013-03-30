@@ -27,15 +27,6 @@
             Chimera.Util.Rotation rotation1 = new Chimera.Util.Rotation();
             this.hSplit = new System.Windows.Forms.SplitContainer();
             this.diagramWorldSplit = new System.Windows.Forms.SplitContainer();
-            this.diagramHeightmapTab = new System.Windows.Forms.TabControl();
-            this.diagramTab = new System.Windows.Forms.TabPage();
-            this.diagSplit = new System.Windows.Forms.SplitContainer();
-            this.hGroup = new System.Windows.Forms.GroupBox();
-            this.button1 = new System.Windows.Forms.Button();
-            this.testButton = new System.Windows.Forms.Button();
-            this.vGroup = new System.Windows.Forms.GroupBox();
-            this.heightmapTab = new System.Windows.Forms.TabPage();
-            this.heightmapPanel = new System.Windows.Forms.PictureBox();
             this.globalBox = new System.Windows.Forms.GroupBox();
             this.triggerHelpButton = new System.Windows.Forms.Button();
             this.eyePositionPanel = new Chimera.GUI.VectorPanel();
@@ -46,6 +37,13 @@
             this.windowsTab = new System.Windows.Forms.TabControl();
             this.inputsGroup = new System.Windows.Forms.GroupBox();
             this.inputsTab = new System.Windows.Forms.TabControl();
+            this.diagSplit = new System.Windows.Forms.SplitContainer();
+            this.realSpaceGroup = new System.Windows.Forms.GroupBox();
+            this.button1 = new System.Windows.Forms.Button();
+            this.testButton = new System.Windows.Forms.Button();
+            this.virtualSpaceGroup = new System.Windows.Forms.GroupBox();
+            this.heightmapPanel = new System.Windows.Forms.PictureBox();
+            this.realSpacePanel = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.hSplit)).BeginInit();
             this.hSplit.Panel1.SuspendLayout();
             this.hSplit.Panel2.SuspendLayout();
@@ -54,15 +52,6 @@
             this.diagramWorldSplit.Panel1.SuspendLayout();
             this.diagramWorldSplit.Panel2.SuspendLayout();
             this.diagramWorldSplit.SuspendLayout();
-            this.diagramHeightmapTab.SuspendLayout();
-            this.diagramTab.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.diagSplit)).BeginInit();
-            this.diagSplit.Panel1.SuspendLayout();
-            this.diagSplit.Panel2.SuspendLayout();
-            this.diagSplit.SuspendLayout();
-            this.hGroup.SuspendLayout();
-            this.heightmapTab.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.heightmapPanel)).BeginInit();
             this.globalBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.windowsPluginsSplit)).BeginInit();
             this.windowsPluginsSplit.Panel1.SuspendLayout();
@@ -70,6 +59,14 @@
             this.windowsPluginsSplit.SuspendLayout();
             this.windowsGroup.SuspendLayout();
             this.inputsGroup.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.diagSplit)).BeginInit();
+            this.diagSplit.Panel1.SuspendLayout();
+            this.diagSplit.Panel2.SuspendLayout();
+            this.diagSplit.SuspendLayout();
+            this.realSpaceGroup.SuspendLayout();
+            this.virtualSpaceGroup.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.heightmapPanel)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.realSpacePanel)).BeginInit();
             this.SuspendLayout();
             // 
             // hSplit
@@ -102,7 +99,7 @@
             // 
             // diagramWorldSplit.Panel1
             // 
-            this.diagramWorldSplit.Panel1.Controls.Add(this.diagramHeightmapTab);
+            this.diagramWorldSplit.Panel1.Controls.Add(this.diagSplit);
             // 
             // diagramWorldSplit.Panel2
             // 
@@ -111,113 +108,6 @@
             this.diagramWorldSplit.Size = new System.Drawing.Size(911, 320);
             this.diagramWorldSplit.SplitterDistance = 646;
             this.diagramWorldSplit.TabIndex = 0;
-            // 
-            // diagramHeightmapTab
-            // 
-            this.diagramHeightmapTab.Controls.Add(this.diagramTab);
-            this.diagramHeightmapTab.Controls.Add(this.heightmapTab);
-            this.diagramHeightmapTab.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.diagramHeightmapTab.Location = new System.Drawing.Point(0, 0);
-            this.diagramHeightmapTab.Name = "diagramHeightmapTab";
-            this.diagramHeightmapTab.SelectedIndex = 0;
-            this.diagramHeightmapTab.Size = new System.Drawing.Size(646, 320);
-            this.diagramHeightmapTab.TabIndex = 3;
-            this.diagramHeightmapTab.KeyDown += new System.Windows.Forms.KeyEventHandler(this.CoordinatorForm_KeyDown);
-            this.diagramHeightmapTab.KeyUp += new System.Windows.Forms.KeyEventHandler(this.CoordinatorForm_KeyUp);
-            // 
-            // diagramTab
-            // 
-            this.diagramTab.Controls.Add(this.diagSplit);
-            this.diagramTab.Location = new System.Drawing.Point(4, 22);
-            this.diagramTab.Name = "diagramTab";
-            this.diagramTab.Padding = new System.Windows.Forms.Padding(3);
-            this.diagramTab.Size = new System.Drawing.Size(638, 294);
-            this.diagramTab.TabIndex = 0;
-            this.diagramTab.Text = "Diagram";
-            this.diagramTab.UseVisualStyleBackColor = true;
-            // 
-            // diagSplit
-            // 
-            this.diagSplit.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.diagSplit.Location = new System.Drawing.Point(3, 3);
-            this.diagSplit.Name = "diagSplit";
-            // 
-            // diagSplit.Panel1
-            // 
-            this.diagSplit.Panel1.Controls.Add(this.hGroup);
-            // 
-            // diagSplit.Panel2
-            // 
-            this.diagSplit.Panel2.Controls.Add(this.vGroup);
-            this.diagSplit.Size = new System.Drawing.Size(632, 288);
-            this.diagSplit.SplitterDistance = 304;
-            this.diagSplit.TabIndex = 0;
-            this.diagSplit.KeyDown += new System.Windows.Forms.KeyEventHandler(this.CoordinatorForm_KeyDown);
-            this.diagSplit.KeyUp += new System.Windows.Forms.KeyEventHandler(this.CoordinatorForm_KeyUp);
-            // 
-            // hGroup
-            // 
-            this.hGroup.Controls.Add(this.button1);
-            this.hGroup.Controls.Add(this.testButton);
-            this.hGroup.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.hGroup.Location = new System.Drawing.Point(0, 0);
-            this.hGroup.Name = "hGroup";
-            this.hGroup.Size = new System.Drawing.Size(304, 288);
-            this.hGroup.TabIndex = 0;
-            this.hGroup.TabStop = false;
-            this.hGroup.Text = "Top Down";
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(6, 48);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(91, 23);
-            this.button1.TabIndex = 2;
-            this.button1.Text = "Crash - Thread";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
-            // testButton
-            // 
-            this.testButton.Location = new System.Drawing.Point(6, 19);
-            this.testButton.Name = "testButton";
-            this.testButton.Size = new System.Drawing.Size(91, 23);
-            this.testButton.TabIndex = 1;
-            this.testButton.Text = "Crash - GUI";
-            this.testButton.UseVisualStyleBackColor = true;
-            this.testButton.Click += new System.EventHandler(this.testButton_Click);
-            // 
-            // vGroup
-            // 
-            this.vGroup.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.vGroup.Location = new System.Drawing.Point(0, 0);
-            this.vGroup.Name = "vGroup";
-            this.vGroup.Size = new System.Drawing.Size(324, 288);
-            this.vGroup.TabIndex = 0;
-            this.vGroup.TabStop = false;
-            this.vGroup.Text = "Side On";
-            // 
-            // heightmapTab
-            // 
-            this.heightmapTab.Controls.Add(this.heightmapPanel);
-            this.heightmapTab.Location = new System.Drawing.Point(4, 22);
-            this.heightmapTab.Name = "heightmapTab";
-            this.heightmapTab.Padding = new System.Windows.Forms.Padding(3);
-            this.heightmapTab.Size = new System.Drawing.Size(638, 288);
-            this.heightmapTab.TabIndex = 1;
-            this.heightmapTab.Text = "Heightmap";
-            this.heightmapTab.UseVisualStyleBackColor = true;
-            // 
-            // heightmapPanel
-            // 
-            this.heightmapPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.heightmapPanel.Location = new System.Drawing.Point(3, 3);
-            this.heightmapPanel.Name = "heightmapPanel";
-            this.heightmapPanel.Size = new System.Drawing.Size(632, 282);
-            this.heightmapPanel.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.heightmapPanel.TabIndex = 0;
-            this.heightmapPanel.TabStop = false;
-            this.heightmapPanel.Paint += new System.Windows.Forms.PaintEventHandler(this.heightmapPanel_Paint);
             // 
             // globalBox
             // 
@@ -236,8 +126,8 @@
             // 
             // triggerHelpButton
             // 
-            this.triggerHelpButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.triggerHelpButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.triggerHelpButton.Location = new System.Drawing.Point(7, 288);
             this.triggerHelpButton.Name = "triggerHelpButton";
             this.triggerHelpButton.Size = new System.Drawing.Size(248, 23);
@@ -248,8 +138,8 @@
             // 
             // eyePositionPanel
             // 
-            this.eyePositionPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.eyePositionPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.eyePositionPanel.Location = new System.Drawing.Point(3, 195);
             this.eyePositionPanel.Max = 5000F;
             this.eyePositionPanel.MaxV = ((OpenMetaverse.Vector3)(resources.GetObject("eyePositionPanel.MaxV")));
@@ -267,8 +157,8 @@
             // 
             // virtualOrientationPanel
             // 
-            this.virtualOrientationPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.virtualOrientationPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.virtualOrientationPanel.Location = new System.Drawing.Point(3, 105);
             this.virtualOrientationPanel.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("virtualOrientationPanel.LookAtVector")));
             this.virtualOrientationPanel.MinimumSize = new System.Drawing.Size(252, 95);
@@ -287,8 +177,8 @@
             // 
             // virtualPositionPanel
             // 
-            this.virtualPositionPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.virtualPositionPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.virtualPositionPanel.Location = new System.Drawing.Point(3, 12);
             this.virtualPositionPanel.Max = 1024F;
             this.virtualPositionPanel.MaxV = ((OpenMetaverse.Vector3)(resources.GetObject("virtualPositionPanel.MaxV")));
@@ -367,6 +257,86 @@
             this.inputsTab.KeyDown += new System.Windows.Forms.KeyEventHandler(this.CoordinatorForm_KeyDown);
             this.inputsTab.KeyUp += new System.Windows.Forms.KeyEventHandler(this.CoordinatorForm_KeyUp);
             // 
+            // diagSplit
+            // 
+            this.diagSplit.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.diagSplit.Location = new System.Drawing.Point(0, 0);
+            this.diagSplit.Name = "diagSplit";
+            // 
+            // diagSplit.Panel1
+            // 
+            this.diagSplit.Panel1.Controls.Add(this.realSpaceGroup);
+            // 
+            // diagSplit.Panel2
+            // 
+            this.diagSplit.Panel2.Controls.Add(this.virtualSpaceGroup);
+            this.diagSplit.Size = new System.Drawing.Size(646, 320);
+            this.diagSplit.SplitterDistance = 310;
+            this.diagSplit.TabIndex = 1;
+            // 
+            // realSpaceGroup
+            // 
+            this.realSpaceGroup.Controls.Add(this.button1);
+            this.realSpaceGroup.Controls.Add(this.testButton);
+            this.realSpaceGroup.Controls.Add(this.realSpacePanel);
+            this.realSpaceGroup.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.realSpaceGroup.Location = new System.Drawing.Point(0, 0);
+            this.realSpaceGroup.Name = "realSpaceGroup";
+            this.realSpaceGroup.Size = new System.Drawing.Size(310, 320);
+            this.realSpaceGroup.TabIndex = 0;
+            this.realSpaceGroup.TabStop = false;
+            this.realSpaceGroup.Text = "Real Space";
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(6, 48);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(91, 23);
+            this.button1.TabIndex = 2;
+            this.button1.Text = "Crash - Thread";
+            this.button1.UseVisualStyleBackColor = true;
+            // 
+            // testButton
+            // 
+            this.testButton.Location = new System.Drawing.Point(6, 19);
+            this.testButton.Name = "testButton";
+            this.testButton.Size = new System.Drawing.Size(91, 23);
+            this.testButton.TabIndex = 1;
+            this.testButton.Text = "Crash - GUI";
+            this.testButton.UseVisualStyleBackColor = true;
+            // 
+            // virtualSpaceGroup
+            // 
+            this.virtualSpaceGroup.Controls.Add(this.heightmapPanel);
+            this.virtualSpaceGroup.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.virtualSpaceGroup.Location = new System.Drawing.Point(0, 0);
+            this.virtualSpaceGroup.Name = "virtualSpaceGroup";
+            this.virtualSpaceGroup.Size = new System.Drawing.Size(332, 320);
+            this.virtualSpaceGroup.TabIndex = 0;
+            this.virtualSpaceGroup.TabStop = false;
+            this.virtualSpaceGroup.Text = "Virtual Space";
+            // 
+            // heightmapPanel
+            // 
+            this.heightmapPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.heightmapPanel.Location = new System.Drawing.Point(3, 16);
+            this.heightmapPanel.Name = "heightmapPanel";
+            this.heightmapPanel.Size = new System.Drawing.Size(326, 301);
+            this.heightmapPanel.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.heightmapPanel.TabIndex = 1;
+            this.heightmapPanel.TabStop = false;
+            this.heightmapPanel.Paint += new System.Windows.Forms.PaintEventHandler(this.heightmapPanel_Paint);
+            // 
+            // realSpacePanel
+            // 
+            this.realSpacePanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.realSpacePanel.Location = new System.Drawing.Point(3, 16);
+            this.realSpacePanel.Name = "realSpacePanel";
+            this.realSpacePanel.Size = new System.Drawing.Size(304, 301);
+            this.realSpacePanel.TabIndex = 3;
+            this.realSpacePanel.TabStop = false;
+            this.realSpacePanel.Paint += new System.Windows.Forms.PaintEventHandler(this.realSpacePanel_Paint);
+            // 
             // CoordinatorForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -386,15 +356,6 @@
             this.diagramWorldSplit.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.diagramWorldSplit)).EndInit();
             this.diagramWorldSplit.ResumeLayout(false);
-            this.diagramHeightmapTab.ResumeLayout(false);
-            this.diagramTab.ResumeLayout(false);
-            this.diagSplit.Panel1.ResumeLayout(false);
-            this.diagSplit.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.diagSplit)).EndInit();
-            this.diagSplit.ResumeLayout(false);
-            this.hGroup.ResumeLayout(false);
-            this.heightmapTab.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.heightmapPanel)).EndInit();
             this.globalBox.ResumeLayout(false);
             this.windowsPluginsSplit.Panel1.ResumeLayout(false);
             this.windowsPluginsSplit.Panel2.ResumeLayout(false);
@@ -402,6 +363,14 @@
             this.windowsPluginsSplit.ResumeLayout(false);
             this.windowsGroup.ResumeLayout(false);
             this.inputsGroup.ResumeLayout(false);
+            this.diagSplit.Panel1.ResumeLayout(false);
+            this.diagSplit.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.diagSplit)).EndInit();
+            this.diagSplit.ResumeLayout(false);
+            this.realSpaceGroup.ResumeLayout(false);
+            this.virtualSpaceGroup.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.heightmapPanel)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.realSpacePanel)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -412,9 +381,6 @@
         private System.Windows.Forms.SplitContainer diagramWorldSplit;
         private System.Windows.Forms.SplitContainer windowsPluginsSplit;
         private System.Windows.Forms.GroupBox globalBox;
-        private System.Windows.Forms.SplitContainer diagSplit;
-        private System.Windows.Forms.GroupBox hGroup;
-        private System.Windows.Forms.GroupBox vGroup;
         private System.Windows.Forms.GroupBox windowsGroup;
         private System.Windows.Forms.GroupBox inputsGroup;
         private System.Windows.Forms.TabControl windowsTab;
@@ -422,12 +388,13 @@
         private Chimera.GUI.VectorPanel virtualPositionPanel;
         private Chimera.GUI.VectorPanel eyePositionPanel;
         private Chimera.GUI.RotationPanel virtualOrientationPanel;
-        private System.Windows.Forms.Button testButton;
-        private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button triggerHelpButton;
-        private System.Windows.Forms.TabControl diagramHeightmapTab;
-        private System.Windows.Forms.TabPage diagramTab;
-        private System.Windows.Forms.TabPage heightmapTab;
+        private System.Windows.Forms.SplitContainer diagSplit;
+        private System.Windows.Forms.GroupBox realSpaceGroup;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button testButton;
+        private System.Windows.Forms.GroupBox virtualSpaceGroup;
         private System.Windows.Forms.PictureBox heightmapPanel;
+        private System.Windows.Forms.PictureBox realSpacePanel;
     }
 }
