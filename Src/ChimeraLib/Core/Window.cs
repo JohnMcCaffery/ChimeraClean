@@ -12,11 +12,44 @@ using Chimera.Interfaces;
 using Chimera.Overlay;
 
 namespace Chimera {
-    public class Window {
+    /// <summary>
+    /// The different mechanisms used to calculate the projection matrix.
+    /// </summary>
+    public enum ProjectionStyle { 
+        /// <summary>
+        /// Just uses Field of View and Aspect Ratio. The same as the SL Viewer's projection matrix.
+        /// </summary>
+        Simple, 
+        /// <summary>
+        /// Calculated using Fiend of View, Aspect Ratio with horizontal and vertical skews taken into account.
+        /// </summary>
+        Skewed, 
+        /// <summary>
+        /// Calculated using the method from this paper http://lds62-112-144-233.my-simplyroot.de/wp-content/uploads/downloads/2011/12/0008.pdf.
+        /// </summary>
+        Calculated 
+    }
+    /// <summary>
+    /// When adjusting the height and width of a window, which point should stay anchored.
+    /// </summary>
+    public enum WindowAnchor { 
+        /// <summary>
+        /// The top left point should stay in place. The window will extend further right and down.
+        /// </summary>
+        TopLeft, 
+        /// <summary>
+        /// The centre will stay in place and the window will extend in all directions.
+        /// </summary>
+        Centre 
+    }
+    public class Window { 
         /// <summary>
         /// The system which this input is registered with.
         /// </summary>
-        private Coordinator mCoordinator;
+        private Coordinator mCoordinator;     
+        /// The manager for the overlay which can be renderered on this window.
+        /// </summary>
+        private WindowOverlayManager mOverlayManager;        
         /// <summary>
         /// Output object used to actually render the view 'through' the input. Can be null.
         /// </summary>
@@ -29,10 +62,6 @@ namespace Chimera {
         /// The unique name by which the input is known.
         /// </summary>
         private string mName;
-        /// <summary>
-        /// The matrix which will project objects in virtual space onto the flat input.
-        /// </summary>
-        private Matrix4 mProjectionMatrix;
         /// <summary>
         /// The orientation of the input in real space.
         /// </summary>
@@ -54,9 +83,13 @@ namespace Chimera {
         /// </summary>
         private bool mMouseControl = false;
         /// <summary>
-        /// The manager for the overlay which can be renderered on this window.
+        /// The anchor for the window as the width and height change.
         /// </summary>
-        private WindowOverlayManager mOverlayManager;
+        private WindowAnchor mWindowAnchor = WindowAnchor.TopLeft; 
+        /// <summary>
+        /// The method used to calculate the projection matrix.
+        /// </summary>
+        private ProjectionStyle mProjection = ProjectionStyle.Simple;
 
         /// <summary>
         /// Triggered whenever the position of this input changes.
@@ -165,10 +198,7 @@ namespace Chimera {
         /// </summary>
         public double Width {
             get { return mWidth ; }
-            set {
-                mWidth = value;
-                TriggerChanged();
-            }
+            set { ChangeDimesions(value, mHeight); }
         }
 
         /// <summary>
@@ -176,10 +206,7 @@ namespace Chimera {
         /// </summary>
         public double Height {
             get { return mHeight ; }
-            set {
-                mHeight = value;
-                TriggerChanged();
-            }
+            set { ChangeDimesions(mWidth, value); }
         }
 
         /// <summary>
@@ -192,8 +219,8 @@ namespace Chimera {
             set {
                 if (AspectRatio == value || value <= 0.0)
                     return;
-                mWidth = mHeight / value;
-                TriggerChanged();
+                double width = mHeight / value;
+                ChangeDimesions(width, mHeight);
             }
         }
 
@@ -208,9 +235,9 @@ namespace Chimera {
                 if (Diagonal == value || value <= 0.0)
                     return;
                 double tan = Math.Atan(AspectRatio);
-                mHeight = value * Math.Sin(tan);
-                mWidth = value * Math.Cos(tan);
-                TriggerChanged();
+                double height = value * Math.Sin(tan);
+                double width = value * Math.Cos(tan);
+                ChangeDimesions(width, height);
             }
         }
 
@@ -227,8 +254,9 @@ namespace Chimera {
                 left *= q;
                 right *= q;
 
-                left += Centre;
-                right += Centre;
+                Vector3 centre = Centre;
+                left += centre;
+                right += centre;
 
                 float dot = Vector3.Dot(Vector3.Normalize(left - mCoordinator.EyePosition), Vector3.Normalize(right - mCoordinator.EyePosition));
                 //return Math.Acos(dot);
@@ -240,12 +268,12 @@ namespace Chimera {
                 if (value <= 0.0)
                     return;
                 double aspectRatio = AspectRatio;
-                mWidth = 2 * ScreenDistance * Math.Cos(value / 2.0);
+                double width = 2 * ScreenDistance * Math.Cos(value / 2.0);
                 double a = Math.Cos(value / 2);
                 if (a != 0.0)
-                    mWidth /= a;
-                mHeight = mWidth * aspectRatio;
-                TriggerChanged();
+                    width /= a;
+                double height = mWidth * aspectRatio;
+                ChangeDimesions(width, height);
             }
         }
 
@@ -262,8 +290,9 @@ namespace Chimera {
                 top *= q;
                 bottom *= q;
 
-                top += Centre;
-                bottom += Centre;
+                Vector3 centre = Centre;
+                top += centre;
+                bottom += centre;
 
                 float dot = Vector3.Dot(Vector3.Normalize(top - mCoordinator.EyePosition), Vector3.Normalize(bottom - mCoordinator.EyePosition));
                 //return Math.Acos(dot);
@@ -275,12 +304,12 @@ namespace Chimera {
                 if (value <= 0.0)
                     return;
                 double aspectRatio = AspectRatio;
-                mHeight = 2 * ScreenDistance * Math.Sin(value / 2.0);
+                double height = 2 * ScreenDistance * Math.Sin(value / 2.0);
                 double a = Math.Cos(value / 2);
                 if (a != 0.0)
-                    mHeight /= a;
-                mWidth = mHeight / aspectRatio;
-                TriggerChanged();
+                    height /= a;
+                double width = mHeight / aspectRatio;
+                ChangeDimesions(width, height);
             }
         }
 
@@ -296,8 +325,12 @@ namespace Chimera {
         /// The matrix which will project objects in virtual space onto the flat input.
         /// </summary>
         public Matrix4 ProjectionMatrix {
-            get { return mProjectionMatrix ; }
-            set { mProjectionMatrix  = value; }
+            get { 
+                switch (mProjection) {
+                    case ProjectionStyle.Simple: return SimpleProjection();
+                }
+                throw new NotImplementedException();
+            }
         }
 
         /// <summary>
@@ -388,6 +421,29 @@ namespace Chimera {
         private void TriggerChanged() {
             if (Changed != null)
                 Changed(this, null);
+        }
+        private void ChangeDimesions(double width, double height) {
+            Vector3 centre = mWindowAnchor == WindowAnchor.Centre ? Centre : Vector3.Zero;
+            mWidth = width;
+            mHeight = height;
+            if (mWindowAnchor == WindowAnchor.Centre) {
+                Vector3 diagonal = new Vector3(0f, (float)(mWidth / 2.0), (float)(mHeight / 2.0));
+                diagonal *= mOrientation.Quaternion;
+                mTopLeft = centre - diagonal;
+            }
+            TriggerChanged();
+        }
+
+        private Matrix4 SimpleProjection() {
+            float f = (float) VFieldOfView;
+            float aspect = (float) AspectRatio;
+            float zNear = .1f;
+            float zFar = 1024f;
+            return new Matrix4(
+                f / aspect, 0,  0,                                  0,
+                0,          f,  0,                                  0,
+                0,          0,  (zFar + zNear) / (zNear - zFar),    (2f * zFar * zNear) / (zNear - zFar),
+                0,          0,  -1f,                                0);
         }
     }
 }
