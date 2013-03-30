@@ -313,6 +313,7 @@ namespace Chimera {
             get { 
                 switch (mProjection) {
                     case ProjectionStyle.Simple: return SimpleProjection();
+                    case ProjectionStyle.Calculated: return CalculatedProjection();
                 }
                 throw new NotImplementedException();
             }
@@ -426,6 +427,7 @@ namespace Chimera {
         public void Draw(Chimera.Perspective perspective, Graphics graphics) {
             throw new System.NotImplementedException();
         }
+
         void mCoordinator_EyeUpdated(Coordinator source, EventArgs args) {
             TriggerChanged();
         }
@@ -507,6 +509,19 @@ namespace Chimera {
             return new Matrix4(
                 f / aspect, 0,  0,                                  0,
                 0,          f,  0,                                  0,
+                0,          0,  (zFar + zNear) / (zNear - zFar),    (2f * zFar * zNear) / (zNear - zFar),
+                0,          0,  -1f,                                0);
+        }
+        private Matrix4 SkewedProjection() {
+            float f = (float) VFieldOfView;
+            float aspect = (float) AspectRatio;
+            float zNear = .1f;
+            float zFar = 1024f;
+            float hSkew = (float) (HSkew / mWidth);
+            float vSkew = (float) (VSkew / mHeight);
+            return new Matrix4(
+                f / aspect, 0,  hSkew,                              0,
+                0,          f,  vSkew,                              0,
                 0,          0,  (zFar + zNear) / (zNear - zFar),    (2f * zFar * zNear) / (zNear - zFar),
                 0,          0,  -1f,                                0);
         }
