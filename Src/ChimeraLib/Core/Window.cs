@@ -543,29 +543,29 @@ namespace Chimera {
         }
 
         private Matrix4 SimpleProjection() {
-            float f = (float) VFieldOfView;
-            float aspect = (float) AspectRatio;
+            float fV = (float)VFieldOfView;
+            float fH = (float)HFieldOfView;
             float zNear = .1f;
             float zFar = 1024f;
             return new Matrix4(
-                f / aspect, 0,  0,                                  0,
-                0,          f,  0,                                  0,
-                0,          0,  (zFar + zNear) / (zNear - zFar),    (2f * zFar * zNear) / (zNear - zFar),
-                0,          0,  -1f,                                0);
+                fH, 0,      0,                                  0,
+                0,  fV,     0,                                  0,
+                0,  0,      (zFar + zNear) / (zNear - zFar),    (2f * zFar * zNear) / (zNear - zFar),
+                0,  0,      -1f,                                0);
         }
 
         private Matrix4 SkewedProjection() {
-            float f = (float) VFieldOfView;
-            float aspect = (float) AspectRatio;
+            float fV = (float) VFieldOfView;
+            float fH = (float) HFieldOfView;
             float zNear = .1f;
             float zFar = 1024f;
             float hSkew = (float) (HSkew / mWidth);
             float vSkew = (float) (VSkew / mHeight);
             return new Matrix4(
-                f / aspect, 0,  hSkew,                              0,
-                0,          f,  vSkew,                              0,
-                0,          0,  (zFar + zNear) / (zNear - zFar),    (2f * zFar * zNear) / (zNear - zFar),
-                0,          0,  -1f,                                0);
+                fH,     0,  hSkew,                              0,
+                0,      fV, vSkew,                              0,
+                0,      0,  (zFar + zNear) / (zNear - zFar),    (2f * zFar * zNear) / (zNear - zFar),
+                0,      0,  -1f,                                0);
         }
 
         private Matrix4 CalculatedProjection() {
