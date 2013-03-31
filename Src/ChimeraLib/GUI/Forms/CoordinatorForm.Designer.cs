@@ -35,19 +35,20 @@
             this.button1 = new System.Windows.Forms.Button();
             this.testButton = new System.Windows.Forms.Button();
             this.realSpacePanel = new System.Windows.Forms.PictureBox();
+            this.realSpaceScale = new System.Windows.Forms.TrackBar();
             this.virtualSpaceGroup = new System.Windows.Forms.GroupBox();
-            this.virtualZoom = new System.Windows.Forms.TrackBar();
             this.heightmapPanel = new System.Windows.Forms.PictureBox();
+            this.heightmapScale = new System.Windows.Forms.TrackBar();
             this.globalBox = new System.Windows.Forms.GroupBox();
             this.triggerHelpButton = new System.Windows.Forms.Button();
+            this.eyePositionPanel = new Chimera.GUI.VectorPanel();
+            this.virtualOrientationPanel = new Chimera.GUI.RotationPanel();
+            this.virtualPositionPanel = new Chimera.GUI.VectorPanel();
             this.windowsPluginsSplit = new System.Windows.Forms.SplitContainer();
             this.windowsGroup = new System.Windows.Forms.GroupBox();
             this.windowsTab = new System.Windows.Forms.TabControl();
             this.inputsGroup = new System.Windows.Forms.GroupBox();
             this.inputsTab = new System.Windows.Forms.TabControl();
-            this.eyePositionPanel = new Chimera.GUI.VectorPanel();
-            this.virtualOrientationPanel = new Chimera.GUI.RotationPanel();
-            this.virtualPositionPanel = new Chimera.GUI.VectorPanel();
             ((System.ComponentModel.ISupportInitialize)(this.hSplit)).BeginInit();
             this.hSplit.Panel1.SuspendLayout();
             this.hSplit.Panel2.SuspendLayout();
@@ -62,9 +63,10 @@
             this.diagSplit.SuspendLayout();
             this.realSpaceGroup.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.realSpacePanel)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.realSpaceScale)).BeginInit();
             this.virtualSpaceGroup.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.virtualZoom)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.heightmapPanel)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.heightmapScale)).BeginInit();
             this.globalBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.windowsPluginsSplit)).BeginInit();
             this.windowsPluginsSplit.Panel1.SuspendLayout();
@@ -129,7 +131,7 @@
             // 
             this.diagSplit.Panel2.Controls.Add(this.virtualSpaceGroup);
             this.diagSplit.Size = new System.Drawing.Size(646, 319);
-            this.diagSplit.SplitterDistance = 336;
+            this.diagSplit.SplitterDistance = 361;
             this.diagSplit.TabIndex = 1;
             // 
             // realSpaceGroup
@@ -140,10 +142,11 @@
             this.realSpaceGroup.Controls.Add(this.button1);
             this.realSpaceGroup.Controls.Add(this.testButton);
             this.realSpaceGroup.Controls.Add(this.realSpacePanel);
+            this.realSpaceGroup.Controls.Add(this.realSpaceScale);
             this.realSpaceGroup.Dock = System.Windows.Forms.DockStyle.Fill;
             this.realSpaceGroup.Location = new System.Drawing.Point(0, 0);
             this.realSpaceGroup.Name = "realSpaceGroup";
-            this.realSpaceGroup.Size = new System.Drawing.Size(336, 319);
+            this.realSpaceGroup.Size = new System.Drawing.Size(361, 319);
             this.realSpaceGroup.TabIndex = 0;
             this.realSpaceGroup.TabStop = false;
             this.realSpaceGroup.Text = "Real Space";
@@ -152,7 +155,7 @@
             // 
             this.yPerspectiveButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.yPerspectiveButton.AutoSize = true;
-            this.yPerspectiveButton.Location = new System.Drawing.Point(260, 293);
+            this.yPerspectiveButton.Location = new System.Drawing.Point(284, 265);
             this.yPerspectiveButton.Name = "yPerspectiveButton";
             this.yPerspectiveButton.Size = new System.Drawing.Size(32, 17);
             this.yPerspectiveButton.TabIndex = 6;
@@ -165,7 +168,7 @@
             this.zPerspectiveButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.zPerspectiveButton.AutoSize = true;
             this.zPerspectiveButton.Checked = true;
-            this.zPerspectiveButton.Location = new System.Drawing.Point(298, 293);
+            this.zPerspectiveButton.Location = new System.Drawing.Point(322, 265);
             this.zPerspectiveButton.Name = "zPerspectiveButton";
             this.zPerspectiveButton.Size = new System.Drawing.Size(32, 17);
             this.zPerspectiveButton.TabIndex = 5;
@@ -178,7 +181,7 @@
             // 
             this.xPerspectiveButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.xPerspectiveButton.AutoSize = true;
-            this.xPerspectiveButton.Location = new System.Drawing.Point(222, 293);
+            this.xPerspectiveButton.Location = new System.Drawing.Point(246, 265);
             this.xPerspectiveButton.Name = "xPerspectiveButton";
             this.xPerspectiveButton.Size = new System.Drawing.Size(32, 17);
             this.xPerspectiveButton.TabIndex = 4;
@@ -206,47 +209,56 @@
             // 
             // realSpacePanel
             // 
-            this.realSpacePanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.realSpacePanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.realSpacePanel.Cursor = System.Windows.Forms.Cursors.Hand;
             this.realSpacePanel.Location = new System.Drawing.Point(3, 16);
             this.realSpacePanel.Name = "realSpacePanel";
-            this.realSpacePanel.Size = new System.Drawing.Size(330, 300);
+            this.realSpacePanel.Size = new System.Drawing.Size(355, 274);
             this.realSpacePanel.TabIndex = 3;
             this.realSpacePanel.TabStop = false;
             this.realSpacePanel.Paint += new System.Windows.Forms.PaintEventHandler(this.realSpacePanel_Paint);
+            this.realSpacePanel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.realSpacePanel_MouseDown);
+            this.realSpacePanel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.realSpacePanel_MouseMove);
+            this.realSpacePanel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.realSpacePanel_MouseUp);
+            this.realSpacePanel.Resize += new System.EventHandler(this.realSpacePanel_Resize);
+            // 
+            // realSpaceScale
+            // 
+            this.realSpaceScale.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.realSpaceScale.Location = new System.Drawing.Point(5, 291);
+            this.realSpaceScale.Maximum = 1000;
+            this.realSpaceScale.Minimum = 1;
+            this.realSpaceScale.Name = "realSpaceScale";
+            this.realSpaceScale.Size = new System.Drawing.Size(353, 42);
+            this.realSpaceScale.TabIndex = 3;
+            this.realSpaceScale.TickStyle = System.Windows.Forms.TickStyle.None;
+            this.realSpaceScale.Value = 1000;
+            this.realSpaceScale.Scroll += new System.EventHandler(this.realSpaceScale_Scroll);
             // 
             // virtualSpaceGroup
             // 
-            this.virtualSpaceGroup.Controls.Add(this.virtualZoom);
             this.virtualSpaceGroup.Controls.Add(this.heightmapPanel);
+            this.virtualSpaceGroup.Controls.Add(this.heightmapScale);
             this.virtualSpaceGroup.Dock = System.Windows.Forms.DockStyle.Fill;
             this.virtualSpaceGroup.Location = new System.Drawing.Point(0, 0);
             this.virtualSpaceGroup.Name = "virtualSpaceGroup";
-            this.virtualSpaceGroup.Size = new System.Drawing.Size(306, 319);
+            this.virtualSpaceGroup.Size = new System.Drawing.Size(281, 319);
             this.virtualSpaceGroup.TabIndex = 0;
             this.virtualSpaceGroup.TabStop = false;
             this.virtualSpaceGroup.Text = "Virtual Space";
             // 
-            // virtualZoom
-            // 
-            this.virtualZoom.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.virtualZoom.Location = new System.Drawing.Point(6, 289);
-            this.virtualZoom.Maximum = 16000;
-            this.virtualZoom.Minimum = 1000;
-            this.virtualZoom.Name = "virtualZoom";
-            this.virtualZoom.Size = new System.Drawing.Size(294, 42);
-            this.virtualZoom.TabIndex = 2;
-            this.virtualZoom.TickStyle = System.Windows.Forms.TickStyle.None;
-            this.virtualZoom.Value = 1000;
-            this.virtualZoom.Scroll += new System.EventHandler(this.virtualZoom_Scroll);
-            // 
             // heightmapPanel
             // 
+            this.heightmapPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.heightmapPanel.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.heightmapPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.heightmapPanel.Location = new System.Drawing.Point(3, 16);
             this.heightmapPanel.Name = "heightmapPanel";
-            this.heightmapPanel.Size = new System.Drawing.Size(300, 300);
+            this.heightmapPanel.Size = new System.Drawing.Size(275, 275);
             this.heightmapPanel.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.heightmapPanel.TabIndex = 1;
             this.heightmapPanel.TabStop = false;
@@ -254,6 +266,20 @@
             this.heightmapPanel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.heightmapPanel_MouseDown);
             this.heightmapPanel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.heightmapPanel_MouseMove);
             this.heightmapPanel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.heightmapPanel_MouseUp);
+            // 
+            // virtualZoom
+            // 
+            this.heightmapScale.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.heightmapScale.Location = new System.Drawing.Point(3, 291);
+            this.heightmapScale.Maximum = 16000;
+            this.heightmapScale.Minimum = 1000;
+            this.heightmapScale.Name = "virtualZoom";
+            this.heightmapScale.Size = new System.Drawing.Size(275, 42);
+            this.heightmapScale.TabIndex = 2;
+            this.heightmapScale.TickStyle = System.Windows.Forms.TickStyle.None;
+            this.heightmapScale.Value = 1000;
+            this.heightmapScale.Scroll += new System.EventHandler(this.virtualZoom_Scroll);
             // 
             // globalBox
             // 
@@ -281,6 +307,64 @@
             this.triggerHelpButton.Text = "CustomTrigger Help";
             this.triggerHelpButton.UseVisualStyleBackColor = true;
             this.triggerHelpButton.Click += new System.EventHandler(this.triggerHelpButton_Click);
+            // 
+            // eyePositionPanel
+            // 
+            this.eyePositionPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.eyePositionPanel.Location = new System.Drawing.Point(3, 195);
+            this.eyePositionPanel.Max = 5000F;
+            this.eyePositionPanel.MaxV = ((OpenMetaverse.Vector3)(resources.GetObject("eyePositionPanel.MaxV")));
+            this.eyePositionPanel.Min = -5000F;
+            this.eyePositionPanel.MinimumSize = new System.Drawing.Size(103, 95);
+            this.eyePositionPanel.MinV = ((OpenMetaverse.Vector3)(resources.GetObject("eyePositionPanel.MinV")));
+            this.eyePositionPanel.Name = "eyePositionPanel";
+            this.eyePositionPanel.Size = new System.Drawing.Size(255, 95);
+            this.eyePositionPanel.TabIndex = 1;
+            this.eyePositionPanel.Value = ((OpenMetaverse.Vector3)(resources.GetObject("eyePositionPanel.Value")));
+            this.eyePositionPanel.X = 0F;
+            this.eyePositionPanel.Y = 0F;
+            this.eyePositionPanel.Z = 0F;
+            this.eyePositionPanel.ValueChanged += new System.EventHandler(this.eyePositionPanel_OnChange);
+            // 
+            // virtualOrientationPanel
+            // 
+            this.virtualOrientationPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.virtualOrientationPanel.Location = new System.Drawing.Point(3, 105);
+            this.virtualOrientationPanel.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("virtualOrientationPanel.LookAtVector")));
+            this.virtualOrientationPanel.MinimumSize = new System.Drawing.Size(252, 95);
+            this.virtualOrientationPanel.Name = "virtualOrientationPanel";
+            this.virtualOrientationPanel.Pitch = 0D;
+            this.virtualOrientationPanel.Quaternion = ((OpenMetaverse.Quaternion)(resources.GetObject("virtualOrientationPanel.Quaternion")));
+            this.virtualOrientationPanel.Size = new System.Drawing.Size(255, 95);
+            this.virtualOrientationPanel.TabIndex = 2;
+            rotation1.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("rotation1.LookAtVector")));
+            rotation1.Pitch = 0D;
+            rotation1.Quaternion = ((OpenMetaverse.Quaternion)(resources.GetObject("rotation1.Quaternion")));
+            rotation1.Yaw = 0D;
+            this.virtualOrientationPanel.Value = rotation1;
+            this.virtualOrientationPanel.Yaw = 0D;
+            this.virtualOrientationPanel.OnChange += new System.EventHandler(this.virtualRotation_OnChange);
+            // 
+            // virtualPositionPanel
+            // 
+            this.virtualPositionPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.virtualPositionPanel.Location = new System.Drawing.Point(3, 12);
+            this.virtualPositionPanel.Max = 1024F;
+            this.virtualPositionPanel.MaxV = ((OpenMetaverse.Vector3)(resources.GetObject("virtualPositionPanel.MaxV")));
+            this.virtualPositionPanel.Min = -1024F;
+            this.virtualPositionPanel.MinimumSize = new System.Drawing.Size(103, 95);
+            this.virtualPositionPanel.MinV = ((OpenMetaverse.Vector3)(resources.GetObject("virtualPositionPanel.MinV")));
+            this.virtualPositionPanel.Name = "virtualPositionPanel";
+            this.virtualPositionPanel.Size = new System.Drawing.Size(255, 95);
+            this.virtualPositionPanel.TabIndex = 0;
+            this.virtualPositionPanel.Value = ((OpenMetaverse.Vector3)(resources.GetObject("virtualPositionPanel.Value")));
+            this.virtualPositionPanel.X = 0F;
+            this.virtualPositionPanel.Y = 0F;
+            this.virtualPositionPanel.Z = 0F;
+            this.virtualPositionPanel.ValueChanged += new System.EventHandler(this.virtualPositionPanel_OnChange);
             // 
             // windowsPluginsSplit
             // 
@@ -345,64 +429,6 @@
             this.inputsTab.KeyDown += new System.Windows.Forms.KeyEventHandler(this.CoordinatorForm_KeyDown);
             this.inputsTab.KeyUp += new System.Windows.Forms.KeyEventHandler(this.CoordinatorForm_KeyUp);
             // 
-            // eyePositionPanel
-            // 
-            this.eyePositionPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.eyePositionPanel.Location = new System.Drawing.Point(3, 195);
-            this.eyePositionPanel.Max = 5000F;
-            this.eyePositionPanel.MaxV = ((OpenMetaverse.Vector3)(resources.GetObject("eyePositionPanel.MaxV")));
-            this.eyePositionPanel.Min = -5000F;
-            this.eyePositionPanel.MinimumSize = new System.Drawing.Size(103, 95);
-            this.eyePositionPanel.MinV = ((OpenMetaverse.Vector3)(resources.GetObject("eyePositionPanel.MinV")));
-            this.eyePositionPanel.Name = "eyePositionPanel";
-            this.eyePositionPanel.Size = new System.Drawing.Size(255, 95);
-            this.eyePositionPanel.TabIndex = 1;
-            this.eyePositionPanel.Value = ((OpenMetaverse.Vector3)(resources.GetObject("eyePositionPanel.Value")));
-            this.eyePositionPanel.X = 0F;
-            this.eyePositionPanel.Y = 0F;
-            this.eyePositionPanel.Z = 0F;
-            this.eyePositionPanel.ValueChanged += new System.EventHandler(this.eyePositionPanel_OnChange);
-            // 
-            // virtualOrientationPanel
-            // 
-            this.virtualOrientationPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.virtualOrientationPanel.Location = new System.Drawing.Point(3, 105);
-            this.virtualOrientationPanel.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("virtualOrientationPanel.LookAtVector")));
-            this.virtualOrientationPanel.MinimumSize = new System.Drawing.Size(252, 95);
-            this.virtualOrientationPanel.Name = "virtualOrientationPanel";
-            this.virtualOrientationPanel.Pitch = 0D;
-            this.virtualOrientationPanel.Quaternion = ((OpenMetaverse.Quaternion)(resources.GetObject("virtualOrientationPanel.Quaternion")));
-            this.virtualOrientationPanel.Size = new System.Drawing.Size(255, 95);
-            this.virtualOrientationPanel.TabIndex = 2;
-            rotation1.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("rotation1.LookAtVector")));
-            rotation1.Pitch = 0D;
-            rotation1.Quaternion = ((OpenMetaverse.Quaternion)(resources.GetObject("rotation1.Quaternion")));
-            rotation1.Yaw = 0D;
-            this.virtualOrientationPanel.Value = rotation1;
-            this.virtualOrientationPanel.Yaw = 0D;
-            this.virtualOrientationPanel.OnChange += new System.EventHandler(this.virtualRotation_OnChange);
-            // 
-            // virtualPositionPanel
-            // 
-            this.virtualPositionPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.virtualPositionPanel.Location = new System.Drawing.Point(3, 12);
-            this.virtualPositionPanel.Max = 1024F;
-            this.virtualPositionPanel.MaxV = ((OpenMetaverse.Vector3)(resources.GetObject("virtualPositionPanel.MaxV")));
-            this.virtualPositionPanel.Min = -1024F;
-            this.virtualPositionPanel.MinimumSize = new System.Drawing.Size(103, 95);
-            this.virtualPositionPanel.MinV = ((OpenMetaverse.Vector3)(resources.GetObject("virtualPositionPanel.MinV")));
-            this.virtualPositionPanel.Name = "virtualPositionPanel";
-            this.virtualPositionPanel.Size = new System.Drawing.Size(255, 95);
-            this.virtualPositionPanel.TabIndex = 0;
-            this.virtualPositionPanel.Value = ((OpenMetaverse.Vector3)(resources.GetObject("virtualPositionPanel.Value")));
-            this.virtualPositionPanel.X = 0F;
-            this.virtualPositionPanel.Y = 0F;
-            this.virtualPositionPanel.Z = 0F;
-            this.virtualPositionPanel.ValueChanged += new System.EventHandler(this.virtualPositionPanel_OnChange);
-            // 
             // CoordinatorForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -429,10 +455,11 @@
             this.realSpaceGroup.ResumeLayout(false);
             this.realSpaceGroup.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.realSpacePanel)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.realSpaceScale)).EndInit();
             this.virtualSpaceGroup.ResumeLayout(false);
             this.virtualSpaceGroup.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.virtualZoom)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.heightmapPanel)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.heightmapScale)).EndInit();
             this.globalBox.ResumeLayout(false);
             this.windowsPluginsSplit.Panel1.ResumeLayout(false);
             this.windowsPluginsSplit.Panel2.ResumeLayout(false);
@@ -468,6 +495,7 @@
         private System.Windows.Forms.RadioButton yPerspectiveButton;
         private System.Windows.Forms.RadioButton zPerspectiveButton;
         private System.Windows.Forms.RadioButton xPerspectiveButton;
-        private System.Windows.Forms.TrackBar virtualZoom;
+        private System.Windows.Forms.TrackBar heightmapScale;
+        private System.Windows.Forms.TrackBar realSpaceScale;
     }
 }

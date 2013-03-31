@@ -377,7 +377,7 @@
             this.distancePanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.distancePanel.Location = new System.Drawing.Point(78, 33);
-            this.distancePanel.Max = 10000F;
+            this.distancePanel.Max = 1000F;
             this.distancePanel.Min = 0F;
             this.distancePanel.MinimumSize = new System.Drawing.Size(95, 20);
             this.distancePanel.Name = "distancePanel";

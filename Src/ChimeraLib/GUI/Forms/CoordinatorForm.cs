@@ -26,6 +26,10 @@ namespace Chimera.GUI.Forms {
         private Action<Coordinator, KeyEventArgs> mClosed;
         private EventHandler<HeightmapChangedEventArgs> mHeightmapChanged;
 
+        private static float sPerspectiveScaleMin = .0001f;
+        private static float sPerspectiveScaleMax = .5f;
+        private static float sPerspectiveScaleRange = sPerspectiveScaleMax - sPerspectiveScaleMin;
+
         public CoordinatorForm() {
             InitializeComponent();
 
@@ -33,6 +37,24 @@ namespace Chimera.GUI.Forms {
             mPerspectives.Add(Perspective.Y, new TwoDPerspective(Perspective.Y));
             mPerspectives.Add(Perspective.Z, new TwoDPerspective(Perspective.Z));
             mCurrentPerspective = mPerspectives[Perspective.Z];
+            float normalized = (mCurrentPerspective.Scale - sPerspectiveScaleMin) / sPerspectiveScaleRange;
+            float sRange = realSpaceScale.Maximum - realSpaceScale.Minimum;
+            realSpaceScale.Value = (int)(realSpaceScale.Minimum + normalized * sRange);
+
+            heightmapPanel.MouseWheel += new MouseEventHandler(heightmapPanel_MouseWheel);
+            realSpacePanel.MouseWheel += new MouseEventHandler(realSpaceScale_MouseWheel);
+        }
+
+        void realSpaceScale_MouseWheel(object sender, MouseEventArgs e) {            if (e.Delta != 0) {
+                int newVal = realSpaceScale.Value + e.Delta;
+                realSpaceScale.Value = Math.Max(realSpaceScale.Minimum, Math.Min(realSpaceScale.Maximum, newVal));
+            }
+        }
+
+        void heightmapPanel_MouseWheel(object sender, MouseEventArgs e) {            if (e.Delta != 0) {
+                int newVal = heightmapScale.Value + e.Delta;
+                heightmapScale.Value = Math.Max(heightmapScale.Minimum, Math.Min(heightmapScale.Maximum, newVal));
+            }
         }
 
         public CoordinatorForm(Coordinator coordinator)
@@ -62,9 +84,8 @@ namespace Chimera.GUI.Forms {
             eyePositionPanel.Value = mCoordinator.EyePosition;
 
             mHeightmap = new Bitmap(mCoordinator.Heightmap.GetLength(0), mCoordinator.Heightmap.GetLength(1), PixelFormat.Format24bppRgb);
-            mHeightmapPerspective = new HeightmapPerspective(mCoordinator, heightmapPanel);
-            //mHeightmapPerspective.AspectRatio = (float) mHeightmap.Width / (float) mHeightmap.Height;
-            mHeightmapPerspective.Scale = 1f;
+            mHeightmapPerspective = new HeightmapPerspective(mCoordinator, heightmapPanel);
+
 
             foreach (var window in mCoordinator.Windows) {
                 mCoordinator_WindowAdded(window, null);
@@ -141,7 +162,10 @@ namespace Chimera.GUI.Forms {
         }
 
         private void window_Changed(Window window, EventArgs args) {
-            Invoke(() => realSpacePanel.Invalidate());
+            Invoke(() => {
+                realSpacePanel.Invalidate();
+                heightmapPanel.Invalidate();
+            });
         }
 
         private void CoordinatorForm_Disposed(object sender, EventArgs e) {
@@ -191,11 +215,9 @@ namespace Chimera.GUI.Forms {
                     for (int y = 0; y < h; y++) {
                         int i = ((e.StartY + y) * dat.Stride) + (e.StartX * bytesPerPixel);
                         for (int x = 0; x < w; x++) {
-                            float height = e.Heights[x, y];
+                            float height = e.Heights[x, y] + 25f;
                             float floatVal = ((float)byte.MaxValue) * (height / 100f);
                             byte val = (byte)floatVal;
-
-                            Console.WriteLine("{0:00.00} - {1:000.0} - {2}", height, floatVal, val);
 
                             rgbValues[i++] = val;
                             rgbValues[i++] = val;
@@ -342,24 +364,95 @@ namespace Chimera.GUI.Forms {
         private void realSpacePanel_Paint(object sender, PaintEventArgs e) {
             if (mCoordinator != null) {
                 mCurrentPerspective.Clip = e.ClipRectangle;
-                float edge = 100000f;
-                e.Graphics.DrawLine(Pens.Red, mCurrentPerspective.To2D(new Vector3(-edge, 0f, 0f)), mCurrentPerspective.To2D(new Vector3(edge, 0f, 0f)));
-                e.Graphics.DrawLine(Pens.Green, mCurrentPerspective.To2D(new Vector3(0f, -edge, 0f)), mCurrentPerspective.To2D(new Vector3(0f, edge, 0f)));
-                e.Graphics.DrawLine(Pens.Blue, mCurrentPerspective.To2D(new Vector3(0f, 0f, -edge)), mCurrentPerspective.To2D(new Vector3(0f, 0f, edge)));
+                float greenEdge = (e.ClipRectangle.Width * 2) / mCurrentPerspective.Scale;
+                float blueEdge = (e.ClipRectangle.Height * 2) / mCurrentPerspective.Scale;
+                float redEdge = mCurrentPerspective.Perspective == Perspective.Y ? greenEdge : blueEdge;
+                e.Graphics.DrawLine(Pens.Red, mCurrentPerspective.To2D(new Vector3(-greenEdge, 0f, 0f)), mCurrentPerspective.To2D(new Vector3(greenEdge, 0f, 0f)));
+                e.Graphics.DrawLine(Pens.Green, mCurrentPerspective.To2D(new Vector3(0f, -greenEdge, 0f)), mCurrentPerspective.To2D(new Vector3(0f, greenEdge, 0f)));
+                e.Graphics.DrawLine(Pens.Blue, mCurrentPerspective.To2D(new Vector3(0f, 0f, -blueEdge)), mCurrentPerspective.To2D(new Vector3(0f, 0f, blueEdge)));
                 mCoordinator.Draw(mCurrentPerspective.To2D, e.Graphics, e.ClipRectangle);
             }
         }
 
+
+        private bool mVirtualMouseDown;
+        private Point mVirtualMousePosition;
+        private bool mRealMouseDown;
+        private Point mRealMousePosition;
+        private Point mHeightmapTopLeft = new Point(0, 0);
         private TwoDPerspective mCurrentPerspective;
         private HeightmapPerspective mHeightmapPerspective;
-        private Dictionary<Perspective, TwoDPerspective> mPerspectives = new Dictionary<Perspective,TwoDPerspective>();
+        private Dictionary<Perspective, TwoDPerspective> mPerspectives = new Dictionary<Perspective,TwoDPerspective>();
 
+        private void PerspectiveButton_CheckedChanged(object sender, EventArgs e) {
+            if (xPerspectiveButton.Checked)
+                mCurrentPerspective = mPerspectives[Perspective.X];
+            if (yPerspectiveButton.Checked)
+                mCurrentPerspective = mPerspectives[Perspective.Y];
+            if (zPerspectiveButton.Checked)
+                mCurrentPerspective = mPerspectives[Perspective.Z];
+            realSpacePanel.Invalidate();
+        }
+
+        private void heightmapPanel_MouseDown(object sender, MouseEventArgs e) {
+            mVirtualMouseDown = true;
+            mVirtualMousePosition = e.Location;
+        }
+
+        private void heightmapPanel_MouseUp(object sender, MouseEventArgs e) {
+            mVirtualMouseDown = false;
+        }
+
+        private void heightmapPanel_MouseMove(object sender, MouseEventArgs e) {
+            if (mVirtualMouseDown) {
+                int xDelta = e.X - mVirtualMousePosition.X;
+                int yDelta = e.Y - mVirtualMousePosition.Y;
+                mVirtualMousePosition = e.Location;
+
+                mHeightmapPerspective.Drag(xDelta, yDelta);
+            }
+        }
+
+        private void virtualZoom_Scroll(object sender, EventArgs e) {
+            mHeightmapPerspective.Scale = (float) (heightmapScale.Value / 1000f);
+        }
+
+
+        private void realSpacePanel_Resize(object sender, EventArgs e) {
+            realSpacePanel.Invalidate();
+        }
+
+        private void realSpacePanel_MouseDown(object sender, MouseEventArgs e) {
+            mRealMouseDown = true;
+            mRealMousePosition = e.Location;
+        }
+
+        private void realSpacePanel_MouseUp(object sender, MouseEventArgs e) {
+            mRealMouseDown = false;
+        }
+
+        private void realSpacePanel_MouseMove(object sender, MouseEventArgs e) {
+            if (mRealMouseDown) {
+                int xDelta = e.X - mRealMousePosition.X;
+                int yDelta = e.Y - mRealMousePosition.Y;
+                mRealMousePosition = e.Location;
+
+                mCurrentPerspective.Drag(xDelta, yDelta);
+                realSpacePanel.Invalidate();
+            }
+        }
+        private void realSpaceScale_Scroll(object sender, EventArgs e) {
+            float normalized = (float) realSpaceScale.Value / ((float) realSpaceScale.Maximum - (float) realSpaceScale.Minimum);
+            sPerspectiveScaleMin = .001f;
+            sPerspectiveScaleMax = .5f;
+            sPerspectiveScaleRange = sPerspectiveScaleMax - sPerspectiveScaleMin;
+            mCurrentPerspective.Scale = (normalized * sPerspectiveScaleRange) + sPerspectiveScaleMin;
+            realSpacePanel.Invalidate();
+        }
         private class TwoDPerspective {
             private readonly Perspective mPerspective;
             private Vector3 mCentre = Vector3.Zero;
-            private float mAspectRatio = 1f;
-            private float mHScale = .05f;
-            private float mVScale = .05f;
+            private float mScale = .05f;
             private int mCentreX;
             private int mCentreY;
 
@@ -380,17 +473,9 @@ namespace Chimera.GUI.Forms {
                 }
             }
 
-            public float AspectRatio {
-                get { return mAspectRatio; }
-                set { mAspectRatio = value; }
-            }
-
             public float Scale {
-                get { return mVScale; }
-                set {
-                    mHScale = value * mAspectRatio;
-                    mVScale = value;
-                }
+                get { return mScale; }
+                set { mScale = value; }
             }
 
             public virtual Point To2D(Vector3 point) {
@@ -402,10 +487,25 @@ namespace Chimera.GUI.Forms {
                     case Perspective.Z: ret = new Vector2(point.Y, point.X); break;
                 }
 
-                ret.X *= mHScale;
-                ret.Y *= mVScale;
+                ret.X *= mScale;
+                ret.Y *= mScale;
                 return new Point((int)ret.X + mCentreX, mCentreY - (int)ret.Y);
             }
+
+            internal void Drag(int xDelta, int yDelta) {
+                if (mPerspective == Perspective.Z)
+                    mCentre.X += (yDelta / mScale);
+                if (mPerspective == Perspective.X || mPerspective == Perspective.Z)
+                    mCentre.Y -= (xDelta / mScale);
+
+                if (mPerspective == Perspective.Y)
+                    mCentre.X -= (xDelta / mScale);
+
+                if (mPerspective == Perspective.X || mPerspective == Perspective.Y)
+                    mCentre.Z += (yDelta / mScale);
+            }
+
+            public Perspective Perspective { get { return mPerspective; } }
         }
 
         private class HeightmapPerspective {
@@ -416,8 +516,9 @@ namespace Chimera.GUI.Forms {
             private Size mSize;
             private RectangleF mCrop;
             private Rectangle mClip;
-            private float mScale;
+            private float mScale = 1f;
             private PictureBox mDrawPanel;
+            private bool mResized = false;
 
             public Rectangle Crop {
                 get { return new Rectangle((int) mCrop.X, (int) mCrop.Y, (int) mCrop.Width, (int) mCrop.Height); }
@@ -425,9 +526,12 @@ namespace Chimera.GUI.Forms {
 
             public Rectangle Clip {
                 get { return mClip; }
-                set {
+                set { 
                     mClip = value;
-                    CalculateClipMatrix();
+                    if (mResized) {
+                        mResized = false;
+                        CalculateClipMatrix();
+                    }
                 }
             }
 
@@ -448,8 +552,8 @@ namespace Chimera.GUI.Forms {
                 Vector3 delta = new Vector3(xDelta, yDelta, 0f);
                 delta *= mWorldScale;
 
-                mCrop.X += (int) delta.X;
-                mCrop.Y += (int) delta.Y;
+                mCrop.X += delta.X;
+                mCrop.Y += delta.Y;
 
                 CheckTopLeft();
                 CalculateClipMatrix();
@@ -464,12 +568,14 @@ namespace Chimera.GUI.Forms {
 
             private void CalculateWorldMatrix() {
                 Matrix4 toWorldScale = Matrix4.CreateScale(new Vector3(.001f, .001f, .001f));
-                Matrix4 toWorldOrientation = Matrix4.CreateTranslation(new Vector3(0f, 0f, (float) mCoordinator.Orientation.Yaw));
+                Matrix4 toWorldOrientation = Matrix4.CreateRotationZ((float) (mCoordinator.Orientation.Yaw * Math.PI / 180.0));
                 Matrix4 toWorldCoords = Matrix4.CreateTranslation(mCoordinator.Position);
                 mWorldMatrix = Matrix4.Identity;
                 mWorldMatrix *= toWorldScale;
                 mWorldMatrix *= toWorldOrientation;
                 mWorldMatrix *= toWorldCoords;
+
+                CalculateClipMatrix();
             }
 
             private void CalculateClipMatrix() {                mWorldScale = Matrix4.CreateScale(
@@ -497,11 +603,17 @@ namespace Chimera.GUI.Forms {
                 mCoordinator = coordinator;
                 mDrawPanel = drawPanel;
                 mSize = new Size(coordinator.Heightmap.GetLength(0), coordinator.Heightmap.GetLength(1));
+                mCrop = new Rectangle(0, 0, mSize.Width, mSize.Height);
                 mClip = new Rectangle(0, 0, mSize.Width, mSize.Height);
                 mCoordinator.CameraUpdated += (coord, args) => CalculateWorldMatrix();
                 mCoordinator.EyeUpdated += (coord, args) => CalculateWorldMatrix();
+                mDrawPanel.Resize += new EventHandler(mDrawPanel_Resize);
 
                 CalculateWorldMatrix();
+            }
+
+            void mDrawPanel_Resize(object sender, EventArgs e) {
+                mResized = true;
             }
 
             public Point To2D(Vector3 point) {
@@ -527,43 +639,6 @@ namespace Chimera.GUI.Forms {
             /// View down the Z axis.
             /// </summary>
             Z
-        }
-
-        private void PerspectiveButton_CheckedChanged(object sender, EventArgs e) {
-            if (xPerspectiveButton.Checked)
-                mCurrentPerspective = mPerspectives[Perspective.X];
-            if (yPerspectiveButton.Checked)
-                mCurrentPerspective = mPerspectives[Perspective.Y];
-            if (zPerspectiveButton.Checked)
-                mCurrentPerspective = mPerspectives[Perspective.Z];
-            realSpacePanel.Invalidate();
-        }
-
-        private bool mMouseDown;
-        private Point mMousePosition;
-        private Point mHeightmapTopLeft = new Point(0, 0);
-
-        private void heightmapPanel_MouseDown(object sender, MouseEventArgs e) {
-            mMouseDown = true;
-            mMousePosition = e.Location;
-        }
-
-        private void heightmapPanel_MouseUp(object sender, MouseEventArgs e) {
-            mMouseDown = false;
-        }
-
-        private void heightmapPanel_MouseMove(object sender, MouseEventArgs e) {
-            if (mMouseDown) {
-                int xDelta = e.X - mMousePosition.X;
-                int yDelta = e.Y - mMousePosition.Y;
-                mMousePosition = e.Location;
-
-                mHeightmapPerspective.Drag(xDelta, yDelta);
-            }
-        }
-
-        private void virtualZoom_Scroll(object sender, EventArgs e) {
-            mHeightmapPerspective.Scale = (float) (virtualZoom.Value / 1000f);
         }
     }
 }
