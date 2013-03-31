@@ -62,8 +62,8 @@ namespace Chimera.GUI.Forms {
             eyePositionPanel.Value = mCoordinator.EyePosition;
 
             mHeightmap = new Bitmap(mCoordinator.Heightmap.GetLength(0), mCoordinator.Heightmap.GetLength(1), PixelFormat.Format24bppRgb);
-            mHeightmapPerspective = new HeightmapPerspective(mCoordinator);
-            mHeightmapPerspective.AspectRatio = (float) mHeightmap.Width / (float) mHeightmap.Height;
+            mHeightmapPerspective = new HeightmapPerspective(mCoordinator, heightmapPanel);
+            //mHeightmapPerspective.AspectRatio = (float) mHeightmap.Width / (float) mHeightmap.Height;
             mHeightmapPerspective.Scale = 1f;
 
             foreach (var window in mCoordinator.Windows) {
@@ -195,6 +195,8 @@ namespace Chimera.GUI.Forms {
                             float floatVal = ((float)byte.MaxValue) * (height / 100f);
                             byte val = (byte)floatVal;
 
+                            Console.WriteLine("{0:00.00} - {1:000.0} - {2}", height, floatVal, val);
+
                             rgbValues[i++] = val;
                             rgbValues[i++] = val;
                             rgbValues[i++] = val;
@@ -216,7 +218,7 @@ namespace Chimera.GUI.Forms {
                     virtualPositionPanel.Value = args.position;
                     virtualOrientationPanel.Pitch = args.rotation.Pitch;
                     virtualOrientationPanel.Yaw = args.rotation.Yaw;
-                    heightmapPanel.Invalidate();
+                    //heightmapPanel.Invalidate();
                 });
                 mEventUpdate = false;
             }
@@ -226,7 +228,7 @@ namespace Chimera.GUI.Forms {
             if (!mGuiUpdate) {
                 mEventUpdate = true;
                 eyePositionPanel.Value = coordinator.EyePosition;
-                heightmapPanel.Invalidate();
+                //heightmapPanel.Invalidate();
                 mEventUpdate = false;
             }
         }
@@ -235,7 +237,7 @@ namespace Chimera.GUI.Forms {
             if (!mEventUpdate) {
                 mGuiUpdate = true;
                 mCoordinator.Update(virtualPositionPanel.Value, Vector3.Zero, new Rotation(virtualOrientationPanel.Pitch, virtualOrientationPanel.Yaw), Rotation.Zero);
-                heightmapPanel.Invalidate();
+                //heightmapPanel.Invalidate();
                 mGuiUpdate = false;
             }
         }
@@ -244,7 +246,7 @@ namespace Chimera.GUI.Forms {
             if (!mEventUpdate) {
                 mGuiUpdate = true;
                 mCoordinator.Update(virtualPositionPanel.Value, Vector3.Zero, new Rotation(virtualOrientationPanel.Pitch, virtualOrientationPanel.Yaw), Rotation.Zero);
-                heightmapPanel.Invalidate();
+                //heightmapPanel.Invalidate();
                 mGuiUpdate = false;
             }
         }
@@ -311,7 +313,8 @@ namespace Chimera.GUI.Forms {
                 else
                     a();
             }
-        }
+        }
+
         private void heightmapPanel_Paint(object sender, PaintEventArgs e) {
             if (mCoordinator != null) {
                 /*
@@ -324,16 +327,15 @@ namespace Chimera.GUI.Forms {
                 e.Graphics.FillEllipse(Brushes.Red, x - r, y - r, r * 2, r * 2);
                 e.Graphics.DrawLine(Pens.Red, x, y, x2, y2);*/
                 Bitmap map;
-                lock (mHeightmap)
-                    map = new Bitmap(mHeightmap, 
-                        (int) ((float) e.ClipRectangle.Width / mHeightmapPerspective.Scale), 
-                        (int) ((float) e.ClipRectangle.Height / mHeightmapPerspective.Scale));
-                e.Graphics.DrawImage(map, mHeightmapTopLeft);
+                lock (mHeightmap) {
+                    map = new Bitmap(mHeightmapPerspective.Crop.Width, mHeightmapPerspective.Crop.Height, mHeightmap.PixelFormat);
+                    using (Graphics g = Graphics.FromImage(map))
+                        g.DrawImage(mHeightmap, mHeightmapPerspective.Crop.Location);
+                }
+                map = new Bitmap(map, e.ClipRectangle.Width, e.ClipRectangle.Height);
                 mHeightmapPerspective.Clip = e.ClipRectangle;
+                e.Graphics.DrawImage(map, Point.Empty);
                 mCoordinator.Draw(mHeightmapPerspective.To2D, e.Graphics, e.ClipRectangle);
-
-                e.Graphics.DrawLine(Pens.Red, e.ClipRectangle.Width / 2, 0, e.ClipRectangle.Width / 2, e.ClipRectangle.Height);
-                e.Graphics.DrawLine(Pens.Red, 0, e.ClipRectangle.Height / 2, e.ClipRectangle.Width, e.ClipRectangle.Height / 2);
             }
         }
 
@@ -349,7 +351,7 @@ namespace Chimera.GUI.Forms {
         }
 
         private TwoDPerspective mCurrentPerspective;
-        private TwoDPerspective mHeightmapPerspective;
+        private HeightmapPerspective mHeightmapPerspective;
         private Dictionary<Perspective, TwoDPerspective> mPerspectives = new Dictionary<Perspective,TwoDPerspective>();
 
         private class TwoDPerspective {
@@ -406,60 +408,105 @@ namespace Chimera.GUI.Forms {
             }
         }
 
-        private class HeightmapPerspective : TwoDPerspective {
+        private class HeightmapPerspective {
             private Coordinator mCoordinator;
+            private Matrix4 mWorldMatrix;
+            private Matrix4 mClipMatrix;
+            private Matrix4 mWorldScale;
+            private Size mSize;
+            private RectangleF mCrop;
+            private Rectangle mClip;
+            private float mScale;
+            private PictureBox mDrawPanel;
 
-            public HeightmapPerspective(Coordinator coordinator)
-                : base(Perspective.Z) {
-
-                mCoordinator = coordinator;
+            public Rectangle Crop {
+                get { return new Rectangle((int) mCrop.X, (int) mCrop.Y, (int) mCrop.Width, (int) mCrop.Height); }
             }
 
-            public override Point To2D(Vector3 point) {
-                point *= mCoordinator.Orientation.Quaternion;
-                point /= 1000f;
-                point += mCoordinator.Position; 
+            public Rectangle Clip {
+                get { return mClip; }
+                set {
+                    mClip = value;
+                    CalculateClipMatrix();
+                }
+            }
 
-                /*
+            public float Scale {
+                get { return mScale; }
+                set {
+                    mScale = value;
+                    mCrop.X += ((mSize.Width / value) - mCrop.Width) / 2f;
+                    mCrop.Y += ((mSize.Height / value) - mCrop.Height) / 2f;
+                    mCrop.Width = mSize.Width / value;
+                    mCrop.Height = mSize.Height / value;
+                    CheckTopLeft();
+                    CalculateClipMatrix();
+                }
+            }
+
+            public void Drag(int xDelta, int yDelta) {
+                Vector3 delta = new Vector3(xDelta, yDelta, 0f);
+                delta *= mWorldScale;
+
+                mCrop.X += (int) delta.X;
+                mCrop.Y += (int) delta.Y;
+
+                CheckTopLeft();
+                CalculateClipMatrix();
+            }
+
+            private void CheckTopLeft() {
+                mCrop.X = Math.Min(0f, mCrop.X);
+                mCrop.Y = Math.Min(0f, mCrop.Y);
+                mCrop.X = Math.Max(mCrop.Width - mSize.Width , mCrop.X);
+                mCrop.Y = Math.Max(mCrop.Height - mSize.Height, mCrop.Y);
+            }
+
+            private void CalculateWorldMatrix() {
                 Matrix4 toWorldScale = Matrix4.CreateScale(new Vector3(.001f, .001f, .001f));
-                Matrix4 toWorldOrientation = Matrix4.CreateTranslation(mCoordinator.Orientation.LookAtVector);
+                Matrix4 toWorldOrientation = Matrix4.CreateTranslation(new Vector3(0f, 0f, (float) mCoordinator.Orientation.Yaw));
                 Matrix4 toWorldCoords = Matrix4.CreateTranslation(mCoordinator.Position);
-                point *= toWorldScale;
-                point *= toWorldOrientation;
-                point *= toWorldCoords;
-                */
+                mWorldMatrix = Matrix4.Identity;
+                mWorldMatrix *= toWorldScale;
+                mWorldMatrix *= toWorldOrientation;
+                mWorldMatrix *= toWorldCoords;
+            }
 
-                float w = Clip.Width / Scale;
-                float h = Clip.Height / Scale;
-                float hmW = mCoordinator.Heightmap.GetLength(0);
-                float hmH = mCoordinator.Heightmap.GetLength(1);
+            private void CalculateClipMatrix() {                mWorldScale = Matrix4.CreateScale(
+                    new Vector3(mSize.Width / (mScale * mClip.Width), mSize.Height / (mScale * mClip.Height), 1f));
 
-                Matrix4 normalized = Matrix4.CreateScale(new Vector3(1f / hmW, 1f / hmH, 1f));
-                point *= normalized;
+                //TODO - mSize.[W,H] may have to be reversed
+                Matrix4 toClipScale = Matrix4.CreateScale(
+                    new Vector3((mScale * mClip.Height) / mSize.Height, (mScale * mClip.Width) / mSize.Width, 1f));
 
-                Matrix4 toClipScale = Matrix4.CreateScale(new Vector3(h, w, 1f));
-                point *= toClipScale;
+                Vector3 topLeft = new Vector3(mCrop.Y, mCrop.X, 0f);
+                Matrix4 toClipTranslate = Matrix4.CreateTranslation(topLeft);
 
-                Matrix4 toClipLocation = Matrix4.CreateTranslation(Centre);
-                point *= toClipLocation;
+                mClipMatrix = Matrix4.Identity;
+                mClipMatrix *= mWorldMatrix;
+                mClipMatrix *= toClipTranslate;
+                mClipMatrix *= toClipScale;
 
+                if (mDrawPanel.InvokeRequired)
+                    mDrawPanel.BeginInvoke(new Action(() => mDrawPanel.Invalidate()));
+                else
+                    mDrawPanel.Invalidate();
+            }
 
-                /*
-                int x = (int)((point.X / (float)mCoordinator.Heightmap.GetLength(0)) * Clip.Width);
-                int y = Clip.Height - (int)((point.Y / (float)mCoordinator.Heightmap.GetLength(1)) * Clip.Height);
+            public HeightmapPerspective(Coordinator coordinator, PictureBox drawPanel) {
+                mCoordinator = coordinator;
+                mDrawPanel = drawPanel;
+                mSize = new Size(coordinator.Heightmap.GetLength(0), coordinator.Heightmap.GetLength(1));
+                mClip = new Rectangle(0, 0, mSize.Width, mSize.Height);
+                mCoordinator.CameraUpdated += (coord, args) => CalculateWorldMatrix();
+                mCoordinator.EyeUpdated += (coord, args) => CalculateWorldMatrix();
 
-                return new Point((int) (x * Scale), (int) (y * Scale));
-                */
-                return new Point((int) point.Y, (int) (h - point.X));
+                CalculateWorldMatrix();
+            }
 
-                /*
-                int r = 5;
-                Vector3 p2 = mCoordinator.Position + (mCoordinator.Orientation.LookAtVector * 20);
-                int x2 = (int)((p2.X / (float)mCoordinator.Heightmap.GetLength(0)) * Clip.Width);
-                int y2 = Clip.Height - (int)((p2.Y / (float)mCoordinator.Heightmap.GetLength(1)) * Clip.Height);
-                e.Graphics.FillEllipse(Brushes.Red, x - r, y - r, r * 2, r * 2);
-                e.Graphics.DrawLine(Pens.Red, x, y, x2, y2);
-                */
+            public Point To2D(Vector3 point) {
+                point *= mClipMatrix;
+                return new Point((int) point.Y, (int) (point.X));
             }
         }
 
@@ -510,37 +557,13 @@ namespace Chimera.GUI.Forms {
                 int xDelta = e.X - mMousePosition.X;
                 int yDelta = e.Y - mMousePosition.Y;
                 mMousePosition = e.Location;
-                //mHeightmapTopLeft.X += xDelta;
-                //mHeightmapTopLeft.Y += yDelta;
 
-                int x = mHeightmapTopLeft.X + xDelta;
-                int y = mHeightmapTopLeft.Y + yDelta;
-                //x = Math.Max(0, x);
-                //y = Math.Max(0, y);
-                //x = Math.Min((int)(mHeightmapPerspective.Clip.Width * mHeightmapPerspective.Scale) - mHeightmapPerspective.Clip.Width, x);
-                //y = Math.Min((int)(mHeightmapPerspective.Clip.Height * mHeightmapPerspective.Scale) - mHeightmapPerspective.Clip.Height, y);
-
-                /*
-                int farRight = (int) (mHeightmapPerspective.Clip.Width / mHeightmapPerspective.Scale);
-                int farBottom = (int) (mHeightmapPerspective.Clip.Height / mHeightmapPerspective.Scale);
-
-
-                if (x + mHeightmapPerspective.Clip.Width > farRight)
-                    x = farRight - mHeightmapPerspective.Clip.Width;
-                if (y + mHeightmapPerspective.Clip.Height > farBottom)
-                    y = farRight - mHeightmapPerspective.Clip.Width;
-                */
-
-                mHeightmapTopLeft.X = x;
-                mHeightmapTopLeft.Y = y;
-                mHeightmapPerspective.Centre = new Vector3(-y, x, 0f);
-                heightmapPanel.Invalidate();
+                mHeightmapPerspective.Drag(xDelta, yDelta);
             }
         }
 
         private void virtualZoom_Scroll(object sender, EventArgs e) {
-            mHeightmapPerspective.Scale = (float) ((virtualZoom.Maximum - virtualZoom.Value) + virtualZoom.Minimum) / (float) virtualZoom.Maximum;
-            heightmapPanel.Invalidate();
+            mHeightmapPerspective.Scale = (float) (virtualZoom.Value / 1000f);
         }
     }
 }
