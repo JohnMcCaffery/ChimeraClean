@@ -8,9 +8,14 @@ using System.Text;
 using System.Windows.Forms;
 using Chimera.Overlay;
 using Chimera.Interfaces.Overlay;
+using Chimera.Util;
 
 namespace Chimera.GUI.Forms {
     public partial class OverlayWindow : Form {
+        /// <summary>
+        /// Statistics object which monitors how long ticks are taking.
+        /// </summary>
+        private readonly TickStatistics mStats = new TickStatistics();
         /// <summary>
         /// The manager which controls this overlay.
         /// </summary>
@@ -27,6 +32,10 @@ namespace Chimera.GUI.Forms {
         /// Flag to force the static portion of the overlay to be redrawn.
         /// </summary>
         private bool mRedrawStatic;
+        /// <summary>
+        /// Delegate to be triggered on tick events.
+        /// </summary>
+        private Action mTickListener;
 
         public OverlayWindow() {
             InitializeComponent();
@@ -46,6 +55,9 @@ namespace Chimera.GUI.Forms {
             Opacity = manager.Opacity;
             refreshTimer.Interval = manager.FrameLength;
             refreshTimer.Enabled = true;
+
+            //mTickListener = new Action(Coordinator_Tick);
+            manager.Window.Coordinator.Tick += mTickListener;
         }
 
         public void RedrawStatic() {
@@ -98,18 +110,26 @@ namespace Chimera.GUI.Forms {
                     mClip = e.ClipRectangle;
                     using (Graphics g = Graphics.FromImage(mStaticBG))
                         mManager.CurrentDisplay.RedrawStatic(e.ClipRectangle, g);
+                    drawPanel.Image = mStaticBG;
                 }
 
-                e.Graphics.DrawImage(mStaticBG, 0, 0);
                 mManager.CurrentDisplay.DrawDynamic(e.Graphics);
+            }
+        }
 
-                mStaticBG.Save("../Images/TestImage.png");
+        private void Coordinator_Tick() {
+            if (mManager.CurrentDisplay != null && mManager.CurrentDisplay.NeedsRedrawn) {
+                BeginInvoke(new Action(() => drawPanel.Invalidate()));
             }
         }
 
         private void refreshTimer_Tick(object sender, EventArgs e) {
+            mStats.Begin();
             if (mManager.CurrentDisplay != null && mManager.CurrentDisplay.NeedsRedrawn)
                 drawPanel.Invalidate();
+            mStats.Tick();
         }
+
+        public TickStatistics Statistics { get { return mStats; } }
     }
 }

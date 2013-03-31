@@ -23,7 +23,8 @@ namespace Chimera.Overlay.Transitions {
             return new BitmapFadeWindowTransition(transition, window, mLengthMS);
         }
     }
-    public class BitmapFadeWindowTransition : WindowTransition {        /// <summary>
+    public class BitmapFadeWindowTransition : WindowTransition {
+        /// <summary>
         /// When the transition began.
         /// </summary>
         private DateTime mTransitionStart;
@@ -35,6 +36,14 @@ namespace Chimera.Overlay.Transitions {
         /// The image for the background of the state that is fading out.
         /// </summary>
         private Bitmap mFromBG;
+        /// <summary>
+        /// The steps that can be used to render the from image fading into the back image.
+        /// </summary>
+        private Bitmap[] mStepImages;
+        /// <summary>
+        /// The last clip rectangle the images were redrawn for. Used to check if the images need to be recalculated.
+        /// </summary>
+        private Rectangle mLastClip;
 
         /// <summary>
         /// Initialise the fade transition, specifying how long the fade should last, in ms.
@@ -45,6 +54,8 @@ namespace Chimera.Overlay.Transitions {
         public BitmapFadeWindowTransition(StateTransition transition, Window window, double lengthMS)
             : base(transition, window) {
             mLengthMS = lengthMS;
+
+            mStepImages = new Bitmap[(int)(lengthMS / 20)];
         }
 
         #region IWindowTransition Members
@@ -53,6 +64,7 @@ namespace Chimera.Overlay.Transitions {
 
         public override void Begin() {
             mTransitionStart = DateTime.Now;
+            mStepCount = 0;
         }
 
         public override void Cancel() {
@@ -65,33 +77,56 @@ namespace Chimera.Overlay.Transitions {
 
         public override void RedrawStatic(Rectangle clip, Graphics graphics) {
             To.RedrawStatic(clip, graphics);
-            mFromBG = new Bitmap(clip.Width, clip.Height);
-            using (Graphics g = Graphics.FromImage(mFromBG))
-                From.RedrawStatic(clip, g);
+
+            if (!clip.Equals(mLastClip)) {
+                mFromBG = new Bitmap(clip.Width, clip.Height);
+                using (Graphics g = Graphics.FromImage(mFromBG))
+                    From.RedrawStatic(clip, g);
+                mLastClip = clip;
+                mStepImages = new Bitmap[(int)(mLengthMS / 20)];
+            }
         }
+
+        private Bitmap CreateStep(double time) {
+            Bitmap image = new Bitmap(mFromBG);
+            Rectangle affectedRect = new Rectangle(0, 0, image.Width, image.Height);
+            BitmapData dat = image.LockBits(affectedRect, ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
+            byte[] argbValues = new byte[image.Height * dat.Stride];
+
+            Marshal.Copy(dat.Scan0, argbValues, 0, argbValues.Length);
+
+            byte a = (byte)((double)byte.MaxValue * (1.0 - (time / mLengthMS)));
+
+            for (int i = 3; i < argbValues.Length; i += 4)
+                argbValues[i] = a;
+
+            Marshal.Copy(argbValues, 0, dat.Scan0, argbValues.Length);
+            image.UnlockBits(dat);
+            return image;
+        }
+
+        private int mStepCount;
 
         public override void DrawDynamic(System.Drawing.Graphics graphics) {
             double time = DateTime.Now.Subtract(mTransitionStart).TotalMilliseconds;
             if (time > mLengthMS) {
-                mFromBG = null;
+                Console.WriteLine("Transition completed in {0} steps.", mStepCount);
+                //mFromBG = null;
                 if (Finished != null)
                     Finished(this);
             }
             else if (mFromBG != null) {
-                Rectangle affectedRect = new Rectangle(0, 0, mFromBG.Width, mFromBG.Height);
-                BitmapData dat = mFromBG.LockBits(affectedRect, ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
-                byte[] argbValues = new byte[mFromBG.Height * dat.Stride];
+                mStepCount++;
 
-                Marshal.Copy(dat.Scan0, argbValues, 0, argbValues.Length);
+                DateTime start = DateTime.Now;
 
-                byte a = (byte) ((double) byte.MaxValue * (1.0 - (time / mLengthMS)));
-                for (int i = 3; i < argbValues.Length; i += 4)
-                    argbValues[i] = a;
-
-                Marshal.Copy(argbValues, 0, dat.Scan0, argbValues.Length);
-                mFromBG.UnlockBits(dat);
-
-                graphics.DrawImage(mFromBG, 0, 0);
+                int i = (int) (time / 20.0);
+                if (mStepImages[i] == null) {
+                    mStepImages[i] = CreateStep(time);
+                    graphics.DrawImage(mStepImages[i], 0, 0);
+                } else
+                    graphics.DrawImage(mStepImages[i], 0, 0);
+                Console.WriteLine("Step {0:000} - Opacity: {1:000} - Took: {2}ms", mStepCount, mStepImages[(int) (time / 20.0)].GetPixel(0, 0).A, DateTime.Now.Subtract(start).TotalMilliseconds);
             }
         }
 

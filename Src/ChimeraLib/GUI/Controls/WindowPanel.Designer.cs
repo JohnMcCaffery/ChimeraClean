@@ -69,6 +69,14 @@
             this.bringToFrontButtin = new System.Windows.Forms.Button();
             this.fullscreenCheck = new System.Windows.Forms.CheckBox();
             this.launchOverlayButton = new System.Windows.Forms.Button();
+            this.tickCountLabel = new System.Windows.Forms.Label();
+            this.shortestWorkLabel = new System.Windows.Forms.Label();
+            this.longestWorkLabel = new System.Windows.Forms.Label();
+            this.meanWorkLabel = new System.Windows.Forms.Label();
+            this.longestTickLabel = new System.Windows.Forms.Label();
+            this.shortestTickLabel = new System.Windows.Forms.Label();
+            this.meanTickLabel = new System.Windows.Forms.Label();
+            this.tpsLabel = new System.Windows.Forms.Label();
             this.mainTab.SuspendLayout();
             this.configTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -623,6 +631,14 @@
             // 
             // overlayTab
             // 
+            this.overlayTab.Controls.Add(this.tickCountLabel);
+            this.overlayTab.Controls.Add(this.shortestWorkLabel);
+            this.overlayTab.Controls.Add(this.longestWorkLabel);
+            this.overlayTab.Controls.Add(this.meanWorkLabel);
+            this.overlayTab.Controls.Add(this.longestTickLabel);
+            this.overlayTab.Controls.Add(this.shortestTickLabel);
+            this.overlayTab.Controls.Add(this.meanTickLabel);
+            this.overlayTab.Controls.Add(this.tpsLabel);
             this.overlayTab.Controls.Add(this.controlCursor);
             this.overlayTab.Controls.Add(this.bringToFrontButtin);
             this.overlayTab.Controls.Add(this.fullscreenCheck);
@@ -676,6 +692,78 @@
             this.launchOverlayButton.Text = "Launch Overlay";
             this.launchOverlayButton.UseVisualStyleBackColor = true;
             this.launchOverlayButton.Click += new System.EventHandler(this.launchOverlayButton_Click);
+            // 
+            // tickCountLabel
+            // 
+            this.tickCountLabel.AutoSize = true;
+            this.tickCountLabel.Location = new System.Drawing.Point(3, 199);
+            this.tickCountLabel.Name = "tickCountLabel";
+            this.tickCountLabel.Size = new System.Drawing.Size(59, 13);
+            this.tickCountLabel.TabIndex = 15;
+            this.tickCountLabel.Text = "Tick Count";
+            // 
+            // shortestWorkLabel
+            // 
+            this.shortestWorkLabel.AutoSize = true;
+            this.shortestWorkLabel.Location = new System.Drawing.Point(3, 186);
+            this.shortestWorkLabel.Name = "shortestWorkLabel";
+            this.shortestWorkLabel.Size = new System.Drawing.Size(75, 13);
+            this.shortestWorkLabel.TabIndex = 14;
+            this.shortestWorkLabel.Text = "Shortest Work";
+            // 
+            // longestWorkLabel
+            // 
+            this.longestWorkLabel.AutoSize = true;
+            this.longestWorkLabel.Location = new System.Drawing.Point(3, 173);
+            this.longestWorkLabel.Name = "longestWorkLabel";
+            this.longestWorkLabel.Size = new System.Drawing.Size(74, 13);
+            this.longestWorkLabel.TabIndex = 13;
+            this.longestWorkLabel.Text = "Longest Work";
+            // 
+            // meanWorkLabel
+            // 
+            this.meanWorkLabel.AutoSize = true;
+            this.meanWorkLabel.Location = new System.Drawing.Point(3, 160);
+            this.meanWorkLabel.Name = "meanWorkLabel";
+            this.meanWorkLabel.Size = new System.Drawing.Size(99, 13);
+            this.meanWorkLabel.TabIndex = 12;
+            this.meanWorkLabel.Text = "Mean Work Length";
+            // 
+            // longestTickLabel
+            // 
+            this.longestTickLabel.AutoSize = true;
+            this.longestTickLabel.Location = new System.Drawing.Point(3, 134);
+            this.longestTickLabel.Name = "longestTickLabel";
+            this.longestTickLabel.Size = new System.Drawing.Size(69, 13);
+            this.longestTickLabel.TabIndex = 11;
+            this.longestTickLabel.Text = "Longest Tick";
+            // 
+            // shortestTickLabel
+            // 
+            this.shortestTickLabel.AutoSize = true;
+            this.shortestTickLabel.Location = new System.Drawing.Point(3, 147);
+            this.shortestTickLabel.Name = "shortestTickLabel";
+            this.shortestTickLabel.Size = new System.Drawing.Size(70, 13);
+            this.shortestTickLabel.TabIndex = 10;
+            this.shortestTickLabel.Text = "Shortest Tick";
+            // 
+            // meanTickLabel
+            // 
+            this.meanTickLabel.AutoSize = true;
+            this.meanTickLabel.Location = new System.Drawing.Point(3, 121);
+            this.meanTickLabel.Name = "meanTickLabel";
+            this.meanTickLabel.Size = new System.Drawing.Size(94, 13);
+            this.meanTickLabel.TabIndex = 9;
+            this.meanTickLabel.Text = "Mean Tick Length";
+            // 
+            // tpsLabel
+            // 
+            this.tpsLabel.AutoSize = true;
+            this.tpsLabel.Location = new System.Drawing.Point(3, 108);
+            this.tpsLabel.Name = "tpsLabel";
+            this.tpsLabel.Size = new System.Drawing.Size(81, 13);
+            this.tpsLabel.TabIndex = 8;
+            this.tpsLabel.Text = "Ticks / Second";
             // 
             // WindowPanel
             // 
@@ -750,5 +838,13 @@
         private System.Windows.Forms.RadioButton centreAnchorButton;
         private ScalarPanel diagonalPanel;
         private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.Label tickCountLabel;
+        private System.Windows.Forms.Label shortestWorkLabel;
+        private System.Windows.Forms.Label longestWorkLabel;
+        private System.Windows.Forms.Label meanWorkLabel;
+        private System.Windows.Forms.Label longestTickLabel;
+        private System.Windows.Forms.Label shortestTickLabel;
+        private System.Windows.Forms.Label meanTickLabel;
+        private System.Windows.Forms.Label tpsLabel;
     }
 }

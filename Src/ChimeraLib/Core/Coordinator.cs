@@ -52,6 +52,10 @@ namespace Chimera {
 
     public class Coordinator : ICrashable, IInputSource {
         /// <summary>
+        /// Statistics object which monitors how long ticks are taking.
+        /// </summary>
+        private readonly TickStatistics mStats = new TickStatistics();
+        /// <summary>
         /// The authoratitive orientation of the camera in virtual space. This is read-only. To update it use the 'Update' method.
         /// </summary>
         private readonly Rotation mRotation;
@@ -182,9 +186,12 @@ namespace Chimera {
             Thread tickThread = new Thread(() => {
                 mAlive = true;
                 while (mAlive) {
+                    DateTime tickStart = DateTime.Now;
+                    mStats.Begin();
                     if (Tick != null)
                         Tick();
-                    Thread.Sleep(mTickLength);
+                    mStats.Tick();
+                    Thread.Sleep(Math.Max(0, (int) (mTickLength - DateTime.Now.Subtract(tickStart).TotalMilliseconds)));
                 }
             });
             tickThread.Name = "Tick Thread";
@@ -279,6 +286,13 @@ namespace Chimera {
         /// </summary>
         public StateManager StateManager {
             get { return mStateManager; }
+        }
+
+        /// <summary>
+        /// Object which will supply information about how long ticks are taking.
+        /// </summary>
+        public TickStatistics Statistics {
+            get { return mStats; }
         }
 
         /// <summary>

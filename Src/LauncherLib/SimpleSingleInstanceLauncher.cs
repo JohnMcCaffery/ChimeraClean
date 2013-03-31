@@ -85,28 +85,29 @@ namespace Chimera.Launcher {
             OpacityFadeInTransitionFactory fadeInTransition = new OpacityFadeInTransitionFactory(1500.0);
 
             StateTransition splashHelpTransition = new StateTransition(mCoordinator.StateManager, splashScreen, helpScreen, splashHelpTrigger, fadeTransition);
-            StateTransition helpSplashTransition = new StateTransition(mCoordinator.StateManager, helpScreen, splashScreen, helpSplashTrigger, cutTransition);
-            StateTransition helpKinectTransition = new StateTransition(mCoordinator.StateManager, helpScreen, kinectControl, helpKinectTrigger, fadeOutTransition);
-            StateTransition kinectHelpTransition = new StateTransition(mCoordinator.StateManager, kinectControl, helpScreen, customTriggerHelp, fadeInTransition);
             StateTransition splashFlythroughTransition = new StateTransition(mCoordinator.StateManager, splashScreen, flythroughState, skeletonLost, fadeOutTransition);
+            //StateTransition helpSplashTransition = new StateTransition(mCoordinator.StateManager, helpScreen, splashScreen, helpSplashTrigger, cutTransition);
+            StateTransition helpSplashTransition = new StateTransition(mCoordinator.StateManager, helpScreen, splashScreen, helpSplashTrigger, fadeTransition);
+            StateTransition helpKinectTransition = new StateTransition(mCoordinator.StateManager, helpScreen, kinectControl, helpKinectTrigger, fadeOutTransition);
             StateTransition helpFlythroughTransition = new StateTransition(mCoordinator.StateManager, helpScreen, flythroughState, skeletonLost, fadeOutTransition);
+            StateTransition kinectHelpTransition = new StateTransition(mCoordinator.StateManager, kinectControl, helpScreen, customTriggerHelp, fadeInTransition);
             StateTransition kinectFlythroughTransition = new StateTransition(mCoordinator.StateManager, kinectControl, flythroughState, skeletonLost, fadeOutTransition);
             StateTransition flythroughSplashTransition = new StateTransition(mCoordinator.StateManager, flythroughState, splashScreen, skeletonFound, fadeInTransition);
 
             SkeletonFeature helpSkeleton = new SkeletonFeature(1650f / 1920f, 0f, 800f / 1080f, 225f);
 
             splashScreen.AddTransition(splashHelpTransition);
-            splashScreen.AddTransition(splashFlythroughTransition);
+            //splashScreen.AddTransition(splashFlythroughTransition);
             splashScreen.AddFeature(mainWindow.Name, splashHelpTrigger);
 
             helpScreen.AddTransition(helpSplashTransition);
             helpScreen.AddTransition(helpKinectTransition);
-            helpScreen.AddTransition(helpFlythroughTransition);
+            //helpScreen.AddTransition(helpFlythroughTransition);
             helpScreen.AddFeature(mainWindow.Name, helpSplashTrigger);
             helpScreen.AddFeature(mainWindow.Name, helpKinectTrigger);
             helpScreen.AddFeature(mainWindow.Name, helpSkeleton);
 
-            kinectControl.AddTransition(kinectFlythroughTransition);
+            //kinectControl.AddTransition(kinectFlythroughTransition);
             kinectControl.AddTransition(kinectHelpTransition);
 
             flythroughState.AddTransition(flythroughSplashTransition);
@@ -115,7 +116,7 @@ namespace Chimera.Launcher {
             mCoordinator.StateManager.AddState(helpScreen);
             mCoordinator.StateManager.AddState(kinectControl);
             mCoordinator.StateManager.AddState(flythroughState);
-            //mCoordinator.StateManager.CurrentState = splashScreen;
+            mCoordinator.StateManager.CurrentState = splashScreen;
 
             //Window[] windows = new Window[] { new Window("Main Window") };
             //Chimera.Overlay.MainMenu mainMenu = new Chimera.Overlay.MainMenu();

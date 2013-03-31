@@ -41,14 +41,23 @@
             this.heightmapScale = new System.Windows.Forms.TrackBar();
             this.globalBox = new System.Windows.Forms.GroupBox();
             this.triggerHelpButton = new System.Windows.Forms.Button();
-            this.eyePositionPanel = new Chimera.GUI.VectorPanel();
-            this.virtualOrientationPanel = new Chimera.GUI.RotationPanel();
-            this.virtualPositionPanel = new Chimera.GUI.VectorPanel();
             this.windowsPluginsSplit = new System.Windows.Forms.SplitContainer();
             this.windowsGroup = new System.Windows.Forms.GroupBox();
             this.windowsTab = new System.Windows.Forms.TabControl();
             this.inputsGroup = new System.Windows.Forms.GroupBox();
             this.inputsTab = new System.Windows.Forms.TabControl();
+            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.shortestWorkLabel = new System.Windows.Forms.Label();
+            this.longestWorkLabel = new System.Windows.Forms.Label();
+            this.meanWorkLabel = new System.Windows.Forms.Label();
+            this.longestTickLabel = new System.Windows.Forms.Label();
+            this.shortestTickLabel = new System.Windows.Forms.Label();
+            this.meanTickLabel = new System.Windows.Forms.Label();
+            this.tpsLabel = new System.Windows.Forms.Label();
+            this.tickCountLabel = new System.Windows.Forms.Label();
+            this.eyePositionPanel = new Chimera.GUI.VectorPanel();
+            this.virtualOrientationPanel = new Chimera.GUI.RotationPanel();
+            this.virtualPositionPanel = new Chimera.GUI.VectorPanel();
             ((System.ComponentModel.ISupportInitialize)(this.hSplit)).BeginInit();
             this.hSplit.Panel1.SuspendLayout();
             this.hSplit.Panel2.SuspendLayout();
@@ -74,6 +83,8 @@
             this.windowsPluginsSplit.SuspendLayout();
             this.windowsGroup.SuspendLayout();
             this.inputsGroup.SuspendLayout();
+            this.inputsTab.SuspendLayout();
+            this.tabPage1.SuspendLayout();
             this.SuspendLayout();
             // 
             // hSplit
@@ -267,14 +278,14 @@
             this.heightmapPanel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.heightmapPanel_MouseMove);
             this.heightmapPanel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.heightmapPanel_MouseUp);
             // 
-            // virtualZoom
+            // heightmapScale
             // 
             this.heightmapScale.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.heightmapScale.Location = new System.Drawing.Point(3, 291);
             this.heightmapScale.Maximum = 16000;
             this.heightmapScale.Minimum = 1000;
-            this.heightmapScale.Name = "virtualZoom";
+            this.heightmapScale.Name = "heightmapScale";
             this.heightmapScale.Size = new System.Drawing.Size(275, 42);
             this.heightmapScale.TabIndex = 2;
             this.heightmapScale.TickStyle = System.Windows.Forms.TickStyle.None;
@@ -307,6 +318,160 @@
             this.triggerHelpButton.Text = "CustomTrigger Help";
             this.triggerHelpButton.UseVisualStyleBackColor = true;
             this.triggerHelpButton.Click += new System.EventHandler(this.triggerHelpButton_Click);
+            // 
+            // windowsPluginsSplit
+            // 
+            this.windowsPluginsSplit.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.windowsPluginsSplit.Location = new System.Drawing.Point(0, 0);
+            this.windowsPluginsSplit.Name = "windowsPluginsSplit";
+            // 
+            // windowsPluginsSplit.Panel1
+            // 
+            this.windowsPluginsSplit.Panel1.Controls.Add(this.windowsGroup);
+            // 
+            // windowsPluginsSplit.Panel2
+            // 
+            this.windowsPluginsSplit.Panel2.Controls.Add(this.inputsGroup);
+            this.windowsPluginsSplit.Size = new System.Drawing.Size(911, 499);
+            this.windowsPluginsSplit.SplitterDistance = 445;
+            this.windowsPluginsSplit.TabIndex = 0;
+            this.windowsPluginsSplit.KeyDown += new System.Windows.Forms.KeyEventHandler(this.CoordinatorForm_KeyDown);
+            this.windowsPluginsSplit.KeyUp += new System.Windows.Forms.KeyEventHandler(this.CoordinatorForm_KeyUp);
+            // 
+            // windowsGroup
+            // 
+            this.windowsGroup.Controls.Add(this.windowsTab);
+            this.windowsGroup.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.windowsGroup.Location = new System.Drawing.Point(0, 0);
+            this.windowsGroup.Name = "windowsGroup";
+            this.windowsGroup.Size = new System.Drawing.Size(445, 499);
+            this.windowsGroup.TabIndex = 0;
+            this.windowsGroup.TabStop = false;
+            this.windowsGroup.Text = "Windows";
+            // 
+            // windowsTab
+            // 
+            this.windowsTab.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.windowsTab.Location = new System.Drawing.Point(3, 16);
+            this.windowsTab.Name = "windowsTab";
+            this.windowsTab.SelectedIndex = 0;
+            this.windowsTab.Size = new System.Drawing.Size(439, 480);
+            this.windowsTab.TabIndex = 0;
+            this.windowsTab.KeyDown += new System.Windows.Forms.KeyEventHandler(this.CoordinatorForm_KeyDown);
+            this.windowsTab.KeyUp += new System.Windows.Forms.KeyEventHandler(this.CoordinatorForm_KeyUp);
+            // 
+            // inputsGroup
+            // 
+            this.inputsGroup.Controls.Add(this.inputsTab);
+            this.inputsGroup.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.inputsGroup.Location = new System.Drawing.Point(0, 0);
+            this.inputsGroup.Name = "inputsGroup";
+            this.inputsGroup.Size = new System.Drawing.Size(462, 499);
+            this.inputsGroup.TabIndex = 0;
+            this.inputsGroup.TabStop = false;
+            this.inputsGroup.Text = "Inputs";
+            // 
+            // inputsTab
+            // 
+            this.inputsTab.Controls.Add(this.tabPage1);
+            this.inputsTab.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.inputsTab.Location = new System.Drawing.Point(3, 16);
+            this.inputsTab.Name = "inputsTab";
+            this.inputsTab.SelectedIndex = 0;
+            this.inputsTab.Size = new System.Drawing.Size(456, 480);
+            this.inputsTab.TabIndex = 0;
+            this.inputsTab.KeyDown += new System.Windows.Forms.KeyEventHandler(this.CoordinatorForm_KeyDown);
+            this.inputsTab.KeyUp += new System.Windows.Forms.KeyEventHandler(this.CoordinatorForm_KeyUp);
+            // 
+            // tabPage1
+            // 
+            this.tabPage1.Controls.Add(this.tickCountLabel);
+            this.tabPage1.Controls.Add(this.shortestWorkLabel);
+            this.tabPage1.Controls.Add(this.longestWorkLabel);
+            this.tabPage1.Controls.Add(this.meanWorkLabel);
+            this.tabPage1.Controls.Add(this.longestTickLabel);
+            this.tabPage1.Controls.Add(this.shortestTickLabel);
+            this.tabPage1.Controls.Add(this.meanTickLabel);
+            this.tabPage1.Controls.Add(this.tpsLabel);
+            this.tabPage1.Location = new System.Drawing.Point(4, 22);
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage1.Size = new System.Drawing.Size(448, 454);
+            this.tabPage1.TabIndex = 0;
+            this.tabPage1.Text = "Statistics";
+            this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // shortestWorkLabel
+            // 
+            this.shortestWorkLabel.AutoSize = true;
+            this.shortestWorkLabel.Location = new System.Drawing.Point(6, 81);
+            this.shortestWorkLabel.Name = "shortestWorkLabel";
+            this.shortestWorkLabel.Size = new System.Drawing.Size(75, 13);
+            this.shortestWorkLabel.TabIndex = 6;
+            this.shortestWorkLabel.Text = "Shortest Work";
+            // 
+            // longestWorkLabel
+            // 
+            this.longestWorkLabel.AutoSize = true;
+            this.longestWorkLabel.Location = new System.Drawing.Point(6, 68);
+            this.longestWorkLabel.Name = "longestWorkLabel";
+            this.longestWorkLabel.Size = new System.Drawing.Size(74, 13);
+            this.longestWorkLabel.TabIndex = 5;
+            this.longestWorkLabel.Text = "Longest Work";
+            // 
+            // meanWorkLabel
+            // 
+            this.meanWorkLabel.AutoSize = true;
+            this.meanWorkLabel.Location = new System.Drawing.Point(6, 55);
+            this.meanWorkLabel.Name = "meanWorkLabel";
+            this.meanWorkLabel.Size = new System.Drawing.Size(99, 13);
+            this.meanWorkLabel.TabIndex = 4;
+            this.meanWorkLabel.Text = "Mean Work Length";
+            // 
+            // longestTickLabel
+            // 
+            this.longestTickLabel.AutoSize = true;
+            this.longestTickLabel.Location = new System.Drawing.Point(6, 29);
+            this.longestTickLabel.Name = "longestTickLabel";
+            this.longestTickLabel.Size = new System.Drawing.Size(69, 13);
+            this.longestTickLabel.TabIndex = 3;
+            this.longestTickLabel.Text = "Longest Tick";
+            // 
+            // shortestTickLabel
+            // 
+            this.shortestTickLabel.AutoSize = true;
+            this.shortestTickLabel.Location = new System.Drawing.Point(6, 42);
+            this.shortestTickLabel.Name = "shortestTickLabel";
+            this.shortestTickLabel.Size = new System.Drawing.Size(70, 13);
+            this.shortestTickLabel.TabIndex = 2;
+            this.shortestTickLabel.Text = "Shortest Tick";
+            // 
+            // meanTickLabel
+            // 
+            this.meanTickLabel.AutoSize = true;
+            this.meanTickLabel.Location = new System.Drawing.Point(6, 16);
+            this.meanTickLabel.Name = "meanTickLabel";
+            this.meanTickLabel.Size = new System.Drawing.Size(94, 13);
+            this.meanTickLabel.TabIndex = 1;
+            this.meanTickLabel.Text = "Mean Tick Length";
+            // 
+            // tpsLabel
+            // 
+            this.tpsLabel.AutoSize = true;
+            this.tpsLabel.Location = new System.Drawing.Point(6, 3);
+            this.tpsLabel.Name = "tpsLabel";
+            this.tpsLabel.Size = new System.Drawing.Size(81, 13);
+            this.tpsLabel.TabIndex = 0;
+            this.tpsLabel.Text = "Ticks / Second";
+            // 
+            // tickCountLabel
+            // 
+            this.tickCountLabel.AutoSize = true;
+            this.tickCountLabel.Location = new System.Drawing.Point(6, 94);
+            this.tickCountLabel.Name = "tickCountLabel";
+            this.tickCountLabel.Size = new System.Drawing.Size(59, 13);
+            this.tickCountLabel.TabIndex = 7;
+            this.tickCountLabel.Text = "Tick Count";
             // 
             // eyePositionPanel
             // 
@@ -366,69 +531,6 @@
             this.virtualPositionPanel.Z = 0F;
             this.virtualPositionPanel.ValueChanged += new System.EventHandler(this.virtualPositionPanel_OnChange);
             // 
-            // windowsPluginsSplit
-            // 
-            this.windowsPluginsSplit.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.windowsPluginsSplit.Location = new System.Drawing.Point(0, 0);
-            this.windowsPluginsSplit.Name = "windowsPluginsSplit";
-            // 
-            // windowsPluginsSplit.Panel1
-            // 
-            this.windowsPluginsSplit.Panel1.Controls.Add(this.windowsGroup);
-            // 
-            // windowsPluginsSplit.Panel2
-            // 
-            this.windowsPluginsSplit.Panel2.Controls.Add(this.inputsGroup);
-            this.windowsPluginsSplit.Size = new System.Drawing.Size(911, 499);
-            this.windowsPluginsSplit.SplitterDistance = 445;
-            this.windowsPluginsSplit.TabIndex = 0;
-            this.windowsPluginsSplit.KeyDown += new System.Windows.Forms.KeyEventHandler(this.CoordinatorForm_KeyDown);
-            this.windowsPluginsSplit.KeyUp += new System.Windows.Forms.KeyEventHandler(this.CoordinatorForm_KeyUp);
-            // 
-            // windowsGroup
-            // 
-            this.windowsGroup.Controls.Add(this.windowsTab);
-            this.windowsGroup.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.windowsGroup.Location = new System.Drawing.Point(0, 0);
-            this.windowsGroup.Name = "windowsGroup";
-            this.windowsGroup.Size = new System.Drawing.Size(445, 499);
-            this.windowsGroup.TabIndex = 0;
-            this.windowsGroup.TabStop = false;
-            this.windowsGroup.Text = "Windows";
-            // 
-            // windowsTab
-            // 
-            this.windowsTab.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.windowsTab.Location = new System.Drawing.Point(3, 16);
-            this.windowsTab.Name = "windowsTab";
-            this.windowsTab.SelectedIndex = 0;
-            this.windowsTab.Size = new System.Drawing.Size(439, 480);
-            this.windowsTab.TabIndex = 0;
-            this.windowsTab.KeyDown += new System.Windows.Forms.KeyEventHandler(this.CoordinatorForm_KeyDown);
-            this.windowsTab.KeyUp += new System.Windows.Forms.KeyEventHandler(this.CoordinatorForm_KeyUp);
-            // 
-            // inputsGroup
-            // 
-            this.inputsGroup.Controls.Add(this.inputsTab);
-            this.inputsGroup.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.inputsGroup.Location = new System.Drawing.Point(0, 0);
-            this.inputsGroup.Name = "inputsGroup";
-            this.inputsGroup.Size = new System.Drawing.Size(462, 499);
-            this.inputsGroup.TabIndex = 0;
-            this.inputsGroup.TabStop = false;
-            this.inputsGroup.Text = "Inputs";
-            // 
-            // inputsTab
-            // 
-            this.inputsTab.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.inputsTab.Location = new System.Drawing.Point(3, 16);
-            this.inputsTab.Name = "inputsTab";
-            this.inputsTab.SelectedIndex = 0;
-            this.inputsTab.Size = new System.Drawing.Size(456, 480);
-            this.inputsTab.TabIndex = 0;
-            this.inputsTab.KeyDown += new System.Windows.Forms.KeyEventHandler(this.CoordinatorForm_KeyDown);
-            this.inputsTab.KeyUp += new System.Windows.Forms.KeyEventHandler(this.CoordinatorForm_KeyUp);
-            // 
             // CoordinatorForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -467,6 +569,9 @@
             this.windowsPluginsSplit.ResumeLayout(false);
             this.windowsGroup.ResumeLayout(false);
             this.inputsGroup.ResumeLayout(false);
+            this.inputsTab.ResumeLayout(false);
+            this.tabPage1.ResumeLayout(false);
+            this.tabPage1.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -497,5 +602,14 @@
         private System.Windows.Forms.RadioButton xPerspectiveButton;
         private System.Windows.Forms.TrackBar heightmapScale;
         private System.Windows.Forms.TrackBar realSpaceScale;
+        private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.Label shortestWorkLabel;
+        private System.Windows.Forms.Label longestWorkLabel;
+        private System.Windows.Forms.Label meanWorkLabel;
+        private System.Windows.Forms.Label longestTickLabel;
+        private System.Windows.Forms.Label shortestTickLabel;
+        private System.Windows.Forms.Label meanTickLabel;
+        private System.Windows.Forms.Label tpsLabel;
+        private System.Windows.Forms.Label tickCountLabel;
     }
 }

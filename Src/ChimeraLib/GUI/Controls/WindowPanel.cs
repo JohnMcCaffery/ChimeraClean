@@ -12,6 +12,7 @@ namespace Chimera.GUI.Controls {
         private bool mMassUpdated;
         private double mScale = 10.0;
         private Window mWindow;
+        private Action mTickListener;
 
         public WindowPanel() {
             InitializeComponent();
@@ -31,10 +32,12 @@ namespace Chimera.GUI.Controls {
             mWindow = window;
 
             controlCursor.Checked = mWindow.OverlayManager.ControlPointer;
+            mTickListener = new Action(Coordinator_Tick);
 
             mWindow.OverlayManager.OverlayClosed += new EventHandler(mWindow_OverlayClosed);
             mWindow.OverlayManager.OverlayLaunched += new EventHandler(mWindow_OverlayLaunched);
-            mWindow.Changed += new Action<Window,EventArgs>(mWindow_Changed);
+            mWindow.Changed += new Action<Window, EventArgs>(mWindow_Changed);
+            mWindow.Coordinator.Tick += mTickListener;
 
             foreach (var screen in Screen.AllScreens) {
                 monitorPulldown.Items.Add(screen);
@@ -59,6 +62,23 @@ namespace Chimera.GUI.Controls {
             }
 
             mWindow_Changed(window, null);
+        }
+
+        private void Coordinator_Tick() {
+            if (Created && !IsDisposed && !Disposing)
+                BeginInvoke(new Action(() => {
+                    tpsLabel.Text = "Ticks / Second: " + mWindow.OverlayManager.Statistics.TicksPerSecond;
+
+                    meanTickLabel.Text = "Mean Tick Length: " + mWindow.OverlayManager.Statistics.MeanTickLength;
+                    longestTickLabel.Text = "Longest Tick: " + mWindow.OverlayManager.Statistics.LongestTick;
+                    shortestTickLabel.Text = "Shortest Tick: " + mWindow.OverlayManager.Statistics.ShortestTick;
+
+                    meanWorkLabel.Text = "Mean Work Length: " + mWindow.OverlayManager.Statistics.MeanWorkLength;
+                    longestWorkLabel.Text = "Longest Work: " + mWindow.OverlayManager.Statistics.LongestWork;
+                    shortestWorkLabel.Text = "Shortest Work: " + mWindow.OverlayManager.Statistics.ShortestWork;
+
+                    tickCountLabel.Text = "Tick Count: " + mWindow.OverlayManager.Statistics.TickCount;
+                }));
         }
 
         void mWindow_Changed(Window source, EventArgs args) {

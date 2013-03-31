@@ -21,10 +21,11 @@ namespace Chimera.GUI.Forms {
         private Coordinator mCoordinator;
         private Bitmap mHeightmap;
 
-        private Action<Coordinator, CameraUpdateEventArgs> mCameraUpdated;
-        private Action<Coordinator, EventArgs> mEyeUpdated;
-        private Action<Coordinator, KeyEventArgs> mClosed;
-        private EventHandler<HeightmapChangedEventArgs> mHeightmapChanged;
+        private Action<Coordinator, CameraUpdateEventArgs> mCameraUpdatedListener;
+        private Action<Coordinator, EventArgs> mEyeUpdatedListener;
+        private Action<Coordinator, KeyEventArgs> mClosedListener;
+        private Action mTickListener;
+        private EventHandler<HeightmapChangedEventArgs> mHeightmapChangedListener;
 
         private static float sPerspectiveScaleMin = .0001f;
         private static float sPerspectiveScaleMax = .5f;
@@ -67,15 +68,17 @@ namespace Chimera.GUI.Forms {
 
             Disposed += new EventHandler(CoordinatorForm_Disposed);
 
-            mCameraUpdated = new Action<Coordinator, CameraUpdateEventArgs>(mCoordinator_CameraUpdated);
-            mEyeUpdated = new Action<Coordinator, EventArgs>(mCoordinator_EyeUpdated);
-            mClosed = new Action<Coordinator, KeyEventArgs>(mCoordinator_Closed);
-            mHeightmapChanged = new EventHandler<HeightmapChangedEventArgs>(mCoordinator_HeightmapChanged);
+            mCameraUpdatedListener = new Action<Coordinator, CameraUpdateEventArgs>(mCoordinator_CameraUpdated);
+            mEyeUpdatedListener = new Action<Coordinator, EventArgs>(mCoordinator_EyeUpdated);
+            mClosedListener = new Action<Coordinator, KeyEventArgs>(mCoordinator_Closed);
+            mHeightmapChangedListener = new EventHandler<HeightmapChangedEventArgs>(mCoordinator_HeightmapChanged);
+            mTickListener = new Action(mCoordinator_Tick);
 
-            mCoordinator.CameraUpdated += mCameraUpdated;
-            mCoordinator.EyeUpdated += mEyeUpdated;
-            mCoordinator.Closed += mClosed;
-            mCoordinator.HeightmapChanged += mHeightmapChanged;
+            mCoordinator.CameraUpdated += mCameraUpdatedListener;
+            mCoordinator.EyeUpdated += mEyeUpdatedListener;
+            mCoordinator.Closed += mClosedListener;
+            mCoordinator.Tick += mTickListener;
+            mCoordinator.HeightmapChanged += mHeightmapChangedListener;
             mCoordinator.WindowAdded += new Action<Window,EventArgs>(mCoordinator_WindowAdded);
 
             Rotation orientation = new Rotation(mCoordinator.Orientation);
@@ -161,6 +164,23 @@ namespace Chimera.GUI.Forms {
             window.Changed += new Action<Window, EventArgs>(window_Changed);
         }
 
+        private void mCoordinator_Tick() {
+            if (Created && !IsDisposed && !Disposing)
+                BeginInvoke(new Action(() => {
+                    tpsLabel.Text = "Ticks / Second: " + mCoordinator.Statistics.TicksPerSecond;
+
+                    meanTickLabel.Text = "Mean Tick Length: " + mCoordinator.Statistics.MeanTickLength;
+                    longestTickLabel.Text = "Longest Tick: " + mCoordinator.Statistics.LongestTick;
+                    shortestTickLabel.Text = "Shortest Tick: " + mCoordinator.Statistics.ShortestTick;
+
+                    meanWorkLabel.Text = "Mean Work Length: " + mCoordinator.Statistics.MeanWorkLength;
+                    longestWorkLabel.Text = "Longest Work: " + mCoordinator.Statistics.LongestWork;
+                    shortestWorkLabel.Text = "Shortest Work: " + mCoordinator.Statistics.ShortestWork;
+
+                    tickCountLabel.Text = "Tick Count: " + mCoordinator.Statistics.TickCount;
+                }));
+        }
+
         private void window_Changed(Window window, EventArgs args) {
             Invoke(() => {
                 realSpacePanel.Invalidate();
@@ -170,10 +190,11 @@ namespace Chimera.GUI.Forms {
 
         private void CoordinatorForm_Disposed(object sender, EventArgs e) {
             mClosing = true;
-            mCoordinator.CameraUpdated -= mCameraUpdated;
-            mCoordinator.EyeUpdated -= mEyeUpdated;
-            mCoordinator.Closed -= mClosed;
-            mCoordinator.HeightmapChanged -= mHeightmapChanged;
+            mCoordinator.CameraUpdated -= mCameraUpdatedListener;
+            mCoordinator.EyeUpdated -= mEyeUpdatedListener;
+            mCoordinator.Closed -= mClosedListener;
+            mCoordinator.HeightmapChanged -= mHeightmapChangedListener;
+            mCoordinator.Tick -= mTickListener;
         }
 
         private Thread mHeightmapUpdateThread;

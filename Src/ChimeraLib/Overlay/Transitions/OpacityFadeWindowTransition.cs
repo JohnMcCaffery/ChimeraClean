@@ -67,7 +67,8 @@ namespace Chimera.Overlay.Transitions {
             transition.Manager.Coordinator.Tick += new Action(Coordinator_Tick);
         }
 
-        void Coordinator_Tick() {            if (!mTransitioning)
+        void Coordinator_Tick() {
+            if (!mTransitioning)
                 return;
 
             double time = DateTime.Now.Subtract(mTransitionStart).TotalMilliseconds;

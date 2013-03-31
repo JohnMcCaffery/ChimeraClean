@@ -7,6 +7,7 @@ using System.Drawing;
 using Chimera.GUI.Forms;
 using System.Windows.Forms;
 using Chimera.Interfaces.Overlay;
+using Chimera.Util;
 
 namespace Chimera.Overlay {
     public class WindowOverlayManager {
@@ -67,6 +68,10 @@ namespace Chimera.Overlay {
         /// Triggered whenever the position of the cursor on this input changes.
         /// </summary>
         public event Action<WindowOverlayManager, EventArgs> CursorMoved;
+
+        public TickStatistics Statistics {
+            get { return mOverlayWindow != null ? mOverlayWindow.Statistics : null; }
+        }
 
         /// <summary>
         /// Where on the monitor the cursor is. Specified as percentages.
@@ -161,7 +166,8 @@ namespace Chimera.Overlay {
                 if (mOverlayWindow != null)
                     mOverlayWindow.Fullscreen = value;
             }
-        }
+        }
+
         public IDrawable CurrentDisplay {
             get { return mCurrentDisplay; }
             set { 

@@ -41,12 +41,12 @@ namespace Chimera.Flythrough.GUI {
             Disposed += new EventHandler(LookAtPanel_Disposed);
         }
 
-        void LookAtPanel_Disposed(object sender, EventArgs e) {
-            mEvent.TimeChange -= mTimeChangeListener;
-        }
+        void LookAtPanel_FormClosing(object sender, FormClosingEventArgs e) { mEvent.TimeChange -= mTimeChangeListener; }
+
+        void LookAtPanel_Disposed(object sender, EventArgs e) { mEvent.TimeChange -= mTimeChangeListener; }
 
         private void TimeChanged(FlythroughEvent<Rotation> evt, int time) {
-            if (!IsDisposed)
+            if (!IsDisposed && Created && !Disposing)
                 Invoke(new Action(() => {
                     progressBar.Maximum = evt.Length;
                     progressBar.Value = evt.Time;

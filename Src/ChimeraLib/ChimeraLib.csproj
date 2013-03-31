@@ -216,6 +216,7 @@
     <Compile Include="Overlay\WindowOverlayManager.cs" />
     <Compile Include="Overlay\WindowState.cs" />
     <Compile Include="Overlay\WindowTransition.cs" />
+    <Compile Include="Util\TickStatistics.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
