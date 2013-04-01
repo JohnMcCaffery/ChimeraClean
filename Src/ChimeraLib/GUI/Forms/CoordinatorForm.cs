@@ -226,6 +226,7 @@ namespace Chimera.GUI.Forms {
                 int w = e.Heights.GetLength(0);
                 int h = e.Heights.GetLength(1);
                 lock (mHeightmap) {
+                    int totH = mHeightmap.Height;
                     Rectangle affectedRect = new Rectangle(0, 0, mHeightmap.Width, mHeightmap.Height);
                     BitmapData dat = mHeightmap.LockBits(affectedRect, ImageLockMode.WriteOnly, PixelFormat.Format24bppRgb);
                     int bytesPerPixel = 3;
@@ -234,7 +235,8 @@ namespace Chimera.GUI.Forms {
                     Marshal.Copy(dat.Scan0, rgbValues, 0, rgbValues.Length);
 
                     for (int y = 0; y < h; y++) {
-                        int i = ((e.StartY + y) * dat.Stride) + (e.StartX * bytesPerPixel);
+                        int startY = e.StartY + y + 1;
+                        int i = ((totH - startY) * dat.Stride) + (e.StartX * bytesPerPixel);
                         for (int x = 0; x < w; x++) {
                             float height = e.Heights[x, y] + 25f;
                             float floatVal = ((float)byte.MaxValue) * (height / 100f);
@@ -604,13 +606,13 @@ namespace Chimera.GUI.Forms {
 
                 //TODO - mSize.[W,H] may have to be reversed
                 Matrix4 toClipScale = Matrix4.CreateScale(
-                    new Vector3((mScale * mClip.Height) / mSize.Height, (mScale * mClip.Width) / mSize.Width, 1f));
+                    new Vector3((mScale * mClip.Width) / mSize.Width, (mScale * mClip.Height) / mSize.Height, 1f));
 
-                Vector3 topLeft = new Vector3(mCrop.Y, mCrop.X, 0f);
+                Vector3 topLeft = new Vector3(mCrop.X, mCrop.Y, 0f);
                 Matrix4 toClipTranslate = Matrix4.CreateTranslation(topLeft);
 
                 mClipMatrix = Matrix4.Identity;
-                mClipMatrix *= mWorldMatrix;
+                //mClipMatrix *= mWorldMatrix;
                 mClipMatrix *= toClipTranslate;
                 mClipMatrix *= toClipScale;
 
@@ -638,8 +640,11 @@ namespace Chimera.GUI.Forms {
             }
 
             public Point To2D(Vector3 point) {
+                point *= mWorldMatrix;
+                point.Y = mSize.Height - point.Y;
                 point *= mClipMatrix;
-                return new Point((int) point.Y, (int) (point.X));
+                //return new Point((int) point.X, mClip.Height - (int) point.Y);
+                return new Point((int) point.X, (int) point.Y);
             }
         }
 

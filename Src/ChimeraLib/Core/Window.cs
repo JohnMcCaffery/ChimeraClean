@@ -543,8 +543,10 @@ namespace Chimera {
         }
 
         private Matrix4 SimpleProjection() {
-            float fV = (float)VFieldOfView;
-            float fH = (float)HFieldOfView;
+            //GLfloat f = 1.f / tanf(DEG_TO_RAD * fovy / 2.f);
+            //float fH = (float)HFieldOfView;
+            float fH = (float) (1.0 /  Math.Tan(HFieldOfView / 2.0));
+            float fV = (float) (1.0 /  Math.Tan(VFieldOfView / 2.0));
             float zNear = .1f;
             float zFar = 1024f;
             return new Matrix4(
@@ -555,8 +557,10 @@ namespace Chimera {
         }
 
         private Matrix4 SkewedProjection() {
-            float fV = (float) VFieldOfView;
-            float fH = (float) HFieldOfView;
+            //float fV = (float) VFieldOfView;
+            //float fH = (float)HFieldOfView;
+            float fH = (float)(1.0 / Math.Tan(HFieldOfView / 2.0));
+            float fV = (float)(1.0 / Math.Tan(VFieldOfView / 2.0));
             float zNear = .1f;
             float zFar = 1024f;
             float hSkew = (float) (HSkew / mWidth);

@@ -116,7 +116,7 @@ namespace Chimera.Launcher {
             mCoordinator.StateManager.AddState(helpScreen);
             mCoordinator.StateManager.AddState(kinectControl);
             mCoordinator.StateManager.AddState(flythroughState);
-            mCoordinator.StateManager.CurrentState = splashScreen;
+            //mCoordinator.StateManager.CurrentState = splashScreen;
 
             //Window[] windows = new Window[] { new Window("Main Window") };
             //Chimera.Overlay.MainMenu mainMenu = new Chimera.Overlay.MainMenu();
