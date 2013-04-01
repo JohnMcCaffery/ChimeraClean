@@ -104,6 +104,7 @@ namespace Chimera.GUI.Controls {
                     case ProjectionStyle.Simple: simpleProjectionButton.Checked = true; break;
                     case ProjectionStyle.Skewed: skewedProjectionButton.Checked = true; break;
                     case ProjectionStyle.Calculated: calculatedProjectionButton.Checked = true; break;
+                    case ProjectionStyle.RotFoV: rotFoVProjectionButton.Checked = true; break;
                 }
 
                 if (mWindow.Anchor == WindowAnchor.Centre)
@@ -246,6 +247,8 @@ namespace Chimera.GUI.Controls {
                 mWindow.Projection = ProjectionStyle.Skewed;
             else if (calculatedProjectionButton.Checked)
                 mWindow.Projection = ProjectionStyle.Calculated;
+            else if (rotFoVProjectionButton.Checked)
+                mWindow.Projection = ProjectionStyle.RotFoV;
         }
 
         private void AnchorButton_CheckedChanged(object sender, EventArgs e) {

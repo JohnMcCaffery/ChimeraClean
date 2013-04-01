@@ -641,9 +641,9 @@ namespace Chimera.GUI.Forms {
 
             public Point To2D(Vector3 point) {
                 point *= mWorldMatrix;
+                //TODO put this flip into the matrices - translate to middle, rotate 180 deg around yaw, translate back from middle
                 point.Y = mSize.Height - point.Y;
                 point *= mClipMatrix;
-                //return new Point((int) point.X, mClip.Height - (int) point.Y);
                 return new Point((int) point.X, (int) point.Y);
             }
         }
