@@ -713,7 +713,7 @@ namespace Chimera {
             float dn = (diff.Length() / diff.X) * .1f;
             float df = (512f * 100f) * dn;
 
-		    return new Matrix4(
+		    Matrix4 ret = new Matrix4(
     			(2*dn) / (x2-x1),   0,              (x2+x1)/(x2-x1),   0,
     			0,                  (2*dn)/(y1-y2), (y1+y2)/(y1-y2),   0,
     			0,                  0,              -(df+dn)/(df-dn),   -(2.0f*df*dn)/(df-dn),
@@ -724,6 +724,33 @@ namespace Chimera {
     			//0,                  (2*dn)/((float) mHeight), (float) (VSkew/mHeight),   0,
     			//0,                  0,              -(df+dn)/(df-dn),   -(2.0f*df*dn)/(df-dn),
     			//0,                  0,              -1.0f,              0);
+
+            //Vector3 left = mTopLeft - mCoordinator.EyePosition;
+            //Vector3 right = (mTopLeft + new Vector3(0f, 2000f, 0f)) - mCoordinator.EyePosition;
+            //Vector3 middle = (mTopLeft + new Vector3(0f, 1000f, 0f)) - mCoordinator.EyePosition;
+            Vector3 left = new Vector3(-1000f, 0f, 1000f);
+            Vector3 middle = new Vector3(0f, 0f, 1000f);
+            Vector3 right = new Vector3(1000f, 0f, 1000f);
+
+            /*
+            o = (left * ret) / Vector3.Mag(left);
+            o = (right * ret) / Vector3.Mag(left);
+            o = (middle * ret) / Vector3.Mag(left);
+            */
+
+            Vector3 oLeft = (left * ret) / left.Z;
+            Vector3 oMiddle = (middle * ret) / left.Z;
+            Vector3 oRight = (right * ret) / left.Z;
+
+            left *= 3f;
+            middle *= 3f;
+            right *= 3f;
+
+            oLeft = (left * ret) / left.Z;
+            oMiddle = (middle * ret) / left.Z;
+            oRight = (right * ret) / left.Z;
+
+            return ret;
         }
 
         private Matrix4 FoVRotProjection() {
