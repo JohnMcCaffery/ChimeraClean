@@ -100,6 +100,9 @@ namespace Chimera.GUI.Controls {
                 fovHPanel.Value = (float)(mWindow.HFieldOfView * (180.0 / Math.PI));
                 fovVPanel.Value = (float)(mWindow.VFieldOfView * (180.0 / Math.PI));
 
+                outputPitchLabel.Text = "Pitch: " + Math.Round(mWindow.OutputOrientation.Pitch, 3);
+                outputYawLabel.Text = "Yaw: " + Math.Round(mWindow.OutputOrientation.Yaw, 3);
+
                 switch (mWindow.Projection) {
                     case ProjectionStyle.Simple: simpleProjectionButton.Checked = true; break;
                     case ProjectionStyle.Skewed: skewedProjectionButton.Checked = true; break;

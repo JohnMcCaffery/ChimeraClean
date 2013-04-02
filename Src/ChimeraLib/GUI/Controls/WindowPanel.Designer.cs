@@ -24,7 +24,7 @@
         /// </summary>
         private void InitializeComponent() {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(WindowPanel));
-            Chimera.Util.Rotation rotation2 = new Chimera.Util.Rotation();
+            Chimera.Util.Rotation rotation1 = new Chimera.Util.Rotation();
             this.mainTab = new System.Windows.Forms.TabControl();
             this.configTab = new System.Windows.Forms.TabPage();
             this.restartButton = new System.Windows.Forms.Button();
@@ -78,6 +78,9 @@
             this.bringToFrontButtin = new System.Windows.Forms.Button();
             this.fullscreenCheck = new System.Windows.Forms.CheckBox();
             this.launchOverlayButton = new System.Windows.Forms.Button();
+            this.label13 = new System.Windows.Forms.Label();
+            this.outputPitchLabel = new System.Windows.Forms.Label();
+            this.outputYawLabel = new System.Windows.Forms.Label();
             this.mainTab.SuspendLayout();
             this.configTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -119,9 +122,9 @@
             // 
             // restartButton
             // 
-            this.restartButton.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.restartButton.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.restartButton.BackColor = System.Drawing.Color.Red;
             this.restartButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 27.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.restartButton.Location = new System.Drawing.Point(3, 313);
@@ -134,8 +137,8 @@
             // 
             // splitContainer1
             // 
-            this.splitContainer1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.splitContainer1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.splitContainer1.FixedPanel = System.Windows.Forms.FixedPanel.Panel2;
             this.splitContainer1.Location = new System.Drawing.Point(3, 0);
             this.splitContainer1.Name = "splitContainer1";
@@ -172,6 +175,8 @@
             // 
             // splitContainer1.Panel2
             // 
+            this.splitContainer1.Panel2.Controls.Add(this.outputYawLabel);
+            this.splitContainer1.Panel2.Controls.Add(this.outputPitchLabel);
             this.splitContainer1.Panel2.Controls.Add(this.orientationPanel);
             this.splitContainer1.Panel2.Controls.Add(this.centrePanel);
             this.splitContainer1.Panel2.Controls.Add(this.topLeftPanel);
@@ -181,8 +186,8 @@
             // 
             // diagonalPanel
             // 
-            this.diagonalPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.diagonalPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.diagonalPanel.Location = new System.Drawing.Point(78, 163);
             this.diagonalPanel.Max = 500F;
             this.diagonalPanel.Min = 0F;
@@ -252,8 +257,8 @@
             // 
             // widthPanel
             // 
-            this.widthPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.widthPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.widthPanel.Location = new System.Drawing.Point(78, 111);
             this.widthPanel.Max = 500F;
             this.widthPanel.Min = 1F;
@@ -266,8 +271,8 @@
             // 
             // projectionGroup
             // 
-            this.projectionGroup.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.projectionGroup.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.projectionGroup.Controls.Add(this.rotFoVProjectionButton);
             this.projectionGroup.Controls.Add(this.calculatedProjectionButton);
             this.projectionGroup.Controls.Add(this.skewedProjectionButton);
@@ -347,8 +352,8 @@
             // 
             // monitorPulldown
             // 
-            this.monitorPulldown.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.monitorPulldown.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.monitorPulldown.DisplayMember = "DeviceName";
             this.monitorPulldown.FormattingEnabled = true;
             this.monitorPulldown.Location = new System.Drawing.Point(78, 6);
@@ -359,8 +364,8 @@
             // 
             // heightPanel
             // 
-            this.heightPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.heightPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.heightPanel.Location = new System.Drawing.Point(78, 137);
             this.heightPanel.Max = 500F;
             this.heightPanel.Min = 1F;
@@ -382,8 +387,8 @@
             // 
             // fovVPanel
             // 
-            this.fovVPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.fovVPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.fovVPanel.Location = new System.Drawing.Point(79, 244);
             this.fovVPanel.Max = 179.9F;
             this.fovVPanel.Min = 0.1F;
@@ -396,8 +401,8 @@
             // 
             // distancePanel
             // 
-            this.distancePanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.distancePanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.distancePanel.Location = new System.Drawing.Point(78, 33);
             this.distancePanel.Max = 1000F;
             this.distancePanel.Min = 0F;
@@ -419,8 +424,8 @@
             // 
             // skewHPanel
             // 
-            this.skewHPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.skewHPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.skewHPanel.Location = new System.Drawing.Point(78, 59);
             this.skewHPanel.Max = 1000F;
             this.skewHPanel.Min = -1000F;
@@ -460,8 +465,8 @@
             // 
             // vSkewPanel
             // 
-            this.vSkewPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.vSkewPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.vSkewPanel.Location = new System.Drawing.Point(78, 85);
             this.vSkewPanel.Max = 1000F;
             this.vSkewPanel.Min = -1000F;
@@ -506,8 +511,8 @@
             // 
             // aspectRatioValue
             // 
-            this.aspectRatioValue.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.aspectRatioValue.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.aspectRatioValue.DecimalPlaces = 4;
             this.aspectRatioValue.Location = new System.Drawing.Point(196, 189);
             this.aspectRatioValue.Maximum = new decimal(new int[] {
@@ -522,8 +527,8 @@
             // 
             // fovHPanel
             // 
-            this.fovHPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.fovHPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.fovHPanel.Location = new System.Drawing.Point(79, 215);
             this.fovHPanel.Max = 179.9F;
             this.fovHPanel.Min = 0.1F;
@@ -588,8 +593,8 @@
             // 
             // orientationPanel
             // 
-            this.orientationPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.orientationPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.orientationPanel.Location = new System.Drawing.Point(6, 203);
             this.orientationPanel.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("orientationPanel.LookAtVector")));
             this.orientationPanel.MinimumSize = new System.Drawing.Size(252, 95);
@@ -598,17 +603,17 @@
             this.orientationPanel.Quaternion = ((OpenMetaverse.Quaternion)(resources.GetObject("orientationPanel.Quaternion")));
             this.orientationPanel.Size = new System.Drawing.Size(352, 95);
             this.orientationPanel.TabIndex = 1;
-            rotation2.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("rotation2.LookAtVector")));
-            rotation2.Pitch = 0D;
-            rotation2.Quaternion = ((OpenMetaverse.Quaternion)(resources.GetObject("rotation2.Quaternion")));
-            rotation2.Yaw = 0D;
-            this.orientationPanel.Value = rotation2;
+            rotation1.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("rotation1.LookAtVector")));
+            rotation1.Pitch = 0D;
+            rotation1.Quaternion = ((OpenMetaverse.Quaternion)(resources.GetObject("rotation1.Quaternion")));
+            rotation1.Yaw = 0D;
+            this.orientationPanel.Value = rotation1;
             this.orientationPanel.Yaw = 0D;
             // 
             // centrePanel
             // 
-            this.centrePanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.centrePanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.centrePanel.Location = new System.Drawing.Point(6, 3);
             this.centrePanel.Max = 1024F;
             this.centrePanel.MaxV = ((OpenMetaverse.Vector3)(resources.GetObject("centrePanel.MaxV")));
@@ -626,8 +631,8 @@
             // 
             // topLeftPanel
             // 
-            this.topLeftPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.topLeftPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.topLeftPanel.Location = new System.Drawing.Point(6, 102);
             this.topLeftPanel.Max = 1024F;
             this.topLeftPanel.MaxV = ((OpenMetaverse.Vector3)(resources.GetObject("topLeftPanel.MaxV")));
@@ -779,10 +784,38 @@
             this.launchOverlayButton.UseVisualStyleBackColor = true;
             this.launchOverlayButton.Click += new System.EventHandler(this.launchOverlayButton_Click);
             // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(0, 0);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(41, 13);
+            this.label13.TabIndex = 1;
+            this.label13.Text = "label13";
+            // 
+            // outputPitchLabel
+            // 
+            this.outputPitchLabel.AutoSize = true;
+            this.outputPitchLabel.Location = new System.Drawing.Point(6, 297);
+            this.outputPitchLabel.Name = "outputPitchLabel";
+            this.outputPitchLabel.Size = new System.Drawing.Size(37, 13);
+            this.outputPitchLabel.TabIndex = 2;
+            this.outputPitchLabel.Text = "Pitch: ";
+            // 
+            // outputYawLabel
+            // 
+            this.outputYawLabel.AutoSize = true;
+            this.outputYawLabel.Location = new System.Drawing.Point(119, 297);
+            this.outputYawLabel.Name = "outputYawLabel";
+            this.outputYawLabel.Size = new System.Drawing.Size(34, 13);
+            this.outputYawLabel.TabIndex = 3;
+            this.outputYawLabel.Text = "Yaw: ";
+            // 
             // WindowPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.label13);
             this.Controls.Add(this.mainTab);
             this.Name = "WindowPanel";
             this.Size = new System.Drawing.Size(841, 625);
@@ -791,6 +824,7 @@
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel1.PerformLayout();
             this.splitContainer1.Panel2.ResumeLayout(false);
+            this.splitContainer1.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
             this.anchorBox.ResumeLayout(false);
@@ -803,6 +837,7 @@
             this.overlayTab.ResumeLayout(false);
             this.overlayTab.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -861,5 +896,8 @@
         private System.Windows.Forms.Label meanTickLabel;
         private System.Windows.Forms.Label tpsLabel;
         private System.Windows.Forms.RadioButton rotFoVProjectionButton;
+        private System.Windows.Forms.Label outputYawLabel;
+        private System.Windows.Forms.Label outputPitchLabel;
+        private System.Windows.Forms.Label label13;
     }
 }
