@@ -109,7 +109,7 @@ namespace Chimera {
         /// <summary>
         /// The method used to calculate the projection matrix.
         /// </summary>
-        private ProjectionStyle mProjection = ProjectionStyle.RotFoV;
+        private ProjectionStyle mProjection = ProjectionStyle.Skewed;
 
         /// <summary>
         /// Triggered whenever the position of this input changes.
@@ -702,10 +702,14 @@ namespace Chimera {
             upperRight /= (float) (diff.X * 10.0);
             lowerLeft /= (float) (diff.X * 10.0);
 
-            float x1 = Math.Min(upperRight.Y, lowerLeft.Y);
-            float x2 = Math.Max(upperRight.Y, lowerLeft.Y);
-            float y1 = Math.Max(upperRight.Z, lowerLeft.Z);
-            float y2 = Math.Min(upperRight.Z, lowerLeft.Z);
+            float x1O = Math.Min(upperRight.Y, lowerLeft.Y);
+            float x2O = Math.Max(upperRight.Y, lowerLeft.Y);
+            float y1O = Math.Max(upperRight.Z, lowerLeft.Z);
+            float y2O = Math.Min(upperRight.Z, lowerLeft.Z);
+            float x1 = (float) ((mWidth /-2) + HSkew) / 10000f;
+            float x2 = (float) ((mWidth / 2) + HSkew) / 10000f;
+            float y1 = (float)((mHeight / 2) + VSkew) / 10000f;
+            float y2 = (float)((mHeight /-2) + VSkew) / 10000f;
             float dn = (diff.Length() / diff.X) * .1f;
             float df = (512f * 100f) * dn;
 
@@ -714,6 +718,12 @@ namespace Chimera {
     			0,                  (2*dn)/(y1-y2), (y1+y2)/(y1-y2),   0,
     			0,                  0,              -(df+dn)/(df-dn),   -(2.0f*df*dn)/(df-dn),
     			0,                  0,              -1.0f,              0);
+    			 //(2*dn) / (x2-x1),   0,              (float) (HSkew/mWidth),   0,
+    			//0,                  (2*dn)/(y2-y1), (float) (VSkew/mHeight),   0,
+    			 //(2*dn) / ((float)mWidth),   0,              (float) (HSkew/mWidth),   0,
+    			//0,                  (2*dn)/((float) mHeight), (float) (VSkew/mHeight),   0,
+    			//0,                  0,              -(df+dn)/(df-dn),   -(2.0f*df*dn)/(df-dn),
+    			//0,                  0,              -1.0f,              0);
         }
 
         private Matrix4 FoVRotProjection() {
