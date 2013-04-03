@@ -65,7 +65,7 @@ namespace Chimera.GUI.Controls {
         }
 
         private void Coordinator_Tick() {
-            if (Created && !IsDisposed && !Disposing)
+            if (Created && !IsDisposed && !Disposing && mWindow.OverlayManager.Statistics != null)
                 BeginInvoke(new Action(() => {
                     tpsLabel.Text = "Ticks / Second: " + mWindow.OverlayManager.Statistics.TicksPerSecond;
 
@@ -100,14 +100,10 @@ namespace Chimera.GUI.Controls {
                 fovHPanel.Value = (float)(mWindow.HFieldOfView * (180.0 / Math.PI));
                 fovVPanel.Value = (float)(mWindow.VFieldOfView * (180.0 / Math.PI));
 
-                outputPitchLabel.Text = "Pitch: " + Math.Round(mWindow.OutputOrientation.Pitch, 3);
-                outputYawLabel.Text = "Yaw: " + Math.Round(mWindow.OutputOrientation.Yaw, 3);
-
                 switch (mWindow.Projection) {
                     case ProjectionStyle.Simple: simpleProjectionButton.Checked = true; break;
                     case ProjectionStyle.Skewed: skewedProjectionButton.Checked = true; break;
                     case ProjectionStyle.Calculated: calculatedProjectionButton.Checked = true; break;
-                    case ProjectionStyle.RotFoV: rotFoVProjectionButton.Checked = true; break;
                 }
 
                 if (mWindow.Anchor == WindowAnchor.Centre)
@@ -250,8 +246,6 @@ namespace Chimera.GUI.Controls {
                 mWindow.Projection = ProjectionStyle.Skewed;
             else if (calculatedProjectionButton.Checked)
                 mWindow.Projection = ProjectionStyle.Calculated;
-            else if (rotFoVProjectionButton.Checked)
-                mWindow.Projection = ProjectionStyle.RotFoV;
         }
 
         private void AnchorButton_CheckedChanged(object sender, EventArgs e) {

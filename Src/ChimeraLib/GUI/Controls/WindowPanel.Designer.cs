@@ -35,7 +35,6 @@
             this.centreAnchorButton = new System.Windows.Forms.RadioButton();
             this.topLeftAnchorButton = new System.Windows.Forms.RadioButton();
             this.projectionGroup = new System.Windows.Forms.GroupBox();
-            this.rotFoVProjectionButton = new System.Windows.Forms.RadioButton();
             this.calculatedProjectionButton = new System.Windows.Forms.RadioButton();
             this.skewedProjectionButton = new System.Windows.Forms.RadioButton();
             this.simpleProjectionButton = new System.Windows.Forms.RadioButton();
@@ -54,8 +53,6 @@
             this.label4 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
-            this.outputYawLabel = new System.Windows.Forms.Label();
-            this.outputPitchLabel = new System.Windows.Forms.Label();
             this.overlayTab = new System.Windows.Forms.TabPage();
             this.tickCountLabel = new System.Windows.Forms.Label();
             this.shortestWorkLabel = new System.Windows.Forms.Label();
@@ -69,7 +66,6 @@
             this.bringToFrontButtin = new System.Windows.Forms.Button();
             this.fullscreenCheck = new System.Windows.Forms.CheckBox();
             this.launchOverlayButton = new System.Windows.Forms.Button();
-            this.label13 = new System.Windows.Forms.Label();
             this.diagonalPanel = new Chimera.GUI.ScalarPanel();
             this.widthPanel = new Chimera.GUI.ScalarPanel();
             this.heightPanel = new Chimera.GUI.ScalarPanel();
@@ -175,8 +171,6 @@
             // 
             // splitContainer1.Panel2
             // 
-            this.splitContainer1.Panel2.Controls.Add(this.outputYawLabel);
-            this.splitContainer1.Panel2.Controls.Add(this.outputPitchLabel);
             this.splitContainer1.Panel2.Controls.Add(this.orientationPanel);
             this.splitContainer1.Panel2.Controls.Add(this.centrePanel);
             this.splitContainer1.Panel2.Controls.Add(this.topLeftPanel);
@@ -245,7 +239,6 @@
             // 
             this.projectionGroup.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.projectionGroup.Controls.Add(this.rotFoVProjectionButton);
             this.projectionGroup.Controls.Add(this.calculatedProjectionButton);
             this.projectionGroup.Controls.Add(this.skewedProjectionButton);
             this.projectionGroup.Controls.Add(this.simpleProjectionButton);
@@ -255,19 +248,6 @@
             this.projectionGroup.TabIndex = 32;
             this.projectionGroup.TabStop = false;
             this.projectionGroup.Text = "Projection";
-            // 
-            // rotFoVProjectionButton
-            // 
-            this.rotFoVProjectionButton.AutoSize = true;
-            this.rotFoVProjectionButton.Enabled = false;
-            this.rotFoVProjectionButton.Location = new System.Drawing.Point(219, 19);
-            this.rotFoVProjectionButton.Name = "rotFoVProjectionButton";
-            this.rotFoVProjectionButton.Size = new System.Drawing.Size(81, 17);
-            this.rotFoVProjectionButton.TabIndex = 3;
-            this.rotFoVProjectionButton.TabStop = true;
-            this.rotFoVProjectionButton.Text = "Rotate/FoV";
-            this.rotFoVProjectionButton.UseVisualStyleBackColor = true;
-            this.rotFoVProjectionButton.CheckedChanged += new System.EventHandler(this.ProjectionButton_CheckedChanged);
             // 
             // calculatedProjectionButton
             // 
@@ -480,24 +460,6 @@
             this.label8.TabIndex = 24;
             this.label8.Text = " : ";
             // 
-            // outputYawLabel
-            // 
-            this.outputYawLabel.AutoSize = true;
-            this.outputYawLabel.Location = new System.Drawing.Point(119, 297);
-            this.outputYawLabel.Name = "outputYawLabel";
-            this.outputYawLabel.Size = new System.Drawing.Size(34, 13);
-            this.outputYawLabel.TabIndex = 3;
-            this.outputYawLabel.Text = "Yaw: ";
-            // 
-            // outputPitchLabel
-            // 
-            this.outputPitchLabel.AutoSize = true;
-            this.outputPitchLabel.Location = new System.Drawing.Point(6, 297);
-            this.outputPitchLabel.Name = "outputPitchLabel";
-            this.outputPitchLabel.Size = new System.Drawing.Size(37, 13);
-            this.outputPitchLabel.TabIndex = 2;
-            this.outputPitchLabel.Text = "Pitch: ";
-            // 
             // overlayTab
             // 
             this.overlayTab.Controls.Add(this.tickCountLabel);
@@ -633,15 +595,6 @@
             this.launchOverlayButton.Text = "Launch Overlay";
             this.launchOverlayButton.UseVisualStyleBackColor = true;
             this.launchOverlayButton.Click += new System.EventHandler(this.launchOverlayButton_Click);
-            // 
-            // label13
-            // 
-            this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(0, 0);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(41, 13);
-            this.label13.TabIndex = 1;
-            this.label13.Text = "label13";
             // 
             // diagonalPanel
             // 
@@ -816,7 +769,6 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.label13);
             this.Controls.Add(this.mainTab);
             this.Name = "WindowPanel";
             this.Size = new System.Drawing.Size(841, 625);
@@ -825,7 +777,6 @@
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel1.PerformLayout();
             this.splitContainer1.Panel2.ResumeLayout(false);
-            this.splitContainer1.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
             this.anchorBox.ResumeLayout(false);
@@ -838,7 +789,6 @@
             this.overlayTab.ResumeLayout(false);
             this.overlayTab.PerformLayout();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -896,9 +846,5 @@
         private System.Windows.Forms.Label shortestTickLabel;
         private System.Windows.Forms.Label meanTickLabel;
         private System.Windows.Forms.Label tpsLabel;
-        private System.Windows.Forms.RadioButton rotFoVProjectionButton;
-        private System.Windows.Forms.Label outputYawLabel;
-        private System.Windows.Forms.Label outputPitchLabel;
-        private System.Windows.Forms.Label label13;
     }
 }

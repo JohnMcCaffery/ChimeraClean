@@ -77,9 +77,10 @@ namespace Chimera.OpenSim {
 
             //Vector3 focus = Window.Coordinator.Position + Window.Coordinator.Orientation.LookAtVector;
             Vector3 lookAt = (rotation + Window.Orientation).LookAtVector;
+            Vector3 eyePos = new Vector3(Window.Coordinator.EyePosition.Y, Window.Coordinator.EyePosition.X, -Window.Coordinator.EyePosition.Z);
 
             SetWindowPacket p = new SetWindowPacket();
-            p.Window.Position = position;
+            p.Window.Position = position - (eyePos / 1000f);
             p.Window.PositionDelta = positionDelta;
             p.Window.LookAt = lookAt;
             p.Window.LookAtDelta = rotationDelta.LookAtVector;

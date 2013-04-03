@@ -28,10 +28,6 @@ namespace Chimera {
         /// Calculated using the method from this paper http://lds62-112-144-233.my-simplyroot.de/wp-content/uploads/downloads/2011/12/0008.pdf.
         /// </summary>
         Calculated,
-        /// <summary>
-        /// No skewing is used to achieve the offset effect. Instead the FoV and the orientation are adjusted.
-        /// </summary>
-        RotFoV
     }
     /// <summary>
     /// When adjusting the height and width of a window, which point should stay anchored.
@@ -214,41 +210,6 @@ namespace Chimera {
         }
 
         /// <summary>
-        /// The orientation of the input in real space.
-        /// </summary>
-        public Rotation OutputOrientation {
-            get { 
-                if (mProjection == ProjectionStyle.RotFoV) {
-                    /*
-                    Vector3 diffH = mTopLeft - mCoordinator.EyePosition;
-                    Vector3 diffV = mTopLeft - mCoordinator.EyePosition;
-                    diffH.Z = 0f;
-                    //diffV.Y = (float) Math.Sqrt(Math.Pow(diffV.X, 2) + Math.Pow(diffV.Y, 2));
-                    //diffV.X = 0f;
-                    double hAngle = Math.Acos(Vector3.Dot(Vector3.Normalize(diffH), Vector3.UnitX));
-                    double vAngle = Math.Acos(Vector3.Dot(Vector3.Normalize(diffV), Vector3.Normalize(diffH)));
-                    //double vAngle = Math.Acos(Vector3.Mag(diffV) / Vector3.Mag(diffH));
-                    hAngle = ApplySign(hAngle, diffH, Vector3.UnitX);
-                    vAngle = ApplySign(vAngle, diffV, diffH);
-                    double hdeg = hAngle * (180 / Math.PI);
-                    double vdeg = vAngle * (180 / Math.PI);
-                    return new Rotation((vAngle + (VFieldOfView / 2.0)) * (180 / Math.PI), (hAngle + (HFieldOfView / 2.0)) * (180.0 / Math.PI));
-                    */
-                    Rotation topLeftRot = new Rotation(mTopLeft - mCoordinator.EyePosition);
-                    //Rotation topLeftRot = new Rotation(t - mCoordinator.EyePosition);
-                    Rotation fovRot = new Rotation((VFieldOfView / 2.0) * (180.0 / Math.PI), (HFieldOfView / 2.0) * (180.0 / Math.PI));
-                    Vector3 a = new Vector3((float) ScreenDistance, 0f, 0f);
-                    Vector3 h = new Vector3(0f, 0f, mTopLeft.Z);
-                    //double pitch = ApplySign(Math.Acos(Vector3.Dot(a, h)) * (180 / Math.PI), a, h);
-                    double pitch = ApplySign(Math.Atan(mTopLeft.Z / ScreenDistance) * (180 / Math.PI), mTopLeft, Vector3.UnitX);
-                    topLeftRot.Pitch = pitch;
-                    return topLeftRot + fovRot;
-                }
-                return mOrientation;
-            }
-        }
-
-        /// <summary>
         /// The width of the screen, in mm.
         /// </summary>
         public double Width {
@@ -327,16 +288,7 @@ namespace Chimera {
         /// Calculated as the tangent of <code>width / (2 * d)</code> where d is distance to the screen.
         /// </summary>
         public double HFieldOfView {
-            get {
-                /*
-                if (mProjection == ProjectionStyle.RotFoV) {
-                    Vector3 bottomRight = mTopLeft + (new Vector3(0f, (float)mWidth, (float)-mHeight) * mOrientation.Quaternion);
-                    Rotation tlRot = new Rotation(mTopLeft);
-                    Rotation brRot = new Rotation(bottomRight);
-                    return (brRot - tlRot).Yaw * (Math.PI / 180.0);
-                }
-                */
-                return CalculateFOV(mWidth, new Vector3(0f, (float)mWidth, 0f)); }
+            get { return CalculateFOV(mWidth, new Vector3(0f, (float)mWidth, 0f)); }
             set {
                 if (value <= 0.0)
                     return;
@@ -352,16 +304,7 @@ namespace Chimera {
         /// Calculated as the tangent of <code>height / (2 * d)</code> where d is distance to the screen.
         /// </summary>
         public double VFieldOfView {
-            get {
-                /*
-                if (mProjection == ProjectionStyle.RotFoV) {
-                    Vector3 bottomRight = mTopLeft + (new Vector3(0f, (float)mWidth, (float)-mHeight) * mOrientation.Quaternion);
-                    Rotation tlRot = new Rotation(mTopLeft);
-                    Rotation brRot = new Rotation(bottomRight);
-                    return (brRot - tlRot).Pitch * (Math.PI / 180.0);
-                }
-                */
-                return CalculateFOV(mHeight, new Vector3(0f, 0f, (float)-mHeight)); }
+            get { return CalculateFOV(mHeight, new Vector3(0f, 0f, (float)-mHeight)); }
             set {
                 if (value <= 0.0)
                     return;
@@ -496,34 +439,12 @@ namespace Chimera {
             Vector3 miniTop = Vector3.Zero;
             Vector3 miniSide = Vector3.Zero;
 
-            if (mProjection == ProjectionStyle.RotFoV) {
-                Vector3 hLeft = new Vector3(mTopLeft - mCoordinator.EyePosition);
-                Vector3 vLeft = new Vector3(mTopLeft - mCoordinator.EyePosition);
-                hLeft.Z = 0f;
-                vLeft.X = (float) ScreenDistance;
-                vLeft.Y = 0f;
-                float hHyp = Vector3.Mag(hLeft);
-                float vHyp = Vector3.Mag(vLeft);
-                double w = (Math.Sin(HFieldOfView / 2.0) * hHyp) * 2.0;
-                double h = (Math.Sin(VFieldOfView / 2.0) * vHyp) * 2.0;
-                miniTop = new Vector3(0f, (float) w, 0f) * new Rotation(0.0, OutputOrientation.Yaw).Quaternion;
-                miniSide = new Vector3(0f, 0f, (float) -h) * new Rotation(OutputOrientation.Pitch, 0.0).Quaternion;
-            }
-
             using (Pen p = new Pen(mColour, 3f)) {
                 Point bottomR = to2D(mTopLeft + top + side);
                 graphics.DrawLine(p, to2D(mTopLeft), to2D(mTopLeft + top));
                 graphics.DrawLine(p, to2D(mTopLeft), to2D(mTopLeft + side));
                 graphics.DrawLine(p, to2D(mTopLeft + top), bottomR);
                 graphics.DrawLine(p, to2D(mTopLeft + side), bottomR);
-
-                if (mProjection == ProjectionStyle.RotFoV) {
-                    Point botR = to2D(mTopLeft + miniTop + miniSide);
-                    graphics.DrawLine(p, to2D(mTopLeft), to2D(mTopLeft + miniTop));
-                    graphics.DrawLine(p, to2D(mTopLeft), to2D(mTopLeft + miniSide));
-                    graphics.DrawLine(p, to2D(mTopLeft + miniTop), botR);
-                    graphics.DrawLine(p, to2D(mTopLeft + miniSide), botR);
-                }
             }
 
             using (Brush b = new SolidBrush(mColour)) {
@@ -533,17 +454,6 @@ namespace Chimera {
                     to2D(mTopLeft + top + side),
                     to2D(mTopLeft + side)
                 });
-
-                /*
-                if (mProjection == ProjectionStyle.RotFoV) {
-                    graphics.FillPolygon(Brushes.Red, new Point[] {
-                        to2D(mTopLeft),
-                        to2D(mTopLeft + miniTop),
-                        to2D(mTopLeft + miniTop + miniSide),
-                        to2D(mTopLeft + miniSide)
-                    });
-                }
-                */
             }
 
             float perspectiveLineScale = 5f;
@@ -609,42 +519,7 @@ namespace Chimera {
         }
 
         private double CalculateFOV(double o, Vector3 edge) {
-            if (mProjection == ProjectionStyle.RotFoV) {
-                //Vector3 max = edge * -1;
-                //Quaternion q = Quaternion.CreateFromEulers(0f, (float)(mOrientation.Pitch * Rotation.DEG2RAD), 0f);
-                //edge *= q;
-                //max *= q;
-                //Vector3 centre = Centre;
-                //edge += centre;
-                //max += centre;
-
-                edge *= mOrientation.Quaternion;
-                //Vector3 otherCorner = mTopLeft + (edge * mOrientation.Quaternion);
-                Vector3 otherCorner = mTopLeft + edge;
-                Vector3 arm1 = mTopLeft - mCoordinator.EyePosition;
-                Vector3 arm2 = otherCorner - mCoordinator.EyePosition;
-                if (edge.Z == 0f) {
-                    arm1.Z = 0f;
-                    arm2.Z = 0f;
-                } else {
-                    //arm1.X = (float)Math.Sqrt(Math.Pow(arm1.X, 2.0) + Math.Pow(arm1.Y, 2.0));
-                    //arm2.X = (float)Math.Sqrt(Math.Pow(arm2.X, 2.0) + Math.Pow(arm2.Y, 2.0));
-                    arm1.X = (float) ScreenDistance;
-                    arm2.X = (float) ScreenDistance;
-                    arm1.Y = 0f;
-                    arm2.Y = 0f;
-                }
-                //arm1 = Vector3.Normalize(arm1);
-                //arm2 = Vector3.Normalize(arm2);
-                //float mag1 = Vector3.Mag(arm1);
-                //float mag2 = Vector3.Mag(arm2);
-                //float dot = Vector3.Dot(Vector3.Normalize(mTopLeft - mCoordinator.EyePosition), Vector3.Normalize(otherCorner - mCoordinator.EyePosition));
-                float dot = Vector3.Dot(Vector3.Normalize(arm1), Vector3.Normalize(arm2));
-                double angle = Math.Acos(dot) * (180.0 / Math.PI);
-                return Math.Acos(dot);
-            } else 
-                //TODO what happens with a skew?
-                return Math.Atan2(o / 2, ScreenDistance) * 2;
+            return Math.Atan2(o / 2, ScreenDistance) * 2;
         }
 
         private void ChangeDimesions(double width, double height) {
@@ -706,51 +581,45 @@ namespace Chimera {
             float x2O = Math.Max(upperRight.Y, lowerLeft.Y);
             float y1O = Math.Max(upperRight.Z, lowerLeft.Z);
             float y2O = Math.Min(upperRight.Z, lowerLeft.Z);
-            float x1 = (float) ((mWidth /-2) + HSkew) / 10000f;
-            float x2 = (float) ((mWidth / 2) + HSkew) / 10000f;
-            float y1 = (float)((mHeight / 2) + VSkew) / 10000f;
-            float y2 = (float)((mHeight /-2) + VSkew) / 10000f;
-            float dn = (diff.Length() / diff.X) * .1f;
-            float df = (512f * 100f) * dn;
+            float dn = .1f;
+            float df = 1024f;
+            double scale = 1f / ScreenDistance;
+            float x1 = (float) ((mWidth /-2) + HSkew) * (float) scale;
+            float x2 = (float) ((mWidth / 2) + HSkew) * (float) scale;
+            float y1 = (float)((mHeight / 2) + VSkew) * (float) scale;
+            float y2 = (float)((mHeight /-2) + VSkew) * (float) scale;
 
-		    Matrix4 ret = new Matrix4(
+            float hFoV = (float)(2.0 / (mWidth * scale));
+            float vFoV = (float)(2.0 / (mHeight * scale));
+            float hShift = (float)(HSkew / (mWidth / 2.0));
+            float vShift = (float)(VSkew / (mHeight / 2.0));
+            float clip1 = -(df + dn) / (df - dn);
+            float clip2 = -(2.0f * df * dn) / (df - dn);
+
+            float hFoV2 = (2*dn) / (x2-x1);
+            float vFoV2 = (2*dn)/(y1-y2);
+            float hShift2 = (x2+x1)/(x2-x1);
+            float vShift2 = (y1+y2)/(y1-y2);
+            float clip12 = -(df+dn)/(df-dn);
+            float clip22 = -(2.0f * df * dn) / (df - dn);
+
+		    return new Matrix4(
+                hFoV,   0f,     hShift, 0f,
+                0f,     vFoV,   vShift, 0f,
+                0f,     0f,     clip1,  clip2,
+                0f,     0f,     -1f,    0f);
+                /*
     			(2*dn) / (x2-x1),   0,              (x2+x1)/(x2-x1),   0,
     			0,                  (2*dn)/(y1-y2), (y1+y2)/(y1-y2),   0,
     			0,                  0,              -(df+dn)/(df-dn),   -(2.0f*df*dn)/(df-dn),
     			0,                  0,              -1.0f,              0);
+                */
     			 //(2*dn) / (x2-x1),   0,              (float) (HSkew/mWidth),   0,
     			//0,                  (2*dn)/(y2-y1), (float) (VSkew/mHeight),   0,
     			 //(2*dn) / ((float)mWidth),   0,              (float) (HSkew/mWidth),   0,
     			//0,                  (2*dn)/((float) mHeight), (float) (VSkew/mHeight),   0,
     			//0,                  0,              -(df+dn)/(df-dn),   -(2.0f*df*dn)/(df-dn),
     			//0,                  0,              -1.0f,              0);
-
-            //Vector3 left = mTopLeft - mCoordinator.EyePosition;
-            //Vector3 right = (mTopLeft + new Vector3(0f, 2000f, 0f)) - mCoordinator.EyePosition;
-            //Vector3 middle = (mTopLeft + new Vector3(0f, 1000f, 0f)) - mCoordinator.EyePosition;
-            Vector3 left = new Vector3(-1000f, 0f, 1000f);
-            Vector3 middle = new Vector3(0f, 0f, 1000f);
-            Vector3 right = new Vector3(1000f, 0f, 1000f);
-
-            /*
-            o = (left * ret) / Vector3.Mag(left);
-            o = (right * ret) / Vector3.Mag(left);
-            o = (middle * ret) / Vector3.Mag(left);
-            */
-
-            Vector3 oLeft = (left * ret) / left.Z;
-            Vector3 oMiddle = (middle * ret) / left.Z;
-            Vector3 oRight = (right * ret) / left.Z;
-
-            left *= 3f;
-            middle *= 3f;
-            right *= 3f;
-
-            oLeft = (left * ret) / left.Z;
-            oMiddle = (middle * ret) / left.Z;
-            oRight = (right * ret) / left.Z;
-
-            return ret;
         }
 
         private Matrix4 FoVRotProjection() {

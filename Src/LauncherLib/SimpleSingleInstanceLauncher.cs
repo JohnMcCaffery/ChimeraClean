@@ -118,6 +118,12 @@ namespace Chimera.Launcher {
             mCoordinator.StateManager.AddState(flythroughState);
             //mCoordinator.StateManager.CurrentState = splashScreen;
 
+            IState cathedralOverlay = new ImageBGState("CathedralOverlay", mCoordinator.StateManager, "../Images/CathedralSplashScreen.png");
+            mCoordinator.StateManager.CurrentState = cathedralOverlay;
+            mainWindow.OverlayManager.Opacity = .5;
+            customTriggerHelp.Triggered += () => mainWindow.OverlayManager.Opacity = mainWindow.OverlayManager.Opacity > 0.0 ? 0.0 : .5;
+            customTriggerHelp.Active = true;
+
             //Window[] windows = new Window[] { new Window("Main Window") };
             //Chimera.Overlay.MainMenu mainMenu = new Chimera.Overlay.MainMenu();
             //Coordinator input = new Coordinator(windows, mainMenu, kinect);
