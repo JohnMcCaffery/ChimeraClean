@@ -270,7 +270,7 @@ namespace Chimera {
         /// How far the view is skewed away from the direction it is facing along the horizontal axis.
         /// </summary>
         public double HSkew {
-            get { return CalculateFrustumOffset(v => new Vector2(v.X, v.Y)); }
+            get { return CalculateFrustumOffset(v => new Vector2(v.X, v.Y), mOrientation.LookAtVector); }
             set { TopLeftFromSkew(ScreenDistance, value, VSkew); }
         }
 
@@ -278,7 +278,7 @@ namespace Chimera {
         /// How far the view is skewed away from the direction it is facing along the veritcal axis.
         /// </summary>
         public double VSkew {
-            get { return CalculateFrustumOffset(v => new Vector2((float) Math.Sqrt(Math.Pow(v.X, 2) + Math.Pow(v.Y, 2)), v.Z)); }
+            get { return CalculateFrustumOffset(v => new Vector2((float) Math.Sqrt(Math.Pow(v.X, 2) + Math.Pow(v.Y, 2)), v.Z), Vector3.UnitZ); }
             set { TopLeftFromSkew(ScreenDistance, HSkew, value); }
         }
 
@@ -511,11 +511,13 @@ namespace Chimera {
             return val;
         }
 
-        private double CalculateFrustumOffset(Func<Vector3, Vector2> to2D) {
+        private double CalculateFrustumOffset(Func<Vector3, Vector2> to2D, Vector3 b) {
             Vector2 h = to2D(Centre - mCoordinator.EyePosition);
             Vector2 a = to2D(mOrientation.LookAtVector);
             float dot = Vector2.Dot(Vector2.Normalize(h), Vector2.Normalize(a));
-            return ApplySign(Math.Sin(Math.Acos(dot)) * h.Length(), Centre - mCoordinator.EyePosition, mOrientation.LookAtVector);
+            return ApplySign(Math.Sin(Math.Acos(dot)) * h.Length(), new Vector3(h, 0f), new Vector3(a, 0f));
+            //return ApplySign(Math.Sin(Math.Acos(dot)) * h.Length(), Centre - mCoordinator.EyePosition, b);
+            //return ApplySign(Math.Sin(Math.Acos(dot)) * h.Length(), Centre - mCoordinator.EyePosition, mOrientation.LookAtVector);
         }
 
         private double CalculateFOV(double o, Vector3 edge) {

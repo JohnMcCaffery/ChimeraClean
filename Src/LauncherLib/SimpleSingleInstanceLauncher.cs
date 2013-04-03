@@ -123,6 +123,7 @@ namespace Chimera.Launcher {
             mainWindow.OverlayManager.Opacity = .5;
             customTriggerHelp.Triggered += () => mainWindow.OverlayManager.Opacity = mainWindow.OverlayManager.Opacity > 0.0 ? 0.0 : .5;
             customTriggerHelp.Active = true;
+            mCoordinator.EnableUpdates = true;
 
             //Window[] windows = new Window[] { new Window("Main Window") };
             //Chimera.Overlay.MainMenu mainMenu = new Chimera.Overlay.MainMenu();
