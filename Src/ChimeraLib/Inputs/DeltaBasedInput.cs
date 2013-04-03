@@ -77,8 +77,8 @@ namespace Chimera.Inputs {
             mInput.Close();
         }
 
-        public void Draw(Func<Vector3, Point> to2D, Graphics graphics) {
-            mInput.Draw(to2D, graphics);
+        public void Draw(Func<Vector3, Point> to2D, Graphics graphics, Action redraw) {
+            mInput.Draw(to2D, graphics, redraw);
         }
 
         #endregion

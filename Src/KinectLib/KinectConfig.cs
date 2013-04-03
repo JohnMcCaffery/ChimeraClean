@@ -12,6 +12,7 @@ namespace Chimera.Kinect {
         public double Yaw;
         public bool Autostart;
         public bool Enabled;
+        public bool EnableHead;
 
         public override string Group {
             get { return "Kinect"; }
@@ -27,6 +28,7 @@ namespace Chimera.Kinect {
             Yaw = Get(true, "KinectYaw", 0.0, "the yaw of where the kinect is looking in real space.");
             Autostart = Get(true, "KinectAutostart", false, "Whether to start the kinect when the system starts.");
             Enabled = Get(true, "KinectEnabled", true, "Whether to start with kinect input controlling the system.");
+            EnableHead = Get(true, "KinectHeadEnabled", false, "Whether to start with the kinect mapping the user's head position into the 'eye' position for calculating views.");
         }
     }
 }

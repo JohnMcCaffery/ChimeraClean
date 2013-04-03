@@ -170,17 +170,17 @@ namespace Chimera.GUI.Forms {
         private void mCoordinator_Tick() {
             if (Created && !IsDisposed && !Disposing)
                 BeginInvoke(new Action(() => {
-                    tpsLabel.Text = "Ticks / Second: " + mCoordinator.Statistics.TicksPerSecond;
+                        tpsLabel.Text = "Ticks / Second: " + mCoordinator.Statistics.TicksPerSecond;
 
-                    meanTickLabel.Text = "Mean Tick Length: " + mCoordinator.Statistics.MeanTickLength;
-                    longestTickLabel.Text = "Longest Tick: " + mCoordinator.Statistics.LongestTick;
-                    shortestTickLabel.Text = "Shortest Tick: " + mCoordinator.Statistics.ShortestTick;
+                        meanTickLabel.Text = "Mean Tick Length: " + mCoordinator.Statistics.MeanTickLength;
+                        longestTickLabel.Text = "Longest Tick: " + mCoordinator.Statistics.LongestTick;
+                        shortestTickLabel.Text = "Shortest Tick: " + mCoordinator.Statistics.ShortestTick;
 
-                    meanWorkLabel.Text = "Mean Work Length: " + mCoordinator.Statistics.MeanWorkLength;
-                    longestWorkLabel.Text = "Longest Work: " + mCoordinator.Statistics.LongestWork;
-                    shortestWorkLabel.Text = "Shortest Work: " + mCoordinator.Statistics.ShortestWork;
+                        meanWorkLabel.Text = "Mean Work Length: " + mCoordinator.Statistics.MeanWorkLength;
+                        longestWorkLabel.Text = "Longest Work: " + mCoordinator.Statistics.LongestWork;
+                        shortestWorkLabel.Text = "Shortest Work: " + mCoordinator.Statistics.ShortestWork;
 
-                    tickCountLabel.Text = "Tick Count: " + mCoordinator.Statistics.TickCount;
+                        tickCountLabel.Text = "Tick Count: " + mCoordinator.Statistics.TickCount;
                 }));
         }
 
@@ -364,6 +364,13 @@ namespace Chimera.GUI.Forms {
         }
 
         private void heightmapPanel_Paint(object sender, PaintEventArgs e) {
+            if (mRedrawHeightmap == null)
+                mRedrawHeightmap = () => {
+                    if (InvokeRequired)
+                        Invoke(() => heightmapPanel.Invalidate());
+                    else
+                        heightmapPanel.Invalidate();
+                };
             if (mCoordinator != null) {
                 /*
                 int x = (int)((mCoordinator.Position.X / (float)mCoordinator.Heightmap.GetLength(0)) * e.ClipRectangle.Width);
@@ -383,11 +390,18 @@ namespace Chimera.GUI.Forms {
                 map = new Bitmap(map, e.ClipRectangle.Width, e.ClipRectangle.Height);
                 mHeightmapPerspective.Clip = e.ClipRectangle;
                 e.Graphics.DrawImage(map, Point.Empty);
-                mCoordinator.Draw(mHeightmapPerspective.To2D, e.Graphics, e.ClipRectangle);
+                mCoordinator.Draw(mHeightmapPerspective.To2D, e.Graphics, e.ClipRectangle, mRedrawHeightmap);
             }
         }
 
         private void realSpacePanel_Paint(object sender, PaintEventArgs e) {
+            if (mRedrawRealSpace == null)
+                mRedrawRealSpace = () => {
+                    if (InvokeRequired)
+                        Invoke(() => realSpacePanel.Invalidate());
+                    else
+                        realSpacePanel.Invalidate();
+                };
             if (mCoordinator != null) {
                 mCurrentPerspective.Clip = e.ClipRectangle;
                 float greenEdge = (e.ClipRectangle.Width * 2) / mCurrentPerspective.Scale;
@@ -396,9 +410,13 @@ namespace Chimera.GUI.Forms {
                 e.Graphics.DrawLine(Pens.Red, mCurrentPerspective.To2D(new Vector3(-greenEdge, 0f, 0f)), mCurrentPerspective.To2D(new Vector3(greenEdge, 0f, 0f)));
                 e.Graphics.DrawLine(Pens.Green, mCurrentPerspective.To2D(new Vector3(0f, -greenEdge, 0f)), mCurrentPerspective.To2D(new Vector3(0f, greenEdge, 0f)));
                 e.Graphics.DrawLine(Pens.Blue, mCurrentPerspective.To2D(new Vector3(0f, 0f, -blueEdge)), mCurrentPerspective.To2D(new Vector3(0f, 0f, blueEdge)));
-                mCoordinator.Draw(mCurrentPerspective.To2D, e.Graphics, e.ClipRectangle);
+
+                mCoordinator.Draw(mCurrentPerspective.To2D, e.Graphics, e.ClipRectangle, mRedrawRealSpace);
             }
         }
+
+        private Action mRedrawRealSpace;
+        private Action mRedrawHeightmap;
 
 
         private bool mVirtualMouseDown;

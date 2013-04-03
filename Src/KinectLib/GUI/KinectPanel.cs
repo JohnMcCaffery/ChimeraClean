@@ -41,7 +41,8 @@ namespace Chimera.Kinect.GUI {
                 AddMovement(movementController);
                 if (movementControllerPulldown.SelectedIndex == -1)
                     movementControllerPulldown.SelectedIndex = 0;
-            }            foreach (var helpTrigger in mInput.HelpTriggers) {
+            }
+            foreach (var helpTrigger in mInput.HelpTriggers) {
                 helpTriggerPulldown.Items.Add(helpTrigger.Name);
                 AddHelpTrigger(helpTrigger);
                 if (helpTriggerPulldown.SelectedIndex == -1)
@@ -86,7 +87,8 @@ namespace Chimera.Kinect.GUI {
             mInput.MovementController.ControlPanel.Visible = false;
             mInput.SetMovement(movementControllerPulldown.SelectedItem.ToString());
             mInput.MovementController.ControlPanel.Visible = true;
-        }
+        }
+
         private void helpTriggerPulldown_SelectedIndexChanged(object sender, EventArgs e) {
             mInput.HelpTrigger.ControlPanel.Visible = false;
             mInput.SetHelpTrigger(helpTriggerPulldown.SelectedItem.ToString());

@@ -21,9 +21,12 @@ namespace Chimera.Kinect {
         private Coordinator mCoordinator;
         private bool mEnabled;
         private bool mKinectStarted;
+        private bool mHeadEnabled;
         private Vector3 mKinectPosition;
         private Rotation mKinectOrientation;
         private KinectPanel mPanel;
+
+        private Vector mHead;
 
         private IDeltaInput mCurrentMovementController;
         private IHelpTrigger mCurrentHelpTrigger;
@@ -68,6 +71,8 @@ namespace Chimera.Kinect {
             get { return mKinectPosition; }
             set {
                 mKinectPosition = value;
+                foreach (var redraw in mRedraws)
+                    redraw();
                 if (PositionChanged != null)
                     PositionChanged(value);
             }
@@ -77,8 +82,8 @@ namespace Chimera.Kinect {
             get { return mKinectOrientation; }
             set {
                 mKinectOrientation = value;
-                if (OrientationChanged != null)
-                    OrientationChanged(value);
+                mKinectOrientation_Changed(value, null);
+                mKinectOrientation.Changed += new EventHandler(mKinectOrientation_Changed);
             }
         }
 
@@ -91,8 +96,12 @@ namespace Chimera.Kinect {
 
             mKinectPosition = cfg.Position;
             mKinectOrientation = new Rotation(cfg.Pitch, cfg.Yaw);
+            mKinectOrientation.Changed += new EventHandler(mKinectOrientation_Changed);
             mCursorFactories = new List<IKinectCursorFactory>(cursors);
             mEnabled = cfg.Enabled;
+            mHeadEnabled = cfg.EnableHead;
+
+            mHead = Nui.joint(Nui.Head);
 
             foreach (var movement in movementControllers) {
                 mMovementControllers.Add(movement.Name, movement);
@@ -123,6 +132,13 @@ namespace Chimera.Kinect {
 
             if (cfg.Autostart)
                 StartKinect();
+        }
+
+        void mKinectOrientation_Changed(object sender, EventArgs e) {
+            foreach (var redraw in mRedraws)
+                redraw();
+            if (OrientationChanged != null)
+                OrientationChanged(mKinectOrientation);
         }
         public void StartKinect() {
             if (!mKinectStarted) {
@@ -225,8 +241,37 @@ namespace Chimera.Kinect {
             //Nui.Close();
         }
 
-        public void Draw(Func<Vector3, Point> to2D, Graphics graphics) {
-            throw new NotImplementedException();
+        readonly HashSet<Action> mRedraws = new HashSet<Action>();
+
+        public void Draw(Func<Vector3, Point> to2D, Graphics graphics, Action redraw) {
+            if (!mRedraws.Contains(redraw))
+                mRedraws.Add(redraw);
+            //TODO - draw in Kinect position / orientation
+            using (Pen p = new Pen(Color.Black, 3f)) {
+                Vector3 l = new Vector3(0f, -140, 0f) * mKinectOrientation.Quaternion;
+                Vector3 r = new Vector3(0f, 140, 0f) * mKinectOrientation.Quaternion;
+                graphics.DrawLine(p, to2D(mKinectPosition + l), to2D(mKinectPosition + r));
+            }
+            using (Brush b = new SolidBrush(Color.FromArgb(128, Color.Blue))) {
+                int hFoV = 57 / 2;
+                int vFoV = 43 / 2;
+                Vector3 range = new Vector3(3500f, 0f, 0f);
+                Vector3 topLeft = range * (new Rotation(vFoV, -hFoV) + mKinectOrientation).Quaternion;
+                Vector3 topRight = range * (new Rotation(vFoV, hFoV) + mKinectOrientation).Quaternion;
+                Vector3 bottomLeft = range * (new Rotation(-vFoV, -hFoV) + mKinectOrientation).Quaternion;
+                Vector3 bottomRight = range * (new Rotation(-vFoV, hFoV) + mKinectOrientation).Quaternion;
+
+                Point centreP = to2D(mKinectPosition);
+                Point topLeftP = to2D(topLeft);
+                Point topRightP = to2D(topRight);
+                Point bottomLeftP = to2D(bottomLeft);
+                Point bottomRightP = to2D(bottomRight);
+
+                graphics.FillPolygon(b, new Point[] { centreP, topLeftP, topRightP, centreP });
+                graphics.FillPolygon(b, new Point[] { centreP, bottomLeftP, bottomRightP,centreP });
+                graphics.FillPolygon(b, new Point[] { centreP, topLeftP, bottomLeftP,centreP });
+                graphics.FillPolygon(b, new Point[] { centreP, topRightP, bottomRightP,centreP });
+            }
         }
 
         #endregion

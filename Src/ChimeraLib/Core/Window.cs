@@ -433,7 +433,7 @@ namespace Chimera {
         /// </summary>
         /// <param name="perspective">The perspective to render along.</param>
         /// <param name="graphics">The graphics object to draw with.</param>
-        public void Draw(Func<Vector3, Point> to2D, Graphics graphics, Rectangle clipRectangle) {
+        public void Draw(Func<Vector3, Point> to2D, Graphics graphics, Rectangle clipRectangle, Action redraw) {
             Vector3 top = new Vector3(0f, (float)mWidth, 0f) * mOrientation.Quaternion;
             Vector3 side = new Vector3(0f, 0f, (float)-mHeight) * mOrientation.Quaternion;
             Vector3 miniTop = Vector3.Zero;
@@ -463,13 +463,13 @@ namespace Chimera {
             Vector3 bottomRightLine = (((mTopLeft + side) - mCoordinator.EyePosition) * perspectiveLineScale) + mCoordinator.EyePosition;
 
             Point eye = to2D(mCoordinator.EyePosition);
-            graphics.DrawLine(Pens.SeaShell, eye, to2D(topLeftLine));
-            graphics.DrawLine(Pens.SeaShell, eye, to2D(topRightLine));
-            graphics.DrawLine(Pens.SeaShell, eye, to2D(bottomLeftLine));
-            graphics.DrawLine(Pens.SeaShell, eye, to2D(bottomRightLine));
+            graphics.DrawLine(Pens.DarkViolet, eye, to2D(topLeftLine));
+            graphics.DrawLine(Pens.DarkViolet, eye, to2D(topRightLine));
+            graphics.DrawLine(Pens.DarkViolet, eye, to2D(bottomLeftLine));
+            graphics.DrawLine(Pens.DarkViolet, eye, to2D(bottomRightLine));
 
             Vector3 look = new Vector3((float)ScreenDistance, 0f, 0f) * mOrientation.Quaternion;
-            graphics.DrawLine(Pens.SeaShell, eye, to2D(look + mCoordinator.EyePosition));
+            graphics.DrawLine(Pens.DarkViolet, eye, to2D(look + mCoordinator.EyePosition));
         }
 
         void mCoordinator_EyeUpdated(Coordinator source, EventArgs args) {

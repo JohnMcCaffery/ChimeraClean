@@ -315,8 +315,8 @@ namespace Chimera.Kinect {
 
         public void Close() { }
 
-        public void Draw(Func<Vector3, Point> to2D, System.Drawing.Graphics graphics) {
-            throw new NotImplementedException();
+        public void Draw(Func<Vector3, Point> to2D, Graphics graphics, Action redraw) {
+            //Do nothing
         }
 
         #endregion

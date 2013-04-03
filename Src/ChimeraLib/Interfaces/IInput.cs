@@ -60,6 +60,6 @@ namespace Chimera {
         /// </summary>
         /// <param name=" to2D">Lambda to convert a 3D coordinate into a 2D coordinate that can be rendered on the output.</param>
         /// <param name="graphics">The graphics object to draw with.</param>
-        void Draw(Func<Vector3, Point> to2D, Graphics graphics);
+        void Draw(Func<Vector3, Point> to2D, Graphics graphics, Action redraw);
     }
 }

@@ -375,12 +375,12 @@ namespace Chimera {
         /// <param name="clip">The bounds of the area being drawn on.</param>
         /// <param name="scale">The value to control how large or small the diagram is rendered.</param>
         /// <param name="origin">The origin on the panel to draw transition.</param>
-        public void Draw(Func<Vector3, Point> to2D, Graphics graphics, Rectangle clip) {
-            //foreach (var input in mInputs)
-                //input.Draw(perspective, graphics);
+        public void Draw(Func<Vector3, Point> to2D, Graphics graphics, Rectangle clip, Action redraw) {
+            foreach (var input in mInputs)
+                input.Draw(to2D, graphics, redraw);
 
             foreach (var window in mWindows)
-                window.Draw(to2D, graphics, clip);
+                window.Draw(to2D, graphics, clip, redraw);
         }
 
         /// <summary>
