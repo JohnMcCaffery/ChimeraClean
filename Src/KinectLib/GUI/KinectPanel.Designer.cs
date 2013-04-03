@@ -23,8 +23,8 @@
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent() {
-            Chimera.Util.Rotation rotation1 = new Chimera.Util.Rotation();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(KinectPanel));
+            Chimera.Util.Rotation rotation1 = new Chimera.Util.Rotation();
             this.mainTab = new System.Windows.Forms.TabControl();
             this.controlTab = new System.Windows.Forms.TabPage();
             this.label3 = new System.Windows.Forms.Label();
@@ -34,11 +34,11 @@
             this.cursorControllerPulldown = new System.Windows.Forms.ComboBox();
             this.movementControllerPulldown = new System.Windows.Forms.ComboBox();
             this.startButton = new System.Windows.Forms.Button();
-            this.orientationPanel = new Chimera.GUI.RotationPanel();
-            this.positionPanel = new Chimera.GUI.VectorPanel();
             this.movementTab = new System.Windows.Forms.TabPage();
             this.triggerTab = new System.Windows.Forms.TabPage();
             this.headPanel = new Chimera.GUI.UpdatedVectorPanel();
+            this.orientationPanel = new Chimera.GUI.RotationPanel();
+            this.positionPanel = new Chimera.GUI.VectorPanel();
             this.mainTab.SuspendLayout();
             this.controlTab.SuspendLayout();
             this.SuspendLayout();
@@ -148,6 +148,45 @@
             this.startButton.UseVisualStyleBackColor = true;
             this.startButton.Click += new System.EventHandler(this.startButton_Click);
             // 
+            // movementTab
+            // 
+            this.movementTab.Location = new System.Drawing.Point(4, 22);
+            this.movementTab.Name = "movementTab";
+            this.movementTab.Padding = new System.Windows.Forms.Padding(3);
+            this.movementTab.Size = new System.Drawing.Size(701, 494);
+            this.movementTab.TabIndex = 1;
+            this.movementTab.Text = "Movement";
+            this.movementTab.UseVisualStyleBackColor = true;
+            // 
+            // triggerTab
+            // 
+            this.triggerTab.Location = new System.Drawing.Point(4, 22);
+            this.triggerTab.Name = "triggerTab";
+            this.triggerTab.Padding = new System.Windows.Forms.Padding(3);
+            this.triggerTab.Size = new System.Drawing.Size(701, 494);
+            this.triggerTab.TabIndex = 2;
+            this.triggerTab.Text = "CustomTrigger";
+            this.triggerTab.UseVisualStyleBackColor = true;
+            // 
+            // headPanel
+            // 
+            this.headPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.headPanel.Location = new System.Drawing.Point(3, 312);
+            this.headPanel.Max = 10F;
+            this.headPanel.MaxV = ((OpenMetaverse.Vector3)(resources.GetObject("headPanel.MaxV")));
+            this.headPanel.Min = -10F;
+            this.headPanel.MinimumSize = new System.Drawing.Size(103, 95);
+            this.headPanel.MinV = ((OpenMetaverse.Vector3)(resources.GetObject("headPanel.MinV")));
+            this.headPanel.Name = "headPanel";
+            this.headPanel.Size = new System.Drawing.Size(695, 95);
+            this.headPanel.TabIndex = 11;
+            this.headPanel.Value = ((OpenMetaverse.Vector3)(resources.GetObject("headPanel.Value")));
+            this.headPanel.Vector = null;
+            this.headPanel.X = 0F;
+            this.headPanel.Y = 0F;
+            this.headPanel.Z = 0F;
+            // 
             // orientationPanel
             // 
             this.orientationPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
@@ -185,43 +224,6 @@
             this.positionPanel.Y = 0F;
             this.positionPanel.Z = 0F;
             this.positionPanel.ValueChanged += new System.EventHandler(this.positionPanel_ValueChanged);
-            // 
-            // movementTab
-            // 
-            this.movementTab.Location = new System.Drawing.Point(4, 22);
-            this.movementTab.Name = "movementTab";
-            this.movementTab.Padding = new System.Windows.Forms.Padding(3);
-            this.movementTab.Size = new System.Drawing.Size(701, 494);
-            this.movementTab.TabIndex = 1;
-            this.movementTab.Text = "Movement";
-            this.movementTab.UseVisualStyleBackColor = true;
-            // 
-            // triggerTab
-            // 
-            this.triggerTab.Location = new System.Drawing.Point(4, 22);
-            this.triggerTab.Name = "triggerTab";
-            this.triggerTab.Padding = new System.Windows.Forms.Padding(3);
-            this.triggerTab.Size = new System.Drawing.Size(701, 494);
-            this.triggerTab.TabIndex = 2;
-            this.triggerTab.Text = "CustomTrigger";
-            this.triggerTab.UseVisualStyleBackColor = true;
-            // 
-            // headPanel
-            // 
-            this.headPanel.Location = new System.Drawing.Point(3, 312);
-            this.headPanel.Max = 10F;
-            this.headPanel.MaxV = ((OpenMetaverse.Vector3)(resources.GetObject("headPanel.MaxV")));
-            this.headPanel.Min = -10F;
-            this.headPanel.MinimumSize = new System.Drawing.Size(103, 95);
-            this.headPanel.MinV = ((OpenMetaverse.Vector3)(resources.GetObject("headPanel.MinV")));
-            this.headPanel.Name = "headPanel";
-            this.headPanel.Size = new System.Drawing.Size(698, 95);
-            this.headPanel.TabIndex = 11;
-            this.headPanel.Value = ((OpenMetaverse.Vector3)(resources.GetObject("headPanel.Value")));
-            this.headPanel.Vector = null;
-            this.headPanel.X = 0F;
-            this.headPanel.Y = 0F;
-            this.headPanel.Z = 0F;
             // 
             // KinectPanel
             // 

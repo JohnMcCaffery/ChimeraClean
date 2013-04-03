@@ -25,6 +25,8 @@ namespace Chimera.Kinect {
         private Vector3 mKinectPosition;
         private Rotation mKinectOrientation;
         private KinectPanel mPanel;
+        private Matrix4 mKinectToRealSpace;
+        private EventHandler mOrientationChangeHandler;
 
         private Vector mHead;
 
@@ -71,8 +73,7 @@ namespace Chimera.Kinect {
             get { return mKinectPosition; }
             set {
                 mKinectPosition = value;
-                foreach (var redraw in mRedraws)
-                    redraw();
+                KinectSetupChanged();
                 if (PositionChanged != null)
                     PositionChanged(value);
             }
@@ -81,9 +82,11 @@ namespace Chimera.Kinect {
         public Rotation Orientation {
             get { return mKinectOrientation; }
             set {
+                if (mKinectOrientation != null)
+                    mKinectOrientation.Changed -= mOrientationChangeHandler;
                 mKinectOrientation = value;
                 mKinectOrientation_Changed(value, null);
-                mKinectOrientation.Changed += new EventHandler(mKinectOrientation_Changed);
+                mKinectOrientation.Changed += mOrientationChangeHandler;
             }
         }
 
@@ -93,6 +96,8 @@ namespace Chimera.Kinect {
 
         public KinectInput(IEnumerable<IDeltaInput> movementControllers, IEnumerable<IHelpTrigger> helpTriggers, params IKinectCursorFactory[] cursors) {
             KinectConfig cfg = new KinectConfig();
+
+            mOrientationChangeHandler = new EventHandler(mKinectOrientation_Changed);
 
             mKinectPosition = cfg.Position;
             mKinectOrientation = new Rotation(cfg.Pitch, cfg.Yaw);
@@ -133,26 +138,23 @@ namespace Chimera.Kinect {
 
             if (cfg.Autostart)
                 StartKinect();
+        }
+        private void KinectSetupChanged() {
+             mKinectToRealSpace = Matrix4.CreateFromQuaternion(mKinectOrientation.Quaternion) * Matrix4.CreateTranslation(mKinectPosition);
+             foreach (var redraw in mRedraws)
+                 redraw();
         }
 
         void mHead_OnChange() {
             if (Nui.HasSkeleton) {
-                Matrix4 kinectRot = Matrix4.CreateFromQuaternion(mKinectOrientation.Quaternion);
-                Matrix4 kinectTrans = Matrix4.CreateTranslation(mKinectPosition);
-                Matrix4 kinectToRealSpace = Matrix4.Identity;
-                kinectToRealSpace *= kinectRot;
-                kinectToRealSpace *= kinectTrans;
-
                 Vector3 hKinect = new Vector3(mHead.Z, -mHead.X, mHead.Y) * 1000f;
-                Vector3 eye = hKinect * kinectToRealSpace;
-                mCoordinator.EyePosition = hKinect * kinectToRealSpace;
+                mCoordinator.EyePosition = hKinect * mKinectToRealSpace;
             } else
                 mCoordinator.EyePosition = Vector3.Zero;
         }
 
         void mKinectOrientation_Changed(object sender, EventArgs e) {
-            foreach (var redraw in mRedraws)
-                redraw();
+            KinectSetupChanged();
             if (OrientationChanged != null)
                 OrientationChanged(mKinectOrientation);
         }
