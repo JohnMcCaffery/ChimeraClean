@@ -105,7 +105,7 @@ namespace Chimera {
         /// <summary>
         /// The method used to calculate the projection matrix.
         /// </summary>
-        private ProjectionStyle mProjection = ProjectionStyle.Skewed;
+        private ProjectionStyle mProjection = ProjectionStyle.Calculated;
 
         /// <summary>
         /// Triggered whenever the position of this input changes.

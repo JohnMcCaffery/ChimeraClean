@@ -23,10 +23,12 @@
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent() {
+            Chimera.Util.Rotation rotation1 = new Chimera.Util.Rotation();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(KinectPanel));
-            Chimera.Util.Rotation rotation2 = new Chimera.Util.Rotation();
             this.mainTab = new System.Windows.Forms.TabControl();
             this.controlTab = new System.Windows.Forms.TabPage();
+            this.label3 = new System.Windows.Forms.Label();
+            this.helpTriggerPulldown = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.cursorControllerPulldown = new System.Windows.Forms.ComboBox();
@@ -35,9 +37,8 @@
             this.orientationPanel = new Chimera.GUI.RotationPanel();
             this.positionPanel = new Chimera.GUI.VectorPanel();
             this.movementTab = new System.Windows.Forms.TabPage();
-            this.label3 = new System.Windows.Forms.Label();
-            this.helpTriggerPulldown = new System.Windows.Forms.ComboBox();
             this.triggerTab = new System.Windows.Forms.TabPage();
+            this.headPanel = new Chimera.GUI.UpdatedVectorPanel();
             this.mainTab.SuspendLayout();
             this.controlTab.SuspendLayout();
             this.SuspendLayout();
@@ -57,6 +58,7 @@
             // controlTab
             // 
             this.controlTab.AutoScroll = true;
+            this.controlTab.Controls.Add(this.headPanel);
             this.controlTab.Controls.Add(this.label3);
             this.controlTab.Controls.Add(this.helpTriggerPulldown);
             this.controlTab.Controls.Add(this.label2);
@@ -73,6 +75,26 @@
             this.controlTab.TabIndex = 0;
             this.controlTab.Text = "Control";
             this.controlTab.UseVisualStyleBackColor = true;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(6, 261);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(45, 13);
+            this.label3.TabIndex = 10;
+            this.label3.Text = "Triggers";
+            // 
+            // helpTriggerPulldown
+            // 
+            this.helpTriggerPulldown.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.helpTriggerPulldown.FormattingEnabled = true;
+            this.helpTriggerPulldown.Location = new System.Drawing.Point(116, 258);
+            this.helpTriggerPulldown.Name = "helpTriggerPulldown";
+            this.helpTriggerPulldown.Size = new System.Drawing.Size(579, 21);
+            this.helpTriggerPulldown.TabIndex = 9;
+            this.helpTriggerPulldown.SelectedIndexChanged += new System.EventHandler(this.helpTriggerPulldown_SelectedIndexChanged);
             // 
             // label2
             // 
@@ -138,11 +160,11 @@
             this.orientationPanel.Quaternion = ((OpenMetaverse.Quaternion)(resources.GetObject("orientationPanel.Quaternion")));
             this.orientationPanel.Size = new System.Drawing.Size(701, 95);
             this.orientationPanel.TabIndex = 2;
-            rotation2.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("rotation2.LookAtVector")));
-            rotation2.Pitch = 0D;
-            rotation2.Quaternion = ((OpenMetaverse.Quaternion)(resources.GetObject("rotation2.Quaternion")));
-            rotation2.Yaw = 0D;
-            this.orientationPanel.Value = rotation2;
+            rotation1.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("rotation1.LookAtVector")));
+            rotation1.Pitch = 0D;
+            rotation1.Quaternion = ((OpenMetaverse.Quaternion)(resources.GetObject("rotation1.Quaternion")));
+            rotation1.Yaw = 0D;
+            this.orientationPanel.Value = rotation1;
             this.orientationPanel.Yaw = 0D;
             // 
             // positionPanel
@@ -174,26 +196,6 @@
             this.movementTab.Text = "Movement";
             this.movementTab.UseVisualStyleBackColor = true;
             // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(6, 261);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(45, 13);
-            this.label3.TabIndex = 10;
-            this.label3.Text = "Triggers";
-            // 
-            // helpTriggerPulldown
-            // 
-            this.helpTriggerPulldown.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.helpTriggerPulldown.FormattingEnabled = true;
-            this.helpTriggerPulldown.Location = new System.Drawing.Point(116, 258);
-            this.helpTriggerPulldown.Name = "helpTriggerPulldown";
-            this.helpTriggerPulldown.Size = new System.Drawing.Size(579, 21);
-            this.helpTriggerPulldown.TabIndex = 9;
-            this.helpTriggerPulldown.SelectedIndexChanged += new System.EventHandler(this.helpTriggerPulldown_SelectedIndexChanged);
-            // 
             // triggerTab
             // 
             this.triggerTab.Location = new System.Drawing.Point(4, 22);
@@ -203,6 +205,23 @@
             this.triggerTab.TabIndex = 2;
             this.triggerTab.Text = "CustomTrigger";
             this.triggerTab.UseVisualStyleBackColor = true;
+            // 
+            // headPanel
+            // 
+            this.headPanel.Location = new System.Drawing.Point(3, 312);
+            this.headPanel.Max = 10F;
+            this.headPanel.MaxV = ((OpenMetaverse.Vector3)(resources.GetObject("headPanel.MaxV")));
+            this.headPanel.Min = -10F;
+            this.headPanel.MinimumSize = new System.Drawing.Size(103, 95);
+            this.headPanel.MinV = ((OpenMetaverse.Vector3)(resources.GetObject("headPanel.MinV")));
+            this.headPanel.Name = "headPanel";
+            this.headPanel.Size = new System.Drawing.Size(698, 95);
+            this.headPanel.TabIndex = 11;
+            this.headPanel.Value = ((OpenMetaverse.Vector3)(resources.GetObject("headPanel.Value")));
+            this.headPanel.Vector = null;
+            this.headPanel.X = 0F;
+            this.headPanel.Y = 0F;
+            this.headPanel.Z = 0F;
             // 
             // KinectPanel
             // 
@@ -233,5 +252,6 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.ComboBox helpTriggerPulldown;
         private System.Windows.Forms.TabPage triggerTab;
+        private Chimera.GUI.UpdatedVectorPanel headPanel;
     }
 }

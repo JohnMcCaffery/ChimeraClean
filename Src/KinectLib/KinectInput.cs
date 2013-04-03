@@ -102,6 +102,7 @@ namespace Chimera.Kinect {
             mHeadEnabled = cfg.EnableHead;
 
             mHead = Nui.joint(Nui.Head);
+            mHead.OnChange += new ChangeDelegate(mHead_OnChange);
 
             foreach (var movement in movementControllers) {
                 mMovementControllers.Add(movement.Name, movement);
@@ -134,6 +135,21 @@ namespace Chimera.Kinect {
                 StartKinect();
         }
 
+        void mHead_OnChange() {
+            if (Nui.HasSkeleton) {
+                Matrix4 kinectRot = Matrix4.CreateFromQuaternion(mKinectOrientation.Quaternion);
+                Matrix4 kinectTrans = Matrix4.CreateTranslation(mKinectPosition);
+                Matrix4 kinectToRealSpace = Matrix4.Identity;
+                kinectToRealSpace *= kinectRot;
+                kinectToRealSpace *= kinectTrans;
+
+                Vector3 hKinect = new Vector3(mHead.Z, -mHead.X, mHead.Y) * 1000f;
+                Vector3 eye = hKinect * kinectToRealSpace;
+                mCoordinator.EyePosition = hKinect * kinectToRealSpace;
+            } else
+                mCoordinator.EyePosition = Vector3.Zero;
+        }
+
         void mKinectOrientation_Changed(object sender, EventArgs e) {
             foreach (var redraw in mRedraws)
                 redraw();
@@ -144,8 +160,13 @@ namespace Chimera.Kinect {
             if (!mKinectStarted) {
                 Nui.Init();
                 Nui.SetAutoPoll(true);
+                Nui.SkeletonLost += new SkeletonTrackDelegate(Nui_SkeletonLost);
                 mKinectStarted = true;
             }
+        }
+
+        void Nui_SkeletonLost() {
+            mCoordinator.EyePosition = Vector3.Zero;
         }
 
         public void SetCursor(string cursorName) {

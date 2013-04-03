@@ -32,6 +32,7 @@ namespace Chimera.Kinect.GUI {
             orientationPanel.Value = input.Orientation;
             positionPanel.Value = input.Position;
             startButton.Enabled = !mInput.KinectStarted;
+            headPanel.Vector = new VectorUpdater(Nui.joint(Nui.Head));
 
             foreach (var window in input.Coordinator.Windows)
                 AddWindow(window.Name);
