@@ -120,12 +120,13 @@ namespace Chimera.Launcher {
 
             double opacity = new CoordinatorConfig().OverlayOpacity;
 
+            /*
             IState cathedralOverlay = new ImageBGState("CathedralOverlay", mCoordinator.StateManager, "../Images/CathedralSplashScreen.png");
             mCoordinator.StateManager.CurrentState = cathedralOverlay;
             mainWindow.OverlayManager.Opacity = opacity;
             customTriggerHelp.Triggered += () => mainWindow.OverlayManager.Opacity = mainWindow.OverlayManager.Opacity > 0.0 ? 0.0 : opacity;
             customTriggerHelp.Active = true;
-            mCoordinator.EnableUpdates = false;
+            */
 
             //Window[] windows = new Window[] { new Window("Main Window") };
             //Chimera.Overlay.MainMenu mainMenu = new Chimera.Overlay.MainMenu();
