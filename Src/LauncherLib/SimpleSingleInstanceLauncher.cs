@@ -45,7 +45,7 @@ namespace Chimera.Launcher {
             PointCursorFactory pointFactory = new PointCursorFactory();
 
             //IOutput output = new SetFollowCamPropertiesViewerOutput("Main Window");
-            IOutput output = new SetWindowViewerOutput("Main Window");
+            SetWindowViewerOutput mainWindowProxy = new SetWindowViewerOutput("Main Window");
             ISystemInput kbMouseInput = new DeltaBasedInput(new KBMouseInput());
             ISystemInput flythrough = new Chimera.Flythrough.Flythrough();
             ISystemInput mouse = new MouseInput();
@@ -53,12 +53,12 @@ namespace Chimera.Launcher {
             mKinect = new KinectInput(new IDeltaInput[] { timespan, dolphin }, new IHelpTrigger[] { trigger }, simpleFactory, pointFactory);
             //ISystemInput kinectDolphin = new DeltaBasedInput(dolphin);
 
-            Window mainWindow = new Window("Main Window", output);
+            Window mainWindow = new Window("Main Window", mainWindowProxy);
             Window[] windows = new Window[] { mainWindow };
             //ImageHoverTrigger mOverlay = new ImageHoverTrigger("../Select1.jpg", .1f, .1f, .3f, .3f);
             //From mState = new TestState();
             //MainMenuItem item1 = new MainMenuItem(mState, mOverlay);
-            mCoordinator = new Coordinator(windows, kbMouseInput, mKinect, mouse, heightmap, flythrough);
+            mCoordinator = new Coordinator(windows, kbMouseInput, mKinect, mouse, heightmap, flythrough, mainWindowProxy);
 
             IState splashScreen = new ImageBGState("SplashScreen", mCoordinator.StateManager, "../Images/CathedralSplashScreen.png");
             IState helpScreen = new ImageBGState("HelpScreen", mCoordinator.StateManager, "../Images/CathedralHelp.png");

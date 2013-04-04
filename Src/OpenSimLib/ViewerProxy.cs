@@ -20,7 +20,7 @@ using System.IO;
 using Nwc.XmlRpc;
 
 namespace Chimera.OpenSim {
-    public abstract class ViewerProxy : IOutput, IInput {
+    public abstract class ViewerProxy : IOutput, ISystemInput {
         private static readonly string proxyAddress = "127.0.0.1";
 
         private Process mClient;
@@ -524,5 +524,15 @@ namespace Chimera.OpenSim {
                 else
                     SetCamera();
         }
+
+        #region ISystemInput Members
+
+        public Coordinator Coordinator {
+            get { return mWindow.Coordinator; }
+        }
+
+        void ISystemInput.Init(Coordinator coordinator) { }
+
+        #endregion
     }
 }
