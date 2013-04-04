@@ -19,7 +19,7 @@ along with Routing Project.  If not, see <http://www.gnu.org/licenses/>.
 **************************************************************************/
 
 namespace Chimera.OpenSim.GUI {
-    partial class ProxyPanel {
+    partial class OutputPanel {
         /// <summary> 
         /// Required designer variable.
         /// </summary>
