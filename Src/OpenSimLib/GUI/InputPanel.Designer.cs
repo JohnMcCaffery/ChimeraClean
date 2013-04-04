@@ -59,11 +59,11 @@
             // 
             this.activeCheckbox.AutoSize = true;
             this.activeCheckbox.CheckAlign = System.Drawing.ContentAlignment.BottomRight;
-            this.activeCheckbox.Location = new System.Drawing.Point(7, 180);
+            this.activeCheckbox.Location = new System.Drawing.Point(443, 182);
             this.activeCheckbox.Name = "activeCheckbox";
-            this.activeCheckbox.Size = new System.Drawing.Size(59, 17);
+            this.activeCheckbox.Size = new System.Drawing.Size(56, 17);
             this.activeCheckbox.TabIndex = 127;
-            this.activeCheckbox.Text = "Control";
+            this.activeCheckbox.Text = "Active";
             this.activeCheckbox.UseVisualStyleBackColor = true;
             this.activeCheckbox.CheckedChanged += new System.EventHandler(this.activeCheckbox_CheckedChanged);
             // 
@@ -159,8 +159,8 @@
             // 
             // focusOffsetPanel
             // 
-            this.focusOffsetPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.focusOffsetPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.focusOffsetPanel.Location = new System.Drawing.Point(76, 101);
             this.focusOffsetPanel.Max = 10F;
             this.focusOffsetPanel.Min = -10F;
@@ -182,8 +182,8 @@
             // 
             // focusOffset3DPanel
             // 
-            this.focusOffset3DPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.focusOffset3DPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.focusOffset3DPanel.Location = new System.Drawing.Point(3, 0);
             this.focusOffset3DPanel.Max = 10F;
             this.focusOffset3DPanel.MaxV = ((OpenMetaverse.Vector3)(resources.GetObject("focusOffset3DPanel.MaxV")));
@@ -201,8 +201,8 @@
             // 
             // pitchPanel
             // 
-            this.pitchPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.pitchPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.pitchPanel.Location = new System.Drawing.Point(76, 127);
             this.pitchPanel.Max = 10F;
             this.pitchPanel.Min = -10F;
@@ -215,8 +215,8 @@
             // 
             // lookAtLagPanel
             // 
-            this.lookAtLagPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lookAtLagPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.lookAtLagPanel.Location = new System.Drawing.Point(76, 153);
             this.lookAtLagPanel.Max = 10F;
             this.lookAtLagPanel.Min = -10F;
@@ -229,8 +229,8 @@
             // 
             // focusLagPanel
             // 
-            this.focusLagPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.focusLagPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.focusLagPanel.Location = new System.Drawing.Point(76, 179);
             this.focusLagPanel.Max = 10F;
             this.focusLagPanel.Min = -10F;
@@ -243,8 +243,8 @@
             // 
             // distancePanel
             // 
-            this.distancePanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.distancePanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.distancePanel.Location = new System.Drawing.Point(101, 104);
             this.distancePanel.Max = 10F;
             this.distancePanel.Min = -10F;
@@ -257,8 +257,8 @@
             // 
             // focusThresholdPanel
             // 
-            this.focusThresholdPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.focusThresholdPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.focusThresholdPanel.Location = new System.Drawing.Point(101, 78);
             this.focusThresholdPanel.Max = 10F;
             this.focusThresholdPanel.Min = -10F;
@@ -271,8 +271,8 @@
             // 
             // lookAtThresholdPanel
             // 
-            this.lookAtThresholdPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lookAtThresholdPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.lookAtThresholdPanel.Location = new System.Drawing.Point(101, 52);
             this.lookAtThresholdPanel.Max = 10F;
             this.lookAtThresholdPanel.Min = -10F;
@@ -285,8 +285,8 @@
             // 
             // behindnessLagPanel
             // 
-            this.behindnessLagPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.behindnessLagPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.behindnessLagPanel.Location = new System.Drawing.Point(101, 26);
             this.behindnessLagPanel.Max = 10F;
             this.behindnessLagPanel.Min = -10F;
@@ -299,8 +299,8 @@
             // 
             // behindnessAnglePanel
             // 
-            this.behindnessAnglePanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.behindnessAnglePanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.behindnessAnglePanel.Location = new System.Drawing.Point(101, 0);
             this.behindnessAnglePanel.Max = 10F;
             this.behindnessAnglePanel.Min = -10F;
@@ -313,8 +313,8 @@
             // 
             // focusPanel
             // 
-            this.focusPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.focusPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.focusPanel.Location = new System.Drawing.Point(101, 156);
             this.focusPanel.Max = 10F;
             this.focusPanel.Min = -10F;
@@ -327,8 +327,8 @@
             // 
             // lookAtPanel
             // 
-            this.lookAtPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lookAtPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.lookAtPanel.Location = new System.Drawing.Point(101, 130);
             this.lookAtPanel.Max = 10F;
             this.lookAtPanel.Min = -10F;
