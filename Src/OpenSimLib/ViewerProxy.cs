@@ -344,11 +344,21 @@ namespace Chimera.OpenSim {
             }
         }
 
-        public ViewerProxy(params string[] args) {
-            mConfig = new ProxyConfig(args);
+        public ViewerProxy(params string[] args)
+            : this(false, args) {
         }
 
-        public ViewerProxy(string name, params string[] args) {
+        public ViewerProxy(bool master, params string[] args) {
+            mConfig = new ProxyConfig(args);
+            mMaster = master;
+        }
+
+        public ViewerProxy(string name, params string[] args)
+            : this(name, false, args) {
+        }
+
+        public ViewerProxy(string name, bool master, params string[] args)
+            : this(master, args) {
             mConfig = new ProxyConfig(name, AppDomain.CurrentDomain.SetupInformation.ConfigurationFile, args);
         }
 
