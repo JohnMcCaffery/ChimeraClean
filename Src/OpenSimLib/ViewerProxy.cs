@@ -105,7 +105,8 @@ namespace Chimera.OpenSim {
         }
 
         internal void ToggleHUD() {
-            ProcessWrangler.PressKey(mClient, mConfig.ViewerToggleHUDKey);
+            if (mClient != null)
+                ProcessWrangler.PressKey(mClient, mConfig.ViewerToggleHUDKey);
         }
 
         internal bool StartProxy() {
@@ -241,7 +242,8 @@ namespace Chimera.OpenSim {
         }
 
         private void ProcessChangeViewer(Coordinator coordinator, CameraUpdateEventArgs args) {
-            ProcessChange(coordinator, args);
+            if (coordinator.ControlMode == ControlMode.Absolute || !mMaster)
+                ProcessChange(coordinator, args);
         }
 
         /// <summary>
@@ -369,6 +371,7 @@ namespace Chimera.OpenSim {
             mWindow.Coordinator.CameraUpdated += ProcessChangeViewer;
             mWindow.Coordinator.EyeUpdated += ProcessEyeUpdate;
             mWindow.Coordinator.Tick += new Action(Coordinator_Tick);
+            mWindow.Coordinator.CameraModeChanged += new Action<Coordinator,ControlMode>(Coordinator_CameraModeChanged);
             mWindow.MonitorChanged += new Action<Chimera.Window,Screen>(mWindow_MonitorChanged);
             mWindow.Changed += new Action<Chimera.Window,EventArgs>(mWindow_Changed);
             mFullscreen = mConfig.Fullscreen;
@@ -418,7 +421,8 @@ namespace Chimera.OpenSim {
                 return mClientLoggedIn;
 
             } catch (Win32Exception e) {
-                Logger.Info("Unable to start client transition " + mClient.StartInfo.FileName + ". " + e.Message);
+                Logger.Info("Unable to start client " + mClient.StartInfo.FileName + ". " + e.Message);
+                mClient = null;
                 return false;
             }
         }
@@ -500,9 +504,17 @@ namespace Chimera.OpenSim {
         private Packet mProxy_AgentUpdatePacketReceived(Packet p, IPEndPoint ep) {
             if (mMaster && mWindow.Coordinator.ControlMode == ControlMode.Delta) {
                 AgentUpdatePacket packet = p as AgentUpdatePacket;
-                mWindow.Coordinator.Update(packet.AgentData.CameraCenter, Vector3.Zero, new Rotation(packet.AgentData.CameraAtAxis), Rotation.Zero);
+                mWindow.Coordinator.Update(packet.AgentData.CameraCenter, Vector3.Zero, new Rotation(packet.AgentData.CameraAtAxis), Rotation.Zero, ControlMode.Absolute);
             }
             return p;
+        }
+
+        private void Coordinator_CameraModeChanged(Coordinator coordinator, ControlMode mode) {
+            if (mMaster)
+                if (mode == ControlMode.Delta)
+                    ClearCamera();
+                else
+                    SetCamera();
         }
     }
 }

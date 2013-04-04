@@ -112,6 +112,7 @@
     <Compile Include="HeightmapInput.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ProxyConfig.cs" />
+    <Compile Include="SetFollowCamProperties.cs" />
     <Compile Include="SetFollowCamPropertiesViewerOutput.cs" />
     <Compile Include="SetWindowPacket.cs" />
     <Compile Include="SetWindowViewerOutput.cs" />
@@ -127,6 +128,9 @@
     <EmbeddedResource Include="GUI\HeightmapInputPanel.resx">
       <DependentUpon>HeightmapInputPanel.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\InputPanel.resx">
+      <DependentUpon>InputPanel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\OutputPanel.resx">
       <DependentUpon>OutputPanel.cs</DependentUpon>
