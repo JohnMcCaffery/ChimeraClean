@@ -30,7 +30,7 @@ namespace Chimera.Overlay.Triggers {
         private Cursor mCompletedCursor;
         private WindowOverlayManager mOverlayManager;
 
-        public static bool IsCursorSelection() {
+        public static bool GlobalCursorIsHover() {
             return sCursors.Contains(ProcessWrangler.GetGlobalCursor());
         }
 
@@ -59,7 +59,7 @@ namespace Chimera.Overlay.Triggers {
 
         public CursorRenderer (Action<Graphics, Rectangle, double> drawStep, Size size, WindowOverlayManager manager) {
             mOverlayManager = manager;
-            if (!IsCursorSelection())
+            if (!GlobalCursorIsHover())
                 mCompletedCursor = new Cursor(ProcessWrangler.GetGlobalCursor());
 
             for (double i = 0.0; i < sSteps; i++) {
@@ -85,7 +85,7 @@ namespace Chimera.Overlay.Triggers {
             DrawCursor(mCompletedCursor);
         }
 
-        public void Completed() {
+        public void Clear() {
             DrawCursor(mCompletedCursor);
         }
 

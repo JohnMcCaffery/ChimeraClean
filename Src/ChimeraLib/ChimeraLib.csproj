@@ -105,7 +105,9 @@
     <Compile Include="Core\WindowConfig.cs" />
     <Compile Include="Overlay\Transitions\OpacityFadeWindowTransition.cs" />
     <Compile Include="Overlay\Transitions\CutWindowTransition.cs" />
+    <Compile Include="Overlay\Triggers\CircleRenderer.cs" />
     <Compile Include="Overlay\Triggers\CursorRenderer.cs" />
+    <Compile Include="Overlay\Triggers\CursorTrigger.cs" />
     <Compile Include="Overlay\Triggers\CustomTriggerTrigger.cs" />
     <Compile Include="Overlay\Triggers\DialCursorRenderer.cs" />
     <Compile Include="Overlay\Triggers\DialRenderer.cs" />

@@ -195,7 +195,7 @@ namespace Chimera.GUI.Forms {
             mGoInWorldHelp.Selected += new Action<ISelectable>(mGoInWorldHelp_Selected);
             mGoInWorldHelp.Active = false;
 
-            mClickRenderer = new CursorSelector(this, mController.Window);
+            mClickRenderer = new CursorTrigger(this, mController.Window);
 
             mGoInWorld.Init(mController.Window);
             mGoInWorldHelp.Init(mController.Window);

@@ -132,7 +132,7 @@ namespace Chimera.Overlay.Triggers {
                         Triggered();
                     mTriggered = true;
                     mHovering = false;
-                    mRenderer.Completed();
+                    mRenderer.Clear();
                 }
 
                 mNeedsRedrawn = true;
@@ -141,6 +141,7 @@ namespace Chimera.Overlay.Triggers {
                 mHovering = false;
                 mNeedsRedrawn = true;
                 mManager.ForceRedrawStatic();
+                mRenderer.Clear();
             } else
                 mNeedsRedrawn = false;
         }

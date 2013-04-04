@@ -130,5 +130,9 @@ namespace Chimera.GUI.Forms {
             else if (Created && !IsDisposed && !Disposing)
                 base.Invoke(a);
         }
+
+        internal void ForceRedraw() {
+            Invoke(() => drawPanel.Invalidate());
+        }
     }
 }
