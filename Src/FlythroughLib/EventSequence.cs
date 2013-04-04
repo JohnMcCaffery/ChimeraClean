@@ -144,8 +144,8 @@ namespace Chimera.Flythrough {
             mLastEvent = evt;
             mEvents.Add(evt);
 
-            if (mCurrentEvent == null)
-                mCurrentEvent = evt;
+            //if (mCurrentEvent == null)
+                //mCurrentEvent = evt;
 
             evt.LengthChange += (source, args) => {
                 FlythroughEvent<T> prev = evt;

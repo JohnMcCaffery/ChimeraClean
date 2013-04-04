@@ -17,6 +17,9 @@ namespace Chimera.Flythrough.GUI {
         private bool GUIUpdate;
         private bool TickUpdate;
 
+        
+        private Action<int> mContainer_TickListener;
+
 
         public FlythroughPanel() {
             InitializeComponent();
@@ -30,7 +33,10 @@ namespace Chimera.Flythrough.GUI {
 
         public void Init(Flythrough container) {
             mContainer = container;
-            mContainer.TimeChange += mContainer_Tick;
+
+            mContainer_TickListener = new Action<int>(mContainer_Tick);
+
+            mContainer.TimeChange += mContainer_TickListener;
             mContainer.LengthChange += mContainer_LengthChange;
             mContainer.SequenceFinished += mContainer_SequenceFinished;
             mContainer.FlythroughLoaded += mContainer_FlythroughLoaded;
@@ -47,7 +53,7 @@ namespace Chimera.Flythrough.GUI {
         }
 
         void FlythroughPanel_Disposed(object sender, EventArgs e) {
-            mContainer.TimeChange -= mContainer_Tick;
+            mContainer.TimeChange -= mContainer_TickListener;
             mContainer.LengthChange -= mContainer_LengthChange;
             mContainer.SequenceFinished -= mContainer_SequenceFinished;
             mContainer.FlythroughLoaded -= mContainer_FlythroughLoaded;
@@ -68,10 +74,10 @@ namespace Chimera.Flythrough.GUI {
         void mContainer_FlythroughLoaded() {
             Action a = () => {
                 //timeSlider.Maximum = mContainer.Length;
-                startPositionPanel.Value = mContainer.Start.Position;
-                startOrientationPanel.Value = mContainer.Start.Orientation;
                 foreach (var evt in mContainer.Events)
                     AddEventToGUI((ComboEvent)evt);
+                startPositionPanel.Value = mContainer.Start.Position;
+                startOrientationPanel.Value = mContainer.Start.Orientation;
             };
             if (InvokeRequired)
                 Invoke(a);
