@@ -349,6 +349,17 @@ namespace Chimera {
         /// <param name="orientation">The look at vector for the camera orientation.</param>
         /// <param name="orientationDelta">The delta to be applied to the look at vector for interpolation.</param>
         public void Update(Vector3 position, Vector3 postionDelta, Rotation orientation, Rotation orientationDelta) {
+            Update(position, postionDelta, orientation, orientationDelta, mControlMode);
+        }
+        /// <summary>
+        /// Update the position of the camera.
+        /// </summary>
+        /// <param name="position">The new position for the camera.</param>
+        /// <param name="postionDelta">The delta to be applied to the position for interpolation.</param>
+        /// <param name="orientation">The look at vector for the camera orientation.</param>
+        /// <param name="orientationDelta">The delta to be applied to the look at vector for interpolation.</param>
+        /// <param name="mode">How the camera is to be updated. Can override the current global ControlMode setting.</param>
+        public void Update(Vector3 position, Vector3 postionDelta, Rotation orientation, Rotation orientationDelta, ControlMode mode) {
             //TODO put this back in when menus are set up
             //if (!mMainMenuActive) {
             if (mEnableUpdates) {
