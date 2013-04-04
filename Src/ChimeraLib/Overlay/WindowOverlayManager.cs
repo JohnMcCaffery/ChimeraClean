@@ -82,7 +82,7 @@ namespace Chimera.Overlay {
         }
 
         public Cursor Cursor {
-            get { return mOverlayWindow != null ? mOverlayWindow.Cursor : null; }
+            get { return mOverlayWindow != null ? mOverlayWindow.Cursor : Cursor.Current; }
             set {
                 if (mOverlayWindow != null)
                         mOverlayWindow.SetCursor(value);
@@ -270,6 +270,11 @@ namespace Chimera.Overlay {
             mOverlayActive = false;
             if (OverlayClosed != null)
                 OverlayClosed(this, null);
+        }
+
+        public void ForceRedraw() {
+            if (mOverlayWindow != null)
+                mOverlayWindow.ForceRedraw();
         }
 
         public void ForceRedrawStatic() {

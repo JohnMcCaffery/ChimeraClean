@@ -11,9 +11,8 @@ namespace Chimera {
         /// </summary>
         /// <param name="graphics">The graphics object to draw with.</param>
         /// <param name="bounds">The area which surrounds the selection.</param>
-        /// <param name="hoverStart">When hovering started.</param>
-        /// <param name="hoverLength">How long the selector will hover for.</param>
-        void DrawHover(Graphics graphics, Rectangle bounds, double hoverLength);
+        /// <param name="percentageDone">How long the hovering has being going on. 0, just started, 1, complete.</param>
+        void DrawHover(Graphics graphics, Rectangle bounds, double percentageDone);
 
         /// <summary>
         /// Draw the selection after it has been selected.
@@ -25,6 +24,6 @@ namespace Chimera {
         /// <summary>
         /// Clear up anything that needs to be cleared up after the selection has completed.
         /// </summary>
-        void Completed();
+        void Clear();
     }
 }

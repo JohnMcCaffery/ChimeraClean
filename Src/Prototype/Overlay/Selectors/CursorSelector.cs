@@ -20,7 +20,7 @@ namespace Chimera.Overlay.Selectors {
         private Cursor mDefaultCursor;
         private Cursor mSelectCursor;
 
-        public CursorSelector(SimpleOverlay overly, Window window) {
+        public CursorTrigger(SimpleOverlay overly, Window window) {
             mOverlay = overly;
             mWindow = window;
             window.Coordinator.Tick += new Action(coordinator_Tick);

@@ -16,6 +16,8 @@ using Chimera.Overlay.Transitions;
 using Chimera.Interfaces.Overlay;
 using Chimera.Kinect.Overlay;
 using Chimera.Flythrough.Overlay;
+using Chimera.Util;
+using System.Windows.Forms;
 
 namespace Chimera.Launcher {
     public class SimpleSingleInstanceLauncher {
@@ -66,7 +68,8 @@ namespace Chimera.Launcher {
             IState flythroughState = new FlythroughState("Flythrough", mCoordinator.StateManager, "../CathedralFlythrough-LookAt.xml");
 
             DialRenderer dialRenderer = new DialRenderer();
-            IHoverSelectorRenderer cursorRenderer = new DialCursorRenderer(dialRenderer, mainWindow.OverlayManager);
+            CursorRenderer cursorRenderer = new DialCursorRenderer(dialRenderer, mainWindow.OverlayManager);
+            CursorTrigger t = new CursorTrigger(new CircleRenderer(100), mainWindow);
 
             InvisibleHoverTrigger splashHelpTrigger = new InvisibleHoverTrigger(mainWindow.OverlayManager, cursorRenderer, 265f / 1920f, 255f / 1080f, (675f - 255f) / 1920f, (900f - 255f) / 1080f);
             InvisibleHoverTrigger helpSplashTrigger = new InvisibleHoverTrigger(mainWindow.OverlayManager, cursorRenderer, 70f / 1920f, 65f / 1080f, (490f - 70f) / 1920f, (300f - 65f) / 1080f);
@@ -107,6 +110,7 @@ namespace Chimera.Launcher {
 
             //kinectControl.AddTransition(kinectFlythroughTransition);
             kinectControl.AddTransition(kinectHelpTransition);
+            kinectControl.AddFeature(t);
 
             flythroughState.AddTransition(flythroughSplashTransition);
 
@@ -114,7 +118,8 @@ namespace Chimera.Launcher {
             mCoordinator.StateManager.AddState(helpScreen);
             mCoordinator.StateManager.AddState(kinectControl);
             mCoordinator.StateManager.AddState(flythroughState);
-            mCoordinator.StateManager.CurrentState = splashScreen;
+            //mCoordinator.StateManager.CurrentState = splashScreen;
+            mCoordinator.StateManager.CurrentState = kinectControl;
 
 
             /*

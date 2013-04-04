@@ -44,6 +44,7 @@ namespace Chimera.GUI.Controls.Inputs {
             if (Created && !IsDisposed && !Disposing)
                 Invoke(new Action(() => {
                     positionLabel.Text = string.Format("{0,-4},{1,-4}", x, y);
+                    cursorHandleLabel.Text = ProcessWrangler.GetGlobalCursor().ToString();
                 }));
         }
     }
