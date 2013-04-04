@@ -12,34 +12,41 @@ using System.IO;
 using System.Threading;
 using Chimera.Overlay;
 
-namespace Chimera {
-    public class CameraUpdateEventArgs {
-        /// <summary>
-        /// The new position for the camera.
-        /// </summary>
-        public Vector3 position;
+namespace Chimera {    public class DeltaUpdateEventArgs : EventArgs {
         /// <summary>
         /// The delta that results in the new position.
         /// </summary>
         public Vector3 positionDelta;
         /// <summary>
-        /// The new orientation of the camera.
-        /// </summary>
-        public Rotation rotation;
-        /// <summary>
         /// The delta that results in the new orientation.
         /// </summary>
         public Rotation rotationDelta;
+
+        /// <param name="positionDelta">The delta that results in the new position.</param>
+        /// <param name="rotationDelta">The delta that results in the orientation.</param>
+        public DeltaUpdateEventArgs(Vector3 positionDelta, Rotation rotationDelta) {
+            this.positionDelta = positionDelta;
+            this.rotationDelta = rotationDelta;
+        }
+    }
+    public class CameraUpdateEventArgs : DeltaUpdateEventArgs {
+        /// <summary>
+        /// The new position for the camera.
+        /// </summary>
+        public Vector3 position;
+        /// <summary>
+        /// The new orientation of the camera.
+        /// </summary>
+        public Rotation rotation;
 
         /// <param name="position">The new position for the camera.</param>
         /// <param name="positionDelta">The delta that results in the new position.</param>
         /// <param name="rotation">The new orientation for the camera.</param>
         /// <param name="rotationDelta">The delta that results in the orientation.</param>
-        public CameraUpdateEventArgs(Vector3 position, Vector3 positionDelta, Rotation rotation, Rotation rotationDelta) {
-            this.position = position; 
-            this.positionDelta = positionDelta; 
-            this.rotation = rotation; 
-            this.rotationDelta = rotationDelta; 
+        public CameraUpdateEventArgs(Vector3 position, Vector3 positionDelta, Rotation rotation, Rotation rotationDelta) :
+            base(positionDelta, rotationDelta) {
+            this.position = position;
+            this.rotation = rotation;
         }
     }
 
@@ -132,7 +139,7 @@ namespace Chimera {
         /// <summary>
         /// How the camera is controlled.
         /// </summary>
-        private ControlMode mControlMode;
+        private ControlMode mControlMode = ControlMode.Camera;
         /// <summary>
         /// The object containing the configuration for the system.
         /// </summary>
@@ -148,6 +155,10 @@ namespace Chimera {
         /// </summary>
         public event Action<Window, EventArgs> WindowRemoved;
 
+        /// <summary>
+        /// Selected whenever the delta controlling where the camera is is updated.
+        /// </summary>
+        public event Action<Coordinator, DeltaUpdateEventArgs> DeltaUpdated;
         /// <summary>
         /// Selected whenever the virtual camera position/orientation is changed.
         /// </summary>
@@ -374,21 +385,31 @@ namespace Chimera {
             if (mEnableUpdates) {
                 int x = (int)position.X;
                 int y = (int)position.Y;
-                float height = 
-                    x >= 0 && x < mHeightmap.GetLength(0) && 
-                    y >= 0 && y < mHeightmap.GetLength(1) ? 
-                        mHeightmap[x, y] : 
+                float height =
+                    x >= 0 && x < mHeightmap.GetLength(0) &&
+                    y >= 0 && y < mHeightmap.GetLength(1) ?
+                        mHeightmap[x, y] :
                         mDefaultHeight;
                 height += .5f;
                 if (position.Z < height) {
                     position.Z = height;
                     postionDelta.Z = 0f;
                 }
-                mPosition = position;
-                mOrientation.Update(mRotationLock, orientation);
-                if (CameraUpdated != null && mAlive) {
-                    CameraUpdateEventArgs args = new CameraUpdateEventArgs(position, postionDelta, orientation, orientationDelta);
-                    CameraUpdated(this, args);
+
+                mPositionDelta = postionDelta;
+                mOrientationDelta.Update(mRotationLock, orientationDelta);
+                if (mode == Chimera.ControlMode.Camera) {
+                    mPosition = position;
+                    mOrientation.Update(mRotationLock, orientation);
+                    if (CameraUpdated != null && mAlive) {
+                        CameraUpdateEventArgs args = new CameraUpdateEventArgs(position, postionDelta, orientation, orientationDelta);
+                        CameraUpdated(this, args);
+                    }
+                } else {
+                    if (DeltaUpdated != null && mAlive) {
+                        DeltaUpdateEventArgs args = new DeltaUpdateEventArgs(postionDelta, orientationDelta);
+                        DeltaUpdated(this, args);
+                    }
                 }
             }
             //}
