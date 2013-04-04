@@ -59,8 +59,6 @@
             // 
             this.activeCheckbox.AutoSize = true;
             this.activeCheckbox.CheckAlign = System.Drawing.ContentAlignment.BottomRight;
-            this.activeCheckbox.Checked = true;
-            this.activeCheckbox.CheckState = System.Windows.Forms.CheckState.Checked;
             this.activeCheckbox.Location = new System.Drawing.Point(7, 180);
             this.activeCheckbox.Name = "activeCheckbox";
             this.activeCheckbox.Size = new System.Drawing.Size(59, 17);
