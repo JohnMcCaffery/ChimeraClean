@@ -13,7 +13,6 @@ using System.Threading;
 using Chimera.Overlay;
 
 namespace Chimera {
-
     public class CameraUpdateEventArgs {
         /// <summary>
         /// The new position for the camera.
@@ -42,6 +41,20 @@ namespace Chimera {
             this.rotation = rotation; 
             this.rotationDelta = rotationDelta; 
         }
+    }
+
+    /// <summary>
+    /// How the camera for the system as a whole is controlled.
+    /// </summary>
+    public enum ControlMode {
+        /// <summary>
+        /// Control the system via moving the camera.
+        /// </summary>
+        Camera,
+        /// <summary>
+        /// Control the system via moving an avatar.
+        /// </summary>
+        Avatar
     }
 
     public class HeightmapChangedEventArgs : EventArgs {
