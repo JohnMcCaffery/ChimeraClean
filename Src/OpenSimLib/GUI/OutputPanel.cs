@@ -31,7 +31,7 @@ using System.Runtime.InteropServices;
 using OpenMetaverse;
 
 namespace Chimera.OpenSim.GUI {
-    public partial class ProxyPanel : UserControl {
+    public partial class OutputPanel : UserControl {
         private ViewerProxy proxy;
 
         public ViewerProxy Proxy { 
@@ -140,11 +140,11 @@ namespace Chimera.OpenSim.GUI {
             set { loginURIBox.Text = value; }
         }
 
-        public ProxyPanel() {
+        public OutputPanel() {
             InitializeComponent();
         }
 
-        public ProxyPanel(ViewerProxy proxy)
+        public OutputPanel(ViewerProxy proxy)
             : this() {
             Proxy = proxy;
         }

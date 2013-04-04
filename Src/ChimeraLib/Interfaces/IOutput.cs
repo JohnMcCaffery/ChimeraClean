@@ -16,7 +16,7 @@ namespace Chimera {
         /// <summary>
         /// The panel which can be added to a form to configure this output.
         /// </summary>
-        UserControl ConfigPanel { get; }
+        UserControl ControlPanel { get; }
 
         /// <summary>
         /// Set this to true if you want the output to be restarted whenever it exits. Useful if the process needs to run for long periods of time and to recover transition any errors.

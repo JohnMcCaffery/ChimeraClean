@@ -20,7 +20,7 @@ using System.IO;
 using Nwc.XmlRpc;
 
 namespace Chimera.OpenSim {
-    public abstract class ViewerProxy : IOutput {
+    public abstract class ViewerProxy : IOutput, IInput {
         private static readonly string proxyAddress = "127.0.0.1";
 
         private Process mClient;
@@ -35,11 +35,14 @@ namespace Chimera.OpenSim {
         private string mFirstName = "NotLoggedIn";
         private string mLastName = "NotLoggedIn";
         private bool mFullscreen;
+        private bool mEnabled;
+        private bool mMaster;
 
         private object processLock = new object();
 
         private Window mWindow;
-        private ProxyPanel mPanel;
+        private OutputPanel mOutputPanel;
+        private InputPanel mInputPanel;
         private ProxyConfig mConfig;
 
         /// <summary>
@@ -123,6 +126,7 @@ namespace Chimera.OpenSim {
             try {
                 mProxy = new Proxy(config);
                 mProxy.AddLoginResponseDelegate(mProxy_LoginResponse);
+                mProxy.AddDelegate(PacketType.AgentUpdate, Direction.Outgoing, mProxy_AgentUpdatePacketReceived);
                 //foreach (PacketType pt in Enum.GetValues(typeof(PacketType))) {
                     //mProxy.AddDelegate(pt, Direction.Incoming, ReceiveIncomingPacket);
                     //mProxy.AddDelegate(pt, Direction.Outgoing, ReceiveOutgoingPacket);
@@ -280,6 +284,13 @@ namespace Chimera.OpenSim {
         /// <returns>The packet which is to be forwarded on to the client.</returns>
         protected virtual Packet ReceiveIncomingPacket(Packet p, IPEndPoint ep) { return p; }
 
+        private void CloseProxy() {
+            if (mProxy != null) {
+                mProxy.Stop();
+                mProxy = null;
+            }
+        }
+
         #region IOutput Members
 
         public bool Active {
@@ -303,11 +314,11 @@ namespace Chimera.OpenSim {
             get { return mWindow; }
         }
 
-        public UserControl ConfigPanel {
+        UserControl IOutput.ControlPanel {
             get {
-                if (mPanel == null)
-                    mPanel = new ProxyPanel(this);
-                return mPanel;
+                if (mOutputPanel == null)
+                    mOutputPanel = new OutputPanel(this);
+                return mOutputPanel;
             }
         }
 
@@ -434,11 +445,53 @@ namespace Chimera.OpenSim {
 
         #endregion
 
-        private void CloseProxy() {
-            if (mProxy != null) {
-                mProxy.Stop();
-                mProxy = null;
+        #region IInput Members
+
+        public event Action<IInput, bool> EnabledChanged;
+
+        UserControl IInput.ControlPanel {
+            get {
+                if (mInputPanel == null)
+                    mInputPanel = new InputPanel();
+                return mInputPanel;
             }
+        }
+
+        public bool Enabled {
+            get { return mEnabled; }
+            set {
+                if (mEnabled != value) {
+                    mEnabled = value;
+                    if (EnabledChanged != null)
+                        EnabledChanged(this, value);
+                }
+            }
+        }
+
+        public string Name {
+            get { return "Master Client"; }
+        }
+
+        string IInput.State {
+            get { throw new NotImplementedException(); }
+        }
+
+        public ConfigBase Config {
+            get { return mConfig; }
+        }
+
+        public void Draw(Func<Vector3, System.Drawing.Point> to2D, System.Drawing.Graphics graphics, Action redraw) {
+            //Do nothing
+        }
+
+        #endregion
+
+        private Packet mProxy_AgentUpdatePacketReceived(Packet p, IPEndPoint ep) {
+            if (mMaster && mWindow.Coordinator.ControlMode == ControlMode.Delta) {
+                AgentUpdatePacket packet = p as AgentUpdatePacket;
+                mWindow.Coordinator.Update(packet.AgentData.CameraCenter, Vector3.Zero, new Rotation(packet.AgentData.CameraAtAxis), Rotation.Zero);
+            }
+            return p;
         }
     }
 }
