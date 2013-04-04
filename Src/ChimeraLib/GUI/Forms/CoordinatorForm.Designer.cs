@@ -49,11 +49,7 @@
             this.windowsTab = new System.Windows.Forms.TabControl();
             this.inputsGroup = new System.Windows.Forms.GroupBox();
             this.inputsTab = new System.Windows.Forms.TabControl();
-<<<<<<< HEAD
             this.statisticsTab = new System.Windows.Forms.TabPage();
-=======
-            this.tabPage1 = new System.Windows.Forms.TabPage();
->>>>>>> Added delta vs absolute to Coordinator form.
             this.tickCountLabel = new System.Windows.Forms.Label();
             this.shortestWorkLabel = new System.Windows.Forms.Label();
             this.longestWorkLabel = new System.Windows.Forms.Label();
@@ -62,11 +58,8 @@
             this.shortestTickLabel = new System.Windows.Forms.Label();
             this.meanTickLabel = new System.Windows.Forms.Label();
             this.tpsLabel = new System.Windows.Forms.Label();
-<<<<<<< HEAD
-=======
             this.absoluteModeButton = new System.Windows.Forms.RadioButton();
             this.deltaModeButton = new System.Windows.Forms.RadioButton();
->>>>>>> Added delta vs absolute to Coordinator form.
             ((System.ComponentModel.ISupportInitialize)(this.hSplit)).BeginInit();
             this.hSplit.Panel1.SuspendLayout();
             this.hSplit.Panel2.SuspendLayout();
@@ -361,19 +354,11 @@
             this.virtualOrientationPanel.Quaternion = ((OpenMetaverse.Quaternion)(resources.GetObject("virtualOrientationPanel.Quaternion")));
             this.virtualOrientationPanel.Size = new System.Drawing.Size(255, 95);
             this.virtualOrientationPanel.TabIndex = 2;
-<<<<<<< HEAD
-            rotation2.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("rotation2.LookAtVector")));
-            rotation2.Pitch = 0D;
-            rotation2.Quaternion = ((OpenMetaverse.Quaternion)(resources.GetObject("rotation2.Quaternion")));
-            rotation2.Yaw = 0D;
-            this.virtualOrientationPanel.Value = rotation2;
-=======
             rotation3.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("rotation3.LookAtVector")));
             rotation3.Pitch = 0D;
             rotation3.Quaternion = ((OpenMetaverse.Quaternion)(resources.GetObject("rotation3.Quaternion")));
             rotation3.Yaw = 0D;
             this.virtualOrientationPanel.Value = rotation3;
->>>>>>> Added delta vs absolute to Coordinator form.
             this.virtualOrientationPanel.Yaw = 0D;
             this.virtualOrientationPanel.OnChange += new System.EventHandler(this.virtualRotation_OnChange);
             // 
@@ -558,8 +543,6 @@
             this.tpsLabel.TabIndex = 0;
             this.tpsLabel.Text = "Ticks / Second";
             // 
-<<<<<<< HEAD
-=======
             // absoluteModeButton
             // 
             this.absoluteModeButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -586,7 +569,6 @@
             this.deltaModeButton.UseVisualStyleBackColor = true;
             this.deltaModeButton.CheckedChanged += new System.EventHandler(this.deltaModeButton_CheckedChanged);
             // 
->>>>>>> Added delta vs absolute to Coordinator form.
             // CoordinatorForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
