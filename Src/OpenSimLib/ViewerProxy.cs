@@ -40,6 +40,7 @@ namespace Chimera.OpenSim {
 
         private object processLock = new object();
 
+        private SetFollowCamProperties mFollowCamProperties;
         private Window mWindow;
         private OutputPanel mOutputPanel;
         private InputPanel mInputPanel;
@@ -134,6 +135,8 @@ namespace Chimera.OpenSim {
                 //}
 
                 mProxy.Start();
+                if (mFollowCamProperties != null)
+                    mFollowCamProperties.SetProxy(mProxy);
             } catch (NullReferenceException e) {
                 Logger.Info("Unable to start proxy. " + e.Message);
                 mProxy = null;
@@ -290,6 +293,8 @@ namespace Chimera.OpenSim {
             if (mProxy != null) {
                 mProxy.Stop();
                 mProxy = null;
+                if (mFollowCamProperties != null)
+                    mFollowCamProperties.SetProxy(mProxy);
             }
         }
 
@@ -366,6 +371,9 @@ namespace Chimera.OpenSim {
         }
 
         public void Init(Window window) {
+            if (mMaster)
+                mFollowCamProperties = new SetFollowCamProperties(window.Coordinator);
+
             mLogger = LogManager.GetLogger(mConfig.Name);
             mWindow = window;
             mWindow.Coordinator.CameraUpdated += ProcessChangeViewer;
@@ -467,7 +475,7 @@ namespace Chimera.OpenSim {
         UserControl IInput.ControlPanel {
             get {
                 if (mInputPanel == null)
-                    mInputPanel = new InputPanel();
+                    mInputPanel = new InputPanel(mFollowCamProperties);
                 return mInputPanel;
             }
         }
