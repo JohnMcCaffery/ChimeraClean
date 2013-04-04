@@ -24,7 +24,7 @@
         /// </summary>
         private void InitializeComponent() {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CoordinatorForm));
-            Chimera.Util.Rotation rotation1 = new Chimera.Util.Rotation();
+            Chimera.Util.Rotation rotation2 = new Chimera.Util.Rotation();
             this.hSplit = new System.Windows.Forms.SplitContainer();
             this.diagramWorldSplit = new System.Windows.Forms.SplitContainer();
             this.diagSplit = new System.Windows.Forms.SplitContainer();
@@ -41,12 +41,16 @@
             this.heightmapScale = new System.Windows.Forms.TrackBar();
             this.globalBox = new System.Windows.Forms.GroupBox();
             this.triggerHelpButton = new System.Windows.Forms.Button();
+            this.eyePositionPanel = new Chimera.GUI.VectorPanel();
+            this.virtualOrientationPanel = new Chimera.GUI.RotationPanel();
+            this.virtualPositionPanel = new Chimera.GUI.VectorPanel();
             this.windowsPluginsSplit = new System.Windows.Forms.SplitContainer();
             this.windowsGroup = new System.Windows.Forms.GroupBox();
             this.windowsTab = new System.Windows.Forms.TabControl();
             this.inputsGroup = new System.Windows.Forms.GroupBox();
             this.inputsTab = new System.Windows.Forms.TabControl();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.statisticsTab = new System.Windows.Forms.TabPage();
+            this.tickCountLabel = new System.Windows.Forms.Label();
             this.shortestWorkLabel = new System.Windows.Forms.Label();
             this.longestWorkLabel = new System.Windows.Forms.Label();
             this.meanWorkLabel = new System.Windows.Forms.Label();
@@ -54,10 +58,6 @@
             this.shortestTickLabel = new System.Windows.Forms.Label();
             this.meanTickLabel = new System.Windows.Forms.Label();
             this.tpsLabel = new System.Windows.Forms.Label();
-            this.tickCountLabel = new System.Windows.Forms.Label();
-            this.eyePositionPanel = new Chimera.GUI.VectorPanel();
-            this.virtualOrientationPanel = new Chimera.GUI.RotationPanel();
-            this.virtualPositionPanel = new Chimera.GUI.VectorPanel();
             ((System.ComponentModel.ISupportInitialize)(this.hSplit)).BeginInit();
             this.hSplit.Panel1.SuspendLayout();
             this.hSplit.Panel2.SuspendLayout();
@@ -84,7 +84,7 @@
             this.windowsGroup.SuspendLayout();
             this.inputsGroup.SuspendLayout();
             this.inputsTab.SuspendLayout();
-            this.tabPage1.SuspendLayout();
+            this.statisticsTab.SuspendLayout();
             this.SuspendLayout();
             // 
             // hSplit
@@ -319,6 +319,64 @@
             this.triggerHelpButton.UseVisualStyleBackColor = true;
             this.triggerHelpButton.Click += new System.EventHandler(this.triggerHelpButton_Click);
             // 
+            // eyePositionPanel
+            // 
+            this.eyePositionPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.eyePositionPanel.Location = new System.Drawing.Point(3, 195);
+            this.eyePositionPanel.Max = 5000F;
+            this.eyePositionPanel.MaxV = ((OpenMetaverse.Vector3)(resources.GetObject("eyePositionPanel.MaxV")));
+            this.eyePositionPanel.Min = -5000F;
+            this.eyePositionPanel.MinimumSize = new System.Drawing.Size(103, 95);
+            this.eyePositionPanel.MinV = ((OpenMetaverse.Vector3)(resources.GetObject("eyePositionPanel.MinV")));
+            this.eyePositionPanel.Name = "eyePositionPanel";
+            this.eyePositionPanel.Size = new System.Drawing.Size(255, 95);
+            this.eyePositionPanel.TabIndex = 1;
+            this.eyePositionPanel.Value = ((OpenMetaverse.Vector3)(resources.GetObject("eyePositionPanel.Value")));
+            this.eyePositionPanel.X = 0F;
+            this.eyePositionPanel.Y = 0F;
+            this.eyePositionPanel.Z = 0F;
+            this.eyePositionPanel.ValueChanged += new System.EventHandler(this.eyePositionPanel_OnChange);
+            // 
+            // virtualOrientationPanel
+            // 
+            this.virtualOrientationPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.virtualOrientationPanel.Location = new System.Drawing.Point(3, 105);
+            this.virtualOrientationPanel.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("virtualOrientationPanel.LookAtVector")));
+            this.virtualOrientationPanel.MinimumSize = new System.Drawing.Size(252, 95);
+            this.virtualOrientationPanel.Name = "virtualOrientationPanel";
+            this.virtualOrientationPanel.Pitch = 0D;
+            this.virtualOrientationPanel.Quaternion = ((OpenMetaverse.Quaternion)(resources.GetObject("virtualOrientationPanel.Quaternion")));
+            this.virtualOrientationPanel.Size = new System.Drawing.Size(255, 95);
+            this.virtualOrientationPanel.TabIndex = 2;
+            rotation2.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("rotation2.LookAtVector")));
+            rotation2.Pitch = 0D;
+            rotation2.Quaternion = ((OpenMetaverse.Quaternion)(resources.GetObject("rotation2.Quaternion")));
+            rotation2.Yaw = 0D;
+            this.virtualOrientationPanel.Value = rotation2;
+            this.virtualOrientationPanel.Yaw = 0D;
+            this.virtualOrientationPanel.OnChange += new System.EventHandler(this.virtualRotation_OnChange);
+            // 
+            // virtualPositionPanel
+            // 
+            this.virtualPositionPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.virtualPositionPanel.Location = new System.Drawing.Point(3, 12);
+            this.virtualPositionPanel.Max = 1024F;
+            this.virtualPositionPanel.MaxV = ((OpenMetaverse.Vector3)(resources.GetObject("virtualPositionPanel.MaxV")));
+            this.virtualPositionPanel.Min = -1024F;
+            this.virtualPositionPanel.MinimumSize = new System.Drawing.Size(103, 95);
+            this.virtualPositionPanel.MinV = ((OpenMetaverse.Vector3)(resources.GetObject("virtualPositionPanel.MinV")));
+            this.virtualPositionPanel.Name = "virtualPositionPanel";
+            this.virtualPositionPanel.Size = new System.Drawing.Size(255, 95);
+            this.virtualPositionPanel.TabIndex = 0;
+            this.virtualPositionPanel.Value = ((OpenMetaverse.Vector3)(resources.GetObject("virtualPositionPanel.Value")));
+            this.virtualPositionPanel.X = 0F;
+            this.virtualPositionPanel.Y = 0F;
+            this.virtualPositionPanel.Z = 0F;
+            this.virtualPositionPanel.ValueChanged += new System.EventHandler(this.virtualPositionPanel_OnChange);
+            // 
             // windowsPluginsSplit
             // 
             this.windowsPluginsSplit.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -373,7 +431,6 @@
             // 
             // inputsTab
             // 
-            this.inputsTab.Controls.Add(this.tabPage1);
             this.inputsTab.Dock = System.Windows.Forms.DockStyle.Fill;
             this.inputsTab.Location = new System.Drawing.Point(3, 16);
             this.inputsTab.Name = "inputsTab";
@@ -383,23 +440,32 @@
             this.inputsTab.KeyDown += new System.Windows.Forms.KeyEventHandler(this.CoordinatorForm_KeyDown);
             this.inputsTab.KeyUp += new System.Windows.Forms.KeyEventHandler(this.CoordinatorForm_KeyUp);
             // 
-            // tabPage1
+            // statisticsTab
             // 
-            this.tabPage1.Controls.Add(this.tickCountLabel);
-            this.tabPage1.Controls.Add(this.shortestWorkLabel);
-            this.tabPage1.Controls.Add(this.longestWorkLabel);
-            this.tabPage1.Controls.Add(this.meanWorkLabel);
-            this.tabPage1.Controls.Add(this.longestTickLabel);
-            this.tabPage1.Controls.Add(this.shortestTickLabel);
-            this.tabPage1.Controls.Add(this.meanTickLabel);
-            this.tabPage1.Controls.Add(this.tpsLabel);
-            this.tabPage1.Location = new System.Drawing.Point(4, 22);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(448, 454);
-            this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "Statistics";
-            this.tabPage1.UseVisualStyleBackColor = true;
+            this.statisticsTab.Controls.Add(this.tickCountLabel);
+            this.statisticsTab.Controls.Add(this.shortestWorkLabel);
+            this.statisticsTab.Controls.Add(this.longestWorkLabel);
+            this.statisticsTab.Controls.Add(this.meanWorkLabel);
+            this.statisticsTab.Controls.Add(this.longestTickLabel);
+            this.statisticsTab.Controls.Add(this.shortestTickLabel);
+            this.statisticsTab.Controls.Add(this.meanTickLabel);
+            this.statisticsTab.Controls.Add(this.tpsLabel);
+            this.statisticsTab.Location = new System.Drawing.Point(4, 22);
+            this.statisticsTab.Name = "statisticsTab";
+            this.statisticsTab.Padding = new System.Windows.Forms.Padding(3);
+            this.statisticsTab.Size = new System.Drawing.Size(448, 454);
+            this.statisticsTab.TabIndex = 0;
+            this.statisticsTab.Text = "Statistics";
+            this.statisticsTab.UseVisualStyleBackColor = true;
+            // 
+            // tickCountLabel
+            // 
+            this.tickCountLabel.AutoSize = true;
+            this.tickCountLabel.Location = new System.Drawing.Point(6, 94);
+            this.tickCountLabel.Name = "tickCountLabel";
+            this.tickCountLabel.Size = new System.Drawing.Size(59, 13);
+            this.tickCountLabel.TabIndex = 7;
+            this.tickCountLabel.Text = "Tick Count";
             // 
             // shortestWorkLabel
             // 
@@ -464,73 +530,6 @@
             this.tpsLabel.TabIndex = 0;
             this.tpsLabel.Text = "Ticks / Second";
             // 
-            // tickCountLabel
-            // 
-            this.tickCountLabel.AutoSize = true;
-            this.tickCountLabel.Location = new System.Drawing.Point(6, 94);
-            this.tickCountLabel.Name = "tickCountLabel";
-            this.tickCountLabel.Size = new System.Drawing.Size(59, 13);
-            this.tickCountLabel.TabIndex = 7;
-            this.tickCountLabel.Text = "Tick Count";
-            // 
-            // eyePositionPanel
-            // 
-            this.eyePositionPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.eyePositionPanel.Location = new System.Drawing.Point(3, 195);
-            this.eyePositionPanel.Max = 5000F;
-            this.eyePositionPanel.MaxV = ((OpenMetaverse.Vector3)(resources.GetObject("eyePositionPanel.MaxV")));
-            this.eyePositionPanel.Min = -5000F;
-            this.eyePositionPanel.MinimumSize = new System.Drawing.Size(103, 95);
-            this.eyePositionPanel.MinV = ((OpenMetaverse.Vector3)(resources.GetObject("eyePositionPanel.MinV")));
-            this.eyePositionPanel.Name = "eyePositionPanel";
-            this.eyePositionPanel.Size = new System.Drawing.Size(255, 95);
-            this.eyePositionPanel.TabIndex = 1;
-            this.eyePositionPanel.Value = ((OpenMetaverse.Vector3)(resources.GetObject("eyePositionPanel.Value")));
-            this.eyePositionPanel.X = 0F;
-            this.eyePositionPanel.Y = 0F;
-            this.eyePositionPanel.Z = 0F;
-            this.eyePositionPanel.ValueChanged += new System.EventHandler(this.eyePositionPanel_OnChange);
-            // 
-            // virtualOrientationPanel
-            // 
-            this.virtualOrientationPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.virtualOrientationPanel.Location = new System.Drawing.Point(3, 105);
-            this.virtualOrientationPanel.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("virtualOrientationPanel.LookAtVector")));
-            this.virtualOrientationPanel.MinimumSize = new System.Drawing.Size(252, 95);
-            this.virtualOrientationPanel.Name = "virtualOrientationPanel";
-            this.virtualOrientationPanel.Pitch = 0D;
-            this.virtualOrientationPanel.Quaternion = ((OpenMetaverse.Quaternion)(resources.GetObject("virtualOrientationPanel.Quaternion")));
-            this.virtualOrientationPanel.Size = new System.Drawing.Size(255, 95);
-            this.virtualOrientationPanel.TabIndex = 2;
-            rotation1.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("rotation1.LookAtVector")));
-            rotation1.Pitch = 0D;
-            rotation1.Quaternion = ((OpenMetaverse.Quaternion)(resources.GetObject("rotation1.Quaternion")));
-            rotation1.Yaw = 0D;
-            this.virtualOrientationPanel.Value = rotation1;
-            this.virtualOrientationPanel.Yaw = 0D;
-            this.virtualOrientationPanel.OnChange += new System.EventHandler(this.virtualRotation_OnChange);
-            // 
-            // virtualPositionPanel
-            // 
-            this.virtualPositionPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.virtualPositionPanel.Location = new System.Drawing.Point(3, 12);
-            this.virtualPositionPanel.Max = 1024F;
-            this.virtualPositionPanel.MaxV = ((OpenMetaverse.Vector3)(resources.GetObject("virtualPositionPanel.MaxV")));
-            this.virtualPositionPanel.Min = -1024F;
-            this.virtualPositionPanel.MinimumSize = new System.Drawing.Size(103, 95);
-            this.virtualPositionPanel.MinV = ((OpenMetaverse.Vector3)(resources.GetObject("virtualPositionPanel.MinV")));
-            this.virtualPositionPanel.Name = "virtualPositionPanel";
-            this.virtualPositionPanel.Size = new System.Drawing.Size(255, 95);
-            this.virtualPositionPanel.TabIndex = 0;
-            this.virtualPositionPanel.Value = ((OpenMetaverse.Vector3)(resources.GetObject("virtualPositionPanel.Value")));
-            this.virtualPositionPanel.X = 0F;
-            this.virtualPositionPanel.Y = 0F;
-            this.virtualPositionPanel.Z = 0F;
-            this.virtualPositionPanel.ValueChanged += new System.EventHandler(this.virtualPositionPanel_OnChange);
-            // 
             // CoordinatorForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -570,8 +569,8 @@
             this.windowsGroup.ResumeLayout(false);
             this.inputsGroup.ResumeLayout(false);
             this.inputsTab.ResumeLayout(false);
-            this.tabPage1.ResumeLayout(false);
-            this.tabPage1.PerformLayout();
+            this.statisticsTab.ResumeLayout(false);
+            this.statisticsTab.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -602,7 +601,7 @@
         private System.Windows.Forms.RadioButton xPerspectiveButton;
         private System.Windows.Forms.TrackBar heightmapScale;
         private System.Windows.Forms.TrackBar realSpaceScale;
-        private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.TabPage statisticsTab;
         private System.Windows.Forms.Label shortestWorkLabel;
         private System.Windows.Forms.Label longestWorkLabel;
         private System.Windows.Forms.Label meanWorkLabel;

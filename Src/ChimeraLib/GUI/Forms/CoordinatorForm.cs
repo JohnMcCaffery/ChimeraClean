@@ -138,6 +138,8 @@ namespace Chimera.GUI.Forms {
 
                 inputsTab.Controls.Add(inputTab);
             }
+            
+            inputsTab.Controls.Add(statisticsTab);
         }
 
         private void mCoordinator_WindowAdded(Window window, EventArgs args) {
