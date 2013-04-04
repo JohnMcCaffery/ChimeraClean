@@ -32,6 +32,7 @@ namespace Chimera.OpenSim {
         public bool ControlCamera;
         public bool Fullscreen;
         public int ProxyPort;
+        public bool Master;
 
         public override string Group {
             get { return "SecondLifeViewer"; }
@@ -96,6 +97,7 @@ namespace Chimera.OpenSim {
             ControlCamera = Get(false, "ControlCamera", true, "Whether to start the viewer in avatar control or proxy control mode.");
             Fullscreen = Get(false, "Fullscreen", true, "Whether to start the viewer fullscreen.");
 
+            Master = Get(false, "IsMaster", false, "Whether this viewer is the master and can control the camera position from in world avatar movements.");
             //EnableWindowPackets = Init.Get(generalConfig, "EnableWindowPackets", true);
             //UseSetFollowCamPackets = !enableWindowPackets || Get(generalConfig, "UseSetFollowCamPackets", false);
             //ControlCamera = Init.Get(sectionConfig, "ControlCamera", true);
