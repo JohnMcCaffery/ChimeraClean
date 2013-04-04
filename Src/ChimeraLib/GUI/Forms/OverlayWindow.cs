@@ -130,9 +130,12 @@ namespace Chimera.GUI.Forms {
             else if (Created && !IsDisposed && !Disposing)
                 base.Invoke(a);
         }
+<<<<<<< HEAD
 
         internal void ForceRedraw() {
             Invoke(() => drawPanel.Invalidate());
         }
+=======
+>>>>>>> Implemented CursorSelectionRenderer.
     }
 }
