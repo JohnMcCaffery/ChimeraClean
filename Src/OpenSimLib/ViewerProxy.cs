@@ -350,7 +350,7 @@ namespace Chimera.OpenSim {
 
         public ViewerProxy(bool master, params string[] args) {
             mConfig = new ProxyConfig(args);
-            mMaster = master;
+            mMaster = master || mConfig.Master;
         }
 
         public ViewerProxy(string name, params string[] args)
@@ -360,6 +360,7 @@ namespace Chimera.OpenSim {
         public ViewerProxy(string name, bool master, params string[] args)
             : this(master, args) {
             mConfig = new ProxyConfig(name, AppDomain.CurrentDomain.SetupInformation.ConfigurationFile, args);
+            mMaster = master || mConfig.Master;
         }
 
         public void Init(Window window) {
