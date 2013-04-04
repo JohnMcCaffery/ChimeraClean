@@ -71,11 +71,19 @@ namespace Chimera {
         /// <summary>
         /// The authoratitive orientation of the camera in virtual space. This is read-only. To update it use the 'Update' method.
         /// </summary>
-        private readonly Rotation mRotation;
+        private readonly Rotation mOrientation;
+        /// <summary>
+        /// Current orientation delta.
+        /// </summary>
+        private readonly Rotation mOrientationDelta;
         /// <summary>
         /// The authoratitive position of the camera in virtual space.
         /// </summary>
         private Vector3 mPosition;
+        /// <summary>
+        /// Current position delta.
+        /// </summary>
+        private Vector3 mPositionDelta;
         /// <summary>
         /// The position of the eye in the real world, in mm.
         /// </summary>
@@ -183,7 +191,8 @@ namespace Chimera {
             mStateManager = new StateManager(this);
 
             mInputs = new List<ISystemInput>(inputs);
-            mRotation = new Rotation(mRotationLock, mConfig.Pitch, mConfig.Yaw);
+            mOrientation = new Rotation(mRotationLock, mConfig.Pitch, mConfig.Yaw);
+            mOrientationDelta = new Rotation(mRotationLock);
             mPosition = mConfig.Position;
             mEyePosition = mConfig.EyePosition;
             mCrashLogFile = mConfig.CrashLogFile;
@@ -277,7 +286,7 @@ namespace Chimera {
         /// The authoratitive orientation of the camera in virtual space. This is read-only. To update it use the 'Update' method.
         /// </summary>
         public Rotation Orientation {
-            get { return mRotation ; }
+            get { return mOrientation ; }
         } 
         /// <summary>
         /// The position of the eye in the real world, in mm.
@@ -376,7 +385,7 @@ namespace Chimera {
                     postionDelta.Z = 0f;
                 }
                 mPosition = position;
-                mRotation.Update(mRotationLock, orientation);
+                mOrientation.Update(mRotationLock, orientation);
                 if (CameraUpdated != null && mAlive) {
                     CameraUpdateEventArgs args = new CameraUpdateEventArgs(position, postionDelta, orientation, orientationDelta);
                     CameraUpdated(this, args);
@@ -459,7 +468,7 @@ namespace Chimera {
             dump += String.Format("{1}{0}{2}{0}{0}", Environment.NewLine, e.Message, e.StackTrace);
             dump += String.Format("-----------Coordinator-----------{0}", Environment.NewLine);
             dump += "Virtual Position: " + mPosition + Environment.NewLine;
-            dump += "Virtual Orientation | Yaw: " + mRotation.Yaw + ", Pitch: " + mRotation.Pitch + Environment.NewLine;
+            dump += "Virtual Orientation | Yaw: " + mOrientation.Yaw + ", Pitch: " + mOrientation.Pitch + Environment.NewLine;
             dump += "Eye Position: " + mEyePosition + Environment.NewLine;
 
             /*
