@@ -25,13 +25,113 @@ namespace Chimera.OpenSim {
         private Proxy mProxy;
         private Coordinator mCoordinator;
 
+        public float Pitch {
+            get { return mPitch; }
+            set {
+                mPitch = value;
+                Update();
+            }
+        }
+        public float LookAtLag {
+            get { return mLookAtLag; }
+            set {
+                mLookAtLag = value;
+                Update();
+            }
+        }
+        public float FocusLag {
+            get { return mFocusLag; }
+            set {
+                mFocusLag = value;
+                Update();
+            }
+        }
+        public float Distance {
+            get { return mDistance; }
+            set {
+                mDistance = value;
+                Update();
+            }
+        }
+        public float BehindnessAngle {
+            get { return mBehindnessAngle; }
+            set {
+                mBehindnessAngle = value;
+                Update();
+            }
+        }
+        public float BehindnessLag {
+            get { return mBehindnessLag; }
+            set {
+                mBehindnessLag = value;
+                Update();
+            }
+        }
+        public float LookAtThreshold {
+            get { return mLookAtThreshold; }
+            set {
+                mLookAtThreshold = value;
+                Update();
+            }
+        }
+        public float FocusThreshold {
+            get { return mFocusThreshold; }
+            set {
+                mFocusThreshold = value;
+                Update();
+            }
+        }
+        public bool SendPackets {
+            get { return mSendPackets; }
+            set {
+                mSendPackets = value;
+                Update();
+            }
+        }
+        public float FocusOffset {
+            get { return mFocusOffset; }
+            set {
+                mFocusOffset = value;
+                Update();
+            }
+        }
+        public float LookAt {
+            get { return mLookAt; }
+            set {
+                mLookAt = value;
+                Update();
+            }
+        }
+        public float Focus {
+            get { return mFocus; }
+            set {
+                mFocus = value;
+                Update();
+            }
+        }
+        public Vector3 FocusOffset3D {
+            get { return mFocusOffset3D; }
+            set {
+                mFocusOffset3D = value;
+                Update();
+            }
+        }
+
+        public void SetProxy(Proxy proxy) {
+            mProxy = proxy;
+        }
+
         public SetFollowCamProperties(Coordinator coordinator) {
             mCoordinator = coordinator;
             mCoordinator.CameraModeChanged += new Action<Coordinator,ControlMode>(mCoordinator_CameraModeChanged);
         }
 
         private void mCoordinator_CameraModeChanged(Coordinator coordinator, ControlMode mode) {
-            if (mode == ControlMode.Delta)
+            Update();
+        }
+
+        private void Update() {
+            if (mProxy != null && mCoordinator.ControlMode == ControlMode.Delta)
                 mProxy.InjectPacket(Packet, Direction.Incoming);
         }
 
@@ -46,9 +146,9 @@ namespace Chimera.OpenSim {
 
                 packet.CameraProperty[0].Value = mPitch;
                 packet.CameraProperty[1].Value = mFocusOffset;
-                packet.CameraProperty[2].Value = mFocusOffset3D.X; //Focus Offset X
-                packet.CameraProperty[3].Value = mFocusOffset3D.Y; //Focus Offset Y
-                packet.CameraProperty[4].Value = mFocusOffset3D.Z; //Focus Offset Z
+                packet.CameraProperty[2].Value = mFocusOffset3D.X;
+                packet.CameraProperty[3].Value = mFocusOffset3D.Y;
+                packet.CameraProperty[4].Value = mFocusOffset3D.Z;
                 packet.CameraProperty[5].Value = mLookAtLag;
                 packet.CameraProperty[6].Value = mFocusLag;
                 packet.CameraProperty[7].Value = mDistance;
