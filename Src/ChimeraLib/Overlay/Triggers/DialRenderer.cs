@@ -8,21 +8,47 @@ namespace Chimera.Overlay.Triggers {
     public class DialRenderer : IHoverSelectorRenderer {
         private Color mHoverColour = Color.Red;
         private Color mSelectionColour = Color.Blue;
+        private int mR;
 
-        public void DrawHover(Graphics graphics, Rectangle bounds, DateTime hoverStart, float hoverLength) {
+        public int R {
+            get { return mR; }
+        }
+
+        public Color HoverColour {
+            get { return mHoverColour; }
+        }
+
+        public DialRenderer()
+            : this(40, Color.Red) {
+        }
+
+        public DialRenderer(int r)
+            : this(r, Color.Blue) {
+        }
+
+        public DialRenderer(Color colour)
+            : this(40, colour) {
+        }
+
+        public DialRenderer(int r, Color colour) {
+            mR = r;
+            mSelectionColour = colour;
+        }
+
+        public void DrawHover(Graphics graphics, Rectangle bounds, double hoverDone) {
             int x =  bounds.X + (bounds.Width / 2);
             int y =  bounds.Y + (bounds.Height / 2);
-            int r = 40;
             using (Brush b = new SolidBrush(mHoverColour))
-                graphics.FillPie(b, x - r, y - r, r*2, r*2, -90, (int) ((DateTime.Now.Subtract(hoverStart).TotalMilliseconds / hoverLength) * 360f));
+                graphics.FillPie(b, x - mR, y - mR, mR*2, mR*2, -90, (int) (hoverDone * 360f));
         }
 
         public void DrawSelected(System.Drawing.Graphics graphics, Rectangle bounds) {
             int x =  bounds.X + (bounds.Width / 2);
             int y =  bounds.Y + (bounds.Height / 2);
-            int r = 40;
             using (Brush b = new SolidBrush(mSelectionColour))
-                graphics.FillEllipse(b, x - r, y - r, r*2, r*2);
+                graphics.FillEllipse(b, x - mR, y - mR, mR*2, mR*2);
         }
+
+        public void Completed() { }
     }
 }

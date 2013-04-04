@@ -77,8 +77,16 @@ namespace Chimera.Overlay {
         /// Where on the monitor the cursor is. Specified as percentages.
         /// 0,0 = top left, 1,1 = bottom right.
         /// </summary>
-        public PointF Cursor {
+        public PointF CursorPosition {
             get { return new PointF((float)mCursorX, (float)mCursorY); }
+        }
+
+        public Cursor Cursor {
+            get { return mOverlayWindow != null ? mOverlayWindow.Cursor : null; }
+            set {
+                if (mOverlayWindow != null)
+                        mOverlayWindow.SetCursor(value);
+            }
         }
 
         /// <summary>

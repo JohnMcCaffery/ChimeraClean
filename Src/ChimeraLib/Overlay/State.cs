@@ -102,8 +102,8 @@ namespace Chimera.Overlay {
         /// </summary>
         /// <param name="window">The window to draw the feature on.</param>
         /// <param name="feature">The feature to draw.</param>
-        public void AddFeature(string window, IDrawable feature) {
-            mWindowStates[window].AddFeature(feature);
+        public void AddFeature(IDrawable feature) {
+            mWindowStates[feature.Window].AddFeature(feature);
         }
 
         /// <summary>
@@ -116,7 +116,8 @@ namespace Chimera.Overlay {
         /// Do any actions that need to be set as soon as the state is activated.
         /// Use this to make sure the overlay is set up as expected, e.g. set whether the camera should be controlled.
         /// </summary>
-        protected abstract void OnActivated();
+        protected abstract void OnActivated();
+
         /// <summary>
         /// Do any actions that need to be when the state is de-activated.
         /// Use this to make sure the overlay is set up as expected, e.g. set whether the camera should be controlled.

@@ -428,11 +428,9 @@ namespace Chimera {
                         CameraUpdateEventArgs args = new CameraUpdateEventArgs(position, postionDelta, orientation, orientationDelta);
                         CameraUpdated(this, args);
                     }
-                } else {
-                    if (DeltaUpdated != null && mAlive) {
-                        DeltaUpdateEventArgs args = new DeltaUpdateEventArgs(postionDelta, orientationDelta);
-                        DeltaUpdated(this, args);
-                    }
+                } else if (DeltaUpdated != null && mAlive) {
+                    DeltaUpdateEventArgs args = new DeltaUpdateEventArgs(postionDelta, orientationDelta);
+                    DeltaUpdated(this, args);
                 }
             }
         }
