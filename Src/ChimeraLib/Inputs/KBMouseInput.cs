@@ -20,6 +20,7 @@ namespace Chimera.Inputs {
         private bool mFlyEnabled = true;
         private bool mYawEnabled = true;
         private bool mPitchEnabled = true;
+        private bool mActive = false;
 
         /// <summary>
         /// Triggered whenever the keyboard scale changes.
@@ -249,8 +250,13 @@ namespace Chimera.Inputs {
         }
 
         private void mCoordinator_Tick() {
-            if (Change != null && (mDeltas != Vector3.Zero || mOrientation.Pitch != 0.0 || mOrientation.Yaw != 0.0))
+            if (Change != null && (mDeltas != Vector3.Zero || mOrientation.Pitch != 0.0 || mOrientation.Yaw != 0.0)) {
+                mActive = true;
                 Change(this);
+            } else if (mActive) {
+                mActive = false;
+                Change(this);
+            }
             if (MouseDown)
                 mOrientation = Rotation.Zero;
         }

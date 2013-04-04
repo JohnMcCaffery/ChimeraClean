@@ -27,15 +27,18 @@ namespace Chimera.Inputs {
             mDeltaActive = move != Vector3.Zero || mInput.OrientationDelta.Pitch != 0.0 || mInput.OrientationDelta.Yaw != 0.0;
 
             //TODO - handle keyboard rotation
-            if (mInput.Enabled || mDeltaActive || wasActive) {
-                float fly = move.Z;
-                move.Z = 0f;
-                move *= mCoordinator.Orientation.Quaternion;
-                move.Z += fly;
+            if (mInput.Enabled && (mDeltaActive || wasActive)) {
+                if (mCoordinator.ControlMode == ControlMode.Absolute) {
+                    float fly = move.Z;
+                    move.Z = 0f;
+                    move *= mCoordinator.Orientation.Quaternion;
+                    move.Z += fly;
 
-                Vector3 pos = mCoordinator.Position + move;
-                Rotation orientation = mCoordinator.Orientation + mInput.OrientationDelta;
-                mCoordinator.Update(pos, move, orientation, mInput.OrientationDelta);
+                    Vector3 pos = mCoordinator.Position + move;
+                    Rotation orientation = mCoordinator.Orientation + mInput.OrientationDelta;
+                    mCoordinator.Update(pos, move, orientation, mInput.OrientationDelta);
+                } else
+                    mCoordinator.Update(Vector3.Zero, input.PositionDelta, Rotation.Zero, mInput.OrientationDelta);
             }
         }
 

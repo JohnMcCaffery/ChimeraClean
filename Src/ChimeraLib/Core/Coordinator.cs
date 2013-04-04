@@ -407,22 +407,21 @@ namespace Chimera {
         /// <param name="mode">How the camera is to be updated. Can override the current global ControlMode setting.</param>
         public void Update(Vector3 position, Vector3 postionDelta, Rotation orientation, Rotation orientationDelta, ControlMode mode) {
             if (mEnableUpdates) {
-                int x = (int)position.X;
-                int y = (int)position.Y;
-                float height =
-                    x >= 0 && x < mHeightmap.GetLength(0) &&
-                    y >= 0 && y < mHeightmap.GetLength(1) ?
-                        mHeightmap[x, y] :
-                        mDefaultHeight;
-                height += .5f;
-                if (position.Z < height) {
-                    position.Z = height;
-                    postionDelta.Z = 0f;
-                }
-
                 mPositionDelta = postionDelta;
                 mOrientationDelta.Update(mRotationLock, orientationDelta);
                 if (mode == Chimera.ControlMode.Absolute) {
+                    int x = (int)position.X;
+                    int y = (int)position.Y;
+                    float height =
+                        x >= 0 && x < mHeightmap.GetLength(0) &&
+                        y >= 0 && y < mHeightmap.GetLength(1) ?
+                            mHeightmap[x, y] :
+                            mDefaultHeight;
+                    height += .5f;
+                    if (position.Z < height) {
+                        position.Z = height;
+                        postionDelta.Z = 0f;
+                    }
                     mPosition = position;
                     mOrientation.Update(mRotationLock, orientation);
                     if (CameraUpdated != null && mAlive) {

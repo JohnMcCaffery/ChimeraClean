@@ -542,13 +542,14 @@ namespace Chimera.OpenSim {
 
         private void Coordinator_DeltaUpdated(Coordinator coordinator, DeltaUpdateEventArgs args) {
             if (mMaster && coordinator.ControlMode == ControlMode.Delta && mProxy != null) {
-                Rotation oldRot = coordinator.Orientation - args.rotationDelta;
-                Vector3 position = args.positionDelta * (oldRot * -1).Quaternion;
                 RemoteControlPacket packet = new RemoteControlPacket();
-                packet.Delta.Position = position;
-                packet.Delta.Pitch = (float) args.rotationDelta.Pitch;
-                packet.Delta.Yaw = (float) args.rotationDelta.Yaw;
+                packet.Delta.Position = args.positionDelta;
+                packet.Delta.Pitch = (float) (args.rotationDelta.Pitch * (Math.PI / -45.0));
+                packet.Delta.Yaw = (float) (args.rotationDelta.Yaw * (Math.PI / -45.0));
                 mProxy.InjectPacket(packet, Direction.Incoming);
+                
+                //TODO - would be nice to be able to land
+                //TODO - Would be nice if pitching the view 'stuck'.
             }
         }
     }
