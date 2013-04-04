@@ -12,6 +12,7 @@ namespace Chimera.Inputs {
         private IDeltaInput mInput;
         private Coordinator mCoordinator;
         private bool mEnabled;
+        private bool mDeltaActive;
 
         public DeltaBasedInput(IDeltaInput input) {
             mInput = input;
@@ -22,8 +23,11 @@ namespace Chimera.Inputs {
         void mInput_Change(IDeltaInput input) {
             Vector3 move = mInput.PositionDelta;
 
+            bool wasActive = mDeltaActive;
+            mDeltaActive = move != Vector3.Zero || mInput.OrientationDelta.Pitch != 0.0 || mInput.OrientationDelta.Yaw != 0.0;
+
             //TODO - handle keyboard rotation
-            if (mInput.Enabled && move != Vector3.Zero || mInput.OrientationDelta.Pitch != 0.0 || mInput.OrientationDelta.Yaw != 0.0) {
+            if (mInput.Enabled || mDeltaActive || wasActive) {
                 float fly = move.Z;
                 move.Z = 0f;
                 move *= mCoordinator.Orientation.Quaternion;
