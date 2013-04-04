@@ -122,6 +122,10 @@ namespace Chimera {
         /// </summary>
         private int mTickLength;
         /// <summary>
+        /// How the camera is controlled.
+        /// </summary>
+        private ControlMode mControlMode;
+        /// <summary>
         /// The object containing the configuration for the system.
         /// </summary>
         private CoordinatorConfig mConfig;
@@ -292,6 +296,17 @@ namespace Chimera {
         /// </summary>
         public int TickLength {
             get { return mTickLength; }
+        }
+
+        /// <summary>
+        /// How the camera is controlled.
+        /// </summary>
+        public ControlMode ControlMode {
+            get { return mControlMode; }
+            set {
+                mControlMode = value;
+                //TODO - add code here so that when the value is changed the camera updates
+            }
         }
 
         /// <summary>
