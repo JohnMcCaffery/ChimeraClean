@@ -55,13 +55,13 @@ namespace Chimera {    public class DeltaUpdateEventArgs : EventArgs {
     /// </summary>
     public enum ControlMode {
         /// <summary>
-        /// Control the system via moving the camera.
+        /// Control the system by specifying the precise location and orientation of the camera.
         /// </summary>
-        Camera,
+        Absolute,
         /// <summary>
-        /// Control the system via moving an avatar.
+        /// Control the system by sending delta events to be applied to camera/avatar position.
         /// </summary>
-        Avatar
+        Delta
     }
 
     public class HeightmapChangedEventArgs : EventArgs {
@@ -139,7 +139,7 @@ namespace Chimera {    public class DeltaUpdateEventArgs : EventArgs {
         /// <summary>
         /// How the camera is controlled.
         /// </summary>
-        private ControlMode mControlMode = ControlMode.Camera;
+        private ControlMode mControlMode = ControlMode.Absolute;
         /// <summary>
         /// The object containing the configuration for the system.
         /// </summary>
@@ -398,7 +398,7 @@ namespace Chimera {    public class DeltaUpdateEventArgs : EventArgs {
 
                 mPositionDelta = postionDelta;
                 mOrientationDelta.Update(mRotationLock, orientationDelta);
-                if (mode == Chimera.ControlMode.Camera) {
+                if (mode == Chimera.ControlMode.Absolute) {
                     mPosition = position;
                     mOrientation.Update(mRotationLock, orientation);
                     if (CameraUpdated != null && mAlive) {
