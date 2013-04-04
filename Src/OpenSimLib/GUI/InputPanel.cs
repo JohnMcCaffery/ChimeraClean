@@ -13,6 +13,7 @@ namespace Chimera.OpenSim.GUI {
 
         public InputPanel() {
             InitializeComponent();
+            focusOffset3DPanel.Text = "Focus Offset";
         }
 
         internal InputPanel(SetFollowCamProperties properties)
