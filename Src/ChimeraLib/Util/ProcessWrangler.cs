@@ -1342,6 +1342,9 @@ namespace Chimera.Util {
         [DllImport("user32.dll")]
         internal static extern uint SendInput( uint nInputs, [MarshalAs(UnmanagedType.LPArray), In] INPUT[] pInputs, int cbSize);
 
+        [DllImport("user32.dll")]
+        private static extern IntPtr SetCursor(IntPtr cursor);
+
         private const Int32 CURSOR_SHOWING = 0x00000001;
 
         public static void Click() {
@@ -1368,6 +1371,9 @@ namespace Chimera.Util {
             return pci.hCursor;
         }
 
+        public static void SetGlobalCursor(Cursor c) {
+            SetCursor(c.Handle);
+        }
         public static void SetBorder(Process window, Screen monitor, bool enableBorder) {
             Process foreground = Process.GetCurrentProcess();
             Int32 lStyle = GetWindowLong(window.MainWindowHandle, GWL_STYLE);

@@ -42,6 +42,10 @@ namespace Chimera {
             get { return mManager; }
         }
 
+        public string Window {
+            get { return mManager.Window.Name; }
+        }
+
         public abstract event Action<IWindowTransition> Finished;
 
         public abstract void Begin();

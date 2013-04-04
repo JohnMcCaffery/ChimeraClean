@@ -63,6 +63,12 @@ namespace Chimera.Overlay {
             mTrigger.Triggered += new Action(mTrigger_Triggered);
             mManager.Coordinator.WindowAdded += new Action<Window,EventArgs>(Coordinator_WindowAdded);
 
+            if (trigger is IDrawable) {
+                IDrawable feature = trigger as IDrawable;
+                from.AddFeature(feature);
+            }
+            
+
             foreach (var window in mManager.Coordinator.Windows)
                 Coordinator_WindowAdded(window, null);
         }

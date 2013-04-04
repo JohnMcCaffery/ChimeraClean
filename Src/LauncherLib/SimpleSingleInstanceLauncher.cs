@@ -65,11 +65,12 @@ namespace Chimera.Launcher {
             IState kinectControl = new KinectControlState("KinectControL", mCoordinator.StateManager);
             IState flythroughState = new FlythroughState("Flythrough", mCoordinator.StateManager, "../CathedralFlythrough-LookAt.xml");
 
-            IHoverSelectorRenderer renderer = new DialRenderer();
+            DialRenderer dialRenderer = new DialRenderer();
+            IHoverSelectorRenderer cursorRenderer = new DialCursorRenderer(dialRenderer, mainWindow.OverlayManager);
 
-            InvisibleHoverTrigger splashHelpTrigger = new InvisibleHoverTrigger(mainWindow.OverlayManager, renderer, 265f / 1920f, 255f / 1080f, (675f - 255f) / 1920f, (900f - 255f) / 1080f);
-            InvisibleHoverTrigger helpSplashTrigger = new InvisibleHoverTrigger(mainWindow.OverlayManager, renderer, 70f / 1920f, 65f / 1080f, (490f - 70f) / 1920f, (300f - 65f) / 1080f);
-            InvisibleHoverTrigger helpKinectTrigger = new InvisibleHoverTrigger(mainWindow.OverlayManager, renderer, 60f / 1920f, 520f / 1080f, (335f - 60f) / 1920f, (945f - 520f) / 1080f);
+            InvisibleHoverTrigger splashHelpTrigger = new InvisibleHoverTrigger(mainWindow.OverlayManager, cursorRenderer, 265f / 1920f, 255f / 1080f, (675f - 255f) / 1920f, (900f - 255f) / 1080f);
+            InvisibleHoverTrigger helpSplashTrigger = new InvisibleHoverTrigger(mainWindow.OverlayManager, cursorRenderer, 70f / 1920f, 65f / 1080f, (490f - 70f) / 1920f, (300f - 65f) / 1080f);
+            InvisibleHoverTrigger helpKinectTrigger = new InvisibleHoverTrigger(mainWindow.OverlayManager, cursorRenderer, 60f / 1920f, 520f / 1080f, (335f - 60f) / 1920f, (945f - 520f) / 1080f);
 
             //InvisibleHoverTrigger splashHelpTrigger = new InvisibleHoverTrigger(mainWindow.OverlayManager, renderer, 155f / 1920f, 220f / 1080f, (555f - 155f) / 1920f, (870f - 220f) / 1080);
             //InvisibleHoverTrigger helpSplashTrigger = new InvisibleHoverTrigger(mainWindow.OverlayManager, renderer, 70f / 1920f, 65f / 1080f, (490f - 70f) / 1920f, (300f - 65f) / 1080f);
@@ -94,18 +95,15 @@ namespace Chimera.Launcher {
             StateTransition kinectFlythroughTransition = new StateTransition(mCoordinator.StateManager, kinectControl, flythroughState, skeletonLost, fadeOutTransition);
             StateTransition flythroughSplashTransition = new StateTransition(mCoordinator.StateManager, flythroughState, splashScreen, skeletonFound, fadeInTransition);
 
-            SkeletonFeature helpSkeleton = new SkeletonFeature(1650f / 1920f, 0f, 800f / 1080f, 225f);
+            SkeletonFeature helpSkeleton = new SkeletonFeature(1650f / 1920f, 0f, 800f / 1080f, 225f, mainWindow.Name);
 
             splashScreen.AddTransition(splashHelpTransition);
             //splashScreen.AddTransition(splashFlythroughTransition);
-            splashScreen.AddFeature(mainWindow.Name, splashHelpTrigger);
 
             helpScreen.AddTransition(helpSplashTransition);
             helpScreen.AddTransition(helpKinectTransition);
             //helpScreen.AddTransition(helpFlythroughTransition);
-            helpScreen.AddFeature(mainWindow.Name, helpSplashTrigger);
-            helpScreen.AddFeature(mainWindow.Name, helpKinectTrigger);
-            helpScreen.AddFeature(mainWindow.Name, helpSkeleton);
+            helpScreen.AddFeature(helpSkeleton);
 
             //kinectControl.AddTransition(kinectFlythroughTransition);
             kinectControl.AddTransition(kinectHelpTransition);
@@ -116,11 +114,11 @@ namespace Chimera.Launcher {
             mCoordinator.StateManager.AddState(helpScreen);
             mCoordinator.StateManager.AddState(kinectControl);
             mCoordinator.StateManager.AddState(flythroughState);
-            //mCoordinator.StateManager.CurrentState = splashScreen;
+            mCoordinator.StateManager.CurrentState = splashScreen;
 
-            double opacity = new CoordinatorConfig().OverlayOpacity;
 
             /*
+            double opacity = new CoordinatorConfig().OverlayOpacity;
             IState cathedralOverlay = new ImageBGState("CathedralOverlay", mCoordinator.StateManager, "../Images/CathedralSplashScreen.png");
             mCoordinator.StateManager.CurrentState = cathedralOverlay;
             mainWindow.OverlayManager.Opacity = opacity;

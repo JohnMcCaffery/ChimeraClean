@@ -67,13 +67,7 @@ namespace Chimera.GUI.Forms {
 
         public int FrameLength {
             get { return refreshTimer.Interval; }
-            set {
-                Action a = () => refreshTimer.Interval = value;
-                if (InvokeRequired)
-                    Invoke(a);
-                else
-                    a();
-            }
+            set { Invoke(() => refreshTimer.Interval = value); }
         }
 
         /// <summary>
@@ -93,13 +87,7 @@ namespace Chimera.GUI.Forms {
         /// </summary>
         public new double Opacity {
             get { return base.Opacity; }
-            set {
-                Action a = () => base.Opacity = value;
-                if (InvokeRequired)
-                    Invoke(a);
-                else
-                    a();
-            }
+            set { Invoke(() => base.Opacity = value); }
         }
 
         private void drawPanel_Paint(object sender, PaintEventArgs e) {
@@ -131,5 +119,16 @@ namespace Chimera.GUI.Forms {
         }
 
         public TickStatistics Statistics { get { return mStats; } }
+
+        internal void SetCursor(Cursor value) {
+            Invoke(() => Cursor = value);
+        }
+
+        private void Invoke(Action a) {
+            if (!InvokeRequired)
+                a();
+            else if (Created && !IsDisposed && !Disposing)
+                base.Invoke(a);
+        }
     }
 }

@@ -15,7 +15,18 @@ namespace Chimera.Overlay {
         /// True if the state needs to be redrawn.
         /// </summary>
         private bool mNeedsRedrawn;
+        /// <summary>
+        /// The name of the window this drawable is to be drawn on.
+        /// </summary>
+        private string mWindowName;
 
+        protected DrawableRoot(string window) {
+            mWindowName = window;
+        }
+
+        public virtual string Window {
+            get { return mWindowName; }
+        }
         /// <summary>
         /// Whether the dynmic part of the drawable needs to be redrawn.
         /// </summary>

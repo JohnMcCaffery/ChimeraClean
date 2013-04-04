@@ -68,6 +68,10 @@ namespace Chimera.Overlay.Triggers {
             mManager.Window.Coordinator.Tick += new Action(Coordinator_Tick);
         }
 
+        public string Window {
+            get { return mManager.Window.Name; }
+        }
+
         /// <summary>
         /// Whether the cursor is currently hovering within the area.
         /// </summary>
@@ -117,7 +121,7 @@ namespace Chimera.Overlay.Triggers {
         }
 
         private void Coordinator_Tick() {
-            if (mActive && mBounds.Contains(mManager.Cursor)) {
+            if (mActive && mBounds.Contains(mManager.CursorPosition)) {
                 if (!mHovering) {
                     mHovering = true;
                     mHoverStart = DateTime.Now;
@@ -128,6 +132,7 @@ namespace Chimera.Overlay.Triggers {
                         Triggered();
                     mTriggered = true;
                     mHovering = false;
+                    mRenderer.Completed();
                 }
 
                 mNeedsRedrawn = true;
@@ -165,7 +170,7 @@ namespace Chimera.Overlay.Triggers {
             if (mTriggered)
                 mRenderer.DrawSelected(graphics, ScaledBounds);
             else if (mHovering) {
-                mRenderer.DrawHover(graphics, ScaledBounds, mHoverStart, mSelectTimeMS);
+                mRenderer.DrawHover(graphics, ScaledBounds, DateTime.Now.Subtract(mHoverStart).TotalMilliseconds / mSelectTimeMS);
             }
         }
 

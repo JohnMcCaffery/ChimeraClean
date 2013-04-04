@@ -18,7 +18,8 @@ namespace Chimera.Kinect.Overlay {
         private static Vector sLeftFoot, sRightFoot;
         private static Vector sCentreHip;
         private static Vector sCentreShoulder;
-        private static Vector sHead;        /// <summary>
+        private static Vector sHead;
+        /// <summary>
         /// The colour the current skeleton will be drawn. Changes every time the skeleton changes.
         /// </summary>
         private static Color sSkeletonColour = Color.Red;
@@ -56,12 +57,21 @@ namespace Chimera.Kinect.Overlay {
         /// The scale for the skeleton.
         /// </summary>
         private float mScale;
+        /// <summary>
+        /// The name of the window this skeleton is to be drawn on.
+        /// </summary>
+        private string mWindowName;
 
-        public SkeletonFeature (float xStart, float xRange, float y, float scale) {
+        public SkeletonFeature (float xStart, float xRange, float y, float scale, string windowName) {
             mXStart = xStart;
             mXRange = xRange;
             mY = y;
             mScale = scale;
+            mWindowName = windowName;
+        }
+
+        public string Window {
+            get { return mWindowName; }
         }
 
         public bool NeedsRedrawn {
@@ -148,7 +158,8 @@ namespace Chimera.Kinect.Overlay {
 
                 }
             }
-        }
+        }
+
 
         private Vector3 V3toVector(Vector vector) {
             return new Vector3(vector.X, vector.Y, vector.Z);
@@ -187,7 +198,9 @@ namespace Chimera.Kinect.Overlay {
 
         static void Nui_Tick() {
             if (Nui.HasSkeleton)
-                sNeedsRedrawn = true;        }
+                sNeedsRedrawn = true;
+        }
+
         static void Nui_SkeletonLost() {
             sNeedsRedrawn = true;
             switch (sSkeletonCount++ % 3) {
