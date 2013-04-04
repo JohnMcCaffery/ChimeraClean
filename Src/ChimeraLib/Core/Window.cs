@@ -21,10 +21,6 @@ namespace Chimera {
         /// </summary>
         Simple, 
         /// <summary>
-        /// Calculated using Fiend of View, Aspect Ratio with horizontal and vertical skews taken into account.
-        /// </summary>
-        Skewed, 
-        /// <summary>
         /// Calculated using the method from this paper http://lds62-112-144-233.my-simplyroot.de/wp-content/uploads/downloads/2011/12/0008.pdf.
         /// </summary>
         Calculated,
@@ -321,7 +317,6 @@ namespace Chimera {
             get { 
                 switch (mProjection) {
                     case ProjectionStyle.Simple: return SimpleProjection();
-                    case ProjectionStyle.Skewed: return SkewedProjection();
                     case ProjectionStyle.Calculated: return CalculatedProjection();
                 }
                 throw new NotImplementedException();
@@ -549,47 +544,10 @@ namespace Chimera {
                 0,  0,      -1f,                                0);
         }
 
-        private Matrix4 SkewedProjection() {
-            float fH = (float)(1.0 / Math.Tan(HFieldOfView / 2.0));
-            float fV = (float)(1.0 / Math.Tan(VFieldOfView / 2.0));
-            float zNear = .1f;
-            float zFar = 1024f;
-            float hSkew = (float) (HSkew / mWidth);
-            float vSkew = (float) (VSkew / mHeight);
-            return new Matrix4(
-                fH,     0,  hSkew,                              0,
-                0,      fV, vSkew,                              0,
-                0,      0,  (zFar + zNear) / (zNear - zFar),    (2f * zFar * zNear) / (zNear - zFar),
-                0,      0,  -1f,                                0);
-        }
-
         private Matrix4 CalculatedProjection() {
-            Vector3 upperRight = new Vector3(0f, (float)(mWidth / 2.0), (float)(mHeight / 2.0));
-            Vector3 lowerLeft = new Vector3(0f, (float)(mWidth / -2.0), (float)(mHeight / -2.0));
-            Vector3 diff = Centre - mCoordinator.EyePosition;
-
-            diff *= -mOrientation.Quaternion;
-            //diff *= input.RotationOffset.Quaternion;
-
-            upperRight += diff;
-            lowerLeft += diff;
-
-            //upperRight /= (Math.Abs(diff.X) - .01f);
-            //lowerLeft /= (Math.Abs(diff.X) - .01f);
-            upperRight /= (float) (diff.X * 10.0);
-            lowerLeft /= (float) (diff.X * 10.0);
-
-            float x1O = Math.Min(upperRight.Y, lowerLeft.Y);
-            float x2O = Math.Max(upperRight.Y, lowerLeft.Y);
-            float y1O = Math.Max(upperRight.Z, lowerLeft.Z);
-            float y2O = Math.Min(upperRight.Z, lowerLeft.Z);
             float dn = .1f;
             float df = 1024f;
             double scale = 1f / ScreenDistance;
-            float x1 = (float) ((mWidth /-2) + HSkew) * (float) scale;
-            float x2 = (float) ((mWidth / 2) + HSkew) * (float) scale;
-            float y1 = (float)((mHeight / 2) + VSkew) * (float) scale;
-            float y2 = (float)((mHeight /-2) + VSkew) * (float) scale;
 
             float hFoV = (float)(2.0 / (mWidth * scale));
             float vFoV = (float)(2.0 / (mHeight * scale));
@@ -598,44 +556,11 @@ namespace Chimera {
             float clip1 = -(df + dn) / (df - dn);
             float clip2 = -(2.0f * df * dn) / (df - dn);
 
-            float hFoV2 = (2*dn) / (x2-x1);
-            float vFoV2 = (2*dn)/(y1-y2);
-            float hShift2 = (x2+x1)/(x2-x1);
-            float vShift2 = (y1+y2)/(y1-y2);
-            float clip12 = -(df+dn)/(df-dn);
-            float clip22 = -(2.0f * df * dn) / (df - dn);
-
 		    return new Matrix4(
                 hFoV,   0f,     hShift, 0f,
                 0f,     vFoV,   vShift, 0f,
                 0f,     0f,     clip1,  clip2,
                 0f,     0f,     -1f,    0f);
-                /*
-    			(2*dn) / (x2-x1),   0,              (x2+x1)/(x2-x1),   0,
-    			0,                  (2*dn)/(y1-y2), (y1+y2)/(y1-y2),   0,
-    			0,                  0,              -(df+dn)/(df-dn),   -(2.0f*df*dn)/(df-dn),
-    			0,                  0,              -1.0f,              0);
-                */
-    			 //(2*dn) / (x2-x1),   0,              (float) (HSkew/mWidth),   0,
-    			//0,                  (2*dn)/(y2-y1), (float) (VSkew/mHeight),   0,
-    			 //(2*dn) / ((float)mWidth),   0,              (float) (HSkew/mWidth),   0,
-    			//0,                  (2*dn)/((float) mHeight), (float) (VSkew/mHeight),   0,
-    			//0,                  0,              -(df+dn)/(df-dn),   -(2.0f*df*dn)/(df-dn),
-    			//0,                  0,              -1.0f,              0);
-        }
-
-        private Matrix4 FoVRotProjection() {
-            float fH = (float)(1.0 / Math.Tan(HFieldOfView / 2.0));
-            float fV = (float)(1.0 / Math.Tan(VFieldOfView / 2.0));
-            float zNear = .1f;
-            float zFar = 1024f;
-            float hSkew = (float)(HSkew / mWidth);
-            float vSkew = (float)(VSkew / mHeight);
-            return new Matrix4(
-                fH, 0, hSkew, 0,
-                0, fV, vSkew, 0,
-                0, 0, (zFar + zNear) / (zNear - zFar), (2f * zFar * zNear) / (zNear - zFar),
-                0, 0, -1f, 0);
         }
     }
 }

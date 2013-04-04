@@ -36,7 +36,6 @@
             this.topLeftAnchorButton = new System.Windows.Forms.RadioButton();
             this.projectionGroup = new System.Windows.Forms.GroupBox();
             this.calculatedProjectionButton = new System.Windows.Forms.RadioButton();
-            this.skewedProjectionButton = new System.Windows.Forms.RadioButton();
             this.simpleProjectionButton = new System.Windows.Forms.RadioButton();
             this.label11 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
@@ -118,9 +117,9 @@
             // 
             // restartButton
             // 
-            this.restartButton.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.restartButton.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.restartButton.BackColor = System.Drawing.Color.Red;
             this.restartButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 27.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.restartButton.Location = new System.Drawing.Point(3, 313);
@@ -133,8 +132,8 @@
             // 
             // splitContainer1
             // 
-            this.splitContainer1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.splitContainer1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.splitContainer1.FixedPanel = System.Windows.Forms.FixedPanel.Panel2;
             this.splitContainer1.Location = new System.Drawing.Point(3, 0);
             this.splitContainer1.Name = "splitContainer1";
@@ -237,10 +236,9 @@
             // 
             // projectionGroup
             // 
-            this.projectionGroup.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.projectionGroup.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.projectionGroup.Controls.Add(this.calculatedProjectionButton);
-            this.projectionGroup.Controls.Add(this.skewedProjectionButton);
             this.projectionGroup.Controls.Add(this.simpleProjectionButton);
             this.projectionGroup.Location = new System.Drawing.Point(8, 266);
             this.projectionGroup.Name = "projectionGroup";
@@ -252,7 +250,7 @@
             // calculatedProjectionButton
             // 
             this.calculatedProjectionButton.AutoSize = true;
-            this.calculatedProjectionButton.Location = new System.Drawing.Point(138, 19);
+            this.calculatedProjectionButton.Location = new System.Drawing.Point(71, 19);
             this.calculatedProjectionButton.Name = "calculatedProjectionButton";
             this.calculatedProjectionButton.Size = new System.Drawing.Size(75, 17);
             this.calculatedProjectionButton.TabIndex = 2;
@@ -260,18 +258,6 @@
             this.calculatedProjectionButton.Text = "Calculated";
             this.calculatedProjectionButton.UseVisualStyleBackColor = true;
             this.calculatedProjectionButton.CheckedChanged += new System.EventHandler(this.ProjectionButton_CheckedChanged);
-            // 
-            // skewedProjectionButton
-            // 
-            this.skewedProjectionButton.AutoSize = true;
-            this.skewedProjectionButton.Location = new System.Drawing.Point(68, 19);
-            this.skewedProjectionButton.Name = "skewedProjectionButton";
-            this.skewedProjectionButton.Size = new System.Drawing.Size(64, 17);
-            this.skewedProjectionButton.TabIndex = 1;
-            this.skewedProjectionButton.TabStop = true;
-            this.skewedProjectionButton.Text = "Skewed";
-            this.skewedProjectionButton.UseVisualStyleBackColor = true;
-            this.skewedProjectionButton.CheckedChanged += new System.EventHandler(this.ProjectionButton_CheckedChanged);
             // 
             // simpleProjectionButton
             // 
@@ -305,8 +291,8 @@
             // 
             // monitorPulldown
             // 
-            this.monitorPulldown.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.monitorPulldown.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.monitorPulldown.DisplayMember = "DeviceName";
             this.monitorPulldown.FormattingEnabled = true;
             this.monitorPulldown.Location = new System.Drawing.Point(78, 6);
@@ -394,8 +380,8 @@
             // 
             // aspectRatioValue
             // 
-            this.aspectRatioValue.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.aspectRatioValue.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.aspectRatioValue.DecimalPlaces = 4;
             this.aspectRatioValue.Location = new System.Drawing.Point(196, 189);
             this.aspectRatioValue.Maximum = new decimal(new int[] {
@@ -598,8 +584,8 @@
             // 
             // diagonalPanel
             // 
-            this.diagonalPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.diagonalPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.diagonalPanel.Location = new System.Drawing.Point(78, 163);
             this.diagonalPanel.Max = 500F;
             this.diagonalPanel.Min = 0F;
@@ -612,8 +598,8 @@
             // 
             // widthPanel
             // 
-            this.widthPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.widthPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.widthPanel.Location = new System.Drawing.Point(78, 111);
             this.widthPanel.Max = 500F;
             this.widthPanel.Min = 1F;
@@ -626,8 +612,8 @@
             // 
             // heightPanel
             // 
-            this.heightPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.heightPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.heightPanel.Location = new System.Drawing.Point(78, 137);
             this.heightPanel.Max = 500F;
             this.heightPanel.Min = 1F;
@@ -640,8 +626,8 @@
             // 
             // fovVPanel
             // 
-            this.fovVPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.fovVPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.fovVPanel.Location = new System.Drawing.Point(79, 244);
             this.fovVPanel.Max = 179.9F;
             this.fovVPanel.Min = 0.1F;
@@ -654,8 +640,8 @@
             // 
             // distancePanel
             // 
-            this.distancePanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.distancePanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.distancePanel.Location = new System.Drawing.Point(78, 33);
             this.distancePanel.Max = 1000F;
             this.distancePanel.Min = 0F;
@@ -668,8 +654,8 @@
             // 
             // skewHPanel
             // 
-            this.skewHPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.skewHPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.skewHPanel.Location = new System.Drawing.Point(78, 59);
             this.skewHPanel.Max = 1000F;
             this.skewHPanel.Min = -1000F;
@@ -682,8 +668,8 @@
             // 
             // vSkewPanel
             // 
-            this.vSkewPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.vSkewPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.vSkewPanel.Location = new System.Drawing.Point(78, 85);
             this.vSkewPanel.Max = 1000F;
             this.vSkewPanel.Min = -1000F;
@@ -696,8 +682,8 @@
             // 
             // fovHPanel
             // 
-            this.fovHPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.fovHPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.fovHPanel.Location = new System.Drawing.Point(79, 215);
             this.fovHPanel.Max = 179.9F;
             this.fovHPanel.Min = 0.1F;
@@ -710,8 +696,8 @@
             // 
             // orientationPanel
             // 
-            this.orientationPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.orientationPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.orientationPanel.Location = new System.Drawing.Point(6, 203);
             this.orientationPanel.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("orientationPanel.LookAtVector")));
             this.orientationPanel.MinimumSize = new System.Drawing.Size(252, 95);
@@ -729,8 +715,8 @@
             // 
             // centrePanel
             // 
-            this.centrePanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.centrePanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.centrePanel.Location = new System.Drawing.Point(6, 3);
             this.centrePanel.Max = 1024F;
             this.centrePanel.MaxV = ((OpenMetaverse.Vector3)(resources.GetObject("centrePanel.MaxV")));
@@ -748,8 +734,8 @@
             // 
             // topLeftPanel
             // 
-            this.topLeftPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.topLeftPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.topLeftPanel.Location = new System.Drawing.Point(6, 102);
             this.topLeftPanel.Max = 1024F;
             this.topLeftPanel.MaxV = ((OpenMetaverse.Vector3)(resources.GetObject("topLeftPanel.MaxV")));
@@ -832,7 +818,6 @@
         private System.Windows.Forms.GroupBox anchorBox;
         private System.Windows.Forms.CheckBox linkFOVCheck;
         private System.Windows.Forms.RadioButton simpleProjectionButton;
-        private System.Windows.Forms.RadioButton skewedProjectionButton;
         private System.Windows.Forms.RadioButton calculatedProjectionButton;
         private System.Windows.Forms.RadioButton topLeftAnchorButton;
         private System.Windows.Forms.RadioButton centreAnchorButton;

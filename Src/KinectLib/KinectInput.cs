@@ -288,7 +288,6 @@ namespace Chimera.Kinect {
             if (!mRedraws.Contains(redraw))
                 mRedraws.Add(redraw);
             if (mEnabled) {
-                //TODO - draw in Kinect position / orientation
                 using (Pen p = new Pen(Color.Black, 3f)) {
                     Vector3 l = new Vector3(0f, -140, 0f) * mKinectOrientation.Quaternion;
                     Vector3 r = new Vector3(0f, 140, 0f) * mKinectOrientation.Quaternion;

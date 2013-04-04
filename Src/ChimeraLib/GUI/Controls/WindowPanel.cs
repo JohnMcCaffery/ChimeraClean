@@ -102,7 +102,6 @@ namespace Chimera.GUI.Controls {
 
                 switch (mWindow.Projection) {
                     case ProjectionStyle.Simple: simpleProjectionButton.Checked = true; break;
-                    case ProjectionStyle.Skewed: skewedProjectionButton.Checked = true; break;
                     case ProjectionStyle.Calculated: calculatedProjectionButton.Checked = true; break;
                 }
 
@@ -242,8 +241,6 @@ namespace Chimera.GUI.Controls {
                 return;
             if (simpleProjectionButton.Checked)
                 mWindow.Projection = ProjectionStyle.Simple;
-            else if (skewedProjectionButton.Checked)
-                mWindow.Projection = ProjectionStyle.Skewed;
             else if (calculatedProjectionButton.Checked)
                 mWindow.Projection = ProjectionStyle.Calculated;
         }
