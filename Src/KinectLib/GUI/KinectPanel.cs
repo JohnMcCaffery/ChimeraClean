@@ -32,6 +32,7 @@ namespace Chimera.Kinect.GUI {
             orientationPanel.Value = input.Orientation;
             positionPanel.Value = input.Position;
             startButton.Enabled = !mInput.KinectStarted;
+            headCheck.Checked = mInput.HeadEnabled;
             headPanel.Vector = new VectorUpdater(Nui.joint(Nui.Head));
 
             foreach (var window in input.Coordinator.Windows)
@@ -55,8 +56,17 @@ namespace Chimera.Kinect.GUI {
                     cursorControllerPulldown.SelectedIndex = 0;
             }
 
+            mInput.EnabledChanged += new Action<IInput,bool>(mInput_EnabledChanged);
             mInput.PositionChanged += new Action<Vector3>(mInput_PositionChanged);
             mInput.Coordinator.WindowAdded += new Action<Window,EventArgs>(Coordinator_WindowAdded);
+        }
+
+        private void mInput_EnabledChanged(IInput input, bool enabled) {
+            if (!mGuiUpdate) {
+                mExternalUpdate = true;
+                headCheck.Checked = mInput.HeadEnabled;
+                mExternalUpdate = false;
+            }
         }
 
         private void Coordinator_WindowAdded(Window window, EventArgs args) {
@@ -171,6 +181,14 @@ namespace Chimera.Kinect.GUI {
             windowPanel.TabIndex = 0;
 
             mTabs[windowName].Controls.Add(windowPanel);
+        }
+
+        private void headCheck_CheckedChanged(object sender, EventArgs e) {
+            if (!mExternalUpdate) {
+                mGuiUpdate = true;
+                mInput.HeadEnabled = headCheck.Checked;
+                mGuiUpdate = false;
+            }
         }
     }
 }

@@ -17,6 +17,7 @@ namespace Chimera.Kinect {
         private readonly Dictionary<string, IHelpTrigger> mHelpTriggers = new Dictionary<string, IHelpTrigger>();
         private readonly List<IKinectCursorFactory> mCursorFactories = new List<IKinectCursorFactory>();
         private readonly Dictionary<string, Dictionary<string, IKinectCursor>> mCursors = new Dictionary<string, Dictionary<string, IKinectCursor>>();
+        private readonly HashSet<Action> mRedraws = new HashSet<Action>();
 
         private Coordinator mCoordinator;
         private bool mEnabled;
@@ -94,6 +95,19 @@ namespace Chimera.Kinect {
             get { return mKinectStarted; }
         }
 
+        public bool HeadEnabled {
+            get { return mHeadEnabled; }
+            set {
+                mHeadEnabled = value;
+                if (value)
+                    mHead_OnChange();
+                else
+                    mCoordinator.EyePosition = Vector3.Zero;
+                if (EnabledChanged != null)
+                    EnabledChanged(this, mEnabled);
+            }
+        }
+
         public KinectInput(IEnumerable<IDeltaInput> movementControllers, IEnumerable<IHelpTrigger> helpTriggers, params IKinectCursorFactory[] cursors) {
             KinectConfig cfg = new KinectConfig();
 
@@ -138,7 +152,8 @@ namespace Chimera.Kinect {
 
             if (cfg.Autostart)
                 StartKinect();
-        }
+        }
+
         private void KinectSetupChanged() {
              mKinectToRealSpace = Matrix4.CreateFromQuaternion(mKinectOrientation.Quaternion) * Matrix4.CreateTranslation(mKinectPosition);
              foreach (var redraw in mRedraws)
@@ -146,11 +161,14 @@ namespace Chimera.Kinect {
         }
 
         void mHead_OnChange() {
-            if (Nui.HasSkeleton) {
+            if (mHeadEnabled) {
                 Vector3 hKinect = new Vector3(mHead.Z, -mHead.X, mHead.Y) * 1000f;
-                mCoordinator.EyePosition = hKinect * mKinectToRealSpace;
-            } else
-                mCoordinator.EyePosition = Vector3.Zero;
+                //if (Nui.HasSkeleton)
+                if (!hKinect.Equals(Vector3.Zero))
+                    mCoordinator.EyePosition = hKinect * mKinectToRealSpace;
+                else
+                    mCoordinator.EyePosition = Vector3.Zero;
+            }
         }
 
         void mKinectOrientation_Changed(object sender, EventArgs e) {
@@ -232,6 +250,8 @@ namespace Chimera.Kinect {
             get { return mEnabled; }
             set { 
                 mEnabled = value;
+                foreach (var redraw in mRedraws)
+                    redraw();
                 if (EnabledChanged != null)
                     EnabledChanged(this, value);
             }
@@ -264,36 +284,36 @@ namespace Chimera.Kinect {
             //Nui.Close();
         }
 
-        readonly HashSet<Action> mRedraws = new HashSet<Action>();
-
         public void Draw(Func<Vector3, Point> to2D, Graphics graphics, Action redraw) {
             if (!mRedraws.Contains(redraw))
                 mRedraws.Add(redraw);
-            //TODO - draw in Kinect position / orientation
-            using (Pen p = new Pen(Color.Black, 3f)) {
-                Vector3 l = new Vector3(0f, -140, 0f) * mKinectOrientation.Quaternion;
-                Vector3 r = new Vector3(0f, 140, 0f) * mKinectOrientation.Quaternion;
-                graphics.DrawLine(p, to2D(mKinectPosition + l), to2D(mKinectPosition + r));
-            }
-            using (Brush b = new SolidBrush(Color.FromArgb(128, Color.Blue))) {
-                int hFoV = 57 / 2;
-                int vFoV = 43 / 2;
-                Vector3 range = new Vector3(3500f, 0f, 0f);
-                Vector3 topLeft = range * (new Rotation(vFoV, -hFoV) + mKinectOrientation).Quaternion;
-                Vector3 topRight = range * (new Rotation(vFoV, hFoV) + mKinectOrientation).Quaternion;
-                Vector3 bottomLeft = range * (new Rotation(-vFoV, -hFoV) + mKinectOrientation).Quaternion;
-                Vector3 bottomRight = range * (new Rotation(-vFoV, hFoV) + mKinectOrientation).Quaternion;
+            if (mEnabled) {
+                //TODO - draw in Kinect position / orientation
+                using (Pen p = new Pen(Color.Black, 3f)) {
+                    Vector3 l = new Vector3(0f, -140, 0f) * mKinectOrientation.Quaternion;
+                    Vector3 r = new Vector3(0f, 140, 0f) * mKinectOrientation.Quaternion;
+                    graphics.DrawLine(p, to2D(mKinectPosition + l), to2D(mKinectPosition + r));
+                }
+                using (Brush b = new SolidBrush(Color.FromArgb(128, Color.Blue))) {
+                    int hFoV = 57 / 2;
+                    int vFoV = 43 / 2;
+                    Vector3 range = new Vector3(3500f, 0f, 0f);
+                    Vector3 topLeft = range * (new Rotation(vFoV, -hFoV) + mKinectOrientation).Quaternion;
+                    Vector3 topRight = range * (new Rotation(vFoV, hFoV) + mKinectOrientation).Quaternion;
+                    Vector3 bottomLeft = range * (new Rotation(-vFoV, -hFoV) + mKinectOrientation).Quaternion;
+                    Vector3 bottomRight = range * (new Rotation(-vFoV, hFoV) + mKinectOrientation).Quaternion;
 
-                Point centreP = to2D(mKinectPosition);
-                Point topLeftP = to2D(topLeft);
-                Point topRightP = to2D(topRight);
-                Point bottomLeftP = to2D(bottomLeft);
-                Point bottomRightP = to2D(bottomRight);
+                    Point centreP = to2D(mKinectPosition);
+                    Point topLeftP = to2D(topLeft);
+                    Point topRightP = to2D(topRight);
+                    Point bottomLeftP = to2D(bottomLeft);
+                    Point bottomRightP = to2D(bottomRight);
 
-                graphics.FillPolygon(b, new Point[] { centreP, topLeftP, topRightP, centreP });
-                graphics.FillPolygon(b, new Point[] { centreP, bottomLeftP, bottomRightP,centreP });
-                graphics.FillPolygon(b, new Point[] { centreP, topLeftP, bottomLeftP,centreP });
-                graphics.FillPolygon(b, new Point[] { centreP, topRightP, bottomRightP,centreP });
+                    graphics.FillPolygon(b, new Point[] { centreP, topLeftP, topRightP, centreP });
+                    graphics.FillPolygon(b, new Point[] { centreP, bottomLeftP, bottomRightP, centreP });
+                    graphics.FillPolygon(b, new Point[] { centreP, topLeftP, bottomLeftP, centreP });
+                    graphics.FillPolygon(b, new Point[] { centreP, topRightP, bottomRightP, centreP });
+                }
             }
         }
 
