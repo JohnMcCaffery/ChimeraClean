@@ -3,12 +3,39 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using OpenMetaverse.Packets;
+using OpenMetaverse;
+using GridProxy;
 
 namespace Chimera.OpenSim {
     class SetFollowCamProperties {
+        private float mPitch;
+        private float mLookAtLag;
+        private float mFocusLag;
+        private float mDistance;
+        private float mBehindnessAngle;
+        private float mBehindnessLag;
+        private float mLookAtThreshold;
+        private float mFocusThreshold;
+        private bool mSendPackets;
+        private float mFocusOffset;
+        private float mLookAt;
+        private float mFocus;
+        private Vector3 mFocusOffset3D;
+
+        private Proxy mProxy;
+        private Coordinator mCoordinator;
+
+        public SetFollowCamProperties(Coordinator coordinator) {
+            mCoordinator = coordinator;
+            mCoordinator.CameraModeChanged += new Action<Coordinator,ControlMode>(mCoordinator_CameraModeChanged);
+        }
+
+        private void mCoordinator_CameraModeChanged(Coordinator coordinator, ControlMode mode) {
+            if (mode == ControlMode.Delta)
+                mProxy.InjectPacket(Packet, Direction.Incoming);
+        }
+
         public SetFollowCamPropertiesPacket Packet {
-            set { }
-                /*
             get {
                 SetFollowCamPropertiesPacket packet = new SetFollowCamPropertiesPacket();
                 packet.CameraProperty = new SetFollowCamPropertiesPacket.CameraPropertyBlock[22];
@@ -17,43 +44,33 @@ namespace Chimera.OpenSim {
                     packet.CameraProperty[i].Type = i + 1;
                 }
 
-                if (useVelocity) {
-                    /*
-                    (n - o) / v * diff = scale
-                    n-o = scale * diff * v
-                    n = (scale * diff * v) + o
-                    double diff = DateTime.Now.Subtract(lastVelocityUpdate).TotalMilliseconds;
-                    Position += Velocity * (float)(scale * diff);
-                }
-                Vector3 position = finalPositionPanel.Value;
-                Vector3 focus = finalFocusPanel.LookAtVector + position;
-
-                packet.CameraProperty[0].Value = (float)type1Value.Value;
-                packet.CameraProperty[1].Value = (float)type2Value.Value;
-                packet.CameraProperty[2].Value = focusOffsetPanel.Value.X;
-                packet.CameraProperty[3].Value = focusOffsetPanel.Value.Y;
-                packet.CameraProperty[4].Value = focusOffsetPanel.Value.Z;
-                packet.CameraProperty[5].Value = (float)type6Value.Value;
-                packet.CameraProperty[6].Value = (float)type7Value.Value;
-                packet.CameraProperty[7].Value = (float)type8Value.Value;
-                packet.CameraProperty[8].Value = (float)type9Value.Value;
-                packet.CameraProperty[9].Value = (float)type10Value.Value;
-                packet.CameraProperty[10].Value = (float)type11Value.Value;
-                packet.CameraProperty[11].Value = activeCheckbox.Checked ? 1f : 0f;
-                packet.CameraProperty[12].Value = (float)type13Value.Value;
-                packet.CameraProperty[13].Value = position.X;
-                packet.CameraProperty[14].Value = position.Y;
-                packet.CameraProperty[15].Value = position.Z;
-                packet.CameraProperty[16].Value = (float)type17Value.Value;
-                packet.CameraProperty[17].Value = focus.X;
-                packet.CameraProperty[18].Value = focus.Y;
-                packet.CameraProperty[19].Value = focus.Z;
-                packet.CameraProperty[20].Value = positionLockedCheckbox.Checked ? 1f : 0f;
-                packet.CameraProperty[21].Value = focusLockedCheckbox.Checked ? 1f : 0f;
+                packet.CameraProperty[0].Value = mPitch;
+                packet.CameraProperty[1].Value = mFocusOffset;
+                packet.CameraProperty[2].Value = mFocusOffset3D.X; //Focus Offset X
+                packet.CameraProperty[3].Value = mFocusOffset3D.Y; //Focus Offset Y
+                packet.CameraProperty[4].Value = mFocusOffset3D.Z; //Focus Offset Z
+                packet.CameraProperty[5].Value = mLookAtLag;
+                packet.CameraProperty[6].Value = mFocusLag;
+                packet.CameraProperty[7].Value = mDistance;
+                packet.CameraProperty[8].Value = mBehindnessAngle;
+                packet.CameraProperty[9].Value = mBehindnessLag;
+                packet.CameraProperty[10].Value = mLookAtThreshold;
+                packet.CameraProperty[11].Value = mSendPackets ? 1f : 0f;
+                packet.CameraProperty[12].Value = 0f; //Position
+                packet.CameraProperty[13].Value = 0f; //Position X
+                packet.CameraProperty[14].Value = 0f; //Position Y
+                packet.CameraProperty[15].Value = 0f; //Position Z
+                packet.CameraProperty[16].Value = mFocus; //Focus
+                packet.CameraProperty[17].Value = 0f; //Focus X
+                packet.CameraProperty[18].Value = 0f; //Focus Y
+                packet.CameraProperty[19].Value = 0f; //Focus Z
+                packet.CameraProperty[20].Value = 0f; //Lock Positon
+                packet.CameraProperty[21].Value = 0f; //Lock Focus
+                //packet.CameraProperty[20].Value = positionLockedCheckbox.Checked ? 1f : 0f;
+                //packet.CameraProperty[21].Value = focusLockedCheckbox.Checked ? 1f : 0f;
 
                 return packet;
             }
-            */
         }
     }
 }
