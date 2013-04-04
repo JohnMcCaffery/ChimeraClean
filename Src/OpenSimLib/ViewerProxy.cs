@@ -380,6 +380,7 @@ namespace Chimera.OpenSim {
             mWindow.Coordinator.EyeUpdated += ProcessEyeUpdate;
             mWindow.Coordinator.Tick += new Action(Coordinator_Tick);
             mWindow.Coordinator.CameraModeChanged += new Action<Coordinator,ControlMode>(Coordinator_CameraModeChanged);
+            mWindow.Coordinator.DeltaUpdated += new Action<Chimera.Coordinator,DeltaUpdateEventArgs>(Coordinator_DeltaUpdated);
             mWindow.MonitorChanged += new Action<Chimera.Window,Screen>(mWindow_MonitorChanged);
             mWindow.Changed += new Action<Chimera.Window,EventArgs>(mWindow_Changed);
             mFullscreen = mConfig.Fullscreen;
@@ -509,22 +510,6 @@ namespace Chimera.OpenSim {
 
         #endregion
 
-        private Packet mProxy_AgentUpdatePacketReceived(Packet p, IPEndPoint ep) {
-            if (mMaster && mWindow.Coordinator.ControlMode == ControlMode.Delta) {
-                AgentUpdatePacket packet = p as AgentUpdatePacket;
-                mWindow.Coordinator.Update(packet.AgentData.CameraCenter, Vector3.Zero, new Rotation(packet.AgentData.CameraAtAxis), Rotation.Zero, ControlMode.Absolute);
-            }
-            return p;
-        }
-
-        private void Coordinator_CameraModeChanged(Coordinator coordinator, ControlMode mode) {
-            if (mMaster)
-                if (mode == ControlMode.Delta)
-                    ClearCamera();
-                else
-                    SetCamera();
-        }
-
         #region ISystemInput Members
 
         public Coordinator Coordinator {
@@ -534,5 +519,37 @@ namespace Chimera.OpenSim {
         void ISystemInput.Init(Coordinator coordinator) { }
 
         #endregion
+    
+        private Packet mProxy_AgentUpdatePacketReceived(Packet p, IPEndPoint ep) {
+            if (mMaster && mWindow.Coordinator.ControlMode == ControlMode.Delta) {
+                AgentUpdatePacket packet = p as AgentUpdatePacket;
+                mWindow.Coordinator.Update(packet.AgentData.CameraCenter, Vector3.Zero, new Rotation(packet.AgentData.CameraAtAxis), Rotation.Zero, ControlMode.Absolute);
+            }
+            return p;
+        }
+
+        private void Coordinator_CameraModeChanged(Coordinator coordinator, ControlMode mode) {
+            if (mMaster) {
+                if (mode == ControlMode.Delta)
+                    ClearCamera();
+                else {
+                    SetCamera();
+                    if (mProxy != null)
+                        mProxy.InjectPacket(new ClearRemoteControlPacket(), Direction.Incoming);
+                }
+            }
+        }
+
+        private void Coordinator_DeltaUpdated(Coordinator coordinator, DeltaUpdateEventArgs args) {
+            if (mMaster && coordinator.ControlMode == ControlMode.Delta && mProxy != null) {
+                Rotation oldRot = coordinator.Orientation - args.rotationDelta;
+                Vector3 position = args.positionDelta * (oldRot * -1).Quaternion;
+                RemoteControlPacket packet = new RemoteControlPacket();
+                packet.Delta.Position = position;
+                packet.Delta.Pitch = (float) args.rotationDelta.Pitch;
+                packet.Delta.Yaw = (float) args.rotationDelta.Yaw;
+                mProxy.InjectPacket(packet, Direction.Incoming);
+            }
+        }
     }
 }
