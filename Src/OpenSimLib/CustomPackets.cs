@@ -135,7 +135,7 @@ namespace Chimera.OpenSim {
             //Type = PacketType.SetFollowCamProperties;
             Header = new Header();
             Header.Frequency = PacketFrequency.Low;
-            Header.ID = 429;
+            Header.ID = 427;
             Header.Reliable = true;
             Window = new WindowBlock();
         }
@@ -241,7 +241,7 @@ namespace Chimera.OpenSim {
             Type = PacketType.ClearFollowCamProperties;
             Header = new Header();
             Header.Frequency = PacketFrequency.Low;
-            Header.ID = 430;
+            Header.ID = 428;
             Header.Reliable = true;
             ObjectData = new ObjectDataBlock();
         }
@@ -373,7 +373,7 @@ namespace Chimera.OpenSim {
             //Type = PacketType.SetFollowCamProperties;
             Header = new Header();
             Header.Frequency = PacketFrequency.Low;
-            Header.ID = 427;
+            Header.ID = 429;
             Header.Reliable = true;
             Delta = new DeltaBlock();
         }
@@ -466,7 +466,7 @@ namespace Chimera.OpenSim {
             Type = PacketType.ClearFollowCamProperties;
             Header = new Header();
             Header.Frequency = PacketFrequency.Low;
-            Header.ID = 428;
+            Header.ID = 430;
             Header.Reliable = true;
             ObjectData = new ObjectDataBlock();
         }
