@@ -146,6 +146,11 @@ namespace Chimera {    public class DeltaUpdateEventArgs : EventArgs {
         private CoordinatorConfig mConfig;
 
         /// <summary>
+        /// Triggered when the camera control mode changes.
+        /// </summary>
+        public event Action<Coordinator, ControlMode> CameraModeChanged;
+
+        /// <summary>
         /// Triggered whenever a window is added.
         /// </summary>
         public event Action<Window, EventArgs> WindowAdded;
@@ -324,8 +329,12 @@ namespace Chimera {    public class DeltaUpdateEventArgs : EventArgs {
         public ControlMode ControlMode {
             get { return mControlMode; }
             set {
-                mControlMode = value;
-                //TODO - add code here so that when the value is changed the camera updates
+                if (value != mControlMode) {
+                    mControlMode = value;
+                    //TODO - add code here so that when the value is changed the camera updates
+                    if (CameraModeChanged != null)
+                        CameraModeChanged(this, value);
+                }
             }
         }
 
