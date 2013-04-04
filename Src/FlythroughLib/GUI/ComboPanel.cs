@@ -14,6 +14,8 @@ namespace Chimera.Flythrough.GUI {
         private ComboEvent mEvent;
         private UserControl mCurrentPositionPanel;
         private UserControl mCurrentOrientationPanel;
+        private Action<FlythroughEvent<Vector3>, int> mPositionTimeChanged;
+        private Action<FlythroughEvent<Rotation>, int> mOrientationTimeChanged;
         private bool mGuiUpdate;
 
         public ComboPanel() {
@@ -23,6 +25,9 @@ namespace Chimera.Flythrough.GUI {
         public ComboPanel(ComboEvent evt)
             : this() {
             mEvent = evt;
+
+            mPositionTimeChanged = new Action<FlythroughEvent<Vector3>, int>(positionEvt_TimeChanged);
+            mOrientationTimeChanged = new Action<FlythroughEvent<Rotation>, int>(orientationEvt_TimeChanged);
             mEvent.Positions.CurrentEventChange += new Action<FlythroughEvent<Vector3>,FlythroughEvent<Vector3>>(Positions_CurrentEventChange);
             mEvent.Orientations.CurrentEventChange += new Action<FlythroughEvent<Rotation>,FlythroughEvent<Rotation>>(Orientations_CurrentEventChange);
 
@@ -33,21 +38,32 @@ namespace Chimera.Flythrough.GUI {
             }
         }
 
+        private void positionEvt_TimeChanged(FlythroughEvent<Vector3> evt, int time) {
+            TimeChanged(evt, positionsList);
+        }
+
+        private void orientationEvt_TimeChanged(FlythroughEvent<Rotation> evt, int time) {
+            TimeChanged(evt, orientationsList);
+        }
+
+        private void TimeChanged<T>(FlythroughEvent<T> evt, ListBox list) {
+            if (!mGuiUpdate && !IsDisposed && Created)
+                Invoke(new Action(() => { if (list.SelectedItem != evt) list.SelectedItem = evt; }));
+        }
+
         private void AddEvent(FlythroughEvent<Vector3> evt) {
+            evt.TimeChange += mPositionTimeChanged;
             mEvent.AddEvent(evt);
             AddEvent(evt, positionsList, positionPanel);
         }
 
         private void AddEvent(FlythroughEvent<Rotation> evt) {
+            evt.TimeChange += mOrientationTimeChanged;
             mEvent.AddEvent(evt);
             AddEvent(evt, orientationsList, orientationPanel);
         }
 
         private void AddEvent<T>(FlythroughEvent<T> evt, ListBox list, Panel panel) {
-            evt.TimeChange += (e, time) => {
-                if (!mGuiUpdate && !IsDisposed && Created)
-                Invoke(new Action(() => { if (list.SelectedItem != evt) list.SelectedItem = evt; }));
-            };
             evt.ControlPanel.Dock = DockStyle.Fill;
             panel.Controls.Add(evt.ControlPanel);
             list.BeginUpdate();
@@ -57,11 +73,13 @@ namespace Chimera.Flythrough.GUI {
         }
 
         private void RemoveEvent(FlythroughEvent<Vector3> evt) {
+            evt.TimeChange -= mPositionTimeChanged;
             mEvent.RemoveEvent(evt);
             RemoveEvent(evt, positionsList, positionPanel);
         }
 
         private void RemoveEvent(FlythroughEvent<Rotation> evt) {
+            evt.TimeChange -= mOrientationTimeChanged;
             mEvent.RemoveEvent(evt);
             RemoveEvent(evt, orientationsList, orientationPanel);
         }

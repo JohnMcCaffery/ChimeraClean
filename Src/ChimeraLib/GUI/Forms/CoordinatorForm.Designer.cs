@@ -24,7 +24,7 @@
         /// </summary>
         private void InitializeComponent() {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CoordinatorForm));
-            Chimera.Util.Rotation rotation2 = new Chimera.Util.Rotation();
+            Chimera.Util.Rotation rotation3 = new Chimera.Util.Rotation();
             this.hSplit = new System.Windows.Forms.SplitContainer();
             this.diagramWorldSplit = new System.Windows.Forms.SplitContainer();
             this.diagSplit = new System.Windows.Forms.SplitContainer();
@@ -49,7 +49,11 @@
             this.windowsTab = new System.Windows.Forms.TabControl();
             this.inputsGroup = new System.Windows.Forms.GroupBox();
             this.inputsTab = new System.Windows.Forms.TabControl();
+<<<<<<< HEAD
             this.statisticsTab = new System.Windows.Forms.TabPage();
+=======
+            this.tabPage1 = new System.Windows.Forms.TabPage();
+>>>>>>> Added delta vs absolute to Coordinator form.
             this.tickCountLabel = new System.Windows.Forms.Label();
             this.shortestWorkLabel = new System.Windows.Forms.Label();
             this.longestWorkLabel = new System.Windows.Forms.Label();
@@ -58,6 +62,11 @@
             this.shortestTickLabel = new System.Windows.Forms.Label();
             this.meanTickLabel = new System.Windows.Forms.Label();
             this.tpsLabel = new System.Windows.Forms.Label();
+<<<<<<< HEAD
+=======
+            this.absoluteModeButton = new System.Windows.Forms.RadioButton();
+            this.deltaModeButton = new System.Windows.Forms.RadioButton();
+>>>>>>> Added delta vs absolute to Coordinator form.
             ((System.ComponentModel.ISupportInitialize)(this.hSplit)).BeginInit();
             this.hSplit.Panel1.SuspendLayout();
             this.hSplit.Panel2.SuspendLayout();
@@ -294,6 +303,8 @@
             // 
             // globalBox
             // 
+            this.globalBox.Controls.Add(this.deltaModeButton);
+            this.globalBox.Controls.Add(this.absoluteModeButton);
             this.globalBox.Controls.Add(this.triggerHelpButton);
             this.globalBox.Controls.Add(this.eyePositionPanel);
             this.globalBox.Controls.Add(this.virtualOrientationPanel);
@@ -350,11 +361,19 @@
             this.virtualOrientationPanel.Quaternion = ((OpenMetaverse.Quaternion)(resources.GetObject("virtualOrientationPanel.Quaternion")));
             this.virtualOrientationPanel.Size = new System.Drawing.Size(255, 95);
             this.virtualOrientationPanel.TabIndex = 2;
+<<<<<<< HEAD
             rotation2.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("rotation2.LookAtVector")));
             rotation2.Pitch = 0D;
             rotation2.Quaternion = ((OpenMetaverse.Quaternion)(resources.GetObject("rotation2.Quaternion")));
             rotation2.Yaw = 0D;
             this.virtualOrientationPanel.Value = rotation2;
+=======
+            rotation3.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("rotation3.LookAtVector")));
+            rotation3.Pitch = 0D;
+            rotation3.Quaternion = ((OpenMetaverse.Quaternion)(resources.GetObject("rotation3.Quaternion")));
+            rotation3.Yaw = 0D;
+            this.virtualOrientationPanel.Value = rotation3;
+>>>>>>> Added delta vs absolute to Coordinator form.
             this.virtualOrientationPanel.Yaw = 0D;
             this.virtualOrientationPanel.OnChange += new System.EventHandler(this.virtualRotation_OnChange);
             // 
@@ -467,6 +486,15 @@
             this.tickCountLabel.TabIndex = 7;
             this.tickCountLabel.Text = "Tick Count";
             // 
+            // tickCountLabel
+            // 
+            this.tickCountLabel.AutoSize = true;
+            this.tickCountLabel.Location = new System.Drawing.Point(6, 94);
+            this.tickCountLabel.Name = "tickCountLabel";
+            this.tickCountLabel.Size = new System.Drawing.Size(59, 13);
+            this.tickCountLabel.TabIndex = 7;
+            this.tickCountLabel.Text = "Tick Count";
+            // 
             // shortestWorkLabel
             // 
             this.shortestWorkLabel.AutoSize = true;
@@ -530,6 +558,35 @@
             this.tpsLabel.TabIndex = 0;
             this.tpsLabel.Text = "Ticks / Second";
             // 
+<<<<<<< HEAD
+=======
+            // absoluteModeButton
+            // 
+            this.absoluteModeButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.absoluteModeButton.AutoSize = true;
+            this.absoluteModeButton.Location = new System.Drawing.Point(127, 12);
+            this.absoluteModeButton.Name = "absoluteModeButton";
+            this.absoluteModeButton.Size = new System.Drawing.Size(66, 17);
+            this.absoluteModeButton.TabIndex = 4;
+            this.absoluteModeButton.TabStop = true;
+            this.absoluteModeButton.Text = "Absolute";
+            this.absoluteModeButton.UseVisualStyleBackColor = true;
+            this.absoluteModeButton.CheckedChanged += new System.EventHandler(this.absoluteModeButton_CheckedChanged);
+            // 
+            // deltaModeButton
+            // 
+            this.deltaModeButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.deltaModeButton.AutoSize = true;
+            this.deltaModeButton.Location = new System.Drawing.Point(199, 12);
+            this.deltaModeButton.Name = "deltaModeButton";
+            this.deltaModeButton.Size = new System.Drawing.Size(50, 17);
+            this.deltaModeButton.TabIndex = 5;
+            this.deltaModeButton.TabStop = true;
+            this.deltaModeButton.Text = "Delta";
+            this.deltaModeButton.UseVisualStyleBackColor = true;
+            this.deltaModeButton.CheckedChanged += new System.EventHandler(this.deltaModeButton_CheckedChanged);
+            // 
+>>>>>>> Added delta vs absolute to Coordinator form.
             // CoordinatorForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -562,6 +619,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.heightmapPanel)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.heightmapScale)).EndInit();
             this.globalBox.ResumeLayout(false);
+            this.globalBox.PerformLayout();
             this.windowsPluginsSplit.Panel1.ResumeLayout(false);
             this.windowsPluginsSplit.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.windowsPluginsSplit)).EndInit();
@@ -610,5 +668,7 @@
         private System.Windows.Forms.Label meanTickLabel;
         private System.Windows.Forms.Label tpsLabel;
         private System.Windows.Forms.Label tickCountLabel;
+        private System.Windows.Forms.RadioButton deltaModeButton;
+        private System.Windows.Forms.RadioButton absoluteModeButton;
     }
 }
