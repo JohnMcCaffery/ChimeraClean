@@ -12,7 +12,8 @@ using System.IO;
 using System.Threading;
 using Chimera.Overlay;
 
-namespace Chimera {    public class DeltaUpdateEventArgs : EventArgs {
+namespace Chimera {
+    public class DeltaUpdateEventArgs : EventArgs {
         /// <summary>
         /// The delta that results in the new position.
         /// </summary>
@@ -298,12 +299,28 @@ namespace Chimera {    public class DeltaUpdateEventArgs : EventArgs {
         public Vector3 Position {
             get { return mPosition ; }
         }
+
         /// <summary>
-        /// The authoratitive orientation of the camera in virtual space. This is read-only. To update it use the 'Update' method.
+        /// The current delta for the camera in virtual space.
+        /// </summary>
+        public Vector3 PositionDelta {
+            get { return mPositionDelta ; }
+        }
+
+        /// <summary>
+        /// The authoratitive orientation of the camera position in virtual space. This is read-only. To update it use the 'Update' method.
         /// </summary>
         public Rotation Orientation {
             get { return mOrientation ; }
         } 
+
+        /// <summary>
+        /// The current delta for the camera orientation in virtual space.
+        /// </summary>
+        public Rotation OrientationDelta {
+            get { return mOrientationDelta ; }
+        }
+
         /// <summary>
         /// The position of the eye in the real world, in mm.
         /// </summary>
