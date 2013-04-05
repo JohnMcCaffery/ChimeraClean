@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using Chimera.GUI.Forms;
 using Chimera.Interfaces;
 using Chimera.Overlay;
+using Chimera.Core;
 
 namespace Chimera {
     /// <summary>
@@ -102,6 +103,14 @@ namespace Chimera {
         /// The method used to calculate the projection matrix.
         /// </summary>
         private ProjectionStyle mProjection = ProjectionStyle.Calculated;
+        /// <summary>
+        /// The projector that is to display this window.
+        /// </summary>
+        private Projector mProjector;
+        /// <summary>
+        /// Whether to include the eye position and resulting perspective lines when drawing the diagram.
+        /// </summary>
+        private bool mDrawEye = true;
 
         /// <summary>
         /// Triggered whenever the position of this input changes.
@@ -120,6 +129,8 @@ namespace Chimera {
         /// <param name="overlayAreas">The overlay areas mapped to this input.</param>
         public Window(string name) {
             mName = name;
+
+            mProjector = new Projector(this);
 
             WindowConfig cfg = new WindowConfig(name);
             mMonitor = Screen.AllScreens.FirstOrDefault(s => s.DeviceName.Equals(cfg.Monitor));
@@ -148,6 +159,13 @@ namespace Chimera {
         }
 
         /// <summary>
+        /// The projector which is to display the screen.
+        /// </summary>
+        internal Projector Projector {
+            get { return mProjector; }
+        }
+
+        /// <summary>
         /// The system which this input is registered with.
         /// </summary>
         public Coordinator Coordinator {
@@ -161,6 +179,14 @@ namespace Chimera {
         public IOutput Output {
             get { return mOutput ; }
             set { mOutput  = value; }
+        }
+
+        /// <summary>
+        /// Whether to draw the eye and resulting perspective lines when drawing the diagram.
+        /// </summary>
+        public bool DrawEye {
+            get { return mDrawEye; }
+            set { mDrawEye = value; }
         }
 
         /// <summary>
@@ -451,20 +477,24 @@ namespace Chimera {
                 });
             }
 
-            float perspectiveLineScale = 5f;
-            Vector3 topLeftLine = ((mTopLeft - mCoordinator.EyePosition) * perspectiveLineScale) + mCoordinator.EyePosition;
-            Vector3 topRightLine = (((mTopLeft + top) - mCoordinator.EyePosition) * perspectiveLineScale) + mCoordinator.EyePosition;
-            Vector3 bottomLeftLine = (((mTopLeft + top + side) - mCoordinator.EyePosition) * perspectiveLineScale) + mCoordinator.EyePosition;
-            Vector3 bottomRightLine = (((mTopLeft + side) - mCoordinator.EyePosition) * perspectiveLineScale) + mCoordinator.EyePosition;
+            if (mDrawEye) {
+                float perspectiveLineScale = 5f;
+                Vector3 topLeftLine = ((mTopLeft - mCoordinator.EyePosition) * perspectiveLineScale) + mCoordinator.EyePosition;
+                Vector3 topRightLine = (((mTopLeft + top) - mCoordinator.EyePosition) * perspectiveLineScale) + mCoordinator.EyePosition;
+                Vector3 bottomLeftLine = (((mTopLeft + top + side) - mCoordinator.EyePosition) * perspectiveLineScale) + mCoordinator.EyePosition;
+                Vector3 bottomRightLine = (((mTopLeft + side) - mCoordinator.EyePosition) * perspectiveLineScale) + mCoordinator.EyePosition;
 
-            Point eye = to2D(mCoordinator.EyePosition);
-            graphics.DrawLine(Pens.DarkViolet, eye, to2D(topLeftLine));
-            graphics.DrawLine(Pens.DarkViolet, eye, to2D(topRightLine));
-            graphics.DrawLine(Pens.DarkViolet, eye, to2D(bottomLeftLine));
-            graphics.DrawLine(Pens.DarkViolet, eye, to2D(bottomRightLine));
+                Point eye = to2D(mCoordinator.EyePosition);
+                graphics.DrawLine(Pens.DarkViolet, eye, to2D(topLeftLine));
+                graphics.DrawLine(Pens.DarkViolet, eye, to2D(topRightLine));
+                graphics.DrawLine(Pens.DarkViolet, eye, to2D(bottomLeftLine));
+                graphics.DrawLine(Pens.DarkViolet, eye, to2D(bottomRightLine));
 
-            Vector3 look = new Vector3((float)ScreenDistance, 0f, 0f) * mOrientation.Quaternion;
-            graphics.DrawLine(Pens.DarkViolet, eye, to2D(look + mCoordinator.EyePosition));
+                Vector3 look = new Vector3((float)ScreenDistance, 0f, 0f) * mOrientation.Quaternion;
+                graphics.DrawLine(Pens.DarkViolet, eye, to2D(look + mCoordinator.EyePosition));
+            }
+
+            mProjector.Draw(graphics, to2D, redraw);
         }
 
         void mCoordinator_EyeUpdated(Coordinator source, EventArgs args) {

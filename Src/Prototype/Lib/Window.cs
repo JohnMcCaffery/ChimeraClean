@@ -219,13 +219,13 @@ namespace Chimera {
                 float dot = Vector3.Dot(Vector3.Normalize(top - eyePosition), Vector3.Normalize(bottom - eyePosition));
                 //return Math.Acos(dot);
 
-                return Math.Atan2(Height, ScreenDistance);
+                return Math.Atan2(Height, WallDistance);
             }
             set {
                 double fov = HFieldOfView;
                 if (Math.Abs(fov) < TOLERANCE || value <= 0.0)
                     return;
-                double height = 2 * ScreenDistance * Math.Sin(value / 2.0);
+                double height = 2 * WallDistance * Math.Sin(value / 2.0);
                 double a = Math.Cos(value / 2);
                 if (a != 0.0)
                     height /= a;

@@ -31,7 +31,9 @@ namespace Chimera.Kinect.GUI {
             mInput = input;
 
             orientationPanel.Value = input.Orientation;
-            positionPanel.Value = input.Position;
+            orientationPanel.Text = "Orientation (deg)";
+            positionPanel.Value = input.Position / 10f;
+            positionPanel.Text = "Position (cm)";
             startButton.Enabled = !mInput.KinectStarted;
             headCheck.Checked = mInput.HeadEnabled;
             headPanel.Vector = new VectorUpdater(Nui.joint(Nui.Head));
@@ -77,7 +79,7 @@ namespace Chimera.Kinect.GUI {
         private void mInput_PositionChanged(Vector3 value) {
             if (!mGuiUpdate) {
                 mExternalUpdate = true;
-                positionPanel.Value = value;
+                positionPanel.Value = value / 10f;
                 mExternalUpdate = false;
             }
         }
@@ -85,7 +87,7 @@ namespace Chimera.Kinect.GUI {
         private void positionPanel_ValueChanged(object sender, EventArgs e) {
             if (!mExternalUpdate) {
                 mGuiUpdate = true;
-                mInput.Position = positionPanel.Value;
+                mInput.Position = positionPanel.Value * 10f;
                 mGuiUpdate = false;
             }
         }
