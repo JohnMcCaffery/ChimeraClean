@@ -26,11 +26,11 @@ namespace Chimera.OpenSim {
                 InjectPacket(MakePacket());
         }
 
-        protected override void ProcessChange (Coordinator coordinator, CameraUpdateEventArgs args) {
+        public override void SetWindow() { }
+
+        protected override void ProcessCameraUpdate (Coordinator coordinator, CameraUpdateEventArgs args) {
             SetCamera();
         }
-
-        protected override void ProcessEyeUpdate(Coordinator coordinator, EventArgs args) { }
 
         private SetFollowCamPropertiesPacket MakePacket() {
             SetFollowCamPropertiesPacket cameraPacket = new SetFollowCamPropertiesPacket();

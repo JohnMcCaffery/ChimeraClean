@@ -244,9 +244,20 @@ namespace Chimera.OpenSim {
                 ProcessWrangler.SetMonitor(mClient, monitor);
         }
 
-        private void ProcessChangeViewer(Coordinator coordinator, CameraUpdateEventArgs args) {
+        private void Coordinator_CameraUpdated(Coordinator coordinator, CameraUpdateEventArgs args) {
             if (coordinator.ControlMode == ControlMode.Absolute || !mMaster)
-                ProcessChange(coordinator, args);
+                ProcessCameraUpdate(coordinator, args);
+        }
+        /// <summary>
+        /// Called whenever the eye position is updated.
+        /// </summary>
+        /// <param name="input">The input which triggered the eye change.</param>
+        /// <param name="args">The arguments about the change that was made.</param>
+        private void Coordinator_EyeUpdated(Coordinator coordinator, EventArgs args) {
+            if (ProxyRunning && ControlCamera && Window.Coordinator.ControlMode == ControlMode.Absolute) {
+                SetCamera();
+                SetWindow();
+            }
         }
 
         /// <summary>
@@ -257,21 +268,18 @@ namespace Chimera.OpenSim {
         /// <summary>
         /// Take control of the camera and set it to the position specified by the input.
         /// </summary>
-        public abstract void SetCamera();
+        public abstract void SetCamera();
+        /// <summary>
+        /// Take control of the window frustum and set it up as specified by the Window.
+        /// </summary>
+        public abstract void SetWindow();
 
         /// <summary>
         /// Called whenever the camera position is updated.
         /// </summary>
         /// <param name="input">The input which triggered the camera change.</param>
         /// <param name="args">The arguments about the change that was made.</param>
-        protected abstract void ProcessChange(Coordinator coordinator, CameraUpdateEventArgs args);
-
-        /// <summary>
-        /// Called whenever the eye position is updated.
-        /// </summary>
-        /// <param name="input">The input which triggered the eye change.</param>
-        /// <param name="args">The arguments about the change that was made.</param>
-        protected abstract void ProcessEyeUpdate(Coordinator coordinator, EventArgs args);
+        protected abstract void ProcessCameraUpdate(Coordinator coordinator, CameraUpdateEventArgs args);
 
         /// <summary>
         /// Called whenever a packet is received transition the client.
@@ -376,8 +384,8 @@ namespace Chimera.OpenSim {
 
             mLogger = LogManager.GetLogger(mConfig.Name);
             mWindow = window;
-            mWindow.Coordinator.CameraUpdated += ProcessChangeViewer;
-            mWindow.Coordinator.EyeUpdated += ProcessEyeUpdate;
+            mWindow.Coordinator.CameraUpdated += Coordinator_CameraUpdated;
+            mWindow.Coordinator.EyeUpdated += Coordinator_EyeUpdated;
             mWindow.Coordinator.Tick += new Action(Coordinator_Tick);
             mWindow.Coordinator.CameraModeChanged += new Action<Coordinator,ControlMode>(Coordinator_CameraModeChanged);
             mWindow.Coordinator.DeltaUpdated += new Action<Chimera.Coordinator,DeltaUpdateEventArgs>(Coordinator_DeltaUpdated);
@@ -395,7 +403,8 @@ namespace Chimera.OpenSim {
         }
 
         void mWindow_Changed(Window w, EventArgs args) {
-            SetCamera();
+            if (w.Coordinator.ControlMode == ControlMode.Absolute)
+                SetWindow();
         }
 
         void Coordinator_Tick() {

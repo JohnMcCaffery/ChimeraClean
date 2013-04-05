@@ -11,6 +11,7 @@ using OpenMetaverse;
 using Chimera.Util;
 using NuiLibDotNet;
 using Chimera.Kinect.Interfaces;
+using Chimera.Inputs;
 
 namespace Chimera.Kinect.GUI {
     public partial class KinectPanel : UserControl {
@@ -120,7 +121,7 @@ namespace Chimera.Kinect.GUI {
             }
         }
 
-        private void AddMovement(IDeltaInput input) {
+        private void AddMovement(DeltaBasedInput input) {
             // 
             // controlPanel
             // 

@@ -24,12 +24,11 @@ using System.Text;
 using OpenMetaverse.Packets;
 using OpenMetaverse;
 
-namespace Chimera.OpenSim {
+namespace Chimera.OpenSim {
     /// <exclude/>
-    public sealed class SetWindowPacket: Packet {
+    public sealed class SetCameraPacket: Packet {
         /// <exclude/>
-        public sealed class WindowBlock : PacketBlock {
-            public Matrix4 ProjectionMatrix;
+        public sealed class CameraBlock : PacketBlock {
             public Vector3 Position;
             public Vector3 PositionDelta;
             public Vector3 LookAt;
@@ -40,7 +39,236 @@ namespace Chimera.OpenSim {
             public override int Length {
                 get {
                     //Matrix (4x4 floats (4bit) + 4 vector3s (3x floats (4bits)) + (1 xint) UUID
-                    return (sizeof(float) * 16) + (sizeof(float) * 3 * 4) + sizeof(int) + Source.GetBytes().Length;
+                    return (sizeof(float) * 3 * 4) + sizeof(int) + Source.GetBytes().Length;
+                }
+            }
+
+            public CameraBlock() { }
+            public CameraBlock(byte[] bytes, ref int i) {
+                FromBytes(bytes, ref i);
+            }
+
+            public override void FromBytes(byte[] bytes, ref int i) {
+                try {
+                    Position.FromBytes(bytes, i); i += sizeof(float) * 3;
+                    PositionDelta.FromBytes(bytes, i); i += sizeof(float) * 3;
+                    LookAt.FromBytes(bytes, i); i += sizeof(float) * 3;
+                    LookAtDelta.FromBytes(bytes, i); i += sizeof(float) * 3;
+
+                    TickLength = Utils.BytesToUInt(bytes, i); i += sizeof(int);
+
+                    Source.FromBytes(bytes, i);
+                } catch (Exception) {
+                    throw new MalformedDataException();
+                }
+            }
+
+            public override void ToBytes(byte[] bytes, ref int i) {
+                Position.ToBytes(bytes, i); i += sizeof(float) * 3;
+                PositionDelta.ToBytes(bytes, i); i += sizeof(float) * 3;
+                LookAt.ToBytes(bytes, i); i += sizeof(float) * 3;
+                LookAtDelta.ToBytes(bytes, i); i += sizeof(float) * 3;
+
+                Utils.UIntToBytes(TickLength, bytes, i); i += sizeof(int);
+
+                Source.ToBytes(bytes, i);
+            }
+        }
+
+        public override int Length {
+            get {
+                int length = 10;
+                length += Camera.Length;
+                return length;
+            }
+        }
+        public CameraBlock Camera;
+
+        public SetCameraPacket () {
+            HasVariableBlocks = false;
+            //Type = PacketType.SetFollowCamProperties;
+            Header = new Header();
+            Header.Frequency = PacketFrequency.Low;
+            Header.ID = 427;
+            Header.Reliable = true;
+            Camera = new CameraBlock();
+        }
+
+        public SetCameraPacket(byte[] bytes, ref int i)
+            : this() {
+            int packetEnd = bytes.Length - 1;
+            FromBytes(bytes, ref i, ref packetEnd, null);
+        }
+
+        override public void FromBytes(byte[] bytes, ref int i, ref int packetEnd, byte[] zeroBuffer) {
+            Header.FromBytes(bytes, ref i, ref packetEnd);
+            if (Header.Zerocoded && zeroBuffer != null) {
+                packetEnd = Helpers.ZeroDecode(bytes, packetEnd + 1, zeroBuffer) - 1;
+                bytes = zeroBuffer;
+            }
+            Camera.FromBytes(bytes, ref i);
+        }
+
+        public SetCameraPacket(Header head, byte[] bytes, ref int i)
+            : this() {
+            int packetEnd = bytes.Length - 1;
+            FromBytes(head, bytes, ref i, ref packetEnd);
+        }
+
+        override public void FromBytes(Header header, byte[] bytes, ref int i, ref int packetEnd) {
+            Header = header;
+            Camera.FromBytes(bytes, ref i);
+        }
+
+        public override byte[] ToBytes() {
+            int length = 10;
+            length += Camera.Length;
+            if (Header.AckList != null && Header.AckList.Length > 0) { length += Header.AckList.Length * 4 + 1; }
+            byte[] bytes = new byte[length];
+            int i = 0;
+            Header.ToBytes(bytes, ref i);
+            Camera.ToBytes(bytes, ref i);
+            if (Header.AckList != null && Header.AckList.Length > 0) { Header.AcksToBytes(bytes, ref i); }
+            return bytes;
+        }
+
+        public override byte[][] ToBytesMultiple() {
+            return new byte[][] { ToBytes() };
+        }
+    }
+
+    /// <exclude/>
+    public sealed class ClearCameraPacket : Packet
+    {
+        /// <exclude/>
+        public sealed class ObjectDataBlock : PacketBlock
+        {
+            public UUID ObjectID;
+
+            public override int Length
+            {
+                get
+                {
+                    return 16;
+                }
+            }
+
+            public ObjectDataBlock() { }
+            public ObjectDataBlock(byte[] bytes, ref int i)
+            {
+                FromBytes(bytes, ref i);
+            }
+
+            public override void FromBytes(byte[] bytes, ref int i)
+            {
+                try
+                {
+                    ObjectID.FromBytes(bytes, i); i += 16;
+                }
+                catch (Exception)
+                {
+                    throw new MalformedDataException();
+                }
+            }
+
+            public override void ToBytes(byte[] bytes, ref int i)
+            {
+                ObjectID.ToBytes(bytes, i); i += 16;
+            }
+
+        }
+
+        public override int Length
+        {
+            get
+            {
+                int length = 10;
+                length += ObjectData.Length;
+                return length;
+            }
+        }
+        public ObjectDataBlock ObjectData;
+
+        public ClearCameraPacket()
+        {
+            HasVariableBlocks = false;
+            Type = PacketType.ClearFollowCamProperties;
+            Header = new Header();
+            Header.Frequency = PacketFrequency.Low;
+            Header.ID = 428;
+            Header.Reliable = true;
+            ObjectData = new ObjectDataBlock();
+        }
+
+        public ClearCameraPacket(UUID id)
+            : this() {
+            ObjectData.ObjectID = id;
+        }
+
+        public ClearCameraPacket(byte[] bytes, ref int i) : this()
+        {
+            int packetEnd = bytes.Length - 1;
+            FromBytes(bytes, ref i, ref packetEnd, null);
+        }
+
+        override public void FromBytes(byte[] bytes, ref int i, ref int packetEnd, byte[] zeroBuffer)
+        {
+            Header.FromBytes(bytes, ref i, ref packetEnd);
+            if (Header.Zerocoded && zeroBuffer != null)
+            {
+                packetEnd = Helpers.ZeroDecode(bytes, packetEnd + 1, zeroBuffer) - 1;
+                bytes = zeroBuffer;
+            }
+            ObjectData.FromBytes(bytes, ref i);
+        }
+
+        public ClearCameraPacket(Header head, byte[] bytes, ref int i): this()
+        {
+            int packetEnd = bytes.Length - 1;
+            FromBytes(head, bytes, ref i, ref packetEnd);
+        }
+
+        override public void FromBytes(Header header, byte[] bytes, ref int i, ref int packetEnd)
+        {
+            Header = header;
+            ObjectData.FromBytes(bytes, ref i);
+        }
+
+        public override byte[] ToBytes()
+        {
+            int length = 10;
+            length += ObjectData.Length;
+            if (Header.AckList != null && Header.AckList.Length > 0) { length += Header.AckList.Length * 4 + 1; }
+            byte[] bytes = new byte[length];
+            int i = 0;
+            Header.ToBytes(bytes, ref i);
+            ObjectData.ToBytes(bytes, ref i);
+            if (Header.AckList != null && Header.AckList.Length > 0) { Header.AcksToBytes(bytes, ref i); }
+            return bytes;
+        }
+
+        public override byte[][] ToBytesMultiple()
+        {
+            return new byte[][] { ToBytes() };
+        }
+    }
+
+
+
+
+
+
+
+    /// <exclude/>
+    public sealed class SetWindowPacket: Packet {
+        /// <exclude/>
+        public sealed class WindowBlock : PacketBlock {
+            public Matrix4 ProjectionMatrix;
+
+            public override int Length {
+                get {
+                    //Matrix (4x4 floats (4bit) + 4 vector3s (3x floats (4bits)) + (1 xint) UUID
+                    return (sizeof(float) * 16);
                 }
             }
 
@@ -76,15 +304,6 @@ namespace Chimera.OpenSim {
                     ProjectionMatrix.M42 = r4.Y;
                     ProjectionMatrix.M43 = r4.Z;
                     ProjectionMatrix.M44 = r4.W;
-
-                    Position.FromBytes(bytes, i); i += 12;
-                    PositionDelta.FromBytes(bytes, i); i += 12;
-                    LookAt.FromBytes(bytes, i); i += 12;
-                    LookAtDelta.FromBytes(bytes, i); i += 12;
-
-                    TickLength = Utils.BytesToUInt(bytes, i); i += sizeof(int);
-
-                    Source.FromBytes(bytes, i);
                 } catch (Exception) {
                     throw new MalformedDataException();
                 }
@@ -93,31 +312,22 @@ namespace Chimera.OpenSim {
             public override void ToBytes(byte[] bytes, ref int i) {
                 //Vector4 r1;
                 //ProjectionMatrix.UpAxis
-                Utils.FloatToBytes(ProjectionMatrix.M11, bytes, i); i += 4;
-                Utils.FloatToBytes(ProjectionMatrix.M12, bytes, i); i += 4;
-                Utils.FloatToBytes(ProjectionMatrix.M13, bytes, i); i += 4;
-                Utils.FloatToBytes(ProjectionMatrix.M14, bytes, i); i += 4;
-                Utils.FloatToBytes(ProjectionMatrix.M21, bytes, i); i += 4;
-                Utils.FloatToBytes(ProjectionMatrix.M22, bytes, i); i += 4;
-                Utils.FloatToBytes(ProjectionMatrix.M23, bytes, i); i += 4;
-                Utils.FloatToBytes(ProjectionMatrix.M34, bytes, i); i += 4;
-                Utils.FloatToBytes(ProjectionMatrix.M31, bytes, i); i += 4;
-                Utils.FloatToBytes(ProjectionMatrix.M32, bytes, i); i += 4;
-                Utils.FloatToBytes(ProjectionMatrix.M33, bytes, i); i += 4;
-                Utils.FloatToBytes(ProjectionMatrix.M34, bytes, i); i += 4;
-                Utils.FloatToBytes(ProjectionMatrix.M41, bytes, i); i += 4;
-                Utils.FloatToBytes(ProjectionMatrix.M42, bytes, i); i += 4;
-                Utils.FloatToBytes(ProjectionMatrix.M43, bytes, i); i += 4;
-                Utils.FloatToBytes(ProjectionMatrix.M44, bytes, i); i += 4;
-
-                Position.ToBytes(bytes, i); i += 12;
-                PositionDelta.ToBytes(bytes, i); i += 12;
-                LookAt.ToBytes(bytes, i); i += 12;
-                LookAtDelta.ToBytes(bytes, i); i += 12;
-
-                Utils.UIntToBytes(TickLength, bytes, i); i += sizeof(int);
-
-                Source.ToBytes(bytes, i);
+                Utils.FloatToBytes(ProjectionMatrix.M11, bytes, i); i += sizeof(float);
+                Utils.FloatToBytes(ProjectionMatrix.M12, bytes, i); i += sizeof(float);
+                Utils.FloatToBytes(ProjectionMatrix.M13, bytes, i); i += sizeof(float);
+                Utils.FloatToBytes(ProjectionMatrix.M14, bytes, i); i += sizeof(float);
+                Utils.FloatToBytes(ProjectionMatrix.M21, bytes, i); i += sizeof(float);
+                Utils.FloatToBytes(ProjectionMatrix.M22, bytes, i); i += sizeof(float);
+                Utils.FloatToBytes(ProjectionMatrix.M23, bytes, i); i += sizeof(float);
+                Utils.FloatToBytes(ProjectionMatrix.M34, bytes, i); i += sizeof(float);
+                Utils.FloatToBytes(ProjectionMatrix.M31, bytes, i); i += sizeof(float);
+                Utils.FloatToBytes(ProjectionMatrix.M32, bytes, i); i += sizeof(float);
+                Utils.FloatToBytes(ProjectionMatrix.M33, bytes, i); i += sizeof(float);
+                Utils.FloatToBytes(ProjectionMatrix.M34, bytes, i); i += sizeof(float);
+                Utils.FloatToBytes(ProjectionMatrix.M41, bytes, i); i += sizeof(float);
+                Utils.FloatToBytes(ProjectionMatrix.M42, bytes, i); i += sizeof(float);
+                Utils.FloatToBytes(ProjectionMatrix.M43, bytes, i); i += sizeof(float);
+                Utils.FloatToBytes(ProjectionMatrix.M44, bytes, i); i += sizeof(float);
             }
         }
 
@@ -135,7 +345,7 @@ namespace Chimera.OpenSim {
             //Type = PacketType.SetFollowCamProperties;
             Header = new Header();
             Header.Frequency = PacketFrequency.Low;
-            Header.ID = 427;
+            Header.ID = 429;
             Header.Reliable = true;
             Window = new WindowBlock();
         }
@@ -144,6 +354,11 @@ namespace Chimera.OpenSim {
             : this() {
             int packetEnd = bytes.Length - 1;
             FromBytes(bytes, ref i, ref packetEnd, null);
+        }
+        public SetWindowPacket(Matrix4 matrix)
+            : this() {
+
+            Window.ProjectionMatrix = matrix;
         }
 
         override public void FromBytes(byte[] bytes, ref int i, ref int packetEnd, byte[] zeroBuffer) {
@@ -241,7 +456,7 @@ namespace Chimera.OpenSim {
             Type = PacketType.ClearFollowCamProperties;
             Header = new Header();
             Header.Frequency = PacketFrequency.Low;
-            Header.ID = 428;
+            Header.ID = 430;
             Header.Reliable = true;
             ObjectData = new ObjectDataBlock();
         }
@@ -373,7 +588,7 @@ namespace Chimera.OpenSim {
             //Type = PacketType.SetFollowCamProperties;
             Header = new Header();
             Header.Frequency = PacketFrequency.Low;
-            Header.ID = 429;
+            Header.ID = 431;
             Header.Reliable = true;
             Delta = new DeltaBlock();
         }
@@ -466,7 +681,7 @@ namespace Chimera.OpenSim {
             Type = PacketType.ClearFollowCamProperties;
             Header = new Header();
             Header.Frequency = PacketFrequency.Low;
-            Header.ID = 430;
+            Header.ID = 432;
             Header.Reliable = true;
             ObjectData = new ObjectDataBlock();
         }

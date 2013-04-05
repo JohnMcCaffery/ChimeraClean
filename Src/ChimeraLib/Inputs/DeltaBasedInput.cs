@@ -12,7 +12,27 @@ namespace Chimera.Inputs {
         private IDeltaInput mInput;
         private Coordinator mCoordinator;
         private bool mEnabled;
-        private bool mDeltaActive;
+        private bool mDeltaActive;
+        public bool WalkEnabled {
+            get { return mInput.WalkEnabled; }
+            set { mInput.WalkEnabled = value; }
+        }
+        public bool StrafeEnabled {
+            get { return mInput.StrafeEnabled; }
+            set { mInput.StrafeEnabled = value; }
+        }
+        public bool FlyEnabled {
+            get { return mInput.FlyEnabled; }
+            set { mInput.FlyEnabled = value; }
+        }
+        public bool PitchEnabled {
+            get { return mInput.PitchEnabled; }
+            set { }
+        }
+        public bool YawEnabled {
+            get { return mInput.YawEnabled; }
+            set { mInput.YawEnabled = value; }
+        }
 
         public DeltaBasedInput(IDeltaInput input) {
             mInput = input;

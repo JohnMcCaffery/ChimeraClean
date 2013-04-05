@@ -10,10 +10,11 @@ using Chimera.Kinect.GUI;
 using C = NuiLibDotNet.Condition;
 using Chimera.Kinect.Interfaces;
 using System.Drawing;
+using Chimera.Inputs;
 
 namespace Chimera.Kinect {
     public class KinectInput : ISystemInput, IKinectController {
-        private readonly Dictionary<string, IDeltaInput> mMovementControllers = new Dictionary<string, IDeltaInput>();
+        private readonly Dictionary<string, DeltaBasedInput> mMovementControllers = new Dictionary<string, DeltaBasedInput>();
         private readonly Dictionary<string, IHelpTrigger> mHelpTriggers = new Dictionary<string, IHelpTrigger>();
         private readonly List<IKinectCursorFactory> mCursorFactories = new List<IKinectCursorFactory>();
         private readonly Dictionary<string, Dictionary<string, IKinectCursor>> mCursors = new Dictionary<string, Dictionary<string, IKinectCursor>>();
@@ -31,7 +32,7 @@ namespace Chimera.Kinect {
 
         private Vector mHead;
 
-        private IDeltaInput mCurrentMovementController;
+        private DeltaBasedInput mCurrentMovementController;
         private IHelpTrigger mCurrentHelpTrigger;
         private Dictionary<string, IKinectCursor> mCurrentCursors = null;
 
@@ -50,7 +51,7 @@ namespace Chimera.Kinect {
         public string[] CursorNames {
             get { return mCursors.Keys.ToArray(); }
         }
-        public IDeltaInput[] MovementControllers {
+        public DeltaBasedInput[] MovementControllers {
             get { return mMovementControllers.Values.ToArray(); }
         }
         public IHelpTrigger[] HelpTriggers {
@@ -63,7 +64,7 @@ namespace Chimera.Kinect {
         public IKinectCursor[] Cursors {
             get { return mCurrentCursors.Values.ToArray(); }
         }
-        public IDeltaInput MovementController {
+        public DeltaBasedInput MovementController {
             get { return mCurrentMovementController; }
         }
         public IHelpTrigger HelpTrigger {
@@ -124,12 +125,12 @@ namespace Chimera.Kinect {
             mHead.OnChange += new ChangeDelegate(mHead_OnChange);
 
             foreach (var movement in movementControllers) {
-                mMovementControllers.Add(movement.Name, movement);
-                movement.Init(mCoordinator);
-                movement.Change += new Action<IDeltaInput>(movement_Change);
-                if (mCurrentMovementController == null)
-                    mCurrentMovementController = movement;
-                else
+                DeltaBasedInput put = new DeltaBasedInput(movement);
+                mMovementControllers.Add(movement.Name, put);
+                if (mCurrentMovementController == null) {
+                    mCurrentMovementController = put;
+                    mCurrentMovementController.Enabled = true;
+                } else
                     movement.Enabled = false;
             }
 
@@ -276,6 +277,9 @@ namespace Chimera.Kinect {
                 mCoordinator_WindowAdded(window, null);
             }
 
+            foreach (var input in mMovementControllers.Values)
+                input.Init(coordinator);
+
             mCoordinator.WindowAdded += new Action<Window,EventArgs>(mCoordinator_WindowAdded);
         }
 
@@ -335,25 +339,6 @@ namespace Chimera.Kinect {
         private void helpTrigger_Triggered(IHelpTrigger trigger) {
             if (trigger.Enabled)
                 mCoordinator.StateManager.TriggerCustom("Help");
-        }
-
-        private void movement_Change(IDeltaInput input) {
-            if (!mEnabled)
-                return;
-
-            Vector3 move = input.PositionDelta;
-
-            //TODO - handle keyboard rotation
-            if (input.Enabled && Nui.HasSkeleton && move != Vector3.Zero || input.OrientationDelta.Pitch != 0.0 || input.OrientationDelta.Yaw != 0.0) {
-                float fly = move.Z;
-                move.Z = 0f;
-                move *= mCoordinator.Orientation.Quaternion;
-                move.Z = fly;
-
-                Vector3 pos = mCoordinator.Position + move;
-                Rotation orientation = mCoordinator.Orientation + input.OrientationDelta;
-                mCoordinator.Update(pos, move, orientation, input.OrientationDelta);
-            }
         }
 
         private void cursor_CursorMove(IKinectCursor cursor, float x, float y) {
