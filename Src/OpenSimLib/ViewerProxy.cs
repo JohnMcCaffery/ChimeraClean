@@ -548,7 +548,6 @@ namespace Chimera.OpenSim {
                 packet.Delta.Yaw = (float) (args.rotationDelta.Yaw * (Math.PI / 45.0));
                 mProxy.InjectPacket(packet, Direction.Incoming);
                 
-                //TODO - would be nice to be able to land
                 //TODO - Would be nice if pitching the view 'stuck'.
             }
         }

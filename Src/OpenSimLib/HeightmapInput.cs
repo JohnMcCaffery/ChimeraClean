@@ -41,8 +41,6 @@ namespace Chimera.OpenSim {
         public HeightmapInput() {
             mConfig = new HeightmapConfig();
             mEnabled = mConfig.Enabled;
-            if (mConfig.AutoLogin)
-                Login();
         }
 
         void Network_LoggedOut(object sender, LoggedOutEventArgs e) {
@@ -198,6 +196,8 @@ namespace Chimera.OpenSim {
 
         public void Init(Coordinator coordinator) {
             mCoordinator = coordinator;
+            if (mConfig.AutoLogin)
+                Login();
         }
 
         #endregion
