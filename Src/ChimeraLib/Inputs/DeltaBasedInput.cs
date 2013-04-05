@@ -12,7 +12,8 @@ namespace Chimera.Inputs {
         private IDeltaInput mInput;
         private Coordinator mCoordinator;
         private bool mEnabled;
-        private bool mDeltaActive;
+        private bool mDeltaActive;
+
         public bool WalkEnabled {
             get { return mInput.WalkEnabled; }
             set { mInput.WalkEnabled = value; }
