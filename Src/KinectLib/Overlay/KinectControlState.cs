@@ -23,21 +23,10 @@ namespace Chimera.Kinect.Overlay {
             return new KinectControlWindowState(window.OverlayManager);
         }
 
-        public KinectControlState(string name, StateManager manager, string mainWindow, string whereWindow)
+        public KinectControlState(string name, StateManager manager)
             : base(name, manager) {
 
             mInput = manager.Coordinator.GetInput<KinectInput>();
-
-            mWhereWindow = whereWindow;
-            mWhereButton = new ImageHoverTrigger(manager.Coordinator[mainWindow].OverlayManager, new DialCursorRenderer(), new OverlayImage(new Bitmap(mWhereAmIImage), .85f, .2f, mainWindow));
-            mWhereButton.Triggered += new Action(mWhereButton_Triggered);
-
-            mCloseWhereButton = new ImageHoverTrigger(Manager.Coordinator[whereWindow].OverlayManager, new DialCursorRenderer(), mWhereButton.Image);
-            mCloseWhereButton.Triggered += new Action(mCloseWhereButton_Triggered);
-            
-            AddFeature(new SkeletonFeature(0f, 1f, 150f / 1080f, 100f, mainWindow));
-            AddFeature(new OverlayImage(new Bitmap(mHelpImages), .05f, .2f, mainWindow));
-            AddFeature(mWhereButton);
         }
 
         void mCloseWhereButton_Triggered() {
