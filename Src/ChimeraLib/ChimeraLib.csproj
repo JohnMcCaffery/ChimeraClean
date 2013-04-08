@@ -102,6 +102,9 @@
   <ItemGroup>
     <Compile Include="Core\Projector.cs" />
     <Compile Include="Overlay\Drawables\OverlayImage.cs" />
+    <Compile Include="Overlay\States\SeeThroughMenuState.cs" />
+    <Compile Include="Overlay\States\SlideshowState.cs" />
+    <Compile Include="Overlay\States\VideoState.cs" />
     <Compile Include="Overlay\Transitions\BitmapFadeWindowTransition.cs" />
     <Compile Include="Core\CoordinatorConfig.cs" />
     <Compile Include="Core\WindowConfig.cs" />
