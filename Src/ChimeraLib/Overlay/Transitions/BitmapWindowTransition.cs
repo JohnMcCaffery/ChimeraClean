@@ -86,7 +86,7 @@ namespace Chimera.Overlay.Transitions {
                 mTransition.Init(from, to);
             }
 
-            Begin();
+            mTransition.Begin();
         }
 
         public override void DrawDynamic(Graphics graphics) {
