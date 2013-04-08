@@ -10,32 +10,18 @@ using Chimera.Overlay.Triggers;
 
 namespace Chimera.Kinect.Overlay {
     public class KinectControlState : State {
-        private readonly Dictionary<Rectangle, OverlayImage> mActiveAreas = new Dictionary<Rectangle, OverlayImage>();
         private KinectInput mInput;
-        private string mHelpImages = "../Images/HelpSidebar.png";
-        private string mWhereAmIImage = "../WhereAmIButton.png";
-        private string mWhereWindow;
-        private ImageHoverTrigger mWhereButton;
-        private ImageHoverTrigger mCloseWhereButton;
-        private readonly HashSet<OverlayImage> mInfoImages = new HashSet<OverlayImage>();
+        private bool mAvatar;
 
         public override IWindowState CreateWindowState(Window window) {
             return new KinectControlWindowState(window.OverlayManager);
         }
 
-        public KinectControlState(string name, StateManager manager)
+        public KinectControlState(string name, StateManager manager, bool avatar)
             : base(name, manager) {
 
             mInput = manager.Coordinator.GetInput<KinectInput>();
-        }
-
-        void mCloseWhereButton_Triggered() {
-            mCloseWhereButton.Active = false;
-        }
-
-        void mWhereButton_Triggered() {
-            mCloseWhereButton.Image = mInfoImages.First();
-            mCloseWhereButton.Active = true;
+            mAvatar = avatar;
         }
 
         protected override void TransitionToFinish() {
@@ -53,22 +39,9 @@ namespace Chimera.Kinect.Overlay {
         }
 
         public override void TransitionToStart() {
-            mInfoImages.Clear();
+            Manager.Coordinator.ControlMode = mAvatar ? ControlMode.Delta : ControlMode.Absolute;
         }
 
         public override void TransitionFromFinish() { }
-
-        public void AddActiveArea(Rectangle area, Bitmap infoImage) {
-            OverlayImage info = new OverlayImage(infoImage, .2f, .2f, mWhereWindow);
-            CameraPositionTrigger trigger = new CameraPositionTrigger(Manager.Coordinator);
-            trigger.Triggered += () => {
-                mInfoImages.Add(info);
-                mWhereButton.Active = true;
-            };
-            trigger.Left += () => {
-                mInfoImages.Remove(info);
-                mWhereButton.Active = mInfoImages.Count > 0;
-            };
-        }
     }
 }
