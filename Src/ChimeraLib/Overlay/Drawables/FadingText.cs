@@ -39,12 +39,25 @@ namespace Chimera.Overlay.Drawables {
             mPosition = new PointF(x, y);
         }
 
-        private double Time {
-            get { return DateTime.Now.Subtract(mActivated).TotalMilliseconds; }
-        }
-
+        /// <summary>
+        /// Create a fading text object, specifying position as absolute values and a bounding area they are contained within.
+        /// Fading texts will draw the same text on screen, getting fainter and fainter, for the specified length of time.
+        /// The stay fully visible for 'solidTimeMS' then fade away over the length of 'fadeTimeMS'. Both specified in milliseconds.
+        /// </summary>
+        /// <param name="text">The text to draw.</param>
+        /// <param name="fadeTimeMS">How long the text should remain on screen before fading away completely.</param>
+        /// <param name="window">The window to draw the text on.</param>
+        /// <param name="colour">The colour to draw the text.</param>
+        /// <param name="font">The font to draw the text with.</param>
+        /// <param name="x">Where the text should be positioned, as an absolute value on bounds.</param>
+        /// <param name="y">Where the text should be positioned, as an absolute value on bounds.</param>
+        /// <param name="bounds">The bounding area on which the text is to be drawn.</param>
         public FadingText(string text, double solidTimeMS, double fadeTimeMS, string window, Color colour, Font font, int x, int y, Rectangle bounds)
             : this(text, solidTimeMS, fadeTimeMS, window, colour, font, (float)x / (float)bounds.Width, (float)y / (float)bounds.Height) {
+        }
+
+        private double Time {
+            get { return DateTime.Now.Subtract(mActivated).TotalMilliseconds; }
         }
 
         public bool NeedsRedrawn {
