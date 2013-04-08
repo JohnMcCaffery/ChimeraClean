@@ -14,6 +14,15 @@ namespace Chimera.Overlay.Drawables {
         private string mWindow;
         private bool mActive = true;
 
+        /// <summary>
+        /// The position / size for the image. Specified as a relative values.
+        /// For location: 0,0 = top left, 1,1 = bottom right.
+        /// For size: 0,0 = invisible, 1,1 = same size as the screen
+        /// </summary>
+        public RectangleF Bounds {
+            get { return mBounds; }
+        }
+
         public bool NeedsRedrawn {
             get { return false; }
         }
