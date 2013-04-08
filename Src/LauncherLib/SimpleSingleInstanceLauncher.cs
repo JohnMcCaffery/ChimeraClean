@@ -64,7 +64,7 @@ namespace Chimera.Launcher {
 
             State splashScreen = new ImageBGState("SplashScreen", mCoordinator.StateManager, "../Images/CathedralSplashScreen.png");
             State helpScreen = new ImageBGState("HelpScreen", mCoordinator.StateManager, "../Images/CathedralHelp.png");
-            State kinectControl = new KinectControlState("KinectControL", mCoordinator.StateManager, mainWindow.Name);
+            State kinectControl = new KinectControlState("KinectControL", mCoordinator.StateManager, mainWindow.Name, mainWindow.Name);
             State flythroughState = new FlythroughState("Flythrough", mCoordinator.StateManager, "../CathedralFlythrough-LookAt.xml");
 
             DialRenderer dialRenderer = new DialRenderer();

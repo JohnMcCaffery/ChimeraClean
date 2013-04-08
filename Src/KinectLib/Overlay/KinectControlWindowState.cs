@@ -9,8 +9,6 @@ namespace Chimera.Kinect.Overlay {
 
         public KinectControlWindowState(WindowOverlayManager manager)
             : base(manager) {
-
-            AddFeature(new SkeletonFeature(0f, 1f, 150f / 1080f, 100f, manager.Window.Name));
         }
 
         protected override void OnActivated() {
