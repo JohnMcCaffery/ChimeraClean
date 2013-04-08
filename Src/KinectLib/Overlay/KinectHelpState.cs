@@ -13,7 +13,7 @@ namespace Chimera.Kinect.Overlay {
         private readonly Dictionary<Rectangle, OverlayImage> mActiveAreas = new Dictionary<Rectangle, OverlayImage>();
         private KinectInput mInput;
         private string mHelpImages = "../Images/HelpSidebar.png";
-        private string mWhereAmIImage = "../WhereAmIButton.png";
+        private string mWhereAmIImage = "../Images/WhereAmIButton.png";
         private string mWhereWindow;
         private ImageHoverTrigger mWhereButton;
         private ImageHoverTrigger mCloseWhereButton;

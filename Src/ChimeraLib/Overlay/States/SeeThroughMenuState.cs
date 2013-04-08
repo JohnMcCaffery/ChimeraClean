@@ -38,8 +38,7 @@ namespace Chimera.Overlay.States {
         }
 
         protected override void TransitionToFinish() {
-            foreach (var window in mWindows)
-                window.ResetToTransparent();
+            TransitionToStart();
         }
 
         protected override void TransitionFromStart() {
@@ -73,7 +72,7 @@ namespace Chimera.Overlay.States {
             protected override void OnActivated() { }
 
             public override void RedrawStatic(Rectangle clip, Graphics graphics) {
-                if (mFadeBG == null)
+                if (mFadeBG != null)
                     graphics.DrawImage(mFadeBG, Point.Empty);
                 else {
                     using (Pen p = new Pen(Color.FromArgb(1, Color.White)))

@@ -64,6 +64,10 @@ namespace Chimera.Kinect.Overlay {
         /// </summary>
         private string mWindowName;
 
+        public SkeletonFeature(int xStart, int xEnd, int y, float scale, string windowName, Rectangle clip)
+            : this((float)xStart / (float) clip.Width, (float)(xEnd - xStart) / (float) clip.Width, (float)y / (float) clip.Height, scale, windowName) {
+        }
+
         public SkeletonFeature (float xStart, float xRange, float y, float scale, string windowName) {
             mXStart = xStart;
             mXRange = xRange;
