@@ -32,7 +32,7 @@ namespace Chimera.Kinect.Overlay {
             mMainWindow = manager.Coordinator[mainWindow];
 
             mWhereWindow = whereWindow;
-            mWhereButton = new ImageHoverTrigger(mMainWindow.OverlayManager, new DialCursorRenderer(), new OverlayImage(new Bitmap(mWhereAmIImage), .65f, .05f, mainWindow));
+            mWhereButton = new ImageHoverTrigger(mMainWindow.OverlayManager, new DialCursorRenderer(), new OverlayImage(new Bitmap(mWhereAmIImage), .65f, .25f, mainWindow));
             mWhereButton.Triggered += new Action(mWhereButton_Triggered);
 
             mCloseWhereButton = new ImageHoverTrigger(Manager.Coordinator[whereWindow].OverlayManager, new DialCursorRenderer(), mWhereButton.Image);

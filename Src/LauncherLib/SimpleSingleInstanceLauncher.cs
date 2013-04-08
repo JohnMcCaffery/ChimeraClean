@@ -78,11 +78,11 @@ namespace Chimera.Launcher {
             CursorRenderer cursorRenderer = new DialCursorRenderer(dialRenderer, mainWindow.OverlayManager);
             CursorTrigger t = new CursorTrigger(new CircleRenderer(100), mainWindow);
 
-            OverlayImage exploreButton = new OverlayImage(new Bitmap("../Images/SeeTheTownship.png"), .25f, .35f, .5f, mainWindow.Name);
-            OverlayImage helpKinectButton = new OverlayImage(new Bitmap("../Images/HelpToWorld.png"), .75f, 05f, mainWindow.Name);
-            OverlayImage kinectAvatarButton = new OverlayImage(new Bitmap("../Images/ExploreWithAvatar.png"), .15f, .4f, mainWindow.Name);
-            OverlayImage kinectFlycamButton = new OverlayImage(new Bitmap("../Images/ExploreFreely.png"), .65f, .4f, mainWindow.Name);
-            OverlayImage splashButton = new OverlayImage(new Bitmap("../Images/MainMenu.png"), .85f, .5f, mainWindow.Name);
+            OverlayImage exploreButton = new OverlayImage(new Bitmap("../Images/Caen/Buttons/SeeTheTownship.png"), .25f, .35f, .5f, mainWindow.Name);
+            OverlayImage helpKinectButton = new OverlayImage(new Bitmap("../Images/Caen/Buttons/HelpToWorld.png"), .75f, 05f, mainWindow.Name);
+            OverlayImage kinectAvatarButton = new OverlayImage(new Bitmap("../Images/Caen/Buttons/ExploreWithAvatar.png"), .15f, .4f, mainWindow.Name);
+            OverlayImage kinectFlycamButton = new OverlayImage(new Bitmap("../Images/Caen/Buttons/ExploreFreely.png"), .65f, .4f, mainWindow.Name);
+            OverlayImage splashButton = new OverlayImage(new Bitmap("../Images/Caen/Buttons/MainMenu.png"), .85f, .5f, mainWindow.Name);
 
             ImageHoverTrigger splashExploreTrigger = new ImageHoverTrigger(mainWindow.OverlayManager, cursorRenderer, exploreButton);
             ImageHoverTrigger helpKinectTrigger = new ImageHoverTrigger(mainWindow.OverlayManager, cursorRenderer, helpKinectButton);
