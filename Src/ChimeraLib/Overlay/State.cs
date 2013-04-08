@@ -5,7 +5,7 @@ using System.Text;
 using Chimera.Interfaces.Overlay;
 
 namespace Chimera.Overlay {
-    public abstract class State : IState {
+    public abstract class State {
         /// <summary>
         /// The window states, mapped to the names of the windows.
         /// </summary>
