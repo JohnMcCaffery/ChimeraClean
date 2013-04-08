@@ -3,31 +3,68 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Chimera.Interfaces.Overlay;
+using System.Drawing;
 
 namespace Chimera.Overlay.States {
     public class SeeThroughMenuState : State {
+        private readonly List<SeeThroughMenuWindow> mWindows = new List<SeeThroughMenuWindow>();
+
         public SeeThroughMenuState(string name, StateManager manager)
             : base(name, manager) {
         }
 
         public override IWindowState CreateWindowState(Window window) {
-            throw new NotImplementedException();
+            SeeThroughMenuWindow stateWindow = new SeeThroughMenuWindow(window);
+            mWindows.Add(stateWindow);
+            return stateWindow;
         }
 
         public override void TransitionToStart() {
-            throw new NotImplementedException();
+            foreach (var window in mWindows)
+                window.ResetToTransparent();
         }
 
         protected override void TransitionToFinish() {
-            throw new NotImplementedException();
+            foreach (var window in mWindows)
+                window.ResetToTransparent();
         }
 
         protected override void TransitionFromStart() {
-            throw new NotImplementedException();
+            foreach (var window in mWindows)
+                window.TransitionFromState();
         }
 
         public override void TransitionFromFinish() {
-            throw new NotImplementedException();
+            foreach (var window in mWindows)
+                window.ResetToTransparent();
+        }
+
+        private class SeeThroughMenuWindow : WindowState {
+            private Bitmap mFadeBG;
+
+            public SeeThroughMenuWindow(Window window)
+                : base(window.OverlayManager) {
+            }
+
+            internal void TransitionFromState() {
+                mFadeBG = new Bitmap(Manager.Window.Monitor.Bounds.Width, Manager.Window.Monitor.Bounds.Height);
+                using (Graphics g = Graphics.FromImage(mFadeBG)) {
+                    g.CopyFromScreen(Manager.Window.Monitor.Bounds.Location, Point.Empty, Manager.Window.Monitor.Bounds.Size);
+                }
+            }
+
+            internal void ResetToTransparent() {
+                mFadeBG = null;
+            }
+
+            protected override void OnActivated() { }
+
+            public override void RedrawStatic(Rectangle clip, Graphics graphics) {
+                if (mFadeBG == null)
+                    graphics.DrawImage(mFadeBG, Point.Empty);
+                else
+                    base.RedrawStatic(clip, graphics);
+            }
         }
     }
 }
