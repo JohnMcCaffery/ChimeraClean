@@ -24,7 +24,7 @@ namespace Chimera.Core {
         private bool mDraw = true;
         private bool mDrawRoom = true;
         private bool mDrawLabels = true;
-        private bool mAutoUpdate = true;
+        private bool mAutoUpdate = false;
         private float mWallDistance = 2000f;
 
         public Vector3 Position {
