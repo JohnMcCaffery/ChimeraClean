@@ -95,6 +95,7 @@ namespace Chimera.Overlay.Triggers {
         /// </summary>
         protected virtual RectangleF Bounds {
             get { return mBounds; }
+            set { mBounds = value; }
         }
 
         /// <summary>

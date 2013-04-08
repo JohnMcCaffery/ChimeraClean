@@ -15,6 +15,7 @@ namespace Chimera.Overlay.Triggers {
             get { return mImage; }
             set {
                 mImage = value;
+                Bounds = value.Bounds;
                 Manager.ForceRedrawStatic();
             }
         }
