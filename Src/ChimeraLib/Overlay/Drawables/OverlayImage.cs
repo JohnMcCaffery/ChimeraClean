@@ -34,6 +34,11 @@ namespace Chimera.Overlay.Drawables {
 
         public void DrawDynamic(Graphics graphics) { }
 
+        private OverlayImage(Bitmap image, string window) {
+            mImage = image;
+            mWindow = window;
+        }
+
         /// <summary>
         /// Create the image, specifying x and y as relative values and determining the size by the size of the image vs the size of the area it is to be drawn on.
         /// </summary>
@@ -41,8 +46,8 @@ namespace Chimera.Overlay.Drawables {
         /// <param name="x">How far across the screen to draw the image (0: left, 1: right).</param>
         /// <param name="y">How far down the screen to draw the image (0: top, 1: bottom).</param>
         /// <param name="bounds">The bounding rectangle for the area the image is to be drawn on. Width and Height will be calculated using the relative size of this and the size of the image.</param>
-        public OverlayImage(Bitmap image, float x, float y, Rectangle bounds) {
-            mImage = image;
+        public OverlayImage(Bitmap image, float x, float y, Rectangle bounds, string window)
+            : this(image, window) {
             mBounds = new RectangleF(x, y, (float)image.Width / (float) bounds.Width, (float)image.Height / (float) bounds.Height);
         }
         /// <summary>
@@ -52,8 +57,8 @@ namespace Chimera.Overlay.Drawables {
         /// <param name="x">How far across the screen to draw the image (0: left, 1: right).</param>
         /// <param name="y">How far down the screen to draw the image (0: top, 1: bottom).</param>
         /// <param name="screen">The screen the image is to be drawn on. Width and Height will be calculated using the relative size of this and the size of the image.</param>
-        public OverlayImage(Bitmap image, float x, float y, Screen screen)
-            : this(image, x, y, screen.Bounds) {
+        public OverlayImage(Bitmap image, float x, float y, Screen screen, string window)
+            : this(image, x, y, screen.Bounds, window) {
         }
 
         /// <summary>
@@ -63,8 +68,8 @@ namespace Chimera.Overlay.Drawables {
         /// <param name="x">Where across the bounding rectangle the image should be drawn.</param>
         /// <param name="y">Where down the bounding rectangle the image should be drawn.</param>
         /// <param name="bounds">The bounding rectangle for the area the image will be drawn on.</param>
-        public OverlayImage(Bitmap image, int x, int y, Rectangle bounds) {
-            mImage = image;
+        public OverlayImage(Bitmap image, int x, int y, Rectangle bounds, string window)
+            : this(image, window) {
             mBounds = new RectangleF(
                 (float) x / (float) bounds.Width, 
                 (float) y / (float) bounds.Height, 
@@ -78,8 +83,8 @@ namespace Chimera.Overlay.Drawables {
         /// <param name="image">The image to draw.</param>
         /// <param name="x">How far across the screen to draw the image (0: left, 1: right).</param>
         /// <param name="y">How far down the screen to draw the image (0: top, 1: bottom).</param>
-        public OverlayImage(Bitmap image, float x, float y) {
-            mImage = image;
+        public OverlayImage(Bitmap image, float x, float y, string window)
+            : this(image, window) {
             mBounds = new RectangleF(x, y, -1f, -1f);
         }
 
@@ -90,10 +95,10 @@ namespace Chimera.Overlay.Drawables {
         /// <param name="x">How far across the screen to draw the image (0: left, 1: right).</param>
         /// <param name="y">How far down the screen to draw the image (0: top, 1: bottom).</param>
         /// <param name="w">The width to draw the image, specified as fraction of the width of the surface the image will be drawn on. (0: no width, 1: covers the entire screen).</param>
-        public OverlayImage(Bitmap image, float x, float y, float w) {
+        public OverlayImage(Bitmap image, float x, float y, float w, string window)
+            : this(image, window) {
             mBounds = new RectangleF(x, y, -1f, -1f);
             mAspectRatio = (float) image.Height / (float) image.Width;
-            mImage = image;
         }
 
         /// <summary>
@@ -104,9 +109,9 @@ namespace Chimera.Overlay.Drawables {
         /// <param name="y">How far down the screen to draw the image (0: top, 1: bottom).</param>
         /// <param name="w">The width to draw the image, specified as fraction of the width of the surface the image will be drawn on. (0: no width, 1: covers the entire screen).</param>
         /// <param name="h">The width to draw the image, specified as fraction of the height of the surface the image will be drawn on. (0: no height, 1: covers the entire screen).</param>
-        public OverlayImage(Bitmap image, float x, float y, float w, float h) {
+        public OverlayImage(Bitmap image, float x, float y, float w, float h, string window)
+            : this(image, window) {
             mBounds = new RectangleF(x, y, w, h);
-            mImage = image;
         }
     }
 }
