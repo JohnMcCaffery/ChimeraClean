@@ -4,13 +4,20 @@ using System.Linq;
 using System.Text;
 using Chimera.Interfaces.Overlay;
 using System.Drawing;
+using OpenMetaverse;
+using Chimera.Util;
 
 namespace Chimera.Overlay.States {
     public class SeeThroughMenuState : State {
         private readonly List<SeeThroughMenuWindow> mWindows = new List<SeeThroughMenuWindow>();
+        private Vector3 mPosition;
+        private Rotation mOrientation;
 
-        public SeeThroughMenuState(string name, StateManager manager)
+        public SeeThroughMenuState(string name, StateManager manager, Vector3 position, Rotation orientation)
             : base(name, manager) {
+
+            mPosition = position;
+            mOrientation = orientation;
         }
 
         public override IWindowState CreateWindowState(Window window) {
@@ -20,6 +27,11 @@ namespace Chimera.Overlay.States {
         }
 
         public override void TransitionToStart() {
+            Manager.Coordinator.EnableUpdates = true;
+            Manager.Coordinator.ControlMode = ControlMode.Absolute;
+            Manager.Coordinator.Update(mPosition, Vector3.Zero, mOrientation, Rotation.Zero);
+            Manager.Coordinator.EnableUpdates = false;
+
             foreach (var window in mWindows)
                 window.ResetToTransparent();
         }
