@@ -19,6 +19,7 @@ namespace Chimera.Overlay {
         /// The name of the window this drawable is to be drawn on.
         /// </summary>
         private string mWindowName;
+        private bool mActive;
 
         protected DrawableRoot(string window) {
             mWindowName = window;
@@ -27,6 +28,12 @@ namespace Chimera.Overlay {
         public virtual string Window {
             get { return mWindowName; }
         }
+
+        public bool Active {
+            get { return mActive; }
+            set { mActive = value; }
+        }
+
         /// <summary>
         /// Whether the dynmic part of the drawable needs to be redrawn.
         /// </summary>
@@ -47,7 +54,8 @@ namespace Chimera.Overlay {
         /// <param name="graphics">The object with which to draw the elements.</param>
         public virtual void DrawDynamic(Graphics graphics) {
             foreach (var feature in mFeatures)
-                feature.DrawDynamic(graphics);
+                if (feature.Active)
+                    feature.DrawDynamic(graphics);
         }
 
         /// <summary>

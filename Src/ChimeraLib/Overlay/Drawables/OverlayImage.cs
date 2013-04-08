@@ -12,6 +12,7 @@ namespace Chimera.Overlay.Drawables {
         private Bitmap mImage;
         private float mAspectRatio;
         private string mWindow;
+        private bool mActive = true;
 
         public bool NeedsRedrawn {
             get { return false; }
@@ -19,6 +20,11 @@ namespace Chimera.Overlay.Drawables {
 
         public string Window {
             get { return mWindow; }
+        }
+
+        public bool Active {
+            get { return mActive; }
+            set { mActive = value; }
         }
 
         public void RedrawStatic(Rectangle clip, Graphics graphics) {
@@ -49,7 +55,8 @@ namespace Chimera.Overlay.Drawables {
         public OverlayImage(Bitmap image, float x, float y, Rectangle bounds, string window)
             : this(image, window) {
             mBounds = new RectangleF(x, y, (float)image.Width / (float) bounds.Width, (float)image.Height / (float) bounds.Height);
-        }
+        }
+
         /// <summary>
         /// Create the image, specifying x and y as relative values and determining the size by the size of the image vs the size of the screen it is to be drawn on.
         /// </summary>
