@@ -101,12 +101,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core\Projector.cs" />
+    <Compile Include="Interfaces\Overlay\IImageTransition.cs" />
+    <Compile Include="Interfaces\Overlay\IImageTransitionFactory.cs" />
     <Compile Include="Overlay\Drawables\FadingText.cs" />
     <Compile Include="Overlay\Drawables\OverlayImage.cs" />
     <Compile Include="Overlay\States\SeeThroughMenuState.cs" />
     <Compile Include="Overlay\States\SlideshowState.cs" />
     <Compile Include="Overlay\States\VideoState.cs" />
-    <Compile Include="Overlay\Transitions\BitmapFadeWindowTransition.cs" />
+    <Compile Include="Overlay\Transitions\BitmapFade.cs" />
+    <Compile Include="Overlay\Transitions\BitmapWindowTransition.cs" />
     <Compile Include="Core\CoordinatorConfig.cs" />
     <Compile Include="Core\WindowConfig.cs" />
     <Compile Include="Overlay\Transitions\OpacityFadeWindowTransition.cs" />
