@@ -6,6 +6,7 @@ using Chimera.Interfaces.Overlay;
 using System.Drawing;
 using OpenMetaverse;
 using Chimera.Util;
+using Chimera.Overlay.Drawables;
 
 namespace Chimera.Overlay.States {
     public class SeeThroughMenuState : State {
@@ -74,8 +75,11 @@ namespace Chimera.Overlay.States {
             public override void RedrawStatic(Rectangle clip, Graphics graphics) {
                 if (mFadeBG == null)
                     graphics.DrawImage(mFadeBG, Point.Empty);
-                else
+                else {
+                    using (Pen p = new Pen(Color.FromArgb(1, Color.White)))
+                        graphics.DrawRectangle(p, clip);
                     base.RedrawStatic(clip, graphics);
+                }
             }
         }
     }
