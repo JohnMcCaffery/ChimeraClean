@@ -64,16 +64,15 @@ namespace Chimera.Launcher {
 
 
 
-
-            State splash = new ImageBGState("SplashScreen", mCoordinator.StateManager, "../Images/Caen-Splash.png");
-            State explore = new ImageBGState("InWorldChoice", mCoordinator.StateManager, "../Images/Caen-Explore.png");
+            State splash = new ImageBGState("SplashScreen", mCoordinator.StateManager, "../Images/Caen/MenuBGs/Caen-Splash.png");
+            State explore = new ImageBGState("InWorldChoice", mCoordinator.StateManager, "../Images/Caen/MenuBGs/Caen-Explore.png");
             //State splash = new SeeThroughMenuState("SplashScreen", mCoordinator.StateManager, new Vector3(488f, 224f, 80f), new Rotation(23.6, 159.2));
             //State explore = new SeeThroughMenuState("InWorldChoice", mCoordinator.StateManager, new Vector3(437F, 274f, 48f), new Rotation(0.0, -128.0));
             State kinectAvatar = new KinectControlState("KinectControlAvatar", mCoordinator.StateManager, true);
             State kinectFlycam = new KinectControlState("KinectControlFlycam", mCoordinator.StateManager, false);
             State helpAvatar = new KinectHelpState("KinectHelpAvatar", mCoordinator.StateManager, mainWindow.Name, mainWindow.Name);
             State helpFlycam = new KinectHelpState("KinectHelpFlycam", mCoordinator.StateManager, mainWindow.Name, mainWindow.Name);
-            State flythroughState = new FlythroughState("Flythrough", mCoordinator.StateManager, "../CathedralFlythrough-LookAt.xml");
+            State flythroughState = new FlythroughState("Flythrough", mCoordinator.StateManager, "../Flythroughs/Caen-long.xml");
 
             DialRenderer dialRenderer = new DialRenderer();
             CursorRenderer cursorRenderer = new DialCursorRenderer(dialRenderer, mainWindow.OverlayManager);
