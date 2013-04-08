@@ -67,7 +67,7 @@ namespace Chimera.Overlay {
         /// <summary>
         /// Whether the state is currently active.
         /// </summary>
-        public virtual bool Active {
+        public bool Active {
             get { return mActive; }
             set { 
                 mActive = value;
@@ -76,9 +76,9 @@ namespace Chimera.Overlay {
                 foreach (var window in mWindowStates.Values)
                     window.Active = false;
                 if (value)
-                    OnActivated();
+                    TransitionToFinish();
                 else
-                    OnDeActivated();
+                    TransitionFromStart();
             }
         }
 
@@ -113,15 +113,27 @@ namespace Chimera.Overlay {
         public abstract IWindowState CreateWindowState(Window window);
 
         /// <summary>
+        /// Called before a transition to this state begins, set up any graphics that need to be in place before the transition begins.
+        /// Will only be called if a tranisition was used to get to the state.
+        /// </summary>
+        public abstract void TransitionToStart();
+
+        /// <summary>
         /// Do any actions that need to be set as soon as the state is activated.
         /// Use this to make sure the overlay is set up as expected, e.g. set whether the camera should be controlled.
         /// </summary>
-        protected abstract void OnActivated();
+        protected abstract void TransitionToFinish();
 
         /// <summary>
         /// Do any actions that need to be when the state is de-activated.
         /// Use this to make sure the overlay is set up as expected, e.g. set whether the camera should be controlled.
         /// </summary>
-        protected abstract void OnDeActivated();
+        protected abstract void TransitionFromStart();
+
+        /// <summary>
+        /// Called after the transition away from this state has been finished. Finalize any graphics that needed to stay in place whilst the transition was going.
+        /// Will only be called if a tranisition was used to get from the state.
+        /// </summary>
+        public abstract void TransitionFromFinish();
     }
 }

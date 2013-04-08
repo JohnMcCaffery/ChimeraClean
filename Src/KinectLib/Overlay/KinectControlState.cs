@@ -9,12 +9,6 @@ namespace Chimera.Kinect.Overlay {
     public class KinectControlState : State {
         private KinectInput mInput;
 
-        public override bool Active {
-            get { return base.Active; }
-            set {
-                base.Active = value;
-            }
-        }
         public override IWindowState CreateWindowState(Window window) {
             return new KinectControlWindowState(window.OverlayManager);
         }
@@ -25,16 +19,25 @@ namespace Chimera.Kinect.Overlay {
             mInput = manager.Coordinator.GetInput<KinectInput>();
         }
 
-        protected override void OnActivated() {
+        protected override void TransitionToFinish() {
             mInput.FlyEnabled = true;
             mInput.WalkEnabled = true;
             mInput.YawEnabled = true;
             Manager.Coordinator.EnableUpdates = true;
-        }
-        protected override void OnDeActivated() { 
+        }
+
+        protected override void TransitionFromStart() { 
             mInput.FlyEnabled = false;
             mInput.WalkEnabled = false;
             mInput.YawEnabled = false;       
+        }
+
+        public override void TransitionToStart() {
+            throw new NotImplementedException();
+        }
+
+        public override void TransitionFromFinish() {
+            throw new NotImplementedException();
         }
     }
 }
