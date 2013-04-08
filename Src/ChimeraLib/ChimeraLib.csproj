@@ -194,6 +194,7 @@
     <Compile Include="Overlay\Triggers\HoverTrigger.cs" />
     <Compile Include="Overlay\State.cs" />
     <Compile Include="Overlay\StateTransition.cs" />
+    <Compile Include="Overlay\Triggers\TextHoverTrigger.cs" />
     <Compile Include="Util\ConfigBase.cs" />
     <Compile Include="Util\Init.cs" />
     <Compile Include="Util\ProcessWrangler.cs" />

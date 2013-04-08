@@ -53,7 +53,7 @@ namespace Chimera.Overlay.Drawables {
             get { return DateTime.Now.Subtract(mActivated).TotalMilliseconds; }
         }
 
-        public bool NeedsRedrawn {
+        public override bool NeedsRedrawn {
             get { return !mFirstDrawn || Time > mSolidTime && Time < mSolidTime + mFadeTime; }
         }
 
@@ -68,12 +68,12 @@ namespace Chimera.Overlay.Drawables {
             if (done < 0.0) {
                 mFirstDrawn = true;
                 using (Brush b = new SolidBrush(mColour)) {
-                    graphics.DrawString(TextString, mFont, b, mLocation);
+                    graphics.DrawString(TextString, Font, b, mLocation);
                 }
             }
             if (done < 1.0) {
                 using (Brush b = new SolidBrush(Color.FromArgb((int) (255.0 * (1.0 - done)), mColour))) {
-                    graphics.DrawString(TextString, mFont, b, mLocation);
+                    graphics.DrawString(TextString, Font, b, mLocation);
                 }
             }
         }

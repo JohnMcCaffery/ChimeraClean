@@ -8,6 +8,7 @@ namespace Chimera.Overlay.Drawables {
     public class DynamicText : Text {
         private Rectangle mClip;
         private WindowOverlayManager mManager;
+        private bool mNeedsRedrawn;
 
         public DynamicText(string text, WindowOverlayManager manager, Font font, Color colour, PointF location)
             : base(text, manager.Window.Name, font, colour, location) {
@@ -15,11 +16,15 @@ namespace Chimera.Overlay.Drawables {
             mManager = manager;
         }
 
-        public override string TextString {
+        public bool NeedsRedrawn {
+            get { return mNeedsRedrawn; }
+        }
+
+        public string TextString {
             get { return base.TextString; }
             set {
                 base.TextString = value;
-                mManager.ForceRedraw();
+                mNeedsRedrawn = true;
             }
         }
 

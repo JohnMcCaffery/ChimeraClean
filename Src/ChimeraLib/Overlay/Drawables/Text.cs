@@ -11,8 +11,8 @@ namespace Chimera.Overlay.Drawables {
         private bool mActive;
         private string mWindow;
 
-        protected readonly Font mFont;
-        protected readonly PointF mPosition;
+        private Font mFont;
+        private PointF mPosition;
         protected readonly Color mColour;
 
         public virtual String TextString {
@@ -34,16 +34,16 @@ namespace Chimera.Overlay.Drawables {
 
         #region IDrawable Members
 
-        public bool Active {
+        public virtual bool Active {
             get { return mActive; }
             set { mActive = value; }
         }
 
-        public bool NeedsRedrawn {
+        public virtual bool NeedsRedrawn {
             get { return false; }
         }
 
-        public string Window {
+        public virtual string Window {
             get { return mWindow; }
         }
 
@@ -63,6 +63,14 @@ namespace Chimera.Overlay.Drawables {
 
         protected PointF GetPoint(Rectangle clip) {
             return new PointF(clip.Width * mPosition.X, clip.Height * mPosition.Y);
+        }
+
+        public PointF Position {
+            get { return mPosition; }
+        }
+
+        public Font Font {
+            get { return mFont; }
         }
     }
 }
