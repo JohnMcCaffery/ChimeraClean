@@ -60,10 +60,14 @@ namespace Chimera.Overlay.Triggers {
         /// <param name="y">The y coordinate for where the image is to be positioned, specified between 0 and 1. 0 is flush to the top, 1 flush to the bottom.</param>
         /// <param name="x">The width of the image, specified between 0 and 1. 1 will fill the entire width, 0 will be invisible.</param>
         /// <param name="y">The width of the image, specified between 0 and 1. 1 will fill the entire height, 0 will be invisible.</param>
-        public HoverTrigger(WindowOverlayManager manager, IHoverSelectorRenderer selector, float x, float y, float w, float h) {
+        public HoverTrigger(WindowOverlayManager manager, IHoverSelectorRenderer renderer, float x, float y, float w, float h)
+            : this(manager, renderer, new RectangleF(x, y, w, h)) {
+        }
+
+        public HoverTrigger(WindowOverlayManager manager, IHoverSelectorRenderer renderer, RectangleF bounds) {
             mManager = manager;
-            mBounds = new RectangleF(x, y, w, h);
-            mRenderer = selector;
+            mBounds = bounds;
+            mRenderer = renderer;
 
             mManager.Window.Coordinator.Tick += new Action(Coordinator_Tick);
         }
