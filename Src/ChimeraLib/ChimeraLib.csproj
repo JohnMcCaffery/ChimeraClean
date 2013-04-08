@@ -103,8 +103,11 @@
     <Compile Include="Core\Projector.cs" />
     <Compile Include="Interfaces\Overlay\IImageTransition.cs" />
     <Compile Include="Interfaces\Overlay\IImageTransitionFactory.cs" />
+    <Compile Include="Overlay\Drawables\DynamicText.cs" />
     <Compile Include="Overlay\Drawables\FadingText.cs" />
     <Compile Include="Overlay\Drawables\OverlayImage.cs" />
+    <Compile Include="Overlay\Drawables\StaticText.cs" />
+    <Compile Include="Overlay\Drawables\Text.cs" />
     <Compile Include="Overlay\States\SeeThroughMenuState.cs" />
     <Compile Include="Overlay\States\SlideshowState.cs" />
     <Compile Include="Overlay\States\VideoState.cs" />

@@ -6,17 +6,13 @@ using Chimera.Interfaces.Overlay;
 using System.Drawing;
 
 namespace Chimera.Overlay.Drawables {
-    public class FadingText : IDrawable {
+    public class FadingText : Text, IDrawable {
         private DateTime mActivated;
         private double mSolidTime;
         private double mFadeTime;
-        private string mText;
-        private string mWindow;
-        private Color mColour;
-        private Font mFont;
-        private PointF mPosition;
         private bool mFirstDrawn;
         private bool mActive = true;
+        private PointF mLocation;
 
         /// <summary>
         /// Create a fading text object, specifying position as relative values.
@@ -30,14 +26,10 @@ namespace Chimera.Overlay.Drawables {
         /// <param name="font">The font to draw the text with.</param>
         /// <param name="x">Where the text should be positioned, as relative values (0: left, 1: right)</param>
         /// <param name="y">Where the text should be positioned, as relative values (0: top, 1: bottom)</param>
-        public FadingText(string text, double solidTimeMS, double fadeTimeMS, string window, Color colour, Font font, float x, float y) {
-            mWindow = window;
+        public FadingText(string text, double solidTimeMS, double fadeTimeMS, string window, Color colour, Font font, float x, float y)
+            : base(text, window, font, colour, new PointF(x, y)) {
             mSolidTime = solidTimeMS;
             mFadeTime = fadeTimeMS;
-            mText = text;
-            mColour = colour;
-            mFont = font;
-            mPosition = new PointF(x, y);
         }
 
         /// <summary>
@@ -65,30 +57,23 @@ namespace Chimera.Overlay.Drawables {
             get { return !mFirstDrawn || Time > mSolidTime && Time < mSolidTime + mFadeTime; }
         }
 
-        public string Window {
-            get { return mWindow; }
-        }
-        public bool Active {
-            get { return mActive; }
-            set { mActive = value; }
-        }
-
-        public void RedrawStatic(Rectangle clip, Graphics graphics) {
+        public override void RedrawStatic(Rectangle clip, Graphics graphics) {
             mActivated = DateTime.Now;
             mFirstDrawn = false;
+            mLocation = GetPoint(clip);
         }
 
-        public void DrawDynamic(Graphics graphics) {
+        public override void DrawDynamic(Graphics graphics) {
             double done = (Time - mSolidTime) / mFadeTime;
             if (done < 0.0) {
                 mFirstDrawn = true;
                 using (Brush b = new SolidBrush(mColour)) {
-                    graphics.DrawString(mText, mFont, b, mPosition);
+                    graphics.DrawString(TextString, mFont, b, mLocation);
                 }
             }
             if (done < 1.0) {
                 using (Brush b = new SolidBrush(Color.FromArgb((int) (255.0 * (1.0 - done)), mColour))) {
-                    graphics.DrawString(mText, mFont, b, mPosition);
+                    graphics.DrawString(TextString, mFont, b, mLocation);
                 }
             }
         }
