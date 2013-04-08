@@ -65,28 +65,27 @@ namespace Chimera.Launcher {
 
 
 
-            State splash = new SeeThroughMenuState("SplashScreen", mCoordinator.StateManager, new Vector3(128f, 128f, 55f), new Rotation(0.0, 90.0));
-            State explore = new SeeThroughMenuState("InWorldChoice", mCoordinator.StateManager, new Vector3(512f, 512f, 60f), new Rotation(0.0, 40.0));
-            State kinectAvatar = new KinectControlState("KinectHelpAvatar", mCoordinator.StateManager, true);
-            State kinectFlycam = new KinectControlState("KinectHelpFlycam", mCoordinator.StateManager, false);
-            State helpAvatar = new KinectHelpState("KinectControlAvatar", mCoordinator.StateManager, mainWindow.Name, mainWindow.Name);
-            State helpFlycam = new KinectHelpState("KinectControlFlycam", mCoordinator.StateManager, mainWindow.Name, mainWindow.Name);
+            State splash = new SeeThroughMenuState("SplashScreen", mCoordinator.StateManager, new Vector3(488f, 224f, 80f), new Rotation(23.6, 159.2));
+            State explore = new SeeThroughMenuState("InWorldChoice", mCoordinator.StateManager, new Vector3(437F, 274f, 48f), new Rotation(0.0, -128.0));
+            State kinectAvatar = new KinectControlState("KinectControlAvatar", mCoordinator.StateManager, true);
+            State kinectFlycam = new KinectControlState("KinectControlFlycam", mCoordinator.StateManager, false);
+            State helpAvatar = new KinectHelpState("KinectHelpAvatar", mCoordinator.StateManager, mainWindow.Name, mainWindow.Name);
+            State helpFlycam = new KinectHelpState("KinectHelpFlycam", mCoordinator.StateManager, mainWindow.Name, mainWindow.Name);
             State flythroughState = new FlythroughState("Flythrough", mCoordinator.StateManager, "../CathedralFlythrough-LookAt.xml");
 
             DialRenderer dialRenderer = new DialRenderer();
             CursorRenderer cursorRenderer = new DialCursorRenderer(dialRenderer, mainWindow.OverlayManager);
             CursorTrigger t = new CursorTrigger(new CircleRenderer(100), mainWindow);
 
-            OverlayImage helpKinectButton = new OverlayImage(new Bitmap("../Images/HelpToWorld.png"), .85f, .5f, mainWindow.Name);
-            OverlayImage exploreButton = new OverlayImage(new Bitmap("../Images/SeeTheTownship.png"), .85f, .5f, mainWindow.Name);
-            OverlayImage kinectAvatarButton = new OverlayImage(new Bitmap("../Images/ExploreWithAvatar.png"), .85f, .5f, mainWindow.Name);
-            OverlayImage kinectFlycamButton = new OverlayImage(new Bitmap("../Images/ExploreFreely.png"), .85f, .5f, mainWindow.Name);
+            OverlayImage exploreButton = new OverlayImage(new Bitmap("../Images/SeeTheTownship.png"), .25f, .35f, .5f, mainWindow.Name);
+            OverlayImage helpKinectButton = new OverlayImage(new Bitmap("../Images/HelpToWorld.png"), .75f, 05f, mainWindow.Name);
+            OverlayImage kinectAvatarButton = new OverlayImage(new Bitmap("../Images/ExploreWithAvatar.png"), .15f, .4f, mainWindow.Name);
+            OverlayImage kinectFlycamButton = new OverlayImage(new Bitmap("../Images/ExploreFreely.png"), .65f, .4f, mainWindow.Name);
             OverlayImage splashButton = new OverlayImage(new Bitmap("../Images/MainMenu.png"), .85f, .5f, mainWindow.Name);
 
-            Rectangle clip = new Rectangle(0, 0, 1920, 1080);
-            ImageHoverTrigger helpSplashTrigger = new ImageHoverTrigger(mainWindow.OverlayManager, cursorRenderer, splashButton);
-            ImageHoverTrigger helpKinectTrigger = new ImageHoverTrigger(mainWindow.OverlayManager, cursorRenderer, helpKinectButton);
             ImageHoverTrigger splashExploreTrigger = new ImageHoverTrigger(mainWindow.OverlayManager, cursorRenderer, exploreButton);
+            ImageHoverTrigger helpKinectTrigger = new ImageHoverTrigger(mainWindow.OverlayManager, cursorRenderer, helpKinectButton);
+            ImageHoverTrigger helpSplashTrigger = new ImageHoverTrigger(mainWindow.OverlayManager, cursorRenderer, splashButton);
             ImageHoverTrigger exploreAvatarTrigger = new ImageHoverTrigger(mainWindow.OverlayManager, cursorRenderer, kinectAvatarButton);
             ImageHoverTrigger exploreFlycamTrigger = new ImageHoverTrigger(mainWindow.OverlayManager, cursorRenderer, kinectFlycamButton);
 
@@ -119,10 +118,10 @@ namespace Chimera.Launcher {
             StateTransition helpAvatarFlythroughTransition = new StateTransition(mCoordinator.StateManager, helpAvatar, flythroughState, skeletonLost, fadeOutTransition);
             StateTransition helpFlycamFlythroughTransition = new StateTransition(mCoordinator.StateManager, helpFlycam, flythroughState, skeletonLost, fadeOutTransition);
 
+            Rectangle clip = new Rectangle(0, 0, 1920, 1080);
             SkeletonFeature helpSkeleton = new SkeletonFeature(1650, 1650, 800, 225f, mainWindow.Name, clip);
 
             splash.AddTransition(splashExploreTransition);
-
             explore.AddTransition(exploreAvatarTransition);
             explore.AddTransition(exploreFlycamTransition);
 
@@ -145,7 +144,6 @@ namespace Chimera.Launcher {
             mCoordinator.StateManager.AddState(kinectFlycam);
             mCoordinator.StateManager.AddState(helpAvatar);
             mCoordinator.StateManager.AddState(helpFlycam);
-
             mCoordinator.StateManager.CurrentState = splash;
 
             /*

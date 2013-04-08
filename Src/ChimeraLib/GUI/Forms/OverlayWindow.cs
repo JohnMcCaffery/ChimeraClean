@@ -92,7 +92,7 @@ namespace Chimera.GUI.Forms {
 
         private void drawPanel_Paint(object sender, PaintEventArgs e) {
             if (mManager.CurrentDisplay != null) {
-                if (!e.ClipRectangle.Equals(mClip) || mRedrawStatic) {
+                if (!e.ClipRectangle.Width.Equals(mClip.Width) || !e.ClipRectangle.Height.Equals(mClip.Height) || mRedrawStatic) {
                     mRedrawStatic = false;
                     mStaticBG = new Bitmap(e.ClipRectangle.Width, e.ClipRectangle.Height);
                     mClip = e.ClipRectangle;

@@ -10,7 +10,7 @@ using Chimera.Overlay.Triggers;
 
 namespace Chimera.Kinect.Overlay {
     public class KinectHelpState : State {
-        private readonly Dictionary<Rectangle, OverlayImage> mActiveAreas = new Dictionary<Rectangle, OverlayImage>();
+        private readonly List<ITrigger> mActiveAreas = new List<ITrigger>();
         private KinectInput mInput;
         private string mHelpImages = "../Images/HelpSidebar.png";
         private string mWhereAmIImage = "../Images/WhereAmIButton.png";
@@ -21,7 +21,7 @@ namespace Chimera.Kinect.Overlay {
         private Window mMainWindow;
 
         public override IWindowState CreateWindowState(Window window) {
-            return new KinectControlWindowState(window.OverlayManager);
+            return new WindowState(window.OverlayManager);
         }
 
         public KinectHelpState(string name, StateManager manager, string mainWindow, string whereWindow)
@@ -32,15 +32,18 @@ namespace Chimera.Kinect.Overlay {
             mMainWindow = manager.Coordinator[mainWindow];
 
             mWhereWindow = whereWindow;
-            mWhereButton = new ImageHoverTrigger(mMainWindow.OverlayManager, new DialCursorRenderer(), new OverlayImage(new Bitmap(mWhereAmIImage), .85f, .2f, mainWindow));
+            mWhereButton = new ImageHoverTrigger(mMainWindow.OverlayManager, new DialCursorRenderer(), new OverlayImage(new Bitmap(mWhereAmIImage), .65f, .05f, mainWindow));
             mWhereButton.Triggered += new Action(mWhereButton_Triggered);
 
             mCloseWhereButton = new ImageHoverTrigger(Manager.Coordinator[whereWindow].OverlayManager, new DialCursorRenderer(), mWhereButton.Image);
             mCloseWhereButton.Triggered += new Action(mCloseWhereButton_Triggered);
             
             AddFeature(new SkeletonFeature(0f, 1f, 150f / 1080f, 100f, mainWindow));
-            AddFeature(new OverlayImage(new Bitmap(mHelpImages), .05f, .2f, mainWindow));
+            AddFeature(new OverlayImage(new Bitmap(mHelpImages), .05f, .1f, mainWindow));
             AddFeature(mWhereButton);
+
+            mWhereButton.Active = false;
+            mCloseWhereButton.Active = false;
         }
 
         void mCloseWhereButton_Triggered() {
@@ -58,10 +61,14 @@ namespace Chimera.Kinect.Overlay {
         }
 
         protected override void TransitionFromStart() { 
+            foreach (var trigger in mActiveAreas)
+                trigger.Active = false;
         }
 
         public override void TransitionToStart() {
             mInfoImages.Clear();
+            foreach (var trigger in mActiveAreas)
+                trigger.Active = true;
         }
 
         public override void TransitionFromFinish() { }
@@ -69,6 +76,7 @@ namespace Chimera.Kinect.Overlay {
         public void AddActiveArea(Rectangle area, Bitmap infoImage) {
             OverlayImage info = new OverlayImage(infoImage, .2f, .2f, mWhereWindow);
             CameraPositionTrigger trigger = new CameraPositionTrigger(Manager.Coordinator);
+            mActiveAreas.Add(trigger);
             trigger.Triggered += () => {
                 mInfoImages.Add(info);
                 mWhereButton.Active = true;

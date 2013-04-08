@@ -176,5 +176,9 @@ namespace Chimera.Overlay {
             foreach (var windowTransition in mWindowTransitions.Values)
                 windowTransition.Cancel();
         }
+
+        public override string ToString() {
+            return "Transition " + mFrom.Name + " to " + mFrom.Name;
+        }
     }
 }

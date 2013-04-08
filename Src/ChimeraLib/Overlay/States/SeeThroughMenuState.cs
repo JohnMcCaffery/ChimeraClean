@@ -75,7 +75,7 @@ namespace Chimera.Overlay.States {
                 if (mFadeBG != null)
                     graphics.DrawImage(mFadeBG, Point.Empty);
                 else {
-                    using (Pen p = new Pen(Color.FromArgb(1, Color.White)))
+                    using (Pen p = new Pen(Color.FromArgb(200, Color.White)))
                         graphics.DrawRectangle(p, clip);
                     base.RedrawStatic(clip, graphics);
                 }
