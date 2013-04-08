@@ -8,7 +8,7 @@ using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 
 namespace Chimera.Overlay.Transitions {
-    public class BitmapFadeFactory : IImageTransitionFactory {
+    public class FadeFactory : IImageTransitionFactory {
         #region IImageTransitionFactory Members
 
         public IImageTransition Create(double length) {
@@ -17,7 +17,8 @@ namespace Chimera.Overlay.Transitions {
 
         #endregion
     }
-    public class FadeTransition : IImageTransition {        /// <summary>
+    public class FadeTransition : IImageTransition {
+        /// <summary>
         /// When the transition began.
         /// </summary>
         private DateTime mTransitionStart;
@@ -94,7 +95,9 @@ namespace Chimera.Overlay.Transitions {
         }
 
         public void RedrawStatic(Rectangle clip, Graphics graphics) {
-            graphics.DrawImage(mTo, 0, 0);        }
+            graphics.DrawImage(mTo, 0, 0);
+        }
+
         public void DrawDynamic(System.Drawing.Graphics graphics) {
             double time = DateTime.Now.Subtract(mTransitionStart).TotalMilliseconds;
             if (time > mLengthMS) {
@@ -115,7 +118,8 @@ namespace Chimera.Overlay.Transitions {
             }
         }
 
-        #endregion
+        #endregion
+
         private Bitmap CreateStep(double time) {
             Bitmap image = new Bitmap(mFrom);
             Rectangle affectedRect = new Rectangle(0, 0, image.Width, image.Height);

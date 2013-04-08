@@ -22,8 +22,8 @@ namespace Chimera {
             mManager = window.OverlayManager;
             mTransition = transition;
 
-            mFrom = transition.From.WindowStates.First(s => s.Manager.Window.Name.Equals(window.Name));
-            mTo = transition.To.WindowStates.First(s => s.Manager.Window.Name.Equals(window.Name));
+            mFrom = transition.From[window.Name];
+            mTo = transition.To[window.Name];
         }
 
         public StateTransition StateTransition {

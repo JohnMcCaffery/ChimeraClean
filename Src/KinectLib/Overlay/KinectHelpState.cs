@@ -12,8 +12,8 @@ namespace Chimera.Kinect.Overlay {
     public class KinectHelpState : State {
         private readonly List<ITrigger> mActiveAreas = new List<ITrigger>();
         private KinectInput mInput;
-        private string mHelpImages = "../Images/HelpSidebar.png";
-        private string mWhereAmIImage = "../Images/WhereAmIButton.png";
+        private string mHelpImages = "../Images/Caen/Misc/HelpSidebar.png";
+        private string mWhereAmIImage = "../Images/Caen/Buttons/WhereAmIButton.png";
         private string mWhereWindow;
         private ImageHoverTrigger mWhereButton;
         private ImageHoverTrigger mCloseWhereButton;

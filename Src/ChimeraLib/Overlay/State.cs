@@ -36,14 +36,29 @@ namespace Chimera.Overlay {
             mName = name;
             mManager = manager;
 
-            foreach (var window in mManager.Coordinator.Windows)
-                Coordinator_WindowAdded(window, null);
-
             mManager.Coordinator.WindowAdded += new Action<Window,EventArgs>(Coordinator_WindowAdded);
         }
 
+        /// <summary>
+        /// //TODO - is this right? 
+        /// Relies on state being added to coordinator to add windows, i.e. quite late on during startup.
+        /// </summary>
+        public void Init() {
+            foreach (var window in mManager.Coordinator.Windows)
+                Coordinator_WindowAdded(window, null);
+        }
+
         protected virtual void Coordinator_WindowAdded(Window window, EventArgs args) {
-            mWindowStates.Add(window.Name, CreateWindowState(window));
+            if (!mWindowStates.ContainsKey(window.Name))
+                mWindowStates.Add(window.Name, CreateWindowState(window));
+        }
+
+        public IWindowState this[string window] {
+            get {
+                if (!mWindowStates.ContainsKey(window))
+                    Coordinator_WindowAdded(mManager.Coordinator[window], null);
+                return mWindowStates[window];
+            }
         }
     
         public IWindowState[] WindowStates {
@@ -105,7 +120,7 @@ namespace Chimera.Overlay {
         /// <param name="window">The window to draw the feature on.</param>
         /// <param name="feature">The feature to draw.</param>
         public void AddFeature(IDrawable feature) {
-            mWindowStates[feature.Window].AddFeature(feature);
+            this[feature.Window].AddFeature(feature);
         }
 
         /// <summary>

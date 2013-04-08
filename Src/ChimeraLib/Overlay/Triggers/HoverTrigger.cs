@@ -164,7 +164,7 @@ namespace Chimera.Overlay.Triggers {
 
         #region IDrawable
 
-        public bool NeedsRedrawn {
+        public virtual bool NeedsRedrawn {
             get { return mNeedsRedrawn; }
         }
 

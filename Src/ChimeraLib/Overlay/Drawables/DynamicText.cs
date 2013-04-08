@@ -16,11 +16,11 @@ namespace Chimera.Overlay.Drawables {
             mManager = manager;
         }
 
-        public bool NeedsRedrawn {
+        public override bool NeedsRedrawn {
             get { return mNeedsRedrawn; }
         }
 
-        public string TextString {
+        public override string TextString {
             get { return base.TextString; }
             set {
                 base.TextString = value;

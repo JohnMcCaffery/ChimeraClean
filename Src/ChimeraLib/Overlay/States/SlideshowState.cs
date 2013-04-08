@@ -47,20 +47,30 @@ namespace Chimera.Overlay.States {
                     windowState.AddFeature(next);
             }
             if (mPrev is IDrawable) {
-                IDrawable next = mPrev as IDrawable;
-                if (window.Name.Equals(next.Window))
-                    windowState.AddFeature(next);
+                IDrawable prev = mPrev as IDrawable;
+                if (window.Name.Equals(prev.Window))
+                    windowState.AddFeature(prev);
             }
+            mWindows.Add(windowState);
             return windowState;
         }
 
         public override void TransitionToStart() { }
 
-        protected override void TransitionToFinish() { }
+        protected override void TransitionToFinish() {
+            mNext.Active = true;
+            mPrev.Active = true;
+        }
 
-        protected override void TransitionFromStart() { }
+        protected override void TransitionFromStart() {
+            mNext.Active = false;
+            mPrev.Active = false;
+        }
 
-        public override void TransitionFromFinish() { }
+        public override void TransitionFromFinish() {
+            mNext.Active = false;
+            mPrev.Active = false;
+        }
 
         public class SlideshowWindowState : WindowState {
             private readonly IImageTransition mTransition;
@@ -76,7 +86,7 @@ namespace Chimera.Overlay.States {
 
                 List<Bitmap> images = new List<Bitmap>();
                 foreach (var file in Directory.GetFiles(Path.Combine(folder, manager.Window.Name))) {
-                    if (Regex.IsMatch(Path.GetExtension(file), @"\\.png|\\.jpe?g|\\.bmp", RegexOptions.IgnoreCase)) {
+                    if (Regex.IsMatch(Path.GetExtension(file), @"png$|jpe?g$|bmp$", RegexOptions.IgnoreCase)) {
                         images.Add(new Bitmap(file));
                     }
                 }
@@ -84,6 +94,8 @@ namespace Chimera.Overlay.States {
                 mImages = images.ToArray();
 
                 AddFeature(transition);
+
+                mTransition.Init(mImages[0], mImages[0]);
             }
 
             public void Prev() {

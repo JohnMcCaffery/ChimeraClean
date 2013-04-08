@@ -12,7 +12,7 @@ namespace Chimera.Overlay.Triggers {
         private bool mActive;
 
         private static RectangleF GetBounds(Text text) {
-            using (Bitmap b = new Bitmap(0, 0)) {
+            using (Bitmap b = new Bitmap(1, 1)) {
                 using (Graphics g = Graphics.FromImage(b)) {
                     SizeF size = g.MeasureString(text.TextString, text.Font);
                     return new RectangleF(text.Position, size);
@@ -25,15 +25,23 @@ namespace Chimera.Overlay.Triggers {
                 mText = text;
         }
 
-        #region IDrawable Members
-
-        bool IDrawable.Active {
-            get { return mActive; }
-            set { mActive = value; }
+        protected override RectangleF Bounds {
+            get { return GetBounds(mText); }
+            set { }
         }
 
-        bool IDrawable.NeedsRedrawn {
-            get { return mText.NeedsRedrawn; }
+        #region IDrawable Members
+
+        public override bool Active {
+            get { return mActive; }
+            set { 
+                mActive = value;
+                mText.Active = value;
+            }
+        }
+
+        public override bool NeedsRedrawn {
+            get { return mText.NeedsRedrawn || base.NeedsRedrawn; }
         }
 
         string IDrawable.Window {
@@ -42,10 +50,12 @@ namespace Chimera.Overlay.Triggers {
 
         void IDrawable.RedrawStatic(Rectangle clip, Graphics graphics) {
             mText.RedrawStatic(clip, graphics);
+            base.RedrawStatic(clip, graphics);
         }
 
         void IDrawable.DrawDynamic(Graphics graphics) {
             mText.DrawDynamic(graphics);
+            base.DrawDynamic(graphics);
         }
 
         #endregion
