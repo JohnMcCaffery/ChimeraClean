@@ -111,6 +111,7 @@
     <Compile Include="Core\WindowConfig.cs" />
     <Compile Include="Overlay\Transitions\OpacityFadeWindowTransition.cs" />
     <Compile Include="Overlay\Transitions\CutWindowTransition.cs" />
+    <Compile Include="Overlay\Triggers\CameraPositionTrigger.cs" />
     <Compile Include="Overlay\Triggers\CircleRenderer.cs" />
     <Compile Include="Overlay\Triggers\CursorRenderer.cs" />
     <Compile Include="Overlay\Triggers\CursorTrigger.cs" />
