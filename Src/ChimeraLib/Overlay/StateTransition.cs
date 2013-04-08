@@ -158,12 +158,12 @@ namespace Chimera.Overlay {
 
         void transition_Finished(IWindowTransition transition) {
             mCompletedWindows.Add(transition);
+            mFrom.TransitionFromFinish();
             transition.To.Active = true;
             transition.Manager.CurrentDisplay = transition.To;
             transition.Manager.ForceRedrawStatic();
             if (mCompletedWindows.Count == mWindowTransitions.Count) {
                 mInProgress = false;
-                mFrom.TransitionFromFinish();
                 if (Finished != null)
                     Finished(this);
             }

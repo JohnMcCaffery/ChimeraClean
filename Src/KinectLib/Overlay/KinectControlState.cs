@@ -32,12 +32,8 @@ namespace Chimera.Kinect.Overlay {
             mInput.YawEnabled = false;       
         }
 
-        public override void TransitionToStart() {
-            throw new NotImplementedException();
-        }
+        public override void TransitionToStart() { }
 
-        public override void TransitionFromFinish() {
-            throw new NotImplementedException();
-        }
+        public override void TransitionFromFinish() { }
     }
 }

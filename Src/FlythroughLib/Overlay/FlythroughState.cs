@@ -21,23 +21,18 @@ namespace Chimera.Flythrough.Overlay {
             return new FlythroughWindowState(window.OverlayManager);
         }
 
-        protected override void TransitionToFinish() {
-            mInput.Coordinator.EnableUpdates = true;
+        protected override void TransitionToFinish() { }
+
+        protected override void TransitionFromStart() { }
+
+        public override void TransitionToStart() {            mInput.Coordinator.EnableUpdates = true;
             mInput.Load(mFlythrough);
             mInput.Loop = true;
             mInput.Play();
         }
 
-        protected override void TransitionFromStart() {
-            mInput.Paused = true;
-        }
-
-        public override void TransitionToStart() {
-            throw new NotImplementedException();
-        }
-
         public override void TransitionFromFinish() {
-            throw new NotImplementedException();
+            mInput.Paused = true;
         }
     }
 }
