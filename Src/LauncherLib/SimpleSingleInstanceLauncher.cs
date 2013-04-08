@@ -18,6 +18,9 @@ using Chimera.Kinect.Overlay;
 using Chimera.Flythrough.Overlay;
 using Chimera.Util;
 using System.Windows.Forms;
+using Chimera.Overlay.Drawables;
+using System.Drawing;
+using OpenMetaverse;
 
 namespace Chimera.Launcher {
     public class SimpleSingleInstanceLauncher {
@@ -39,6 +42,7 @@ namespace Chimera.Launcher {
                 return mForm;
             }
         }
+
         public SimpleSingleInstanceLauncher(params string[] args) {
             TimespanMovementInput timespan = new TimespanMovementInput();
             DolphinMovementInput dolphin = new DolphinMovementInput();
@@ -53,74 +57,97 @@ namespace Chimera.Launcher {
             ISystemInput mouse = new MouseInput();
             ISystemInput heightmap = new HeightmapInput();
             mKinect = new KinectInput(new IDeltaInput[] { timespan, dolphin }, new IHelpTrigger[] { trigger }, simpleFactory, pointFactory);
-            //ISystemInput kinectDolphin = new DeltaBasedInput(dolphin);
 
             Window mainWindow = new Window("Main Window", mainWindowProxy);
             Window[] windows = new Window[] { mainWindow };
-            //ImageHoverTrigger mOverlay = new ImageHoverTrigger("../Select1.jpg", .1f, .1f, .3f, .3f);
-            //From mState = new TestState();
-            //MainMenuItem item1 = new MainMenuItem(mState, mOverlay);
             mCoordinator = new Coordinator(windows, kbMouseInput, mKinect, mouse, heightmap, flythrough, mainWindowProxy);
 
-            IState splashScreen = new ImageBGState("SplashScreen", mCoordinator.StateManager, "../Images/Cathedral/CathedralSplashScreen.png");
-            IState helpScreen = new ImageBGState("HelpScreen", mCoordinator.StateManager, "../Images/Cathedral/CathedralHelp.png");
-            IState kinectControl = new KinectControlState("KinectControL", mCoordinator.StateManager);
-            IState flythroughState = new FlythroughState("Flythrough", mCoordinator.StateManager, "../Flythroughs/CathedralFlythrough-LookAt.xml");
+
+
+
+            State splash = new ImageBGState("SplashScreen", mCoordinator.StateManager, "../Images/Caen-Splash.png");
+            State explore = new ImageBGState("InWorldChoice", mCoordinator.StateManager, "../Images/Caen-Explore.png");
+            //State splash = new SeeThroughMenuState("SplashScreen", mCoordinator.StateManager, new Vector3(488f, 224f, 80f), new Rotation(23.6, 159.2));
+            //State explore = new SeeThroughMenuState("InWorldChoice", mCoordinator.StateManager, new Vector3(437F, 274f, 48f), new Rotation(0.0, -128.0));
+            State kinectAvatar = new KinectControlState("KinectControlAvatar", mCoordinator.StateManager, true);
+            State kinectFlycam = new KinectControlState("KinectControlFlycam", mCoordinator.StateManager, false);
+            State helpAvatar = new KinectHelpState("KinectHelpAvatar", mCoordinator.StateManager, mainWindow.Name, mainWindow.Name);
+            State helpFlycam = new KinectHelpState("KinectHelpFlycam", mCoordinator.StateManager, mainWindow.Name, mainWindow.Name);
+            State flythroughState = new FlythroughState("Flythrough", mCoordinator.StateManager, "../CathedralFlythrough-LookAt.xml");
 
             DialRenderer dialRenderer = new DialRenderer();
             CursorRenderer cursorRenderer = new DialCursorRenderer(dialRenderer, mainWindow.OverlayManager);
             CursorTrigger t = new CursorTrigger(new CircleRenderer(100), mainWindow);
 
-            InvisibleHoverTrigger splashHelpTrigger = new InvisibleHoverTrigger(mainWindow.OverlayManager, cursorRenderer, 265f / 1920f, 255f / 1080f, (675f - 255f) / 1920f, (900f - 255f) / 1080f);
-            InvisibleHoverTrigger helpSplashTrigger = new InvisibleHoverTrigger(mainWindow.OverlayManager, cursorRenderer, 70f / 1920f, 65f / 1080f, (490f - 70f) / 1920f, (300f - 65f) / 1080f);
-            InvisibleHoverTrigger helpKinectTrigger = new InvisibleHoverTrigger(mainWindow.OverlayManager, cursorRenderer, 60f / 1920f, 520f / 1080f, (335f - 60f) / 1920f, (945f - 520f) / 1080f);
+            OverlayImage exploreButton = new OverlayImage(new Bitmap("../Images/SeeTheTownship.png"), .25f, .35f, .5f, mainWindow.Name);
+            OverlayImage helpKinectButton = new OverlayImage(new Bitmap("../Images/HelpToWorld.png"), .75f, 05f, mainWindow.Name);
+            OverlayImage kinectAvatarButton = new OverlayImage(new Bitmap("../Images/ExploreWithAvatar.png"), .15f, .4f, mainWindow.Name);
+            OverlayImage kinectFlycamButton = new OverlayImage(new Bitmap("../Images/ExploreFreely.png"), .65f, .4f, mainWindow.Name);
+            OverlayImage splashButton = new OverlayImage(new Bitmap("../Images/MainMenu.png"), .85f, .5f, mainWindow.Name);
 
-            //InvisibleHoverTrigger splashHelpTrigger = new InvisibleHoverTrigger(mainWindow.OverlayManager, renderer, 155f / 1920f, 220f / 1080f, (555f - 155f) / 1920f, (870f - 220f) / 1080);
-            //InvisibleHoverTrigger helpSplashTrigger = new InvisibleHoverTrigger(mainWindow.OverlayManager, renderer, 70f / 1920f, 65f / 1080f, (490f - 70f) / 1920f, (300f - 65f) / 1080f);
-            //InvisibleHoverTrigger helpKinectTrigger = new InvisibleHoverTrigger(mainWindow.OverlayManager, renderer, 55f / 1920f, 515f / 1080f, (330f - 55f) / 1920f, (950f - 515f) / 1080f);
+            ImageHoverTrigger splashExploreTrigger = new ImageHoverTrigger(mainWindow.OverlayManager, cursorRenderer, exploreButton);
+            ImageHoverTrigger helpKinectTrigger = new ImageHoverTrigger(mainWindow.OverlayManager, cursorRenderer, helpKinectButton);
+            ImageHoverTrigger helpSplashTrigger = new ImageHoverTrigger(mainWindow.OverlayManager, cursorRenderer, splashButton);
+            ImageHoverTrigger exploreAvatarTrigger = new ImageHoverTrigger(mainWindow.OverlayManager, cursorRenderer, kinectAvatarButton);
+            ImageHoverTrigger exploreFlycamTrigger = new ImageHoverTrigger(mainWindow.OverlayManager, cursorRenderer, kinectFlycamButton);
 
             ITrigger customTriggerHelp = new CustomTriggerTrigger(mCoordinator.StateManager, "Help");
             ITrigger skeletonLost = new SkeletonLostTrigger(mCoordinator, 15000.0);
             ITrigger skeletonFound = new SkeletonFoundTrigger();
 
+            IImageTransitionFactory fadeFactory = new BitmapFadeFactory();
             CutWindowTransitionFactory cutTransition = new CutWindowTransitionFactory();
-            BitmapFadeTransitionFactory fadeTransition = new BitmapFadeTransitionFactory(1500.0);
+            BitmapFadeTransitionFactory fadeTransition = new BitmapFadeTransitionFactory(fadeFactory, 1500.0);
             OpacityFadeOutTransitionFactory fadeOutTransition = new OpacityFadeOutTransitionFactory(1500.0);
             OpacityFadeInTransitionFactory fadeInTransition = new OpacityFadeInTransitionFactory(1500.0);
 
-            StateTransition splashHelpTransition = new StateTransition(mCoordinator.StateManager, splashScreen, helpScreen, splashHelpTrigger, fadeTransition);
-            StateTransition splashFlythroughTransition = new StateTransition(mCoordinator.StateManager, splashScreen, flythroughState, skeletonLost, fadeOutTransition);
-            //StateTransition helpSplashTransition = new StateTransition(mCoordinator.StateManager, helpScreen, splashScreen, helpSplashTrigger, cutTransition);
-            StateTransition helpSplashTransition = new StateTransition(mCoordinator.StateManager, helpScreen, splashScreen, helpSplashTrigger, fadeTransition);
-            StateTransition helpKinectTransition = new StateTransition(mCoordinator.StateManager, helpScreen, kinectControl, helpKinectTrigger, fadeOutTransition);
-            StateTransition helpFlythroughTransition = new StateTransition(mCoordinator.StateManager, helpScreen, flythroughState, skeletonLost, fadeOutTransition);
-            StateTransition kinectHelpTransition = new StateTransition(mCoordinator.StateManager, kinectControl, helpScreen, customTriggerHelp, fadeInTransition);
-            StateTransition kinectFlythroughTransition = new StateTransition(mCoordinator.StateManager, kinectControl, flythroughState, skeletonLost, fadeOutTransition);
-            StateTransition flythroughSplashTransition = new StateTransition(mCoordinator.StateManager, flythroughState, splashScreen, skeletonFound, fadeInTransition);
+            StateTransition splashExploreTransition = new StateTransition(mCoordinator.StateManager, splash, explore, splashExploreTrigger, fadeTransition);
 
-            SkeletonFeature helpSkeleton = new SkeletonFeature(1650f / 1920f, 0f, 800f / 1080f, 225f, mainWindow.Name);
+            StateTransition exploreAvatarTransition = new StateTransition(mCoordinator.StateManager, explore, kinectAvatar, exploreAvatarTrigger, fadeOutTransition);
+            StateTransition exploreFlycamTransition = new StateTransition(mCoordinator.StateManager, explore, kinectFlycam, exploreFlycamTrigger, fadeOutTransition);
 
-            splashScreen.AddTransition(splashHelpTransition);
-            //splashScreen.AddTransition(splashFlythroughTransition);
+            StateTransition helpAvatarSplashTransition = new StateTransition(mCoordinator.StateManager, helpAvatar, splash, helpSplashTrigger, fadeTransition);
+            StateTransition helpAvatarKinectTransition = new StateTransition(mCoordinator.StateManager, helpAvatar, kinectAvatar, helpKinectTrigger, fadeOutTransition);
 
-            helpScreen.AddTransition(helpSplashTransition);
-            helpScreen.AddTransition(helpKinectTransition);
-            //helpScreen.AddTransition(helpFlythroughTransition);
-            helpScreen.AddFeature(helpSkeleton);
+            StateTransition helpFlycamSplashTransition = new StateTransition(mCoordinator.StateManager, helpFlycam, splash, helpSplashTrigger, fadeTransition);
+            StateTransition helpFlycamKinectTransition = new StateTransition(mCoordinator.StateManager, helpFlycam, kinectFlycam, helpKinectTrigger, fadeOutTransition);
 
-            //kinectControl.AddTransition(kinectFlythroughTransition);
-            kinectControl.AddTransition(kinectHelpTransition);
-            kinectControl.AddFeature(t);
+            StateTransition kinectHelpAvatarTransition = new StateTransition(mCoordinator.StateManager, kinectAvatar, helpAvatar, customTriggerHelp, fadeInTransition);
+            StateTransition kinectHelpFlycamTransition = new StateTransition(mCoordinator.StateManager, kinectFlycam, helpFlycam, customTriggerHelp, fadeInTransition);
+
+            StateTransition splashFlythroughTransition = new StateTransition(mCoordinator.StateManager, splash, flythroughState, skeletonLost, fadeOutTransition);
+            StateTransition kinectFlythroughTransition = new StateTransition(mCoordinator.StateManager, kinectAvatar, flythroughState, skeletonLost, fadeOutTransition);
+            StateTransition flythroughSplashTransition = new StateTransition(mCoordinator.StateManager, flythroughState, splash, skeletonFound, fadeInTransition);
+            StateTransition helpAvatarFlythroughTransition = new StateTransition(mCoordinator.StateManager, helpAvatar, flythroughState, skeletonLost, fadeOutTransition);
+            StateTransition helpFlycamFlythroughTransition = new StateTransition(mCoordinator.StateManager, helpFlycam, flythroughState, skeletonLost, fadeOutTransition);
+
+            Rectangle clip = new Rectangle(0, 0, 1920, 1080);
+            SkeletonFeature helpSkeleton = new SkeletonFeature(1650, 1650, 800, 225f, mainWindow.Name, clip);
+
+            splash.AddTransition(splashExploreTransition);
+            explore.AddTransition(exploreAvatarTransition);
+            explore.AddTransition(exploreFlycamTransition);
+
+            kinectAvatar.AddTransition(kinectHelpAvatarTransition);
+
+            kinectFlycam.AddTransition(kinectHelpFlycamTransition);
+
+            helpAvatar.AddTransition(helpAvatarKinectTransition);
+            helpAvatar.AddTransition(helpAvatarSplashTransition);
+            helpAvatar.AddFeature(helpSkeleton);
+
+            helpFlycam.AddTransition(helpFlycamKinectTransition);
+            helpFlycam.AddTransition(helpFlycamSplashTransition);
+            helpFlycam.AddFeature(helpSkeleton);
 
             flythroughState.AddTransition(flythroughSplashTransition);
 
-            mCoordinator.StateManager.AddState(splashScreen);
-            mCoordinator.StateManager.AddState(helpScreen);
-            mCoordinator.StateManager.AddState(kinectControl);
-            mCoordinator.StateManager.AddState(flythroughState);
-            //mCoordinator.StateManager.CurrentState = splashScreen;
-            mCoordinator.StateManager.CurrentState = kinectControl;
-
+            mCoordinator.StateManager.AddState(splash);
+            mCoordinator.StateManager.AddState(kinectAvatar);
+            mCoordinator.StateManager.AddState(kinectFlycam);
+            mCoordinator.StateManager.AddState(helpAvatar);
+            mCoordinator.StateManager.AddState(helpFlycam);
+            mCoordinator.StateManager.CurrentState = splash;
 
             /*
             double opacity = new CoordinatorConfig().OverlayOpacity;

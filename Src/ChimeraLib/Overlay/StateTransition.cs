@@ -29,11 +29,11 @@ namespace Chimera.Overlay {
         /// <summary>
         /// The state the transition starts at.
         /// </summary>
-        private IState mFrom;
+        private State mFrom;
         /// <summary>
         /// The state the transition goes to.
         /// </summary>
-        private IState mTo;
+        private State mTo;
         /// <summary>
         /// Whether the transition is in progress.
         /// </summary>
@@ -53,7 +53,7 @@ namespace Chimera.Overlay {
         public event Action<StateTransition> Finished;
 
         /// <param name="manager">The manager this transition works transition.</param>
-        public StateTransition(StateManager manager, IState from, IState to, ITrigger trigger, IWindowTransitionFactory factory) {
+        public StateTransition(StateManager manager, State from, State to, ITrigger trigger, IWindowTransitionFactory factory) {
             mManager = manager;
             mFrom = from;
             mTo = to;
@@ -83,14 +83,14 @@ namespace Chimera.Overlay {
         /// <summary>
         /// The state the transition goes transition.
         /// </summary>
-        public IState From {
+        public State From {
             get { return mFrom; }
         }
 
         /// <summary>
         /// The state the transition goes to.
         /// </summary>
-        public IState To {
+        public State To {
             get { return mTo; }
         }
 

@@ -9,7 +9,7 @@ namespace Chimera.Overlay {
         /// <summary>
         /// All the states this manager manages.
         /// </summary>
-        private readonly Dictionary<string, IState> mStates = new Dictionary<string,IState>();
+        private readonly Dictionary<string, State> mStates = new Dictionary<string,State>();
         /// <summary>
         /// The coordinator this state manager is tied to.
         /// </summary>
@@ -17,7 +17,7 @@ namespace Chimera.Overlay {
         /// <summary>
         /// The current state the manager is in. Will be null during a transition.
         /// </summary>
-        private IState mCurrentState;
+        private State mCurrentState;
         /// <summary>
         /// The current transition the manager is going through. Will be null if no transition is in progress.
         /// </summary>
@@ -35,7 +35,7 @@ namespace Chimera.Overlay {
         /// <summary>
         /// Triggered whenever a new state is added.
         /// </summary>
-        public event Action<IState> StateAdded;
+        public event Action<State> StateAdded;
 
         /// <summary>
         /// Triggered whenever a transition starts.
@@ -50,7 +50,7 @@ namespace Chimera.Overlay {
         /// <summary>
         /// Triggered whenever the current state changes.
         /// </summary>
-        public event Action<IState> StateChanged;
+        public event Action<State> StateChanged;
         
         /// <summary>
         /// CreateWindowState the manager. Linking it with a coordinator.
@@ -64,7 +64,7 @@ namespace Chimera.Overlay {
         /// <summary>
         /// All the states this manager manages.
         /// </summary>
-        public IState[] States {
+        public State[] States {
             get { return mStates.Values.ToArray(); }
         }
 
@@ -79,7 +79,7 @@ namespace Chimera.Overlay {
         /// The current state the manager is in. Will be null during a transition.
         /// Setting the state directly will immediately skip to the new state without any transition.
         /// </summary>
-        public IState CurrentState {
+        public State CurrentState {
             get { return mCurrentState; }
             set {
                 if (mCurrentTransition != null)
@@ -119,7 +119,7 @@ namespace Chimera.Overlay {
         /// <summary>
         /// Add a state to the manager.
         /// </summary>
-        public void AddState(IState state) {
+        public void AddState(State state) {
             mStates.Add(state.Name, state);
             if (StateAdded != null)
                 StateAdded(state);

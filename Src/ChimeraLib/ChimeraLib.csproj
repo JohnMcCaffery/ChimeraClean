@@ -170,7 +170,6 @@
       <DependentUpon>KBMousePanel.cs</DependentUpon>
     </Compile>
     <Compile Include="Interfaces\ICrashable.cs" />
-    <Compile Include="Interfaces\Overlay\IState.cs" />
     <Compile Include="Interfaces\Overlay\IStateFactory.cs" />
     <Compile Include="Interfaces\Overlay\IStateTransitionFactory.cs" />
     <Compile Include="Interfaces\Overlay\ITrigger.cs" />
