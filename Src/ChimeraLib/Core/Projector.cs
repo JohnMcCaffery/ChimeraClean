@@ -45,7 +45,8 @@ namespace Chimera.Core {
 
         public Rotation Orientation {
             get { return mOrientation; }
-        }
+        }
+
         public bool AutoUpdate {
             get { return mAutoUpdate; }
             set { mAutoUpdate = value; }
