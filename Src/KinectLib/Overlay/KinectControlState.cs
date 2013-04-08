@@ -13,16 +13,18 @@ namespace Chimera.Kinect.Overlay {
             return new KinectControlWindowState(window.OverlayManager);
         }
 
-        public KinectControlState(string name, StateManager manager)
+        public KinectControlState(string name, StateManager manager, string mainWindow)
             : base(name, manager) {
 
             mInput = manager.Coordinator.GetInput<KinectInput>();
+
         }
 
         protected override void TransitionToFinish() {
             mInput.FlyEnabled = true;
             mInput.WalkEnabled = true;
             mInput.YawEnabled = true;
+            mInput.Enabled = true;
             Manager.Coordinator.EnableUpdates = true;
         }
 
