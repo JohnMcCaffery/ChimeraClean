@@ -13,9 +13,28 @@ namespace Chimera.Overlay.Drawables {
         private string mWindow;
         private Color mColour;
         private Font mFont;
-        private Point mPosition;
+        private PointF mPosition;
 
+        /// <summary>
+        /// Create a fading text object, specifying position as relative values.
+        /// </summary>
+        /// <param name="text">The text to draw.</param>
+        /// <param name="window">The window to draw the text on.</param>
+        /// <param name="colour">The colour to draw the text.</param>
+        /// <param name="font">The font to draw the text with.</param>
+        /// <param name="x">Where the text should be positioned, as relative values (0: left, 1: right)</param>
+        /// <param name="y">Where the text should be positioned, as relative values (0: top, 1: bottom)</param>
+        public FadingText(string text, string window, Color colour, Font font, float x, float y) {
+            mWindow = window;
+            mText = text;
+            mColour = colour;
+            mFont = font;
+            mPosition = new PointF(x, y);
+        }
 
+        public FadingText(string text, string window, Color colour, Font font, int x, int y, Rectangle bounds)
+            : this(text, window, colour, font, (float)x / (float)bounds.Width, (float)y / (float)bounds.Height) {
+        }
 
         public bool NeedsRedrawn {
             get { return DateTime.Now.Subtract(mActivated).TotalMilliseconds < mFadeTime; }
