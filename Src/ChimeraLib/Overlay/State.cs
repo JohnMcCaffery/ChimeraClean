@@ -95,6 +95,8 @@ namespace Chimera.Overlay {
         /// <param name="stateTransition">The new transition to add.</param>
         public void AddTransition(StateTransition stateTransition) {
             mTransitions.Add(stateTransition.To.Name, stateTransition);
+            if (stateTransition is IDrawable)
+                AddFeature(stateTransition as IDrawable);
         }
         
         /// <summary>
@@ -135,5 +137,9 @@ namespace Chimera.Overlay {
         /// Will only be called if a tranisition was used to get from the state.
         /// </summary>
         public abstract void TransitionFromFinish();
+
+        public override string ToString() {
+            return mName;
+        }
     }
 }

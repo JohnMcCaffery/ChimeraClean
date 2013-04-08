@@ -10,6 +10,12 @@ using Chimera.Overlay.Drawables;
 namespace Chimera.Overlay.Triggers {
     public class ImageHoverTrigger : HoverTrigger {
         private OverlayImage mImage;
+        private Rectangle mClip;
+
+        protected override RectangleF Bounds {
+            get { return mImage.Bounds; }
+            set { base.Bounds = value; }
+        }
 
         public OverlayImage Image {
             get { return mImage; }
@@ -17,6 +23,14 @@ namespace Chimera.Overlay.Triggers {
                 mImage = value;
                 Bounds = value.Bounds;
                 Manager.ForceRedrawStatic();
+            }
+        }
+
+        public override bool Active {
+            get { return base.Active; }
+            set {
+                base.Active = value;
+                mImage.Active = value;
             }
         }
 
@@ -30,6 +44,10 @@ namespace Chimera.Overlay.Triggers {
         public override void RedrawStatic(Rectangle clip, Graphics graphics) {
             base.RedrawStatic(clip, graphics);
             mImage.RedrawStatic(clip, graphics);
+            if (!clip.Equals(mClip)) {
+                mClip = clip;
+                Bounds = mImage.Bounds;
+            }
         }
 
         #endregion

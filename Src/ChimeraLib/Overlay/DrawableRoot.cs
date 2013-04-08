@@ -29,7 +29,7 @@ namespace Chimera.Overlay {
             get { return mWindowName; }
         }
 
-        public bool Active {
+        public virtual bool Active {
             get { return mActive; }
             set { mActive = value; }
         }

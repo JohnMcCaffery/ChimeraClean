@@ -111,10 +111,10 @@ namespace Chimera.Overlay.Triggers {
         protected virtual Rectangle ScaledBounds {
             get {
                 return new Rectangle(
-                    (int)(mClip.Width * mBounds.X),
-                    (int)(mClip.Height * mBounds.Y),
-                    (int)(mClip.Width * mBounds.Width),
-                    (int)(mClip.Height * mBounds.Height));
+                    (int)(mClip.Width * Bounds.X),
+                    (int)(mClip.Height * Bounds.Y),
+                    (int)(mClip.Width * Bounds.Width),
+                    (int)(mClip.Height * Bounds.Height));
                 }
         }
 
@@ -126,7 +126,7 @@ namespace Chimera.Overlay.Triggers {
         }
 
         private void Coordinator_Tick() {
-            if (mActive && mBounds.Contains(mManager.CursorPosition)) {
+            if (mActive && Bounds.Contains(mManager.CursorPosition)) {
                 if (!mHovering) {
                     mHovering = true;
                     mHoverStart = DateTime.Now;

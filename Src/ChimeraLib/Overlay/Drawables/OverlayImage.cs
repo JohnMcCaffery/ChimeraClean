@@ -10,9 +10,12 @@ namespace Chimera.Overlay.Drawables {
     public class OverlayImage : IDrawable {
         private RectangleF mBounds;
         private Bitmap mImage;
+        private Rectangle mClip;
         private float mAspectRatio;
         private string mWindow;
         private bool mActive = true;
+        private int mW;
+        private int mH;
 
         /// <summary>
         /// The position / size for the image. Specified as a relative values.
@@ -20,7 +23,16 @@ namespace Chimera.Overlay.Drawables {
         /// For size: 0,0 = invisible, 1,1 = same size as the screen
         /// </summary>
         public RectangleF Bounds {
-            get { return mBounds; }
+            get {
+                RectangleF bounds = new RectangleF(mBounds.X, mBounds.Y, mBounds.Width, mBounds.Height);
+
+                if (mBounds.Width < 0) {
+                    bounds.Width = mW / (float)mClip.Width;
+                    bounds.Height = mH / (float)mClip.Height;
+                } else if (mBounds.Height < 0f)
+                    bounds.Height = mBounds.Width * mAspectRatio;
+
+                return bounds; }
         }
 
         public bool NeedsRedrawn {
@@ -37,6 +49,7 @@ namespace Chimera.Overlay.Drawables {
         }
 
         public void RedrawStatic(Rectangle clip, Graphics graphics) {
+            mClip = clip;
             int x = (int) (clip.Width * mBounds.X);
             int y = (int) (clip.Height * mBounds.Y);
             if (mBounds.Width > 0) {
@@ -44,7 +57,7 @@ namespace Chimera.Overlay.Drawables {
                 int h = (int)(mBounds.Height > 0 ? clip.Height * mBounds.Height : w * mAspectRatio);
                 graphics.DrawImage(mImage, new Rectangle(x, y, w, h));
             } else
-                graphics.DrawImage(mImage, x, y);
+                graphics.DrawImage(mImage, x, y, mW, mH);
         }
 
         public void DrawDynamic(Graphics graphics) { }
@@ -52,6 +65,8 @@ namespace Chimera.Overlay.Drawables {
         private OverlayImage(Bitmap image, string window) {
             mImage = image;
             mWindow = window;
+            mW = mImage.Width;
+            mH = mImage.Height;
         }
 
         /// <summary>
