@@ -101,6 +101,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core\Projector.cs" />
+    <Compile Include="Overlay\Drawables\FadingText.cs" />
     <Compile Include="Overlay\Drawables\OverlayImage.cs" />
     <Compile Include="Overlay\States\SeeThroughMenuState.cs" />
     <Compile Include="Overlay\States\SlideshowState.cs" />
