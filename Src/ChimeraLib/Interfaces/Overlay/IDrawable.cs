@@ -7,6 +7,10 @@ using System.Drawing;
 namespace Chimera.Interfaces.Overlay {
     public interface IDrawable {
         /// <summary>
+        /// Whether this feature should be drawn.
+        /// </summary>
+        bool Active { get; set; }
+        /// <summary>
         /// Whether the dynmic part of the drawable needs to be redrawn.
         /// </summary>
         bool NeedsRedrawn { get; }

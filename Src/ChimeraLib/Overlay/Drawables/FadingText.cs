@@ -16,6 +16,7 @@ namespace Chimera.Overlay.Drawables {
         private Font mFont;
         private PointF mPosition;
         private bool mFirstDrawn;
+        private bool mActive = true;
 
         /// <summary>
         /// Create a fading text object, specifying position as relative values.
@@ -66,6 +67,10 @@ namespace Chimera.Overlay.Drawables {
 
         public string Window {
             get { return mWindow; }
+        }
+        public bool Active {
+            get { return mActive; }
+            set { mActive = value; }
         }
 
         public void RedrawStatic(Rectangle clip, Graphics graphics) {

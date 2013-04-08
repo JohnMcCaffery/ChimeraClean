@@ -19,6 +19,8 @@ namespace Chimera.Kinect.Overlay {
         private static Vector sCentreHip;
         private static Vector sCentreShoulder;
         private static Vector sHead;
+        private bool mActive;
+
         /// <summary>
         /// The colour the current skeleton will be drawn. Changes every time the skeleton changes.
         /// </summary>
@@ -72,6 +74,11 @@ namespace Chimera.Kinect.Overlay {
 
         public string Window {
             get { return mWindowName; }
+        }
+
+        public bool Active {
+            get { return mActive; }
+            set { mActive = value; }
         }
 
         public bool NeedsRedrawn {
