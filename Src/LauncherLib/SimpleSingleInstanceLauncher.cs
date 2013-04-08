@@ -62,10 +62,10 @@ namespace Chimera.Launcher {
             //MainMenuItem item1 = new MainMenuItem(mState, mOverlay);
             mCoordinator = new Coordinator(windows, kbMouseInput, mKinect, mouse, heightmap, flythrough, mainWindowProxy);
 
-            IState splashScreen = new ImageBGState("SplashScreen", mCoordinator.StateManager, "../Images/CathedralSplashScreen.png");
-            IState helpScreen = new ImageBGState("HelpScreen", mCoordinator.StateManager, "../Images/CathedralHelp.png");
+            IState splashScreen = new ImageBGState("SplashScreen", mCoordinator.StateManager, "../Images/Cathedral/CathedralSplashScreen.png");
+            IState helpScreen = new ImageBGState("HelpScreen", mCoordinator.StateManager, "../Images/Cathedral/CathedralHelp.png");
             IState kinectControl = new KinectControlState("KinectControL", mCoordinator.StateManager);
-            IState flythroughState = new FlythroughState("Flythrough", mCoordinator.StateManager, "../CathedralFlythrough-LookAt.xml");
+            IState flythroughState = new FlythroughState("Flythrough", mCoordinator.StateManager, "../Flythroughs/CathedralFlythrough-LookAt.xml");
 
             DialRenderer dialRenderer = new DialRenderer();
             CursorRenderer cursorRenderer = new DialCursorRenderer(dialRenderer, mainWindow.OverlayManager);
