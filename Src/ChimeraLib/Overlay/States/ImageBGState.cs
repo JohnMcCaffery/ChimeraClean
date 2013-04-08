@@ -44,10 +44,18 @@ namespace Chimera.Overlay.States {
                 mWindows[window].BackgroundImage = image;
         }
 
-        protected override void OnActivated() {
+        protected override void TransitionToFinish() {
             Manager.Coordinator.EnableUpdates = false;
         }
 
-        protected override void OnDeActivated() { }
+        protected override void TransitionFromStart() { }
+
+        public override void TransitionToStart() {
+            throw new NotImplementedException();
+        }
+
+        public override void TransitionFromFinish() {
+            throw new NotImplementedException();
+        }
     }
 }
