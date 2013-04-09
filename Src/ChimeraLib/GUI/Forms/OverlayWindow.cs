@@ -131,5 +131,10 @@ namespace Chimera.GUI.Forms {
         internal void ResetCursor() {
             Invoke(() => Cursor = mDefaultCursor);
         }
+
+        public bool AlwaysOnTop {
+            get { return TopMost; }
+            set { Invoke(() => TopMost = value); }
+        }
     }
 }

@@ -286,5 +286,13 @@ namespace Chimera.Overlay {
             if (mOverlayWindow != null)
                 mOverlayWindow.RedrawStatic();
         }
+
+        public bool AlwaysOnTop { 
+            get { return mOverlayWindow != null ? mOverlayWindow.AlwaysOnTop : false; }
+            set { 
+                if (mOverlayWindow != null)
+                    mOverlayWindow.AlwaysOnTop = value;
+            }
+        }
     }
 }

@@ -89,6 +89,8 @@ namespace Chimera.Launcher {
             State helpFlycam = new KinectHelpState("KinectHelpFlycam", mCoordinator.StateManager, mainWindow.Name, mainWindow.Name);
             State idleFlythrough = new FlythroughState("IdleFlythrough", mCoordinator.StateManager, "../Flythroughs/Caen-long.xml");
             State structuredFlythrough = new FlythroughState("StructuredFlythrough", mCoordinator.StateManager, "../Flythroughs/Caen-Guided.xml", slideshowNext);
+            State infoVideo = new VideoState("Video", mCoordinator.StateManager, mainWindow.Name, "../Videos/Vid1.flv");
+            State story1 = new VideoState("Story1", mCoordinator.StateManager, mainWindow.Name, "../Videos/Wolf.flv");
 
             IImageTransitionFactory fadeFactory = new FadeFactory();
             CutWindowTransitionFactory cutTransition = new CutWindowTransitionFactory();
@@ -105,11 +107,13 @@ namespace Chimera.Launcher {
             ImgTrans(explore,       kinectAvatar,           "ExploreWithAvatar",    .15f, .4f, mainWindow, cursorRenderer, fadeOutTransition);
             ImgTrans(explore,       kinectFlycam,           "ExploreFreely",        .45f, .4f, mainWindow, cursorRenderer, fadeOutTransition);
             TxtTrans(explore,       structured,             "Guide Me",             .75f, .4f, font, Color.DarkBlue, clip, mainWindow, cursorRenderer, fadeTransition);
-            ImgTrans(learn,         slideshow,              "Slideshow",            .65f, .5f, mainWindow, cursorRenderer, fadeTransition);
+            ImgTrans(learn,         slideshow,              "Slideshow",            .65f, .4f, mainWindow, cursorRenderer, fadeTransition);
+            TxtTrans(learn,         infoVideo,              "Show me about the township", .25f, .4f, font, Color.DarkBlue, clip, mainWindow, cursorRenderer, fadeTransition);
             TxtTrans(learn,         splash,                 "Back",                 .45f, .9f, font, Color.DarkBlue, clip, mainWindow, cursorRenderer, fadeTransition);
             TxtTrans(slideshow,     learn,                  "Back",                 .45f, .9f, font, Color.DarkBlue, clip, mainWindow, cursorRenderer, fadeTransition);
             TxtTrans(structured,    structuredFlythrough,   "Guided Tour",          .35f, .4f, font, Color.DarkBlue, clip, mainWindow, cursorRenderer, fadeTransition);
             TxtTrans(structuredFlythrough,  structured,     "Back",                 .45f, .9f, font, Color.DarkBlue, clip, mainWindow, cursorRenderer, fadeTransition);
+            TxtTrans(infoVideo,     learn,                  "Back",                 .45f, .9f, font, Color.DarkBlue, clip, mainWindow, cursorRenderer, fadeTransition);
 
             ITrigger customTriggerHelp = new CustomTriggerTrigger(mCoordinator.StateManager, "Help");
             ITrigger skeletonLost = new SkeletonLostTrigger(mCoordinator, 15000.0);
@@ -138,6 +142,8 @@ namespace Chimera.Launcher {
             mCoordinator.StateManager.AddState(structuredFlythrough);
             mCoordinator.StateManager.AddState(slideshow);
             mCoordinator.StateManager.AddState(learn);
+            mCoordinator.StateManager.AddState(infoVideo);
+            mCoordinator.StateManager.AddState(story1);
             mCoordinator.StateManager.CurrentState = splash;
             //mCoordinator.StateManager.CurrentState = helpFlycam;
             //mCoordinator.StateManager.CurrentState = kinectFlycam;
