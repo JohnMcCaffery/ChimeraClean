@@ -85,8 +85,13 @@ namespace Chimera.Overlay {
             get { return mOverlayWindow != null ? mOverlayWindow.Cursor : Cursor.Current; }
             set {
                 if (mOverlayWindow != null)
-                        mOverlayWindow.SetCursor(value);
+                    mOverlayWindow.SetCursor(value);
             }
+        }
+
+        public void ResetCursor() {
+            if (mOverlayWindow != null)
+                mOverlayWindow.ResetCursor();
         }
 
         /// <summary>

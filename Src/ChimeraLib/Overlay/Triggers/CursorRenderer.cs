@@ -82,13 +82,21 @@ namespace Chimera.Overlay.Triggers {
         }
 
         public void DrawSelected(Graphics graphics, Rectangle bounds) { 
-            DrawCursor(mCompletedCursor);
+            ResetCursor();
         }
 
         public void Clear() {
-            DrawCursor(mCompletedCursor);
+            ResetCursor();
         }
 
         #endregion
+
+        private void ResetCursor() {
+            if (mOverlayManager == null) {
+                ProcessWrangler.SetGlobalCursor(mCompletedCursor);
+            } else {
+                mOverlayManager.ResetCursor();
+            }
+        }
     }
 }
