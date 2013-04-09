@@ -25,7 +25,7 @@
         private void InitializeComponent() {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FlythroughPanel));
-            Chimera.Util.Rotation rotation5 = new Chimera.Util.Rotation();
+            Chimera.Util.Rotation rotation1 = new Chimera.Util.Rotation();
             this.saveSequenceDialog = new System.Windows.Forms.SaveFileDialog();
             this.eventsList = new System.Windows.Forms.ListBox();
             this.eventsContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -42,8 +42,8 @@
             this.takeCurrentCameraButton = new System.Windows.Forms.Button();
             this.takeOrientationButton = new System.Windows.Forms.Button();
             this.currentPositionButton = new System.Windows.Forms.Button();
-            this.startOrientationPanel = new Chimera.GUI.RotationPanel();
             this.startPositionPanel = new Chimera.GUI.VectorPanel();
+            this.startOrientationPanel = new Chimera.GUI.RotationPanel();
             this.autoStepCheck = new System.Windows.Forms.CheckBox();
             this.timeSlider = new System.Windows.Forms.TrackBar();
             this.lengthLabel = new System.Windows.Forms.Label();
@@ -169,8 +169,8 @@
             this.startPanel.Controls.Add(this.takeCurrentCameraButton);
             this.startPanel.Controls.Add(this.takeOrientationButton);
             this.startPanel.Controls.Add(this.currentPositionButton);
-            this.startPanel.Controls.Add(this.startOrientationPanel);
             this.startPanel.Controls.Add(this.startPositionPanel);
+            this.startPanel.Controls.Add(this.startOrientationPanel);
             this.startPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.startPanel.Location = new System.Drawing.Point(0, 0);
             this.startPanel.Name = "startPanel";
@@ -213,36 +213,14 @@
             this.currentPositionButton.UseVisualStyleBackColor = true;
             this.currentPositionButton.Click += new System.EventHandler(this.currentPositionButton_Click);
             // 
-            // startOrientationPanel
-            // 
-            this.startOrientationPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.startOrientationPanel.Text = "Begin Orientation";
-            this.startOrientationPanel.Location = new System.Drawing.Point(0, 133);
-            this.startOrientationPanel.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("startOrientationPanel.LookAtVector")));
-            this.startOrientationPanel.MinimumSize = new System.Drawing.Size(252, 95);
-            this.startOrientationPanel.Name = "startOrientationPanel";
-            this.startOrientationPanel.Pitch = 0D;
-            this.startOrientationPanel.Quaternion = ((OpenMetaverse.Quaternion)(resources.GetObject("startOrientationPanel.Quaternion")));
-            this.startOrientationPanel.Size = new System.Drawing.Size(402, 95);
-            this.startOrientationPanel.TabIndex = 1;
-            rotation5.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("rotation5.LookAtVector")));
-            rotation5.Pitch = 0D;
-            rotation5.Quaternion = ((OpenMetaverse.Quaternion)(resources.GetObject("rotation5.Quaternion")));
-            rotation5.Yaw = 0D;
-            this.startOrientationPanel.Value = rotation5;
-            this.startOrientationPanel.Yaw = 0D;
-            this.startOrientationPanel.OnChange += new System.EventHandler(this.startOrientationPanel_OnChange);
-            // 
             // startPositionPanel
             // 
             this.startPositionPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.startPositionPanel.Text = "Begin Position";
             this.startPositionPanel.Location = new System.Drawing.Point(0, 3);
-            this.startPositionPanel.Max = 1024f;
+            this.startPositionPanel.Max = 1024F;
             this.startPositionPanel.MaxV = ((OpenMetaverse.Vector3)(resources.GetObject("startPositionPanel.MaxV")));
-            this.startPositionPanel.Min = -1024f;
+            this.startPositionPanel.Min = -1024F;
             this.startPositionPanel.MinimumSize = new System.Drawing.Size(103, 95);
             this.startPositionPanel.MinV = ((OpenMetaverse.Vector3)(resources.GetObject("startPositionPanel.MinV")));
             this.startPositionPanel.Name = "startPositionPanel";
@@ -253,6 +231,26 @@
             this.startPositionPanel.Y = 0F;
             this.startPositionPanel.Z = 0F;
             this.startPositionPanel.ValueChanged += new System.EventHandler(this.startPositionPanel_OnChange);
+            // 
+            // startOrientationPanel
+            // 
+            this.startOrientationPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.startOrientationPanel.Location = new System.Drawing.Point(0, 133);
+            this.startOrientationPanel.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("startOrientationPanel.LookAtVector")));
+            this.startOrientationPanel.MinimumSize = new System.Drawing.Size(252, 95);
+            this.startOrientationPanel.Name = "startOrientationPanel";
+            this.startOrientationPanel.Pitch = 0D;
+            this.startOrientationPanel.Quaternion = ((OpenMetaverse.Quaternion)(resources.GetObject("startOrientationPanel.Quaternion")));
+            this.startOrientationPanel.Size = new System.Drawing.Size(402, 95);
+            this.startOrientationPanel.TabIndex = 1;
+            rotation1.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("rotation1.LookAtVector")));
+            rotation1.Pitch = 0D;
+            rotation1.Quaternion = ((OpenMetaverse.Quaternion)(resources.GetObject("rotation1.Quaternion")));
+            rotation1.Yaw = 0D;
+            this.startOrientationPanel.Value = rotation1;
+            this.startOrientationPanel.Yaw = 0D;
+            this.startOrientationPanel.OnChange += new System.EventHandler(this.startOrientationPanel_OnChange);
             // 
             // autoStepCheck
             // 
@@ -305,7 +303,7 @@
             this.startButton.Name = "startButton";
             this.startButton.Size = new System.Drawing.Size(37, 23);
             this.startButton.TabIndex = 17;
-            this.startButton.Text = "Begin";
+            this.startButton.Text = "Start";
             this.startButton.UseVisualStyleBackColor = true;
             this.startButton.Click += new System.EventHandler(this.startButton_Click);
             // 

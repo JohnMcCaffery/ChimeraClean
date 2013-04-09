@@ -15,6 +15,7 @@ namespace Chimera.Flythrough.Overlay {
         private string mSlideshowFolder;
         private string mFlythrough;
         private bool mStepping;
+        private ITrigger[] mStepTriggers = new ITrigger[0];
 
         public FlythroughState(string name, StateManager manager, string flythrough)
             : base(name, manager) {
@@ -26,6 +27,7 @@ namespace Chimera.Flythrough.Overlay {
         public FlythroughState(string name, StateManager manager, string flythrough, params ITrigger[] steps)
             : this(name, manager, flythrough) {
 
+            mStepTriggers = steps;
             mStepping = true;
 
             foreach (var step in steps) {
@@ -45,6 +47,13 @@ namespace Chimera.Flythrough.Overlay {
 
         void step_Triggered() {
             mInput.Step();
+            //foreach (var step in mStepTriggers)
+                //step.Active = false;
+        }
+
+        void mInput_CurrentEventChange(FlythroughEvent<Camera> old, FlythroughEvent<Camera> to) {
+            foreach (var step in mStepTriggers)
+                step.Active = true;
         }
 
         public override IWindowState CreateWindowState(Window window) {
@@ -68,6 +77,8 @@ namespace Chimera.Flythrough.Overlay {
             else
                 mInput.Loop = true;
 
+            mInput.Time = 0;
+            //mInput.CurrentEventChange += mInput_CurrentEventChange;
             mInput.Play();
         }
 
