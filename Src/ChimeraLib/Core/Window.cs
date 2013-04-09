@@ -454,7 +454,7 @@ namespace Chimera {
         /// </summary>
         /// <param name="perspective">The perspective to render along.</param>
         /// <param name="graphics">The graphics object to draw with.</param>
-        public void Draw(Func<Vector3, Point> to2D, Graphics graphics, Rectangle clipRectangle, Action redraw) {
+        public void Draw(Func<Vector3, Point> to2D, Graphics graphics, Rectangle clipRectangle, Action redraw, Perspective perspective) {
             Vector3 top = new Vector3(0f, (float)mWidth, 0f) * mOrientation.Quaternion;
             Vector3 side = new Vector3(0f, 0f, (float)-mHeight) * mOrientation.Quaternion;
             Vector3 miniTop = Vector3.Zero;
@@ -494,7 +494,8 @@ namespace Chimera {
                 graphics.DrawLine(Pens.DarkViolet, eye, to2D(look + mCoordinator.EyePosition));
             }
 
-            mProjector.Draw(graphics, to2D, redraw);
+            if (perspective != Perspective.Heightmap) 
+                mProjector.Draw(graphics, to2D, redraw);
         }
 
         void mCoordinator_EyeUpdated(Coordinator source, EventArgs args) {
