@@ -49,7 +49,11 @@ namespace Chimera.Core {
 
         public bool AutoUpdate {
             get { return mAutoUpdate; }
-            set { mAutoUpdate = value; }
+            set { 
+                mAutoUpdate = value;
+                if (value)
+                    ConfigureWindow();
+            }
         }
 
         public bool DrawDiagram {
