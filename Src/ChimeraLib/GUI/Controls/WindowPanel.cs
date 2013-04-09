@@ -48,7 +48,7 @@ namespace Chimera.GUI.Controls {
             projectorDrawCheck.Checked = mWindow.Projector.DrawDiagram;
             projectorDrawRoomCheck.Checked = mWindow.Projector.DrawRoom;
             projectorDrawLabelsCheck.Checked = mWindow.Projector.DrawLabels;
-            projectorAutoUpdateCheck.Checked = mWindow.Projector.DrawLabels;
+            projectorAutoUpdateCheck.Checked = mWindow.Projector.AutoUpdate;
 
             projectorDrawRoomCheck.Enabled = mWindow.Projector.DrawDiagram;
             projectorDrawLabelsCheck.Enabled = mWindow.Projector.DrawDiagram;
