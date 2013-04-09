@@ -110,6 +110,7 @@
     <Compile Include="Overlay\Drawables\Text.cs" />
     <Compile Include="Overlay\States\SeeThroughMenuState.cs" />
     <Compile Include="Overlay\States\SlideshowState.cs" />
+    <Compile Include="Overlay\States\SlideshowWindow.cs" />
     <Compile Include="Overlay\States\VideoState.cs" />
     <Compile Include="Overlay\Transitions\BitmapFade.cs" />
     <Compile Include="Overlay\Transitions\BitmapWindowTransition.cs" />

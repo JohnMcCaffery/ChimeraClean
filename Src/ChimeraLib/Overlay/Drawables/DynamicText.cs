@@ -6,7 +6,6 @@ using System.Drawing;
 
 namespace Chimera.Overlay.Drawables {
     public class DynamicText : Text {
-        private Rectangle mClip;
         private WindowOverlayManager mManager;
         private bool mNeedsRedrawn;
 

@@ -12,10 +12,6 @@ namespace Chimera {
         private WindowOverlayManager mManager;
         private IWindowState mFrom;
         private IWindowState mTo;
-        /// <summary>
-        /// The clip rectangle bounding the area this item will be drawn to.
-        /// </summary>
-        private Rectangle mClip;
  
         /// <summary>
         /// 
@@ -48,24 +44,10 @@ namespace Chimera {
             get { return mManager; }
         }
 
-        public string Window {
-            get { return mManager.Window.Name; }
-        }
-
-        public bool Active {
-            get { return true; }
-            set { }
-        }
-
         public abstract event Action<IWindowTransition> Finished;
 
         public abstract void Begin();
 
         public abstract void Cancel();
-
-        public virtual Rectangle Clip {
-            get { return mClip; }
-            set { mClip = value; }
-        }
     }
 }
