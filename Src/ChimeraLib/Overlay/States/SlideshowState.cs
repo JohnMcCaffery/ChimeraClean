@@ -31,19 +31,23 @@ namespace Chimera.Overlay.States {
         }
 
         void prev_Triggered() {
-            mFinishedCount = 0;
-            mNext.Active = false;
-            mPrev.Active = false;
-            foreach (var window in mWindows)
-                window.Prev();
+            if (Active) {
+                mFinishedCount = 0;
+                mNext.Active = false;
+                mPrev.Active = false;
+                foreach (var window in mWindows)
+                    window.Prev();
+            }
         }
 
         void next_Triggered() {
-            mFinishedCount = 0;
-            mNext.Active = false;
-            mPrev.Active = false;
-            foreach (var window in mWindows)
-                window.Next();
+            if (Active) {
+                mFinishedCount = 0;
+                mNext.Active = false;
+                mPrev.Active = false;
+                foreach (var window in mWindows)
+                    window.Next();
+            }
         }
 
         public override IWindowState CreateWindowState(Window window) {
