@@ -95,7 +95,6 @@ namespace Chimera.Overlay.States {
             private readonly string mFolder;
             private Bitmap[] mImages;
             private int mCurrentImage = -1;
-            private Rectangle mClip;
 
             public SlideshowWindowState(WindowOverlayManager manager, string folder, IImageTransition transition)
                 : base(manager) {
@@ -115,27 +114,30 @@ namespace Chimera.Overlay.States {
                 AddFeature(transition);
             }
 
-            public override void RedrawStatic(Rectangle clip, Graphics graphics) {
-                if (!clip.Width.Equals(mClip.Width) || !mClip.Height.Equals(clip.Height)) {
-                    mClip = clip;
-                    mImages = new Bitmap[mRawImages.Length];
+            public override Rectangle Clip {
+                get { return base.Clip; }
+                set {
+                    base.Clip = value;                    mImages = new Bitmap[mRawImages.Length];
                     for (int i = 0; i < mRawImages.Length; i++) {
                         Bitmap img = mRawImages[i];
-                        Bitmap n = new Bitmap(clip.Width, clip.Height);
-                        int x = (clip.Width - img.Width) / 2;
-                        int y = (clip.Height - img.Height) / 2;
+                        Bitmap n = new Bitmap(Clip.Width, Clip.Height);
+                        int x = (Clip.Width - img.Width) / 2;
+                        int y = (Clip.Height - img.Height) / 2;
                         using (Graphics g = Graphics.FromImage(n)) {
-                            g.FillRectangle(Brushes.Black, clip);
+                            g.FillRectangle(Brushes.Black, Clip);
                             g.DrawImage(img, x, y, img.Width, img.Height);
                         }
                         mImages[i] = n;
                     }
                 }
+            }
+
+            public override void DrawStatic(Graphics graphics) {
                 if (mCurrentImage == -1) {
                     mCurrentImage = 0;
                     mTransition.Init(mImages[mCurrentImage], mImages[mCurrentImage]);
                 }
-                base.RedrawStatic(clip, graphics);
+                base.DrawStatic(graphics);
             }
 
             public void Prev() {

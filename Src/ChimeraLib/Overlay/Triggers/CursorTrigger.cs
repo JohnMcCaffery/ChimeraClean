@@ -20,7 +20,11 @@ namespace Chimera.Overlay.Triggers {
         private bool mActive;
         private Window mWindow;
         private int mR;
-
+        /// <summary>
+        /// The clip rectangle bounding the area this item will be drawn to.
+        /// </summary>
+        private Rectangle mClip;
+ 
         public CursorTrigger(IHoverSelectorRenderer renderer, Window window) {
             mWindow = window;
             mRenderer = renderer;
@@ -77,6 +81,12 @@ namespace Chimera.Overlay.Triggers {
 
         #region IDrawable Members
 
+        public virtual Rectangle Clip {
+            get { return mClip; }
+            set { mClip = value; }
+        }
+
+
         public bool NeedsRedrawn {
             get { return mHovering && !mClicked; }
         }
@@ -85,11 +95,7 @@ namespace Chimera.Overlay.Triggers {
             get { return mWindow.Name; }
         }
 
-        private Rectangle mClip;
-
-        public void RedrawStatic(Rectangle clip, Graphics graphics) {
-            mClip = clip;
-        }
+        public void DrawStatic(Graphics graphics) { }
 
         public void DrawDynamic(Graphics graphics) {
             if (mHovering && !mClicked) {

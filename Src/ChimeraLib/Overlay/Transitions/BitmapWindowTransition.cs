@@ -51,6 +51,8 @@ namespace Chimera.Overlay.Transitions {
 
             mTransition = transitionEffect;
             transitionEffect.Finished += new Action(transitionEffect_Finished);
+
+            AddFeature(mTransition);
         }
 
         private void transitionEffect_Finished() {
@@ -74,29 +76,29 @@ namespace Chimera.Overlay.Transitions {
             get { return true; }
         }
 
-        public override void RedrawStatic(Rectangle clip, Graphics graphics) {
-            To.RedrawStatic(clip, graphics);
-
-            if (!clip.Width.Equals(mLastClip.Width) || !clip.Height.Equals(mLastClip.Height)) {
-                mLastClip = clip;
-                Bitmap from = new Bitmap(clip.Width, clip.Height);
-                Bitmap to = new Bitmap(clip.Width, clip.Height);
+        public override Rectangle Clip {
+            get { return base.Clip; }
+            set {
+                base.Clip = value;
+                Bitmap from = new Bitmap(Clip.Width, Clip.Height);
+                Bitmap to = new Bitmap(Clip.Width, Clip.Height);
+                From.Clip = value;
+                To.Clip = value;
                 using (Graphics g = Graphics.FromImage(from))
-                    From.RedrawStatic(clip, g);
+                    From.DrawStatic(g);
                 using (Graphics g = Graphics.FromImage(to))
-                    To.RedrawStatic(clip, g);
+                    To.DrawStatic(g);
 
                 mTransition.Init(from, to);
             }
+        }
 
+        public override void DrawStatic(Graphics graphics) {
+            base.DrawStatic(graphics);
             if (!mBegun) {
                 mBegun = true;
                 mTransition.Begin();
             }
-        }
-
-        public override void DrawDynamic(Graphics graphics) {
-            mTransition.DrawDynamic(graphics);
         }
 
         #endregion

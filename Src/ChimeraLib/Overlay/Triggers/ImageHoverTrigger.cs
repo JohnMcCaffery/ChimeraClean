@@ -41,13 +41,18 @@ namespace Chimera.Overlay.Triggers {
 
         #region IDrawable Members
 
-        public override void RedrawStatic(Rectangle clip, Graphics graphics) {
-            base.RedrawStatic(clip, graphics);
-            mImage.RedrawStatic(clip, graphics);
-            if (!clip.Equals(mClip)) {
-                mClip = clip;
+        public override Rectangle Clip {
+            get { return base.Clip; }
+            set {
+                base.Clip = value;
+                mImage.Clip = value;
                 Bounds = mImage.Bounds;
             }
+        }
+
+        public override void DrawStatic(Graphics graphics) {
+            base.DrawStatic(graphics);
+            mImage.DrawStatic(graphics);
         }
 
         #endregion

@@ -7,6 +7,12 @@ using System.Drawing;
 namespace Chimera.Interfaces.Overlay {
     public interface IDrawable {
         /// <summary>
+        /// The clip rectangle this drawable is to be drawn on. Will always be updated before either of the draw methods are called.
+        /// If you are drawing a drawable on another drawable and NOT using DrawableRoot you MUST remember to update clip on the child
+        /// item or you will get undefined behaviour.
+        /// </summary>
+        Rectangle Clip { get; set; }
+        /// <summary>
         /// Whether this feature should be drawn.
         /// </summary>
         bool Active { get; set; }
@@ -21,9 +27,9 @@ namespace Chimera.Interfaces.Overlay {
         /// <summary>
         /// Notify the drawable that the area on which it is to draw has changed. Should draw any elements which only change when the area is resized to the supplied graphics object.
         /// </summary>
-        /// <param name="clip">The area in which this drawable will be drawn.</param>
+        /// 
         /// <param name="graphics">The object with which to to draw any elements which only change when the area is resized.</param>
-        void RedrawStatic(Rectangle clip, Graphics graphics);
+        void DrawStatic(Graphics graphics);
 
         /// <summary>
         /// Draw the elements of the drawable that change more frequently than when the drawing area is resized.

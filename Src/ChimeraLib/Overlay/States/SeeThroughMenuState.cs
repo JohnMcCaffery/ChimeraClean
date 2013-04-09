@@ -71,13 +71,13 @@ namespace Chimera.Overlay.States {
 
             protected override void OnActivated() { }
 
-            public override void RedrawStatic(Rectangle clip, Graphics graphics) {
+            public override void DrawStatic(Graphics graphics) {
                 if (mFadeBG != null)
                     graphics.DrawImage(mFadeBG, Point.Empty);
                 else {
                     using (Pen p = new Pen(Color.FromArgb(200, Color.White)))
-                        graphics.DrawRectangle(p, clip);
-                    base.RedrawStatic(clip, graphics);
+                        graphics.DrawRectangle(p, Clip);
+                    base.DrawStatic(graphics);
                 }
             }
         }

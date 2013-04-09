@@ -19,10 +19,26 @@ namespace Chimera.Overlay {
         /// The name of the window this drawable is to be drawn on.
         /// </summary>
         private string mWindowName;
+        /// <summary>
+        /// The clip rectangle bounding the area this item will be drawn to.
+        /// </summary>
+        private Rectangle mClip;
+        /// <summary>
+        /// Whether this drawable is active and should therefore be drawn.
+        /// </summary>
         private bool mActive;
 
         protected DrawableRoot(string window) {
             mWindowName = window;
+        }
+
+        public virtual Rectangle Clip {
+            get { return mClip; }
+            set { 
+                mClip = value;
+                foreach (var feature in mFeatures)
+                    feature.Clip = value;
+            }
         }
 
         public virtual string Window {
@@ -72,9 +88,9 @@ namespace Chimera.Overlay {
         /// </summary>
         /// <param name="clip">The area in which this drawable will be drawn.</param>
         /// <param name="graphics">The object with which to to draw any elements which only change when the area is resized.</param>
-        public virtual void RedrawStatic(Rectangle clip, Graphics graphics) {
+        public virtual void DrawStatic(Graphics graphics) {
             foreach (var feature in mFeatures)
-                feature.RedrawStatic(clip, graphics);
+                feature.DrawStatic(graphics);
         }
 
         /// <summary>

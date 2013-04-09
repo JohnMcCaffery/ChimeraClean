@@ -10,12 +10,22 @@ namespace Chimera.Overlay.Drawables {
     public class OverlayImage : IDrawable {
         private RectangleF mBounds;
         private Bitmap mImage;
-        private Rectangle mClip;
         private float mAspectRatio;
         private string mWindow;
         private bool mActive = true;
         private int mW;
         private int mH;
+        /// <summary>
+        /// The clip rectangle bounding the area this item will be drawn to.
+        /// </summary>
+        private Rectangle mClip;
+ 
+
+        public virtual Rectangle Clip {
+            get { return mClip; }
+            set { mClip = value; }
+        }
+
 
         /// <summary>
         /// The position / size for the image. Specified as a relative values.
@@ -27,8 +37,8 @@ namespace Chimera.Overlay.Drawables {
                 RectangleF bounds = new RectangleF(mBounds.X, mBounds.Y, mBounds.Width, mBounds.Height);
 
                 if (mBounds.Width < 0) {
-                    bounds.Width = mW / (float)mClip.Width;
-                    bounds.Height = mH / (float)mClip.Height;
+                    bounds.Width = mW / (float)Clip.Width;
+                    bounds.Height = mH / (float)Clip.Height;
                 } else if (mBounds.Height < 0f)
                     bounds.Height = mBounds.Width * mAspectRatio;
 
@@ -48,13 +58,12 @@ namespace Chimera.Overlay.Drawables {
             set { mActive = value; }
         }
 
-        public void RedrawStatic(Rectangle clip, Graphics graphics) {
-            mClip = clip;
-            int x = (int) (clip.Width * mBounds.X);
-            int y = (int) (clip.Height * mBounds.Y);
+        public void DrawStatic(Graphics graphics) {
+            int x = (int) (Clip.Width * mBounds.X);
+            int y = (int) (Clip.Height * mBounds.Y);
             if (mBounds.Width > 0) {
-                int w = (int)(clip.Width * mBounds.Width);
-                int h = (int)(mBounds.Height > 0 ? clip.Height * mBounds.Height : w * mAspectRatio);
+                int w = (int)(Clip.Width * mBounds.Width);
+                int h = (int)(mBounds.Height > 0 ? Clip.Height * mBounds.Height : w * mAspectRatio);
                 graphics.DrawImage(mImage, new Rectangle(x, y, w, h));
             } else
                 graphics.DrawImage(mImage, x, y, mW, mH);

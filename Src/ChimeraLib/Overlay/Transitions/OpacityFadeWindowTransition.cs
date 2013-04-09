@@ -101,11 +101,11 @@ namespace Chimera.Overlay.Transitions {
             get { return true; }
         }
 
-        public override void RedrawStatic(Rectangle clip, Graphics graphics) {
+        public override void DrawStatic(Graphics graphics) {
             if (mFadeIn)
-                To.RedrawStatic(clip, graphics);
+                To.DrawStatic(graphics);
             else
-                From.RedrawStatic(clip, graphics);
+                From.DrawStatic(graphics);
         }
 
         public override void DrawDynamic(Graphics graphics) { }

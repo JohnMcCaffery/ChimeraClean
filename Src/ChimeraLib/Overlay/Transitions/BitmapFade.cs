@@ -46,7 +46,11 @@ namespace Chimera.Overlay.Transitions {
         /// <summary>
         /// Whether the transition has completed.
         /// </summary>
-        private bool mCompleted;
+        private bool mCompleted;        /// <summary>
+        /// The clip rectangle bounding the area this item will be drawn to.
+        /// </summary>
+        private Rectangle mClip;
+ 
 
 
         public event Action Finished;
@@ -75,6 +79,12 @@ namespace Chimera.Overlay.Transitions {
 
         #endregion
 
+        public virtual Rectangle Clip {
+            get { return mClip; }
+            set { mClip = value; }
+        }
+
+
         #region IDrawable Members
 
         public bool Active {
@@ -90,7 +100,7 @@ namespace Chimera.Overlay.Transitions {
             get { throw new NotImplementedException(); }
         }
 
-        public void RedrawStatic(Rectangle clip, Graphics graphics) {
+        public void DrawStatic(Graphics graphics) {
             graphics.DrawImage(mTo, 0, 0);
         }
 

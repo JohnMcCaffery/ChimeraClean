@@ -4,21 +4,27 @@ using System.Linq;
 using System.Text;
 using Chimera.Overlay;
 using Chimera.Interfaces.Overlay;
+using System.Drawing;
 
 namespace Chimera {
-    public abstract class WindowTransition : IWindowTransition {
+    public abstract class WindowTransition : DrawableRoot, IWindowTransition {
         private StateTransition mTransition;
         private WindowOverlayManager mManager;
         private IWindowState mFrom;
         private IWindowState mTo;
-
+        /// <summary>
+        /// The clip rectangle bounding the area this item will be drawn to.
+        /// </summary>
+        private Rectangle mClip;
+ 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="transition"></param>
         /// <param name="window"></param>
         /// <exception cref="InvalidArgumentException">Thrown if there is no window state for the To or From state.</exception>
-        public WindowTransition(StateTransition transition, Window window) {
+        public WindowTransition(StateTransition transition, Window window)
+            : base(window.Name) {
             mManager = window.OverlayManager;
             mTransition = transition;
 
@@ -57,12 +63,9 @@ namespace Chimera {
 
         public abstract void Cancel();
 
-        public abstract bool NeedsRedrawn {
-            get;
+        public virtual Rectangle Clip {
+            get { return mClip; }
+            set { mClip = value; }
         }
-
-        public abstract void RedrawStatic(System.Drawing.Rectangle clip, System.Drawing.Graphics graphics);
-
-        public abstract void DrawDynamic(System.Drawing.Graphics graphics);
     }
 }

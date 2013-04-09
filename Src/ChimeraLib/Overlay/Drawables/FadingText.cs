@@ -57,10 +57,17 @@ namespace Chimera.Overlay.Drawables {
             get { return !mFirstDrawn || Time > mSolidTime && Time < mSolidTime + mFadeTime; }
         }
 
-        public override void RedrawStatic(Rectangle clip, Graphics graphics) {
+        public override Rectangle Clip {
+            get { return base.Clip; }
+            set {
+                base.Clip = value;
+                mLocation = GetPoint(value);
+            }
+        }
+
+        public override void DrawStatic(Graphics graphics) {
             mActivated = DateTime.Now;
             mFirstDrawn = false;
-            mLocation = GetPoint(clip);
         }
 
         public override void DrawDynamic(Graphics graphics) {

@@ -22,9 +22,9 @@ namespace Chimera.Overlay.States {
             mBG = BG;
         }
 
-        public override void RedrawStatic(Rectangle clip, Graphics graphics) {
-            graphics.DrawImage(mBG, clip);
-            base.RedrawStatic(clip, graphics);
+        public override void DrawStatic(Graphics graphics) {
+            graphics.DrawImage(mBG, Clip);
+            base.DrawStatic(graphics);
         }
 
         protected override void OnActivated() {

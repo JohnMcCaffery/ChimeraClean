@@ -19,7 +19,11 @@ namespace Chimera.Kinect.Overlay {
         private static Vector sCentreHip;
         private static Vector sCentreShoulder;
         private static Vector sHead;
-        private bool mActive;
+        private bool mActive;        /// <summary>
+        /// The clip rectangle bounding the area this item will be drawn to.
+        /// </summary>
+        private Rectangle mClip;
+ 
 
         /// <summary>
         /// The colour the current skeleton will be drawn. Changes every time the skeleton changes.
@@ -40,9 +44,6 @@ namespace Chimera.Kinect.Overlay {
 
         private float mRoomW = 3f;
         /// <summary>
-        /// The clip rectangle for the window as a whole.
-        /// </summary>
-        private Rectangle mClip;
         /// <summary>
         /// Where the x coordinate the skeleton can be positioned at starts.
         /// </summary>
@@ -76,6 +77,12 @@ namespace Chimera.Kinect.Overlay {
             mWindowName = windowName;
         }
 
+        public virtual Rectangle Clip {
+            get { return mClip; }
+            set { mClip = value; }
+        }
+
+
         public string Window {
             get { return mWindowName; }
         }
@@ -89,9 +96,7 @@ namespace Chimera.Kinect.Overlay {
             get { return sNeedsRedrawn; }
         }
 
-        public void RedrawStatic(Rectangle clip, Graphics graphics) {
-            mClip = clip;
-
+        public void DrawStatic(Graphics graphics) {
             if (!sInitialised)
                 Init();
         }
@@ -103,7 +108,7 @@ namespace Chimera.Kinect.Overlay {
 
             float scaledPos = ((sCentreHip.X + mRoomW / 2f) / mRoomW);
             float x = mXStart + (mXRange * scaledPos);
-            Point centreP = new Point((int)(mClip.Width * x), (int) (mY * mClip.Height));
+            Point centreP = new Point((int)(Clip.Width * x), (int) (mY * Clip.Height));
             Vector3 centre = V3toVector(sCentreHip);
             float lineW = 16f;
             using (Pen p = new Pen(sSkeletonColour, lineW)) {

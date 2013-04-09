@@ -10,10 +10,20 @@ namespace Chimera.Overlay.Drawables {
         private string mText;
         private bool mActive;
         private string mWindow;
-
+        /// <summary>
+        /// The clip rectangle bounding the area this item will be drawn to.
+        /// </summary>
+        private Rectangle mClip;
+ 
         private Font mFont;
         private PointF mPosition;
         protected readonly Color mColour;
+
+        public virtual Rectangle Clip {
+            get { return mClip; }
+            set { mClip = value; }
+        }
+
 
         public virtual String TextString {
             get { return mText; }
@@ -47,18 +57,18 @@ namespace Chimera.Overlay.Drawables {
             get { return mWindow; }
         }
 
-        public abstract void RedrawStatic(Rectangle clip, Graphics graphics);
+        public abstract void DrawStatic(Graphics graphics);
 
         public abstract void DrawDynamic(System.Drawing.Graphics graphics);
 
         #endregion
 
-        protected void Draw(Graphics g, Rectangle clip) {
+        protected void Draw(Graphics g) {
             using (Brush b = new SolidBrush(mColour))
-                Draw(g, clip, b);
+                Draw(g, b);
         }
-        protected void Draw(Graphics g, Rectangle clip, Brush b) {
-                g.DrawString(mText, mFont, b, GetPoint(clip));
+        protected void Draw(Graphics g, Brush b) {
+                g.DrawString(mText, mFont, b, GetPoint(Clip));
         }
 
         protected PointF GetPoint(Rectangle clip) {

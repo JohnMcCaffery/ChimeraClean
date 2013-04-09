@@ -121,8 +121,9 @@ namespace Chimera.Overlay.Triggers {
         /// <summary>
         /// Clip boundary of the area on which the selector is being drawn.
         /// </summary>
-        protected Rectangle Clip {
+        public virtual Rectangle Clip {
             get { return mClip; }
+            set { mClip = value; }
         }
 
         private void Coordinator_Tick() {
@@ -185,9 +186,7 @@ namespace Chimera.Overlay.Triggers {
         /// </summary>
         /// <param name="clip">The area in which this drawable will be drawn.</param>
         /// <param name="graphics">The object with which to to draw any elements which only change when the area is resized.</param>
-        public virtual void RedrawStatic(Rectangle clip, Graphics graphics) {
-            mClip = clip;
-        }
+        public virtual void DrawStatic(Graphics graphics) { }
 
         #endregion    
     }

@@ -11,8 +11,8 @@ namespace Chimera.Overlay.Drawables {
 
         public override void DrawDynamic(Graphics graphics) { }
 
-        public override void RedrawStatic(Rectangle clip, Graphics graphics) {
-            Draw(graphics, clip);
+        public override void DrawStatic(Graphics graphics) {
+            Draw(graphics);
         }
     }
 }

@@ -10,7 +10,6 @@ namespace Chimera.Overlay.Triggers {
     public class TextHoverTrigger : HoverTrigger, IDrawable {
         private Text mText;
         private bool mActive;
-        private Rectangle mClip;
 
         private static RectangleF GetBounds(Text text, Rectangle clip) {
             using (Bitmap b = new Bitmap(1, 1)) {
@@ -24,15 +23,23 @@ namespace Chimera.Overlay.Triggers {
         public TextHoverTrigger(WindowOverlayManager manager, IHoverSelectorRenderer renderer, Text text, Rectangle clip)
             : base(manager, renderer, GetBounds(text, clip)) {
                 mText = text;
-                mClip = clip;
+                Clip = clip;
         }
 
         protected override RectangleF Bounds {
-            get { return GetBounds(mText, mClip); }
+            get { return GetBounds(mText, Clip); }
             set { }
         }
 
         #region IDrawable Members
+
+        public override Rectangle Clip {
+            get { return base.Clip; }
+            set {
+                base.Clip = value;
+                mText.Clip = value;
+            }
+        }
 
         public override bool Active {
             get { return mActive; }
@@ -50,10 +57,9 @@ namespace Chimera.Overlay.Triggers {
             get { return mText.Window; }
         }
 
-        void IDrawable.RedrawStatic(Rectangle clip, Graphics graphics) {
-            mClip = clip;
-            mText.RedrawStatic(clip, graphics);
-            base.RedrawStatic(clip, graphics);
+        void IDrawable.DrawStatic(Graphics graphics) {
+            mText.DrawStatic(graphics);
+            base.DrawStatic(graphics);
         }
 
         void IDrawable.DrawDynamic(Graphics graphics) {
