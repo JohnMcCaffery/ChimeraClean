@@ -888,7 +888,7 @@
             this.projectorDrawCheck.TabIndex = 36;
             this.projectorDrawCheck.Text = "Draw";
             this.projectorDrawCheck.UseVisualStyleBackColor = true;
-            this.projectorDrawCheck.CheckedChanged += new System.EventHandler(this.drawnCheck_CheckedChanged);
+            this.projectorDrawCheck.CheckedChanged += new System.EventHandler(this.projectorDrawCheck_CheckedChanged);
             // 
             // label17
             // 
