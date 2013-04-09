@@ -47,7 +47,11 @@ namespace Chimera.Overlay {
 
         public virtual bool Active {
             get { return mActive; }
-            set { mActive = value; }
+            set { 
+                mActive = value;
+                foreach (var feature in mFeatures)
+                    feature.Active = value;
+            }
         }
 
         /// <summary>

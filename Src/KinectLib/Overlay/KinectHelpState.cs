@@ -37,10 +37,13 @@ namespace Chimera.Kinect.Overlay {
 
             mCloseWhereButton = new ImageHoverTrigger(Manager.Coordinator[whereWindow].OverlayManager, new DialCursorRenderer(), mWhereButton.Image);
             mCloseWhereButton.Triggered += new Action(mCloseWhereButton_Triggered);
-            
-            AddFeature(new SkeletonFeature(0f, 1f, 150f / 1080f, 100f, mainWindow));
+
+            //TODO - should this be here or inbuilt?
+            SkeletonFeature helpSkeleton = new SkeletonFeature(.065f, 0f, .13f, 125f, mainWindow);
+            AddFeature(helpSkeleton);
+            //AddFeature(new SkeletonFeature(0f, 1f, 150f / 1080f, 100f, mainWindow));
             AddFeature(new OverlayImage(new Bitmap(mHelpImages), .05f, .1f, mainWindow));
-            AddFeature(mWhereButton);
+            //AddFeature(mWhereButton);
 
             mWhereButton.Active = false;
             mCloseWhereButton.Active = false;

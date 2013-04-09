@@ -37,17 +37,22 @@ namespace Chimera.Overlay.States {
             get { return base.Clip; }
             set {
                 base.Clip = value;
+                if (Clip.Width == 0 || Clip.Height == 0)
+                    return;
                 mImages = new Bitmap[mRawImages.Length];
                 for (int i = 0; i < mRawImages.Length; i++) {
-                    Bitmap img = mRawImages[i];
-                    Bitmap n = new Bitmap(Clip.Width, Clip.Height);
-                    int x = (Clip.Width - img.Width) / 2;
-                    int y = (Clip.Height - img.Height) / 2;
-                    using (Graphics g = Graphics.FromImage(n)) {
-                        g.FillRectangle(Brushes.Black, Clip);
-                        g.DrawImage(img, x, y, img.Width, img.Height);
+                    lock (mRawImages) {
+                        Bitmap img = mRawImages[i];
+                        Console.WriteLine(Clip);
+                        Bitmap n = new Bitmap(Clip.Width, Clip.Height);
+                        int x = (Clip.Width - img.Width) / 2;
+                        int y = (Clip.Height - img.Height) / 2;
+                        using (Graphics g = Graphics.FromImage(n)) {
+                            g.FillRectangle(Brushes.Black, Clip);
+                            g.DrawImage(img, x, y, img.Width, img.Height);
+                        }
+                        mImages[i] = n;
                     }
-                    mImages[i] = n;
                 }
             }
         }

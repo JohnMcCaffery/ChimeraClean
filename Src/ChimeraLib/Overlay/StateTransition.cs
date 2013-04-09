@@ -9,7 +9,7 @@ namespace Chimera.Overlay {
         /// <summary>
         /// The individual transitions for each window in the system.
         /// </summary>
-        private readonly Dictionary<string, IWindowTransition> mWindowTransitions = new Dictionary<string,IWindowTransition>();
+        private readonly Dictionary<string, IWindowTransition> mWindowTransitions = new Dictionary<string, IWindowTransition>();
         /// <summary>
         /// During a transition, the windows which have completed the transition. The transition as a whole is only complete when all windows have completed.
         /// </summary>

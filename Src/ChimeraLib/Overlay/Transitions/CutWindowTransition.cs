@@ -20,6 +20,7 @@ namespace Chimera.Overlay.Transitions {
         }
 
         public override void Begin() {
+            base.Begin();
             if (Finished != null)
                 Finished(this);
         }

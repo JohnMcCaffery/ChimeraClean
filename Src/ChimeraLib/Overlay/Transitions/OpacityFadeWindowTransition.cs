@@ -89,6 +89,7 @@ namespace Chimera.Overlay.Transitions {
         public override event Action<IWindowTransition> Finished;
 
         public override void Begin() {
+            base.Begin();
             mTransitionStart = DateTime.Now;
             mTransitioning = true;
         }

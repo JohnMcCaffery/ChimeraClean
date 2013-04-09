@@ -124,14 +124,8 @@ namespace Chimera.Launcher {
             StateTransition helpAvatarFlythroughTransition = new StateTransition(mCoordinator.StateManager, helpAvatar, idleFlythrough, skeletonLost, fadeOutTransition);
             StateTransition helpFlycamFlythroughTransition = new StateTransition(mCoordinator.StateManager, helpFlycam, idleFlythrough, skeletonLost, fadeOutTransition);
 
-            SkeletonFeature helpSkeleton = new SkeletonFeature(1650, 1650, 800, 225f, mainWindow.Name, clip);
-
             kinectAvatar.AddTransition(kinectHelpAvatarTransition);
             kinectFlycam.AddTransition(kinectHelpFlycamTransition);
-
-            //TODO - should this be here or inbuilt?
-            helpAvatar.AddFeature(helpSkeleton);
-            helpFlycam.AddFeature(helpSkeleton);
 
             idleFlythrough.AddTransition(flythroughSplashTransition);
 
@@ -144,7 +138,9 @@ namespace Chimera.Launcher {
             mCoordinator.StateManager.AddState(structuredFlythrough);
             mCoordinator.StateManager.AddState(slideshow);
             mCoordinator.StateManager.AddState(learn);
-            mCoordinator.StateManager.CurrentState = splash;
+            //mCoordinator.StateManager.CurrentState = splash;
+            //mCoordinator.StateManager.CurrentState = helpFlycam;
+            mCoordinator.StateManager.CurrentState = kinectFlycam;
 
             /*
             double opacity = new CoordinatorConfig().OverlayOpacity;

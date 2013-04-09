@@ -89,7 +89,7 @@ namespace Chimera.Overlay {
                 foreach (var transition in mTransitions.Values)
                     transition.Active = value;
                 foreach (var window in mWindowStates.Values)
-                    window.Active = false;
+                    window.Active = value;
                 if (value)
                     TransitionToFinish();
                 else

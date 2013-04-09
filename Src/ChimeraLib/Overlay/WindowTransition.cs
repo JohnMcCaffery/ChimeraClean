@@ -12,6 +12,14 @@ namespace Chimera {
         private WindowOverlayManager mManager;
         private IWindowState mFrom;
         private IWindowState mTo;
+
+        public override Rectangle Clip {
+            get { return base.Clip; }
+            set {
+                base.Clip = value;
+                mTo.Clip = value;
+            }
+        }
  
         /// <summary>
         /// 
@@ -46,7 +54,9 @@ namespace Chimera {
 
         public abstract event Action<IWindowTransition> Finished;
 
-        public abstract void Begin();
+        public virtual void Begin() {
+            mTo.Clip = Clip;
+        }
 
         public abstract void Cancel();
     }

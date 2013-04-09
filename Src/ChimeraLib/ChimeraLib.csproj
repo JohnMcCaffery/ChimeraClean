@@ -103,6 +103,7 @@
     <Compile Include="Core\Projector.cs" />
     <Compile Include="Interfaces\Overlay\IImageTransition.cs" />
     <Compile Include="Interfaces\Overlay\IImageTransitionFactory.cs" />
+    <Compile Include="Interfaces\Overlay\IWindowTransition.cs" />
     <Compile Include="Overlay\Drawables\DynamicText.cs" />
     <Compile Include="Overlay\Drawables\FadingText.cs" />
     <Compile Include="Overlay\Drawables\OverlayImage.cs" />
@@ -186,7 +187,6 @@
     <Compile Include="Interfaces\Overlay\IStateTransitionFactory.cs" />
     <Compile Include="Interfaces\Overlay\ITrigger.cs" />
     <Compile Include="Interfaces\Overlay\IWindowState.cs" />
-    <Compile Include="Interfaces\Overlay\IWindowTransition.cs" />
     <Compile Include="Overlay\States\ImageBGState.cs" />
     <Compile Include="Overlay\States\ImageBGWindow.cs" />
     <Compile Include="Overlay\Triggers\ImageHoverTrigger.cs" />
