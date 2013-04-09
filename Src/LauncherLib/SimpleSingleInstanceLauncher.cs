@@ -162,7 +162,7 @@ namespace Chimera.Launcher {
         }
 
         static void TxtTrans(State from, State to, string text, float x, float y, Font font, Color colour, Rectangle clip, Window window, IHoverSelectorRenderer renderer, IWindowTransitionFactory transition) {
-            Text txt = new DynamicText(text, window.OverlayManager, font, colour, new PointF(x, y));
+            Text txt = new StaticText(text, window.Name, font, colour, new PointF(x, y));
             TextHoverTrigger splashExploreTrigger = new TextHoverTrigger(window.OverlayManager, renderer, txt, clip);
             StateTransition splashExploreTransition = new StateTransition(window.Coordinator.StateManager, from, to, splashExploreTrigger, transition);
             from.AddTransition(splashExploreTransition);

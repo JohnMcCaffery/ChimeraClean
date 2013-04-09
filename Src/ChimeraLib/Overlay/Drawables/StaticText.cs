@@ -5,7 +5,8 @@ using System.Text;
 using System.Drawing;
 
 namespace Chimera.Overlay.Drawables {
-    public class StaticText : Text {        public StaticText(string text, string window, Font font, Color colour, PointF location)
+    public class StaticText : Text {
+        public StaticText(string text, string window, Font font, Color colour, PointF location)
             : base(text, window, font, colour, location) {
         }
 
