@@ -88,50 +88,27 @@ namespace Chimera.Launcher {
             State helpFlycam = new KinectHelpState("KinectHelpFlycam", mCoordinator.StateManager, mainWindow.Name, mainWindow.Name);
             State flythroughState = new FlythroughState("Flythrough", mCoordinator.StateManager, "../Flythroughs/Caen-long.xml");
 
-            OverlayImage exploreButton = new OverlayImage(new Bitmap("../Images/Caen/Buttons/SeeTheTownship.png"), .10f, .35f, .25f, mainWindow.Name);
-            OverlayImage helpKinectButton = new OverlayImage(new Bitmap("../Images/Caen/Buttons/HelpToWorld.png"), .75f, 05f, mainWindow.Name);
-            OverlayImage kinectAvatarButton = new OverlayImage(new Bitmap("../Images/Caen/Buttons/ExploreWithAvatar.png"), .15f, .4f, mainWindow.Name);
-            OverlayImage kinectFlycamButton = new OverlayImage(new Bitmap("../Images/Caen/Buttons/ExploreFreely.png"), .65f, .4f, mainWindow.Name);
-            OverlayImage splashButton = new OverlayImage(new Bitmap("../Images/Caen/Buttons/MainMenu.png"), .85f, .5f, mainWindow.Name);
-            OverlayImage splashLearnButton = new OverlayImage(new Bitmap("../Images/Caen/Buttons/Learn.png"), .65f, .4f, mainWindow.Name);
-            OverlayImage learnSlideshowButton = new OverlayImage(new Bitmap("../Images/Caen/Buttons/Slideshow.png"), .85f, .5f, mainWindow.Name);
-
-            ImageHoverTrigger splashExploreTrigger = new ImageHoverTrigger(mainWindow.OverlayManager, cursorRenderer, exploreButton);
-            ImageHoverTrigger helpKinectTrigger = new ImageHoverTrigger(mainWindow.OverlayManager, cursorRenderer, helpKinectButton);
-            ImageHoverTrigger helpSplashTrigger = new ImageHoverTrigger(mainWindow.OverlayManager, cursorRenderer, splashButton);
-            ImageHoverTrigger exploreAvatarTrigger = new ImageHoverTrigger(mainWindow.OverlayManager, cursorRenderer, kinectAvatarButton);
-            ImageHoverTrigger exploreFlycamTrigger = new ImageHoverTrigger(mainWindow.OverlayManager, cursorRenderer, kinectFlycamButton);
-            ImageHoverTrigger splashLearnTrigger = new ImageHoverTrigger(mainWindow.OverlayManager, cursorRenderer, splashLearnButton);
-            ImageHoverTrigger learnSlideshowTrigger = new ImageHoverTrigger(mainWindow.OverlayManager, cursorRenderer, learnSlideshowButton);
-            TextHoverTrigger backTrigger = new TextHoverTrigger(mainWindow.OverlayManager, cursorRenderer, 
-                new StaticText("Back", mainWindow.Name, font, Color.DarkBlue, new PointF(.45f, .8f)), clip);
-
-            ITrigger customTriggerHelp = new CustomTriggerTrigger(mCoordinator.StateManager, "Help");
-            ITrigger skeletonLost = new SkeletonLostTrigger(mCoordinator, 15000.0);
-            ITrigger skeletonFound = new SkeletonFoundTrigger();
-
             IImageTransitionFactory fadeFactory = new FadeFactory();
             CutWindowTransitionFactory cutTransition = new CutWindowTransitionFactory();
             BitmapFadeTransitionFactory fadeTransition = new BitmapFadeTransitionFactory(fadeFactory, 1500.0);
             OpacityFadeOutTransitionFactory fadeOutTransition = new OpacityFadeOutTransitionFactory(1500.0);
             OpacityFadeInTransitionFactory fadeInTransition = new OpacityFadeInTransitionFactory(1500.0);
 
-            StateTransition splashExploreTransition = new StateTransition(mCoordinator.StateManager, splash, explore, splashExploreTrigger, fadeTransition);
-            StateTransition splashLearnTransition = new StateTransition(mCoordinator.StateManager, splash, learn, splashLearnTrigger, fadeTransition);
+            ImgTrans(splash,        explore,        "SeeTheTownship",       .10f, .35f, .25f, mainWindow, cursorRenderer, fadeTransition);
+            ImgTrans(splash,        learn,          "Learn",                .65f, .4f, mainWindow, cursorRenderer, fadeTransition);
+            ImgTrans(helpAvatar,    kinectAvatar,   "HelpToWorld",          .85f, .15f, .1f, mainWindow, cursorRenderer, fadeOutTransition);
+            ImgTrans(helpAvatar,    splash,         "MainMenu",             .85f, .35f, .1f, mainWindow, cursorRenderer, fadeTransition);
+            ImgTrans(helpFlycam,    kinectFlycam,   "HelpToWorld",          .85f, .15f, .1f, mainWindow, cursorRenderer, fadeOutTransition);
+            ImgTrans(helpFlycam,    splash,         "MainMenu",             .85f, .35f, .1f, mainWindow, cursorRenderer, fadeTransition);
+            ImgTrans(explore,       kinectAvatar,   "ExploreWithAvatar",    .15f, .4f, mainWindow, cursorRenderer, fadeOutTransition);
+            ImgTrans(explore,       kinectFlycam,   "ExploreFreely",        .65f, .4f, mainWindow, cursorRenderer, fadeOutTransition);
+            ImgTrans(learn,         slideshow,      "Slideshow",            .65f, .5f, mainWindow, cursorRenderer, fadeTransition);
+            TxtTrans(learn,         splash,         "Back",                 .45f, .8f, font, Color.DarkBlue, clip, mainWindow, cursorRenderer, fadeTransition);
+            TxtTrans(slideshow,     learn,          "Back",                 .45f, .8f, font, Color.DarkBlue, clip, mainWindow, cursorRenderer, fadeTransition);
 
-            StateTransition learnSlideshowTransition = new StateTransition(mCoordinator.StateManager, learn, slideshow, learnSlideshowTrigger, fadeTransition);
-            StateTransition learnSplashTransition = new StateTransition(mCoordinator.StateManager, learn, splash, backTrigger, fadeTransition);
-
-            StateTransition slideshowLearnTransition = new StateTransition(mCoordinator.StateManager, slideshow, learn, backTrigger, fadeTransition);
-
-            StateTransition exploreAvatarTransition = new StateTransition(mCoordinator.StateManager, explore, kinectAvatar, exploreAvatarTrigger, fadeOutTransition);
-            StateTransition exploreFlycamTransition = new StateTransition(mCoordinator.StateManager, explore, kinectFlycam, exploreFlycamTrigger, fadeOutTransition);
-
-            StateTransition helpAvatarSplashTransition = new StateTransition(mCoordinator.StateManager, helpAvatar, splash, helpSplashTrigger, fadeTransition);
-            StateTransition helpAvatarKinectTransition = new StateTransition(mCoordinator.StateManager, helpAvatar, kinectAvatar, helpKinectTrigger, fadeOutTransition);
-
-            StateTransition helpFlycamSplashTransition = new StateTransition(mCoordinator.StateManager, helpFlycam, splash, helpSplashTrigger, fadeTransition);
-            StateTransition helpFlycamKinectTransition = new StateTransition(mCoordinator.StateManager, helpFlycam, kinectFlycam, helpKinectTrigger, fadeOutTransition);
+            ITrigger customTriggerHelp = new CustomTriggerTrigger(mCoordinator.StateManager, "Help");
+            ITrigger skeletonLost = new SkeletonLostTrigger(mCoordinator, 15000.0);
+            ITrigger skeletonFound = new SkeletonFoundTrigger();
 
             StateTransition kinectHelpAvatarTransition = new StateTransition(mCoordinator.StateManager, kinectAvatar, helpAvatar, customTriggerHelp, fadeInTransition);
             StateTransition kinectHelpFlycamTransition = new StateTransition(mCoordinator.StateManager, kinectFlycam, helpFlycam, customTriggerHelp, fadeInTransition);
@@ -144,27 +121,11 @@ namespace Chimera.Launcher {
 
             SkeletonFeature helpSkeleton = new SkeletonFeature(1650, 1650, 800, 225f, mainWindow.Name, clip);
 
-            splash.AddTransition(splashExploreTransition);
-            splash.AddTransition(splashLearnTransition);
-
-            learn.AddTransition(learnSlideshowTransition);
-            learn.AddTransition(learnSplashTransition);
-
-            slideshow.AddTransition(slideshowLearnTransition);
-
-            explore.AddTransition(exploreAvatarTransition);
-            explore.AddTransition(exploreFlycamTransition);
-
             kinectAvatar.AddTransition(kinectHelpAvatarTransition);
-
             kinectFlycam.AddTransition(kinectHelpFlycamTransition);
 
-            helpAvatar.AddTransition(helpAvatarKinectTransition);
-            helpAvatar.AddTransition(helpAvatarSplashTransition);
+            //TODO - should this be here or inbuilt?
             helpAvatar.AddFeature(helpSkeleton);
-
-            helpFlycam.AddTransition(helpFlycamKinectTransition);
-            helpFlycam.AddTransition(helpFlycamSplashTransition);
             helpFlycam.AddFeature(helpSkeleton);
 
             flythroughState.AddTransition(flythroughSplashTransition);
@@ -188,6 +149,23 @@ namespace Chimera.Launcher {
             //Window[] windows = new Window[] { new Window("MainWindow") };
             //Chimera.Overlay.MainMenu mainMenu = new Chimera.Overlay.MainMenu();
             //Coordinator input = new Coordinator(windows, mainMenu, kinect);
+        }
+
+        static void ImgTrans(State from, State to, string image, float x, float y, Window window, IHoverSelectorRenderer renderer, IWindowTransitionFactory transition) {
+            ImgTrans(from, to, image, x, y, -1f, window, renderer, transition);
+        }
+        static void ImgTrans(State from, State to, string image, float x, float y, float w, Window window, IHoverSelectorRenderer renderer, IWindowTransitionFactory transition) {
+            OverlayImage exploreButton = new OverlayImage(new Bitmap("../Images/Caen/Buttons/" + image + ".png"), x, y, w, window.Name);
+            ImageHoverTrigger splashExploreTrigger = new ImageHoverTrigger(window.OverlayManager, renderer, exploreButton);
+            StateTransition splashExploreTransition = new StateTransition(window.Coordinator.StateManager, from, to, splashExploreTrigger, transition);
+            from.AddTransition(splashExploreTransition);
+        }
+
+        static void TxtTrans(State from, State to, string text, float x, float y, Font font, Color colour, Rectangle clip, Window window, IHoverSelectorRenderer renderer, IWindowTransitionFactory transition) {
+            Text txt = new DynamicText(text, window.OverlayManager, font, colour, new PointF(x, y));
+            TextHoverTrigger splashExploreTrigger = new TextHoverTrigger(window.OverlayManager, renderer, txt, clip);
+            StateTransition splashExploreTransition = new StateTransition(window.Coordinator.StateManager, from, to, splashExploreTrigger, transition);
+            from.AddTransition(splashExploreTransition);
         }
     }
 }

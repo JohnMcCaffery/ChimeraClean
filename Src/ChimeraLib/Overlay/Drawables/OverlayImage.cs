@@ -137,7 +137,7 @@ namespace Chimera.Overlay.Drawables {
         /// <param name="w">The width to draw the image, specified as fraction of the width of the surface the image will be drawn on. (0: no width, 1: covers the entire screen).</param>
         public OverlayImage(Bitmap image, float x, float y, float w, string window)
             : this(image, window) {
-            mBounds = new RectangleF(x, y, -1f, -1f);
+            mBounds = new RectangleF(x, y, w, -1f);
             mAspectRatio = (float) image.Height / (float) image.Width;
         }
 
