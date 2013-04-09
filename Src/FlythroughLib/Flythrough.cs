@@ -181,8 +181,10 @@ namespace Chimera.Flythrough {
         }
 
         public void Step() {
-            if (mEvents.CurrentEvent != null && mEvents.CurrentEvent.GlobalFinishTime + 1< Length)
-                Time = CurrentEvent.GlobalFinishTime + 1;
+            //if (mEvents.CurrentEvent != null && mEvents.CurrentEvent.GlobalFinishTime + 1 < Length)
+                //Time = CurrentEvent.GlobalFinishTime + 1;
+                //Time = CurrentEvent.GlobalStartTime;
+            Paused = false;
         }
 
         /// <summary>
