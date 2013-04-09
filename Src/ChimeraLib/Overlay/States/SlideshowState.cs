@@ -15,6 +15,7 @@ namespace Chimera.Overlay.States {
         private readonly ITrigger mPrev;
         private readonly string mFolder;
         private double mFadeLengthMS;
+        private int mFinishedCount = 0;
 
         public SlideshowState(string name, StateManager manager, string folder, ITrigger next, ITrigger prev, IImageTransitionFactory transition, double fadeLengthMS)
             : base(name, manager) {
@@ -30,17 +31,24 @@ namespace Chimera.Overlay.States {
         }
 
         void prev_Triggered() {
+            mFinishedCount = 0;
+            mNext.Active = false;
+            mPrev.Active = false;
             foreach (var window in mWindows)
                 window.Prev();
         }
 
         void next_Triggered() {
+            mFinishedCount = 0;
+            mNext.Active = false;
+            mPrev.Active = false;
             foreach (var window in mWindows)
                 window.Next();
         }
 
         public override IWindowState CreateWindowState(Window window) {
-            SlideshowWindowState windowState = new SlideshowWindowState(window.OverlayManager, mFolder, mTransition.Create(mFadeLengthMS));
+            IImageTransition trans = mTransition.Create(mFadeLengthMS);
+            SlideshowWindowState windowState = new SlideshowWindowState(window.OverlayManager, mFolder, trans);
             if (mNext is IDrawable) {
                 IDrawable next = mNext as IDrawable;
                 if (window.Name.Equals(next.Window))
@@ -52,7 +60,16 @@ namespace Chimera.Overlay.States {
                     windowState.AddFeature(prev);
             }
             mWindows.Add(windowState);
+            trans.Finished += new Action(trans_Finished);
             return windowState;
+        }
+
+        void trans_Finished() {
+            mFinishedCount++;
+            if (mFinishedCount == mWindows.Count) {
+                mNext.Active = true;
+                mPrev.Active = true;
+            }
         }
 
         public override void TransitionToStart() { }
@@ -74,9 +91,11 @@ namespace Chimera.Overlay.States {
 
         public class SlideshowWindowState : WindowState {
             private readonly IImageTransition mTransition;
-            private readonly Bitmap[] mImages;
+            private readonly Bitmap[] mRawImages;
             private readonly string mFolder;
-            private int mCurrentImage = 0;
+            private Bitmap[] mImages;
+            private int mCurrentImage = -1;
+            private Rectangle mClip;
 
             public SlideshowWindowState(WindowOverlayManager manager, string folder, IImageTransition transition)
                 : base(manager) {
@@ -91,15 +110,37 @@ namespace Chimera.Overlay.States {
                     }
                 }
 
-                mImages = images.ToArray();
+                mRawImages = images.ToArray();
 
                 AddFeature(transition);
+            }
 
-                mTransition.Init(mImages[0], mImages[0]);
+            public override void RedrawStatic(Rectangle clip, Graphics graphics) {
+                if (!clip.Width.Equals(mClip.Width) || !mClip.Height.Equals(clip.Height)) {
+                    mClip = clip;
+                    mImages = new Bitmap[mRawImages.Length];
+                    for (int i = 0; i < mRawImages.Length; i++) {
+                        Bitmap img = mRawImages[i];
+                        Bitmap n = new Bitmap(clip.Width, clip.Height);
+                        int x = (clip.Width - img.Width) / 2;
+                        int y = (clip.Height - img.Height) / 2;
+                        using (Graphics g = Graphics.FromImage(n)) {
+                            g.FillRectangle(Brushes.Black, clip);
+                            g.DrawImage(img, x, y, img.Width, img.Height);
+                        }
+                        mImages[i] = n;
+                    }
+                }
+                if (mCurrentImage == -1) {
+                    mCurrentImage = 0;
+                    mTransition.Init(mImages[mCurrentImage], mImages[mCurrentImage]);
+                }
+                base.RedrawStatic(clip, graphics);
             }
 
             public void Prev() {
-                Transition((mCurrentImage - 1) % mImages.Length);
+                int next = (mCurrentImage - 1) % mImages.Length;
+                Transition(next >= 0 ? next : mImages.Length - 1);
             }
 
             public void Next() {
@@ -108,6 +149,7 @@ namespace Chimera.Overlay.States {
 
             private void Transition(int next) {
                 mTransition.Init(mImages[mCurrentImage], mImages[next]);
+                mTransition.Begin();
                 mCurrentImage = next;
                 Manager.OverlayWindow.RedrawStatic();
             }

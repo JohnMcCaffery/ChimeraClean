@@ -35,7 +35,7 @@ namespace Chimera.Overlay.Triggers {
 
 
         void coordinator_Tick() {
-            if (ProcessWrangler.GetGlobalCursor().Equals(mSelectCursor.Handle) || CursorRenderer.GlobalCursorIsHover()) {
+            if (ProcessWrangler.GetGlobalCursor().Equals(mSelectCursor.Handle)) {
                 if (mClicked)
                     return;
                 if (!mHovering) {

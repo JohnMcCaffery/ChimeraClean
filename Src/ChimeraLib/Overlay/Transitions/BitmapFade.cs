@@ -6,6 +6,7 @@ using System.Drawing;
 using Chimera.Interfaces.Overlay;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
+using System.Diagnostics;
 
 namespace Chimera.Overlay.Transitions {
     public class FadeFactory : IImageTransitionFactory {
@@ -41,7 +42,7 @@ namespace Chimera.Overlay.Transitions {
         /// <summary>
         /// Whether this transition is active as a drawable.
         /// </summary>
-        private bool mActive;
+        private bool mActive = true;
         /// <summary>
         /// Whether the transition has completed.
         /// </summary>
@@ -62,14 +63,11 @@ namespace Chimera.Overlay.Transitions {
         public void Begin() {
             mCompleted = false;
             mTransitionStart = DateTime.Now;
+
+            Console.WriteLine(new StackTrace());
         }
 
         public void Init(Bitmap from, Bitmap to) {
-            if (mFrom != null)
-                mFrom.Dispose();
-            if (mTo != null)
-                mTo.Dispose();
-
             mFrom = from;
             mTo = to;
             mStepImages = new Bitmap[(int)(mLengthMS / 20)];
@@ -100,16 +98,16 @@ namespace Chimera.Overlay.Transitions {
 
         public void DrawDynamic(System.Drawing.Graphics graphics) {
             double time = DateTime.Now.Subtract(mTransitionStart).TotalMilliseconds;
-            if (time > mLengthMS) {
+            if (time > mLengthMS && !mCompleted) {
+                Console.WriteLine("Drawing fade. - completed");
                 mCompleted = true;
                 if (Finished != null)
                     Finished();
             }
 
-            else if (mFrom != null) {
-                DateTime start = DateTime.Now;
-
+            else if (!mCompleted) {
                 int i = (int) (time / 20.0);
+                Console.WriteLine("Drawing fade. - step: " + i);
                 if (mStepImages[i] == null) {
                     mStepImages[i] = CreateStep(time);
                     graphics.DrawImage(mStepImages[i], 0, 0);

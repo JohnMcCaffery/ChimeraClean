@@ -37,6 +37,7 @@ namespace Chimera.Overlay.Transitions {
         /// The object which will handle the actual transition.
         /// </summary>
         private IImageTransition mTransition;
+        private bool mBegun;
 
 
         /// <summary>
@@ -61,7 +62,9 @@ namespace Chimera.Overlay.Transitions {
 
         public override event Action<IWindowTransition> Finished;
 
-        public override void Begin() { }
+        public override void Begin() {
+            mBegun = false;
+        }
 
         public override void Cancel() {
             throw new NotImplementedException();
@@ -86,7 +89,10 @@ namespace Chimera.Overlay.Transitions {
                 mTransition.Init(from, to);
             }
 
-            mTransition.Begin();
+            if (!mBegun) {
+                mBegun = true;
+                mTransition.Begin();
+            }
         }
 
         public override void DrawDynamic(Graphics graphics) {

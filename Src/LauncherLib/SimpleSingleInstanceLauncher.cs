@@ -64,15 +64,16 @@ namespace Chimera.Launcher {
 
             DialRenderer dialRenderer = new DialRenderer();
             CursorRenderer cursorRenderer = new DialCursorRenderer(dialRenderer, mainWindow.OverlayManager);
-            CursorTrigger t = new CursorTrigger(new CircleRenderer(100), mainWindow);
+            //CursorTrigger t = new CursorTrigger(new CircleRenderer(100), mainWindow);
 
             Font font = new Font("Verdana", 62f, FontStyle.Bold);
+            Rectangle clip = new Rectangle(0, 0, 1920, 1080);
 
             IImageTransitionFactory fade = new FadeFactory();
             ITrigger slideshowNext = new TextHoverTrigger(mainWindow.OverlayManager, cursorRenderer, 
-                new StaticText("Next", mainWindow.Name, font, Color.DarkBlue, new PointF(.6f, .9f)));
+                new StaticText("Next", mainWindow.Name, font, Color.DarkBlue, new PointF(.6f, .9f)), clip);
             ITrigger slideshowPrev = new TextHoverTrigger(mainWindow.OverlayManager, cursorRenderer, 
-                new StaticText("Prev", mainWindow.Name, font, Color.DarkBlue, new PointF(.25f, .9f)));
+                new StaticText("Prev", mainWindow.Name, font, Color.DarkBlue, new PointF(.25f, .9f)), clip);
 
 
             State splash = new ImageBGState("SplashScreen", mCoordinator.StateManager, "../Images/Caen/MenuBGs/Caen-Splash.png");
@@ -103,7 +104,7 @@ namespace Chimera.Launcher {
             ImageHoverTrigger splashLearnTrigger = new ImageHoverTrigger(mainWindow.OverlayManager, cursorRenderer, splashLearnButton);
             ImageHoverTrigger learnSlideshowTrigger = new ImageHoverTrigger(mainWindow.OverlayManager, cursorRenderer, learnSlideshowButton);
             TextHoverTrigger backTrigger = new TextHoverTrigger(mainWindow.OverlayManager, cursorRenderer, 
-                new StaticText("Back", mainWindow.Name, font, Color.DarkBlue, new PointF(.45f, .8f)));
+                new StaticText("Back", mainWindow.Name, font, Color.DarkBlue, new PointF(.45f, .8f)), clip);
 
             ITrigger customTriggerHelp = new CustomTriggerTrigger(mCoordinator.StateManager, "Help");
             ITrigger skeletonLost = new SkeletonLostTrigger(mCoordinator, 15000.0);
@@ -120,6 +121,8 @@ namespace Chimera.Launcher {
 
             StateTransition learnSlideshowTransition = new StateTransition(mCoordinator.StateManager, learn, slideshow, learnSlideshowTrigger, fadeTransition);
             StateTransition learnSplashTransition = new StateTransition(mCoordinator.StateManager, learn, splash, backTrigger, fadeTransition);
+
+            StateTransition slideshowLearnTransition = new StateTransition(mCoordinator.StateManager, slideshow, learn, backTrigger, fadeTransition);
 
             StateTransition exploreAvatarTransition = new StateTransition(mCoordinator.StateManager, explore, kinectAvatar, exploreAvatarTrigger, fadeOutTransition);
             StateTransition exploreFlycamTransition = new StateTransition(mCoordinator.StateManager, explore, kinectFlycam, exploreFlycamTrigger, fadeOutTransition);
@@ -139,7 +142,6 @@ namespace Chimera.Launcher {
             StateTransition helpAvatarFlythroughTransition = new StateTransition(mCoordinator.StateManager, helpAvatar, flythroughState, skeletonLost, fadeOutTransition);
             StateTransition helpFlycamFlythroughTransition = new StateTransition(mCoordinator.StateManager, helpFlycam, flythroughState, skeletonLost, fadeOutTransition);
 
-            Rectangle clip = new Rectangle(0, 0, 1920, 1080);
             SkeletonFeature helpSkeleton = new SkeletonFeature(1650, 1650, 800, 225f, mainWindow.Name, clip);
 
             splash.AddTransition(splashExploreTransition);
@@ -147,6 +149,8 @@ namespace Chimera.Launcher {
 
             learn.AddTransition(learnSlideshowTransition);
             learn.AddTransition(learnSplashTransition);
+
+            slideshow.AddTransition(slideshowLearnTransition);
 
             explore.AddTransition(exploreAvatarTransition);
             explore.AddTransition(exploreFlycamTransition);
