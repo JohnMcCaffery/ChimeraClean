@@ -48,8 +48,12 @@ namespace Chimera.GUI.Controls {
             projectorDrawCheck.Checked = mWindow.Projector.DrawDiagram;
             projectorDrawRoomCheck.Checked = mWindow.Projector.DrawRoom;
             projectorDrawLabelsCheck.Checked = mWindow.Projector.DrawLabels;
-            projectorDrawRoomCheck.Enabled = mWindow.Projector.DrawRoom;
-            projectorAutoUpdateCheck.Enabled = mWindow.Projector.AutoUpdate;
+            projectorAutoUpdateCheck.Checked = mWindow.Projector.DrawLabels;
+
+            projectorDrawRoomCheck.Enabled = mWindow.Projector.DrawDiagram;
+            projectorDrawLabelsCheck.Enabled = mWindow.Projector.DrawDiagram;
+            projectorAutoUpdateCheck.Enabled = mWindow.Projector.DrawDiagram;
+
             projectorOrientationPanel.Text = "Orientation (cm)";
             projectorPositionPanel.Text = "Position (cm)";
             projectorRoomPositionPanel.Text = "EyePosition (cm)";
@@ -276,8 +280,12 @@ namespace Chimera.GUI.Controls {
             mWindow.Projector.Redraw();
         }
 
-        private void drawnCheck_CheckedChanged(object sender, EventArgs e) {
+        private void projectorDrawCheck_CheckedChanged(object sender, EventArgs e) {
             mWindow.Projector.DrawDiagram = projectorDrawCheck.Checked;
+
+            projectorDrawRoomCheck.Enabled = mWindow.Projector.DrawDiagram;
+            projectorDrawLabelsCheck.Enabled = mWindow.Projector.DrawDiagram;
+            projectorAutoUpdateCheck.Enabled = mWindow.Projector.DrawDiagram;
         }
 
         private void projectorAspectRatio_ValueChanged(object sender, EventArgs e) {
@@ -306,7 +314,6 @@ namespace Chimera.GUI.Controls {
 
         private void projectorDrawRoomChecked_CheckedChanged(object sender, EventArgs e) {
             mWindow.Projector.DrawRoom = projectorDrawRoomCheck.Checked;
-            projectorDrawLabelsCheck.Enabled = mWindow.Projector.DrawRoom;
         }
 
         private void projectorDrawLabelsCheck_CheckedChanged(object sender, EventArgs e) {
