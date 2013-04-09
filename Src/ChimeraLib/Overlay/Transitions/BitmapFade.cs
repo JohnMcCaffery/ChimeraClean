@@ -63,8 +63,6 @@ namespace Chimera.Overlay.Transitions {
         public void Begin() {
             mCompleted = false;
             mTransitionStart = DateTime.Now;
-
-            Console.WriteLine(new StackTrace());
         }
 
         public void Init(Bitmap from, Bitmap to) {
@@ -99,7 +97,6 @@ namespace Chimera.Overlay.Transitions {
         public void DrawDynamic(System.Drawing.Graphics graphics) {
             double time = DateTime.Now.Subtract(mTransitionStart).TotalMilliseconds;
             if (time > mLengthMS && !mCompleted) {
-                Console.WriteLine("Drawing fade. - completed");
                 mCompleted = true;
                 if (Finished != null)
                     Finished();
@@ -107,7 +104,6 @@ namespace Chimera.Overlay.Transitions {
 
             else if (!mCompleted) {
                 int i = (int) (time / 20.0);
-                Console.WriteLine("Drawing fade. - step: " + i);
                 if (mStepImages[i] == null) {
                     mStepImages[i] = CreateStep(time);
                     graphics.DrawImage(mStepImages[i], 0, 0);

@@ -41,12 +41,10 @@ namespace Chimera.Overlay.Triggers {
                 if (!mHovering) {
                     mHovering = true;
                     mEnter = DateTime.Now;
-                    Console.WriteLine("Hover Begin");
                 }
 
                 if (HoverTime > mSelectMS) {
                     mClicked = true;
-                    Console.WriteLine("Clicking");
                     Thread.Sleep(20);
                     ProcessWrangler.Click();
                     mRenderer.Clear();
