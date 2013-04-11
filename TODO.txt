@@ -1,6 +1,3 @@
-Viewer Camera Update Timeout
-	- close
-	- restart
 FS Fail Silently
 FS OS Info bug
 Move when no HUD
@@ -20,6 +17,10 @@ Performance
 
 Done-ish -
 	Pretty Menus
+	Viewer Camera Update Timeout
+		- close
+		- restart
+		- Test?
 
 
 Done - 

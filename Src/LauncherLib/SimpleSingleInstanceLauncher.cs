@@ -25,7 +25,6 @@ using OpenMetaverse;
 namespace Chimera.Launcher {
     public class SimpleSingleInstanceLauncher {
         private readonly Coordinator mCoordinator;
-        private readonly KinectInput mKinect;
         private CoordinatorForm mForm;
 
         public Coordinator Coordinator {
@@ -33,12 +32,8 @@ namespace Chimera.Launcher {
         }
         public CoordinatorForm Form {
             get {
-                if (mForm == null) {
+                if (mForm == null)
                     mForm = new CoordinatorForm(mCoordinator);
-                    mKinect.FlyEnabled = true;
-                    mKinect.WalkEnabled = true;
-                    mKinect.YawEnabled = true;
-                }
                 return mForm;
             }
         }
@@ -56,11 +51,11 @@ namespace Chimera.Launcher {
             ISystemInput flythrough = new Chimera.Flythrough.Flythrough();
             ISystemInput mouse = new MouseInput();
             ISystemInput heightmap = new HeightmapInput();
-            mKinect = new KinectInput(new IDeltaInput[] { timespan, dolphin }, new IHelpTrigger[] { trigger }, simpleFactory, pointFactory);
+            ISystemInput kinectInput = new KinectInput(new IDeltaInput[] { timespan, dolphin }, new IHelpTrigger[] { trigger }, simpleFactory, pointFactory);
 
             Window mainWindow = new Window("MainWindow", mainWindowProxy);
             Window[] windows = new Window[] { mainWindow };
-            mCoordinator = new Coordinator(windows, kbMouseInput, mKinect, mouse, heightmap, flythrough, mainWindowProxy);
+            mCoordinator = new Coordinator(windows, kbMouseInput, kinectInput, mouse, heightmap, flythrough, mainWindowProxy);
 
             DialRenderer dialRenderer = new DialRenderer();
             CursorRenderer cursorRenderer = new DialCursorRenderer(dialRenderer, mainWindow.OverlayManager);
