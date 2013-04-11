@@ -1,9 +1,7 @@
-Pretty Menus
 Viewer Camera Update Timeout
 	- close
 	- restart
 FS Fail Silently
-Windows fail silently
 FS OS Info bug
 Move when no HUD
 	- Recompile
@@ -17,3 +15,12 @@ Better Stats
 	- Inputs
 	- Stats vs State
 	- Uptime
+Performance
+
+
+Done-ish -
+	Pretty Menus
+
+
+Done - 
+	Windows fail silently

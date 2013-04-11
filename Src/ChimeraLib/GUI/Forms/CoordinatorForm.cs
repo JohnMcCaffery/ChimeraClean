@@ -254,8 +254,9 @@ namespace Chimera.GUI.Forms {
                         int startY = e.StartY + y + 1;
                         int i = ((totH - startY) * dat.Stride) + (e.StartX * bytesPerPixel);
                         for (int x = 0; x < w; x++) {
-                            float height = e.Heights[x, y] + 25f;
-                            float floatVal = ((float)byte.MaxValue) * (height / 100f);
+                            //float height = e.Heights[x, y] + 25f;
+                            float height = e.Heights[x, y];
+                            float floatVal = ((float)byte.MaxValue) * (height / 150f);
                             byte val = (byte)floatVal;
 
                             rgbValues[i++] = val;
