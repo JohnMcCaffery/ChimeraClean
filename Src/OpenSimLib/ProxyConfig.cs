@@ -75,7 +75,7 @@ namespace Chimera.OpenSim {
             */
             
 
-            ViewerExecutable = Get(true, "ViewerExe", DEFAULT_CLIENT_EXE, "The executable that runs the viewer.");
+            ViewerExecutable = Path.GetFullPath(Get(true, "ViewerExe", DEFAULT_CLIENT_EXE, "The executable that runs the viewer."));
             ViewerWorkingDirectory = Get(true, "WorkingDirectory", Path.GetDirectoryName(ViewerExecutable), "The workign directory for the viewer executable.");
             ViewerArguments = Get(true, "ViewerArguments", "", "Any arguments to be passed to the viewer when it starts.");
             ViewerToggleHUDKey= Get(true, "ViewerToggleHUDKey", "%^{F1}", "The key press that will toggle the HUD on and off in the viewer.");

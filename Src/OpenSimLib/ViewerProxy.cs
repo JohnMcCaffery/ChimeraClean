@@ -247,7 +247,8 @@ namespace Chimera.OpenSim {
         private void Coordinator_CameraUpdated(Coordinator coordinator, CameraUpdateEventArgs args) {
             if (coordinator.ControlMode == ControlMode.Absolute || !mMaster)
                 ProcessCameraUpdate(coordinator, args);
-        }
+        }
+
         /// <summary>
         /// Called whenever the eye position is updated.
         /// </summary>
@@ -268,7 +269,8 @@ namespace Chimera.OpenSim {
         /// <summary>
         /// Take control of the camera and set it to the position specified by the input.
         /// </summary>
-        public abstract void SetCamera();
+        public abstract void SetCamera();
+
         /// <summary>
         /// Take control of the window frustum and set it up as specified by the Window.
         /// </summary>
