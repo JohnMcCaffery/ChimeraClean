@@ -70,9 +70,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL" />
-    <Reference Include="NuiLib-DotNet_dv, Version=1.0.4821.24838, Culture=neutral, processorArchitecture=x86">
+    <Reference Include="NuiLib-DotNet_v, Version=1.0.4850.33034, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Lib\NuiLib-DotNet_dv.dll</HintPath>
+      <HintPath>..\..\Lib\NuiLib-DotNet_v.dll</HintPath>
     </Reference>
     <Reference Include="OpenMetaverseTypes">
       <HintPath>..\..\Lib\OpenMetaverseTypes.dll</HintPath>

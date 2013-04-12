@@ -38,6 +38,7 @@ namespace Chimera.GUI.Forms {
             InitializeComponent();
 
             Cursor = mDefaultCursor;
+            TopMost = true;
         }
 
         public OverlayWindow(WindowOverlayManager manager)
@@ -50,7 +51,6 @@ namespace Chimera.GUI.Forms {
             BackColor = manager.TransparencyKey;
             TransparencyKey = manager.TransparencyKey;
             mManager = manager;
-            TopMost = true;
             Opacity = manager.Opacity;
             refreshTimer.Interval = manager.FrameLength;
             refreshTimer.Enabled = true;
@@ -128,13 +128,20 @@ namespace Chimera.GUI.Forms {
             Invoke(() => drawPanel.Invalidate());
         }
 
-        internal void ResetCursor() {
+        public override void ResetCursor() {
             Invoke(() => Cursor = mDefaultCursor);
         }
 
         public bool AlwaysOnTop {
             get { return TopMost; }
             set { Invoke(() => TopMost = value); }
+        }
+        
+
+        public void BringOverlayToFront() {
+            Invoke(() => {
+                BringToFront();
+            });
         }
     }
 }

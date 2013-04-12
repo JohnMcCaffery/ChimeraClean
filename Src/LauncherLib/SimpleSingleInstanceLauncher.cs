@@ -71,6 +71,12 @@ namespace Chimera.Launcher {
                 new StaticText("Prev", mainWindow.Name, font, Color.DarkBlue, new PointF(.25f, .9f)), clip);
 
 
+            IImageTransitionFactory fadeFactory = new FadeFactory();
+            CutWindowTransitionFactory cutTransition = new CutWindowTransitionFactory();
+            BitmapFadeTransitionFactory fadeTransition = new BitmapFadeTransitionFactory(fadeFactory, 1500.0);
+            OpacityFadeOutTransitionFactory fadeOutTransition = new OpacityFadeOutTransitionFactory(1500.0);
+            OpacityFadeInTransitionFactory fadeInTransition = new OpacityFadeInTransitionFactory(1500.0);
+
             State splash = new ImageBGState("SplashScreen", mCoordinator.StateManager, "../Images/Caen/MenuBGs/Caen-Splash.png");
             //State explore = new ImageBGState("InWorldChoice", mCoordinator.StateManager, "../Images/Caen/MenuBGs/Caen-Explore.png");
             //State splash = new SeeThroughMenuState("SplashScreen", mCoordinator.StateManager, new Vector3(488f, 224f, 80f), new Rotation(23.6, 159.2));
@@ -84,14 +90,8 @@ namespace Chimera.Launcher {
             State helpFlycam = new KinectHelpState("KinectHelpFlycam", mCoordinator.StateManager, mainWindow.Name, mainWindow.Name);
             State idleFlythrough = new FlythroughState("IdleFlythrough", mCoordinator.StateManager, "../Flythroughs/Caen-long.xml");
             State structuredFlythrough = new FlythroughState("StructuredFlythrough", mCoordinator.StateManager, "../Flythroughs/Caen-Guided.xml", slideshowNext);
-            State infoVideo = new VideoState("Video", mCoordinator.StateManager, mainWindow.Name, "../Videos/Vid1.flv");
-            State storyWolf = new VideoState("Story1", mCoordinator.StateManager, mainWindow.Name, "../Videos/Wolf.flv");
-
-            IImageTransitionFactory fadeFactory = new FadeFactory();
-            CutWindowTransitionFactory cutTransition = new CutWindowTransitionFactory();
-            BitmapFadeTransitionFactory fadeTransition = new BitmapFadeTransitionFactory(fadeFactory, 1500.0);
-            OpacityFadeOutTransitionFactory fadeOutTransition = new OpacityFadeOutTransitionFactory(1500.0);
-            OpacityFadeInTransitionFactory fadeInTransition = new OpacityFadeInTransitionFactory(1500.0);
+            State infoVideo = new VideoState("Video", mCoordinator.StateManager, mainWindow.Name, "../Videos/Vid1.flv", splash, fadeTransition);
+            State storyWolf = new VideoState("Story1", mCoordinator.StateManager, mainWindow.Name, "../Videos/Wolf.flv", splash, fadeTransition);
 
             /*
             ImgTrans(splash,        explore,                "SeeTheTownship",       .10f, .35f, .25f, mainWindow, cursorRenderer, fadeTransition);

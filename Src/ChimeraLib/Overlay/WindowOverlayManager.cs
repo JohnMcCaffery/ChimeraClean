@@ -294,5 +294,10 @@ namespace Chimera.Overlay {
                     mOverlayWindow.AlwaysOnTop = value;
             }
         }
+
+        public void ForegroundOverlay() {
+            if (mOverlayWindow != null)
+                mOverlayWindow.BringOverlayToFront();
+        }
     }
 }

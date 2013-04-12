@@ -7,12 +7,16 @@ using Chimera.Overlay;
 using Chimera.Overlay.Drawables;
 using System.Drawing;
 using Chimera.Overlay.Triggers;
+using Chimera.Util;
+using OpenMetaverse;
 
 namespace Chimera.Kinect.Overlay {
     public class KinectControlState : State {
         private KinectInput mInput;
         private bool mAvatar;
         private List<CursorTrigger> mClickTriggers = new List<CursorTrigger>();
+        private Rotation mStartOrientation;
+        private Vector3 mStartPosition;
 
         public override IWindowState CreateWindowState(Window window) {
             return new KinectControlWindowState(window.OverlayManager);
@@ -23,6 +27,12 @@ namespace Chimera.Kinect.Overlay {
 
             mInput = manager.Coordinator.GetInput<KinectInput>();
             mAvatar = avatar;
+
+            mStartOrientation = new Rotation(manager.Coordinator.Orientation);
+            mStartPosition = manager.Coordinator.Position;
+            mInput.FlyEnabled = false;
+            mInput.WalkEnabled = false;
+            mInput.YawEnabled = false;
         }
 
         protected override void TransitionToFinish() {
@@ -30,9 +40,6 @@ namespace Chimera.Kinect.Overlay {
             mInput.WalkEnabled = true;
             mInput.YawEnabled = true;
             mInput.Enabled = true;
-            Manager.Coordinator.EnableUpdates = true;
-            foreach (var window in Manager.Coordinator.Windows)
-                window.OverlayManager.ControlPointer = true;
         }
 
         protected override void TransitionFromStart() { 
@@ -43,8 +50,18 @@ namespace Chimera.Kinect.Overlay {
 
         public override void TransitionToStart() {
             Manager.Coordinator.ControlMode = mAvatar ? ControlMode.Delta : ControlMode.Absolute;
+            if (!mAvatar) {
+                Manager.Coordinator.EnableUpdates = true;
+                Manager.Coordinator.Update(mStartPosition, Vector3.Zero, mStartOrientation, Rotation.Zero);
+                Manager.Coordinator.EnableUpdates = false;
+            }
+            Manager.Coordinator.EnableUpdates = true; foreach (var window in Manager.Coordinator.Windows)
+                window.OverlayManager.ControlPointer = false;
         }
 
-        public override void TransitionFromFinish() { }
+        public override void TransitionFromFinish() {
+            Manager.Coordinator.EnableUpdates = true; foreach (var window in Manager.Coordinator.Windows)
+                window.OverlayManager.ControlPointer = true;
+        }
     }
 }

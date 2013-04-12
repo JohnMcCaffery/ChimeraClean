@@ -74,7 +74,8 @@ namespace Chimera.Overlay.Transitions {
             double time = DateTime.Now.Subtract(mTransitionStart).TotalMilliseconds;
             if (time > mLengthMS) {
                 mTransitioning = false;
-                Manager.Opacity = mFadeIn ? 1.0 : 0.0;
+                //Manager.Opacity = mFadeIn ? 1.0 : 0.0;
+                Manager.Opacity = 1.0;
                 if (Finished != null)
                     Finished(this);
             }

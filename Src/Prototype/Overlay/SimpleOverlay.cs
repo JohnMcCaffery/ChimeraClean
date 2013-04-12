@@ -168,7 +168,6 @@ namespace Chimera.GUI.Forms {
             mController = controller;
             mController.ControlPointer = true;
 
-            TopMost = true;
             StartPosition = FormStartPosition.Manual;
             Location = mController.Window.Monitor.Bounds.Location;
             Size = mController.Window.Monitor.Bounds.Size;

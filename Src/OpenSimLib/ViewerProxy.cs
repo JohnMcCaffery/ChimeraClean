@@ -36,7 +36,8 @@ namespace Chimera.OpenSim {
         private string mLastName = "NotLoggedIn";
         private bool mFullscreen;
         private bool mEnabled;
-        private bool mMaster;
+        private bool mMaster;
+
         private object processLock = new object();
 
         private SetFollowCamProperties mFollowCamProperties;
@@ -89,7 +90,7 @@ namespace Chimera.OpenSim {
                 mFullscreen = value;
                 if (mClientLoggedIn && mClient != null) {
                     ProcessWrangler.SetBorder(mClient, mWindow.Monitor, !value);
-                    ToggleHUD();
+                    //ToggleHUD();
                 }
             }
         }
@@ -134,7 +135,7 @@ namespace Chimera.OpenSim {
         public void Chat(string msg) {
             if (mProxy != null) {
                 ChatFromViewerPacket p = new ChatFromViewerPacket();
-                p.ChatData.Channel = 0;
+                p.ChatData.Channel = -40;
                 p.ChatData.Message = Utils.StringToBytes(msg);
                 p.ChatData.Type = (byte)1;
                 p.AgentData.AgentID = mAgentID;
@@ -242,10 +243,12 @@ namespace Chimera.OpenSim {
                     if (OnClientLoggedIn != null)
                         OnClientLoggedIn(mProxy, null);
 
-                    Thread.Sleep(5000);
-                    if (mFullscreen)
-                        ToggleHUD();
-                    //mManager.Overlay.ForegroundOverlay();
+                    Thread.Sleep(30000);
+                    //if (mFullscreen)
+                        //ToggleHUD();
+                    if (mClient != null)
+                        ProcessWrangler.PressKey(mClient, "U", true, false, true);
+                    mWindow.OverlayManager.ForegroundOverlay();
                 }).Start();
             } else {
             }
@@ -553,7 +556,8 @@ namespace Chimera.OpenSim {
 
         void ISystemInput.Init(Coordinator coordinator) { }
 
-        #endregion
+        #endregion
+
 
         private void mWindow_MonitorChanged(Window window, Screen monitor) {
             if (mClientLoggedIn && mClient != null)

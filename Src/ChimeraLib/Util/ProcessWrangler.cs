@@ -1387,8 +1387,8 @@ namespace Chimera.Util {
 
             SetWindowLong(window.MainWindowHandle, GWL_STYLE, lStyle);
             SetWindowLong(window.MainWindowHandle, GWL_EXSTYLE, lExStyle);
-            //SetWindowPos(window.MainWindowHandle, IntPtr.Zero, monitor.Bounds.X, monitor.Bounds.Y, monitor.Bounds.Width, monitor.Bounds.Height, SWP_FRAMECHANGED |  SWP_NOZORDER | SWP_NOOWNERZORDER);
             SetWindowPos(window.MainWindowHandle, IntPtr.Zero, 0, 0, 0, 0, SWP_FRAMECHANGED | SWP_NOSIZE | SWP_NOREPOSITION | SWP_NOMOVE | SWP_NOZORDER | SWP_NOOWNERZORDER);
+            SetWindowPos(window.MainWindowHandle, IntPtr.Zero, monitor.Bounds.X, monitor.Bounds.Y, monitor.Bounds.Width, monitor.Bounds.Height, SWP_NOZORDER | SWP_NOOWNERZORDER);
             BringToFront(foreground);
         }
 

@@ -67,16 +67,6 @@ namespace Chimera.Overlay {
         public IDrawable[] Features {
             get { return mFeatures.ToArray(); }
         }
-        /// <summary>
-        /// Draw the elements of the drawable that change more frequently than when the drawing area is resized.
-        /// Call this transition a sub class to draw all features for this window state.
-        /// </summary>
-        /// <param name="graphics">The object with which to draw the elements.</param>
-        public virtual void DrawDynamic(Graphics graphics) {
-            foreach (var feature in mFeatures)
-                if (feature.Active)
-                    feature.DrawDynamic(graphics);
-        }
 
         /// <summary>
         /// Set whether or not this window state needs redrawn.
@@ -93,10 +83,20 @@ namespace Chimera.Overlay {
         /// <param name="clip">The area in which this drawable will be drawn.</param>
         /// <param name="graphics">The object with which to to draw any elements which only change when the area is resized.</param>
         public virtual void DrawStatic(Graphics graphics) {
-            foreach (var feature in mFeatures)
+            foreach (var feature in mFeatures.Where(feat => feat.Active))
                 feature.DrawStatic(graphics);
         }
 
+        /// <summary>
+        /// Draw the elements of the drawable that change more frequently than when the drawing area is resized.
+        /// Call this transition a sub class to draw all features for this window state.
+        /// </summary>
+        /// <param name="graphics">The object with which to draw the elements.</param>
+        public virtual void DrawDynamic(Graphics graphics) {
+            foreach (var feature in mFeatures)
+                if (feature.Active)
+                    feature.DrawDynamic(graphics);
+        }
         /// <summary>
         /// Add a drawable feature to the state. Any features added will be drawn on top of content drawn as part of the state itself.
         /// </summary>

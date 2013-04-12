@@ -50,11 +50,19 @@ namespace Chimera.GUI.Forms {
         /// </summary>
         public bool Fullscreen {
             get { return FormBorderStyle == FormBorderStyle.None; }
-            set { 
-                FormBorderStyle = value ? FormBorderStyle.None : FormBorderStyle.Sizable;
-                Location = mController.Window.Monitor.Bounds.Location;
-                Size = mController.Window.Monitor.Bounds.Size;
+            set {
+                Invoke(() => {
+                    FormBorderStyle = value ? FormBorderStyle.None : FormBorderStyle.Sizable;
+                    Location = mController.Window.Monitor.Bounds.Location;
+                    Size = mController.Window.Monitor.Bounds.Size;
+                });
             }
+        }
+
+        public void BringOverlayToFront() {
+            Invoke(() => {
+                BringToFront();
+            });
         }
 
         /// <summary>
@@ -66,6 +74,13 @@ namespace Chimera.GUI.Forms {
                     if (!IsDisposed && Created)
                         drawPanel.Invalidate();
                 }));
+        }
+
+        private void Invoke(Action a) {
+            if (!InvokeRequired)
+                a();
+            else if (Created && !IsDisposed && !Disposing)
+                base.Invoke(a);
         }
 
         /// <summary>

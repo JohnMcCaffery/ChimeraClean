@@ -16,6 +16,8 @@ namespace Chimera.Util {
         public StatisticsServer(Coordinator coordinator) {
             mCoordinator = coordinator;
 
+            return;
+
             mServer = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             mServer.Bind(new IPEndPoint(IPAddress.Loopback, 80));
             mServer.Listen(1);
@@ -26,6 +28,7 @@ namespace Chimera.Util {
         }
 
         public void Stop() {
+            return;
             mCont = false;
             if (mServer.Connected) {
                 mServer.Disconnect(false);

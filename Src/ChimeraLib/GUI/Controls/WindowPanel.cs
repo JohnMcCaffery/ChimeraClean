@@ -175,11 +175,11 @@ namespace Chimera.GUI.Controls {
         }
 
         private void bringToFrontButtin_Click(object sender, EventArgs e) {
-            //mManager.Overlay.ForegroundOverlay();
+            mWindow.OverlayManager.ForegroundOverlay();
         }
 
         private void showBordersTextBox_CheckedChanged(object sender, EventArgs e) {
-            //mManager.Overlay.Fullscreen = fullscreenCheck.Checked;
+            mWindow.OverlayManager.Fullscreen = fullscreenCheck.Checked;
         }
 
         private void controlCursor_CheckedChanged(object sender, EventArgs e) {

@@ -1,4 +1,3 @@
-FS Fail Silently
 FS OS Info bug
 Move when no HUD
 	- Recompile
@@ -16,6 +15,7 @@ Performance
 
 
 Done-ish -
+	FS Fail Silently
 	Pretty Menus
 	Viewer Camera Update Timeout
 		- close

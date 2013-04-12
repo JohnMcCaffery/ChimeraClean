@@ -20,6 +20,7 @@ namespace Chimera.Launcher {
         private SetWindowViewerOutput mMainWindowProxy = new SetWindowViewerOutput("MainWindow");
 
         protected override ISystemInput[] GetInputs() {
+            /*
             TimespanMovementInput timespan = new TimespanMovementInput();
             DolphinMovementInput dolphin = new DolphinMovementInput();
             RaiseArmHelpTrigger trigger = new RaiseArmHelpTrigger();
@@ -30,7 +31,6 @@ namespace Chimera.Launcher {
             SetWindowViewerOutput mainWindowProxy = new SetWindowViewerOutput("MainWindow");
             ISystemInput kbMouseInput = new DeltaBasedInput(new KBMouseInput());
             ISystemInput flythrough = new Chimera.Flythrough.Flythrough();
-            ISystemInput mouse = new MouseInput();
             ISystemInput heightmap = new HeightmapInput();
             ISystemInput kinectInput = new KinectInput(
                 new IDeltaInput[] { 
@@ -43,13 +43,16 @@ namespace Chimera.Launcher {
                 simpleFactory, 
                 pointFactory
                 );
+            */
+
+            ISystemInput mouse = new MouseInput();
 
             return new ISystemInput[] { 
                 //kbMouseInput, 
                 //kinectInput, 
                 mouse, 
                 //heightmap, 
-                flythrough, 
+                //flythrough, 
                 //mainWindowProxy 
             };
         }
@@ -59,6 +62,7 @@ namespace Chimera.Launcher {
         }
 
         protected override void InitOverlay() {
+            return;
             Window mainWindow = Coordinator["MainWindow"];
 
             DialRenderer dialRenderer = new DialRenderer();
@@ -73,6 +77,11 @@ namespace Chimera.Launcher {
             ITrigger slideshowPrev = new TextHoverTrigger(mainWindow.OverlayManager, cursorRenderer, 
                 new StaticText("Prev", mainWindow.Name, font, Color.DarkBlue, new PointF(.25f, .9f)), clip);
 
+            IImageTransitionFactory fadeFactory = new FadeFactory();
+            CutWindowTransitionFactory cutTransition = new CutWindowTransitionFactory();
+            BitmapFadeTransitionFactory fadeTransition = new BitmapFadeTransitionFactory(fadeFactory, 1500.0);
+            OpacityFadeOutTransitionFactory fadeOutTransition = new OpacityFadeOutTransitionFactory(1500.0);
+            OpacityFadeInTransitionFactory fadeInTransition = new OpacityFadeInTransitionFactory(1500.0);
 
             State splash = new ImageBGState("SplashScreen", Coordinator.StateManager, "../Images/Caen/MenuBGs/Caen-Splash.png");
             State slideshow = new SlideshowState("Slideshow", Coordinator.StateManager, "../Images/Caen/Slideshow", slideshowNext, slideshowPrev, fade, 1000.0);
@@ -84,14 +93,8 @@ namespace Chimera.Launcher {
             */
             State idleFlythrough = new FlythroughState("IdleFlythrough", Coordinator.StateManager, "../Flythroughs/Caen-long.xml");
             State structuredFlythrough = new FlythroughState("StructuredFlythrough", Coordinator.StateManager, "../Flythroughs/Caen-Guided.xml", slideshowNext);
-            State infoVideo = new VideoState("Video", Coordinator.StateManager, mainWindow.Name, "../Videos/Vid1.flv");
-            State storyWolf = new VideoState("Story1", Coordinator.StateManager, mainWindow.Name, "../Videos/Wolf.flv");
-
-            IImageTransitionFactory fadeFactory = new FadeFactory();
-            CutWindowTransitionFactory cutTransition = new CutWindowTransitionFactory();
-            BitmapFadeTransitionFactory fadeTransition = new BitmapFadeTransitionFactory(fadeFactory, 1500.0);
-            OpacityFadeOutTransitionFactory fadeOutTransition = new OpacityFadeOutTransitionFactory(1500.0);
-            OpacityFadeInTransitionFactory fadeInTransition = new OpacityFadeInTransitionFactory(1500.0);
+            State infoVideo = new VideoState("Video", Coordinator.StateManager, mainWindow.Name, "../Videos/Vid1.flv", splash, fadeTransition);
+            State storyWolf = new VideoState("Story1", Coordinator.StateManager, mainWindow.Name, "../Videos/Wolf.flv", splash, fadeTransition);
 
             /*
             ImgTrans(helpAvatar,    kinectAvatar,           "HelpToWorld",          .85f, .15f, .1f, mainWindow, cursorRenderer, fadeOutTransition);

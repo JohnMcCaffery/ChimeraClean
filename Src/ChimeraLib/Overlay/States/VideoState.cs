@@ -11,19 +11,21 @@ using System.IO;
 using System.Threading;
 
 namespace Chimera.Overlay.States {
-    public class VideoState : State {
+    public class VideoState : State, ITrigger {
         private string mVideo;
         private string mPlayerExe = "C:\\Program Files (x86)\\VideoLAN\\VLC\\vlc";
         private string mArgs = "-f --video-on-top --play-and-exit";
         private string mMainWindow;
         private Process mPlayer;
 
-        public VideoState(string name, StateManager manager, string mainWindow, string video)
+        public VideoState(string name, StateManager manager, string mainWindow, string video, State parent, IWindowTransitionFactory transition)
             : base(name, manager) {
 
             mMainWindow = mainWindow;
             mVideo = Path.GetFullPath(video);
             mArgs = mArgs + " " + mVideo;
+
+            AddTransition(new StateTransition(manager, this, parent, this, transition));
         }
 
         public override IWindowState CreateWindowState(Window window) {
@@ -46,8 +48,10 @@ namespace Chimera.Overlay.States {
 
         void mPlayer_Exited(object sender, EventArgs e) {
             mPlayer = null;
-            if (Transitions.Length > 0)
-                Manager.BeginTransition(Transitions[0]);
+            if (Triggered != null)
+                Triggered();
+            //if (Transitions.Length > 0)
+                //Manager.BeginTransition(Transitions[0]);
         }
 
         protected override void TransitionFromStart() { }
@@ -75,5 +79,7 @@ namespace Chimera.Overlay.States {
                 base.DrawStatic(graphics);
             }
         }
+
+        public event Action Triggered;
     }
 }
