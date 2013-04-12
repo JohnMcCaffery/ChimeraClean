@@ -61,6 +61,27 @@ namespace Chimera.Overlay {
             mTransitionComplete = new Action<StateTransition>(transition_Finished);
         }
 
+        public string Statistics {
+            get {
+                string table = "";
+                table += "<TABLE>" + Environment.NewLine;
+                table += "    <TR>" + Environment.NewLine;
+                table += "        <TD>State Name</TD>" + Environment.NewLine;
+                table += "        <TD># Visits</TD>" + Environment.NewLine;
+                table += "        <TD>Shortest Visit (m)</TD>" + Environment.NewLine;
+                table += "        <TD>Longest Visit (m)</TD>" + Environment.NewLine;
+                table += "        <TD>Mean Visit Length (m)</TD>" + Environment.NewLine;
+                table += "    </TR>" + Environment.NewLine;
+
+                foreach (var state in mStates.Values)
+                    table += state.StatisticsRow;
+
+                table += "</TABLE>" + Environment.NewLine;
+
+                return table;
+            }
+        }
+
         /// <summary>
         /// All the states this manager manages.
         /// </summary>

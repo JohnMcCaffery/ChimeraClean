@@ -24,7 +24,7 @@
         /// </summary>
         private void InitializeComponent() {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CoordinatorForm));
-            Chimera.Util.Rotation rotation3 = new Chimera.Util.Rotation();
+            Chimera.Util.Rotation rotation2 = new Chimera.Util.Rotation();
             this.hSplit = new System.Windows.Forms.SplitContainer();
             this.diagramWorldSplit = new System.Windows.Forms.SplitContainer();
             this.diagSplit = new System.Windows.Forms.SplitContainer();
@@ -40,6 +40,8 @@
             this.heightmapPanel = new System.Windows.Forms.PictureBox();
             this.heightmapScale = new System.Windows.Forms.TrackBar();
             this.globalBox = new System.Windows.Forms.GroupBox();
+            this.deltaModeButton = new System.Windows.Forms.RadioButton();
+            this.absoluteModeButton = new System.Windows.Forms.RadioButton();
             this.triggerHelpButton = new System.Windows.Forms.Button();
             this.eyePositionPanel = new Chimera.GUI.VectorPanel();
             this.virtualOrientationPanel = new Chimera.GUI.RotationPanel();
@@ -58,8 +60,7 @@
             this.shortestTickLabel = new System.Windows.Forms.Label();
             this.meanTickLabel = new System.Windows.Forms.Label();
             this.tpsLabel = new System.Windows.Forms.Label();
-            this.absoluteModeButton = new System.Windows.Forms.RadioButton();
-            this.deltaModeButton = new System.Windows.Forms.RadioButton();
+            this.overlayStatsBox = new System.Windows.Forms.RichTextBox();
             ((System.ComponentModel.ISupportInitialize)(this.hSplit)).BeginInit();
             this.hSplit.Panel1.SuspendLayout();
             this.hSplit.Panel2.SuspendLayout();
@@ -222,9 +223,9 @@
             // 
             // realSpacePanel
             // 
-            this.realSpacePanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.realSpacePanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.realSpacePanel.Cursor = System.Windows.Forms.Cursors.Hand;
             this.realSpacePanel.Location = new System.Drawing.Point(3, 16);
             this.realSpacePanel.Name = "realSpacePanel";
@@ -239,13 +240,13 @@
             // 
             // realSpaceScale
             // 
-            this.realSpaceScale.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.realSpaceScale.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.realSpaceScale.Location = new System.Drawing.Point(5, 291);
             this.realSpaceScale.Maximum = 1000;
             this.realSpaceScale.Minimum = 1;
             this.realSpaceScale.Name = "realSpaceScale";
-            this.realSpaceScale.Size = new System.Drawing.Size(353, 42);
+            this.realSpaceScale.Size = new System.Drawing.Size(353, 45);
             this.realSpaceScale.TabIndex = 3;
             this.realSpaceScale.TickStyle = System.Windows.Forms.TickStyle.None;
             this.realSpaceScale.Value = 1000;
@@ -265,9 +266,9 @@
             // 
             // heightmapPanel
             // 
-            this.heightmapPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.heightmapPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.heightmapPanel.Cursor = System.Windows.Forms.Cursors.Hand;
             this.heightmapPanel.Location = new System.Drawing.Point(3, 16);
             this.heightmapPanel.Name = "heightmapPanel";
@@ -282,13 +283,13 @@
             // 
             // heightmapScale
             // 
-            this.heightmapScale.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.heightmapScale.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.heightmapScale.Location = new System.Drawing.Point(3, 291);
             this.heightmapScale.Maximum = 16000;
             this.heightmapScale.Minimum = 1000;
             this.heightmapScale.Name = "heightmapScale";
-            this.heightmapScale.Size = new System.Drawing.Size(275, 42);
+            this.heightmapScale.Size = new System.Drawing.Size(275, 45);
             this.heightmapScale.TabIndex = 2;
             this.heightmapScale.TickStyle = System.Windows.Forms.TickStyle.None;
             this.heightmapScale.Value = 1000;
@@ -311,10 +312,36 @@
             this.globalBox.TabStop = false;
             this.globalBox.Text = "Global";
             // 
+            // deltaModeButton
+            // 
+            this.deltaModeButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.deltaModeButton.AutoSize = true;
+            this.deltaModeButton.Location = new System.Drawing.Point(199, 12);
+            this.deltaModeButton.Name = "deltaModeButton";
+            this.deltaModeButton.Size = new System.Drawing.Size(50, 17);
+            this.deltaModeButton.TabIndex = 5;
+            this.deltaModeButton.TabStop = true;
+            this.deltaModeButton.Text = "Delta";
+            this.deltaModeButton.UseVisualStyleBackColor = true;
+            this.deltaModeButton.CheckedChanged += new System.EventHandler(this.deltaModeButton_CheckedChanged);
+            // 
+            // absoluteModeButton
+            // 
+            this.absoluteModeButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.absoluteModeButton.AutoSize = true;
+            this.absoluteModeButton.Location = new System.Drawing.Point(127, 12);
+            this.absoluteModeButton.Name = "absoluteModeButton";
+            this.absoluteModeButton.Size = new System.Drawing.Size(66, 17);
+            this.absoluteModeButton.TabIndex = 4;
+            this.absoluteModeButton.TabStop = true;
+            this.absoluteModeButton.Text = "Absolute";
+            this.absoluteModeButton.UseVisualStyleBackColor = true;
+            this.absoluteModeButton.CheckedChanged += new System.EventHandler(this.absoluteModeButton_CheckedChanged);
+            // 
             // triggerHelpButton
             // 
-            this.triggerHelpButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.triggerHelpButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.triggerHelpButton.Location = new System.Drawing.Point(7, 288);
             this.triggerHelpButton.Name = "triggerHelpButton";
             this.triggerHelpButton.Size = new System.Drawing.Size(248, 23);
@@ -325,8 +352,8 @@
             // 
             // eyePositionPanel
             // 
-            this.eyePositionPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.eyePositionPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.eyePositionPanel.Location = new System.Drawing.Point(3, 195);
             this.eyePositionPanel.Max = 5000F;
             this.eyePositionPanel.MaxV = ((OpenMetaverse.Vector3)(resources.GetObject("eyePositionPanel.MaxV")));
@@ -344,8 +371,8 @@
             // 
             // virtualOrientationPanel
             // 
-            this.virtualOrientationPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.virtualOrientationPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.virtualOrientationPanel.Location = new System.Drawing.Point(3, 105);
             this.virtualOrientationPanel.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("virtualOrientationPanel.LookAtVector")));
             this.virtualOrientationPanel.MinimumSize = new System.Drawing.Size(252, 95);
@@ -354,18 +381,18 @@
             this.virtualOrientationPanel.Quaternion = ((OpenMetaverse.Quaternion)(resources.GetObject("virtualOrientationPanel.Quaternion")));
             this.virtualOrientationPanel.Size = new System.Drawing.Size(255, 95);
             this.virtualOrientationPanel.TabIndex = 2;
-            rotation3.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("rotation3.LookAtVector")));
-            rotation3.Pitch = 0D;
-            rotation3.Quaternion = ((OpenMetaverse.Quaternion)(resources.GetObject("rotation3.Quaternion")));
-            rotation3.Yaw = 0D;
-            this.virtualOrientationPanel.Value = rotation3;
+            rotation2.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("rotation2.LookAtVector")));
+            rotation2.Pitch = 0D;
+            rotation2.Quaternion = ((OpenMetaverse.Quaternion)(resources.GetObject("rotation2.Quaternion")));
+            rotation2.Yaw = 0D;
+            this.virtualOrientationPanel.Value = rotation2;
             this.virtualOrientationPanel.Yaw = 0D;
             this.virtualOrientationPanel.OnChange += new System.EventHandler(this.virtualRotation_OnChange);
             // 
             // virtualPositionPanel
             // 
-            this.virtualPositionPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.virtualPositionPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.virtualPositionPanel.Location = new System.Drawing.Point(3, 12);
             this.virtualPositionPanel.Max = 1024F;
             this.virtualPositionPanel.MaxV = ((OpenMetaverse.Vector3)(resources.GetObject("virtualPositionPanel.MaxV")));
@@ -435,6 +462,7 @@
             // 
             // inputsTab
             // 
+            //this.inputsTab.Controls.Add(this.statisticsTab);
             this.inputsTab.Dock = System.Windows.Forms.DockStyle.Fill;
             this.inputsTab.Location = new System.Drawing.Point(3, 16);
             this.inputsTab.Name = "inputsTab";
@@ -446,6 +474,7 @@
             // 
             // statisticsTab
             // 
+            this.statisticsTab.Controls.Add(this.overlayStatsBox);
             this.statisticsTab.Controls.Add(this.tickCountLabel);
             this.statisticsTab.Controls.Add(this.shortestWorkLabel);
             this.statisticsTab.Controls.Add(this.longestWorkLabel);
@@ -461,15 +490,6 @@
             this.statisticsTab.TabIndex = 0;
             this.statisticsTab.Text = "Statistics";
             this.statisticsTab.UseVisualStyleBackColor = true;
-            // 
-            // tickCountLabel
-            // 
-            this.tickCountLabel.AutoSize = true;
-            this.tickCountLabel.Location = new System.Drawing.Point(6, 94);
-            this.tickCountLabel.Name = "tickCountLabel";
-            this.tickCountLabel.Size = new System.Drawing.Size(59, 13);
-            this.tickCountLabel.TabIndex = 7;
-            this.tickCountLabel.Text = "Tick Count";
             // 
             // tickCountLabel
             // 
@@ -543,31 +563,17 @@
             this.tpsLabel.TabIndex = 0;
             this.tpsLabel.Text = "Ticks / Second";
             // 
-            // absoluteModeButton
+            // overlayStatsBox
             // 
-            this.absoluteModeButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.absoluteModeButton.AutoSize = true;
-            this.absoluteModeButton.Location = new System.Drawing.Point(127, 12);
-            this.absoluteModeButton.Name = "absoluteModeButton";
-            this.absoluteModeButton.Size = new System.Drawing.Size(66, 17);
-            this.absoluteModeButton.TabIndex = 4;
-            this.absoluteModeButton.TabStop = true;
-            this.absoluteModeButton.Text = "Absolute";
-            this.absoluteModeButton.UseVisualStyleBackColor = true;
-            this.absoluteModeButton.CheckedChanged += new System.EventHandler(this.absoluteModeButton_CheckedChanged);
-            // 
-            // deltaModeButton
-            // 
-            this.deltaModeButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.deltaModeButton.AutoSize = true;
-            this.deltaModeButton.Location = new System.Drawing.Point(199, 12);
-            this.deltaModeButton.Name = "deltaModeButton";
-            this.deltaModeButton.Size = new System.Drawing.Size(50, 17);
-            this.deltaModeButton.TabIndex = 5;
-            this.deltaModeButton.TabStop = true;
-            this.deltaModeButton.Text = "Delta";
-            this.deltaModeButton.UseVisualStyleBackColor = true;
-            this.deltaModeButton.CheckedChanged += new System.EventHandler(this.deltaModeButton_CheckedChanged);
+            this.overlayStatsBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.overlayStatsBox.Enabled = false;
+            this.overlayStatsBox.Location = new System.Drawing.Point(111, -2);
+            this.overlayStatsBox.Name = "overlayStatsBox";
+            this.overlayStatsBox.Size = new System.Drawing.Size(334, 450);
+            this.overlayStatsBox.TabIndex = 8;
+            this.overlayStatsBox.Text = "";
             // 
             // CoordinatorForm
             // 
@@ -612,7 +618,6 @@
             this.statisticsTab.ResumeLayout(false);
             this.statisticsTab.PerformLayout();
             this.ResumeLayout(false);
-
         }
 
         #endregion
@@ -652,5 +657,6 @@
         private System.Windows.Forms.Label tickCountLabel;
         private System.Windows.Forms.RadioButton deltaModeButton;
         private System.Windows.Forms.RadioButton absoluteModeButton;
+        private System.Windows.Forms.RichTextBox overlayStatsBox;
     }
 }

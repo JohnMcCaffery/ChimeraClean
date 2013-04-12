@@ -12,6 +12,7 @@ namespace Chimera.Kinect.Overlay {
     public class KinectControlState : State {
         private KinectInput mInput;
         private bool mAvatar;
+        private List<CursorTrigger> mClickTriggers = new List<CursorTrigger>();
 
         public override IWindowState CreateWindowState(Window window) {
             return new KinectControlWindowState(window.OverlayManager);
@@ -30,6 +31,8 @@ namespace Chimera.Kinect.Overlay {
             mInput.YawEnabled = true;
             mInput.Enabled = true;
             Manager.Coordinator.EnableUpdates = true;
+            foreach (var window in Manager.Coordinator.Windows)
+                window.OverlayManager.ControlPointer = true;
         }
 
         protected override void TransitionFromStart() { 

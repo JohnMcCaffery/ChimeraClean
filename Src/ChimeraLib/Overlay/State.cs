@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Chimera.Interfaces.Overlay;
+using Chimera.Util;
 
 namespace Chimera.Overlay {
     public abstract class State {
@@ -26,6 +27,11 @@ namespace Chimera.Overlay {
         /// Whether this state is currently active.
         /// </summary>
         private bool mActive;
+
+        /// <summary>
+        /// Statistics object for tracking how this state is used.
+        /// </summary>
+        private TickStatistics mStatistics = new TickStatistics();
 
         /// <summary>
         /// CreateWindowState the state, specifying the name, form and the window factory for creating window states.
@@ -79,6 +85,29 @@ namespace Chimera.Overlay {
             get { return mName; }
         }
 
+        public TickStatistics Statistics {
+            get { return mStatistics; }
+        }
+
+        public string StatisticsRow {
+            get {
+                string row = "";
+
+                double max = mStatistics.ShortestWork == double.MaxValue ? 0.0 : mStatistics.ShortestWork / 60000.0;
+                double min = mStatistics.LongestWork == double.MinValue ? -1.0 : mStatistics.LongestWork / 60000.0;
+
+                row += "    <TR>" + Environment.NewLine;
+                row += "        <TD>" + Name + "</TD>" + Environment.NewLine;
+                row += "        <TD>" + mStatistics.TickCount + "</TD>" + Environment.NewLine;
+                row += "        <TD>" + max.ToString("0.") + "</TD>" + Environment.NewLine;
+                row += "        <TD>" + min.ToString("0.") + "</TD>" + Environment.NewLine;
+                row += "        <TD>" + (mStatistics.MeanWorkLength / 60000.0).ToString("0.") + "</TD>" + Environment.NewLine;
+                row += "    </TR>" + Environment.NewLine;
+
+                return row;
+            }
+        }
+
         /// <summary>
         /// Whether the state is currently active.
         /// </summary>
@@ -90,10 +119,13 @@ namespace Chimera.Overlay {
                     transition.Active = value;
                 foreach (var window in mWindowStates.Values)
                     window.Active = value;
-                if (value)
+                if (value) {
                     TransitionToFinish();
-                else
+                    mStatistics.Begin();
+                } else {
                     TransitionFromStart();
+                    mStatistics.Tick();
+                }
             }
         }
 

@@ -63,7 +63,6 @@ namespace Chimera.Launcher {
 
             DialRenderer dialRenderer = new DialRenderer();
             CursorRenderer cursorRenderer = new DialCursorRenderer(dialRenderer, mainWindow.OverlayManager);
-            //CursorTrigger t = new CursorTrigger(new CircleRenderer(100), mainWindow);
 
             Font font = new Font("Verdana", 62f, FontStyle.Bold);
             Rectangle clip = new Rectangle(0, 0, 1920, 1080);

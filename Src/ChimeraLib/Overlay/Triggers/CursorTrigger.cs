@@ -30,7 +30,7 @@ namespace Chimera.Overlay.Triggers {
             mRenderer = renderer;
             mWindow.Coordinator.Tick += new Action(coordinator_Tick);
             //mSelectCursor = new Cursor(new IntPtr(65571));
-            mSelectCursor = new Cursor(new IntPtr(65569));
+            mSelectCursor = new Cursor(new IntPtr(65567));
         }
 
         public double HoverTime {
@@ -39,7 +39,7 @@ namespace Chimera.Overlay.Triggers {
 
 
         void coordinator_Tick() {
-            if (ProcessWrangler.GetGlobalCursor().Equals(mSelectCursor.Handle)) {
+            if (mActive && ProcessWrangler.GetGlobalCursor().Equals(mSelectCursor.Handle)) {
                 if (mClicked)
                     return;
                 if (!mHovering) {

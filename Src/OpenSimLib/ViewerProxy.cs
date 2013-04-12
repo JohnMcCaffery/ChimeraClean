@@ -123,6 +123,26 @@ namespace Chimera.OpenSim {
             set { mLogger = value; }
         }
 
+        public void Glow() {
+            Chat("Glow");
+        }
+
+        public void NoGlow() {
+            Chat("NoGlow");
+        }
+
+        public void Chat(string msg) {
+            if (mProxy != null) {
+                ChatFromViewerPacket p = new ChatFromViewerPacket();
+                p.ChatData.Channel = 0;
+                p.ChatData.Message = Utils.StringToBytes(msg);
+                p.ChatData.Type = (byte)1;
+                p.AgentData.AgentID = mAgentID;
+                p.AgentData.SessionID = mSessionID;
+                mProxy.InjectPacket(p, Direction.Outgoing);
+            }
+        }
+
         internal void ToggleHUD() {
             if (mClient != null)
                 ProcessWrangler.PressKey(mClient, mConfig.ViewerToggleHUDKey);
@@ -387,6 +407,7 @@ namespace Chimera.OpenSim {
             mWindow.Coordinator.Tick += new Action(Coordinator_Tick);
             mWindow.Coordinator.CameraModeChanged += new Action<Coordinator,ControlMode>(Coordinator_CameraModeChanged);
             mWindow.Coordinator.DeltaUpdated += new Action<Chimera.Coordinator,DeltaUpdateEventArgs>(Coordinator_DeltaUpdated);
+            mWindow.Coordinator.StateManager.CustomTrigger += new Action<string>(StateManager_CustomTrigger);
             mWindow.MonitorChanged += new Action<Chimera.Window,Screen>(mWindow_MonitorChanged);
             mWindow.Changed += new Action<Chimera.Window,EventArgs>(mWindow_Changed);
             mFullscreen = mConfig.Fullscreen;
@@ -398,6 +419,13 @@ namespace Chimera.OpenSim {
 
             AutoRestart = mConfig.AutoRestartViewer;
             ControlCamera = mConfig.ControlCamera;
+        }
+
+        void StateManager_CustomTrigger(string trigger) {
+            if (trigger == "Glow")
+                Glow();
+            else if (trigger == "NoGlow")
+                NoGlow();
         }
 
         void mWindow_Changed(Window w, EventArgs args) {
@@ -533,24 +561,25 @@ namespace Chimera.OpenSim {
         }
 
         private void Coordinator_CameraUpdated(Coordinator coordinator, CameraUpdateEventArgs args) {
-            double viewer = DateTime.Now.Subtract(mLastViewerUpdate).TotalSeconds;
-            double camera = DateTime.Now.Subtract(mLastCameraUpdate).TotalSeconds;
-            if (viewer > 2.0 && viewer > camera) {
-                Console.WriteLine("Timeout since last viewer move. Last Viewer Update: {0}s, Last Camera Update: {1}s", viewer, camera);
+            if (coordinator.ControlMode == ControlMode.Absolute || !mMaster) {
+                double viewer = DateTime.Now.Subtract(mLastViewerUpdate).TotalSeconds;
+                double camera = DateTime.Now.Subtract(mLastCameraUpdate).TotalSeconds;
+                if (viewer > 2.0 && viewer > camera) {
+                    Console.WriteLine("Timeout since last viewer move. Last Viewer Update: {0}s, Last Camera Update: {1}s", viewer, camera);
 
-                if (mRestartOnTimeout)
-                    Restart();
-                else {
-                    ClearCamera();
-                    SetCamera();
+                    if (mRestartOnTimeout)
+                        Restart();
+                    else {
+                        ClearCamera();
+                        SetCamera();
+                    }
                 }
-            }
-            if (mLastCameraPosition != args.position) {
-                mLastCameraUpdate = DateTime.Now;
-                mLastCameraPosition = args.position;
-            }
-            if (coordinator.ControlMode == ControlMode.Absolute || !mMaster)
+                if (mLastCameraPosition != args.position) {
+                    mLastCameraUpdate = DateTime.Now;
+                    mLastCameraPosition = args.position;
+                }
                 ProcessCameraUpdate(coordinator, args);
+            }
         }
 
         /// <summary>

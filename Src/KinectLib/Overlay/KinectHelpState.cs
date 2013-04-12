@@ -11,14 +11,17 @@ using Chimera.Overlay.Triggers;
 namespace Chimera.Kinect.Overlay {
     public class KinectHelpState : State {
         private readonly List<ITrigger> mActiveAreas = new List<ITrigger>();
+        private readonly HashSet<OverlayImage> mInfoImages = new HashSet<OverlayImage>();
+        private readonly CursorTrigger mClickTrigger;
+
         private KinectInput mInput;
+        private ImageHoverTrigger mWhereButton;
+        private ImageHoverTrigger mCloseWhereButton;
+        private Window mMainWindow;
+
         private string mHelpImages = "../Images/Caen/Misc/HelpSidebar.png";
         private string mWhereAmIImage = "../Images/Caen/Buttons/WhereAmIButton.png";
         private string mWhereWindow;
-        private ImageHoverTrigger mWhereButton;
-        private ImageHoverTrigger mCloseWhereButton;
-        private readonly HashSet<OverlayImage> mInfoImages = new HashSet<OverlayImage>();
-        private Window mMainWindow;
 
         public override IWindowState CreateWindowState(Window window) {
             return new WindowState(window.OverlayManager);
@@ -38,11 +41,12 @@ namespace Chimera.Kinect.Overlay {
             mCloseWhereButton = new ImageHoverTrigger(Manager.Coordinator[whereWindow].OverlayManager, new DialCursorRenderer(), mWhereButton.Image);
             mCloseWhereButton.Triggered += new Action(mCloseWhereButton_Triggered);
 
-            //TODO - should this be here or inbuilt?
+            mClickTrigger = new CursorTrigger(new CircleRenderer(100), mMainWindow);
+
             SkeletonFeature helpSkeleton = new SkeletonFeature(.065f, 0f, .13f, 125f, mainWindow);
             AddFeature(helpSkeleton);
-            //AddFeature(new SkeletonFeature(0f, 1f, 150f / 1080f, 100f, mainWindow));
             AddFeature(new OverlayImage(new Bitmap(mHelpImages), .05f, .1f, mainWindow));
+            AddFeature(mClickTrigger);
             //AddFeature(mWhereButton);
 
             mWhereButton.Active = false;
@@ -61,20 +65,28 @@ namespace Chimera.Kinect.Overlay {
         protected override void TransitionToFinish() {
             Manager.Coordinator.EnableUpdates = false;
             mMainWindow.OverlayManager.ControlPointer = true;
+            mClickTrigger.Active = true;
+            Manager.Coordinator.StateManager.TriggerCustom("Glow");
         }
 
         protected override void TransitionFromStart() { 
             foreach (var trigger in mActiveAreas)
                 trigger.Active = false;
+            mClickTrigger.Active = false;
+            Manager.Coordinator.StateManager.TriggerCustom("NoGlow");
         }
 
         public override void TransitionToStart() {
+            Manager.Coordinator.StateManager.TriggerCustom("Glow");
             mInfoImages.Clear();
             foreach (var trigger in mActiveAreas)
                 trigger.Active = true;
         }
 
-        public override void TransitionFromFinish() { }
+        public override void TransitionFromFinish() {
+            mClickTrigger.Active = false;
+            Manager.Coordinator.StateManager.TriggerCustom("NoGlow");
+        }
 
         public void AddActiveArea(Rectangle area, Bitmap infoImage) {
             OverlayImage info = new OverlayImage(infoImage, .2f, .2f, mWhereWindow);

@@ -12,6 +12,7 @@ using Chimera.GUI.Controls;
 using System.Threading;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
+using Chimera.Overlay;
 
 namespace Chimera.GUI.Forms {
     public partial class CoordinatorForm : Form {
@@ -71,6 +72,7 @@ namespace Chimera.GUI.Forms {
             Init(coordinator);
         }
 
+
         public void Init(Coordinator coordinator) {
             mCoordinator = coordinator;
 
@@ -91,6 +93,7 @@ namespace Chimera.GUI.Forms {
             mCoordinator.Tick += mTickListener;
             mCoordinator.HeightmapChanged += mHeightmapChangedListener;
             mCoordinator.WindowAdded += new Action<Window,EventArgs>(mCoordinator_WindowAdded);
+            mCoordinator.StateManager.StateChanged += new Action<Overlay.State>(StateManager_StateChanged);
 
             mCoordinator_CameraModeChanged(coordinator, coordinator.ControlMode);
 
@@ -153,6 +156,10 @@ namespace Chimera.GUI.Forms {
             inputsTab.Controls.Add(statisticsTab);
         }
 
+        private void StateManager_StateChanged(State state) {
+            Invoke(() => overlayStatsBox.Text = mCoordinator.StateManager.Statistics);
+        }
+
         private void mCoordinator_WindowAdded(Window window, EventArgs args) {
             // 
             // windowPanel
@@ -183,17 +190,17 @@ namespace Chimera.GUI.Forms {
         private void mCoordinator_Tick() {
             if (Created && !IsDisposed && !Disposing)
                 BeginInvoke(new Action(() => {
-                        tpsLabel.Text = "Ticks / Second: " + mCoordinator.Statistics.TicksPerSecond;
+                    tpsLabel.Text = "Ticks / Second: " + mCoordinator.Statistics.TicksPerSecond;
 
-                        meanTickLabel.Text = "Mean Tick Length: " + mCoordinator.Statistics.MeanTickLength;
-                        longestTickLabel.Text = "Longest Tick: " + mCoordinator.Statistics.LongestTick;
-                        shortestTickLabel.Text = "Shortest Tick: " + mCoordinator.Statistics.ShortestTick;
+                    meanTickLabel.Text = "Mean Tick Length: " + mCoordinator.Statistics.MeanTickLength;
+                    longestTickLabel.Text = "Longest Tick: " + mCoordinator.Statistics.LongestTick;
+                    shortestTickLabel.Text = "Shortest Tick: " + mCoordinator.Statistics.ShortestTick;
 
-                        meanWorkLabel.Text = "Mean Work Length: " + mCoordinator.Statistics.MeanWorkLength;
-                        longestWorkLabel.Text = "Longest Work: " + mCoordinator.Statistics.LongestWork;
-                        shortestWorkLabel.Text = "Shortest Work: " + mCoordinator.Statistics.ShortestWork;
+                    meanWorkLabel.Text = "Mean Work Length: " + mCoordinator.Statistics.MeanWorkLength;
+                    longestWorkLabel.Text = "Longest Work: " + mCoordinator.Statistics.LongestWork;
+                    shortestWorkLabel.Text = "Shortest Work: " + mCoordinator.Statistics.ShortestWork;
 
-                        tickCountLabel.Text = "Tick Count: " + mCoordinator.Statistics.TickCount;
+                    tickCountLabel.Text = "Tick Count: " + mCoordinator.Statistics.TickCount;
                 }));
         }
 
