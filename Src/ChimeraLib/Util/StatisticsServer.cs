@@ -12,9 +12,11 @@ namespace Chimera.Util {
         private Thread mListenThread;
         private bool mCont;
         private Coordinator mCoordinator;
+        private DateTime mStarted;
 
         public StatisticsServer(Coordinator coordinator) {
             mCoordinator = coordinator;
+            mStarted = DateTime.Now;
 
             return;
 

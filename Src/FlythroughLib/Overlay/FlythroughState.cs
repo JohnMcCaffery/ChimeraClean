@@ -74,10 +74,13 @@ namespace Chimera.Flythrough.Overlay {
             mInput.Coordinator.EnableUpdates = true;
             mInput.Load(mFlythrough);
 
-            if (mStepping)
+            if (mStepping) {
                 mInput.AutoStep = false;
-            else
+                mInput.Loop = false;
+            } else {
                 mInput.Loop = true;
+                mInput.AutoStep = true;
+            }
 
             mInput.Time = 0;
             //mInput.CurrentEventChange += mInput_CurrentEventChange;

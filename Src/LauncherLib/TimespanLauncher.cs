@@ -31,7 +31,7 @@ namespace Chimera.Launcher {
             ISystemInput kbMouseInput = new DeltaBasedInput(new KBMouseInput());
             ISystemInput flythrough = new Chimera.Flythrough.Flythrough();
             ISystemInput mouse = new MouseInput();
-            //ISystemInput heightmap = new HeightmapInput();
+            ISystemInput heightmap = new HeightmapInput();
             ISystemInput kinectInput = new KinectInput(
                 new IDeltaInput[] { 
                     timespan, 
@@ -48,7 +48,7 @@ namespace Chimera.Launcher {
                 kbMouseInput, 
                 kinectInput, 
                 mouse, 
-                //heightmap, 
+                heightmap, 
                 flythrough, 
                 mMainWindowProxy 
             };
