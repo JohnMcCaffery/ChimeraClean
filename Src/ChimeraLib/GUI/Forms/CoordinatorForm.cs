@@ -86,6 +86,7 @@ namespace Chimera.GUI.Forms {
             mHeightmapChangedListener = new EventHandler<HeightmapChangedEventArgs>(mCoordinator_HeightmapChanged);
             mTickListener = new Action(mCoordinator_Tick);
 
+            mCoordinator.CameraModeChanged += mCameraModeChangedListener;
             mCoordinator.CameraUpdated += mCameraUpdatedListener;
             mCoordinator.DeltaUpdated += mDeltaUpdatedListener;
             mCoordinator.EyeUpdated += mEyeUpdatedListener;
@@ -285,6 +286,7 @@ namespace Chimera.GUI.Forms {
                 mExternalUpdate = true;
                 Invoke(() => {
                     if (mCoordinator.ControlMode == ControlMode.Absolute) {
+                        deltaModeButton.Checked = false;
                         absoluteModeButton.Checked = true;
                         virtualPositionPanel.Text = "Camera Position";
                         virtualOrientationPanel.Text = "Camera Orientation";
@@ -293,6 +295,7 @@ namespace Chimera.GUI.Forms {
                         virtualOrientationPanel.Yaw = mCoordinator.Orientation.Yaw;
                     } else {
                         deltaModeButton.Checked = true;
+                        absoluteModeButton.Checked = false;
                         virtualPositionPanel.Text = "Camera Position Delta";
                         virtualOrientationPanel.Text = "Camera Orientation Delta";
                         virtualPositionPanel.Value = mCoordinator.PositionDelta;

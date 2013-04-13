@@ -239,8 +239,9 @@ namespace Chimera.OpenSim {
                 }
 
                 new Thread(() => {
-                    if (mControlCamera)
+                    if (mControlCamera && Coordinator.ControlMode == ControlMode.Absolute)
                         SetCamera();
+                    SetWindow();
                     if (OnClientLoggedIn != null)
                         OnClientLoggedIn(mProxy, null);
 
@@ -484,20 +485,6 @@ namespace Chimera.OpenSim {
 
         public void Restart() {
             if (mClientLoggedIn) {
-                /*
-                ProcessWrangler.PressKey(mClient, "q", true, false, false);
-
-                Thread shutdownThread = new Thread(() => {
-                    int i = 0;
-                    while (mClientLoggedIn && i++ < 5) {
-                        lock (processLock)
-                            Monitor.Wait(processLock, 3000);
-                        if (mClientLoggedIn) {
-                            ProcessWrangler.PressKey(mClient, "{ENTER}");
-                            ProcessWrangler.PressKey(mClient, "q", true, false, false);
-                        }
-                    }
-                });*/
                 CloseViewer();
                 Thread.Sleep(1000);
                 CloseProxy();

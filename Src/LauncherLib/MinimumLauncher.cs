@@ -26,10 +26,11 @@ namespace Chimera.Launcher {
             RaiseArmHelpTrigger trigger = new RaiseArmHelpTrigger();
             SimpleCursorFactory simpleFactory = new SimpleCursorFactory();
             PointCursorFactory pointFactory = new PointCursorFactory();
+            */
 
             //IOutput output = new SetFollowCamPropertiesViewerOutput("MainWindow");
-            SetWindowViewerOutput mainWindowProxy = new SetWindowViewerOutput("MainWindow");
             ISystemInput kbMouseInput = new DeltaBasedInput(new KBMouseInput());
+            /*
             ISystemInput flythrough = new Chimera.Flythrough.Flythrough();
             ISystemInput heightmap = new HeightmapInput();
             ISystemInput kinectInput = new KinectInput(
@@ -48,12 +49,12 @@ namespace Chimera.Launcher {
             ISystemInput mouse = new MouseInput();
 
             return new ISystemInput[] { 
-                //kbMouseInput, 
+                kbMouseInput, 
                 //kinectInput, 
                 mouse, 
                 //heightmap, 
                 //flythrough, 
-                //mainWindowProxy 
+                mMainWindowProxy 
             };
         }
 
@@ -62,6 +63,7 @@ namespace Chimera.Launcher {
         }
 
         protected override void InitOverlay() {
+            Coordinator.ControlMode = ControlMode.Delta;
             return;
             Window mainWindow = Coordinator["MainWindow"];
 
