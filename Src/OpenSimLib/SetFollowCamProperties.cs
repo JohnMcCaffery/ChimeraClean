@@ -13,14 +13,14 @@ namespace Chimera.OpenSim {
         private float mFocusLag;
         private float mDistance;
         private float mBehindnessAngle;
-        private float mBehindnessLag;
+        private float mBehindnessLag = .5f;
         private float mLookAtThreshold;
         private float mFocusThreshold;
-        private bool mSendPackets;
+        private bool mSendPackets = true;
         private float mFocusOffset;
         private float mLookAt;
         private float mFocus;
-        private Vector3 mFocusOffset3D;
+        private Vector3 mFocusOffset3D = new Vector3(0f, 1f, 0f);
 
         private Proxy mProxy;
         private Coordinator mCoordinator;
