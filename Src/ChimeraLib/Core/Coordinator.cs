@@ -13,6 +13,27 @@ using System.Threading;
 using Chimera.Overlay;
 
 namespace Chimera {
+    /// <summary>
+    /// Which perspective to render.
+    /// </summary>
+    public enum Perspective {
+        /// <summary>
+        /// View down the X axis.
+        /// </summary>
+        X,
+        /// <summary>
+        /// View down the Y axis.
+        /// </summary>
+        Y,
+        /// <summary>
+        /// View down the Z axis.
+        /// </summary>
+        Z,
+        /// <summary>
+        /// The perspective is top down and drawn on the heightmap.
+        /// </summary>
+        Heightmap
+    }
     public class DeltaUpdateEventArgs : EventArgs {
         /// <summary>
         /// The delta that results in the new position.
@@ -464,12 +485,12 @@ namespace Chimera {
         /// <param name="clip">The bounds of the area being drawn on.</param>
         /// <param name="scale">The value to control how large or small the diagram is rendered.</param>
         /// <param name="origin">The origin on the panel to draw transition.</param>
-        public void Draw(Func<Vector3, Point> to2D, Graphics graphics, Rectangle clip, Action redraw) {
+        public void Draw(Func<Vector3, Point> to2D, Graphics graphics, Rectangle clip, Action redraw, Perspective perspective) {
             foreach (var input in mInputs)
                 input.Draw(to2D, graphics, redraw);
 
             foreach (var window in mWindows)
-                window.Draw(to2D, graphics, clip, redraw);
+                window.Draw(to2D, graphics, clip, redraw, perspective);
         }
 
         /// <summary>

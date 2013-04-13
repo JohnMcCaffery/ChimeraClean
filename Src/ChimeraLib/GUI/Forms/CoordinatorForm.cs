@@ -432,7 +432,7 @@ namespace Chimera.GUI.Forms {
                 map = new Bitmap(map, e.ClipRectangle.Width, e.ClipRectangle.Height);
                 mHeightmapPerspective.Clip = e.ClipRectangle;
                 e.Graphics.DrawImage(map, Point.Empty);
-                mCoordinator.Draw(mHeightmapPerspective.To2D, e.Graphics, e.ClipRectangle, mRedrawHeightmap);
+                mCoordinator.Draw(mHeightmapPerspective.To2D, e.Graphics, e.ClipRectangle, mRedrawHeightmap, Perspective.Heightmap);
             }
         }
 
@@ -453,7 +453,7 @@ namespace Chimera.GUI.Forms {
                 e.Graphics.DrawLine(Pens.Green, mCurrentPerspective.To2D(new Vector3(0f, -greenEdge, 0f)), mCurrentPerspective.To2D(new Vector3(0f, greenEdge, 0f)));
                 e.Graphics.DrawLine(Pens.Blue, mCurrentPerspective.To2D(new Vector3(0f, 0f, -blueEdge)), mCurrentPerspective.To2D(new Vector3(0f, 0f, blueEdge)));
 
-                mCoordinator.Draw(mCurrentPerspective.To2D, e.Graphics, e.ClipRectangle, mRedrawRealSpace);
+                mCoordinator.Draw(mCurrentPerspective.To2D, e.Graphics, e.ClipRectangle, mRedrawRealSpace, mCurrentPerspective.Perspective);
             }
         }
 
@@ -712,25 +712,6 @@ namespace Chimera.GUI.Forms {
                 point *= mClipMatrix;
                 return new Point((int) point.X, (int) point.Y);
             }
-        }
-
-
-        /// <summary>
-        /// Which perspective to render.
-        /// </summary>
-        public enum Perspective {
-            /// <summary>
-            /// View down the X axis.
-            /// </summary>
-            X,
-            /// <summary>
-            /// View down the Y axis.
-            /// </summary>
-            Y,
-            /// <summary>
-            /// View down the Z axis.
-            /// </summary>
-            Z
         }
 
         private void absoluteModeButton_CheckedChanged(object sender, EventArgs e) {
