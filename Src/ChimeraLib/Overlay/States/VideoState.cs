@@ -11,12 +11,27 @@ using System.IO;
 using System.Threading;
 
 namespace Chimera.Overlay.States {
-    public class VideoState : State, ITrigger {
+    public class VideoState : State {
+        private class Trigger : ITrigger {
+            public event Action Triggered;
+
+            public bool Active {
+                get { return true; }
+                set { }
+            }
+
+            public void TriggerEvt() {
+                if (Triggered != null)
+                    Triggered();
+            }
+        }
+
         private string mVideo;
         private string mPlayerExe = "C:\\Program Files (x86)\\VideoLAN\\VLC\\vlc";
         private string mArgs = "-f --video-on-top --play-and-exit";
         private string mMainWindow;
         private Process mPlayer;
+        private Trigger mTrigger;
 
         public VideoState(string name, StateManager manager, string mainWindow, string video, State parent, IWindowTransitionFactory transition)
             : base(name, manager) {
@@ -25,7 +40,8 @@ namespace Chimera.Overlay.States {
             mVideo = Path.GetFullPath(video);
             mArgs = mArgs + " " + mVideo;
 
-            AddTransition(new StateTransition(manager, this, parent, this, transition));
+            mTrigger = new Trigger();
+            AddTransition(new StateTransition(manager, this, parent, mTrigger, transition));
         }
 
         public override IWindowState CreateWindowState(Window window) {
@@ -42,14 +58,16 @@ namespace Chimera.Overlay.States {
             ProcessWrangler.SetMonitor(mPlayer, Manager.Coordinator[mMainWindow].Monitor);
 
             Console.WriteLine(mPlayer.StartInfo.FileName + " " + mPlayer.StartInfo.Arguments);
+
+            foreach (var window in Manager.Coordinator.Windows)
+                window.OverlayManager.ControlPointer = false;
         }
 
         protected override void TransitionToFinish() { }
 
         void mPlayer_Exited(object sender, EventArgs e) {
             mPlayer = null;
-            if (Triggered != null)
-                Triggered();
+            mTrigger.TriggerEvt();
             //if (Transitions.Length > 0)
                 //Manager.BeginTransition(Transitions[0]);
         }
@@ -79,7 +97,5 @@ namespace Chimera.Overlay.States {
                 base.DrawStatic(graphics);
             }
         }
-
-        public event Action Triggered;
     }
 }

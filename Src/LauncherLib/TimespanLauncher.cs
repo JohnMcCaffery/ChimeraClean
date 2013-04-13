@@ -32,7 +32,7 @@ namespace Chimera.Launcher {
             ISystemInput kbMouseInput = new DeltaBasedInput(new KBMouseInput());
             ISystemInput flythrough = new Chimera.Flythrough.Flythrough();
             ISystemInput mouse = new MouseInput();
-            ISystemInput heightmap = new HeightmapInput();
+            //ISystemInput heightmap = new HeightmapInput();
             ISystemInput kinectInput = new KinectInput(
                 new IDeltaInput[] { 
                     timespan, 
@@ -49,7 +49,7 @@ namespace Chimera.Launcher {
                 kbMouseInput, 
                 kinectInput, 
                 mouse, 
-                heightmap, 
+                //heightmap, 
                 flythrough, 
                 mainWindowProxy 
             };
@@ -80,7 +80,6 @@ namespace Chimera.Launcher {
             BitmapFadeTransitionFactory fadeTransition = new BitmapFadeTransitionFactory(fadeFactory, 1500.0);
             OpacityFadeOutTransitionFactory fadeOutTransition = new OpacityFadeOutTransitionFactory(1500.0);
             OpacityFadeInTransitionFactory fadeInTransition = new OpacityFadeInTransitionFactory(1500.0);
-
 
             State splash = new ImageBGState("SplashScreen", Coordinator.StateManager, "../Images/Caen/MenuBGs/Caen-Splash.png");
             State kinectAvatar = new KinectControlState("KinectControlAvatar", Coordinator.StateManager, true);
@@ -113,22 +112,14 @@ namespace Chimera.Launcher {
             InvisTrans(splash, storyWolf,               new Point(1085,855), new Point(1795,945), clip, mainWindow, cursorRenderer, fadeTransition);
 
             ITrigger customTriggerHelp = new CustomTriggerTrigger(Coordinator.StateManager, "Help");
-            ITrigger skeletonLost = new SkeletonLostTrigger(Coordinator, 15000.0);
-            ITrigger skeletonFound = new SkeletonFoundTrigger();
 
             StateTransition kinectHelpAvatarTransition = new StateTransition(Coordinator.StateManager, kinectAvatar, helpAvatar, customTriggerHelp, fadeInTransition);
             StateTransition kinectHelpFlycamTransition = new StateTransition(Coordinator.StateManager, kinectFlycam, helpFlycam, customTriggerHelp, fadeInTransition);
 
-            StateTransition splashFlythroughTransition = new StateTransition(Coordinator.StateManager, splash, idleFlythrough, skeletonLost, fadeOutTransition);
-            StateTransition kinectFlythroughTransition = new StateTransition(Coordinator.StateManager, kinectAvatar, idleFlythrough, skeletonLost, fadeOutTransition);
-            StateTransition flythroughSplashTransition = new StateTransition(Coordinator.StateManager, idleFlythrough, splash, skeletonFound, fadeInTransition);
-            StateTransition helpAvatarFlythroughTransition = new StateTransition(Coordinator.StateManager, helpAvatar, idleFlythrough, skeletonLost, fadeOutTransition);
-            StateTransition helpFlycamFlythroughTransition = new StateTransition(Coordinator.StateManager, helpFlycam, idleFlythrough, skeletonLost, fadeOutTransition);
+           
 
             kinectAvatar.AddTransition(kinectHelpAvatarTransition);
             kinectFlycam.AddTransition(kinectHelpFlycamTransition);
-
-            idleFlythrough.AddTransition(flythroughSplashTransition);
 
             Coordinator.StateManager.AddState(splash);
             Coordinator.StateManager.AddState(kinectAvatar);
@@ -145,6 +136,8 @@ namespace Chimera.Launcher {
             //Coordinator.StateManager.CurrentState = structuredFlythrough;
             //Coordinator.StateManager.CurrentState = helpFlycam;
             //Coordinator.StateManager.CurrentState = kinectFlycam;
+
+            InitIdle(idleFlythrough, splash, fadeInTransition, fadeOutTransition);
 
             /*
             ImgTrans(splash,        explore,                "SeeTheTownship",       .10f, .35f, .25f, mainWindow, cursorRenderer, fadeTransition);

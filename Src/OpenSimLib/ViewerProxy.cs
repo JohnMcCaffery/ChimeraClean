@@ -37,6 +37,7 @@ namespace Chimera.OpenSim {
         private bool mFullscreen;
         private bool mEnabled;
         private bool mMaster;
+        private float mDeltaScale = .25f;
 
         private object processLock = new object();
 
@@ -625,9 +626,9 @@ namespace Chimera.OpenSim {
         private void Coordinator_DeltaUpdated(Coordinator coordinator, DeltaUpdateEventArgs args) {
             if (mMaster && coordinator.ControlMode == ControlMode.Delta && mProxy != null) {
                 RemoteControlPacket packet = new RemoteControlPacket();
-                packet.Delta.Position = args.positionDelta;
-                packet.Delta.Pitch = (float) (args.rotationDelta.Pitch * (Math.PI / 45.0));
-                packet.Delta.Yaw = (float) (args.rotationDelta.Yaw * (Math.PI / 45.0));
+                packet.Delta.Position = args.positionDelta * mDeltaScale;
+                packet.Delta.Pitch = (float) (args.rotationDelta.Pitch * (Math.PI / 45.0)) * mDeltaScale;
+                packet.Delta.Yaw = (float) (args.rotationDelta.Yaw * (Math.PI / 45.0)) * mDeltaScale;
                 mProxy.InjectPacket(packet, Direction.Incoming);
                 
                 //TODO - Would be nice if pitching the view 'stuck'.

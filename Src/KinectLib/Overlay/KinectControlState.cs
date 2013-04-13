@@ -29,7 +29,8 @@ namespace Chimera.Kinect.Overlay {
             mAvatar = avatar;
 
             mStartOrientation = new Rotation(manager.Coordinator.Orientation);
-            mStartPosition = manager.Coordinator.Position;
+            mStartPosition = manager.Coordinator.Position;
+
             mInput.FlyEnabled = false;
             mInput.WalkEnabled = false;
             mInput.YawEnabled = false;
@@ -55,13 +56,11 @@ namespace Chimera.Kinect.Overlay {
                 Manager.Coordinator.Update(mStartPosition, Vector3.Zero, mStartOrientation, Rotation.Zero);
                 Manager.Coordinator.EnableUpdates = false;
             }
-            Manager.Coordinator.EnableUpdates = true; foreach (var window in Manager.Coordinator.Windows)
+            Manager.Coordinator.EnableUpdates = true; 
+            foreach (var window in Manager.Coordinator.Windows)
                 window.OverlayManager.ControlPointer = false;
         }
 
-        public override void TransitionFromFinish() {
-            Manager.Coordinator.EnableUpdates = true; foreach (var window in Manager.Coordinator.Windows)
-                window.OverlayManager.ControlPointer = true;
-        }
+        public override void TransitionFromFinish() { }
     }
 }
