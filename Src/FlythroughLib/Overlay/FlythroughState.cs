@@ -69,6 +69,7 @@ namespace Chimera.Flythrough.Overlay {
         protected override void TransitionFromStart() { }
 
         public override void TransitionToStart() {
+            Manager.Coordinator.ControlMode = ControlMode.Absolute;
             mInput.Enabled = true;
             mInput.Coordinator.EnableUpdates = true;
             mInput.Load(mFlythrough);

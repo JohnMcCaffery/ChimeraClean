@@ -28,6 +28,13 @@ namespace Chimera.Overlay.States {
 
             next.Triggered += new Action(next_Triggered);
             prev.Triggered += new Action(prev_Triggered);
+
+            if (mNext is IDrawable) {
+                AddFeature(mNext as IDrawable);
+            }
+            if (mPrev is IDrawable) {
+                AddFeature(mPrev as IDrawable);
+            }
         }
 
         void prev_Triggered() {
@@ -53,6 +60,7 @@ namespace Chimera.Overlay.States {
         public override IWindowState CreateWindowState(Window window) {
             IImageTransition trans = mTransition.Create(mFadeLengthMS);
             SlideshowWindow windowState = new SlideshowWindow(window.OverlayManager, mFolder, trans);
+            /*
             if (mNext is IDrawable) {
                 IDrawable next = mNext as IDrawable;
                 if (window.Name.Equals(next.Window))
@@ -63,6 +71,7 @@ namespace Chimera.Overlay.States {
                 if (window.Name.Equals(prev.Window))
                     windowState.AddFeature(prev);
             }
+            */
             mWindows.Add(windowState);
             trans.Finished += new Action(trans_Finished);
             return windowState;

@@ -121,6 +121,8 @@ namespace Chimera.Kinect {
             mEnabled = cfg.Enabled;
             mHeadEnabled = cfg.EnableHead;
 
+            Nui.SkeletonLost += new SkeletonTrackDelegate(Nui_SkeletonLost);
+
             mHead = Nui.joint(Nui.Head);
             mHead.OnChange += new ChangeDelegate(mHead_OnChange);
 
@@ -188,6 +190,8 @@ namespace Chimera.Kinect {
 
         void Nui_SkeletonLost() {
             mCoordinator.EyePosition = Vector3.Zero;
+            if (mCoordinator.ControlMode == ControlMode.Delta)
+                mCoordinator.Update(Vector3.Zero, Vector3.Zero, Rotation.Zero, Rotation.Zero);
         }
 
         public void SetCursor(string cursorName) {

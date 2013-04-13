@@ -70,7 +70,6 @@ namespace Chimera.Launcher {
         protected void InitIdle(State idle, State home, IWindowTransitionFactory fadeInTransition, IWindowTransitionFactory fadeOutTransition) {
             ITrigger skeletonLost = new SkeletonLostTrigger(Coordinator, 15000.0);
             ITrigger skeletonFound = new SkeletonFoundTrigger();
-            StateTransition splashFlythroughTransition = new StateTransition(Coordinator.StateManager, home, idle, skeletonLost, fadeOutTransition);
 
             foreach (var state in Coordinator.StateManager.States) {
                 if (state != idle) {

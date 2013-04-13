@@ -33,6 +33,20 @@ namespace Chimera.Overlay.States {
             AddFeature(transition);
         }
 
+        public override bool Active {
+            get { return base.Active; }
+            set {
+                base.Active = value;
+                mTransition.Active = value;
+            }
+        }
+
+        public override bool NeedsRedrawn {
+            get {
+                return base.NeedsRedrawn || mTransition.NeedsRedrawn;
+            }
+        }
+
         public override Rectangle Clip {
             get { return base.Clip; }
             set {
@@ -43,7 +57,6 @@ namespace Chimera.Overlay.States {
                 for (int i = 0; i < mRawImages.Length; i++) {
                     lock (mRawImages) {
                         Bitmap img = mRawImages[i];
-                        Console.WriteLine(Clip);
                         Bitmap n = new Bitmap(Clip.Width, Clip.Height);
                         int x = (Clip.Width - img.Width) / 2;
                         int y = (Clip.Height - img.Height) / 2;

@@ -559,7 +559,8 @@ namespace Chimera.OpenSim {
                 double viewer = DateTime.Now.Subtract(mLastViewerUpdate).TotalSeconds;
                 double camera = DateTime.Now.Subtract(mLastCameraUpdate).TotalSeconds;
                 if (viewer > 2.0 && viewer > camera) {
-                    Console.WriteLine("Timeout since last viewer move. Last Viewer Update: {0}s, Last Camera Update: {1}s", viewer, camera);
+                    Console.WriteLine("Timeout since last viewer move. Last Viewer Update: {0}s, Last Camera Update: {1}s ", viewer, camera);
+                    Console.WriteLine("Control mode: " + coordinator.ControlMode);
 
                     if (mRestartOnTimeout)
                         Restart();
@@ -602,9 +603,11 @@ namespace Chimera.OpenSim {
 
         private void Coordinator_CameraModeChanged(Coordinator coordinator, ControlMode mode) {
             if (mMaster) {
-                if (mode == ControlMode.Delta)
+                if (mode == ControlMode.Delta) {
                     ClearCamera();
-                else {
+                    if (mProxy != null && mFollowCamProperties.SendPackets)
+                        mProxy.InjectPacket(mFollowCamProperties.Packet, Direction.Incoming);
+                } else {
                     SetCamera();
                     if (mProxy != null)
                         mProxy.InjectPacket(new ClearRemoteControlPacket(), Direction.Incoming);
