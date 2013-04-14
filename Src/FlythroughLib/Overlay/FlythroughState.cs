@@ -15,27 +15,27 @@ namespace Chimera.Flythrough.Overlay {
         private string mSlideshowWindowName;
         private string mSlideshowFolder;
         private string mFlythrough;
-        private bool mStepping;
+        private bool mStepping = false;
         private ITrigger[] mStepTriggers = new ITrigger[0];
         private SimpleTrigger mTrigger;
 
-        public FlythroughState(string name, StateManager manager, string flythrough, State home, IWindowTransitionFactory transition)
+        public FlythroughState(string name, StateManager manager, string flythrough)
             : base(name, manager) {
 
             mFlythrough = flythrough;
-            mTrigger = new SimpleTrigger();
             mInput = manager.Coordinator.GetInput<Flythrough>();
+        }
+
+        public FlythroughState(string name, StateManager manager, string flythrough, State home, IWindowTransitionFactory transition, params ITrigger[] steps)
+            : this(name, manager, flythrough) {
+
+            mStepTriggers = steps;
+            mStepping = true;
+
+            mTrigger = new SimpleTrigger();
             mInput.SequenceFinished += new EventHandler(mInput_SequenceFinished);
             StateTransition trans = new StateTransition(manager, this, home, mTrigger, transition);
             AddTransition(trans);
-        }
-
-        public FlythroughState(string name, StateManager manager, string flythrough, params ITrigger[] steps)
-            : base(name, manager) {
-            mFlythrough = flythrough;
-            mInput = manager.Coordinator.GetInput<Flythrough>();
-            mStepTriggers = steps;
-            mStepping = true;
 
             foreach (var step in steps) {
                 step.Triggered += new Action(step_Triggered);
@@ -49,8 +49,8 @@ namespace Chimera.Flythrough.Overlay {
                 mTrigger.Trigger();
         }
 
-        public FlythroughState(string name, StateManager manager, string flythrough, string slideshowWindow, string slideshowFolder, IImageTransition slideshowTransition, params ITrigger[] steps)
-            : this(name, manager, flythrough, steps) {
+        public FlythroughState(string name, StateManager manager, string flythrough, State home, IWindowTransitionFactory transition, string slideshowWindow, string slideshowFolder, IImageTransition slideshowTransition, params ITrigger[] steps)
+            : this(name, manager, flythrough, home, transition, steps) {
 
             mSlideshowWindowName = slideshowWindow;
             mSlideshowFolder = slideshowFolder;
