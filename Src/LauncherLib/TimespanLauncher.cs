@@ -95,6 +95,13 @@ namespace Chimera.Launcher {
             State idleFlythrough = new FlythroughState("IdleFlythrough", Coordinator.StateManager, "../Flythroughs/Caen-long.xml");
             State slideshow = new SlideshowState("Slideshow", Coordinator.StateManager, "../Images/Caen/TodaySlideshow", slideshowNext, slideshowPrev, fade, 1500);
             State structuredFlythrough = new FlythroughState("StructuredFlythrough", Coordinator.StateManager, "../Flythroughs/Caen-Guided.xml", flythroughNext);
+
+            State confirmDog = new ImageBGState("Story1Confirm", Coordinator.StateManager, "../Images/Caen/StorytellingVideos/ConfirmDogs.png");
+            State confirmGartymore = new ImageBGState("Story2Confirm", Coordinator.StateManager, "../Images/Caen/StorytellingVideos/ConfirmGartymore.png");
+            State confirmFrakkok = new ImageBGState("Story3Confirm", Coordinator.StateManager, "../Images/Caen/StorytellingVideos/ConfirmFrakkok.png");
+            State confirmFisherman = new ImageBGState("Story4Confirm", Coordinator.StateManager, "../Images/Caen/StorytellingVideos/ConfirmFisherman.png");
+            State confirmWolf = new ImageBGState("Story5Confirm", Coordinator.StateManager, "../Images/Caen/StorytellingVideos/ConfirmWolf.png");
+
             State storyDog = new VideoState("Story1", Coordinator.StateManager, mainWindow.Name, "../Videos/Wolf.flv", splash, fadeTransition);
             State storyGartymore = new VideoState("Story2", Coordinator.StateManager, mainWindow.Name, "../Videos/Wolf.flv", splash, fadeTransition);
             State storyFrakkok = new VideoState("Story3", Coordinator.StateManager, mainWindow.Name, "../Videos/Wolf.flv", splash, fadeTransition);
@@ -110,16 +117,27 @@ namespace Chimera.Launcher {
             ImgTrans(structuredFlythrough,  splash,         "Back",                 .05f, .85f, mainWindow, cursorRenderer, fadeTransition);
             ImgTrans(slideshow,  splash,                    "BackTrans",            .45f, .85f, mainWindow, cursorRenderer, fadeTransition);
 
-            InvisTrans(splash, structuredFlythrough,    new Point(130,385), new Point(780,485), clip, mainWindow, cursorRenderer, fadeOutTransition);
-            InvisTrans(splash, kinectAvatar,            new Point(130,520), new Point(780,605), clip, mainWindow, cursorRenderer, fadeOutTransition);
-            InvisTrans(splash, kinectFlycam,            new Point(130,645), new Point(780,720), clip, mainWindow, cursorRenderer, fadeOutTransition);
-            InvisTrans(splash, slideshow,               new Point(130,765), new Point(780,850), clip, mainWindow, cursorRenderer, fadeTransition);
+            InvisTrans(splash, confirmDog,                new Point(115,395), new Point(835,485), clip, mainWindow, cursorRenderer, fadeTransition);
+            InvisTrans(splash, confirmGartymore,          new Point(115,510), new Point(835,600), clip, mainWindow, cursorRenderer, fadeTransition);
+            InvisTrans(splash, confirmFrakkok,            new Point(115,625), new Point(835,720), clip, mainWindow, cursorRenderer, fadeTransition);
+            InvisTrans(splash, confirmFisherman,          new Point(115,745), new Point(835,825), clip, mainWindow, cursorRenderer, fadeTransition);
+            InvisTrans(splash, confirmWolf,               new Point(115,860), new Point(835,955), clip, mainWindow, cursorRenderer, fadeTransition);
+            
+            InvisTrans(confirmDog, splash,               new Point(320,380), new Point(770,665), clip, mainWindow, cursorRenderer, fadeTransition);
+            InvisTrans(confirmDog, storyWolf,            new Point(320,960), new Point(770,1410), clip, mainWindow, cursorRenderer, fadeTransition);
+            InvisTrans(confirmGartymore, splash,         new Point(320,380), new Point(770,665), clip, mainWindow, cursorRenderer, fadeTransition);
+            InvisTrans(confirmGartymore, storyGartymore, new Point(320,960), new Point(770,1410), clip, mainWindow, cursorRenderer, fadeTransition);
+            InvisTrans(confirmFrakkok, splash,           new Point(320,380), new Point(770,665), clip, mainWindow, cursorRenderer, fadeTransition);
+            InvisTrans(confirmFrakkok, storyFrakkok,     new Point(320,960), new Point(770,1410), clip, mainWindow, cursorRenderer, fadeTransition);
+            InvisTrans(confirmFisherman, splash,         new Point(320,380), new Point(770,665), clip, mainWindow, cursorRenderer, fadeTransition);
+            InvisTrans(confirmFisherman, storyFisherman, new Point(320,960), new Point(770,1410), clip, mainWindow, cursorRenderer, fadeTransition);
+            InvisTrans(confirmWolf, splash,              new Point(320,380), new Point(770,665), clip, mainWindow, cursorRenderer, fadeTransition);
+            InvisTrans(confirmWolf, storyWolf,           new Point(320,960), new Point(770,1410), clip, mainWindow, cursorRenderer, fadeTransition);
 
-            InvisTrans(splash, storyDog,                new Point(1085,385), new Point(1795,475), clip, mainWindow, cursorRenderer, fadeTransition);
-            InvisTrans(splash, storyGartymore,          new Point(1085,505), new Point(1795,590), clip, mainWindow, cursorRenderer, fadeTransition);
-            InvisTrans(splash, storyFrakkok,            new Point(1085,620), new Point(1795,705), clip, mainWindow, cursorRenderer, fadeTransition);
-            InvisTrans(splash, storyFisherman,          new Point(1085,740), new Point(1795,815), clip, mainWindow, cursorRenderer, fadeTransition);
-            InvisTrans(splash, storyWolf,               new Point(1085,855), new Point(1795,945), clip, mainWindow, cursorRenderer, fadeTransition);
+            InvisTrans(splash, structuredFlythrough,    new Point(1080,415), new Point(1755,500), clip, mainWindow, cursorRenderer, fadeOutTransition);
+            InvisTrans(splash, kinectAvatar,            new Point(1080,535), new Point(1755,620), clip, mainWindow, cursorRenderer, fadeOutTransition);
+            InvisTrans(splash, kinectFlycam,            new Point(1080,645), new Point(1755,735), clip, mainWindow, cursorRenderer, fadeOutTransition);
+            InvisTrans(splash, slideshow,               new Point(1080,765), new Point(1755,865), clip, mainWindow, cursorRenderer, fadeTransition);
 
             ITrigger customTriggerHelp = new CustomTriggerTrigger(Coordinator.StateManager, "Help");
 
@@ -148,7 +166,7 @@ namespace Chimera.Launcher {
             //Coordinator.StateManager.CurrentState = helpFlycam;
             //Coordinator.StateManager.CurrentState = kinectFlycam;
 
-            InitIdle(idleFlythrough, splash, fadeInTransition, fadeOutTransition);
+            //InitIdle(idleFlythrough, splash, fadeInTransition, fadeOutTransition);
 
             /*
             ImgTrans(splash,        explore,                "SeeTheTownship",       .10f, .35f, .25f, mainWindow, cursorRenderer, fadeTransition);

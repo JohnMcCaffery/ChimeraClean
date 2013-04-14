@@ -5,6 +5,7 @@ using System.Text;
 using Chimera.Interfaces.Overlay;
 using Chimera.Overlay;
 using Chimera.Overlay.States;
+using Chimera.Overlay.Triggers;
 
 namespace Chimera.Flythrough.Overlay {
     public class FlythroughState : State {
@@ -16,17 +17,23 @@ namespace Chimera.Flythrough.Overlay {
         private string mFlythrough;
         private bool mStepping;
         private ITrigger[] mStepTriggers = new ITrigger[0];
+        private SimpleTrigger mTrigger;
 
-        public FlythroughState(string name, StateManager manager, string flythrough)
+        public FlythroughState(string name, StateManager manager, string flythrough, State home, IWindowTransitionFactory transition)
             : base(name, manager) {
 
             mFlythrough = flythrough;
+            mTrigger = new SimpleTrigger();
             mInput = manager.Coordinator.GetInput<Flythrough>();
+            mInput.SequenceFinished += new EventHandler(mInput_SequenceFinished);
+            StateTransition trans = new StateTransition(manager, this, home, mTrigger, transition);
+            AddTransition(trans);
         }
 
         public FlythroughState(string name, StateManager manager, string flythrough, params ITrigger[] steps)
-            : this(name, manager, flythrough) {
-
+            : base(name, manager) {
+            mFlythrough = flythrough;
+            mInput = manager.Coordinator.GetInput<Flythrough>();
             mStepTriggers = steps;
             mStepping = true;
 
@@ -35,6 +42,11 @@ namespace Chimera.Flythrough.Overlay {
                 if (step is IDrawable)
                     AddFeature(step as IDrawable);
             }
+        }
+
+        void mInput_SequenceFinished(object sender, EventArgs e) {
+            if (mTrigger != null)
+                mTrigger.Trigger();
         }
 
         public FlythroughState(string name, StateManager manager, string flythrough, string slideshowWindow, string slideshowFolder, IImageTransition slideshowTransition, params ITrigger[] steps)
