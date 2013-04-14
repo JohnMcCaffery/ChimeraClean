@@ -124,15 +124,15 @@ namespace Chimera.Launcher {
             InvisTrans(splash, confirmWolf,               new Point(115,860), new Point(835,955), clip, mainWindow, cursorRenderer, fadeTransition);
             
             InvisTrans(confirmDog, splash,               new Point(320,380), new Point(770,665), clip, mainWindow, cursorRenderer, fadeTransition);
-            InvisTrans(confirmDog, storyWolf,            new Point(320,960), new Point(770,1410), clip, mainWindow, cursorRenderer, fadeTransition);
+            InvisTrans(confirmDog, storyWolf,            new Point(960,380), new Point(1410,665), clip, mainWindow, cursorRenderer, fadeTransition);
             InvisTrans(confirmGartymore, splash,         new Point(320,380), new Point(770,665), clip, mainWindow, cursorRenderer, fadeTransition);
-            InvisTrans(confirmGartymore, storyGartymore, new Point(320,960), new Point(770,1410), clip, mainWindow, cursorRenderer, fadeTransition);
+            InvisTrans(confirmGartymore, storyGartymore, new Point(960,380), new Point(1410,665), clip, mainWindow, cursorRenderer, fadeTransition);
             InvisTrans(confirmFrakkok, splash,           new Point(320,380), new Point(770,665), clip, mainWindow, cursorRenderer, fadeTransition);
-            InvisTrans(confirmFrakkok, storyFrakkok,     new Point(320,960), new Point(770,1410), clip, mainWindow, cursorRenderer, fadeTransition);
+            InvisTrans(confirmFrakkok, storyFrakkok,     new Point(960,380), new Point(1410,665), clip, mainWindow, cursorRenderer, fadeTransition);
             InvisTrans(confirmFisherman, splash,         new Point(320,380), new Point(770,665), clip, mainWindow, cursorRenderer, fadeTransition);
-            InvisTrans(confirmFisherman, storyFisherman, new Point(320,960), new Point(770,1410), clip, mainWindow, cursorRenderer, fadeTransition);
+            InvisTrans(confirmFisherman, storyFisherman, new Point(960,380), new Point(1410,665), clip, mainWindow, cursorRenderer, fadeTransition);
             InvisTrans(confirmWolf, splash,              new Point(320,380), new Point(770,665), clip, mainWindow, cursorRenderer, fadeTransition);
-            InvisTrans(confirmWolf, storyWolf,           new Point(320,960), new Point(770,1410), clip, mainWindow, cursorRenderer, fadeTransition);
+            InvisTrans(confirmWolf, storyWolf,           new Point(960,380), new Point(1410,665), clip, mainWindow, cursorRenderer, fadeTransition);
 
             InvisTrans(splash, structuredFlythrough,    new Point(1080,415), new Point(1755,500), clip, mainWindow, cursorRenderer, fadeOutTransition);
             InvisTrans(splash, kinectAvatar,            new Point(1080,535), new Point(1755,620), clip, mainWindow, cursorRenderer, fadeOutTransition);
@@ -147,6 +147,9 @@ namespace Chimera.Launcher {
 
             kinectAvatar.AddTransition(kinectHelpAvatarTransition);
             kinectFlycam.AddTransition(kinectHelpFlycamTransition);
+
+            SkeletonFeature splashSkeleton = new SkeletonFeature(1040, 1535, 1000, 100f, "mainWindow", clip);
+            splash.AddFeature(splashSkeleton);
 
             Coordinator.StateManager.AddState(splash);
             Coordinator.StateManager.AddState(kinectAvatar);
