@@ -141,9 +141,15 @@ namespace Chimera.Overlay {
         /// </summary>
         /// <param name="stateTransition">The new transition to add.</param>
         public void AddTransition(StateTransition stateTransition) {
-            mTransitions.Add(stateTransition.To.Name, stateTransition);
-            if (stateTransition is IDrawable)
-                AddFeature(stateTransition as IDrawable);
+            //TODO - this is a hack and will break things. Need to decide on how to handle multiple triggers.
+            //What happens if new transition needs to be drawn?
+            if (mTransitions.ContainsKey(stateTransition.To.Name)) {
+                mTransitions[stateTransition.To.Name].AddTriggers(stateTransition.Triggers);
+            } else {
+                mTransitions.Add(stateTransition.To.Name, stateTransition);
+                if (stateTransition is IDrawable)
+                    AddFeature(stateTransition as IDrawable);
+            }
         }
         
         /// <summary>

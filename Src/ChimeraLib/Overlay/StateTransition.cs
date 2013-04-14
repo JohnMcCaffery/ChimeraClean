@@ -25,7 +25,7 @@ namespace Chimera.Overlay {
         /// <summary>
         /// The trigger which will start this transition.
         /// </summary>
-        private ITrigger mTrigger;
+        private List<ITrigger> mTriggers = new List<ITrigger>();
         /// <summary>
         /// The state the transition starts at.
         /// </summary>
@@ -57,17 +57,12 @@ namespace Chimera.Overlay {
             mManager = manager;
             mFrom = from;
             mTo = to;
-            mTrigger = trigger;
+            mTriggers.Add(trigger);
             mWindowTransitionFactory = factory;
 
-            mTrigger.Triggered += new Action(mTrigger_Triggered);
             mManager.Coordinator.WindowAdded += new Action<Window,EventArgs>(Coordinator_WindowAdded);
 
-            if (trigger is IDrawable) {
-                IDrawable feature = trigger as IDrawable;
-                from.AddFeature(feature);
-            }
-            
+            AddTrigger(trigger);
 
             foreach (var window in mManager.Coordinator.Windows)
                 Coordinator_WindowAdded(window, null);
@@ -97,8 +92,8 @@ namespace Chimera.Overlay {
         /// <summary>
         /// Trigger which will start the transition.
         /// </summary>
-        public ITrigger Trigger {
-            get { return mTrigger; }
+        public List<ITrigger> Triggers {
+            get { return mTriggers; }
         }
 
         /// <summary>
@@ -115,7 +110,8 @@ namespace Chimera.Overlay {
             get { return mActive; }
             set { 
                 mActive = value;
-                mTrigger.Active = value;
+                foreach (var trigger in mTriggers)
+                    trigger.Active = value;
             }
         }
 
@@ -125,6 +121,19 @@ namespace Chimera.Overlay {
         public bool InProgress {
             get { return mInProgress; }
             set { mInProgress = value; }
+        }
+
+        public void AddTrigger(ITrigger trigger) {
+            trigger.Triggered += new Action(mTrigger_Triggered);            mTriggers.Add(trigger);
+            if (trigger is IDrawable) {
+                IDrawable feature = trigger as IDrawable;
+                From.AddFeature(feature);
+            }
+        }
+
+        public void AddTriggers(IEnumerable<ITrigger> triggers) {
+            foreach (var trigger in triggers)
+                AddTrigger(trigger);
         }
 
         /// <summary>
@@ -147,7 +156,8 @@ namespace Chimera.Overlay {
 
         void mTrigger_Triggered() {
             if (mActive) {
-                mTrigger.Active = false;
+                foreach (var trigger in mTriggers)
+                    trigger.Active = false;
                 mManager.BeginTransition(this);
             }
         }
