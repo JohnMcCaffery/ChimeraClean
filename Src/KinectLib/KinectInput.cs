@@ -192,6 +192,8 @@ namespace Chimera.Kinect {
             mCoordinator.EyePosition = Vector3.Zero;
             if (mCoordinator.ControlMode == ControlMode.Delta)
                 mCoordinator.Update(Vector3.Zero, Vector3.Zero, Rotation.Zero, Rotation.Zero);
+            foreach (var window in mCoordinator.Windows)
+                window.OverlayManager.MoveCursorOffScreen();
         }
 
         public void SetCursor(string cursorName) {

@@ -267,7 +267,7 @@ namespace Chimera.Overlay {
             mControlPointer = cfg.ControlPointer;
         }
 
-        private void MoveCursorOffScreen() {
+        public void MoveCursorOffScreen() {
             SystemCursor.Position = new Point(mWindow.Monitor.Bounds.X + mWindow.Monitor.Bounds.Width, mWindow.Monitor.Bounds.Y + mWindow.Monitor.Bounds.Height);
         }
 

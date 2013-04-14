@@ -23,6 +23,8 @@ namespace Chimera.Launcher {
                     //sServerProcess.Exited += sServerProcess_Exited;
                 sServerProcess.Start();
 
+                Console.WriteLine("Launcher started.");
+
                 Thread.Sleep(15 * 1000);
             }
 
@@ -31,7 +33,7 @@ namespace Chimera.Launcher {
             sProxyProcess = ProcessWrangler.InitProcess(sProxyExe);
                 //if (cfg.AutoRestart)
                     //sProxyProcess.Exited += sProxyProcess_Exited;
-            sProxyProcess.Start();
+            sProxyProcess.Start();
 
             Thread input = new Thread(() => {
                 Console.WriteLine("Type Exit to quit.");

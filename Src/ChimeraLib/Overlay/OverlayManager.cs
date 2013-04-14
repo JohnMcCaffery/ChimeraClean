@@ -19,6 +19,10 @@ namespace Chimera.Overlay {
         /// </summary>
         private State mCurrentState;
         /// <summary>
+        /// The first state that was set, when reset the overlay will go back to this.
+        /// </summary>
+        private State mFirstState;
+        /// <summary>
         /// The current transition the manager is going through. Will be null if no transition is in progress.
         /// </summary>
         private StateTransition mCurrentTransition;
@@ -103,6 +107,8 @@ namespace Chimera.Overlay {
         public State CurrentState {
             get { return mCurrentState; }
             set {
+                if (mFirstState == null)
+                    mFirstState = value;
                 if (mCurrentTransition != null)
                     mCurrentTransition.Cancel();
                 mCurrentState = value;
@@ -126,6 +132,10 @@ namespace Chimera.Overlay {
         /// </summary>
         public bool Transitioning {
             get { return mCurrentState == null; }
+        }
+
+        public void Reset() {
+            CurrentState = mFirstState;
         }
 
         /// <summary>

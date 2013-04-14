@@ -169,7 +169,9 @@ namespace Chimera.Launcher {
             //Coordinator.StateManager.CurrentState = helpFlycam;
             //Coordinator.StateManager.CurrentState = kinectFlycam;
 
-            //InitIdle(idleFlythrough, splash, fadeInTransition, fadeOutTransition);
+            OverlayConfig cfg = new OverlayConfig();
+            if (cfg.IdleState)
+                InitIdle(idleFlythrough, splash, fadeInTransition, fadeOutTransition, cfg.IdleTimeoutMs);
 
             /*
             ImgTrans(splash,        explore,                "SeeTheTownship",       .10f, .35f, .25f, mainWindow, cursorRenderer, fadeTransition);

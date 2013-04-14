@@ -187,6 +187,8 @@ namespace Chimera.GUI.Controls {
         }
 
         private void restartButton_Click(object sender, EventArgs e) {
+            mWindow.Coordinator.StateManager.Reset();
+            mWindow.OverlayManager.MoveCursorOffScreen();
             if (mWindow.Output != null)
                 mWindow.Output.Restart();
         }
