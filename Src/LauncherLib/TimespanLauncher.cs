@@ -148,7 +148,7 @@ namespace Chimera.Launcher {
             kinectAvatar.AddTransition(kinectHelpAvatarTransition);
             kinectFlycam.AddTransition(kinectHelpFlycamTransition);
 
-            SkeletonFeature splashSkeleton = new SkeletonFeature(1040, 1535, 1000, 100f, "mainWindow", clip);
+            SkeletonFeature splashSkeleton = new SkeletonFeature(1040, 1535, 1000, 100f, mainWindow.Name, clip);
             splash.AddFeature(splashSkeleton);
 
             Coordinator.StateManager.AddState(splash);
