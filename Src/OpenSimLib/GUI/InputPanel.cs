@@ -20,6 +20,20 @@ namespace Chimera.OpenSim.GUI {
             : this() {
 
             mProperties = properties;
+
+            behindnessAnglePanel.Value = properties.BehindnessAngle;
+            behindnessLagPanel.Value = properties.BehindnessLag;
+            distancePanel.Value = properties.Distance;
+            focusPanel.Value = properties.Focus;
+            focusLagPanel.Value = properties.FocusLag;
+            focusOffsetPanel.Value = properties.FocusOffset;
+            focusOffset3DPanel.Value = properties.FocusOffset3D;
+            focusThresholdPanel.Value = properties.FocusThreshold;
+            lookAtPanel.Value = properties.LookAt;
+            lookAtLagPanel.Value = properties.LookAtLag;
+            lookAtThresholdPanel.Value = properties.LookAtThreshold;
+            pitchPanel.Value = properties.Pitch;
+            activeCheckbox.Checked = properties.SendPackets;
         }
 
         private void focusOffset3DPanel_ValueChanged(object sender, EventArgs e) {

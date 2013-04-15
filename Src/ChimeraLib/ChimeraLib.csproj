@@ -101,11 +101,25 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core\Projector.cs" />
-    <Compile Include="Overlay\Transitions\BitmapFadeWindowTransition.cs" />
+    <Compile Include="Interfaces\Overlay\IImageTransition.cs" />
+    <Compile Include="Interfaces\Overlay\IImageTransitionFactory.cs" />
+    <Compile Include="Interfaces\Overlay\IWindowTransition.cs" />
+    <Compile Include="Overlay\Drawables\DynamicText.cs" />
+    <Compile Include="Overlay\Drawables\FadingText.cs" />
+    <Compile Include="Overlay\Drawables\OverlayImage.cs" />
+    <Compile Include="Overlay\Drawables\StaticText.cs" />
+    <Compile Include="Overlay\Drawables\Text.cs" />
+    <Compile Include="Overlay\States\SeeThroughMenuState.cs" />
+    <Compile Include="Overlay\States\SlideshowState.cs" />
+    <Compile Include="Overlay\States\SlideshowWindow.cs" />
+    <Compile Include="Overlay\States\VideoState.cs" />
+    <Compile Include="Overlay\Transitions\BitmapFade.cs" />
+    <Compile Include="Overlay\Transitions\BitmapWindowTransition.cs" />
     <Compile Include="Core\CoordinatorConfig.cs" />
     <Compile Include="Core\WindowConfig.cs" />
     <Compile Include="Overlay\Transitions\OpacityFadeWindowTransition.cs" />
     <Compile Include="Overlay\Transitions\CutWindowTransition.cs" />
+    <Compile Include="Overlay\Triggers\CameraPositionTrigger.cs" />
     <Compile Include="Overlay\Triggers\CircleRenderer.cs" />
     <Compile Include="Overlay\Triggers\CursorRenderer.cs" />
     <Compile Include="Overlay\Triggers\CursorTrigger.cs" />
@@ -169,12 +183,10 @@
       <DependentUpon>KBMousePanel.cs</DependentUpon>
     </Compile>
     <Compile Include="Interfaces\ICrashable.cs" />
-    <Compile Include="Interfaces\Overlay\IState.cs" />
     <Compile Include="Interfaces\Overlay\IStateFactory.cs" />
     <Compile Include="Interfaces\Overlay\IStateTransitionFactory.cs" />
     <Compile Include="Interfaces\Overlay\ITrigger.cs" />
     <Compile Include="Interfaces\Overlay\IWindowState.cs" />
-    <Compile Include="Interfaces\Overlay\IWindowTransition.cs" />
     <Compile Include="Overlay\States\ImageBGState.cs" />
     <Compile Include="Overlay\States\ImageBGWindow.cs" />
     <Compile Include="Overlay\Triggers\ImageHoverTrigger.cs" />
@@ -183,6 +195,9 @@
     <Compile Include="Overlay\Triggers\HoverTrigger.cs" />
     <Compile Include="Overlay\State.cs" />
     <Compile Include="Overlay\StateTransition.cs" />
+    <Compile Include="Overlay\Triggers\SimpleTrigger.cs" />
+    <Compile Include="Overlay\Triggers\TextHoverTrigger.cs" />
+    <Compile Include="Util\StatisticsServer.cs" />
     <Compile Include="Util\ConfigBase.cs" />
     <Compile Include="Util\Init.cs" />
     <Compile Include="Util\ProcessWrangler.cs" />
@@ -228,7 +243,9 @@
     <None Include="Overlay.cd" />
     <None Include="Core.cd" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Statistics\" />
+  </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="GUI\Controls\Inputs\MouseInputPanel.resx">
       <DependentUpon>MouseInputPanel.cs</DependentUpon>

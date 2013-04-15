@@ -41,6 +41,14 @@ namespace Chimera.Flythrough {
         private int mTime;
 
         /// <summary>
+        /// Selected whenever playback of the sequence is paused.
+        /// </summary>
+        public event Action OnPaused;
+        /// <summary>
+        /// Selected whenever playback of the sequence is unpaused.
+        /// </summary>
+        public event Action UnPaused;
+        /// <summary>
         /// Selected whenever the sequence gets to the end, even if looping.
         /// </summary>
         public event EventHandler SequenceFinished;
@@ -113,9 +121,11 @@ namespace Chimera.Flythrough {
         public bool Paused {
             get { return !mPlaying; }
             set {
-                if (value)
+                if (value) {
                     mPlaying = false;
-                else
+                    if (OnPaused != null)
+                        OnPaused();
+                } else
                     Play();
             }
         }
@@ -155,7 +165,12 @@ namespace Chimera.Flythrough {
             if (mPlaying)
                 return;
 
+            if (UnPaused != null)
+                UnPaused();
+
             if (mEnabled && mEvents.Length > 0) {
+                if (mEvents.CurrentEvent == null)
+                    Time = 0;
                 Camera n = mEvents.CurrentEvent.Value;
                 mCoordinator.Update(n.Position, Vector3.Zero, n.Orientation, Rotation.Zero);
             }
@@ -181,8 +196,13 @@ namespace Chimera.Flythrough {
         }
 
         public void Step() {
-            if (mEvents.CurrentEvent != null && mEvents.CurrentEvent.GlobalFinishTime + 1< Length)
+            if (Paused)
+                Paused = false;
+            else if (mEvents.CurrentEvent != null && mEvents.CurrentEvent.GlobalFinishTime + 1 < Length) {
                 Time = CurrentEvent.GlobalFinishTime + 1;
+                Play();
+                //Time = CurrentEvent.GlobalStartTime;
+            }
         }
 
         /// <summary>
@@ -258,48 +278,14 @@ namespace Chimera.Flythrough {
         }
 
         private void mEvents_CurrentEventChange(FlythroughEvent<Camera> oldEvent, FlythroughEvent<Camera> newEvent) {
-            if (!mAutoStep) {
-                mPlaying = false;
-                if (SequenceFinished != null)
-                    SequenceFinished(this, null);
-            }
+            if (!mAutoStep)
+                Paused = true;
         }
 
         private void mEvents_LengthChange(EventSequence<Camera> sequence, int length) {
             if (LengthChange != null)
                 LengthChange(length);
         }
-
-        /*
-        private void PlayThread() {
-            mPlaying = true;
-
-            if (mEnabled && mEvents.Length > 0) {
-                Camera n = mEvents.CurrentEvent.Value;
-                mCoordinator.Update(n.Position, Vector3.Zero, n.Orientation, Rotation.Zero);
-            }
-
-            while (mPlaying && mEvents.Length > 0) {
-                Thread.Sleep(mCoordinator.TickLength);
-                if (mPlaying) {
-                    if (mEvents.Time + mCoordinator.TickLength < mEvents.Length)
-                        DoTick(mEvents.Time + mCoordinator.TickLength, mEvents.CurrentEvent.Value);
-                    else {
-                        if (mLoop)
-                            DoTick(0, mEvents.Begin);
-                        else {
-                            DoTick(mEvents.Length, mEvents.CurrentEvent.Value);
-                            mPlaying = false;
-
-                            if (SequenceFinished != null)
-                                SequenceFinished(this, null);
-                        }
-                    }
-                }
-            }
-
-        }
-        */
 
         private void DoTick(int time, Camera o) {
             mEvents.Time = time;

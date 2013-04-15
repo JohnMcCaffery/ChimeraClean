@@ -9,7 +9,7 @@ namespace Chimera.Overlay {
         /// <summary>
         /// The individual transitions for each window in the system.
         /// </summary>
-        private readonly Dictionary<string, IWindowTransition> mWindowTransitions = new Dictionary<string,IWindowTransition>();
+        private readonly Dictionary<string, IWindowTransition> mWindowTransitions = new Dictionary<string, IWindowTransition>();
         /// <summary>
         /// During a transition, the windows which have completed the transition. The transition as a whole is only complete when all windows have completed.
         /// </summary>
@@ -25,15 +25,15 @@ namespace Chimera.Overlay {
         /// <summary>
         /// The trigger which will start this transition.
         /// </summary>
-        private ITrigger mTrigger;
+        private List<ITrigger> mTriggers = new List<ITrigger>();
         /// <summary>
         /// The state the transition starts at.
         /// </summary>
-        private IState mFrom;
+        private State mFrom;
         /// <summary>
         /// The state the transition goes to.
         /// </summary>
-        private IState mTo;
+        private State mTo;
         /// <summary>
         /// Whether the transition is in progress.
         /// </summary>
@@ -53,21 +53,16 @@ namespace Chimera.Overlay {
         public event Action<StateTransition> Finished;
 
         /// <param name="manager">The manager this transition works transition.</param>
-        public StateTransition(StateManager manager, IState from, IState to, ITrigger trigger, IWindowTransitionFactory factory) {
+        public StateTransition(StateManager manager, State from, State to, ITrigger trigger, IWindowTransitionFactory factory) {
             mManager = manager;
             mFrom = from;
             mTo = to;
-            mTrigger = trigger;
+            mTriggers.Add(trigger);
             mWindowTransitionFactory = factory;
 
-            mTrigger.Triggered += new Action(mTrigger_Triggered);
             mManager.Coordinator.WindowAdded += new Action<Window,EventArgs>(Coordinator_WindowAdded);
 
-            if (trigger is IDrawable) {
-                IDrawable feature = trigger as IDrawable;
-                from.AddFeature(feature);
-            }
-            
+            AddTrigger(trigger);
 
             foreach (var window in mManager.Coordinator.Windows)
                 Coordinator_WindowAdded(window, null);
@@ -83,22 +78,22 @@ namespace Chimera.Overlay {
         /// <summary>
         /// The state the transition goes transition.
         /// </summary>
-        public IState From {
+        public State From {
             get { return mFrom; }
         }
 
         /// <summary>
         /// The state the transition goes to.
         /// </summary>
-        public IState To {
+        public State To {
             get { return mTo; }
         }
 
         /// <summary>
         /// Trigger which will start the transition.
         /// </summary>
-        public ITrigger Trigger {
-            get { return mTrigger; }
+        public List<ITrigger> Triggers {
+            get { return mTriggers; }
         }
 
         /// <summary>
@@ -115,7 +110,8 @@ namespace Chimera.Overlay {
             get { return mActive; }
             set { 
                 mActive = value;
-                mTrigger.Active = value;
+                foreach (var trigger in mTriggers)
+                    trigger.Active = value;
             }
         }
 
@@ -127,12 +123,26 @@ namespace Chimera.Overlay {
             set { mInProgress = value; }
         }
 
+        public void AddTrigger(ITrigger trigger) {
+            trigger.Triggered += new Action(mTrigger_Triggered);            mTriggers.Add(trigger);
+            if (trigger is IDrawable) {
+                IDrawable feature = trigger as IDrawable;
+                From.AddFeature(feature);
+            }
+        }
+
+        public void AddTriggers(IEnumerable<ITrigger> triggers) {
+            foreach (var trigger in triggers)
+                AddTrigger(trigger);
+        }
+
         /// <summary>
         /// Start the transition.
         /// </summary>
         public void Begin() {
             if (mActive) {
                 mFrom.Active = false;
+                mTo.TransitionToStart();
                 mCompletedWindows.Clear();
                 foreach (var windowTrans in mWindowTransitions.Values) {
                     windowTrans.From.Active = false;
@@ -145,8 +155,11 @@ namespace Chimera.Overlay {
         }
 
         void mTrigger_Triggered() {
-            if (mActive)
+            if (mActive) {
+                foreach (var trigger in mTriggers)
+                    trigger.Active = false;
                 mManager.BeginTransition(this);
+            }
         }
 
         void Coordinator_WindowAdded(Window window, EventArgs args) {
@@ -157,6 +170,7 @@ namespace Chimera.Overlay {
 
         void transition_Finished(IWindowTransition transition) {
             mCompletedWindows.Add(transition);
+            mFrom.TransitionFromFinish();
             transition.To.Active = true;
             transition.Manager.CurrentDisplay = transition.To;
             transition.Manager.ForceRedrawStatic();
@@ -173,6 +187,10 @@ namespace Chimera.Overlay {
         public void Cancel() {
             foreach (var windowTransition in mWindowTransitions.Values)
                 windowTransition.Cancel();
+        }
+
+        public override string ToString() {
+            return "Transition " + mFrom.Name + " to " + mFrom.Name;
         }
     }
 }

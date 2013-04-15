@@ -4,26 +4,36 @@ using System.Linq;
 using System.Text;
 using Chimera.Overlay;
 using Chimera.Interfaces.Overlay;
+using System.Drawing;
 
 namespace Chimera {
-    public abstract class WindowTransition : IWindowTransition {
+    public abstract class WindowTransition : DrawableRoot, IWindowTransition {
         private StateTransition mTransition;
         private WindowOverlayManager mManager;
         private IWindowState mFrom;
         private IWindowState mTo;
 
+        public override Rectangle Clip {
+            get { return base.Clip; }
+            set {
+                base.Clip = value;
+                mTo.Clip = value;
+            }
+        }
+ 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="transition"></param>
         /// <param name="window"></param>
         /// <exception cref="InvalidArgumentException">Thrown if there is no window state for the To or From state.</exception>
-        public WindowTransition(StateTransition transition, Window window) {
+        public WindowTransition(StateTransition transition, Window window)
+            : base(window.Name) {
             mManager = window.OverlayManager;
             mTransition = transition;
 
-            mFrom = transition.From.WindowStates.First(s => s.Manager.Window.Name.Equals(window.Name));
-            mTo = transition.To.WindowStates.First(s => s.Manager.Window.Name.Equals(window.Name));
+            mFrom = transition.From[window.Name];
+            mTo = transition.To[window.Name];
         }
 
         public StateTransition StateTransition {
@@ -42,22 +52,12 @@ namespace Chimera {
             get { return mManager; }
         }
 
-        public string Window {
-            get { return mManager.Window.Name; }
-        }
-
         public abstract event Action<IWindowTransition> Finished;
 
-        public abstract void Begin();
-
-        public abstract void Cancel();
-
-        public abstract bool NeedsRedrawn {
-            get;
+        public virtual void Begin() {
+            mTo.Clip = Clip;
         }
 
-        public abstract void RedrawStatic(System.Drawing.Rectangle clip, System.Drawing.Graphics graphics);
-
-        public abstract void DrawDynamic(System.Drawing.Graphics graphics);
+        public abstract void Cancel();
     }
 }

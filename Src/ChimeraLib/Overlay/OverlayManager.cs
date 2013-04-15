@@ -9,7 +9,7 @@ namespace Chimera.Overlay {
         /// <summary>
         /// All the states this manager manages.
         /// </summary>
-        private readonly Dictionary<string, IState> mStates = new Dictionary<string,IState>();
+        private readonly Dictionary<string, State> mStates = new Dictionary<string,State>();
         /// <summary>
         /// The coordinator this state manager is tied to.
         /// </summary>
@@ -17,7 +17,11 @@ namespace Chimera.Overlay {
         /// <summary>
         /// The current state the manager is in. Will be null during a transition.
         /// </summary>
-        private IState mCurrentState;
+        private State mCurrentState;
+        /// <summary>
+        /// The first state that was set, when reset the overlay will go back to this.
+        /// </summary>
+        private State mFirstState;
         /// <summary>
         /// The current transition the manager is going through. Will be null if no transition is in progress.
         /// </summary>
@@ -35,7 +39,7 @@ namespace Chimera.Overlay {
         /// <summary>
         /// Triggered whenever a new state is added.
         /// </summary>
-        public event Action<IState> StateAdded;
+        public event Action<State> StateAdded;
 
         /// <summary>
         /// Triggered whenever a transition starts.
@@ -50,7 +54,7 @@ namespace Chimera.Overlay {
         /// <summary>
         /// Triggered whenever the current state changes.
         /// </summary>
-        public event Action<IState> StateChanged;
+        public event Action<State> StateChanged;
         
         /// <summary>
         /// CreateWindowState the manager. Linking it with a coordinator.
@@ -61,10 +65,31 @@ namespace Chimera.Overlay {
             mTransitionComplete = new Action<StateTransition>(transition_Finished);
         }
 
+        public string Statistics {
+            get {
+                string table = "";
+                table += "<TABLE>" + Environment.NewLine;
+                table += "    <TR>" + Environment.NewLine;
+                table += "        <TD>State Name</TD>" + Environment.NewLine;
+                table += "        <TD># Visits</TD>" + Environment.NewLine;
+                table += "        <TD>Shortest Visit (m)</TD>" + Environment.NewLine;
+                table += "        <TD>Longest Visit (m)</TD>" + Environment.NewLine;
+                table += "        <TD>Mean Visit Length (m)</TD>" + Environment.NewLine;
+                table += "    </TR>" + Environment.NewLine;
+
+                foreach (var state in mStates.Values)
+                    table += state.StatisticsRow;
+
+                table += "</TABLE>" + Environment.NewLine;
+
+                return table;
+            }
+        }
+
         /// <summary>
         /// All the states this manager manages.
         /// </summary>
-        public IState[] States {
+        public State[] States {
             get { return mStates.Values.ToArray(); }
         }
 
@@ -79,9 +104,11 @@ namespace Chimera.Overlay {
         /// The current state the manager is in. Will be null during a transition.
         /// Setting the state directly will immediately skip to the new state without any transition.
         /// </summary>
-        public IState CurrentState {
+        public State CurrentState {
             get { return mCurrentState; }
             set {
+                if (mFirstState == null)
+                    mFirstState = value;
                 if (mCurrentTransition != null)
                     mCurrentTransition.Cancel();
                 mCurrentState = value;
@@ -107,6 +134,10 @@ namespace Chimera.Overlay {
             get { return mCurrentState == null; }
         }
 
+        public void Reset() {
+            CurrentState = mFirstState;
+        }
+
         /// <summary>
         /// Trigger a custom event.
         /// </summary>
@@ -119,7 +150,10 @@ namespace Chimera.Overlay {
         /// <summary>
         /// Add a state to the manager.
         /// </summary>
-        public void AddState(IState state) {
+        public void AddState(State state) {
+            foreach (var window in mCoordinator.Windows)
+                state.Init();
+
             mStates.Add(state.Name, state);
             if (StateAdded != null)
                 StateAdded(state);

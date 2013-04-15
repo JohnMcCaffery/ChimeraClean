@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Chimera.Interfaces.Overlay;
+using Chimera.Util;
 
 namespace Chimera.Overlay {
-    public abstract class State : IState {
+    public abstract class State {
         /// <summary>
         /// The window states, mapped to the names of the windows.
         /// </summary>
@@ -28,6 +29,11 @@ namespace Chimera.Overlay {
         private bool mActive;
 
         /// <summary>
+        /// Statistics object for tracking how this state is used.
+        /// </summary>
+        private TickStatistics mStatistics = new TickStatistics();
+
+        /// <summary>
         /// CreateWindowState the state, specifying the name, form and the window factory for creating window states.
         /// </summary>
         /// <param name="name">The name of the state. All state names should be unique.</param>
@@ -36,14 +42,29 @@ namespace Chimera.Overlay {
             mName = name;
             mManager = manager;
 
-            foreach (var window in mManager.Coordinator.Windows)
-                Coordinator_WindowAdded(window, null);
-
             mManager.Coordinator.WindowAdded += new Action<Window,EventArgs>(Coordinator_WindowAdded);
         }
 
+        /// <summary>
+        /// //TODO - is this right? 
+        /// Relies on state being added to coordinator to add windows, i.e. quite late on during startup.
+        /// </summary>
+        public void Init() {
+            foreach (var window in mManager.Coordinator.Windows)
+                Coordinator_WindowAdded(window, null);
+        }
+
         protected virtual void Coordinator_WindowAdded(Window window, EventArgs args) {
-            mWindowStates.Add(window.Name, CreateWindowState(window));
+            if (!mWindowStates.ContainsKey(window.Name))
+                mWindowStates.Add(window.Name, CreateWindowState(window));
+        }
+
+        public IWindowState this[string window] {
+            get {
+                if (!mWindowStates.ContainsKey(window))
+                    Coordinator_WindowAdded(mManager.Coordinator[window], null);
+                return mWindowStates[window];
+            }
         }
     
         public IWindowState[] WindowStates {
@@ -64,21 +85,47 @@ namespace Chimera.Overlay {
             get { return mName; }
         }
 
+        public TickStatistics Statistics {
+            get { return mStatistics; }
+        }
+
+        public string StatisticsRow {
+            get {
+                string row = "";
+
+                double max = mStatistics.ShortestWork == double.MaxValue ? 0.0 : mStatistics.ShortestWork / 60000.0;
+                double min = mStatistics.LongestWork == double.MinValue ? -1.0 : mStatistics.LongestWork / 60000.0;
+
+                row += "    <TR>" + Environment.NewLine;
+                row += "        <TD>" + Name + "</TD>" + Environment.NewLine;
+                row += "        <TD>" + mStatistics.TickCount + "</TD>" + Environment.NewLine;
+                row += "        <TD>" + max.ToString("0.") + "</TD>" + Environment.NewLine;
+                row += "        <TD>" + min.ToString("0.") + "</TD>" + Environment.NewLine;
+                row += "        <TD>" + (mStatistics.MeanWorkLength / 60000.0).ToString("0.") + "</TD>" + Environment.NewLine;
+                row += "    </TR>" + Environment.NewLine;
+
+                return row;
+            }
+        }
+
         /// <summary>
         /// Whether the state is currently active.
         /// </summary>
-        public virtual bool Active {
+        public bool Active {
             get { return mActive; }
             set { 
                 mActive = value;
                 foreach (var transition in mTransitions.Values)
                     transition.Active = value;
                 foreach (var window in mWindowStates.Values)
-                    window.Active = false;
-                if (value)
-                    OnActivated();
-                else
-                    OnDeActivated();
+                    window.Active = value;
+                if (value) {
+                    TransitionToFinish();
+                    mStatistics.Begin();
+                } else {
+                    TransitionFromStart();
+                    mStatistics.Tick();
+                }
             }
         }
 
@@ -94,7 +141,15 @@ namespace Chimera.Overlay {
         /// </summary>
         /// <param name="stateTransition">The new transition to add.</param>
         public void AddTransition(StateTransition stateTransition) {
-            mTransitions.Add(stateTransition.To.Name, stateTransition);
+            //TODO - this is a hack and will break things. Need to decide on how to handle multiple triggers.
+            //What happens if new transition needs to be drawn?
+            if (mTransitions.ContainsKey(stateTransition.To.Name)) {
+                mTransitions[stateTransition.To.Name].AddTriggers(stateTransition.Triggers);
+            } else {
+                mTransitions.Add(stateTransition.To.Name, stateTransition);
+                if (stateTransition is IDrawable)
+                    AddFeature(stateTransition as IDrawable);
+            }
         }
         
         /// <summary>
@@ -103,7 +158,7 @@ namespace Chimera.Overlay {
         /// <param name="window">The window to draw the feature on.</param>
         /// <param name="feature">The feature to draw.</param>
         public void AddFeature(IDrawable feature) {
-            mWindowStates[feature.Window].AddFeature(feature);
+            this[feature.Window].AddFeature(feature);
         }
 
         /// <summary>
@@ -113,15 +168,31 @@ namespace Chimera.Overlay {
         public abstract IWindowState CreateWindowState(Window window);
 
         /// <summary>
+        /// Called before a transition to this state begins, set up any graphics that need to be in place before the transition begins.
+        /// Will only be called if a tranisition was used to get to the state.
+        /// </summary>
+        public abstract void TransitionToStart();
+
+        /// <summary>
         /// Do any actions that need to be set as soon as the state is activated.
         /// Use this to make sure the overlay is set up as expected, e.g. set whether the camera should be controlled.
         /// </summary>
-        protected abstract void OnActivated();
+        protected abstract void TransitionToFinish();
 
         /// <summary>
         /// Do any actions that need to be when the state is de-activated.
         /// Use this to make sure the overlay is set up as expected, e.g. set whether the camera should be controlled.
         /// </summary>
-        protected abstract void OnDeActivated();
+        protected abstract void TransitionFromStart();
+
+        /// <summary>
+        /// Called after the transition away from this state has been finished. Finalize any graphics that needed to stay in place whilst the transition was going.
+        /// Will only be called if a tranisition was used to get from the state.
+        /// </summary>
+        public abstract void TransitionFromFinish();
+
+        public override string ToString() {
+            return mName;
+        }
     }
 }

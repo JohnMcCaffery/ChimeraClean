@@ -20,7 +20,8 @@ namespace Chimera.Core {
         private Vector3 mPosition = new Vector3(200f, mW / 2f, -251f);
         private Rotation mOrientation = new Rotation(5.0, 0.0);
         private float mThrowRatio = 1.7f;
-        private float mAspectRatio = 16f / 9f;
+        //private float mAspectRatio = 4f / 3f;
+        private float mAspectRatio = 9f / 16;
         private bool mDraw = true;
         private bool mDrawRoom = true;
         private bool mDrawLabels = true;
@@ -49,7 +50,11 @@ namespace Chimera.Core {
 
         public bool AutoUpdate {
             get { return mAutoUpdate; }
-            set { mAutoUpdate = value; }
+            set { 
+                mAutoUpdate = value;
+                if (value)
+                    ConfigureWindow();
+            }
         }
 
         public bool DrawDiagram {
@@ -167,7 +172,7 @@ namespace Chimera.Core {
         }
 
         private Vector3 GetCorner(float left, float up) {
-            Vector3 originalVector = new Vector3(mThrowRatio, .5f * left, (.5f * up) / mAspectRatio);
+            Vector3 originalVector = new Vector3(mThrowRatio, (.5f * left) / mAspectRatio, .5f * up);
             Vector3 corner = originalVector * new Rotation(mOrientation.Pitch, 0.0).Quaternion;
             corner *= mWallDistance / corner.X;
             corner *= new Rotation(0.0, mOrientation.Yaw).Quaternion;

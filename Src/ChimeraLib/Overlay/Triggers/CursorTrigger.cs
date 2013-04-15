@@ -20,13 +20,17 @@ namespace Chimera.Overlay.Triggers {
         private bool mActive;
         private Window mWindow;
         private int mR;
-
+        /// <summary>
+        /// The clip rectangle bounding the area this item will be drawn to.
+        /// </summary>
+        private Rectangle mClip;
+ 
         public CursorTrigger(IHoverSelectorRenderer renderer, Window window) {
             mWindow = window;
             mRenderer = renderer;
             mWindow.Coordinator.Tick += new Action(coordinator_Tick);
             //mSelectCursor = new Cursor(new IntPtr(65571));
-            mSelectCursor = new Cursor(new IntPtr(65569));
+            mSelectCursor = new Cursor(new IntPtr(65567));
         }
 
         public double HoverTime {
@@ -35,18 +39,16 @@ namespace Chimera.Overlay.Triggers {
 
 
         void coordinator_Tick() {
-            if (ProcessWrangler.GetGlobalCursor().Equals(mSelectCursor.Handle) || CursorRenderer.GlobalCursorIsHover()) {
+            if (mActive && ProcessWrangler.GetGlobalCursor().Equals(mSelectCursor.Handle)) {
                 if (mClicked)
                     return;
                 if (!mHovering) {
                     mHovering = true;
                     mEnter = DateTime.Now;
-                    Console.WriteLine("Hover Begin");
                 }
 
                 if (HoverTime > mSelectMS) {
                     mClicked = true;
-                    Console.WriteLine("Clicking");
                     Thread.Sleep(20);
                     ProcessWrangler.Click();
                     mRenderer.Clear();
@@ -79,6 +81,12 @@ namespace Chimera.Overlay.Triggers {
 
         #region IDrawable Members
 
+        public virtual Rectangle Clip {
+            get { return mClip; }
+            set { mClip = value; }
+        }
+
+
         public bool NeedsRedrawn {
             get { return mHovering && !mClicked; }
         }
@@ -87,11 +95,7 @@ namespace Chimera.Overlay.Triggers {
             get { return mWindow.Name; }
         }
 
-        private Rectangle mClip;
-
-        public void RedrawStatic(Rectangle clip, Graphics graphics) {
-            mClip = clip;
-        }
+        public void DrawStatic(Graphics graphics) { }
 
         public void DrawDynamic(Graphics graphics) {
             if (mHovering && !mClicked) {

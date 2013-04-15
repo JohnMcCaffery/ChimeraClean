@@ -32,13 +32,13 @@ namespace Chimera.GUI.Forms {
         /// Flag to force the static portion of the overlay to be redrawn.
         /// </summary>
         private bool mRedrawStatic;
-        /// <summary>
-        /// Delegate to be triggered on tick events.
-        /// </summary>
-        private Action mTickListener;
+        private Cursor mDefaultCursor = new Cursor("../Cursors/cursor.cur");
 
         public OverlayWindow() {
             InitializeComponent();
+
+            Cursor = mDefaultCursor;
+            TopMost = true;
         }
 
         public OverlayWindow(WindowOverlayManager manager)
@@ -51,13 +51,10 @@ namespace Chimera.GUI.Forms {
             BackColor = manager.TransparencyKey;
             TransparencyKey = manager.TransparencyKey;
             mManager = manager;
-            TopMost = true;
             Opacity = manager.Opacity;
             refreshTimer.Interval = manager.FrameLength;
             refreshTimer.Enabled = true;
 
-            //mTickListener = new Action(Coordinator_Tick);
-            manager.Window.Coordinator.Tick += mTickListener;
         }
 
         public void RedrawStatic() {
@@ -92,22 +89,18 @@ namespace Chimera.GUI.Forms {
 
         private void drawPanel_Paint(object sender, PaintEventArgs e) {
             if (mManager.CurrentDisplay != null) {
-                if (!e.ClipRectangle.Equals(mClip) || mRedrawStatic) {
+                if (!e.ClipRectangle.Width.Equals(mClip.Width) || !e.ClipRectangle.Height.Equals(mClip.Height) || mRedrawStatic) {
+                    //if (!e.ClipRectangle.Width.Equals(mClip.Width) || !e.ClipRectangle.Height.Equals(mClip.Height))
+                        mManager.CurrentDisplay.Clip = e.ClipRectangle;
                     mRedrawStatic = false;
                     mStaticBG = new Bitmap(e.ClipRectangle.Width, e.ClipRectangle.Height);
                     mClip = e.ClipRectangle;
                     using (Graphics g = Graphics.FromImage(mStaticBG))
-                        mManager.CurrentDisplay.RedrawStatic(e.ClipRectangle, g);
+                        mManager.CurrentDisplay.DrawStatic(g);
                     drawPanel.Image = mStaticBG;
                 }
 
                 mManager.CurrentDisplay.DrawDynamic(e.Graphics);
-            }
-        }
-
-        private void Coordinator_Tick() {
-            if (mManager.CurrentDisplay != null && mManager.CurrentDisplay.NeedsRedrawn) {
-                BeginInvoke(new Action(() => drawPanel.Invalidate()));
             }
         }
 
@@ -133,6 +126,22 @@ namespace Chimera.GUI.Forms {
 
         internal void ForceRedraw() {
             Invoke(() => drawPanel.Invalidate());
+        }
+
+        public override void ResetCursor() {
+            Invoke(() => Cursor = mDefaultCursor);
+        }
+
+        public bool AlwaysOnTop {
+            get { return TopMost; }
+            set { Invoke(() => TopMost = value); }
+        }
+        
+
+        public void BringOverlayToFront() {
+            Invoke(() => {
+                BringToFront();
+            });
         }
     }
 }

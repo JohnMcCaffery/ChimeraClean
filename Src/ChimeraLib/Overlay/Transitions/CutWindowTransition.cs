@@ -20,6 +20,7 @@ namespace Chimera.Overlay.Transitions {
         }
 
         public override void Begin() {
+            base.Begin();
             if (Finished != null)
                 Finished(this);
         }
@@ -30,7 +31,7 @@ namespace Chimera.Overlay.Transitions {
             get { return false; }
         }
 
-        public override void RedrawStatic(Rectangle clip, Graphics graphics) { }
+        public override void DrawStatic(Graphics graphics) { }
 
         public override void DrawDynamic(Graphics graphics) { }
     }

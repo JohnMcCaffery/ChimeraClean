@@ -37,6 +37,7 @@ namespace Chimera.OpenSim {
         private bool mFullscreen;
         private bool mEnabled;
         private bool mMaster;
+        private float mDeltaScale = .25f;
 
         private object processLock = new object();
 
@@ -47,15 +48,34 @@ namespace Chimera.OpenSim {
         private ProxyConfig mConfig;
 
         /// <summary>
+        /// Whther to restart the viewer if the camera stops updating, or just clear the camera then set it again."
+        /// </summary>
+        private bool mRestartOnTimeout;
+        /// <summary>
+        /// The position the camera was at the last time an AgentUpdate packet was received.
+        /// </summary>
+        private Vector3 mLastViewerPosition;
+        /// <summary>
+        /// The position the camera was being set to the last time a CameraUpdated event was received.
+        /// </summary>
+        private Vector3 mLastCameraPosition;
+        /// <summary>
+        /// The last time the viewer was updated.
+        /// </summary>
+        private DateTime mLastCameraUpdate;
+        /// <summary>
+        /// The last time the viewer sent out an agent update.
+        /// </summary>
+        private DateTime mLastViewerUpdate;
+
+        /// <summary>
         /// Selected whenever the client proxy starts up.
         /// </summary>
         public event EventHandler OnProxyStarted;
-
         /// <summary>
         /// Selected whenever a client logs in to the proxy.
         /// </summary>
         public event EventHandler OnClientLoggedIn;
-
         /// <summary>
         /// Selected whenever a viewer exits.
         /// </summary>
@@ -71,7 +91,7 @@ namespace Chimera.OpenSim {
                 mFullscreen = value;
                 if (mClientLoggedIn && mClient != null) {
                     ProcessWrangler.SetBorder(mClient, mWindow.Monitor, !value);
-                    ToggleHUD();
+                    //ToggleHUD();
                 }
             }
         }
@@ -103,6 +123,26 @@ namespace Chimera.OpenSim {
         protected ILog Logger {
             get { return mLogger; }
             set { mLogger = value; }
+        }
+
+        public void Glow() {
+            Chat("Glow");
+        }
+
+        public void NoGlow() {
+            Chat("NoGlow");
+        }
+
+        public void Chat(string msg) {
+            if (mProxy != null) {
+                ChatFromViewerPacket p = new ChatFromViewerPacket();
+                p.ChatData.Channel = -40;
+                p.ChatData.Message = Utils.StringToBytes(msg);
+                p.ChatData.Type = (byte)1;
+                p.AgentData.AgentID = mAgentID;
+                p.AgentData.SessionID = mSessionID;
+                mProxy.InjectPacket(p, Direction.Outgoing);
+            }
         }
 
         internal void ToggleHUD() {
@@ -199,15 +239,20 @@ namespace Chimera.OpenSim {
                 }
 
                 new Thread(() => {
-                    if (mControlCamera)
+                    if (mControlCamera && Coordinator.ControlMode == ControlMode.Absolute)
                         SetCamera();
+                    SetWindow();
+                    if (mFollowCamProperties.SendPackets)
+                        mProxy.InjectPacket(mFollowCamProperties.Packet, Direction.Incoming);
                     if (OnClientLoggedIn != null)
                         OnClientLoggedIn(mProxy, null);
 
-                    Thread.Sleep(5000);
-                    if (mFullscreen)
-                        ToggleHUD();
-                    //mManager.Overlay.ForegroundOverlay();
+                    Thread.Sleep(30000);
+                    //if (mFullscreen)
+                        //ToggleHUD();
+                    if (mClient != null)
+                        ProcessWrangler.PressKey(mClient, "U", true, false, true);
+                    mWindow.OverlayManager.ForegroundOverlay();
                 }).Start();
             } else {
             }
@@ -239,27 +284,6 @@ namespace Chimera.OpenSim {
                 Launch();
         }
 
-        private void mWindow_MonitorChanged(Window window, Screen monitor) {
-            if (mClientLoggedIn && mClient != null)
-                ProcessWrangler.SetMonitor(mClient, monitor);
-        }
-
-        private void Coordinator_CameraUpdated(Coordinator coordinator, CameraUpdateEventArgs args) {
-            if (coordinator.ControlMode == ControlMode.Absolute || !mMaster)
-                ProcessCameraUpdate(coordinator, args);
-        }
-        /// <summary>
-        /// Called whenever the eye position is updated.
-        /// </summary>
-        /// <param name="input">The input which triggered the eye change.</param>
-        /// <param name="args">The arguments about the change that was made.</param>
-        private void Coordinator_EyeUpdated(Coordinator coordinator, EventArgs args) {
-            if (ProxyRunning && ControlCamera && Window.Coordinator.ControlMode == ControlMode.Absolute) {
-                SetCamera();
-                SetWindow();
-            }
-        }
-
         /// <summary>
         /// Return control of the camera to the viewer.
         /// </summary>
@@ -268,7 +292,8 @@ namespace Chimera.OpenSim {
         /// <summary>
         /// Take control of the camera and set it to the position specified by the input.
         /// </summary>
-        public abstract void SetCamera();
+        public abstract void SetCamera();
+
         /// <summary>
         /// Take control of the window frustum and set it up as specified by the Window.
         /// </summary>
@@ -389,6 +414,7 @@ namespace Chimera.OpenSim {
             mWindow.Coordinator.Tick += new Action(Coordinator_Tick);
             mWindow.Coordinator.CameraModeChanged += new Action<Coordinator,ControlMode>(Coordinator_CameraModeChanged);
             mWindow.Coordinator.DeltaUpdated += new Action<Chimera.Coordinator,DeltaUpdateEventArgs>(Coordinator_DeltaUpdated);
+            mWindow.Coordinator.StateManager.CustomTrigger += new Action<string>(StateManager_CustomTrigger);
             mWindow.MonitorChanged += new Action<Chimera.Window,Screen>(mWindow_MonitorChanged);
             mWindow.Changed += new Action<Chimera.Window,EventArgs>(mWindow_Changed);
             mFullscreen = mConfig.Fullscreen;
@@ -400,6 +426,13 @@ namespace Chimera.OpenSim {
 
             AutoRestart = mConfig.AutoRestartViewer;
             ControlCamera = mConfig.ControlCamera;
+        }
+
+        void StateManager_CustomTrigger(string trigger) {
+            if (trigger == "Glow")
+                Glow();
+            else if (trigger == "NoGlow")
+                NoGlow();
         }
 
         void mWindow_Changed(Window w, EventArgs args) {
@@ -454,20 +487,6 @@ namespace Chimera.OpenSim {
 
         public void Restart() {
             if (mClientLoggedIn) {
-                /*
-                ProcessWrangler.PressKey(mClient, "q", true, false, false);
-
-                Thread shutdownThread = new Thread(() => {
-                    int i = 0;
-                    while (mClientLoggedIn && i++ < 5) {
-                        lock (processLock)
-                            Monitor.Wait(processLock, 3000);
-                        if (mClientLoggedIn) {
-                            ProcessWrangler.PressKey(mClient, "{ENTER}");
-                            ProcessWrangler.PressKey(mClient, "q", true, false, false);
-                        }
-                    }
-                });*/
                 CloseViewer();
                 Thread.Sleep(1000);
                 CloseProxy();
@@ -528,10 +547,55 @@ namespace Chimera.OpenSim {
         void ISystemInput.Init(Coordinator coordinator) { }
 
         #endregion
+
+
+        private void mWindow_MonitorChanged(Window window, Screen monitor) {
+            if (mClientLoggedIn && mClient != null)
+                ProcessWrangler.SetMonitor(mClient, monitor);
+        }
+
+        private void Coordinator_CameraUpdated(Coordinator coordinator, CameraUpdateEventArgs args) {
+            if (coordinator.ControlMode == ControlMode.Absolute || !mMaster) {
+                double viewer = DateTime.Now.Subtract(mLastViewerUpdate).TotalSeconds;
+                double camera = DateTime.Now.Subtract(mLastCameraUpdate).TotalSeconds;
+                if (viewer > 2.0 && viewer > camera) {
+                    Console.WriteLine("Timeout since last viewer move. Last Viewer Update: {0}s, Last Camera Update: {1}s ", viewer, camera);
+                    Console.WriteLine("Control mode: " + coordinator.ControlMode);
+
+                    if (mRestartOnTimeout)
+                        Restart();
+                    else {
+                        ClearCamera();
+                        SetCamera();
+                    }
+                }
+                if (mLastCameraPosition != args.position) {
+                    mLastCameraUpdate = DateTime.Now;
+                    mLastCameraPosition = args.position;
+                }
+                ProcessCameraUpdate(coordinator, args);
+            }
+        }
+
+        /// <summary>
+        /// Called whenever the eye position is updated.
+        /// </summary>
+        /// <param name="input">The input which triggered the eye change.</param>
+        /// <param name="args">The arguments about the change that was made.</param>
+        private void Coordinator_EyeUpdated(Coordinator coordinator, EventArgs args) {
+            if (ProxyRunning && ControlCamera && Window.Coordinator.ControlMode == ControlMode.Absolute) {
+                SetCamera();
+                SetWindow();
+            }
+        }
     
         private Packet mProxy_AgentUpdatePacketReceived(Packet p, IPEndPoint ep) {
+            AgentUpdatePacket packet = p as AgentUpdatePacket;
+            if (packet.AgentData.CameraAtAxis != mLastViewerPosition) {
+                mLastViewerPosition = packet.AgentData.CameraAtAxis;
+                mLastViewerUpdate =  DateTime.Now;
+            }
             if (mMaster && mWindow.Coordinator.ControlMode == ControlMode.Delta) {
-                AgentUpdatePacket packet = p as AgentUpdatePacket;
                 mWindow.Coordinator.Update(packet.AgentData.CameraCenter, Vector3.Zero, new Rotation(packet.AgentData.CameraAtAxis), Rotation.Zero, ControlMode.Absolute);
             }
             return p;
@@ -539,9 +603,11 @@ namespace Chimera.OpenSim {
 
         private void Coordinator_CameraModeChanged(Coordinator coordinator, ControlMode mode) {
             if (mMaster) {
-                if (mode == ControlMode.Delta)
+                if (mode == ControlMode.Delta) {
                     ClearCamera();
-                else {
+                    if (mProxy != null && mFollowCamProperties.SendPackets)
+                        mProxy.InjectPacket(mFollowCamProperties.Packet, Direction.Incoming);
+                } else {
                     SetCamera();
                     if (mProxy != null)
                         mProxy.InjectPacket(new ClearRemoteControlPacket(), Direction.Incoming);
@@ -552,9 +618,9 @@ namespace Chimera.OpenSim {
         private void Coordinator_DeltaUpdated(Coordinator coordinator, DeltaUpdateEventArgs args) {
             if (mMaster && coordinator.ControlMode == ControlMode.Delta && mProxy != null) {
                 RemoteControlPacket packet = new RemoteControlPacket();
-                packet.Delta.Position = args.positionDelta;
-                packet.Delta.Pitch = (float) (args.rotationDelta.Pitch * (Math.PI / 45.0));
-                packet.Delta.Yaw = (float) (args.rotationDelta.Yaw * (Math.PI / 45.0));
+                packet.Delta.Position = args.positionDelta * mDeltaScale;
+                packet.Delta.Pitch = (float) (args.rotationDelta.Pitch * (Math.PI / 45.0)) * mDeltaScale;
+                packet.Delta.Yaw = (float) (args.rotationDelta.Yaw * (Math.PI / 45.0)) * mDeltaScale;
                 mProxy.InjectPacket(packet, Direction.Incoming);
                 
                 //TODO - Would be nice if pitching the view 'stuck'.

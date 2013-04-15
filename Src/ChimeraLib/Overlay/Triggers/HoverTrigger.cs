@@ -60,10 +60,14 @@ namespace Chimera.Overlay.Triggers {
         /// <param name="y">The y coordinate for where the image is to be positioned, specified between 0 and 1. 0 is flush to the top, 1 flush to the bottom.</param>
         /// <param name="x">The width of the image, specified between 0 and 1. 1 will fill the entire width, 0 will be invisible.</param>
         /// <param name="y">The width of the image, specified between 0 and 1. 1 will fill the entire height, 0 will be invisible.</param>
-        public HoverTrigger(WindowOverlayManager manager, IHoverSelectorRenderer selector, float x, float y, float w, float h) {
+        public HoverTrigger(WindowOverlayManager manager, IHoverSelectorRenderer renderer, float x, float y, float w, float h)
+            : this(manager, renderer, new RectangleF(x, y, w, h)) {
+        }
+
+        public HoverTrigger(WindowOverlayManager manager, IHoverSelectorRenderer renderer, RectangleF bounds) {
             mManager = manager;
-            mBounds = new RectangleF(x, y, w, h);
-            mRenderer = selector;
+            mBounds = bounds;
+            mRenderer = renderer;
 
             mManager.Window.Coordinator.Tick += new Action(Coordinator_Tick);
         }
@@ -91,6 +95,7 @@ namespace Chimera.Overlay.Triggers {
         /// </summary>
         protected virtual RectangleF Bounds {
             get { return mBounds; }
+            set { mBounds = value; }
         }
 
         /// <summary>
@@ -106,22 +111,23 @@ namespace Chimera.Overlay.Triggers {
         protected virtual Rectangle ScaledBounds {
             get {
                 return new Rectangle(
-                    (int)(mClip.Width * mBounds.X),
-                    (int)(mClip.Height * mBounds.Y),
-                    (int)(mClip.Width * mBounds.Width),
-                    (int)(mClip.Height * mBounds.Height));
+                    (int)(mClip.Width * Bounds.X),
+                    (int)(mClip.Height * Bounds.Y),
+                    (int)(mClip.Width * Bounds.Width),
+                    (int)(mClip.Height * Bounds.Height));
                 }
         }
 
         /// <summary>
         /// Clip boundary of the area on which the selector is being drawn.
         /// </summary>
-        protected Rectangle Clip {
+        public virtual Rectangle Clip {
             get { return mClip; }
+            set { mClip = value; }
         }
 
         private void Coordinator_Tick() {
-            if (mActive && mBounds.Contains(mManager.CursorPosition)) {
+            if (mActive && Bounds.Contains(mManager.CursorPosition)) {
                 if (!mHovering) {
                     mHovering = true;
                     mHoverStart = DateTime.Now;
@@ -159,7 +165,7 @@ namespace Chimera.Overlay.Triggers {
 
         #region IDrawable
 
-        public bool NeedsRedrawn {
+        public virtual bool NeedsRedrawn {
             get { return mNeedsRedrawn; }
         }
 
@@ -180,9 +186,7 @@ namespace Chimera.Overlay.Triggers {
         /// </summary>
         /// <param name="clip">The area in which this drawable will be drawn.</param>
         /// <param name="graphics">The object with which to to draw any elements which only change when the area is resized.</param>
-        public virtual void RedrawStatic(Rectangle clip, Graphics graphics) {
-            mClip = clip;
-        }
+        public virtual void DrawStatic(Graphics graphics) { }
 
         #endregion    
     }

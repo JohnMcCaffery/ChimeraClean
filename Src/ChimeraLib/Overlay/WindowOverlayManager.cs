@@ -85,8 +85,13 @@ namespace Chimera.Overlay {
             get { return mOverlayWindow != null ? mOverlayWindow.Cursor : Cursor.Current; }
             set {
                 if (mOverlayWindow != null)
-                        mOverlayWindow.SetCursor(value);
+                    mOverlayWindow.SetCursor(value);
             }
+        }
+
+        public void ResetCursor() {
+            if (mOverlayWindow != null)
+                mOverlayWindow.ResetCursor();
         }
 
         /// <summary>
@@ -262,7 +267,7 @@ namespace Chimera.Overlay {
             mControlPointer = cfg.ControlPointer;
         }
 
-        private void MoveCursorOffScreen() {
+        public void MoveCursorOffScreen() {
             SystemCursor.Position = new Point(mWindow.Monitor.Bounds.X + mWindow.Monitor.Bounds.Width, mWindow.Monitor.Bounds.Y + mWindow.Monitor.Bounds.Height);
         }
 
@@ -280,6 +285,19 @@ namespace Chimera.Overlay {
         public void ForceRedrawStatic() {
             if (mOverlayWindow != null)
                 mOverlayWindow.RedrawStatic();
+        }
+
+        public bool AlwaysOnTop { 
+            get { return mOverlayWindow != null ? mOverlayWindow.AlwaysOnTop : false; }
+            set { 
+                if (mOverlayWindow != null)
+                    mOverlayWindow.AlwaysOnTop = value;
+            }
+        }
+
+        public void ForegroundOverlay() {
+            if (mOverlayWindow != null)
+                mOverlayWindow.BringOverlayToFront();
         }
     }
 }

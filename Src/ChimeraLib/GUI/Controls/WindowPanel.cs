@@ -48,7 +48,7 @@ namespace Chimera.GUI.Controls {
             projectorDrawCheck.Checked = mWindow.Projector.DrawDiagram;
             projectorDrawRoomCheck.Checked = mWindow.Projector.DrawRoom;
             projectorDrawLabelsCheck.Checked = mWindow.Projector.DrawLabels;
-            projectorAutoUpdateCheck.Checked = mWindow.Projector.DrawLabels;
+            projectorAutoUpdateCheck.Checked = mWindow.Projector.AutoUpdate;
 
             projectorDrawRoomCheck.Enabled = mWindow.Projector.DrawDiagram;
             projectorDrawLabelsCheck.Enabled = mWindow.Projector.DrawDiagram;
@@ -175,11 +175,11 @@ namespace Chimera.GUI.Controls {
         }
 
         private void bringToFrontButtin_Click(object sender, EventArgs e) {
-            //mManager.Overlay.ForegroundOverlay();
+            mWindow.OverlayManager.ForegroundOverlay();
         }
 
         private void showBordersTextBox_CheckedChanged(object sender, EventArgs e) {
-            //mManager.Overlay.Fullscreen = fullscreenCheck.Checked;
+            mWindow.OverlayManager.Fullscreen = fullscreenCheck.Checked;
         }
 
         private void controlCursor_CheckedChanged(object sender, EventArgs e) {
@@ -187,6 +187,8 @@ namespace Chimera.GUI.Controls {
         }
 
         private void restartButton_Click(object sender, EventArgs e) {
+            mWindow.Coordinator.StateManager.Reset();
+            mWindow.OverlayManager.MoveCursorOffScreen();
             if (mWindow.Output != null)
                 mWindow.Output.Restart();
         }

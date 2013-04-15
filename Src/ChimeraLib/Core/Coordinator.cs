@@ -11,6 +11,7 @@ using Chimera.Interfaces;
 using System.IO;
 using System.Threading;
 using Chimera.Overlay;
+using Chimera.Util;
 
 namespace Chimera {
     /// <summary>
@@ -167,6 +168,8 @@ namespace Chimera {
         /// </summary>
         private CoordinatorConfig mConfig;
 
+        private StatisticsServer mServer;
+
         /// <summary>
         /// Triggered when the camera control mode changes.
         /// </summary>
@@ -225,6 +228,8 @@ namespace Chimera {
         /// </summary>
         /// <param name="inputs">The inputs which control the camera through this input.</param>
         public Coordinator(params ISystemInput[] inputs) {
+            mServer = new StatisticsServer(this);
+
             mConfig = new CoordinatorConfig();
             mStateManager = new StateManager(this);
 
@@ -506,6 +511,8 @@ namespace Chimera {
         /// Called when the input is to be disposed of.
         /// </summary>
         public void Close() {
+            mServer.Stop();
+
             mAlive = false;
             foreach (var input in mInputs) {
                 input.Enabled = false;

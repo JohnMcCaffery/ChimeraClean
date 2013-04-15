@@ -74,7 +74,8 @@ namespace Chimera.Overlay.Transitions {
             double time = DateTime.Now.Subtract(mTransitionStart).TotalMilliseconds;
             if (time > mLengthMS) {
                 mTransitioning = false;
-                Manager.Opacity = mFadeIn ? 1.0 : 0.0;
+                //Manager.Opacity = mFadeIn ? 1.0 : 0.0;
+                Manager.Opacity = 1.0;
                 if (Finished != null)
                     Finished(this);
             }
@@ -89,6 +90,7 @@ namespace Chimera.Overlay.Transitions {
         public override event Action<IWindowTransition> Finished;
 
         public override void Begin() {
+            base.Begin();
             mTransitionStart = DateTime.Now;
             mTransitioning = true;
         }
@@ -101,11 +103,11 @@ namespace Chimera.Overlay.Transitions {
             get { return true; }
         }
 
-        public override void RedrawStatic(Rectangle clip, Graphics graphics) {
+        public override void DrawStatic(Graphics graphics) {
             if (mFadeIn)
-                To.RedrawStatic(clip, graphics);
+                To.DrawStatic(graphics);
             else
-                From.RedrawStatic(clip, graphics);
+                From.DrawStatic(graphics);
         }
 
         public override void DrawDynamic(Graphics graphics) { }
