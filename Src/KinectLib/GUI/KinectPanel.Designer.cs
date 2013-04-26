@@ -24,9 +24,10 @@
         /// </summary>
         private void InitializeComponent() {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(KinectPanel));
-            Chimera.Util.Rotation rotation2 = new Chimera.Util.Rotation();
+            Chimera.Util.Rotation rotation1 = new Chimera.Util.Rotation();
             this.mainTab = new System.Windows.Forms.TabControl();
             this.controlTab = new System.Windows.Forms.TabPage();
+            this.headCheck = new System.Windows.Forms.CheckBox();
             this.headPanel = new Chimera.GUI.UpdatedVectorPanel();
             this.label3 = new System.Windows.Forms.Label();
             this.helpTriggerPulldown = new System.Windows.Forms.ComboBox();
@@ -39,13 +40,17 @@
             this.positionPanel = new Chimera.GUI.VectorPanel();
             this.movementTab = new System.Windows.Forms.TabPage();
             this.triggerTab = new System.Windows.Forms.TabPage();
-            this.headCheck = new System.Windows.Forms.CheckBox();
+            this.frameTab = new System.Windows.Forms.TabPage();
+            this.frameImage = new System.Windows.Forms.PictureBox();
             this.mainTab.SuspendLayout();
             this.controlTab.SuspendLayout();
+            this.frameTab.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.frameImage)).BeginInit();
             this.SuspendLayout();
             // 
             // mainTab
             // 
+            this.mainTab.Controls.Add(this.frameTab);
             this.mainTab.Controls.Add(this.controlTab);
             this.mainTab.Controls.Add(this.movementTab);
             this.mainTab.Controls.Add(this.triggerTab);
@@ -77,6 +82,18 @@
             this.controlTab.TabIndex = 0;
             this.controlTab.Text = "Control";
             this.controlTab.UseVisualStyleBackColor = true;
+            // 
+            // headCheck
+            // 
+            this.headCheck.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.headCheck.AutoSize = true;
+            this.headCheck.Location = new System.Drawing.Point(573, 312);
+            this.headCheck.Name = "headCheck";
+            this.headCheck.Size = new System.Drawing.Size(128, 17);
+            this.headCheck.TabIndex = 12;
+            this.headCheck.Text = "Control Head Position";
+            this.headCheck.UseVisualStyleBackColor = true;
+            this.headCheck.CheckedChanged += new System.EventHandler(this.headCheck_CheckedChanged);
             // 
             // headPanel
             // 
@@ -181,11 +198,11 @@
             this.orientationPanel.Quaternion = ((OpenMetaverse.Quaternion)(resources.GetObject("orientationPanel.Quaternion")));
             this.orientationPanel.Size = new System.Drawing.Size(701, 95);
             this.orientationPanel.TabIndex = 2;
-            rotation2.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("rotation2.LookAtVector")));
-            rotation2.Pitch = 0D;
-            rotation2.Quaternion = ((OpenMetaverse.Quaternion)(resources.GetObject("rotation2.Quaternion")));
-            rotation2.Yaw = 0D;
-            this.orientationPanel.Value = rotation2;
+            rotation1.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("rotation1.LookAtVector")));
+            rotation1.Pitch = 0D;
+            rotation1.Quaternion = ((OpenMetaverse.Quaternion)(resources.GetObject("rotation1.Quaternion")));
+            rotation1.Yaw = 0D;
+            this.orientationPanel.Value = rotation1;
             this.orientationPanel.Yaw = 0D;
             // 
             // positionPanel
@@ -227,17 +244,26 @@
             this.triggerTab.Text = "CustomTrigger";
             this.triggerTab.UseVisualStyleBackColor = true;
             // 
-            // headCheck
+            // frameTab
             // 
-            this.headCheck.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.headCheck.AutoSize = true;
-            this.headCheck.Location = new System.Drawing.Point(573, 312);
-            this.headCheck.Name = "headCheck";
-            this.headCheck.Size = new System.Drawing.Size(128, 17);
-            this.headCheck.TabIndex = 12;
-            this.headCheck.Text = "Control Head Position";
-            this.headCheck.UseVisualStyleBackColor = true;
-            this.headCheck.CheckedChanged += new System.EventHandler(this.headCheck_CheckedChanged);
+            this.frameTab.Controls.Add(this.frameImage);
+            this.frameTab.Location = new System.Drawing.Point(4, 22);
+            this.frameTab.Name = "frameTab";
+            this.frameTab.Padding = new System.Windows.Forms.Padding(3);
+            this.frameTab.Size = new System.Drawing.Size(701, 494);
+            this.frameTab.TabIndex = 3;
+            this.frameTab.Text = "Frame";
+            this.frameTab.UseVisualStyleBackColor = true;
+            // 
+            // frameImage
+            // 
+            this.frameImage.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.frameImage.Location = new System.Drawing.Point(3, 3);
+            this.frameImage.Name = "frameImage";
+            this.frameImage.Size = new System.Drawing.Size(695, 488);
+            this.frameImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.frameImage.TabIndex = 0;
+            this.frameImage.TabStop = false;
             // 
             // KinectPanel
             // 
@@ -249,6 +275,9 @@
             this.mainTab.ResumeLayout(false);
             this.controlTab.ResumeLayout(false);
             this.controlTab.PerformLayout();
+            this.frameTab.ResumeLayout(false);
+            this.frameTab.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.frameImage)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -270,5 +299,7 @@
         private System.Windows.Forms.TabPage triggerTab;
         private Chimera.GUI.UpdatedVectorPanel headPanel;
         private System.Windows.Forms.CheckBox headCheck;
+        private System.Windows.Forms.TabPage frameTab;
+        private System.Windows.Forms.PictureBox frameImage;
     }
 }

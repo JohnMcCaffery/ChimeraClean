@@ -21,6 +21,8 @@ namespace Chimera.Kinect.GUI {
         private KinectInput mInput;
         private Dictionary<string, TabPage> mTabs = new Dictionary<string, TabPage>();
 
+        private ChangeDelegate mKinectTick;
+
         public KinectPanel() {
             InitializeComponent();
         }
@@ -29,6 +31,8 @@ namespace Chimera.Kinect.GUI {
             : this() {
 
             mInput = input;
+
+            mKinectTick = new ChangeDelegate(Nui_Tick);
 
             orientationPanel.Value = input.Orientation;
             orientationPanel.Text = "Orientation (deg)";
@@ -62,6 +66,26 @@ namespace Chimera.Kinect.GUI {
             mInput.EnabledChanged += new Action<IInput,bool>(mInput_EnabledChanged);
             mInput.PositionChanged += new Action<Vector3>(mInput_PositionChanged);
             mInput.Coordinator.WindowAdded += new Action<Window,EventArgs>(Coordinator_WindowAdded);
+
+            Disposed += new EventHandler(KinectPanel_Disposed);
+            HandleCreated += new EventHandler(KinectPanel_HandleCreated);
+        }
+
+        void KinectPanel_HandleCreated(object sender, EventArgs e) {
+            Nui.Tick += mKinectTick;
+        }
+
+        void KinectPanel_Disposed(object sender, EventArgs e) {
+            Nui.Tick -= mKinectTick;
+        }
+
+        private void Nui_Tick() {
+            bool update = false;
+            Invoke(new Action(() => update = mainTab.SelectedTab == frameTab));
+            if (update) {
+                Bitmap frame = Nui.ColourFrame;
+                BeginInvoke(new Action(() => frameImage.Image = frame));
+            }
         }
 
         private void mInput_EnabledChanged(IInput input, bool enabled) {
