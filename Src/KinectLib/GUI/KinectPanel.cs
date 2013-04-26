@@ -72,6 +72,25 @@ namespace Chimera.Kinect.GUI {
         }
 
         void KinectPanel_HandleCreated(object sender, EventArgs e) {
+            mHead = Nui.joint(Nui.Head);
+            mHandR = Nui.joint(Nui.Hand_Right);
+            mHandL = Nui.joint(Nui.Hand_Left);
+            mWristR = Nui.joint(Nui.Wrist_Right);
+            mWristL = Nui.joint(Nui.Wrist_Left);
+            mElbowR = Nui.joint(Nui.Elbow_Right);
+            mElbowL = Nui.joint(Nui.Elbow_Left);
+            mShoulderR = Nui.joint(Nui.Shoulder_Right);
+            mShoulderL = Nui.joint(Nui.Shoulder_Left);
+            mShoulderC = Nui.joint(Nui.Shoulder_Centre);
+            mHipC = Nui.joint(Nui.Hip_Centre);
+            mHipR = Nui.joint(Nui.Hip_Right);
+            mHipL = Nui.joint(Nui.Hip_Left);
+            mKneeR = Nui.joint(Nui.Knee_Right);
+            mKneeL = Nui.joint(Nui.Knee_Left);
+            mAnkleR = Nui.joint(Nui.Ankle_Right);
+            mAnkleL = Nui.joint(Nui.Ankle_Left);
+            mFootR = Nui.joint(Nui.Foot_Right);
+            mFootL = Nui.joint(Nui.Foot_Left);
             Nui.Tick += mKinectTick;
         }
 
@@ -79,11 +98,68 @@ namespace Chimera.Kinect.GUI {
             Nui.Tick -= mKinectTick;
         }
 
+        private Vector mHead;
+        private Vector mHandR;
+        private Vector mHandL;
+        private Vector mWristR;
+        private Vector mWristL;
+        private Vector mElbowR;
+        private Vector mElbowL;
+        private Vector mShoulderR;
+        private Vector mShoulderL;
+        private Vector mShoulderC;
+        private Vector mHipC;
+        private Vector mHipR;
+        private Vector mHipL;
+        private Vector mKneeR;
+        private Vector mKneeL;
+        private Vector mAnkleR;
+        private Vector mAnkleL;
+        private Vector mFootR;
+        private Vector mFootL;
+        private static readonly int R = 5;
+        private Size mSize = new Size(R * 2, R * 2);
+
         private void Nui_Tick() {
             bool update = false;
-            Invoke(new Action(() => update = mainTab.SelectedTab == frameTab));
+            bool depth = true;
+            Invoke(new Action(() => {
+                update = mainTab.SelectedTab == frameTab;
+                depth = depthFrameButton.Checked;
+            }));
             if (update) {
-                Bitmap frame = Nui.ColourFrame;
+                Bitmap frame = depth ? Nui.DepthFrame : Nui.ColourFrame;
+                Func<Vector, Point> toP = v => {
+                    Point p = depth ? Nui.SkeletonToDepth(v) : Nui.SkeletonToColour(v);
+                    return new Point(p.X - R, p.Y - R);
+                };
+
+                if (Nui.HasSkeleton) {
+                    using (Graphics g = Graphics.FromImage(frame)) {
+                        using (Pen p = new Pen(Color.Red, R / 2)) {
+                            g.DrawEllipse(p, new Rectangle(toP(mHead), mSize));
+                            g.DrawEllipse(p, new Rectangle(toP(mHandL), mSize));
+                            g.DrawEllipse(p, new Rectangle(toP(mHandR), mSize));
+                            g.DrawEllipse(p, new Rectangle(toP(mWristL), mSize));
+                            g.DrawEllipse(p, new Rectangle(toP(mWristR), mSize));
+                            g.DrawEllipse(p, new Rectangle(toP(mElbowL), mSize));
+                            g.DrawEllipse(p, new Rectangle(toP(mElbowL), mSize));
+                            g.DrawEllipse(p, new Rectangle(toP(mShoulderL), mSize));
+                            g.DrawEllipse(p, new Rectangle(toP(mShoulderR), mSize));
+                            g.DrawEllipse(p, new Rectangle(toP(mShoulderC), mSize));
+                            g.DrawEllipse(p, new Rectangle(toP(mHipC), mSize));
+                            g.DrawEllipse(p, new Rectangle(toP(mHipL), mSize));
+                            g.DrawEllipse(p, new Rectangle(toP(mHipR), mSize));
+                            g.DrawEllipse(p, new Rectangle(toP(mKneeL), mSize));
+                            g.DrawEllipse(p, new Rectangle(toP(mKneeR), mSize));
+                            g.DrawEllipse(p, new Rectangle(toP(mAnkleL), mSize));
+                            g.DrawEllipse(p, new Rectangle(toP(mAnkleR), mSize));
+                            g.DrawEllipse(p, new Rectangle(toP(mFootL), mSize));
+                            g.DrawEllipse(p, new Rectangle(toP(mFootR), mSize));
+                        }
+                    }
+                }
+
                 BeginInvoke(new Action(() => frameImage.Image = frame));
             }
         }
