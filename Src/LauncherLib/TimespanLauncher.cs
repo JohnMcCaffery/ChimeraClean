@@ -15,6 +15,7 @@ using Chimera.OpenSim;
 using Chimera.Kinect;
 using Chimera.Inputs;
 using Chimera.Kinect.Interfaces;
+using Joystick;
 
 namespace Chimera.Launcher {
     public class TimespanLauncher : Launcher{
@@ -28,6 +29,7 @@ namespace Chimera.Launcher {
             PointCursorFactory pointFactory = new PointCursorFactory();
 
             //IOutput output = new SetFollowCamPropertiesViewerOutput("MainWindow");
+            ISystemInput joystick = new DeltaBasedInput(new JoystickInput());
             ISystemInput kbMouseInput = new DeltaBasedInput(new KBMouseInput());
             ISystemInput flythrough = new Chimera.Flythrough.Flythrough();
             ISystemInput mouse = new MouseInput();
@@ -45,6 +47,7 @@ namespace Chimera.Launcher {
                 );
 
             return new ISystemInput[] { 
+                joystick,
                 kbMouseInput, 
                 kinectInput, 
                 mouse, 
