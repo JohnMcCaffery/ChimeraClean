@@ -32,6 +32,10 @@ namespace Chimera.Overlay {
         /// </summary>
         private bool mControlPointer;
         /// <summary>
+        /// Whether the program can ever control the pointer. Is set from the config file at startup and never changed.
+        /// </summary>
+        private bool mEverControlPointer;
+        /// <summary>
         /// The window used to render the overlay.
         /// </summary>
         private OverlayWindow mOverlayWindow;
@@ -112,7 +116,7 @@ namespace Chimera.Overlay {
         public bool ControlPointer {
             get { return mControlPointer; }
             set {
-                mControlPointer = value;
+                mControlPointer = value && mEverControlPointer;
                 if (!value)
                     MoveCursorOffScreen();
             }
@@ -265,6 +269,7 @@ namespace Chimera.Overlay {
             mOverlayActive = cfg.LaunchOverlay;
             mOverlayFullscreen = cfg.Fullscreen;
             mControlPointer = cfg.ControlPointer;
+            mEverControlPointer = cfg.ControlPointer;
         }
 
         public void MoveCursorOffScreen() {
