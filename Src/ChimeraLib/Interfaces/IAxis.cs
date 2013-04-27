@@ -5,6 +5,9 @@ using System.Text;
 using System.Windows.Forms;
 
 namespace Chimera.Interfaces {
+    /// <summary>
+    /// The different options for binding an input axis to a camera axis.
+    /// </summary>
     public enum AxisBinding {
         /// <summary>
         /// The input axis is not bound to any camera axis.

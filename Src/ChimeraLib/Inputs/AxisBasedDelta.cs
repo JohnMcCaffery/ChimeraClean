@@ -12,6 +12,8 @@ using System.Drawing;
 namespace Chimera.Inputs {
     public class AxisBasedDelta : IDeltaInput {
         private readonly List<IAxis> mAxes = new List<IAxis>();
+        private readonly string mName;
+
         private AxisBasedDeltaPanel mPanel;
         private bool mEnableX;
         private bool mEnableY;
@@ -19,9 +21,19 @@ namespace Chimera.Inputs {
         private bool mEnablePitch;
         private bool mEnableYaw;
         private bool mEnabled;
-        private string mName;
+        private float mScale;
+
+        public float Scale {
+            get { return mScale; }
+            set {
+                mScale = value;
+                if (Change != null)
+                    Change(this);
+            }
+        }
 
         public AxisBasedDelta(string name, params IAxis[] axes) {
+            mName = name;
             foreach (var axis in mAxes)
                 AddAxis(axis);
         }
@@ -45,7 +57,7 @@ namespace Chimera.Inputs {
                 float x = mEnableX ? mAxes.Where(a => a.Binding == AxisBinding.X).Sum(a => a.Delta) : 0f;
                 float y = mEnableY ? mAxes.Where(a => a.Binding == AxisBinding.Y).Sum(a => a.Delta) : 0f;
                 float z = mEnableZ ? mAxes.Where(a => a.Binding == AxisBinding.Z).Sum(a => a.Delta) : 0f;
-                return new Vector3(x, y, z);
+                return new Vector3(x, y, z) * mScale;
             }
         }
 
@@ -53,7 +65,7 @@ namespace Chimera.Inputs {
             get { 
                 float p = mEnablePitch ? mAxes.Where(a => a.Binding == AxisBinding.Pitch).Sum(a => a.Delta) : 0f;
                 float y = mEnableYaw ? mAxes.Where(a => a.Binding == AxisBinding.Yaw).Sum(a => a.Delta) : 0f;
-                return new Rotation(p, y);
+                return new Rotation(p * mScale, y * mScale);
             }
         }
 
