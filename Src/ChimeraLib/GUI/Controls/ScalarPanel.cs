@@ -84,7 +84,7 @@ namespace Chimera.GUI {
 
         private void SetSlider() {
             if (spinner.Maximum - spinner.Minimum > 10) {
-                spinner.DecimalPlaces = 2;
+                spinner.DecimalPlaces = 4;
                 mScale = 100;
             } else if (spinner.Maximum- spinner.Maximum < 10) {
                 spinner.DecimalPlaces = 4;

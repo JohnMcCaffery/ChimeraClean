@@ -68,13 +68,15 @@ namespace Chimera.Kinect {
         public Scalar X { get { return mX; } }
         public Scalar Y { get { return mY; } }
 
+        private static readonly int HAND_SMOOTHING_FRAMES = 5;
+        private static readonly int ANCHOR_SMOOTHING_FRAMES = 15;
+        private static readonly int ANCHOR = Nui.Hip_Centre;
+
         public SimpleCursor() : this (false) { }
         public SimpleCursor(bool test) {
-            mHandR = test ? Vector.Create("HandR", 0f, 0f, 0f) : Nui.joint(Nui.Hand_Right);
-            mHandL = test ? Vector.Create("HandL", 0f, 0f, 0f) : Nui.joint(Nui.Hand_Left);
-            mAnchor = test ? Vector.Create("Anchor", 0f, 0f, 0f) : Nui.joint(Nui.Hip_Centre);
-            Vector head = test ? Vector.Create("Head", -1f, 0f, 0f) : Nui.joint(Nui.Head);
-            Scalar headShoulderDiff = Nui.magnitude(mAnchor - head);
+            mHandR = test ? Vector.Create("HandR", 0f, 0f, 0f) : Nui.smooth(Nui.joint(Nui.Hand_Right), HAND_SMOOTHING_FRAMES);
+            mHandL = test ? Vector.Create("HandL", 0f, 0f, 0f) : Nui.smooth(Nui.joint(Nui.Hand_Left), HAND_SMOOTHING_FRAMES);
+            mAnchor = test ? Vector.Create("Anchor", 0f, 0f, 0f) : Nui.smooth(Nui.joint(Nui.Hip_Centre), ANCHOR_SMOOTHING_FRAMES);
 
             mLeftShift = Scalar.Create("Left Shift", .0f);
             mUpShift = Scalar.Create("Up Shift", .0f);

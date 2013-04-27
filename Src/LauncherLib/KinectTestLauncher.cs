@@ -16,23 +16,27 @@ using Chimera.Overlay;
 using Chimera.Flythrough.Overlay;
 
 namespace Chimera.Launcher {
-    public class KinectTestLauncher : Launcher {
+    public class MinimumLauncher : Launcher {
         private SetWindowViewerOutput mMainWindowProxy = new SetWindowViewerOutput("MainWindow");
 
         protected override ISystemInput[] GetInputs() {
             /*
-            DolphinMovementInput dolphin = new DolphinMovementInput();
-            */
-
-            RaiseArmHelpTrigger trigger = new RaiseArmHelpTrigger();
             TimespanMovementInput timespan = new TimespanMovementInput();
+            DolphinMovementInput dolphin = new DolphinMovementInput();
+            RaiseArmHelpTrigger trigger = new RaiseArmHelpTrigger();
             SimpleCursorFactory simpleFactory = new SimpleCursorFactory();
             PointCursorFactory pointFactory = new PointCursorFactory();
+            */
 
+            //IOutput output = new SetFollowCamPropertiesViewerOutput("MainWindow");
             ISystemInput kbMouseInput = new DeltaBasedInput(new KBMouseInput());
+            /*
+            ISystemInput flythrough = new Chimera.Flythrough.Flythrough();
+            ISystemInput heightmap = new HeightmapInput();
             ISystemInput kinectInput = new KinectInput(
                 new IDeltaInput[] { 
                     timespan, 
+                    dolphin 
                 }, 
                 new IHelpTrigger[] { 
                     trigger 
@@ -40,12 +44,17 @@ namespace Chimera.Launcher {
                 simpleFactory, 
                 pointFactory
                 );
+            */
 
             ISystemInput mouse = new MouseInput();
 
             return new ISystemInput[] { 
-                kinectInput, 
+                kbMouseInput, 
+                //kinectInput, 
                 mouse, 
+                //heightmap, 
+                //flythrough, 
+                mMainWindowProxy 
             };
         }
 
@@ -71,7 +80,7 @@ namespace Chimera.Launcher {
             State tmpSplash = new ImageBGState("SplashScreen", Coordinator.StateManager, "../Images/Caen/MenuBGs/Caen-Splash.png");
             State vid = new OverlayVideoState("TestVid", Coordinator.StateManager, mainWindow.OverlayManager, "../Videos/test.mp4", tmpSplash, fadeTransition);
 
-            //TxtTrans(tmpSplash, vid, "Play", .4f, .4f, font, Color.Red, clip, mainWindow, cursorRenderer, fadeTransition);
+            TxtTrans(tmpSplash, vid, "Play", .4f, .4f, font, Color.Red, clip, mainWindow, cursorRenderer, fadeTransition);
 
             Coordinator.StateManager.CurrentState = tmpSplash;
 
