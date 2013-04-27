@@ -24,6 +24,8 @@ namespace Chimera.GUI.Controls.Inputs {
             mInput = input;
             mInput.AxisAdded += new Action<Interfaces.IAxis>(mInput_AxisAdded);
 
+            scalePanel.Value = input.Scale;
+
             foreach (var axis in mInput.Axes)
                 mInput_AxisAdded(axis);
         }
@@ -49,6 +51,10 @@ namespace Chimera.GUI.Controls.Inputs {
                 panel.Location = new Point(x, y);
                 y += panel.Height;
             }
+        }
+
+        private void scalePanel_ValueChanged(float obj) {
+            mInput.Scale = scalePanel.Value;
         }
     }
 }

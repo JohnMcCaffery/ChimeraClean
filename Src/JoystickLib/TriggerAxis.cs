@@ -5,14 +5,15 @@ using System.Text;
 using SlimDX.XInput;
 using Chimera.Inputs;
 using Chimera;
+using Chimera.Interfaces;
 
 namespace Joystick {
-    public class TriggerAxis : ConstrainedAxis {
+    public class TriggerAxis : ConstrainedAxis, IInputListener {
         private Controller mController;
         private bool mLeftUp;
 
         public TriggerAxis(bool leftUp)
-            : base(short.MaxValue / 3f, short.MaxValue / 2f, short.MaxValue / 6f, .00005f) {
+            : base(0, 255f, 0, .0005f) {
             Init(leftUp);
 
             mController = JoystickInput.GetController();
@@ -26,19 +27,6 @@ namespace Joystick {
         public TriggerAxis(Controller controller, bool leftUp)
             : this(leftUp) {
             mController = controller;
-        }
-
-        public TriggerAxis(bool leftUp, IInputSource source)
-            : this(leftUp) {
-            Init(source);
-        }
-        public TriggerAxis(UserIndex index, bool leftUp, IInputSource source)
-            : this(index, leftUp) {
-            Init(source);
-        }
-        public TriggerAxis(Controller controller, bool leftUp, IInputSource source)
-            : this(controller, leftUp) {
-            Init(source);
         }
 
         private void Init(bool leftUp) {

@@ -129,6 +129,7 @@
     <Compile Include="Inputs\ConstrainedAxis.cs" />
     <Compile Include="Inputs\SelectableInput.cs" />
     <Compile Include="Interfaces\IAxis.cs" />
+    <Compile Include="Interfaces\IInputListener.cs" />
     <Compile Include="Interfaces\Overlay\IImageTransition.cs" />
     <Compile Include="Interfaces\Overlay\IImageTransitionFactory.cs" />
     <Compile Include="Interfaces\Overlay\IWindowTransition.cs" />

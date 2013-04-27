@@ -13,15 +13,16 @@ namespace Chimera.Inputs {
     public class AxisBasedDelta : IDeltaInput {
         private readonly List<IAxis> mAxes = new List<IAxis>();
         private readonly string mName;
+        private IInputSource mSource;
 
         private AxisBasedDeltaPanel mPanel;
-        private bool mEnableX;
-        private bool mEnableY;
-        private bool mEnableZ;
-        private bool mEnablePitch;
-        private bool mEnableYaw;
-        private bool mEnabled;
-        private float mScale;
+        private bool mEnableX = true;
+        private bool mEnableY = true;
+        private bool mEnableZ = true;
+        private bool mEnablePitch = true;
+        private bool mEnableYaw = true;
+        private bool mEnabled = true;
+        private float mScale = 1f;
 
         public event Action<IAxis> AxisAdded;
 
@@ -53,13 +54,16 @@ namespace Chimera.Inputs {
             if (axes.Length > i && axes[i++] != null)
                 axes[i - 1].Binding = AxisBinding.Yaw;
 
-            foreach (var axis in mAxes)
-                AddAxis(axis);
+            foreach (var axis in axes)
+                if (axis != null)
+                    AddAxis(axis);
         }
 
         public void AddAxis(IAxis axis) {
             mAxes.Add(axis);
             axis.Changed += new Action(axis_Changed);
+            if (mSource != null && axis is IInputListener)
+                (axis as IInputListener).Init(mSource);
             if (AxisAdded != null)
                 AxisAdded(axis);
         }
@@ -145,7 +149,12 @@ namespace Chimera.Inputs {
             }
         }
 
-        public void Init(IInputSource input) { }
+        public void Init(IInputSource input) {
+            mSource = input;
+            foreach (var axis in mAxes)
+                if (axis is IInputListener)
+                    (axis as IInputListener).Init(input);
+        }
 
         #endregion
 

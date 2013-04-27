@@ -66,14 +66,14 @@ namespace Chimera.Inputs {
 
         private void Recalculate() {
             float old = mDelta;
-            if (mDelta < mDeadzone || mDelta > mDeadzone + mRange + mGrace)
+            if (mRaw < mDeadzone || mRaw > mDeadzone + mRange + mGrace)
                 mDelta = 0f;
-            if (mDelta <= mDeadzone + mRange)
-                mDelta = ((mDelta - mDeadzone) / mRange) * mScale;
+            if (mRaw <= mDeadzone + mRange)
+                mDelta = ((mRaw - mDeadzone) / mRange) * mScale;
             else
-                mDeadzone = mScale;
+                mDelta = mScale;
 
-            if (Changed != null && mDelta != old)
+            if (Changed != null)
                 Changed();
         }
 

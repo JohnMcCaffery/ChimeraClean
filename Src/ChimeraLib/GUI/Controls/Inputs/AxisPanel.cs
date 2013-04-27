@@ -25,11 +25,12 @@ namespace Chimera.GUI.Controls.Inputs {
 
             mAxis = axis;
 
+            bindingDropdown.SelectedItem = axis.Binding;
+
             UserControl control = mAxis.ControlPanel;
 
             mExpandedSize = MinimumSize.Height + control.Height;
-            if (editBox.Checked)
-                Height = mExpandedSize;
+            Height = editBox.Checked ? mExpandedSize : MinimumSize.Height;
 
             control.Visible = editBox.Checked;
             control.Width = configPanel.Width;

@@ -5,9 +5,10 @@ using System.Text;
 using SlimDX.XInput;
 using Chimera.Inputs;
 using Chimera;
+using Chimera.Interfaces;
 
 namespace Joystick {
-    public class ThumbstickAxis : ConstrainedAxis {
+    public class ThumbstickAxis : ConstrainedAxis, IInputListener {
         private Controller mController;
         private bool mLeft;
         private bool mX;
@@ -31,19 +32,6 @@ namespace Joystick {
             : this(left, x) {
 
             mController = controller;
-        }
-
-        public ThumbstickAxis(bool left, bool x, IInputSource source)
-            : this(left, x) {
-            Init(source);
-        }
-        public ThumbstickAxis(UserIndex index, bool left, bool x, IInputSource source)
-            : this(index, left, x) {
-            Init(source);
-        }
-        public ThumbstickAxis(Controller controller, bool left, bool x, IInputSource source)
-            : this(controller, left, x) {
-            Init(source);
         }
 
         private void Init(bool left, bool x) {

@@ -24,9 +24,9 @@
         /// </summary>
         private void InitializeComponent() {
             this.mainGroup = new System.Windows.Forms.GroupBox();
+            this.configPanel = new System.Windows.Forms.Panel();
             this.editBox = new System.Windows.Forms.CheckBox();
             this.bindingDropdown = new System.Windows.Forms.ComboBox();
-            this.configPanel = new System.Windows.Forms.Panel();
             this.mainGroup.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -43,8 +43,19 @@
             this.mainGroup.TabStop = false;
             this.mainGroup.Text = "Axis Name";
             // 
+            // configPanel
+            // 
+            this.configPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.configPanel.Location = new System.Drawing.Point(6, 46);
+            this.configPanel.Name = "configPanel";
+            this.configPanel.Size = new System.Drawing.Size(417, 151);
+            this.configPanel.TabIndex = 2;
+            // 
             // editBox
             // 
+            this.editBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.editBox.AutoSize = true;
             this.editBox.Location = new System.Drawing.Point(379, 21);
             this.editBox.Name = "editBox";
@@ -64,16 +75,6 @@
             this.bindingDropdown.Size = new System.Drawing.Size(367, 21);
             this.bindingDropdown.TabIndex = 0;
             this.bindingDropdown.SelectedIndexChanged += new System.EventHandler(this.bindingDropdown_SelectedIndexChanged);
-            // 
-            // configPanel
-            // 
-            this.configPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.configPanel.Location = new System.Drawing.Point(6, 46);
-            this.configPanel.Name = "configPanel";
-            this.configPanel.Size = new System.Drawing.Size(417, 151);
-            this.configPanel.TabIndex = 2;
             // 
             // AxisPanel
             // 

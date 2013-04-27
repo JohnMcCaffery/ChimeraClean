@@ -14,6 +14,7 @@ using Chimera.Overlay.Transitions;
 using Chimera.Overlay.States;
 using Chimera.Overlay;
 using Chimera.Flythrough.Overlay;
+using Joystick;
 
 namespace Chimera.Launcher {
     public class KinectTestLauncher : Launcher {
@@ -150,6 +151,6 @@ namespace Chimera.Launcher {
             Coordinator.StateManager.AddState(infoVideo);
             Coordinator.StateManager.AddState(storyWolf);
             Coordinator.StateManager.CurrentState = splash;
-        }
+        } 
     }
 }
