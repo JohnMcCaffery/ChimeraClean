@@ -86,7 +86,8 @@ namespace Joystick{
                 if (g.RightTrigger > 0)
                     posDelta.Z = g.RightTrigger * mScaleZ;
                 else if (g.LeftTrigger > 0)
-                    posDelta.Z = g.LeftTrigger * -mScaleZ;
+                    posDelta.Z = g.LeftTrigger * -mScaleZ;
+
 
                 int pitch = Math.Abs((int) g.LeftThumbY) - mDeadzone;
                 rotDelta.Pitch = pitch > 0 ? y * mScalePitch * (g.LeftThumbY > 0 ? 1.0 : -1.0) : 0.0;
