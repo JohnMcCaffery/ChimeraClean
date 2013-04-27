@@ -15,27 +15,13 @@ namespace Joystick {
         public ThumbstickAxis(bool left, bool x)
             : base(short.MaxValue / 3f, short.MaxValue / 2f, short.MaxValue / 6f, .00005f) {
             Init(left, x);
-            mController = new Controller(UserIndex.One);
-            if (mController.IsConnected)
-                return;
 
-            mController = new Controller(UserIndex.Two);
-            if (mController.IsConnected)
-                return;
-
-            mController = new Controller(UserIndex.Three);
-            if (mController.IsConnected)
-                return;
-
-            mController = new Controller(UserIndex.Four);
-            if (mController.IsConnected)
-                return;
-
-            mController = null;
+            mController = JoystickInput.GetController();
         }
 
         public ThumbstickAxis(UserIndex index, bool left, bool x)
             : this(left, x) {
+
             mController = new Controller(index);
             if (!mController.IsConnected)
                 mController = null;
@@ -43,7 +29,21 @@ namespace Joystick {
 
         public ThumbstickAxis(Controller controller, bool left, bool x)
             : this(left, x) {
+
             mController = controller;
+        }
+
+        public ThumbstickAxis(bool left, bool x, IInputSource source)
+            : this(left, x) {
+            Init(source);
+        }
+        public ThumbstickAxis(UserIndex index, bool left, bool x, IInputSource source)
+            : this(index, left, x) {
+            Init(source);
+        }
+        public ThumbstickAxis(Controller controller, bool left, bool x, IInputSource source)
+            : this(controller, left, x) {
+            Init(source);
         }
 
         private void Init(bool left, bool x) {

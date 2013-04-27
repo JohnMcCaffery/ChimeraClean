@@ -14,35 +14,31 @@ namespace Joystick {
         public TriggerAxis(bool leftUp)
             : base(short.MaxValue / 3f, short.MaxValue / 2f, short.MaxValue / 6f, .00005f) {
             Init(leftUp);
-            mController = new Controller(UserIndex.One);
-            if (mController.IsConnected)
-                return;
 
-            mController = new Controller(UserIndex.Two);
-            if (mController.IsConnected)
-                return;
-
-            mController = new Controller(UserIndex.Three);
-            if (mController.IsConnected)
-                return;
-
-            mController = new Controller(UserIndex.Four);
-            if (mController.IsConnected)
-                return;
-
-            mController = null;
+            mController = JoystickInput.GetController();
         }
-
         public TriggerAxis(UserIndex index, bool leftUp)
             : this(leftUp) {
             mController = new Controller(index);
             if (!mController.IsConnected)
                 mController = null;
         }
-
         public TriggerAxis(Controller controller, bool leftUp)
             : this(leftUp) {
             mController = controller;
+        }
+
+        public TriggerAxis(bool leftUp, IInputSource source)
+            : this(leftUp) {
+            Init(source);
+        }
+        public TriggerAxis(UserIndex index, bool leftUp, IInputSource source)
+            : this(index, leftUp) {
+            Init(source);
+        }
+        public TriggerAxis(Controller controller, bool leftUp, IInputSource source)
+            : this(controller, leftUp) {
+            Init(source);
         }
 
         private void Init(bool leftUp) {

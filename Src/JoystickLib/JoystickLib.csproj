@@ -69,6 +69,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="KinectControllerDelta.cs" />
     <Compile Include="TriggerAxis.cs" />
     <Compile Include="GUI\JoystickPanel.cs">
       <SubType>UserControl</SubType>

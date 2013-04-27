@@ -15,6 +15,25 @@ using SlimDX.XInput;
 
 namespace Joystick{
     public class JoystickInput : IDeltaInput {
+        public static Controller GetController() {            Controller controller = new Controller(UserIndex.One);
+            if (controller.IsConnected)
+                return controller;
+
+            controller = new Controller(UserIndex.Two);
+            if (controller.IsConnected)
+                return controller;
+
+            controller = new Controller(UserIndex.Three);
+            if (controller.IsConnected)
+                return controller;
+
+            controller = new Controller(UserIndex.Four);
+            if (controller.IsConnected)
+                return controller;
+
+            return null;
+        }
+
         private Controller mJS;
         private Action mTick;
         private JoystickPanel mControlPanel;
@@ -49,25 +68,8 @@ namespace Joystick{
             DirectInput input = new DirectInput();
             devices.AddRange(input.GetDevices(DeviceClass.GameController, DeviceEnumerationFlags.AttachedOnly));
 
+            mJS = GetController();
             mTick = new Action(Tick);
-
-            mJS = new Controller(UserIndex.One);
-            if (mJS.IsConnected)
-                return;
-
-            mJS = new Controller(UserIndex.Two);
-            if (mJS.IsConnected)
-                return;
-
-            mJS = new Controller(UserIndex.Three);
-            if (mJS.IsConnected)
-                return;
-
-            mJS = new Controller(UserIndex.Four);
-            if (mJS.IsConnected)
-                return;
-
-            mJS = null;
         }
 
         private void Tick() {
