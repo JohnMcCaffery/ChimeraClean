@@ -23,7 +23,7 @@ namespace Chimera.Flythrough.Overlay {
             : base(name, manager) {
 
             mFlythrough = flythrough;
-            mInput = manager.Coordinator.GetInput<Flythrough>();
+            mInput = manager.Coordinator.GetPlugin<Flythrough>();
         }
 
         public FlythroughState(string name, StateManager manager, string flythrough, State home, IWindowTransitionFactory transition, params ITrigger[] steps)

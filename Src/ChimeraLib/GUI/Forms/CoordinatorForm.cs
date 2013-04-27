@@ -112,7 +112,7 @@ namespace Chimera.GUI.Forms {
                 mCoordinator_WindowAdded(window, null);
             }
 
-            foreach (var input in mCoordinator.Inputs) {
+            foreach (var input in mCoordinator.Plugins) {
                 TabPage inputTab = new TabPage();
                 CheckBox enableCheck = new CheckBox();
                 // 
@@ -140,7 +140,7 @@ namespace Chimera.GUI.Forms {
                 enableCheck.Text = input.Name;
                 enableCheck.Checked = input.Enabled;
                 enableCheck.CheckStateChanged += new EventHandler((source, args) => 
-                    mCoordinator.Inputs.First(i => enableCheck.Name.Equals("enable" + i.Name + "Check")).Enabled = enableCheck.Checked);
+                    mCoordinator.Plugins.First(i => enableCheck.Name.Equals("enable" + i.Name + "Check")).Enabled = enableCheck.Checked);
                 //enableCheck.UseVisualStyleBackColor = false;
                 // 
                 // inputPanel

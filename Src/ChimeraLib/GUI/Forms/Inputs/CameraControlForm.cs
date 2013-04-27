@@ -7,42 +7,42 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Chimera.Inputs {
+namespace Chimera.Plugins {
     public partial class CameraControlForm : Form {
-        private KBMouseInput mInput;
+        private KBMousePlugin mPlugin;
         private bool mCleared;
 
         public CameraControlForm() {
             InitializeComponent();
         }
 
-        public CameraControlForm(KBMouseInput input) : this() { 
+        public CameraControlForm(KBMousePlugin input) : this() { 
             Init(input);
         }
 
-        public void Init(KBMouseInput input) {
-            mInput = input;
+        public void Init(KBMousePlugin input) {
+            mPlugin = input;
 
-            MouseDown += new MouseEventHandler(mInput.panel_MouseDown);
-            MouseUp += new MouseEventHandler(mInput.panel_MouseUp);
-            MouseMove += new MouseEventHandler(mInput.panel_MouseMove);
+            MouseDown += new MouseEventHandler(mPlugin.panel_MouseDown);
+            MouseUp += new MouseEventHandler(mPlugin.panel_MouseUp);
+            MouseMove += new MouseEventHandler(mPlugin.panel_MouseMove);
             MouseWheel += new MouseEventHandler(CameraControlForm_MouseWheel);
         }
 
         void CameraControlForm_MouseWheel(object sender, MouseEventArgs e) {
-            int newVal = Math.Max(1, Math.Min(1000, mInput.KBScale + (e.Delta / 6)));
-            if (mInput != null)
-                mInput.KBScale = newVal;
+            int newVal = Math.Max(1, Math.Min(1000, mPlugin.KBScale + (e.Delta / 6)));
+            if (mPlugin != null)
+                mPlugin.KBScale = newVal;
         }
 
         private void CameraControlForm_KeyDown(object sender, KeyEventArgs e) {
-            if (mInput != null)
-                mInput.Source.TriggerKeyboard(true, e);
+            if (mPlugin != null)
+                mPlugin.Source.TriggerKeyboard(true, e);
         }
 
         private void CameraControlForm_KeyUp(object sender, KeyEventArgs e) {
-            if (mInput != null)
-                mInput.Source.TriggerKeyboard(false, e);
+            if (mPlugin != null)
+                mPlugin.Source.TriggerKeyboard(false, e);
         }
 
         private void CameraControlForm_MouseUp(object sender, MouseEventArgs e) {
@@ -52,16 +52,16 @@ namespace Chimera.Inputs {
         }
 
         private void CameraControlForm_MouseMove(object sender, MouseEventArgs e) {
-            if (mInput != null && (mInput.MouseDown || !mCleared)) {
+            if (mPlugin != null && (mPlugin.MouseDown || !mCleared)) {
                 Refresh();
                 mCleared = true;
             }
         }
 
         private void CameraControlForm_Paint(object sender, PaintEventArgs e) {
-            if (mInput != null) {
-                if (mInput.MouseDown) {
-                    e.Graphics.DrawLine(new Pen(Color.Black), mInput.X, mInput.Y, mInput.CurrentX, mInput.IgnorePitch ? mInput.Y : mInput.CurrentY);
+            if (mPlugin != null) {
+                if (mPlugin.MouseDown) {
+                    e.Graphics.DrawLine(new Pen(Color.Black), mPlugin.X, mPlugin.Y, mPlugin.CurrentX, mPlugin.IgnorePitch ? mPlugin.Y : mPlugin.CurrentY);
                     mCleared = false;
                 } else {
                     //e.Graphics.Clear();

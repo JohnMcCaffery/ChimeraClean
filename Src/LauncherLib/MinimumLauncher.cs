@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using Chimera.Kinect.Interfaces;
 using Chimera.Kinect;
-using Chimera.Inputs;
+using Chimera.Plugins;
 using Chimera.OpenSim;
 using Chimera.Overlay.Triggers;
 using System.Drawing;
@@ -20,7 +20,7 @@ namespace Chimera.Launcher {
     public class KinectTestLauncher : Launcher {
         private SetWindowViewerOutput mMainWindowProxy = new SetWindowViewerOutput("MainWindow");
 
-        protected override ISystemInput[] GetInputs() {
+        protected override ISystemPlugin[] GetInputs() {
             /*
             DolphinMovementInput dolphin = new DolphinMovementInput();
             */
@@ -30,8 +30,8 @@ namespace Chimera.Launcher {
             SimpleCursorFactory simpleFactory = new SimpleCursorFactory();
             PointCursorFactory pointFactory = new PointCursorFactory();
 
-            ISystemInput kbMouseInput = new DeltaBasedInput(new KBMouseInput());
-            ISystemInput kinectInput = new KinectInput(
+            ISystemPlugin kbMouseInput = new DeltaBasedInput(new KBMousePlugin());
+            ISystemPlugin kinectInput = new KinectInput(
                 new IDeltaInput[] { 
                     timespan, 
                 }, 
@@ -42,9 +42,9 @@ namespace Chimera.Launcher {
                 pointFactory
                 );
 
-            ISystemInput mouse = new MouseInput();
+            ISystemPlugin mouse = new MousePlugin();
 
-            return new ISystemInput[] { 
+            return new ISystemPlugin[] { 
                 kinectInput, 
                 mouse, 
             };

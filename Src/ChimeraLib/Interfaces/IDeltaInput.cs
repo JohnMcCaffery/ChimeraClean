@@ -7,7 +7,7 @@ using System.Windows.Forms;
 using Chimera.Util;
 
 namespace Chimera {
-    public interface IDeltaInput : IInput {
+    public interface IDeltaInput : IPlugin {
         /// <summary>
         /// Triggered whenever the values are updated.
         /// </summary>
@@ -67,6 +67,6 @@ namespace Chimera {
         /// Initialise the input. Linking it to an object that can provide information about keyboard input and ticks.
         /// </summary>
         /// <param name="input">The source of tick and keyboard events.</param>
-        void Init(IInputSource input);
+        void Init(ITickSource input);
     }
 }

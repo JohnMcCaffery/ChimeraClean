@@ -7,8 +7,8 @@ using System.Windows.Forms;
 using OpenMetaverse;
 using System.Drawing;
 
-namespace Chimera.Inputs {
-    public class DeltaBasedInput : ISystemInput {
+namespace Chimera.Plugins {
+    public class DeltaBasedInput : ISystemPlugin {
         private IDeltaInput mInput;
         private Coordinator mCoordinator;
         private bool mEnabled;
@@ -65,7 +65,7 @@ namespace Chimera.Inputs {
 
         #region ISystemInput Members
 
-        public event Action<IInput, bool> EnabledChanged;
+        public event Action<IPlugin, bool> EnabledChanged;
 
         public virtual UserControl ControlPanel {
             get { return mInput.ControlPanel; }

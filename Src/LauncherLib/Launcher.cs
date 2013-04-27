@@ -32,7 +32,7 @@ namespace Chimera.Launcher {
                 InitOverlay();
         }
 
-        protected abstract ISystemInput[] GetInputs();
+        protected abstract ISystemPlugin[] GetInputs();
 
         protected abstract Window[] GetWindows();
 

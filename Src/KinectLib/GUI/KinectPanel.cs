@@ -11,7 +11,7 @@ using OpenMetaverse;
 using Chimera.Util;
 using NuiLibDotNet;
 using Chimera.Kinect.Interfaces;
-using Chimera.Inputs;
+using Chimera.Plugins;
 
 namespace Chimera.Kinect.GUI {
     public partial class KinectPanel : UserControl {
@@ -63,7 +63,7 @@ namespace Chimera.Kinect.GUI {
                     cursorControllerPulldown.SelectedIndex = 0;
             }
 
-            mInput.EnabledChanged += new Action<IInput,bool>(mInput_EnabledChanged);
+            mInput.EnabledChanged += new Action<IPlugin,bool>(mInput_EnabledChanged);
             mInput.PositionChanged += new Action<Vector3>(mInput_PositionChanged);
             mInput.Coordinator.WindowAdded += new Action<Window,EventArgs>(Coordinator_WindowAdded);
 
@@ -170,7 +170,7 @@ namespace Chimera.Kinect.GUI {
             }
         }
 
-            private void mInput_EnabledChanged(IInput input, bool enabled) {
+            private void mInput_EnabledChanged(IPlugin input, bool enabled) {
             if (!mGuiUpdate) {
                 mExternalUpdate = true;
                 headCheck.Checked = mInput.HeadEnabled;

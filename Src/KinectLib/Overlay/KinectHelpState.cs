@@ -30,7 +30,7 @@ namespace Chimera.Kinect.Overlay {
         public KinectHelpState(string name, StateManager manager, string mainWindow, string whereWindow)
             : base(name, manager) {
 
-            mInput = manager.Coordinator.GetInput<KinectInput>();
+            mInput = manager.Coordinator.GetPlugin<KinectInput>();
 
             mMainWindow = manager.Coordinator[mainWindow];
 

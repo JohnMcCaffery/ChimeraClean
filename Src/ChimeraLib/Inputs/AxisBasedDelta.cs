@@ -6,14 +6,14 @@ using Chimera.Interfaces;
 using OpenMetaverse;
 using Chimera.Util;
 using System.Windows.Forms;
-using Chimera.GUI.Controls.Inputs;
+using Chimera.GUI.Controls.Plugins;
 using System.Drawing;
 
-namespace Chimera.Inputs {
+namespace Chimera.Plugins {
     public class AxisBasedDelta : IDeltaInput {
         private readonly List<IAxis> mAxes = new List<IAxis>();
         private readonly string mName;
-        private IInputSource mSource;
+        private ITickSource mSource;
 
         private AxisBasedDeltaPanel mPanel;
         private bool mEnableX = true;
@@ -62,8 +62,8 @@ namespace Chimera.Inputs {
         public void AddAxis(IAxis axis) {
             mAxes.Add(axis);
             axis.Changed += new Action(axis_Changed);
-            if (mSource != null && axis is IInputListener)
-                (axis as IInputListener).Init(mSource);
+            if (mSource != null && axis is ITickListener)
+                (axis as ITickListener).Init(mSource);
             if (AxisAdded != null)
                 AxisAdded(axis);
         }
@@ -149,18 +149,18 @@ namespace Chimera.Inputs {
             }
         }
 
-        public void Init(IInputSource input) {
+        public void Init(ITickSource input) {
             mSource = input;
             foreach (var axis in mAxes)
-                if (axis is IInputListener)
-                    (axis as IInputListener).Init(input);
+                if (axis is ITickListener)
+                    (axis as ITickListener).Init(input);
         }
 
         #endregion
 
         #region IInput Members
 
-        public event Action<IInput, bool> EnabledChanged;
+        public event Action<IPlugin, bool> EnabledChanged;
 
         public UserControl ControlPanel {
             get {

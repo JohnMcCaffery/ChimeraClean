@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using Chimera.Kinect.Interfaces;
 using Chimera.Kinect;
-using Chimera.Inputs;
+using Chimera.Plugins;
 using Chimera.OpenSim;
 using Chimera.Overlay.Triggers;
 using System.Drawing;
@@ -20,7 +20,7 @@ namespace Chimera.Launcher {
     public class MinimumLauncher : Launcher {
         private SetWindowViewerOutput mMainWindowProxy = new SetWindowViewerOutput("MainWindow");
 
-        protected override ISystemInput[] GetInputs() {
+        protected override ISystemPlugin[] GetInputs() {
             /*
             TimespanMovementInput timespan = new TimespanMovementInput();
             DolphinMovementInput dolphin = new DolphinMovementInput();
@@ -30,7 +30,7 @@ namespace Chimera.Launcher {
             */
 
             //IOutput output = new SetFollowCamPropertiesViewerOutput("MainWindow");
-            ISystemInput kbMouseInput = new DeltaBasedInput(new KBMouseInput());
+            ISystemPlugin kbMouseInput = new DeltaBasedInput(new KBMousePlugin());
             /*
             ISystemInput flythrough = new Chimera.Flythrough.Flythrough();
             ISystemInput heightmap = new HeightmapInput();
@@ -47,9 +47,9 @@ namespace Chimera.Launcher {
                 );
             */
 
-            ISystemInput mouse = new MouseInput();
+            ISystemPlugin mouse = new MousePlugin();
 
-            return new ISystemInput[] { 
+            return new ISystemPlugin[] { 
                 new XBoxControllerInput(),
                 kbMouseInput, 
                 //kinectInput, 

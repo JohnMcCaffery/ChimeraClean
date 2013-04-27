@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using SlimDX.XInput;
-using Chimera.Inputs;
+using Chimera.Plugins;
 using Chimera;
 using Chimera.Interfaces;
 
 namespace Joystick {
-    public class ThumbstickAxis : ConstrainedAxis, IInputListener {
+    public class ThumbstickAxis : ConstrainedAxis, ITickListener {
         private Controller mController;
         private bool mLeft;
         private bool mX;
@@ -39,7 +39,7 @@ namespace Joystick {
             mX = x;
         }
 
-        public void Init(IInputSource source) {
+        public void Init(ITickSource source) {
             source.Tick += new Action(source_Tick);
         }
 

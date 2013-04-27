@@ -166,7 +166,7 @@ namespace Joystick{
             }
         }
 
-        public void Init(IInputSource input) {
+        public void Init(ITickSource input) {
             input.Tick += mTick;
         }
 
@@ -174,7 +174,7 @@ namespace Joystick{
 
         #region IInput Members
 
-        public event Action<IInput, bool> EnabledChanged;
+        public event Action<IPlugin, bool> EnabledChanged;
 
         public UserControl ControlPanel {
             get {

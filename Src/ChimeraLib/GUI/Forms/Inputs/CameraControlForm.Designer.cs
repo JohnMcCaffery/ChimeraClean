@@ -1,4 +1,4 @@
-﻿namespace Chimera.Inputs {
+﻿namespace Chimera.Plugins {
     partial class CameraControlForm {
         /// <summary>
         /// Required designer variable.

@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using Chimera.Interfaces;
 using System.Windows.Forms;
-using Chimera.GUI.Controls.Inputs;
+using Chimera.GUI.Controls.Plugins;
 
-namespace Chimera.Inputs {
+namespace Chimera.Plugins {
     public abstract class ConstrainedAxis : IAxis {
         private AxisBinding mBinding = AxisBinding.None;
         private ConstrainedAxisPanel mPanel;

@@ -5,7 +5,7 @@ using System.Windows.Forms;
 using Chimera.GUI.Forms;
 using Chimera;
 using Chimera.Util;
-using Chimera.Inputs;
+using Chimera.Plugins;
 using Chimera.Launcher;
 
 namespace Chimera {

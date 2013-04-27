@@ -79,7 +79,7 @@ namespace Chimera.Kinect {
         public Scalar YawScale { get { return mYawScale; } }
         public Scalar YawThreshold { get { return mYawThreshold; } }
 
-        public event Action<IInput, bool> EnabledChanged;
+        public event Action<IPlugin, bool> EnabledChanged;
 
         public bool WalkEnabled {
             get { return mWalkEnabled; }
@@ -279,7 +279,7 @@ namespace Chimera.Kinect {
             get { return new Rotation(mPitchDelta, mYawDelta); }
         }
 
-        public void Init(IInputSource input) { }
+        public void Init(ITickSource input) { }
 
         public UserControl ControlPanel {
             get {

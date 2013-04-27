@@ -93,7 +93,7 @@ namespace Chimera {
         public int StartY;
     }
 
-    public class Coordinator : ICrashable, IInputSource {
+    public class Coordinator : ICrashable, ITickSource {
         /// <summary>
         /// Statistics object which monitors how long ticks are taking.
         /// </summary>
@@ -139,11 +139,13 @@ namespace Chimera {
         /// </summary>
         private readonly object mRotationLock = new object();
         /// <summary>
-        /// The inputs which can control the virtual position and lookAt of the view and the real world eye position to calculate views transition.
+        /// The plugins currently attached to the system.
+        /// Plugins can can control the virtual position and lookAt of the view and the real world eye position to calculate views transition.
+        /// They can also control the mouse or set up the heightmap.
         /// </summary>
-        private readonly List<ISystemInput> mInputs = new List<ISystemInput>();
+        private readonly List<ISystemPlugin> mPlugins = new List<ISystemPlugin>();
         /// <summary>
-        /// The windows which define where, in real space, each 'input' onto the virtual space is located.
+        /// The windows which define where, in real space, each 'view' onto the virtual space is located.
         /// </summary>
         private readonly List<Window> mWindows = new List<Window>();
         /// <summary>
@@ -156,7 +158,7 @@ namespace Chimera {
         /// </summary>
         private string mCrashLogFile;
         /// <summary>
-        /// The length of each tick for any input that has an event loop.
+        /// The length of each tick for any plugin that has an event loop.
         /// </summary>
         private int mTickLength;
         /// <summary>
@@ -224,16 +226,16 @@ namespace Chimera {
         /// </summary>
         public event Action Tick;
         /// <summary>
-        /// Initialise this input, specifying a collection of inputs to work with.
+        /// Initialise this coordinator, specifying a collection of plugins to work with.
         /// </summary>
-        /// <param name="inputs">The inputs which control the camera through this input.</param>
-        public Coordinator(params ISystemInput[] inputs) {
+        /// <param name="plugins">The plugins which control this coordinator.</param>
+        public Coordinator(params ISystemPlugin[] plugins) {
             mServer = new StatisticsServer(this);
 
             mConfig = new CoordinatorConfig();
             mStateManager = new StateManager(this);
 
-            mInputs = new List<ISystemInput>(inputs);
+            mPlugins = new List<ISystemPlugin>(plugins);
             mOrientation = new Rotation(mRotationLock, mConfig.Pitch, mConfig.Yaw);
             mOrientationDelta = new Rotation(mRotationLock);
             mPosition = mConfig.Position;
@@ -249,8 +251,8 @@ namespace Chimera {
                 }
             }
 
-            foreach (var input in mInputs)
-                input.Init(this);
+            foreach (var plugin in mPlugins)
+                plugin.Init(this);
 
             Thread tickThread = new Thread(() => {
                 mAlive = true;
@@ -268,12 +270,12 @@ namespace Chimera {
         }
 
         /// <summary>
-        /// Initialise this input, specifying a collection of inputs to work with and a collection of windows coordinated by this input.
+        /// Initialise this coordinator, specifying a collection of plugins to work with and a collection of windows coordinated by this coordinator.
         /// </summary>
-        /// <param name="windows">The windows which are coordinated by this input.</param>
-        /// <param name="inputs">The inputs which control the camera through this input.</param>
-        public Coordinator(IEnumerable<Window> windows, params ISystemInput[] inputs)
-            : this(inputs) {
+        /// <param name="windows">The windows which are coordinated by this coordinator.</param>
+        /// <param name="plugins">The plugins which control the camera through this coordinator.</param>
+        public Coordinator(IEnumerable<Window> windows, params ISystemPlugin[] plugins)
+            : this(plugins) {
 
             foreach (var window in windows)
                 AddWindow(window);
@@ -290,7 +292,7 @@ namespace Chimera {
         }
 
         /// <summary>
-        /// The heightmap the coordinator is working with. Any attempted input value below the heightmap value will be set to the heightmap value.
+        /// The heightmap the coordinator is working with. Any attempted camera position z value below the heightmap value will be set to the heightmap value.
         /// Stops the camera going through the floor.
         /// </summary>
         public float[,] Heightmap {
@@ -306,17 +308,17 @@ namespace Chimera {
         }
 
         /// <summary>
-        /// The windows which define where, in real space, each 'input' onto the virtual space is located.
+        /// The windows which define where, in real space, each 'view' onto the virtual space is located.
         /// </summary>
         public Window[] Windows {
             get { return mWindows.ToArray() ; }
         }
 
         /// <summary>
-        /// The inputs which can control the virtual position and lookAt of the view and the real world eye position to calculate views transition.
+        /// The plugins which can control the virtual position and lookAt of the view and the real world eye position to calculate views transition.
         /// </summary>
-        public ISystemInput[] Inputs {
-            get { return mInputs.ToArray() ; }
+        public ISystemPlugin[] Plugins {
+            get { return mPlugins.ToArray() ; }
         }
 
         /// <summary>
@@ -360,7 +362,7 @@ namespace Chimera {
         }
 
         /// <summary>
-        /// How long every tick should be, in ms, for any input that has a refresh loop.
+        /// How long every tick should be, in ms, for any plugin that has a refresh loop.
         /// </summary>
         public int TickLength {
             get { return mTickLength; }
@@ -472,9 +474,9 @@ namespace Chimera {
         }
 
         /// <summary>
-        /// Add a input to the system.
+        /// Add a view to the system.
         /// </summary>
-        /// <param name="input">The input to add.</param>
+        /// <param name="window">The window to add.</param>
         public void AddWindow(Window window) {
             mWindows.Add(window);
             window.Init(this);
@@ -483,7 +485,8 @@ namespace Chimera {
         }
 
         /// <summary>
-        /// DrawSelected any relevant information about this input onto a diagram.
+        /// Draw any relevant information about this window onto a diagram.
+        /// Which diagram is specified in the perspective parameter.
         /// </summary>
         /// <param name="perspective">The perspective to render along.</param>
         /// <param name="graphics">The graphics object to draw with.</param>
@@ -491,15 +494,15 @@ namespace Chimera {
         /// <param name="scale">The value to control how large or small the diagram is rendered.</param>
         /// <param name="origin">The origin on the panel to draw transition.</param>
         public void Draw(Func<Vector3, Point> to2D, Graphics graphics, Rectangle clip, Action redraw, Perspective perspective) {
-            foreach (var input in mInputs)
-                input.Draw(to2D, graphics, redraw);
+            foreach (var plugin in mPlugins)
+                plugin.Draw(to2D, graphics, redraw);
 
             foreach (var window in mWindows)
                 window.Draw(to2D, graphics, clip, redraw, perspective);
         }
 
         /// <summary>
-        /// Get a point on the horizontal output input that corresponds to a point in real space.
+        /// Get a point on the 2D output diagram that corresponds to a point in real space.
         /// </summary>
         /// <param name="perspective">The perspective to render along.</param>
         /// <param name="realPoint">The real point to translate into 2D coordinates.</param>
@@ -508,15 +511,15 @@ namespace Chimera {
         }
 
         /// <summary>
-        /// Called when the input is to be disposed of.
+        /// Called when the coordinator is to be disposed of.
         /// </summary>
         public void Close() {
             mServer.Stop();
 
             mAlive = false;
-            foreach (var input in mInputs) {
-                input.Enabled = false;
-                input.Close();
+            foreach (var plugin in mPlugins) {
+                plugin.Enabled = false;
+                plugin.Close();
             }
             foreach (var window in mWindows)
                 window.Close();
@@ -559,24 +562,24 @@ namespace Chimera {
                     try {
                         dump += Environment.NewLine + window.State;
                     } catch (Exception ex) {
-                        dump += "Unable to get stats for input " + window.Name + ". " + ex.Message + Environment.NewLine;
+                        dump += "Unable to get stats for window " + window.Name + ". " + ex.Message + Environment.NewLine;
                         dump += ex.StackTrace;
                     }
                 }
                 dump += Environment.NewLine;
             }
 
-            if (mInputs.Count > 0) {
-                dump += String.Format("{0}{0}--------Inputs--------{0}", Environment.NewLine);
-                foreach (var input in mInputs) {
-                    if (input.Enabled)
+            if (mPlugins.Count > 0) {
+                dump += String.Format("{0}{0}--------Plugins--------{0}", Environment.NewLine);
+                foreach (var plugin in mPlugins) {
+                    if (plugin.Enabled)
                         try {
-                            dump += Environment.NewLine + input.State;
+                            dump += Environment.NewLine + plugin.State;
                         } catch (Exception ex) {
-                            dump += "Unable to get stats for input " + input.Name + ". " + ex.Message + Environment.NewLine;
+                            dump += "Unable to get stats for plugin " + plugin.Name + ". " + ex.Message + Environment.NewLine;
                             dump += ex.StackTrace;
                         } else
-                        dump += Environment.NewLine + "--------" + input.Name + "--------" + Environment.NewLine + "Disabled";
+                        dump += Environment.NewLine + "--------" + plugin.Name + "--------" + Environment.NewLine + "Disabled";
                 }
                 dump += Environment.NewLine;
             }
@@ -589,13 +592,13 @@ namespace Chimera {
         }
 
         /// <summary>
-        /// Get the input instance of the specified type. Throws an ArgumentException if no such input found.
+        /// Get the plugin instance of the specified type. Throws an ArgumentException if no such plugin is found.
         /// </summary>
-        public T GetInput<T> () where T : ISystemInput {
+        public T GetPlugin<T> () where T : ISystemPlugin {
             Type t = typeof(T);
-            ISystemInput ret = mInputs.FirstOrDefault(input => input.GetType() == t);
+            ISystemPlugin ret = mPlugins.FirstOrDefault(plugin => plugin.GetType() == t);
             if (ret == null)
-                throw new ArgumentException("Unable to get input. No input of the specified type (" + t.FullName + ") found.");
+                throw new ArgumentException("Unable to get plugin. No plugin of the specified type (" + t.FullName + ") found.");
             return (T)ret;
         }
     }

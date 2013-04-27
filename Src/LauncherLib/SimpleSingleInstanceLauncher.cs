@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Chimera.Kinect;
-using Chimera.Inputs;
+using Chimera.Plugins;
 using Chimera;
 using Chimera.GUI.Forms;
 using Chimera.Kinect.Interfaces;
@@ -47,11 +47,11 @@ namespace Chimera.Launcher {
 
             //IOutput output = new SetFollowCamPropertiesViewerOutput("MainWindow");
             SetWindowViewerOutput mainWindowProxy = new SetWindowViewerOutput("MainWindow");
-            ISystemInput kbMouseInput = new DeltaBasedInput(new KBMouseInput());
-            ISystemInput flythrough = new Chimera.Flythrough.Flythrough();
-            ISystemInput mouse = new MouseInput();
-            ISystemInput heightmap = new HeightmapInput();
-            ISystemInput kinectInput = new KinectInput(new IDeltaInput[] { timespan, dolphin }, new IHelpTrigger[] { trigger }, simpleFactory, pointFactory);
+            ISystemPlugin kbMouseInput = new DeltaBasedInput(new KBMousePlugin());
+            ISystemPlugin flythrough = new Chimera.Flythrough.Flythrough();
+            ISystemPlugin mouse = new MousePlugin();
+            ISystemPlugin heightmap = new HeightmapInput();
+            ISystemPlugin kinectInput = new KinectInput(new IDeltaInput[] { timespan, dolphin }, new IHelpTrigger[] { trigger }, simpleFactory, pointFactory);
 
             Window mainWindow = new Window("MainWindow", mainWindowProxy);
             Window[] windows = new Window[] { mainWindow };

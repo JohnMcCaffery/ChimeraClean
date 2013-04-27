@@ -10,10 +10,10 @@ using Chimera.Kinect.GUI;
 using C = NuiLibDotNet.Condition;
 using Chimera.Kinect.Interfaces;
 using System.Drawing;
-using Chimera.Inputs;
+using Chimera.Plugins;
 
 namespace Chimera.Kinect {
-    public class KinectInput : ISystemInput, IKinectController {
+    public class KinectInput : ISystemPlugin, IKinectController {
         private readonly Dictionary<string, DeltaBasedInput> mMovementControllers = new Dictionary<string, DeltaBasedInput>();
         private readonly Dictionary<string, IHelpTrigger> mHelpTriggers = new Dictionary<string, IHelpTrigger>();
         private readonly List<IKinectCursorFactory> mCursorFactories = new List<IKinectCursorFactory>();
@@ -239,7 +239,7 @@ namespace Chimera.Kinect {
 
         #region ISystemInput Members
 
-        public event Action<IInput, bool> EnabledChanged;
+        public event Action<IPlugin, bool> EnabledChanged;
 
         public UserControl ControlPanel {
             get {

@@ -10,7 +10,7 @@ using System.Threading;
 using System.Drawing;
 
 namespace Chimera.OpenSim {
-    public class HeightmapInput : ISystemInput {
+    public class HeightmapInput : ISystemPlugin {
         private readonly Dictionary<ulong, HashSet<string>> mMappedParcels = new Dictionary<ulong, HashSet<string>>();
         private readonly HashSet<ulong> mFinishedRegions = new HashSet<ulong>();
 
@@ -147,7 +147,7 @@ namespace Chimera.OpenSim {
 
         #region IInput Members
 
-        public event Action<IInput, bool> EnabledChanged;
+        public event Action<IPlugin, bool> EnabledChanged;
 
         public UserControl ControlPanel {
             get {

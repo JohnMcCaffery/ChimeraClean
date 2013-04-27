@@ -27,7 +27,7 @@ namespace Chimera.Flythrough {
         }
     }
 
-    public class Flythrough : ISystemInput {
+    public class Flythrough : ISystemPlugin {
         private EventSequence<Camera> mEvents = new EventSequence<Camera>();
         private Coordinator mCoordinator;
         private FlythroughPanel mPanel;
@@ -315,7 +315,7 @@ namespace Chimera.Flythrough {
 
         #region ISystemInput Members
 
-        public event Action<IInput, bool> EnabledChanged;
+        public event Action<IPlugin, bool> EnabledChanged;
 
         public UserControl ControlPanel {
             get {

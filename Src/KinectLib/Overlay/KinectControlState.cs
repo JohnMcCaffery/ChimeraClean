@@ -25,7 +25,7 @@ namespace Chimera.Kinect.Overlay {
         public KinectControlState(string name, StateManager manager, bool avatar)
             : base(name, manager) {
 
-            mInput = manager.Coordinator.GetInput<KinectInput>();
+            mInput = manager.Coordinator.GetPlugin<KinectInput>();
             mAvatar = avatar;
 
             mStartOrientation = new Rotation(manager.Coordinator.Orientation);

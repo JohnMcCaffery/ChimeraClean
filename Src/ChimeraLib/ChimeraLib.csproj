@@ -101,35 +101,35 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core\Projector.cs" />
-    <Compile Include="GUI\Controls\Inputs\AxisBasedDeltaPanel.cs">
+    <Compile Include="GUI\Controls\Plugins\AxisBasedDeltaPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="GUI\Controls\Inputs\AxisBasedDeltaPanel.Designer.cs">
+    <Compile Include="GUI\Controls\Plugins\AxisBasedDeltaPanel.Designer.cs">
       <DependentUpon>AxisBasedDeltaPanel.cs</DependentUpon>
     </Compile>
-    <Compile Include="GUI\Controls\Inputs\AxisPanel.cs">
+    <Compile Include="GUI\Controls\Plugins\AxisPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="GUI\Controls\Inputs\AxisPanel.Designer.cs">
+    <Compile Include="GUI\Controls\Plugins\AxisPanel.Designer.cs">
       <DependentUpon>AxisPanel.cs</DependentUpon>
     </Compile>
-    <Compile Include="GUI\Controls\Inputs\ConstrainedAxisPanel.cs">
+    <Compile Include="GUI\Controls\Plugins\ConstrainedAxisPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="GUI\Controls\Inputs\ConstrainedAxisPanel.Designer.cs">
+    <Compile Include="GUI\Controls\Plugins\ConstrainedAxisPanel.Designer.cs">
       <DependentUpon>ConstrainedAxisPanel.cs</DependentUpon>
     </Compile>
-    <Compile Include="GUI\Controls\Inputs\SelectableInputPanel.cs">
+    <Compile Include="GUI\Controls\Plugins\PluginSelectorPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="GUI\Controls\Inputs\SelectableInputPanel.Designer.cs">
-      <DependentUpon>SelectableInputPanel.cs</DependentUpon>
+    <Compile Include="GUI\Controls\Plugins\PluginSelectorPanel.Designer.cs">
+      <DependentUpon>PluginSelectorPanel.cs</DependentUpon>
     </Compile>
     <Compile Include="Inputs\AxisBasedDelta.cs" />
     <Compile Include="Inputs\ConstrainedAxis.cs" />
-    <Compile Include="Inputs\SelectableInput.cs" />
+    <Compile Include="Inputs\SelectablePlugin.cs" />
     <Compile Include="Interfaces\IAxis.cs" />
-    <Compile Include="Interfaces\IInputListener.cs" />
+    <Compile Include="Interfaces\ITickListener.cs" />
     <Compile Include="Interfaces\Overlay\IImageTransition.cs" />
     <Compile Include="Interfaces\Overlay\IImageTransitionFactory.cs" />
     <Compile Include="Interfaces\Overlay\IWindowTransition.cs" />
@@ -160,11 +160,11 @@
     <Compile Include="GUI\Controls\ConditionalCheck.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="GUI\Controls\Inputs\MouseInputPanel.cs">
+    <Compile Include="GUI\Controls\Plugins\MousePluginPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="GUI\Controls\Inputs\MouseInputPanel.Designer.cs">
-      <DependentUpon>MouseInputPanel.cs</DependentUpon>
+    <Compile Include="GUI\Controls\Plugins\MousePluginPanel.Designer.cs">
+      <DependentUpon>MousePluginPanel.cs</DependentUpon>
     </Compile>
     <Compile Include="GUI\Controls\ScalarPanel.cs">
       <SubType>UserControl</SubType>
@@ -192,24 +192,24 @@
     </Compile>
     <Compile Include="Interfaces\Overlay\IHoverSelectorRenderer.cs" />
     <Compile Include="Interfaces\Overlay\IDrawable.cs" />
-    <Compile Include="Inputs\InputConfig.cs" />
-    <Compile Include="Interfaces\IInput.cs" />
+    <Compile Include="Inputs\PluginConfig.cs" />
+    <Compile Include="Interfaces\IPlugin.cs" />
     <Compile Include="Inputs\DeltaBasedInput.cs" />
-    <Compile Include="Inputs\MouseInput.cs" />
+    <Compile Include="Inputs\MousePlugin.cs" />
     <Compile Include="Interfaces\IDeltaInput.cs" />
     <Compile Include="Interfaces\IUpdater.cs" />
-    <Compile Include="Interfaces\IInputSource.cs" />
+    <Compile Include="Interfaces\ITickSource.cs" />
     <Compile Include="GUI\Forms\Inputs\CameraControlForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="GUI\Forms\Inputs\CameraControlForm.Designer.cs">
       <DependentUpon>CameraControlForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Inputs\KBMouseInput.cs" />
-    <Compile Include="GUI\Controls\Inputs\KBMousePanel.cs">
+    <Compile Include="Inputs\KBMousePlugin.cs" />
+    <Compile Include="GUI\Controls\Plugins\KBMousePanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="GUI\Controls\Inputs\KBMousePanel.Designer.cs">
+    <Compile Include="GUI\Controls\Plugins\KBMousePanel.Designer.cs">
       <DependentUpon>KBMousePanel.cs</DependentUpon>
     </Compile>
     <Compile Include="Interfaces\ICrashable.cs" />
@@ -256,7 +256,7 @@
     <Compile Include="GUI\Forms\CoordinatorForm.Designer.cs">
       <DependentUpon>CoordinatorForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Interfaces\ISystemInput.cs" />
+    <Compile Include="Interfaces\ISystemPlugin.cs" />
     <Compile Include="Interfaces\IOutput.cs" />
     <Compile Include="Core\Coordinator.cs" />
     <Compile Include="Core\NetworkMaster.cs" />
@@ -277,20 +277,20 @@
     <Folder Include="Statistics\" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="GUI\Controls\Inputs\AxisBasedDeltaPanel.resx">
+    <EmbeddedResource Include="GUI\Controls\Plugins\AxisBasedDeltaPanel.resx">
       <DependentUpon>AxisBasedDeltaPanel.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="GUI\Controls\Inputs\AxisPanel.resx">
+    <EmbeddedResource Include="GUI\Controls\Plugins\AxisPanel.resx">
       <DependentUpon>AxisPanel.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="GUI\Controls\Inputs\ConstrainedAxisPanel.resx">
+    <EmbeddedResource Include="GUI\Controls\Plugins\ConstrainedAxisPanel.resx">
       <DependentUpon>ConstrainedAxisPanel.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="GUI\Controls\Inputs\MouseInputPanel.resx">
-      <DependentUpon>MouseInputPanel.cs</DependentUpon>
+    <EmbeddedResource Include="GUI\Controls\Plugins\MousePluginPanel.resx">
+      <DependentUpon>MousePluginPanel.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="GUI\Controls\Inputs\SelectableInputPanel.resx">
-      <DependentUpon>SelectableInputPanel.cs</DependentUpon>
+    <EmbeddedResource Include="GUI\Controls\Plugins\PluginSelectorPanel.resx">
+      <DependentUpon>PluginSelectorPanel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\Controls\ScalarPanel.resx">
       <DependentUpon>ScalarPanel.cs</DependentUpon>
@@ -316,7 +316,7 @@
     <EmbeddedResource Include="GUI\Forms\Inputs\CameraControlForm.resx">
       <DependentUpon>CameraControlForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="GUI\Controls\Inputs\KBMousePanel.resx">
+    <EmbeddedResource Include="GUI\Controls\Plugins\KBMousePanel.resx">
       <DependentUpon>KBMousePanel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\Forms\OverlayWindow.resx">

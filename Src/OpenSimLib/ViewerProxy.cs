@@ -20,7 +20,7 @@ using System.IO;
 using Nwc.XmlRpc;
 
 namespace Chimera.OpenSim {
-    public abstract class ViewerProxy : IOutput, ISystemInput {
+    public abstract class ViewerProxy : IOutput, ISystemPlugin {
         private static readonly string proxyAddress = "127.0.0.1";
 
         private Process mClient;
@@ -499,9 +499,9 @@ namespace Chimera.OpenSim {
 
         #region IInput Members
 
-        public event Action<IInput, bool> EnabledChanged;
+        public event Action<IPlugin, bool> EnabledChanged;
 
-        UserControl IInput.ControlPanel {
+        UserControl IPlugin.ControlPanel {
             get {
                 if (mInputPanel == null)
                     mInputPanel = new InputPanel(mFollowCamProperties);
@@ -524,7 +524,7 @@ namespace Chimera.OpenSim {
             get { return "Master Client"; }
         }
 
-        string IInput.State {
+        string IPlugin.State {
             get { throw new NotImplementedException(); }
         }
 
@@ -544,7 +544,7 @@ namespace Chimera.OpenSim {
             get { return mWindow.Coordinator; }
         }
 
-        void ISystemInput.Init(Coordinator coordinator) { }
+        void ISystemPlugin.Init(Coordinator coordinator) { }
 
         #endregion
 
