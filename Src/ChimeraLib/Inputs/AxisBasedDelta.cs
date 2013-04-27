@@ -23,6 +23,8 @@ namespace Chimera.Inputs {
         private bool mEnabled;
         private float mScale;
 
+        public event Action<IAxis> AxisAdded;
+
         public float Scale {
             get { return mScale; }
             set {
@@ -30,6 +32,10 @@ namespace Chimera.Inputs {
                 if (Change != null)
                     Change(this);
             }
+        }
+
+        public IEnumerable<IAxis> Axes {
+            get { return mAxes; }
         }
 
         public AxisBasedDelta(string name, params IAxis[] axes) {
@@ -41,6 +47,8 @@ namespace Chimera.Inputs {
         public void AddAxis(IAxis axis) {
             mAxes.Add(axis);
             axis.Changed += new Action(axis_Changed);
+            if (AxisAdded != null)
+                AxisAdded(axis);
         }
 
         void axis_Changed() {

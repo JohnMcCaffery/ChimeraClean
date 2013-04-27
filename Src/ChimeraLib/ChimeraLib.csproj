@@ -113,6 +113,12 @@
     <Compile Include="GUI\Controls\Inputs\AxisPanel.Designer.cs">
       <DependentUpon>AxisPanel.cs</DependentUpon>
     </Compile>
+    <Compile Include="GUI\Controls\Inputs\SelectableInputPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\Controls\Inputs\SelectableInputPanel.Designer.cs">
+      <DependentUpon>SelectableInputPanel.cs</DependentUpon>
+    </Compile>
     <Compile Include="Inputs\AxisBasedDelta.cs" />
     <Compile Include="Inputs\SelectableInput.cs" />
     <Compile Include="Interfaces\IAxis.cs" />
@@ -271,6 +277,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\Controls\Inputs\MouseInputPanel.resx">
       <DependentUpon>MouseInputPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\Controls\Inputs\SelectableInputPanel.resx">
+      <DependentUpon>SelectableInputPanel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\Controls\ScalarPanel.resx">
       <DependentUpon>ScalarPanel.cs</DependentUpon>
