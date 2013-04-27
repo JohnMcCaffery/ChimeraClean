@@ -54,8 +54,8 @@ namespace Chimera.Plugins {
 
         public void Init(Coordinator coordinator) {
             mCoordinator = coordinator;
-            foreach (var input in mPlugins)
-                input.Init(coordinator);
+            foreach (var plugin in mPlugins)
+                plugin.Init(coordinator);
         }
 
         #endregion

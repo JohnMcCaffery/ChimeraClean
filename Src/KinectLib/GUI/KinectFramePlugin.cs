@@ -120,13 +120,16 @@ namespace Chimera.Kinect.GUI {
 
         #region ISystemPlugin Members
 
-        public void Init(Coordinator coordinator) {
-            throw new NotImplementedException();
-        }
+        public void Init(Coordinator coordinator) { }
 
         #endregion
 
         #region IPlugin Members
+
+        public new bool Enabled {
+            get { return mEnabled; }
+            set { mEnabled = value; }
+        }
 
         public new event Action<IPlugin, bool> EnabledChanged;
 
