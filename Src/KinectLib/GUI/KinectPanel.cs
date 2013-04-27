@@ -123,9 +123,11 @@ namespace Chimera.Kinect.GUI {
         private void Nui_Tick() {
             bool update = false;
             bool depth = true;
+            Image oldFrame = null;
             Invoke(new Action(() => {
                 update = mainTab.SelectedTab == frameTab;
                 depth = depthFrameButton.Checked;
+                oldFrame = frameImage.Image;
             }));
             if (update) {
                 Bitmap frame = depth ? Nui.DepthFrame : Nui.ColourFrame;
@@ -160,7 +162,9 @@ namespace Chimera.Kinect.GUI {
                     }
                 }
 
-                BeginInvoke(new Action(() => frameImage.Image = frame));
+                Invoke(new Action(() => frameImage.Image = frame));
+                if (oldFrame != null)
+                    oldFrame.Dispose();
             }
         }
 
