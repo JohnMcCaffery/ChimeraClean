@@ -19,6 +19,16 @@ namespace Chimera.GUI.Controls.Inputs {
         public ConstrainedAxisPanel(Chimera.Inputs.ConstrainedAxis constrainedAxis)
             : this() {
             mConstrainedAxis = constrainedAxis;
+
+            deadzonePanel.Max = mConstrainedAxis.Deadzone * 3;
+            rangePanel.Max = mConstrainedAxis.Range * 3;
+            gracePanel.Max = mConstrainedAxis.Grace * 3;
+            scalePanel.Max = mConstrainedAxis.Scale * 3;
+
+            deadzonePanel.Value = mConstrainedAxis.Deadzone;
+            rangePanel.Value = mConstrainedAxis.Range;
+            gracePanel.Value = mConstrainedAxis.Grace;
+            scalePanel.Value = mConstrainedAxis.Scale;
         }
     }
 }
