@@ -96,8 +96,10 @@ namespace Chimera.Inputs {
         public string State {
             get {
                 string ret = mName + " -- combined input. Current Input: " + mCurrentInput.Name + Environment.NewLine;
-                ret += mCurrentInput.State;
-                ret += "---------------------------" + Environment.NewLine;
+                if (mCurrentInput != null) {
+                    ret += mCurrentInput.State;
+                    ret += "---------------------------" + Environment.NewLine;
+                }
                 foreach (var input in mInputs) {
                     if (input != mCurrentInput) {
                         ret += input.State;
@@ -118,7 +120,8 @@ namespace Chimera.Inputs {
         }
 
         public void Draw(Func<Vector3, Point> to2D, Graphics graphics, Action redraw) {
-            mCurrentInput.Draw(to2D, graphics, redraw);
+            if (mCurrentInput != null)
+                mCurrentInput.Draw(to2D, graphics, redraw);
         }
 
         #endregion
