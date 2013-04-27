@@ -113,6 +113,12 @@
     <Compile Include="GUI\Controls\Inputs\AxisPanel.Designer.cs">
       <DependentUpon>AxisPanel.cs</DependentUpon>
     </Compile>
+    <Compile Include="GUI\Controls\Inputs\ConstrainedAxisPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\Controls\Inputs\ConstrainedAxisPanel.Designer.cs">
+      <DependentUpon>ConstrainedAxisPanel.cs</DependentUpon>
+    </Compile>
     <Compile Include="GUI\Controls\Inputs\SelectableInputPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -120,6 +126,7 @@
       <DependentUpon>SelectableInputPanel.cs</DependentUpon>
     </Compile>
     <Compile Include="Inputs\AxisBasedDelta.cs" />
+    <Compile Include="Inputs\ConstrainedAxis.cs" />
     <Compile Include="Inputs\SelectableInput.cs" />
     <Compile Include="Interfaces\IAxis.cs" />
     <Compile Include="Interfaces\Overlay\IImageTransition.cs" />
