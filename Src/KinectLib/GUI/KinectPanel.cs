@@ -162,13 +162,15 @@ namespace Chimera.Kinect.GUI {
                     }
                 }
 
-                Invoke(new Action(() => frameImage.Image = frame));
-                if (oldFrame != null)
-                    oldFrame.Dispose();
+                BeginInvoke(new Action(() => {
+                    frameImage.Image = frame;
+                    if (oldFrame != null)
+                        oldFrame.Dispose();
+                }));
             }
         }
 
-        private void mInput_EnabledChanged(IInput input, bool enabled) {
+            private void mInput_EnabledChanged(IInput input, bool enabled) {
             if (!mGuiUpdate) {
                 mExternalUpdate = true;
                 headCheck.Checked = mInput.HeadEnabled;

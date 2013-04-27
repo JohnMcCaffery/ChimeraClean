@@ -558,7 +558,7 @@ namespace Chimera.OpenSim {
             if (coordinator.ControlMode == ControlMode.Absolute || !mMaster) {
                 double viewer = DateTime.Now.Subtract(mLastViewerUpdate).TotalSeconds;
                 double camera = DateTime.Now.Subtract(mLastCameraUpdate).TotalSeconds;
-                if (viewer > 2.0 && viewer > camera) {
+                if (mClientLoggedIn && viewer > 2.0 && viewer > camera) {
                     Console.WriteLine("Timeout since last viewer move. Last Viewer Update: {0}s, Last Camera Update: {1}s ", viewer, camera);
                     Console.WriteLine("Control mode: " + coordinator.ControlMode);
 
