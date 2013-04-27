@@ -90,6 +90,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GUI\KinectFramePlugin.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\KinectFramePlugin.Designer.cs">
+      <DependentUpon>KinectFramePlugin.cs</DependentUpon>
+    </Compile>
     <Compile Include="Overlay\KinectHelpState.cs" />
     <Compile Include="Overlay\KinectHelpWindowState.cs" />
     <Compile Include="Overlay\SkeletonLostTrigger.cs" />
@@ -160,6 +166,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="GUI\KinectFramePlugin.resx">
+      <DependentUpon>KinectFramePlugin.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="GUI\TimespanMovementPanel.resx">
       <DependentUpon>TimespanMovementPanel.cs</DependentUpon>
     </EmbeddedResource>

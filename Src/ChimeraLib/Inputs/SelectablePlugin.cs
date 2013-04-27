@@ -52,10 +52,6 @@ namespace Chimera.Plugins {
 
         #region ISystemPlugin Members
 
-        public Coordinator Coordinator {
-            get { return mCoordinator; }
-        }
-
         public void Init(Coordinator coordinator) {
             mCoordinator = coordinator;
             foreach (var input in mPlugins)

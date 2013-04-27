@@ -188,11 +188,7 @@ namespace Chimera.OpenSim {
 
         #endregion
 
-        #region ISystemInput Members
-
-        public Coordinator Coordinator {
-            get { return mCoordinator; }
-        }
+        #region ISystemPlugin Members
 
         public void Init(Coordinator coordinator) {
             mCoordinator = coordinator;

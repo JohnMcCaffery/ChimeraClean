@@ -239,7 +239,7 @@ namespace Chimera.OpenSim {
                 }
 
                 new Thread(() => {
-                    if (mControlCamera && Coordinator.ControlMode == ControlMode.Absolute)
+                    if (mControlCamera && mWindow.Coordinator.ControlMode == ControlMode.Absolute)
                         SetCamera();
                     SetWindow();
                     if (mFollowCamProperties.SendPackets)
@@ -538,13 +538,9 @@ namespace Chimera.OpenSim {
 
         #endregion
 
-        #region ISystemInput Members
+        #region ISystemPlugin Members
 
-        public Coordinator Coordinator {
-            get { return mWindow.Coordinator; }
-        }
-
-        void ISystemPlugin.Init(Coordinator coordinator) { }
+        public void Init(Coordinator coordinator) { }
 
         #endregion
 

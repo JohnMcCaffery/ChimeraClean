@@ -313,7 +313,7 @@ namespace Chimera.Flythrough {
             }
         }
 
-        #region ISystemInput Members
+        #region ISystemPlugin Members
 
         public event Action<IPlugin, bool> EnabledChanged;
 

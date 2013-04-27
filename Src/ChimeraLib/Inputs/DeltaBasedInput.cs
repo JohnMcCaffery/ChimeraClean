@@ -63,7 +63,7 @@ namespace Chimera.Plugins {
             }
         }
 
-        #region ISystemInput Members
+        #region ISystemPlugin Members
 
         public event Action<IPlugin, bool> EnabledChanged;
 
@@ -90,10 +90,6 @@ namespace Chimera.Plugins {
 
         public virtual string State {
             get { return mInput.State; }
-        }
-
-        public Coordinator Coordinator {
-            get { return mCoordinator; }
         }
 
         public void Init(Coordinator coordinator) {

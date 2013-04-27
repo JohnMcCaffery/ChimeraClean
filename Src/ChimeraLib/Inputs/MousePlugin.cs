@@ -50,10 +50,6 @@ namespace Chimera.Plugins {
 
         public event Action<IPlugin, bool> EnabledChanged;
 
-        public Coordinator Coordinator {
-            get { return mCoordinator; }
-        }
-
         public void Init(Coordinator coordinator) {
             mCoordinator = coordinator;
             coordinator.Tick += new Action(coordinator_Tick);

@@ -237,7 +237,7 @@ namespace Chimera.Kinect {
             set { mCurrentMovementController.YawEnabled = value; }
         }
 
-        #region ISystemInput Members
+        #region ISystemPlugin Members
 
         public event Action<IPlugin, bool> EnabledChanged;
 
