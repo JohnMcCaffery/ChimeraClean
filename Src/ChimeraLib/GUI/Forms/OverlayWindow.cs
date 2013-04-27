@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using Chimera.Overlay;
 using Chimera.Interfaces.Overlay;
 using Chimera.Util;
+using AxWMPLib;
 
 namespace Chimera.GUI.Forms {
     public partial class OverlayWindow : Form {
@@ -34,6 +35,8 @@ namespace Chimera.GUI.Forms {
         private bool mRedrawStatic;
         private Cursor mDefaultCursor = new Cursor("../Cursors/cursor.cur");
 
+        public event Action VideoFinished;
+
         public OverlayWindow() {
             InitializeComponent();
 
@@ -47,14 +50,23 @@ namespace Chimera.GUI.Forms {
         }
 
         public void Init(WindowOverlayManager manager) {
+            mManager = manager;
+
             drawPanel.BackColor = manager.TransparencyKey;
             BackColor = manager.TransparencyKey;
             TransparencyKey = manager.TransparencyKey;
-            mManager = manager;
             Opacity = manager.Opacity;
             refreshTimer.Interval = manager.FrameLength;
             refreshTimer.Enabled = true;
 
+            videoPlayer.PlayStateChange += new _WMPOCXEvents_PlayStateChangeEventHandler(videoPlayer_PlayStateChange);
+        }
+
+        private void videoPlayer_PlayStateChange(object source, _WMPOCXEvents_PlayStateChangeEvent args) {
+            if (args.newState == 1 && VideoFinished != null) {
+                VideoFinished();
+                videoPlayer.Visible = false;
+            }
         }
 
         public void RedrawStatic() {
@@ -142,6 +154,20 @@ namespace Chimera.GUI.Forms {
             Invoke(() => {
                 BringToFront();
             });
+        }
+
+        public void PlayVideo(string uri) {
+            videoPlayer.Visible = true;
+            videoPlayer.URL = uri;
+
+            videoPlayer.uiMode = "none";
+            videoPlayer.stretchToFit = true;
+            videoPlayer.windowlessVideo = true;
+            //videoPlayer.Dock = DockStyle.Fill;
+            //videoPlayer.enableContextMenu = false;
+            //videoPlayer.fullScreen = true;
+
+            //videoPlayer.Ctlcontrols.play();
         }
     }
 }

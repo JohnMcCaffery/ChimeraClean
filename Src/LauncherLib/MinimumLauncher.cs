@@ -64,14 +64,29 @@ namespace Chimera.Launcher {
 
         protected override void InitOverlay() {
             Coordinator.ControlMode = ControlMode.Delta;
-            return;
+
             Window mainWindow = Coordinator["MainWindow"];
+
+            Font font = new Font("Verdana", 62f, FontStyle.Bold);
+            Rectangle clip = new Rectangle(0, 0, 292, 289);
+            //Rectangle clip = new Rectangle(0, 0, 1920, 1080);
 
             DialRenderer dialRenderer = new DialRenderer();
             CursorRenderer cursorRenderer = new DialCursorRenderer(dialRenderer, mainWindow.OverlayManager);
 
-            Font font = new Font("Verdana", 62f, FontStyle.Bold);
-            Rectangle clip = new Rectangle(0, 0, 1920, 1080);
+            IImageTransitionFactory fadeFactory = new FadeFactory();
+            IWindowTransitionFactory fadeTransition = new BitmapFadeTransitionFactory(fadeFactory, 1500.0);
+
+            State tmpSplash = new ImageBGState("SplashScreen", Coordinator.StateManager, "../Images/Caen/MenuBGs/Caen-Splash.png");
+            State vid = new OverlayVideoState("TestVid", Coordinator.StateManager, mainWindow.OverlayManager, "../Videos/test.mp4", tmpSplash, fadeTransition);
+
+            TxtTrans(tmpSplash, vid, "Play", .4f, .4f, font, Color.Red, clip, mainWindow, cursorRenderer, fadeTransition);
+
+            Coordinator.StateManager.CurrentState = tmpSplash;
+
+
+            return;
+
 
             IImageTransitionFactory fade = new FadeFactory();
             ITrigger slideshowNext = new TextHoverTrigger(mainWindow.OverlayManager, cursorRenderer, 
@@ -79,9 +94,7 @@ namespace Chimera.Launcher {
             ITrigger slideshowPrev = new TextHoverTrigger(mainWindow.OverlayManager, cursorRenderer, 
                 new StaticText("Prev", mainWindow.Name, font, Color.DarkBlue, new PointF(.25f, .9f)), clip);
 
-            IImageTransitionFactory fadeFactory = new FadeFactory();
             CutWindowTransitionFactory cutTransition = new CutWindowTransitionFactory();
-            BitmapFadeTransitionFactory fadeTransition = new BitmapFadeTransitionFactory(fadeFactory, 1500.0);
             OpacityFadeOutTransitionFactory fadeOutTransition = new OpacityFadeOutTransitionFactory(1500.0);
             OpacityFadeInTransitionFactory fadeInTransition = new OpacityFadeInTransitionFactory(1500.0);
 
