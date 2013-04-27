@@ -282,6 +282,9 @@
     <EmbeddedResource Include="GUI\Controls\Inputs\AxisPanel.resx">
       <DependentUpon>AxisPanel.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="GUI\Controls\Inputs\ConstrainedAxisPanel.resx">
+      <DependentUpon>ConstrainedAxisPanel.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="GUI\Controls\Inputs\MouseInputPanel.resx">
       <DependentUpon>MouseInputPanel.cs</DependentUpon>
     </EmbeddedResource>
