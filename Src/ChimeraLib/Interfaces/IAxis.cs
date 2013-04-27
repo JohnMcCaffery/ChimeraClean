@@ -57,5 +57,10 @@ namespace Chimera.Interfaces {
         /// The camera axis this input axis is bound to.
         /// </summary>
         AxisBinding Binding { get; set;  }
+
+        /// <summary>
+        /// The name by which this axis can be identified. Is not necessarily unique.
+        /// </summary>
+        string Name { get; }
     }
 }

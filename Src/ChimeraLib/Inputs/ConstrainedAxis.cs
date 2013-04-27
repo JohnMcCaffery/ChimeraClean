@@ -10,6 +10,7 @@ namespace Chimera.Plugins {
     public abstract class ConstrainedAxis : IAxis {
         private AxisBinding mBinding = AxisBinding.None;
         private ConstrainedAxisPanel mPanel;
+        private readonly string mName;
 
         private float mRaw = 0f;
         private float mDelta = 0f;
@@ -50,9 +51,12 @@ namespace Chimera.Plugins {
             }
         }
 
-        protected ConstrainedAxis() { }
+        protected ConstrainedAxis(string name) {
+            mName = name;
+        }
 
-        protected ConstrainedAxis(float deadzone, float range, float grace, float scale) {
+        protected ConstrainedAxis(string name, float deadzone, float range, float grace, float scale)
+            : this(name) {
             mDeadzone = deadzone;
             mRange = range;
             mGrace = grace;
@@ -102,6 +106,10 @@ namespace Chimera.Plugins {
                         Changed();
                 }
             }
+        }
+
+        public string Name {
+            get { return mName; }
         }
 
         #endregion

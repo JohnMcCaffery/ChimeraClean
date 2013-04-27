@@ -26,6 +26,7 @@ namespace Chimera.GUI.Controls.Plugins {
             mAxis = axis;
 
             bindingDropdown.SelectedItem = axis.Binding;
+            mainGroup.Text = axis.Name;
 
             UserControl control = mAxis.ControlPanel;
 

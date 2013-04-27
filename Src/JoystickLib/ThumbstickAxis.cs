@@ -13,8 +13,12 @@ namespace Joystick {
         private bool mLeft;
         private bool mX;
 
+        private static string MakeName(bool left, bool x) {
+            return (left ? "Left" : "Right") + "Thumbstick" + (x ? "X" : "Y");
+        }
+
         public ThumbstickAxis(bool left, bool x)
-            : base(short.MaxValue / 3f, short.MaxValue / 2f, short.MaxValue / 6f, .00005f) {
+            : base(MakeName(left, x), short.MaxValue / 3f, short.MaxValue / 2f, short.MaxValue / 6f, .00005f) {
             Init(left, x);
 
             mController = JoystickInput.GetController();

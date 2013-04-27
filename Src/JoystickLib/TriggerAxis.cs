@@ -13,7 +13,7 @@ namespace Joystick {
         private bool mLeftUp;
 
         public TriggerAxis(bool leftUp)
-            : base(0, 255f, 0, .0005f) {
+            : base("Trigger", 0, 255f, 0, .0005f) {
             Init(leftUp);
 
             mController = JoystickInput.GetController();
