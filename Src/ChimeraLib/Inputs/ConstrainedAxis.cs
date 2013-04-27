@@ -54,6 +54,10 @@ namespace Chimera.Plugins {
         protected ConstrainedAxis(string name) {
             mName = name;
         }
+        protected ConstrainedAxis(string name, AxisBinding binding)
+            : this(name) {
+            mBinding = binding;
+        }
 
         protected ConstrainedAxis(string name, float deadzone, float range, float grace, float scale)
             : this(name) {
@@ -61,6 +65,11 @@ namespace Chimera.Plugins {
             mRange = range;
             mGrace = grace;
             mScale = scale;
+        }
+
+        protected ConstrainedAxis(string name, float deadzone, float range, float grace, float scale, AxisBinding binding)
+            : this(name, deadzone, range, grace, scale) {
+            mBinding = binding;
         }
 
         protected void SetRawValue(float value) {

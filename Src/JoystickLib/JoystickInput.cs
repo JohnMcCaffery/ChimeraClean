@@ -15,7 +15,8 @@ using SlimDX.XInput;
 
 namespace Joystick{
     public class JoystickInput : IDeltaInput {
-        public static Controller GetController() {            Controller controller = new Controller(UserIndex.One);
+        public static Controller GetController() {
+            Controller controller = new Controller(UserIndex.One);
             if (controller.IsConnected)
                 return controller;
 
@@ -32,6 +33,11 @@ namespace Joystick{
                 return controller;
 
             return null;
+        }
+
+        public static Controller GetController(UserIndex index) {
+            Controller c = new Controller(index);
+            return c.IsConnected ? c : null;
         }
 
         private Controller mJS;

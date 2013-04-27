@@ -12,25 +12,16 @@ namespace Joystick {
         private Controller mController;
         private bool mLeftUp;
 
-        public TriggerAxis(bool leftUp)
-            : base("Trigger", 0, 255f, 0, .0005f) {
-            Init(leftUp);
+        
+        public TriggerAxis(Controller controller, bool leftUp, AxisBinding binding) 
+            : base("Trigger", 0, 255f, 0, .0005f, binding) {
 
-            mController = JoystickInput.GetController();
-        }
-        public TriggerAxis(UserIndex index, bool leftUp)
-            : this(leftUp) {
-            mController = new Controller(index);
-            if (!mController.IsConnected)
-                mController = null;
-        }
-        public TriggerAxis(Controller controller, bool leftUp)
-            : this(leftUp) {
+            mLeftUp = leftUp;
             mController = controller;
         }
-
-        private void Init(bool leftUp) {
-            mLeftUp = leftUp;
+       
+        public TriggerAxis(Controller controller, bool leftUp)
+            : this(controller, leftUp, AxisBinding.None) {
         }
 
         public void Init(ITickSource source) {

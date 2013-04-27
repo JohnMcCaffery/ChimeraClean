@@ -17,30 +17,16 @@ namespace Joystick {
             return (left ? "Left" : "Right") + "Thumbstick" + (x ? "X" : "Y");
         }
 
-        public ThumbstickAxis(bool left, bool x)
-            : base(MakeName(left, x), short.MaxValue / 3f, short.MaxValue / 2f, short.MaxValue / 6f, .00005f) {
-            Init(left, x);
+        public ThumbstickAxis(Controller controller, bool left, bool x, AxisBinding binding)
+            : base(MakeName(left, x), short.MaxValue / 3f, short.MaxValue / 2f, short.MaxValue / 6f, .00005f, binding) {
 
-            mController = JoystickInput.GetController();
-        }
-
-        public ThumbstickAxis(UserIndex index, bool left, bool x)
-            : this(left, x) {
-
-            mController = new Controller(index);
-            if (!mController.IsConnected)
-                mController = null;
+            mController = controller;
+            mLeft = left;
+            mX = x;
         }
 
         public ThumbstickAxis(Controller controller, bool left, bool x)
-            : this(left, x) {
-
-            mController = controller;
-        }
-
-        private void Init(bool left, bool x) {
-            mLeft = left;
-            mX = x;
+            : this (controller, left, x, AxisBinding.None) {
         }
 
         public void Init(ITickSource source) {
