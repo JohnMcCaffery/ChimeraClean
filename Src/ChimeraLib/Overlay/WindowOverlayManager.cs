@@ -319,5 +319,10 @@ namespace Chimera.Overlay {
             if (mOverlayWindow != null)
                 mOverlayWindow.PlayVideo(uri);
         }
+
+        public void PlayAudio(string uri) {
+            if (mOverlayWindow != null)
+                mOverlayWindow.PlayAudio(uri);
+        }
     }
 }

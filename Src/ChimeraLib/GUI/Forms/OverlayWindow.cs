@@ -166,11 +166,10 @@ namespace Chimera.GUI.Forms {
             videoPlayer.uiMode = "none";
             videoPlayer.stretchToFit = true;
             videoPlayer.windowlessVideo = true;
-            //videoPlayer.Dock = DockStyle.Fill;
-            //videoPlayer.enableContextMenu = false;
-            //videoPlayer.fullScreen = true;
+        }
 
-            //videoPlayer.Ctlcontrols.play();
+        public void PlayAudio(string uri) {
+            videoPlayer.URL = uri;
         }
     }
 }

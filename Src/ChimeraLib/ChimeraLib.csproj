@@ -101,6 +101,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core\Projector.cs" />
+    <Compile Include="GUI\Controls\Inputs\AxisBasedDeltaPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\Controls\Inputs\AxisBasedDeltaPanel.Designer.cs">
+      <DependentUpon>AxisBasedDeltaPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Inputs\AxisBasedDelta.cs" />
+    <Compile Include="Inputs\SelectableInput.cs" />
+    <Compile Include="Interfaces\IAxis.cs" />
     <Compile Include="Interfaces\Overlay\IImageTransition.cs" />
     <Compile Include="Interfaces\Overlay\IImageTransitionFactory.cs" />
     <Compile Include="Interfaces\Overlay\IWindowTransition.cs" />
