@@ -15,32 +15,6 @@ using SlimDX.XInput;
 
 namespace Joystick{
     public class JoystickInput : IDeltaInput {
-        public static Controller GetController() {
-            Controller controller = new Controller(UserIndex.One);
-            if (controller.IsConnected)
-                return controller;
-
-            controller = new Controller(UserIndex.Two);
-            if (controller.IsConnected)
-                return controller;
-
-            controller = new Controller(UserIndex.Three);
-            if (controller.IsConnected)
-                return controller;
-
-            controller = new Controller(UserIndex.Four);
-            if (controller.IsConnected)
-                return controller;
-
-            return null;
-        }
-
-        public static Controller GetController(UserIndex index) {
-            Controller c = new Controller(index);
-            return c.IsConnected ? c : null;
-        }
-
-        private Controller mJS;
         private Action mTick;
         private JoystickPanel mControlPanel;
         private bool mEnabled;
@@ -54,17 +28,17 @@ namespace Joystick{
 
         public int[] Sliders {
             get { 
-                if (mJS == null)
+                if (!GamepadManager.Initialised)
                     return new int[0];
 
                 List<int> values = new List<int>();
-                SlimDX.XInput.State state = mJS.GetState();
-                values.Add(state.Gamepad.LeftThumbX);
-                values.Add(state.Gamepad.LeftThumbY);
-                values.Add(state.Gamepad.RightThumbX);
-                values.Add(state.Gamepad.RightThumbY);
-                values.Add(state.Gamepad.LeftTrigger);
-                values.Add(state.Gamepad.RightTrigger);
+                Gamepad g = GamepadManager.Gamepad;
+                values.Add(g.LeftThumbX);
+                values.Add(g.LeftThumbY);
+                values.Add(g.RightThumbX);
+                values.Add(g.RightThumbY);
+                values.Add(g.LeftTrigger);
+                values.Add(g.RightTrigger);
                 return values.ToArray(); 
             }
         }
@@ -74,16 +48,15 @@ namespace Joystick{
             DirectInput input = new DirectInput();
             devices.AddRange(input.GetDevices(DeviceClass.GameController, DeviceEnumerationFlags.AttachedOnly));
 
-            mJS = GetController();
             mTick = new Action(Tick);
         }
 
         private void Tick() {
-            if (mJS != null) {
+            if (GamepadManager.Initialised) {
                 OSVector posDelta = OSVector.Zero;
                 Rotation rotDelta = Rotation.Zero;
 
-                Gamepad g = mJS.GetState().Gamepad;
+                Gamepad g = GamepadManager.Gamepad;
 
                 int x = Math.Abs((int) g.RightThumbY) - mDeadzone;
                 posDelta.X = x > 0 ? x * mScaleX * (g.RightThumbY > 0f ? 1f : -1f) : 0f;

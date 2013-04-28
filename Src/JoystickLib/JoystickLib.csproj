@@ -69,6 +69,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GamepadManager.cs" />
     <Compile Include="XBoxControllerDelta.cs" />
     <Compile Include="TriggerAxis.cs" />
     <Compile Include="GUI\JoystickPanel.cs">

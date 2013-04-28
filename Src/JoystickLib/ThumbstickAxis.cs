@@ -9,7 +9,6 @@ using Chimera.Interfaces;
 
 namespace Joystick {
     public class ThumbstickAxis : ConstrainedAxis, ITickListener {
-        private Controller mController;
         private bool mLeft;
         private bool mX;
 
@@ -17,27 +16,27 @@ namespace Joystick {
             return (left ? "Left" : "Right") + "Thumbstick" + (x ? "X" : "Y");
         }
 
-        public ThumbstickAxis(Controller controller, bool left, bool x, AxisBinding binding)
+        public ThumbstickAxis(bool left, bool x, AxisBinding binding)
             : base(MakeName(left, x), short.MaxValue / 3f, short.MaxValue / 2f, short.MaxValue / 6f, .00005f, binding) {
 
-            mController = controller;
             mLeft = left;
             mX = x;
         }
 
-        public ThumbstickAxis(Controller controller, bool left, bool x)
-            : this (controller, left, x, AxisBinding.None) {
+        public ThumbstickAxis(bool left, bool x)
+            : this (left, x, AxisBinding.None) {
         }
 
         public void Init(ITickSource source) {
+            GamepadManager.Init(source);
             source.Tick += new Action(source_Tick);
         }
 
         void source_Tick() {
-            if (mController == null)
+            if (!GamepadManager.Initialised)
                 return;
 
-            Gamepad g = mController.GetState().Gamepad;
+            Gamepad g = GamepadManager.Gamepad;
             if (mLeft)
                 SetRawValue(mX ? g.LeftThumbX : g.LeftThumbY);
             else

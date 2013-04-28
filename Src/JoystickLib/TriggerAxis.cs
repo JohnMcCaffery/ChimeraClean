@@ -9,30 +9,29 @@ using Chimera.Interfaces;
 
 namespace Joystick {
     public class TriggerAxis : ConstrainedAxis, ITickListener {
-        private Controller mController;
         private bool mLeftUp;
 
         
-        public TriggerAxis(Controller controller, bool leftUp, AxisBinding binding) 
+        public TriggerAxis(bool leftUp, AxisBinding binding) 
             : base("Trigger", 0, 255f, 0, .0005f, binding) {
 
             mLeftUp = leftUp;
-            mController = controller;
         }
        
-        public TriggerAxis(Controller controller, bool leftUp)
-            : this(controller, leftUp, AxisBinding.None) {
+        public TriggerAxis(bool leftUp)
+            : this(leftUp, AxisBinding.None) {
         }
 
         public void Init(ITickSource source) {
+            GamepadManager.Init(source);
             source.Tick += new Action(source_Tick);
         }
 
         void source_Tick() {
-            if (mController == null)
+            if (!GamepadManager.Initialised)
                 return;
 
-            Gamepad g = mController.GetState().Gamepad;
+            Gamepad g = GamepadManager.Gamepad;
 
             if (g.RightTrigger > 0)
                 SetRawValue(g.RightTrigger * (mLeftUp ? -1f : 1f));

@@ -9,17 +9,14 @@ using SlimDX.XInput;
 
 namespace Joystick {
     public class XBoxControllerDelta : AxisBasedDelta {
-        private static Controller C() {
-            return JoystickInput.GetController();
-        }
         public XBoxControllerDelta()
             : base(
                 "XBox Controller",
-                new ThumbstickAxis(C(), false, false),
-                new ThumbstickAxis(C(), false, true),
-                new TriggerAxis(C(), false),
-                new ThumbstickAxis(C(), true, true),
-                new ThumbstickAxis(C(), true, false)
+                new ThumbstickAxis(false, false),
+                new ThumbstickAxis(false, true),
+                new TriggerAxis(false),
+                new ThumbstickAxis(true, true),
+                new ThumbstickAxis(true, false)
             ) { }
     }
 
