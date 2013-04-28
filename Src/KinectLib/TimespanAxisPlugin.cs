@@ -14,7 +14,8 @@ namespace Chimera.Kinect {
     public class TimespanAxisPlugin : AxisBasedDelta {
         public TimespanAxisPlugin()
             : base("Kinect Move - Timespan",
-                new PushAxis(true)
+                new PushAxis(true, Chimera.Interfaces.AxisBinding.X),
+                new PushAxis(false, Chimera.Interfaces.AxisBinding.X)
                 ) {
         }
 

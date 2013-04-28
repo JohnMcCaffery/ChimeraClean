@@ -31,6 +31,8 @@ namespace Chimera.Plugins {
         private ConstrainedAxisPanel mPanel;
         private readonly string mName;
 
+        protected bool mMirror = true;
+
         private float mRaw = 0f;
         private float mDelta = 0f;
         private float mDeadzone = .1f;
@@ -78,9 +80,11 @@ namespace Chimera.Plugins {
 
         private void Recalculate() {
             float sign = mRaw < 0f ? -1f : 1f;
-            mRaw = Math.Abs(mRaw);
+            if(mMirror)
+                mRaw = Math.Abs(mRaw);
             mDelta = mRaw < mDeadzone ? 0f : (mRaw - mDeadzone) * mScale;
-            mDelta *= sign;
+            if (mMirror)
+                mDelta *= sign;
         }
 
         #region IAxis Members

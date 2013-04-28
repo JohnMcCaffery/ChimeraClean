@@ -25,6 +25,8 @@ using Chimera.Plugins;
 using Chimera.Interfaces;
 using NuiLibDotNet;
 using C = NuiLibDotNet.Condition;
+using Chimera.GUI.Controls.Plugins;
+using Chimera.Kinect.GUI.Axes;
 
 namespace Chimera.Kinect.Axes {
     public class PushAxis : SplitAxis {
@@ -43,7 +45,21 @@ namespace Chimera.Kinect.Axes {
             private static readonly float DZ = .3f;
             private static readonly float SCALE = .05f;
             private static readonly float BACKDZ = DZ / 5f;
-            private static Scalar mValue;
+            private Scalar mDiff;
+            private Scalar mValue;
+            private PushAxisPanel mPanel;
+
+            public Scalar Diff {
+                get { return mDiff; }
+            }
+
+            public override System.Windows.Forms.UserControl ControlPanel {
+                get {
+                    if (mPanel == null)
+                        mPanel = new PushAxisPanel(this);
+                    return mPanel;
+                }
+            }
 
             public PushSingleAxis(bool right, bool forward)
                 : this(right, forward, AxisBinding.None) {
@@ -52,12 +68,17 @@ namespace Chimera.Kinect.Axes {
             public PushSingleAxis(bool right, bool forward, AxisBinding binding)
                 : base("Push " + (right ? "Right" : "Left") + (forward ? "+" : "-"), forward ? DZ : BACKDZ, SCALE, binding) {
 
+                mMirror = false;
+
                 //How far pushing forward
-                Scalar diff = Nui.z(Nui.joint(right ? Nui.Hand_Right : Nui.Hand_Left) - Nui.joint(Nui.Hip_Centre)) - .15f;
+                mDiff = Nui.z(Nui.joint(right ? Nui.Hand_Right : Nui.Hand_Left) - Nui.joint(Nui.Hip_Centre));
+                if (forward)
+                    mDiff *= -1f;
+
                 //Whether the push gesture could be active
                 Condition active = right ? GlobalConditions.ActiveR : GlobalConditions.ActiveL;
                 //The value for the push gesture
-                mValue = Nui.ifScalar(active, right ? diff * -1f : diff, 0f);
+                mValue = Nui.ifScalar(active, mDiff, 0f);
 
                 Nui.Tick += new ChangeDelegate(Nui_Tick);
             }

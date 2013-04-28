@@ -37,13 +37,24 @@ namespace Chimera.GUI.Controls.Plugins {
 
         public ConstrainedAxisPanel(Chimera.Plugins.ConstrainedAxis constrainedAxis)
             : this() {
-            mConstrainedAxis = constrainedAxis;
 
-            deadzonePanel.Max = mConstrainedAxis.Deadzone * 3;
-            scalePanel.Max = mConstrainedAxis.Scale * 3;
+            Axis = constrainedAxis;
+        }
 
-            deadzonePanel.Value = mConstrainedAxis.Deadzone;
-            scalePanel.Value = mConstrainedAxis.Scale;
+        public ConstrainedAxis Axis {
+            get { return mConstrainedAxis; }
+            set {
+                if (value == null)
+                    return;
+
+                mConstrainedAxis = value;
+
+                deadzonePanel.Max = mConstrainedAxis.Deadzone * 3;
+                scalePanel.Max = mConstrainedAxis.Scale * 3;
+
+                deadzonePanel.Value = mConstrainedAxis.Deadzone;
+                scalePanel.Value = mConstrainedAxis.Scale;
+            }
         }
     }
 }

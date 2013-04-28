@@ -34,6 +34,7 @@ using Chimera.Overlay.States;
 using Chimera.Overlay;
 using Chimera.Flythrough.Overlay;
 using Joystick;
+using Chimera.Kinect.GUI;
 
 namespace Chimera.Launcher {
     public class MinimumLauncher : Launcher {
@@ -68,7 +69,11 @@ namespace Chimera.Launcher {
 
             ISystemPlugin mouse = new MousePlugin();
 
+            NuiLibDotNet.Nui.Init();
+            NuiLibDotNet.Nui.SetAutoPoll(true);
+
             return new ISystemPlugin[] { 
+                new KinectFramePlugin(),
                 new TimespanDeltaPlugin(),
                 new XBoxControllerInput(),
                 kbMouseInput, 
