@@ -90,6 +90,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Axes\PushAxis.cs" />
+    <Compile Include="Axes\SplitAxis.cs" />
+    <Compile Include="GlobalConditions.cs" />
     <Compile Include="GUI\KinectFramePlugin.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -187,6 +190,9 @@
     <EmbeddedResource Include="GUI\SimpleCursorPanel.resx">
       <DependentUpon>SimpleCursorPanel.cs</DependentUpon>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Axes\Halves\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
