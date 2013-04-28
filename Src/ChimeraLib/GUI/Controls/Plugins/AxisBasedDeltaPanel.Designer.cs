@@ -25,19 +25,20 @@
         private void InitializeComponent() {
             this.axesBox = new System.Windows.Forms.GroupBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.scalePanel = new Chimera.GUI.ScalarPanel();
             this.label2 = new System.Windows.Forms.Label();
+            this.axesPanel = new System.Windows.Forms.Panel();
             this.rotXMovePanel = new Chimera.GUI.ScalarPanel();
+            this.scalePanel = new Chimera.GUI.ScalarPanel();
+            this.axesPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // axesBox
             // 
-            this.axesBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
+            this.axesBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.axesBox.Location = new System.Drawing.Point(3, 55);
+            this.axesBox.Location = new System.Drawing.Point(3, 3);
             this.axesBox.Name = "axesBox";
-            this.axesBox.Size = new System.Drawing.Size(494, 384);
+            this.axesBox.Size = new System.Drawing.Size(494, 381);
             this.axesBox.TabIndex = 0;
             this.axesBox.TabStop = false;
             this.axesBox.Text = "Axes";
@@ -51,20 +52,6 @@
             this.label1.TabIndex = 2;
             this.label1.Text = "Scale";
             // 
-            // scalePanel
-            // 
-            this.scalePanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.scalePanel.Location = new System.Drawing.Point(44, 3);
-            this.scalePanel.Max = 4F;
-            this.scalePanel.Min = 0F;
-            this.scalePanel.MinimumSize = new System.Drawing.Size(95, 20);
-            this.scalePanel.Name = "scalePanel";
-            this.scalePanel.Size = new System.Drawing.Size(316, 20);
-            this.scalePanel.TabIndex = 1;
-            this.scalePanel.Value = 0F;
-            this.scalePanel.ValueChanged += new System.Action<float>(this.scalePanel_ValueChanged);
-            // 
             // label2
             // 
             this.label2.AutoSize = true;
@@ -73,6 +60,18 @@
             this.label2.Size = new System.Drawing.Size(61, 13);
             this.label2.TabIndex = 4;
             this.label2.Text = "Rot * Move";
+            // 
+            // axesPanel
+            // 
+            this.axesPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.axesPanel.AutoScroll = true;
+            this.axesPanel.Controls.Add(this.axesBox);
+            this.axesPanel.Location = new System.Drawing.Point(0, 55);
+            this.axesPanel.Name = "axesPanel";
+            this.axesPanel.Size = new System.Drawing.Size(500, 387);
+            this.axesPanel.TabIndex = 5;
             // 
             // rotXMovePanel
             // 
@@ -88,17 +87,31 @@
             this.rotXMovePanel.Value = 0F;
             this.rotXMovePanel.ValueChanged += new System.Action<float>(this.rotXMove_ValueChanged);
             // 
+            // scalePanel
+            // 
+            this.scalePanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.scalePanel.Location = new System.Drawing.Point(44, 3);
+            this.scalePanel.Max = 4F;
+            this.scalePanel.Min = 0F;
+            this.scalePanel.MinimumSize = new System.Drawing.Size(95, 20);
+            this.scalePanel.Name = "scalePanel";
+            this.scalePanel.Size = new System.Drawing.Size(316, 20);
+            this.scalePanel.TabIndex = 1;
+            this.scalePanel.Value = 0F;
+            this.scalePanel.ValueChanged += new System.Action<float>(this.scalePanel_ValueChanged);
+            // 
             // AxisBasedDeltaPanel
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
+            this.Controls.Add(this.axesPanel);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.rotXMovePanel);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.scalePanel);
-            this.Controls.Add(this.axesBox);
             this.Name = "AxisBasedDeltaPanel";
             this.Size = new System.Drawing.Size(500, 442);
+            this.axesPanel.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -111,5 +124,6 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private ScalarPanel rotXMovePanel;
+        private System.Windows.Forms.Panel axesPanel;
     }
 }

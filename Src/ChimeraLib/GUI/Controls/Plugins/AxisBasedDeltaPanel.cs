@@ -34,8 +34,11 @@ namespace Chimera.GUI.Controls.Plugins {
         void mInput_AxisAdded(IAxis axis) {
             AxisPanel panel = new AxisPanel(axis);
             panel.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+            //panel.Width = Width - PADDING * 4;
             panel.Width = axesBox.Width - PADDING * 2;
             axesBox.Controls.Add(panel);
+            //panel.Width = axesPanel.Width;
+            //axesPanel.Controls.Add(panel);
             panel.SizeChanged += new EventHandler(panel_SizeChanged);
 
             RepositionPanels();
@@ -47,11 +50,13 @@ namespace Chimera.GUI.Controls.Plugins {
 
         private void RepositionPanels() {
             int x = PADDING;
-            int y = PADDING;
+            int y = PADDING * 5;
             foreach (Control panel in axesBox.Controls) {
                 panel.Location = new Point(x, y);
                 y += panel.Height;
             }
+
+            //axesBox.Height = y + PADDING;
         }
 
         private void scalePanel_ValueChanged(float obj) {
