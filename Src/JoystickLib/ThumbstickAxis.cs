@@ -59,7 +59,7 @@ namespace Joystick {
             if (mLeft)
                 SetRawValue(mX ? g.LeftThumbX : g.LeftThumbY);
             else
-                SetRawValue(mX ? g.LeftThumbX : g.LeftThumbY);
+                SetRawValue(mX ? g.RightThumbX : g.RightThumbY);
         }
     }
 }

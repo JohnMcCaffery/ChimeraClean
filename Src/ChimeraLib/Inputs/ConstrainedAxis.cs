@@ -77,7 +77,10 @@ namespace Chimera.Plugins {
         }
 
         private void Recalculate() {
+            float sign = mRaw < 0f ? -1f : 1f;
+            mRaw = Math.Abs(mRaw);
             mDelta = mRaw < mDeadzone ? 0f : (mRaw - mDeadzone) * mScale;
+            mDelta *= sign;
         }
 
         #region IAxis Members

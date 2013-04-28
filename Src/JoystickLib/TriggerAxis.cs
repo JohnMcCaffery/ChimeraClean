@@ -52,12 +52,10 @@ namespace Joystick {
 
             Gamepad g = GamepadManager.Gamepad;
 
-            if (g.RightTrigger > 0)
-                SetRawValue(g.RightTrigger * (mLeftUp ? -1f : 1f));
-            else if (g.LeftTrigger > 0)
-               SetRawValue(g.LeftTrigger * (mLeftUp ? 1f : -1f));
-            else
-                SetRawValue(0f);
+            float l = g.LeftTrigger * (mLeftUp ? 1f : -1f);
+            float r = g.RightTrigger * (mLeftUp ? -1f : 1f);
+
+            SetRawValue(l + r);
         }
     }
 }
