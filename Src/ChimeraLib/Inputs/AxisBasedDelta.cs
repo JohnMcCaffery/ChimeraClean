@@ -21,8 +21,9 @@ namespace Chimera.Plugins {
         private bool mEnableZ = true;
         private bool mEnablePitch = true;
         private bool mEnableYaw = true;
-        private bool mEnabled = true;
+        private bool mEnabled = false;
         private float mScale = 1f;
+        private float mRotXMove = 3f;
 
         public event Action<IAxis> AxisAdded;
 
@@ -30,6 +31,15 @@ namespace Chimera.Plugins {
             get { return mScale; }
             set {
                 mScale = value;
+                if (Change != null)
+                    Change(this);
+            }
+        }
+
+        public float RotXMove { 
+            get { return mRotXMove; }
+            set {
+                mRotXMove = value;
                 if (Change != null)
                     Change(this);
             }
@@ -90,7 +100,7 @@ namespace Chimera.Plugins {
             get { 
                 float p = mEnablePitch ? mAxes.Where(a => a.Binding == AxisBinding.Pitch).Sum(a => a.Delta) : 0f;
                 float y = mEnableYaw ? mAxes.Where(a => a.Binding == AxisBinding.Yaw).Sum(a => a.Delta) : 0f;
-                return new Rotation(p * mScale, y * mScale);
+                return new Rotation(p * mScale * mRotXMove, y * mScale * mRotXMove);
             }
         }
 

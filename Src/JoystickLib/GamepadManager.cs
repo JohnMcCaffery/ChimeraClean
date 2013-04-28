@@ -22,6 +22,7 @@ namespace Joystick {
 
         public static void Init(ITickSource source) {
             if (!mTracking) {
+                GetController();
                 source.Tick += new Action(source_Tick);
                 mTracking = true;
             }

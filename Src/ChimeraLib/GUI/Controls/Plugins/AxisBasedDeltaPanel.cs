@@ -25,6 +25,7 @@ namespace Chimera.GUI.Controls.Plugins {
             mInput.AxisAdded += new Action<Interfaces.IAxis>(mInput_AxisAdded);
 
             scalePanel.Value = input.Scale;
+            rotXMovePanel.Value = input.RotXMove;
 
             foreach (var axis in mInput.Axes)
                 mInput_AxisAdded(axis);
@@ -55,6 +56,10 @@ namespace Chimera.GUI.Controls.Plugins {
 
         private void scalePanel_ValueChanged(float obj) {
             mInput.Scale = scalePanel.Value;
+        }
+
+        private void rotXMove_ValueChanged(float obj) {
+            mInput.RotXMove = rotXMovePanel.Value;
         }
     }
 }
