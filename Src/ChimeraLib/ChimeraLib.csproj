@@ -125,6 +125,12 @@
     <Compile Include="GUI\Controls\Plugins\PluginSelectorPanel.Designer.cs">
       <DependentUpon>PluginSelectorPanel.cs</DependentUpon>
     </Compile>
+    <Compile Include="GUI\Controls\Plugins\SplitAxisPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\Controls\Plugins\SplitAxisPanel.Designer.cs">
+      <DependentUpon>SplitAxisPanel.cs</DependentUpon>
+    </Compile>
     <Compile Include="Plugins\AxisBasedDelta.cs" />
     <Compile Include="Plugins\ConstrainedAxis.cs" />
     <Compile Include="Plugins\SelectablePlugin.cs" />
@@ -292,6 +298,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\Controls\Plugins\PluginSelectorPanel.resx">
       <DependentUpon>PluginSelectorPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\Controls\Plugins\SplitAxisPanel.resx">
+      <DependentUpon>SplitAxisPanel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\Controls\ScalarPanel.resx">
       <DependentUpon>ScalarPanel.cs</DependentUpon>
