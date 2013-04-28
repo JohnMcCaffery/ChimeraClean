@@ -34,11 +34,8 @@ namespace Chimera.GUI.Controls.Plugins {
         void mInput_AxisAdded(IAxis axis) {
             AxisPanel panel = new AxisPanel(axis);
             panel.Anchor = AnchorStyles.Left | AnchorStyles.Right;
-            //panel.Width = Width - PADDING * 4;
             panel.Width = axesBox.Width - PADDING * 2;
             axesBox.Controls.Add(panel);
-            //panel.Width = axesPanel.Width;
-            //axesPanel.Controls.Add(panel);
             panel.SizeChanged += new EventHandler(panel_SizeChanged);
 
             RepositionPanels();

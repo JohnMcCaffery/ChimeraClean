@@ -17,7 +17,7 @@ namespace Joystick {
         }
 
         public ThumbstickAxis(bool left, bool x, AxisBinding binding)
-            : base(MakeName(left, x), short.MaxValue / 3f, short.MaxValue / 2f, short.MaxValue / 6f, .00005f, binding) {
+            : base(MakeName(left, x), short.MaxValue / 3f, .00005f, binding) {
 
             mLeft = left;
             mX = x;

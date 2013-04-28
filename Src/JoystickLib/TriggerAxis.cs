@@ -12,8 +12,8 @@ namespace Joystick {
         private bool mLeftUp;
 
         
-        public TriggerAxis(bool leftUp, AxisBinding binding) 
-            : base("Trigger", 0, 255f, 0, .0005f, binding) {
+        public TriggerAxis(bool leftUp, AxisBinding binding)
+            : base("Trigger", 0, .0005f, binding) {
 
             mLeftUp = leftUp;
         }

@@ -15,30 +15,12 @@ namespace Chimera.Plugins {
         private float mRaw = 0f;
         private float mDelta = 0f;
         private float mDeadzone = .1f;
-        private float mRange = .5f;
-        private float mGrace = .1f;
         private float mScale = 1f;
 
         public float Deadzone {
             get { return mDeadzone; }
             set { 
                 mDeadzone = value;
-                Recalculate();
-            }
-        }
-
-        public float Range {
-            get { return mRange; }
-            set { 
-                mRange = value;
-                Recalculate();
-            }
-        }
-
-        public float Grace {
-            get { return mGrace; }
-            set { 
-                mGrace = value;
                 Recalculate();
             }
         }
@@ -59,16 +41,14 @@ namespace Chimera.Plugins {
             mBinding = binding;
         }
 
-        protected ConstrainedAxis(string name, float deadzone, float range, float grace, float scale)
+        protected ConstrainedAxis(string name, float deadzone, float scale)
             : this(name) {
             mDeadzone = deadzone;
-            mRange = range;
-            mGrace = grace;
             mScale = scale;
         }
 
-        protected ConstrainedAxis(string name, float deadzone, float range, float grace, float scale, AxisBinding binding)
-            : this(name, deadzone, range, grace, scale) {
+        protected ConstrainedAxis(string name, float deadzone, float scale, AxisBinding binding)
+            : this(name, deadzone, scale) {
             mBinding = binding;
         }
 
@@ -78,13 +58,7 @@ namespace Chimera.Plugins {
         }
 
         private void Recalculate() {
-            float old = mDelta;
-            if (mRaw < mDeadzone || mRaw > mDeadzone + mRange + mGrace)
-                mDelta = 0f;
-            if (mRaw <= mDeadzone + mRange)
-                mDelta = ((mRaw - mDeadzone) / mRange) * mScale;
-            else
-                mDelta = mScale;
+            mDelta = mRaw < mDeadzone ? 0f : (mRaw - mDeadzone) * mScale;
 
             if (Changed != null)
                 Changed();
