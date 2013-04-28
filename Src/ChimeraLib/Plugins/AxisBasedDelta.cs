@@ -68,6 +68,18 @@ namespace Chimera.Plugins {
             get { return mAxes; }
         }
 
+        /// <summary>
+        /// Input axes will automatically be assigned to camera axes if no axis is specified.
+        /// The ordering is as follows:
+        /// 1st axis: x
+        /// 2nd axis: y
+        /// 3rd axis: z
+        /// 4th axis: pitch
+        /// 5th axis : yaw
+        /// Specify null if you do not which to assign that axis.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="axes"></param>
         public AxisBasedDelta(string name, params IAxis[] axes) {
             mName = name;
 
