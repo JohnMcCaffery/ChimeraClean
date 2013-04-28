@@ -1,4 +1,5 @@
-﻿/****Chimera (c) 2012 John McCaffery 
+﻿/**************************************************************************
+Chimera (c) 2012 John McCaffery 
 
 This file is part of Chimera.
 
