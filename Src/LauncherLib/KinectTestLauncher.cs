@@ -69,6 +69,7 @@ namespace Chimera.Launcher {
             ISystemPlugin mouse = new MousePlugin();
 
             return new ISystemPlugin[] { 
+                new TimespanDeltaPlugin(),
                 new XBoxControllerInput(),
                 kbMouseInput, 
                 //kinectInput, 

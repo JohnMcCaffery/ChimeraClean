@@ -25,11 +25,11 @@
         private void InitializeComponent() {
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.positiveBox = new System.Windows.Forms.GroupBox();
-            this.negativeBox = new System.Windows.Forms.GroupBox();
-            this.positivePulldown = new System.Windows.Forms.ComboBox();
-            this.negativePulldown = new System.Windows.Forms.ComboBox();
             this.positivePanel = new System.Windows.Forms.Panel();
+            this.positivePulldown = new System.Windows.Forms.ComboBox();
+            this.negativeBox = new System.Windows.Forms.GroupBox();
             this.negativePanel = new System.Windows.Forms.Panel();
+            this.negativePulldown = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -51,7 +51,7 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.negativeBox);
-            this.splitContainer1.Size = new System.Drawing.Size(323, 130);
+            this.splitContainer1.Size = new System.Drawing.Size(323, 50);
             this.splitContainer1.SplitterDistance = 160;
             this.splitContainer1.TabIndex = 0;
             // 
@@ -62,22 +62,20 @@
             this.positiveBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.positiveBox.Location = new System.Drawing.Point(0, 0);
             this.positiveBox.Name = "positiveBox";
-            this.positiveBox.Size = new System.Drawing.Size(160, 130);
+            this.positiveBox.Size = new System.Drawing.Size(160, 50);
             this.positiveBox.TabIndex = 0;
             this.positiveBox.TabStop = false;
             this.positiveBox.Text = "Positive";
             // 
-            // negativeBox
+            // positivePanel
             // 
-            this.negativeBox.Controls.Add(this.negativePanel);
-            this.negativeBox.Controls.Add(this.negativePulldown);
-            this.negativeBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.negativeBox.Location = new System.Drawing.Point(0, 0);
-            this.negativeBox.Name = "negativeBox";
-            this.negativeBox.Size = new System.Drawing.Size(159, 130);
-            this.negativeBox.TabIndex = 0;
-            this.negativeBox.TabStop = false;
-            this.negativeBox.Text = "Negative";
+            this.positivePanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.positivePanel.Location = new System.Drawing.Point(6, 46);
+            this.positivePanel.Name = "positivePanel";
+            this.positivePanel.Size = new System.Drawing.Size(148, 1);
+            this.positivePanel.TabIndex = 1;
             // 
             // positivePulldown
             // 
@@ -91,6 +89,28 @@
             this.positivePulldown.TabIndex = 0;
             this.positivePulldown.SelectedIndexChanged += new System.EventHandler(this.positivePulldown_SelectedIndexChanged);
             // 
+            // negativeBox
+            // 
+            this.negativeBox.Controls.Add(this.negativePanel);
+            this.negativeBox.Controls.Add(this.negativePulldown);
+            this.negativeBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.negativeBox.Location = new System.Drawing.Point(0, 0);
+            this.negativeBox.Name = "negativeBox";
+            this.negativeBox.Size = new System.Drawing.Size(159, 50);
+            this.negativeBox.TabIndex = 0;
+            this.negativeBox.TabStop = false;
+            this.negativeBox.Text = "Negative";
+            // 
+            // negativePanel
+            // 
+            this.negativePanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.negativePanel.Location = new System.Drawing.Point(6, 46);
+            this.negativePanel.Name = "negativePanel";
+            this.negativePanel.Size = new System.Drawing.Size(148, 1);
+            this.negativePanel.TabIndex = 2;
+            // 
             // negativePulldown
             // 
             this.negativePulldown.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -103,33 +123,14 @@
             this.negativePulldown.TabIndex = 1;
             this.negativePulldown.SelectedIndexChanged += new System.EventHandler(this.negativePulldown_SelectedIndexChanged);
             // 
-            // positivePanel
-            // 
-            this.positivePanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.positivePanel.Location = new System.Drawing.Point(6, 46);
-            this.positivePanel.Name = "positivePanel";
-            this.positivePanel.Size = new System.Drawing.Size(148, 81);
-            this.positivePanel.TabIndex = 1;
-            // 
-            // negativePanel
-            // 
-            this.negativePanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.negativePanel.Location = new System.Drawing.Point(6, 46);
-            this.negativePanel.Name = "negativePanel";
-            this.negativePanel.Size = new System.Drawing.Size(148, 81);
-            this.negativePanel.TabIndex = 2;
-            // 
             // SplitAxisPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.splitContainer1);
+            this.MinimumSize = new System.Drawing.Size(323, 50);
             this.Name = "SplitAxisPanel";
-            this.Size = new System.Drawing.Size(323, 130);
+            this.Size = new System.Drawing.Size(323, 50);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();

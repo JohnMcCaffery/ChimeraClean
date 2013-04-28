@@ -27,31 +27,44 @@ using NuiLibDotNet;
 using C = NuiLibDotNet.Condition;
 
 namespace Chimera.Kinect.Axes {
-    public class PushAxis : ConstrainedAxis {
-        private static readonly float DZ = .3f;
-        private static readonly float SCALE = .05f;
-        private static readonly float BACKDZ = DZ / 5f;
-        private static Scalar mValue;
+    public class PushAxis : SplitAxis {
+        public PushAxis(bool right, AxisBinding binding)
+            : base(
+            "Push" + (right ? "Right" : "Left"), 
+            binding,
+            new PushSingleAxis(right, true), 
+            new PushSingleAxis(right, false)) { }
 
-        public PushAxis(bool right, bool forward)
-            : this(right, forward, AxisBinding.None) {
+        public PushAxis(bool right)
+            : this(right, AxisBinding.None) {
         }
 
-        public PushAxis(bool right, bool forward, AxisBinding binding)
-            : base("Push " + (right ? "Left" : "Right"), forward ? DZ : BACKDZ, SCALE, binding) {
+        public class PushSingleAxis : ConstrainedAxis {
+            private static readonly float DZ = .3f;
+            private static readonly float SCALE = .05f;
+            private static readonly float BACKDZ = DZ / 5f;
+            private static Scalar mValue;
 
-            //How far pushing forward
-            Scalar diff = Nui.z(Nui.joint(right ? Nui.Hand_Right : Nui.Hand_Left) - Nui.joint(Nui.Hip_Centre)) - .15f;
-            //Whether the push gesture could be active
-            Condition active = right ? GlobalConditions.ActiveR : GlobalConditions.ActiveL;
-            //The value for the push gesture
-            mValue = Nui.ifScalar(active, right ? diff * -1f : diff, 0f);
+            public PushSingleAxis(bool right, bool forward)
+                : this(right, forward, AxisBinding.None) {
+            }
 
-            Nui.Tick += new ChangeDelegate(Nui_Tick);
-        }
+            public PushSingleAxis(bool right, bool forward, AxisBinding binding)
+                : base("Push " + (right ? "Right" : "Left") + (forward ? "+" : "-"), forward ? DZ : BACKDZ, SCALE, binding) {
 
-        void Nui_Tick() {
-            SetRawValue(mValue.Value);
+                //How far pushing forward
+                Scalar diff = Nui.z(Nui.joint(right ? Nui.Hand_Right : Nui.Hand_Left) - Nui.joint(Nui.Hip_Centre)) - .15f;
+                //Whether the push gesture could be active
+                Condition active = right ? GlobalConditions.ActiveR : GlobalConditions.ActiveL;
+                //The value for the push gesture
+                mValue = Nui.ifScalar(active, right ? diff * -1f : diff, 0f);
+
+                Nui.Tick += new ChangeDelegate(Nui_Tick);
+            }
+
+            void Nui_Tick() {
+                SetRawValue(mValue.Value);
+            }
         }
     }
 }

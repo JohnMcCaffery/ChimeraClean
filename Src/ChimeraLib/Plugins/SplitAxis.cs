@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Chimera.Interfaces;
+using Chimera.GUI.Controls.Plugins;
 
 namespace Chimera.Plugins {
     public class SplitAxis : IAxis {
         private readonly List<IAxis> mAxes = new List<IAxis>();
         private readonly string mName;
 
+        private SplitAxisPanel mPanel;
         private AxisBinding mBinding;
         private IAxis mPositive;
         private IAxis mNegative;
@@ -33,7 +35,7 @@ namespace Chimera.Plugins {
             if (mPositive == null)
                 mPositive = axis;
             else if (mNegative == null)
-                mNegative = null;
+                mNegative = axis;
 
             mAxes.Add(axis);
 
@@ -59,22 +61,31 @@ namespace Chimera.Plugins {
         /// <param name="name"></param>
         /// <param name="binding"></param>
         /// <param name="axes">First access will be positive, second negative.</param>
-        public SplitAxis(string name, AxisBinding binding, params IAxis[] axes) {
+        public SplitAxis(string name, AxisBinding binding, params IAxis[] axes)
+            : this(name, axes) {
             mBinding = binding;
-
-            foreach (var axis in axes)
-                AddAxis(axis);
         }
 
 
         #region IAxis Members
 
         public System.Windows.Forms.UserControl ControlPanel {
-            get { throw new NotImplementedException(); }
+            get {
+                if (mPanel == null)
+                    mPanel = new SplitAxisPanel(this);
+                return mPanel;
+            }
         }
 
         public float Delta {
-            get { return Math.Abs(mPositive.Delta) + (Math.Abs(mNegative.Delta) * -1f); }
+            get {
+                if (mPositive == null)
+                    return 0f;
+                if (mNegative == null)
+                    return Math.Abs(mPositive.Delta);
+
+                return Math.Abs(mPositive.Delta) + (Math.Abs(mNegative.Delta) * -1f);
+            }
         }
 
         public AxisBinding Binding {
