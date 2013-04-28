@@ -91,7 +91,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Axes\PushAxis.cs" />
-    <Compile Include="Axes\SplitAxis.cs" />
     <Compile Include="GlobalConditions.cs" />
     <Compile Include="GUI\KinectFramePlugin.cs">
       <SubType>UserControl</SubType>

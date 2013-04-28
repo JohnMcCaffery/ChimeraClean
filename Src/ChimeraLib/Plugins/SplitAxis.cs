@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using Chimera.Interfaces;
 
-namespace Chimera.Kinect.Axes {
+namespace Chimera.Plugins {
     public class SplitAxis : IAxis {
         private IAxis mPositive;
         private IAxis mNegative;

@@ -125,9 +125,10 @@
     <Compile Include="GUI\Controls\Plugins\PluginSelectorPanel.Designer.cs">
       <DependentUpon>PluginSelectorPanel.cs</DependentUpon>
     </Compile>
-    <Compile Include="Inputs\AxisBasedDelta.cs" />
-    <Compile Include="Inputs\ConstrainedAxis.cs" />
-    <Compile Include="Inputs\SelectablePlugin.cs" />
+    <Compile Include="Plugins\AxisBasedDelta.cs" />
+    <Compile Include="Plugins\ConstrainedAxis.cs" />
+    <Compile Include="Plugins\SelectablePlugin.cs" />
+    <Compile Include="Plugins\SplitAxis.cs" />
     <Compile Include="Interfaces\IAxis.cs" />
     <Compile Include="Interfaces\ITickListener.cs" />
     <Compile Include="Interfaces\Overlay\IImageTransition.cs" />
@@ -192,10 +193,10 @@
     </Compile>
     <Compile Include="Interfaces\Overlay\IHoverSelectorRenderer.cs" />
     <Compile Include="Interfaces\Overlay\IDrawable.cs" />
-    <Compile Include="Inputs\PluginConfig.cs" />
+    <Compile Include="Plugins\PluginConfig.cs" />
     <Compile Include="Interfaces\IPlugin.cs" />
-    <Compile Include="Inputs\DeltaBasedInput.cs" />
-    <Compile Include="Inputs\MousePlugin.cs" />
+    <Compile Include="Plugins\DeltaBasedInput.cs" />
+    <Compile Include="Plugins\MousePlugin.cs" />
     <Compile Include="Interfaces\IDeltaInput.cs" />
     <Compile Include="Interfaces\IUpdater.cs" />
     <Compile Include="Interfaces\ITickSource.cs" />
@@ -205,7 +206,7 @@
     <Compile Include="GUI\Forms\Inputs\CameraControlForm.Designer.cs">
       <DependentUpon>CameraControlForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Inputs\KBMousePlugin.cs" />
+    <Compile Include="Plugins\KBMousePlugin.cs" />
     <Compile Include="GUI\Controls\Plugins\KBMousePanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
