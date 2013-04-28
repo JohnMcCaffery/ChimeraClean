@@ -59,11 +59,6 @@ namespace Chimera.Interfaces {
     /// </summary>
     public interface IAxis {
         /// <summary>
-        /// Triggered whenever the axis updates.
-        /// </summary>
-        event Action Changed;
-
-        /// <summary>
         /// The control panel which can be used to configure this axis.
         /// </summary>
         UserControl ControlPanel { get; }

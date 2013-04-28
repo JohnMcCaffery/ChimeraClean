@@ -78,14 +78,9 @@ namespace Chimera.Plugins {
 
         private void Recalculate() {
             mDelta = mRaw < mDeadzone ? 0f : (mRaw - mDeadzone) * mScale;
-
-            if (Changed != null)
-                Changed();
         }
 
         #region IAxis Members
-
-        public event Action Changed;
 
         public virtual UserControl ControlPanel {
             get {
@@ -102,11 +97,8 @@ namespace Chimera.Plugins {
         public AxisBinding Binding {
             get { return mBinding; }
             set {
-                if (mBinding != value) {
+                if (mBinding != value)
                     mBinding = value;
-                    if (Changed != null)
-                        Changed();
-                }
             }
         }
 

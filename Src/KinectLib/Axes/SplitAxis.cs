@@ -13,8 +13,6 @@ namespace Chimera.Kinect.Axes {
 
         #region IAxis Members
 
-        public event Action Changed;
-
         public System.Windows.Forms.UserControl ControlPanel {
             get { throw new NotImplementedException(); }
         }

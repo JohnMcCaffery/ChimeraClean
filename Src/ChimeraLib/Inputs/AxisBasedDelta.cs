@@ -90,7 +90,6 @@ namespace Chimera.Plugins {
 
         public void AddAxis(IAxis axis) {
             mAxes.Add(axis);
-            axis.Changed += new Action(axis_Changed);
             if (mSource != null && axis is ITickListener)
                 (axis as ITickListener).Init(mSource);
             if (AxisAdded != null)
@@ -183,6 +182,13 @@ namespace Chimera.Plugins {
             foreach (var axis in mAxes)
                 if (axis is ITickListener)
                     (axis as ITickListener).Init(input);
+
+            input.Tick += new Action(input_Tick);
+        }
+
+        void input_Tick() {
+            if (Change != null)
+                Change(this);
         }
 
         #endregion
