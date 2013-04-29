@@ -17,8 +17,8 @@ namespace Chimera {
         public static void Main() {
             Application.SetCompatibleTextRenderingDefault(false);
 
-            //Launcher.Launcher launcher = new TimespanLauncher();
-            Launcher.Launcher launcher = new KinectTestLauncher();
+            Launcher.Launcher launcher = new TimespanLauncher();
+            //Launcher.Launcher launcher = new KinectTestLauncher();
 
             ProcessWrangler.BlockingRunForm(launcher.Form, launcher.Coordinator);
         }

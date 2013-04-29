@@ -105,11 +105,18 @@ namespace Chimera.Launcher {
             State confirmFisherman = new ImageBGState("Story4Confirm", Coordinator.StateManager, "../Images/Caen/StorytellingVideos/ConfirmFisherman.png");
             State confirmWolf = new ImageBGState("Story5Confirm", Coordinator.StateManager, "../Images/Caen/StorytellingVideos/ConfirmWolf.png");
 
+            State storyDog = new OverlayVideoState("Story1", mainWindow.OverlayManager, "../../Videos/dogs.mpg", splash, fadeTransition);
+            State storyGartymore = new OverlayVideoState("Story2", mainWindow.OverlayManager, "../../Videos/garyore.mpg", splash, fadeTransition);
+            State storyFrakkok = new OverlayVideoState("Story3", mainWindow.OverlayManager, "../../Videos/orkney.mpg", splash, fadeTransition);
+            State storyFisherman = new OverlayVideoState("Story4", mainWindow.OverlayManager, "../../Videos/fisherman.mpg", splash, fadeTransition);
+            State storyWolf = new OverlayVideoState("Story5", mainWindow.OverlayManager, "../../Videos/wolf.mpg", splash, fadeTransition);
+            /*
             State storyDog = new VideoState("Story1", Coordinator.StateManager, mainWindow.Name, "../../Videos/dogs.mpg", splash, fadeTransition);
             State storyGartymore = new VideoState("Story2", Coordinator.StateManager, mainWindow.Name, "../../Videos/garyore.mpg", splash, fadeTransition);
             State storyFrakkok = new VideoState("Story3", Coordinator.StateManager, mainWindow.Name, "../../Videos/orkney.mpg", splash, fadeTransition);
             State storyFisherman = new VideoState("Story4", Coordinator.StateManager, mainWindow.Name, "../../Videos/fisherman.mpg", splash, fadeTransition);
             State storyWolf = new VideoState("Story5", Coordinator.StateManager, mainWindow.Name, "../../Videos/wolf.mpg", splash, fadeTransition);
+            */
 
             ImgTrans(helpAvatar,    kinectAvatar,           "HelpToWorld",          .85f, .15f, .1f, mainWindow, cursorRenderer, fadeOutTransition);
             ImgTrans(helpFlycam,    kinectFlycam,           "HelpToWorld",          .85f, .15f, .1f, mainWindow, cursorRenderer, fadeOutTransition);

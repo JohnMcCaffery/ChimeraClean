@@ -78,7 +78,7 @@ namespace Chimera.Launcher {
             IWindowTransitionFactory fadeTransition = new BitmapFadeTransitionFactory(fadeFactory, 1500.0);
 
             State tmpSplash = new ImageBGState("SplashScreen", Coordinator.StateManager, "../Images/Caen/MenuBGs/Caen-Splash.png");
-            State vid = new OverlayVideoState("TestVid", Coordinator.StateManager, mainWindow.OverlayManager, "../Videos/test.mp4", tmpSplash, fadeTransition);
+            State vid = new OverlayVideoState("TestVid", mainWindow.OverlayManager, "../Videos/test.mp4", tmpSplash, fadeTransition);
 
             TxtTrans(tmpSplash, vid, "Play", .4f, .4f, font, Color.Red, clip, mainWindow, cursorRenderer, fadeTransition);
 
@@ -108,8 +108,8 @@ namespace Chimera.Launcher {
             */
             State idleFlythrough = new FlythroughState("IdleFlythrough", Coordinator.StateManager, "../Flythroughs/Caen-long.xml");
             State structuredFlythrough = new FlythroughState("StructuredFlythrough", Coordinator.StateManager, "../Flythroughs/Caen-Guided.xml", splash, fadeTransition, slideshowNext);
-            State infoVideo = new VideoState("Video", Coordinator.StateManager, mainWindow.Name, "../Videos/Vid1.flv", splash, fadeTransition);
-            State storyWolf = new VideoState("Story1", Coordinator.StateManager, mainWindow.Name, "../Videos/Wolf.flv", splash, fadeTransition);
+            State infoVideo = new VideoState("Video", mainWindow.Name, "../Videos/Vid1.flv", splash, fadeTransition);
+            State storyWolf = new VideoState("Story1", mainWindow.Name, "../Videos/Wolf.flv", splash, fadeTransition);
 
             /*
             ImgTrans(helpAvatar,    kinectAvatar,           "HelpToWorld",          .85f, .15f, .1f, mainWindow, cursorRenderer, fadeOutTransition);

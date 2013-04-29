@@ -21,15 +21,15 @@ namespace Chimera.Overlay.States {
         private Process mPlayer;
         private SimpleTrigger mTrigger;
 
-        public VideoState(string name, StateManager manager, string mainWindow, string video, State parent, IWindowTransitionFactory transition)
-            : base(name, manager) {
+        public VideoState(string name, string mainWindow, string video, State parent, IWindowTransitionFactory transition)
+            : base(name, parent.Manager) {
 
             mMainWindow = mainWindow;
             mVideo = Path.GetFullPath(video);
             mArgs = mArgs + " " + mVideo;
 
             mTrigger = new SimpleTrigger();
-            AddTransition(new StateTransition(manager, this, parent, mTrigger, transition));
+            AddTransition(new StateTransition(Manager, this, parent, mTrigger, transition));
         }
 
         public override IWindowState CreateWindowState(Window window) {
