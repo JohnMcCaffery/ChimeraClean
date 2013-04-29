@@ -92,7 +92,7 @@ namespace Chimera.GUI.Forms {
             mCoordinator.EyeUpdated += mEyeUpdatedListener;
             mCoordinator.Closed += mClosedListener;
             mCoordinator.Tick += mTickListener;
-            mCoordinator.HeightmapChanged += mHeightmapChangedListener;
+            //mCoordinator.HeightmapChanged += mHeightmapChangedListener;
             mCoordinator.WindowAdded += new Action<Window,EventArgs>(mCoordinator_WindowAdded);
             mCoordinator.StateManager.StateChanged += new Action<Overlay.State>(StateManager_StateChanged);
 
