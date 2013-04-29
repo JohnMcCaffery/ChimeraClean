@@ -36,10 +36,6 @@ namespace Chimera.Overlay.Transitions {
         /// </summary>
         private Bitmap mTo;
         /// <summary>
-        /// The steps that can be used to render the from image fading into the back image.
-        /// </summary>
-        private Bitmap[] mStepImages;
-        /// <summary>
         /// Whether this transition is active as a drawable.
         /// </summary>
         private bool mActive = true;
@@ -73,7 +69,6 @@ namespace Chimera.Overlay.Transitions {
         public void Init(Bitmap from, Bitmap to) {
             mFrom = from;
             mTo = to;
-            mStepImages = new Bitmap[(int)(mLengthMS / 20)];
         }
 
         #region IImageTransition Members
@@ -115,11 +110,8 @@ namespace Chimera.Overlay.Transitions {
 
             else if (!mCompleted) {
                 int i = (int) (time / 20.0);
-                if (mStepImages[i] == null) {
-                    mStepImages[i] = CreateStep(time);
-                    graphics.DrawImage(mStepImages[i], 0, 0);
-                } else
-                    graphics.DrawImage(mStepImages[i], 0, 0);
+                using (Bitmap step = CreateStep(time))
+                    graphics.DrawImage(step, 0, 0);
             }
         }
 

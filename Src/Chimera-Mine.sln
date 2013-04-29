@@ -498,6 +498,7 @@ Global
 		{C184F128-6AE6-43D7-922E-B706E7B4E576}.Release|Win32.ActiveCfg = Release|Any CPU
 		{C184F128-6AE6-43D7-922E-B706E7B4E576}.Release|x64.ActiveCfg = Release|Any CPU
 		{C184F128-6AE6-43D7-922E-B706E7B4E576}.Release|x86.ActiveCfg = Release|Any CPU
+		{C184F128-6AE6-43D7-922E-B706E7B4E576}.Release|x86.Build.0 = Release|Any CPU
 		{C184F128-6AE6-43D7-922E-B706E7B4E576}.ReleaseVisual|Any CPU.ActiveCfg = Release|Any CPU
 		{C184F128-6AE6-43D7-922E-B706E7B4E576}.ReleaseVisual|Any CPU.Build.0 = Release|Any CPU
 		{C184F128-6AE6-43D7-922E-B706E7B4E576}.ReleaseVisual|Mixed Platforms.ActiveCfg = Release|Any CPU

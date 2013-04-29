@@ -160,6 +160,7 @@ namespace Chimera.GUI.Forms {
         }
 
         public void PlayVideo(string uri) {
+            //videoPlayer.uiMode = "Mini";
             videoPlayer.Visible = true;
             videoPlayer.URL = uri;
 
@@ -170,7 +171,7 @@ namespace Chimera.GUI.Forms {
             //videoPlayer.enableContextMenu = false;
             //videoPlayer.fullScreen = true;
 
-            //videoPlayer.Ctlcontrols.play();
+            videoPlayer.Ctlcontrols.play();
         }
     }
 }

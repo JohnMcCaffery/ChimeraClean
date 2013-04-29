@@ -47,9 +47,9 @@ namespace Chimera.Launcher {
                 );
 
             return new ISystemInput[] { 
+                kinectInput, 
                 joystick,
                 kbMouseInput, 
-                kinectInput, 
                 mouse, 
                 heightmap, 
                 flythrough, 
@@ -105,11 +105,11 @@ namespace Chimera.Launcher {
             State confirmFisherman = new ImageBGState("Story4Confirm", Coordinator.StateManager, "../Images/Caen/StorytellingVideos/ConfirmFisherman.png");
             State confirmWolf = new ImageBGState("Story5Confirm", Coordinator.StateManager, "../Images/Caen/StorytellingVideos/ConfirmWolf.png");
 
-            State storyDog = new OverlayVideoState("Story1", mainWindow.OverlayManager, "../../Videos/dogs.mpg", splash, fadeTransition);
-            State storyGartymore = new OverlayVideoState("Story2", mainWindow.OverlayManager, "../../Videos/garyore.mpg", splash, fadeTransition);
-            State storyFrakkok = new OverlayVideoState("Story3", mainWindow.OverlayManager, "../../Videos/orkney.mpg", splash, fadeTransition);
-            State storyFisherman = new OverlayVideoState("Story4", mainWindow.OverlayManager, "../../Videos/fisherman.mpg", splash, fadeTransition);
-            State storyWolf = new OverlayVideoState("Story5", mainWindow.OverlayManager, "../../Videos/wolf.mpg", splash, fadeTransition);
+            State storyDog = new OverlayVideoState("Story1", mainWindow.OverlayManager, "../../Videos/dogs.m4v", splash, fadeTransition);
+            State storyGartymore = new OverlayVideoState("Story2", mainWindow.OverlayManager, "../../Videos/garyore.mp4", splash, fadeTransition);
+            State storyFrakkok = new OverlayVideoState("Story3", mainWindow.OverlayManager, "../../Videos/orkney.mp4", splash, fadeTransition);
+            State storyFisherman = new OverlayVideoState("Story4", mainWindow.OverlayManager, "../../Videos/fisherman.mp4", splash, fadeTransition);
+            State storyWolf = new OverlayVideoState("Story5", mainWindow.OverlayManager, "../../Videos/wolf.mp4", splash, fadeTransition);
             /*
             State storyDog = new VideoState("Story1", Coordinator.StateManager, mainWindow.Name, "../../Videos/dogs.mpg", splash, fadeTransition);
             State storyGartymore = new VideoState("Story2", Coordinator.StateManager, mainWindow.Name, "../../Videos/garyore.mpg", splash, fadeTransition);
@@ -134,7 +134,7 @@ namespace Chimera.Launcher {
             InvisTrans(splash, confirmWolf,               new Point(115,860), new Point(835,955), clip, mainWindow, cursorRenderer, fadeTransition);
             
             InvisTrans(confirmDog, splash,               new Point(320,380), new Point(770,665), clip, mainWindow, cursorRenderer, fadeTransition);
-            InvisTrans(confirmDog, storyWolf,            new Point(960,380), new Point(1410,665), clip, mainWindow, cursorRenderer, fadeTransition);
+            InvisTrans(confirmDog, storyDog,            new Point(960,380), new Point(1410,665), clip, mainWindow, cursorRenderer, fadeTransition);
             InvisTrans(confirmGartymore, splash,         new Point(320,380), new Point(770,665), clip, mainWindow, cursorRenderer, fadeTransition);
             InvisTrans(confirmGartymore, storyGartymore, new Point(960,380), new Point(1410,665), clip, mainWindow, cursorRenderer, fadeTransition);
             InvisTrans(confirmFrakkok, splash,           new Point(320,380), new Point(770,665), clip, mainWindow, cursorRenderer, fadeTransition);
