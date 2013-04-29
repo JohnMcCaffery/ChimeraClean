@@ -28,7 +28,8 @@ namespace Chimera.Launcher {
 
         public Launcher(params string[] args) {
             mCoordinator = new Coordinator(GetWindows(), GetInputs());
-            InitOverlay();
+            if (new OverlayConfig(args).InitOverlay)
+                InitOverlay();
         }
 
         protected abstract ISystemInput[] GetInputs();

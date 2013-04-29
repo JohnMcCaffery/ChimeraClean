@@ -24,10 +24,10 @@
         /// </summary>
         private void InitializeComponent() {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(KinectPanel));
-            Chimera.Util.Rotation rotation2 = new Chimera.Util.Rotation();
+            Chimera.Util.Rotation rotation4 = new Chimera.Util.Rotation();
             this.mainTab = new System.Windows.Forms.TabControl();
             this.controlTab = new System.Windows.Forms.TabPage();
-            this.headPanel = new Chimera.GUI.UpdatedVectorPanel();
+            this.headCheck = new System.Windows.Forms.CheckBox();
             this.label3 = new System.Windows.Forms.Label();
             this.helpTriggerPulldown = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
@@ -35,17 +35,24 @@
             this.cursorControllerPulldown = new System.Windows.Forms.ComboBox();
             this.movementControllerPulldown = new System.Windows.Forms.ComboBox();
             this.startButton = new System.Windows.Forms.Button();
-            this.orientationPanel = new Chimera.GUI.RotationPanel();
-            this.positionPanel = new Chimera.GUI.VectorPanel();
             this.movementTab = new System.Windows.Forms.TabPage();
             this.triggerTab = new System.Windows.Forms.TabPage();
-            this.headCheck = new System.Windows.Forms.CheckBox();
+            this.frameTab = new System.Windows.Forms.TabPage();
+            this.frameImage = new System.Windows.Forms.PictureBox();
+            this.headPanel = new Chimera.GUI.UpdatedVectorPanel();
+            this.orientationPanel = new Chimera.GUI.RotationPanel();
+            this.positionPanel = new Chimera.GUI.VectorPanel();
+            this.depthFrameButton = new System.Windows.Forms.RadioButton();
+            this.colourFrameButton = new System.Windows.Forms.RadioButton();
             this.mainTab.SuspendLayout();
             this.controlTab.SuspendLayout();
+            this.frameTab.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.frameImage)).BeginInit();
             this.SuspendLayout();
             // 
             // mainTab
             // 
+            this.mainTab.Controls.Add(this.frameTab);
             this.mainTab.Controls.Add(this.controlTab);
             this.mainTab.Controls.Add(this.movementTab);
             this.mainTab.Controls.Add(this.triggerTab);
@@ -60,7 +67,6 @@
             // 
             this.controlTab.AutoScroll = true;
             this.controlTab.Controls.Add(this.headCheck);
-            this.controlTab.Controls.Add(this.headPanel);
             this.controlTab.Controls.Add(this.label3);
             this.controlTab.Controls.Add(this.helpTriggerPulldown);
             this.controlTab.Controls.Add(this.label2);
@@ -68,6 +74,7 @@
             this.controlTab.Controls.Add(this.cursorControllerPulldown);
             this.controlTab.Controls.Add(this.movementControllerPulldown);
             this.controlTab.Controls.Add(this.startButton);
+            this.controlTab.Controls.Add(this.headPanel);
             this.controlTab.Controls.Add(this.orientationPanel);
             this.controlTab.Controls.Add(this.positionPanel);
             this.controlTab.Location = new System.Drawing.Point(4, 22);
@@ -78,24 +85,17 @@
             this.controlTab.Text = "Control";
             this.controlTab.UseVisualStyleBackColor = true;
             // 
-            // headPanel
+            // headCheck
             // 
-            this.headPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.headPanel.Location = new System.Drawing.Point(3, 312);
-            this.headPanel.Max = 10F;
-            this.headPanel.MaxV = ((OpenMetaverse.Vector3)(resources.GetObject("headPanel.MaxV")));
-            this.headPanel.Min = -10F;
-            this.headPanel.MinimumSize = new System.Drawing.Size(103, 95);
-            this.headPanel.MinV = ((OpenMetaverse.Vector3)(resources.GetObject("headPanel.MinV")));
-            this.headPanel.Name = "headPanel";
-            this.headPanel.Size = new System.Drawing.Size(695, 95);
-            this.headPanel.TabIndex = 11;
-            this.headPanel.Value = ((OpenMetaverse.Vector3)(resources.GetObject("headPanel.Value")));
-            this.headPanel.Vector = null;
-            this.headPanel.X = 0F;
-            this.headPanel.Y = 0F;
-            this.headPanel.Z = 0F;
+            this.headCheck.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.headCheck.AutoSize = true;
+            this.headCheck.Location = new System.Drawing.Point(573, 312);
+            this.headCheck.Name = "headCheck";
+            this.headCheck.Size = new System.Drawing.Size(128, 17);
+            this.headCheck.TabIndex = 12;
+            this.headCheck.Text = "Control Head Position";
+            this.headCheck.UseVisualStyleBackColor = true;
+            this.headCheck.CheckedChanged += new System.EventHandler(this.headCheck_CheckedChanged);
             // 
             // label3
             // 
@@ -169,6 +169,68 @@
             this.startButton.UseVisualStyleBackColor = true;
             this.startButton.Click += new System.EventHandler(this.startButton_Click);
             // 
+            // movementTab
+            // 
+            this.movementTab.Location = new System.Drawing.Point(4, 22);
+            this.movementTab.Name = "movementTab";
+            this.movementTab.Padding = new System.Windows.Forms.Padding(3);
+            this.movementTab.Size = new System.Drawing.Size(701, 494);
+            this.movementTab.TabIndex = 1;
+            this.movementTab.Text = "Movement";
+            this.movementTab.UseVisualStyleBackColor = true;
+            // 
+            // triggerTab
+            // 
+            this.triggerTab.Location = new System.Drawing.Point(4, 22);
+            this.triggerTab.Name = "triggerTab";
+            this.triggerTab.Padding = new System.Windows.Forms.Padding(3);
+            this.triggerTab.Size = new System.Drawing.Size(701, 494);
+            this.triggerTab.TabIndex = 2;
+            this.triggerTab.Text = "CustomTrigger";
+            this.triggerTab.UseVisualStyleBackColor = true;
+            // 
+            // frameTab
+            // 
+            this.frameTab.Controls.Add(this.colourFrameButton);
+            this.frameTab.Controls.Add(this.depthFrameButton);
+            this.frameTab.Controls.Add(this.frameImage);
+            this.frameTab.Location = new System.Drawing.Point(4, 22);
+            this.frameTab.Name = "frameTab";
+            this.frameTab.Padding = new System.Windows.Forms.Padding(3);
+            this.frameTab.Size = new System.Drawing.Size(701, 494);
+            this.frameTab.TabIndex = 3;
+            this.frameTab.Text = "Frame";
+            this.frameTab.UseVisualStyleBackColor = true;
+            // 
+            // frameImage
+            // 
+            this.frameImage.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.frameImage.Location = new System.Drawing.Point(3, 3);
+            this.frameImage.Name = "frameImage";
+            this.frameImage.Size = new System.Drawing.Size(695, 488);
+            this.frameImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.frameImage.TabIndex = 0;
+            this.frameImage.TabStop = false;
+            // 
+            // headPanel
+            // 
+            this.headPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.headPanel.Location = new System.Drawing.Point(3, 312);
+            this.headPanel.Max = 10F;
+            this.headPanel.MaxV = ((OpenMetaverse.Vector3)(resources.GetObject("headPanel.MaxV")));
+            this.headPanel.Min = -10F;
+            this.headPanel.MinimumSize = new System.Drawing.Size(103, 95);
+            this.headPanel.MinV = ((OpenMetaverse.Vector3)(resources.GetObject("headPanel.MinV")));
+            this.headPanel.Name = "headPanel";
+            this.headPanel.Size = new System.Drawing.Size(695, 95);
+            this.headPanel.TabIndex = 11;
+            this.headPanel.Value = ((OpenMetaverse.Vector3)(resources.GetObject("headPanel.Value")));
+            this.headPanel.Vector = null;
+            this.headPanel.X = 0F;
+            this.headPanel.Y = 0F;
+            this.headPanel.Z = 0F;
+            // 
             // orientationPanel
             // 
             this.orientationPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -181,11 +243,11 @@
             this.orientationPanel.Quaternion = ((OpenMetaverse.Quaternion)(resources.GetObject("orientationPanel.Quaternion")));
             this.orientationPanel.Size = new System.Drawing.Size(701, 95);
             this.orientationPanel.TabIndex = 2;
-            rotation2.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("rotation2.LookAtVector")));
-            rotation2.Pitch = 0D;
-            rotation2.Quaternion = ((OpenMetaverse.Quaternion)(resources.GetObject("rotation2.Quaternion")));
-            rotation2.Yaw = 0D;
-            this.orientationPanel.Value = rotation2;
+            rotation4.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("rotation4.LookAtVector")));
+            rotation4.Pitch = 0D;
+            rotation4.Quaternion = ((OpenMetaverse.Quaternion)(resources.GetObject("rotation4.Quaternion")));
+            rotation4.Yaw = 0D;
+            this.orientationPanel.Value = rotation4;
             this.orientationPanel.Yaw = 0D;
             // 
             // positionPanel
@@ -207,37 +269,31 @@
             this.positionPanel.Z = 0F;
             this.positionPanel.ValueChanged += new System.EventHandler(this.positionPanel_ValueChanged);
             // 
-            // movementTab
+            // depthFrameButton
             // 
-            this.movementTab.Location = new System.Drawing.Point(4, 22);
-            this.movementTab.Name = "movementTab";
-            this.movementTab.Padding = new System.Windows.Forms.Padding(3);
-            this.movementTab.Size = new System.Drawing.Size(701, 494);
-            this.movementTab.TabIndex = 1;
-            this.movementTab.Text = "Movement";
-            this.movementTab.UseVisualStyleBackColor = true;
+            this.depthFrameButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.depthFrameButton.AutoSize = true;
+            this.depthFrameButton.BackColor = System.Drawing.Color.Transparent;
+            this.depthFrameButton.Checked = true;
+            this.depthFrameButton.Location = new System.Drawing.Point(580, 471);
+            this.depthFrameButton.Name = "depthFrameButton";
+            this.depthFrameButton.Size = new System.Drawing.Size(54, 17);
+            this.depthFrameButton.TabIndex = 1;
+            this.depthFrameButton.TabStop = true;
+            this.depthFrameButton.Text = "Depth";
+            this.depthFrameButton.UseVisualStyleBackColor = false;
             // 
-            // triggerTab
+            // colourFrameButton
             // 
-            this.triggerTab.Location = new System.Drawing.Point(4, 22);
-            this.triggerTab.Name = "triggerTab";
-            this.triggerTab.Padding = new System.Windows.Forms.Padding(3);
-            this.triggerTab.Size = new System.Drawing.Size(701, 494);
-            this.triggerTab.TabIndex = 2;
-            this.triggerTab.Text = "CustomTrigger";
-            this.triggerTab.UseVisualStyleBackColor = true;
-            // 
-            // headCheck
-            // 
-            this.headCheck.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.headCheck.AutoSize = true;
-            this.headCheck.Location = new System.Drawing.Point(573, 312);
-            this.headCheck.Name = "headCheck";
-            this.headCheck.Size = new System.Drawing.Size(128, 17);
-            this.headCheck.TabIndex = 12;
-            this.headCheck.Text = "Control Head Position";
-            this.headCheck.UseVisualStyleBackColor = true;
-            this.headCheck.CheckedChanged += new System.EventHandler(this.headCheck_CheckedChanged);
+            this.colourFrameButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.colourFrameButton.AutoSize = true;
+            this.colourFrameButton.BackColor = System.Drawing.Color.Transparent;
+            this.colourFrameButton.Location = new System.Drawing.Point(640, 471);
+            this.colourFrameButton.Name = "colourFrameButton";
+            this.colourFrameButton.Size = new System.Drawing.Size(55, 17);
+            this.colourFrameButton.TabIndex = 2;
+            this.colourFrameButton.Text = "Colour";
+            this.colourFrameButton.UseVisualStyleBackColor = false;
             // 
             // KinectPanel
             // 
@@ -249,6 +305,9 @@
             this.mainTab.ResumeLayout(false);
             this.controlTab.ResumeLayout(false);
             this.controlTab.PerformLayout();
+            this.frameTab.ResumeLayout(false);
+            this.frameTab.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.frameImage)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -270,5 +329,9 @@
         private System.Windows.Forms.TabPage triggerTab;
         private Chimera.GUI.UpdatedVectorPanel headPanel;
         private System.Windows.Forms.CheckBox headCheck;
+        private System.Windows.Forms.TabPage frameTab;
+        private System.Windows.Forms.PictureBox frameImage;
+        private System.Windows.Forms.RadioButton colourFrameButton;
+        private System.Windows.Forms.RadioButton depthFrameButton;
     }
 }

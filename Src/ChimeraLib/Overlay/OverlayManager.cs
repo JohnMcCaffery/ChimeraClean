@@ -136,6 +136,10 @@ namespace Chimera.Overlay {
 
         public void Reset() {
             CurrentState = mFirstState;
+            foreach (var window in Coordinator.Windows) {
+                window.OverlayManager.Close();
+                window.OverlayManager.Launch();
+            }
         }
 
         /// <summary>

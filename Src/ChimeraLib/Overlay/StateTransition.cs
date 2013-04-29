@@ -124,7 +124,9 @@ namespace Chimera.Overlay {
         }
 
         public void AddTrigger(ITrigger trigger) {
-            trigger.Triggered += new Action(mTrigger_Triggered);            mTriggers.Add(trigger);
+            trigger.Triggered += new Action(mTrigger_Triggered);
+            mTriggers.Add(trigger);
+
             if (trigger is IDrawable) {
                 IDrawable feature = trigger as IDrawable;
                 From.AddFeature(feature);

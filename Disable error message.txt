@@ -1,0 +1,2 @@
+http://www.raymond.cc/blog/disable-program-has-stopped-working-error-dialog-in-windows-server-2008/
+http://www.techspot.com/blog/671/disable-windows-is-checking-for-a-solution-message-after-a-program-crashes/
