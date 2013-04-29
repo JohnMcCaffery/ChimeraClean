@@ -24,7 +24,7 @@
         /// </summary>
         private void InitializeComponent() {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CoordinatorForm));
-            Chimera.Util.Rotation rotation2 = new Chimera.Util.Rotation();
+            Chimera.Util.Rotation rotation1 = new Chimera.Util.Rotation();
             this.hSplit = new System.Windows.Forms.SplitContainer();
             this.diagramWorldSplit = new System.Windows.Forms.SplitContainer();
             this.diagSplit = new System.Windows.Forms.SplitContainer();
@@ -52,6 +52,7 @@
             this.inputsGroup = new System.Windows.Forms.GroupBox();
             this.inputsTab = new System.Windows.Forms.TabControl();
             this.statisticsTab = new System.Windows.Forms.TabPage();
+            this.overlayStatsBox = new System.Windows.Forms.RichTextBox();
             this.tickCountLabel = new System.Windows.Forms.Label();
             this.shortestWorkLabel = new System.Windows.Forms.Label();
             this.longestWorkLabel = new System.Windows.Forms.Label();
@@ -60,7 +61,6 @@
             this.shortestTickLabel = new System.Windows.Forms.Label();
             this.meanTickLabel = new System.Windows.Forms.Label();
             this.tpsLabel = new System.Windows.Forms.Label();
-            this.overlayStatsBox = new System.Windows.Forms.RichTextBox();
             ((System.ComponentModel.ISupportInitialize)(this.hSplit)).BeginInit();
             this.hSplit.Panel1.SuspendLayout();
             this.hSplit.Panel2.SuspendLayout();
@@ -86,7 +86,6 @@
             this.windowsPluginsSplit.SuspendLayout();
             this.windowsGroup.SuspendLayout();
             this.inputsGroup.SuspendLayout();
-            this.inputsTab.SuspendLayout();
             this.statisticsTab.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -381,11 +380,11 @@
             this.virtualOrientationPanel.Quaternion = ((OpenMetaverse.Quaternion)(resources.GetObject("virtualOrientationPanel.Quaternion")));
             this.virtualOrientationPanel.Size = new System.Drawing.Size(255, 95);
             this.virtualOrientationPanel.TabIndex = 2;
-            rotation2.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("rotation2.LookAtVector")));
-            rotation2.Pitch = 0D;
-            rotation2.Quaternion = ((OpenMetaverse.Quaternion)(resources.GetObject("rotation2.Quaternion")));
-            rotation2.Yaw = 0D;
-            this.virtualOrientationPanel.Value = rotation2;
+            rotation1.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("rotation1.LookAtVector")));
+            rotation1.Pitch = 0D;
+            rotation1.Quaternion = ((OpenMetaverse.Quaternion)(resources.GetObject("rotation1.Quaternion")));
+            rotation1.Yaw = 0D;
+            this.virtualOrientationPanel.Value = rotation1;
             this.virtualOrientationPanel.Yaw = 0D;
             this.virtualOrientationPanel.OnChange += new System.EventHandler(this.virtualRotation_OnChange);
             // 
@@ -462,7 +461,6 @@
             // 
             // inputsTab
             // 
-            //this.inputsTab.Controls.Add(this.statisticsTab);
             this.inputsTab.Dock = System.Windows.Forms.DockStyle.Fill;
             this.inputsTab.Location = new System.Drawing.Point(3, 16);
             this.inputsTab.Name = "inputsTab";
@@ -490,6 +488,18 @@
             this.statisticsTab.TabIndex = 0;
             this.statisticsTab.Text = "Statistics";
             this.statisticsTab.UseVisualStyleBackColor = true;
+            // 
+            // overlayStatsBox
+            // 
+            this.overlayStatsBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.overlayStatsBox.Enabled = false;
+            this.overlayStatsBox.Location = new System.Drawing.Point(111, -2);
+            this.overlayStatsBox.Name = "overlayStatsBox";
+            this.overlayStatsBox.Size = new System.Drawing.Size(334, 450);
+            this.overlayStatsBox.TabIndex = 8;
+            this.overlayStatsBox.Text = "";
             // 
             // tickCountLabel
             // 
@@ -563,18 +573,6 @@
             this.tpsLabel.TabIndex = 0;
             this.tpsLabel.Text = "Ticks / Second";
             // 
-            // overlayStatsBox
-            // 
-            this.overlayStatsBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.overlayStatsBox.Enabled = false;
-            this.overlayStatsBox.Location = new System.Drawing.Point(111, -2);
-            this.overlayStatsBox.Name = "overlayStatsBox";
-            this.overlayStatsBox.Size = new System.Drawing.Size(334, 450);
-            this.overlayStatsBox.TabIndex = 8;
-            this.overlayStatsBox.Text = "";
-            // 
             // CoordinatorForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -583,6 +581,7 @@
             this.Controls.Add(this.hSplit);
             this.Name = "CoordinatorForm";
             this.Text = "Caen Control Panel";
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.CoordinatorForm_FormClosing);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.CoordinatorForm_KeyDown);
             this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.CoordinatorForm_KeyUp);
@@ -614,10 +613,10 @@
             this.windowsPluginsSplit.ResumeLayout(false);
             this.windowsGroup.ResumeLayout(false);
             this.inputsGroup.ResumeLayout(false);
-            this.inputsTab.ResumeLayout(false);
             this.statisticsTab.ResumeLayout(false);
             this.statisticsTab.PerformLayout();
             this.ResumeLayout(false);
+
         }
 
         #endregion

@@ -63,9 +63,8 @@
     <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="GridProxy, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\libopenmetaverse-mine\bin\GridProxy.dll</HintPath>
+    <Reference Include="GridProxy">
+      <HintPath>..\..\..\libopenmetaverse\bin\GridProxy.dll</HintPath>
     </Reference>
     <Reference Include="log4net">
       <HintPath>..\..\..\libopenmetaverse\bin\log4net.dll</HintPath>

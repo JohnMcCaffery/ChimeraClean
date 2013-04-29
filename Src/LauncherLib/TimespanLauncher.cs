@@ -65,7 +65,7 @@ namespace Chimera.Launcher {
             CursorRenderer cursorRenderer = new DialCursorRenderer(dialRenderer, mainWindow.OverlayManager);
             //CursorTrigger t = new CursorTrigger(new CircleRenderer(100), mainWindow);
 
-            Font font = new Font("Verdana", 62f, FontStyle.Bold);
+            Font font = new Font("Verdana", 52, FontStyle.Bold);
             Rectangle clip = new Rectangle(0, 0, 1920, 1080);
 
             /*
@@ -102,11 +102,11 @@ namespace Chimera.Launcher {
             State confirmFisherman = new ImageBGState("Story4Confirm", Coordinator.StateManager, "../Images/Caen/StorytellingVideos/ConfirmFisherman.png");
             State confirmWolf = new ImageBGState("Story5Confirm", Coordinator.StateManager, "../Images/Caen/StorytellingVideos/ConfirmWolf.png");
 
-            State storyDog = new VideoState("Story1", Coordinator.StateManager, mainWindow.Name, "../Videos/Wolf.flv", splash, fadeTransition);
-            State storyGartymore = new VideoState("Story2", Coordinator.StateManager, mainWindow.Name, "../Videos/Wolf.flv", splash, fadeTransition);
-            State storyFrakkok = new VideoState("Story3", Coordinator.StateManager, mainWindow.Name, "../Videos/Wolf.flv", splash, fadeTransition);
-            State storyFisherman = new VideoState("Story4", Coordinator.StateManager, mainWindow.Name, "../Videos/VTS_01_1.VOB", splash, fadeTransition);
-            State storyWolf = new VideoState("Story5", Coordinator.StateManager, mainWindow.Name, "../Videos/VTS_01_2.VOB", splash, fadeTransition);
+            State storyDog = new VideoState("Story1", Coordinator.StateManager, mainWindow.Name, "../../Videos/dogs.mpg", splash, fadeTransition);
+            State storyGartymore = new VideoState("Story2", Coordinator.StateManager, mainWindow.Name, "../../Videos/garyore.mpg", splash, fadeTransition);
+            State storyFrakkok = new VideoState("Story3", Coordinator.StateManager, mainWindow.Name, "../../Videos/orkney.mpg", splash, fadeTransition);
+            State storyFisherman = new VideoState("Story4", Coordinator.StateManager, mainWindow.Name, "../../Videos/fisherman.mpg", splash, fadeTransition);
+            State storyWolf = new VideoState("Story5", Coordinator.StateManager, mainWindow.Name, "../../Videos/wolf.mpg", splash, fadeTransition);
 
             ImgTrans(helpAvatar,    kinectAvatar,           "HelpToWorld",          .85f, .15f, .1f, mainWindow, cursorRenderer, fadeOutTransition);
             ImgTrans(helpFlycam,    kinectFlycam,           "HelpToWorld",          .85f, .15f, .1f, mainWindow, cursorRenderer, fadeOutTransition);
@@ -148,8 +148,12 @@ namespace Chimera.Launcher {
             kinectAvatar.AddTransition(kinectHelpAvatarTransition);
             kinectFlycam.AddTransition(kinectHelpFlycamTransition);
 
-            SkeletonFeature splashSkeleton = new SkeletonFeature(1040, 1535, 1000, 100f, mainWindow.Name, clip);
+            SkeletonFeature splashSkeleton = new SkeletonFeature(940, 1470, 1000, 100f, mainWindow.Name, clip);
             splash.AddFeature(splashSkeleton);
+
+            FadingText raiseHandText = new FadingText("Stretch your arm above your head for help", 30000, 30000, mainWindow.Name, Color.Red, font, 150, 10, clip);
+            kinectAvatar.AddFeature(raiseHandText);
+            kinectFlycam.AddFeature(raiseHandText);
 
             Coordinator.StateManager.AddState(splash);
             Coordinator.StateManager.AddState(kinectAvatar);

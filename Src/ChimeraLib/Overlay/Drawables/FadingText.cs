@@ -54,7 +54,8 @@ namespace Chimera.Overlay.Drawables {
         }
 
         public override bool NeedsRedrawn {
-            get { return !mFirstDrawn || Time > mSolidTime && Time < mSolidTime + mFadeTime; }
+            //get { return !mFirstDrawn || Time > mSolidTime && Time < mSolidTime + mFadeTime; }
+            get { return true; }
         }
 
         public override Rectangle Clip {
@@ -72,13 +73,13 @@ namespace Chimera.Overlay.Drawables {
 
         public override void DrawDynamic(Graphics graphics) {
             double done = (Time - mSolidTime) / mFadeTime;
+            mFirstDrawn = true;
             if (done < 0.0) {
-                mFirstDrawn = true;
                 using (Brush b = new SolidBrush(mColour)) {
                     graphics.DrawString(TextString, Font, b, mLocation);
                 }
             }
-            if (done < 1.0) {
+            else if (done < 1.0) {
                 using (Brush b = new SolidBrush(Color.FromArgb((int) (255.0 * (1.0 - done)), mColour))) {
                     graphics.DrawString(TextString, Font, b, mLocation);
                 }
