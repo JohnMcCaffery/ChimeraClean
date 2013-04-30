@@ -12,7 +12,11 @@ namespace Chimera.Kinect {
         private static Condition sActiveConditionL;
 
 
+
         private static void Init() {
+            Nui.Init();
+            Nui.SetAutoPoll(true);
+
             mInit = true;
             Vector hipC = Nui.joint(Nui.Hip_Centre);
             Vector handR = Nui.joint(Nui.Hip_Centre);

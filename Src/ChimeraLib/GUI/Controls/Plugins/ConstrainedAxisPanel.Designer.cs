@@ -44,8 +44,8 @@ namespace Chimera.GUI.Controls.Plugins {
         private void InitializeComponent() {
             this.label1 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
-            this.scalePanel = new Chimera.GUI.ScalarPanel();
-            this.deadzonePanel = new Chimera.GUI.ScalarPanel();
+            this.scalePanel = new Chimera.GUI.UpdatedScalarPanel();
+            this.deadzonePanel = new Chimera.GUI.UpdatedScalarPanel();
             this.SuspendLayout();
             // 
             // label1
@@ -110,8 +110,8 @@ namespace Chimera.GUI.Controls.Plugins {
 
         #endregion
 
-        private ScalarPanel deadzonePanel;
-        private ScalarPanel scalePanel;
+        private UpdatedScalarPanel deadzonePanel;
+        private UpdatedScalarPanel scalePanel;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label4;
     }

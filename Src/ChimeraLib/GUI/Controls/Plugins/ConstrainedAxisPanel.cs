@@ -49,11 +49,11 @@ namespace Chimera.GUI.Controls.Plugins {
 
                 mConstrainedAxis = value;
 
-                deadzonePanel.Max = mConstrainedAxis.Deadzone * 3;
-                scalePanel.Max = mConstrainedAxis.Scale * 3;
+                //deadzonePanel.Max = mConstrainedAxis.Deadzone * 3;
+                //scalePanel.Max = mConstrainedAxis.Scale * 3;
 
-                deadzonePanel.Value = mConstrainedAxis.Deadzone;
-                scalePanel.Value = mConstrainedAxis.Scale;
+                deadzonePanel.Scalar = mConstrainedAxis.Deadzone;
+                scalePanel.Scalar = mConstrainedAxis.Scale;
             }
         }
     }

@@ -26,6 +26,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using NuiLibDotNet;
+using OpenMetaverse;
 
 namespace Chimera.Kinect.GUI {
     public partial class KinectFramePlugin : UserControl, ISystemPlugin {
@@ -169,7 +170,7 @@ namespace Chimera.Kinect.GUI {
             Nui.Tick -= mKinectTick;
         }
 
-        public void Draw(Func<OpenMetaverse.Vector3, Point> to2D, Graphics graphics, Action redraw) { }
+        public void Draw(Func<Vector3, Point> to2D, Graphics graphics, Action redraw) { }
 
         #endregion
     }

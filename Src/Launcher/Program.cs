@@ -52,7 +52,7 @@ namespace Chimera.Launcher {
             sProxyProcess = ProcessWrangler.InitProcess(sProxyExe);
                 //if (cfg.AutoRestart)
                     //sProxyProcess.Exited += sProxyProcess_Exited;
-            sProxyProcess.Start();
+            sProxyProcess.Start();
 
             Thread input = new Thread(() => {
                 Console.WriteLine("Type Exit to quit.");

@@ -24,6 +24,7 @@ using System.Text;
 using Chimera.Interfaces;
 using System.Windows.Forms;
 using Chimera.GUI.Controls.Plugins;
+using Chimera.Util;
 
 namespace Chimera.Plugins {
     public abstract class ConstrainedAxis : IAxis {
@@ -35,10 +36,10 @@ namespace Chimera.Plugins {
 
         private float mRaw = 0f;
         private float mDelta = 0f;
-        private float mDeadzone = .1f;
-        private float mScale = 1f;
+        private IUpdater<float> mDeadzone = new Updater<float>("Deadzone", .1f);
+        private IUpdater<float> mScale  = new Updater<float>("Deadzone", 1f);
 
-        public float Deadzone {
+        public IUpdater<float> Deadzone {
             get { return mDeadzone; }
             set { 
                 mDeadzone = value;
@@ -46,7 +47,7 @@ namespace Chimera.Plugins {
             }
         }
 
-        public float Scale {
+        public IUpdater<float> Scale {
             get { return mScale; }
             set { 
                 mScale = value;
@@ -62,10 +63,22 @@ namespace Chimera.Plugins {
             mBinding = binding;
         }
 
-        protected ConstrainedAxis(string name, float deadzone, float scale)
+        protected ConstrainedAxis(string name, IUpdater<float> deadzone, IUpdater<float> scale)
             : this(name) {
             mDeadzone = deadzone;
             mScale = scale;
+        }
+
+        protected ConstrainedAxis(string name, IUpdater<float> deadzone, float scale) :
+            this(name, deadzone, new Updater<float>("Scale", scale)) {
+        }
+
+        protected ConstrainedAxis(string name, float deadzone, IUpdater<float> scale) :
+            this(name, new Updater<float>("Deadzone", deadzone), scale) {
+        }
+
+        protected ConstrainedAxis(string name, float deadzone, float scale) :
+            this(name, new Updater<float>("Deadzone", deadzone), new Updater<float>("Scale", scale)) {
         }
 
         protected ConstrainedAxis(string name, float deadzone, float scale, AxisBinding binding)
@@ -82,7 +95,7 @@ namespace Chimera.Plugins {
             float sign = mRaw < 0f ? -1f : 1f;
             if(mMirror)
                 mRaw = Math.Abs(mRaw);
-            mDelta = mRaw < mDeadzone ? 0f : (mRaw - mDeadzone) * mScale;
+            mDelta = mRaw < mDeadzone.Value ? 0f : (mRaw - mDeadzone.Value) * mScale.Value;
             if (mMirror)
                 mDelta *= sign;
         }

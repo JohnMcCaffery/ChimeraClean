@@ -70,9 +70,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL" />
-    <Reference Include="NuiLib-DotNet_d, Version=1.0.4864.36909, Culture=neutral, processorArchitecture=x86">
+    <Reference Include="NuiLib-DotNet_d, Version=1.0.4865.29647, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Lib\NuiLib-DotNet_d.dll</HintPath>
+      <HintPath>..\..\Bin\NuiLib-DotNet_d.dll</HintPath>
     </Reference>
     <Reference Include="OpenMetaverseTypes">
       <HintPath>..\..\Lib\OpenMetaverseTypes.dll</HintPath>
@@ -90,13 +90,24 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Axes\AxisBase.cs" />
+    <Compile Include="Axes\TAxis.cs" />
+    <Compile Include="Axes\LeanAxis.cs" />
     <Compile Include="Axes\PushAxis.cs" />
+    <Compile Include="Axes\DotAxis.cs" />
+    <Compile Include="Axes\TwistAxis.cs" />
     <Compile Include="GlobalConditions.cs" />
-    <Compile Include="GUI\Axes\PushAxisPanel.cs">
+    <Compile Include="GUI\Axes\DotAxisPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="GUI\Axes\PushAxisPanel.Designer.cs">
-      <DependentUpon>PushAxisPanel.cs</DependentUpon>
+    <Compile Include="GUI\Axes\DotAxisPanel.Designer.cs">
+      <DependentUpon>DotAxisPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\Axes\KinectAxisPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\Axes\KinectAxisPanel.Designer.cs">
+      <DependentUpon>KinectAxisPanel.cs</DependentUpon>
     </Compile>
     <Compile Include="GUI\KinectFramePlugin.cs">
       <SubType>UserControl</SubType>
@@ -104,6 +115,7 @@
     <Compile Include="GUI\KinectFramePlugin.Designer.cs">
       <DependentUpon>KinectFramePlugin.cs</DependentUpon>
     </Compile>
+    <Compile Include="Interfaces\IKinectAxis.cs" />
     <Compile Include="Overlay\KinectHelpState.cs" />
     <Compile Include="Overlay\KinectHelpWindowState.cs" />
     <Compile Include="Overlay\SkeletonLostTrigger.cs" />
@@ -175,8 +187,11 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="GUI\Axes\PushAxisPanel.resx">
-      <DependentUpon>PushAxisPanel.cs</DependentUpon>
+    <EmbeddedResource Include="GUI\Axes\DotAxisPanel.resx">
+      <DependentUpon>DotAxisPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\Axes\KinectAxisPanel.resx">
+      <DependentUpon>KinectAxisPanel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\KinectFramePlugin.resx">
       <DependentUpon>KinectFramePlugin.cs</DependentUpon>
@@ -200,9 +215,7 @@
       <DependentUpon>SimpleCursorPanel.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Axes\Halves\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>

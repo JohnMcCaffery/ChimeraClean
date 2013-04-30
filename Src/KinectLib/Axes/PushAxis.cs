@@ -27,6 +27,8 @@ using NuiLibDotNet;
 using C = NuiLibDotNet.Condition;
 using Chimera.GUI.Controls.Plugins;
 using Chimera.Kinect.GUI.Axes;
+using Chimera.Kinect.Interfaces;
+using System.Windows.Forms;
 
 namespace Chimera.Kinect.Axes {
     public class PushAxis : SplitAxis {
@@ -41,44 +43,54 @@ namespace Chimera.Kinect.Axes {
             : this(right, AxisBinding.None) {
         }
 
-        public class PushSingleAxis : ConstrainedAxis {
+        public class PushSingleAxis : ConstrainedAxis, IKinectAxis {
             private static readonly float DZ = .3f;
             private static readonly float SCALE = .05f;
             private static readonly float BACKDZ = DZ / 5f;
-            private Scalar mDiff;
+            private Condition mActive;
+            private Scalar mRaw;
             private Scalar mValue;
-            private PushAxisPanel mPanel;
+            private KinectAxisPanel mPanel;
 
-            public Scalar Diff {
-                get { return mDiff; }
+            public ConstrainedAxis Axis {
+                get { return this; }
+            }
+            public Condition Active {
+                get { return mActive; }
+            }
+            public Scalar Raw {
+                get { return mRaw; }
             }
 
-            public override System.Windows.Forms.UserControl ControlPanel {
+            public override UserControl ControlPanel {
                 get {
                     if (mPanel == null)
-                        mPanel = new PushAxisPanel(this);
+                        mPanel = new KinectAxisPanel(this);
                     return mPanel;
                 }
             }
 
             public PushSingleAxis(bool right, bool forward)
-                : this(right, forward, AxisBinding.None) {
-            }
+                : this(right, forward, AxisBinding.None) { }
 
             public PushSingleAxis(bool right, bool forward, AxisBinding binding)
                 : base("Push " + (right ? "Right" : "Left") + (forward ? "+" : "-"), forward ? DZ : BACKDZ, SCALE, binding) {
 
                 mMirror = false;
 
+                Vector hand = Nui.joint(right ? Nui.Hand_Right : Nui.Hand_Left);
+                Vector elbow = Nui.joint(right ? Nui.Elbow_Right : Nui.Elbow_Left);
+
                 //How far pushing forward
-                mDiff = Nui.z(Nui.joint(right ? Nui.Hand_Right : Nui.Hand_Left) - Nui.joint(Nui.Hip_Centre));
+                mRaw = Nui.z(hand - Nui.joint(Nui.Hip_Centre));
                 if (forward)
-                    mDiff *= -1f;
+                    mRaw *= -1f;
 
                 //Whether the push gesture could be active
-                Condition active = right ? GlobalConditions.ActiveR : GlobalConditions.ActiveL;
+                mActive = right ? GlobalConditions.ActiveR : GlobalConditions.ActiveL;
+                mActive = C.And(mActive, hand.Y > elbow.Y);
                 //The value for the push gesture
-                mValue = Nui.ifScalar(active, mDiff, 0f);
+                mValue = Nui.ifScalar(mActive, mRaw, 0f);
 
                 Nui.Tick += new ChangeDelegate(Nui_Tick);
             }

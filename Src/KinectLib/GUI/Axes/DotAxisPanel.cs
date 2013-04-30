@@ -9,19 +9,17 @@ using System.Windows.Forms;
 using Chimera.Kinect.Axes;
 
 namespace Chimera.Kinect.GUI.Axes {
-    public partial class PushAxisPanel : UserControl {
-
-        public PushAxisPanel() {
+    public partial class DotAxisPanel : UserControl {
+        public DotAxisPanel() {
             InitializeComponent();
         }
 
-        public PushAxisPanel(PushAxis.PushSingleAxis axis)
+        public DotAxisPanel(DotAxis axis)
             : this() {
 
-            constrainedAxisPanel.Axis = axis;
-            pushPanel.Scalar = new ScalarUpdater(axis.Diff);
+            kinectAxisPanel.Axis = axis;
+            aPanel.Vector = new VectorUpdater(axis.A);
+            bPanel.Vector = new VectorUpdater(axis.B);
         }
-
-
     }
 }

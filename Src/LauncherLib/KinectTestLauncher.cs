@@ -69,12 +69,9 @@ namespace Chimera.Launcher {
 
             ISystemPlugin mouse = new MousePlugin();
 
-            NuiLibDotNet.Nui.Init();
-            NuiLibDotNet.Nui.SetAutoPoll(true);
-
             return new ISystemPlugin[] { 
-                new KinectFramePlugin(),
                 new TimespanDeltaPlugin(),
+                new KinectFramePlugin(),
                 new XBoxControllerInput(),
                 kbMouseInput, 
                 //kinectInput, 
