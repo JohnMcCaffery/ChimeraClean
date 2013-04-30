@@ -1,4 +1,23 @@
-﻿using System;
+﻿/*************************************************************************
+Copyright (c) 2012 John McCaffery 
+
+This file is part of Chimera.
+
+Chimera is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Chimera is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Chimera.  If not, see <http://www.gnu.org/licenses/>.
+
+**************************************************************************/
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -112,7 +131,7 @@ namespace Chimera.GUI.Forms {
                 mCoordinator_WindowAdded(window, null);
             }
 
-            foreach (var input in mCoordinator.Inputs) {
+            foreach (var input in mCoordinator.Plugins) {
                 TabPage inputTab = new TabPage();
                 CheckBox enableCheck = new CheckBox();
                 // 
@@ -140,7 +159,7 @@ namespace Chimera.GUI.Forms {
                 enableCheck.Text = input.Name;
                 enableCheck.Checked = input.Enabled;
                 enableCheck.CheckStateChanged += new EventHandler((source, args) => 
-                    mCoordinator.Inputs.First(i => enableCheck.Name.Equals("enable" + i.Name + "Check")).Enabled = enableCheck.Checked);
+                    mCoordinator.Plugins.First(i => enableCheck.Name.Equals("enable" + i.Name + "Check")).Enabled = enableCheck.Checked);
                 //enableCheck.UseVisualStyleBackColor = false;
                 // 
                 // inputPanel

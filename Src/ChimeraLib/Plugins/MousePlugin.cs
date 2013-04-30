@@ -1,25 +1,44 @@
-﻿using System;
+﻿/*************************************************************************
+Copyright (c) 2012 John McCaffery 
+
+This file is part of Chimera.
+
+Chimera is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Chimera is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Chimera.  If not, see <http://www.gnu.org/licenses/>.
+
+**************************************************************************/
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using Chimera.Util;
-using Chimera.GUI.Controls.Inputs;
+using Chimera.GUI.Controls.Plugins;
 using System.Drawing;
 using OpenMetaverse;
 
-namespace Chimera.Inputs {
-    public class MouseInput : ISystemInput {
+namespace Chimera.Plugins {
+    public class MousePlugin : ISystemPlugin {
         private Coordinator mCoordinator;
-        private MouseInputPanel mPanel;
+        private MousePluginPanel mPanel;
         private Point mLastMouse;
         private bool mEnabled;
         private bool mMouseOnScreen;
 
         public event Action<int, int> MouseMoved;
 
-        public MouseInput() {
-            InputConfig cfg = new InputConfig();
+        public MousePlugin() {
+            PluginConfig cfg = new PluginConfig();
             mEnabled = cfg.MouseEnabled;
         }
 
@@ -46,13 +65,9 @@ namespace Chimera.Inputs {
             window.OverlayManager.UpdateCursor((double)x / (double)bounds.Width, (double)y / (double)bounds.Height);
         }
 
-        #region ISystemInputMembers
+        #region ISystemPluginMembers
 
-        public event Action<IInput, bool> EnabledChanged;
-
-        public Coordinator Coordinator {
-            get { return mCoordinator; }
-        }
+        public event Action<IPlugin, bool> EnabledChanged;
 
         public void Init(Coordinator coordinator) {
             mCoordinator = coordinator;
@@ -62,14 +77,14 @@ namespace Chimera.Inputs {
         public UserControl ControlPanel {
             get {
                 if (mPanel == null)
-                    mPanel = new MouseInputPanel(this);
+                    mPanel = new MousePluginPanel(this);
                 return mPanel; 
             }
         }
 
         #endregion
 
-        #region IInput Members
+        #region IPlugin Members
 
         public virtual bool Enabled {
             get { return mEnabled; }
@@ -81,12 +96,12 @@ namespace Chimera.Inputs {
         }
 
         public string Name {
-            get { return "Mouse Input"; }
+            get { return "Mouse Plugin"; }
         }
 
         public string State {
             get { 
-                string dump = "-KB/Mouse Input-" + Environment.NewLine;
+                string dump = "-Mouse Plugin-" + Environment.NewLine;
                 dump += "LastPosition" + mLastMouse + Environment.NewLine;
                 dump += "Onscreen: " + mMouseOnScreen + Environment.NewLine;
                 return dump;

@@ -1,4 +1,23 @@
-﻿using System;
+﻿/*************************************************************************
+Copyright (c) 2012 John McCaffery 
+
+This file is part of Chimera.
+
+Chimera is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Chimera is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Chimera.  If not, see <http://www.gnu.org/licenses/>.
+
+**************************************************************************/
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
@@ -7,9 +26,9 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Chimera.Inputs {
+namespace Chimera.Plugins {
     public partial class KBMousePanel : UserControl {
-        private KBMouseInput mInput;
+        private KBMousePlugin mPlugin;
         private CameraControlForm mForm;
         private bool mCleared;
         private bool mGuiInput;
@@ -18,25 +37,25 @@ namespace Chimera.Inputs {
             InitializeComponent();
         }
 
-        public KBMousePanel(KBMouseInput input)
+        public KBMousePanel(KBMousePlugin plugin)
             : this() {
-            Init(input);
+            Init(plugin);
         }
 
-        public void Init(KBMouseInput input) {
-            mInput = input;
+        public void Init(KBMousePlugin plugin) {
+            mPlugin = plugin;
 
-            mousePanel.MouseDown += new MouseEventHandler(mInput.panel_MouseDown);
-            mousePanel.MouseUp += new MouseEventHandler(mInput.panel_MouseUp);
-            mousePanel.MouseMove += new MouseEventHandler(mInput.panel_MouseMove);
+            mousePanel.MouseDown += new MouseEventHandler(mPlugin.panel_MouseDown);
+            mousePanel.MouseUp += new MouseEventHandler(mPlugin.panel_MouseUp);
+            mousePanel.MouseMove += new MouseEventHandler(mPlugin.panel_MouseMove);
 
-            mInput.MouseScale = mouseScaleSlider.Value;
-            mInput.KBScale = keyboardScaleSlider.Value;
-            mInput.KBScaleChange += new Action<int>(mInput_KBScaleChange);
-            mInput.MouseScaleChange += new Action<int>(mInput_MouseScaleChange);
+            mPlugin.MouseScale = mouseScaleSlider.Value;
+            mPlugin.KBScale = keyboardScaleSlider.Value;
+            mPlugin.KBScaleChange += new Action<int>(mPlugin_KBScaleChange);
+            mPlugin.MouseScaleChange += new Action<int>(mPlugin_MouseScaleChange);
         }
 
-        private void mInput_KBScaleChange (int newScale) {
+        private void mPlugin_KBScaleChange (int newScale) {
             if (!mGuiInput) {
                 keyboardScaleSlider.Minimum = Math.Min(newScale, keyboardScaleSlider.Minimum);
                 keyboardScaleSlider.Maximum = Math.Max(newScale, keyboardScaleSlider.Maximum);
@@ -44,7 +63,7 @@ namespace Chimera.Inputs {
             }
         }
 
-        private void mInput_MouseScaleChange(int newScale) {
+        private void mPlugin_MouseScaleChange(int newScale) {
             if (!mGuiInput) {
                 mouseScaleSlider.Minimum = Math.Min(newScale, mouseScaleSlider.Minimum);
                 mouseScaleSlider.Maximum = Math.Max(newScale, mouseScaleSlider.Maximum);
@@ -59,16 +78,16 @@ namespace Chimera.Inputs {
         }
 
         private void mousePanel_MouseMove(object sender, MouseEventArgs e) {
-            if (mInput != null && (mInput.MouseDown || !mCleared)) {
+            if (mPlugin != null && (mPlugin.MouseDown || !mCleared)) {
                 mousePanel.Refresh();
                 mCleared = true;
             }
         }
 
         private void mousePanel_Paint(object sender, PaintEventArgs e) {
-            if (mInput != null) {
-                if (mInput.MouseDown) {
-                    e.Graphics.DrawLine(new Pen(Color.Black), mInput.X, mInput.Y, mInput.CurrentX, mInput.IgnorePitch ? mInput.Y : mInput.CurrentY);
+            if (mPlugin != null) {
+                if (mPlugin.MouseDown) {
+                    e.Graphics.DrawLine(new Pen(Color.Black), mPlugin.X, mPlugin.Y, mPlugin.CurrentX, mPlugin.IgnorePitch ? mPlugin.Y : mPlugin.CurrentY);
                     mCleared = false;
                 } else {
                     //e.Graphics.Clear();
@@ -82,29 +101,29 @@ namespace Chimera.Inputs {
         internal void Stop() { }
 
         private void mouseScaleSlider_Scroll(object sender, EventArgs e) {
-            if (mInput != null) {
+            if (mPlugin != null) {
                 mGuiInput = true;
-                mInput.MouseScale = mouseScaleSlider.Value;
+                mPlugin.MouseScale = mouseScaleSlider.Value;
                 mGuiInput = false;
             }
         }
 
         private void keyboardScaleSlider_Scroll(object sender, EventArgs e) {
-            if (mInput != null) {
+            if (mPlugin != null) {
                 mGuiInput = true;
-                mInput.KBScale = keyboardScaleSlider.Value;
+                mPlugin.KBScale = keyboardScaleSlider.Value;
                 mGuiInput = false;
             }
         }
 
         private void ignorePitchCheck_CheckedChanged(object sender, EventArgs e) {
-            if (mInput != null)
-                mInput.IgnorePitch = ignorePitchCheck.Checked;
+            if (mPlugin != null)
+                mPlugin.IgnorePitch = ignorePitchCheck.Checked;
         }
 
         private void showWindowButton_Click(object sender, EventArgs e) {
-            if (mInput != null && showWindowButton.Text == "Show Window") {
-                mForm = new CameraControlForm(mInput);
+            if (mPlugin != null && showWindowButton.Text == "Show Window") {
+                mForm = new CameraControlForm(mPlugin);
                 mForm.FormClosed += (source, args) => showWindowButton.Text = "Show Window";
                 mForm.Show(this);
                     showWindowButton.Text = "Hide Window";

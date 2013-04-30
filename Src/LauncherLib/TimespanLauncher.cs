@@ -13,7 +13,7 @@ using Chimera.Overlay.Transitions;
 using Chimera.Overlay.Drawables;
 using Chimera.OpenSim;
 using Chimera.Kinect;
-using Chimera.Inputs;
+using Chimera.Plugins;
 using Chimera.Kinect.Interfaces;
 using Joystick;
 
@@ -21,7 +21,7 @@ namespace Chimera.Launcher {
     public class TimespanLauncher : Launcher{
         private SetWindowViewerOutput mMainWindowProxy = new SetWindowViewerOutput("MainWindow");
 
-        protected override ISystemInput[] GetInputs() {
+        protected override ISystemPlugin[] GetInputs() {
             TimespanMovementInput timespan = new TimespanMovementInput();
             DolphinMovementInput dolphin = new DolphinMovementInput();
             RaiseArmHelpTrigger trigger = new RaiseArmHelpTrigger();
@@ -29,12 +29,12 @@ namespace Chimera.Launcher {
             PointCursorFactory pointFactory = new PointCursorFactory();
 
             //IOutput output = new SetFollowCamPropertiesViewerOutput("MainWindow");
-            ISystemInput joystick = new DeltaBasedInput(new JoystickInput());
-            ISystemInput kbMouseInput = new DeltaBasedInput(new KBMouseInput());
-            ISystemInput flythrough = new Chimera.Flythrough.Flythrough();
-            ISystemInput mouse = new MouseInput();
-            ISystemInput heightmap = new HeightmapInput();
-            ISystemInput kinectInput = new KinectInput(
+            ISystemPlugin joystick = new DeltaBasedInput(new JoystickInput());
+            ISystemPlugin kbMousePlugin = new DeltaBasedInput(new KBMousePlugin());
+            ISystemPlugin flythrough = new Chimera.Flythrough.Flythrough();
+            ISystemPlugin mouse = new MousePlugin();
+            ISystemPlugin heightmap = new HeightmapInput();
+            ISystemPlugin kinectPlugin = new KinectInput(
                 new IDeltaInput[] { 
                     timespan, 
                     dolphin 
@@ -46,10 +46,10 @@ namespace Chimera.Launcher {
                 pointFactory
                 );
 
-            return new ISystemInput[] { 
-                kinectInput, 
+            return new ISystemPlugin[] { 
+                kinectPlugin, 
                 joystick,
-                kbMouseInput, 
+                kbMousePlugin, 
                 mouse, 
                 heightmap, 
                 flythrough, 

@@ -1,4 +1,23 @@
-﻿namespace Chimera.GUI.Forms {
+﻿/*************************************************************************
+Copyright (c) 2012 John McCaffery 
+
+This file is part of Chimera.
+
+Chimera is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Chimera is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Chimera.  If not, see <http://www.gnu.org/licenses/>.
+
+**************************************************************************/
+namespace Chimera.GUI.Forms {
     partial class CoordinatorForm {
         /// <summary>
         /// Required designer variable.
@@ -222,9 +241,9 @@
             // 
             // realSpacePanel
             // 
-            this.realSpacePanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.realSpacePanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.realSpacePanel.Cursor = System.Windows.Forms.Cursors.Hand;
             this.realSpacePanel.Location = new System.Drawing.Point(3, 16);
             this.realSpacePanel.Name = "realSpacePanel";
@@ -239,13 +258,13 @@
             // 
             // realSpaceScale
             // 
-            this.realSpaceScale.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.realSpaceScale.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.realSpaceScale.Location = new System.Drawing.Point(5, 291);
             this.realSpaceScale.Maximum = 1000;
             this.realSpaceScale.Minimum = 1;
             this.realSpaceScale.Name = "realSpaceScale";
-            this.realSpaceScale.Size = new System.Drawing.Size(353, 45);
+            this.realSpaceScale.Size = new System.Drawing.Size(353, 42);
             this.realSpaceScale.TabIndex = 3;
             this.realSpaceScale.TickStyle = System.Windows.Forms.TickStyle.None;
             this.realSpaceScale.Value = 1000;
@@ -265,9 +284,9 @@
             // 
             // heightmapPanel
             // 
-            this.heightmapPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.heightmapPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.heightmapPanel.Cursor = System.Windows.Forms.Cursors.Hand;
             this.heightmapPanel.Location = new System.Drawing.Point(3, 16);
             this.heightmapPanel.Name = "heightmapPanel";
@@ -282,13 +301,13 @@
             // 
             // heightmapScale
             // 
-            this.heightmapScale.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.heightmapScale.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.heightmapScale.Location = new System.Drawing.Point(3, 291);
             this.heightmapScale.Maximum = 16000;
             this.heightmapScale.Minimum = 1000;
             this.heightmapScale.Name = "heightmapScale";
-            this.heightmapScale.Size = new System.Drawing.Size(275, 45);
+            this.heightmapScale.Size = new System.Drawing.Size(275, 42);
             this.heightmapScale.TabIndex = 2;
             this.heightmapScale.TickStyle = System.Windows.Forms.TickStyle.None;
             this.heightmapScale.Value = 1000;
@@ -339,8 +358,8 @@
             // 
             // triggerHelpButton
             // 
-            this.triggerHelpButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.triggerHelpButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.triggerHelpButton.Location = new System.Drawing.Point(7, 288);
             this.triggerHelpButton.Name = "triggerHelpButton";
             this.triggerHelpButton.Size = new System.Drawing.Size(248, 23);
@@ -351,8 +370,8 @@
             // 
             // eyePositionPanel
             // 
-            this.eyePositionPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.eyePositionPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.eyePositionPanel.Location = new System.Drawing.Point(3, 195);
             this.eyePositionPanel.Max = 5000F;
             this.eyePositionPanel.MaxV = ((OpenMetaverse.Vector3)(resources.GetObject("eyePositionPanel.MaxV")));
@@ -370,8 +389,8 @@
             // 
             // virtualOrientationPanel
             // 
-            this.virtualOrientationPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.virtualOrientationPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.virtualOrientationPanel.Location = new System.Drawing.Point(3, 105);
             this.virtualOrientationPanel.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("virtualOrientationPanel.LookAtVector")));
             this.virtualOrientationPanel.MinimumSize = new System.Drawing.Size(252, 95);
@@ -390,8 +409,8 @@
             // 
             // virtualPositionPanel
             // 
-            this.virtualPositionPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.virtualPositionPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.virtualPositionPanel.Location = new System.Drawing.Point(3, 12);
             this.virtualPositionPanel.Max = 1024F;
             this.virtualPositionPanel.MaxV = ((OpenMetaverse.Vector3)(resources.GetObject("virtualPositionPanel.MaxV")));
@@ -457,7 +476,7 @@
             this.inputsGroup.Size = new System.Drawing.Size(462, 499);
             this.inputsGroup.TabIndex = 0;
             this.inputsGroup.TabStop = false;
-            this.inputsGroup.Text = "Inputs";
+            this.inputsGroup.Text = "Plugins";
             // 
             // inputsTab
             // 
@@ -491,9 +510,9 @@
             // 
             // overlayStatsBox
             // 
-            this.overlayStatsBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.overlayStatsBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.overlayStatsBox.Enabled = false;
             this.overlayStatsBox.Location = new System.Drawing.Point(111, -2);
             this.overlayStatsBox.Name = "overlayStatsBox";

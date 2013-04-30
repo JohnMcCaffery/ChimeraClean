@@ -1,4 +1,23 @@
-﻿using System;
+﻿/*************************************************************************
+Copyright (c) 2012 John McCaffery 
+
+This file is part of Chimera.
+
+Chimera is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Chimera is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Chimera.  If not, see <http://www.gnu.org/licenses/>.
+
+**************************************************************************/
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,7 +34,6 @@ using SlimDX.XInput;
 
 namespace Joystick{
     public class JoystickInput : IDeltaInput {
-        private Controller mJS;
         private Action mTick;
         private JoystickPanel mControlPanel;
         private bool mEnabled;
@@ -29,17 +47,17 @@ namespace Joystick{
 
         public int[] Sliders {
             get { 
-                if (mJS == null)
+                if (!GamepadManager.Initialised)
                     return new int[0];
 
                 List<int> values = new List<int>();
-                SlimDX.XInput.State state = mJS.GetState();
-                values.Add(state.Gamepad.LeftThumbX);
-                values.Add(state.Gamepad.LeftThumbY);
-                values.Add(state.Gamepad.RightThumbX);
-                values.Add(state.Gamepad.RightThumbY);
-                values.Add(state.Gamepad.LeftTrigger);
-                values.Add(state.Gamepad.RightTrigger);
+                Gamepad g = GamepadManager.Gamepad;
+                values.Add(g.LeftThumbX);
+                values.Add(g.LeftThumbY);
+                values.Add(g.RightThumbX);
+                values.Add(g.RightThumbY);
+                values.Add(g.LeftTrigger);
+                values.Add(g.RightTrigger);
                 return values.ToArray(); 
             }
         }
@@ -50,32 +68,14 @@ namespace Joystick{
             devices.AddRange(input.GetDevices(DeviceClass.GameController, DeviceEnumerationFlags.AttachedOnly));
 
             mTick = new Action(Tick);
-
-            mJS = new Controller(UserIndex.One);
-            if (mJS.IsConnected)
-                return;
-
-            mJS = new Controller(UserIndex.Two);
-            if (mJS.IsConnected)
-                return;
-
-            mJS = new Controller(UserIndex.Three);
-            if (mJS.IsConnected)
-                return;
-
-            mJS = new Controller(UserIndex.Four);
-            if (mJS.IsConnected)
-                return;
-
-            mJS = null;
         }
 
         private void Tick() {
-            if (mJS != null) {
+            if (GamepadManager.Initialised) {
                 OSVector posDelta = OSVector.Zero;
                 Rotation rotDelta = Rotation.Zero;
 
-                Gamepad g = mJS.GetState().Gamepad;
+                Gamepad g = GamepadManager.Gamepad;
 
                 int x = Math.Abs((int) g.RightThumbY) - mDeadzone;
                 posDelta.X = x > 0 ? x * mScaleX * (g.RightThumbY > 0f ? 1f : -1f) : 0f;
@@ -164,7 +164,7 @@ namespace Joystick{
             }
         }
 
-        public void Init(IInputSource input) {
+        public void Init(ITickSource input) {
             input.Tick += mTick;
         }
 
@@ -172,7 +172,7 @@ namespace Joystick{
 
         #region IInput Members
 
-        public event Action<IInput, bool> EnabledChanged;
+        public event Action<IPlugin, bool> EnabledChanged;
 
         public UserControl ControlPanel {
             get {

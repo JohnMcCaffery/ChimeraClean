@@ -1,4 +1,23 @@
-﻿using System;
+﻿/*************************************************************************
+Copyright (c) 2012 John McCaffery 
+
+This file is part of Chimera.
+
+Chimera is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Chimera is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Chimera.  If not, see <http://www.gnu.org/licenses/>.
+
+**************************************************************************/
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,7 +39,7 @@ using System.IO;
 using Nwc.XmlRpc;
 
 namespace Chimera.OpenSim {
-    public abstract class ViewerProxy : IOutput, ISystemInput {
+    public abstract class ViewerProxy : IOutput, ISystemPlugin {
         private static readonly string proxyAddress = "127.0.0.1";
 
         private Process mClient;
@@ -239,7 +258,7 @@ namespace Chimera.OpenSim {
                 }
 
                 new Thread(() => {
-                    if (mControlCamera && Coordinator.ControlMode == ControlMode.Absolute)
+                    if (mControlCamera && mWindow.Coordinator.ControlMode == ControlMode.Absolute)
                         SetCamera();
                     SetWindow();
                     if (mFollowCamProperties.SendPackets)
@@ -499,9 +518,9 @@ namespace Chimera.OpenSim {
 
         #region IInput Members
 
-        public event Action<IInput, bool> EnabledChanged;
+        public event Action<IPlugin, bool> EnabledChanged;
 
-        UserControl IInput.ControlPanel {
+        UserControl IPlugin.ControlPanel {
             get {
                 if (mInputPanel == null)
                     mInputPanel = new InputPanel(mFollowCamProperties);
@@ -524,7 +543,7 @@ namespace Chimera.OpenSim {
             get { return "Master Client"; }
         }
 
-        string IInput.State {
+        string IPlugin.State {
             get { throw new NotImplementedException(); }
         }
 
@@ -538,13 +557,9 @@ namespace Chimera.OpenSim {
 
         #endregion
 
-        #region ISystemInput Members
+        #region ISystemPlugin Members
 
-        public Coordinator Coordinator {
-            get { return mWindow.Coordinator; }
-        }
-
-        void ISystemInput.Init(Coordinator coordinator) { }
+        public void Init(Coordinator coordinator) { }
 
         #endregion
 

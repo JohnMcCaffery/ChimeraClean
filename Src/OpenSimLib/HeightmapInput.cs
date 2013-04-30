@@ -1,4 +1,23 @@
-﻿using System;
+﻿/*************************************************************************
+Copyright (c) 2012 John McCaffery 
+
+This file is part of Chimera.
+
+Chimera is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Chimera is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Chimera.  If not, see <http://www.gnu.org/licenses/>.
+
+**************************************************************************/
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,7 +29,7 @@ using System.Threading;
 using System.Drawing;
 
 namespace Chimera.OpenSim {
-    public class HeightmapInput : ISystemInput {
+    public class HeightmapInput : ISystemPlugin {
         private readonly Dictionary<ulong, HashSet<string>> mMappedParcels = new Dictionary<ulong, HashSet<string>>();
         private readonly HashSet<ulong> mFinishedRegions = new HashSet<ulong>();
 
@@ -147,7 +166,7 @@ namespace Chimera.OpenSim {
 
         #region IInput Members
 
-        public event Action<IInput, bool> EnabledChanged;
+        public event Action<IPlugin, bool> EnabledChanged;
 
         public UserControl ControlPanel {
             get {
@@ -188,11 +207,7 @@ namespace Chimera.OpenSim {
 
         #endregion
 
-        #region ISystemInput Members
-
-        public Coordinator Coordinator {
-            get { return mCoordinator; }
-        }
+        #region ISystemPlugin Members
 
         public void Init(Coordinator coordinator) {
             mCoordinator = coordinator;
