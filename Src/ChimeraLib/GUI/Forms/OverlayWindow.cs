@@ -173,5 +173,9 @@ namespace Chimera.GUI.Forms {
 
             videoPlayer.Ctlcontrols.play();
         }
+
+        public void StopPlayback() {
+            videoPlayer.Ctlcontrols.stop();
+        }
     }
 }

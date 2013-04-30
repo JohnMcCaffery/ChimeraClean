@@ -47,7 +47,9 @@ namespace Chimera.Overlay.States {
             mTrigger.Trigger();
         }
 
-        protected override void TransitionFromStart() { }
+        protected override void TransitionFromStart() {
+            mMainWindow.StopPlayback();
+        }
 
         public override void TransitionFromFinish() { }
 
