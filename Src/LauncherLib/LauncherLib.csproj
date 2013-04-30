@@ -41,9 +41,8 @@
     <Reference Include="log4net">
       <HintPath>..\..\..\libopenmetaverse\bin\log4net.dll</HintPath>
     </Reference>
-    <Reference Include="NuiLib-DotNet_d, Version=1.0.4865.29647, Culture=neutral, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Lib\NuiLib-DotNet_d.dll</HintPath>
+    <Reference Include="NuiLib-DotNet">
+      <HintPath>..\..\Lib\NuiLib-DotNet.dll</HintPath>
     </Reference>
     <Reference Include="OpenMetaverse">
       <HintPath>..\..\..\libopenmetaverse\bin\OpenMetaverse.dll</HintPath>

@@ -274,6 +274,7 @@
     <Compile Include="Overlay\WindowState.cs" />
     <Compile Include="Overlay\WindowTransition.cs" />
     <Compile Include="Util\TickStatistics.cs" />
+    <Compile Include="Util\Updaters.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
