@@ -50,7 +50,8 @@ namespace Chimera.Kinect.GUI.Axes {
         }
 
         void Active_OnChange() {
-            Invoke(new Action(() => stateLabel.Text = mAxis.Active.Value ? "Active" : "Disabled"));
+            if (Created)
+                Invoke(new Action(() => stateLabel.Text = mAxis.Active.Value ? "Active" : "Disabled"));
         }
     }
 }

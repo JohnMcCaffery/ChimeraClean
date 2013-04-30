@@ -31,7 +31,7 @@ using OpenMetaverse;
 
 namespace Chimera.Kinect.Overlay {
     public class KinectControlState : State {
-        private KinectInput mInput;
+        private TimespanAxisPlugin mInput;
         private bool mAvatar;
         private List<CursorTrigger> mClickTriggers = new List<CursorTrigger>();
         private Rotation mStartOrientation;
@@ -44,7 +44,7 @@ namespace Chimera.Kinect.Overlay {
         public KinectControlState(string name, StateManager manager, bool avatar)
             : base(name, manager) {
 
-            mInput = manager.Coordinator.GetPlugin<KinectInput>();
+            mInput = manager.Coordinator.GetPlugin<TimespanAxisPlugin>();
             mAvatar = avatar;
 
             mStartOrientation = new Rotation(manager.Coordinator.Orientation);

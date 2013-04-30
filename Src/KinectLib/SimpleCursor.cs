@@ -60,11 +60,10 @@ namespace Chimera.Kinect {
         private Scalar mConstrainedYLeft;
         private Condition mOnScreenConditionRight;
         private Condition mOnScreenConditionLeft;
-        private Window mWindow;
         private PointF mLocation = new PointF(-1f, -1f);
         private RectangleF mBounds = new RectangleF(0f, 0f, 1f, 1f);
         private bool mOnScreen;
-        private bool mEnabled;
+        private bool mEnabled = true;
         private bool mListening;
 
         private WindowOverlayManager mManager;
@@ -148,8 +147,9 @@ namespace Chimera.Kinect {
                         CursorLeave(this);
                 }
 
-                if (CursorMove != null && mEnabled && Nui.HasSkeleton) {
-                    CursorMove(this, x, y);
+                if (mEnabled && Nui.HasSkeleton) {
+                    if (CursorMove != null)
+                        CursorMove(this, x, y);
                     mManager.UpdateCursor(x, y);
                 }
             }
@@ -191,7 +191,7 @@ namespace Chimera.Kinect {
         }
 
         public Window Window {
-            get { return mWindow; }
+            get { return mManager.Window; }
         }
 
         public string State {
@@ -213,11 +213,7 @@ namespace Chimera.Kinect {
             }
         }
 
-        public void Init(IKinectController controller, Window window) {
-            mWindow = window;
-            mWindow.MonitorChanged += (win, monitor) => Init();
-            Init();
-        }
+        public void Init(IKinectController controller, Window window) { }
 
         #endregion
 
@@ -232,7 +228,7 @@ namespace Chimera.Kinect {
         }
 
         private void coordinator_WindowAdded(Window window, EventArgs args) {
-            mWindow = window;
+            mManager = window.OverlayManager;
             window.Coordinator.WindowAdded -= mWindowAddedListener;
         }
 

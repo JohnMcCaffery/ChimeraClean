@@ -52,6 +52,8 @@ namespace Chimera.Kinect {
         public Scalar AngleThreshold { get { return mAngleThreshold; } }
         public Scalar HeightThreshold { get { return mHeightThreshold; } }
 
+        private Coordinator mCoordinator;
+
         public event Action<IHelpTrigger> Triggered;
 
         public UserControl ControlPanel {
@@ -74,6 +76,8 @@ namespace Chimera.Kinect {
         }
 
         public void Init(Coordinator coordinator) {
+            mCoordinator = coordinator;
+
             mHeightThreshold = Scalar.Create(.4f);
             mAngleThreshold = Scalar.Create(.48f);
 
@@ -91,8 +95,11 @@ namespace Chimera.Kinect {
         }
 
         void mTrigger_OnChange() {
-            if (mEnabled && Triggered != null && mTrigger.Value)
-                Triggered(this);
+            if (mEnabled && mTrigger.Value) {
+                mCoordinator.StateManager.TriggerCustom("Help");
+                if (Triggered != null)
+                    Triggered(this);
+            }
 
         }
 

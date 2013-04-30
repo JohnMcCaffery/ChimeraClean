@@ -33,7 +33,7 @@ namespace Chimera.Kinect.Overlay {
         private readonly HashSet<OverlayImage> mInfoImages = new HashSet<OverlayImage>();
         private readonly CursorTrigger mClickTrigger;
 
-        private KinectInput mInput;
+        private TimespanAxisPlugin mInput;
         private ImageHoverTrigger mWhereButton;
         private ImageHoverTrigger mCloseWhereButton;
         private Window mMainWindow;
@@ -49,7 +49,7 @@ namespace Chimera.Kinect.Overlay {
         public KinectHelpState(string name, StateManager manager, string mainWindow, string whereWindow)
             : base(name, manager) {
 
-            mInput = manager.Coordinator.GetPlugin<KinectInput>();
+            mInput = manager.Coordinator.GetPlugin<TimespanAxisPlugin>();
 
             mMainWindow = manager.Coordinator[mainWindow];
 
