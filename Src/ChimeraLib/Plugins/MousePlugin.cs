@@ -96,7 +96,7 @@ namespace Chimera.Plugins {
         }
 
         public string Name {
-            get { return "Mouse Plugin"; }
+            get { return "MouseCursor"; }
         }
 
         public string State {

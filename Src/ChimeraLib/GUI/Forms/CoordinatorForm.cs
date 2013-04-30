@@ -166,7 +166,6 @@ namespace Chimera.GUI.Forms {
                 // 
                 input.ControlPanel.Dock = System.Windows.Forms.DockStyle.Fill;
                 input.ControlPanel.Location = new System.Drawing.Point(3, 3);
-                input.ControlPanel.Name = input.Name + "Panel";
                 input.ControlPanel.Size = new System.Drawing.Size(413, 233);
                 input.ControlPanel.TabIndex = 0;
 

@@ -71,7 +71,7 @@ namespace Chimera.Launcher {
 
             return new ISystemPlugin[] { 
                 new TimespanAxisPlugin(),
-                new KinectFramePlugin(),
+                new KinectCamera(),
                 new XBoxControllerDelta(),
                 kbMouseInput, 
                 //kinectInput, 

@@ -29,7 +29,7 @@ using NuiLibDotNet;
 using OpenMetaverse;
 
 namespace Chimera.Kinect.GUI {
-    public partial class KinectFramePlugin : UserControl, ISystemPlugin {
+    public partial class KinectCamera : UserControl, ISystemPlugin {
         private static readonly int R = 5;
 
         private Vector mHead;
@@ -54,9 +54,9 @@ namespace Chimera.Kinect.GUI {
 
         private Size mSize = new Size(R * 2, R * 2);
         private ChangeDelegate mKinectTick;
-        private bool mEnabled;
+        private bool mEnabled = true;
 
-        public KinectFramePlugin() {
+        public KinectCamera() {
             InitializeComponent();
 
             mKinectTick = new ChangeDelegate(Nui_Tick);

@@ -127,7 +127,7 @@ namespace Chimera.Plugins {
         }
 
         public override string Name {
-            get { return "Keyboard + Mouse"; }
+            get { return "KB+Mouse"; }
         }
 
         public override ConfigBase Config {

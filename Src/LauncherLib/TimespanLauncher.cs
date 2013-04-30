@@ -25,7 +25,7 @@ namespace Chimera.Launcher {
 
         protected override ISystemPlugin[] GetInputs() {
             return new ISystemPlugin[] { 
-                new KinectFramePlugin(), 
+                new KinectCamera(), 
                 new TimespanAxisPlugin(),
                 new SimpleCursor(),
                 new RaiseArmHelpTrigger(),

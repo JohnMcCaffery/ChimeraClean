@@ -25,7 +25,7 @@ namespace Chimera.Kinect.Axes {
         }
 
         protected override Scalar Sign {
-            get { return MakeSign(Perspective.Y); }
+            get { return MakeSign(Perspective.Y) * -1f; }
         }
 
         public TwistAxis(AxisBinding binding)

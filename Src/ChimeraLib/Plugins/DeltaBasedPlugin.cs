@@ -36,7 +36,7 @@ namespace Chimera.Plugins {
         private bool mEnableZ = true;
         private bool mEnablePitch = true;
         private bool mEnableYaw = true;
-        private bool mEnabled = false;
+        private bool mEnabled = true;
 
         public Action<DeltaBasedPlugin> Change;
 
@@ -118,7 +118,7 @@ namespace Chimera.Plugins {
                     moveDelta.Z += fly;
 
                     Vector3 pos = mCoordinator.Position + moveDelta;
-                    Rotation orientation = mCoordinator.Orientation;
+                    Rotation orientation = mCoordinator.Orientation + orientationDelta;
                     mCoordinator.Update(pos, moveDelta, orientation, orientationDelta);
                 } else
                     mCoordinator.Update(Vector3.Zero, moveDelta, Rotation.Zero, orientationDelta);

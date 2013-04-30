@@ -186,7 +186,7 @@ namespace Chimera.OpenSim {
         }
 
         public string Name {
-            get { return "Bot Heightmap Listener"; }
+            get { return "HeightmapBot"; }
         }
 
         public string State {

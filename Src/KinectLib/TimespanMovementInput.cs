@@ -262,7 +262,7 @@ namespace Chimera.Kinect {
         }
 
         public override string Name {
-            get { return "Kinect Movement - Timespan Configuration"; }
+            get { return "KinectMovement-Timespan"; }
         }
 
         public override string State {

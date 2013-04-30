@@ -18,7 +18,7 @@ along with Chimera.  If not, see <http://www.gnu.org/licenses/>.
 
 **************************************************************************/
 namespace Chimera.Kinect.GUI {
-    partial class KinectFramePlugin {
+    partial class KinectCamera {
         /// <summary> 
         /// Required designer variable.
         /// </summary>
@@ -84,14 +84,14 @@ namespace Chimera.Kinect.GUI {
             this.frameImage.TabIndex = 3;
             this.frameImage.TabStop = false;
             // 
-            // KinectFramePlugin
+            // KinectCamera
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.colourFrameButton);
             this.Controls.Add(this.depthFrameButton);
             this.Controls.Add(this.frameImage);
-            this.Name = "KinectFramePlugin";
+            this.Name = "KinectCamera";
             this.Size = new System.Drawing.Size(492, 439);
             ((System.ComponentModel.ISupportInitialize)(this.frameImage)).EndInit();
             this.ResumeLayout(false);

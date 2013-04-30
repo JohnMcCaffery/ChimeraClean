@@ -540,7 +540,7 @@ namespace Chimera.OpenSim {
         }
 
         public string Name {
-            get { return "Master Client"; }
+            get { return "MasterClient"; }
         }
 
         string IPlugin.State {

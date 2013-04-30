@@ -134,7 +134,7 @@ namespace Joystick{
         }
 
         public override string Name {
-            get { return "Joystick"; }
+            get { return "Gamepad"; }
         }
 
         public override string State {
