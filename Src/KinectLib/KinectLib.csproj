@@ -91,6 +91,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Axes\AxisBase.cs" />
+    <Compile Include="Axes\KinectAxis.cs" />
     <Compile Include="Axes\TAxis.cs" />
     <Compile Include="Axes\LeanAxis.cs" />
     <Compile Include="Axes\PushAxis.cs" />
@@ -115,7 +116,7 @@
     <Compile Include="GUI\KinectFramePlugin.Designer.cs">
       <DependentUpon>KinectFramePlugin.cs</DependentUpon>
     </Compile>
-    <Compile Include="Interfaces\IKinectAxis.cs" />
+    <Compile Include="Axes\KinectAxisConfig.cs" />
     <Compile Include="Overlay\KinectHelpState.cs" />
     <Compile Include="Overlay\KinectHelpWindowState.cs" />
     <Compile Include="Overlay\SkeletonLostTrigger.cs" />

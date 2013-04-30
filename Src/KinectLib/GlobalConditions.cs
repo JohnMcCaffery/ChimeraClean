@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using NuiLibDotNet;
 using C = NuiLibDotNet.Condition;
+using Chimera.Kinect.Axes;
+using Chimera.Kinect.GUI;
 
 namespace Chimera.Kinect {
     public static class GlobalConditions {
@@ -11,7 +13,11 @@ namespace Chimera.Kinect {
         private static Condition sActiveConditionR;
         private static Condition sActiveConditionL;
 
+        private static KinectAxisConfig mConfig = new KinectAxisConfig();
 
+        public static KinectAxisConfig Cfg {
+            get { return mConfig; }
+        }
 
         private static void Init() {
             Nui.Init();

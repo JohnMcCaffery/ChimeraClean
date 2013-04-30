@@ -36,7 +36,7 @@ namespace Chimera.Kinect.Axes {
         }
 
         public TAxis(bool right, AxisBinding binding)
-            : base("T" + (right ? "-Right" : "-Left"), DEADZONE, SCALE, binding) {
+            : base("T" + (right ? "-Right" : "-Left"), binding) {
 
             mRight = right;
             Vector h = Nui.joint(mRight ? Nui.Hand_Right : Nui.Hand_Left);

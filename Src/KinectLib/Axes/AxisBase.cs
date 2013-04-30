@@ -8,7 +8,7 @@ using NuiLibDotNet;
 using Chimera.Kinect.Interfaces;
 
 namespace Chimera.Kinect.Axes {
-    public class AxisBase : ConstrainedAxis, IKinectAxis {
+    public class AxisBase : KinectAxis {
         private static readonly float DZ = 10f;
         private static readonly float SCALE = .01f;
         private Scalar mRaw;
@@ -20,20 +20,20 @@ namespace Chimera.Kinect.Axes {
         }
 
         public AxisBase(AxisBinding binding)
-            : base("Twist", DZ, SCALE, binding) {
+            : base("Twist", binding) {
         }
 
         #region IKinectAxis Members
 
-        public ConstrainedAxis Axis {
+        public override ConstrainedAxis Axis {
             get { return this; }
         }
 
-        public Scalar Raw {
+        public override Scalar Raw {
             get { return mRaw; }
         }
 
-        public Condition Active {
+        public override Condition Active {
             get { return mActive; }
         }
 

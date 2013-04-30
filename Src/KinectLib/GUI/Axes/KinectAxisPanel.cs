@@ -13,12 +13,13 @@ using Chimera.Kinect.Interfaces;
 
 namespace Chimera.Kinect.GUI.Axes {
     public partial class KinectAxisPanel : UserControl {
-        private IKinectAxis mAxis;
+        private KinectAxis mAxis;
         private ChangeDelegate mChangeListener;
 
-        public IKinectAxis Axis {
+        public KinectAxis Axis {
             get { return mAxis; }
-            set {            mAxis = value;
+            set {
+            mAxis = value;
 
             stateLabel.Text = mAxis.Active.Value ? "Active" : "Disabled";
 
@@ -34,7 +35,7 @@ namespace Chimera.Kinect.GUI.Axes {
             InitializeComponent();
         }
 
-        public KinectAxisPanel(IKinectAxis axis)
+        public KinectAxisPanel(KinectAxis axis)
             : this() {
 
             Axis = axis;

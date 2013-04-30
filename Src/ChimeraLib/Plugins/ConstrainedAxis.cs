@@ -63,27 +63,23 @@ namespace Chimera.Plugins {
             mBinding = binding;
         }
 
-        protected ConstrainedAxis(string name, IUpdater<float> deadzone, IUpdater<float> scale)
+        protected ConstrainedAxis(string name, IUpdater<float> deadzone, IUpdater<float> scale, AxisBinding binding)
             : this(name) {
             mDeadzone = deadzone;
             mScale = scale;
-        }
-
-        protected ConstrainedAxis(string name, IUpdater<float> deadzone, float scale) :
-            this(name, deadzone, new Updater<float>("Scale", scale)) {
-        }
-
-        protected ConstrainedAxis(string name, float deadzone, IUpdater<float> scale) :
-            this(name, new Updater<float>("Deadzone", deadzone), scale) {
-        }
-
-        protected ConstrainedAxis(string name, float deadzone, float scale) :
-            this(name, new Updater<float>("Deadzone", deadzone), new Updater<float>("Scale", scale)) {
-        }
-
-        protected ConstrainedAxis(string name, float deadzone, float scale, AxisBinding binding)
-            : this(name, deadzone, scale) {
             mBinding = binding;
+        }
+
+        protected ConstrainedAxis(string name, IUpdater<float> deadzone, float scale, AxisBinding binding) :
+            this(name, deadzone, new Updater<float>("Scale", scale), binding) {
+        }
+
+        protected ConstrainedAxis(string name, float deadzone, IUpdater<float> scale, AxisBinding binding) :
+            this(name, new Updater<float>("Deadzone", deadzone), scale, binding) {
+        }
+
+        protected ConstrainedAxis(string name, float deadzone, float scale, AxisBinding binding) :
+            this(name, new Updater<float>("Deadzone", deadzone), new Updater<float>("Scale", scale), binding) {
         }
 
         protected void SetRawValue(float value) {

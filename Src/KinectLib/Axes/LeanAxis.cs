@@ -32,11 +32,11 @@ namespace Chimera.Kinect.Axes {
         }
 
         public LeanAxis(AxisBinding binding)
-            : base("Lean", DEADZONE, SCALE, binding) {
+            : base("Lean") {
         }
 
         public LeanAxis()
-            : base("Lean", DEADZONE, SCALE) {
+            : base("Lean") {
         }
 
         public override Condition Active {

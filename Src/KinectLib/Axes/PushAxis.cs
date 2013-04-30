@@ -43,7 +43,7 @@ namespace Chimera.Kinect.Axes {
             : this(right, AxisBinding.None) {
         }
 
-        public class PushSingleAxis : ConstrainedAxis, IKinectAxis {
+        public class PushSingleAxis : KinectAxis {
             private static readonly float DZ = .3f;
             private static readonly float SCALE = .05f;
             private static readonly float BACKDZ = DZ / 5f;
@@ -52,13 +52,13 @@ namespace Chimera.Kinect.Axes {
             private Scalar mValue;
             private KinectAxisPanel mPanel;
 
-            public ConstrainedAxis Axis {
+            public override ConstrainedAxis Axis {
                 get { return this; }
             }
-            public Condition Active {
+            public override Condition Active {
                 get { return mActive; }
             }
-            public Scalar Raw {
+            public override Scalar Raw {
                 get { return mRaw; }
             }
 
@@ -74,7 +74,7 @@ namespace Chimera.Kinect.Axes {
                 : this(right, forward, AxisBinding.None) { }
 
             public PushSingleAxis(bool right, bool forward, AxisBinding binding)
-                : base("Push " + (right ? "Right" : "Left") + (forward ? "+" : "-"), forward ? DZ : BACKDZ, SCALE, binding) {
+                : base("Push " + (right ? "Right" : "Left") + (forward ? "+" : "-"), binding) {
 
                 mMirror = false;
 

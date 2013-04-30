@@ -29,11 +29,11 @@ namespace Chimera.Kinect.Axes {
         }
 
         public TwistAxis(AxisBinding binding)
-            : base("Twist", DEADZONE, SCALE, binding) {
+            : base("Twist", binding) {
         }
 
         public TwistAxis()
-            : base("Twist", DEADZONE, SCALE) {
+            : base("Twist") {
         }
 
         public override Condition Active {

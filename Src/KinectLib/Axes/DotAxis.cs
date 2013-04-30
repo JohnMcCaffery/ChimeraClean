@@ -13,7 +13,7 @@ namespace Chimera.Kinect.Axes {
     /// <summary>
     /// Takes the signed dot product of two vectors as the final axis
     /// </summary>
-    public abstract class DotAxis : ConstrainedAxis, IKinectAxis {
+    public abstract class DotAxis : KinectAxis {
         private Scalar mRaw;
         private Condition mActive;
         private DotAxisPanel mPanel;
@@ -33,12 +33,12 @@ namespace Chimera.Kinect.Axes {
             get;
         }
 
-        public DotAxis(string name, float deadzone, float scale)
-            : this(name, deadzone, scale, AxisBinding.None) {
+        public DotAxis(string name)
+            : this(name, AxisBinding.None) {
         }
 
-        public DotAxis(string name, float deadzone, float scale, AxisBinding binding)
-            : base(name, deadzone, scale, binding) {
+        public DotAxis(string name, AxisBinding binding)
+            : base(name, binding) {
 
             Init();
         }
@@ -72,15 +72,15 @@ namespace Chimera.Kinect.Axes {
 
         #region IKinectAxis Members
 
-        public ConstrainedAxis Axis {
+        public override ConstrainedAxis Axis {
             get { return this; }
         }
 
-        public Scalar Raw {
+        public override Scalar Raw {
             get { return mRaw; }
         }
 
-        public virtual Condition Active {
+        public override Condition Active {
             get { return mActive; }
         }
 
