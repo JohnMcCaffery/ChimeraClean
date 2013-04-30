@@ -25,10 +25,10 @@ namespace Chimera.Kinect {
 
             mInit = true;
             Vector hipC = Nui.joint(Nui.Hip_Centre);
-            Vector handR = Nui.joint(Nui.Hip_Centre);
-            Vector handL = Nui.joint(Nui.Hip_Centre);
-            Condition heightThresholdR = Nui.y(Nui.joint(Nui.Hand_Right)) > Nui.y(hipC);
-            Condition heightThresholdL = Nui.y(Nui.joint(Nui.Hand_Right)) > Nui.y(hipC);
+            Vector handR = Nui.joint(Nui.Hand_Right);
+            Vector handL = Nui.joint(Nui.Hand_Left);
+            Condition heightThresholdR = Nui.y(handR) > Nui.y(hipC);
+            Condition heightThresholdL = Nui.y(handL) > Nui.y(hipC);
             Condition heightThreshold = C.Or(heightThresholdL, heightThresholdR);
 
             Scalar dist = Nui.magnitude(Nui.joint(Nui.Shoulder_Centre) - hipC);

@@ -19,15 +19,19 @@ namespace Chimera.Kinect.GUI.Axes {
         public KinectAxis Axis {
             get { return mAxis; }
             set {
-            mAxis = value;
+                mAxis = value;
 
-            stateLabel.Text = mAxis.Active.Value ? "Active" : "Disabled";
+                stateLabel.Text = mAxis.Active.Value ? "Active" : "Disabled";
 
-            constrainedAxisPanel.Axis = mAxis.Axis;
-            pushPanel.Scalar = new ScalarUpdater(mAxis.Raw);
-            mChangeListener = new ChangeDelegate(Active_OnChange);
-            mAxis.Active.OnChange += mChangeListener;
-            Disposed += new EventHandler(KinectAxisPanel_Disposed);
+                constrainedAxisPanel.Axis = mAxis.Axis;
+                pushPanel.Scalar = new ScalarUpdater(mAxis.Raw);
+                mChangeListener = new ChangeDelegate(Active_OnChange);
+
+                scalePanel.Scalar = new ScalarUpdater(mAxis.ScaleScale);
+                deadzonePanel.Scalar = new ScalarUpdater(mAxis.DeadzoneScale);
+
+                mAxis.Active.OnChange += mChangeListener;
+                Disposed += new EventHandler(KinectAxisPanel_Disposed);
             }
         }
 

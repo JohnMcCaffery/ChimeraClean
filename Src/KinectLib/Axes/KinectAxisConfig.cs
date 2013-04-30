@@ -4,11 +4,12 @@ using System.Linq;
 using System.Text;
 using Chimera.Util;
 using Chimera.Interfaces;
+using System.IO;
 
 namespace Chimera.Kinect.Axes {
     public class KinectAxisConfig : ConfigBase {
         public KinectAxisConfig()
-            : base("Movement", "Config/Kinect.ini") {
+            : base("Movement", Path.GetFullPath("../Config/Kinect.ini"), new string[0]) {
         }
 
         public override string Group {
@@ -16,16 +17,16 @@ namespace Chimera.Kinect.Axes {
         }
 
         protected override void InitConfig() {
-            Get(false, "|X|Deadzone", .1f, "The deadzone for axis |X|.");
-            Get(false, "|X|Scale", .1f, "The scale factor for axis |X|.");
+            Get(false, "Deadzone|X|", .1f, "The deadzone for axis |X|.");
+            Get(false, "Scale|X|", .1f, "The scale factor for axis |X|.");
         }
 
         public float GetDeadzone(string name) {
-            return Get(false, name + "Deadzone", .1f, "");
+            return Get(false, "Deadzone" + name, .1f, "");
         }
 
         public float GetScale(string name) {
-            return Get(false, name + "Scale", .1f, "");
+            return Get(false, "Scale" + name, 1f, "");
         }
     }
 }

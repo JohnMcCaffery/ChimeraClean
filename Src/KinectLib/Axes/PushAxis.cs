@@ -74,7 +74,7 @@ namespace Chimera.Kinect.Axes {
                 : this(right, forward, AxisBinding.None) { }
 
             public PushSingleAxis(bool right, bool forward, AxisBinding binding)
-                : base("Push " + (right ? "Right" : "Left") + (forward ? "+" : "-"), binding) {
+                : base("Push" + (right ? "Right" : "Left") + (forward ? "+" : "-"), binding) {
 
                 mMirror = false;
 
@@ -88,7 +88,7 @@ namespace Chimera.Kinect.Axes {
 
                 //Whether the push gesture could be active
                 mActive = right ? GlobalConditions.ActiveR : GlobalConditions.ActiveL;
-                mActive = C.And(mActive, hand.Y > elbow.Y);
+                //mActive = C.And(mActive, Nui.y(hand) > Nui.y(elbow));
                 //The value for the push gesture
                 mValue = Nui.ifScalar(mActive, mRaw, 0f);
 

@@ -15,7 +15,7 @@ namespace Chimera.Kinect.Axes {
     /// </summary>
     public abstract class DotAxis : KinectAxis {
         private Scalar mRaw;
-        private Condition mActive;
+        private Scalar mValue;
         private DotAxisPanel mPanel;
 
         public abstract Vector A { get; }
@@ -63,11 +63,13 @@ namespace Chimera.Kinect.Axes {
             mRaw = dot * Sign * (180f / (float)Math.PI);
             //mRaw = Nui.acos(Nui.dot(A, B)) * (180f / (float) Math.PI);
 
+            mValue = Nui.ifScalar(Active, mRaw, 0f);
+
             Nui.Tick += new ChangeDelegate(Nui_Tick);
         }
 
         void Nui_Tick() {
-            SetRawValue(mRaw.Value);
+            SetRawValue(mValue.Value);
         }
 
         #region IKinectAxis Members
@@ -78,10 +80,6 @@ namespace Chimera.Kinect.Axes {
 
         public override Scalar Raw {
             get { return mRaw; }
-        }
-
-        public override Condition Active {
-            get { return mActive; }
         }
 
         #endregion

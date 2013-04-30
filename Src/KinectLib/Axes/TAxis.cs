@@ -9,9 +9,7 @@ using Chimera.Interfaces;
 
 namespace Chimera.Kinect.Axes {
     public class TAxis : DotAxis {
-        private static readonly float DEADZONE = 10f;
-        private static readonly float SCALE = .01f;
-        private Condition mActive;
+        private Condition mActive = Condition.Create(true);
         private Vector mB;
         private bool mRight;
 
@@ -36,7 +34,7 @@ namespace Chimera.Kinect.Axes {
         }
 
         public TAxis(bool right, AxisBinding binding)
-            : base("T" + (right ? "-Right" : "-Left"), binding) {
+            : base((right ? "T-Right" : "T-Left"), binding) {
 
             mRight = right;
             Vector h = Nui.joint(mRight ? Nui.Hand_Right : Nui.Hand_Left);

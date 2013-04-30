@@ -33,7 +33,8 @@ namespace Chimera.Kinect.Axes {
 
         public Scalar ScaleScale {
             get { return mScaleScale; }
-        }
+        }
+
         public abstract ConstrainedAxis Axis { get; }
         public abstract Scalar Raw { get; }
         public abstract Condition Active { get; }

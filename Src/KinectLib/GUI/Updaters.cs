@@ -63,6 +63,10 @@ namespace Chimera.Kinect.GUI {
         public ScalarUpdater(Scalar scalar) {
             Scalar = scalar;
         }
+
+        public override string ToString() {
+            return Name + ":" + Value;
+        }
     }
 
     public class VectorUpdater : IUpdater<Vector3> {
@@ -102,6 +106,10 @@ namespace Chimera.Kinect.GUI {
         public VectorUpdater(Vector vector) {
             Vector = vector;
         }
+
+        public override string ToString() {
+            return Name + ":" + Value;
+        }
     }
 
     public class ConditionUpdater : IUpdater<bool> {
@@ -140,6 +148,10 @@ namespace Chimera.Kinect.GUI {
 
         public ConditionUpdater(Condition condition) {
             Condition = condition;
+        }
+
+        public override string ToString() {
+            return Name + ":" + Value;
         }
     }
 }
