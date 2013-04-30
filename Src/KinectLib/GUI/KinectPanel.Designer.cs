@@ -262,9 +262,7 @@ namespace Chimera.Kinect.GUI {
             this.orientationPanel.Quaternion = ((OpenMetaverse.Quaternion)(resources.GetObject("orientationPanel.Quaternion")));
             this.orientationPanel.Size = new System.Drawing.Size(701, 95);
             this.orientationPanel.TabIndex = 2;
-            rotation4.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("rotation4.LookAtVector")));
             rotation4.Pitch = 0D;
-            rotation4.Quaternion = ((OpenMetaverse.Quaternion)(resources.GetObject("rotation4.Quaternion")));
             rotation4.Yaw = 0D;
             this.orientationPanel.Value = rotation4;
             this.orientationPanel.Yaw = 0D;

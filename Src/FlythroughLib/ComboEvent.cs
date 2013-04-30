@@ -62,7 +62,7 @@ namespace Chimera.Flythrough {
         /// </summary>
         /// <param name="flythrough">The flythrough this event is part of.</param>
         /// <param name="length">The length of value the event will run (ms).</param>
-        public ComboEvent(Flythrough flythrough)
+        public ComboEvent(FlythroughPlugin flythrough)
             : base(flythrough, 1) {
 
             mPositionSequence.LengthChange += new Action<EventSequence<Vector3>,int>(mPositionSequence_LengthChange);

@@ -33,7 +33,7 @@ using Chimera.Plugins;
 
 namespace Chimera.Kinect {
     public class KinectInput : ISystemPlugin, IKinectController {
-        private readonly Dictionary<string, DeltaBasedInput> mMovementControllers = new Dictionary<string, DeltaBasedInput>();
+        private readonly Dictionary<string, DeltaBasedPlugin> mMovementControllers = new Dictionary<string, DeltaBasedPlugin>();
         private readonly Dictionary<string, IHelpTrigger> mHelpTriggers = new Dictionary<string, IHelpTrigger>();
         private readonly List<IKinectCursorFactory> mCursorFactories = new List<IKinectCursorFactory>();
         private readonly Dictionary<string, Dictionary<string, IKinectCursor>> mCursors = new Dictionary<string, Dictionary<string, IKinectCursor>>();
@@ -51,7 +51,7 @@ namespace Chimera.Kinect {
 
         private Vector mHead;
 
-        private DeltaBasedInput mCurrentMovementController;
+        private DeltaBasedPlugin mCurrentMovementController;
         private IHelpTrigger mCurrentHelpTrigger;
         private Dictionary<string, IKinectCursor> mCurrentCursors = null;
 
@@ -70,7 +70,7 @@ namespace Chimera.Kinect {
         public string[] CursorNames {
             get { return mCursors.Keys.ToArray(); }
         }
-        public DeltaBasedInput[] MovementControllers {
+        public DeltaBasedPlugin[] MovementControllers {
             get { return mMovementControllers.Values.ToArray(); }
         }
         public IHelpTrigger[] HelpTriggers {
@@ -83,7 +83,7 @@ namespace Chimera.Kinect {
         public IKinectCursor[] Cursors {
             get { return mCurrentCursors.Values.ToArray(); }
         }
-        public DeltaBasedInput MovementController {
+        public DeltaBasedPlugin MovementController {
             get { return mCurrentMovementController; }
         }
         public IHelpTrigger HelpTrigger {
@@ -128,7 +128,7 @@ namespace Chimera.Kinect {
             }
         }
 
-        public KinectInput(IEnumerable<IDeltaInput> movementControllers, IEnumerable<IHelpTrigger> helpTriggers, params IKinectCursorFactory[] cursors) {
+        public KinectInput(IEnumerable<DeltaBasedPlugin> movementControllers, IEnumerable<IHelpTrigger> helpTriggers, params IKinectCursorFactory[] cursors) {
             KinectConfig cfg = new KinectConfig();
 
             mOrientationChangeHandler = new EventHandler(mKinectOrientation_Changed);
@@ -146,10 +146,9 @@ namespace Chimera.Kinect {
             mHead.OnChange += new ChangeDelegate(mHead_OnChange);
 
             foreach (var movement in movementControllers) {
-                DeltaBasedInput put = new DeltaBasedInput(movement);
-                mMovementControllers.Add(movement.Name, put);
+                mMovementControllers.Add(movement.Name, movement);
                 if (mCurrentMovementController == null) {
-                    mCurrentMovementController = put;
+                    mCurrentMovementController = movement;
                     mCurrentMovementController.Enabled = true;
                 } else
                     movement.Enabled = false;

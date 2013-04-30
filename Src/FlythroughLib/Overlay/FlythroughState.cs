@@ -28,7 +28,7 @@ using Chimera.Overlay.Triggers;
 
 namespace Chimera.Flythrough.Overlay {
     public class FlythroughState : State {
-        private Flythrough mInput;
+        private FlythroughPlugin mInput;
         private SlideshowWindow mSlideshow;
         private IImageTransition mSlideshowTransition;
         private string mSlideshowWindowName;
@@ -42,7 +42,7 @@ namespace Chimera.Flythrough.Overlay {
             : base(name, manager) {
 
             mFlythrough = flythrough;
-            mInput = manager.Coordinator.GetPlugin<Flythrough>();
+            mInput = manager.Coordinator.GetPlugin<FlythroughPlugin>();
         }
 
         public FlythroughState(string name, StateManager manager, string flythrough, State home, IWindowTransitionFactory transition, params ITrigger[] steps)

@@ -28,7 +28,7 @@ using NuiLibDotNet;
 using C = NuiLibDotNet.Condition;
 
 namespace Chimera.Kinect {
-    public class RaiseArmHelpTrigger : IHelpTrigger {
+    public class RaiseArmHelpTrigger : ISystemPlugin, IHelpTrigger {
         private RaiseArmHelpTriggerPanel mPanel;
         private bool mEnabled = true;
 
@@ -66,7 +66,11 @@ namespace Chimera.Kinect {
 
         public bool Enabled {
             get { return mEnabled; }
-            set { mEnabled = value; }
+            set { 
+                mEnabled = value;
+                if (EnabledChanged != null)
+                    EnabledChanged(this, value);
+            }
         }
 
         public void Init(Coordinator coordinator) {
@@ -91,5 +95,25 @@ namespace Chimera.Kinect {
                 Triggered(this);
 
         }
+
+        #region IPlugin Members
+
+        public event Action<IPlugin, bool> EnabledChanged;
+
+        public string State {
+            get { throw new NotImplementedException(); }
+        }
+
+        public Util.ConfigBase Config {
+            get { throw new NotImplementedException(); }
+        }
+
+        public void Close() {
+        }
+
+        public void Draw(Func<OpenMetaverse.Vector3, System.Drawing.Point> to2D, System.Drawing.Graphics graphics, Action redraw) {
+        }
+
+        #endregion
     }
 }

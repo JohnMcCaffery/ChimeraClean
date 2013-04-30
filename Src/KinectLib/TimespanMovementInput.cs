@@ -28,9 +28,10 @@ using System.Windows.Forms;
 using Chimera.Util;
 using Chimera.Kinect.GUI;
 using System.Drawing;
+using Chimera.Plugins;
 
 namespace Chimera.Kinect {
-    public class TimespanMovementInput : IDeltaInput {
+    public class TimespanMovementInput : DeltaBasedPlugin {
         private Scalar mWalkDiffR;
         private Scalar mWalkDiffL;
         private Scalar mWalkValR;
@@ -60,11 +61,6 @@ namespace Chimera.Kinect {
         private Scalar mWalkVal;
         private Vector3 mDelta;
         private double mPitchDelta, mYawDelta;
-
-        private bool mWalkEnabled = true;
-        private bool mFlyEnabled = true;
-        private bool mYawEnabled = true;
-        private bool mEnabled = true;
 
         private DateTime mFlyStart;
         private bool mFlying;
@@ -98,46 +94,8 @@ namespace Chimera.Kinect {
         public Scalar YawScale { get { return mYawScale; } }
         public Scalar YawThreshold { get { return mYawThreshold; } }
 
-        public event Action<IPlugin, bool> EnabledChanged;
-
-        public bool WalkEnabled {
-            get { return mWalkEnabled; }
-            set { 
-                mWalkEnabled = value;
-                if (EnabledChanged != null)
-                    EnabledChanged(this, mEnabled);
-            }
-        }
-        public bool StrafeEnabled {
-            get { return false; }
-            set { }
-        }
-        public bool FlyEnabled {
-            get { return mFlyEnabled; }
-            set { 
-                mFlyEnabled = value;
-                if (EnabledChanged != null)
-                    EnabledChanged(this, mEnabled);
-            }
-        }
-        public bool PitchEnabled {
-            get { return false; }
-            set { }
-        }
-        public bool YawEnabled {
-            get { return mYawEnabled; }
-            set {
-                mYawEnabled = value;
-                if (EnabledChanged != null)
-                    EnabledChanged(this, mEnabled);
-            }
-        }
 
         public TimespanMovementInput () {
-            mWalkEnabled = true;
-            mFlyEnabled = true;
-            mYawEnabled = true;
-            //(val * scale) + min = out
             //Scalar walkThreshold = Nui.tracker("WalkStart", 40, .65f / 40f, 0f, 20);
             mWalkThreshold = Scalar.Create(.325f);
             mWalkScale = Scalar.Create(2f);
@@ -165,22 +123,22 @@ namespace Chimera.Kinect {
                 return;
 
             mDelta = Vector3.Zero;
-            mYawDelta = mYawEnabled ? -mYaw.Value : 0f;
+            mYawDelta = -mYaw.Value;
             mPitchDelta = 0.0;
 
-            mDelta.X = mWalkEnabled ? mWalkVal.Value : 0f;
+            mDelta.X = mWalkVal.Value;
 
             //Put a timer on flying so that fly input greater than x will be ignored until the user has stayed in the position for y ms.
             if (mFlyVal.Value != 0f && !mFlying) {
                 mFlying = true;
                 if (!mFlyAllowed && mFlyVal.Value < mFlyMin.Value) {
                     mFlyAllowed = true;
-                    mDelta.Z = mFlyEnabled ? mFlyVal.Value : 0f;
+                    mDelta.Z = mFlyVal.Value;
                     Console.WriteLine("Below Threshold");
                 } else 
                     mFlyStart = DateTime.Now;
             } else if (mFlyAllowed || DateTime.Now.Subtract(mFlyStart).TotalMilliseconds > mFlyTimer.Value) {
-                mDelta.Z = mFlyEnabled ? mFlyVal.Value : 0f;
+                mDelta.Z = mFlyVal.Value;
                 //Console.WriteLine("Time trigger " + (sw ? "+" : "-"));
                 sw = !sw;
             }else if (mFlyVal.Value == 0f) {
@@ -188,8 +146,7 @@ namespace Chimera.Kinect {
                 mFlyAllowed = true;
             }
 
-            if (mEnabled && Change != null)
-                Change(this);
+            TriggerChange(this);
         }
         private bool mFlyAllowed;
 
@@ -288,19 +245,15 @@ namespace Chimera.Kinect {
 
         #region IDeltaInput Members 
 
-        public event Action<IDeltaInput> Change;
-
-        public Vector3 PositionDelta {
+        public override Vector3 PositionDelta {
             get { return mDelta; }
         }
 
-        public Rotation OrientationDelta {
+        public override Rotation OrientationDelta {
             get { return new Rotation(mPitchDelta, mYawDelta); }
         }
 
-        public void Init(ITickSource input) { }
-
-        public UserControl ControlPanel {
+        public override UserControl ControlPanel {
             get {
                 if (mPanel == null)
                     mPanel = new TimespanMovementPanel(this);
@@ -308,33 +261,24 @@ namespace Chimera.Kinect {
             }
         }
 
-        public bool Enabled {
-            get { return mEnabled; }
-            set { 
-                mEnabled = value;
-                if (EnabledChanged != null)
-                    EnabledChanged(this, mEnabled);
-            }
-        }
-
-        public string Name {
+        public override string Name {
             get { return "Kinect Movement - Timespan Configuration"; }
         }
 
-        public string State {
+        public override string State {
             get {
                 string dump = "----Timespan Config Kinect Input----";
                 return ""; 
             }
         }
 
-        public ConfigBase Config {
+        public override ConfigBase Config {
             get { throw new NotImplementedException(); }
         }
 
-        public void Close() { }
+        public override void Close() { }
 
-        public void Draw(Func<Vector3, Point> to2D, Graphics graphics, Action redraw) {
+        public override void Draw(Func<Vector3, Point> to2D, Graphics graphics, Action redraw) {
             //Do nothing
         }
 

@@ -38,9 +38,4 @@ namespace Joystick {
                 new ThumbstickAxis(true, true)
             ) { }
     }
-
-    public class XBoxControllerInput : DeltaBasedInput {
-        public XBoxControllerInput()
-            : base(new XBoxControllerDelta()) { }
-    }
 }

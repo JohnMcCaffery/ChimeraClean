@@ -108,7 +108,7 @@
       <DependentUpon>OutputPanel.cs</DependentUpon>
     </Compile>
     <Compile Include="HeightmapConfig.cs" />
-    <Compile Include="HeightmapInput.cs" />
+    <Compile Include="HeightmapPlugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ProxyConfig.cs" />
     <Compile Include="SetFollowCamProperties.cs" />

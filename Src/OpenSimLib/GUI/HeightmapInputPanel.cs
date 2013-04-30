@@ -28,19 +28,19 @@ using System.Windows.Forms;
 
 namespace Chimera.OpenSim.GUI {
     public partial class HeightmapInputPanel : UserControl {
-        private HeightmapInput mInput;
+        private HeightmapPlugin mInput;
         private HeightmapConfig mConfig;
 
         public HeightmapInputPanel() {
             InitializeComponent();
         }
 
-        public HeightmapInputPanel(HeightmapInput input)
+        public HeightmapInputPanel(HeightmapPlugin input)
             : this() {
             Init(input);
         }
 
-        public void Init(HeightmapInput input) {
+        public void Init(HeightmapPlugin input) {
             mInput = input;
             mConfig = (HeightmapConfig) mInput.Config;
             loginErrorLabel.Text = mInput.LoginFailMessage != null ? mInput.LoginFailMessage : "";

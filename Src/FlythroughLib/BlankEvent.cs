@@ -40,7 +40,7 @@ namespace Chimera.Flythrough {
         /// Initialise the event, specifying how long to do nothing for.
         /// </summary>
         /// <param name="target">The position the camera will end up in.</param>
-        public BlankEvent(Flythrough container, int length)
+        public BlankEvent(FlythroughPlugin container, int length)
             : base(container, length) {
             Name = "Blank " + (++COUNT);
         }

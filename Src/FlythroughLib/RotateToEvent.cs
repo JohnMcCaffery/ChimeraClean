@@ -52,7 +52,7 @@ namespace Chimera.Flythrough {
         /// <param name="length">The length of time the event will run (ms).</param>
         /// <param name="pitch">How far the event should rotate the camera around the pitch axis (degrees).</param>
         /// <param name="yaw">How far the event should rotate the camera around the yaw axis (degrees).</param>
-        public RotateToEvent(Flythrough container, int length, Rotation target)
+        public RotateToEvent(FlythroughPlugin container, int length, Rotation target)
             : this(container, length) {
 
             Target = target;
@@ -63,7 +63,7 @@ namespace Chimera.Flythrough {
         /// </summary>
         /// <param name="container">The container which this event is part of.</param>
         /// <param name="length">The length of time the event will run (ms).</param>
-        public RotateToEvent(Flythrough container, int length)
+        public RotateToEvent(FlythroughPlugin container, int length)
             : base(container, length) {
 
             Name = "Rotate To " + (++COUNT);

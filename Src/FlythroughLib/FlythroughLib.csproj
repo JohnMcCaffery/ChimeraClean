@@ -94,7 +94,7 @@
     </Compile>
     <Compile Include="LookAtEvent.cs" />
     <Compile Include="EventSequence.cs" />
-    <Compile Include="Flythrough.cs" />
+    <Compile Include="FlythroughPlugin.cs" />
     <Compile Include="FlythroughEvent.cs" />
     <Compile Include="GUI\BlankPanel.cs">
       <SubType>UserControl</SubType>

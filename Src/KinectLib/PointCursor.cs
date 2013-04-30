@@ -35,7 +35,7 @@ namespace Chimera.Kinect {
         public IKinectCursor Make() { return new PointCursor(); }
         public string Name { get { return "Ray Tracing Pointer"; } }
     }
-    public class PointCursor : IKinectCursor {
+    public class PointCursor : ISystemPlugin, IKinectCursor {
         public static float SCALE = 1000f;
 
         private IKinectController mController;
@@ -128,7 +128,7 @@ namespace Chimera.Kinect {
 
         public event Action<IKinectCursor, float, float> CursorMove;
 
-        public event Action<bool> EnabledChanged;
+        public event Action<IPlugin, bool> EnabledChanged;
 
         public PointF Location {
             get { return mLocation; }
@@ -160,7 +160,7 @@ namespace Chimera.Kinect {
                 if (value != mEnabled) {
                     mEnabled = value;
                     if (EnabledChanged != null)
-                        EnabledChanged(value);
+                        EnabledChanged(this, value);
                 }
             }
         }
@@ -237,6 +237,33 @@ namespace Chimera.Kinect {
                 mOrientation.Changed -= orientation_Changed;
             mOrientation = orientation;
             orientation.Changed += orientation_Changed;
+        }
+
+        #endregion
+
+        #region ISystemPlugin Members
+
+        public void Init(Coordinator coordinator) {
+
+        }
+
+        #endregion
+
+        #region IPlugin Members
+
+
+        public string Name {
+            get { return "RayTracingCursor"; }
+        }
+
+        public ConfigBase Config {
+            get { throw new NotImplementedException(); }
+        }
+
+        public void Close() {
+        }
+
+        public void Draw(Func<Vector3, Point> to2D, Graphics graphics, Action redraw) {
         }
 
         #endregion

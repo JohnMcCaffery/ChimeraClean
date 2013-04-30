@@ -31,9 +31,10 @@ using Chimera.Util;
 using Joystick.GUI;
 using OSVector = OpenMetaverse.Vector3;
 using SlimDX.XInput;
+using Chimera.Plugins;
 
 namespace Joystick{
-    public class JoystickInput : IDeltaInput {
+    public class JoystickInput : DeltaBasedPlugin {
         private Action mTick;
         private JoystickPanel mControlPanel;
         private bool mEnabled;
@@ -98,8 +99,7 @@ namespace Joystick{
                 mDelta = posDelta;
                 mRotation = rotDelta;
 
-                if (Change != null)
-                    Change(this);
+                TriggerChange(this);
             }
         }
 
@@ -109,62 +109,15 @@ namespace Joystick{
 
         #region IDeltaInput Members
 
-        public event Action<IDeltaInput> Change;
-
-        public OSVector PositionDelta {
+        public override OSVector PositionDelta {
             get { return mDelta; }
         }
 
-        public Rotation OrientationDelta {
+         public override Rotation OrientationDelta {
             get { return mRotation; }
         }
 
-        public bool WalkEnabled {
-            get {
-                throw new NotImplementedException();
-            }
-            set {
-                throw new NotImplementedException();
-            }
-        }
-
-        public bool StrafeEnabled {
-            get {
-                throw new NotImplementedException();
-            }
-            set {
-                throw new NotImplementedException();
-            }
-        }
-
-        public bool FlyEnabled {
-            get {
-                throw new NotImplementedException();
-            }
-            set {
-                throw new NotImplementedException();
-            }
-        }
-
-        public bool YawEnabled {
-            get {
-                throw new NotImplementedException();
-            }
-            set {
-                throw new NotImplementedException();
-            }
-        }
-
-        public bool PitchEnabled {
-            get {
-                throw new NotImplementedException();
-            }
-            set {
-                throw new NotImplementedException();
-            }
-        }
-
-        public void Init(ITickSource input) {
+        public override void Init(Coordinator input) {
             input.Tick += mTick;
         }
 
@@ -172,9 +125,7 @@ namespace Joystick{
 
         #region IInput Members
 
-        public event Action<IPlugin, bool> EnabledChanged;
-
-        public UserControl ControlPanel {
+        public override UserControl ControlPanel {
             get {
                 if (mControlPanel == null)
                     mControlPanel = new JoystickPanel(this);
@@ -182,35 +133,21 @@ namespace Joystick{
             }
         }
 
-        public bool Enabled {
-            get {
-                return mEnabled;
-            }
-            set {
-                if (value != mEnabled) {
-                    mEnabled = value;
-                    if (EnabledChanged != null)
-                        EnabledChanged(this, value);
-                }
-            }
-        }
-
-        public string Name {
+        public override string Name {
             get { return "Joystick"; }
         }
 
-        public string State {
+        public override string State {
             get { throw new NotImplementedException(); }
         }
 
-        public ConfigBase Config {
+        public override ConfigBase Config {
             get { throw new NotImplementedException(); }
         }
 
-        public void Close() {
-        }
+        public override void Close() { }
 
-        public void Draw(Func<OSVector, Point> to2D, Graphics graphics, Action redraw) { }
+        public override void Draw(Func<OSVector, Point> to2D, Graphics graphics, Action redraw) { }
 
         #endregion
     }

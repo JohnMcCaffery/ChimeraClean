@@ -16,43 +16,23 @@ using Chimera.Kinect;
 using Chimera.Plugins;
 using Chimera.Kinect.Interfaces;
 using Joystick;
+using Chimera.Kinect.GUI;
+using Chimera.Flythrough;
 
 namespace Chimera.Launcher {
     public class TimespanLauncher : Launcher{
         private SetWindowViewerOutput mMainWindowProxy = new SetWindowViewerOutput("MainWindow");
 
         protected override ISystemPlugin[] GetInputs() {
-            TimespanMovementInput timespan = new TimespanMovementInput();
-            DolphinMovementInput dolphin = new DolphinMovementInput();
-            RaiseArmHelpTrigger trigger = new RaiseArmHelpTrigger();
-            SimpleCursorFactory simpleFactory = new SimpleCursorFactory();
-            PointCursorFactory pointFactory = new PointCursorFactory();
-
-            //IOutput output = new SetFollowCamPropertiesViewerOutput("MainWindow");
-            ISystemPlugin joystick = new DeltaBasedInput(new JoystickInput());
-            ISystemPlugin kbMousePlugin = new DeltaBasedInput(new KBMousePlugin());
-            ISystemPlugin flythrough = new Chimera.Flythrough.Flythrough();
-            ISystemPlugin mouse = new MousePlugin();
-            ISystemPlugin heightmap = new HeightmapInput();
-            ISystemPlugin kinectPlugin = new KinectInput(
-                new IDeltaInput[] { 
-                    timespan, 
-                    dolphin 
-                }, 
-                new IHelpTrigger[] { 
-                    trigger 
-                }, 
-                simpleFactory, 
-                pointFactory
-                );
-
             return new ISystemPlugin[] { 
-                kinectPlugin, 
-                joystick,
-                kbMousePlugin, 
-                mouse, 
-                heightmap, 
-                flythrough, 
+                new KinectFramePlugin(), 
+                new TimespanAxisPlugin(),
+                new SimpleCursor(),
+                new RaiseArmHelpTrigger(),
+                new KBMousePlugin(), 
+                new MousePlugin(), 
+                new HeightmapPlugin(), 
+                new FlythroughPlugin(), 
                 mMainWindowProxy 
             };
         }

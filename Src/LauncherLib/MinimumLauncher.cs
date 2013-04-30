@@ -49,9 +49,9 @@ namespace Chimera.Launcher {
             SimpleCursorFactory simpleFactory = new SimpleCursorFactory();
             PointCursorFactory pointFactory = new PointCursorFactory();
 
-            ISystemPlugin kbMouseInput = new DeltaBasedInput(new KBMousePlugin());
+            ISystemPlugin kbMouseInput = new KBMousePlugin();
             ISystemPlugin kinectInput = new KinectInput(
-                new IDeltaInput[] { 
+                new DeltaBasedPlugin[] { 
                     timespan, 
                 }, 
                 new IHelpTrigger[] { 

@@ -31,7 +31,7 @@ namespace Chimera.Flythrough {
         /// <summary>
         /// The flythrough this event is part of.
         /// </summary>
-        private readonly Flythrough mFlythrough;
+        private readonly FlythroughPlugin mFlythrough;
         /// <summary>
         /// The flythrough this event is part of.
         /// </summary>
@@ -80,7 +80,7 @@ namespace Chimera.Flythrough {
         /// <param name="flythrough">The flythrough this event is part of.</param>
         /// 
         /// <param name="length">The length of value the event will run (ms).</param>
-        public FlythroughEvent(Flythrough flythrough, int length) {
+        public FlythroughEvent(FlythroughPlugin flythrough, int length) {
             mFlythrough = flythrough;
             mStartTime = 0;
             Length = length;
@@ -148,7 +148,7 @@ namespace Chimera.Flythrough {
         /// <summary>
         /// The container which manages all the events.
         /// </summary>
-        public Flythrough Container {
+        public FlythroughPlugin Container {
             get { return mFlythrough; }
         }
 

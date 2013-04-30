@@ -50,7 +50,7 @@ namespace Chimera.Kinect.Interfaces {
         /// <summary>
         /// Triggered whenever this controller is enabled or disabled.
         /// </summary>
-        event Action<bool> EnabledChanged;
+        event Action<IPlugin, bool> EnabledChanged;
 
         /// <summary>
         /// The location of the cursor on screen.

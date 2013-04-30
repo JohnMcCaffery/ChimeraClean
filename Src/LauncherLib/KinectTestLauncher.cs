@@ -50,7 +50,7 @@ namespace Chimera.Launcher {
             */
 
             //IOutput output = new SetFollowCamPropertiesViewerOutput("MainWindow");
-            ISystemPlugin kbMouseInput = new DeltaBasedInput(new KBMousePlugin());
+            ISystemPlugin kbMouseInput = new KBMousePlugin();
             /*
             ISystemInput flythrough = new Chimera.Flythrough.Flythrough();
             ISystemInput heightmap = new HeightmapInput();
@@ -70,9 +70,9 @@ namespace Chimera.Launcher {
             ISystemPlugin mouse = new MousePlugin();
 
             return new ISystemPlugin[] { 
-                new TimespanDeltaPlugin(),
+                new TimespanAxisPlugin(),
                 new KinectFramePlugin(),
-                new XBoxControllerInput(),
+                new XBoxControllerDelta(),
                 kbMouseInput, 
                 //kinectInput, 
                 mouse, 

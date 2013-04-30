@@ -30,7 +30,7 @@ using Chimera.Util;
 
 namespace Chimera.Flythrough.GUI {
     public partial class FlythroughPanel : UserControl {
-        private Flythrough mContainer;
+        private FlythroughPlugin mContainer;
         private Control mCurrentPanel;
         private ComboEvent mStartEvt;
         private bool GUIUpdate;
@@ -42,13 +42,13 @@ namespace Chimera.Flythrough.GUI {
             InitializeComponent();
         }
 
-        public FlythroughPanel(Flythrough container)
+        public FlythroughPanel(FlythroughPlugin container)
             : this() {
 
             Init(container);
         }
 
-        public void Init(Flythrough container) {
+        public void Init(FlythroughPlugin container) {
             mContainer = container;
 
             mContainer_TickListener = new Action<int>(mContainer_Tick);

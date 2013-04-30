@@ -66,11 +66,11 @@ namespace Chimera.Launcher {
 
             //IOutput output = new SetFollowCamPropertiesViewerOutput("MainWindow");
             SetWindowViewerOutput mainWindowProxy = new SetWindowViewerOutput("MainWindow");
-            ISystemPlugin kbMouseInput = new DeltaBasedInput(new KBMousePlugin());
-            ISystemPlugin flythrough = new Chimera.Flythrough.Flythrough();
+            ISystemPlugin kbMouseInput = new KBMousePlugin();
+            ISystemPlugin flythrough = new Chimera.Flythrough.FlythroughPlugin();
             ISystemPlugin mouse = new MousePlugin();
-            ISystemPlugin heightmap = new HeightmapInput();
-            ISystemPlugin kinectInput = new KinectInput(new IDeltaInput[] { timespan, dolphin }, new IHelpTrigger[] { trigger }, simpleFactory, pointFactory);
+            ISystemPlugin heightmap = new HeightmapPlugin();
+            ISystemPlugin kinectInput = new KinectInput(new DeltaBasedPlugin[] { timespan, dolphin }, new IHelpTrigger[] { trigger }, simpleFactory, pointFactory);
 
             Window mainWindow = new Window("MainWindow", mainWindowProxy);
             Window[] windows = new Window[] { mainWindow };

@@ -31,13 +31,16 @@ namespace Joystick {
         private static bool mTracking;
 
         public static bool Initialised {
-            get { return sGamepad != null && sController.IsConnected; }
+            get { 
+                if (sController == null)
+                    GetController();
+                return sController != null && sController.IsConnected; 
+            }
         }
 
         public static Gamepad Gamepad {
             get { return sGamepad; }
         }
-
 
         public static void Init(ITickSource source) {
             if (!mTracking) {
@@ -48,7 +51,11 @@ namespace Joystick {
         }
 
         static void source_Tick() {
-            if (sController != null && sController.IsConnected)                sGamepad = sController.GetState().Gamepad;        }        public static Controller GetController() {
+            if (sController != null && sController.IsConnected)
+                sGamepad = sController.GetState().Gamepad;
+        }
+
+        public static Controller GetController() {
             sController = new Controller(UserIndex.One);
             if (sController.IsConnected)
                 return sController;

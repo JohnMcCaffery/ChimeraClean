@@ -248,7 +248,7 @@ namespace Chimera.Kinect.GUI {
             }
         }
 
-        private void AddMovement(DeltaBasedInput input) {
+        private void AddMovement(DeltaBasedPlugin input) {
             // 
             // controlPanel
             // 

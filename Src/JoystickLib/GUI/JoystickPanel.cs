@@ -32,7 +32,6 @@ namespace Joystick.GUI {
     public partial class JoystickPanel : UserControl {
         private List<ScalarPanel> mAxisPanels = new List<ScalarPanel>();
         private JoystickInput mInput;
-        private Action<IDeltaInput> mChangeListener;
 
         public JoystickPanel() {
             InitializeComponent();
@@ -41,31 +40,11 @@ namespace Joystick.GUI {
         public JoystickPanel(JoystickInput input)
             : this() {
             mInput = input;
-
-            mChangeListener = new Action<IDeltaInput>(mInput_Change);
-
-            Disposed += new EventHandler(JoystickPanel_Disposed);
-            HandleCreated += new EventHandler(JoystickPanel_HandleCreated);
         }
 
-        void JoystickPanel_Disposed(object sender, EventArgs e) {
-            mInput.Change -= mChangeListener;
-        }
-
-        void JoystickPanel_HandleCreated(object sender, EventArgs e) {
-            mInput.Change += mChangeListener;
-        }
-
-        private void mInput_Change(IDeltaInput input) {
-            for (int i = 0; i < mInput.Sliders.Length; i++) {
-                if (i == mAxisPanels.Count)
-                    AddAxisPanel();
-
-                mAxisPanels[i].Value = mInput.Sliders[i];
-            }
-        }
-
-        private void AddAxisPanel() {            ScalarPanel panel = new ScalarPanel();            // 
+        private void AddAxisPanel() {
+            ScalarPanel panel = new ScalarPanel();
+            // 
             // scalarPanel1
             // 
             panel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 

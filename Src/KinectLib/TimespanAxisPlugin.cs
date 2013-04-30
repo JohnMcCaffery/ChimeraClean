@@ -7,11 +7,6 @@ using Chimera.Kinect.Axes;
 using Chimera.Interfaces;
 
 namespace Chimera.Kinect {
-    public class TimespanDeltaPlugin : DeltaBasedInput {
-        public TimespanDeltaPlugin()
-            : base(new TimespanAxisPlugin()) {
-        }
-    }
     public class TimespanAxisPlugin : AxisBasedDelta {
         public TimespanAxisPlugin()
             : base("Kinect Move - Timespan",

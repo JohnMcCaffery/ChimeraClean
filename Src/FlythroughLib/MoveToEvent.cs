@@ -49,7 +49,7 @@ namespace Chimera.Flythrough {
         /// Initialise the event, specificying where the camera will end up.
         /// </summary>
         /// <param name="target">The position the camera will end up in.</param>
-        public MoveToEvent(Flythrough container, int length, Vector3 target)
+        public MoveToEvent(FlythroughPlugin container, int length, Vector3 target)
             : base(container, length) {
             Target = target;
             Name = "Move To " + (++COUNT);

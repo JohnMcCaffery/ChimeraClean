@@ -29,13 +29,14 @@ using Chimera.Kinect.GUI;
 using Chimera.Util;
 using OpenMetaverse;
 using Chimera.Kinect.Interfaces;
+using Chimera.Overlay;
 
 namespace Chimera.Kinect {
     public class SimpleCursorFactory : IKinectCursorFactory {
         public IKinectCursor Make() { return new SimpleCursor(); }
         public string Name { get { return "Simple X/Y Cursor"; } }
     }
-    public class SimpleCursor : IKinectCursor {
+    public class SimpleCursor : ISystemPlugin, IKinectCursor {
         private SimpleCursorPanel mPanel;
         private Vector mHandR;
         private Vector mHandL;
@@ -66,6 +67,8 @@ namespace Chimera.Kinect {
         private bool mEnabled;
         private bool mListening;
 
+        private WindowOverlayManager mManager;
+
         public Vector Anchor { get { return mAnchor; } }
         public Vector HandR { get { return mHandR; } }
         public Vector HandL { get { return mHandL; } }
@@ -91,7 +94,9 @@ namespace Chimera.Kinect {
         private static readonly int ANCHOR_SMOOTHING_FRAMES = 15;
         private static readonly int ANCHOR = Nui.Hip_Centre;
 
-        public SimpleCursor() : this (false) { }
+        public SimpleCursor() 
+            : this (false) {
+        }
         public SimpleCursor(bool test) {
             mHandR = test ? Vector.Create("HandR", 0f, 0f, 0f) : Nui.smooth(Nui.joint(Nui.Hand_Right), HAND_SMOOTHING_FRAMES);
             mHandL = test ? Vector.Create("HandL", 0f, 0f, 0f) : Nui.smooth(Nui.joint(Nui.Hand_Left), HAND_SMOOTHING_FRAMES);
@@ -143,8 +148,10 @@ namespace Chimera.Kinect {
                         CursorLeave(this);
                 }
 
-                if (CursorMove != null && mEnabled)
+                if (CursorMove != null && mEnabled && Nui.HasSkeleton) {
                     CursorMove(this, x, y);
+                    mManager.UpdateCursor(x, y);
+                }
             }
         }
 
@@ -169,7 +176,7 @@ namespace Chimera.Kinect {
 
         public event Action<IKinectCursor, float, float> CursorMove;
 
-        public event Action<bool> EnabledChanged;
+        public event Action<IPlugin, bool> EnabledChanged;
 
         public PointF Location {
             get { return mLocation; }
@@ -201,7 +208,7 @@ namespace Chimera.Kinect {
                 if (value != mEnabled) {
                     mEnabled = value;
                     if (EnabledChanged != null)
-                        EnabledChanged(value);
+                        EnabledChanged(this, value);
                 }
             }
         }
@@ -211,6 +218,39 @@ namespace Chimera.Kinect {
             mWindow.MonitorChanged += (win, monitor) => Init();
             Init();
         }
+
+        #endregion
+
+        #region ISystemPlugin Members
+
+        private Action<Window, EventArgs> mWindowAddedListener;
+
+        public void Init(Coordinator coordinator) {
+            mWindowAddedListener = new Action<Window, EventArgs>(coordinator_WindowAdded);
+            coordinator.WindowAdded += mWindowAddedListener;
+            Init();
+        }
+
+        private void coordinator_WindowAdded(Window window, EventArgs args) {
+            mWindow = window;
+            window.Coordinator.WindowAdded -= mWindowAddedListener;
+        }
+
+        #endregion
+
+        #region IPlugin Members
+
+        public string Name {
+            get { return "KinectCursor"; }
+        }
+
+        public ConfigBase Config {
+            get { throw new NotImplementedException(); }
+        }
+
+        public void Close() { }
+
+        public void Draw(Func<Vector3, Point> to2D, Graphics graphics, Action redraw) { }
 
         #endregion
     }

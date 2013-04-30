@@ -27,7 +27,7 @@ using Chimera.Util;
 using System.Drawing;
 
 namespace Chimera.Plugins {
-    public class KBMousePlugin : IDeltaInput {
+    public class KBMousePlugin : DeltaBasedPlugin {
         internal int X, Y, CurrentX, CurrentY;
         internal bool MouseDown;
         private Rotation mOrientation = Rotation.Zero;
@@ -118,7 +118,7 @@ namespace Chimera.Plugins {
 
         public event Action<IPlugin, bool> EnabledChanged;
 
-        public UserControl ControlPanel {
+        public override UserControl ControlPanel {
             get {
                 if (mControlPanel == null)
                     mControlPanel = new KBMousePanel(this);
@@ -126,24 +126,15 @@ namespace Chimera.Plugins {
             }
         }
 
-        public string Name {
+        public override string Name {
             get { return "Keyboard + Mouse"; }
         }
 
-        public virtual bool Enabled {
-            get { return mEnabled; }
-            set { 
-                mEnabled = value;
-                if (EnabledChanged != null)
-                    EnabledChanged(this, value);
-            }
-        }
-
-        public ConfigBase Config {
+        public override ConfigBase Config {
             get { throw new NotImplementedException(); }
         }
 
-        public string State {
+        public override string State {
             get { 
                 string dump = "----------KB/Mouse Input----------" + Environment.NewLine;
                 dump += "Mouse Scale: " + mMouseScale + Environment.NewLine;
@@ -152,12 +143,12 @@ namespace Chimera.Plugins {
             }
         }
 
-        public void Close() {
+        public override void Close() {
             if (mControlPanel != null)
                 mControlPanel.Stop();
         }
 
-        public void Draw(Func<Vector3, Point> to2D, System.Drawing.Graphics graphics, Action redraw) {
+        public override void Draw(Func<Vector3, Point> to2D, System.Drawing.Graphics graphics, Action redraw) {
             //Do nothing
         }
 
@@ -165,42 +156,16 @@ namespace Chimera.Plugins {
 
         #region IDeltaInput
 
-        public event Action<IDeltaInput> Change;
-
-        public Vector3 PositionDelta {
+        public override Vector3 PositionDelta {
             get { return mDeltas; }
         }
 
-        public Rotation OrientationDelta {
+        public override Rotation OrientationDelta {
             get { return mOrientation; }
         }
 
-        public bool WalkEnabled {
-            get { return mWalkEnabled; }
-            set { mWalkEnabled = value; }
-        }
-
-        public bool StrafeEnabled {
-            get { return mStrafeEnabled; }
-            set { mStrafeEnabled = value; }
-        }
-
-        public bool FlyEnabled {
-            get { return mFlyEnabled; }
-            set { mFlyEnabled = value; }
-        }
-
-        public bool YawEnabled {
-            get { return mYawEnabled; }
-            set { mYawEnabled = value; }
-        }
-
-        public bool PitchEnabled {
-            get { return mPitchEnabled; }
-            set { mPitchEnabled = value; }
-        }
-
-        public void Init(ITickSource input) {
+        public override void Init(Coordinator input) {
+            base.Init(input);
             mInputSource = input;
             input.KeyDown += new Action<Coordinator,KeyEventArgs>(mCoordinator_KeyDown);
             input.KeyUp += new Action<Coordinator,KeyEventArgs>(mCoordinator_KeyUp);
@@ -269,12 +234,12 @@ namespace Chimera.Plugins {
         }
 
         private void mCoordinator_Tick() {
-            if (Change != null && (mDeltas != Vector3.Zero || mOrientation.Pitch != 0.0 || mOrientation.Yaw != 0.0)) {
+            if (mDeltas != Vector3.Zero || mOrientation.Pitch != 0.0 || mOrientation.Yaw != 0.0) {
                 mActive = true;
-                Change(this);
+                TriggerChange(this);
             } else if (mActive) {
                 mActive = false;
-                Change(this);
+                TriggerChange(this);
             }
             if (MouseDown)
                 mOrientation = Rotation.Zero;

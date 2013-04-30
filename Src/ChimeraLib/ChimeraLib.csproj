@@ -201,9 +201,8 @@
     <Compile Include="Interfaces\Overlay\IDrawable.cs" />
     <Compile Include="Plugins\PluginConfig.cs" />
     <Compile Include="Interfaces\IPlugin.cs" />
-    <Compile Include="Plugins\DeltaBasedInput.cs" />
+    <Compile Include="Plugins\DeltaBasedPlugin.cs" />
     <Compile Include="Plugins\MousePlugin.cs" />
-    <Compile Include="Interfaces\IDeltaInput.cs" />
     <Compile Include="Interfaces\IUpdater.cs" />
     <Compile Include="Interfaces\ITickSource.cs" />
     <Compile Include="GUI\Forms\Inputs\CameraControlForm.cs">
