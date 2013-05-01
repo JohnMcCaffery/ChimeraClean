@@ -165,7 +165,12 @@ namespace Chimera.Kinect {
             if (!mListening) {
                 mListening = true;
                 Nui.Tick += new ChangeDelegate(Nui_Tick);
+                Nui.SkeletonLost += new SkeletonTrackDelegate(Nui_SkeletonLost);
             }
+        }
+
+        void Nui_SkeletonLost() {
+            mManager.MoveCursorOffScreen();
         }
 
         #region IKinectCursorWindow Members
