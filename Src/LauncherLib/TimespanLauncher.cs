@@ -162,14 +162,15 @@ namespace Chimera.Launcher {
             Coordinator.StateManager.AddState(storyFrakkok);
             Coordinator.StateManager.AddState(storyFisherman);
             Coordinator.StateManager.AddState(storyWolf);
-            Coordinator.StateManager.CurrentState = splash;
-            //Coordinator.StateManager.CurrentState = structuredFlythrough;
-            //Coordinator.StateManager.CurrentState = helpFlycam;
-            //Coordinator.StateManager.CurrentState = kinectFlycam;
 
             OverlayConfig cfg = new OverlayConfig();
             if (cfg.IdleState)
                 InitIdle(idleFlythrough, splash, fadeInTransition, fadeOutTransition, cfg.IdleTimeoutMs);
+
+            Coordinator.StateManager.CurrentState = splash;
+            //Coordinator.StateManager.CurrentState = structuredFlythrough;
+            //Coordinator.StateManager.CurrentState = helpFlycam;
+            //Coordinator.StateManager.CurrentState = kinectFlycam;
         }
     }
 }

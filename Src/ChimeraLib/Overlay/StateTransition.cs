@@ -211,7 +211,7 @@ namespace Chimera.Overlay {
         }
 
         public override string ToString() {
-            return "Transition " + mFrom.Name + " to " + mFrom.Name;
+            return "Transition " + mFrom.Name + " to " + mTo.Name;
         }
     }
 }
