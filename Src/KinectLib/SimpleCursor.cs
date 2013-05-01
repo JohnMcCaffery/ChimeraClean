@@ -58,6 +58,7 @@ namespace Chimera.Kinect {
         private Scalar mConstrainedYRight;
         private Scalar mConstrainedXLeft;
         private Scalar mConstrainedYLeft;
+        private Scalar mSmoothingFactor;
         private Condition mOnScreenConditionRight;
         private Condition mOnScreenConditionLeft;
         private PointF mLocation = new PointF(-1f, -1f);
@@ -88,6 +89,7 @@ namespace Chimera.Kinect {
         public Scalar ConstrainedYLeft { get { return mConstrainedYLeft; } }
         public Scalar X { get { return mX; } }
         public Scalar Y { get { return mY; } }
+        public Scalar SmoothingFactor { get { return mSmoothingFactor; } }
 
         private static readonly int HAND_SMOOTHING_FRAMES = 5;
         private static readonly int ANCHOR_SMOOTHING_FRAMES = 15;
@@ -97,7 +99,8 @@ namespace Chimera.Kinect {
             : this (false) {
         }
         public SimpleCursor(bool test) {
-            mHandR = test ? Vector.Create("HandR", 0f, 0f, 0f) : Nui.smooth(Nui.joint(Nui.Hand_Right), HAND_SMOOTHING_FRAMES);
+            mSmoothingFactor = Scalar.Create(HAND_SMOOTHING_FRAMES);
+            mHandR = test ? Vector.Create("HandR", 0f, 0f, 0f) : Nui.smooth(Nui.joint(Nui.Hand_Right), mSmoothingFactor);
             mHandL = test ? Vector.Create("HandL", 0f, 0f, 0f) : Nui.smooth(Nui.joint(Nui.Hand_Left), HAND_SMOOTHING_FRAMES);
             mAnchor = test ? Vector.Create("Anchor", 0f, 0f, 0f) : Nui.smooth(Nui.joint(Nui.Hip_Centre), ANCHOR_SMOOTHING_FRAMES);
 

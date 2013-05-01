@@ -63,6 +63,7 @@ namespace Chimera.Kinect.GUI {
             RawYRight.Scalar = new ScalarUpdater(mInput.RawYRight);
             RawXLeft.Scalar = new ScalarUpdater(mInput.RawXLeft);
             RawYLeft.Scalar = new ScalarUpdater(mInput.RawYLeft);
+            SmoothingFactor.Scalar = new ScalarUpdater(mInput.SmoothingFactor);
 
             enabledCheck.Checked = mInput.Enabled;
 

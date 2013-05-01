@@ -84,6 +84,8 @@ namespace Chimera.Kinect.GUI {
             this.label13 = new System.Windows.Forms.Label();
             this.ConstrainedYLeft = new Chimera.GUI.UpdatedScalarPanel();
             this.rightBox = new System.Windows.Forms.GroupBox();
+            this.SmoothingFactor = new Chimera.GUI.UpdatedScalarPanel();
+            this.label14 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -131,7 +133,7 @@ namespace Chimera.Kinect.GUI {
             // XLable
             // 
             this.XLable.AutoSize = true;
-            this.XLable.Location = new System.Drawing.Point(0, 397);
+            this.XLable.Location = new System.Drawing.Point(0, 426);
             this.XLable.Name = "XLable";
             this.XLable.Size = new System.Drawing.Size(14, 13);
             this.XLable.TabIndex = 11;
@@ -140,7 +142,7 @@ namespace Chimera.Kinect.GUI {
             // YLable
             // 
             this.YLable.AutoSize = true;
-            this.YLable.Location = new System.Drawing.Point(0, 423);
+            this.YLable.Location = new System.Drawing.Point(0, 452);
             this.YLable.Name = "YLable";
             this.YLable.Size = new System.Drawing.Size(14, 13);
             this.YLable.TabIndex = 12;
@@ -307,7 +309,7 @@ namespace Chimera.Kinect.GUI {
             // 
             this.Y.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.Y.Location = new System.Drawing.Point(21, 423);
+            this.Y.Location = new System.Drawing.Point(21, 452);
             this.Y.Max = 1F;
             this.Y.Min = 0F;
             this.Y.MinimumSize = new System.Drawing.Size(95, 20);
@@ -321,7 +323,7 @@ namespace Chimera.Kinect.GUI {
             // 
             this.X.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.X.Location = new System.Drawing.Point(21, 397);
+            this.X.Location = new System.Drawing.Point(21, 426);
             this.X.Max = 1F;
             this.X.Min = 0F;
             this.X.MinimumSize = new System.Drawing.Size(95, 20);
@@ -422,7 +424,7 @@ namespace Chimera.Kinect.GUI {
             // 
             this.splitContainer1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.splitContainer1.Location = new System.Drawing.Point(6, 3);
+            this.splitContainer1.Location = new System.Drawing.Point(3, 26);
             this.splitContainer1.Name = "splitContainer1";
             // 
             // splitContainer1.Panel1
@@ -625,10 +627,34 @@ namespace Chimera.Kinect.GUI {
             this.rightBox.TabStop = false;
             this.rightBox.Text = "Right";
             // 
+            // SmoothingFactor
+            // 
+            this.SmoothingFactor.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.SmoothingFactor.Location = new System.Drawing.Point(96, 3);
+            this.SmoothingFactor.Max = 10F;
+            this.SmoothingFactor.Min = -10F;
+            this.SmoothingFactor.MinimumSize = new System.Drawing.Size(95, 20);
+            this.SmoothingFactor.Name = "SmoothingFactor";
+            this.SmoothingFactor.Size = new System.Drawing.Size(906, 20);
+            this.SmoothingFactor.TabIndex = 32;
+            this.SmoothingFactor.Value = 0F;
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(3, 7);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(90, 13);
+            this.label14.TabIndex = 33;
+            this.label14.Text = "Smoothing Factor";
+            // 
             // SimpleCursorPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.label14);
+            this.Controls.Add(this.SmoothingFactor);
             this.Controls.Add(this.enabledCheck);
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.YLable);
@@ -695,5 +721,7 @@ namespace Chimera.Kinect.GUI {
         private System.Windows.Forms.GroupBox rightBox;
         private System.Windows.Forms.Label leftHandShiftLabel;
         private Chimera.GUI.UpdatedScalarPanel LeftHandShift;
+        private Chimera.GUI.UpdatedScalarPanel SmoothingFactor;
+        private System.Windows.Forms.Label label14;
     }
 }
