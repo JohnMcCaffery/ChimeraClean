@@ -340,6 +340,11 @@ namespace Chimera.Overlay {
                 mOverlayWindow.PlayVideo(uri);
         }
 
+        public void PlayVideo(string uri, RectangleF position) {
+            if (mOverlayWindow != null)
+                mOverlayWindow.PlayVideo(uri, position);
+        }
+
         public void PlayAudio(string uri) {
             if (mOverlayWindow != null)
                 mOverlayWindow.PlayAudio(uri);

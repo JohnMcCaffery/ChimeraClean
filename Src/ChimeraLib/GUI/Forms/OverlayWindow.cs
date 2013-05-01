@@ -177,10 +177,17 @@ namespace Chimera.GUI.Forms {
                 BringToFront();
             });
         }
-
         public void PlayVideo(string uri) {
+            PlayVideo(uri, new RectangleF(0f, 0f, 1f, 1f));
+        }
+
+        public void PlayVideo(string uri, RectangleF pos) {
+            RectangleF b = new RectangleF(Width * pos.X, Height * pos.Y, Width * pos.Width, Height * pos.Height);
+
             //videoPlayer.uiMode = "Mini";
             videoPlayer.Visible = true;
+            videoPlayer.Dock = DockStyle.None;
+            videoPlayer.Bounds = new Rectangle((int) b.X, (int) b.Y, (int) b.Width, (int) b.Height);
             videoPlayer.URL = uri;
 
             videoPlayer.uiMode = "none";
