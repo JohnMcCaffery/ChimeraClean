@@ -130,8 +130,8 @@ namespace Chimera.Launcher {
 
             InvisTrans(splash, structuredFlythrough,    new Point(1080,415), new Point(1755,500), clip, mainWindow, cursorRenderer, fadeOutTransition);
             InvisTrans(splash, kinectAvatar,            new Point(1080,535), new Point(1755,620), clip, mainWindow, cursorRenderer, fadeOutTransition);
-            InvisTrans(splash, kinectFlycam,            new Point(1080,645), new Point(1755,735), clip, mainWindow, cursorRenderer, fadeOutTransition);
-            InvisTrans(splash, slideshow,               new Point(1080,765), new Point(1755,865), clip, mainWindow, cursorRenderer, fadeTransition);
+            InvisTrans(splash, slideshow,               new Point(1080,645), new Point(1755,735), clip, mainWindow, cursorRenderer, fadeTransition);
+            InvisTrans(splash, kinectFlycam,            new Point(1080,765), new Point(1755,865), clip, mainWindow, cursorRenderer, fadeOutTransition);
 
             ITrigger customTriggerHelp = new CustomTriggerTrigger(Coordinator.StateManager, "Help");
 
