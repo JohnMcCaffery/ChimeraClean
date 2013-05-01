@@ -48,6 +48,12 @@ namespace Chimera.Kinect.Axes {
 
             mDeadzoneScale.Value = G.Cfg.GetDeadzone(name);
             mScaleScale.Value = G.Cfg.GetScale(name);
+
+            Nui.SkeletonLost += new SkeletonTrackDelegate(Nui_SkeletonLost);
+        }
+
+        void Nui_SkeletonLost() {
+            SetRawValue(0f);
         }
     }
 }

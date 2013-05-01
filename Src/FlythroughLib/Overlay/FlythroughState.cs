@@ -33,7 +33,7 @@ namespace Chimera.Flythrough.Overlay {
         private static string FONT = "Verdana";
         private static float FONT_SIZE = 20;
         private static Color FONT_COLOUR = Color.Red;
-        private static PointF STEP_TEXT_POS = new PointF(.005f, .01f);
+        private static PointF STEP_TEXT_POS = new PointF(.005f, .05f);
 
         private FlythroughPlugin mInput;
         private SlideshowWindow mSlideshow;
@@ -59,7 +59,7 @@ namespace Chimera.Flythrough.Overlay {
             mStepTriggers = steps;
             mStepping = true;
             Font f = new Font(FONT, FONT_SIZE, FontStyle.Bold);
-            mStepText = new StaticText("Step " + mStep + "/" + mInput.Count, manager.Coordinator.Windows[0].Name, f, FONT_COLOUR, STEP_TEXT_POS);
+            mStepText = new StaticText(mStep + "/" + mInput.Count, manager.Coordinator.Windows[0].Name, f, FONT_COLOUR, STEP_TEXT_POS);
             AddFeature(mStepText);
 
             mInput.CurrentEventChange += new Action<FlythroughEvent<Camera>,FlythroughEvent<Camera>>(mInput_CurrentEventChange);
@@ -87,7 +87,7 @@ namespace Chimera.Flythrough.Overlay {
                     trigger.Active = false;
             }
 
-            mStepText.TextString = "Step " + mStep + "\\" + mInput.Count;
+            mStepText.TextString = mStep + "\\" + mInput.Count;
             Manager.RedrawStatic();
         }
 
