@@ -1,3 +1,5 @@
+timeout 20
+
 cd C:\Users\OpenVirtualWorlds\Documents\John\Chimera
 
 git pull
