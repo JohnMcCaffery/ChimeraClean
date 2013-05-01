@@ -229,6 +229,7 @@ namespace Chimera.GUI.Forms {
             this.button1.TabIndex = 2;
             this.button1.Text = "Crash - Thread";
             this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // testButton
             // 
@@ -238,6 +239,7 @@ namespace Chimera.GUI.Forms {
             this.testButton.TabIndex = 1;
             this.testButton.Text = "Crash - GUI";
             this.testButton.UseVisualStyleBackColor = true;
+            this.testButton.Click += new System.EventHandler(this.testButton_Click);
             // 
             // realSpacePanel
             // 
