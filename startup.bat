@@ -12,6 +12,6 @@ cd C:\Users\OpenVirtualWorlds\Desktop\Opensim-Timespan\
 start "OpenSim" /MAX OpenSim.exe
 cd C:\Users\OpenVirtualWorlds\Documents\John\Chimera\Bin\
 
-timeout 60000
+timeout 60
 
 Chimera.exe
