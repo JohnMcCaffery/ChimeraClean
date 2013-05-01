@@ -70,20 +70,12 @@ namespace Chimera.Launcher {
             Font font = new Font("Verdana", 52, FontStyle.Bold);
             Rectangle clip = new Rectangle(0, 0, 1920, 1080);
 
-            /*
-            ITrigger slideshowNext = new TextHoverTrigger(mainWindow.OverlayManager, cursorRenderer, 
-                new StaticText("Next", mainWindow.Name, font, Color.DarkBlue, new PointF(.85f, .85f)), clip);
-            ITrigger slideshowPrev = new TextHoverTrigger(mainWindow.OverlayManager, cursorRenderer, 
-                new StaticText("Prev", mainWindow.Name, font, Color.DarkBlue, new PointF(.25f, .9f)), clip);
-            */
-            /*
             ITrigger slideshowNext = new ImageHoverTrigger(mainWindow.OverlayManager, cursorRenderer, 
                 new OverlayImage(new Bitmap("../Images/Caen/Buttons/NextTrans.png"), .85f, .85f, mainWindow.Name));
             ITrigger slideshowPrev = new ImageHoverTrigger(mainWindow.OverlayManager, cursorRenderer, 
                 new OverlayImage(new Bitmap("../Images/Caen/Buttons/PrevTrans.png"), .05f, .85f, mainWindow.Name));
             ITrigger flythroughNext = new ImageHoverTrigger(mainWindow.OverlayManager, cursorRenderer, 
                 new OverlayImage(new Bitmap("../Images/Caen/Buttons/Next.png"), .85f, .85f, mainWindow.Name));
-            */
 
             IImageTransitionFactory fade = new FadeFactory();
             CutWindowTransitionFactory cutTransition = new CutWindowTransitionFactory();
@@ -97,8 +89,8 @@ namespace Chimera.Launcher {
             State helpAvatar = new KinectHelpState("KinectHelpAvatar", Coordinator.StateManager, mainWindow.Name, mainWindow.Name);
             State helpFlycam = new KinectHelpState("KinectHelpFlycam", Coordinator.StateManager, mainWindow.Name, mainWindow.Name);
             State idleFlythrough = new FlythroughState("IdleFlythrough", Coordinator.StateManager, "../Flythroughs/Caen-long.xml");
-            //State slideshow = new SlideshowState("Slideshow", Coordinator.StateManager, "../Images/Caen/TodaySlideshow", slideshowNext, slideshowPrev, fade, 1500);
-            //State structuredFlythrough = new FlythroughState("StructuredFlythrough", Coordinator.StateManager, "../Flythroughs/Caen-Guided.xml", splash, fadeTransition, flythroughNext);
+            State slideshow = new SlideshowState("Slideshow", Coordinator.StateManager, "../Images/Caen/TodaySlideshow", slideshowNext, slideshowPrev, fade, 1500);
+            State structuredFlythrough = new FlythroughState("StructuredFlythrough", Coordinator.StateManager, "../Flythroughs/Caen-Guided.xml", splash, fadeTransition, flythroughNext);
 
             State confirmDog = new ImageBGState("Story1Confirm", Coordinator.StateManager, "../Images/Caen/StorytellingVideos/ConfirmDogs.png");
             State confirmGartymore = new ImageBGState("Story2Confirm", Coordinator.StateManager, "../Images/Caen/StorytellingVideos/ConfirmGartymore.png");
@@ -111,25 +103,15 @@ namespace Chimera.Launcher {
             State storyFrakkok = new OverlayVideoState("Story3", mainWindow.OverlayManager, "../../Videos/orkney.mp4", splash, fadeTransition);
             State storyFisherman = new OverlayVideoState("Story4", mainWindow.OverlayManager, "../../Videos/fisherman.mp4", splash, fadeTransition);
             State storyWolf = new OverlayVideoState("Story5", mainWindow.OverlayManager, "../../Videos/wolf.mp4", splash, fadeTransition);
-            /*
-            State storyDog = new VideoState("Story1", Coordinator.StateManager, mainWindow.Name, "../../Videos/dogs.mpg", splash, fadeTransition);
-            State storyGartymore = new VideoState("Story2", Coordinator.StateManager, mainWindow.Name, "../../Videos/garyore.mpg", splash, fadeTransition);
-            State storyFrakkok = new VideoState("Story3", Coordinator.StateManager, mainWindow.Name, "../../Videos/orkney.mpg", splash, fadeTransition);
-            State storyFisherman = new VideoState("Story4", Coordinator.StateManager, mainWindow.Name, "../../Videos/fisherman.mpg", splash, fadeTransition);
-            State storyWolf = new VideoState("Story5", Coordinator.StateManager, mainWindow.Name, "../../Videos/wolf.mpg", splash, fadeTransition);
 
             ImgTrans(helpAvatar,    kinectAvatar,           "HelpToWorld",          .85f, .15f, .1f, mainWindow, cursorRenderer, fadeOutTransition);
             ImgTrans(helpFlycam,    kinectFlycam,           "HelpToWorld",          .85f, .15f, .1f, mainWindow, cursorRenderer, fadeOutTransition);
-            */
-            ImgTrans(splash,    splash,                 "Test",             .85f, .35f, .08f, mainWindow, cursorRenderer, fadeTransition);
-            /*
             ImgTrans(helpAvatar,    splash,                 "MainMenu",             .85f, .35f, .1f, mainWindow, cursorRenderer, fadeTransition);
             ImgTrans(helpFlycam,    splash,                 "MainMenu",             .85f, .35f, .1f, mainWindow, cursorRenderer, fadeTransition);
 
-            //TxtTrans(structuredFlythrough,  splash,         "Back",                 .05f, .85f, font, Color.DarkBlue, clip, mainWindow, cursorRenderer, fadeTransition);
             ImgTrans(structuredFlythrough,  splash,         "Back",                 .05f, .85f, mainWindow, cursorRenderer, fadeTransition);
             ImgTrans(slideshow,  splash,                    "BackTrans",            .45f, .85f, mainWindow, cursorRenderer, fadeTransition);
-/*
+
             InvisTrans(splash, confirmDog,                new Point(115,395), new Point(835,485), clip, mainWindow, cursorRenderer, fadeTransition);
             InvisTrans(splash, confirmGartymore,          new Point(115,510), new Point(835,600), clip, mainWindow, cursorRenderer, fadeTransition);
             InvisTrans(splash, confirmFrakkok,            new Point(115,625), new Point(835,720), clip, mainWindow, cursorRenderer, fadeTransition);
@@ -146,12 +128,10 @@ namespace Chimera.Launcher {
             InvisTrans(confirmWolf, splash,              new Point(320,380), new Point(770,665), clip, mainWindow, cursorRenderer, fadeTransition);
             InvisTrans(confirmWolf, storyWolf,           new Point(960,380), new Point(1410,665), clip, mainWindow, cursorRenderer, fadeTransition);
 
-            /*
             InvisTrans(splash, structuredFlythrough,    new Point(1080,415), new Point(1755,500), clip, mainWindow, cursorRenderer, fadeOutTransition);
             InvisTrans(splash, kinectAvatar,            new Point(1080,535), new Point(1755,620), clip, mainWindow, cursorRenderer, fadeOutTransition);
             InvisTrans(splash, kinectFlycam,            new Point(1080,645), new Point(1755,735), clip, mainWindow, cursorRenderer, fadeOutTransition);
             InvisTrans(splash, slideshow,               new Point(1080,765), new Point(1755,865), clip, mainWindow, cursorRenderer, fadeTransition);
-            */
 
             ITrigger customTriggerHelp = new CustomTriggerTrigger(Coordinator.StateManager, "Help");
 
@@ -174,8 +154,8 @@ namespace Chimera.Launcher {
             Coordinator.StateManager.AddState(kinectFlycam);
             Coordinator.StateManager.AddState(helpAvatar);
             Coordinator.StateManager.AddState(helpFlycam);
-            //Coordinator.StateManager.AddState(slideshow);
-            //Coordinator.StateManager.AddState(structuredFlythrough);
+            Coordinator.StateManager.AddState(slideshow);
+            Coordinator.StateManager.AddState(structuredFlythrough);
             Coordinator.StateManager.AddState(idleFlythrough);
             Coordinator.StateManager.AddState(storyDog);
             Coordinator.StateManager.AddState(storyGartymore);
@@ -190,31 +170,6 @@ namespace Chimera.Launcher {
             OverlayConfig cfg = new OverlayConfig();
             if (cfg.IdleState)
                 InitIdle(idleFlythrough, splash, fadeInTransition, fadeOutTransition, cfg.IdleTimeoutMs);
-
-            /*
-            ImgTrans(splash,        explore,                "SeeTheTownship",       .10f, .35f, .25f, mainWindow, cursorRenderer, fadeTransition);
-            ImgTrans(splash,        learn,                  "Learn",                .65f, .4f, mainWindow, cursorRenderer, fadeTransition);
-            ImgTrans(explore,       kinectAvatar,           "ExploreWithAvatar",    .15f, .4f, mainWindow, cursorRenderer, fadeOutTransition);
-            ImgTrans(explore,       kinectFlycam,           "ExploreFreely",        .45f, .4f, mainWindow, cursorRenderer, fadeOutTransition);
-            TxtTrans(explore,       structured,             "Guide Me",             .75f, .4f, font, Color.DarkBlue, clip, mainWindow, cursorRenderer, fadeTransition);
-            ImgTrans(learn,         slideshow,              "Slideshow",            .65f, .4f, mainWindow, cursorRenderer, fadeTransition);
-            TxtTrans(learn,         infoVideo,              "Show me about the township", .25f, .4f, font, Color.DarkBlue, clip, mainWindow, cursorRenderer, fadeTransition);
-            TxtTrans(learn,         splash,                 "Back",                 .45f, .9f, font, Color.DarkBlue, clip, mainWindow, cursorRenderer, fadeTransition);
-            TxtTrans(structured,    structuredFlythrough,   "Guided Tour",          .35f, .4f, font, Color.DarkBlue, clip, mainWindow, cursorRenderer, fadeTransition);
-            */
-
-            /*
-            double opacity = new CoordinatorConfig().OverlayOpacity;
-            IState cathedralOverlay = new ImageBGState("CathedralOverlay", Coordinator.StateManager, "../Images/CathedralSplashScreen.png");
-            Coordinator.StateManager.CurrentState = cathedralOverlay;
-            mainWindow.OverlayManager.Opacity = opacity;
-            customTriggerHelp.Triggered += () => mainWindow.OverlayManager.Opacity = mainWindow.OverlayManager.Opacity > 0.0 ? 0.0 : opacity;
-            customTriggerHelp.Active = true;
-            */
-
-            //Window[] windows = new Window[] { new Window("MainWindow") };
-            //Chimera.Overlay.MainMenu mainMenu = new Chimera.Overlay.MainMenu();
-            //Coordinator input = new Coordinator(windows, mainMenu, kinect);
         }
     }
 }

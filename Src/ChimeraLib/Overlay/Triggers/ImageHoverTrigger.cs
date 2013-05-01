@@ -29,14 +29,11 @@ using Chimera.Overlay.Drawables;
 namespace Chimera.Overlay.Triggers {
     public class ImageHoverTrigger : HoverTrigger {
         private OverlayImage mImage;
-        private Rectangle mClip;
 
-        /*
         protected override RectangleF Bounds {
             get { return mImage.Bounds; }
             set { base.Bounds = value; }
         }
-        */
 
         public OverlayImage Image {
             get { return mImage; }
