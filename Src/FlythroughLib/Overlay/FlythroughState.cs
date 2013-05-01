@@ -30,6 +30,11 @@ using System.Drawing;
 
 namespace Chimera.Flythrough.Overlay {
     public class FlythroughState : State {
+        private static string FONT = "Verdana";
+        private static float FONT_SIZE = 20;
+        private static Color FONT_COLOUR = Color.Red;
+        private static PointF STEP_TEXT_POS = new PointF(.005f, .01f);
+
         private FlythroughPlugin mInput;
         private SlideshowWindow mSlideshow;
         private IImageTransition mSlideshowTransition;
@@ -46,7 +51,6 @@ namespace Chimera.Flythrough.Overlay {
 
             mFlythrough = flythrough;
             mInput = manager.Coordinator.GetPlugin<FlythroughPlugin>();
-            mInput.CurrentEventChange += new Action<FlythroughEvent<Camera>,FlythroughEvent<Camera>>(mInput_CurrentEventChange);
         }
 
         public FlythroughState(string name, StateManager manager, string flythrough, params ITrigger[] steps)
@@ -54,11 +58,11 @@ namespace Chimera.Flythrough.Overlay {
 
             mStepTriggers = steps;
             mStepping = true;
-            Font f = new Font("Verdana", 50f, FontStyle.Bold);
-            mStepText = new StaticText("Step " + mStep + "\\" + mInput.Count, manager.Coordinator.Windows[0].Name, f, Color.Red, new PointF(.05f, .05f));
+            Font f = new Font(FONT, FONT_SIZE, FontStyle.Bold);
+            mStepText = new StaticText("Step " + mStep + "/" + mInput.Count, manager.Coordinator.Windows[0].Name, f, FONT_COLOUR, STEP_TEXT_POS);
             AddFeature(mStepText);
 
-            mInput.SequenceFinished += new EventHandler(mInput_SequenceFinished);
+            mInput.CurrentEventChange += new Action<FlythroughEvent<Camera>,FlythroughEvent<Camera>>(mInput_CurrentEventChange);
 
             foreach (var step in steps) {
                 step.Triggered += new Action(step_Triggered);
@@ -77,18 +81,14 @@ namespace Chimera.Flythrough.Overlay {
 
         void mInput_CurrentEventChange(FlythroughEvent<Camera> old, FlythroughEvent<Camera> n) {
             mStep++;
+
+            if (mStep == mInput.Count) {
+                foreach (var trigger in mStepTriggers)
+                    trigger.Active = false;
+            }
+
             mStepText.TextString = "Step " + mStep + "\\" + mInput.Count;
-
-            foreach (var window in Manager.Coordinator.Windows)
-                window.OverlayManager.ForceRedrawStatic();
-        }
-
-        void mInput_SequenceFinished(object sender, EventArgs e) {
-            foreach (var trigger in mStepTriggers)
-                trigger.Active = false;
-
-            foreach (var window in Manager.Coordinator.Windows)
-                window.OverlayManager.ForceRedrawStatic();
+            Manager.RedrawStatic();
         }
 
         void step_Triggered() {
@@ -96,6 +96,7 @@ namespace Chimera.Flythrough.Overlay {
             //foreach (var step in mStepTriggers)
                 //step.Active = false;
         }
+
 
         public override IWindowState CreateWindowState(Window window) {
             if (window.Name.Equals(mSlideshowWindowName)) {
@@ -110,6 +111,7 @@ namespace Chimera.Flythrough.Overlay {
         protected override void TransitionFromStart() { }
 
         public override void TransitionToStart() {
+            mStep = 0;
             Manager.Coordinator.ControlMode = ControlMode.Absolute;
             mInput.Enabled = true;
             mInput.Coordinator.EnableUpdates = true;

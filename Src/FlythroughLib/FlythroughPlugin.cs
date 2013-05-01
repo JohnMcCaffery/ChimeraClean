@@ -91,10 +91,7 @@ namespace Chimera.Flythrough {
         /// <summary>
         /// Selected whenever the currently executing event changes.
         /// </summary>
-        public event Action<FlythroughEvent<Camera>, FlythroughEvent<Camera>> CurrentEventChange {
-            add { mEvents.CurrentEventChange += value; }
-            remove { mEvents.CurrentEventChange -= value; }
-        }
+        public event Action<FlythroughEvent<Camera>, FlythroughEvent<Camera>> CurrentEventChange;
 
         /// <summary>
         /// All the events queued up to play.
@@ -304,6 +301,8 @@ namespace Chimera.Flythrough {
         private void mEvents_CurrentEventChange(FlythroughEvent<Camera> oldEvent, FlythroughEvent<Camera> newEvent) {
             if (!mAutoStep)
                 Paused = true;
+            if (CurrentEventChange != null)
+                CurrentEventChange(oldEvent, newEvent);
         }
 
         private void mEvents_LengthChange(EventSequence<Camera> sequence, int length) {

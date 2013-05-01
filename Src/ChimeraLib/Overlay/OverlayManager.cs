@@ -201,6 +201,11 @@ namespace Chimera.Overlay {
             transition.Begin();
         }
 
+        public void RedrawStatic() {
+            foreach (var window in Coordinator.Windows)
+                window.OverlayManager.ForceRedrawStatic();
+        }
+
         private void transition_Finished(StateTransition transition) {
             if (TransitionFinished != null)
                 TransitionFinished(transition);
