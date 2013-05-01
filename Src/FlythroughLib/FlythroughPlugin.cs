@@ -102,6 +102,11 @@ namespace Chimera.Flythrough {
         public FlythroughEvent<Camera>[] Events {
             get { return mEvents.ToArray(); }
         }
+
+        public int Count {
+            get { return mEvents.Count; }
+        }
+
         /// <summary>
         /// Where in the current sequence playback has reached.
         /// Between 0 and Length.

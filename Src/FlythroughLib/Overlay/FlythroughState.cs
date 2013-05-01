@@ -25,6 +25,8 @@ using Chimera.Interfaces.Overlay;
 using Chimera.Overlay;
 using Chimera.Overlay.States;
 using Chimera.Overlay.Triggers;
+using Chimera.Overlay.Drawables;
+using System.Drawing;
 
 namespace Chimera.Flythrough.Overlay {
     public class FlythroughState : State {
@@ -36,12 +38,15 @@ namespace Chimera.Flythrough.Overlay {
         private string mFlythrough;
         private bool mStepping = false;
         private ITrigger[] mStepTriggers = new ITrigger[0];
+        private StaticText mStepText;
+        private int mStep = 1;
 
         public FlythroughState(string name, StateManager manager, string flythrough)
             : base(name, manager) {
 
             mFlythrough = flythrough;
             mInput = manager.Coordinator.GetPlugin<FlythroughPlugin>();
+            mInput.CurrentEventChange += new Action<FlythroughEvent<Camera>,FlythroughEvent<Camera>>(mInput_CurrentEventChange);
         }
 
         public FlythroughState(string name, StateManager manager, string flythrough, params ITrigger[] steps)
@@ -49,6 +54,9 @@ namespace Chimera.Flythrough.Overlay {
 
             mStepTriggers = steps;
             mStepping = true;
+            Font f = new Font("Verdana", 50f, FontStyle.Bold);
+            mStepText = new StaticText("Step " + mStep + "\\" + mInput.Count, manager.Coordinator.Windows[0].Name, f, Color.Red, new PointF(.05f, .05f));
+            AddFeature(mStepText);
 
             mInput.SequenceFinished += new EventHandler(mInput_SequenceFinished);
 
@@ -65,6 +73,14 @@ namespace Chimera.Flythrough.Overlay {
             mSlideshowWindowName = slideshowWindow;
             mSlideshowFolder = slideshowFolder;
             mSlideshowTransition = slideshowTransition;
+        }
+
+        void mInput_CurrentEventChange(FlythroughEvent<Camera> old, FlythroughEvent<Camera> n) {
+            mStep++;
+            mStepText.TextString = "Step " + mStep + "\\" + mInput.Count;
+
+            foreach (var window in Manager.Coordinator.Windows)
+                window.OverlayManager.ForceRedrawStatic();
         }
 
         void mInput_SequenceFinished(object sender, EventArgs e) {
