@@ -192,5 +192,9 @@ namespace Chimera.GUI.Forms {
         public void PlayAudio(string uri) {
             videoPlayer.URL = uri;
         }
+
+        internal void StopPlayback() {
+            videoPlayer.Ctlcontrols.stop();
+        }
     }
 }
