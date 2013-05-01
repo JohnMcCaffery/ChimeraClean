@@ -270,8 +270,10 @@ namespace Chimera {
                 }
             }
 
-            foreach (var plugin in mPlugins)
+            foreach (var plugin in mPlugins) {
                 plugin.Init(this);
+                plugin.Enabled = mConfig.PluginEnabled(plugin);
+            }
 
             Thread tickThread = new Thread(() => {
                 mAlive = true;

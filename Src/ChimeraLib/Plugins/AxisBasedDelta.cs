@@ -76,16 +76,20 @@ namespace Chimera.Plugins {
             mName = name;
 
             int i = 0;
-            if (axes.Length > i && axes[i] != null && axes[i++].Binding == AxisBinding.None)
-                axes[i - 1].Binding = AxisBinding.X;
-            if (axes.Length > i && axes[i] != null && axes[i++].Binding == AxisBinding.None)
-                axes[i - 1].Binding = AxisBinding.Y;
-            if (axes.Length > i && axes[i] != null && axes[i++].Binding == AxisBinding.None)
-                axes[i - 1].Binding = AxisBinding.Z;
-            if (axes.Length > i && axes[i] != null && axes[i++].Binding == AxisBinding.None)
-                axes[i - 1].Binding = AxisBinding.Pitch;
-            if (axes.Length > i && axes[i] != null && axes[i++].Binding == AxisBinding.None)
-                axes[i - 1].Binding = AxisBinding.Yaw;
+            if (axes.Length > i && axes[i] != null && axes[i].Binding == AxisBinding.None)
+                axes[i].Binding = AxisBinding.X;
+            i++;
+            if (axes.Length > i && axes[i] != null && axes[i].Binding == AxisBinding.None)
+                axes[i].Binding = AxisBinding.Y;
+            i++;
+            if (axes.Length > i && axes[i] != null && axes[i].Binding == AxisBinding.None)
+                axes[i].Binding = AxisBinding.Z;
+            i++;
+            if (axes.Length > i && axes[i] != null && axes[i].Binding == AxisBinding.None)
+                axes[i].Binding = AxisBinding.Pitch;
+            i++;
+            if (axes.Length > i && axes[i] != null && axes[i].Binding == AxisBinding.None)
+                axes[i].Binding = AxisBinding.Yaw;
 
             foreach (var axis in axes)
                 if (axis != null)

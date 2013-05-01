@@ -70,6 +70,12 @@ namespace Chimera {
             YRegions = Get(true, "YRegions", 1, "The number of contiguous regions along the Y axis that make up the environment.");
             HeightmapDefault = Get(true, "HeightmapDefault", 0f, "The default heightmap height. Any square that does not have heightmap data set will revert to this.");
             OverlayOpacity = Get(true, "OverlayOpacity", .5, "The opacity for the quick and dirty overlay for Miguel.");
+
+            Get(true, "|PLUGIN|Enabled", true, "Set whether |PLUGIN| is enabled at start-up.");
+        }
+
+        internal bool PluginEnabled(ISystemPlugin plugin) {
+            return Get(true, plugin.Name + "Enabled", true, "Find out whether a plugin is enabled.");
         }
     }
 }

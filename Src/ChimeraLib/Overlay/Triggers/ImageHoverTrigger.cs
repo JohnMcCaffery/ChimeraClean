@@ -31,10 +31,12 @@ namespace Chimera.Overlay.Triggers {
         private OverlayImage mImage;
         private Rectangle mClip;
 
+        /*
         protected override RectangleF Bounds {
             get { return mImage.Bounds; }
             set { base.Bounds = value; }
         }
+        */
 
         public OverlayImage Image {
             get { return mImage; }

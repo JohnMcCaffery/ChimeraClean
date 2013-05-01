@@ -59,9 +59,10 @@ namespace Chimera.Overlay.Drawables {
                     bounds.Width = mW / (float)Clip.Width;
                     bounds.Height = mH / (float)Clip.Height;
                 } else if (mBounds.Height < 0f)
-                    bounds.Height = mBounds.Width * mAspectRatio;
+                    bounds.Height = mBounds.Width * mAspectRatio * ((float) Clip.Width / (float) Clip.Height);
 
-                return bounds; }
+                return bounds; 
+            }
         }
 
         public bool NeedsRedrawn {

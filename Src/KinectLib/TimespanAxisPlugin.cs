@@ -9,7 +9,7 @@ using Chimera.Interfaces;
 namespace Chimera.Kinect {
     public class TimespanAxisPlugin : AxisBasedDelta {
         public TimespanAxisPlugin()
-            : base("Kinect Move - Timespan",
+            : base("KinectMove-Timespan",
                 new PushAxis(true, AxisBinding.X),
                 new PushAxis(false, AxisBinding.X),
                 new TAxis(true, AxisBinding.Z),

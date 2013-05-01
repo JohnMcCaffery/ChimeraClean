@@ -39,21 +39,17 @@ namespace Chimera.Overlay {
         /// </summary>
         private double mCursorY;
         /// <summary>
+        /// Whether the overlay should be full screen.
+        /// </summary>
+        private bool mOverlayFullscreen;
+        /// <summary>
         /// Whether to launch the overlay window at startup.
         /// </summary>
         private bool mOverlayActive;
         /// <summary>
-        /// Whether to launch the overlay window fullscreen at startup.
-        /// </summary>
-        private bool mOverlayFullscreen;
-        /// <summary>
         /// Whether the overlay should control the cursor position.
         /// </summary>
         private bool mControlPointer;
-        /// <summary>
-        /// Whether the program can ever control the pointer. Is set from the config file at startup and never changed.
-        /// </summary>
-        private bool mEverControlPointer;
         /// <summary>
         /// The window used to render the overlay.
         /// </summary>
@@ -78,6 +74,10 @@ namespace Chimera.Overlay {
         /// How long each frame will display for.
         /// </summary>
         private int mFrameLength = 10;
+        /// <summary>
+        /// The configuration for this manager.
+        /// </summary>
+        private WindowConfig mConfig;
 
         /// <summary>
         /// Triggered when the overlay window is launched.
@@ -139,7 +139,7 @@ namespace Chimera.Overlay {
         public bool ControlPointer {
             get { return mControlPointer; }
             set {
-                mControlPointer = value && mEverControlPointer;
+                mControlPointer = value && mConfig.ControlPointer;
                 if (!value)
                     MoveCursorOffScreen();
             }
@@ -200,7 +200,7 @@ namespace Chimera.Overlay {
         /// Whether the overlay window is currently fullscreen.
         /// </summary>
         public bool Fullscreen {
-            get { return mOverlayFullscreen; }
+            get { return mOverlayWindow != null ? mOverlayWindow.Fullscreen : mOverlayFullscreen; }
             set {
                 mOverlayFullscreen = value;
                 if (mOverlayWindow != null)
@@ -268,7 +268,7 @@ namespace Chimera.Overlay {
                 mOverlayWindow.Show();
                 mOverlayWindow.FormClosed += new FormClosedEventHandler(mOverlayWindow_FormClosed);
                 mOverlayWindow.VideoFinished += new Action(mOverlayWindow_VideoFinished);
-                mOverlayActive = false;
+                mOverlayWindow.AlwaysOnTop = mConfig.AlwaysOnTop;
                 if (mOverlayFullscreen)
                     mOverlayWindow.Fullscreen = true;
                 if (OverlayLaunched != null)
@@ -294,11 +294,10 @@ namespace Chimera.Overlay {
         public WindowOverlayManager(Window window) {
             mWindow = window;
 
-            WindowConfig cfg = new WindowConfig(mWindow.Name);
-            mOverlayActive = cfg.LaunchOverlay;
-            mOverlayFullscreen = cfg.Fullscreen;
-            mControlPointer = cfg.ControlPointer;
-            mEverControlPointer = cfg.ControlPointer;
+            mConfig = new WindowConfig(mWindow.Name);
+            mOverlayActive = mConfig.LaunchOverlay;
+            mControlPointer = mConfig.ControlPointer;
+            mOverlayFullscreen = mConfig.Fullscreen;
         }
 
         public void MoveCursorOffScreen() {
