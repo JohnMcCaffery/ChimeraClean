@@ -145,7 +145,7 @@ namespace Chimera.Launcher {
             SkeletonFeature splashSkeleton = new SkeletonFeature(940, 1470, 1000, 100f, mainWindow.Name, clip);
             splash.AddFeature(splashSkeleton);
 
-            FadingText raiseHandText = new FadingText("Stretch your arm above your head for help", 30000, 30000, mainWindow.Name, Color.Red, font, 150, 10, clip);
+            FadingText raiseHandText = new FadingText("Stretch your arm above your head for help", 30000, 30000, mainWindow.Name, Color.Red, font, 150, 30, clip);
             kinectAvatar.AddFeature(raiseHandText);
             kinectFlycam.AddFeature(raiseHandText);
 
