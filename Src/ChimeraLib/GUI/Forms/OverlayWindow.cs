@@ -1,4 +1,23 @@
-﻿using System;
+﻿/*************************************************************************
+Copyright (c) 2012 John McCaffery 
+
+This file is part of Chimera.
+
+Chimera is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Chimera is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Chimera.  If not, see <http://www.gnu.org/licenses/>.
+
+**************************************************************************/
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -9,6 +28,7 @@ using System.Windows.Forms;
 using Chimera.Overlay;
 using Chimera.Interfaces.Overlay;
 using Chimera.Util;
+using AxWMPLib;
 
 namespace Chimera.GUI.Forms {
     public partial class OverlayWindow : Form {
@@ -32,13 +52,15 @@ namespace Chimera.GUI.Forms {
         /// Flag to force the static portion of the overlay to be redrawn.
         /// </summary>
         private bool mRedrawStatic;
-        /// <summary>
-        /// Delegate to be triggered on tick events.
-        /// </summary>
-        private Action mTickListener;
+        private Cursor mDefaultCursor = new Cursor("../Cursors/cursor.cur");
+
+        public event Action VideoFinished;
 
         public OverlayWindow() {
             InitializeComponent();
+
+            Cursor = mDefaultCursor;
+            TopMost = true;
         }
 
         public OverlayWindow(WindowOverlayManager manager)
@@ -47,17 +69,23 @@ namespace Chimera.GUI.Forms {
         }
 
         public void Init(WindowOverlayManager manager) {
+            mManager = manager;
+
             drawPanel.BackColor = manager.TransparencyKey;
             BackColor = manager.TransparencyKey;
             TransparencyKey = manager.TransparencyKey;
-            mManager = manager;
-            TopMost = true;
             Opacity = manager.Opacity;
             refreshTimer.Interval = manager.FrameLength;
             refreshTimer.Enabled = true;
 
-            //mTickListener = new Action(Coordinator_Tick);
-            manager.Window.Coordinator.Tick += mTickListener;
+            videoPlayer.PlayStateChange += new _WMPOCXEvents_PlayStateChangeEventHandler(videoPlayer_PlayStateChange);
+        }
+
+        private void videoPlayer_PlayStateChange(object source, _WMPOCXEvents_PlayStateChangeEvent args) {
+            if (args.newState == 1 && VideoFinished != null) {
+                VideoFinished();
+                videoPlayer.Visible = false;
+            }
         }
 
         public void RedrawStatic() {
@@ -92,22 +120,21 @@ namespace Chimera.GUI.Forms {
 
         private void drawPanel_Paint(object sender, PaintEventArgs e) {
             if (mManager.CurrentDisplay != null) {
-                if (!e.ClipRectangle.Equals(mClip) || mRedrawStatic) {
+                if (!e.ClipRectangle.Width.Equals(mClip.Width) || !e.ClipRectangle.Height.Equals(mClip.Height) || mRedrawStatic) {
+                    //if (!e.ClipRectangle.Width.Equals(mClip.Width) || !e.ClipRectangle.Height.Equals(mClip.Height))
+                    mManager.CurrentDisplay.Clip = e.ClipRectangle;
                     mRedrawStatic = false;
+                    Bitmap oldBG = mStaticBG;
                     mStaticBG = new Bitmap(e.ClipRectangle.Width, e.ClipRectangle.Height);
                     mClip = e.ClipRectangle;
                     using (Graphics g = Graphics.FromImage(mStaticBG))
-                        mManager.CurrentDisplay.RedrawStatic(e.ClipRectangle, g);
+                        mManager.CurrentDisplay.DrawStatic(g);
                     drawPanel.Image = mStaticBG;
+                    if (oldBG != null)
+                        oldBG.Dispose();
                 }
 
                 mManager.CurrentDisplay.DrawDynamic(e.Graphics);
-            }
-        }
-
-        private void Coordinator_Tick() {
-            if (mManager.CurrentDisplay != null && mManager.CurrentDisplay.NeedsRedrawn) {
-                BeginInvoke(new Action(() => drawPanel.Invalidate()));
             }
         }
 
@@ -133,6 +160,41 @@ namespace Chimera.GUI.Forms {
 
         internal void ForceRedraw() {
             Invoke(() => drawPanel.Invalidate());
+        }
+
+        public override void ResetCursor() {
+            Invoke(() => Cursor = mDefaultCursor);
+        }
+
+        public bool AlwaysOnTop {
+            get { return TopMost; }
+            set { Invoke(() => TopMost = value); }
+        }
+        
+
+        public void BringOverlayToFront() {
+            Invoke(() => {
+                BringToFront();
+            });
+        }
+
+        public void PlayVideo(string uri) {
+            //videoPlayer.uiMode = "Mini";
+            videoPlayer.Visible = true;
+            videoPlayer.URL = uri;
+
+            videoPlayer.uiMode = "none";
+            videoPlayer.stretchToFit = true;
+            videoPlayer.windowlessVideo = true;
+            videoPlayer.Ctlcontrols.play();
+        }
+
+        public void PlayAudio(string uri) {
+            videoPlayer.URL = uri;
+        }
+
+        internal void StopPlayback() {
+            videoPlayer.Ctlcontrols.stop();
         }
     }
 }

@@ -70,9 +70,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL" />
-    <Reference Include="NuiLib-DotNet_dv, Version=1.0.4821.24838, Culture=neutral, processorArchitecture=x86">
+    <Reference Include="NuiLib-DotNet, Version=1.0.4867.31431, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Lib\NuiLib-DotNet_dv.dll</HintPath>
+      <HintPath>..\..\Bin\NuiLib-DotNet.dll</HintPath>
     </Reference>
     <Reference Include="OpenMetaverseTypes">
       <HintPath>..\..\Lib\OpenMetaverseTypes.dll</HintPath>
@@ -90,11 +90,39 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Axes\AxisBase.cs" />
+    <Compile Include="Axes\DotAxis.cs" />
+    <Compile Include="GlobalConditions.cs" />
+    <Compile Include="GUI\Axes\DotAxisPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\Axes\DotAxisPanel.designer.cs">
+      <DependentUpon>DotAxisPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\Axes\KinectAxisPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\Axes\KinectAxisPanel.designer.cs">
+      <DependentUpon>KinectAxisPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Axes\KinectAxis.cs" />
+    <Compile Include="Axes\KinectAxisConfig.cs" />
+    <Compile Include="GUI\KinectCamera.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\KinectCamera.designer.cs">
+      <DependentUpon>KinectCamera.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Axes\LeanAxis.cs" />
+    <Compile Include="Overlay\KinectHelpState.cs" />
     <Compile Include="Overlay\SkeletonLostTrigger.cs" />
     <Compile Include="Overlay\KinectControlState.cs" />
     <Compile Include="Overlay\KinectControlWindowState.cs" />
     <Compile Include="Overlay\SkeletonFeature.cs" />
     <Compile Include="Overlay\SkeletonFoundTrigger.cs" />
+    <Compile Include="Axes\PushAxis.cs" />
+    <Compile Include="Axes\TAxis.cs" />
+    <Compile Include="TimespanAxisPlugin.cs" />
     <Compile Include="TimespanMovementInput.cs" />
     <Compile Include="DolphinMovementInput.cs" />
     <Compile Include="GUI\TimespanMovementPanel.cs">
@@ -109,10 +137,10 @@
     <Compile Include="GUI\DolphinMovementPanel.Designer.cs">
       <DependentUpon>DolphinMovementPanel.cs</DependentUpon>
     </Compile>
-    <Compile Include="GUI\KinectPanel.cs">
+    <Compile Include="GUI\Axes\KinectPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="GUI\KinectPanel.Designer.cs">
+    <Compile Include="GUI\Axes\KinectPanel.Designer.cs">
       <DependentUpon>KinectPanel.cs</DependentUpon>
     </Compile>
     <Compile Include="GUI\PointCursorPanel.cs">
@@ -143,6 +171,7 @@
     <Compile Include="PointCursor.cs" />
     <Compile Include="RaiseArmHelpTrigger.cs" />
     <Compile Include="SimpleCursor.cs" />
+    <Compile Include="Axes\TwistAxis.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ChimeraLib\ChimeraLib.csproj">
@@ -158,13 +187,19 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="GUI\Axes\DotAxisPanel.resx">
+      <DependentUpon>DotAxisPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\Axes\KinectAxisPanel.resx">
+      <DependentUpon>KinectAxisPanel.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="GUI\TimespanMovementPanel.resx">
       <DependentUpon>TimespanMovementPanel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\DolphinMovementPanel.resx">
       <DependentUpon>DolphinMovementPanel.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="GUI\KinectPanel.resx">
+    <EmbeddedResource Include="GUI\Axes\KinectPanel.resx">
       <DependentUpon>KinectPanel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\PointCursorPanel.resx">
@@ -175,6 +210,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\SimpleCursorPanel.resx">
       <DependentUpon>SimpleCursorPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\KinectCamera.resx">
+      <DependentUpon>KinectCamera.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

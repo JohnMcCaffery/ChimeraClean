@@ -1,4 +1,23 @@
-﻿using System;
+﻿/*************************************************************************
+Copyright (c) 2012 John McCaffery 
+
+This file is part of Chimera.
+
+Chimera is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Chimera is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Chimera.  If not, see <http://www.gnu.org/licenses/>.
+
+**************************************************************************/
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -31,6 +50,10 @@ namespace Chimera.Overlay {
         /// Whether the overlay should control the cursor position.
         /// </summary>
         private bool mControlPointer;
+        /// <summary>
+        /// Whether the program can ever control the pointer. Is set from the config file at startup and never changed.
+        /// </summary>
+        private bool mEverControlPointer;
         /// <summary>
         /// The window used to render the overlay.
         /// </summary>
@@ -68,6 +91,10 @@ namespace Chimera.Overlay {
         /// Triggered whenever the position of the cursor on this input changes.
         /// </summary>
         public event Action<WindowOverlayManager, EventArgs> CursorMoved;
+        /// <summary>
+        /// Triggered whenever a video that has been played through the interface finishes.
+        /// </summary>
+        public event Action VideoFinished;
 
         public TickStatistics Statistics {
             get { return mOverlayWindow != null ? mOverlayWindow.Statistics : null; }
@@ -85,8 +112,13 @@ namespace Chimera.Overlay {
             get { return mOverlayWindow != null ? mOverlayWindow.Cursor : Cursor.Current; }
             set {
                 if (mOverlayWindow != null)
-                        mOverlayWindow.SetCursor(value);
+                    mOverlayWindow.SetCursor(value);
             }
+        }
+
+        public void ResetCursor() {
+            if (mOverlayWindow != null)
+                mOverlayWindow.ResetCursor();
         }
 
         /// <summary>
@@ -107,7 +139,7 @@ namespace Chimera.Overlay {
         public bool ControlPointer {
             get { return mControlPointer; }
             set {
-                mControlPointer = value;
+                mControlPointer = value && mEverControlPointer;
                 if (!value)
                     MoveCursorOffScreen();
             }
@@ -212,7 +244,7 @@ namespace Chimera.Overlay {
         /// <param name="x">The percentage across the screen the cursor is (1 = all the way across).</param>
         /// <param name="y">The percentage down the screen the cursor is (1 = all the way down).</param>
         public void UpdateCursor(double x, double y) {
-            if (mWindow == null)
+            if (mWindow == null || mOverlayWindow == null)
                 return;
             bool wasOn = mWindow.Monitor.Bounds.Contains(MonitorCursor);
             mCursorX = x;
@@ -235,12 +267,18 @@ namespace Chimera.Overlay {
                 mOverlayWindow = new OverlayWindow(this);
                 mOverlayWindow.Show();
                 mOverlayWindow.FormClosed += new FormClosedEventHandler(mOverlayWindow_FormClosed);
+                mOverlayWindow.VideoFinished += new Action(mOverlayWindow_VideoFinished);
                 mOverlayActive = false;
                 if (mOverlayFullscreen)
                     mOverlayWindow.Fullscreen = true;
                 if (OverlayLaunched != null)
                     OverlayLaunched(this, null);
             }
+        }
+
+        void mOverlayWindow_VideoFinished() {
+            if (VideoFinished != null)
+                VideoFinished();
         }
 
         /// <summary>
@@ -260,14 +298,16 @@ namespace Chimera.Overlay {
             mOverlayActive = cfg.LaunchOverlay;
             mOverlayFullscreen = cfg.Fullscreen;
             mControlPointer = cfg.ControlPointer;
+            mEverControlPointer = cfg.ControlPointer;
         }
 
-        private void MoveCursorOffScreen() {
+        public void MoveCursorOffScreen() {
             SystemCursor.Position = new Point(mWindow.Monitor.Bounds.X + mWindow.Monitor.Bounds.Width, mWindow.Monitor.Bounds.Y + mWindow.Monitor.Bounds.Height);
         }
 
         void mOverlayWindow_FormClosed(object sender, FormClosedEventArgs e) {
             mOverlayActive = false;
+            mOverlayWindow = null;
             if (OverlayClosed != null)
                 OverlayClosed(this, null);
         }
@@ -280,6 +320,34 @@ namespace Chimera.Overlay {
         public void ForceRedrawStatic() {
             if (mOverlayWindow != null)
                 mOverlayWindow.RedrawStatic();
+        }
+
+        public bool AlwaysOnTop { 
+            get { return mOverlayWindow != null ? mOverlayWindow.AlwaysOnTop : false; }
+            set { 
+                if (mOverlayWindow != null)
+                    mOverlayWindow.AlwaysOnTop = value;
+            }
+        }
+
+        public void ForegroundOverlay() {
+            if (mOverlayWindow != null)
+                mOverlayWindow.BringOverlayToFront();
+        }
+
+        public void PlayVideo(string uri) {
+            if (mOverlayWindow != null)
+                mOverlayWindow.PlayVideo(uri);
+        }
+
+        public void PlayAudio(string uri) {
+            if (mOverlayWindow != null)
+                mOverlayWindow.PlayAudio(uri);
+        }
+
+        public void StopPlayback() {
+            if (mOverlayWindow != null)
+                mOverlayWindow.StopPlayback();
         }
     }
 }
