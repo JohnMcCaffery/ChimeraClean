@@ -36,7 +36,6 @@ namespace Chimera.Flythrough.Overlay {
         private string mFlythrough;
         private bool mStepping = false;
         private ITrigger[] mStepTriggers = new ITrigger[0];
-        private SimpleTrigger mTrigger;
 
         public FlythroughState(string name, StateManager manager, string flythrough)
             : base(name, manager) {
@@ -45,16 +44,13 @@ namespace Chimera.Flythrough.Overlay {
             mInput = manager.Coordinator.GetPlugin<FlythroughPlugin>();
         }
 
-        public FlythroughState(string name, StateManager manager, string flythrough, State home, IWindowTransitionFactory transition, params ITrigger[] steps)
+        public FlythroughState(string name, StateManager manager, string flythrough, params ITrigger[] steps)
             : this(name, manager, flythrough) {
 
             mStepTriggers = steps;
             mStepping = true;
 
-            mTrigger = new SimpleTrigger();
             mInput.SequenceFinished += new EventHandler(mInput_SequenceFinished);
-            StateTransition trans = new StateTransition(manager, this, home, mTrigger, transition);
-            AddTransition(trans);
 
             foreach (var step in steps) {
                 step.Triggered += new Action(step_Triggered);
@@ -63,28 +59,26 @@ namespace Chimera.Flythrough.Overlay {
             }
         }
 
-        void mInput_SequenceFinished(object sender, EventArgs e) {
-            if (mTrigger != null)
-                mTrigger.Trigger();
-        }
-
-        public FlythroughState(string name, StateManager manager, string flythrough, State home, IWindowTransitionFactory transition, string slideshowWindow, string slideshowFolder, IImageTransition slideshowTransition, params ITrigger[] steps)
-            : this(name, manager, flythrough, home, transition, steps) {
+        public FlythroughState(string name, StateManager manager, string flythrough, string slideshowWindow, string slideshowFolder, IImageTransition slideshowTransition, params ITrigger[] steps)
+            : this(name, manager, flythrough, steps) {
 
             mSlideshowWindowName = slideshowWindow;
             mSlideshowFolder = slideshowFolder;
             mSlideshowTransition = slideshowTransition;
         }
 
+        void mInput_SequenceFinished(object sender, EventArgs e) {
+            foreach (var trigger in mStepTriggers)
+                trigger.Active = false;
+
+            foreach (var window in Manager.Coordinator.Windows)
+                window.OverlayManager.ForceRedrawStatic();
+        }
+
         void step_Triggered() {
             mInput.Step();
             //foreach (var step in mStepTriggers)
                 //step.Active = false;
-        }
-
-        void mInput_CurrentEventChange(FlythroughEvent<Camera> old, FlythroughEvent<Camera> to) {
-            foreach (var step in mStepTriggers)
-                step.Active = true;
         }
 
         public override IWindowState CreateWindowState(Window window) {

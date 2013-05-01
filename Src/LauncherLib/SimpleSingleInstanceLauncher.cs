@@ -108,7 +108,7 @@ namespace Chimera.Launcher {
             State helpAvatar = new KinectHelpState("KinectHelpAvatar", mCoordinator.StateManager, mainWindow.Name, mainWindow.Name);
             State helpFlycam = new KinectHelpState("KinectHelpFlycam", mCoordinator.StateManager, mainWindow.Name, mainWindow.Name);
             State idleFlythrough = new FlythroughState("IdleFlythrough", mCoordinator.StateManager, "../Flythroughs/Caen-long.xml");
-            State structuredFlythrough = new FlythroughState("StructuredFlythrough", mCoordinator.StateManager, "../Flythroughs/Caen-Guided.xml", splash, fadeTransition, slideshowNext);
+            State structuredFlythrough = new FlythroughState("StructuredFlythrough", mCoordinator.StateManager, "../Flythroughs/Caen-Guided.xml", slideshowNext);
             State infoVideo = new VideoState("Video", mainWindow.Name, "../Videos/Vid1.flv", splash, fadeTransition);
             State storyWolf = new VideoState("Story1", mainWindow.Name, "../Videos/Wolf.flv", splash, fadeTransition);
 
