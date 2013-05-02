@@ -17,9 +17,3 @@ cd C:\Users\OpenVirtualWorlds\Documents\John\Chimera\Bin\
 timeout 60
 
 Chimera.exe
-
-cd ..
-
-start cscript shutdown1.vbs
-timeout 1
-start cscript shutdown2.vbs
