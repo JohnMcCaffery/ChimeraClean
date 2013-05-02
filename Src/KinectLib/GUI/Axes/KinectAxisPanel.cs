@@ -30,8 +30,8 @@ namespace Chimera.Kinect.GUI.Axes {
                 scalePanel.Scalar = new ScalarUpdater(mAxis.ScaleScale);
                 deadzonePanel.Scalar = new ScalarUpdater(mAxis.DeadzoneScale);
 
-                scalePanel.Max = mAxis.ScaleScale.Value * 10f;
-                deadzonePanel.Max = mAxis.DeadzoneScale.Value * 10f;
+                scalePanel.Max = mAxis.ScaleScale.Value * 6f;
+                deadzonePanel.Max = mAxis.DeadzoneScale.Value * 6f;
 
                 mAxis.Active.OnChange += mChangeListener;
                 Disposed += new EventHandler(KinectAxisPanel_Disposed);

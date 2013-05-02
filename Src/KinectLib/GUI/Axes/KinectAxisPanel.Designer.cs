@@ -121,7 +121,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.deadzonePanel.Location = new System.Drawing.Point(0, 5);
             this.deadzonePanel.Max = 10F;
-            this.deadzonePanel.Min = -10F;
+            this.deadzonePanel.Min = 0F;
             this.deadzonePanel.MinimumSize = new System.Drawing.Size(95, 20);
             this.deadzonePanel.Name = "deadzonePanel";
             this.deadzonePanel.Scalar = null;
