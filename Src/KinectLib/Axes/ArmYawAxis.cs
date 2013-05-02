@@ -8,7 +8,7 @@ using Chimera.Interfaces;
 namespace Chimera.Kinect.Axes {
     public class ArmYawAxis : DotAxis {
         private bool mRight;
-        private Vector mA = Vector.Create("Z", 0f, 0f, -1f);
+        private Vector mA = Vector.Create("Z", 0f, 0f, 1f);
         private Vector mB = 
             Nui.limit(Nui.joint(Nui.Hand_Right), true, false, true) -
             Nui.limit(Nui.joint(Nui.Shoulder_Right), true, false, true);
@@ -34,7 +34,7 @@ namespace Chimera.Kinect.Axes {
 
             Vector diff = 
                 Nui.joint(mRight ? Nui.Shoulder_Right : Nui.Shoulder_Left) -
-                Nui.joint(mRight ? Nui.Hand_Right : Nui.Shoulder_Left);
+                Nui.joint(mRight ? Nui.Hand_Right : Nui.Hand_Left);
 
             mActive = Condition.And(
                 mRight ? GlobalConditions.ActiveR : GlobalConditions.ActiveL,
