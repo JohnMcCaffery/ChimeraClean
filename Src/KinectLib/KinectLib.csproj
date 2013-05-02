@@ -91,6 +91,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Axes\AxisBase.cs" />
+    <Compile Include="Axes\ArmYawAxis.cs" />
+    <Compile Include="Axes\CrouchAxis.cs" />
     <Compile Include="Axes\DotAxis.cs" />
     <Compile Include="GlobalConditions.cs" />
     <Compile Include="GUI\Axes\DotAxisPanel.cs">

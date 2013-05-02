@@ -53,7 +53,8 @@ namespace Chimera.GUI.Controls.Plugins {
             // 
             // axesBox
             // 
-            this.axesBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.axesBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.axesBox.Location = new System.Drawing.Point(3, 3);
             this.axesBox.Name = "axesBox";

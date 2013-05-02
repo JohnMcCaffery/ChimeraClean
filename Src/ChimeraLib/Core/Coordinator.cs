@@ -530,11 +530,14 @@ namespace Chimera {
         public Point GetPoint(Func<Vector3, Point> to2D, Vector3 realPoint) {
             throw new System.NotImplementedException();
         }
+        public void Close() {
+            Close("Shutdown");
+        }
 
         /// <summary>
         /// Called when the coordinator is to be disposed of.
         /// </summary>
-        public void Close() {
+        public void Close(string reason) {
             mServer.Stop();
 
             mAlive = false;
@@ -545,6 +548,8 @@ namespace Chimera {
             foreach (var window in mWindows)
                 window.Close();
 
+            StateManager.Dump(reason);
+
             if (Closed != null)
                 Closed(this, null);
         }
@@ -553,11 +558,14 @@ namespace Chimera {
             get { return mConfig.AutoRestart; }
         }
 
+        private DateTime mStart = DateTime.Now;
+
         /// <summary>
         /// Handle a crash event,
         /// </summary>
         public void OnCrash(Exception e) {
             string dump = "Crash: " + DateTime.Now.ToString("u") + Environment.NewLine;
+            dump += "Uptime: " + DateTime.Now.Subtract(mStart) + Environment.NewLine;
             dump += String.Format("{1}{0}{2}{0}{0}", Environment.NewLine, e.Message, e.StackTrace);
             dump += String.Format("-----------Coordinator-----------{0}", Environment.NewLine);
             dump += "Virtual Position: " + mPosition + Environment.NewLine;
@@ -607,9 +615,9 @@ namespace Chimera {
 
             dump += String.Format("{0}{0}------------------------End of Crash Report------------------------{0}{0}", Environment.NewLine);
 
-            File.AppendAllText(mCrashLogFile, dump);
-
-            Close();
+            //File.AppendAllText(mCrashLogFile, dump);
+            File.WriteAllText("../Logs/" + DateTime.Now + ".log", dump);
+            Close("Crash");
         }
 
         /// <summary>

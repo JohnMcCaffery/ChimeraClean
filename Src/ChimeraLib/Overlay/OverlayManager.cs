@@ -22,6 +22,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Chimera.Interfaces.Overlay;
+using System.IO;
 
 namespace Chimera.Overlay {
     public class StateManager {
@@ -214,6 +215,26 @@ namespace Chimera.Overlay {
                 mCurrentTransition = null;
                 CurrentState = transition.To;
             }
+        }
+
+        internal void Dump(string reason) {
+            string table = "";
+            table += "<TABLE>" + Environment.NewLine;
+            table += "    <TR>" + Environment.NewLine;
+            table += "        <TD>State Name</TD>" + Environment.NewLine;
+            table += "        <TD># Visits</TD>" + Environment.NewLine;
+            table += "        <TD>Shortest Visit (m)</TD>" + Environment.NewLine;
+            table += "        <TD>Longest Visit (m)</TD>" + Environment.NewLine;
+            table += "        <TD>Mean Visit Length (m)</TD>" + Environment.NewLine;
+            table += "    </TR>" + Environment.NewLine;
+
+            foreach (var state in mStates.Values)
+                table += state.StatisticsRow;
+
+            table += "</TABLE>" + Environment.NewLine;
+
+            string file = "../Logs/" + reason + "Stats" + DateTime.Now.ToString("dd.mm.yy-HH.mm") + ".html";
+            File.WriteAllText(file, table);
         }
     }
 }

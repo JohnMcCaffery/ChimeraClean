@@ -14,8 +14,11 @@ namespace Chimera.Kinect {
                 new PushAxis(false, AxisBinding.X),
                 new TAxis(true, AxisBinding.Z),
                 new TAxis(false, AxisBinding.Z),
-                new TwistAxis(AxisBinding.Yaw),
-                new LeanAxis(AxisBinding.Yaw)
+                new CrouchAxis(AxisBinding.Z),
+                new TwistAxis(AxisBinding.None),
+                new LeanAxis(AxisBinding.None),
+                new ArmYawAxis(true, AxisBinding.Yaw),
+                new ArmYawAxis(false, AxisBinding.Yaw)
                 ) {
         }
 
