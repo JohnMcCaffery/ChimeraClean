@@ -2,12 +2,14 @@ timeout 20
 
 cd C:\Users\OpenVirtualWorlds\Documents\John\Chimera
 
-git pull
-git add Logs\*
+git add .
 git commit -m "Startup log push - %DATE% %TIME%"
 git push
+git pull
 
 cd Bin
+git add .
+git commit -m "Startup log push - %DATE% %TIME%"
 git pull
 
 cd C:\Users\OpenVirtualWorlds\Desktop\Opensim-Timespan\

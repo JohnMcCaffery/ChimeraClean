@@ -24,7 +24,7 @@ namespace Chimera.Kinect.Axes {
         }
 
         protected override Scalar Sign {
-            get { return MakeSign(Perspective.Y); }
+            get { return MakeSign(Perspective.Y) * -1f; }
         }
 
         public ArmYawAxis(bool right, AxisBinding binding)
@@ -42,7 +42,7 @@ namespace Chimera.Kinect.Axes {
                     Nui.z(diff) > Nui.abs(Nui.x(diff)),
                     Nui.z(diff) > Nui.abs(Nui.y(diff))));
 
-            diff = Nui.limit(diff, true, false, true);
+            mB = Nui.limit(diff, true, false, true);
 
             Init();
         }

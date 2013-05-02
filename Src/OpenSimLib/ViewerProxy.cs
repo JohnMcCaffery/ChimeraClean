@@ -291,7 +291,12 @@ namespace Chimera.OpenSim {
                     dump += line + Environment.NewLine;
                 dump += Environment.NewLine + Environment.NewLine + "---------------- End of Viewer Crash report -------------" + Environment.NewLine + Environment.NewLine;
 
-                File.AppendAllText(mConfig.CrashLogFile, dump);
+                Thread.Sleep(1000);
+                //File.AppendAllText(mConfig.CrashLogFile, dump);
+                string file = Path.GetFullPath("../Logs/FirestormCrash" + DateTime.Now.ToString("dd.mm.yy-HH.mm") + ".log");
+                Console.WriteLine("Writing log to " + file);
+                File.WriteAllText(file, dump);
+                Console.WriteLine("Log dumped.");
             }
             mClosing = false;
             mClientLoggedIn = false;
@@ -299,8 +304,9 @@ namespace Chimera.OpenSim {
                 OnViewerExit(this, null);
             lock (processLock)
                 Monitor.PulseAll(processLock);
-            if (mAutoRestart && unexpected)
-                Launch();
+            if (mAutoRestart && unexpected) {
+                Restart();
+            }
         }
 
         /// <summary>
@@ -505,13 +511,14 @@ namespace Chimera.OpenSim {
         }
 
         public void Restart() {
-            if (mClientLoggedIn) {
+            Console.WriteLine("Restarting viewer");
+            //if (mClientLoggedIn) {
                 CloseViewer();
                 Thread.Sleep(1000);
                 CloseProxy();
                 Thread.Sleep(1000);
                 Launch();
-            }
+            //}
         }
 
         #endregion
@@ -574,8 +581,8 @@ namespace Chimera.OpenSim {
                 double viewer = DateTime.Now.Subtract(mLastViewerUpdate).TotalSeconds;
                 double camera = DateTime.Now.Subtract(mLastCameraUpdate).TotalSeconds;
                 if (mClientLoggedIn && viewer > 2.0 && viewer > camera) {
-                    Console.WriteLine("Timeout since last viewer move. Last Viewer Update: {0}s, Last Camera Update: {1}s ", viewer, camera);
-                    Console.WriteLine("Control mode: " + coordinator.ControlMode);
+                    //Console.WriteLine("Timeout since last viewer move. Last Viewer Update: {0}s, Last Camera Update: {1}s ", viewer, camera);
+                    //Console.WriteLine("Control mode: " + coordinator.ControlMode);
 
                     if (mRestartOnTimeout)
                         Restart();

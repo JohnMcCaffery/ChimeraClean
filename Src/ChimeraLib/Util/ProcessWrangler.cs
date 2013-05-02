@@ -1482,7 +1482,7 @@ namespace Chimera.Util {
                 try {
                     Application.Run(form);
                 } catch (Exception e) {
-                    Console.WriteLine("Exception caught transition GUI thread.");
+                    Console.WriteLine("Exception caught in GUI thread.");
                     HandleException(e);
                 }
             } else
@@ -1490,13 +1490,13 @@ namespace Chimera.Util {
         }
 
         static void Application_ThreadException(object sender, System.Threading.ThreadExceptionEventArgs e) {
-            Console.WriteLine("Exception caught transition ThreadException.");
+            Console.WriteLine("Exception caught in Thread.");
             sForm.Close();
             HandleException(e.Exception);
         }
 
         static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e) {
-            Console.WriteLine("Exception caught transition App Domain.");
+            Console.WriteLine("Exception caught in App Domain.");
             sForm.Close();
             HandleException((Exception)e.ExceptionObject);
         }

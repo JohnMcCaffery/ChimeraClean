@@ -233,7 +233,8 @@ namespace Chimera.Overlay {
 
             table += "</TABLE>" + Environment.NewLine;
 
-            string file = "../Logs/" + reason + "Stats" + DateTime.Now.ToString("dd.mm.yy-HH.mm") + ".html";
+            string file = Path.GetFullPath("../Logs/" + reason + "Stats" + DateTime.Now.ToString("dd.mm.yy-HH.mm") + ".html");
+            Console.WriteLine("Dumping " + reason + " to " + file);
             File.WriteAllText(file, table);
         }
     }

@@ -555,7 +555,8 @@ namespace Chimera {
         }
 
         public bool AutoRestart {
-            get { return mConfig.AutoRestart; }
+            //get { return mConfig.AutoRestart; }
+            get { return false; }
         }
 
         private DateTime mStart = DateTime.Now;
@@ -616,7 +617,9 @@ namespace Chimera {
             dump += String.Format("{0}{0}------------------------End of Crash Report------------------------{0}{0}", Environment.NewLine);
 
             //File.AppendAllText(mCrashLogFile, dump);
-            File.WriteAllText("../Logs/" + DateTime.Now + ".log", dump);
+            string file = Path.GetFullPath("../Logs/" + DateTime.Now + ".log");
+            Console.WriteLine("Dumping crash to " + file);
+            File.WriteAllText(file, dump);
             Close("Crash");
         }
 
