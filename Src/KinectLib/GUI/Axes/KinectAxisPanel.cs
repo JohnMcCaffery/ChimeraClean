@@ -24,11 +24,14 @@ namespace Chimera.Kinect.GUI.Axes {
                 stateLabel.Text = mAxis.Active.Value ? "Active" : "Disabled";
 
                 constrainedAxisPanel.Axis = mAxis.Axis;
-                pushPanel.Scalar = new ScalarUpdater(mAxis.Raw);
+                rawPanel.Scalar = new ScalarUpdater(mAxis.Raw);
                 mChangeListener = new ChangeDelegate(Active_OnChange);
 
                 scalePanel.Scalar = new ScalarUpdater(mAxis.ScaleScale);
                 deadzonePanel.Scalar = new ScalarUpdater(mAxis.DeadzoneScale);
+
+                scalePanel.Max = mAxis.ScaleScale.Value * 10f;
+                deadzonePanel.Max = mAxis.DeadzoneScale.Value * 10f;
 
                 mAxis.Active.OnChange += mChangeListener;
                 Disposed += new EventHandler(KinectAxisPanel_Disposed);

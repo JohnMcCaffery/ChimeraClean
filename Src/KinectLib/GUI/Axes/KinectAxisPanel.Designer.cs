@@ -25,11 +25,11 @@
         private void InitializeComponent() {
             this.label1 = new System.Windows.Forms.Label();
             this.stateLabel = new System.Windows.Forms.Label();
-            this.pushPanel = new Chimera.GUI.UpdatedScalarPanel();
+            this.rawPanel = new Chimera.GUI.UpdatedScalarPanel();
             this.constrainedAxisPanel = new Chimera.GUI.Controls.Plugins.ConstrainedAxisPanel();
             this.anchorScaleSplit = new System.Windows.Forms.SplitContainer();
-            this.deadzonePanel = new Chimera.GUI.UpdatedScalarPanel();
             this.scalePanel = new Chimera.GUI.UpdatedScalarPanel();
+            this.deadzonePanel = new Chimera.GUI.UpdatedScalarPanel();
             ((System.ComponentModel.ISupportInitialize)(this.anchorScaleSplit)).BeginInit();
             this.anchorScaleSplit.Panel1.SuspendLayout();
             this.anchorScaleSplit.Panel2.SuspendLayout();
@@ -55,19 +55,19 @@
             this.stateLabel.TabIndex = 4;
             this.stateLabel.Text = "Disabled";
             // 
-            // pushPanel
+            // rawPanel
             // 
-            this.pushPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.rawPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.pushPanel.Location = new System.Drawing.Point(68, 59);
-            this.pushPanel.Max = 10F;
-            this.pushPanel.Min = -10F;
-            this.pushPanel.MinimumSize = new System.Drawing.Size(95, 20);
-            this.pushPanel.Name = "pushPanel";
-            this.pushPanel.Scalar = null;
-            this.pushPanel.Size = new System.Drawing.Size(111, 20);
-            this.pushPanel.TabIndex = 3;
-            this.pushPanel.Value = 0F;
+            this.rawPanel.Location = new System.Drawing.Point(68, 59);
+            this.rawPanel.Max = 10F;
+            this.rawPanel.Min = -10F;
+            this.rawPanel.MinimumSize = new System.Drawing.Size(95, 20);
+            this.rawPanel.Name = "rawPanel";
+            this.rawPanel.Scalar = null;
+            this.rawPanel.Size = new System.Drawing.Size(111, 20);
+            this.rawPanel.TabIndex = 3;
+            this.rawPanel.Value = 0F;
             // 
             // constrainedAxisPanel
             // 
@@ -101,6 +101,20 @@
             this.anchorScaleSplit.SplitterDistance = 130;
             this.anchorScaleSplit.TabIndex = 5;
             // 
+            // scalePanel
+            // 
+            this.scalePanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.scalePanel.Location = new System.Drawing.Point(1, 31);
+            this.scalePanel.Max = 10F;
+            this.scalePanel.Min = 0F;
+            this.scalePanel.MinimumSize = new System.Drawing.Size(95, 20);
+            this.scalePanel.Name = "scalePanel";
+            this.scalePanel.Scalar = null;
+            this.scalePanel.Size = new System.Drawing.Size(100, 20);
+            this.scalePanel.TabIndex = 7;
+            this.scalePanel.Value = 0F;
+            // 
             // deadzonePanel
             // 
             this.deadzonePanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -115,27 +129,13 @@
             this.deadzonePanel.TabIndex = 6;
             this.deadzonePanel.Value = 0F;
             // 
-            // scalePanel
-            // 
-            this.scalePanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.scalePanel.Location = new System.Drawing.Point(1, 31);
-            this.scalePanel.Max = 10F;
-            this.scalePanel.Min = -10F;
-            this.scalePanel.MinimumSize = new System.Drawing.Size(95, 20);
-            this.scalePanel.Name = "scalePanel";
-            this.scalePanel.Scalar = null;
-            this.scalePanel.Size = new System.Drawing.Size(100, 20);
-            this.scalePanel.TabIndex = 7;
-            this.scalePanel.Value = 0F;
-            // 
             // KinectAxisPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.anchorScaleSplit);
             this.Controls.Add(this.stateLabel);
-            this.Controls.Add(this.pushPanel);
+            this.Controls.Add(this.rawPanel);
             this.Controls.Add(this.label1);
             this.MinimumSize = new System.Drawing.Size(235, 83);
             this.Name = "KinectAxisPanel";
@@ -153,7 +153,7 @@
 
         private Chimera.GUI.Controls.Plugins.ConstrainedAxisPanel constrainedAxisPanel;
         private System.Windows.Forms.Label label1;
-        private Chimera.GUI.UpdatedScalarPanel pushPanel;
+        private Chimera.GUI.UpdatedScalarPanel rawPanel;
         private System.Windows.Forms.Label stateLabel;
         private System.Windows.Forms.SplitContainer anchorScaleSplit;
         private Chimera.GUI.UpdatedScalarPanel scalePanel;
