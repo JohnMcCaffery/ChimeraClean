@@ -14,8 +14,8 @@ git pull
 
 cd C:\Users\OpenVirtualWorlds\Desktop\Opensim-Timespan\
 start "OpenSim" /MAX OpenSim.exe
-cd C:\Users\OpenVirtualWorlds\Documents\John\Chimera\Bin\
+cd C:\Users\OpenVirtualWorlds\Documents\John\Chimera\
 
 timeout 60
 
-Chimera.exe
+launch.bat

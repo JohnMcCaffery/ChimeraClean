@@ -88,6 +88,6 @@ namespace Chimera {
         /// <summary>
         /// Restart the output.
         /// </summary>
-        void Restart();
+        void Restart(string reason);
     }
 }

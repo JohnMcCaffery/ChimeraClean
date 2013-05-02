@@ -23,6 +23,7 @@ using System.Linq;
 using System.Text;
 using Chimera.Interfaces.Overlay;
 using System.IO;
+using Chimera.Util;
 
 namespace Chimera.Overlay {
     public class StateManager {
@@ -233,9 +234,7 @@ namespace Chimera.Overlay {
 
             table += "</TABLE>" + Environment.NewLine;
 
-            string file = Path.GetFullPath("../Logs/" + reason + "Stats" + DateTime.Now.ToString("dd.mm.yy-HH.mm") + ".html");
-            Console.WriteLine("Dumping " + reason + " to " + file);
-            File.WriteAllText(file, table);
+            ProcessWrangler.Dump(table, ".html");
         }
     }
 }

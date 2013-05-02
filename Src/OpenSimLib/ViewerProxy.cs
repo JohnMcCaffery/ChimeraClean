@@ -279,25 +279,6 @@ namespace Chimera.OpenSim {
 
         private void mClient_Exited(object sender, EventArgs e) {
             bool unexpected = !mClosing;
-            if (unexpected) {
-                Console.WriteLine("Viewer shutdown unexpectedly");
-                string dump = "Viewer crashed at " + DateTime.Now.ToString("u") + Environment.NewLine;
-                dump += " Login: " + mFirstName + " " + mLastName + Environment.NewLine;
-                dump += " Exe: " + mConfig.ViewerExecutable + Environment.NewLine;
-                dump += " Dir: " + mConfig.ViewerWorkingDirectory + Environment.NewLine + Environment.NewLine;
-                dump += "Log: " + Environment.NewLine;
-                string username = Environment.UserName;
-                foreach (string line in File.ReadAllLines("C:\\Users\\" + username + "\\AppData\\Roaming\\Firestorm\\logs\\Firestorm.log"))
-                    dump += line + Environment.NewLine;
-                dump += Environment.NewLine + Environment.NewLine + "---------------- End of Viewer Crash report -------------" + Environment.NewLine + Environment.NewLine;
-
-                Thread.Sleep(1000);
-                //File.AppendAllText(mConfig.CrashLogFile, dump);
-                string file = Path.GetFullPath("../Logs/FirestormCrash" + DateTime.Now.ToString("dd.mm.yy-HH.mm") + ".log");
-                Console.WriteLine("Writing log to " + file);
-                File.WriteAllText(file, dump);
-                Console.WriteLine("Log dumped.");
-            }
             mClosing = false;
             mClientLoggedIn = false;
             if (OnViewerExit != null)
@@ -305,7 +286,7 @@ namespace Chimera.OpenSim {
             lock (processLock)
                 Monitor.PulseAll(processLock);
             if (mAutoRestart && unexpected) {
-                Restart();
+                Restart("Crash");
             }
         }
 
@@ -510,8 +491,25 @@ namespace Chimera.OpenSim {
                 CloseViewer();
         }
 
-        public void Restart() {
+        public void Restart(string reason) {
             Console.WriteLine("Restarting viewer");
+
+            Console.WriteLine("Viewer shutdown unexpectedly");
+            string dump = "Viewer crashed at " + DateTime.Now.ToString("u") + Environment.NewLine;
+            dump += " Login: " + mFirstName + " " + mLastName + Environment.NewLine;
+            dump += " Exe: " + mConfig.ViewerExecutable + Environment.NewLine;
+            dump += " Dir: " + mConfig.ViewerWorkingDirectory + Environment.NewLine + Environment.NewLine;
+            dump += "Log: " + Environment.NewLine;
+            if (reason == "Crash") {
+                Thread.Sleep(1000);
+                string username = Environment.UserName;
+                foreach (string line in File.ReadAllLines("C:\\Users\\" + username + "\\AppData\\Roaming\\Firestorm\\logs\\Firestorm.log"))
+                    dump += line + Environment.NewLine;
+            }
+            dump += Environment.NewLine + Environment.NewLine + "---------------- End of Viewer Crash report -------------" + Environment.NewLine + Environment.NewLine;
+
+            ProcessWrangler.Dump(dump, "-" + reason + "-FS.log");
+
             //if (mClientLoggedIn) {
                 CloseViewer();
                 Thread.Sleep(1000);
@@ -585,7 +583,7 @@ namespace Chimera.OpenSim {
                     //Console.WriteLine("Control mode: " + coordinator.ControlMode);
 
                     if (mRestartOnTimeout)
-                        Restart();
+                        Restart("Timeout");
                     else {
                         ClearCamera();
                         SetCamera();

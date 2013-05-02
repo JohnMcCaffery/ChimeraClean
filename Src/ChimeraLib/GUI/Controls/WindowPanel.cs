@@ -209,7 +209,7 @@ namespace Chimera.GUI.Controls {
             mWindow.Coordinator.StateManager.Reset();
             mWindow.OverlayManager.MoveCursorOffScreen();
             if (mWindow.Output != null)
-                mWindow.Output.Restart();
+                mWindow.Output.Restart("User");
         }
 
         private void distancePanel_ValueChanged(float obj) {

@@ -24,14 +24,14 @@ namespace Chimera.Kinect {
             Nui.SetAutoPoll(true);
 
             mInit = true;
-            Vector hipC = Nui.joint(Nui.Hip_Centre);
+            Vector hipR = Nui.joint(Nui.Hip_Right);
             Vector handR = Nui.joint(Nui.Hand_Right);
             Vector handL = Nui.joint(Nui.Hand_Left);
-            Condition heightThresholdR = Nui.y(handR) > Nui.y(hipC);
-            Condition heightThresholdL = Nui.y(handL) > Nui.y(hipC);
+            Condition heightThresholdR = Nui.y(handR) > Nui.y(hipR);
+            Condition heightThresholdL = Nui.y(handL) > Nui.y(hipR);
             Condition heightThreshold = C.Or(heightThresholdL, heightThresholdR);
 
-            Scalar dist = Nui.magnitude(Nui.joint(Nui.Shoulder_Centre) - hipC);
+            Scalar dist = Nui.magnitude(Nui.joint(Nui.Shoulder_Centre) - Nui.joint(Nui.Hip_Centre));
             Condition distanceThresholdR = Nui.x(handR - Nui.joint(Nui.Hip_Right)) > dist;
             Condition distanceThresholdL = Nui.x(Nui.joint(Nui.Hip_Left) - handL) > dist;
             //Condition distanceThresholdR = Nui.magnitude(handR - hipR) > dist;
