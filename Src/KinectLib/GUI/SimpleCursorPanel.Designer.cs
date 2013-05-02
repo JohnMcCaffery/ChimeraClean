@@ -632,10 +632,11 @@ namespace Chimera.Kinect.GUI {
             this.SmoothingFactor.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.SmoothingFactor.Location = new System.Drawing.Point(96, 3);
-            this.SmoothingFactor.Max = 10F;
-            this.SmoothingFactor.Min = -10F;
+            this.SmoothingFactor.Max = 20F;
+            this.SmoothingFactor.Min = 0F;
             this.SmoothingFactor.MinimumSize = new System.Drawing.Size(95, 20);
             this.SmoothingFactor.Name = "SmoothingFactor";
+            this.SmoothingFactor.Scalar = null;
             this.SmoothingFactor.Size = new System.Drawing.Size(906, 20);
             this.SmoothingFactor.TabIndex = 32;
             this.SmoothingFactor.Value = 0F;
