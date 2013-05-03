@@ -68,26 +68,28 @@ namespace Chimera.GUI.Controls.Plugins {
             // 
             // scalePanel
             // 
-            this.scalePanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.scalePanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.scalePanel.Location = new System.Drawing.Point(68, 31);
             this.scalePanel.Max = 10F;
-            this.scalePanel.Min = 0F;
+            this.scalePanel.Min = -10F;
             this.scalePanel.MinimumSize = new System.Drawing.Size(95, 20);
             this.scalePanel.Name = "scalePanel";
+            this.scalePanel.Scalar = null;
             this.scalePanel.Size = new System.Drawing.Size(95, 20);
             this.scalePanel.TabIndex = 3;
             this.scalePanel.Value = 0F;
             // 
             // deadzonePanel
             // 
-            this.deadzonePanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.deadzonePanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.deadzonePanel.Location = new System.Drawing.Point(68, 5);
             this.deadzonePanel.Max = 100F;
             this.deadzonePanel.Min = 0F;
             this.deadzonePanel.MinimumSize = new System.Drawing.Size(95, 20);
             this.deadzonePanel.Name = "deadzonePanel";
+            this.deadzonePanel.Scalar = null;
             this.deadzonePanel.Size = new System.Drawing.Size(95, 20);
             this.deadzonePanel.TabIndex = 0;
             this.deadzonePanel.Value = 0F;

@@ -42,14 +42,25 @@ namespace Chimera.Launcher {
 
         protected override ISystemPlugin[] GetInputs() {
             return new ISystemPlugin[] { 
+                //Control
                 new KBMousePlugin(), 
+                new XBoxControllerPlugin(),
+                mMainWindowProxy,
+
+                //Flythrough
                 new FlythroughPlugin(), 
-                new KinectCamera(), 
-                new SimpleCursor(),
-                new RaiseArmHelpTrigger(),
+
+                //Overlay
                 new MousePlugin(), 
+
+                //Heightmap
                 new HeightmapPlugin(), 
-                mMainWindowProxy 
+
+                //Kinect
+                //new KinectCamera(),
+                //new KinectMovementPlugin(),
+                //new SimpleKinectCursor(),
+                //new RaiseArmHelpTrigger()
             };
         }
 

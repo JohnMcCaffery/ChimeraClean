@@ -155,7 +155,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PointCursor.cs" />
     <Compile Include="RaiseArmHelpTrigger.cs" />
-    <Compile Include="SimpleCursor.cs" />
+    <Compile Include="SimpleKinectCursor.cs" />
     <Compile Include="Axes\TwistAxis.cs" />
   </ItemGroup>
   <ItemGroup>
