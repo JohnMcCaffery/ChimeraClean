@@ -27,7 +27,6 @@ using NuiLibDotNet;
 using C = NuiLibDotNet.Condition;
 using Chimera.GUI.Controls.Plugins;
 using Chimera.Kinect.GUI.Axes;
-using Chimera.Kinect.Interfaces;
 using System.Windows.Forms;
 
 namespace Chimera.Kinect.Axes {

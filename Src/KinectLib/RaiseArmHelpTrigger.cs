@@ -21,14 +21,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Chimera.Kinect.Interfaces;
 using System.Windows.Forms;
 using Chimera.Kinect.GUI;
 using NuiLibDotNet;
 using C = NuiLibDotNet.Condition;
 
 namespace Chimera.Kinect {
-    public class RaiseArmHelpTrigger : ISystemPlugin, IHelpTrigger {
+    public class RaiseArmHelpTrigger : ISystemPlugin {
         private RaiseArmHelpTriggerPanel mPanel;
         private bool mEnabled = true;
 
@@ -54,7 +53,7 @@ namespace Chimera.Kinect {
 
         private Coordinator mCoordinator;
 
-        public event Action<IHelpTrigger> Triggered;
+        public event Action<RaiseArmHelpTrigger> Triggered;
 
         public UserControl ControlPanel {
             get {

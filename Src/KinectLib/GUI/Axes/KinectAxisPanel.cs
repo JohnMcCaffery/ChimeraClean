@@ -9,7 +9,6 @@ using System.Windows.Forms;
 using Chimera.Kinect.Axes;
 using NuiLibDotNet;
 using Chimera.Plugins;
-using Chimera.Kinect.Interfaces;
 
 namespace Chimera.Kinect.GUI.Axes {
     public partial class KinectAxisPanel : UserControl {

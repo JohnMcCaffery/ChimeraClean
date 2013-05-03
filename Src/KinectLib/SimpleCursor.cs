@@ -28,15 +28,10 @@ using System.Windows.Forms;
 using Chimera.Kinect.GUI;
 using Chimera.Util;
 using OpenMetaverse;
-using Chimera.Kinect.Interfaces;
 using Chimera.Overlay;
 
 namespace Chimera.Kinect {
-    public class SimpleCursorFactory : IKinectCursorFactory {
-        public IKinectCursor Make() { return new SimpleCursor(); }
-        public string Name { get { return "Simple X/Y Cursor"; } }
-    }
-    public class SimpleCursor : ISystemPlugin, IKinectCursor {
+    public class SimpleCursor : ISystemPlugin {
         private SimpleCursorPanel mPanel;
         private Vector mHandR;
         private Vector mHandL;
@@ -178,11 +173,11 @@ namespace Chimera.Kinect {
 
         #region IKinectCursorWindow Members
 
-        public event Action<IKinectCursor> CursorEnter;
+        public event Action<SimpleCursor> CursorEnter;
 
-        public event Action<IKinectCursor> CursorLeave;
+        public event Action<SimpleCursor> CursorLeave;
 
-        public event Action<IKinectCursor, float, float> CursorMove;
+        public event Action<SimpleCursor, float, float> CursorMove;
 
         public event Action<IPlugin, bool> EnabledChanged;
 
@@ -220,8 +215,6 @@ namespace Chimera.Kinect {
                 }
             }
         }
-
-        public void Init(IKinectController controller, Window window) { }
 
         #endregion
 

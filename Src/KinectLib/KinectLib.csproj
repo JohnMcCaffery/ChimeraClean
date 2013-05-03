@@ -124,26 +124,13 @@
     <Compile Include="Overlay\SkeletonFoundTrigger.cs" />
     <Compile Include="Axes\PushAxis.cs" />
     <Compile Include="Axes\TAxis.cs" />
-    <Compile Include="TimespanAxisPlugin.cs" />
-    <Compile Include="TimespanMovementInput.cs" />
+    <Compile Include="KinectMovementPlugin.cs" />
     <Compile Include="DolphinMovementInput.cs" />
-    <Compile Include="GUI\TimespanMovementPanel.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="GUI\TimespanMovementPanel.Designer.cs">
-      <DependentUpon>TimespanMovementPanel.cs</DependentUpon>
-    </Compile>
     <Compile Include="GUI\DolphinMovementPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="GUI\DolphinMovementPanel.Designer.cs">
       <DependentUpon>DolphinMovementPanel.cs</DependentUpon>
-    </Compile>
-    <Compile Include="GUI\Axes\KinectPanel.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="GUI\Axes\KinectPanel.Designer.cs">
-      <DependentUpon>KinectPanel.cs</DependentUpon>
     </Compile>
     <Compile Include="GUI\PointCursorPanel.cs">
       <SubType>UserControl</SubType>
@@ -164,11 +151,7 @@
       <DependentUpon>SimpleCursorPanel.cs</DependentUpon>
     </Compile>
     <Compile Include="GUI\Updaters.cs" />
-    <Compile Include="Interfaces\IHelpTrigger.cs" />
-    <Compile Include="Interfaces\IKinectController.cs" />
-    <Compile Include="Interfaces\IKinectCursor.cs" />
     <Compile Include="KinectConfig.cs" />
-    <Compile Include="KinectInput.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PointCursor.cs" />
     <Compile Include="RaiseArmHelpTrigger.cs" />
@@ -195,14 +178,8 @@
     <EmbeddedResource Include="GUI\Axes\KinectAxisPanel.resx">
       <DependentUpon>KinectAxisPanel.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="GUI\TimespanMovementPanel.resx">
-      <DependentUpon>TimespanMovementPanel.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="GUI\DolphinMovementPanel.resx">
       <DependentUpon>DolphinMovementPanel.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="GUI\Axes\KinectPanel.resx">
-      <DependentUpon>KinectPanel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\PointCursorPanel.resx">
       <DependentUpon>PointCursorPanel.cs</DependentUpon>
