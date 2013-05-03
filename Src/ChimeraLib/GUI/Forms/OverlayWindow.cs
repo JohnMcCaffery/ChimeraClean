@@ -203,5 +203,13 @@ namespace Chimera.GUI.Forms {
         internal void StopPlayback() {
             videoPlayer.Ctlcontrols.stop();
         }
+
+        private void OverlayWindow_MouseDown(object sender, MouseEventArgs e) {
+            mManager.Press(0);
+        }
+
+        private void OverlayWindow_MouseUp(object sender, MouseEventArgs e) {
+            mManager.Release(0);
+        }
     }
 }

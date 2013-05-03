@@ -26,6 +26,15 @@ using System.Drawing;
 
 namespace Chimera.Overlay.Drawables {
     public abstract class Text : IDrawable {
+        public static RectangleF GetBounds(Text text, Rectangle clip) {
+            using (Bitmap b = new Bitmap(1, 1)) {
+                using (Graphics g = Graphics.FromImage(b)) {
+                    SizeF size = g.MeasureString(text.TextString, text.Font);
+                    return new RectangleF(text.Position.X, text.Position.Y, size.Width / clip.Width, size.Height / clip.Height);
+                }
+            }
+        }
+
         private string mText;
         private bool mActive;
         private string mWindow;

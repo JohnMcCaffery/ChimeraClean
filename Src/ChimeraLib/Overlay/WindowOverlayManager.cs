@@ -78,6 +78,10 @@ namespace Chimera.Overlay {
         /// The configuration for this manager.
         /// </summary>
         private WindowConfig mConfig;
+        /// <summary>
+        /// Id's of any input devices pressing on the screen.
+        /// </summary>
+        private HashSet<int> mPressedIDs;
 
         /// <summary>
         /// Triggered when the overlay window is launched.
@@ -91,6 +95,15 @@ namespace Chimera.Overlay {
         /// Triggered whenever the position of the cursor on this input changes.
         /// </summary>
         public event Action<WindowOverlayManager, EventArgs> CursorMoved;
+        /// <summary>
+        /// Triggered whenever a device presses onto the screen.
+        /// Mouse clicks will register as index 0.
+        /// </summary>
+        public event Action<int> OnPress;
+        /// <summary>
+        /// Triggered whenever a device releases its pressure on the screen onto the screen.
+        /// Mouse clicks will register as index 0.
+        public event Action<int> OnRelease;
         /// <summary>
         /// Triggered whenever a video that has been played through the interface finishes.
         /// </summary>
@@ -256,6 +269,20 @@ namespace Chimera.Overlay {
 
             if (CursorMoved != null && (mWindow.Monitor.Bounds.Contains(MonitorCursor) || wasOn))
                 CursorMoved(this, null);
+        }
+
+        public void Press(int index) {
+            mPressedIDs.Add(index);
+            if (OnPress != null)
+                OnPress(index);
+        }
+
+        public void Release(int index) {
+            if (mPressedIDs.Contains(index)) {
+                mPressedIDs.Remove(index);
+                if (OnRelease != null)
+                    OnRelease(index);
+            }
         }
 
         /// <summary>

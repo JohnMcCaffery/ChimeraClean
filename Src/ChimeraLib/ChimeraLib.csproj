@@ -132,6 +132,9 @@
       <DependentUpon>SplitAxisPanel.cs</DependentUpon>
     </Compile>
     <Compile Include="Overlay\OverlayConfig.cs" />
+    <Compile Include="Overlay\Triggers\ClickTrigger.cs" />
+    <Compile Include="Overlay\Triggers\TextClickTrigger.cs" />
+    <Compile Include="Overlay\Triggers\ImageClickTrigger.cs" />
     <Compile Include="Plugins\AxisBasedDelta.cs" />
     <Compile Include="Plugins\ConstrainedAxis.cs" />
     <Compile Include="Plugins\SelectablePlugin.cs" />
