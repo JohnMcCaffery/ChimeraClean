@@ -209,7 +209,7 @@ namespace Chimera.Flythrough {
                 prev = current;
             }
 
-            evt.SequenceStartTime = NextStart(prev);
+            evt.SequenceStartTime = prev == null ? 0 : prev.SequenceStartTime;
             if (prev != null)
                 prev.SequenceStartTime = NextStart(evt);
 
