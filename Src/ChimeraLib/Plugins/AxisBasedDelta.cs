@@ -27,12 +27,14 @@ using Chimera.Util;
 using System.Windows.Forms;
 using Chimera.GUI.Controls.Plugins;
 using System.Drawing;
+using System.IO;
 
 namespace Chimera.Plugins {
     public class AxisBasedDelta : DeltaBasedPlugin, ISystemPlugin {
         private readonly List<IAxis> mAxes = new List<IAxis>();
         private readonly string mName;
         private ITickSource mSource;
+        private AxisConfig mConfig;
 
         private AxisBasedDeltaPanel mPanel;
         private float mScale = 1f;
@@ -74,6 +76,7 @@ namespace Chimera.Plugins {
         /// <param name="axes"></param>
         public AxisBasedDelta(string name, params IAxis[] axes) {
             mName = name;
+            mConfig = new AxisConfig(name);
 
             int i = 0;
             if (axes.Length > i && axes[i] != null && axes[i].Binding == AxisBinding.None)
@@ -100,6 +103,11 @@ namespace Chimera.Plugins {
             mAxes.Add(axis);
             if (mSource != null && axis is ITickListener)
                 (axis as ITickListener).Init(mSource);
+            if (axis is ConstrainedAxis) {
+                ConstrainedAxis ax = axis as ConstrainedAxis;
+                ax.Deadzone.Value = AxConfig.GetDeadzone(axis.Name);
+                ax.Scale.Value  = AxConfig.GetScale(axis.Name);
+            }
             if (AxisAdded != null)
                 AxisAdded(axis);
         }
@@ -170,5 +178,35 @@ namespace Chimera.Plugins {
         public override void Draw(Func<Vector3, Point> to2D, Graphics graphics, Action redraw) { }
 
         #endregion
+
+        protected virtual AxisConfig AxConfig {
+            get { return mConfig; }
+        }
+
+        public class AxisConfig : ConfigBase {
+            private string mType;
+
+            public AxisConfig(string type)
+                : base("Movement", Path.GetFullPath("../Config/" + type + ".ini"), new string[0]) {
+                mType = type;
+            }
+
+            public override string Group {
+                get { return mType + "Movement"; }
+            }
+
+            protected override void InitConfig() {
+                Get(false, "Deadzone|X|", .1f, "The deadzone for axis |X|.");
+                Get(false, "Scale|X|", .1f, "The scale factor for axis |X|.");
+            }
+
+            public float GetDeadzone(string name) {
+                return Get(false, "Deadzone" + name, .1f, "");
+            }
+
+            public float GetScale(string name) {
+                return Get(false, "Scale" + name, 1f, "");
+            }
+        }
     }
 }

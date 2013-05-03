@@ -70,7 +70,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GamepadManager.cs" />
-    <Compile Include="XBoxControllerDelta.cs" />
+    <Compile Include="XBoxControllerPlugin.cs" />
     <Compile Include="TriggerAxis.cs" />
     <Compile Include="GUI\JoystickPanel.cs">
       <SubType>UserControl</SubType>

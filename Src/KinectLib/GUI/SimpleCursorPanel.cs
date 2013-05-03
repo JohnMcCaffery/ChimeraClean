@@ -28,19 +28,19 @@ using System.Windows.Forms;
 
 namespace Chimera.Kinect.GUI {
     public partial class SimpleCursorPanel : UserControl {
-        private SimpleCursor mInput;
+        private SimpleKinectCursor mInput;
 
         public SimpleCursorPanel() {
             InitializeComponent();
         }
 
-        public SimpleCursorPanel(SimpleCursor cursor)
+        public SimpleCursorPanel(SimpleKinectCursor cursor)
             : this() {
 
             Init(cursor);
         }
 
-        public void Init(SimpleCursor input) {
+        public void Init(SimpleKinectCursor input) {
             mInput = input;
 
             Anchor.Vector = new VectorUpdater(mInput.Anchor);

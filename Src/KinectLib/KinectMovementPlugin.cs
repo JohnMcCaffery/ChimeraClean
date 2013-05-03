@@ -9,7 +9,7 @@ using Chimera.Interfaces;
 namespace Chimera.Kinect {
     public class KinectMovementPlugin : AxisBasedDelta {
         public KinectMovementPlugin()
-            : base("KinectMovent",
+            : base("KinectMovement",
                 new PushAxis(true, AxisBinding.X),
                 new PushAxis(false, AxisBinding.X),
                 new TAxis(true, AxisBinding.Z),
