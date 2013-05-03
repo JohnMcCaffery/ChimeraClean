@@ -108,6 +108,9 @@ namespace Chimera.Plugins {
                 ax.Deadzone.Value = AxConfig.GetDeadzone(axis.Name);
                 ax.Scale.Value  = AxConfig.GetScale(axis.Name);
             }
+            AxisBinding binding = AxConfig.GetBinding(axis.Name);
+            if (binding != AxisBinding.None)
+                axis.Binding = binding;
             if (AxisAdded != null)
                 AxisAdded(axis);
         }
@@ -198,6 +201,7 @@ namespace Chimera.Plugins {
             protected override void InitConfig() {
                 Get(false, "Deadzone|X|", .1f, "The deadzone for axis |X|.");
                 Get(false, "Scale|X|", .1f, "The scale factor for axis |X|.");
+                Get(false, "Binding|X|", "None", "The camera axis binding for axis |X|.");
             }
 
             public float GetDeadzone(string name) {
@@ -206,6 +210,18 @@ namespace Chimera.Plugins {
 
             public float GetScale(string name) {
                 return Get(false, "Scale" + name, 1f, "");
+            }
+
+            public AxisBinding GetBinding(string name) {
+                string binding = Get(false, "Binding" + name, "None", "");
+                switch (binding.ToUpper()) {
+                    case "X": return AxisBinding.X;
+                    case "Y": return AxisBinding.Y;
+                    case "Z": return AxisBinding.Z;
+                    case "Pitch": return AxisBinding.Pitch;
+                    case "Yaw": return AxisBinding.Yaw;
+                }
+                return AxisBinding.None;
             }
         }
     }
