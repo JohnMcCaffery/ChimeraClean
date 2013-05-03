@@ -66,6 +66,7 @@ namespace Chimera.Flythrough {
 
         /// <summary>
         /// Get the value of a specific value through the sequence.
+        /// Time is taken as starting from 0 at the start of the sequence.
         /// </summary>
         /// <param name="value">The value through the sequence to get the position for.</param>
         public FlythroughEvent<T> this[int time] {

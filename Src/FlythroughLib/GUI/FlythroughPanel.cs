@@ -282,8 +282,9 @@ namespace Chimera.Flythrough.GUI {
 
         private void takeCurrentCameraButton_Click(object sender, EventArgs e) {
             if (mContainer != null) {
+                Rotation orientation = mContainer.Coordinator.Orientation;
                 startPositionPanel.Value = mContainer.Coordinator.Position;
-                startOrientationPanel.Value = new Rotation(mContainer.Coordinator.Orientation);
+                startOrientationPanel.Value = new Rotation(orientation);
             }
         }
 
