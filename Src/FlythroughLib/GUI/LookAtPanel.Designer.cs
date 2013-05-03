@@ -56,9 +56,9 @@ namespace Chimera.Flythrough.GUI {
             // 
             this.moveToTakeCurrentButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.moveToTakeCurrentButton.Location = new System.Drawing.Point(0, 125);
+            this.moveToTakeCurrentButton.Location = new System.Drawing.Point(0, 154);
             this.moveToTakeCurrentButton.Name = "moveToTakeCurrentButton";
-            this.moveToTakeCurrentButton.Size = new System.Drawing.Size(216, 23);
+            this.moveToTakeCurrentButton.Size = new System.Drawing.Size(114, 23);
             this.moveToTakeCurrentButton.TabIndex = 11;
             this.moveToTakeCurrentButton.Text = "Take Current";
             this.moveToTakeCurrentButton.UseVisualStyleBackColor = true;
@@ -66,6 +66,8 @@ namespace Chimera.Flythrough.GUI {
             // 
             // lengthValue
             // 
+            this.lengthValue.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.lengthValue.Increment = new decimal(new int[] {
             50,
             0,
@@ -78,7 +80,7 @@ namespace Chimera.Flythrough.GUI {
             0,
             0});
             this.lengthValue.Name = "lengthValue";
-            this.lengthValue.Size = new System.Drawing.Size(60, 20);
+            this.lengthValue.Size = new System.Drawing.Size(46, 20);
             this.lengthValue.TabIndex = 13;
             this.lengthValue.Value = new decimal(new int[] {
             5000,
@@ -100,13 +102,13 @@ namespace Chimera.Flythrough.GUI {
             this.targetVectorPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.targetVectorPanel.Location = new System.Drawing.Point(0, 0);
-            this.targetVectorPanel.Max = 20489F;
+            this.targetVectorPanel.Max = 256F;
             this.targetVectorPanel.MaxV = ((OpenMetaverse.Vector3)(resources.GetObject("targetVectorPanel.MaxV")));
-            this.targetVectorPanel.Min = -2048F;
+            this.targetVectorPanel.Min = 0F;
             this.targetVectorPanel.MinimumSize = new System.Drawing.Size(103, 95);
             this.targetVectorPanel.MinV = ((OpenMetaverse.Vector3)(resources.GetObject("targetVectorPanel.MinV")));
             this.targetVectorPanel.Name = "targetVectorPanel";
-            this.targetVectorPanel.Size = new System.Drawing.Size(216, 98);
+            this.targetVectorPanel.Size = new System.Drawing.Size(114, 98);
             this.targetVectorPanel.TabIndex = 10;
             this.targetVectorPanel.Value = ((OpenMetaverse.Vector3)(resources.GetObject("targetVectorPanel.Value")));
             this.targetVectorPanel.X = 128F;
@@ -117,9 +119,9 @@ namespace Chimera.Flythrough.GUI {
             // 
             this.progressBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.progressBar.Location = new System.Drawing.Point(0, 154);
+            this.progressBar.Location = new System.Drawing.Point(0, 183);
             this.progressBar.Name = "progressBar";
-            this.progressBar.Size = new System.Drawing.Size(216, 23);
+            this.progressBar.Size = new System.Drawing.Size(114, 23);
             this.progressBar.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
             this.progressBar.TabIndex = 14;
             // 
@@ -127,9 +129,9 @@ namespace Chimera.Flythrough.GUI {
             // 
             this.goToTargetButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.goToTargetButton.Location = new System.Drawing.Point(134, 99);
+            this.goToTargetButton.Location = new System.Drawing.Point(0, 125);
             this.goToTargetButton.Name = "goToTargetButton";
-            this.goToTargetButton.Size = new System.Drawing.Size(82, 23);
+            this.goToTargetButton.Size = new System.Drawing.Size(114, 23);
             this.goToTargetButton.TabIndex = 15;
             this.goToTargetButton.Text = "Go To Target";
             this.goToTargetButton.UseVisualStyleBackColor = true;
@@ -145,9 +147,9 @@ namespace Chimera.Flythrough.GUI {
             this.Controls.Add(this.Length);
             this.Controls.Add(this.moveToTakeCurrentButton);
             this.Controls.Add(this.targetVectorPanel);
-            this.MinimumSize = new System.Drawing.Size(216, 179);
+            this.MinimumSize = new System.Drawing.Size(114, 207);
             this.Name = "LookAtPanel";
-            this.Size = new System.Drawing.Size(216, 179);
+            this.Size = new System.Drawing.Size(114, 207);
             ((System.ComponentModel.ISupportInitialize)(this.lengthValue)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

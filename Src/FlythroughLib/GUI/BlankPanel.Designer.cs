@@ -50,6 +50,8 @@ namespace Chimera.Flythrough.GUI {
             // 
             // lengthValue
             // 
+            this.lengthValue.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.lengthValue.Increment = new decimal(new int[] {
             50,
             0,
@@ -62,7 +64,7 @@ namespace Chimera.Flythrough.GUI {
             0,
             0});
             this.lengthValue.Name = "lengthValue";
-            this.lengthValue.Size = new System.Drawing.Size(60, 20);
+            this.lengthValue.Size = new System.Drawing.Size(61, 20);
             this.lengthValue.TabIndex = 15;
             this.lengthValue.Value = new decimal(new int[] {
             5000,
@@ -85,7 +87,7 @@ namespace Chimera.Flythrough.GUI {
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.progressBar.Location = new System.Drawing.Point(4, 29);
             this.progressBar.Name = "progressBar";
-            this.progressBar.Size = new System.Drawing.Size(455, 23);
+            this.progressBar.Size = new System.Drawing.Size(123, 23);
             this.progressBar.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
             this.progressBar.TabIndex = 16;
             // 
@@ -96,8 +98,9 @@ namespace Chimera.Flythrough.GUI {
             this.Controls.Add(this.progressBar);
             this.Controls.Add(this.lengthValue);
             this.Controls.Add(this.Length);
+            this.MinimumSize = new System.Drawing.Size(130, 57);
             this.Name = "BlankPanel";
-            this.Size = new System.Drawing.Size(462, 156);
+            this.Size = new System.Drawing.Size(130, 57);
             ((System.ComponentModel.ISupportInitialize)(this.lengthValue)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
