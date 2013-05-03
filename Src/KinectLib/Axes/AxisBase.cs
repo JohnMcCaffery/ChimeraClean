@@ -5,7 +5,6 @@ using System.Text;
 using Chimera.Plugins;
 using Chimera.Interfaces;
 using NuiLibDotNet;
-using Chimera.Kinect.Interfaces;
 
 namespace Chimera.Kinect.Axes {
     public class AxisBase : KinectAxis {

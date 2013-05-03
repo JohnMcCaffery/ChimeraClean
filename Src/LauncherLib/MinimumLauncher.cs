@@ -21,7 +21,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Chimera.Kinect.Interfaces;
 using Chimera.Kinect;
 using Chimera.Plugins;
 using Chimera.OpenSim;
@@ -43,14 +42,13 @@ namespace Chimera.Launcher {
 
         protected override ISystemPlugin[] GetInputs() {
             return new ISystemPlugin[] { 
+                new KBMousePlugin(), 
+                new FlythroughPlugin(), 
                 new KinectCamera(), 
-                new TimespanAxisPlugin(),
                 new SimpleCursor(),
                 new RaiseArmHelpTrigger(),
-                new KBMousePlugin(), 
                 new MousePlugin(), 
                 new HeightmapPlugin(), 
-                new FlythroughPlugin(), 
                 mMainWindowProxy 
             };
         }

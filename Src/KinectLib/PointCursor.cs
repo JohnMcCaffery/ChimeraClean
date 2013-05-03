@@ -28,17 +28,11 @@ using System.Windows.Forms;
 using System.Drawing;
 using Chimera.Util;
 using C = NuiLibDotNet.Condition;
-using Chimera.Kinect.Interfaces;
 
 namespace Chimera.Kinect {
-    public class PointCursorFactory : IKinectCursorFactory {
-        public IKinectCursor Make() { return new PointCursor(); }
-        public string Name { get { return "Ray Tracing Pointer"; } }
-    }
-    public class PointCursor : ISystemPlugin, IKinectCursor {
+    public class PointCursor : ISystemPlugin {
         public static float SCALE = 1000f;
 
-        private IKinectController mController;
         private Window mWindow;
         private Rotation mOrientation;
         private Vector mPlaneTopLeft, mPlaneNormal;
@@ -107,7 +101,8 @@ namespace Chimera.Kinect {
             mScreenH.Value = mWindow.Monitor.Bounds.Height;
 
             Vector3 topLeft = mWindow.TopLeft;
-            topLeft -= mController.Position;
+            //TODO - this should be set as property
+            topLeft -= Vector3.Zero;
             topLeft *= mOrientation.Quaternion;
 
             Vector3 normal = mWindow.Orientation.LookAtVector * mOrientation.Quaternion;
@@ -122,11 +117,11 @@ namespace Chimera.Kinect {
 
         #region IKinectCursor
 
-        public event Action<IKinectCursor> CursorEnter;
+        public event Action<PointCursor> CursorEnter;
 
-        public event Action<IKinectCursor> CursorLeave;
+        public event Action<PointCursor> CursorLeave;
 
-        public event Action<IKinectCursor, float, float> CursorMove;
+        public event Action<PointCursor, float, float> CursorMove;
 
         public event Action<IPlugin, bool> EnabledChanged;
 
@@ -165,10 +160,10 @@ namespace Chimera.Kinect {
             }
         }
 
-        public void Init(IKinectController controller, Window window) {
-            mController = controller;
+        public void Init(Window window) {
             mWindow = window;
-            mOrientation = controller.Orientation;
+            //TODO - this should be set properly - as a property
+            mOrientation = Rotation.Zero;
 
             mOrientation.Changed += orientation_Changed;
             mWindow.Changed += (win, args) => ConfigureFromWindow();
@@ -222,8 +217,6 @@ namespace Chimera.Kinect {
             mY.Name = "Y";
 
             ConfigureFromWindow();
-            mController.PositionChanged += SetPosition;
-            mController.OrientationChanged += SetOrientation;
 
             Nui.Tick += Tick;
         }

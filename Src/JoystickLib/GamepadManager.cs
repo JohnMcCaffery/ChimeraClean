@@ -34,6 +34,8 @@ namespace Joystick {
             get { 
                 if (sController == null)
                     GetController();
+                if (!sController.IsConnected)
+                    sController = null;
                 return sController != null && sController.IsConnected; 
             }
         }
