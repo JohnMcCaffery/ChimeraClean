@@ -57,10 +57,10 @@ namespace Chimera.Launcher {
                 new HeightmapPlugin(), 
 
                 //Kinect
-                //new KinectCamera(),
-                //new KinectMovementPlugin(),
-                //new SimpleKinectCursor(),
-                //new RaiseArmHelpTrigger()
+                new KinectCamera(),
+                new KinectMovementPlugin(),
+                new SimpleKinectCursor(),
+                new RaiseArmHelpTrigger()
             };
         }
 
