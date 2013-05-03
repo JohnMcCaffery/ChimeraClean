@@ -26,12 +26,13 @@ using System.Drawing;
 using Chimera.Interfaces.Overlay;
 
 namespace Chimera.Overlay.Triggers {
-    public class TextHoverTrigger : HoverTrigger, IDrawable {
+    public class TextClickTrigger : ClickTrigger, IDrawable {
         private Text mText;
         private bool mActive;
+        private Rectangle mClip;
 
-        public TextHoverTrigger(WindowOverlayManager manager, IHoverSelectorRenderer renderer, Text text, Rectangle clip)
-            : base(manager, renderer, Text.GetBounds(text, clip)) {
+        public TextClickTrigger(WindowOverlayManager manager, Text text, Rectangle clip)
+            : base(manager, Text.GetBounds(text, clip)) {
                 mText = text;
                 Clip = clip;
         }
@@ -43,15 +44,15 @@ namespace Chimera.Overlay.Triggers {
 
         #region IDrawable Members
 
-        public override Rectangle Clip {
-            get { return base.Clip; }
+        public Rectangle Clip {
+            get { return mClip; }
             set {
-                base.Clip = value;
+                mClip = value;
                 mText.Clip = value;
             }
         }
 
-        public override bool Active {
+        public bool Active {
             get { return mActive; }
             set { 
                 mActive = value;
@@ -59,8 +60,8 @@ namespace Chimera.Overlay.Triggers {
             }
         }
 
-        public override bool NeedsRedrawn {
-            get { return mText.NeedsRedrawn || base.NeedsRedrawn; }
+        public bool NeedsRedrawn {
+            get { return mText.NeedsRedrawn; }
         }
 
         string IDrawable.Window {
@@ -69,12 +70,10 @@ namespace Chimera.Overlay.Triggers {
 
         void IDrawable.DrawStatic(Graphics graphics) {
             mText.DrawStatic(graphics);
-            base.DrawStatic(graphics);
         }
 
         void IDrawable.DrawDynamic(Graphics graphics) {
             mText.DrawDynamic(graphics);
-            base.DrawDynamic(graphics);
         }
 
         #endregion
