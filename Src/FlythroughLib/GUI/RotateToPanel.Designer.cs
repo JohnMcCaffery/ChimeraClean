@@ -43,7 +43,7 @@ namespace Chimera.Flythrough.GUI {
         /// </summary>
         private void InitializeComponent() {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RotateToPanel));
-            Chimera.Util.Rotation rotation2 = new Chimera.Util.Rotation();
+            Chimera.Util.Rotation rotation4 = new Chimera.Util.Rotation();
             this.rotateToTakeCurrentButton = new System.Windows.Forms.Button();
             this.lengthValue = new System.Windows.Forms.NumericUpDown();
             this.Length = new System.Windows.Forms.Label();
@@ -99,9 +99,9 @@ namespace Chimera.Flythrough.GUI {
             // 
             // progressBar
             // 
-            this.progressBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.progressBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.progressBar.Location = new System.Drawing.Point(0, 154);
+            this.progressBar.Location = new System.Drawing.Point(0, 156);
             this.progressBar.Name = "progressBar";
             this.progressBar.Size = new System.Drawing.Size(133, 23);
             this.progressBar.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
@@ -118,11 +118,11 @@ namespace Chimera.Flythrough.GUI {
             this.rotationPanel.Quaternion = ((OpenMetaverse.Quaternion)(resources.GetObject("rotationPanel.Quaternion")));
             this.rotationPanel.Size = new System.Drawing.Size(133, 95);
             this.rotationPanel.TabIndex = 24;
-            rotation2.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("rotation2.LookAtVector")));
-            rotation2.Pitch = 0D;
-            rotation2.Quaternion = ((OpenMetaverse.Quaternion)(resources.GetObject("rotation2.Quaternion")));
-            rotation2.Yaw = 0D;
-            this.rotationPanel.Value = rotation2;
+            rotation4.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("rotation4.LookAtVector")));
+            rotation4.Pitch = 0D;
+            rotation4.Quaternion = ((OpenMetaverse.Quaternion)(resources.GetObject("rotation4.Quaternion")));
+            rotation4.Yaw = 0D;
+            this.rotationPanel.Value = rotation4;
             this.rotationPanel.Yaw = 0D;
             // 
             // RotateToPanel
