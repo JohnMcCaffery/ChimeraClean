@@ -1505,19 +1505,11 @@ namespace Chimera.Util {
             Console.WriteLine(e.Message);
             Console.WriteLine(e.StackTrace);
             sRoot.OnCrash(e);
-            if (sRoot.AutoRestart) {
-                Console.WriteLine("Auto re-starting.");
-                string entry = Assembly.GetEntryAssembly().Location;
-                string call = Assembly.GetCallingAssembly().Location;
-                string exe = Assembly.GetExecutingAssembly().Location;
-                InitProcess(Assembly.GetEntryAssembly().Location).Start();
-            }
             throw e;
             //Environment.Exit(42);
         }
 
         public static void Dump(string dump, string end) {
-            //File.AppendAllText(mCrashLogFile, dump);
             string t = DateTime.Now.ToString("dd-HH.mm");
             string y = DateTime.Now.ToString("yyyy");
             string m = DateTime.Now.ToString("MMM");

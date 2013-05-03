@@ -131,6 +131,7 @@
     <Compile Include="GUI\Controls\Plugins\SplitAxisPanel.Designer.cs">
       <DependentUpon>SplitAxisPanel.cs</DependentUpon>
     </Compile>
+    <Compile Include="Overlay\OverlayConfig.cs" />
     <Compile Include="Plugins\AxisBasedDelta.cs" />
     <Compile Include="Plugins\ConstrainedAxis.cs" />
     <Compile Include="Plugins\SelectablePlugin.cs" />

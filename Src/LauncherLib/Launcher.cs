@@ -28,6 +28,7 @@ using Chimera.Overlay;
 using System.Drawing;
 using Chimera.Interfaces.Overlay;
 using Chimera.Kinect.Overlay;
+using Chimera.Overlay.Transitions;
 
 namespace Chimera.Launcher {
     public abstract class Launcher {
@@ -47,8 +48,21 @@ namespace Chimera.Launcher {
 
         public Launcher(params string[] args) {
             mCoordinator = new Coordinator(GetWindows(), GetInputs());
-            if (new OverlayConfig(args).InitOverlay)
+            OverlayConfig cfg = new OverlayConfig(args);
+            if (cfg.InitOverlay) {
                 InitOverlay();
+                State home = mCoordinator.StateManager.States.FirstOrDefault(s => s.Name == cfg.HomeState);
+                if (cfg.IdleState != "None") {
+                    State idle = mCoordinator.StateManager.States.FirstOrDefault(s => s.Name == cfg.IdleState);
+                    if (idle != null && home != null)
+                        InitIdle(idle, home, new OpacityFadeInTransitionFactory(5000), new OpacityFadeOutTransitionFactory(5000), cfg.IdleTimeoutMs);
+                    else
+                        Console.WriteLine("Unable to create idle state. The idle state specified (" + cfg.IdleState + ") was not found.");
+                }
+
+                if (home != null)
+                    mCoordinator.StateManager.CurrentState = home;
+            }
         }
 
         protected abstract ISystemPlugin[] GetInputs();
