@@ -56,9 +56,9 @@ namespace Chimera.Flythrough.GUI {
             // 
             this.moveToTakeCurrentButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.moveToTakeCurrentButton.Location = new System.Drawing.Point(219, 99);
+            this.moveToTakeCurrentButton.Location = new System.Drawing.Point(0, 125);
             this.moveToTakeCurrentButton.Name = "moveToTakeCurrentButton";
-            this.moveToTakeCurrentButton.Size = new System.Drawing.Size(106, 23);
+            this.moveToTakeCurrentButton.Size = new System.Drawing.Size(216, 23);
             this.moveToTakeCurrentButton.TabIndex = 11;
             this.moveToTakeCurrentButton.Text = "Take Current";
             this.moveToTakeCurrentButton.UseVisualStyleBackColor = true;
@@ -99,15 +99,14 @@ namespace Chimera.Flythrough.GUI {
             // 
             this.targetVectorPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.targetVectorPanel.Text = "Move To Target";
             this.targetVectorPanel.Location = new System.Drawing.Point(0, 0);
-            this.targetVectorPanel.Max = 20489f;
+            this.targetVectorPanel.Max = 20489F;
             this.targetVectorPanel.MaxV = ((OpenMetaverse.Vector3)(resources.GetObject("targetVectorPanel.MaxV")));
-            this.targetVectorPanel.Min = -2048f;
+            this.targetVectorPanel.Min = -2048F;
             this.targetVectorPanel.MinimumSize = new System.Drawing.Size(103, 95);
             this.targetVectorPanel.MinV = ((OpenMetaverse.Vector3)(resources.GetObject("targetVectorPanel.MinV")));
             this.targetVectorPanel.Name = "targetVectorPanel";
-            this.targetVectorPanel.Size = new System.Drawing.Size(325, 98);
+            this.targetVectorPanel.Size = new System.Drawing.Size(216, 98);
             this.targetVectorPanel.TabIndex = 10;
             this.targetVectorPanel.Value = ((OpenMetaverse.Vector3)(resources.GetObject("targetVectorPanel.Value")));
             this.targetVectorPanel.X = 128F;
@@ -118,17 +117,19 @@ namespace Chimera.Flythrough.GUI {
             // 
             this.progressBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.progressBar.Location = new System.Drawing.Point(3, 125);
+            this.progressBar.Location = new System.Drawing.Point(0, 154);
             this.progressBar.Name = "progressBar";
-            this.progressBar.Size = new System.Drawing.Size(322, 23);
+            this.progressBar.Size = new System.Drawing.Size(216, 23);
             this.progressBar.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
             this.progressBar.TabIndex = 14;
             // 
             // goToTargetButton
             // 
+            this.goToTargetButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.goToTargetButton.Location = new System.Drawing.Point(134, 99);
             this.goToTargetButton.Name = "goToTargetButton";
-            this.goToTargetButton.Size = new System.Drawing.Size(79, 23);
+            this.goToTargetButton.Size = new System.Drawing.Size(82, 23);
             this.goToTargetButton.TabIndex = 15;
             this.goToTargetButton.Text = "Go To Target";
             this.goToTargetButton.UseVisualStyleBackColor = true;
@@ -144,9 +145,9 @@ namespace Chimera.Flythrough.GUI {
             this.Controls.Add(this.Length);
             this.Controls.Add(this.moveToTakeCurrentButton);
             this.Controls.Add(this.targetVectorPanel);
-            this.MinimumSize = new System.Drawing.Size(214, 149);
+            this.MinimumSize = new System.Drawing.Size(216, 179);
             this.Name = "LookAtPanel";
-            this.Size = new System.Drawing.Size(325, 149);
+            this.Size = new System.Drawing.Size(216, 179);
             ((System.ComponentModel.ISupportInitialize)(this.lengthValue)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

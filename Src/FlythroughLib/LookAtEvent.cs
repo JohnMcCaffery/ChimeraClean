@@ -96,10 +96,12 @@ namespace Chimera.Flythrough {
                 if (mPositions == null)
                     return Rotation.Zero;
 
-                time += GlobalStartTime;
-                Vector3 pos = mPositions.Length >= time ?
-                    mPositions[time].Value :
-                    mPositions.FinishValue;
+                Vector3 pos = mPositions.FinishValue;
+                time += SequenceStartTime;
+                if (mPositions.Length >= time && mPositions.Length > 0) {
+                    FlythroughEvent<Vector3> evt = mPositions[time];
+                    pos = evt[time - evt.SequenceStartTime];
+                }
                 return new Rotation(mTarget - pos); 
             }
         }
