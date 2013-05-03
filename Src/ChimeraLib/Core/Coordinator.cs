@@ -554,11 +554,6 @@ namespace Chimera {
                 Closed(this, null);
         }
 
-        public bool AutoRestart {
-            //get { return mConfig.AutoRestart; }
-            get { return false; }
-        }
-
         private DateTime mStart = DateTime.Now;
 
         /// <summary>
