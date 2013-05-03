@@ -1517,6 +1517,25 @@ namespace Chimera.Util {
             if (!Directory.Exists(Path.GetDirectoryName(file)))
                 Directory.CreateDirectory(Path.GetDirectoryName(file));
             Console.WriteLine("Dumping to " + file);
-            File.WriteAllText(file, dump);}
+
+            if (new DumpConfig().Dump)
+                File.WriteAllText(file, dump);
+        }
+
+        private class DumpConfig : ConfigBase {
+            public bool Dump;
+
+            public DumpConfig()
+                : base() {
+            }
+
+            public override string Group {
+                get { return "Dump"; }
+            }
+
+            protected override void InitConfig() {
+                Dump = Get(true, "DumpLogs", true, "Whether to write logs which are dumped via the ProcessWrangler.Dump method.");
+            }
+        }
     }
 }
