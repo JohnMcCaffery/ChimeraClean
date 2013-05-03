@@ -22,6 +22,11 @@ cscript shutdown1.vbs
 timeout 1
 cscript shutdown2.vbs
 
+git pull
+git add Logs/*
+git commit -m "Shutdown log push - %DATE% %TIME% "
+git push
+
 shutdown.exe /s /t 00
 
 GOTO :EOF
