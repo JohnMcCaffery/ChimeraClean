@@ -72,7 +72,8 @@ namespace Chimera.Core {
                 mPosition = value;
                 Redraw();
             }
-        }
+        }
+
         public Vector3 RelativePosition {
             get { 
                 Vector3 big = Room.Big - mPosition; 
@@ -282,7 +283,8 @@ namespace Chimera.Core {
             mWindow.Height = TopLeft.Z - BottomLeft.Z;
             mWindow.Orientation.Quaternion = new Rotation(0.0, mOrientation.Yaw).Quaternion;
             mWindow.TopLeft = TopLeft;
-        }
+        }
+
         private void ConfigureProjector() {
             double w = mWindow.Width / mW;
             double screenDistance = w * mThrowRatio;
@@ -371,31 +373,12 @@ namespace Chimera.Core {
                                 g.DrawString(String.Format("X: {0:.#}cm", RelativePosition.X / 10f), SystemFonts.DefaultFont, Brushes.Black, to2D(Room.Anchor + mPosition + (toFar / 2f)));
                                 g.DrawLine(p2, pos, to2D(Room.Anchor + mPosition + toFar));
                             }
+
+                            //TODO w,h,d
                         }
-
-
-                        /*
-                        Vector3 up = new Vector3(0f, 0f, mH / 2f);
-                        Vector3 middleY = new Vector3(mD / 2, 0f, 0f);
-                        Vector3 down = new Vector3(0f, 0f, mH / -2f);
-                        */
                     }
                 }
             }
-        }
-
-        private void DrawXDetails(Graphics g, Point pos, Func<Vector3, Point> to2D, Vector3 toSide) {
-            using (Pen p2 = new Pen(Color.Black, 2f)) {
-            }
-
-            //g.DrawString(String.Format("Width: {0:.#}cm", mW / 10f), SystemFonts.DefaultFont, Brushes.Black, to2D(backBottomLeftCorner + middleY));
-            //g.DrawString(String.Format("Height: {0:.#}cm", mH / 10f), SystemFonts.DefaultFont, Brushes.Black, to2D(frontBottomRightCorner + up));
-            //g.DrawString(String.Format("Depth: {0:.#}cm", mD / 10f), SystemFonts.DefaultFont, Brushes.Black, to2D(Room.Anchor + down));
-
-        }
-        private void DrawYDetails(Graphics g, Point pos, Func<Vector3, Point> to2D, Vector3 toScreen, Vector3 floor, Vector3 clearance, Vector3 toClearance, Vector3 toCeiling, Vector3 toFar) {
-        }
-        private void DrawZDetails(Graphics g, Point pos, Func<Vector3, Point> to2D, Vector3 toScreen, Vector3 toFar, Vector3 toSide) {
         }
 
         private bool Contains(Vector3 p, Vector3[] wall) {
