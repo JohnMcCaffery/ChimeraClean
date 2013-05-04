@@ -23,6 +23,7 @@ using System.Linq;
 using System.Text;
 using Chimera.Util;
 using System.IO;
+using Chimera.Config;
 
 namespace Chimera.OpenSim {
     internal class ProxyConfig : ConfigBase {

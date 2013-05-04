@@ -524,10 +524,6 @@ namespace Chimera.Util {
         }
         */
 
-        public static IConfigSource AddFile(IConfigSource config, out string file) {
-            file = Get(config.Configs["General"], "File", AppDomain.CurrentDomain.SetupInformation.ConfigurationFile);
-            return AddFile(config, file);
-        }
         public static IConfigSource AddFile(IConfigSource config, string file) {
             if (File.Exists(file) && Path.GetExtension(file).ToUpper().Equals(".CONFIG")) {
                 try {

@@ -25,6 +25,7 @@ using Chimera.GUI.Controls.Plugins;
 using Chimera.Util;
 using OpenMetaverse;
 using System.Drawing;
+using Chimera.Config;
 
 namespace Chimera.Plugins {
     public class PluginSelector : ISystemPlugin {

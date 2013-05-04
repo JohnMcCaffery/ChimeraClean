@@ -32,6 +32,7 @@ using Joystick.GUI;
 using OSVector = OpenMetaverse.Vector3;
 using SlimDX.XInput;
 using Chimera.Plugins;
+using Chimera.Config;
 
 namespace Joystick{
     public class JoystickInput : DeltaBasedPlugin {

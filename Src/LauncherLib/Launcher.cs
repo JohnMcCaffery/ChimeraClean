@@ -29,6 +29,7 @@ using System.Drawing;
 using Chimera.Interfaces.Overlay;
 using Chimera.Kinect.Overlay;
 using Chimera.Overlay.Transitions;
+using Chimera.Config;
 
 namespace Chimera.Launcher {
     public abstract class Launcher {

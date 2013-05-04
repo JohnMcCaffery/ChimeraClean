@@ -27,6 +27,7 @@ using Chimera.GUI.Forms;
 using System.Windows.Forms;
 using Chimera.Interfaces.Overlay;
 using Chimera.Util;
+using Chimera.Config;
 
 namespace Chimera.Overlay {
     public class WindowOverlayManager {
@@ -81,7 +82,7 @@ namespace Chimera.Overlay {
         /// <summary>
         /// The configuration for this manager.
         /// </summary>
-        private WindowConfig mConfig;
+        private OverlayConfig mConfig;
 
         /// <summary>
         /// Triggered when the overlay window is launched.
@@ -321,7 +322,7 @@ namespace Chimera.Overlay {
         public WindowOverlayManager(Window window) {
             mWindow = window;
 
-            mConfig = new WindowConfig(mWindow.Name);
+            mConfig = new OverlayConfig();
             mOverlayActive = mConfig.LaunchOverlay;
             mControlPointer = mConfig.ControlPointer;
             mOverlayFullscreen = mConfig.Fullscreen;

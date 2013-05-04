@@ -31,6 +31,7 @@ using System.Threading;
 using Chimera.Flythrough.GUI;
 using Chimera.Flythrough;
 using System.Drawing;
+using Chimera.Config;
 
 namespace Chimera.Flythrough {
     public struct Camera {

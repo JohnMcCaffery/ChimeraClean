@@ -27,6 +27,7 @@ using System.Text;
 using System.Windows.Forms;
 using NuiLibDotNet;
 using OpenMetaverse;
+using Chimera.Config;
 
 namespace Chimera.Kinect.GUI {
     public partial class KinectCamera : UserControl, ISystemPlugin {
@@ -162,7 +163,7 @@ namespace Chimera.Kinect.GUI {
             get { throw new NotImplementedException(); }
         }
 
-        public Util.ConfigBase Config {
+        public ConfigBase Config {
             get { throw new NotImplementedException(); }
         }
 

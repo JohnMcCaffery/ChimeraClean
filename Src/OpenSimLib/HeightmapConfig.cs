@@ -23,6 +23,7 @@ using System.Linq;
 using System.Text;
 using Chimera.Util;
 using OpenMetaverse;
+using Chimera.Config;
 
 namespace Chimera.OpenSim {
     public class HeightmapConfig : ConfigBase {
