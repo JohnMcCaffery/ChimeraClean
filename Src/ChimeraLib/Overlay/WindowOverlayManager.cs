@@ -31,6 +31,10 @@ using Chimera.Util;
 namespace Chimera.Overlay {
     public class WindowOverlayManager {
         /// <summary>
+        /// Id's of any input devices pressing on the screen.
+        /// </summary>
+        private readonly HashSet<int> mPressedIDs = new HashSet<int>();
+        /// <summary>
         /// Where on the window the cursor is.
         /// </summary>
         private double mCursorX;
@@ -78,10 +82,6 @@ namespace Chimera.Overlay {
         /// The configuration for this manager.
         /// </summary>
         private WindowConfig mConfig;
-        /// <summary>
-        /// Id's of any input devices pressing on the screen.
-        /// </summary>
-        private HashSet<int> mPressedIDs;
 
         /// <summary>
         /// Triggered when the overlay window is launched.
