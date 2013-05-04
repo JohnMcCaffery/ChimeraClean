@@ -22,18 +22,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Chimera.Util;
-using Chimera.Config;
 
-namespace Chimera.Flythrough {
-    class FlythroughConfig : ConfigBase {
-        public bool Enabled;
+namespace Chimera.Config {
+    class PluginConfig : ConfigBase {
+        public bool KeyboardEnabled;
+        public bool MouseEnabled;
 
         public override string Group {
-            get { return "Flythrough"; }
+            get { return "Inputs"; }
         }
 
         protected override void InitConfig() {
-            Enabled = Get(true, "Active", true, "Whether to allow the flythrough form to control the camera at the start.");
+            KeyboardEnabled = Get(true, "KeyboardEnabled", true, "Whether to take input transition the keyboard at the beginning.");
+            MouseEnabled = Get(true, "MouseEnabled", true, "Whether to use the mouse to control the cursor transition the beginning.");
         }
     }
 }

@@ -100,6 +100,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Config\ConfigFolderBase.cs" />
     <Compile Include="Core\Projector.cs" />
     <Compile Include="GUI\Controls\Plugins\AxisBasedDeltaPanel.cs">
       <SubType>UserControl</SubType>
@@ -131,7 +132,7 @@
     <Compile Include="GUI\Controls\Plugins\SplitAxisPanel.Designer.cs">
       <DependentUpon>SplitAxisPanel.cs</DependentUpon>
     </Compile>
-    <Compile Include="Overlay\OverlayConfig.cs" />
+    <Compile Include="Config\OverlayConfig.cs" />
     <Compile Include="Overlay\Triggers\ClickTrigger.cs" />
     <Compile Include="Overlay\Triggers\TextClickTrigger.cs" />
     <Compile Include="Overlay\Triggers\ImageClickTrigger.cs" />
@@ -156,8 +157,8 @@
     <Compile Include="Overlay\States\VideoState.cs" />
     <Compile Include="Overlay\Transitions\BitmapFade.cs" />
     <Compile Include="Overlay\Transitions\BitmapWindowTransition.cs" />
-    <Compile Include="Core\CoordinatorConfig.cs" />
-    <Compile Include="Core\WindowConfig.cs" />
+    <Compile Include="Config\CoordinatorConfig.cs" />
+    <Compile Include="Config\WindowConfig.cs" />
     <Compile Include="Overlay\Transitions\OpacityFadeWindowTransition.cs" />
     <Compile Include="Overlay\Transitions\CutWindowTransition.cs" />
     <Compile Include="Overlay\Triggers\CameraPositionTrigger.cs" />
@@ -203,7 +204,7 @@
     </Compile>
     <Compile Include="Interfaces\Overlay\IHoverSelectorRenderer.cs" />
     <Compile Include="Interfaces\Overlay\IDrawable.cs" />
-    <Compile Include="Plugins\PluginConfig.cs" />
+    <Compile Include="Config\PluginConfig.cs" />
     <Compile Include="Interfaces\IPlugin.cs" />
     <Compile Include="Plugins\DeltaBasedPlugin.cs" />
     <Compile Include="Plugins\MousePlugin.cs" />
@@ -238,7 +239,7 @@
     <Compile Include="Overlay\Triggers\SimpleTrigger.cs" />
     <Compile Include="Overlay\Triggers\TextHoverTrigger.cs" />
     <Compile Include="Util\StatisticsServer.cs" />
-    <Compile Include="Util\ConfigBase.cs" />
+    <Compile Include="Config\ConfigBase.cs" />
     <Compile Include="Util\Init.cs" />
     <Compile Include="Util\ProcessWrangler.cs" />
     <Compile Include="Util\Rotation.cs" />

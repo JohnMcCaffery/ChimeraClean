@@ -30,6 +30,7 @@ using Chimera.GUI.Forms;
 using Chimera.Interfaces;
 using Chimera.Overlay;
 using Chimera.Core;
+using Chimera.Config;
 
 namespace Chimera {
     /// <summary>
@@ -103,10 +104,6 @@ namespace Chimera {
         /// </summary>
         private Screen mMonitor;
         /// <summary>
-        /// Whether to use mouse control when the window first starts up.
-        /// </summary>
-        private bool mMouseControl = false;
-        /// <summary>
         /// Whether to link horizontal and vertical field of view's so that when one changes the aspect ratio is preserved.
         /// </summary>
         private bool mLinkFoVs = true;
@@ -153,7 +150,6 @@ namespace Chimera {
 
             WindowConfig cfg = new WindowConfig(name);
             mMonitor = Screen.AllScreens.FirstOrDefault(s => s.DeviceName.Equals(cfg.Monitor));
-            mMouseControl = cfg.ControlPointer;
             mWidth = cfg.Width;
             mHeight = cfg.Height;
             mTopLeft = cfg.TopLeft;

@@ -27,7 +27,8 @@ using System.Windows.Forms;
 using Chimera;
 using OpenMetaverse;
 using Chimera.Kinect;
-using Chimera.Kinect.Interfaces;
+using Nini.Config;
+using System.Configuration;
 
 namespace Test {
     public class Program {
@@ -45,6 +46,19 @@ namespace Test {
 
         [STAThread]
         public static void Main(string[] args) {
+            DotNetConfigSource dotnet = new DotNetConfigSource();
+            ArgvConfigSource arg = new ArgvConfigSource(args);
+
+            dotnet.Merge(arg);
+
+            arg.AddSwitch("Test", "Test", "t");
+
+            string test = arg.Configs["Test"].Get("Test");
+            string test2 = dotnet.Configs["appSettings"].Get("Test");
+
+            Console.WriteLine(test);
+
+            /*
             mPointStart = Vector.Create("PointStart", 0f, 0f, 0f);
             mPointDir = Vector.Create("PointDir", 0f, 0f, 0f);
 
@@ -68,6 +82,7 @@ namespace Test {
             //form.Begin();
             Form form = new KinectCursorForm(cursor, window);
             ProcessWrangler.BlockingRunForm(form, null);
+            */
         }
 
         private static void Init() {

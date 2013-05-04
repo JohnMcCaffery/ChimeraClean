@@ -28,6 +28,7 @@ using System.Windows.Forms;
 using System.Drawing;
 using Chimera.Util;
 using C = NuiLibDotNet.Condition;
+using Chimera.Config;
 
 namespace Chimera.Kinect {
     public class PointCursor : ISystemPlugin {

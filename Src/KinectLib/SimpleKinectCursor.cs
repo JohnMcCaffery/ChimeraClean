@@ -29,6 +29,7 @@ using Chimera.Kinect.GUI;
 using Chimera.Util;
 using OpenMetaverse;
 using Chimera.Overlay;
+using Chimera.Config;
 
 namespace Chimera.Kinect {
     public class SimpleKinectCursor : ISystemPlugin {

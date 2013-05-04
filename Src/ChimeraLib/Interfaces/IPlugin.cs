@@ -25,6 +25,7 @@ using System.Windows.Forms;
 using System.Drawing;
 using Chimera.Util;
 using OpenMetaverse;
+using Chimera.Config;
 
 namespace Chimera {
     public interface IPlugin {
