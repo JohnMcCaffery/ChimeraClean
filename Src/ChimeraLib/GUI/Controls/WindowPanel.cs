@@ -25,6 +25,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using Chimera.Core;
 
 namespace Chimera.GUI.Controls {
     public partial class WindowPanel : UserControl {
@@ -58,25 +59,6 @@ namespace Chimera.GUI.Controls {
             mWindow.Changed += new Action<Window, EventArgs>(mWindow_Changed);
             mWindow.Coordinator.Tick += mTickListener;
 
-            projectorAspectRatio.Value = new decimal(mWindow.Projector.AspectRatio);
-            projectorThrowRatioPanel.Value = mWindow.Projector.ThrowRatio;
-            projectorRoomPositionPanel.Value = mWindow.Projector.RoomPosition / 10f;
-            projectorPositionPanel.Value = mWindow.Projector.Position / 10f;
-            projectorWallDistancePanel.Value = mWindow.Projector.WallDistance / 10f;
-            projectorOrientationPanel.Value = mWindow.Projector.Orientation;
-            projectorDrawCheck.Checked = mWindow.Projector.DrawDiagram;
-            projectorDrawRoomCheck.Checked = mWindow.Projector.DrawRoom;
-            projectorDrawLabelsCheck.Checked = mWindow.Projector.DrawLabels;
-            projectorAutoUpdateCheck.Checked = mWindow.Projector.AutoUpdate;
-
-            projectorDrawRoomCheck.Enabled = mWindow.Projector.DrawDiagram;
-            projectorDrawLabelsCheck.Enabled = mWindow.Projector.DrawDiagram;
-            projectorAutoUpdateCheck.Enabled = mWindow.Projector.DrawDiagram;
-
-            projectorOrientationPanel.Text = "Orientation (cm)";
-            projectorPositionPanel.Text = "Position (cm)";
-            projectorRoomPositionPanel.Text = "EyePosition (cm)";
-
             foreach (var screen in Screen.AllScreens) {
                 monitorPulldown.Items.Add(screen);
                 if (screen.DeviceName.Equals(window.Monitor.DeviceName))
@@ -99,12 +81,15 @@ namespace Chimera.GUI.Controls {
                 mWindow.OverlayManager.Launch();
             }
 
+            projectorPanel.Projector = mWindow.Projector;
             mWindow_Changed(window, null);
         }
 
         private void Coordinator_Tick() {
-            if (Created && !IsDisposed && !Disposing && mWindow.OverlayManager.Statistics != null)
+            if (Created && !IsDisposed && !Disposing)
                 BeginInvoke(new Action(() => {
+                    if (mWindow.OverlayManager.Statistics == null)
+                        return;
                     tpsLabel.Text = "Ticks / Second: " + mWindow.OverlayManager.Statistics.TicksPerSecond;
 
                     meanTickLabel.Text = "Mean Tick Length: " + mWindow.OverlayManager.Statistics.MeanTickLength;
@@ -299,50 +284,6 @@ namespace Chimera.GUI.Controls {
         private void drawEyeCheck_CheckedChanged(object sender, EventArgs e) {
             mWindow.DrawEye = drawEyeCheck.Checked;
             mWindow.Projector.Redraw();
-        }
-
-        private void projectorDrawCheck_CheckedChanged(object sender, EventArgs e) {
-            mWindow.Projector.DrawDiagram = projectorDrawCheck.Checked;
-
-            projectorDrawRoomCheck.Enabled = mWindow.Projector.DrawDiagram;
-            projectorDrawLabelsCheck.Enabled = mWindow.Projector.DrawDiagram;
-            projectorAutoUpdateCheck.Enabled = mWindow.Projector.DrawDiagram;
-        }
-
-        private void projectorAspectRatio_ValueChanged(object sender, EventArgs e) {
-            mWindow.Projector.AspectRatio = (float)decimal.ToDouble(projectorAspectRatio.Value);
-        }
-
-        private void throwRatioPanel_ValueChanged(float obj) {
-            mWindow.Projector.ThrowRatio = projectorThrowRatioPanel.Value;
-        }
-
-        private void projectorPositionPanel_ValueChanged(object sender, EventArgs e) {
-            mWindow.Projector.Position = projectorPositionPanel.Value * 10f;
-        }
-
-        private void wallDistancePanel_ValueChanged(float obj) {
-            mWindow.Projector.WallDistance = projectorWallDistancePanel.Value * 10f;
-        }
-
-        private void projectorEyePosition_ValueChanged(object sender, EventArgs e) {
-            mWindow.Projector.RoomPosition = projectorRoomPositionPanel.Value * 10f;
-        }
-
-        private void projectorConfigureWindowButton_Click(object sender, EventArgs e) {
-            mWindow.Projector.ConfigureWindow();
-        }
-
-        private void projectorDrawRoomChecked_CheckedChanged(object sender, EventArgs e) {
-            mWindow.Projector.DrawRoom = projectorDrawRoomCheck.Checked;
-        }
-
-        private void projectorDrawLabelsCheck_CheckedChanged(object sender, EventArgs e) {
-            mWindow.Projector.DrawLabels = projectorDrawLabelsCheck.Checked;
-        }
-
-        private void projectorAutoUpdate_CheckedChanged(object sender, EventArgs e) {
-            mWindow.Projector.AutoUpdate = projectorAutoUpdateCheck.Checked;
         }
     }
 }

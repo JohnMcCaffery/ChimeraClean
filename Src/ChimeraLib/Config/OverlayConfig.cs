@@ -31,10 +31,10 @@ namespace Chimera.Config {
             IdleState = Get(true, "IdleState", "None", "The state which the system should launch when idle. If not set no idle state will be configured.");
             IdleTimeoutMs = Get(true, "IdleTimeout", 30000, "How long the system should be left alone for before it's considered idle.");
 
-            LaunchOverlay = Get(false, "LaunchOverlay", false, "Whether to launch an overlay for this window at startup.");
-            Fullscreen = Get(false, "Fullscreen", false, "Whether to launch the overlay fullscreen.");
-            ControlPointer = Get(false, "ControlPointer", false, "Whether the overlay should take control of the pointer and move it when the pointer is over the window.");
-            AlwaysOnTop = Get(false, "AlwaysOnTop", true, "Whether the overlay window should force itself to stay on top at all times or let it's order in the Z buffer be freely decided.");
+            LaunchOverlay = Get(true, "LaunchOverlay", false, "Whether to launch an overlay for this window at startup.");
+            Fullscreen = Get(true, "Fullscreen", false, "Whether to launch the overlay fullscreen.");
+            ControlPointer = Get(true, "ControlPointer", false, "Whether the overlay should take control of the pointer and move it when the pointer is over the window.");
+            AlwaysOnTop = Get(true, "AlwaysOnTop", true, "Whether the overlay window should force itself to stay on top at all times or let it's order in the Z buffer be freely decided.");
         }
     }
 }
