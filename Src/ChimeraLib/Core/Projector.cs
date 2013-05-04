@@ -376,25 +376,15 @@ namespace Chimera.Core {
                             }
 
                             Vector3 s = Room.Big - Room.Small;
-                            string w = String.Format("Width: {0:.#}", s.Y);
-                            string h = String.Format("Height: {0:.#}", s.Z);
-                            string d = String.Format("Depth: {0:.#}", s.X);
-
-                            SizeF lH = g.MeasureString(h, font);
-                            SizeF lD = g.MeasureString(d, font);
-
                             Vector3 edgeB = Room.Big + Room.Anchor;
                             Vector3 edgeS = Room.Small + Room.Anchor;
                             Vector3 centre = (s / 2f) + Room.Anchor;
 
-                            //TODO w,h,d
+                            string w = String.Format("Width: {0:.#}", s.Y);
+                            string h = String.Format("Height: {0:.#}", s.Z);
+                            string d = String.Format("Depth: {0:.#}", s.X);
+
                             if (perspective == Perspective.X) {
-                                //Vector3 p = new Vector3(0f, (s.Y / 2f) - (lW.Width / 2f), edge.Z + lW.Height);
-                                //g.DrawString(w, font, Brushes.Black, to2D(p));
-
-                                //p = new Vector3(0f, s.Z + 5f, (Room.Big.Z / 2f) - (lH.Height / 2f));
-                                //g.DrawString(h, font, Brushes.Black, to2D(p));
-
                                 PH(g, new Vector3(0f, edgeB.Y, centre.Z), h, to2D, font);
                                 PW(g, new Vector3(0f, centre.Y, edgeS.Z), w, to2D, font);
                             }
