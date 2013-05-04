@@ -349,36 +349,80 @@ namespace Chimera.Core {
                         Vector3 clearance = new Vector3(0f, 0f, Clearance);
                         Vector3 toClearance = floor + clearance;
 
+                        Font font = SystemFonts.DefaultFont;
 
                         using (Pen p2 = new Pen(Color.Black, 2f)) {
                             g.DrawLine(p2, pos, to2D(Room.Anchor + mPosition + toScreen));
-                            g.DrawString(String.Format("To Screen: {0:.#}cm", ScreenDistance / 10f), SystemFonts.DefaultFont, Brushes.Black, to2D(Room.Anchor + mPosition + (toScreen / 2f)));
+                            g.DrawString(String.Format("To Screen: {0:.#}cm", ScreenDistance / 10f), font, Brushes.Black, to2D(Room.Anchor + mPosition + (toScreen / 2f)));
 
                             if (perspective == Perspective.X || perspective == Perspective.Y) {
                                 Vector3 toCeiling = new Vector3(0f, 0f, RelativePosition.Z);
 
-                                g.DrawString(String.Format("Z: {0:.#}cm", RelativePosition.Z / 10f), SystemFonts.DefaultFont, Brushes.Black, to2D(Room.Anchor + mPosition + (toCeiling / 2f)));
+                                g.DrawString(String.Format("Z: {0:.#}cm", RelativePosition.Z / 10f), font, Brushes.Black, to2D(Room.Anchor + mPosition + (toCeiling / 2f)));
                                 g.DrawLine(p2, pos, to2D(Room.Anchor + mPosition + toCeiling));
 
-                                g.DrawString(String.Format("Clearance: {0:.#}cm", Clearance / 10f), SystemFonts.DefaultFont, Brushes.Black, to2D(floor + (clearance / 2f)));
+                                g.DrawString(String.Format("Clearance: {0:.#}cm", Clearance / 10f), font, Brushes.Black, to2D(floor + (clearance / 2f)));
                                 g.DrawLine(p2, to2D(floor), to2D(toClearance));
                             } if (perspective == Perspective.X || perspective == Perspective.Z) {
                                 Vector3 toSide = new Vector3(0f, RelativePosition.Y, 0f);
 
-                                g.DrawString(String.Format("Y: {0:.#}cm", RelativePosition.Y / 10f), SystemFonts.DefaultFont, Brushes.Black, to2D(Room.Anchor + mPosition + (toSide / 2f)));
+                                g.DrawString(String.Format("Y: {0:.#}cm", RelativePosition.Y / 10f), font, Brushes.Black, to2D(Room.Anchor + mPosition + (toSide / 2f)));
                                 g.DrawLine(p2, pos, to2D(Room.Anchor + mPosition + toSide));
                             } if (perspective == Perspective.Y || perspective == Perspective.Z) {
                                 Vector3 toFar = new Vector3(RelativePosition.X, 0f, 0f);
 
-                                g.DrawString(String.Format("X: {0:.#}cm", RelativePosition.X / 10f), SystemFonts.DefaultFont, Brushes.Black, to2D(Room.Anchor + mPosition + (toFar / 2f)));
+                                g.DrawString(String.Format("X: {0:.#}cm", RelativePosition.X / 10f), font, Brushes.Black, to2D(Room.Anchor + mPosition + (toFar / 2f)));
                                 g.DrawLine(p2, pos, to2D(Room.Anchor + mPosition + toFar));
                             }
 
+                            Vector3 s = Room.Big - Room.Small;
+                            string w = String.Format("Width: {0:.#}", s.Y);
+                            string h = String.Format("Height: {0:.#}", s.Z);
+                            string d = String.Format("Depth: {0:.#}", s.X);
+
+                            SizeF lH = g.MeasureString(h, font);
+                            SizeF lD = g.MeasureString(d, font);
+
+                            Vector3 edgeB = Room.Big + Room.Anchor;
+                            Vector3 edgeS = Room.Small + Room.Anchor;
+                            Vector3 centre = (s / 2f) + Room.Anchor;
+
                             //TODO w,h,d
+                            if (perspective == Perspective.X) {
+                                //Vector3 p = new Vector3(0f, (s.Y / 2f) - (lW.Width / 2f), edge.Z + lW.Height);
+                                //g.DrawString(w, font, Brushes.Black, to2D(p));
+
+                                //p = new Vector3(0f, s.Z + 5f, (Room.Big.Z / 2f) - (lH.Height / 2f));
+                                //g.DrawString(h, font, Brushes.Black, to2D(p));
+
+                                PH(g, new Vector3(0f, edgeB.Y, centre.Z), h, to2D, font);
+                                PW(g, new Vector3(0f, centre.Y, edgeS.Z), w, to2D, font);
+                            }
+                            if (perspective == Perspective.Y) {
+                                PH(g, new Vector3(edgeB.X, 0f, centre.Z), h, to2D, font);
+                                PW(g, new Vector3(centre.X, 0f, edgeS.Z), d, to2D, font);
+                            }
+                            if (perspective == Perspective.Z) {
+                                PH(g, new Vector3(centre.X, edgeB.Y, 0f), d, to2D, font);
+                                PW(g, new Vector3(edgeS.X, centre.Y, 0f), w, to2D, font);
+                            }
                         }
                     }
                 }
             }
+        }
+
+        private void PH(Graphics g, Vector3 v, string txt, Func<Vector3, Point> to2D, Font font) {
+            Point p = to2D(v);
+            SizeF s = g.MeasureString(txt, font);
+            p.Y -= (int)(s.Height / 2f);
+            g.DrawString(txt, font, Brushes.Black, p);
+        }
+        private void PW(Graphics g, Vector3 v, string txt, Func<Vector3, Point> to2D, Font font) {
+            Point p = to2D(v);
+            SizeF s = g.MeasureString(txt, font);
+            p.X -= (int)(s.Width / 2f);
+            g.DrawString(txt, font, Brushes.Black, p);
         }
 
         private bool Contains(Vector3 p, Vector3[] wall) {
