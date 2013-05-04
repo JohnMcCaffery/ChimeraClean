@@ -36,7 +36,8 @@ namespace Chimera {
         public static void Main() {
             Application.SetCompatibleTextRenderingDefault(false);
 
-            Launcher.Launcher launcher = new MinimumLauncher();
+            //Launcher.Launcher launcher = new MinimumLauncher();
+            Launcher.Launcher launcher = new ExampleOverlayLauncher();
 
             ProcessWrangler.BlockingRunForm(launcher.Form, launcher.Coordinator);
         }

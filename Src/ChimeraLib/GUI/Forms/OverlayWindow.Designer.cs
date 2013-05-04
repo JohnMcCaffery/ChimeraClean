@@ -60,6 +60,8 @@ namespace Chimera.GUI.Forms {
             this.drawPanel.TabIndex = 0;
             this.drawPanel.TabStop = false;
             this.drawPanel.Paint += new System.Windows.Forms.PaintEventHandler(this.drawPanel_Paint);
+            this.drawPanel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.OverlayWindow_MouseDown);
+            this.drawPanel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.OverlayWindow_MouseUp);
             // 
             // refreshTimer
             // 
