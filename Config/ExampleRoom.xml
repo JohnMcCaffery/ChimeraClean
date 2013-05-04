@@ -1,0 +1,14 @@
+<Room>
+	<corner X="0"     Y="0"     Z="0" />
+	<corner X="0"     Y="2000"  Z="0" />
+	<corner X="2000"  Y="2000"  Z="0" />
+	<corner X="2000"  Y="2000"  Z="1000" />
+	<corner X="2000"  Y="2000"  Z="0" />
+	<corner X="2000"  Y="0"     Z="0" />
+	<corner X="0"     Y="0"     Z="0" />
+	<corner X="0"     Y="0"     Z="1000" />
+	<corner X="0"     Y="2000"  Z="1000" />
+	<corner X="2000"  Y="2000"  Z="1000" />
+	<corner X="2000"  Y="0"     Z="1000" />
+	<corner X="0"     Y="0"     Z="1000" />
+</Room>

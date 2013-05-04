@@ -101,6 +101,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Config\ConfigFolderBase.cs" />
+    <Compile Include="Config\Room.cs" />
     <Compile Include="Core\Projector.cs" />
     <Compile Include="GUI\Controls\Plugins\AxisBasedDeltaPanel.cs">
       <SubType>UserControl</SubType>
@@ -133,6 +134,12 @@
       <DependentUpon>SplitAxisPanel.cs</DependentUpon>
     </Compile>
     <Compile Include="Config\OverlayConfig.cs" />
+    <Compile Include="GUI\Controls\ProjectorPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\Controls\ProjectorPanel.Designer.cs">
+      <DependentUpon>ProjectorPanel.cs</DependentUpon>
+    </Compile>
     <Compile Include="Overlay\Triggers\ClickTrigger.cs" />
     <Compile Include="Overlay\Triggers\TextClickTrigger.cs" />
     <Compile Include="Overlay\Triggers\ImageClickTrigger.cs" />
@@ -306,6 +313,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\Controls\Plugins\SplitAxisPanel.resx">
       <DependentUpon>SplitAxisPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\Controls\ProjectorPanel.resx">
+      <DependentUpon>ProjectorPanel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\Controls\ScalarPanel.resx">
       <DependentUpon>ScalarPanel.cs</DependentUpon>

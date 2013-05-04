@@ -88,7 +88,7 @@ namespace Chimera.Config {
 
         private void AddParam(string key, string description, string type, string section, string defalt) {
             bool commandLine = commandLineKeys.ContainsKey(section) && commandLineKeys[section].Contains(key);
-            string shortKey = commandLine ? commandLineShortKeys[section][key] : null;
+            string shortKey = commandLine && commandLineShortKeys.ContainsKey(section) ? commandLineShortKeys[section][key] : null;
 
             if (!_parameters.ContainsKey(key))
                 _parameters.Add(key, new ConfigParam(key, description, type, section, Group, defalt, commandLine, shortKey));
@@ -162,10 +162,10 @@ namespace Chimera.Config {
         }
 
         public ConfigBase(params string[] args) {
-            IConfigSource config = GetMainConfig(args, out mArgConfig, out mFile);
+            IConfigSource mSource = GetMainConfig(args, out mArgConfig, out mFile);
 
             mArgConfig.AddSwitch("General", "Section", "s");
-            Section = Init.Get(config.Configs["General"], "Section", "MainWindow");
+            Section = Init.Get(mSource.Configs["General"], "Section", "MainWindow");
 
             InitConfig();
         }
@@ -187,7 +187,7 @@ namespace Chimera.Config {
         }
 
         private void LoadConfig() {
-            IConfigSource config = Init.AddFile(mArgConfig, mFile);
+            mSource = Init.AddFile(mArgConfig, mFile);
             configLoaded = true;
         }
 
@@ -212,11 +212,13 @@ namespace Chimera.Config {
             mArgConfig.AddSwitch(section, key, shortkey);
             if (!commandLineKeys.ContainsKey(section))
                 commandLineKeys.Add(section, new HashSet<string>());
-                commandLineShortKeys.Add(section, new Dictionary<string, string>());
+            commandLineKeys[section].Add(key);
 
-                commandLineKeys[section].Add(key);
-                if (!commandLineShortKeys[section].ContainsKey(key))
-                    commandLineShortKeys[section].Add(key, shortkey);
+
+            if (!commandLineShortKeys.ContainsKey(section))
+                commandLineShortKeys.Add(section, new Dictionary<string, string>());
+            if (!commandLineShortKeys[section].ContainsKey(key))
+                commandLineShortKeys[section].Add(key, shortkey);
         }
 
         /// <summary>
@@ -237,7 +239,7 @@ namespace Chimera.Config {
         protected void AddCommandLineKey(string section, string key) {
             mArgConfig.AddSwitch(section, key);
             if (!commandLineKeys.ContainsKey(section))
-                commandLineKeys.Add(key, new HashSet<string>());
+                commandLineKeys.Add(section, new HashSet<string>());
             commandLineKeys[section].Add(key);
         }
 

@@ -21,13 +21,15 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JoystickLib", "JoystickLib\
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Config", "Config", "{AD5F2EE2-5D80-4DC5-924F-C5636B2103E4}"
 	ProjectSection(SolutionItems) = preProject
-		Heightmap.ini = Heightmap.ini
+		..\Config\ExampleRoom.xml = ..\Config\ExampleRoom.xml
+		..\Config\Heightmap.ini = ..\Config\Heightmap.ini
 		..\Config\Kinect.ini = ..\Config\Kinect.ini
-		..\Config\LaptopOverlay.ini = ..\Config\LaptopOverlay.ini
-		Main.ini = Main.ini
-		..\Config\NoOverlay.ini = ..\Config\NoOverlay.ini
+		..\Config\Main.ini = ..\Config\Main.ini
 		..\Config\Overlay.ini = ..\Config\Overlay.ini
-		..\Config\TouchscreenOverlay.ini = ..\Config\TouchscreenOverlay.ini
+		..\Config\OverlayLaptop.ini = ..\Config\OverlayLaptop.ini
+		..\Config\OverlayNone.ini = ..\Config\OverlayNone.ini
+		..\Config\OverlayTouchscreen.ini = ..\Config\OverlayTouchscreen.ini
+		..\Config\Windows.ini = ..\Config\Windows.ini
 		..\Config\XBoxController.ini = ..\Config\XBoxController.ini
 	EndProjectSection
 EndProject
