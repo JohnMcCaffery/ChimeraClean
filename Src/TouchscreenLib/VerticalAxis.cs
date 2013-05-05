@@ -18,6 +18,7 @@ namespace Touchscreen {
         private float mPaddingV;
         private float mStartH;
         private bool mDown;
+        private bool mWasDown;
         private WindowOverlayManager mManager;
         private VerticalAxisPanel mPanel;
 
@@ -34,8 +35,15 @@ namespace Touchscreen {
         }
 
         public VerticalAxis(WindowOverlayManager manager)
-            : base("SingleAxis") {
+            : base("Single") {
             mManager = manager;
+            mManager.OnPress += i => mDown = true;
+            mManager.OnRelease += i => {
+                mDown = false;
+                SetRawValue(0f);
+            };
+
+            Deadzone.Changed += d => Change();
         }
 
 
@@ -47,7 +55,7 @@ namespace Touchscreen {
             }
         }
 
-        private void Change() {
+        public void Change() {
             if (SizeChanged != null)
                 SizeChanged();
         }
@@ -61,6 +69,10 @@ namespace Touchscreen {
         void source_Tick() {
             if (mDown && Bounds.Contains(mManager.CursorPosition)) {
                 SetRawValue(GetValue(mPaddingV, mH, mManager.CursorY));
+                mWasDown = true;
+            } else if (mWasDown) {
+                mWasDown = false;
+                SetRawValue(0f);
             }
         }
 

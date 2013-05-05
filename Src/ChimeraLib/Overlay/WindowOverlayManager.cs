@@ -258,7 +258,8 @@ namespace Chimera.Overlay {
         /// <param name="x">The percentage across the screen the cursor is (1 = all the way across).</param>
         /// <param name="y">The percentage down the screen the cursor is (1 = all the way down).</param>
         public void UpdateCursor(double x, double y) {
-            if (mWindow == null || mOverlayWindow == null)
+            if (mWindow == null)
+            //if (mWindow == null || mOverlayWindow == null)
                 return;
             bool wasOn = mWindow.Monitor.Bounds.Contains(MonitorCursor);
             mCursorX = x;

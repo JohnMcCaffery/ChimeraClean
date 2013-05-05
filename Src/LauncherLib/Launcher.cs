@@ -49,6 +49,9 @@ namespace Chimera.Launcher {
                 return mForm;
             }
         }
+        protected OverlayConfig Config {
+            get { return mConfig; }
+        }
 
         public Launcher(string buttonFolder, IHoverSelectorRenderer renderer, params string[] args)
             : this(args) {

@@ -35,33 +35,39 @@ using Chimera.Flythrough.Overlay;
 using Joystick;
 using Chimera.Kinect.GUI;
 using Chimera.Flythrough;
+using Touchscreen;
 
 namespace Chimera.Launcher {
     public class MinimumLauncher : Launcher {
         private SetWindowViewerOutput mMainWindowProxy = new SetWindowViewerOutput("MainWindow");
 
         protected override ISystemPlugin[] GetInputs() {
-            return new ISystemPlugin[] { 
-                //Control
-                new KBMousePlugin(), 
-                new XBoxControllerPlugin(),
-                mMainWindowProxy,
+            List<ISystemPlugin> plugins = new List<ISystemPlugin>();
+            //Control
+            if (Config.UseClicks)
+                plugins.Add(new TouchscreenPlugin());
+            plugins.Add(new KBMousePlugin());
+            plugins.Add(new XBoxControllerPlugin());
+            plugins.Add(mMainWindowProxy);
 
-                //Flythrough
-                new FlythroughPlugin(), 
+            //Flythrough
+            plugins.Add(new FlythroughPlugin());
 
-                //Overlay
-                new MousePlugin(), 
+            //Overlay
+            plugins.Add(new MousePlugin());
 
-                //Heightmap
-                new HeightmapPlugin(), 
+            //Heightmap
+            plugins.Add(new HeightmapPlugin());
 
-                //Kinect
-                new KinectCamera(),
-                new KinectMovementPlugin(),
-                new SimpleKinectCursor(),
-                new RaiseArmHelpTrigger()
-            };
+            //Kinect
+            if (!Config.UseClicks) {
+                plugins.Add(new KinectCamera());
+                plugins.Add(new KinectMovementPlugin());
+                plugins.Add(new SimpleKinectCursor());
+                plugins.Add(new RaiseArmHelpTrigger());
+            }
+
+            return plugins.ToArray();
         }
 
         protected override Window[] GetWindows() {

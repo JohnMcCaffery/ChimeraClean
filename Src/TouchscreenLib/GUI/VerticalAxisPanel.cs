@@ -25,5 +25,21 @@ namespace Touchscreen.GUI {
             paddingVPanel.Value = axis.PaddingV;
             constrainedAxisPanel.Axis = axis;
         }
+
+        private void wPanel_ValueChanged(float obj) {
+            mAxis.W = wPanel.Value;
+        }
+
+        private void hPanel_ValueChanged(float obj) {
+            mAxis.H = hPanel.Value;
+        }
+
+        private void paddingHPanel_ValueChanged(float obj) {
+            mAxis.PaddingH = paddingHPanel.Value;
+        }
+
+        private void paddingVPanel_ValueChanged(float obj) {
+            mAxis.PaddingV = paddingVPanel.Value;
+        }
     }
 }
