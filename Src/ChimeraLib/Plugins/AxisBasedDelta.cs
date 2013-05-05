@@ -79,22 +79,6 @@ namespace Chimera.Plugins {
             mName = name;
             mConfig = new AxisConfig(name);
 
-            int i = 0;
-            if (axes.Length > i && axes[i] != null && axes[i].Binding == AxisBinding.None)
-                axes[i].Binding = AxisBinding.X;
-            i++;
-            if (axes.Length > i && axes[i] != null && axes[i].Binding == AxisBinding.None)
-                axes[i].Binding = AxisBinding.Y;
-            i++;
-            if (axes.Length > i && axes[i] != null && axes[i].Binding == AxisBinding.None)
-                axes[i].Binding = AxisBinding.Z;
-            i++;
-            if (axes.Length > i && axes[i] != null && axes[i].Binding == AxisBinding.None)
-                axes[i].Binding = AxisBinding.Pitch;
-            i++;
-            if (axes.Length > i && axes[i] != null && axes[i].Binding == AxisBinding.None)
-                axes[i].Binding = AxisBinding.Yaw;
-
             foreach (var axis in axes)
                 if (axis != null)
                     AddAxis(axis);
@@ -191,7 +175,7 @@ namespace Chimera.Plugins {
             private string mType;
 
             public AxisConfig(string type)
-                : base("Movement", new string[0]) {
+                : base(type, new string[0]) {
                 mType = type;
             }
 
