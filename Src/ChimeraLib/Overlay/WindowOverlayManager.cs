@@ -286,6 +286,10 @@ namespace Chimera.Overlay {
             }
         }
 
+        public bool IsPressed(int id) {
+            return mPressedIDs.Contains(id);
+        }
+
         /// <summary>
         /// CreateWindowState and show the overlay window if it is not already created.
         /// </summary>
