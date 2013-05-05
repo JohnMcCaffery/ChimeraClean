@@ -43,6 +43,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Config", "Config", "{AD5F2E
 		..\Config\XBoxController.ini = ..\Config\XBoxController.ini
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TouchscreenLib", "TouchscreenLib\TouchscreenLib.csproj", "{7780A366-F9CE-4E9F-8C91-0763F73A3A8A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -460,6 +462,34 @@ Global
 		{C184F128-6AE6-43D7-922E-B706E7B4E576}.ReleaseVisual|Win32.ActiveCfg = Release|Any CPU
 		{C184F128-6AE6-43D7-922E-B706E7B4E576}.ReleaseVisual|x64.ActiveCfg = Release|Any CPU
 		{C184F128-6AE6-43D7-922E-B706E7B4E576}.ReleaseVisual|x86.ActiveCfg = Release|Any CPU
+		{7780A366-F9CE-4E9F-8C91-0763F73A3A8A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7780A366-F9CE-4E9F-8C91-0763F73A3A8A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7780A366-F9CE-4E9F-8C91-0763F73A3A8A}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{7780A366-F9CE-4E9F-8C91-0763F73A3A8A}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{7780A366-F9CE-4E9F-8C91-0763F73A3A8A}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{7780A366-F9CE-4E9F-8C91-0763F73A3A8A}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{7780A366-F9CE-4E9F-8C91-0763F73A3A8A}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{7780A366-F9CE-4E9F-8C91-0763F73A3A8A}.DebugVisual|Any CPU.ActiveCfg = Debug|Any CPU
+		{7780A366-F9CE-4E9F-8C91-0763F73A3A8A}.DebugVisual|Any CPU.Build.0 = Debug|Any CPU
+		{7780A366-F9CE-4E9F-8C91-0763F73A3A8A}.DebugVisual|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{7780A366-F9CE-4E9F-8C91-0763F73A3A8A}.DebugVisual|Mixed Platforms.Build.0 = Debug|Any CPU
+		{7780A366-F9CE-4E9F-8C91-0763F73A3A8A}.DebugVisual|Win32.ActiveCfg = Debug|Any CPU
+		{7780A366-F9CE-4E9F-8C91-0763F73A3A8A}.DebugVisual|x64.ActiveCfg = Debug|Any CPU
+		{7780A366-F9CE-4E9F-8C91-0763F73A3A8A}.DebugVisual|x86.ActiveCfg = Debug|Any CPU
+		{7780A366-F9CE-4E9F-8C91-0763F73A3A8A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7780A366-F9CE-4E9F-8C91-0763F73A3A8A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7780A366-F9CE-4E9F-8C91-0763F73A3A8A}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{7780A366-F9CE-4E9F-8C91-0763F73A3A8A}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{7780A366-F9CE-4E9F-8C91-0763F73A3A8A}.Release|Win32.ActiveCfg = Release|Any CPU
+		{7780A366-F9CE-4E9F-8C91-0763F73A3A8A}.Release|x64.ActiveCfg = Release|Any CPU
+		{7780A366-F9CE-4E9F-8C91-0763F73A3A8A}.Release|x86.ActiveCfg = Release|Any CPU
+		{7780A366-F9CE-4E9F-8C91-0763F73A3A8A}.ReleaseVisual|Any CPU.ActiveCfg = Release|Any CPU
+		{7780A366-F9CE-4E9F-8C91-0763F73A3A8A}.ReleaseVisual|Any CPU.Build.0 = Release|Any CPU
+		{7780A366-F9CE-4E9F-8C91-0763F73A3A8A}.ReleaseVisual|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{7780A366-F9CE-4E9F-8C91-0763F73A3A8A}.ReleaseVisual|Mixed Platforms.Build.0 = Release|Any CPU
+		{7780A366-F9CE-4E9F-8C91-0763F73A3A8A}.ReleaseVisual|Win32.ActiveCfg = Release|Any CPU
+		{7780A366-F9CE-4E9F-8C91-0763F73A3A8A}.ReleaseVisual|x64.ActiveCfg = Release|Any CPU
+		{7780A366-F9CE-4E9F-8C91-0763F73A3A8A}.ReleaseVisual|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

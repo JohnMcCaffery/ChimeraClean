@@ -7,6 +7,8 @@ using Chimera.Interfaces;
 using Chimera;
 using System.Drawing;
 using Chimera.Overlay;
+using Touchscreen.GUI;
+using System.Windows.Forms;
 
 namespace Touchscreen {
     public class VerticalAxis : ConstrainedAxis, ITickListener {
@@ -14,19 +16,35 @@ namespace Touchscreen {
         private float mH;
         private float mPaddingH;
         private float mPaddingV;
-        private float mStart;
+        private float mStartH;
         private bool mDown;
         private WindowOverlayManager mManager;
+        private VerticalAxisPanel mPanel;
 
         public event Action SizeChanged;
 
         public float W { get { return mW; } set { if (mW != value) { mW = value; Change(); } } }
         public float H { get { return mH; } set { if (mH != value) { mH = value; Change(); } } }
         public float PaddingH { get { return mPaddingH; } set { if (mPaddingH != value) { mPaddingH = value; Change(); } } }
-        public float PaddingH { get { return mPaddingV; } set { if (mPaddingV != value) { mPaddingV = value; Change(); } } }
-        public float Start { get { return mStart; } set { if (mStart != value) { mStart = value; Change(); } } }
+        public float PaddingV { get { return mPaddingV; } set { if (mPaddingV != value) { mPaddingV = value; Change(); } } }
+        public float StartH { get { return mStartH; } set { if (mStartH != value) { mStartH = value; Change(); } } }
+        public WindowOverlayManager Manager { get { return mManager; } }
         public RectangleF Bounds {
-            get { return new RectangleF(mStart + mPaddingH, mPaddingV, mW, mH); }
+            get { return new RectangleF(mStartH + mPaddingH, mPaddingV, mW, mH); }
+        }
+
+        public VerticalAxis(WindowOverlayManager manager)
+            : base("SingleAxis") {
+            mManager = manager;
+        }
+
+
+        public override UserControl  ControlPanel {
+            get { 
+                if (mPanel == null)
+                    mPanel = new VerticalAxisPanel(this);
+                return mPanel;
+            }
         }
 
         private void Change() {
@@ -42,10 +60,14 @@ namespace Touchscreen {
 
         void source_Tick() {
             if (mDown && Bounds.Contains(mManager.CursorPosition)) {
-                SetRawValue((float)mManager.CursorY - mPaddingV);
+                SetRawValue(GetValue(mPaddingV, mH, mManager.CursorY));
             }
         }
 
         #endregion
+
+        public static float GetValue(float start, float w, double pos) {
+            return (float) pos - (start + (w/2));
+        }
     }
 }
