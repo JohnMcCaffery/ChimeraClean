@@ -30,6 +30,13 @@ using Chimera.Interfaces.Overlay;
 using Chimera.Kinect.Overlay;
 using Chimera.Overlay.Transitions;
 using Chimera.Config;
+using Touchscreen;
+using Chimera.Plugins;
+using Joystick;
+using Chimera.Flythrough;
+using Chimera.OpenSim;
+using Chimera.Kinect.GUI;
+using Chimera.Kinect;
 
 namespace Chimera.Launcher {
     public abstract class Launcher {
@@ -38,6 +45,7 @@ namespace Chimera.Launcher {
         private CoordinatorForm mForm;
         private IHoverSelectorRenderer mRenderer;
         private string mButtonFolder = "../Images/Examples/";
+        protected SetWindowViewerOutput mMainWindowProxy = new SetWindowViewerOutput("MainWindow");
 
         public Coordinator Coordinator {
             get { return mCoordinator; }
@@ -80,9 +88,38 @@ namespace Chimera.Launcher {
             }
         }
 
-        protected abstract ISystemPlugin[] GetInputs();
+        protected virtual Window[] GetWindows() {
+            return new Window[] { new Window("MainWindow", mMainWindowProxy)};
+        }
 
-        protected abstract Window[] GetWindows();
+        protected virtual ISystemPlugin[] GetInputs() {
+            List<ISystemPlugin> plugins = new List<ISystemPlugin>();
+            //Control
+            if (Config.UseClicks)
+                plugins.Add(new TouchscreenPlugin());
+            plugins.Add(new KBMousePlugin());
+            plugins.Add(new XBoxControllerPlugin());
+            plugins.Add(mMainWindowProxy);
+
+            //Flythrough
+            plugins.Add(new FlythroughPlugin());
+
+            //Overlay
+            plugins.Add(new MousePlugin());
+
+            //Heightmap
+            plugins.Add(new HeightmapPlugin());
+
+            //Kinect
+            if (!Config.UseClicks) {
+                plugins.Add(new KinectCamera());
+                plugins.Add(new KinectMovementPlugin());
+                plugins.Add(new SimpleKinectCursor());
+                plugins.Add(new RaiseArmHelpTrigger());
+            }
+
+            return plugins.ToArray();
+        }
 
         protected abstract void InitOverlay();
 

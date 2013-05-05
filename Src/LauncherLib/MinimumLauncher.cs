@@ -39,40 +39,6 @@ using Touchscreen;
 
 namespace Chimera.Launcher {
     public class MinimumLauncher : Launcher {
-        private SetWindowViewerOutput mMainWindowProxy = new SetWindowViewerOutput("MainWindow");
-
-        protected override ISystemPlugin[] GetInputs() {
-            List<ISystemPlugin> plugins = new List<ISystemPlugin>();
-            //Control
-            if (Config.UseClicks)
-                plugins.Add(new TouchscreenPlugin());
-            plugins.Add(new KBMousePlugin());
-            plugins.Add(new XBoxControllerPlugin());
-            plugins.Add(mMainWindowProxy);
-
-            //Flythrough
-            plugins.Add(new FlythroughPlugin());
-
-            //Overlay
-            plugins.Add(new MousePlugin());
-
-            //Heightmap
-            plugins.Add(new HeightmapPlugin());
-
-            //Kinect
-            if (!Config.UseClicks) {
-                plugins.Add(new KinectCamera());
-                plugins.Add(new KinectMovementPlugin());
-                plugins.Add(new SimpleKinectCursor());
-                plugins.Add(new RaiseArmHelpTrigger());
-            }
-
-            return plugins.ToArray();
-        }
-
-        protected override Window[] GetWindows() {
-            return new Window[] { new Window("MainWindow", mMainWindowProxy)};
-        }
 
         protected override void InitOverlay() {
         }

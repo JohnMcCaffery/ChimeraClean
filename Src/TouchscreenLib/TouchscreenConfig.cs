@@ -21,6 +21,7 @@ namespace Touchscreen {
         public float SinglePaddingV;
         public string Window;
         public SinglePos SinglePos;
+        public double Opacity;
 
         public override string Group {
             get { return "Touchscreen"; }
@@ -44,6 +45,7 @@ namespace Touchscreen {
             SinglePaddingH = Get("Single", "PaddingH", .05f, "The padding to the left of the single axis control section.");
             SinglePaddingV = Get("Single", "PaddingV", .1f, "The padding above the single axis control section.");
             Window = Get(true, "Window", null, "The window which is a touch screen.");
+            Opacity = Get(true, "Opacity", .01f, "How opaque the input window should be.");
 
             SinglePos = (SinglePos) Enum.Parse(typeof(SinglePos), Get("Single", "Position", "Right", "Where the single axis is positioned (Left, Right or Centre)."));
         }
