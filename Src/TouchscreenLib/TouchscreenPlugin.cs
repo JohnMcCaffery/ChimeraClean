@@ -39,11 +39,22 @@ namespace Touchscreen {
             get { return base.Enabled; }
             set {
                 base.Enabled = value;
-                if (value && mWindow != null)
+                if (value && mManager != null) {
+                    mWindow = new TouchscreenForm(this);
+                    mWindow.Opacity = mConfig.Opacity;
+                    mWindow.Bounds = mManager.Window.Monitor.Bounds;
+                    mWindow.MouseDown += new System.Windows.Forms.MouseEventHandler(mWindow_MouseDown);
+                    mWindow.MouseUp += new System.Windows.Forms.MouseEventHandler(mWindow_MouseUp); mWindow.Show();
                     mWindow.Show();
-                else if (mWindow != null)
+                } else if (mWindow != null) {
                     mWindow.Close();
+                    mWindow = null;
+                }
             }
+        }
+
+        public WindowOverlayManager Manager {
+            get { return mManager; }
         }
 
         public VerticalAxis Left { get { return mL; } }
@@ -116,15 +127,9 @@ namespace Touchscreen {
                 AddAxis(mSingle);
 
                 Coordinator input = w.Coordinator;
-                mWindow = new TouchscreenForm(this);
-
-                mWindow.Opacity = .5;
-                mWindow.Bounds = mManager.Window.Monitor.Bounds;
-                mWindow.MouseDown += new System.Windows.Forms.MouseEventHandler(mWindow_MouseDown);
-                mWindow.MouseUp += new System.Windows.Forms.MouseEventHandler(mWindow_MouseUp);
 
                 if (Enabled)
-                    mWindow.Show();
+                    Enabled = true;
             }
         }
 

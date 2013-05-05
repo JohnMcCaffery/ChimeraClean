@@ -63,6 +63,8 @@
     <Compile Include="GUI\VerticalAxisPanel.Designer.cs">
       <DependentUpon>VerticalAxisPanel.cs</DependentUpon>
     </Compile>
+    <Compile Include="Overlay\TouchscreenState.cs" />
+    <Compile Include="Overlay\TouchscreenWindow.cs" />
     <Compile Include="TouchscreenConfig.cs" />
     <Compile Include="TwoDAxis.cs" />
     <Compile Include="VerticalAxis.cs" />
@@ -76,9 +78,7 @@
       <Name>ChimeraLib</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Overlay\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <EmbeddedResource Include="GUI\TouchscreenForm.resx">
       <DependentUpon>TouchscreenForm.cs</DependentUpon>

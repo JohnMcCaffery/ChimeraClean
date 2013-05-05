@@ -36,42 +36,17 @@ using Joystick;
 using Chimera.Kinect.GUI;
 using Chimera.Flythrough;
 using Chimera.Kinect.Overlay;
+using Touchscreen.Overlay;
 
 namespace Chimera.Launcher {
     public class ExampleOverlayLauncher : Launcher {
-        private SetWindowViewerOutput mMainWindowProxy = new SetWindowViewerOutput("MainWindow");
-
-        protected override ISystemPlugin[] GetInputs() {
-            return new ISystemPlugin[] { 
-                //Control
-                new KBMousePlugin(), 
-                new XBoxControllerPlugin(),
-                mMainWindowProxy,
-
-                //Flythrough
-                new FlythroughPlugin(), 
-
-                //Overlay
-                new MousePlugin(), 
-
-                //Heightmap
-                new HeightmapPlugin(), 
-
-                //Kinect
-                new KinectCamera(),
-                new KinectMovementPlugin(),
-                new SimpleKinectCursor(),
-                new RaiseArmHelpTrigger()
-            };
-        }
-
-        protected override Window[] GetWindows() {
-            return new Window[] { new Window("MainWindow", mMainWindowProxy)};
-        }
-
         protected override void InitOverlay() {
             ImageBGState splash = new ImageBGState("Splash", Coordinator.StateManager, "../Images/Example/ExampleBG.png");
-            KinectControlState explore = new KinectControlState("ExploreFree", Coordinator.StateManager, false);
+            State explore;
+            if (Config.UseClicks)
+                explore = new TouchscreenState("ExploreFree", Coordinator);
+            else
+                explore = new KinectControlState("ExploreFree", Coordinator.StateManager, false);
 
             Rectangle clip = new Rectangle(0, 0, 1920, 1080);
             IWindowTransitionFactory fadeOut = new OpacityFadeOutTransitionFactory(5000);
