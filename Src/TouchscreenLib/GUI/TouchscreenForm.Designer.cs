@@ -37,6 +37,7 @@
             this.Text = "TouchscreenForm";
             this.TopMost = true;
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
+            this.Paint += new System.Windows.Forms.PaintEventHandler(this.TouchscreenForm_Paint);
             this.ResumeLayout(false);
 
         }

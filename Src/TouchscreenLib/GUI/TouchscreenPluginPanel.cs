@@ -25,5 +25,9 @@ namespace Touchscreen.GUI {
                     singleAxisBox.SelectedItem = pos;
             }
         }
+
+        private void singleAxisBox_SelectedIndexChanged(object sender, EventArgs e) {
+            mPlugin.SinglePos = (SinglePos)singleAxisBox.SelectedItem;
+        }
     }
 }

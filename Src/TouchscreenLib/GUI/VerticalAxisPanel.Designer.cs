@@ -46,6 +46,7 @@
             this.wPanel.Size = new System.Drawing.Size(145, 20);
             this.wPanel.TabIndex = 0;
             this.wPanel.Value = 0F;
+            this.wPanel.ValueChanged += new System.Action<float>(this.wPanel_ValueChanged);
             // 
             // hPanel
             // 
@@ -59,6 +60,7 @@
             this.hPanel.Size = new System.Drawing.Size(145, 20);
             this.hPanel.TabIndex = 1;
             this.hPanel.Value = 0F;
+            this.hPanel.ValueChanged += new System.Action<float>(this.hPanel_ValueChanged);
             // 
             // paddingHPanel
             // 
@@ -72,6 +74,7 @@
             this.paddingHPanel.Size = new System.Drawing.Size(105, 20);
             this.paddingHPanel.TabIndex = 2;
             this.paddingHPanel.Value = 0F;
+            this.paddingHPanel.ValueChanged += new System.Action<float>(this.paddingHPanel_ValueChanged);
             // 
             // paddingVPanel
             // 
@@ -85,6 +88,7 @@
             this.paddingVPanel.Size = new System.Drawing.Size(105, 20);
             this.paddingVPanel.TabIndex = 3;
             this.paddingVPanel.Value = 0F;
+            this.paddingVPanel.ValueChanged += new System.Action<float>(this.paddingVPanel_ValueChanged);
             // 
             // label1
             // 

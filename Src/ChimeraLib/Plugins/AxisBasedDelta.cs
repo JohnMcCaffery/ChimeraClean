@@ -198,15 +198,7 @@ namespace Chimera.Plugins {
             }
 
             public AxisBinding GetBinding(string name) {
-                string binding = Get("Movement", "Binding" + name, "None", "");
-                switch (binding.ToUpper()) {
-                    case "X": return AxisBinding.X;
-                    case "Y": return AxisBinding.Y;
-                    case "Z": return AxisBinding.Z;
-                    case "Pitch": return AxisBinding.Pitch;
-                    case "Yaw": return AxisBinding.Yaw;
-                }
-                return AxisBinding.None;
+                return (AxisBinding) Enum.Parse(typeof(AxisBinding), Get("Movement", "Binding" + name, "None", ""));
             }
         }
     }

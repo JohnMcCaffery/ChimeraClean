@@ -39,7 +39,7 @@ namespace Chimera.Plugins {
         private IUpdater<float> mDeadzone = new Updater<float>("Deadzone", .1f);
         private IUpdater<float> mScale  = new Updater<float>("Deadzone", 1f);
 
-        public IUpdater<float> Deadzone {
+        public virtual IUpdater<float> Deadzone {
             get { return mDeadzone; }
             set { 
                 mDeadzone = value;
@@ -47,7 +47,7 @@ namespace Chimera.Plugins {
             }
         }
 
-        public IUpdater<float> Scale {
+        public virtual IUpdater<float> Scale {
             get { return mScale; }
             set { 
                 mScale = value;
@@ -106,7 +106,7 @@ namespace Chimera.Plugins {
             }
         }
 
-        public float Delta {
+        public virtual float Delta {
             get { return mDelta; }
         }
 

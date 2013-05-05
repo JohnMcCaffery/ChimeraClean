@@ -34,13 +34,11 @@ namespace Chimera.Plugins {
         private MousePluginPanel mPanel;
         private Point mLastMouse;
         private bool mEnabled;
-        private bool mMouseOnScreen;
 
         public event Action<int, int> MouseMoved;
 
         public MousePlugin() {
             PluginConfig cfg = new PluginConfig();
-            mEnabled = cfg.MouseEnabled;
         }
 
         void coordinator_Tick() {
@@ -104,7 +102,6 @@ namespace Chimera.Plugins {
             get { 
                 string dump = "-Mouse Plugin-" + Environment.NewLine;
                 dump += "LastPosition" + mLastMouse + Environment.NewLine;
-                dump += "Onscreen: " + mMouseOnScreen + Environment.NewLine;
                 return dump;
             }
         }

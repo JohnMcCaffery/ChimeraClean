@@ -26,6 +26,10 @@ namespace Touchscreen {
             get { return "Touchscreen"; }
         }
 
+        public TouchscreenConfig()
+            : base("Touchscreen") {
+        }
+
         protected override void InitConfig() {
             LeftW = Get("Left", "W", .35f, "The width of the left control circle.");
             LeftH = Get("Left", "H", .8f, "The height of the left control circle.");
@@ -36,13 +40,12 @@ namespace Touchscreen {
             RightPaddingH = Get("Right", "PaddingH", .05f, "The padding to the left of the right control circle.");
             RightPaddingV = Get("Right", "PaddingV", .1f, "The padding above the right control circle.");
             SingleW = Get("Single", "W", .15f, "The width of the single axis control section.");
-            SingleH = Get("Single", "H", .15f, "The height of the single axis control section.");
+            SingleH = Get("Single", "H", .8f, "The height of the single axis control section.");
             SinglePaddingH = Get("Single", "PaddingH", .05f, "The padding to the left of the single axis control section.");
             SinglePaddingV = Get("Single", "PaddingV", .1f, "The padding above the single axis control section.");
             Window = Get(true, "Window", null, "The window which is a touch screen.");
 
             SinglePos = (SinglePos) Enum.Parse(typeof(SinglePos), Get("Single", "Position", "Right", "Where the single axis is positioned (Left, Right or Centre)."));
-
         }
     }
 }

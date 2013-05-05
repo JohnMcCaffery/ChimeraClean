@@ -15,13 +15,6 @@ namespace Touchscreen {
         Right
     }
     public class TouchscreenPlugin : AxisBasedDelta {
-        private float mLeftPad;
-        private float mLeftW;
-        private float mLeftBreak;
-        private float mMidW;
-        private float mRightBreak;
-        private float mRightW;
-        private float mFlyBreak;
         private SinglePos mSinglePos = SinglePos.Right;
 
         private TwoDAxis mLeftX;
@@ -46,12 +39,20 @@ namespace Touchscreen {
             get { return base.Enabled; }
             set {
                 base.Enabled = value;
-                if (value)
+                if (value && mWindow != null)
                     mWindow.Show();
-                else
+                else if (mWindow != null)
                     mWindow.Close();
             }
         }
+
+        public VerticalAxis Left { get { return mL; } }
+        public TwoDAxis LeftX { get { return mLeftX; } }
+        public TwoDAxis LeftY { get { return mLeftY; } }
+        public VerticalAxis Right { get { return mR; } }
+        public TwoDAxis RightX { get { return mRightX; } }
+        public TwoDAxis RightY { get { return mRightY; } }
+        public VerticalAxis Single { get { return mSingle; } }
 
         protected override AxisBasedDelta.AxisConfig AxConfig {
             get { return mConfig; }
@@ -63,41 +64,68 @@ namespace Touchscreen {
         public override void Init(Coordinator input) {
             base.Init(input);
 
-            Window w = mConfig.Window == null ? input.Windows.First() : input[mConfig.Window];
-            mManager = w.OverlayManager;
+            if (input.Windows.Count() == 0)
+                input.WindowAdded += new Action<Window, EventArgs>(input_WindowAdded);
+            else {
+                Window w = input.Windows.First();
+                if (mConfig.Window != null)
+                    w = input[mConfig.Window];
+                input_WindowAdded(w, null);
+            }
 
-            mL = new VerticalAxis(mManager);
-            mR = new VerticalAxis(mManager);
-            mLeftX = new TwoDAxis(mL, true, false);
-            mLeftY = new TwoDAxis(mL, false, false);
-            mRightX = new TwoDAxis(mL, true, true);
-            mRightY = new TwoDAxis(mL, false, true);
-            mSingle = new VerticalAxis(mManager);
+        }
 
-            mL.W = mConfig.LeftW;
-            mL.H = mConfig.LeftH;
-            mL.PaddingH = mConfig.LeftPaddingH;
-            mL.PaddingV = mConfig.LeftPaddingV;
+        void input_WindowAdded(Window w, EventArgs args) {
+            if (mConfig.Window == null || w.Name.Equals(mConfig.Window)) {
+                mManager = w.OverlayManager;
 
-            mR.W = mConfig.RightW;
-            mR.H = mConfig.RightH;
-            mR.PaddingH = mConfig.RightPaddingH;
-            mR.PaddingV = mConfig.RightPaddingV;
+                mL = new VerticalAxis(mManager);
+                mR = new VerticalAxis(mManager);
+                mLeftX = new TwoDAxis(mL, true, false);
+                mLeftY = new TwoDAxis(mL, false, false);
+                mRightX = new TwoDAxis(mR, true, true);
+                mRightY = new TwoDAxis(mR, false, true);
+                mSingle = new VerticalAxis(mManager);
 
-            mSingle.W = mConfig.SingleW;
-            mSingle.H = mConfig.SingleH;
-            mSingle.PaddingH = mConfig.SinglePaddingH;
-            mSingle.PaddingV = mConfig.SinglePaddingV;
+                mL.W = mConfig.LeftW;
+                mL.H = mConfig.LeftH;
+                mL.PaddingH = mConfig.LeftPaddingH;
+                mL.PaddingV = mConfig.LeftPaddingV;
 
-            mSinglePos = mConfig.SinglePos;
+                mR.W = mConfig.RightW;
+                mR.H = mConfig.RightH;
+                mR.PaddingH = mConfig.RightPaddingH;
+                mR.PaddingV = mConfig.RightPaddingV;
 
-            mL.SizeChanged += OnChange;
-            mR.SizeChanged += OnChange;
-            mSingle.SizeChanged += OnChange;
+                mSingle.W = mConfig.SingleW;
+                mSingle.H = mConfig.SingleH;
+                mSingle.PaddingH = mConfig.SinglePaddingH;
+                mSingle.PaddingV = mConfig.SinglePaddingV;
 
-            mWindow.Opacity = .5;
-            mWindow.MouseDown += new System.Windows.Forms.MouseEventHandler(mWindow_MouseDown);
-            mWindow.MouseUp += new System.Windows.Forms.MouseEventHandler(mWindow_MouseUp);
+                mSinglePos = mConfig.SinglePos;
+
+                mL.SizeChanged += OnChange;
+                mR.SizeChanged += OnChange;
+                mSingle.SizeChanged += OnChange;
+                OnChange();
+
+                AddAxis(mLeftX);
+                AddAxis(mLeftY);
+                AddAxis(mRightX);
+                AddAxis(mRightY);
+                AddAxis(mSingle);
+
+                Coordinator input = w.Coordinator;
+                mWindow = new TouchscreenForm(this);
+
+                mWindow.Opacity = .5;
+                mWindow.Bounds = mManager.Window.Monitor.Bounds;
+                mWindow.MouseDown += new System.Windows.Forms.MouseEventHandler(mWindow_MouseDown);
+                mWindow.MouseUp += new System.Windows.Forms.MouseEventHandler(mWindow_MouseUp);
+
+                if (Enabled)
+                    mWindow.Show();
+            }
         }
 
         void mWindow_MouseUp(object sender, System.Windows.Forms.MouseEventArgs e) {

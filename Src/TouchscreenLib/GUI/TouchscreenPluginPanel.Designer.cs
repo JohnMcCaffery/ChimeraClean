@@ -23,20 +23,10 @@
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent() {
-            this.axisBasedDeltaPanel = new Chimera.GUI.Controls.Plugins.AxisBasedDeltaPanel();
             this.singleAxisBox = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.axisBasedDeltaPanel = new Chimera.GUI.Controls.Plugins.AxisBasedDeltaPanel();
             this.SuspendLayout();
-            // 
-            // axisBasedDeltaPanel
-            // 
-            this.axisBasedDeltaPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.axisBasedDeltaPanel.Location = new System.Drawing.Point(0, 30);
-            this.axisBasedDeltaPanel.Name = "axisBasedDeltaPanel";
-            this.axisBasedDeltaPanel.Size = new System.Drawing.Size(774, 570);
-            this.axisBasedDeltaPanel.TabIndex = 0;
             // 
             // singleAxisBox
             // 
@@ -47,6 +37,7 @@
             this.singleAxisBox.Name = "singleAxisBox";
             this.singleAxisBox.Size = new System.Drawing.Size(663, 21);
             this.singleAxisBox.TabIndex = 1;
+            this.singleAxisBox.SelectedIndexChanged += new System.EventHandler(this.singleAxisBox_SelectedIndexChanged);
             // 
             // label1
             // 
@@ -56,6 +47,17 @@
             this.label1.Size = new System.Drawing.Size(98, 13);
             this.label1.TabIndex = 2;
             this.label1.Text = "Single Axis Position";
+            // 
+            // axisBasedDeltaPanel
+            // 
+            this.axisBasedDeltaPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.axisBasedDeltaPanel.Location = new System.Drawing.Point(0, 30);
+            this.axisBasedDeltaPanel.Name = "axisBasedDeltaPanel";
+            this.axisBasedDeltaPanel.Plugin = null;
+            this.axisBasedDeltaPanel.Size = new System.Drawing.Size(774, 570);
+            this.axisBasedDeltaPanel.TabIndex = 0;
             // 
             // TouchscreenPluginPanel
             // 
