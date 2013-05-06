@@ -7,14 +7,17 @@ using System.IO;
 
 namespace Chimera.Config {
     public abstract class ConfigFolderBase : ConfigBase {
-        private static string GetFile(string group, string defaultFile, string[] args) {
+        private static string GetFile(string group, string[] args) {
             IConfigSource source = GetMainConfig(args);
             string folder = source.Configs["Config"].Get("ConfigFolder", "../Config");
-            string file = source.Configs["Config"].Get(group, defaultFile);
+            string file = source.Configs["Config"].Get(group, group + ".ini");
             return Path.GetFullPath(Path.Combine(folder, file));
         }
         protected ConfigFolderBase(string group, params string[] args) :
-            base(group, GetFile(group, group + ".ini", args), args) {
+            this(group, group, args) {
+        }
+        protected ConfigFolderBase(string section, string group, params string[] args) :
+            base (section, GetFile(group, args), args) {
         }
     }
 }

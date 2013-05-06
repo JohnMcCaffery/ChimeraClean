@@ -160,11 +160,14 @@ namespace Chimera.Launcher {
 
         protected ITrigger ImgTrigger(Window window, string image, float x, float y) {
             return ImgTrigger(window, image, x, y, -1f);
-        }        protected ITrigger ImgTrigger(Window window, string image, float x, float y, float w) {            OverlayImage img = new OverlayImage(new Bitmap(Path.Combine(mButtonFolder, image + ".png")), x, y, w, window.Name);
+        }
+        protected ITrigger ImgTrigger(Window window, string image, float x, float y, float w) {
+            OverlayImage img = new OverlayImage(new Bitmap(Path.Combine(mButtonFolder, image + ".png")), x, y, w, window.Name);
             return mConfig.UseClicks ? 
                 (ITrigger) new ImageClickTrigger(window.OverlayManager, img) :
                 (ITrigger) new ImageHoverTrigger(window.OverlayManager, mRenderer, img);
-        }
+        }
+
         protected ITrigger InvisTrigger(Point topLeft, Point bottomRight, Rectangle clip, Window window) {
             return mConfig.UseClicks ?
                 (ITrigger) new ClickTrigger(window.OverlayManager, topLeft.X, topLeft.Y, bottomRight.X - topLeft.X, bottomRight.Y - topLeft.Y, clip) :

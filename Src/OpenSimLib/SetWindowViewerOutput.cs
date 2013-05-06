@@ -28,10 +28,7 @@ using Chimera;
 
 namespace Chimera.OpenSim {
     public class SetWindowViewerOutput : ViewerProxy {
-        public SetWindowViewerOutput(params string[] args)
-            : base(args) {
-        }
-        public SetWindowViewerOutput(string name, string file, params string[] args)
+        public SetWindowViewerOutput(string name, params string[] args)
             : base(name, args) {
         }
 

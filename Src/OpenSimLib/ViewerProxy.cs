@@ -56,7 +56,7 @@ namespace Chimera.OpenSim {
         private string mLastName = "NotLoggedIn";
         private bool mFullscreen;
         private bool mEnabled;
-        private bool mMaster;
+        private bool mMaster = false;
         private float mDeltaScale = .25f;
 
         private object processLock = new object();
@@ -391,29 +391,11 @@ namespace Chimera.OpenSim {
             }
         }
 
-        public ViewerProxy(params string[] args)
-            : this(false, args) {
-        }
-
-        public ViewerProxy(bool master, params string[] args) {
-            mConfig = new ProxyConfig(args);
-            mMaster = master || mConfig.Master;
-        }
-
-        public ViewerProxy(string name, params string[] args)
-            : this(name, false, args) {
-        }
-
-        public ViewerProxy(string name, bool master, params string[] args)
-            : this(master, args) {
-            mConfig = new ProxyConfig(name, AppDomain.CurrentDomain.SetupInformation.ConfigurationFile, args);
-            mMaster = master || mConfig.Master;
+        public ViewerProxy(string windowName, params string[] args) {
+            mConfig = new ProxyConfig(windowName, args);
         }
 
         public void Init(Window window) {
-            if (mMaster)
-                mFollowCamProperties = new SetFollowCamProperties(window.Coordinator);
-
             mLogger = LogManager.GetLogger(mConfig.Section);
             mWindow = window;
             mWindow.Coordinator.CameraUpdated += Coordinator_CameraUpdated;
@@ -528,8 +510,12 @@ namespace Chimera.OpenSim {
 
         UserControl IPlugin.ControlPanel {
             get {
-                if (mInputPanel == null)
+                if (mInputPanel == null) {
+                    mMaster = true;
+                    mFollowCamProperties = new SetFollowCamProperties(Window.Coordinator);
                     mInputPanel = new InputPanel(mFollowCamProperties);
+
+                }
                 return mInputPanel;
             }
         }

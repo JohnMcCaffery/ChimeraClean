@@ -26,7 +26,7 @@ using System.IO;
 using Chimera.Config;
 
 namespace Chimera.OpenSim {
-    internal class ProxyConfig : ConfigBase {
+    internal class ProxyConfig : ConfigFolderBase {
         public static readonly string DEFAULT_LOGINURI = "http://localhost:9000";
         public static readonly string DEFAULT_CLIENT_EXE = "C:\\Program Files (x86)\\Firestorm-Release\\Firestorm-Release.exe";
         public static readonly string DEFAULT_MASTER_ADDRESS = "127.0.0.1";
@@ -52,18 +52,17 @@ namespace Chimera.OpenSim {
         public bool ControlCamera;
         public bool Fullscreen;
         public int ProxyPort;
-        public bool Master;
 
         public override string Group {
             get { return "SecondLifeViewer"; }
         }
 
         public ProxyConfig(params string[] args)
-            : base(args) {
+            : base("NoNameSpecified", args) {
         }
 
-        public ProxyConfig(string name, string file, params string[] args)
-            : base(name, file, args) {
+        public ProxyConfig(string windowName, params string[] args)
+            : base(windowName, "OpenSim", args) {
         }
 
         protected override void InitConfig() {
@@ -117,7 +116,6 @@ namespace Chimera.OpenSim {
             ControlCamera = Get(false, "ControlCamera", true, "Whether to start the viewer in avatar control or proxy control mode.");
             Fullscreen = Get(false, "Fullscreen", true, "Whether to start the viewer fullscreen.");
 
-            Master = Get(false, "IsMaster", false, "Whether this viewer is the master and can control the camera position from in world avatar movements.");
             //EnableWindowPackets = Init.Get(generalConfig, "EnableWindowPackets", true);
             //UseSetFollowCamPackets = !enableWindowPackets || Get(generalConfig, "UseSetFollowCamPackets", false);
             //ControlCamera = Init.Get(sectionConfig, "ControlCamera", true);

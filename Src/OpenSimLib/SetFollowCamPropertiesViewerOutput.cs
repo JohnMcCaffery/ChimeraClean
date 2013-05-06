@@ -28,9 +28,6 @@ using Chimera;
 
 namespace Chimera.OpenSim {
     public class SetFollowCamPropertiesViewerOutput : ViewerProxy {
-        public SetFollowCamPropertiesViewerOutput(params string[] args)
-            : base(args) {
-        }
         public SetFollowCamPropertiesViewerOutput(string name, string file, params string[] args)
             : base(name, args) {
         }
