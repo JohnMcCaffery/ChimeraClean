@@ -55,8 +55,10 @@ namespace Touchscreen.GUI {
                 g.DrawRectangle(Pens.Black, rect);
 
                 string msg = GetBinding(plugin.LeftY.Binding);
-                int textW = (int)g.MeasureString(msg, font).Width;
-                g.DrawString(msg, font, Brushes.Black, new Point(rect.X + ((rect.Width / 2) - (textW / 2)), rect.Y));
+                SizeF s = g.MeasureString(msg, font);
+                int textW = (int)s.Width;
+                int textH = (int)s.Height;
+                g.DrawString(msg, font, Brushes.Black, new Point(rect.X + ((rect.Width / 2) - (textW / 2)), rect.Y - textH));
 
 
                 int centreX = (rect.Width / 2) + rect.X;
@@ -79,8 +81,10 @@ namespace Touchscreen.GUI {
                 g.DrawRectangle(Pens.Black, rect);
 
                 msg = GetBinding(plugin.RightY.Binding);
-                textW = (int)g.MeasureString(msg, font).Width;
-                g.DrawString(msg, font, Brushes.Black, new Point(rect.X + ((rect.Width / 2) - (textW / 2)), rect.Y));
+                s = g.MeasureString(msg, font);
+                textW = (int)s.Width;
+                textH = (int)s.Height;
+                g.DrawString(msg, font, Brushes.Black, new Point(rect.X + ((rect.Width / 2) - (textW / 2)), rect.Y - textH));
 
                 centreX = (rect.Width / 2) + rect.X;
                 centreY = (rect.Height / 2) + rect.Y;
@@ -104,8 +108,10 @@ namespace Touchscreen.GUI {
                 g.DrawRectangle(Pens.Black, rect);
 
                 msg = GetBinding(plugin.Single.Binding);
-                textW = (int)g.MeasureString(msg, font).Width;
-                g.DrawString(msg, font, Brushes.Black, new Point(rect.X + ((rect.Width / 2) - (textW / 2)), rect.Y));
+                s = g.MeasureString(msg, font);
+                textW = (int)s.Width;
+                textH = (int)s.Height;
+                g.DrawString(msg, font, Brushes.Black, new Point(rect.X + ((rect.Width / 2) - (textW / 2)), rect.Y - textH));
 
                 centreX = (rect.Width / 2) + rect.X;
                 centreY = (rect.Height / 2) + rect.Y;
