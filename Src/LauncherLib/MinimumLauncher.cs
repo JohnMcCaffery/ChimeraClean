@@ -35,38 +35,10 @@ using Chimera.Flythrough.Overlay;
 using Joystick;
 using Chimera.Kinect.GUI;
 using Chimera.Flythrough;
+using Touchscreen;
 
 namespace Chimera.Launcher {
     public class MinimumLauncher : Launcher {
-        private SetWindowViewerOutput mMainWindowProxy = new SetWindowViewerOutput("MainWindow");
-
-        protected override ISystemPlugin[] GetInputs() {
-            return new ISystemPlugin[] { 
-                //Control
-                new KBMousePlugin(), 
-                new XBoxControllerPlugin(),
-                mMainWindowProxy,
-
-                //Flythrough
-                new FlythroughPlugin(), 
-
-                //Overlay
-                new MousePlugin(), 
-
-                //Heightmap
-                new HeightmapPlugin(), 
-
-                //Kinect
-                new KinectCamera(),
-                new KinectMovementPlugin(),
-                new SimpleKinectCursor(),
-                new RaiseArmHelpTrigger()
-            };
-        }
-
-        protected override Window[] GetWindows() {
-            return new Window[] { new Window("MainWindow", mMainWindowProxy)};
-        }
 
         protected override void InitOverlay() {
         }

@@ -31,23 +31,30 @@ using Chimera.Interfaces;
 namespace Chimera.GUI.Controls.Plugins {
     public partial class AxisBasedDeltaPanel : UserControl {
         private static readonly int PADDING = 3;
-        private AxisBasedDelta mInput;
+        private AxisBasedDelta mPlugin;
+
+        public AxisBasedDelta Plugin {
+            get { return mPlugin; }
+            set {
+                mPlugin = value;
+                mPlugin.AxisAdded += new Action<Interfaces.IAxis>(mInput_AxisAdded);
+
+                scalePanel.Value = mPlugin.Scale;
+                rotXMovePanel.Value = mPlugin.RotXMove;
+
+                foreach (var axis in mPlugin.Axes)
+                    mInput_AxisAdded(axis);
+            }
+        }
 
         public AxisBasedDeltaPanel() {
             InitializeComponent();
         }
 
-        public AxisBasedDeltaPanel(AxisBasedDelta input)
+        public AxisBasedDeltaPanel(AxisBasedDelta plugin)
             : this() {
 
-            mInput = input;
-            mInput.AxisAdded += new Action<Interfaces.IAxis>(mInput_AxisAdded);
-
-            scalePanel.Value = input.Scale;
-            rotXMovePanel.Value = input.RotXMove;
-
-            foreach (var axis in mInput.Axes)
-                mInput_AxisAdded(axis);
+            Plugin = plugin;
         }
 
         void mInput_AxisAdded(IAxis axis) {
@@ -76,11 +83,11 @@ namespace Chimera.GUI.Controls.Plugins {
         }
 
         private void scalePanel_ValueChanged(float obj) {
-            mInput.Scale = scalePanel.Value;
+            mPlugin.Scale = scalePanel.Value;
         }
 
         private void rotXMove_ValueChanged(float obj) {
-            mInput.RotXMove = rotXMovePanel.Value;
+            mPlugin.RotXMove = rotXMovePanel.Value;
         }
     }
 }

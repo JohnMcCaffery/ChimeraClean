@@ -60,7 +60,6 @@ namespace Chimera.OpenSim {
 
         public HeightmapPlugin() {
             mConfig = new HeightmapConfig();
-            mEnabled = mConfig.Enabled;
         }
 
         void Network_LoggedOut(object sender, LoggedOutEventArgs e) {
@@ -133,7 +132,7 @@ namespace Chimera.OpenSim {
                 return;
             Thread t = new Thread(() => {
                 string startLocation = NetworkManager.StartLocation(mConfig.StartIsland, (int)mConfig.StartLocation.X, (int)mConfig.StartLocation.Y, (int)mConfig.StartLocation.Z);
-                Client.Settings.LOGIN_SERVER = mConfig.LoginURI;
+                Client.Settings.LOGIN_SERVER = new ProxyConfig().ProxyLoginURI;
                 Client.Terrain.LandPatchReceived += Terrain_LandPatchReceived;
                 Client.Network.LoggedOut += Network_LoggedOut;
                 if (Client.Network.Login(mConfig.FirstName, mConfig.LastName, mConfig.Password, "Monitor", startLocation, "1.0")) {
@@ -180,9 +179,14 @@ namespace Chimera.OpenSim {
         public bool Enabled {
             get { return mEnabled; }
             set {
-                mEnabled = value;
-                if (EnabledChanged != null)
-                    EnabledChanged(this, value);
+                if (value != mEnabled) {
+                    mEnabled = value;
+                    if (value)
+                        if (mConfig.AutoLogin)
+                            Login();
+                    if (EnabledChanged != null)
+                        EnabledChanged(this, value);
+                }
             }
         }
 
@@ -212,8 +216,6 @@ namespace Chimera.OpenSim {
 
         public void Init(Coordinator coordinator) {
             mCoordinator = coordinator;
-            if (mConfig.AutoLogin)
-                Login();
         }
 
         #endregion

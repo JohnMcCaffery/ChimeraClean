@@ -93,6 +93,7 @@ namespace Chimera.Overlay {
                 table += "    <TR>" + Environment.NewLine;
                 table += "        <TD>State Name</TD>" + Environment.NewLine;
                 table += "        <TD># Visits</TD>" + Environment.NewLine;
+                table += "        <TD>Time</TD>" + Environment.NewLine;
                 table += "        <TD>Shortest Visit (m)</TD>" + Environment.NewLine;
                 table += "        <TD>Longest Visit (m)</TD>" + Environment.NewLine;
                 table += "        <TD>Mean Visit Length (m)</TD>" + Environment.NewLine;

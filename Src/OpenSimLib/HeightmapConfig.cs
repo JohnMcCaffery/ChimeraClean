@@ -30,26 +30,23 @@ namespace Chimera.OpenSim {
         public string FirstName;
         public string LastName;
         public string Password;
-        public string LoginURI;
         public Vector3 StartLocation;
         public string StartIsland;
         public bool AutoLogin;
         public bool AutoLogout;
-        public bool Enabled;
 
         public override string Group {
-            get { return "OpenSim Heightmap Listener"; }
+            get { return "OpenSimHeightmapBot"; }
         }
 
         protected override void InitConfig() {
-            FirstName = Get(true, "HeightmapBotFirstName", "Heightmap", "The first name for the heightmap listening bot to login with.");
-            LastName = Get(true, "HeightmapBotLastName", "Bot", "The last name for the heightmap listening bot to login with.");
-            Password = Get(true, "HeightmapBotPassword", "botPassword", "The password for the heightmap listening bot to login with.");
-            AutoLogin = Get(true, "HeightmapBotAutoLogin", true, "Whether the bot should automatically login when the system starts up.");
-            AutoLogout = Get(true, "HeightmapBotAutoLogout", true, "Whether the bot should automatically logout when the system starts up.");
-            LoginURI = Get(true, "LoginURI", "http://localhost:9000", "The URI of the server the bot should login to.");
-            StartLocation = GetV(true, "HeightmapBotStartLocation", new Vector3(128f, 128f, 60f), "Where on the island the bot should login to.");
-            StartIsland = Get(true, "HeightmapBotStartIsland", "Cathedral 1", "What island the bot should login to.");
+            FirstName = Get(true, "FirstName", "Heightmap", "The first name for the heightmap listening bot to login with.");
+            LastName = Get(true, "LastName", "Bot", "The last name for the heightmap listening bot to login with.");
+            Password = Get(true, "Password", "botPassword", "The password for the heightmap listening bot to login with.");
+            AutoLogin = Get(true, "AutoLogin", true, "Whether the bot should automatically login when the system starts up.");
+            AutoLogout = Get(true, "AutoLogout", true, "Whether the bot should automatically logout when the system starts up.");
+            StartLocation = GetV(true, "StartLocation", new Vector3(128f, 128f, 60f), "Where on the island the bot should login to.");
+            StartIsland = Get(true, "StartIsland", "Cathedral 1", "What island the bot should login to.");
         }
 
         public HeightmapConfig(params string[] args)

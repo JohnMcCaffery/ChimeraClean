@@ -170,6 +170,8 @@ namespace Chimera.GUI.Forms {
                 input.ControlPanel.TabIndex = 0;
 
                 inputsTab.Controls.Add(inputTab);
+
+                input.EnabledChanged += (plugin, enabled) => enableCheck.Checked = enabled;
             }
             
             inputsTab.Controls.Add(statisticsTab);

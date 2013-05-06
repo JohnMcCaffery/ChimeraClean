@@ -110,6 +110,10 @@
       <Project>{D1978D10-E5B0-40F9-BDB7-11BF03C7A6CB}</Project>
       <Name>OpenSimLib</Name>
     </ProjectReference>
+    <ProjectReference Include="..\TouchscreenLib\TouchscreenLib.csproj">
+      <Project>{7780A366-F9CE-4E9F-8C91-0763F73A3A8A}</Project>
+      <Name>TouchscreenLib</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
