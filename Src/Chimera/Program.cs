@@ -26,6 +26,7 @@ using Chimera;
 using Chimera.Util;
 using Chimera.Plugins;
 using Chimera.Launcher;
+using System.Reflection;
 
 namespace Chimera {
     public static class ChimeraLauncher {
@@ -36,8 +37,7 @@ namespace Chimera {
         public static void Main() {
             Application.SetCompatibleTextRenderingDefault(false);
 
-            //Launcher.Launcher launcher = new MinimumLauncher();
-            Launcher.Launcher launcher = new ExampleOverlayLauncher();
+            Launcher.Launcher launcher = Launcher.Launcher.Create();
 
             ProcessWrangler.BlockingRunForm(launcher.Form, launcher.Coordinator);
         }

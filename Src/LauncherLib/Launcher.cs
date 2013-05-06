@@ -38,11 +38,12 @@ using Chimera.OpenSim;
 using Chimera.Kinect.GUI;
 using Chimera.Kinect;
 using System.IO;
+using System.Reflection;
 
 namespace Chimera.Launcher {
     public abstract class Launcher {
         private readonly Coordinator mCoordinator;
-        private OverlayConfig mConfig;
+        private LauncherConfig mConfig;
         private CoordinatorForm mForm;
         private IHoverSelectorRenderer mRenderer;
         private string mButtonFolder = "../Images/Examples/";
@@ -58,12 +59,12 @@ namespace Chimera.Launcher {
                 return mForm;
             }
         }
-        protected OverlayConfig Config {
+        protected LauncherConfig Config {
             get { return mConfig; }
         }
 
         public Launcher(params string[] args) {
-            mConfig = new OverlayConfig(args);
+            mConfig = new LauncherConfig(args);
             mCoordinator = new Coordinator(GetWindows(), GetInputs());
             mButtonFolder = Path.GetFullPath(mConfig.ButtonFolder);
 
@@ -186,6 +187,11 @@ namespace Chimera.Launcher {
             return mConfig.UseClicks ?
                 (ITrigger) new TextClickTrigger(window.OverlayManager, txt, clip) :
                 (ITrigger) new TextHoverTrigger(window.OverlayManager, mRenderer, txt, clip);
+        }
+
+        public static Launcher Create() {
+            Assembly ass = typeof(Launcher).Assembly;
+            return (Launcher) ass.CreateInstance(new LauncherConfig().Launcher);
         }
     }
 }
