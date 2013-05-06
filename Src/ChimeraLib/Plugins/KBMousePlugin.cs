@@ -25,6 +25,7 @@ using System.Windows.Forms;
 using OpenMetaverse;
 using Chimera.Util;
 using System.Drawing;
+using Chimera.Config;
 
 namespace Chimera.Plugins {
     public class KBMousePlugin : DeltaBasedPlugin {

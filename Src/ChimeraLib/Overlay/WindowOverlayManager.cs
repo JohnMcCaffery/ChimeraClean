@@ -27,9 +27,14 @@ using Chimera.GUI.Forms;
 using System.Windows.Forms;
 using Chimera.Interfaces.Overlay;
 using Chimera.Util;
+using Chimera.Config;
 
 namespace Chimera.Overlay {
     public class WindowOverlayManager {
+        /// <summary>
+        /// Id's of any input devices pressing on the screen.
+        /// </summary>
+        private readonly HashSet<int> mPressedIDs = new HashSet<int>();
         /// <summary>
         /// Where on the window the cursor is.
         /// </summary>
@@ -77,7 +82,7 @@ namespace Chimera.Overlay {
         /// <summary>
         /// The configuration for this manager.
         /// </summary>
-        private WindowConfig mConfig;
+        private OverlayConfig mConfig;
 
         /// <summary>
         /// Triggered when the overlay window is launched.
@@ -91,6 +96,15 @@ namespace Chimera.Overlay {
         /// Triggered whenever the position of the cursor on this input changes.
         /// </summary>
         public event Action<WindowOverlayManager, EventArgs> CursorMoved;
+        /// <summary>
+        /// Triggered whenever a device presses onto the screen.
+        /// Mouse clicks will register as index 0.
+        /// </summary>
+        public event Action<int> OnPress;
+        /// <summary>
+        /// Triggered whenever a device releases its pressure on the screen onto the screen.
+        /// Mouse clicks will register as index 0.
+        public event Action<int> OnRelease;
         /// <summary>
         /// Triggered whenever a video that has been played through the interface finishes.
         /// </summary>
@@ -258,6 +272,20 @@ namespace Chimera.Overlay {
                 CursorMoved(this, null);
         }
 
+        public void Press(int index) {
+            mPressedIDs.Add(index);
+            if (OnPress != null)
+                OnPress(index);
+        }
+
+        public void Release(int index) {
+            if (mPressedIDs.Contains(index)) {
+                mPressedIDs.Remove(index);
+                if (OnRelease != null)
+                    OnRelease(index);
+            }
+        }
+
         /// <summary>
         /// CreateWindowState and show the overlay window if it is not already created.
         /// </summary>
@@ -294,7 +322,7 @@ namespace Chimera.Overlay {
         public WindowOverlayManager(Window window) {
             mWindow = window;
 
-            mConfig = new WindowConfig(mWindow.Name);
+            mConfig = new OverlayConfig();
             mOverlayActive = mConfig.LaunchOverlay;
             mControlPointer = mConfig.ControlPointer;
             mOverlayFullscreen = mConfig.Fullscreen;

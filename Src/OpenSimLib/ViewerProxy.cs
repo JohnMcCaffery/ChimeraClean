@@ -37,6 +37,7 @@ using GridProxyConfig = GridProxy.ProxyConfig;
 using Chimera.Util;
 using System.IO;
 using Nwc.XmlRpc;
+using Chimera.Config;
 
 namespace Chimera.OpenSim {
     public abstract class ViewerProxy : IOutput, ISystemPlugin {
@@ -413,7 +414,7 @@ namespace Chimera.OpenSim {
             if (mMaster)
                 mFollowCamProperties = new SetFollowCamProperties(window.Coordinator);
 
-            mLogger = LogManager.GetLogger(mConfig.Name);
+            mLogger = LogManager.GetLogger(mConfig.Section);
             mWindow = window;
             mWindow.Coordinator.CameraUpdated += Coordinator_CameraUpdated;
             mWindow.Coordinator.EyeUpdated += Coordinator_EyeUpdated;

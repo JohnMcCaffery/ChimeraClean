@@ -26,6 +26,7 @@ using Chimera.Util;
 using Chimera.GUI.Controls.Plugins;
 using System.Drawing;
 using OpenMetaverse;
+using Chimera.Config;
 
 namespace Chimera.Plugins {
     public class MousePlugin : ISystemPlugin {

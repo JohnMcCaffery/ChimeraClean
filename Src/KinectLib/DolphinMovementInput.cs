@@ -29,6 +29,7 @@ using Chimera.Util;
 using Chimera.Kinect.GUI;
 using System.Drawing;
 using Chimera.Plugins;
+using Chimera.Config;
 
 namespace Chimera.Kinect {
     public class DolphinMovementInput : DeltaBasedPlugin {

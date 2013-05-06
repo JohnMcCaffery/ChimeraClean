@@ -30,6 +30,7 @@ using Chimera.GUI.Forms;
 using Chimera.Interfaces;
 using Chimera.Overlay;
 using Chimera.Core;
+using Chimera.Config;
 
 namespace Chimera {
     /// <summary>
@@ -103,10 +104,6 @@ namespace Chimera {
         /// </summary>
         private Screen mMonitor;
         /// <summary>
-        /// Whether to use mouse control when the window first starts up.
-        /// </summary>
-        private bool mMouseControl = false;
-        /// <summary>
         /// Whether to link horizontal and vertical field of view's so that when one changes the aspect ratio is preserved.
         /// </summary>
         private bool mLinkFoVs = true;
@@ -144,16 +141,15 @@ namespace Chimera {
         /// <summary>
         /// CreateWindowState a input. It is necessary to specify a unique name for the input.
         /// </summary>
-        /// <param name="name">The name this input is known by within the system.</param>
+        /// <param name="windowName">The name this input is known by within the system.</param>
         /// <param name="overlayAreas">The overlay areas mapped to this input.</param>
-        public Window(string name) {
-            mName = name;
+        public Window(string windowName) {
+            mName = windowName;
 
             mProjector = new Projector(this);
 
-            WindowConfig cfg = new WindowConfig(name);
+            WindowConfig cfg = new WindowConfig(windowName);
             mMonitor = Screen.AllScreens.FirstOrDefault(s => s.DeviceName.Equals(cfg.Monitor));
-            mMouseControl = cfg.ControlPointer;
             mWidth = cfg.Width;
             mHeight = cfg.Height;
             mTopLeft = cfg.TopLeft;
@@ -514,7 +510,7 @@ namespace Chimera {
             }
 
             if (perspective != Perspective.Heightmap) 
-                mProjector.Draw(graphics, to2D, redraw);
+                mProjector.Draw(graphics, to2D, redraw, perspective);
         }
 
         void mCoordinator_EyeUpdated(Coordinator source, EventArgs args) {

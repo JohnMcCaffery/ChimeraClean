@@ -31,6 +31,7 @@ using System.IO;
 using System.Threading;
 using Chimera.Overlay;
 using Chimera.Util;
+using Chimera.Config;
 
 namespace Chimera {
     /// <summary>

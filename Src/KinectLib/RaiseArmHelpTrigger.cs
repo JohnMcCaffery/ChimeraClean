@@ -25,6 +25,7 @@ using System.Windows.Forms;
 using Chimera.Kinect.GUI;
 using NuiLibDotNet;
 using C = NuiLibDotNet.Condition;
+using Chimera.Config;
 
 namespace Chimera.Kinect {
     public class RaiseArmHelpTrigger : ISystemPlugin {
@@ -110,7 +111,7 @@ namespace Chimera.Kinect {
             get { throw new NotImplementedException(); }
         }
 
-        public Util.ConfigBase Config {
+        public ConfigBase Config {
             get { throw new NotImplementedException(); }
         }
 

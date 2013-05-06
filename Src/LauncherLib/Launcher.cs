@@ -29,11 +29,15 @@ using System.Drawing;
 using Chimera.Interfaces.Overlay;
 using Chimera.Kinect.Overlay;
 using Chimera.Overlay.Transitions;
+using Chimera.Config;
 
 namespace Chimera.Launcher {
     public abstract class Launcher {
         private readonly Coordinator mCoordinator;
+        private OverlayConfig mConfig;
         private CoordinatorForm mForm;
+        private IHoverSelectorRenderer mRenderer;
+        private string mButtonFolder = "../Images/Examples/";
 
         public Coordinator Coordinator {
             get { return mCoordinator; }
@@ -46,18 +50,26 @@ namespace Chimera.Launcher {
             }
         }
 
+        public Launcher(string buttonFolder, IHoverSelectorRenderer renderer, params string[] args)
+            : this(args) {
+
+            mRenderer = renderer;
+            mButtonFolder = buttonFolder;
+        }
+
         public Launcher(params string[] args) {
+            mConfig = new OverlayConfig(args);
             mCoordinator = new Coordinator(GetWindows(), GetInputs());
-            OverlayConfig cfg = new OverlayConfig(args);
-            if (cfg.InitOverlay) {
+
+            if (mConfig.InitOverlay) {
                 InitOverlay();
-                State home = mCoordinator.StateManager.States.FirstOrDefault(s => s.Name == cfg.HomeState);
-                if (cfg.IdleState != "None") {
-                    State idle = mCoordinator.StateManager.States.FirstOrDefault(s => s.Name == cfg.IdleState);
+                State home = mCoordinator.StateManager.States.FirstOrDefault(s => s.Name == mConfig.HomeState);
+                if (mConfig.IdleState != "None") {
+                    State idle = mCoordinator.StateManager.States.FirstOrDefault(s => s.Name == mConfig.IdleState);
                     if (idle != null && home != null)
-                        InitIdle(idle, home, new OpacityFadeInTransitionFactory(5000), new OpacityFadeOutTransitionFactory(5000), cfg.IdleTimeoutMs);
+                        InitIdle(idle, home, new OpacityFadeInTransitionFactory(5000), new OpacityFadeOutTransitionFactory(5000), mConfig.IdleTimeoutMs);
                     else
-                        Console.WriteLine("Unable to create idle state. The idle state specified (" + cfg.IdleState + ") was not found.");
+                        Console.WriteLine("Unable to create idle state. The idle state specified (" + mConfig.IdleState + ") was not found.");
                 }
 
                 if (home != null)
@@ -71,33 +83,39 @@ namespace Chimera.Launcher {
 
         protected abstract void InitOverlay();
 
-        protected static void InvisTrans(State from, State to, Point topLeft, Point bottomRight, Rectangle clip, Window window, IHoverSelectorRenderer renderer, IWindowTransitionFactory transition) {
-            InvisibleHoverTrigger splashExploreTrigger = new InvisibleHoverTrigger(
+        protected void InvisTrans(State from, State to, Point topLeft, Point bottomRight, Rectangle clip, Window window, IWindowTransitionFactory transition) {
+            ITrigger trigger  = mConfig.UseClicks ?
+                (ITrigger) new ClickTrigger(window.OverlayManager, topLeft.X, topLeft.Y, bottomRight.X - topLeft.X, bottomRight.Y - topLeft.Y, clip) :
+                (ITrigger) new InvisibleHoverTrigger(
                 window.OverlayManager, 
-                renderer, 
+                mRenderer, 
                 topLeft.X, 
                 topLeft.Y, 
                 bottomRight.X - topLeft.X, 
                 bottomRight.Y - topLeft.Y, 
                 clip);
-            StateTransition splashExploreTransition = new StateTransition(window.Coordinator.StateManager, from, to, splashExploreTrigger, transition);
+            StateTransition splashExploreTransition = new StateTransition(window.Coordinator.StateManager, from, to, trigger, transition);
             from.AddTransition(splashExploreTransition);
         }
 
-        protected static void ImgTrans(State from, State to, string image, float x, float y, Window window, IHoverSelectorRenderer renderer, IWindowTransitionFactory transition) {
-            ImgTrans(from, to, image, x, y, -1f, window, renderer, transition);
+        protected void ImgTrans(State from, State to, string image, float x, float y, Window window, IWindowTransitionFactory transition) {
+            ImgTrans(from, to, image, x, y, -1f, window, transition);
         }
-        protected static void ImgTrans(State from, State to, string image, float x, float y, float w, Window window, IHoverSelectorRenderer renderer, IWindowTransitionFactory transition) {
-            OverlayImage exploreButton = new OverlayImage(new Bitmap("../Images/Caen/Buttons/" + image + ".png"), x, y, w, window.Name);
-            ImageHoverTrigger splashExploreTrigger = new ImageHoverTrigger(window.OverlayManager, renderer, exploreButton);
-            StateTransition splashExploreTransition = new StateTransition(window.Coordinator.StateManager, from, to, splashExploreTrigger, transition);
+        protected void ImgTrans(State from, State to, string image, float x, float y, float w, Window window, IWindowTransitionFactory transition) {
+            OverlayImage exploreButton = new OverlayImage(new Bitmap(mButtonFolder + image + ".png"), x, y, w, window.Name);
+            ITrigger trigger = mConfig.UseClicks ? 
+                (ITrigger) new ImageClickTrigger(window.OverlayManager, exploreButton) :
+                (ITrigger) new ImageHoverTrigger(window.OverlayManager, mRenderer, exploreButton);
+            StateTransition splashExploreTransition = new StateTransition(window.Coordinator.StateManager, from, to, trigger, transition);
             from.AddTransition(splashExploreTransition);
         }
 
-        protected static void TxtTrans(State from, State to, string text, float x, float y, Font font, Color colour, Rectangle clip, Window window, IHoverSelectorRenderer renderer, IWindowTransitionFactory transition) {
+        protected void TxtTrans(State from, State to, string text, float x, float y, Font font, Color colour, Rectangle clip, Window window, IHoverSelectorRenderer renderer, IWindowTransitionFactory transition) {
             Text txt = new StaticText(text, window.Name, font, colour, new PointF(x, y));
-            TextHoverTrigger splashExploreTrigger = new TextHoverTrigger(window.OverlayManager, renderer, txt, clip);
-            StateTransition splashExploreTransition = new StateTransition(window.Coordinator.StateManager, from, to, splashExploreTrigger, transition);
+            ITrigger trigger = mConfig.UseClicks ?
+                (ITrigger) new TextClickTrigger(window.OverlayManager, txt, clip) :
+                (ITrigger) new TextHoverTrigger(window.OverlayManager, renderer, txt, clip);
+            StateTransition splashExploreTransition = new StateTransition(window.Coordinator.StateManager, from, to, trigger, transition);
             from.AddTransition(splashExploreTransition);
         }
 

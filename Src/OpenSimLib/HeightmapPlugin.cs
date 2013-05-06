@@ -27,6 +27,7 @@ using OpenMetaverse;
 using Chimera.OpenSim.GUI;
 using System.Threading;
 using System.Drawing;
+using Chimera.Config;
 
 namespace Chimera.OpenSim {
     public class HeightmapPlugin : ISystemPlugin {
