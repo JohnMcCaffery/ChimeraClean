@@ -37,6 +37,7 @@ using Chimera.Flythrough;
 using Chimera.OpenSim;
 using Chimera.Kinect.GUI;
 using Chimera.Kinect;
+using System.IO;
 
 namespace Chimera.Launcher {
     public abstract class Launcher {
@@ -61,16 +62,13 @@ namespace Chimera.Launcher {
             get { return mConfig; }
         }
 
-        public Launcher(string buttonFolder, IHoverSelectorRenderer renderer, params string[] args)
-            : this(args) {
-
-            mRenderer = renderer;
-            mButtonFolder = buttonFolder;
-        }
-
         public Launcher(params string[] args) {
             mConfig = new OverlayConfig(args);
             mCoordinator = new Coordinator(GetWindows(), GetInputs());
+            mButtonFolder = Path.GetFullPath(mConfig.ButtonFolder);
+
+            if (!mConfig.UseClicks)
+                mRenderer = new DialCursorRenderer();
 
             if (mConfig.InitOverlay) {
                 InitOverlay();
@@ -124,16 +122,7 @@ namespace Chimera.Launcher {
         protected abstract void InitOverlay();
 
         protected void InvisTrans(State from, State to, Point topLeft, Point bottomRight, Rectangle clip, Window window, IWindowTransitionFactory transition) {
-            ITrigger trigger  = mConfig.UseClicks ?
-                (ITrigger) new ClickTrigger(window.OverlayManager, topLeft.X, topLeft.Y, bottomRight.X - topLeft.X, bottomRight.Y - topLeft.Y, clip) :
-                (ITrigger) new InvisibleHoverTrigger(
-                window.OverlayManager, 
-                mRenderer, 
-                topLeft.X, 
-                topLeft.Y, 
-                bottomRight.X - topLeft.X, 
-                bottomRight.Y - topLeft.Y, 
-                clip);
+            ITrigger trigger  = InvisTrigger(topLeft, bottomRight, clip, window);
             StateTransition splashExploreTransition = new StateTransition(window.Coordinator.StateManager, from, to, trigger, transition);
             from.AddTransition(splashExploreTransition);
         }
@@ -142,19 +131,14 @@ namespace Chimera.Launcher {
             ImgTrans(from, to, image, x, y, -1f, window, transition);
         }
         protected void ImgTrans(State from, State to, string image, float x, float y, float w, Window window, IWindowTransitionFactory transition) {
-            OverlayImage exploreButton = new OverlayImage(new Bitmap(mButtonFolder + image + ".png"), x, y, w, window.Name);
-            ITrigger trigger = mConfig.UseClicks ? 
-                (ITrigger) new ImageClickTrigger(window.OverlayManager, exploreButton) :
-                (ITrigger) new ImageHoverTrigger(window.OverlayManager, mRenderer, exploreButton);
+            ITrigger trigger = ImgTrigger(window, image, x, y, w);
             StateTransition splashExploreTransition = new StateTransition(window.Coordinator.StateManager, from, to, trigger, transition);
             from.AddTransition(splashExploreTransition);
         }
 
         protected void TxtTrans(State from, State to, string text, float x, float y, Font font, Color colour, Rectangle clip, Window window, IHoverSelectorRenderer renderer, IWindowTransitionFactory transition) {
             Text txt = new StaticText(text, window.Name, font, colour, new PointF(x, y));
-            ITrigger trigger = mConfig.UseClicks ?
-                (ITrigger) new TextClickTrigger(window.OverlayManager, txt, clip) :
-                (ITrigger) new TextHoverTrigger(window.OverlayManager, renderer, txt, clip);
+            ITrigger trigger = TxtTrigger(text, x, y, font, colour, clip, window);
             StateTransition splashExploreTransition = new StateTransition(window.Coordinator.StateManager, from, to, trigger, transition);
             from.AddTransition(splashExploreTransition);
         }
@@ -172,6 +156,33 @@ namespace Chimera.Launcher {
 
             StateTransition back = new StateTransition(Coordinator.StateManager, idle, home, skeletonFound, fadeInTransition);
             idle.AddTransition(back);
+        }
+
+        protected ITrigger ImgTrigger(Window window, string image, float x, float y) {
+            return ImgTrigger(window, image, x, y, -1f);
+        }        protected ITrigger ImgTrigger(Window window, string image, float x, float y, float w) {            OverlayImage img = new OverlayImage(new Bitmap(Path.Combine(mButtonFolder, image + ".png")), x, y, w, window.Name);
+            return mConfig.UseClicks ? 
+                (ITrigger) new ImageClickTrigger(window.OverlayManager, img) :
+                (ITrigger) new ImageHoverTrigger(window.OverlayManager, mRenderer, img);
+        }
+        protected ITrigger InvisTrigger(Point topLeft, Point bottomRight, Rectangle clip, Window window) {
+            return mConfig.UseClicks ?
+                (ITrigger) new ClickTrigger(window.OverlayManager, topLeft.X, topLeft.Y, bottomRight.X - topLeft.X, bottomRight.Y - topLeft.Y, clip) :
+                (ITrigger) new InvisibleHoverTrigger(
+                window.OverlayManager, 
+                mRenderer, 
+                topLeft.X, 
+                topLeft.Y, 
+                bottomRight.X - topLeft.X, 
+                bottomRight.Y - topLeft.Y, 
+                clip);
+        }
+
+        protected ITrigger TxtTrigger(string text, float x, float y, Font font, Color colour, Rectangle clip, Window window) {
+            Text txt = new StaticText(text, window.Name, font, colour, new PointF(x, y));
+            return mConfig.UseClicks ?
+                (ITrigger) new TextClickTrigger(window.OverlayManager, txt, clip) :
+                (ITrigger) new TextHoverTrigger(window.OverlayManager, mRenderer, txt, clip);
         }
     }
 }
