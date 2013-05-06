@@ -1,0 +1,5 @@
+After pulling the repositories remember to checkout the correct branches
+Remember to set Move and View -> Allow Greater Camera freedom
+
+You will need to install:
+SlimDX
