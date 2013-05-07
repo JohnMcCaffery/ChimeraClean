@@ -118,6 +118,7 @@ namespace Chimera.Overlay {
                 row += "    <TR>" + Environment.NewLine;
                 row += "        <TD>" + Name + "</TD>" + Environment.NewLine;
                 row += "        <TD>" + mStatistics.TickCount + "</TD>" + Environment.NewLine;
+                row += "        <TD>" + (mStatistics.TickTotal / 60000.0).ToString("0.") + "</TD>" + Environment.NewLine;
                 row += "        <TD>" + max.ToString("0.") + "</TD>" + Environment.NewLine;
                 row += "        <TD>" + min.ToString("0.") + "</TD>" + Environment.NewLine;
                 row += "        <TD>" + (mStatistics.MeanWorkLength / 60000.0).ToString("0.") + "</TD>" + Environment.NewLine;

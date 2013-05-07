@@ -52,6 +52,10 @@ namespace Chimera.Util {
             get { return mShortestTick; }
         }
 
+        public long TickTotal {
+            get { return mTickTotal; }
+        }
+
         public long MeanWorkLength {
             get { lock (mTickTimes) return mTickCount > 0 ? mWorkTotal / mTickCount : 0; }
         }
@@ -62,6 +66,10 @@ namespace Chimera.Util {
 
         public double ShortestWork {
             get { return mShortestWork; }
+        }
+
+        public long WorkTotal {
+            get { return mTickTotal; }
         }
 
         public int TicksPerSecond {
