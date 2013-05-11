@@ -89,7 +89,7 @@ namespace Chimera.Overlay {
         public string Statistics {
             get {
                 string table = "";
-                table += "<TABLE>" + Environment.NewLine;
+                table += "<TABLE BORDER=\"1\">" + Environment.NewLine;
                 table += "    <TR>" + Environment.NewLine;
                 table += "        <TD>State Name</TD>" + Environment.NewLine;
                 table += "        <TD># Visits</TD>" + Environment.NewLine;
