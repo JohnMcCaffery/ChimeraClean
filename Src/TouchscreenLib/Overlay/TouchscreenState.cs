@@ -9,12 +9,14 @@ using Chimera;
 namespace Touchscreen.Overlay {
     public class TouchscreenState : State {
         private TouchscreenPlugin mPlugin;
+        private bool mAvatar;
 
-        public TouchscreenState(string name, Coordinator coordinator)
+        public TouchscreenState(string name, bool avatar, Coordinator coordinator)
             : base(name, coordinator.StateManager) {
 
             mPlugin = coordinator.GetPlugin<TouchscreenPlugin>();
             mPlugin.Enabled = false;
+            mAvatar = avatar;
         }
 
         public override IWindowState CreateWindowState(Chimera.Window window) {
@@ -23,7 +25,8 @@ namespace Touchscreen.Overlay {
             return new WindowState(window.OverlayManager);
         }
 
-        public override void TransitionToStart() { 
+        public override void TransitionToStart() {
+            Manager.Coordinator.ControlMode = mAvatar ? ControlMode.Delta : ControlMode.Absolute;
             mPlugin.Enabled = true;
         }
 

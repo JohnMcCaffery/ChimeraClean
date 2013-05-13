@@ -44,7 +44,7 @@ namespace Chimera.Launcher {
             ImageBGState splash = new ImageBGState("Splash", Coordinator.StateManager, "../Images/Example/ExampleBG.png");
             State explore;
             if (Config.UseClicks)
-                explore = new TouchscreenState("ExploreFree", Coordinator);
+                explore = new TouchscreenState("ExploreFree", false, Coordinator);
             else
                 explore = new KinectControlState("ExploreFree", Coordinator.StateManager, false);
 

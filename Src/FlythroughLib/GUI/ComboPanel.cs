@@ -233,7 +233,7 @@ namespace Chimera.Flythrough.GUI {
         }
 
         private void copyCurrentOrientationButton_Click(object sender, EventArgs e) {
-            AddEvent(new RotateToEvent(mEvent.Container, 5000, mEvent.Container.Coordinator.Orientation));
+            AddEvent(new RotateToEvent(mEvent.Container, 5000, new Rotation(mEvent.Container.Coordinator.Orientation)));
         }
 
         private void copyCurrentPairButton_Click(object sender, EventArgs e) {
