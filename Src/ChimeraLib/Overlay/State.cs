@@ -112,16 +112,18 @@ namespace Chimera.Overlay {
             get {
                 string row = "";
 
-                double max = mStatistics.ShortestWork == double.MaxValue ? 0.0 : mStatistics.ShortestWork / 60000.0;
-                double min = mStatistics.LongestWork == double.MinValue ? -1.0 : mStatistics.LongestWork / 60000.0;
+                double total = Math.Round(mStatistics.TickTotal / 60000.0);
+                double max = mStatistics.ShortestWork == double.MaxValue ? 0.0 : Math.Round(mStatistics.ShortestWork / 60000.0);
+                double min = mStatistics.LongestWork == double.MinValue ? -1.0 : Math.Round(mStatistics.LongestWork / 60000.0, 1);
+                double mean = Math.Round(mStatistics.MeanWorkLength / 60000.0, 1);
 
                 row += "    <TR>" + Environment.NewLine;
                 row += "        <TD>" + Name + "</TD>" + Environment.NewLine;
                 row += "        <TD ALIGN=\"center\">" + mStatistics.TickCount + "</TD>" + Environment.NewLine;
-                row += "        <TD ALIGN=\"center\">" + (mStatistics.TickTotal / 60000.0).ToString("0.") + "</TD>" + Environment.NewLine;
+                row += "        <TD ALIGN=\"center\">" + total.ToString("0.") + "</TD>" + Environment.NewLine;
                 row += "        <TD ALIGN=\"center\">" + max.ToString("0.") + "</TD>" + Environment.NewLine;
-                row += "        <TD ALIGN=\"center\">" + min.ToString("0.") + "</TD>" + Environment.NewLine;
-                row += "        <TD ALIGN=\"center\">" + (mStatistics.MeanWorkLength / 60000.0).ToString("0.") + "</TD>" + Environment.NewLine;
+                row += "        <TD ALIGN=\"center\">" + min.ToString("0.#") + "</TD>" + Environment.NewLine;
+                row += "        <TD ALIGN=\"center\">" + mean.ToString("0.#") + "</TD>" + Environment.NewLine;
                 row += "    </TR>" + Environment.NewLine;
 
                 return row;
