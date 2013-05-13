@@ -220,22 +220,7 @@ namespace Chimera.Overlay {
         }
 
         internal void Dump(string reason) {
-            string table = "";
-            table += "<TABLE>" + Environment.NewLine;
-            table += "    <TR>" + Environment.NewLine;
-            table += "        <TD>State Name</TD>" + Environment.NewLine;
-            table += "        <TD># Visits</TD>" + Environment.NewLine;
-            table += "        <TD>Shortest Visit (m)</TD>" + Environment.NewLine;
-            table += "        <TD>Longest Visit (m)</TD>" + Environment.NewLine;
-            table += "        <TD>Mean Visit Length (m)</TD>" + Environment.NewLine;
-            table += "    </TR>" + Environment.NewLine;
-
-            foreach (var state in mStates.Values)
-                table += state.StatisticsRow;
-
-            table += "</TABLE>" + Environment.NewLine;
-
-            ProcessWrangler.Dump(table, ".html");
+            ProcessWrangler.Dump(Statistics, reason + ".html");
         }
     }
 }

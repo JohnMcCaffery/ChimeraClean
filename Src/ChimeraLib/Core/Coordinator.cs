@@ -531,7 +531,7 @@ namespace Chimera {
             throw new System.NotImplementedException();
         }
         public void Close() {
-            Close("Shutdown");
+            Close("-Shutdown");
         }
 
         /// <summary>
@@ -618,7 +618,7 @@ namespace Chimera {
 
             ProcessWrangler.Dump(dump, "-Crash.log");
 
-            Close("Crash");
+            Close("-Crash");
         }
 
         /// <summary>
