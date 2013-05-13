@@ -31,13 +31,13 @@ using Chimera;
 namespace Joystick.GUI {
     public partial class JoystickPanel : UserControl {
         private List<ScalarPanel> mAxisPanels = new List<ScalarPanel>();
-        private JoystickInput mInput;
+        private JoystickPlugin mInput;
 
         public JoystickPanel() {
             InitializeComponent();
         }
 
-        public JoystickPanel(JoystickInput input)
+        public JoystickPanel(JoystickPlugin input)
             : this() {
             mInput = input;
         }

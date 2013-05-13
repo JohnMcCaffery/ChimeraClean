@@ -627,5 +627,9 @@ namespace Chimera {
                 throw new ArgumentException("Unable to get plugin. No plugin of the specified type (" + t.FullName + ") found.");
             return (T)ret;
         }
+
+        public bool HasPlugin<PluginT>() {
+            return mPlugins.FirstOrDefault(p => p is PluginT) != null;
+        }
     }
 }
