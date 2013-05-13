@@ -78,7 +78,6 @@ namespace Chimera.GUI.Controls {
             }
             if (mWindow.OverlayManager.Visible) {
                 launchOverlayButton.Text =  "Close Overlay";
-                mWindow.OverlayManager.Launch();
             }
 
             projectorPanel.Projector = mWindow.Projector;

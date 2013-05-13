@@ -40,6 +40,7 @@ using Chimera.Kinect;
 using System.IO;
 using System.Reflection;
 using Chimera.Util;
+using System.Threading;
 
 namespace Chimera.Launcher {
     public abstract class Launcher {
@@ -191,13 +192,27 @@ namespace Chimera.Launcher {
         }
 
         public static Launcher Create() {
-            Assembly ass = typeof(Launcher).Assembly;
-            return (Launcher) ass.CreateInstance(new LauncherConfig().Launcher);
+            //Assembly ass = typeof(Launcher).Assembly;
+            //return (Launcher) ass.CreateInstance(new LauncherConfig().Launcher);
+
+            switch (new LauncherConfig().Launcher) {
+                case "Chimera.Launcher.ExampleOverlayLauncher": return new ExampleOverlayLauncher();
+            }
+
+            return new MinimumLauncher();
         }
 
         public void Launch() {
             if (mConfig.GUI)
                 ProcessWrangler.BlockingRunForm(Form, Coordinator);
+            else {
+                //Thread t = new Thread(() => {
+                while (!Console.ReadLine().ToUpper().StartsWith("Q")) ;
+                mCoordinator.Close();
+                //});
+                //t.Name = "Input Thread";
+                //t.Start();
+            }
         }
     }
 }

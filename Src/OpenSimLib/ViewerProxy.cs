@@ -469,9 +469,9 @@ namespace Chimera.OpenSim {
 
         public void Close() {
             mAutoRestart = false;
-            CloseProxy();
             if (mClientLoggedIn)
                 CloseViewer();
+            CloseProxy();
         }
 
         public void Restart(string reason) {

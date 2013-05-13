@@ -454,6 +454,8 @@ namespace Chimera {
             if (mOutput != null)
                 mOutput.Init(this);
 
+            if (mOverlayManager.Visible)
+                OverlayManager.Launch();
         }
 
         /// <summary>
