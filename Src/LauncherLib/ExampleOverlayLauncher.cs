@@ -42,6 +42,7 @@ namespace Chimera.Launcher {
     public class ExampleOverlayLauncher : Launcher {
         protected override void InitOverlay() {
             ImageBGState splash = new ImageBGState("Splash", Coordinator.StateManager, "../Images/Example/ExampleBG.png");
+            State idle = new FlythroughState("Idle", Coordinator.StateManager, "../Flythroughs/SimpleFlythrough.xml");
             State explore;
             if (Config.UseClicks)
                 explore = new TouchscreenState("ExploreFree", false, Coordinator);
@@ -55,6 +56,7 @@ namespace Chimera.Launcher {
 
             Coordinator.StateManager.AddState(splash);
             Coordinator.StateManager.AddState(explore);
+            Coordinator.StateManager.AddState(idle);
         }
     }
 }

@@ -41,6 +41,7 @@ using System.IO;
 using System.Reflection;
 using Chimera.Util;
 using System.Threading;
+using Joystick.Overlay;
 
 namespace Chimera.Launcher {
     public abstract class Launcher {
@@ -147,18 +148,32 @@ namespace Chimera.Launcher {
         }
 
         protected void InitIdle(State idle, State home, IWindowTransitionFactory fadeInTransition, IWindowTransitionFactory fadeOutTransition, int timeout) {
-            ITrigger skeletonLost = new SkeletonLostTrigger(Coordinator, timeout);
-            ITrigger skeletonFound = new SkeletonFoundTrigger();
+            List<ITrigger> inactiveTriggers = new List<ITrigger>();
+            List<ITrigger> activeTriggers = new List<ITrigger>();
 
-            foreach (var state in Coordinator.StateManager.States) {
-                if (state != idle) {
-                    StateTransition trans = new StateTransition(Coordinator.StateManager, state, idle, skeletonLost, fadeOutTransition);
-                    state.AddTransition(trans);
+            if (!Config.UseClicks) {
+                activeTriggers.Add(new SkeletonFoundTrigger());
+                inactiveTriggers.Add(new SkeletonLostTrigger(Coordinator, timeout));
+            }
+            if (Coordinator.HasPlugin<XBoxControllerPlugin>()) {
+                JoystickActivatedTrigger foundTrigger = new JoystickActivatedTrigger(Coordinator);
+                activeTriggers.Add(foundTrigger);
+                inactiveTriggers.Add(new JoystickInactiveTrigger(timeout, foundTrigger));
+            }
+
+            foreach (var inactiveTrigger in inactiveTriggers) {
+                foreach (var state in Coordinator.StateManager.States) {
+                    if (state != idle) {
+                        StateTransition trans = new StateTransition(Coordinator.StateManager, state, idle, inactiveTrigger, fadeOutTransition);
+                        state.AddTransition(trans);
+                    }
                 }
             }
 
-            StateTransition back = new StateTransition(Coordinator.StateManager, idle, home, skeletonFound, fadeInTransition);
-            idle.AddTransition(back);
+            foreach (var activeTrigger in activeTriggers) {
+                StateTransition back = new StateTransition(Coordinator.StateManager, idle, home, activeTrigger, fadeInTransition);
+                idle.AddTransition(back);
+            }
         }
 
         protected ITrigger ImgTrigger(Window window, string image, float x, float y) {

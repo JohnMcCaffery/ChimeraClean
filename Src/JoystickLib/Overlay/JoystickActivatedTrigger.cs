@@ -7,11 +7,11 @@ using Chimera;
 using OpenMetaverse;
 
 namespace Joystick.Overlay {
-    public class PressedTrigger : ITrigger {
+    public class JoystickActivatedTrigger : ITrigger {
         private static readonly double TIMEOUT = 10000.0;
         private bool mActive;
         private Coordinator mCoordinator;
-        private JoystickPlugin mPlugin;
+        private XBoxControllerPlugin mPlugin;
         private DateTime mLastTriggered = DateTime.Now;
         private bool mInitialised;
 
@@ -23,10 +23,10 @@ namespace Joystick.Overlay {
             get { return mInitialised; }
         }
 
-        public PressedTrigger(Coordinator coordinator) {
+        public JoystickActivatedTrigger(Coordinator coordinator) {
             mCoordinator = coordinator;
-            if (mCoordinator.HasPlugin<JoystickPlugin>()) {
-                mPlugin = mCoordinator.GetPlugin<JoystickPlugin>();
+            if (mCoordinator.HasPlugin<XBoxControllerPlugin>()) {
+                mPlugin = mCoordinator.GetPlugin<XBoxControllerPlugin>();
                 mCoordinator.Tick += new Action(coordinator_Tick);
                 mInitialised = true;
             }

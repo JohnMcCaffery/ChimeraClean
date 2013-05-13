@@ -11,13 +11,13 @@ namespace Joystick.Overlay {
         private double mTimeout;
         private bool mTriggered = false;
         private DateTime mLastTrigger = DateTime.Now;
-        private PressedTrigger mPressedTrigger;
+        private JoystickActivatedTrigger mPressedTrigger;
 
-        public PressedTrigger PressedTrigger {
+        public JoystickActivatedTrigger PressedTrigger {
             get { return mPressedTrigger; }
         }
 
-        public JoystickInactiveTrigger(double timeout, PressedTrigger pressedTrigger) {
+        public JoystickInactiveTrigger(double timeout, JoystickActivatedTrigger pressedTrigger) {
             mTimeout = timeout;
             mPressedTrigger = pressedTrigger;
             if (pressedTrigger.Initialised) {
@@ -27,7 +27,7 @@ namespace Joystick.Overlay {
         }
 
         public JoystickInactiveTrigger(double timeout, Coordinator coordinator)
-            : this(timeout, new PressedTrigger(coordinator)) {
+            : this(timeout, new JoystickActivatedTrigger(coordinator)) {
         }
 
         void trigger_Triggered() {
@@ -36,8 +36,10 @@ namespace Joystick.Overlay {
         }
 
         void Coordinator_Tick() {
-            if (mActive && !mTriggered && Triggered != null && DateTime.Now.Subtract(mLastTrigger).TotalMilliseconds > mTimeout)
+            if (mActive && !mTriggered && Triggered != null && DateTime.Now.Subtract(mLastTrigger).TotalMilliseconds > mTimeout) {
+                mTriggered = true;
                 Triggered();
+            }
         }
 
         #region ITrigger Members
