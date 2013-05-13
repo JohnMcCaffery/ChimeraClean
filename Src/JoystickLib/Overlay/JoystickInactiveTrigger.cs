@@ -17,18 +17,14 @@ namespace Joystick.Overlay {
             get { return mPressedTrigger; }
         }
 
-        public JoystickInactiveTrigger(double timeout, JoystickActivatedTrigger pressedTrigger) {
-            mTimeout = timeout;
-            mPressedTrigger = pressedTrigger;
-            if (pressedTrigger.Initialised) {
-                pressedTrigger.Coordinator.Tick += new Action(Coordinator_Tick);
-                pressedTrigger.Triggered += new Action(trigger_Triggered);
-            }
-        }
+        public JoystickInactiveTrigger(double timeout, Coordinator coordinator) {
 
-        public JoystickInactiveTrigger(double timeout, Coordinator coordinator)
-            : this(timeout, new JoystickActivatedTrigger(coordinator)) {
-        }
+            mTimeout = timeout;
+            mPressedTrigger = new JoystickActivatedTrigger(coordinator);
+            if (mPressedTrigger.Initialised) {
+                mPressedTrigger.Coordinator.Tick += new Action(Coordinator_Tick);
+                mPressedTrigger.Triggered += new Action(trigger_Triggered);
+            }        }
 
         void trigger_Triggered() {
             mLastTrigger = DateTime.Now;
@@ -48,7 +44,10 @@ namespace Joystick.Overlay {
 
         public bool Active {
             get { return mActive; }
-            set { mActive = value; }
+            set { 
+                mActive = value;
+                mPressedTrigger.Active = value;
+            }
         }
 
         #endregion

@@ -12,7 +12,6 @@ namespace Joystick.Overlay {
         private bool mActive;
         private Coordinator mCoordinator;
         private XBoxControllerPlugin mPlugin;
-        private DateTime mLastTriggered = DateTime.Now;
         private bool mInitialised;
 
         public Coordinator Coordinator {
@@ -33,7 +32,7 @@ namespace Joystick.Overlay {
         }
 
         void coordinator_Tick() {
-            if (mActive && Triggered != null && DateTime.Now.Subtract(mLastTriggered).TotalMilliseconds > TIMEOUT &&
+            if (mActive && Triggered != null &&
                 (mPlugin.PositionDelta != Vector3.Zero || mPlugin.OrientationDelta.Pitch != 0.0 || mPlugin.OrientationDelta.Yaw != 0.0))
                 Triggered();
         }

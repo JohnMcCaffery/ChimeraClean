@@ -17,6 +17,7 @@ namespace Chimera.Launcher {
 
         public string ButtonFolder;
         public bool GUI;
+        public double IdleFadeTime;
 
         public override string Group {
             get { return "Launch"; }
@@ -33,6 +34,7 @@ namespace Chimera.Launcher {
             HomeState = Get(true, "HomeState", "None", "The state which the system should start in and return to whenever the idle state ceases.");
             IdleState = Get(true, "IdleState", "None", "The state which the system should launch when idle. If not set no idle state will be configured.");
             IdleTimeoutMs = Get(true, "IdleTimeout", 30000, "How long the system should be left alone for before it's considered idle.");
+            IdleFadeTime = Get(true, "IdleFadeTime", 3000, "How long the fade between the splash screen and the idle screen should take");
 
             ButtonFolder = Get(true, "ButtonFolder", "../Images/", "The folder where all button images are kept.");
 

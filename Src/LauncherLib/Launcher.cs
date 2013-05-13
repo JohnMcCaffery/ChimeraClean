@@ -80,7 +80,7 @@ namespace Chimera.Launcher {
                 if (mConfig.IdleState != "None") {
                     State idle = mCoordinator.StateManager.States.FirstOrDefault(s => s.Name == mConfig.IdleState);
                     if (idle != null && home != null)
-                        InitIdle(idle, home, new OpacityFadeInTransitionFactory(5000), new OpacityFadeOutTransitionFactory(5000), mConfig.IdleTimeoutMs);
+                        InitIdle(idle, home, new OpacityFadeInTransitionFactory(mConfig.IdleFadeTime), new OpacityFadeOutTransitionFactory(mConfig.IdleFadeTime), mConfig.IdleTimeoutMs);
                     else
                         Console.WriteLine("Unable to create idle state. The idle state specified (" + mConfig.IdleState + ") was not found.");
                 }
@@ -156,9 +156,8 @@ namespace Chimera.Launcher {
                 inactiveTriggers.Add(new SkeletonLostTrigger(Coordinator, timeout));
             }
             if (Coordinator.HasPlugin<XBoxControllerPlugin>()) {
-                JoystickActivatedTrigger foundTrigger = new JoystickActivatedTrigger(Coordinator);
-                activeTriggers.Add(foundTrigger);
-                inactiveTriggers.Add(new JoystickInactiveTrigger(timeout, foundTrigger));
+                activeTriggers.Add(new JoystickActivatedTrigger(Coordinator));
+                inactiveTriggers.Add(new JoystickInactiveTrigger(timeout, Coordinator));
             }
 
             foreach (var inactiveTrigger in inactiveTriggers) {
@@ -209,7 +208,6 @@ namespace Chimera.Launcher {
         public static Launcher Create() {
             //Assembly ass = typeof(Launcher).Assembly;
             //return (Launcher) ass.CreateInstance(new LauncherConfig().Launcher);
-
             switch (new LauncherConfig().Launcher) {
                 case "Chimera.Launcher.ExampleOverlayLauncher": return new ExampleOverlayLauncher();
             }
