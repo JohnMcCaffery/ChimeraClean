@@ -140,6 +140,7 @@
     <Compile Include="GUI\Controls\ProjectorPanel.Designer.cs">
       <DependentUpon>ProjectorPanel.cs</DependentUpon>
     </Compile>
+    <Compile Include="Overlay\States\ExploreState.cs" />
     <Compile Include="Overlay\Triggers\ClickTrigger.cs" />
     <Compile Include="Overlay\Triggers\TextClickTrigger.cs" />
     <Compile Include="Overlay\Triggers\ImageClickTrigger.cs" />
