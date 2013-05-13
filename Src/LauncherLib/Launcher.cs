@@ -39,6 +39,7 @@ using Chimera.Kinect.GUI;
 using Chimera.Kinect;
 using System.IO;
 using System.Reflection;
+using Chimera.Util;
 
 namespace Chimera.Launcher {
     public abstract class Launcher {
@@ -192,6 +193,11 @@ namespace Chimera.Launcher {
         public static Launcher Create() {
             Assembly ass = typeof(Launcher).Assembly;
             return (Launcher) ass.CreateInstance(new LauncherConfig().Launcher);
+        }
+
+        public void Launch() {
+            if (mConfig.GUI)
+                ProcessWrangler.BlockingRunForm(Form, Coordinator);
         }
     }
 }

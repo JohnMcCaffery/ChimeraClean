@@ -16,6 +16,7 @@ namespace Chimera.Launcher {
         public int IdleTimeoutMs;
 
         public string ButtonFolder;
+        public bool GUI;
 
         public override string Group {
             get { return "Launch"; }
@@ -34,6 +35,8 @@ namespace Chimera.Launcher {
             IdleTimeoutMs = Get(true, "IdleTimeout", 30000, "How long the system should be left alone for before it's considered idle.");
 
             ButtonFolder = Get(true, "ButtonFolder", "../Images/", "The folder where all button images are kept.");
+
+            GUI = Get(true, "GUI", true, "Whether to launch the GUI when the system starts.");
         }
     }
 }

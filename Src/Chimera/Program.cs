@@ -38,8 +38,7 @@ namespace Chimera {
             Application.SetCompatibleTextRenderingDefault(false);
 
             Launcher.Launcher launcher = Launcher.Launcher.Create();
-
-            ProcessWrangler.BlockingRunForm(launcher.Form, launcher.Coordinator);
+            launcher.Launch();
         }
     }
 }

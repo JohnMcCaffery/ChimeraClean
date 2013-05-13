@@ -262,7 +262,7 @@ namespace Chimera.OpenSim {
                     if (mControlCamera && mWindow.Coordinator.ControlMode == ControlMode.Absolute)
                         SetCamera();
                     SetWindow();
-                    if (mFollowCamProperties.SendPackets)
+                    if (mMaster && mFollowCamProperties.SendPackets)
                         mProxy.InjectPacket(mFollowCamProperties.Packet, Direction.Incoming);
                     if (OnClientLoggedIn != null)
                         OnClientLoggedIn(mProxy, null);
