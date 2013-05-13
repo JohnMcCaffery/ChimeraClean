@@ -27,6 +27,7 @@ using System.Threading;
 using System.IO;
 using log4net;
 using OpenMetaverse;
+using Nini.Ini;
 
 namespace Chimera.Util {
     /// <summary>
@@ -536,7 +537,8 @@ namespace Chimera.Util {
                 }
             } else if (File.Exists(file) && Path.GetExtension(file).ToUpper().Equals(".INI")) {
                 try {
-                    IniConfigSource ini = new IniConfigSource(file);
+                    IniDocument doc = new IniDocument(file, IniFileType.WindowsStyle);
+                    IniConfigSource ini = new IniConfigSource(doc);
                     //config.Merge(ini);
                     ini.Merge(config);
                     return ini;

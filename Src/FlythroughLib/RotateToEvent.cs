@@ -78,7 +78,7 @@ namespace Chimera.Flythrough {
             get { return mTarget; }
             set {
                 mTarget = value;
-                mShift = (value - StartValue) / Length;
+                Recalculate();
                 TriggerFinishChange(value);
                 value.Changed += new EventHandler(value_OnChange);
             }

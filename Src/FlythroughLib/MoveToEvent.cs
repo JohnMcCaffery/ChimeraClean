@@ -89,7 +89,7 @@ namespace Chimera.Flythrough {
         }
 
         protected override void LengthChanged(int time) {
-            mShift = (StartValue - mTarget) / Length;
+            mShift = (mTarget - StartValue ) / Length;
         }
 
         protected override void StartTimeChanged(int startTime) { }

@@ -1,0 +1,30 @@
+<Events StartPosition="&lt;109.6256, 132.9617, 86.04561&gt;" StartPitch="-0.399999890179748" StartYaw="64.4000027027852">
+  <ComboEvent Name="Step 1">
+    <PositionSequence>
+      <MoveToEvent Name="Move To 1" Target="&lt;-88.42314, 358.8852, 152.0905&gt;" Length="5000" />
+      <MoveToEvent Name="Move To 2" Target="&lt;193.228, 629.1509, 151.8844&gt;" Length="5000" />
+      <MoveToEvent Name="Move To 3" Target="&lt;915.7382, 387.8202, 21.66827&gt;" Length="5000" />
+      <MoveToEvent Name="Move To 4" Target="&lt;737.6572, 109.3772, 275.361&gt;" Length="5000" />
+      <MoveToEvent Name="Move To 5" Target="&lt;335.7993, 168.4618, 51.34328&gt;" Length="5000" />
+      <MoveToEvent Name="Move To 6" Target="&lt;84.67089, 59.11633, 126.5712&gt;" Length="5000" />
+      <MoveToEvent Name="Move To 7" Target="&lt;34.22128, 354.6607, 49.77683&gt;" Length="5000" />
+    </PositionSequence>
+    <OrientationSequence>
+      <LookAtEvent Name="Look At 1" Target="&lt;216.7804, 356.6105, 87.77687&gt;" Length="35000" />
+    </OrientationSequence>
+  </ComboEvent>
+  <ComboEvent Name="Step 2">
+    <PositionSequence>
+      <MoveToEvent Name="Move To 8" Target="&lt;98.81186, 357.5091, 46.44496&gt;" Length="5000" />
+      <MoveToEvent Name="Move To 9" Target="&lt;203.5868, 356.5826, 45.41253&gt;" Length="22000" />
+    </PositionSequence>
+    <OrientationSequence>
+      <RotateToEvent Name="Rotate To 1" Pitch="2.24227170356608" Yaw="0.61191232551235" Length="5000" />
+      <RotateToEvent Name="Rotate To 2" Pitch="0.24229437074087" Yaw="-1.38804822532461" Length="3000" />
+      <RotateToEvent Name="Rotate To 3" Pitch="-78.5577076068468" Yaw="-1.78804939616484" Length="5000" />
+      <RotateToEvent Name="Rotate To 6" Pitch="1.44178356468093" Yaw="89.7937171311654" Length="5000" />
+      <RotateToEvent Name="Rotate To 4" Pitch="-0.157705639500796" Yaw="-90.5880544712596" Length="5000" />
+      <RotateToEvent Name="Rotate To 5" Pitch="2.24226337927303" Yaw="0.611943221446182" Length="5000" />
+    </OrientationSequence>
+  </ComboEvent>
+</Events>
