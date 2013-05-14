@@ -19,6 +19,12 @@ namespace Chimera.Launcher {
         public bool GUI;
         public double IdleFadeTime;
 
+        public string MonitorBase;
+        public int NumWindows;
+        public int FirstWindow;
+
+        public bool BackwardsCompatible;
+
         public override string Group {
             get { return "Launch"; }
         }
@@ -39,6 +45,12 @@ namespace Chimera.Launcher {
             ButtonFolder = Get(true, "ButtonFolder", "../Images/", "The folder where all button images are kept.");
 
             GUI = Get(true, "GUI", true, "Whether to launch the GUI when the system starts.");
+
+            MonitorBase = Get(true, "MonitorBase", "MainWindow", "The name of the window. If NumWindows > 1 then X will be appended to NumWindow to get the name of the window. X goes from 'FirstWindow' to 'FirstWindow + NumWindows'");
+            NumWindows = Get(true, "NumWindows", 1, "The number of windows to launch.");
+            FirstWindow = Get(true, "FirstWindow", 1, "The first window to launch. If NumWindows > 1 then an index will be appended to MonitorBase to get the window names.");
+
+            BackwardsCompatible = Get(true, "BackwardsCompatible", false, "If true, no unusual packets will be injected into the viewer. This will disable remote control and frustum control.");
         }
     }
 }

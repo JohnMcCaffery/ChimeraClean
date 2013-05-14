@@ -57,7 +57,7 @@ namespace Chimera.Config {
         public WindowConfig() : base ("Windows") { }
 
         public WindowConfig(string window, params string[] args)
-            : base("Windows", args) {
+            : base(window, "Windows", args) {
             mWindow = window;
         }
 
@@ -66,19 +66,19 @@ namespace Chimera.Config {
         }
 
         protected override void InitConfig() {
-            AddCommandLineKey(mWindow, "Monitor", "m");
-            AddCommandLineKey(mWindow, "LaunchOverlay", "l");
-            AddCommandLineKey(mWindow, "Fullscreen", "f");
-            AddCommandLineKey(mWindow, "MouseControl", "mc");
+            AddCommandLineKey(false, "Monitor", "m");
+            AddCommandLineKey(false, "LaunchOverlay", "l");
+            AddCommandLineKey(false, "Fullscreen", "f");
+            AddCommandLineKey(false, "MouseControl", "mc");
            
 
-            Monitor = Get(mWindow, "Monitor", "CrashLog.log", "The monitor on which this window should render.");
+            Monitor = Get(false, "Monitor", "CrashLog.log", "The monitor on which this window should render.");
 
-            TopLeft = GetV(mWindow, "TopLeft", new Vector3(1000f, 0f, 0f), "The position of the top left corner of the window in real world coordinates (mm).");
-            Yaw = Get(mWindow, "Yaw", 0.0, "The yaw for the direction the monitor faces in the real world.");
-            Pitch = Get(mWindow, "Pitch", 0.0, "The pitch for the direction the monitor faces in the real world.");
-            Width = Get(mWindow, "Width", 0.0, "The width of the window in the real world (mm).");
-            Height = Get(mWindow, "Height", 0.0, "The height of the window in the real world (mm).");
+            TopLeft = GetV(false, "TopLeft", new Vector3(1000f, 0f, 0f), "The position of the top left corner of the window in real world coordinates (mm).");
+            Yaw = Get(false, "Yaw", 0.0, "The yaw for the direction the monitor faces in the real world.");
+            Pitch = Get(false, "Pitch", 0.0, "The pitch for the direction the monitor faces in the real world.");
+            Width = Get(false, "Width", 1000.0, "The width of the window in the real world (mm).");
+            Height = Get(false, "Height", 1000.0, "The height of the window in the real world (mm).");
 
             RoomFile = Get(true, "RoomFile", null, "The file containing the layout for the room the projector is in.");
             RoomAnchor = GetV(true, "RoomAnchor", Vector3.Zero, "The anchor point for the room. All room position values will be offset by this in relation to the eye position.");
@@ -86,19 +86,20 @@ namespace Chimera.Config {
 
 
 
+            string projectorSection = Section + "Projector";
 
-            ProjectorPosition = GetV(mWindow + "Projector", "Position", new Vector3(0f, 1000f, -30f), "Where the projector is, relative to the Room Anchor.");
-            ProjectorPitch = Get(mWindow + "Projector", "Pitch", 5.0, "The pitch the projector is set at.");
-            ProjectorYaw = Get(mWindow + "Projector", "Yaw", 0.0, "The yaw the projector is set at.");
-            ThrowRatio = Get(mWindow + "Projector", "ThrowRatio", 1.7f, "The throw ratio of the projector. Throw ratio is the screen distance/screenWidth");
-            WallDistance = Get(mWindow + "Projector", "WallDistance", 2000f, "How far away from the projector the wall is.");
-            VOffset = Get(mWindow + "Projector", "VOffset", .09f, "How for that image is shifted up above the level of the projector.");
-            Draw = Get(mWindow + "Projector", "Draw", true, "Whether to draw the projector on the window diagrams.");
-            DrawRoom = Get(mWindow + "Projector", "DrawRoom", true, "Whether to draw the room on the window diagrams.");
-            DrawLabels = Get(mWindow + "Projector", "DrawLabels", true, "Whether to draw labels on the window diagrams.");
-            AutoUpdate = Get(mWindow + "Projector", "AutoUpdate", false, "Whether to automatically update the screen size based on the projector position.");
-            UpsideDown = Get(mWindow + "Projector", "UpsideDown", true, "Whether the projector is mounted upside down.");
-            ConfigureWindow = Get(mWindow + "Projector", "ConfigureWindow", true, "If true then changing the projector will update the window. False then changing the window will update the projector.");
+            ProjectorPosition = GetV(projectorSection, "Position", new Vector3(0f, 1000f, -30f), "Where the projector is, relative to the Room Anchor.");
+            ProjectorPitch = Get(projectorSection, "Pitch", 5.0, "The pitch the projector is set at.");
+            ProjectorYaw = Get(projectorSection, "Yaw", 0.0, "The yaw the projector is set at.");
+            ThrowRatio = Get(projectorSection, "ThrowRatio", 1.7f, "The throw ratio of the projector. Throw ratio is the screen distance/screenWidth");
+            WallDistance = Get(projectorSection, "WallDistance", 2000f, "How far away from the projector the wall is.");
+            VOffset = Get(projectorSection, "VOffset", .09f, "How for that image is shifted up above the level of the projector.");
+            Draw = Get(projectorSection, "Draw", true, "Whether to draw the projector on the window diagrams.");
+            DrawRoom = Get(projectorSection, "DrawRoom", true, "Whether to draw the room on the window diagrams.");
+            DrawLabels = Get(projectorSection, "DrawLabels", true, "Whether to draw labels on the window diagrams.");
+            AutoUpdate = Get(projectorSection, "AutoUpdate", false, "Whether to automatically update the screen size based on the projector position.");
+            UpsideDown = Get(projectorSection, "UpsideDown", true, "Whether the projector is mounted upside down.");
+            ConfigureWindow = Get(projectorSection, "ConfigureWindow", true, "If true then changing the projector will update the window. False then changing the window will update the projector.");
 
             string aspectRatioStr = Get(mWindow + "Projector", "AspectRatio", "9:16", "Aspect ratio the projector is set to.");
             string nativeAspectRatioStr = Get(mWindow + "Projector", "AspectRatio", "9:16", "Native aspect ratio the projector supports.");
