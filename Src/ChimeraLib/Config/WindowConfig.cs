@@ -35,7 +35,8 @@ namespace Chimera.Config {
         public double Yaw;
         public double Width;
         public string RoomFile;
-        public Vector3 RoomAnchor;
+        public Vector3 RoomAnchor;
+
         public Vector3 ProjectorPosition;
         public double ProjectorPitch;
         public double ProjectorYaw;
