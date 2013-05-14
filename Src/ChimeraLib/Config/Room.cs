@@ -17,7 +17,9 @@ namespace Chimera.Config {
         private static void Init() {
             if (sInitialised)
                 return;
-            sInitialised = true;            WindowConfig config = new WindowConfig();
+
+            sInitialised = true;
+            WindowConfig config = new WindowConfig();
             string roomFile = config.RoomFile;
             if (roomFile != null) {
                 XmlDocument doc = new XmlDocument();
@@ -63,7 +65,8 @@ namespace Chimera.Config {
                 Init();
                 sAnchor = value;
             }
-        }
+        }
+
 
         public static Vector3 Big {
             get { 
