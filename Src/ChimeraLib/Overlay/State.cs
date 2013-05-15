@@ -112,7 +112,7 @@ namespace Chimera.Overlay {
             get {
                 string row = "";
 
-                double total = Math.Round(mStatistics.TickTotal / 60000.0);
+                double total = Math.Round(mStatistics.WorkTotal / 60000.0);
                 double max = mStatistics.ShortestWork == double.MaxValue ? 0.0 : Math.Round(mStatistics.ShortestWork / 60000.0);
                 double min = mStatistics.LongestWork == double.MinValue ? -1.0 : Math.Round(mStatistics.LongestWork / 60000.0, 1);
                 double mean = Math.Round(mStatistics.MeanWorkLength / 60000.0, 1);
