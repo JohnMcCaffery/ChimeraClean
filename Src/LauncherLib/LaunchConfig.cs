@@ -19,6 +19,9 @@ namespace Chimera.Launcher {
         public bool GUI;
         public double IdleFadeTime;
 
+        public bool BackwardsCompatible;
+        public string Windows;
+
         public override string Group {
             get { return "Launch"; }
         }
@@ -39,6 +42,9 @@ namespace Chimera.Launcher {
             ButtonFolder = Get(true, "ButtonFolder", "../Images/", "The folder where all button images are kept.");
 
             GUI = Get(true, "GUI", true, "Whether to launch the GUI when the system starts.");
+
+            Windows = Get(true, "Windows", "MainWindow", "The name of all the windows to load, separated by commas.");
+            BackwardsCompatible = Get(true, "BackwardsCompatible", false, "If true, no unusual packets will be injected into the viewer. This will disable remote control and frustum control.");
         }
     }
 }

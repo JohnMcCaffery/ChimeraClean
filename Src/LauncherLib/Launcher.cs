@@ -45,12 +45,19 @@ using Joystick.Overlay;
 
 namespace Chimera.Launcher {
     public abstract class Launcher {
+        private readonly List<Window> mWindows = new List<Window>();
         private readonly Coordinator mCoordinator;
         private LauncherConfig mConfig;
         private CoordinatorForm mForm;
         private IHoverSelectorRenderer mRenderer;
         private string mButtonFolder = "../Images/Examples/";
-        protected SetWindowViewerOutput mMainWindowProxy = new SetWindowViewerOutput("MainWindow");
+        protected IOutput mFirstWindowOutput;
+
+        protected IOutput MakeOutput(string name) {
+            if (mConfig.BackwardsCompatible)
+                return new SetFollowCamPropertiesViewerOutput(name, AppDomain.CurrentDomain.SetupInformation.ConfigurationFile);
+            return new SetWindowViewerOutput(name);
+        }
 
         public Coordinator Coordinator {
             get { return mCoordinator; }
@@ -68,6 +75,14 @@ namespace Chimera.Launcher {
 
         public Launcher(params string[] args) {
             mConfig = new LauncherConfig(args);
+
+            foreach (string window in mConfig.Windows.Split(',')) {
+                IOutput output = MakeOutput(window);
+                mWindows.Add(new Window(window, output));
+                if (mFirstWindowOutput == null)
+                    mFirstWindowOutput = output;
+            }
+
             mCoordinator = new Coordinator(GetWindows(), GetInputs());
             mButtonFolder = Path.GetFullPath(mConfig.ButtonFolder);
 
@@ -91,7 +106,7 @@ namespace Chimera.Launcher {
         }
 
         protected virtual Window[] GetWindows() {
-            return new Window[] { new Window("MainWindow", mMainWindowProxy)};
+            return mWindows.ToArray();
         }
 
         protected virtual ISystemPlugin[] GetInputs() {
@@ -101,7 +116,8 @@ namespace Chimera.Launcher {
                 plugins.Add(new TouchscreenPlugin());
             plugins.Add(new KBMousePlugin());
             plugins.Add(new XBoxControllerPlugin());
-            plugins.Add(mMainWindowProxy);
+            if (mFirstWindowOutput is ISystemPlugin)
+                plugins.Add(mFirstWindowOutput as ISystemPlugin);
 
             //Flythrough
             plugins.Add(new FlythroughPlugin());

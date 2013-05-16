@@ -76,7 +76,6 @@ namespace Chimera.GUI.Controls {
 
             projectorDrawRoomCheck.Enabled = mProjector.DrawDiagram;
             projectorDrawLabelsCheck.Enabled = mProjector.DrawDiagram;
-            projectorAutoUpdateCheck.Enabled = mProjector.DrawDiagram;
 
             projectorOrientationPanel.Text = "Orientation (cm)";
             projectorPositionPanel.Text = "Position (cm)";
@@ -94,7 +93,6 @@ namespace Chimera.GUI.Controls {
 
                 projectorDrawRoomCheck.Enabled = mProjector.DrawDiagram;
                 projectorDrawLabelsCheck.Enabled = mProjector.DrawDiagram;
-                projectorAutoUpdateCheck.Enabled = mProjector.DrawDiagram;
             }
         }
 

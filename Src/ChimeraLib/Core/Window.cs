@@ -610,5 +610,9 @@ namespace Chimera {
                 0f,     0f,     clip1,  clip2,
                 0f,     0f,     -1f,    0f);
         }
+
+        public override string ToString() {
+            return mName;
+        }
     }
 }

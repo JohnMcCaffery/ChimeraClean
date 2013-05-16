@@ -43,8 +43,10 @@ namespace Chimera.OpenSim {
         }
 
         public override void SetWindow() {
-            if (ProxyRunning && ControlCamera)
+            if (ProxyRunning && ControlCamera) {
                 InjectPacket(new SetWindowPacket(Window.ProjectionMatrix));
+                SetCamera();
+            }
         }
 
         protected override void ProcessCameraUpdate (Coordinator coordinator, CameraUpdateEventArgs args) {
@@ -54,7 +56,7 @@ namespace Chimera.OpenSim {
 
         private Packet MakePacket(Vector3 position, Vector3 positionDelta, Rotation rotation, Rotation rotationDelta) {
             //Vector3 focus = Window.Coordinator.Position + Window.Coordinator.Orientation.LookAtVector;
-            Vector3 lookAt = (rotation + Window.Orientation).LookAtVector;
+            Vector3 lookAt = (rotation - Window.Orientation).LookAtVector;
             Vector3 eyePos = new Vector3(Window.Coordinator.EyePosition.Y, Window.Coordinator.EyePosition.X, -Window.Coordinator.EyePosition.Z);
 
             SetCameraPacket p = new SetCameraPacket();
