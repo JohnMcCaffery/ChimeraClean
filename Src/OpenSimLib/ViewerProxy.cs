@@ -543,7 +543,7 @@ namespace Chimera.OpenSim {
             get { return mConfig; }
         }
 
-        public void Draw(Func<Vector3, System.Drawing.Point> to2D, System.Drawing.Graphics graphics, Action redraw) {
+        public void Draw(Func<Vector3, System.Drawing.Point> to2D, System.Drawing.Graphics graphics, Action redraw, Perspective perspective) {
             //Do nothing
         }
 

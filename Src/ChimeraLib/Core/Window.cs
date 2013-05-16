@@ -29,7 +29,7 @@ using System.Windows.Forms;
 using Chimera.GUI.Forms;
 using Chimera.Interfaces;
 using Chimera.Overlay;
-using Chimera.Core;
+using Chimera.Plugins;
 using Chimera.Config;
 
 namespace Chimera {
@@ -120,10 +120,6 @@ namespace Chimera {
         /// </summary>
         private ProjectionStyle mProjection = ProjectionStyle.Calculated;
         /// <summary>
-        /// The projector that is to display this window.
-        /// </summary>
-        private Projector mProjector;
-        /// <summary>
         /// Whether to include the eye position and resulting perspective lines when drawing the diagram.
         /// </summary>
         private bool mDrawEye = true;
@@ -145,8 +141,6 @@ namespace Chimera {
         /// <param name="overlayAreas">The overlay areas mapped to this input.</param>
         public Window(string windowName) {
             mName = windowName;
-
-            mProjector = new Projector(this);
 
             WindowConfig cfg = new WindowConfig(windowName);
             mMonitor = Screen.AllScreens.FirstOrDefault(s => s.DeviceName.Equals(cfg.Monitor));
@@ -171,13 +165,6 @@ namespace Chimera {
         public Window(string name, IOutput output)
             : this(name) {
             mOutput = output;
-        }
-
-        /// <summary>
-        /// The projector which is to display the screen.
-        /// </summary>
-        internal Projector Projector {
-            get { return mProjector; }
         }
 
         /// <summary>
@@ -510,9 +497,6 @@ namespace Chimera {
                 Vector3 look = new Vector3((float)ScreenDistance, 0f, 0f) * mOrientation.Quaternion;
                 graphics.DrawLine(Pens.DarkViolet, eye, to2D(look + mCoordinator.EyePosition));
             }
-
-            if (perspective != Perspective.Heightmap) 
-                mProjector.Draw(graphics, to2D, redraw, perspective);
         }
 
         void mCoordinator_EyeUpdated(Coordinator source, EventArgs args) {

@@ -112,7 +112,7 @@ namespace Chimera.Plugins {
 
         public void Close() { }
 
-        public void Draw(Func<Vector3, Point> to2D, System.Drawing.Graphics graphics, Action redraw) {
+        public void Draw(Func<Vector3, Point> to2D, System.Drawing.Graphics graphics, Action redraw, Perspective perspective) {
             //Do nothing
         }
 

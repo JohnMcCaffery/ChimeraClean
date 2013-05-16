@@ -25,8 +25,9 @@ using OpenMetaverse;
 using System.Drawing;
 using Chimera.Util;
 using Chimera.Config;
+using Chimera.Plugins;
 
-namespace Chimera.Core {
+namespace Chimera.Plugins {
     public enum AspectRatio {
         /// <summary>
         /// An aspect ratio of 16:9
@@ -38,7 +39,6 @@ namespace Chimera.Core {
         FourThree
     }
     public class Projector {
-        private readonly HashSet<Action> mRedraws = new HashSet<Action>();
 
         private Window mWindow;
         private Vector3 mPosition;
@@ -49,15 +49,19 @@ namespace Chimera.Core {
         private float mH;
         private float mW;
         private bool mDraw;
-        private bool mDrawRoom;
         private bool mDrawLabels;
         private bool mAutoUpdate;
         private bool mConfigureProjector;
         private bool mUpsideDown;
         private float mScreenDistance;
         private float mVOffset;
+        private bool mRedrawing;
+
+        private ProjectorPlugin mProjectorPlugin;
 
         public event Action Change;
+
+        public Window Window { get { return mWindow; } }
 
         public bool ConfigureFromProjector {
             get { return mConfigureProjector; }
@@ -76,20 +80,12 @@ namespace Chimera.Core {
 
         public Vector3 RelativePosition {
             get { 
-                Vector3 big = Room.Big - mPosition; 
-                Vector3 small = Room.Small - mPosition;
+                Vector3 big = mProjectorPlugin.Big - mPosition; 
+                Vector3 small = mProjectorPlugin.Small - mPosition;
                 float x = Math.Abs(big.X) > Math.Abs(small.X) ? small.X : big.X;
                 float y = Math.Abs(big.Y) > Math.Abs(small.Y) ? small.Y : big.Y;
                 float z = Math.Abs(big.Z) > Math.Abs(small.Z) ? small.Z : big.Z;
                 return new Vector3(x, y, z);
-            }
-        }
-
-        public Vector3 RoomPosition {
-            get { return Room.Anchor; }
-            set { 
-                Room.Anchor = value;
-                Redraw();
             }
         }
 
@@ -114,14 +110,6 @@ namespace Chimera.Core {
             }
         }
 
-        public bool DrawRoom {
-            get { return mDrawRoom; }
-            set {
-                mDrawRoom = value;
-                Redraw();
-            }
-        }
-
         public bool DrawLabels {
             get { return mDrawLabels; }
             set {
@@ -134,24 +122,24 @@ namespace Chimera.Core {
             get { return mAspectRatio; }
             set {
                 switch (mNativeAspectRatio) {
-                    case Core.AspectRatio.SixteenNine:
+                    case AspectRatio.SixteenNine:
                         mH = 9f / 16f; 
                         switch (value) {
-                            case Core.AspectRatio.SixteenNine:
+                            case AspectRatio.SixteenNine:
                                 mW = 1f;
                                 break;
-                            case Core.AspectRatio.FourThree:
+                            case AspectRatio.FourThree:
                                 mW = 6 / 8f;
                                 break;
                         }
                         break;
-                    case Core.AspectRatio.FourThree:
+                    case AspectRatio.FourThree:
                         mW = 1f;
                         switch (value) {
-                            case Core.AspectRatio.SixteenNine: 
+                            case AspectRatio.SixteenNine: 
                                 mH = 9f / 16f; 
                                 break;
-                            case Core.AspectRatio.FourThree: 
+                            case AspectRatio.FourThree: 
                                 mH = 3f / 4f; 
                                 break;
                         }
@@ -167,8 +155,8 @@ namespace Chimera.Core {
             set {
                 mNativeAspectRatio = value;
                 switch (value) {
-                    case Core.AspectRatio.SixteenNine: mH = 9f / 16f; break;
-                    case Core.AspectRatio.FourThree: mH = 3f / 4f; break;
+                    case AspectRatio.SixteenNine: mH = 9f / 16f; break;
+                    case AspectRatio.FourThree: mH = 3f / 4f; break;
                 }
                 AspectRatio = mAspectRatio;
             }
@@ -209,7 +197,7 @@ namespace Chimera.Core {
         public float Clearance {
             get {
                 Vector3 bottomCentre = GetCorner(0f, -1f);
-                Vector3 projector = Room.Anchor + mPosition;
+                Vector3 projector = mProjectorPlugin.RoomPosition + mPosition;
                 Vector3 planeDir = bottomCentre - projector;
                 Vector3 planeNormal = Vector3.Cross(planeDir, Vector3.UnitY * new Rotation(0.0, mOrientation.Yaw).Quaternion);
 
@@ -219,11 +207,12 @@ namespace Chimera.Core {
                 bool mIntersects = denominator != 0f;
                 if (!mIntersects)
                     return -1f;
-                return (-numerator / denominator) + (mH - Room.Anchor.Z);
+                return (-numerator / denominator) + (mH - mProjectorPlugin.RoomPosition.Z);
             }
         }
 
-        internal Projector(Window window) {
+        public Projector(Window window, ProjectorPlugin projectorPlugin) {
+            mProjectorPlugin = projectorPlugin;
             mWindow = window;
 
             WindowConfig cfg = new WindowConfig(window.Name);
@@ -238,7 +227,6 @@ namespace Chimera.Core {
             mVOffset = cfg.VOffset;
 
             mDraw = cfg.Draw;
-            mDrawRoom = cfg.DrawRoom;
             mDrawLabels = cfg.DrawLabels;
             mAutoUpdate = cfg.AutoUpdate;
 
@@ -253,18 +241,15 @@ namespace Chimera.Core {
 
         void mOrientation_Changed(object sender, EventArgs e) {
             Redraw();
-        }
-
-        private bool mRedrawing;
-
+        }
         internal void Redraw() {
             if (!mRedrawing && mAutoUpdate && mWindow != null) {
                 mRedrawing = true;
                 Configure();
                 mRedrawing = false;
             }
-            foreach (var redraw in mRedraws)
-                redraw();
+
+            mProjectorPlugin.Redraw();
 
             if (Change != null)
                 Change();
@@ -291,7 +276,7 @@ namespace Chimera.Core {
             Vector3 line = mWindow.Orientation.LookAtVector * (float) screenDistance;
             Vector3 target = mWindow.Centre;
             target.Z = mWindow.TopLeft.Z;
-            mPosition = (target - line) - Room.Anchor;
+            mPosition = (target - line) - mProjectorPlugin.RoomPosition;
             double offset = mUpsideDown ?
                 mVOffset * mWindow.Width :
                 (VOffset * -mWindow.Width) - (mWindow.Width * mH);
@@ -325,94 +310,52 @@ namespace Chimera.Core {
             Vector3 corner = originalVector * new Rotation(mOrientation.Pitch, 0.0).Quaternion;
             corner *= mScreenDistance / corner.X;
             corner *= new Rotation(0.0, mOrientation.Yaw).Quaternion;
-            corner += mPosition + Room.Anchor;
+            corner += mPosition + mProjectorPlugin.RoomPosition;
             return corner;
         }
 
         public void Draw(Graphics g, Func<Vector3, Point> to2D, Action redraw, Perspective perspective) {
-            if (!mRedraws.Contains(redraw))
-                mRedraws.Add(redraw);
-            
             if (mDraw) {
-                Point pos = to2D(mPosition + Room.Anchor);
+                Point pos = to2D(mPosition + mProjectorPlugin.RoomPosition);
                 g.DrawLine(Pens.Black, pos, to2D(TopLeft));
                 g.DrawLine(Pens.Black, pos, to2D(TopRight));
                 g.DrawLine(Pens.Black, pos, to2D(BottomLeft));
                 g.DrawLine(Pens.Black, pos, to2D(BottomRight));
 
-                if (mDrawRoom) {
-                    Room.Draw(g, to2D);
+                if (mDrawLabels) {
+                    Vector3 toScreen = new Vector3(mScreenDistance, 0f, 0f) * new Rotation(0.0, mOrientation.Yaw).Quaternion;
+                    Vector3 floor = new Vector3(0f, 0f, mProjectorPlugin.RoomPosition.Z + mProjectorPlugin.Small.Z);
+                    Vector3 clearance = new Vector3(0f, 0f, Clearance);
+                    Vector3 toClearance = floor + clearance;
 
-                    if (mDrawLabels) {
-                        Vector3 toScreen = new Vector3(mScreenDistance, 0f, 0f) * new Rotation(0.0, mOrientation.Yaw).Quaternion;
-                        Vector3 floor = new Vector3(0f, 0f, Room.Anchor.Z + Room.Small.Z);
-                        Vector3 clearance = new Vector3(0f, 0f, Clearance);
-                        Vector3 toClearance = floor + clearance;
+                    Font font = SystemFonts.DefaultFont;
 
-                        Font font = SystemFonts.DefaultFont;
+                    using (Pen p2 = new Pen(Color.Black, 2f)) {
+                        g.DrawLine(p2, pos, to2D(mProjectorPlugin.RoomPosition + mPosition + toScreen));
+                        g.DrawString(String.Format("To Screen: {0:.#}cm", ScreenDistance / 10f), font, Brushes.Black, to2D(mProjectorPlugin.RoomPosition + mPosition + (toScreen / 2f)));
 
-                        using (Pen p2 = new Pen(Color.Black, 2f)) {
-                            g.DrawLine(p2, pos, to2D(Room.Anchor + mPosition + toScreen));
-                            g.DrawString(String.Format("To Screen: {0:.#}cm", ScreenDistance / 10f), font, Brushes.Black, to2D(Room.Anchor + mPosition + (toScreen / 2f)));
+                        if (perspective == Perspective.X || perspective == Perspective.Y) {
+                            Vector3 toCeiling = new Vector3(0f, 0f, RelativePosition.Z);
 
-                            if (perspective == Perspective.X || perspective == Perspective.Y) {
-                                Vector3 toCeiling = new Vector3(0f, 0f, RelativePosition.Z);
+                            g.DrawString(String.Format("Z: {0:.#}cm", RelativePosition.Z / 10f), font, Brushes.Black, to2D(mProjectorPlugin.RoomPosition + mPosition + (toCeiling / 2f)));
+                            g.DrawLine(p2, pos, to2D(mProjectorPlugin.RoomPosition + mPosition + toCeiling));
 
-                                g.DrawString(String.Format("Z: {0:.#}cm", RelativePosition.Z / 10f), font, Brushes.Black, to2D(Room.Anchor + mPosition + (toCeiling / 2f)));
-                                g.DrawLine(p2, pos, to2D(Room.Anchor + mPosition + toCeiling));
+                            g.DrawString(String.Format("Clearance: {0:.#}cm", Clearance / 10f), font, Brushes.Black, to2D(floor + (clearance / 2f)));
+                            g.DrawLine(p2, to2D(floor), to2D(toClearance));
+                        } if (perspective == Perspective.X || perspective == Perspective.Z) {
+                            Vector3 toSide = new Vector3(0f, RelativePosition.Y, 0f);
 
-                                g.DrawString(String.Format("Clearance: {0:.#}cm", Clearance / 10f), font, Brushes.Black, to2D(floor + (clearance / 2f)));
-                                g.DrawLine(p2, to2D(floor), to2D(toClearance));
-                            } if (perspective == Perspective.X || perspective == Perspective.Z) {
-                                Vector3 toSide = new Vector3(0f, RelativePosition.Y, 0f);
+                            g.DrawString(String.Format("Y: {0:.#}cm", RelativePosition.Y / 10f), font, Brushes.Black, to2D(mProjectorPlugin.RoomPosition + mPosition + (toSide / 2f)));
+                            g.DrawLine(p2, pos, to2D(mProjectorPlugin.RoomPosition + mPosition + toSide));
+                        } if (perspective == Perspective.Y || perspective == Perspective.Z) {
+                            Vector3 toFar = new Vector3(RelativePosition.X, 0f, 0f);
 
-                                g.DrawString(String.Format("Y: {0:.#}cm", RelativePosition.Y / 10f), font, Brushes.Black, to2D(Room.Anchor + mPosition + (toSide / 2f)));
-                                g.DrawLine(p2, pos, to2D(Room.Anchor + mPosition + toSide));
-                            } if (perspective == Perspective.Y || perspective == Perspective.Z) {
-                                Vector3 toFar = new Vector3(RelativePosition.X, 0f, 0f);
-
-                                g.DrawString(String.Format("X: {0:.#}cm", RelativePosition.X / 10f), font, Brushes.Black, to2D(Room.Anchor + mPosition + (toFar / 2f)));
-                                g.DrawLine(p2, pos, to2D(Room.Anchor + mPosition + toFar));
-                            }
-
-                            Vector3 s = Room.Big - Room.Small;
-                            Vector3 edgeB = Room.Big + Room.Anchor;
-                            Vector3 edgeS = Room.Small + Room.Anchor;
-                            Vector3 centre = (s / 2f) + Room.Anchor;
-
-                            string w = String.Format("Width: {0:.#}", s.Y);
-                            string h = String.Format("Height: {0:.#}", s.Z);
-                            string d = String.Format("Depth: {0:.#}", s.X);
-
-                            if (perspective == Perspective.X) {
-                                PH(g, new Vector3(0f, edgeB.Y, centre.Z), h, to2D, font);
-                                PW(g, new Vector3(0f, centre.Y, edgeS.Z), w, to2D, font);
-                            }
-                            if (perspective == Perspective.Y) {
-                                PH(g, new Vector3(edgeB.X, 0f, centre.Z), h, to2D, font);
-                                PW(g, new Vector3(centre.X, 0f, edgeS.Z), d, to2D, font);
-                            }
-                            if (perspective == Perspective.Z) {
-                                PH(g, new Vector3(centre.X, edgeB.Y, 0f), d, to2D, font);
-                                PW(g, new Vector3(edgeS.X, centre.Y, 0f), w, to2D, font);
-                            }
+                            g.DrawString(String.Format("X: {0:.#}cm", RelativePosition.X / 10f), font, Brushes.Black, to2D(mProjectorPlugin.RoomPosition + mPosition + (toFar / 2f)));
+                            g.DrawLine(p2, pos, to2D(mProjectorPlugin.RoomPosition + mPosition + toFar));
                         }
                     }
                 }
             }
-        }
-
-        private void PH(Graphics g, Vector3 v, string txt, Func<Vector3, Point> to2D, Font font) {
-            Point p = to2D(v);
-            SizeF s = g.MeasureString(txt, font);
-            p.Y -= (int)(s.Height / 2f);
-            g.DrawString(txt, font, Brushes.Black, p);
-        }
-        private void PW(Graphics g, Vector3 v, string txt, Func<Vector3, Point> to2D, Font font) {
-            Point p = to2D(v);
-            SizeF s = g.MeasureString(txt, font);
-            p.X -= (int)(s.Width / 2f);
-            g.DrawString(txt, font, Brushes.Black, p);
         }
 
         private bool Contains(Vector3 p, Vector3[] wall) {

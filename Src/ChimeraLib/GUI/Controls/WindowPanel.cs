@@ -25,7 +25,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using Chimera.Core;
+using Chimera.Plugins;
 
 namespace Chimera.GUI.Controls {
     public partial class WindowPanel : UserControl {
@@ -80,7 +80,6 @@ namespace Chimera.GUI.Controls {
                 launchOverlayButton.Text =  "Close Overlay";
             }
 
-            projectorPanel.Projector = mWindow.Projector;
             mWindow_Changed(window, null);
         }
 
@@ -282,7 +281,6 @@ namespace Chimera.GUI.Controls {
 
         private void drawEyeCheck_CheckedChanged(object sender, EventArgs e) {
             mWindow.DrawEye = drawEyeCheck.Checked;
-            mWindow.Projector.Redraw();
         }
     }
 }

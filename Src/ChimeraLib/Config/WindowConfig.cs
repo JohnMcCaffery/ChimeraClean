@@ -24,7 +24,7 @@ using System.Text;
 using Chimera.Util;
 using System.IO;
 using OpenMetaverse;
-using Chimera.Core;
+using Chimera.Plugins;
 
 namespace Chimera.Config {
     public class WindowConfig : ConfigFolderBase {

@@ -101,8 +101,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Config\ConfigFolderBase.cs" />
-    <Compile Include="Config\Room.cs" />
-    <Compile Include="Core\Projector.cs" />
+    <Compile Include="Config\ProjectorConfig.cs" />
+    <Compile Include="Plugins\Projector.cs" />
     <Compile Include="GUI\Controls\Plugins\AxisBasedDeltaPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -127,6 +127,12 @@
     <Compile Include="GUI\Controls\Plugins\PluginSelectorPanel.Designer.cs">
       <DependentUpon>PluginSelectorPanel.cs</DependentUpon>
     </Compile>
+    <Compile Include="GUI\Controls\Plugins\ProjectorPluginPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\Controls\Plugins\ProjectorPluginPanel.Designer.cs">
+      <DependentUpon>ProjectorPluginPanel.cs</DependentUpon>
+    </Compile>
     <Compile Include="GUI\Controls\Plugins\SplitAxisPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -134,10 +140,10 @@
       <DependentUpon>SplitAxisPanel.cs</DependentUpon>
     </Compile>
     <Compile Include="Config\OverlayConfig.cs" />
-    <Compile Include="GUI\Controls\ProjectorPanel.cs">
+    <Compile Include="GUI\Controls\Plugins\ProjectorPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="GUI\Controls\ProjectorPanel.Designer.cs">
+    <Compile Include="GUI\Controls\Plugins\ProjectorPanel.Designer.cs">
       <DependentUpon>ProjectorPanel.cs</DependentUpon>
     </Compile>
     <Compile Include="Overlay\States\ExploreState.cs" />
@@ -146,6 +152,7 @@
     <Compile Include="Overlay\Triggers\ImageClickTrigger.cs" />
     <Compile Include="Plugins\AxisBasedDelta.cs" />
     <Compile Include="Plugins\ConstrainedAxis.cs" />
+    <Compile Include="Plugins\ProjectorPlugin.cs" />
     <Compile Include="Plugins\SelectablePlugin.cs" />
     <Compile Include="Plugins\SplitAxis.cs" />
     <Compile Include="Interfaces\IAxis.cs" />
@@ -312,10 +319,13 @@
     <EmbeddedResource Include="GUI\Controls\Plugins\PluginSelectorPanel.resx">
       <DependentUpon>PluginSelectorPanel.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="GUI\Controls\Plugins\ProjectorPluginPanel.resx">
+      <DependentUpon>ProjectorPluginPanel.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="GUI\Controls\Plugins\SplitAxisPanel.resx">
       <DependentUpon>SplitAxisPanel.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="GUI\Controls\ProjectorPanel.resx">
+    <EmbeddedResource Include="GUI\Controls\Plugins\ProjectorPanel.resx">
       <DependentUpon>ProjectorPanel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\Controls\ScalarPanel.resx">

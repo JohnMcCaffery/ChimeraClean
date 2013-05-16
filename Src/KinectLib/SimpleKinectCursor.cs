@@ -248,7 +248,7 @@ namespace Chimera.Kinect {
 
         public void Close() { }
 
-        public void Draw(Func<Vector3, Point> to2D, Graphics graphics, Action redraw) { }
+        public void Draw(Func<Vector3, Point> to2D, Graphics graphics, Action redraw, Perspective perspective) { }
 
         #endregion
     }

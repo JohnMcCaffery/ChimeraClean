@@ -1,4 +1,4 @@
-﻿namespace Chimera.GUI.Controls {
+﻿namespace Chimera.GUI.Controls.Plugins {
     partial class ProjectorPanel {
         /// <summary> 
         /// Required designer variable.
@@ -24,7 +24,7 @@
         /// </summary>
         private void InitializeComponent() {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ProjectorPanel));
-            Chimera.Util.Rotation rotation1 = new Chimera.Util.Rotation();
+            Chimera.Util.Rotation rotation5 = new Chimera.Util.Rotation();
             this.aspectRatioSplit = new System.Windows.Forms.SplitContainer();
             this.projectorNativeAspectPulldown = new System.Windows.Forms.ComboBox();
             this.label13 = new System.Windows.Forms.Label();
@@ -32,7 +32,6 @@
             this.label14 = new System.Windows.Forms.Label();
             this.projectorAutoUpdateCheck = new System.Windows.Forms.CheckBox();
             this.projectorDrawLabelsCheck = new System.Windows.Forms.CheckBox();
-            this.projectorDrawRoomCheck = new System.Windows.Forms.CheckBox();
             this.projectorConfigureWindowButton = new System.Windows.Forms.Button();
             this.projectorDrawCheck = new System.Windows.Forms.CheckBox();
             this.label17 = new System.Windows.Forms.Label();
@@ -42,7 +41,6 @@
             this.label1 = new System.Windows.Forms.Label();
             this.upsideDownCheck = new System.Windows.Forms.CheckBox();
             this.vOffsetPanel = new Chimera.GUI.ScalarPanel();
-            this.projectorRoomPositionPanel = new Chimera.GUI.VectorPanel();
             this.projectorWallDistancePanel = new Chimera.GUI.ScalarPanel();
             this.projectorOrientationPanel = new Chimera.GUI.RotationPanel();
             this.projectorThrowRatioPanel = new Chimera.GUI.ScalarPanel();
@@ -55,8 +53,8 @@
             // 
             // aspectRatioSplit
             // 
-            this.aspectRatioSplit.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.aspectRatioSplit.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.aspectRatioSplit.IsSplitterFixed = true;
             this.aspectRatioSplit.Location = new System.Drawing.Point(0, 188);
             this.aspectRatioSplit.Name = "aspectRatioSplit";
@@ -76,8 +74,8 @@
             // 
             // projectorNativeAspectPulldown
             // 
-            this.projectorNativeAspectPulldown.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.projectorNativeAspectPulldown.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.projectorNativeAspectPulldown.FormattingEnabled = true;
             this.projectorNativeAspectPulldown.Location = new System.Drawing.Point(114, 8);
             this.projectorNativeAspectPulldown.Name = "projectorNativeAspectPulldown";
@@ -96,8 +94,8 @@
             // 
             // projectorAspectPulldown
             // 
-            this.projectorAspectPulldown.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.projectorAspectPulldown.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.projectorAspectPulldown.FormattingEnabled = true;
             this.projectorAspectPulldown.Location = new System.Drawing.Point(114, 8);
             this.projectorAspectPulldown.Name = "projectorAspectPulldown";
@@ -117,7 +115,7 @@
             // projectorAutoUpdateCheck
             // 
             this.projectorAutoUpdateCheck.AutoSize = true;
-            this.projectorAutoUpdateCheck.Location = new System.Drawing.Point(253, 306);
+            this.projectorAutoUpdateCheck.Location = new System.Drawing.Point(151, 306);
             this.projectorAutoUpdateCheck.Name = "projectorAutoUpdateCheck";
             this.projectorAutoUpdateCheck.Size = new System.Drawing.Size(86, 17);
             this.projectorAutoUpdateCheck.TabIndex = 55;
@@ -128,7 +126,7 @@
             // projectorDrawLabelsCheck
             // 
             this.projectorDrawLabelsCheck.AutoSize = true;
-            this.projectorDrawLabelsCheck.Location = new System.Drawing.Point(162, 306);
+            this.projectorDrawLabelsCheck.Location = new System.Drawing.Point(60, 306);
             this.projectorDrawLabelsCheck.Name = "projectorDrawLabelsCheck";
             this.projectorDrawLabelsCheck.Size = new System.Drawing.Size(85, 17);
             this.projectorDrawLabelsCheck.TabIndex = 54;
@@ -136,21 +134,10 @@
             this.projectorDrawLabelsCheck.UseVisualStyleBackColor = true;
             this.projectorDrawLabelsCheck.CheckedChanged += new System.EventHandler(this.projectorDrawLabelsCheck_CheckedChanged);
             // 
-            // projectorDrawRoomCheck
-            // 
-            this.projectorDrawRoomCheck.AutoSize = true;
-            this.projectorDrawRoomCheck.Location = new System.Drawing.Point(60, 306);
-            this.projectorDrawRoomCheck.Name = "projectorDrawRoomCheck";
-            this.projectorDrawRoomCheck.Size = new System.Drawing.Size(82, 17);
-            this.projectorDrawRoomCheck.TabIndex = 53;
-            this.projectorDrawRoomCheck.Text = "Draw Room";
-            this.projectorDrawRoomCheck.UseVisualStyleBackColor = true;
-            this.projectorDrawRoomCheck.CheckedChanged += new System.EventHandler(this.projectorDrawRoomChecked_CheckedChanged);
-            // 
             // projectorConfigureWindowButton
             // 
-            this.projectorConfigureWindowButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.projectorConfigureWindowButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.projectorConfigureWindowButton.Location = new System.Drawing.Point(0, 329);
             this.projectorConfigureWindowButton.Name = "projectorConfigureWindowButton";
             this.projectorConfigureWindowButton.Size = new System.Drawing.Size(201, 23);
@@ -226,9 +213,8 @@
             // 
             // upsideDownCheck
             // 
-            this.upsideDownCheck.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.upsideDownCheck.AutoSize = true;
-            this.upsideDownCheck.Location = new System.Drawing.Point(257, 283);
+            this.upsideDownCheck.Location = new System.Drawing.Point(243, 306);
             this.upsideDownCheck.Name = "upsideDownCheck";
             this.upsideDownCheck.Size = new System.Drawing.Size(90, 17);
             this.upsideDownCheck.TabIndex = 61;
@@ -238,41 +224,22 @@
             // 
             // vOffsetPanel
             // 
-            this.vOffsetPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.vOffsetPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.vOffsetPanel.Location = new System.Drawing.Point(73, 280);
             this.vOffsetPanel.Max = 1F;
             this.vOffsetPanel.Min = -1F;
             this.vOffsetPanel.MinimumSize = new System.Drawing.Size(95, 20);
             this.vOffsetPanel.Name = "vOffsetPanel";
-            this.vOffsetPanel.Size = new System.Drawing.Size(178, 20);
+            this.vOffsetPanel.Size = new System.Drawing.Size(271, 20);
             this.vOffsetPanel.TabIndex = 59;
             this.vOffsetPanel.Value = 0F;
             this.vOffsetPanel.ValueChanged += new System.Action<float>(this.vOffsetPanel_ValueChanged);
             // 
-            // projectorRoomPositionPanel
-            // 
-            this.projectorRoomPositionPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.projectorRoomPositionPanel.Location = new System.Drawing.Point(0, 358);
-            this.projectorRoomPositionPanel.Max = 10000F;
-            this.projectorRoomPositionPanel.MaxV = ((OpenMetaverse.Vector3)(resources.GetObject("projectorRoomPositionPanel.MaxV")));
-            this.projectorRoomPositionPanel.Min = -10000F;
-            this.projectorRoomPositionPanel.MinimumSize = new System.Drawing.Size(103, 95);
-            this.projectorRoomPositionPanel.MinV = ((OpenMetaverse.Vector3)(resources.GetObject("projectorRoomPositionPanel.MinV")));
-            this.projectorRoomPositionPanel.Name = "projectorRoomPositionPanel";
-            this.projectorRoomPositionPanel.Size = new System.Drawing.Size(347, 95);
-            this.projectorRoomPositionPanel.TabIndex = 51;
-            this.projectorRoomPositionPanel.Value = ((OpenMetaverse.Vector3)(resources.GetObject("projectorRoomPositionPanel.Value")));
-            this.projectorRoomPositionPanel.X = 0F;
-            this.projectorRoomPositionPanel.Y = 0F;
-            this.projectorRoomPositionPanel.Z = 0F;
-            this.projectorRoomPositionPanel.ValueChanged += new System.EventHandler(this.projectorEyePosition_ValueChanged);
-            // 
             // projectorWallDistancePanel
             // 
-            this.projectorWallDistancePanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.projectorWallDistancePanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.projectorWallDistancePanel.Location = new System.Drawing.Point(114, 254);
             this.projectorWallDistancePanel.Max = 10000F;
             this.projectorWallDistancePanel.Min = 0F;
@@ -285,8 +252,8 @@
             // 
             // projectorOrientationPanel
             // 
-            this.projectorOrientationPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.projectorOrientationPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.projectorOrientationPanel.Location = new System.Drawing.Point(0, 101);
             this.projectorOrientationPanel.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("projectorOrientationPanel.LookAtVector")));
             this.projectorOrientationPanel.MinimumSize = new System.Drawing.Size(252, 95);
@@ -295,17 +262,17 @@
             this.projectorOrientationPanel.Quaternion = ((OpenMetaverse.Quaternion)(resources.GetObject("projectorOrientationPanel.Quaternion")));
             this.projectorOrientationPanel.Size = new System.Drawing.Size(347, 95);
             this.projectorOrientationPanel.TabIndex = 46;
-            rotation1.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("rotation1.LookAtVector")));
-            rotation1.Pitch = 0D;
-            rotation1.Quaternion = ((OpenMetaverse.Quaternion)(resources.GetObject("rotation1.Quaternion")));
-            rotation1.Yaw = 0D;
-            this.projectorOrientationPanel.Value = rotation1;
+            rotation5.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("rotation5.LookAtVector")));
+            rotation5.Pitch = 0D;
+            rotation5.Quaternion = ((OpenMetaverse.Quaternion)(resources.GetObject("rotation5.Quaternion")));
+            rotation5.Yaw = 0D;
+            this.projectorOrientationPanel.Value = rotation5;
             this.projectorOrientationPanel.Yaw = 0D;
             // 
             // projectorThrowRatioPanel
             // 
-            this.projectorThrowRatioPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.projectorThrowRatioPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.projectorThrowRatioPanel.Location = new System.Drawing.Point(74, 228);
             this.projectorThrowRatioPanel.Max = 3F;
             this.projectorThrowRatioPanel.Min = 0F;
@@ -318,8 +285,8 @@
             // 
             // projectorPositionPanel
             // 
-            this.projectorPositionPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.projectorPositionPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.projectorPositionPanel.Location = new System.Drawing.Point(0, 0);
             this.projectorPositionPanel.Max = 5000F;
             this.projectorPositionPanel.MaxV = ((OpenMetaverse.Vector3)(resources.GetObject("projectorPositionPanel.MaxV")));
@@ -347,9 +314,7 @@
             this.Controls.Add(this.aspectRatioSplit);
             this.Controls.Add(this.projectorAutoUpdateCheck);
             this.Controls.Add(this.projectorDrawLabelsCheck);
-            this.Controls.Add(this.projectorDrawRoomCheck);
             this.Controls.Add(this.projectorConfigureWindowButton);
-            this.Controls.Add(this.projectorRoomPositionPanel);
             this.Controls.Add(this.projectorDrawCheck);
             this.Controls.Add(this.label17);
             this.Controls.Add(this.projectorWallDistancePanel);
@@ -358,7 +323,7 @@
             this.Controls.Add(this.projectorThrowRatioPanel);
             this.Controls.Add(this.projectorPositionPanel);
             this.Name = "ProjectorPanel";
-            this.Size = new System.Drawing.Size(347, 451);
+            this.Size = new System.Drawing.Size(347, 358);
             this.aspectRatioSplit.Panel1.ResumeLayout(false);
             this.aspectRatioSplit.Panel1.PerformLayout();
             this.aspectRatioSplit.Panel2.ResumeLayout(false);
@@ -379,9 +344,7 @@
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.CheckBox projectorAutoUpdateCheck;
         private System.Windows.Forms.CheckBox projectorDrawLabelsCheck;
-        private System.Windows.Forms.CheckBox projectorDrawRoomCheck;
         private System.Windows.Forms.Button projectorConfigureWindowButton;
-        private VectorPanel projectorRoomPositionPanel;
         private System.Windows.Forms.CheckBox projectorDrawCheck;
         private System.Windows.Forms.Label label17;
         private ScalarPanel projectorWallDistancePanel;

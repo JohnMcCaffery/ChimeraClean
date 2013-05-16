@@ -128,6 +128,9 @@ namespace Chimera.Launcher {
             //Heightmap
             plugins.Add(new HeightmapPlugin());
 
+            //Projectors
+            plugins.Add(new ProjectorPlugin());
+
             //Kinect
             if (!Config.UseClicks) {
                 plugins.Add(new KinectCamera());
