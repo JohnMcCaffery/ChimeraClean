@@ -112,5 +112,18 @@ namespace Chimera.OpenSim {
                 pPositionChanged(packet.AgentData.CameraCenter, new Rotation(packet.AgentData.CameraAtAxis));
             return p;
         }
+
+
+
+
+        
+        abstract void SetCamera();
+        abstract void SetCamera(Vector3 positionDelta, Rotation orientationDelta);
+        abstract void SetFrustum();
+        abstract void Move(Vector3 positionDelta, Rotation orientationDelta);
+
+        abstract void ClearCamera();
+        abstract void ClearFrustum();
+        abstract void ClearMovement();
     }
 }
