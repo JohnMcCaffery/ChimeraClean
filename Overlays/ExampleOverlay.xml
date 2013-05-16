@@ -1,0 +1,22 @@
+<Overlay UseClicks="true">
+  <Triggers>
+    <Trigger Type="Fade" Name="SlowFade" Length="5000" />
+  </Triggers>
+  <Transitions>
+    
+  </Transitions>
+  <States>
+    
+  </States>
+  <Transitions>
+    <InvisibleTransition>
+      
+    </InvisibleTransition>
+    <ImageTransition>
+      
+    </ImageTransition>
+    <TextTransition>
+      
+    </TextTransition>
+  </Transitions>
+</Overlay>

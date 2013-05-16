@@ -23,6 +23,7 @@ using System.Linq;
 using System.Text;
 using Chimera.Interfaces.Overlay;
 using System.Drawing;
+using System.Xml;
 
 namespace Chimera.Overlay.Triggers {
     public class CameraPositionTrigger : ITrigger {
@@ -35,6 +36,10 @@ namespace Chimera.Overlay.Triggers {
 
         public CameraPositionTrigger(Coordinator coordinator) {
             coordinator.CameraUpdated += new Action<Coordinator,CameraUpdateEventArgs>(coordinator_CameraUpdated);
+        }
+
+        public CameraPositionTrigger(XmlNode node) {
+            //TODO add logic for initialisation
         }
 
         private void coordinator_CameraUpdated(Coordinator coordinator, CameraUpdateEventArgs args) {

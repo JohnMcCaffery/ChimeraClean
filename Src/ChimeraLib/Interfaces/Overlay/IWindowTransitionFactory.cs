@@ -22,6 +22,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Chimera.Overlay;
+using System.Xml;
 
 namespace Chimera.Interfaces.Overlay {
     public interface IWindowTransitionFactory {

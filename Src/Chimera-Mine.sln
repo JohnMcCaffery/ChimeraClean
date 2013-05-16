@@ -37,6 +37,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Config", "Config", "{AD5F2E
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TouchscreenLib", "TouchscreenLib\TouchscreenLib.csproj", "{7780A366-F9CE-4E9F-8C91-0763F73A3A8A}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Overlays", "Overlays", "{AA20755A-F03E-4FF6-A86E-DFC56F1994A9}"
+	ProjectSection(SolutionItems) = preProject
+		..\Overlays\ExampleOverlay.xml = ..\Overlays\ExampleOverlay.xml
+		..\Overlays\ExampleSlideshow.xml = ..\Overlays\ExampleSlideshow.xml
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

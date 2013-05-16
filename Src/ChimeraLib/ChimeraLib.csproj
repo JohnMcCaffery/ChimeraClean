@@ -140,6 +140,7 @@
     <Compile Include="GUI\Controls\ProjectorPanel.Designer.cs">
       <DependentUpon>ProjectorPanel.cs</DependentUpon>
     </Compile>
+    <Compile Include="Interfaces\Overlay\IFactory.cs" />
     <Compile Include="Overlay\States\ExploreState.cs" />
     <Compile Include="Overlay\Triggers\ClickTrigger.cs" />
     <Compile Include="Overlay\Triggers\TextClickTrigger.cs" />
@@ -210,7 +211,7 @@
     <Compile Include="GUI\Forms\OverlayWindow.Designer.cs">
       <DependentUpon>OverlayWindow.cs</DependentUpon>
     </Compile>
-    <Compile Include="Interfaces\Overlay\IHoverSelectorRenderer.cs" />
+    <Compile Include="Interfaces\Overlay\IHoverSelectionRenderer.cs" />
     <Compile Include="Interfaces\Overlay\IDrawable.cs" />
     <Compile Include="Config\PluginConfig.cs" />
     <Compile Include="Interfaces\IPlugin.cs" />
@@ -232,15 +233,14 @@
       <DependentUpon>KBMousePanel.cs</DependentUpon>
     </Compile>
     <Compile Include="Interfaces\ICrashable.cs" />
-    <Compile Include="Interfaces\Overlay\IStateFactory.cs" />
-    <Compile Include="Interfaces\Overlay\IStateTransitionFactory.cs" />
+    <Compile Include="Interfaces\Overlay\IWindowTransitionFactory.cs" />
     <Compile Include="Interfaces\Overlay\ITrigger.cs" />
     <Compile Include="Interfaces\Overlay\IWindowState.cs" />
     <Compile Include="Overlay\States\ImageBGState.cs" />
     <Compile Include="Overlay\States\ImageBGWindow.cs" />
     <Compile Include="Overlay\Triggers\ImageHoverTrigger.cs" />
     <Compile Include="Overlay\Triggers\InvisibleHoverTrigger.cs" />
-    <Compile Include="Overlay\OverlayManager.cs" />
+    <Compile Include="Overlay\StateManager.cs" />
     <Compile Include="Overlay\Triggers\HoverTrigger.cs" />
     <Compile Include="Overlay\State.cs" />
     <Compile Include="Overlay\StateTransition.cs" />

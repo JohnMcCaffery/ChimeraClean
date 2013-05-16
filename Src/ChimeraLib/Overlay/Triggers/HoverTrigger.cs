@@ -24,6 +24,7 @@ using System.Text;
 using System.Drawing;
 using System.Windows.Forms;
 using Chimera.Interfaces.Overlay;
+using System.Xml;
 
 namespace Chimera.Overlay.Triggers {
     public abstract class HoverTrigger : ITrigger, IDrawable {
@@ -89,6 +90,10 @@ namespace Chimera.Overlay.Triggers {
             mRenderer = renderer;
 
             mManager.Window.Coordinator.Tick += new Action(Coordinator_Tick);
+        }
+
+        public HoverTrigger(XmlNode node) {
+            //TODO add logic for initialisation
         }
 
         public string Window {

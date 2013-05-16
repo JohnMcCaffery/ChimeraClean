@@ -27,6 +27,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using System.Threading;
 using Chimera.Interfaces.Overlay;
+using System.Xml;
 
 namespace Chimera.Overlay.Triggers {
     public class CursorTrigger : ITrigger, IDrawable {
@@ -50,6 +51,10 @@ namespace Chimera.Overlay.Triggers {
             mWindow.Coordinator.Tick += new Action(coordinator_Tick);
             //mSelectCursor = new Cursor(new IntPtr(65571));
             mSelectCursor = new Cursor(new IntPtr(65567));
+        }
+
+        public CursorTrigger(XmlNode node) {
+            //TODO add logic for initialisation
         }
 
         public double HoverTime {

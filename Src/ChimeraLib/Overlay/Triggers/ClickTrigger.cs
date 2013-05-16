@@ -24,6 +24,7 @@ using System.Text;
 using System.Drawing;
 using System.Windows.Forms;
 using Chimera.Interfaces.Overlay;
+using System.Xml;
 
 namespace Chimera.Overlay.Triggers {
     public class ClickTrigger : ITrigger {
@@ -64,6 +65,10 @@ namespace Chimera.Overlay.Triggers {
             mBounds = bounds;
 
             mManager.OnRelease += new Action<int>(mManager_OnRelease);
+        }
+
+        public ClickTrigger(XmlNode node) {
+            //TODO add logic for initialisation
         }
 
         public string Window {
