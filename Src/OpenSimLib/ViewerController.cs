@@ -30,5 +30,9 @@ namespace Chimera.OpenSim {
 
             Exited -= closeListener;
         }
+
+        internal void ToggleHUD() {
+            PressKey("{F1}", true, false, true);
+        }
     }
 }

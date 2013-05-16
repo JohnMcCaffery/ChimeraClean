@@ -64,7 +64,7 @@ namespace Chimera.OpenSim {
 
         private SetFollowCamProperties mFollowCamProperties;
         private Window mWindow;
-        private OutputPanel mOutputPanel;
+        private DeprecatedOutputPanel mOutputPanel;
         private InputPanel mInputPanel;
         private ViewerConfig mConfig;
 
@@ -311,7 +311,7 @@ namespace Chimera.OpenSim {
         UserControl IOutput.ControlPanel {
             get {
                 if (mOutputPanel == null)
-                    mOutputPanel = new OutputPanel(this);
+                    mOutputPanel = new DeprecatedOutputPanel(this);
                 return mOutputPanel;
             }
         }

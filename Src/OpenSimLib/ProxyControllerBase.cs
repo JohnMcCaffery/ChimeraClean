@@ -23,6 +23,11 @@ namespace Chimera.OpenSim {
         private string mLoginURI;
         private GridProxyConfig mConfig;
 
+        /// <summary>
+        /// Selected whenever the client proxy starts up.
+        /// </summary>
+        public event Action ProxyStarted;
+
         private event Action<Vector3, Rotation> pPositionChanged;
 
         internal event Action<Vector3, Rotation> PositionChanged {
@@ -46,6 +51,10 @@ namespace Chimera.OpenSim {
             get { return mProxy; }
         }
 
+        public bool Started {
+            get { return mProxy != null; }
+        }
+
         public string LoginURI {
             get { return mLoginURI; }
         }
@@ -67,6 +76,7 @@ namespace Chimera.OpenSim {
             string[] args = { portArg, listenIPArg, loginURIArg, proxyCaps };
             mConfig = new GridProxyConfig("Routing God", "jm726@st-andrews.ac.uk", args);
             mLoginURI = localAddress + ":" + port;
+
             return Start();
         }
 
@@ -83,18 +93,13 @@ namespace Chimera.OpenSim {
                 if (pPositionChanged != null)
                     mProxy.AddDelegate(PacketType.AgentUpdate, Direction.Outgoing, mAgentUpdateListener);
 
-                //TODO - do this in wrapper class
-                //if (mFollowCamProperties != null)
-                    //mFollowCamProperties.SetProxy(mProxy);
+                if (ProxyStarted != null)
+                    ProxyStarted();
             } catch (NullReferenceException e) {
                 //Logger.Info("Unable to start proxy. " + e.Message);
                 mProxy = null;
                 return false;
             }
-
-            //TODO - do this in wrapper class
-            //if (OnProxyStarted != null)
-                //OnProxyStarted(mProxy, null);
 
             return true;
         }

@@ -45,7 +45,6 @@ namespace Chimera.Launcher {
             GUI = Get(true, "GUI", true, "Whether to launch the GUI when the system starts.");
 
             Windows = Get(true, "Windows", "MainWindow", "The name of all the windows to load, separated by commas.");
-            BackwardsCompatible = Get(true, "BackwardsCompatible", false, "If true, no unusual packets will be injected into the viewer. This will disable remote control and frustum control.");
 
             BindingsFile = Get(true, "BindingsFile", "../Config/FullSetup.xml", "The XML file describing the dependency injection bindings used to instantiate the system.");
         }

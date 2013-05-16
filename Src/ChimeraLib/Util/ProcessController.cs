@@ -369,8 +369,11 @@ namespace Chimera.Util {
             }
         }
 
-        public ProcessController() {
+        public bool Started {
+            get { return mProcess != null; }
         }
+
+        public ProcessController() { }
         
         public ProcessController(Process process) {
             mProcess = process;
@@ -451,6 +454,8 @@ namespace Chimera.Util {
         public Screen Monitor {
             get { return mMonitor; }
             set {
+                mMonitor = value;
+
                 if (mProcess == null)
                     return;
 
