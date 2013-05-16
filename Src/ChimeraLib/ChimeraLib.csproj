@@ -254,6 +254,7 @@
     <Compile Include="Overlay\StateTransition.cs" />
     <Compile Include="Overlay\Triggers\SimpleTrigger.cs" />
     <Compile Include="Overlay\Triggers\TextHoverTrigger.cs" />
+    <Compile Include="Util\ProcessController.cs" />
     <Compile Include="Util\StatisticsServer.cs" />
     <Compile Include="Config\ConfigBase.cs" />
     <Compile Include="Util\Init.cs" />

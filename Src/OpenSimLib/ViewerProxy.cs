@@ -38,6 +38,7 @@ using Chimera.Util;
 using System.IO;
 using Nwc.XmlRpc;
 using Chimera.Config;
+using System.Drawing;
 
 namespace Chimera.OpenSim {
     public abstract class ViewerProxy : IOutput, ISystemPlugin {
@@ -237,60 +238,6 @@ namespace Chimera.OpenSim {
             }
         }
 
-        private void mProxy_LoginResponse(XmlRpcResponse response) {
-            mClientLoggedIn = true;
-            Hashtable t = (Hashtable)response.Value;
-
-            if (bool.Parse(t["login"].ToString())) {
-                mSessionID = UUID.Parse(t["session_id"].ToString());
-                mSecureSessionID = UUID.Parse(t["secure_session_id"].ToString());
-                mAgentID = UUID.Parse(t["agent_id"].ToString());
-                mFirstName = t["first_name"].ToString();
-                mLastName = t["last_name"].ToString();
-
-                lock (processLock)
-                    Monitor.PulseAll(processLock);
-
-                //TODO - get client process if not started through GUI
-                if (mClient != null) {
-                    ProcessWrangler.SetMonitor(mClient, mWindow.Monitor);
-                    if (mFullscreen)
-                        ProcessWrangler.SetBorder(mClient, mWindow.Monitor, !mFullscreen);
-                }
-
-                new Thread(() => {
-                    if (mControlCamera && mWindow.Coordinator.ControlMode == ControlMode.Absolute)
-                        SetCamera();
-                    SetWindow();
-                    if (mMaster && mFollowCamProperties.SendPackets)
-                        mProxy.InjectPacket(mFollowCamProperties.Packet, Direction.Incoming);
-                    if (OnClientLoggedIn != null)
-                        OnClientLoggedIn(mProxy, null);
-
-                    Thread.Sleep(30000);
-                    //if (mFullscreen)
-                        //ToggleHUD();
-                    if (mClient != null)
-                        ProcessWrangler.PressKey(mClient, "U", true, false, true);
-                    mWindow.OverlayManager.ForegroundOverlay();
-                }).Start();
-            } else {
-            }
-        }
-
-        private void mClient_Exited(object sender, EventArgs e) {
-            bool unexpected = !mClosing;
-            mClosing = false;
-            mClientLoggedIn = false;
-            if (OnViewerExit != null)
-                OnViewerExit(this, null);
-            lock (processLock)
-                Monitor.PulseAll(processLock);
-            if (mAutoRestart && unexpected) {
-                Restart("Crash");
-            }
-        }
-
         /// <summary>
         /// Return control of the camera to the viewer.
         /// </summary>
@@ -414,22 +361,6 @@ namespace Chimera.OpenSim {
             ControlCamera = mConfig.ControlCamera;
         }
 
-        void StateManager_CustomTrigger(string trigger) {
-            if (trigger == "Glow")
-                Glow();
-            else if (trigger == "NoGlow")
-                NoGlow();
-        }
-
-        void mWindow_Changed(Window w, EventArgs args) {
-            if (w.Coordinator.ControlMode == ControlMode.Absolute)
-                SetWindow();
-        }
-
-        void Coordinator_Tick() {
-            if (mClientLoggedIn && mClient != null && DateTime.Now.Minute % 5 == 0 && DateTime.Now.Second % 60 == 0)
-                ProcessWrangler.PressKey(mClient, "{ENTER}");
-        }
 
         public bool Launch() {
             if (mConfig == null)
@@ -540,7 +471,7 @@ namespace Chimera.OpenSim {
             get { return mConfig; }
         }
 
-        public void Draw(Func<Vector3, System.Drawing.Point> to2D, System.Drawing.Graphics graphics, Action redraw, Perspective perspective) {
+        public void Draw(Func<Vector3, Point> to2D, Graphics graphics, Action redraw, Perspective perspective) {
             //Do nothing
         }
 
@@ -629,6 +560,76 @@ namespace Chimera.OpenSim {
                 
                 //TODO - Would be nice if pitching the view 'stuck'.
             }
+        }
+        void StateManager_CustomTrigger(string trigger) {
+            if (trigger == "Glow")
+                Glow();
+            else if (trigger == "NoGlow")
+                NoGlow();
         }
+
+        void mWindow_Changed(Window w, EventArgs args) {
+            if (w.Coordinator.ControlMode == ControlMode.Absolute)
+                SetWindow();
+        }
+
+        void Coordinator_Tick() {
+            if (mClientLoggedIn && mClient != null && DateTime.Now.Minute % 5 == 0 && DateTime.Now.Second % 60 == 0)
+                ProcessWrangler.PressKey(mClient, "{ENTER}");
+        }
+
+        private void mProxy_LoginResponse(XmlRpcResponse response) {
+            mClientLoggedIn = true;
+            Hashtable t = (Hashtable)response.Value;
+
+            if (bool.Parse(t["login"].ToString())) {
+                mSessionID = UUID.Parse(t["session_id"].ToString());
+                mSecureSessionID = UUID.Parse(t["secure_session_id"].ToString());
+                mAgentID = UUID.Parse(t["agent_id"].ToString());
+                mFirstName = t["first_name"].ToString();
+                mLastName = t["last_name"].ToString();
+
+                lock (processLock)
+                    Monitor.PulseAll(processLock);
+
+                //TODO - get client process if not started through GUI
+                if (mClient != null) {
+                    ProcessWrangler.SetMonitor(mClient, mWindow.Monitor);
+                    if (mFullscreen)
+                        ProcessWrangler.SetBorder(mClient, mWindow.Monitor, !mFullscreen);
+                }
+
+                new Thread(() => {
+                    if (mControlCamera && mWindow.Coordinator.ControlMode == ControlMode.Absolute)
+                        SetCamera();
+                    SetWindow();
+                    if (mMaster && mFollowCamProperties.SendPackets)
+                        mProxy.InjectPacket(mFollowCamProperties.Packet, Direction.Incoming);
+                    if (OnClientLoggedIn != null)
+                        OnClientLoggedIn(mProxy, null);
+
+                    Thread.Sleep(30000);
+                    //if (mFullscreen)
+                        //ToggleHUD();
+                    if (mClient != null)
+                        ProcessWrangler.PressKey(mClient, "U", true, false, true);
+                    mWindow.OverlayManager.ForegroundOverlay();
+                }).Start();
+            } else {
+            }
+        }
+
+        private void mClient_Exited(object sender, EventArgs e) {
+            bool unexpected = !mClosing;
+            mClosing = false;
+            mClientLoggedIn = false;
+            if (OnViewerExit != null)
+                OnViewerExit(this, null);
+            lock (processLock)
+                Monitor.PulseAll(processLock);
+            if (mAutoRestart && unexpected) {
+                Restart("Crash");
+            }
+        }   
     }
 }

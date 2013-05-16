@@ -109,9 +109,11 @@
     </Compile>
     <Compile Include="HeightmapConfig.cs" />
     <Compile Include="HeightmapPlugin.cs" />
+    <Compile Include="Interfaces\IViewerController.cs" />
     <Compile Include="OpenSimViewerFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ProxyConfig.cs" />
+    <Compile Include="ProxyControllerBase.cs" />
     <Compile Include="SetFollowCamProperties.cs" />
     <Compile Include="SetFollowCamPropertiesViewerOutput.cs" />
     <Compile Include="CustomPackets.cs" />
