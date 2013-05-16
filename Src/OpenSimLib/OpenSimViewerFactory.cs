@@ -6,8 +6,20 @@ using Chimera.Interfaces;
 
 namespace Chimera.OpenSim {
     public class OpenSimViewerFactory : IOutputFactory {
-        public IOutput Create(string name) {
-            throw new NotImplementedException();
+        private bool mPluginAssigned;
+        private OpenSimController mPluginController;
+
+        public OpenSimViewerFactory(IEnumerable<ISystemPlugin> plugins) {
+            mPluginController = plugins.FirstOrDefault(p => p is OpenSimController) as OpenSimController;
+        }
+
+        public IOutput Create() {
+            if (mPluginController != null && !mPluginAssigned) {
+                mPluginAssigned = true;
+                return mPluginController;
+            }
+
+            return new OpenSimController();
         }
     }
 }

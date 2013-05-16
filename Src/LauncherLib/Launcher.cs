@@ -45,6 +45,7 @@ using Joystick.Overlay;
 using Ninject;
 using Ninject.Parameters;
 using Ninject.Extensions.Xml;
+using Chimera.Interfaces;
 
 namespace Chimera.Launcher {
     public abstract class Launcher {
@@ -83,19 +84,12 @@ namespace Chimera.Launcher {
             IKernel k = new StandardKernel(settings, new XmlExtensionModule());
             k.Load(mConfig.BindingsFile);
 
-            foreach (string windowName in mConfig.Windows.Split(',')) {
-                IOutput output = MakeOutput(windowName);
-                Window window = new Window(windowName, output);
-                mWindows.Add(window);
-                if (mFirstWindowOutput == null) {
-                    mFirstWindowOutput = output;
-                }
-            }
-
             mCoordinator = k.Get<Coordinator>();
-            //mCoordinator = new Coordinator(GetWindows(), GetInputs());
-            foreach (var window in mWindows)
-                Coordinator.AddWindow(window);
+            IOutputFactory outputFactory = k.Get<IOutputFactory>();
+
+            foreach (string windowName in mConfig.Windows.Split(',')) {
+                Coordinator.AddWindow(new Window(windowName, outputFactory.Create()));
+            }
 
             mButtonFolder = Path.GetFullPath(mConfig.ButtonFolder);
 

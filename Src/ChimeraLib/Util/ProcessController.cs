@@ -409,7 +409,7 @@ namespace Chimera.Util {
         }
 
         public void PressKey(string str) {
-            PressKey(str);
+            PressKey(str, false, false, false);
         }
         public void PressKey(string key, bool ctrl, bool alt, bool shift) {
             if (mProcess == null)
@@ -439,7 +439,7 @@ namespace Chimera.Util {
                 SetWindowLong(mProcess.MainWindowHandle, GWL_STYLE, lStyle);
                 SetWindowLong(mProcess.MainWindowHandle, GWL_EXSTYLE, lExStyle);
                 SetWindowPos(mProcess.MainWindowHandle, IntPtr.Zero, 0, 0, 0, 0, SWP_FRAMECHANGED | SWP_NOSIZE | SWP_NOREPOSITION | SWP_NOMOVE | SWP_NOZORDER | SWP_NOOWNERZORDER);
-                SetWindowPos(mProcess.MainWindowHandle, IntPtr.Zero, mMonitor.Bounds.X, mMonitor.Bounds.Y, mMonitor.Bounds.Width, mMonitor.Bounds.Height, SWP_NOZORDER | SWP_NOOWNERZORDER);
+                //SetWindowPos(mProcess.MainWindowHandle, IntPtr.Zero, mMonitor.Bounds.X, mMonitor.Bounds.Y, mMonitor.Bounds.Width, mMonitor.Bounds.Height, SWP_NOZORDER | SWP_NOOWNERZORDER);
                 BringToFront();
             }
         }
