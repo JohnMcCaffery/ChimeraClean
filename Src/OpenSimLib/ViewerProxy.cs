@@ -66,7 +66,7 @@ namespace Chimera.OpenSim {
         private Window mWindow;
         private OutputPanel mOutputPanel;
         private InputPanel mInputPanel;
-        private ProxyConfig mConfig;
+        private ViewerConfig mConfig;
 
         /// <summary>
         /// Whther to restart the viewer if the camera stops updating, or just clear the camera then set it again."
@@ -102,7 +102,7 @@ namespace Chimera.OpenSim {
         /// </summary>
         public event EventHandler OnViewerExit;
 
-        internal ProxyConfig ProxyConfig {
+        internal ViewerConfig ProxyConfig {
             get { return mConfig; }
         }
 
@@ -339,7 +339,7 @@ namespace Chimera.OpenSim {
         }
 
         public void Init(Window window) {
-            mConfig = new ProxyConfig(window.Name);
+            mConfig = new ViewerConfig(window.Name);
             mLogger = LogManager.GetLogger(mConfig.Section);
             mWindow = window;
             mWindow.Coordinator.CameraUpdated += Coordinator_CameraUpdated;

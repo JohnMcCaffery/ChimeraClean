@@ -20,6 +20,8 @@ namespace Chimera.OpenSim {
         private UUID mAgentID = UUID.Zero;
         private string mFirstName = "NotLoggedIn";
         private string mLastName = "NotLoggedIn";
+        private string mLoginURI;
+        private GridProxyConfig mConfig;
 
         private event Action<Vector3, Rotation> pPositionChanged;
 
@@ -40,23 +42,39 @@ namespace Chimera.OpenSim {
         /// </summary>
         internal event EventHandler OnClientLoggedIn;
 
+        public Proxy Proxy {
+            get { return mProxy; }
+        }
+
+        public string LoginURI {
+            get { return mLoginURI; }
+        }
+
         internal ProxyControllerBase() {
             mAgentUpdateListener = new PacketDelegate(mProxy_AgentUpdatePacketReceived);
         }
 
-        internal bool StartProxy(int port, int address, int loginURI) {
+        internal bool StartProxy(int port, string loginURI) {
             if (mProxy != null)
-                Close();
+                Stop();
             string file = AppDomain.CurrentDomain.SetupInformation.ConfigurationFile;
 
+            string localAddress = "127.0.0.1";
             string portArg = "--proxy-login-port=" + port;
-            string listenIPArg = "--proxy-proxyAddress-facing-address=" + address;
+            string listenIPArg = "--proxy-proxyAddress-facing-address=" + localAddress;
             string loginURIArg = "--proxy-remote-login-uri=" + loginURI;
             string proxyCaps = "--proxy-caps=false";
             string[] args = { portArg, listenIPArg, loginURIArg, proxyCaps };
-            GridProxyConfig config = new GridProxyConfig("Routing God", "jm726@st-andrews.ac.uk", args);
+            mConfig = new GridProxyConfig("Routing God", "jm726@st-andrews.ac.uk", args);
+            mLoginURI = localAddress + ":" + port;
+            return Start();
+        }
+
+        internal bool Start() {
+            if (mConfig == null)
+                throw new ArgumentException("Unable to start proxy. No configuration specified.");
             try {
-                mProxy = new Proxy(config);
+                mProxy = new Proxy(mConfig);
                 mProxy.AddLoginResponseDelegate(mProxy_LoginResponse);
                 mProxy.AddDelegate(PacketType.AgentUpdate, Direction.Outgoing, mProxy_AgentUpdatePacketReceived);
 
@@ -80,7 +98,7 @@ namespace Chimera.OpenSim {
 
             return true;
         }
-        internal void Close() {
+        internal void Stop() {
             if (mProxy != null) {
                 mProxy.Stop();
                 mProxy = null;
@@ -88,22 +106,22 @@ namespace Chimera.OpenSim {
         }
 
         void mProxy_LoginResponse(XmlRpcResponse response) {
-            Hashtable t = (Hashtable)response.Value;
+            new Thread(() => {
+                Hashtable t = (Hashtable)response.Value;
 
-            if (bool.Parse(t["login"].ToString())) {
-                mSessionID = UUID.Parse(t["session_id"].ToString());
-                mSecureSessionID = UUID.Parse(t["secure_session_id"].ToString());
-                mAgentID = UUID.Parse(t["agent_id"].ToString());
-                mFirstName = t["first_name"].ToString();
-                mLastName = t["last_name"].ToString();
+                if (bool.Parse(t["login"].ToString())) {
+                    mSessionID = UUID.Parse(t["session_id"].ToString());
+                    mSecureSessionID = UUID.Parse(t["secure_session_id"].ToString());
+                    mAgentID = UUID.Parse(t["agent_id"].ToString());
+                    mFirstName = t["first_name"].ToString();
+                    mLastName = t["last_name"].ToString();
 
-                new Thread(() => {
                     Thread.Sleep(50);
                     if (OnClientLoggedIn != null)
                         OnClientLoggedIn(mProxy, null);
-                }).Start();
-            } else {
-            }
+                } else {
+                }
+            }).Start();
         }
     
         Packet mProxy_AgentUpdatePacketReceived(Packet p, IPEndPoint ep) {
@@ -117,13 +135,13 @@ namespace Chimera.OpenSim {
 
 
         
-        abstract void SetCamera();
-        abstract void SetCamera(Vector3 positionDelta, Rotation orientationDelta);
-        abstract void SetFrustum();
-        abstract void Move(Vector3 positionDelta, Rotation orientationDelta);
+        public abstract void SetCamera();
+        public abstract void SetCamera(Vector3 positionDelta, Rotation orientationDelta);
+        public abstract void SetFrustum();
+        public abstract void Move(Vector3 positionDelta, Rotation orientationDelta);
 
-        abstract void ClearCamera();
-        abstract void ClearFrustum();
-        abstract void ClearMovement();
+        public abstract void ClearCamera();
+        public abstract void ClearFrustum();
+        public abstract void ClearMovement();
     }
 }

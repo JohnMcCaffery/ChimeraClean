@@ -26,7 +26,7 @@ using System.IO;
 using Chimera.Config;
 
 namespace Chimera.OpenSim {
-    internal class ProxyConfig : ConfigFolderBase {
+    internal class ViewerConfig : ConfigFolderBase {
         public static readonly string DEFAULT_LOGINURI = "http://localhost:9000";
         public static readonly string DEFAULT_CLIENT_EXE = "C:\\Program Files (x86)\\Firestorm-Release\\Firestorm-Release.exe";
         public static readonly string DEFAULT_MASTER_ADDRESS = "127.0.0.1";
@@ -57,11 +57,11 @@ namespace Chimera.OpenSim {
             get { return "SecondLifeViewer"; }
         }
 
-        public ProxyConfig(params string[] args)
+        public ViewerConfig(params string[] args)
             : base("NoNameSpecified", args) {
         }
 
-        public ProxyConfig(string windowName, params string[] args)
+        public ViewerConfig(string windowName, params string[] args)
             : base(windowName, "OpenSim", args) {
         }
 

@@ -110,6 +110,7 @@
     <Compile Include="HeightmapConfig.cs" />
     <Compile Include="HeightmapPlugin.cs" />
     <Compile Include="Interfaces\IViewerController.cs" />
+    <Compile Include="OpenSimController.cs" />
     <Compile Include="OpenSimViewerFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ProxyConfig.cs" />
@@ -118,6 +119,7 @@
     <Compile Include="SetFollowCamPropertiesViewerOutput.cs" />
     <Compile Include="CustomPackets.cs" />
     <Compile Include="SetWindowViewerOutput.cs" />
+    <Compile Include="ViewerController.cs" />
     <Compile Include="ViewerProxy.cs" />
   </ItemGroup>
   <ItemGroup>

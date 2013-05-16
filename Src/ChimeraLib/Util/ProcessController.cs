@@ -340,8 +340,26 @@ namespace Chimera.Util {
         private Process mProcess;
         private Screen mMonitor;
         private bool mFullscreen;
+        private string mExe;
+        private string mWorkingDir;
+        private string mArgs;
 
         public event Action Exited;
+
+        public string Exe {
+            get { return mExe; }
+            set { mExe = value; }
+        }
+
+        public string WorkingDir {
+            get { return mWorkingDir; }
+            set { mWorkingDir = value; }
+        }
+
+        public string Args {
+            get { return mArgs; }
+            set { mArgs = value; }
+        }
 
         public Process Process {
             get { return mProcess; }
@@ -351,17 +369,35 @@ namespace Chimera.Util {
             }
         }
 
+        public ProcessController() {
+        }
+        
         public ProcessController(Process process) {
             mProcess = process;
         }
 
         public ProcessController(string exe, string workingDir, string args) {
+            Start(mExe, mWorkingDir, mArgs);
+        }
+
+        public bool Start() {
+            return Start(mExe, mWorkingDir, mArgs);
+        }
+
+        public bool Start(string exe, string workingDir, string args) {
+            mExe = exe;
+            mWorkingDir = workingDir;
+            mArgs = args;
+
             mProcess = new Process();
             mProcess.StartInfo.FileName = exe;
             mProcess.StartInfo.WorkingDirectory = workingDir;
             mProcess.StartInfo.Arguments =  args;
             mProcess.EnableRaisingEvents = true;
             mProcess.Exited += new EventHandler(mProcess_Exited);
+
+            Console.WriteLine("Launching " + exe + " " + args + " from " + workingDir);
+            return mProcess.Start();
         }
 
         void mProcess_Exited(object sender, EventArgs e) {
@@ -373,6 +409,8 @@ namespace Chimera.Util {
             PressKey(str);
         }
         public void PressKey(string key, bool ctrl, bool alt, bool shift) {
+            if (mProcess == null)
+                return;
             Process foreground = Process.GetCurrentProcess();
             SetForegroundWindow(mProcess.MainWindowHandle);
             SendKeys.SendWait((ctrl ? "^" : "") + (alt ? "%" : "") + (shift ? "+" : "") + key);
@@ -382,6 +420,9 @@ namespace Chimera.Util {
         public bool FullScreen {
             get { return mFullscreen; }
             set {
+                if (mProcess == null)
+                    return;
+
                 Process foreground = Process.GetCurrentProcess();
                 Int32 lStyle = GetWindowLong(mProcess.MainWindowHandle, GWL_STYLE);
                 if (value) lStyle |= WS_CAPTION | WS_THICKFRAME | WS_SYSMENU;
@@ -401,12 +442,18 @@ namespace Chimera.Util {
         }
 
         public void BringToFront() {
+            if (mProcess == null)
+                return;
+
             SetForegroundWindow(mProcess.MainWindowHandle);
         }
 
         public Screen Monitor {
             get { return mMonitor; }
             set {
+                if (mProcess == null)
+                    return;
+
                 SetWindowPos(
                     mProcess.MainWindowHandle,
                     IntPtr.Zero,
