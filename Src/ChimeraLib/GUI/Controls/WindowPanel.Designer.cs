@@ -44,11 +44,12 @@ namespace Chimera.GUI.Controls {
         /// </summary>
         private void InitializeComponent() {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(WindowPanel));
-            Chimera.Util.Rotation rotation4 = new Chimera.Util.Rotation();
+            Chimera.Util.Rotation rotation1 = new Chimera.Util.Rotation();
             this.mainTab = new System.Windows.Forms.TabControl();
             this.configTab = new System.Windows.Forms.TabPage();
             this.restartButton = new System.Windows.Forms.Button();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.aspectRatioButton = new System.Windows.Forms.Button();
             this.drawEyeCheck = new System.Windows.Forms.CheckBox();
             this.diagonalPanel = new Chimera.GUI.ScalarPanel();
             this.label12 = new System.Windows.Forms.Label();
@@ -96,7 +97,6 @@ namespace Chimera.GUI.Controls {
             this.bringToFrontButtin = new System.Windows.Forms.Button();
             this.fullscreenCheck = new System.Windows.Forms.CheckBox();
             this.launchOverlayButton = new System.Windows.Forms.Button();
-            this.aspectRatioButton = new System.Windows.Forms.Button();
             this.mainTab.SuspendLayout();
             this.configTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -198,6 +198,16 @@ namespace Chimera.GUI.Controls {
             this.splitContainer1.Size = new System.Drawing.Size(830, 311);
             this.splitContainer1.SplitterDistance = 465;
             this.splitContainer1.TabIndex = 8;
+            // 
+            // aspectRatioButton
+            // 
+            this.aspectRatioButton.Location = new System.Drawing.Point(193, 186);
+            this.aspectRatioButton.Name = "aspectRatioButton";
+            this.aspectRatioButton.Size = new System.Drawing.Size(39, 23);
+            this.aspectRatioButton.TabIndex = 38;
+            this.aspectRatioButton.Text = "=";
+            this.aspectRatioButton.UseVisualStyleBackColor = true;
+            this.aspectRatioButton.Click += new System.EventHandler(this.aspectRatioButton_Click);
             // 
             // drawEyeCheck
             // 
@@ -553,7 +563,7 @@ namespace Chimera.GUI.Controls {
             this.aspectRatioHValue.Size = new System.Drawing.Size(52, 20);
             this.aspectRatioHValue.TabIndex = 21;
             this.aspectRatioHValue.Value = new decimal(new int[] {
-            10,
+            9,
             0,
             0,
             0});
@@ -589,11 +599,11 @@ namespace Chimera.GUI.Controls {
             this.orientationPanel.Quaternion = ((OpenMetaverse.Quaternion)(resources.GetObject("orientationPanel.Quaternion")));
             this.orientationPanel.Size = new System.Drawing.Size(352, 95);
             this.orientationPanel.TabIndex = 1;
-            rotation4.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("rotation4.LookAtVector")));
-            rotation4.Pitch = 0D;
-            rotation4.Quaternion = ((OpenMetaverse.Quaternion)(resources.GetObject("rotation4.Quaternion")));
-            rotation4.Yaw = 0D;
-            this.orientationPanel.Value = rotation4;
+            rotation1.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("rotation1.LookAtVector")));
+            rotation1.Pitch = 0D;
+            rotation1.Quaternion = ((OpenMetaverse.Quaternion)(resources.GetObject("rotation1.Quaternion")));
+            rotation1.Yaw = 0D;
+            this.orientationPanel.Value = rotation1;
             this.orientationPanel.Yaw = 0D;
             // 
             // centrePanel
@@ -769,16 +779,6 @@ namespace Chimera.GUI.Controls {
             this.launchOverlayButton.Text = "Launch Overlay";
             this.launchOverlayButton.UseVisualStyleBackColor = true;
             this.launchOverlayButton.Click += new System.EventHandler(this.launchOverlayButton_Click);
-            // 
-            // aspectRatioButton
-            // 
-            this.aspectRatioButton.Location = new System.Drawing.Point(193, 186);
-            this.aspectRatioButton.Name = "aspectRatioButton";
-            this.aspectRatioButton.Size = new System.Drawing.Size(39, 23);
-            this.aspectRatioButton.TabIndex = 38;
-            this.aspectRatioButton.Text = "=";
-            this.aspectRatioButton.UseVisualStyleBackColor = true;
-            this.aspectRatioButton.Click += new System.EventHandler(this.aspectRatioButton_Click);
             // 
             // WindowPanel
             // 

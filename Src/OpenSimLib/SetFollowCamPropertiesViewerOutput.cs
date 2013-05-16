@@ -28,10 +28,6 @@ using Chimera;
 
 namespace Chimera.OpenSim {
     public class SetFollowCamPropertiesViewerOutput : ViewerProxy {
-        public SetFollowCamPropertiesViewerOutput(string name, string file, params string[] args)
-            : base(name, args) {
-        }
-
         public override void ClearCamera() {
             if (ProxyRunning)
                 InjectPacket(new ClearFollowCamPropertiesPacket());

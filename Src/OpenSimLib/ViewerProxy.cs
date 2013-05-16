@@ -391,11 +391,8 @@ namespace Chimera.OpenSim {
             }
         }
 
-        public ViewerProxy(string windowName, params string[] args) {
-            mConfig = new ProxyConfig(windowName, args);
-        }
-
         public void Init(Window window) {
+            mConfig = new ProxyConfig(window.Name);
             mLogger = LogManager.GetLogger(mConfig.Section);
             mWindow = window;
             mWindow.Coordinator.CameraUpdated += Coordinator_CameraUpdated;

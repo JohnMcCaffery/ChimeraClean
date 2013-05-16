@@ -21,6 +21,7 @@ namespace Chimera.Launcher {
 
         public bool BackwardsCompatible;
         public string Windows;
+        public String BindingsFile;
 
         public override string Group {
             get { return "Launch"; }
@@ -45,6 +46,8 @@ namespace Chimera.Launcher {
 
             Windows = Get(true, "Windows", "MainWindow", "The name of all the windows to load, separated by commas.");
             BackwardsCompatible = Get(true, "BackwardsCompatible", false, "If true, no unusual packets will be injected into the viewer. This will disable remote control and frustum control.");
+
+            BindingsFile = Get(true, "BindingsFile", "../Config/FullSetup.xml", "The XML file describing the dependency injection bindings used to instantiate the system.");
         }
     }
 }

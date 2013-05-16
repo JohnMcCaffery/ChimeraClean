@@ -28,10 +28,6 @@ using Chimera;
 
 namespace Chimera.OpenSim {
     public class SetWindowViewerOutput : ViewerProxy {
-        public SetWindowViewerOutput(string name, params string[] args)
-            : base(name, args) {
-        }
-
         public override void ClearCamera() {
             if (ProxyRunning)
                 InjectPacket(new ClearCameraPacket());

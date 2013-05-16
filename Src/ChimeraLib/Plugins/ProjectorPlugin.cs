@@ -11,7 +11,8 @@ using System.Windows.Forms;
 using Chimera.GUI.Controls.Plugins;
 
 namespace Chimera.Plugins {
-    public class ProjectorPlugin : ISystemPlugin {        private readonly HashSet<Action> mRedraws = new HashSet<Action>();
+    public class ProjectorPlugin : ISystemPlugin {
+        private readonly HashSet<Action> mRedraws = new HashSet<Action>();
         private readonly List<Vector3> sCorners = new List<Vector3>();
 
         private Vector3 mAnchor;
@@ -36,14 +37,16 @@ namespace Chimera.Plugins {
 
         public IEnumerable<Vector3> InternalCorners {
             get { return sCorners; }
-        }
+        }
+
         public Vector3 RoomPosition {
             get { return mAnchor; }
             set { 
                 mAnchor = value;
                 Redraw();
             }
-        }
+        }
+
         public bool DrawLabels {
             get { return mDrawLabels; }
             set {
@@ -58,7 +61,8 @@ namespace Chimera.Plugins {
                 mDrawRoom = value;
                 Redraw();
             }
-        }
+        }
+
         internal void Redraw() {
             foreach (var redraw in mRedraws)
                 redraw();
@@ -86,7 +90,8 @@ namespace Chimera.Plugins {
 
         #region ISystemPlugin Members
 
-        public void Init(Coordinator coordinator) {            ProjectorConfig config = new ProjectorConfig();
+        public void Init(Coordinator coordinator) {
+            ProjectorConfig config = new ProjectorConfig();
             string roomFile = config.RoomFile;
             if (roomFile != null) {
                 XmlDocument doc = new XmlDocument();
@@ -161,7 +166,8 @@ namespace Chimera.Plugins {
 
         public void Close() { }
 
-        public void Draw(Func<Vector3, Point> to2D, Graphics g, Action redraw, Perspective perspective) {            if (!mRedraws.Contains(redraw))
+        public void Draw(Func<Vector3, Point> to2D, Graphics g, Action redraw, Perspective perspective) {
+            if (!mRedraws.Contains(redraw))
                 mRedraws.Add(redraw);
             
             if (!mEnabled)
@@ -200,7 +206,8 @@ namespace Chimera.Plugins {
                 projector.Draw(g, to2D, redraw, perspective);
         }
 
-        #endregion
+        #endregion
+
 
         private void PH(Graphics g, Vector3 v, string txt, Func<Vector3, Point> to2D, Font font) {
             Point p = to2D(v);

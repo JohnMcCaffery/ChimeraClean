@@ -42,6 +42,9 @@ using System.Reflection;
 using Chimera.Util;
 using System.Threading;
 using Joystick.Overlay;
+using Ninject;
+using Ninject.Parameters;
+using Ninject.Extensions.Xml;
 
 namespace Chimera.Launcher {
     public abstract class Launcher {
@@ -55,8 +58,8 @@ namespace Chimera.Launcher {
 
         protected IOutput MakeOutput(string name) {
             if (mConfig.BackwardsCompatible)
-                return new SetFollowCamPropertiesViewerOutput(name, AppDomain.CurrentDomain.SetupInformation.ConfigurationFile);
-            return new SetWindowViewerOutput(name);
+                return new SetFollowCamPropertiesViewerOutput();
+            return new SetWindowViewerOutput();
         }
 
         public Coordinator Coordinator {
@@ -76,14 +79,24 @@ namespace Chimera.Launcher {
         public Launcher(params string[] args) {
             mConfig = new LauncherConfig(args);
 
-            foreach (string window in mConfig.Windows.Split(',')) {
-                IOutput output = MakeOutput(window);
-                mWindows.Add(new Window(window, output));
-                if (mFirstWindowOutput == null)
+            var settings = new NinjectSettings { LoadExtensions = false };
+            IKernel k = new StandardKernel(settings, new XmlExtensionModule());
+            k.Load(mConfig.BindingsFile);
+
+            foreach (string windowName in mConfig.Windows.Split(',')) {
+                IOutput output = MakeOutput(windowName);
+                Window window = new Window(windowName, output);
+                mWindows.Add(window);
+                if (mFirstWindowOutput == null) {
                     mFirstWindowOutput = output;
+                }
             }
 
-            mCoordinator = new Coordinator(GetWindows(), GetInputs());
+            mCoordinator = k.Get<Coordinator>();
+            //mCoordinator = new Coordinator(GetWindows(), GetInputs());
+            foreach (var window in mWindows)
+                Coordinator.AddWindow(window);
+
             mButtonFolder = Path.GetFullPath(mConfig.ButtonFolder);
 
             if (!mConfig.UseClicks)
