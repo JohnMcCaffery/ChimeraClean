@@ -44,7 +44,7 @@ namespace Chimera.GUI.Controls {
         /// </summary>
         private void InitializeComponent() {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(WindowPanel));
-            Chimera.Util.Rotation rotation1 = new Chimera.Util.Rotation();
+            Chimera.Util.Rotation rotation4 = new Chimera.Util.Rotation();
             this.mainTab = new System.Windows.Forms.TabControl();
             this.configTab = new System.Windows.Forms.TabPage();
             this.restartButton = new System.Windows.Forms.Button();
@@ -79,7 +79,6 @@ namespace Chimera.GUI.Controls {
             this.fovHPanel = new Chimera.GUI.ScalarPanel();
             this.aspectRatioHValue = new System.Windows.Forms.NumericUpDown();
             this.label4 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.orientationPanel = new Chimera.GUI.RotationPanel();
             this.centrePanel = new Chimera.GUI.VectorPanel();
@@ -97,6 +96,7 @@ namespace Chimera.GUI.Controls {
             this.bringToFrontButtin = new System.Windows.Forms.Button();
             this.fullscreenCheck = new System.Windows.Forms.CheckBox();
             this.launchOverlayButton = new System.Windows.Forms.Button();
+            this.aspectRatioButton = new System.Windows.Forms.Button();
             this.mainTab.SuspendLayout();
             this.configTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -161,6 +161,7 @@ namespace Chimera.GUI.Controls {
             // 
             // splitContainer1.Panel1
             // 
+            this.splitContainer1.Panel1.Controls.Add(this.aspectRatioButton);
             this.splitContainer1.Panel1.Controls.Add(this.drawEyeCheck);
             this.splitContainer1.Panel1.Controls.Add(this.diagonalPanel);
             this.splitContainer1.Panel1.Controls.Add(this.label12);
@@ -187,7 +188,6 @@ namespace Chimera.GUI.Controls {
             this.splitContainer1.Panel1.Controls.Add(this.fovHPanel);
             this.splitContainer1.Panel1.Controls.Add(this.aspectRatioHValue);
             this.splitContainer1.Panel1.Controls.Add(this.label4);
-            this.splitContainer1.Panel1.Controls.Add(this.label7);
             this.splitContainer1.Panel1.Controls.Add(this.label8);
             // 
             // splitContainer1.Panel2
@@ -496,7 +496,6 @@ namespace Chimera.GUI.Controls {
             0,
             0,
             0});
-            this.aspectRatioWValue.ValueChanged += new System.EventHandler(this.aspectRatioWValue_ValueChanged);
             // 
             // label9
             // 
@@ -512,14 +511,14 @@ namespace Chimera.GUI.Controls {
             this.aspectRatioValue.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.aspectRatioValue.DecimalPlaces = 4;
-            this.aspectRatioValue.Location = new System.Drawing.Point(196, 189);
+            this.aspectRatioValue.Location = new System.Drawing.Point(238, 189);
             this.aspectRatioValue.Maximum = new decimal(new int[] {
             10000000,
             0,
             0,
             0});
             this.aspectRatioValue.Name = "aspectRatioValue";
-            this.aspectRatioValue.Size = new System.Drawing.Size(264, 20);
+            this.aspectRatioValue.Size = new System.Drawing.Size(222, 20);
             this.aspectRatioValue.TabIndex = 22;
             this.aspectRatioValue.ValueChanged += new System.EventHandler(this.aspectRatioValue_ValueChanged);
             // 
@@ -558,7 +557,6 @@ namespace Chimera.GUI.Controls {
             0,
             0,
             0});
-            this.aspectRatioHValue.ValueChanged += new System.EventHandler(this.aspectRatioHValue_ValueChanged);
             // 
             // label4
             // 
@@ -568,16 +566,6 @@ namespace Chimera.GUI.Controls {
             this.label4.Size = new System.Drawing.Size(70, 13);
             this.label4.TabIndex = 6;
             this.label4.Text = "FoV - H (deg)";
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.Location = new System.Drawing.Point(180, 192);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(22, 13);
-            this.label7.TabIndex = 23;
-            this.label7.Text = " = ";
             // 
             // label8
             // 
@@ -601,11 +589,11 @@ namespace Chimera.GUI.Controls {
             this.orientationPanel.Quaternion = ((OpenMetaverse.Quaternion)(resources.GetObject("orientationPanel.Quaternion")));
             this.orientationPanel.Size = new System.Drawing.Size(352, 95);
             this.orientationPanel.TabIndex = 1;
-            rotation1.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("rotation1.LookAtVector")));
-            rotation1.Pitch = 0D;
-            rotation1.Quaternion = ((OpenMetaverse.Quaternion)(resources.GetObject("rotation1.Quaternion")));
-            rotation1.Yaw = 0D;
-            this.orientationPanel.Value = rotation1;
+            rotation4.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("rotation4.LookAtVector")));
+            rotation4.Pitch = 0D;
+            rotation4.Quaternion = ((OpenMetaverse.Quaternion)(resources.GetObject("rotation4.Quaternion")));
+            rotation4.Yaw = 0D;
+            this.orientationPanel.Value = rotation4;
             this.orientationPanel.Yaw = 0D;
             // 
             // centrePanel
@@ -782,6 +770,16 @@ namespace Chimera.GUI.Controls {
             this.launchOverlayButton.UseVisualStyleBackColor = true;
             this.launchOverlayButton.Click += new System.EventHandler(this.launchOverlayButton_Click);
             // 
+            // aspectRatioButton
+            // 
+            this.aspectRatioButton.Location = new System.Drawing.Point(193, 186);
+            this.aspectRatioButton.Name = "aspectRatioButton";
+            this.aspectRatioButton.Size = new System.Drawing.Size(39, 23);
+            this.aspectRatioButton.TabIndex = 38;
+            this.aspectRatioButton.Text = "=";
+            this.aspectRatioButton.UseVisualStyleBackColor = true;
+            this.aspectRatioButton.Click += new System.EventHandler(this.aspectRatioButton_Click);
+            // 
             // WindowPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -833,7 +831,6 @@ namespace Chimera.GUI.Controls {
         private System.Windows.Forms.Label label4;
         private ScalarPanel fovVPanel;
         private System.Windows.Forms.NumericUpDown aspectRatioHValue;
-        private System.Windows.Forms.Label label7;
         private System.Windows.Forms.NumericUpDown aspectRatioValue;
         private System.Windows.Forms.NumericUpDown aspectRatioWValue;
         private System.Windows.Forms.Label label6;
@@ -864,5 +861,6 @@ namespace Chimera.GUI.Controls {
         private System.Windows.Forms.Label tpsLabel;
         private System.Windows.Forms.CheckBox drawEyeCheck;
         private ProjectorPanel projectorPanel;
+        private System.Windows.Forms.Button aspectRatioButton;
     }
 }
