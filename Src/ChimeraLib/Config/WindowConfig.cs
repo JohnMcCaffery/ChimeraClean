@@ -74,7 +74,7 @@ namespace Chimera.Config {
 
             Monitor = Get(false, "Monitor", "CrashLog.log", "The monitor on which this window should render.");
 
-            TopLeft = GetV(false, "TopLeft", new Vector3(1000f, 0f, 0f), "The position of the top left corner of the window in real world coordinates (mm).");
+            TopLeft = GetV(false, "TopLeft", new Vector3(1000f, -500f, 0f), "The position of the top left corner of the window in real world coordinates (mm).");
             Yaw = Get(false, "Yaw", 0.0, "The yaw for the direction the monitor faces in the real world.");
             Pitch = Get(false, "Pitch", 0.0, "The pitch for the direction the monitor faces in the real world.");
             Width = Get(false, "Width", 1000.0, "The width of the window in the real world (mm).");

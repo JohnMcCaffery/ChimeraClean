@@ -76,17 +76,11 @@ namespace Chimera.Launcher {
         public Launcher(params string[] args) {
             mConfig = new LauncherConfig(args);
 
-            if (mConfig.NumWindows == 1) {
-                mFirstWindowOutput = MakeOutput(mConfig.MonitorBase);
-                mWindows.Add(new Window(mConfig.MonitorBase, mFirstWindowOutput));
-            } else {
-                for (int i = 0; i < mConfig.NumWindows; i++) {
-                    string name = mConfig.MonitorBase + (mConfig.FirstWindow + i);
-                    IOutput output = MakeOutput(name);
-                    mWindows.Add(new Window(name, output));
-                    if (mFirstWindowOutput == null)
-                        mFirstWindowOutput = output;
-                }
+            foreach (string window in mConfig.Windows.Split(',')) {
+                IOutput output = MakeOutput(window);
+                mWindows.Add(new Window(window, output));
+                if (mFirstWindowOutput == null)
+                    mFirstWindowOutput = output;
             }
 
             mCoordinator = new Coordinator(GetWindows(), GetInputs());
