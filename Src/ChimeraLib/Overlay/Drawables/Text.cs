@@ -79,11 +79,17 @@ namespace Chimera.Overlay.Drawables {
         }
 
         public Text(StateManager manager, XmlNode node) {
-            mText = node.InnerText;
+            mText = node != null ? node.InnerText : "";
             mWindow = GetManager(manager, node).Window.Name;
             mFont = GetFont(node);
             mColour = GetColour(node, DEFAULT_FONT_COLOUR);
             mPosition = GetBounds(node).Location;
+
+            if (node.Attributes["Alignment"] != null) {
+                ContentAlignment alignment = ContentAlignment.TopLeft;
+                if (Enum.TryParse<ContentAlignment>(node.Attributes["Alignment"].Value, out alignment))
+                    mAlignment = alignment;
+            }
         }
 
         public Text(StateManager manager, XmlNode node, Rectangle clip)

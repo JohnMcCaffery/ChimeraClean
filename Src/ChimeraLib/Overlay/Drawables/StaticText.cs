@@ -28,7 +28,8 @@ namespace Chimera.Overlay.Drawables {
     public class StaticText : Text {
         public StaticText(string text, string window, Font font, Color colour, PointF location)
             : base(text, window, font, colour, location) {
-        }
+        }
+
         public StaticText(StateManager manager, XmlNode node)
             : base(manager, node) {
         }

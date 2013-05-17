@@ -256,6 +256,9 @@ namespace Chimera.Overlay {
         Dictionary<string, IWindowTransitionFactory> mTransitionStyles = new Dictionary<string, IWindowTransitionFactory>();
         Dictionary<string, IHoverSelectorRenderer> mRenderers = new Dictionary<string, IHoverSelectorRenderer>();
         Rectangle mClip = new Rectangle(0, 0, 1920, 1080);
+        private string mMode;
+
+        private bool mClipLoaded;
 
         private void LoadClip(XmlDocument doc) {
             XmlNodeList clipList = doc.GetElementsByTagName("Overlay");
@@ -263,11 +266,11 @@ namespace Chimera.Overlay {
                 return;
 
             XmlNode node = clipList[0];
-            if (node.Attributes["Width"] != null && node.Attributes["Height"] != null)
+            if (node.Attributes["Width"] != null && node.Attributes["Height"] != null) {
                 mClip = new Rectangle(0, 0, XmlLoader.GetInt(node, mClip.Width, "X"), XmlLoader.GetInt(node, mClip.Height, "Y"));
+                mClipLoaded = true;
+            }
         }
-
-        private string mMode;
 
         public void LoadXML(
                 string xml, 
@@ -283,7 +286,6 @@ namespace Chimera.Overlay {
             XmlDocument doc = new XmlDocument();
             doc.Load(xml);
 
-            bool useClicks = GetUseClicks(doc);
             LoadClip(doc);
 
             LoadComponent(doc, mode, triggerFactories, mTriggers, "Triggers");
@@ -421,6 +423,14 @@ namespace Chimera.Overlay {
 
             T t = factory.Create(node, this);
             triggers.Add(nameAttr.Value, t);
+        }
+
+        public OverlayImage MakeImage(XmlNode node) {
+            return mClipLoaded ?  new OverlayImage(this, node, mClip) : new OverlayImage(this, node);
+        }
+
+        public Text MakeText(XmlNode node) {
+            return mClipLoaded ?  new StaticText(this, node, mClip) : new StaticText(this, node);
         }
     }
 }
