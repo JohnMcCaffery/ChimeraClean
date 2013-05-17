@@ -31,6 +31,9 @@ using Chimera.Overlay.Triggers;
 
 namespace Chimera.Overlay {
     public class StateManager {
+        public static readonly string CLICK_MODE = "ClickBased";
+        public static readonly string HOVER_MODE = "HoverBased";
+
         /// <summary>
         /// All the states this manager manages.
         /// </summary>
@@ -248,6 +251,7 @@ namespace Chimera.Overlay {
             return bool.Parse(useClicksAttr.Value);
         }
 
+        IEnumerable<ITriggerFactory> mTriggerFactories;
         Dictionary<string, ITrigger> mTriggers = new Dictionary<string, ITrigger>();
         Dictionary<string, IWindowTransitionFactory> mTransitionStyles = new Dictionary<string, IWindowTransitionFactory>();
         Dictionary<string, IHoverSelectorRenderer> mRenderers = new Dictionary<string, IHoverSelectorRenderer>();
@@ -263,12 +267,18 @@ namespace Chimera.Overlay {
                 mClip = new Rectangle(0, 0, GetInt(node, "X", mClip.Width), GetInt(node, "Y", mClip.Height));
         }
 
+        private string mMode;
+
         public void LoadXML(
                 string xml, 
+                string mode,
                 IEnumerable<ITriggerFactory> triggerFactories, 
                 IEnumerable<ISelectionRendererFactory> selectionRendererFactories, 
                 IEnumerable<ITransitionStyleFactory> transitionStyleFactories, 
                 IEnumerable<IStateFactory> stateFactories) {
+
+            mTriggerFactories = triggerFactories;
+            mMode = mode;
 
             XmlDocument doc = new XmlDocument();
             doc.Load(xml);
@@ -276,10 +286,10 @@ namespace Chimera.Overlay {
             bool useClicks = GetUseClicks(doc);
             LoadClip(doc);
 
-            LoadComponent(doc, triggerFactories, mTriggers, "Triggers", useClicks);
-            LoadComponent(doc, transitionStyleFactories, mTransitionStyles, "States", useClicks);
-            LoadComponent(doc, selectionRendererFactories, mRenderers, "SelectionRenderers", useClicks);
-            LoadComponent(doc, stateFactories, mStates, "States", useClicks);
+            LoadComponent(doc, mode, triggerFactories, mTriggers, "Triggers");
+            LoadComponent(doc, mode, transitionStyleFactories, mTransitionStyles, "States");
+            LoadComponent(doc, mode, selectionRendererFactories, mRenderers, "SelectionRenderers");
+            LoadComponent(doc, mode, stateFactories, mStates, "States");
 
 
             if (mRenderers.Count == 0)
@@ -291,18 +301,18 @@ namespace Chimera.Overlay {
 
             foreach (XmlNode transitionRoot in doc.GetElementsByTagName("Transitions"))
                 foreach (XmlNode transitionNode in transitionRoot.ChildNodes)
-                    LoadTransition(useClicks, transitionNode);
+                    LoadTransition(mode, transitionNode);
         }
 
-        private void LoadComponent<T>(XmlDocument doc, IEnumerable<IFactory<T>> factories, Dictionary<string, T> map, string nodeID, bool useClicks) {
-            foreach (XmlNode root in doc.GetElementsByTagName(nodeID))
-                foreach (XmlNode node in root.ChildNodes)
-                    if (useClicks == GetUseClicks(node))
+        private void LoadComponent<T>(XmlDocument doc, string mMode, IEnumerable<IFactory<T>> factories, Dictionary<string, T> map, string nodeID) {
+            foreach (XmlNode root in doc.GetElementsByTagName("Overlay")[0].ChildNodes)
+                if (root.Name == "Any" || root.Name == mMode)
+                    foreach (XmlNode node in root.SelectSingleNode("child::" + nodeID).ChildNodes)
                         LoadFactory(node, factories, map);
         }
 
         private void LoadTransition(
-                bool useClicks,
+                string mMode,
                 XmlNode node) {
             XmlAttribute fromAttr = node.Attributes["From"];
             XmlAttribute toAttr = node.Attributes["To"];
@@ -333,49 +343,41 @@ namespace Chimera.Overlay {
                 return;
             }
 
-            ITrigger trigger = GetTrigger(useClicks, node);
+            ITrigger trigger = GetTrigger(node);
             if (trigger != null) {
                 StateTransition transition = new StateTransition(this, mStates[fromAttr.Value], mStates[toAttr.Value], trigger, mTransitionStyles[transitionAttr.Value]);
                 transition.From.AddTransition(transition);
             }
         }
 
-        private ITrigger GetTrigger(bool useClicks, XmlNode node) {
+        private ITrigger GetSpecialTrigger(SpecialTrigger type, XmlNode node) {
+            ITriggerFactory factory = mTriggerFactories.FirstOrDefault(f => f.Special == type && f.Mode == mMode);
+            if (factory == null) {
+                Console.WriteLine("Unable to load " + type + " trigger. No trigger factory mapped for " + mMode + ". Check the ninject configuration file.");
+                return null;
+            }
+
+            return factory.Create(node, Coordinator);
+        }
+
+        public ITrigger GetTrigger(XmlNode node) {
             switch (node.Name) {
-                case "InvibleTransition": return MakeInvisibleTrigger(useClicks, node);
-                case "ImageTransition": return MakeImageTrigger(useClicks, node);
-                case "TextTransition": return MakeTextTrigger(useClicks, node);
+                case "InvibleTransition": return GetSpecialTrigger(SpecialTrigger.Invisible, node);
+                case "ImageTransition": return GetSpecialTrigger(SpecialTrigger.Image, node);
+                case "TextTransition": return GetSpecialTrigger(SpecialTrigger.Text, node);
             }
 
             XmlAttribute triggerAttr = node.Attributes["Trigger"];
             if (triggerAttr == null) {
                 Console.WriteLine("Unable to load transition. No trigger attribute specified."); 
                 return null;
-            }            if (!mTriggers.ContainsKey(triggerAttr.Value)) {
+            }
+            if (!mTriggers.ContainsKey(triggerAttr.Value)) {
                 Console.WriteLine("Unable to load transition. " + triggerAttr.Value + " is not a known trigger.");
                 return null;
             }
 
             return mTriggers[triggerAttr.Value];
-        }
-
-        private static readonly string DEFAULT_FONT = "Verdana";
-        private static readonly float DEFAULT_FONT_SIZE = 12f;
-        private static readonly FontStyle DEFAULT_FONT_STYLE = FontStyle.Regular;
-        private static readonly Color DEFAULT_FONT_COLOUR = Color.Black;
-
-        private float GetFloat(XmlNode node, string attribute, float defalt) {
-            float t = defalt;
-            if (node == null || node.Attributes[attribute] != null && float.TryParse(node.Attributes[attribute].Value, out t))
-                return defalt;
-            return t;
-        }
-
-        private int GetInt(XmlNode node, string attribute, int defalt) {
-            int t = defalt;
-            if (node == null || node.Attributes[attribute] != null && int.TryParse(node.Attributes[attribute].Value, out t))
-                return defalt;
-            return t;
         }
 
         private WindowOverlayManager GetWindow(XmlNode node) {
@@ -392,32 +394,6 @@ namespace Chimera.Overlay {
                 return mRenderers.FirstOrDefault().Value;
 
             return mRenderers[rendererNode.Value];
-        }
-
-        private ITrigger MakeTextTrigger(bool useClicks, XmlNode node) {
-            string text = node.InnerText;
-            string window = node.Attributes["Window"].Value;
-
-            FontStyle style = DEFAULT_FONT_STYLE;
-            Color colour = DEFAULT_FONT_COLOUR;
-            FontStyle styleT;
-
-            string fontName = node.Attributes["Font"] != null ? node.Attributes["Name"].Value : DEFAULT_FONT;
-            float size = GetFloat(node, "Size", DEFAULT_FONT_SIZE);
-            if (node.Attributes["Style"] != null && Enum.TryParse<FontStyle>(node.Attributes["Style"].Value, true, out styleT))
-                style = styleT;
-            if (node.Attributes["Colour"] != null)
-                colour = Color.FromName(node.Attributes["Colour"].Value);
-
-            float x = GetFloat(node, "X", 0f);
-            float y = GetFloat(node, "Y", 0f);
-
-            Font f = new Font(fontName, size, style);
-            Text txt = new StaticText(text, window, f, colour, new PointF(x, y));
-            WindowOverlayManager manager = GetWindow(node);
-                return useClicks ?
-                    (ITrigger)new TextClickTrigger(manager, txt, mClip) :
-                    (ITrigger)new TextHoverTrigger(manager, GetRenderer(node), txt, mClip);
         }
 
         private ITrigger MakeImageTrigger(bool useClicks, XmlNode node) {
@@ -440,7 +416,8 @@ namespace Chimera.Overlay {
                 (ITrigger) new ImageHoverTrigger(manager, GetRenderer(node), img);
         }
 
-        private ITrigger MakeInvisibleTrigger(bool useClicks, XmlNode node) {            int left = GetInt(node, "Left", 0);
+        private ITrigger MakeInvisibleTrigger(bool useClicks, XmlNode node) {
+            int left = GetInt(node, "Left", 0);
             int right = GetInt(node, "Right", 0);
             int top = GetInt(node, "Top", mClip.Width / 10);
             int bottom = GetInt(node, "Bottom", mClip.Height / 10);

@@ -142,9 +142,11 @@
     </Compile>
     <Compile Include="Interfaces\Overlay\IFactory.cs" />
     <Compile Include="Overlay\States\ExploreState.cs" />
+    <Compile Include="Overlay\Triggers\AreaTrigger.cs" />
     <Compile Include="Overlay\Triggers\ClickTrigger.cs" />
     <Compile Include="Overlay\Triggers\TextClickTrigger.cs" />
     <Compile Include="Overlay\Triggers\ImageClickTrigger.cs" />
+    <Compile Include="Overlay\XmlLoader.cs" />
     <Compile Include="Plugins\AxisBasedDelta.cs" />
     <Compile Include="Plugins\ConstrainedAxis.cs" />
     <Compile Include="Plugins\SelectablePlugin.cs" />

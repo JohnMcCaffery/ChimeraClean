@@ -24,9 +24,11 @@ using System.Text;
 using Chimera.Interfaces.Overlay;
 using System.Drawing;
 using System.Windows.Forms;
+using System.Xml;
+using System.IO;
 
 namespace Chimera.Overlay.Drawables {
-    public class OverlayImage : IDrawable {
+    public class OverlayImage : XmlLoader, IDrawable {
         private RectangleF mBounds;
         private Bitmap mImage;
         private float mAspectRatio;
@@ -172,6 +174,28 @@ namespace Chimera.Overlay.Drawables {
         public OverlayImage(Bitmap image, float x, float y, float w, float h, string window)
             : this(image, window) {
             mBounds = new RectangleF(x, y, w, h);
+        }
+
+        public OverlayImage(Coordinator coordinator, XmlNode node) {            float x = GetFloat(node, 0f, "X");
+            float y = GetFloat(node, 0f, "Y");
+            float w = GetFloat(node, .1f, "W", "Width");
+            if (node.Attributes["File"] == null) {
+                throw new ArgumentException("Unable to load image trigger. No file specified.");
+            }
+            string file = Path.GetFullPath(node.Attributes["File"].Value);
+            if (!File.Exists(file)) {
+                Console.WriteLine("Unable to load image trigger. " + file + " does not exist.");
+                return null;
+            }
+            WindowOverlayManager manager = GetWindow(node);
+            OverlayImage img = new OverlayImage(new Bitmap(file), x, y, w, manager.Window.Name);
+            return useClicks ? 
+                (ITrigger) new ImageClickTrigger(manager, img) :
+                (ITrigger) new ImageHoverTrigger(manager, GetRenderer(node), img);
+            throw new NotImplementedException();
+        }
+
+        public OverlayImage(Coordinator coordinator, XmlNode node, Rectangle clip) {
         }
     }
 }

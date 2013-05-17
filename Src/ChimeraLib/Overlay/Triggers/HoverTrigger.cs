@@ -27,24 +27,16 @@ using Chimera.Interfaces.Overlay;
 using System.Xml;
 
 namespace Chimera.Overlay.Triggers {
-    public abstract class HoverTrigger : ITrigger, IDrawable {
+    public abstract class HoverTrigger : AreaTrigger, IDrawable {
         /// <summary>
         /// How many ms to the hover must be maintened before the selector is triggered.
         /// </summary>
         private readonly float mSelectTimeMS = 1500f;
-        /// <summary>
-        /// The manager which will supply the cursor position.
-        /// </summary>
-        private readonly WindowOverlayManager mManager;
 
         /// <summary>
         /// The render object used to draw a visual representation of how close the selector is to triggering.
         /// </summary>
         private IHoverSelectorRenderer mRenderer;
-        /// <summary>
-        /// The bounds defining the area which the cursor can hover over to trigger this selector. The bounds are specified as scaled values between 0,0 and 1,1. 0,0 is top left. 1,1 bottom right.
-        /// </summary>
-        private RectangleF mBounds;
         /// <summary>
         /// The time when the cursor started hovering over the area.
         /// </summary>
@@ -84,20 +76,21 @@ namespace Chimera.Overlay.Triggers {
             : this(manager, renderer, new RectangleF(x, y, w, h)) {
         }
 
-        public HoverTrigger(WindowOverlayManager manager, IHoverSelectorRenderer renderer, RectangleF bounds) {
-            mManager = manager;
-            mBounds = bounds;
+        public HoverTrigger(WindowOverlayManager manager, IHoverSelectorRenderer renderer, RectangleF bounds)
+            : base(manager, bounds) {
             mRenderer = renderer;
 
-            mManager.Window.Coordinator.Tick += new Action(Coordinator_Tick);
+            Manager.Window.Coordinator.Tick += new Action(Coordinator_Tick);
         }
 
-        public HoverTrigger(XmlNode node) {
-            //TODO add logic for initialisation
+        public HoverTrigger(Coordinator coordinator, XmlNode node)
+            : base(coordinator, node) {
+            Manager.Window.Coordinator.Tick += new Action(Coordinator_Tick);
         }
 
-        public string Window {
-            get { return mManager.Window.Name; }
+        public HoverTrigger(Coordinator coordinator, XmlNode node, Rectangle clip)
+            : base(coordinator, node, clip) {
+            Manager.Window.Coordinator.Tick += new Action(Coordinator_Tick);
         }
 
         /// <summary>
@@ -112,21 +105,6 @@ namespace Chimera.Overlay.Triggers {
         /// </summary>
         public virtual bool CurrentlySelected {
             get { return mTriggered; }
-        }
-
-        /// <summary>
-        /// The bounds defining the area which the cursor can hover over to trigger this selector. The bounds are specified as scaled values between 0,0 and 1,1. 0,0 is top left. 1,1 bottom right.
-        /// </summary>
-        protected virtual RectangleF Bounds {
-            get { return mBounds; }
-            set { mBounds = value; }
-        }
-
-        /// <summary>
-        /// The manager which controls the window this trigger renders on.
-        /// </summary>
-        protected WindowOverlayManager Manager {
-            get { return mManager; }
         }
 
         /// <summary>
@@ -151,7 +129,7 @@ namespace Chimera.Overlay.Triggers {
         }
 
         private void Coordinator_Tick() {
-            if (mActive && Bounds.Contains(mManager.CursorPosition)) {
+            if (mActive && Bounds.Contains(Manager.CursorPosition)) {
                 if (!mHovering) {
                     mHovering = true;
                     mHoverStart = DateTime.Now;
@@ -170,7 +148,7 @@ namespace Chimera.Overlay.Triggers {
                 mTriggered = false;
                 mHovering = false;
                 mNeedsRedrawn = true;
-                mManager.ForceRedrawStatic();
+                Manager.ForceRedrawStatic();
                 mRenderer.Clear();
             } else
                 mNeedsRedrawn = false;
@@ -178,12 +156,7 @@ namespace Chimera.Overlay.Triggers {
 
         #region ITrigger Members
 
-        public event Action Triggered;
-
-        public virtual bool Active {
-            get { return mActive; }
-            set { mActive = value; }
-        }
+        public override event Action Triggered;
 
         #endregion
 

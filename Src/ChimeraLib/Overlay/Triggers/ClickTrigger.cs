@@ -27,21 +27,7 @@ using Chimera.Interfaces.Overlay;
 using System.Xml;
 
 namespace Chimera.Overlay.Triggers {
-    public class ClickTrigger : ITrigger {
-        /// <summary>
-        /// The manager which will supply the cursor position.
-        /// </summary>
-        private readonly WindowOverlayManager mManager;
-
-        /// <summary>
-        /// The bounds defining the area which the cursor can hover over to trigger this selector. The bounds are specified as scaled values between 0,0 and 1,1. 0,0 is top left. 1,1 bottom right.
-        /// </summary>
-        private RectangleF mBounds;
-        /// <summary>
-        /// Whether the area is active. If false it will not draw or trigger.
-        /// </summary>
-        private bool mActive = true;
-
+    public class ClickTrigger : AreaTrigger {
         /// <summary>
         /// Create the trigger. Specifies the position and size of the area the cursor must hover in to trigger this trigger as values between 0 and 1.
         /// 0,0 is top left, 1,1 is bottom right.
@@ -60,50 +46,28 @@ namespace Chimera.Overlay.Triggers {
             : this(manager, (float) x / (float) clip.Width, (float) y / (float) clip.Height, (float) w / (float) clip.Width, (float) h / (float) clip.Height) {
         }
 
-        public ClickTrigger(WindowOverlayManager manager, RectangleF bounds) {
-            mManager = manager;
-            mBounds = bounds;
-
-            mManager.OnRelease += new Action<int>(mManager_OnRelease);
+        public ClickTrigger(WindowOverlayManager manager, RectangleF bounds) : base (manager, bounds) {
+            Manager.OnRelease += new Action<int>(mManager_OnRelease);
         }
 
-        public ClickTrigger(XmlNode node) {
-            //TODO add logic for initialisation
-        }
-
-        public string Window {
-            get { return mManager.Window.Name; }
-        }
-
-        /// <summary>
-        /// The bounds defining the area which the cursor can hover over to trigger this selector. The bounds are specified as scaled values between 0,0 and 1,1. 0,0 is top left. 1,1 bottom right.
-        /// </summary>
-        protected virtual RectangleF Bounds {
-            get { return mBounds; }
-            set { mBounds = value; }
-        }
-
-        /// <summary>
-        /// The manager which controls the window this trigger renders on.
-        /// </summary>
-        protected WindowOverlayManager Manager {
-            get { return mManager; }
+        public ClickTrigger(Coordinator coordinator, XmlNode node)
+            : base(coordinator, node) {
+            Manager.OnRelease += new Action<int>(mManager_OnRelease);
+        }
+        public ClickTrigger(Coordinator coordinator, XmlNode node, Rectangle clip)
+            : base(coordinator, node, clip) {
+            Manager.OnRelease += new Action<int>(mManager_OnRelease);
         }
 
         void mManager_OnRelease(int index) {
-            if (mActive && Bounds.Contains(mManager.CursorPosition) && Triggered != null) 
+            if (Active && Bounds.Contains(Manager.CursorPosition) && Triggered != null) 
                 Triggered();
         }
 
 
         #region ITrigger Members
 
-        public event Action Triggered;
-
-        public virtual bool Active {
-            get { return mActive; }
-            set { mActive = value; }
-        }
+        public override event Action Triggered;
 
         #endregion
     }

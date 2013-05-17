@@ -28,6 +28,23 @@ using Chimera.Overlay.Drawables;
 using Chimera.Interfaces.Overlay;
 
 namespace Chimera.Overlay.Triggers {
+    public class ImageClickTriggerFactory : ITriggerFactory {
+        public SpecialTrigger Special {
+            get { return SpecialTrigger.Image; }
+        }
+
+        public string Mode {
+            get { return StateManager.CLICK_MODE; }
+        }
+
+        public string Name {
+            get { return "ImageClickTrigger"; }
+        }
+
+        public ITrigger Create(System.Xml.XmlNode node, Coordinator coordinator) {
+        }
+    }
+
     public class ImageClickTrigger : ClickTrigger, IDrawable {
         private OverlayImage mImage;
 

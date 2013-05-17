@@ -24,8 +24,27 @@ using System.Text;
 using Chimera.Overlay.Drawables;
 using System.Drawing;
 using Chimera.Interfaces.Overlay;
+using System.Xml;
 
 namespace Chimera.Overlay.Triggers {
+    public class TextClickTriggerFactory : ITriggerFactory {
+        public SpecialTrigger Special {
+            get { return SpecialTrigger.Text; }
+        }
+
+        public string Mode {
+            get { return StateManager.CLICK_MODE; }
+        }
+
+        public string Name {
+            get { return "TextClickTrigger"; }
+        }
+
+        public ITrigger Create(XmlNode node, Coordinator coordinator) {
+            return new TextClickTrigger(coordinator, node);
+        }
+    }
+
     public class TextClickTrigger : ClickTrigger, IDrawable {
         private Text mText;
         private bool mActive;
@@ -35,6 +54,18 @@ namespace Chimera.Overlay.Triggers {
             : base(manager, Text.GetBounds(text, clip)) {
                 mText = text;
                 Clip = clip;
+        }
+
+        public TextClickTrigger(Coordinator coordinator, XmlNode node)
+            : base(coordinator, node) {
+            mText = new StaticText(node.InnerText, Manager.Window.Name, GetFont(node), GetColour(node, DEFAULT_FONT_COLOUR), new PointF(Bounds.X, Bounds.Y));
+            throw new NotImplementedException("What happens if Clip is not set?");
+        }
+
+        public TextClickTrigger(Coordinator coordinator, XmlNode node, Rectangle clip)
+            : base(coordinator, node, clip) {
+            mText = new StaticText(node.InnerText, Manager.Window.Name, GetFont(node), GetColour(node, DEFAULT_FONT_COLOUR), new PointF(Bounds.X, Bounds.Y));
+            Clip = clip;
         }
 
         protected override RectangleF Bounds {

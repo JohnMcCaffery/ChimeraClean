@@ -11,7 +11,12 @@ namespace Chimera.Interfaces.Overlay {
         T Create(XmlNode node, Coordinator coordinator);
     }
 
-    public interface ITriggerFactory : IFactory<ITrigger> { }
+    public enum SpecialTrigger { Invisible, Text, Image, None }
+
+    public interface ITriggerFactory : IFactory<ITrigger> {
+        SpecialTrigger Special { get; }
+        string Mode { get; }
+    }
 
     public interface ITransitionStyleFactory : IFactory<IWindowTransitionFactory> { }
 

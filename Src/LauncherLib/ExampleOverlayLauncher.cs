@@ -44,7 +44,7 @@ namespace Chimera.Launcher {
             ImageBGState splash = new ImageBGState("Splash", Coordinator.StateManager, "../Images/Example/ExampleBG.png");
             State idle = new FlythroughState("Idle", Coordinator.StateManager, "../Flythroughs/SimpleFlythrough.xml");
             State explore;
-            if (Config.UseClicks)
+            if (Config.InterfaceMode == "ClickBased")
                 explore = new TouchscreenState("ExploreFree", false, Coordinator);
             else
                 explore = new KinectControlState("ExploreFree", Coordinator.StateManager, false);

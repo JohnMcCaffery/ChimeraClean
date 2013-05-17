@@ -118,7 +118,7 @@ namespace Chimera.Kinect {
         public void Close() {
         }
 
-        public void Draw(Func<OpenMetaverse.Vector3, System.Drawing.Point> to2D, System.Drawing.Graphics graphics, Action redraw) {
+        public void Draw(Func<OpenMetaverse.Vector3, System.Drawing.Point> to2D, System.Drawing.Graphics graphics, Action redraw, Perspective perspective) {
         }
 
         #endregion

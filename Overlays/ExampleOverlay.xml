@@ -1,22 +1,46 @@
 <Overlay UseClicks="true">
-  <Triggers>
-    <Trigger Type="Fade" Name="SlowFade" Length="5000" />
-  </Triggers>
-  <Transitions>
-    
-  </Transitions>
-  <States>
-    
-  </States>
-  <Transitions>
-    <InvisibleTransition>
-      
-    </InvisibleTransition>
-    <ImageTransition>
-      
-    </ImageTransition>
-    <TextTransition>
-      
-    </TextTransition>
-  </Transitions>
+  <Any>
+    <Triggers>
+      <Trigger Type="Fade" Name="SlowFade" Length="5000" />
+    </Triggers>
+    <Transitions>
+
+    </Transitions>
+    <States>
+
+    </States>
+    <Transitions>
+      <InvisibleTransition>
+
+      </InvisibleTransition>
+      <ImageTransition>
+
+      </ImageTransition>
+      <TextTransition>
+
+      </TextTransition>
+    </Transitions>
+  </Any>
+
+  <!-- Settings specific to the overlay being instantiated based on click interactions -->
+
+  <ClickBased>
+    <States>
+
+    </States>
+    <Transitions>
+
+    </Transitions>
+  </ClickBased>
+
+  <!-- Settings specific to the overlay being instantiated based on hover interactions -->
+
+  <HoverBased>
+    <States>
+
+    </States>
+    <Transitions>
+
+    </Transitions>
+  </HoverBased>
 </Overlay>

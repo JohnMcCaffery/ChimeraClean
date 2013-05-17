@@ -71,7 +71,7 @@ namespace Chimera.Launcher {
             mCoordinator = new Coordinator(GetWindows(), GetInputs());
             mButtonFolder = Path.GetFullPath(mConfig.ButtonFolder);
 
-            if (!mConfig.UseClicks)
+            if (mConfig.InterfaceMode != "ClickBased")
                 mRenderer = new DialCursorRenderer();
 
             if (mConfig.InitOverlay) {
@@ -97,7 +97,7 @@ namespace Chimera.Launcher {
         protected virtual ISystemPlugin[] GetInputs() {
             List<ISystemPlugin> plugins = new List<ISystemPlugin>();
             //Control
-            if (Config.UseClicks)
+            if (Config.InterfaceMode == "ClickBased")
                 plugins.Add(new TouchscreenPlugin());
             plugins.Add(new KBMousePlugin());
             plugins.Add(new XBoxControllerPlugin());
@@ -113,7 +113,7 @@ namespace Chimera.Launcher {
             plugins.Add(new HeightmapPlugin());
 
             //Kinect
-            if (!Config.UseClicks) {
+            if (Config.InterfaceMode != "ClickBased") {
                 plugins.Add(new KinectCamera());
                 plugins.Add(new KinectMovementPlugin());
                 plugins.Add(new SimpleKinectCursor());
@@ -151,7 +151,7 @@ namespace Chimera.Launcher {
             List<ITrigger> inactiveTriggers = new List<ITrigger>();
             List<ITrigger> activeTriggers = new List<ITrigger>();
 
-            if (!Config.UseClicks) {
+            if (Config.InterfaceMode != "ClickBased") {
                 activeTriggers.Add(new SkeletonFoundTrigger());
                 inactiveTriggers.Add(new SkeletonLostTrigger(Coordinator, timeout));
             }
@@ -180,13 +180,13 @@ namespace Chimera.Launcher {
         }
         protected ITrigger ImgTrigger(Window window, string image, float x, float y, float w) {
             OverlayImage img = new OverlayImage(new Bitmap(Path.Combine(mButtonFolder, image + ".png")), x, y, w, window.Name);
-            return mConfig.UseClicks ? 
+            return mConfig.InterfaceMode == "ClickBased" ? 
                 (ITrigger) new ImageClickTrigger(window.OverlayManager, img) :
                 (ITrigger) new ImageHoverTrigger(window.OverlayManager, mRenderer, img);
         }
 
         protected ITrigger InvisTrigger(Point topLeft, Point bottomRight, Rectangle clip, Window window) {
-            return mConfig.UseClicks ?
+            return mConfig.InterfaceMode == "ClickBased" ?
                 (ITrigger) new ClickTrigger(window.OverlayManager, topLeft.X, topLeft.Y, bottomRight.X - topLeft.X, bottomRight.Y - topLeft.Y, clip) :
                 (ITrigger) new InvisibleHoverTrigger(
                 window.OverlayManager, 
@@ -200,7 +200,7 @@ namespace Chimera.Launcher {
 
         protected ITrigger TxtTrigger(string text, float x, float y, Font font, Color colour, Rectangle clip, Window window) {
             Text txt = new StaticText(text, window.Name, font, colour, new PointF(x, y));
-            return mConfig.UseClicks ?
+            return mConfig.InterfaceMode == "ClickBased" ?
                 (ITrigger) new TextClickTrigger(window.OverlayManager, txt, clip) :
                 (ITrigger) new TextHoverTrigger(window.OverlayManager, mRenderer, txt, clip);
         }
