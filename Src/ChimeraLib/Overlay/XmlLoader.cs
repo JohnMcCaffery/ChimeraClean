@@ -59,6 +59,29 @@ namespace Chimera.Overlay {
 
             return new Bitmap(file);    
         }
+
+        public static string GetString(XmlNode node, string defalt, params string[] attributes) {
+            string t = defalt;
+            if (attributes.Length == 0)
+                return defalt;
+            int attr = 0;
+            string attribute = attributes[attr++];
+            while ((node == null || node.Attributes[attribute] == null) && attr < attributes.Length)
+                attribute = attributes[attr++];
+            return t;
+        }
+
+        public static bool GetBool(XmlNode node, bool defalt, params string[] attributes) {
+            bool t = defalt;
+            if (attributes.Length == 0)
+                return defalt;
+            int attr = 0;
+            string attribute = attributes[attr++];
+            while ((node == null || node.Attributes[attribute] == null || !bool.TryParse(node.Attributes[attribute].Value, out t)) && attr < attributes.Length)
+                attribute = attributes[attr++];
+            return t;
+        }
+
         public static float GetFloat(XmlNode node, float defalt, params string[] attributes) {
             float t = defalt;
             if (attributes.Length == 0)

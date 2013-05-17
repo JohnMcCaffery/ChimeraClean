@@ -53,15 +53,16 @@ namespace Chimera.Flythrough.Overlay {    public class FlythroughStateFactory :
         private static Color FONT_COLOUR = Color.Red;
         private static PointF STEP_TEXT_POS = new PointF(.005f, .05f);
 
+        private Dictionary<int, Step> mSteps = new Dictionary<int, Step>();
         private FlythroughPlugin mInput;
         private SlideshowWindow mSlideshow;
         private IImageTransition mSlideshowTransition;
+        private List<ITrigger> mStepTriggers = new List<ITrigger>();
+        private StaticText mStepText;
         private string mSlideshowWindowName;
         private string mSlideshowFolder;
         private string mFlythrough;
         private bool mStepping = false;
-        private ITrigger[] mStepTriggers = new ITrigger[0];
-        private StaticText mStepText;
         private int mStep = 1;
 
         public FlythroughState(string name, StateManager manager, string flythrough)
@@ -71,10 +72,9 @@ namespace Chimera.Flythrough.Overlay {    public class FlythroughStateFactory :
             mInput = manager.Coordinator.GetPlugin<FlythroughPlugin>();
         }
 
-        public FlythroughState(string name, StateManager manager, string flythrough, params ITrigger[] steps)
+        public FlythroughState(string name, StateManager manager, string flythrough, params ITrigger[] stepTriggers)
             : this(name, manager, flythrough) {
 
-            mStepTriggers = steps;
             mStepping = true;
             Font f = new Font(FONT, FONT_SIZE, FontStyle.Bold);
             mStepText = new StaticText(mStep + "/" + mInput.Count, manager.Coordinator.Windows[0].Name, f, FONT_COLOUR, STEP_TEXT_POS);
@@ -82,11 +82,8 @@ namespace Chimera.Flythrough.Overlay {    public class FlythroughStateFactory :
 
             mInput.CurrentEventChange += new Action<FlythroughEvent<Camera>,FlythroughEvent<Camera>>(mInput_CurrentEventChange);
 
-            foreach (var step in steps) {
-                step.Triggered += new Action(step_Triggered);
-                if (step is IDrawable)
-                    AddFeature(step as IDrawable);
-            }
+            foreach (var trigger in stepTriggers)
+                AddStepTrigger(trigger);
         }
 
         public FlythroughState(string name, StateManager manager, string flythrough, string slideshowWindow, string slideshowFolder, IImageTransition slideshowTransition, params ITrigger[] steps)
@@ -97,8 +94,34 @@ namespace Chimera.Flythrough.Overlay {    public class FlythroughStateFactory :
             mSlideshowTransition = slideshowTransition;
         }
 
+        private void AddStepTrigger(ITrigger trigger) {
+            mStepTriggers.Add(trigger);
+            trigger.Triggered += new Action(step_Triggered);
+            if (trigger is IDrawable)
+                AddFeature(trigger as IDrawable);
+        }
+
         public FlythroughState(StateManager manager, XmlNode node)
             : base(GetName(node), manager) {
+
+            bool displaySubtitles = GetBool(node, true, "DisplaySubtitles");
+            mStepping = GetBool(node, true, "Stepping");
+            mFlythrough = GetString(node, null, "File");
+            if (mFlythrough == null)
+                throw new ArgumentException("Unable to load flythrough state. No flythrough file specified.");
+
+            XmlNode triggersRoot = node.SelectSingleNode("child::Triggers");
+            if (triggersRoot != null) {
+                foreach (XmlNode child in triggersRoot.ChildNodes)
+                    AddStepTrigger(manager.GetTrigger(child));
+            }
+            XmlNode stepsRoot = node.SelectSingleNode("child::Triggers");
+            if (stepsRoot != null) {
+                foreach (XmlNode child in stepsRoot.ChildNodes) {
+                    Step step = new Step(manager.Coordinator, node, displaySubtitles);
+                    mSteps.Add(step.StepNum, step);
+                }
+            }
         }
 
         void mInput_CurrentEventChange(FlythroughEvent<Camera> old, FlythroughEvent<Camera> n) {
