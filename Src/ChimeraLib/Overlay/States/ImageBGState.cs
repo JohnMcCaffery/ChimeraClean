@@ -64,7 +64,7 @@ namespace Chimera.Overlay.States {
         public ImageBGState(StateManager manager, XmlNode node)
             : base(GetName(node), manager) {
 
-            foreach (XmlNode child in node.ChildNodes)
+            foreach (XmlNode child in node.ChildNodes) {
                 if (child.Name == "Window") {
                     Bitmap img = GetImage(node);
                     if (img != null) {
@@ -74,7 +74,7 @@ namespace Chimera.Overlay.States {
                             mWindows[name].BackgroundImage = img;
                     }
                 }
-
+            }
         }
 
         /// <summary>

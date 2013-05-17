@@ -362,9 +362,15 @@ namespace Chimera.Overlay {
 
         public ITrigger GetTrigger(XmlNode node) {
             switch (node.Name) {
-                case "InvibleTransition": return GetSpecialTrigger(SpecialTrigger.Invisible, node);
-                case "ImageTransition": return GetSpecialTrigger(SpecialTrigger.Image, node);
-                case "TextTransition": return GetSpecialTrigger(SpecialTrigger.Text, node);
+                case "InvisibleTransition": 
+                case "InvisibleTrigger": 
+                    return GetSpecialTrigger(SpecialTrigger.Invisible, node);
+                case "ImageTransition": 
+                case "ImageTrigger": 
+                    return GetSpecialTrigger(SpecialTrigger.Image, node);
+                case "TextTransition": 
+                case "TextTrigger": 
+                    return GetSpecialTrigger(SpecialTrigger.Text, node);
             }
 
             XmlAttribute triggerAttr = node.Attributes["Trigger"];
