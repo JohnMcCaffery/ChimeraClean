@@ -23,9 +23,10 @@ using System.Linq;
 using System.Text;
 using Chimera.Interfaces.Overlay;
 using System.Drawing;
+using System.Xml;
 
 namespace Chimera.Overlay.Drawables {
-    public abstract class Text : IDrawable {
+    public abstract class Text : XmlLoader, IDrawable {
         public static RectangleF GetBounds(Text text, Rectangle clip) {
             using (Bitmap b = new Bitmap(1, 1)) {
                 using (Graphics g = Graphics.FromImage(b)) {
@@ -38,6 +39,8 @@ namespace Chimera.Overlay.Drawables {
         private string mText;
         private bool mActive;
         private string mWindow;
+        private SizeF mSize = new SizeF(10f, 10f);
+        private ContentAlignment mAlignment = ContentAlignment.TopLeft;
         /// <summary>
         /// The clip rectangle bounding the area this item will be drawn to.
         /// </summary>
@@ -58,6 +61,11 @@ namespace Chimera.Overlay.Drawables {
             set { mText = value; }
         }
 
+        public virtual ContentAlignment Alignment {
+            get { return mAlignment; }
+            set { mAlignment = value; }
+        }
+
         public Text(string text, string window, Font font, Color colour, PointF location) {
             mText = text;
             mWindow = window;
@@ -68,6 +76,19 @@ namespace Chimera.Overlay.Drawables {
 
         public Text(string text, string window, Font font, Color colour, Point location, Rectangle clip)
             : this(text, window, font, colour, new PointF((float)location.X / (float)clip.Width, (float)location.Y / (float)clip.Height)) {
+        }
+
+        public Text(StateManager manager, XmlNode node) {
+            mText = node.InnerText;
+            mWindow = GetManager(manager, node).Window.Name;
+            mFont = GetFont(node);
+            mColour = GetColour(node, DEFAULT_FONT_COLOUR);
+            mPosition = GetBounds(node).Location;
+        }
+
+        public Text(StateManager manager, XmlNode node, Rectangle clip)
+            : this(manager, node) {
+            mPosition = GetBounds(node, clip).Location;
         }
 
         #region IDrawable Members
@@ -96,11 +117,25 @@ namespace Chimera.Overlay.Drawables {
                 Draw(g, b);
         }
         protected void Draw(Graphics g, Brush b) {
-                g.DrawString(mText, mFont, b, GetPoint(Clip));
+            mSize = g.MeasureString(mText, mFont);
+            g.DrawString(mText, mFont, b, GetPoint(Clip));
         }
 
         protected PointF GetPoint(Rectangle clip) {
-            return new PointF(clip.Width * mPosition.X, clip.Height * mPosition.Y);
+            PointF p = new PointF(clip.Width * mPosition.X, clip.Height * mPosition.Y);
+            switch (mAlignment) {
+                case ContentAlignment.BottomCenter: p.X -= mSize.Width / 2f; p.Y -= mSize.Height; break;
+                case ContentAlignment.BottomLeft:   p.Y -= mSize.Height; break;
+                case ContentAlignment.BottomRight:  p.X -= mSize.Width; p.Y -= mSize.Height; break;
+
+                case ContentAlignment.MiddleCenter: p.X -= mSize.Width / 2f; p.Y -= mSize.Height / 2f; break;
+                case ContentAlignment.MiddleLeft:   p.Y -= mSize.Height / 2f; break;
+                case ContentAlignment.MiddleRight:  p.X -= mSize.Width; p.Y -= mSize.Height / 2f; break;
+
+                case ContentAlignment.TopCenter: p.X -= mSize.Width / 2f;; break;
+                case ContentAlignment.TopRight:  p.X -= mSize.Width; break;
+            }
+            return p;
         }
 
         public PointF Position {

@@ -22,6 +22,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Drawing;
+using System.Xml;
 
 namespace Chimera.Overlay.Drawables {
     public class DynamicText : Text {
@@ -30,8 +31,17 @@ namespace Chimera.Overlay.Drawables {
 
         public DynamicText(string text, WindowOverlayManager manager, Font font, Color colour, PointF location)
             : base(text, manager.Window.Name, font, colour, location) {
-
             mManager = manager;
+        }
+
+        public DynamicText(StateManager manager, XmlNode node)
+            : base(manager, node) {
+            mManager = GetManager(manager, node);
+        }
+
+        public DynamicText(StateManager manager, XmlNode node, Rectangle clip)
+            : base(manager, node, clip) {
+            mManager = GetManager(manager, node);
         }
 
         public override bool NeedsRedrawn {

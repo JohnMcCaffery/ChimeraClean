@@ -41,11 +41,11 @@ namespace Chimera.Overlay.Triggers {
         }
 
         public ITrigger Create(XmlNode node, StateManager manager) {
-            return new ClickTrigger(manager.Coordinator, node);
+            return new ClickTrigger(manager, node);
         }
 
         public ITrigger Create(XmlNode node, StateManager manager, Rectangle clip) {
-            return new ClickTrigger(manager.Coordinator, node, clip);
+            return new ClickTrigger(manager, node, clip);
         }
     }
 
@@ -72,13 +72,13 @@ namespace Chimera.Overlay.Triggers {
             Manager.OnRelease += new Action<int>(mManager_OnRelease);
         }
 
-        public ClickTrigger(Coordinator coordinator, XmlNode node)
-            : base(coordinator, node) {
+        public ClickTrigger(StateManager manager, XmlNode node)
+            : base(manager, node) {
             Manager.OnRelease += new Action<int>(mManager_OnRelease);
         }
 
-        public ClickTrigger(Coordinator coordinator, XmlNode node, Rectangle clip)
-            : base(coordinator, node, clip) {
+        public ClickTrigger(StateManager manager, XmlNode node, Rectangle clip)
+            : base(manager, node, clip) {
             Manager.OnRelease += new Action<int>(mManager_OnRelease);
         }
 

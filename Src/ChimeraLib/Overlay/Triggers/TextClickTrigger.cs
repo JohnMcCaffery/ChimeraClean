@@ -41,11 +41,11 @@ namespace Chimera.Overlay.Triggers {
         }
 
         public ITrigger Create(XmlNode node, StateManager manager) {
-            return new TextClickTrigger(manager.Coordinator, node);
+            return new TextClickTrigger(manager, node);
         }
 
         public ITrigger Create(XmlNode node, StateManager manager, Rectangle clip) {
-            return new TextClickTrigger(manager.Coordinator, node, clip);
+            return new TextClickTrigger(manager, node, clip);
         }
     }
 
@@ -60,15 +60,15 @@ namespace Chimera.Overlay.Triggers {
                 Clip = clip;
         }
 
-        public TextClickTrigger(Coordinator coordinator, XmlNode node)
-            : base(coordinator, node) {
-            mText = new StaticText(node.InnerText, Manager.Window.Name, GetFont(node), GetColour(node, DEFAULT_FONT_COLOUR), new PointF(Bounds.X, Bounds.Y));
+        public TextClickTrigger(StateManager manager, XmlNode node)
+            : base(manager, node) {
+            mText = new StaticText(manager, node);
             throw new NotImplementedException("What happens if Clip is not set?");
         }
 
-        public TextClickTrigger(Coordinator coordinator, XmlNode node, Rectangle clip)
-            : base(coordinator, node, clip) {
-            mText = new StaticText(node.InnerText, Manager.Window.Name, GetFont(node), GetColour(node, DEFAULT_FONT_COLOUR), new PointF(Bounds.X, Bounds.Y));
+        public TextClickTrigger(StateManager manager, XmlNode node, Rectangle clip)
+            : base(manager, node, clip) {
+            mText = new StaticText(manager, node, clip);
             Clip = clip;
         }
 

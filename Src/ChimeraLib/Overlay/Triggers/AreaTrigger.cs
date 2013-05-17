@@ -54,22 +54,14 @@ namespace Chimera.Overlay.Triggers {
             mBounds = bounds;
         }
 
-        public AreaTrigger(Coordinator coordinator, XmlNode node) {
-            mManager = GetManager(coordinator, node);
-            mBounds = new RectangleF(GetFloat(node, 0f, "X"), GetFloat(node, 0f, "Y"), GetFloat(node, .1f, "W", "Width"), GetFloat(node, .1f, "H", "Height"));
+        public AreaTrigger(StateManager manager, XmlNode node) {
+            mManager = GetManager(manager, node);
+            mBounds = GetBounds(node);
         }
 
-        public AreaTrigger(Coordinator coordinator, XmlNode node, Rectangle clip) {
-            mManager = GetManager(coordinator, node);
-            if (node.Attributes["L"] != null) {
-                float l = GetFloat(node, 0, "L", "Left");
-                float r = GetFloat(node, clip.Width / 10, "R", "Right");
-                float t = GetFloat(node, 0, "T", "Top");
-                float b = GetFloat(node, clip.Height / 10, "B", "Bottom");
-                mBounds = new RectangleF(l / clip.Width, t / clip.Height, (r - l) / clip.Width, (b - t) / clip.Height);
-            } else {
-                mBounds = new RectangleF(GetFloat(node, 0f, "X"), GetFloat(node, 0f, "Y"), GetFloat(node, .1f, "W", "Width"), GetFloat(node, .1f, "H", "Height"));
-            }
+        public AreaTrigger(StateManager manager, XmlNode node, Rectangle clip) {
+            mManager = GetManager(manager, node);
+            mBounds = GetBounds(node, clip);
         }
 
         /// <summary>

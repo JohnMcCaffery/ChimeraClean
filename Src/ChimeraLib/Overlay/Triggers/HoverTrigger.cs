@@ -41,11 +41,11 @@ namespace Chimera.Overlay.Triggers {
         }
 
         public ITrigger Create(XmlNode node, StateManager manager) {
-            return new HoverTrigger(manager.Coordinator, node);
+            return new HoverTrigger(manager, node);
         }
 
         public ITrigger Create(XmlNode node, StateManager manager, Rectangle clip) {
-            return new HoverTrigger(manager.Coordinator, node, clip);
+            return new HoverTrigger(manager, node, clip);
         }
     }
 
@@ -109,15 +109,15 @@ namespace Chimera.Overlay.Triggers {
             Manager.Window.Coordinator.Tick += new Action(Coordinator_Tick);
         }
 
-        public HoverTrigger(Coordinator coordinator, XmlNode node)
-            : base(coordinator, node) {
-            mRenderer = coordinator.StateManager.GetRenderer(node);
+        public HoverTrigger(StateManager manager, XmlNode node)
+            : base(manager, node) {
+            mRenderer = manager.GetRenderer(node);
             Manager.Window.Coordinator.Tick += new Action(Coordinator_Tick);
         }
 
-        public HoverTrigger(Coordinator coordinator, XmlNode node, Rectangle clip)
-            : base(coordinator, node, clip) {
-            mRenderer = coordinator.StateManager.GetRenderer(node);
+        public HoverTrigger(StateManager manager, XmlNode node, Rectangle clip)
+            : base(manager, node, clip) {
+            mRenderer = manager.GetRenderer(node);
             Manager.Window.Coordinator.Tick += new Action(Coordinator_Tick);
         }
 

@@ -19,6 +19,21 @@ namespace Chimera.Overlay {
             return node.Attributes["Name"].Value;
         }
 
+        public RectangleF GetBounds(XmlNode node) {
+            return new RectangleF(GetFloat(node, 0f, "X"), GetFloat(node, 0f, "Y"), GetFloat(node, .1f, "W", "Width"), GetFloat(node, .1f, "H", "Height"));
+        }
+
+        public RectangleF GetBounds(XmlNode node, Rectangle clip) {
+            if (node.Attributes["L"] == null)
+                return GetBounds(node);
+
+            float l = GetFloat(node, 0, "L", "Left");
+            float r = GetFloat(node, clip.Width / 10, "R", "Right");
+            float t = GetFloat(node, 0, "T", "Top");
+            float b = GetFloat(node, clip.Height / 10, "B", "Bottom");
+            return new RectangleF(l / clip.Width, t / clip.Height, (r - l) / clip.Width, (b - t) / clip.Height);
+        }
+
         public static Bitmap GetImage(XmlNode node) {
             if (node.Attributes["File"] == null) {
                 Console.WriteLine("Unable to load image. No file specified.");
@@ -55,19 +70,19 @@ namespace Chimera.Overlay {
             return t;
         }
 
-        public static WindowOverlayManager GetManager(Coordinator coordinator, XmlNode node) {
+        public static WindowOverlayManager GetManager(StateManager manager, XmlNode node) {
             WindowOverlayManager mManager;
             XmlAttribute windowAttr = node.Attributes["Window"];
             if (windowAttr == null) {
-                mManager = coordinator.Windows[0].OverlayManager;
+                mManager = manager.Coordinator.Windows[0].OverlayManager;
                 Console.WriteLine("No window specified. Using default window. Using default window " + mManager.Window.Name + ".");
             } else {
-                Window window = coordinator.Windows.FirstOrDefault(w => w.Name == windowAttr.Value);
+                Window window = manager.Coordinator.Windows.FirstOrDefault(w => w.Name == windowAttr.Value);
                 if (windowAttr == null) {
-                    mManager = coordinator.Windows[0].OverlayManager;
+                    mManager = manager.Coordinator.Windows[0].OverlayManager;
                     Console.WriteLine(windowAttr.Value + " is not a known window. Using default window " + mManager.Window.Name + ".");
                 } else
-                    mManager = coordinator[windowAttr.Value].OverlayManager;
+                    mManager = manager.Coordinator[windowAttr.Value].OverlayManager;
             }
             return mManager;
         }

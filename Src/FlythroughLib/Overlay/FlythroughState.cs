@@ -27,8 +27,26 @@ using Chimera.Overlay.States;
 using Chimera.Overlay.Triggers;
 using Chimera.Overlay.Drawables;
 using System.Drawing;
+using System.Xml;
 
-namespace Chimera.Flythrough.Overlay {
+namespace Chimera.Flythrough.Overlay {    public class FlythroughStateFactory : IStateFactory {
+        #region IFactory<State> Members
+
+        public string Name {
+            get { return "FlythroughState"; }
+        }
+
+        public State Create(XmlNode node, StateManager manager) {
+            return new FlythroughState(manager, node);
+        }
+
+        public State Create(XmlNode node, StateManager manager, Rectangle clip) {
+            return Create(node, manager);
+        }
+
+        #endregion
+    }
+
     public class FlythroughState : State {
         private static string FONT = "Verdana";
         private static float FONT_SIZE = 20;
@@ -77,6 +95,10 @@ namespace Chimera.Flythrough.Overlay {
             mSlideshowWindowName = slideshowWindow;
             mSlideshowFolder = slideshowFolder;
             mSlideshowTransition = slideshowTransition;
+        }
+
+        public FlythroughState(StateManager manager, XmlNode node)
+            : base(GetName(node), manager) {
         }
 
         void mInput_CurrentEventChange(FlythroughEvent<Camera> old, FlythroughEvent<Camera> n) {

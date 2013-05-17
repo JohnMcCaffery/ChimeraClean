@@ -176,7 +176,7 @@ namespace Chimera.Overlay.Drawables {
             mBounds = new RectangleF(x, y, w, h);
         }
 
-        public OverlayImage(Coordinator coordinator, XmlNode node) {
+        public OverlayImage(StateManager manager, XmlNode node) {
             GetImage(node);
 
             float x = GetFloat(node, 0f, "X");
@@ -185,10 +185,10 @@ namespace Chimera.Overlay.Drawables {
             float h = GetFloat(node, -1f, "H", "Height");
             mBounds = new RectangleF(x, y, w, h);
             mAspectRatio = (float) mImage.Height / (float) mImage.Width;
-            mWindow = GetManager(coordinator, node).Window.Name;
+            mWindow = GetManager(manager, node).Window.Name;
         }
 
-        public OverlayImage(Coordinator coordinator, XmlNode node, Rectangle clip) {
+        public OverlayImage(StateManager manager, XmlNode node, Rectangle clip) {
             mImage = GetImage(node);
             if (mImage == null)
                 new ArgumentException("Unable to load image.");
@@ -199,7 +199,7 @@ namespace Chimera.Overlay.Drawables {
             float h = GetFloat(node, -1f, "H", "Height");
             mBounds = new RectangleF(clip.Width / x, clip.Height / y, clip.Width / w, clip.Height / h);
             mAspectRatio = (float) mImage.Height / (float) mImage.Width;
-            mWindow = GetManager(coordinator, node).Window.Name;
+            mWindow = GetManager(manager, node).Window.Name;
         }
     }
 }

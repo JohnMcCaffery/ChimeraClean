@@ -43,12 +43,12 @@ namespace Chimera.Overlay.Triggers {
         }
 
         public ITrigger Create(XmlNode node, StateManager manager) {
-            OverlayImage img = new OverlayImage(manager.Coordinator, node);
+            OverlayImage img = new OverlayImage(manager, node);
             return new ImageHoverTrigger(manager.Coordinator[img.Window].OverlayManager, manager.GetRenderer(node), img);
         }
 
         public ITrigger Create(XmlNode node, StateManager manager, Rectangle clip) {
-            OverlayImage img = new OverlayImage(manager.Coordinator, node, clip);
+            OverlayImage img = new OverlayImage(manager, node, clip);
             return new ImageHoverTrigger(manager.Coordinator[img.Window].OverlayManager, manager.GetRenderer(node), img);
         }
     }
