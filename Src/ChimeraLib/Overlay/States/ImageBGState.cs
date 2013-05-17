@@ -34,12 +34,12 @@ namespace Chimera.Overlay.States {
             get { return "ImageBGState"; }
         }
 
-        public State Create(System.Xml.XmlNode node, StateManager manager) {
-            throw new NotImplementedException();
+        public State Create(XmlNode node, StateManager manager) {
+            return new ImageBGState(manager, node);
         }
 
-        public State Create(System.Xml.XmlNode node, StateManager manager, Rectangle clip) {
-            throw new NotImplementedException();
+        public State Create(XmlNode node, StateManager manager, Rectangle clip) {
+            return Create(node, manager);
         }
 
         #endregion
@@ -63,6 +63,18 @@ namespace Chimera.Overlay.States {
 
         public ImageBGState(StateManager manager, XmlNode node)
             : base(GetName(node), manager) {
+
+            foreach (XmlNode child in node.ChildNodes)
+                if (child.Name == "Window") {
+                    Bitmap img = GetImage(node);
+                    if (img != null) {
+                        string name = GetName(child);
+                        mWindowBGs.Add(name, img);
+                        if (mWindows.ContainsKey(name))
+                            mWindows[name].BackgroundImage = img;
+                    }
+                }
+
         }
 
         /// <summary>

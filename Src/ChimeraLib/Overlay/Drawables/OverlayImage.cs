@@ -177,7 +177,9 @@ namespace Chimera.Overlay.Drawables {
         }
 
         public OverlayImage(Coordinator coordinator, XmlNode node) {
-            LoadImage(node);            float x = GetFloat(node, 0f, "X");
+            GetImage(node);
+
+            float x = GetFloat(node, 0f, "X");
             float y = GetFloat(node, 0f, "Y");
             float w = GetFloat(node, -1f, "W", "Width");
             float h = GetFloat(node, -1f, "H", "Height");
@@ -186,7 +188,10 @@ namespace Chimera.Overlay.Drawables {
             mWindow = GetManager(coordinator, node).Window.Name;
         }
 
-        public OverlayImage(Coordinator coordinator, XmlNode node, Rectangle clip) {            LoadImage(node);
+        public OverlayImage(Coordinator coordinator, XmlNode node, Rectangle clip) {
+            mImage = GetImage(node);
+            if (mImage == null)
+                new ArgumentException("Unable to load image.");
 
             float x = GetFloat(node, 0f, "X");
             float y = GetFloat(node, 0f, "Y");
@@ -195,17 +200,6 @@ namespace Chimera.Overlay.Drawables {
             mBounds = new RectangleF(clip.Width / x, clip.Height / y, clip.Width / w, clip.Height / h);
             mAspectRatio = (float) mImage.Height / (float) mImage.Width;
             mWindow = GetManager(coordinator, node).Window.Name;
-        }
-
-        private void LoadImage(XmlNode node) {
-            if (node.Attributes["File"] == null)
-                throw new ArgumentException("Unable to load image trigger. No file specified.");
-
-            string file = Path.GetFullPath(node.Attributes["File"].Value);
-            if (!File.Exists(file))
-                throw new ArgumentException("Unable to load image trigger. " + file + " does not exist.");
-
-            mImage = new Bitmap(file);    
         }
     }
 }

@@ -5,6 +5,7 @@ using System.Text;
 using System.Xml;
 using Chimera.Overlay.Drawables;
 using System.Drawing;
+using System.IO;
 
 namespace Chimera.Overlay {
     public class XmlLoader {        public const string DEFAULT_FONT = "Verdana";
@@ -18,6 +19,20 @@ namespace Chimera.Overlay {
             return node.Attributes["Name"].Value;
         }
 
+        public static Bitmap GetImage(XmlNode node) {
+            if (node.Attributes["File"] == null) {
+                Console.WriteLine("Unable to load image. No file specified.");
+                return null;
+            }
+
+            string file = Path.GetFullPath(node.Attributes["File"].Value);
+            if (!File.Exists(file)) {
+                Console.WriteLine("Unable to load image. " + file + " does not exist.");
+                return null;
+            }
+
+            return new Bitmap(file);    
+        }
         public static float GetFloat(XmlNode node, float defalt, params string[] attributes) {
             float t = defalt;
             if (attributes.Length == 0)
