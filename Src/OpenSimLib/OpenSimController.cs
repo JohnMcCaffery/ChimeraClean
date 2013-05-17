@@ -235,7 +235,7 @@ namespace Chimera.OpenSim {
         }
 
         void Coordinator_DeltaUpdated(Coordinator coordinator, DeltaUpdateEventArgs args) {
-            if (IsMaster)
+            if (IsMaster && ControlCamera)
                 mProxyController.Move(args.positionDelta, args.rotationDelta, mConfig.DeltaScale);
         }
 
