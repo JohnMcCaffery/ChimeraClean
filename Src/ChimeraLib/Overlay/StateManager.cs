@@ -357,7 +357,7 @@ namespace Chimera.Overlay {
                 return null;
             }
 
-            return factory.Create(node, Coordinator);
+            return factory.Create(node, this);
         }
 
         public ITrigger GetTrigger(XmlNode node) {
@@ -413,7 +413,7 @@ namespace Chimera.Overlay {
                 return;
             }
 
-            T t = factory.Create(node, Coordinator);
+            T t = factory.Create(node, this);
             triggers.Add(nameAttr.Value, t);
         }
     }

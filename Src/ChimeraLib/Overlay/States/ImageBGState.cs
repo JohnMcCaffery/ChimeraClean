@@ -34,11 +34,11 @@ namespace Chimera.Overlay.States {
             get { return "ImageBGState"; }
         }
 
-        public State Create(System.Xml.XmlNode node, Coordinator coordinator) {
+        public State Create(System.Xml.XmlNode node, StateManager manager) {
             throw new NotImplementedException();
         }
 
-        public State Create(System.Xml.XmlNode node, Coordinator coordinator, Rectangle clip) {
+        public State Create(System.Xml.XmlNode node, StateManager manager, Rectangle clip) {
             throw new NotImplementedException();
         }
 

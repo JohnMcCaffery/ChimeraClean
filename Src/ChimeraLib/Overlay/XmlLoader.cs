@@ -7,10 +7,10 @@ using Chimera.Overlay.Drawables;
 using System.Drawing;
 
 namespace Chimera.Overlay {
-    public class XmlLoader {        private const string DEFAULT_FONT = "Verdana";
-        private const float DEFAULT_FONT_SIZE = 12f;
-        private const FontStyle DEFAULT_FONT_STYLE = FontStyle.Regular;
-        private static readonly Color DEFAULT_FONT_COLOUR = Color.Black;
+    public class XmlLoader {        public const string DEFAULT_FONT = "Verdana";
+        public const float DEFAULT_FONT_SIZE = 12f;
+        public const FontStyle DEFAULT_FONT_STYLE = FontStyle.Regular;
+        public static readonly Color DEFAULT_FONT_COLOUR = Color.Black;
 
         public static string GetName(XmlNode node) {
             if (node.Attributes["Name"] == null)

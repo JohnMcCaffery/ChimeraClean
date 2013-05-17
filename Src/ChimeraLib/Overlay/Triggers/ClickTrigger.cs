@@ -40,12 +40,12 @@ namespace Chimera.Overlay.Triggers {
             get { return "ClickTrigger"; }
         }
 
-        public ITrigger Create(XmlNode node, Coordinator coordinator) {
-            return new ClickTrigger(coordinator, node);
+        public ITrigger Create(XmlNode node, StateManager manager) {
+            return new ClickTrigger(manager.Coordinator, node);
         }
 
-        public ITrigger Create(XmlNode node, Coordinator coordinator, Rectangle clip) {
-            return new ClickTrigger(coordinator, node, clip);
+        public ITrigger Create(XmlNode node, StateManager manager, Rectangle clip) {
+            return new ClickTrigger(manager.Coordinator, node, clip);
         }
     }
 
