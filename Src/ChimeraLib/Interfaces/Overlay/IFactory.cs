@@ -4,11 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Xml;
 using Chimera.Overlay;
+using System.Drawing;
 
 namespace Chimera.Interfaces.Overlay {
     public interface IFactory<T> {
         string Name { get; }
         T Create(XmlNode node, Coordinator coordinator);
+        T Create(XmlNode node, Coordinator coordinator, Rectangle clip);
     }
 
     public enum SpecialTrigger { Invisible, Text, Image, None }

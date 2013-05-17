@@ -26,8 +26,29 @@ using System.Windows.Forms;
 using Chimera.Interfaces.Overlay;
 using System.Xml;
 
-namespace Chimera.Overlay.Triggers {
-    public abstract class HoverTrigger : AreaTrigger, IDrawable {
+namespace Chimera.Overlay.Triggers {    public class HoverTriggerFactory : ITriggerFactory {
+        public SpecialTrigger Special {
+            get { return SpecialTrigger.Invisible; }
+        }
+
+        public string Mode {
+            get { return StateManager.HOVER_MODE; }
+        }
+
+        public string Name {
+            get { return "HoverTrigger"; }
+        }
+
+        public ITrigger Create(XmlNode node, Coordinator coordinator) {
+            return new HoverTrigger(coordinator, node);
+        }
+
+        public ITrigger Create(XmlNode node, Coordinator coordinator, Rectangle clip) {
+            return new HoverTrigger(coordinator, node, clip);
+        }
+    }
+
+    public class HoverTrigger : AreaTrigger, IDrawable {
         /// <summary>
         /// How many ms to the hover must be maintened before the selector is triggered.
         /// </summary>
@@ -74,6 +95,9 @@ namespace Chimera.Overlay.Triggers {
         /// <param name="y">The width of the image, specified between 0 and 1. 1 will fill the entire height, 0 will be invisible.</param>
         public HoverTrigger(WindowOverlayManager manager, IHoverSelectorRenderer renderer, float x, float y, float w, float h)
             : this(manager, renderer, new RectangleF(x, y, w, h)) {
+        }
+        public HoverTrigger(WindowOverlayManager manager, IHoverSelectorRenderer renderer, int x, int y, int w, int h, Rectangle clip)
+            : this(manager, renderer, (float) x / (float) clip.Width, (float) y / (float) clip.Height, (float) w / (float) clip.Width, (float) h / (float) clip.Height) {
         }
 
         public HoverTrigger(WindowOverlayManager manager, IHoverSelectorRenderer renderer, RectangleF bounds)
@@ -85,11 +109,13 @@ namespace Chimera.Overlay.Triggers {
 
         public HoverTrigger(Coordinator coordinator, XmlNode node)
             : base(coordinator, node) {
+            mRenderer = coordinator.StateManager.GetRenderer(node);
             Manager.Window.Coordinator.Tick += new Action(Coordinator_Tick);
         }
 
         public HoverTrigger(Coordinator coordinator, XmlNode node, Rectangle clip)
             : base(coordinator, node, clip) {
+            mRenderer = coordinator.StateManager.GetRenderer(node);
             Manager.Window.Coordinator.Tick += new Action(Coordinator_Tick);
         }
 

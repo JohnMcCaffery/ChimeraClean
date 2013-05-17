@@ -26,7 +26,28 @@ using System.Windows.Forms;
 using Chimera.Interfaces.Overlay;
 using System.Xml;
 
-namespace Chimera.Overlay.Triggers {
+namespace Chimera.Overlay.Triggers {    public class ClickTriggerFactory : ITriggerFactory {
+        public SpecialTrigger Special {
+            get { return SpecialTrigger.Invisible; }
+        }
+
+        public string Mode {
+            get { return StateManager.CLICK_MODE; }
+        }
+
+        public string Name {
+            get { return "ClickTrigger"; }
+        }
+
+        public ITrigger Create(XmlNode node, Coordinator coordinator) {
+            return new ClickTrigger(coordinator, node);
+        }
+
+        public ITrigger Create(XmlNode node, Coordinator coordinator, Rectangle clip) {
+            return new ClickTrigger(coordinator, node, clip);
+        }
+    }
+
     public class ClickTrigger : AreaTrigger {
         /// <summary>
         /// Create the trigger. Specifies the position and size of the area the cursor must hover in to trigger this trigger as values between 0 and 1.
@@ -53,7 +74,8 @@ namespace Chimera.Overlay.Triggers {
         public ClickTrigger(Coordinator coordinator, XmlNode node)
             : base(coordinator, node) {
             Manager.OnRelease += new Action<int>(mManager_OnRelease);
-        }
+        }
+
         public ClickTrigger(Coordinator coordinator, XmlNode node, Rectangle clip)
             : base(coordinator, node, clip) {
             Manager.OnRelease += new Action<int>(mManager_OnRelease);

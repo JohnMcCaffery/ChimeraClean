@@ -25,8 +25,34 @@ using System.Drawing;
 using System.Windows.Forms;
 using System.Threading;
 using Chimera.Overlay.Drawables;
+using Chimera.Interfaces.Overlay;
+using System.Xml;
 
 namespace Chimera.Overlay.Triggers {
+    public class ImageHoverTriggerFactory : ITriggerFactory {
+        public SpecialTrigger Special {
+            get { return SpecialTrigger.Image; }
+        }
+
+        public string Mode {
+            get { return StateManager.HOVER_MODE; }
+        }
+
+        public string Name {
+            get { return "ImageHoverTrigger"; }
+        }
+
+        public ITrigger Create(XmlNode node, Coordinator coordinator) {
+            OverlayImage img = new OverlayImage(coordinator, node);
+            return new ImageHoverTrigger(coordinator[img.Window].OverlayManager, coordinator.StateManager.GetRenderer(node), img);
+        }
+
+        public ITrigger Create(XmlNode node, Coordinator coordinator, Rectangle clip) {
+            OverlayImage img = new OverlayImage(coordinator, node, clip);
+            return new ImageHoverTrigger(coordinator[img.Window].OverlayManager, coordinator.StateManager.GetRenderer(node), img);
+        }
+    }
+
     public class ImageHoverTrigger : HoverTrigger {
         private OverlayImage mImage;
 

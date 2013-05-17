@@ -26,6 +26,7 @@ using System.Windows.Forms;
 using System.Threading;
 using Chimera.Overlay.Drawables;
 using Chimera.Interfaces.Overlay;
+using System.Xml;
 
 namespace Chimera.Overlay.Triggers {
     public class ImageClickTriggerFactory : ITriggerFactory {
@@ -41,7 +42,14 @@ namespace Chimera.Overlay.Triggers {
             get { return "ImageClickTrigger"; }
         }
 
-        public ITrigger Create(System.Xml.XmlNode node, Coordinator coordinator) {
+        public ITrigger Create(XmlNode node, Coordinator coordinator) {
+            OverlayImage img = new OverlayImage(coordinator, node);
+            return new ImageClickTrigger(coordinator[img.Window].OverlayManager, img);
+        }
+
+        public ITrigger Create(XmlNode node, Coordinator coordinator, Rectangle clip) {
+            OverlayImage img = new OverlayImage(coordinator, node, clip);
+            return new ImageClickTrigger(coordinator[img.Window].OverlayManager, img);
         }
     }
 

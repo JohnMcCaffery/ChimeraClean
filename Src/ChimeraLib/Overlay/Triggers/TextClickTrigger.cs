@@ -43,6 +43,10 @@ namespace Chimera.Overlay.Triggers {
         public ITrigger Create(XmlNode node, Coordinator coordinator) {
             return new TextClickTrigger(coordinator, node);
         }
+
+        public ITrigger Create(XmlNode node, Coordinator coordinator, Rectangle clip) {
+            return new TextClickTrigger(coordinator, node, clip);
+        }
     }
 
     public class TextClickTrigger : ClickTrigger, IDrawable {

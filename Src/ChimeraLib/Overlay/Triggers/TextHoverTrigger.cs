@@ -27,7 +27,7 @@ using Chimera.Interfaces.Overlay;
 using System.Xml;
 
 namespace Chimera.Overlay.Triggers {
-    public class TextClickTriggerFactory : ITriggerFactory {
+    public class TextHoverTriggerFactory : ITriggerFactory {
         public SpecialTrigger Special {
             get { return SpecialTrigger.Text; }
         }
@@ -42,6 +42,10 @@ namespace Chimera.Overlay.Triggers {
 
         public ITrigger Create(XmlNode node, Coordinator coordinator) {
             return new TextHoverTrigger(coordinator, node);
+        }
+
+        public ITrigger Create(XmlNode node, Coordinator coordinator, Rectangle clip) {
+            return new TextHoverTrigger(coordinator, node, clip);
         }
     }
 

@@ -264,7 +264,7 @@ namespace Chimera.Overlay {
 
             XmlNode node = clipList[0];
             if (node.Attributes["Width"] != null && node.Attributes["Height"] != null)
-                mClip = new Rectangle(0, 0, GetInt(node, "X", mClip.Width), GetInt(node, "Y", mClip.Height));
+                mClip = new Rectangle(0, 0, XmlLoader.GetInt(node, mClip.Width, "X"), XmlLoader.GetInt(node, mClip.Height, "Y"));
         }
 
         private string mMode;
@@ -388,45 +388,12 @@ namespace Chimera.Overlay {
             return Coordinator.Windows.FirstOrDefault(w => w.Name == windowAttr.Value).OverlayManager;
         }
 
-        private IHoverSelectorRenderer GetRenderer(XmlNode node) {
+        public IHoverSelectorRenderer GetRenderer(XmlNode node) {
             XmlAttribute rendererNode = node.Attributes["Renderer"];
             if (rendererNode == null || !mRenderers.ContainsKey(rendererNode.Value))
                 return mRenderers.FirstOrDefault().Value;
 
             return mRenderers[rendererNode.Value];
-        }
-
-        private ITrigger MakeImageTrigger(bool useClicks, XmlNode node) {
-            float x = GetFloat(node, "X", 0f);
-            float y = GetFloat(node, "Y", 0f);
-            float w = GetFloat(node, "W", .1f);
-            if (node.Attributes["File"] == null) {
-                Console.WriteLine("Unable to load image trigger. No file specified.");
-                return null;
-            }
-            string file = Path.GetFullPath(node.Attributes["File"].Value);
-            if (!File.Exists(file)) {
-                Console.WriteLine("Unable to load image trigger. " + file + " does not exist.");
-                return null;
-            }
-            WindowOverlayManager manager = GetWindow(node);
-            OverlayImage img = new OverlayImage(new Bitmap(file), x, y, w, manager.Window.Name);
-            return useClicks ? 
-                (ITrigger) new ImageClickTrigger(manager, img) :
-                (ITrigger) new ImageHoverTrigger(manager, GetRenderer(node), img);
-        }
-
-        private ITrigger MakeInvisibleTrigger(bool useClicks, XmlNode node) {
-            int left = GetInt(node, "Left", 0);
-            int right = GetInt(node, "Right", 0);
-            int top = GetInt(node, "Top", mClip.Width / 10);
-            int bottom = GetInt(node, "Bottom", mClip.Height / 10);
-
-            WindowOverlayManager manager = GetWindow(node);
-            return useClicks ?
-                (ITrigger) new ClickTrigger(manager, left, top, right - left, bottom - top, mClip) :
-                (ITrigger) new InvisibleHoverTrigger(
-                manager, GetRenderer(node), left, top, right - left, bottom - top, mClip);
         }
 
         private void LoadFactory<T>(XmlNode node, IEnumerable<IFactory<T>> factories, Dictionary<string, T> triggers) {

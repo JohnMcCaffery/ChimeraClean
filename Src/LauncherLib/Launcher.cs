@@ -188,7 +188,7 @@ namespace Chimera.Launcher {
         protected ITrigger InvisTrigger(Point topLeft, Point bottomRight, Rectangle clip, Window window) {
             return mConfig.InterfaceMode == "ClickBased" ?
                 (ITrigger) new ClickTrigger(window.OverlayManager, topLeft.X, topLeft.Y, bottomRight.X - topLeft.X, bottomRight.Y - topLeft.Y, clip) :
-                (ITrigger) new InvisibleHoverTrigger(
+                (ITrigger) new HoverTrigger(
                 window.OverlayManager, 
                 mRenderer, 
                 topLeft.X, 

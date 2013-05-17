@@ -8,7 +8,7 @@ using System.Drawing;
 
 namespace Chimera.Overlay {
     public class XmlLoader {
-        protected float GetFloat(XmlNode node, float defalt, params string[] attributes) {
+        public static float GetFloat(XmlNode node, float defalt, params string[] attributes) {
             float t = defalt;
             if (attributes.Length == 0)
                 return defalt;
@@ -19,7 +19,7 @@ namespace Chimera.Overlay {
             return t;
         }
 
-        protected int GetInt(XmlNode node, int defalt, params string[] attributes) {
+        public static int GetInt(XmlNode node, int defalt, params string[] attributes) {
             int t = defalt;
             if (attributes.Length == 0)
                 return defalt;

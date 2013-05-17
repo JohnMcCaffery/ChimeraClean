@@ -176,26 +176,36 @@ namespace Chimera.Overlay.Drawables {
             mBounds = new RectangleF(x, y, w, h);
         }
 
-        public OverlayImage(Coordinator coordinator, XmlNode node) {            float x = GetFloat(node, 0f, "X");
+        public OverlayImage(Coordinator coordinator, XmlNode node) {
+            LoadImage(node);            float x = GetFloat(node, 0f, "X");
             float y = GetFloat(node, 0f, "Y");
-            float w = GetFloat(node, .1f, "W", "Width");
-            if (node.Attributes["File"] == null) {
-                throw new ArgumentException("Unable to load image trigger. No file specified.");
-            }
-            string file = Path.GetFullPath(node.Attributes["File"].Value);
-            if (!File.Exists(file)) {
-                Console.WriteLine("Unable to load image trigger. " + file + " does not exist.");
-                return null;
-            }
-            WindowOverlayManager manager = GetWindow(node);
-            OverlayImage img = new OverlayImage(new Bitmap(file), x, y, w, manager.Window.Name);
-            return useClicks ? 
-                (ITrigger) new ImageClickTrigger(manager, img) :
-                (ITrigger) new ImageHoverTrigger(manager, GetRenderer(node), img);
-            throw new NotImplementedException();
+            float w = GetFloat(node, -1f, "W", "Width");
+            float h = GetFloat(node, -1f, "H", "Height");
+            mBounds = new RectangleF(x, y, w, h);
+            mAspectRatio = (float) mImage.Height / (float) mImage.Width;
+            mWindow = GetManager(coordinator, node).Window.Name;
         }
 
-        public OverlayImage(Coordinator coordinator, XmlNode node, Rectangle clip) {
+        public OverlayImage(Coordinator coordinator, XmlNode node, Rectangle clip) {            LoadImage(node);
+
+            float x = GetFloat(node, 0f, "X");
+            float y = GetFloat(node, 0f, "Y");
+            float w = GetFloat(node, -1f, "W", "Width");
+            float h = GetFloat(node, -1f, "H", "Height");
+            mBounds = new RectangleF(clip.Width / x, clip.Height / y, clip.Width / w, clip.Height / h);
+            mAspectRatio = (float) mImage.Height / (float) mImage.Width;
+            mWindow = GetManager(coordinator, node).Window.Name;
+        }
+
+        private void LoadImage(XmlNode node) {
+            if (node.Attributes["File"] == null)
+                throw new ArgumentException("Unable to load image trigger. No file specified.");
+
+            string file = Path.GetFullPath(node.Attributes["File"].Value);
+            if (!File.Exists(file))
+                throw new ArgumentException("Unable to load image trigger. " + file + " does not exist.");
+
+            mImage = new Bitmap(file);    
         }
     }
 }
