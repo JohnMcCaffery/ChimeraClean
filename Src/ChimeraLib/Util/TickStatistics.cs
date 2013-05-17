@@ -69,7 +69,7 @@ namespace Chimera.Util {
         }
 
         public long WorkTotal {
-            get { return mTickTotal; }
+            get { return mWorkTotal; }
         }
 
         public int TicksPerSecond {
