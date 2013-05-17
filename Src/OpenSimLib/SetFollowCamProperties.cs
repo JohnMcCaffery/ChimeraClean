@@ -154,6 +154,13 @@ namespace Chimera.OpenSim {
                 mProxy.InjectPacket(Packet, Direction.Incoming);
         }
 
+        public void Clear() {
+            bool sendPackets = mSendPackets;
+            mSendPackets = false;
+            Update();
+            mSendPackets = sendPackets;
+        }
+
         public SetFollowCamPropertiesPacket Packet {
             get {
                 SetFollowCamPropertiesPacket packet = new SetFollowCamPropertiesPacket();

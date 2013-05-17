@@ -62,7 +62,7 @@ namespace Chimera.OpenSim {
                 } else {
                     mProxyController.ClearCamera();
                     if (IsMaster)
-                        mFollowCamProperties.ControlCamera = false;
+                        mFollowCamProperties.Clear();
                 }
             }
         }
@@ -78,7 +78,8 @@ namespace Chimera.OpenSim {
                 if (mInputPanel == null) {
                     mFollowCamProperties = new SetFollowCamProperties(Window.Coordinator);
                     mInputPanel = new InputPanel(mFollowCamProperties);
-
+                    if (mProxyController.Started)
+                        mFollowCamProperties.SetProxy(mProxyController.Proxy);
                 }
                 return mInputPanel;
             }
@@ -195,7 +196,7 @@ namespace Chimera.OpenSim {
         #endregion
 
         public bool IsMaster {
-            get { return mProxyController != null; }
+            get { return mFollowCamProperties != null; }
         }
 
         public bool StartProxy() {
@@ -203,7 +204,7 @@ namespace Chimera.OpenSim {
                 return true;
 
             if (mProxyController.StartProxy(mConfig.ProxyPort, mConfig.ProxyLoginURI)) {
-                if (mFollowCamProperties != null)
+                if (IsMaster)
                     mFollowCamProperties.SetProxy(mProxyController.Proxy);
 
                 return true;
