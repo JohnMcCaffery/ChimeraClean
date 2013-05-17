@@ -24,8 +24,27 @@ using System.Text;
 using Chimera.Overlay;
 using System.Drawing;
 using Chimera.Interfaces.Overlay;
+using System.Xml;
 
 namespace Chimera.Overlay.States {
+    public class ImageBGStateFactory : IStateFactory {
+        #region IFactory<State> Members
+
+        public string Name {
+            get { return "ImageBGState"; }
+        }
+
+        public State Create(System.Xml.XmlNode node, Coordinator coordinator) {
+            throw new NotImplementedException();
+        }
+
+        public State Create(System.Xml.XmlNode node, Coordinator coordinator, Rectangle clip) {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+    }
+
     public class ImageBGState : State {
         private readonly Dictionary<string, Bitmap> mWindowBGs = new Dictionary<string, Bitmap>();
         private readonly Dictionary<string, ImageBGWindow> mWindows = new Dictionary<string, ImageBGWindow>();
@@ -40,6 +59,10 @@ namespace Chimera.Overlay.States {
 
         public ImageBGState(string name, StateManager manager, string defaultBG)
             : this(name, manager, new Bitmap(defaultBG)) {
+        }
+
+        public ImageBGState(StateManager manager, XmlNode node)
+            : base(GetName(node), manager) {
         }
 
         /// <summary>

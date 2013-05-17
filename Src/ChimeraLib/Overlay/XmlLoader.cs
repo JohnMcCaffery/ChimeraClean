@@ -7,7 +7,17 @@ using Chimera.Overlay.Drawables;
 using System.Drawing;
 
 namespace Chimera.Overlay {
-    public class XmlLoader {
+    public class XmlLoader {        private const string DEFAULT_FONT = "Verdana";
+        private const float DEFAULT_FONT_SIZE = 12f;
+        private const FontStyle DEFAULT_FONT_STYLE = FontStyle.Regular;
+        private static readonly Color DEFAULT_FONT_COLOUR = Color.Black;
+
+        public static string GetName(XmlNode node) {
+            if (node.Attributes["Name"] == null)
+                throw new ArgumentException("Unable to load " + node.Name + ". No name attribute specified.");
+            return node.Attributes["Name"].Value;
+        }
+
         public static float GetFloat(XmlNode node, float defalt, params string[] attributes) {
             float t = defalt;
             if (attributes.Length == 0)
@@ -30,7 +40,7 @@ namespace Chimera.Overlay {
             return t;
         }
 
-        protected WindowOverlayManager GetManager(Coordinator coordinator, XmlNode node) {
+        public static WindowOverlayManager GetManager(Coordinator coordinator, XmlNode node) {
             WindowOverlayManager mManager;
             XmlAttribute windowAttr = node.Attributes["Window"];
             if (windowAttr == null) {
@@ -45,14 +55,10 @@ namespace Chimera.Overlay {
                     mManager = coordinator[windowAttr.Value].OverlayManager;
             }
             return mManager;
-        }
+        }
 
-        private const string DEFAULT_FONT = "Verdana";
-        private const float DEFAULT_FONT_SIZE = 12f;
-        private const FontStyle DEFAULT_FONT_STYLE = FontStyle.Regular;
-        protected static readonly Color DEFAULT_FONT_COLOUR = Color.Black;
-
-        protected Font GetFont(XmlNode node) {            FontStyle style = DEFAULT_FONT_STYLE;
+        public static Font GetFont(XmlNode node) {
+            FontStyle style = DEFAULT_FONT_STYLE;
             FontStyle styleT;
 
             string fontName = node.Attributes["Font"] != null ? node.Attributes["Name"].Value : DEFAULT_FONT;
@@ -62,7 +68,7 @@ namespace Chimera.Overlay {
             return new Font(fontName, size, style);
         }
 
-        protected Color GetColour(XmlNode node, Color defalt) {
+        public static Color GetColour(XmlNode node, Color defalt) {
             Color colour = defalt;
             if (node.Attributes["Colour"] != null)
                 return Color.FromName(node.Attributes["Colour"].Value);

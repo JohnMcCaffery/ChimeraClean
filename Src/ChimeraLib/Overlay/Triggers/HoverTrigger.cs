@@ -26,7 +26,8 @@ using System.Windows.Forms;
 using Chimera.Interfaces.Overlay;
 using System.Xml;
 
-namespace Chimera.Overlay.Triggers {    public class HoverTriggerFactory : ITriggerFactory {
+namespace Chimera.Overlay.Triggers {
+    public class HoverTriggerFactory : ITriggerFactory {
         public SpecialTrigger Special {
             get { return SpecialTrigger.Invisible; }
         }
@@ -95,7 +96,8 @@ namespace Chimera.Overlay.Triggers {    public class HoverTriggerFactory : ITri
         /// <param name="y">The width of the image, specified between 0 and 1. 1 will fill the entire height, 0 will be invisible.</param>
         public HoverTrigger(WindowOverlayManager manager, IHoverSelectorRenderer renderer, float x, float y, float w, float h)
             : this(manager, renderer, new RectangleF(x, y, w, h)) {
-        }
+        }
+
         public HoverTrigger(WindowOverlayManager manager, IHoverSelectorRenderer renderer, int x, int y, int w, int h, Rectangle clip)
             : this(manager, renderer, (float) x / (float) clip.Width, (float) y / (float) clip.Height, (float) w / (float) clip.Width, (float) h / (float) clip.Height) {
         }

@@ -29,7 +29,8 @@ namespace Chimera.Overlay.Triggers {
         protected virtual RectangleF Bounds {
             get { return mBounds; }
             set { mBounds = value; }
-        }
+        }
+
         /// <summary>
         /// Create the trigger. Specifies the position and size of the area the cursor must hover in to trigger this trigger as values between 0 and 1.
         /// 0,0 is top left, 1,1 is bottom right.
@@ -76,7 +77,8 @@ namespace Chimera.Overlay.Triggers {
         /// </summary>
         protected WindowOverlayManager Manager {
             get { return mManager; }
-        }
+        }
+
         public string Window {
             get { return Manager.Window.Name; }
         }

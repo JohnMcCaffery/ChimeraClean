@@ -25,7 +25,7 @@ using Chimera.Interfaces.Overlay;
 using Chimera.Util;
 
 namespace Chimera.Overlay {
-    public abstract class State {
+    public abstract class State : XmlLoader {
         /// <summary>
         /// The window states, mapped to the names of the windows.
         /// </summary>

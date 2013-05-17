@@ -26,7 +26,8 @@ using System.Windows.Forms;
 using Chimera.Interfaces.Overlay;
 using System.Xml;
 
-namespace Chimera.Overlay.Triggers {    public class ClickTriggerFactory : ITriggerFactory {
+namespace Chimera.Overlay.Triggers {
+    public class ClickTriggerFactory : ITriggerFactory {
         public SpecialTrigger Special {
             get { return SpecialTrigger.Invisible; }
         }
