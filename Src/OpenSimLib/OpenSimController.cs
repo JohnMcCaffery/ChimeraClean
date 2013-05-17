@@ -9,23 +9,20 @@ using System.Drawing;
 using OpenMetaverse;
 using System.Diagnostics;
 using Chimera.OpenSim.GUI;
+using System.Threading;
 
 namespace Chimera.OpenSim {
     public class OpenSimController : ISystemPlugin, IOutput {
         private bool mEnabled;
         private bool mClosingViewer;
-        private bool mAutoRestart;
         private ViewerConfig mConfig;
-        private Window mWindow;        private OutputPanel mOutputPanel;
+        private Window mWindow;
+        private OutputPanel mOutputPanel;
         private InputPanel mInputPanel;
 
         private SetFollowCamProperties mFollowCamProperties;
         private ProxyControllerBase mProxyController;
-        private ViewerController mViewerController;
-        /// <summary>
-        /// Selected whenever a client logs in to the proxy.
-        /// </summary>
-        public event Action OnClientLoggedIn;
+        private ViewerController mViewerController;
 
         internal ProxyControllerBase ProxyController {
             get { return mProxyController; }
@@ -41,16 +38,32 @@ namespace Chimera.OpenSim {
                 mConfig.Fullscreen = value;
                 mViewerController.FullScreen = value;
             }
+        }
+        public bool ControlFrustum {
+            get { return mConfig.ControlFrustum; }
+            set {
+                mConfig.ControlFrustum = value;
+                if (value)
+                    mProxyController.SetFrustum(SetCamera);
+                else 
+                    mProxyController.ClearFrustum();
+            }
         }
 
         public bool ControlCamera {
             get { return mConfig.ControlCamera; }
             set {
                 mConfig.ControlCamera = value;
-                if (value)
-                    mProxyController.SetCamera();
-                else
+                if (value) {
+                    if (Mode == ControlMode.Absolute)
+                        mProxyController.SetCamera();
+                    else if (IsMaster)
+                        mFollowCamProperties.Update();
+                } else {
                     mProxyController.ClearCamera();
+                    if (IsMaster)
+                        mFollowCamProperties.ControlCamera = false;
+                }
             }
         }
 
@@ -96,6 +109,7 @@ namespace Chimera.OpenSim {
         }
 
         public void Close() {
+            mClosingViewer = true;
             mProxyController.Stop();
             mViewerController.Close(false);
         }
@@ -107,8 +121,8 @@ namespace Chimera.OpenSim {
         #region IOutput Members
 
         public bool AutoRestart {
-            get { return mAutoRestart; }
-            set { mAutoRestart = value; }
+            get { return mConfig.AutoRestartViewer; }
+            set { mConfig.AutoRestartViewer = value; }
         }
 
         public string Type {
@@ -125,7 +139,8 @@ namespace Chimera.OpenSim {
 
         public Process Process {
             get { return mViewerController.Process; }
-        }
+        }
+
         UserControl IOutput.ControlPanel {
             get {
                 if (mOutputPanel == null)
@@ -134,16 +149,24 @@ namespace Chimera.OpenSim {
             }
         }
 
+        private ControlMode Mode {
+            get { return Window.Coordinator.ControlMode; }
+        }
+
         public void Init(Window window) {
             mWindow = window;
             mConfig = new ViewerConfig(window.Name);
 
-            mViewerController = new ViewerController();
+            mViewerController = new ViewerController(mConfig.ViewerToggleHUDKey);
             if (mConfig.BackwardsCompatible)
-                mProxyController = new FullController();
+                mProxyController = new BackwardCompatibleController(window);
             else
-                mProxyController = new BackwardCompatibleController();
+                mProxyController = new FullController(window);
 
+            mWindow.Coordinator.DeltaUpdated += new Action<Coordinator,DeltaUpdateEventArgs>(Coordinator_DeltaUpdated);
+            mWindow.Coordinator.CameraUpdated += new Action<Coordinator,CameraUpdateEventArgs>(Coordinator_CameraUpdated);
+            mWindow.Coordinator.CameraModeChanged += new Action<Coordinator,ControlMode>(Coordinator_CameraModeChanged);
+            mWindow.Coordinator.EyeUpdated += new Action<Coordinator,EventArgs>(Coordinator_EyeUpdated);
             mWindow.Changed += new Action<Chimera.Window,EventArgs>(mWindow_Changed);
             mWindow.MonitorChanged += new Action<Chimera.Window,Screen>(mWindow_MonitorChanged);
             mProxyController.OnClientLoggedIn += new EventHandler(mProxyController_OnClientLoggedIn);
@@ -157,37 +180,16 @@ namespace Chimera.OpenSim {
                 StartProxy();
         }
 
-        void mWindow_Changed(Window window, EventArgs args) {
-            mProxyController.SetFrustum();
-        }
-
-        void mWindow_MonitorChanged(Window window, Screen monitor) {
-            mViewerController.Monitor = monitor;
-        }
-
-        void mProxyController_OnClientLoggedIn(object sender, EventArgs e) {
-            if (mConfig.Fullscreen)
-                mViewerController.FullScreen = true;
-            foreach (var key in mConfig.StartupKeyPresses.Split(','))
-                mViewerController.PressKey(key);
-        }
-
-        void mProxyController_PositionChanged(Vector3 position, Rotation rotation) {
-            if (IsMaster && mWindow.Coordinator.ControlMode == ControlMode.Delta)
-                mWindow.Coordinator.Update(position, Vector3.Zero, rotation, Rotation.Zero, ControlMode.Absolute);
-        }
-
-        void mViewerController_Exited() {
-        }
-
         public bool Launch() {
             return StartProxy() && StartViewer();
         }
 
         public void Restart(string reason) {
-            mViewerController.Close(true);
-            mProxyController.Stop();
-            mProxyController.Start();
+            new Thread(() => {
+                mViewerController.Close(true);
+                mProxyController.Stop();
+                mProxyController.Start();
+            }).Start();
         }
 
         #endregion
@@ -198,7 +200,9 @@ namespace Chimera.OpenSim {
 
         public bool StartProxy() {
             if (mProxyController.Proxy != null)
-                return true;            if (mProxyController.StartProxy(mConfig.ProxyPort, mConfig.ProxyLoginURI)) {
+                return true;
+
+            if (mProxyController.StartProxy(mConfig.ProxyPort, mConfig.ProxyLoginURI)) {
                 if (mFollowCamProperties != null)
                     mFollowCamProperties.SetProxy(mProxyController.Proxy);
 
@@ -214,5 +218,89 @@ namespace Chimera.OpenSim {
                 args += " --login " + mConfig.LoginFirstName + " " + mConfig.LoginLastName + " " + mConfig.LoginPassword;
             return mViewerController.Start(mConfig.ViewerExecutable, mConfig.ViewerWorkingDirectory, args);
         }
+
+        public void CloseViewer() {
+            mClosingViewer = true;
+            mViewerController.Close(false);
+        }
+
+        #region Event Handlers
+
+        /// <summary>
+        /// Whether to set the position of the camera along with the adjusted frustum.
+        /// </summary>
+        private bool SetCamera {
+            get { return ControlCamera && Mode == ControlMode.Absolute || !IsMaster; }
+        }
+
+        void Coordinator_DeltaUpdated(Coordinator coordinator, DeltaUpdateEventArgs args) {
+            if (IsMaster)
+                mProxyController.Move(args.positionDelta, args.rotationDelta, mConfig.DeltaScale);
+        }
+
+        void Coordinator_CameraUpdated(Coordinator coordinator, CameraUpdateEventArgs args) {
+            if (ControlCamera && mProxyController.Started && (Mode == ControlMode.Absolute || !IsMaster))
+                mProxyController.SetCamera(args.positionDelta, args.rotationDelta);
+        }
+
+        void Coordinator_CameraModeChanged(Coordinator coordinator, ControlMode newMode) {
+            if (ControlCamera && mProxyController.Started) {
+                if (Mode == ControlMode.Absolute)
+                    mProxyController.SetCamera();
+                else if (IsMaster) {
+                    mProxyController.ClearCamera();
+                    mFollowCamProperties.Update();
+                }
+
+            }
+        }
+
+        void Coordinator_EyeUpdated(Coordinator coordinator, EventArgs args) {
+            if (ControlCamera && ControlFrustum && mProxyController.Started && Mode == ControlMode.Absolute)
+                mProxyController.SetFrustum(SetCamera);
+        }
+
+        void mWindow_Changed(Window window, EventArgs args) {
+            if (ControlFrustum)
+                mProxyController.SetFrustum(SetCamera);
+        }
+
+        void mWindow_MonitorChanged(Window window, Screen monitor) {
+            mViewerController.Monitor = monitor;
+        }
+
+        void mProxyController_OnClientLoggedIn(object sender, EventArgs e) {
+            if (mConfig.Fullscreen)
+                mViewerController.FullScreen = true;
+
+            new Thread(() => {
+                Thread.Sleep(5000);
+                foreach (var key in mConfig.StartupKeyPresses.Split(','))
+                    mViewerController.PressKey(key);
+            }).Start();
+
+
+            if (ControlCamera) {
+                if (ControlFrustum)
+                    mProxyController.SetFrustum(SetCamera);
+                if (Mode == ControlMode.Absolute)
+                    mProxyController.SetCamera();
+                else if (IsMaster)
+                    mFollowCamProperties.Update();
+            }
+        }
+
+        void mProxyController_PositionChanged(Vector3 position, Rotation rotation) {
+            if (IsMaster && Mode == ControlMode.Delta)
+                mWindow.Coordinator.Update(position, Vector3.Zero, rotation, Rotation.Zero, ControlMode.Absolute);
+        }
+
+        void mViewerController_Exited() {
+            if (mConfig.AutoRestartViewer && !mClosingViewer)
+                Restart("UnexpectedViewerClose");
+            mClosingViewer = false;
+        }
+
+        #endregion
     }
 }

@@ -404,6 +404,7 @@ namespace Chimera.Util {
         }
 
         void mProcess_Exited(object sender, EventArgs e) {
+            mProcess = null;
             if (Exited != null)
                 Exited();
         }
@@ -412,7 +413,7 @@ namespace Chimera.Util {
             PressKey(str, false, false, false);
         }
         public void PressKey(string key, bool ctrl, bool alt, bool shift) {
-            if (mProcess == null)
+            if (!Started)
                 return;
             Process foreground = Process.GetCurrentProcess();
             SetForegroundWindow(mProcess.MainWindowHandle);
@@ -423,17 +424,17 @@ namespace Chimera.Util {
         public bool FullScreen {
             get { return mFullscreen; }
             set {
-                if (mProcess == null)
+                if (!Started)
                     return;
 
                 Process foreground = Process.GetCurrentProcess();
                 Int32 lStyle = GetWindowLong(mProcess.MainWindowHandle, GWL_STYLE);
-                if (value) lStyle |= WS_CAPTION | WS_THICKFRAME | WS_SYSMENU;
+                if (!value) lStyle |= WS_CAPTION | WS_THICKFRAME | WS_SYSMENU;
                 else lStyle &= ~(WS_CAPTION | WS_THICKFRAME | WS_MINIMIZE | WS_MAXIMIZE | WS_SYSMENU);
 
 
                 Int32 lExStyle = GetWindowLong(mProcess.MainWindowHandle, GWL_EXSTYLE);
-                if (value) lExStyle |= WS_EX_DLGMODALFRAME | WS_EX_CLIENTEDGE;
+                if (!value) lExStyle |= WS_EX_DLGMODALFRAME | WS_EX_CLIENTEDGE;
                 else lExStyle &= ~(WS_EX_DLGMODALFRAME | WS_EX_CLIENTEDGE | WS_EX_STATICEDGE);
 
                 SetWindowLong(mProcess.MainWindowHandle, GWL_STYLE, lStyle);
@@ -445,7 +446,7 @@ namespace Chimera.Util {
         }
 
         public void BringToFront() {
-            if (mProcess == null)
+            if (!Started)
                 return;
 
             SetForegroundWindow(mProcess.MainWindowHandle);
@@ -456,7 +457,7 @@ namespace Chimera.Util {
             set {
                 mMonitor = value;
 
-                if (mProcess == null)
+                if (!Started)
                     return;
 
                 SetWindowPos(

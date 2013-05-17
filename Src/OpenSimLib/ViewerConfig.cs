@@ -55,6 +55,8 @@ namespace Chimera.OpenSim {
 
         public bool BackwardsCompatible;
         public string StartupKeyPresses;
+        public float DeltaScale;
+        public bool ControlFrustum;
 
         public override string Group {
             get { return "SecondLifeViewer"; }
@@ -103,6 +105,7 @@ namespace Chimera.OpenSim {
             ViewerToggleHUDKey= Get(true, "ViewerToggleHUDKey", "%^{F1}", "The key press that will toggle the HUD on and off in the viewer.");
             ProxyLoginURI = Get(true, "LoginURI", DEFAULT_LOGINURI, "The URI of the server the proxy should proxy.");
             UseGrid = Get(true, "UseGrid", false, "Whether to login using the --grid or --loginuri command line parameter to specify the login target.");
+            DeltaScale = Get(true, "DeltaScale", 1f, "How much to scale delta values by when using remote control.");
 
             CrashLogFile = Get(true, "CrashLogFile", "CrashLog.log", "The log file to record crashes to.");
 
@@ -116,7 +119,8 @@ namespace Chimera.OpenSim {
             AutoStartProxy = Get(false, "AutoStartProxy", false, "Whether to automatically start the proxy when the system start.");
             AutoStartViewer = Get(false, "AutoStartViewer", false, "Whether to automatically start the viewer when the system start.");
             AutoRestartViewer = Get(true, "AutoRestart", false, "Whether to automatically restart the viewer if the process exits.");
-            ControlCamera = Get(false, "ControlCamera", true, "Whether to start the viewer in avatar control or proxy control mode.");
+            ControlCamera = Get(false, "ControlCamera", true, "Whether to control the position of the camera on the viewer.");
+            ControlFrustum = Get(false, "ControlFrustum", true, "Whether to control the viewing frustum on the viewer.");
             Fullscreen = Get(false, "Fullscreen", true, "Whether to start the viewer fullscreen.");
 
             StartupKeyPresses = Get(true, "StartupKeyPresses", "", "A series of key presses, using SendKeys syntax, which will be pressed when the viewer logs in. Separate sequences with commas.");

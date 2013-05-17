@@ -14,8 +14,10 @@ using System.Collections;
 
 namespace Chimera.OpenSim {
     internal abstract class ProxyControllerBase {
+        private readonly Window mWindow;
         private Proxy mProxy;
-        private PacketDelegate mAgentUpdateListener;        private UUID mSecureSessionID = UUID.Zero;
+        private PacketDelegate mAgentUpdateListener;
+        private UUID mSecureSessionID = UUID.Zero;
         private UUID mSessionID = UUID.Zero;
         private UUID mAgentID = UUID.Zero;
         private string mFirstName = "NotLoggedIn";
@@ -32,16 +34,17 @@ namespace Chimera.OpenSim {
 
         internal event Action<Vector3, Rotation> PositionChanged {
             add {
-                if (pPositionChanged == null && mProxy != null)
+                if (pPositionChanged == null && Started)
                     mProxy.AddDelegate(PacketType.AgentUpdate, Direction.Outgoing, mAgentUpdateListener);
                 pPositionChanged += value;
             }
             remove {
                 pPositionChanged -= value;
-                if (pPositionChanged == null && mProxy != null)
+                if (pPositionChanged == null && Started)
                     mProxy.RemoveDelegate(PacketType.AgentUpdate, Direction.Outgoing, mAgentUpdateListener);
             }
-        }
+        }
+
         /// <summary>
         /// Selected whenever a client logs in to the proxy.
         /// </summary>
@@ -59,12 +62,17 @@ namespace Chimera.OpenSim {
             get { return mLoginURI; }
         }
 
-        internal ProxyControllerBase() {
+        protected Window Window {
+            get { return mWindow; }
+        }
+
+        internal ProxyControllerBase(Window window) {
+            mWindow = window;
             mAgentUpdateListener = new PacketDelegate(mProxy_AgentUpdatePacketReceived);
         }
 
         internal bool StartProxy(int port, string loginURI) {
-            if (mProxy != null)
+            if (Started)
                 Stop();
             string file = AppDomain.CurrentDomain.SetupInformation.ConfigurationFile;
 
@@ -102,11 +110,23 @@ namespace Chimera.OpenSim {
             }
 
             return true;
-        }
+        }
+
         internal void Stop() {
             if (mProxy != null) {
                 mProxy.Stop();
                 mProxy = null;
+            }
+        }
+
+        internal void Chat(string message, int channel) {            if (Started) {
+                ChatFromViewerPacket p = new ChatFromViewerPacket();
+                p.ChatData.Channel = channel;
+                p.ChatData.Message = Utils.StringToBytes(message);
+                p.ChatData.Type = (byte)1;
+                p.AgentData.AgentID = mAgentID;
+                p.AgentData.SessionID = mSessionID;
+                mProxy.InjectPacket(p, Direction.Outgoing);
             }
         }
 
@@ -136,14 +156,20 @@ namespace Chimera.OpenSim {
             return p;
         }
 
-
-
+        protected void InjectPacket(Packet p) {
+            if (Started)
+                mProxy.InjectPacket(p, Direction.Incoming);
+        }
 
         
         public abstract void SetCamera();
         public abstract void SetCamera(Vector3 positionDelta, Rotation orientationDelta);
-        public abstract void SetFrustum();
-        public abstract void Move(Vector3 positionDelta, Rotation orientationDelta);
+        /// <summary>
+        /// Set the view frustum on the viewer. Specify whether to control the position of the camer at the same time.
+        /// </summary>
+        /// <param name="setCamera">If true, the position of the camera will be set along with the new frustum. If false, only the frustum will be set.</param>
+        public abstract void SetFrustum(bool setCamera);
+        public abstract void Move(Vector3 positionDelta, Rotation orientationDelta, float scale);
 
         public abstract void ClearCamera();
         public abstract void ClearFrustum();

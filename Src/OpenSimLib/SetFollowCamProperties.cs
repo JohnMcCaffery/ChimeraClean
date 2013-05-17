@@ -100,7 +100,7 @@ namespace Chimera.OpenSim {
                 Update();
             }
         }
-        public bool SendPackets {
+        public bool ControlCamera {
             get { return mSendPackets; }
             set {
                 mSendPackets = value;
@@ -149,7 +149,7 @@ namespace Chimera.OpenSim {
             Update();
         }
 
-        private void Update() {
+        public void Update() {
             if (mProxy != null && mCoordinator.ControlMode == ControlMode.Delta)
                 mProxy.InjectPacket(Packet, Direction.Incoming);
         }

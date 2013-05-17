@@ -129,6 +129,8 @@ namespace Chimera.Overlay {
         public State CurrentState {
             get { return mCurrentState; }
             set {
+                if (value == null)
+                    return;
                 if (mFirstState == null)
                     mFirstState = value;
                 if (mCurrentTransition != null)
@@ -159,8 +161,10 @@ namespace Chimera.Overlay {
         public void Reset() {
             CurrentState = mFirstState;
             foreach (var window in Coordinator.Windows) {
-                window.OverlayManager.Close();
-                window.OverlayManager.Launch();
+                if (window.OverlayManager.Visible) {
+                    window.OverlayManager.Close();
+                    window.OverlayManager.Launch();
+                }
             }
         }
 

@@ -39,6 +39,7 @@ using System.IO;
 using Nwc.XmlRpc;
 using Chimera.Config;
 using System.Drawing;
+using Chimera.OpenSim.Packets;
 
 namespace Chimera.OpenSim {
     public abstract class ViewerProxy : IOutput, ISystemPlugin {
@@ -540,7 +541,7 @@ namespace Chimera.OpenSim {
             if (mMaster) {
                 if (mode == ControlMode.Delta) {
                     ClearCamera();
-                    if (mProxy != null && mFollowCamProperties.SendPackets)
+                    if (mProxy != null && mFollowCamProperties.ControlCamera)
                         mProxy.InjectPacket(mFollowCamProperties.Packet, Direction.Incoming);
                 } else {
                     SetCamera();
@@ -560,7 +561,8 @@ namespace Chimera.OpenSim {
                 
                 //TODO - Would be nice if pitching the view 'stuck'.
             }
-        }
+        }
+
         void StateManager_CustomTrigger(string trigger) {
             if (trigger == "Glow")
                 Glow();
@@ -603,7 +605,7 @@ namespace Chimera.OpenSim {
                     if (mControlCamera && mWindow.Coordinator.ControlMode == ControlMode.Absolute)
                         SetCamera();
                     SetWindow();
-                    if (mMaster && mFollowCamProperties.SendPackets)
+                    if (mMaster && mFollowCamProperties.ControlCamera)
                         mProxy.InjectPacket(mFollowCamProperties.Packet, Direction.Incoming);
                     if (OnClientLoggedIn != null)
                         OnClientLoggedIn(mProxy, null);

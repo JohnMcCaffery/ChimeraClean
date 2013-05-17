@@ -52,7 +52,7 @@ namespace Chimera.OpenSim.GUI {
             lookAtLagPanel.Value = properties.LookAtLag;
             lookAtThresholdPanel.Value = properties.LookAtThreshold;
             pitchPanel.Value = properties.Pitch;
-            activeCheckbox.Checked = properties.SendPackets;
+            activeCheckbox.Checked = properties.ControlCamera;
         }
 
         private void focusOffset3DPanel_ValueChanged(object sender, EventArgs e) {
@@ -117,7 +117,7 @@ namespace Chimera.OpenSim.GUI {
 
         private void activeCheckbox_CheckedChanged(object sender, EventArgs e) {
             if (mProperties != null)
-                mProperties.SendPackets = activeCheckbox.Checked;
+                mProperties.ControlCamera = activeCheckbox.Checked;
         }
     }
 }

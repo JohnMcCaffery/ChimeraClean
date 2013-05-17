@@ -62,8 +62,9 @@ namespace Chimera.OpenSim.GUI {
                     gridCheck.Checked = mConfig.UseGrid;
                     autoRestartBox.Checked = mController.AutoRestart;
                     fullscreenCheck.Checked = mController.Fullscreen;
-                    controlCamera.Checked = mController.ControlCamera;
-
+                    controlCameraCheck.Checked = mController.ControlCamera;
+                    controlFrustumCheck.Checked = mController.ControlFrustum;
+                    backwardsCompatibleLabel.Text = mConfig.BackwardsCompatible ? "Backwards Compatible" : "";
                 };
                 if (InvokeRequired)
                     Invoke(init);
@@ -276,7 +277,7 @@ namespace Chimera.OpenSim.GUI {
 
         private void controlCamera_CheckedChanged(object sender, EventArgs e) {
             if (mController != null)
-                mController.ControlCamera = controlCamera.Checked;
+                mController.ControlCamera = controlCameraCheck.Checked;
         }
 
         private void autoRestartBox_CheckedChanged(object sender, EventArgs e) {
@@ -292,6 +293,11 @@ namespace Chimera.OpenSim.GUI {
         private void borderCheck_CheckedChanged(object sender, EventArgs e) {
             if (mController != null)
                 mController.Fullscreen = fullscreenCheck.Checked;
+        }
+
+        private void controlFrustumCheck_CheckedChanged(object sender, EventArgs e) {
+            if (mController != null)
+                mController.ControlFrustum = controlFrustumCheck.Checked;
         }
     }
 }
