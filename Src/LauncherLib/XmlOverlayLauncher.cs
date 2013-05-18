@@ -7,6 +7,7 @@ using Chimera.Overlay.Transitions;
 using Chimera.Overlay.States;
 using Chimera.Flythrough.Overlay;
 using Chimera.Overlay.Triggers;
+using Chimera.Kinect.Overlay;
 
 namespace Chimera.Launcher {
     public class XmlOverlayLauncher : Launcher {
@@ -16,6 +17,8 @@ namespace Chimera.Launcher {
                 Config.InterfaceMode,
                 new IDrawableFactory[0],
                 new ITriggerFactory[] {
+                    new SkeletonLostFactory(),
+                    new SkeletonFoundFactory(),
                     new HoverTriggerFactory(),
                     new ClickTriggerFactory(),
                     new ImageHoverTriggerFactory(),

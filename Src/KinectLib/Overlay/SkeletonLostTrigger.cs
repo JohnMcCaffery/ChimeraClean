@@ -26,7 +26,7 @@ using NuiLibDotNet;
 using Chimera.Overlay;
 
 namespace Chimera.Kinect.Overlay {
-    public class SkeletonLostTriggerFactory : XmlLoader, ITriggerFactory {
+    public class SkeletonLostFactory : XmlLoader, ITriggerFactory {
         public SpecialTrigger Special {
             get { return SpecialTrigger.None; }
         }
@@ -45,7 +45,7 @@ namespace Chimera.Kinect.Overlay {
         }
 
         public ITrigger Create(System.Xml.XmlNode node, Chimera.Overlay.StateManager manager, System.Drawing.Rectangle clip) {
-            throw new NotImplementedException();
+            return Create(node, manager);
         }
     }
     public class SkeletonLostTrigger : ITrigger {

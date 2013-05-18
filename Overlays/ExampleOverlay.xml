@@ -1,6 +1,8 @@
 <Overlay Width="1920" Height="1080" >
   <Any>
-    <!--<Triggers></Triggers>-->
+    <Triggers>
+      <!--<Trigger Type="SkeletonLost" Timeout="30000" Name="SkeletonLost" />-->
+    </Triggers>
     <TransitionStyles>
       <Transition Type="OpacityTransition" Name="FadeOut" Length="2000" FadeOut="true" />
       <Transition Type="OpacityTransition" Name="FadeIn" Length="2000" FadeOut="false" />
@@ -13,7 +15,7 @@
       </State>
 
       <State Type="Flythrough" Name="Idle" File="../Flythroughs/Cathedral5.xml" Idle="true">
-        <IdleTrigger Trigger="SkeletonLost" />
+        <IdleTrigger Type="SkeletonLost" />
         <IdleTransition Transition="FadeOut" />
         <SplashTransition Transition="FadeIn" />
       </State>

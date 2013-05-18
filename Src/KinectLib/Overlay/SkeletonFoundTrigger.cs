@@ -26,7 +26,7 @@ using NuiLibDotNet;
 using Chimera.Overlay;
 using System.Xml;
 
-namespace Chimera.Kinect.Overlay {    public class SkeletonFoundTriggerFactory : ITriggerFactory {
+namespace Chimera.Kinect.Overlay {    public class SkeletonFoundFactory : ITriggerFactory {
         public SpecialTrigger Special {
             get { return SpecialTrigger.None; }
         }
@@ -36,7 +36,7 @@ namespace Chimera.Kinect.Overlay {    public class SkeletonFoundTriggerFactory 
         }
 
         public string Name {
-            get { return "SkeletonLost"; }
+            get { return "SkeletonFound"; }
         }
 
         public ITrigger Create(XmlNode node, StateManager manager) {
@@ -44,7 +44,7 @@ namespace Chimera.Kinect.Overlay {    public class SkeletonFoundTriggerFactory 
         }
 
         public ITrigger Create(System.Xml.XmlNode node, Chimera.Overlay.StateManager manager, System.Drawing.Rectangle clip) {
-            throw new NotImplementedException();
+            return Create(node, manager);
         }
     }
     public class SkeletonFoundTrigger : ITrigger {
