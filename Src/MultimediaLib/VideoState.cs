@@ -52,7 +52,8 @@ namespace Chimera.Multimedia {
 
 
             videoPlayer.PlayStateChange += new _WMPOCXEvents_PlayStateChangeEventHandler(videoPlayer_PlayStateChange);
-        }
+        }
+
 
         private void videoPlayer_PlayStateChange(object source, _WMPOCXEvents_PlayStateChangeEvent args) {
             if (args.newState == 1 && VideoFinished != null) {

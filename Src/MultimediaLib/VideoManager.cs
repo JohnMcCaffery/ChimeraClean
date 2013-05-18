@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Chimera.Multimedia {
     public static class VideoManager {
-        private static Ax
+        private static AxWindowsMediaPlayer
         /// <summary>
         /// Triggered whenever a video that has been played through the interface finishes.
         /// </summary>
