@@ -27,12 +27,27 @@ using System.Drawing;
 namespace Chimera.Overlay.States {
     public class ImageBGWindow : WindowState {
         private Bitmap mBG;
+        private Bitmap mDefaultBG;
 
         public Bitmap BackgroundImage {
-            get { return mBG; }
+            get {
+                if (mBG == null) {
+                    mDefaultBG = new Bitmap(50, 50);
+                    using (Graphics g = Graphics.FromImage(mDefaultBG))
+                        g.FillEllipse(Brushes.Black, 0, 0, 50, 50);
+                    mBG = mDefaultBG;
+                }
+                return mBG;
+            }
             set {
-                mBG = value;
-                Manager.ForceRedrawStatic();
+                if (value != null) {
+                    mBG = value;
+                    Manager.ForceRedrawStatic();
+                    if (mDefaultBG != null) {
+                        mDefaultBG.Dispose();
+                        mDefaultBG = null;
+                    }
+                }
             }
         }
 
@@ -42,7 +57,7 @@ namespace Chimera.Overlay.States {
         }
 
         public override void DrawStatic(Graphics graphics) {
-            graphics.DrawImage(mBG, Clip);
+            graphics.DrawImage(BackgroundImage, Clip);
             base.DrawStatic(graphics);
         }
 

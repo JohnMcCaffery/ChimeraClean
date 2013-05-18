@@ -18,7 +18,7 @@ namespace Chimera.Multimedia {
 
                 return sVideoPlayer;            }        }
 
-        private void videoPlayer_PlayStateChange(object source, _WMPOCXEvents_PlayStateChangeEvent args) {
+        private static void videoPlayer_PlayStateChange(object source, _WMPOCXEvents_PlayStateChangeEvent args) {
             if (args.newState == 1 && VideoFinished != null) {
                 sVideoPlayer.Visible = false;
                 VideoFinished();
