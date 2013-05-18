@@ -23,15 +23,32 @@ using System.Linq;
 using System.Text;
 using Chimera.Interfaces.Overlay;
 using NuiLibDotNet;
+using Chimera.Overlay;
+using System.Xml;
 
-namespace Chimera.Kinect.Overlay {
-    public class SkeletonLostTrigger : ITrigger {
+namespace Chimera.Kinect.Overlay {    public class SkeletonFoundTriggerFactory : ITriggerFactory {
+        public SpecialTrigger Special {
+            get { return SpecialTrigger.None; }
+        }
+
+        public string Mode {
+            get { return StateManager.HOVER_MODE; }
+        }
+
+        public string Name {
+            get { return "SkeletonLost"; }
+        }
+
+        public ITrigger Create(XmlNode node, StateManager manager) {
+            return new SkeletonFoundTrigger();
+        }
+
+        public ITrigger Create(System.Xml.XmlNode node, Chimera.Overlay.StateManager manager, System.Drawing.Rectangle clip) {
+            throw new NotImplementedException();
+        }
+    }
+    public class SkeletonFoundTrigger : ITrigger {
         private bool mActive;
-        private DateTime mLost;
-        private bool mTriggered = false;
-        private double mTimeout;
-
-        #region ITrigger Members
 
         public event Action Triggered;
 
@@ -40,42 +57,13 @@ namespace Chimera.Kinect.Overlay {
             set { mActive = value; }
         }
 
-        #endregion
-
-        /// <summary>
-        /// How long after losing a skeleton the trigger fires.
-        /// </summary>
-        public double Timeout {
-            get { return mTimeout; }
-            set { mTimeout = value; }
+        public SkeletonFoundTrigger() {
+            Nui.SkeletonFound += new SkeletonTrackDelegate(Nui_SkeletonFound);
         }
 
-        public SkeletonLostTrigger(Coordinator coordinator) {
-            Nui.SkeletonLost += new SkeletonTrackDelegate(Nui_SkeletonLost);
-            coordinator.Tick += new Action(coordinator_Tick);
-            mLost = DateTime.Now;
-        }
-
-        public SkeletonLostTrigger(Coordinator coordinator, double timeout)
-            : this(coordinator) {
-            mTimeout = timeout;
-        }
-
-        void coordinator_Tick() {
-            if (mActive && Triggered != null && !mTriggered && mTimeout != 0.0 && !Nui.HasSkeleton && DateTime.Now.Subtract(mLost).TotalMilliseconds > mTimeout) {
-                mTriggered = true;
+        void Nui_SkeletonFound() {
+            if (mActive && Triggered != null)
                 Triggered();
-            }
-        }
-
-        void Nui_SkeletonLost() {
-            if (mActive) {
-                mTriggered = false;
-                if (mTimeout == 0.0 && Triggered != null)
-                    Triggered();
-                else
-                    mLost = DateTime.Now;
-            }
         }
     }
 }

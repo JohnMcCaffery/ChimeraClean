@@ -117,11 +117,11 @@
     </Compile>
     <Compile Include="Axes\LeanAxis.cs" />
     <Compile Include="Overlay\KinectHelpState.cs" />
-    <Compile Include="Overlay\SkeletonLostTrigger.cs" />
+    <Compile Include="Overlay\SkeletonFoundTrigger.cs" />
     <Compile Include="Overlay\KinectControlState.cs" />
     <Compile Include="Overlay\KinectControlWindowState.cs" />
     <Compile Include="Overlay\SkeletonFeature.cs" />
-    <Compile Include="Overlay\SkeletonFoundTrigger.cs" />
+    <Compile Include="Overlay\SkeletonLostTrigger.cs" />
     <Compile Include="Axes\PushAxis.cs" />
     <Compile Include="Axes\TAxis.cs" />
     <Compile Include="KinectMovementPlugin.cs" />
