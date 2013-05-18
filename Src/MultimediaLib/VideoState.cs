@@ -13,11 +13,12 @@ using Chimera.Overlay.Triggers;
 using Chimera.Overlay;
 using Chimera.Overlay.States;
 using System.Xml;
+using System.Windows.Forms;
 
 namespace Chimera.Multimedia {
     public class VideoStateFactory : IStateFactory {
         public string Name {
-            get { return "VideoState"; }
+            get { return "Video"; }
         }
 
         public State Create(StateManager manager, XmlNode node) {
@@ -74,14 +75,23 @@ namespace Chimera.Multimedia {
             if (!File.Exists(mVideo))
                 throw new ArgumentException("Unable to load VideoState. The file '" + mVideo + "' does not exist.");
 
-            mBounds = GetBounds(node, "video state");
+            mMainWindow = GetManager(manager, node, "video state");
+            mBounds = manager.GetBounds(node, "video state");
+
+            Button b = new Button();
+            b.Text = "Some Text";
+            b.Name = "Button Name";
+            b.Visible = true;
+            mMainWindow.AddControl(b, new RectangleF(0f, 0f, 1f, 1f));
 
             XmlAttribute toAttr = node.Attributes["FinishState"];
             if (toAttr != null && manager.GetState(toAttr.Value) != null) {
                 mTrigger = new SimpleTrigger();
                 IWindowTransitionFactory transition = manager.GetTransition(node);
-                if (transition == null)
+                if (transition == null) {
+                    Console.WriteLine("No transition specified for VideoState. using default transition " + manager.DefaultTransition.GetType().Name.Replace("Factory", "") + ".");
                     transition = manager.DefaultTransition;
+                }
                 AddTransition(new StateTransition(Manager, this, manager.GetState(toAttr.Value), mTrigger, transition));
             }
 
@@ -103,7 +113,9 @@ namespace Chimera.Multimedia {
                 window.OverlayManager.ControlPointer = false;
         }
 
-        protected override void TransitionToFinish() { }
+        protected override void TransitionToFinish() {
+            Start();
+        }
 
         void VideoManager_VideoFinished() {
             if (mTrigger != null)

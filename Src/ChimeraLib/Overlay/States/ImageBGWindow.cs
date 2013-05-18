@@ -32,9 +32,9 @@ namespace Chimera.Overlay.States {
         public Bitmap BackgroundImage {
             get {
                 if (mBG == null) {
-                    mDefaultBG = new Bitmap(50, 50);
+                    mDefaultBG = new Bitmap(Clip.Width, Clip.Height);
                     using (Graphics g = Graphics.FromImage(mDefaultBG))
-                        g.FillEllipse(Brushes.Black, 0, 0, 50, 50);
+                        g.FillRectangle(Brushes.Black, Clip);
                     mBG = mDefaultBG;
                 }
                 return mBG;

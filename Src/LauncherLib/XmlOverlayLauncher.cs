@@ -8,6 +8,7 @@ using Chimera.Overlay.States;
 using Chimera.Flythrough.Overlay;
 using Chimera.Overlay.Triggers;
 using Chimera.Kinect.Overlay;
+using Chimera.Multimedia;
 
 namespace Chimera.Launcher {
     public class XmlOverlayLauncher : Launcher {
@@ -33,7 +34,8 @@ namespace Chimera.Launcher {
                 },
                 new IStateFactory[] { 
                     new ImageBGStateFactory(),
-                    new FlythroughStateFactory()
+                    new FlythroughStateFactory(),
+                    new VideoStateFactory()
                 });
         }
     }

@@ -20,7 +20,7 @@ namespace Chimera.Overlay {
             return node.Attributes["Name"].Value;
         }
 
-        public RectangleF GetBounds(XmlNode node, string request) {
+        public static RectangleF GetBounds(XmlNode node, string request) {
             if (node == null) {
                 Console.WriteLine("No node specified when looking up bounds for " + request + ". Using defaults");
                 return new RectangleF(0f, 0f, 0f, 0f);
@@ -39,7 +39,7 @@ namespace Chimera.Overlay {
             return new RectangleF(l, t, (r - l), (b - t));
         }
 
-        public RectangleF GetBounds(XmlNode node, string request, Rectangle clip) {
+        public static RectangleF GetBounds(XmlNode node, string request, Rectangle clip) {
             if (node == null)
                 return GetBounds(node, request);
             RectangleF bounds = GetBounds(node, request);

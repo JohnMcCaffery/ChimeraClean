@@ -210,7 +210,9 @@ namespace Chimera.GUI.Forms {
 
         private void mCoordinator_Tick() {
             if (Created && !IsDisposed && !Disposing)
-                BeginInvoke(new Action(() => {
+                Invoke(() => {
+                    if (inputsTab.SelectedTab != statisticsTab)
+                        return;
                     tpsLabel.Text = "Ticks / Second: " + mCoordinator.Statistics.TicksPerSecond;
 
                     meanTickLabel.Text = "Mean Tick Length: " + mCoordinator.Statistics.MeanTickLength;
@@ -222,7 +224,7 @@ namespace Chimera.GUI.Forms {
                     shortestWorkLabel.Text = "Shortest Work: " + mCoordinator.Statistics.ShortestWork;
 
                     tickCountLabel.Text = "Tick Count: " + mCoordinator.Statistics.TickCount;
-                }));
+                });
         }
 
         private void window_Changed(Window window, EventArgs args) {

@@ -508,5 +508,9 @@ namespace Chimera.Overlay {
         public State GetState(string state) {
             return mStates.ContainsKey(state) ? mStates[state] : null;
         }
+
+        public RectangleF GetBounds(XmlNode node, string reason) {
+            return mClipLoaded ? XmlLoader.GetBounds(node, reason, mClip) : XmlLoader.GetBounds(node, reason);
+        }
     }
 }

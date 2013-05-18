@@ -168,13 +168,14 @@ namespace Chimera.GUI.Forms {
 
         public void AddControl(Control control, RectangleF pos) {
             control.Bounds = new Rectangle((int) (Width * pos.X), (int) (Height * pos.Y), (int) (Width * pos.Width), (int) (Height * pos.Height));
+            SuspendLayout();
             Controls.Add(control);
+            ResumeLayout();
         }
 
         public void RemoveControl(Control control) {
             Controls.Remove(control);
         }
-
 
         private void OverlayWindow_MouseDown(object sender, MouseEventArgs e) {
             mManager.Press(0);

@@ -5,9 +5,9 @@
     </Triggers>
 
     <TransitionStyles>
+      <Transition Type="BitmapTransition" Name="BitmapFade" Length="2000" Style="Fade" />
       <Transition Type="OpacityTransition" Name="FadeOut" Length="2000" FadeOut="true" />
       <Transition Type="OpacityTransition" Name="FadeIn" Length="2000" FadeOut="false" />
-      <Transition Type="BitmapTransition" Name="BitmapFade" Length="2000" Style="Fade" />
     </TransitionStyles>
 
     <States>
@@ -20,6 +20,8 @@
         <IdleTransition Transition="FadeOut" />
         <SplashTransition Transition="FadeIn" />
       </State>
+
+      <State Type="Video" Name="Video" File="E:\Video\Edit\Out\vid.mpg" FinishState="Splash" W="1920" H="1080" />
 
       <State Type="Flythrough" Name="FullFlythrough" File="../Flythroughs/Cathedral5.xml" Stepping="true" DisplaySubtitles="true" SubtitleTimeout="20">
 
@@ -46,7 +48,7 @@
     </States>
     <Transitions>
       <!--<InvisibleTransition From="Splash" To="FullFlythrough" Transition="FadeOut" T="300" L="300" R="800" B="600" />-->
-      <!--<TextTransition From="Splash" To="FullFlythrough" Transition="FadeOut" X="1000" Y="300" Size="50" Style="Bold">Guided Tour</TextTransition>-->
+      <TextTransition From="Splash" To="Video" Transition="BitmapFade" X="1600" Y="300" Size="50" Style="Bold">Video</TextTransition>
       <ImageTransition From="Splash" To="FullFlythrough" Transition="FadeOut" X="1000" Y="300" File="../Images/Example/Button.png">Guided Tour</ImageTransition>
     </Transitions>
   </Any>
