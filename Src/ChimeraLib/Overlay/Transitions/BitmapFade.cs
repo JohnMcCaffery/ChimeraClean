@@ -31,6 +31,8 @@ namespace Chimera.Overlay.Transitions {
     public class BitmapFadeFactory : IImageTransitionFactory {
         #region IImageTransitionFactory Members
 
+        public string Name { get { return "Fade"; } }
+
         public IImageTransition Create(double length) {
             return new FadeTransition(length);
         }

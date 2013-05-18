@@ -21,6 +21,15 @@
         <SplashTransition Transition="FadeIn" />
       </State>
 
+      <State Type="Slideshow" Name="Slideshow" Folder="C:\Users\Iain\Pictures\Helmsdale Demo - 18-2-2013" >
+        <NextTriggers>
+          <TextTrigger X="1600" Y="950" Size="50" Colour="Red" Style="Bold">Next</TextTrigger>
+        </NextTriggers>
+        <PrevTriggers>
+          <TextTrigger X="100" Y="950" Size="50" Colour="Red" Style="Bold">Prev</TextTrigger>
+        </PrevTriggers>
+      </State>
+
       <State Type="Video" Name="Video" File="E:\Video\Edit\Out\vid.mpg" FinishState="None" L="310" T="310" R="790" B="590" >
         <window Window="MainWindow" File="../Images/Example/ExampleBGVideo.png" Splash="True"/>
       </State>
@@ -49,7 +58,7 @@
       </State>
     </States>
     <Transitions>
-      <!--<InvisibleTransition From="Splash" To="FullFlythrough" Transition="FadeOut" T="300" L="300" R="800" B="600" />-->
+      <InvisibleTransition From="Splash" To="Slideshow" Transition="FadeOut" T="300" L="300" R="800" B="600" />
       <TextTransition From="Splash" To="Video" Transition="BitmapFade" X="1400" Y="300" Size="50" Style="Bold">Video</TextTransition>
       <ImageTransition From="Splash" To="FullFlythrough" Transition="FadeOut" X="1000" Y="300" File="../Images/Example/Button.png" />
     </Transitions>

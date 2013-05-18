@@ -16,6 +16,9 @@ namespace Chimera.Launcher {
             Coordinator.StateManager.LoadXML(
                 Config.OverlayFile,
                 Config.InterfaceMode,
+                new IImageTransitionFactory[] {
+                    new BitmapFadeFactory()
+                },
                 new IDrawableFactory[0],
                 new ITriggerFactory[] {
                     new SkeletonLostFactory(),
@@ -35,7 +38,8 @@ namespace Chimera.Launcher {
                 new IStateFactory[] { 
                     new ImageBGStateFactory(),
                     new FlythroughStateFactory(),
-                    new VideoStateFactory()
+                    new VideoStateFactory(),
+                    new SlideshowStateFactory()
                 });
         }
     }

@@ -24,6 +24,7 @@ using System.Text;
 
 namespace Chimera.Interfaces.Overlay {
     public interface IImageTransitionFactory {
+        string Name { get; } 
         IImageTransition Create(double length);
     }
 }

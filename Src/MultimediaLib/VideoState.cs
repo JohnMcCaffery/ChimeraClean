@@ -22,6 +22,7 @@ namespace Chimera.Multimedia {
         }
 
         public State Create(StateManager manager, XmlNode node) {
+            Console.WriteLine("Creating Video State");
             return new VideoState(manager, node);
         }
 
@@ -67,7 +68,6 @@ namespace Chimera.Multimedia {
 
         public VideoState(StateManager manager, XmlNode node)
             : base(manager, node) {
-
 
             mVideo = GetString(node, null, "File");
             if (mVideo == null)

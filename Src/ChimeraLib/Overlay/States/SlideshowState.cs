@@ -25,42 +25,88 @@ using Chimera.Interfaces.Overlay;
 using System.Drawing;
 using System.IO;
 using System.Text.RegularExpressions;
+using System.Xml;
 
 namespace Chimera.Overlay.States {
+    public class SlideshowStateFactory : IStateFactory {
+        public string Name {
+            get { return "Slideshow"; }
+        }
+
+        public State Create(StateManager manager, XmlNode node) {
+            Console.WriteLine("Creating Slideshow State");
+            return new SlideshowState(manager, node);
+        }
+
+        public State Create(StateManager manager, XmlNode node, Rectangle clip) {
+            return Create(manager, node);
+        }
+    }
+
     public class SlideshowState : State {
         private readonly List<SlideshowWindow> mWindows = new List<SlideshowWindow>();
         private readonly IImageTransitionFactory mTransition;
-        private readonly ITrigger mNext;
-        private readonly ITrigger mPrev;
         private readonly string mFolder;
         private double mFadeLengthMS;
         private int mFinishedCount = 0;
+        private List<ITrigger> mTriggers = new List<ITrigger>();
+
 
         public SlideshowState(string name, StateManager manager, string folder, ITrigger next, ITrigger prev, IImageTransitionFactory transition, double fadeLengthMS)
             : base(name, manager) {
 
-            mNext = next;
-            mPrev = prev;
             mFolder = folder;
             mTransition = transition;
             mFadeLengthMS = fadeLengthMS;
 
-            next.Triggered += new Action(next_Triggered);
-            prev.Triggered += new Action(prev_Triggered);
 
-            if (mNext is IDrawable) {
-                AddFeature(mNext as IDrawable);
+            AddTrigger(true, next);
+            AddTrigger(false, prev);
+        }
+
+        public SlideshowState(StateManager manager, XmlNode node)
+            : base(GetName(node), manager) {
+
+            mTransition = manager.GetImageTransition(node, "slideshow state");
+            if (mTransition == null) {
+                Console.WriteLine("Unable to parse transition for slideshow state. Using default transition " + manager.DefaultImageTransition.Name + ".");
+                mTransition = manager.DefaultImageTransition;
             }
-            if (mPrev is IDrawable) {
-                AddFeature(mPrev as IDrawable);
+            mFolder = GetString(node, null, "Folder");
+            if (mFolder == null)
+                throw new ArgumentException("Unable to load slideshow state. No Folder specified.");
+
+            LoadTriggers(manager, node, true);
+            LoadTriggers(manager, node, false);
+        }
+
+        private void LoadTriggers(StateManager manager, XmlNode node, bool next) {
+            XmlNode nextTriggersNode = node.SelectSingleNode("child::" + (next ? "Next" : "Prev") + "Triggers");
+            //TODO - put this pattern into XML Loader
+            if (nextTriggersNode != null) {
+                foreach (XmlNode child in nextTriggersNode.ChildNodes) {
+                    if (child is XmlElement)
+                        AddTrigger(next, manager.GetTrigger(child));
+                }
             }
+        }
+
+        private void AddTrigger(bool next, ITrigger trigger) {
+            if (next)
+                trigger.Triggered += new Action(next_Triggered);
+            else
+                trigger.Triggered += new Action(prev_Triggered);
+
+            mTriggers.Add(trigger);
+
+            if (trigger is IDrawable)
+                AddFeature(trigger as IDrawable);
         }
 
         void prev_Triggered() {
             if (Active) {
                 mFinishedCount = 0;
-                mNext.Active = false;
-                mPrev.Active = false;
+                SetTriggerState(false);
                 foreach (var window in mWindows)
                     window.Prev();
             }
@@ -69,8 +115,7 @@ namespace Chimera.Overlay.States {
         void next_Triggered() {
             if (Active) {
                 mFinishedCount = 0;
-                mNext.Active = false;
-                mPrev.Active = false;
+                SetTriggerState(false);
                 foreach (var window in mWindows)
                     window.Next();
             }
@@ -99,26 +144,27 @@ namespace Chimera.Overlay.States {
         void trans_Finished() {
             mFinishedCount++;
             if (mFinishedCount == mWindows.Count) {
-                mNext.Active = true;
-                mPrev.Active = true;
+                SetTriggerState(true);
             }
         }
 
         public override void TransitionToStart() { }
 
         protected override void TransitionToFinish() {
-            mNext.Active = true;
-            mPrev.Active = true;
+            SetTriggerState(true);
         }
 
         protected override void TransitionFromStart() {
-            mNext.Active = false;
-            mPrev.Active = false;
+            SetTriggerState(false);
         }
 
         public override void TransitionFromFinish() {
-            mNext.Active = false;
-            mPrev.Active = false;
+            SetTriggerState(false);
+        }
+
+        private void SetTriggerState(bool state) {
+            //foreach (var trigger in mTriggers)
+                //trigger.Active = state;
         }
     }
 }
