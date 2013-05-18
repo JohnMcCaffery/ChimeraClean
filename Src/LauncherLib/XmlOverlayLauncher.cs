@@ -16,7 +16,8 @@ namespace Chimera.Launcher {
                 Config.InterfaceMode,
                 new IDrawableFactory[0],
                 new ITriggerFactory[] {
-                    new HoverTriggerFactory()
+                    new HoverTriggerFactory(),
+                    new ClickTriggerFactory()
                 },
                 new ISelectionRendererFactory[0],
                 new ITransitionStyleFactory[] { 

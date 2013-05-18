@@ -1,4 +1,4 @@
-<Overlay UseClicks="true">
+<Overlay Width="1920" Height="1080" >
   <Any>
     <!--<Triggers></Triggers>-->
     <TransitionStyles>

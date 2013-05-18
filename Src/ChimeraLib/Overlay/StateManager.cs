@@ -346,7 +346,7 @@ namespace Chimera.Overlay {
                 return null;
             }
 
-            return factory.Create(node, this);
+            return mClipLoaded ? factory.Create(node, this, mClip) : factory.Create(node, this);
         }
 
         public ITrigger GetTrigger(XmlNode node) {
@@ -391,7 +391,7 @@ namespace Chimera.Overlay {
             return mDrawables[drawableNode.Value];
         }
 
-        private void LoadFactory<T>(XmlNode node, IEnumerable<IFactory<T>> factories, Dictionary<string, T> triggers) {
+        private void LoadFactory<T>(XmlNode node, IEnumerable<IFactory<T>> factories, Dictionary<string, T> instances) {
             XmlAttribute typeAttr = node.Attributes["Type"];
             XmlAttribute nameAttr = node.Attributes["Name"];
             if (nameAttr == null) {
@@ -408,8 +408,8 @@ namespace Chimera.Overlay {
                 return;
             }
 
-            T t = factory.Create(node, this);
-            triggers.Add(nameAttr.Value, t);
+            T t = mClipLoaded ? factory.Create(node, this, mClip) : factory.Create(node, this);
+            instances.Add(nameAttr.Value, t);
         }
 
         public OverlayImage MakeImage(XmlNode node) {
