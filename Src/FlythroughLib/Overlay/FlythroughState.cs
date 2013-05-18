@@ -60,6 +60,7 @@ namespace Chimera.Flythrough.Overlay {
         private IImageTransition mSlideshowTransition;
         private List<ITrigger> mStepTriggers = new List<ITrigger>();
         private StaticText mStepText;
+        private Text mSubtitlesText;
         private string mSlideshowWindowName;
         private string mSlideshowFolder;
         private string mFlythrough;
@@ -111,9 +112,8 @@ namespace Chimera.Flythrough.Overlay {
             if (mFlythrough == null)
                 throw new ArgumentException("Unable to load flythrough state. No flythrough file specified.");
 
-            Text subtitlesText = null;
             if (displaySubtitles)
-                subtitlesText = Manager.MakeText(node.SelectSingleNode("child::SubtitleText"));
+                mSubtitlesText = Manager.MakeText(node.SelectSingleNode("child::SubtitleText"));
 
             XmlNode triggersRoot = node.SelectSingleNode("child::Triggers");
             if (triggersRoot != null) {
@@ -123,7 +123,7 @@ namespace Chimera.Flythrough.Overlay {
             XmlNode stepsRoot = node.SelectSingleNode("child::Triggers");
             if (stepsRoot != null) {
                 foreach (XmlNode child in stepsRoot.ChildNodes) {
-                    Step step = new Step(manager.Coordinator, node, subtitlesText);
+                    Step step = new Step(manager.Coordinator, node, mSubtitlesText);
                     mSteps.Add(step.StepNum, step);
                 }
             }
@@ -156,11 +156,16 @@ namespace Chimera.Flythrough.Overlay {
             return new WindowState(window.OverlayManager);
         }
 
-        protected override void TransitionToFinish() { }
+        protected override void TransitionToFinish() {
+            if (mInput.Paused)
+                TransitionToStart();
+        }
 
         protected override void TransitionFromStart() { }
 
         public override void TransitionToStart() {
+            if (mSubtitlesText != null)
+                mSubtitlesText.Active = true;
             mStep = 0;
             Manager.Coordinator.ControlMode = ControlMode.Absolute;
             mInput.Enabled = true;
@@ -183,6 +188,8 @@ namespace Chimera.Flythrough.Overlay {
         public override void TransitionFromFinish() {
             mInput.Paused = true;
             mInput.Enabled = false;
+            if (mSubtitlesText != null)
+                mSubtitlesText.Active = false;
         }
     }
 }
