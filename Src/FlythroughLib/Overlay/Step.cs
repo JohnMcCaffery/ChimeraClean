@@ -28,7 +28,7 @@ namespace Chimera.Flythrough.Overlay {
             get { return mStep; }
         }
 
-        public Step(Coordinator coordinator, XmlNode node, bool displaySubtitles) {
+        public Step(Coordinator coordinator, XmlNode node, Text subititlesText) {
             if (node.Attributes["Step"] == null && !int.TryParse(node.Attributes["Step"].Value, out mStep))
                 throw new ArgumentException("Unable to load slideshow step. A valid 'Step' attribute must be supplied.");
 
@@ -39,19 +39,18 @@ namespace Chimera.Flythrough.Overlay {
             if (voiceoverAttribute != null && File.Exists(voiceoverAttribute.Value))
                 mVoiceoverFile = Path.GetFullPath(voiceoverAttribute.Value);
 
-            if (displaySubtitles) {
+            mSubtitlesText = subititlesText;
+
+            if (mSubtitlesText != null) {
                 XmlNode subtitlesNode = node.SelectSingleNode("child::Subtitles");
                 if (subtitlesNode != null) {
                     foreach (XmlNode child in subtitlesNode.ChildNodes) {
-                        if (child.Name == "Setup")
-                            mSubtitlesText = coordinator.StateManager.MakeText(child);
-                        else {
-                            int time = child.Attributes["Time"] != null ? int.Parse(child.Attributes["Time"].Value) : 0;
-                            mSubtitles.Add(time, child.InnerText);
-                        }
+                        int time = child.Attributes["Time"] != null ? int.Parse(child.Attributes["Time"].Value) : 0;
+                        mSubtitles.Add(time, child.InnerText);
                     }
                 }
-            }
+            }
+
             XmlNode imagesNode = node.SelectSingleNode("child::Images");
             if (imagesNode != null) {
                 foreach (XmlNode child in imagesNode.ChildNodes) {

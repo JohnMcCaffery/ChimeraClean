@@ -111,6 +111,10 @@ namespace Chimera.Flythrough.Overlay {
             if (mFlythrough == null)
                 throw new ArgumentException("Unable to load flythrough state. No flythrough file specified.");
 
+            Text subtitlesText = null;
+            if (displaySubtitles)
+                subtitlesText = Manager.MakeText(node.SelectSingleNode("child::SubtitleText"));
+
             XmlNode triggersRoot = node.SelectSingleNode("child::Triggers");
             if (triggersRoot != null) {
                 foreach (XmlNode child in triggersRoot.ChildNodes)
@@ -119,7 +123,7 @@ namespace Chimera.Flythrough.Overlay {
             XmlNode stepsRoot = node.SelectSingleNode("child::Triggers");
             if (stepsRoot != null) {
                 foreach (XmlNode child in stepsRoot.ChildNodes) {
-                    Step step = new Step(manager.Coordinator, node, displaySubtitles);
+                    Step step = new Step(manager.Coordinator, node, subtitlesText);
                     mSteps.Add(step.StepNum, step);
                 }
             }
