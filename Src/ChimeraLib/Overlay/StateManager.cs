@@ -405,16 +405,26 @@ namespace Chimera.Overlay {
             }
 
             XmlAttribute triggerAttr = node.Attributes["Trigger"];
-            if (triggerAttr == null) {
-                Console.WriteLine("Unable to load trigger for " + node.Name + ". No trigger attribute specified."); 
+            XmlAttribute typeAttr = node.Attributes["Type"];
+            if (triggerAttr == null && typeAttr == null) {
+                Console.WriteLine("Unable to load trigger for " + node.Name + ". No trigger or type attribute specified."); 
                 return null;
+            }
+            if (typeAttr != null) {
+                IFactory<ITrigger> factory = GetFactory("Trigger", node, mTriggerFactories);
+                if (factory == null)
+                    return null;
+                return Create(factory, node);
             }
             if (!mTriggers.ContainsKey(triggerAttr.Value)) {
                 Console.WriteLine("Unable to load trigger for " + node.Name + ". " + triggerAttr.Value + " is not a known trigger.");
                 return null;
             }
-
             return mTriggers[triggerAttr.Value];
+        }
+
+        private T Create<T>(IFactory<T> factory, XmlNode node) {
+            return mClipLoaded ? factory.Create(node, this, mClip) : factory.Create(node, this);
         }
 
         public IHoverSelectorRenderer GetRenderer(XmlNode node) {
@@ -434,23 +444,14 @@ namespace Chimera.Overlay {
         }
 
         private void LoadFactory<T>(XmlNode node, IEnumerable<IFactory<T>> factories, Dictionary<string, T> instances) {
-            XmlAttribute typeAttr = node.Attributes["Type"];
             XmlAttribute nameAttr = node.Attributes["Name"];
             if (nameAttr == null) {
                 Console.WriteLine("Unable to load " + node.Name + ". No Name attribute specified.");
                 return;
             }
-            if (typeAttr == null) {
-                Console.WriteLine("Unable to load " + node.Name + " " + nameAttr.Value + ". No Type attribute specified.");
-                return;
-            }
-            IFactory<T> factory = factories.FirstOrDefault(f => f.Name == typeAttr.Value);
-            if (factory == null) {
-                Console.WriteLine("Unable to load " + node.Name + " " + nameAttr.Value + ". Type " + typeAttr.Value + " is not mapped to a " + node.Name + " factory. Check Ninject config to make sure the binding is correct.");
-                return;
-            }
 
-            T t = mClipLoaded ? factory.Create(node, this, mClip) : factory.Create(node, this);
+            IFactory<T> factory = GetFactory(nameAttr.Value, node, factories);
+            T t = Create(factory, node);
             instances.Add(nameAttr.Value, t);
 
             if (typeof(T) == typeof(State)) {
@@ -459,6 +460,18 @@ namespace Chimera.Overlay {
                 else if (XmlLoader.GetBool(node, false, "Splash"))
                     mSplashState = t as State;
             }
+        }
+
+        private IFactory<T> GetFactory<T>(string name, XmlNode node, IEnumerable<IFactory<T>> factories) {            XmlAttribute typeAttr = node.Attributes["Type"];
+            if (typeAttr == null) {
+                Console.WriteLine("Unable to load " + node.Name + " " + name + ". No Type attribute specified.");
+                return null;
+            }
+            IFactory<T> factory = factories.FirstOrDefault(f => f.Name == typeAttr.Value);
+            if (factory == null) {
+                Console.WriteLine("Unable to load " + node.Name + " " + name + ". Type " + typeAttr.Value + " is not mapped to a " + node.Name + " factory. Check Ninject config to make sure the binding is correct.");
+            }
+            return factory;
         }
 
         private void LoadIdle(XmlNode node, State state) {
