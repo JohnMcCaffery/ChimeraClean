@@ -250,7 +250,6 @@ namespace Chimera.Overlay {
         private Dictionary<string, IWindowTransitionFactory> mTransitionStyles = new Dictionary<string, IWindowTransitionFactory>();
         private Dictionary<string, IHoverSelectorRenderer> mRenderers = new Dictionary<string, IHoverSelectorRenderer>();
 
-        private List<ITrigger> mIdleExitTriggers = new List<ITrigger>();
         private State mSplashState;
         private IWindowTransitionFactory mIdleSplashTransition;
         private IWindowTransitionFactory mSplashIdleTransition;
@@ -458,15 +457,8 @@ namespace Chimera.Overlay {
                 if (XmlLoader.GetBool(node, false, "Idle"))
                     LoadIdle(node, t as State);
                 else if (XmlLoader.GetBool(node, false, "Splash"))
-                    LoadSplash(node, t as State);
+                    mSplashState = t as State;
             }
-        }
-
-        private void LoadSplash(XmlNode node, State state) {
-            mSplashState = state;
-            if (mIdleState != null)
-                foreach (var trigger in mIdleExitTriggers)
-                    mIdleState.AddTransition(new StateTransition(this, mIdleState, mSplashState, trigger, mIdleSplashTransition));
         }
 
         private void LoadIdle(XmlNode node, State state) {
@@ -474,17 +466,19 @@ namespace Chimera.Overlay {
             foreach (XmlNode child in node.ChildNodes) {
                 if (child is XmlElement) {
                     switch (child.Name) {
-                        case "EntryTrigger": mIdleTriggers.Add(GetTrigger(child)); return;
-                        case "ExitTrigger": mIdleExitTriggers.Add(GetTrigger(child)); return;
+                        case "Trigger": LoadIdleTrigger(child, GetTrigger(child)); return;
                         case "IdleTransition": mSplashIdleTransition = GetTransition(child); return;
                         case "SplashTransition": mIdleSplashTransition = GetTransition(child); return;
                     }
                 }
             }
+        }
 
-            if (mSplashState != null)
-                foreach (var trigger in mIdleExitTriggers)
-                    mIdleState.AddTransition(new StateTransition(this, mIdleState, mSplashState, trigger, mIdleSplashTransition));
+        private void LoadIdleTrigger(XmlNode node, ITrigger trigger) {
+            if (trigger == null)
+                Console.WriteLine("Unable to add idle trigger. " + node.Name + " does not referenced a known trigger.");
+            else
+                mIdleTriggers.Add(trigger);
         }
 
         public OverlayImage MakeImage(XmlNode node) {
