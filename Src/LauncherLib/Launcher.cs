@@ -78,6 +78,7 @@ namespace Chimera.Launcher {
                 InitOverlay();
                 State home = mCoordinator.StateManager.States.FirstOrDefault(s => s.Name == mConfig.HomeState);
                 if (mConfig.IdleState != "None") {
+                    Coordinator.StateManager.IdleEnabled = true;
                     State idle = mCoordinator.StateManager.States.FirstOrDefault(s => s.Name == mConfig.IdleState);
                     if (idle != null && home != null)
                         InitIdle(idle, home, new OpacityFadeInWindowTransitionFactory(mConfig.IdleFadeTime), new OpacityFadeOutWindowTransitionFactory(mConfig.IdleFadeTime), mConfig.IdleTimeoutMs);
