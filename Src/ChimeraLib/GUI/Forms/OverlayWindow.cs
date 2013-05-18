@@ -28,7 +28,6 @@ using System.Windows.Forms;
 using Chimera.Overlay;
 using Chimera.Interfaces.Overlay;
 using Chimera.Util;
-using AxWMPLib;
 
 namespace Chimera.GUI.Forms {
     public partial class OverlayWindow : Form {
@@ -54,8 +53,6 @@ namespace Chimera.GUI.Forms {
         private bool mRedrawStatic;
         private Cursor mDefaultCursor = new Cursor("../Cursors/cursor.cur");
 
-        public event Action VideoFinished;
-
         public OverlayWindow() {
             InitializeComponent();
 
@@ -77,15 +74,6 @@ namespace Chimera.GUI.Forms {
             Opacity = manager.Opacity;
             refreshTimer.Interval = manager.FrameLength;
             refreshTimer.Enabled = true;
-
-            videoPlayer.PlayStateChange += new _WMPOCXEvents_PlayStateChangeEventHandler(videoPlayer_PlayStateChange);
-        }
-
-        private void videoPlayer_PlayStateChange(object source, _WMPOCXEvents_PlayStateChangeEvent args) {
-            if (args.newState == 1 && VideoFinished != null) {
-                VideoFinished();
-                videoPlayer.Visible = false;
-            }
         }
 
         public void RedrawStatic() {
@@ -177,32 +165,16 @@ namespace Chimera.GUI.Forms {
                 BringToFront();
             });
         }
-        public void PlayVideo(string uri) {
-            PlayVideo(uri, new RectangleF(0f, 0f, 1f, 1f));
+
+        public void AddControl(Control control, RectangleF pos) {
+            control.Bounds = new Rectangle((int) (Width * pos.X), (int) (Height * pos.Y), (int) (Width * pos.Width), (int) (Height * pos.Height));
+            Controls.Add(control);
         }
 
-        public void PlayVideo(string uri, RectangleF pos) {
-            RectangleF b = new RectangleF(Width * pos.X, Height * pos.Y, Width * pos.Width, Height * pos.Height);
-
-            //videoPlayer.uiMode = "Mini";
-            videoPlayer.Visible = true;
-            videoPlayer.Dock = DockStyle.None;
-            videoPlayer.Bounds = new Rectangle((int) b.X, (int) b.Y, (int) b.Width, (int) b.Height);
-            videoPlayer.URL = uri;
-
-            videoPlayer.uiMode = "none";
-            videoPlayer.stretchToFit = true;
-            videoPlayer.windowlessVideo = true;
-            videoPlayer.Ctlcontrols.play();
+        public void RemoveControl(Control control) {
+            Controls.Remove(control);
         }
 
-        public void PlayAudio(string uri) {
-            videoPlayer.URL = uri;
-        }
-
-        internal void StopPlayback() {
-            videoPlayer.Ctlcontrols.stop();
-        }
 
         private void OverlayWindow_MouseDown(object sender, MouseEventArgs e) {
             mManager.Press(0);

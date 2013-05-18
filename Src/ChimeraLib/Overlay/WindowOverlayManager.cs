@@ -105,10 +105,6 @@ namespace Chimera.Overlay {
         /// Triggered whenever a device releases its pressure on the screen onto the screen.
         /// Mouse clicks will register as index 0.
         public event Action<int> OnRelease;
-        /// <summary>
-        /// Triggered whenever a video that has been played through the interface finishes.
-        /// </summary>
-        public event Action VideoFinished;
 
         public TickStatistics Statistics {
             get { return mOverlayWindow != null ? mOverlayWindow.Statistics : null; }
@@ -365,26 +361,15 @@ namespace Chimera.Overlay {
         public void ForegroundOverlay() {
             if (mOverlayWindow != null)
                 mOverlayWindow.BringOverlayToFront();
+        }
+        public void AddControl(Control control, RectangleF pos) {
+            if (mOverlayWindow != null)
+                mOverlayWindow.AddControl(control, pos);
         }
 
-        public void PlayVideo(string uri) {
+        public void RemoveControl(Control control) {
             if (mOverlayWindow != null)
-                mOverlayWindow.PlayVideo(uri);
-        }
-
-        public void PlayVideo(string uri, RectangleF position) {
-            if (mOverlayWindow != null)
-                mOverlayWindow.PlayVideo(uri, position);
-        }
-
-        public void PlayAudio(string uri) {
-            if (mOverlayWindow != null)
-                mOverlayWindow.PlayAudio(uri);
-        }
-
-        public void StopPlayback() {
-            if (mOverlayWindow != null)
-                mOverlayWindow.StopPlayback();
+                mOverlayWindow.RemoveControl(control);
         }
     }
 }

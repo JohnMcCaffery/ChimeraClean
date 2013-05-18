@@ -1,15 +1,16 @@
 <Overlay Width="1920" Height="1080" >
   <Any>
     <Triggers>
-      <!--<Trigger Type="SkeletonLost" Timeout="30000" Name="SkeletonLost" />-->
+      <Trigger Type="SkeletonLost" Timeout="30000" Name="SkeletonLost" />
     </Triggers>
+
     <TransitionStyles>
       <Transition Type="OpacityTransition" Name="FadeOut" Length="2000" FadeOut="true" />
       <Transition Type="OpacityTransition" Name="FadeIn" Length="2000" FadeOut="false" />
       <Transition Type="BitmapTransition" Name="BitmapFade" Length="2000" Style="Fade" />
     </TransitionStyles>
-    <States>
 
+    <States>
       <State Type="ImageBG" Name="Splash" >
         <window Window="MainWindow" File="../Images/Example/ExampleBG.png" Splash="True"/>
       </State>

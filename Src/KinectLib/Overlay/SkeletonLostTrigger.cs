@@ -24,6 +24,8 @@ using System.Text;
 using Chimera.Interfaces.Overlay;
 using NuiLibDotNet;
 using Chimera.Overlay;
+using System.Xml;
+using System.Drawing;
 
 namespace Chimera.Kinect.Overlay {
     public class SkeletonLostFactory : XmlLoader, ITriggerFactory {
@@ -39,12 +41,12 @@ namespace Chimera.Kinect.Overlay {
             get { return "SkeletonLost"; }
         }
 
-        public ITrigger Create(System.Xml.XmlNode node, Chimera.Overlay.StateManager manager) {
+        public ITrigger Create(XmlNode node, StateManager manager) {
             double timeout = GetDouble(node, 30000, "Timeout");
             return new SkeletonLostTrigger(manager.Coordinator, timeout);
         }
 
-        public ITrigger Create(System.Xml.XmlNode node, Chimera.Overlay.StateManager manager, System.Drawing.Rectangle clip) {
+        public ITrigger Create(XmlNode node, StateManager manager, Rectangle clip) {
             return Create(node, manager);
         }
     }
