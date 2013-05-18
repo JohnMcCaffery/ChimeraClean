@@ -69,8 +69,8 @@ namespace Chimera.GUI.Forms {
             mManager = manager;
 
             drawPanel.BackColor = manager.TransparencyKey;
-            BackColor = manager.TransparencyKey;
             TransparencyKey = manager.TransparencyKey;
+            BackColor = manager.TransparencyKey;
             Opacity = manager.Opacity;
             refreshTimer.Interval = manager.FrameLength;
             refreshTimer.Enabled = true;
@@ -168,9 +168,7 @@ namespace Chimera.GUI.Forms {
 
         public void AddControl(Control control, RectangleF pos) {
             control.Bounds = new Rectangle((int) (Width * pos.X), (int) (Height * pos.Y), (int) (Width * pos.Width), (int) (Height * pos.Height));
-            SuspendLayout();
-            Controls.Add(control);
-            ResumeLayout();
+            drawPanel.Controls.Add(control);
         }
 
         public void RemoveControl(Control control) {

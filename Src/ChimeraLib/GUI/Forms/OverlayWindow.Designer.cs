@@ -43,7 +43,6 @@ namespace Chimera.GUI.Forms {
         /// </summary>
         private void InitializeComponent() {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(OverlayWindow));
             this.drawPanel = new System.Windows.Forms.PictureBox();
             this.refreshTimer = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.drawPanel)).BeginInit();
@@ -75,6 +74,7 @@ namespace Chimera.GUI.Forms {
             this.Text = "OverlayWindow";
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.OverlayWindow_MouseDown);
             this.MouseUp += new System.Windows.Forms.MouseEventHandler(this.OverlayWindow_MouseUp);
+            ((System.ComponentModel.ISupportInitialize)(this.drawPanel)).EndInit();
             this.ResumeLayout(false);
 
         }

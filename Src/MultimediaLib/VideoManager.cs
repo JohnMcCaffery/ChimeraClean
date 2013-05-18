@@ -13,11 +13,16 @@ namespace Chimera.Multimedia {
             get {
                 if (sVideoPlayer == null)  {
                     sVideoPlayer = new AxWindowsMediaPlayer();
-                    sVideoPlayer.PlayStateChange += new _WMPOCXEvents_PlayStateChangeEventHandler(videoPlayer_PlayStateChange);
+
+                    sVideoPlayer.Name = "videoPlayer";
+                    sVideoPlayer.TabIndex = 1;
                     sVideoPlayer.Visible = true;
-                    sVideoPlayer.Anchor = AnchorStyles.Top | AnchorStyles.Left;
+
+                    sVideoPlayer.PlayStateChange += new _WMPOCXEvents_PlayStateChangeEventHandler(videoPlayer_PlayStateChange);
                 }
-                return sVideoPlayer;            }        }
+                return sVideoPlayer;
+            }
+        }
 
         private static void videoPlayer_PlayStateChange(object source, _WMPOCXEvents_PlayStateChangeEvent args) {
             if (args.newState == 1 && VideoFinished != null) {
@@ -37,7 +42,7 @@ namespace Chimera.Multimedia {
             sVideoPlayer.Visible = true;
             sVideoPlayer.URL = uri;
 
-            //sVideoPlayer.uiMode = "none";
+            sVideoPlayer.uiMode = "none";
             sVideoPlayer.stretchToFit = true;
             sVideoPlayer.windowlessVideo = true;
             sVideoPlayer.Ctlcontrols.play();

@@ -98,8 +98,8 @@ namespace Chimera.Launcher {
         protected virtual ISystemPlugin[] GetInputs() {
             List<ISystemPlugin> plugins = new List<ISystemPlugin>();
             //Control
-            if (Config.InterfaceMode == StateManager.CLICK_MODE)
-                plugins.Add(new TouchscreenPlugin());
+            //if (Config.InterfaceMode == StateManager.CLICK_MODE)
+                //plugins.Add(new TouchscreenPlugin());
             plugins.Add(new KBMousePlugin());
             plugins.Add(new XBoxControllerPlugin());
             plugins.Add(mMainWindowProxy);

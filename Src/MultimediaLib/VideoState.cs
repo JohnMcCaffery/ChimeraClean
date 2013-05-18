@@ -38,7 +38,8 @@ namespace Chimera.Multimedia {
         private RectangleF mBounds = new RectangleF(0f, 0f, 1f, 1f);
         private bool mAdded;
 
-        private List<ITrigger> mStartTriggers = new List<ITrigger>();        private List<ITrigger> mStopTriggers = new List<ITrigger>();
+        private List<ITrigger> mStartTriggers = new List<ITrigger>();
+        private List<ITrigger> mStopTriggers = new List<ITrigger>();
 
         private static Bitmap mDefaultBG;
 
@@ -75,14 +76,9 @@ namespace Chimera.Multimedia {
             if (!File.Exists(mVideo))
                 throw new ArgumentException("Unable to load VideoState. The file '" + mVideo + "' does not exist.");
 
+            VideoManager.VideoFinished += new Action(VideoManager_VideoFinished);
             mMainWindow = GetManager(manager, node, "video state");
             mBounds = manager.GetBounds(node, "video state");
-
-            Button b = new Button();
-            b.Text = "Some Text";
-            b.Name = "Button Name";
-            b.Visible = true;
-            mMainWindow.AddControl(b, new RectangleF(0f, 0f, 1f, 1f));
 
             XmlAttribute toAttr = node.Attributes["FinishState"];
             if (toAttr != null && manager.GetState(toAttr.Value) != null) {
@@ -139,7 +135,8 @@ namespace Chimera.Multimedia {
             }
         }
 
-        private void Start() {            mMainWindow.AddControl(VideoManager.Player, mBounds);
+        private void Start() {
+            mMainWindow.AddControl(VideoManager.Player, mBounds);
             mAdded = true;
             VideoManager.PlayVideo(mVideo);
             foreach (var trigger in mStartTriggers)

@@ -21,7 +21,9 @@
         <SplashTransition Transition="FadeIn" />
       </State>
 
-      <State Type="Video" Name="Video" File="E:\Video\Edit\Out\vid.mpg" FinishState="Splash" W="1920" H="1080" />
+      <State Type="Video" Name="Video" File="E:\Video\Edit\Out\vid.mpg" FinishState="None" L="310" T="310" R="790" B="590" >
+        <window Window="MainWindow" File="../Images/Example/ExampleBGVideo.png" Splash="True"/>
+      </State>
 
       <State Type="Flythrough" Name="FullFlythrough" File="../Flythroughs/Cathedral5.xml" Stepping="true" DisplaySubtitles="true" SubtitleTimeout="20">
 
@@ -48,8 +50,8 @@
     </States>
     <Transitions>
       <!--<InvisibleTransition From="Splash" To="FullFlythrough" Transition="FadeOut" T="300" L="300" R="800" B="600" />-->
-      <TextTransition From="Splash" To="Video" Transition="BitmapFade" X="1600" Y="300" Size="50" Style="Bold">Video</TextTransition>
-      <ImageTransition From="Splash" To="FullFlythrough" Transition="FadeOut" X="1000" Y="300" File="../Images/Example/Button.png">Guided Tour</ImageTransition>
+      <TextTransition From="Splash" To="Video" Transition="BitmapFade" X="1400" Y="300" Size="50" Style="Bold">Video</TextTransition>
+      <ImageTransition From="Splash" To="FullFlythrough" Transition="FadeOut" X="1000" Y="300" File="../Images/Example/Button.png" />
     </Transitions>
   </Any>
 

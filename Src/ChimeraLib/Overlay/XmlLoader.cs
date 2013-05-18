@@ -22,20 +22,20 @@ namespace Chimera.Overlay {
 
         public static RectangleF GetBounds(XmlNode node, string request) {
             if (node == null) {
-                Console.WriteLine("No node specified when looking up bounds for " + request + ". Using defaults");
-                return new RectangleF(0f, 0f, 0f, 0f);
+                Console.WriteLine("No node specified when looking up bounds for " + request + ". Using defaults (full screen).");
+                return new RectangleF(0f, 0f, 1f, 1f);
             }
 
             if (node == null)
-                return new RectangleF(0f, 0f, 0f, 0f);
+                return new RectangleF(0f, 0f, 1f, 1f);
 
             if (node.Attributes["L"] == null)
-                return new RectangleF(GetFloat(node, 0f, "X"), GetFloat(node, 0f, "Y"), GetFloat(node, .1f, "W", "Width"), GetFloat(node, .1f, "H", "Height"));
+                return new RectangleF(GetFloat(node, 0f, "X"), GetFloat(node, 0f, "Y"), GetFloat(node, 1f, "W", "Width"), GetFloat(node, 1f, "H", "Height"));
 
             float l = GetFloat(node, 0, "L", "Left");
-            float r = GetFloat(node, .1f, "R", "Right");
+            float r = GetFloat(node, 1f, "R", "Right");
             float t = GetFloat(node, 0, "T", "Top");
-            float b = GetFloat(node, .1f, "B", "Bottom");
+            float b = GetFloat(node, 1f, "B", "Bottom");
             return new RectangleF(l, t, (r - l), (b - t));
         }
 
