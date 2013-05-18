@@ -1,23 +1,4 @@
-﻿/*************************************************************************
-Copyright (c) 2012 John McCaffery 
-
-This file is part of Chimera.
-
-Chimera is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-Chimera is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with Chimera.  If not, see <http://www.gnu.org/licenses/>.
-
-**************************************************************************/
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -30,119 +11,123 @@ using System.IO;
 using System.Threading;
 using Chimera.Overlay.Triggers;
 using Chimera.Overlay;
+using Chimera.Overlay.States;
+using System.Xml;
 
 namespace Chimera.Multimedia {
-    public class VideoState : State {
+    public class VideoState : ImageBGState {
         private string mVideo;
-        private string mPlayerExe = "C:\\Program Files (x86)\\VideoLAN\\VLC\\vlc";
-        private string mArgs = "-f --video-on-top --play-and-exit";
-        private string mMainWindow;
+        private WindowOverlayManager mMainWindow;
         private Process mPlayer;
         private SimpleTrigger mTrigger;
+        private RectangleF mBounds = new RectangleF(0f, 0f, 1f, 1f);
+        private bool mAdded;
 
-        public VideoState(string name, string mainWindow, string video, State parent, IWindowTransitionFactory transition)
-            : base(name, parent.Manager) {
+        private List<ITrigger> mStartTriggers = new List<ITrigger>();        private List<ITrigger> mStopTriggers = new List<ITrigger>();
 
-            mMainWindow = mainWindow;
-            mVideo = Path.GetFullPath(video);
-            mArgs = mArgs + " " + mVideo;
+        private static Bitmap mDefaultBG;
 
-            mTrigger = new SimpleTrigger();
-            AddTransition(new StateTransition(Manager, this, parent, mTrigger, transition));
-
-
-            videoPlayer.PlayStateChange += new _WMPOCXEvents_PlayStateChangeEventHandler(videoPlayer_PlayStateChange);
-        }
-
-
-        private void videoPlayer_PlayStateChange(object source, _WMPOCXEvents_PlayStateChangeEvent args) {
-            if (args.newState == 1 && VideoFinished != null) {
-                VideoFinished();
-                videoPlayer.Visible = false;
+        private static Bitmap DefaultBG {
+            get {
+                if (mDefaultBG == null) {
+                    mDefaultBG = new Bitmap(50, 50);
+                    using (Graphics g = Graphics.FromImage(mDefaultBG))
+                        g.FillEllipse(Brushes.Black, 0, 0, 50, 50);
+                }
+                return mDefaultBG;
             }
         }
 
-        public override IWindowState CreateWindowState(Window window) {
-            return new VideoWindow(window.OverlayManager);
+        public VideoState(string name, WindowOverlayManager mainWindow, string video, State parent, IWindowTransitionFactory transition)
+            : base(name, mainWindow.Window.Coordinator.StateManager, DefaultBG) {
+
+            mMainWindow = mainWindow;
+            mVideo = Path.GetFullPath(video);
+            VideoManager.VideoFinished += VideoManager_VideoFinished;
+
+            mTrigger = new SimpleTrigger();
+            AddTransition(new StateTransition(Manager, this, parent, mTrigger, transition));
+        }
+
+        public VideoState(StateManager manager, XmlNode node)
+            : base(manager, node) {
+
+
+            mVideo = GetString(node, null, "File");
+            if (mVideo == null)
+                throw new ArgumentException("Unable to load VideoState. No File attribute specified.");
+            mVideo = Path.GetFullPath(mVideo);
+            if (!File.Exists(mVideo))
+                throw new ArgumentException("Unable to load VideoState. The file '" + mVideo + "' does not exist.");
+
+            mBounds = GetBounds(node, "video state");
+
+            XmlAttribute toAttr = node.Attributes["FinishState"];
+            if (toAttr != null && manager.GetState(toAttr.Value) != null) {
+                mTrigger = new SimpleTrigger();
+                IWindowTransitionFactory transition = manager.GetTransition(node);
+                if (transition == null)
+                    transition = manager.DefaultTransition;
+                AddTransition(new StateTransition(Manager, this, manager.GetState(toAttr.Value), mTrigger, transition));
+            }
+
+            foreach (XmlElement child in node.ChildNodes) {
+                if (child is XmlElement) {
+                    ITrigger trigger = manager.GetTrigger(child);
+                    if (trigger != null) {
+                        if (GetBool(child, false, "TriggerStart"))
+                            mStartTriggers.Add(trigger);
+                        else
+                            mStopTriggers.Add(trigger);
+                    }
+                }
+            }
         }
 
         public override void TransitionToStart() {
-            Manager.Coordinator[mMainWindow].OverlayManager.AlwaysOnTop = false;
-            mPlayer = ProcessWrangler.InitProcess(mPlayerExe, Path.GetDirectoryName(mPlayerExe), mArgs);
-            mPlayer.EnableRaisingEvents = true;
-            mPlayer.Start();
-            mPlayer.Exited += new EventHandler(mPlayer_Exited);
-            Thread.Sleep(50);
-            ProcessWrangler.SetMonitor(mPlayer, Manager.Coordinator[mMainWindow].Monitor);
-
-            Console.WriteLine(mPlayer.StartInfo.FileName + " " + mPlayer.StartInfo.Arguments);
-
             foreach (var window in Manager.Coordinator.Windows)
                 window.OverlayManager.ControlPointer = false;
         }
 
         protected override void TransitionToFinish() { }
 
-        void mPlayer_Exited(object sender, EventArgs e) {
-            mPlayer = null;
-            mTrigger.Trigger();
-            //if (Transitions.Length > 0)
-                //Manager.BeginTransition(Transitions[0]);
+        void VideoManager_VideoFinished() {
+            if (mTrigger != null)
+                mTrigger.Trigger();
+            mMainWindow.RemoveControl(VideoManager.Player);
+            mAdded = false;
         }
 
-        protected override void TransitionFromStart() { }
+        protected override void TransitionFromStart() {
+            VideoManager.StopPlayback();
+            foreach (var trigger in mStartTriggers)
+                trigger.Active = false;
+            foreach (var trigger in mStopTriggers)
+                trigger.Active = false;
+        }
 
         public override void TransitionFromFinish() {
-            if (mPlayer != null)
-                ProcessWrangler.PressKey(mPlayer, "{F4}", false, true, false);
-        }
-
-        private class VideoWindow : WindowState {
-            public VideoWindow(WindowOverlayManager manager)
-                : base(manager) {
-            }
-
-            public override bool Active {
-                get { return base.Active; }
-                set {
-                    base.Active = value;
-                    Manager.AlwaysOnTop = !value;
-                }
-            }
-
-            public override void DrawStatic(Graphics graphics) {
-                graphics.FillRectangle(Brushes.Black, Clip);
-                base.DrawStatic(graphics);
+            if (mAdded) {
+                mMainWindow.RemoveControl(VideoManager.Player);
+                mAdded = false;
             }
         }
 
-
-
-        public void PlayVideo(string uri) {
-            PlayVideo(uri, new RectangleF(0f, 0f, 1f, 1f));
+        private void Start() {            mMainWindow.AddControl(VideoManager.Player, mBounds);
+            mAdded = true;
+            VideoManager.PlayVideo(mVideo);
+            foreach (var trigger in mStartTriggers)
+                trigger.Active = false;
+            foreach (var trigger in mStopTriggers)
+                trigger.Active = true;
         }
 
-        public void PlayVideo(string uri, RectangleF pos) {
-            RectangleF b = new RectangleF(Width * pos.X, Height * pos.Y, Width * pos.Width, Height * pos.Height);
-
-            //videoPlayer.uiMode = "Mini";
-            videoPlayer.Visible = true;
-            videoPlayer.Dock = DockStyle.None;
-            videoPlayer.Bounds = new Rectangle((int) b.X, (int) b.Y, (int) b.Width, (int) b.Height);
-            videoPlayer.URL = uri;
-
-            videoPlayer.uiMode = "none";
-            videoPlayer.stretchToFit = true;
-            videoPlayer.windowlessVideo = true;
-            videoPlayer.Ctlcontrols.play();
-        }
-
-        public void PlayAudio(string uri) {
-            videoPlayer.URL = uri;
-        }
-
-        internal void StopPlayback() {
-            videoPlayer.Ctlcontrols.stop();
+        private void Stop() {
+            VideoManager.StopPlayback();
+            foreach (var trigger in mStartTriggers)
+                trigger.Active = false;
+            foreach (var trigger in mStopTriggers)
+                trigger.Active = true;
         }
     }
 }

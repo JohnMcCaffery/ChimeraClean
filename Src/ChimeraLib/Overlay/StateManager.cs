@@ -244,6 +244,10 @@ namespace Chimera.Overlay {
             }
         }
 
+        public IWindowTransitionFactory DefaultTransition {
+            get { return mTransitionStyles.First().Value; }
+        }
+
         private IEnumerable<ITriggerFactory> mTriggerFactories;
         private Dictionary<string, IDrawable> mDrawables = new Dictionary<string, IDrawable>();
         private Dictionary<string, ITrigger> mTriggers = new Dictionary<string, ITrigger>();
@@ -462,7 +466,8 @@ namespace Chimera.Overlay {
             }
         }
 
-        private IFactory<T> GetFactory<T>(string name, XmlNode node, IEnumerable<IFactory<T>> factories) {            XmlAttribute typeAttr = node.Attributes["Type"];
+        private IFactory<T> GetFactory<T>(string name, XmlNode node, IEnumerable<IFactory<T>> factories) {
+            XmlAttribute typeAttr = node.Attributes["Type"];
             if (typeAttr == null) {
                 Console.WriteLine("Unable to load " + node.Name + " " + name + ". No Type attribute specified.");
                 return null;
@@ -479,9 +484,9 @@ namespace Chimera.Overlay {
             foreach (XmlNode child in node.ChildNodes) {
                 if (child is XmlElement) {
                     switch (child.Name) {
-                        case "IdleTrigger": LoadIdleTrigger(child, GetTrigger(child)); return;
                         case "IdleTransition": mSplashIdleTransition = GetTransition(child); return;
                         case "SplashTransition": mIdleSplashTransition = GetTransition(child); return;
+                        default: LoadIdleTrigger(child, GetTrigger(child)); return;
                     }
                 }
             }
@@ -498,6 +503,10 @@ namespace Chimera.Overlay {
 
         public Text MakeText(XmlNode node) {
             return mClipLoaded ?  new StaticText(this, node, mClip) : new StaticText(this, node);
+        }
+
+        public State GetState(string state) {
+            return mStates.ContainsKey(state) ? mStates[state] : null;
         }
     }
 }

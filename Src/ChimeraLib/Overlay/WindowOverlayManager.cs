@@ -296,18 +296,12 @@ namespace Chimera.Overlay {
                 mOverlayWindow = new OverlayWindow(this);
                 mOverlayWindow.Show();
                 mOverlayWindow.FormClosed += new FormClosedEventHandler(mOverlayWindow_FormClosed);
-                mOverlayWindow.VideoFinished += new Action(mOverlayWindow_VideoFinished);
                 mOverlayWindow.AlwaysOnTop = mConfig.AlwaysOnTop;
                 if (mOverlayFullscreen)
                     mOverlayWindow.Fullscreen = true;
                 if (OverlayLaunched != null)
                     OverlayLaunched(this, null);
             }
-        }
-
-        void mOverlayWindow_VideoFinished() {
-            if (VideoFinished != null)
-                VideoFinished();
         }
 
         /// <summary>
@@ -361,7 +355,8 @@ namespace Chimera.Overlay {
         public void ForegroundOverlay() {
             if (mOverlayWindow != null)
                 mOverlayWindow.BringOverlayToFront();
-        }
+        }
+
         public void AddControl(Control control, RectangleF pos) {
             if (mOverlayWindow != null)
                 mOverlayWindow.AddControl(control, pos);

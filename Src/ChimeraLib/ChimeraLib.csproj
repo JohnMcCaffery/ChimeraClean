@@ -161,7 +161,6 @@
     <Compile Include="Overlay\Drawables\OverlayImage.cs" />
     <Compile Include="Overlay\Drawables\StaticText.cs" />
     <Compile Include="Overlay\Drawables\Text.cs" />
-    <Compile Include="Overlay\States\OverlayVideoState.cs" />
     <Compile Include="Overlay\States\SeeThroughMenuState.cs" />
     <Compile Include="Overlay\States\SlideshowState.cs" />
     <Compile Include="Overlay\States\SlideshowWindow.cs" />
