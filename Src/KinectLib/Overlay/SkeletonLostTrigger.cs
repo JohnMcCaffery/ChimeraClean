@@ -41,13 +41,13 @@ namespace Chimera.Kinect.Overlay {
             get { return "SkeletonLost"; }
         }
 
-        public ITrigger Create(XmlNode node, StateManager manager) {
+        public ITrigger Create(StateManager manager, XmlNode node) {
             double timeout = GetDouble(node, 30000, "Timeout");
             return new SkeletonLostTrigger(manager.Coordinator, timeout);
         }
 
-        public ITrigger Create(XmlNode node, StateManager manager, Rectangle clip) {
-            return Create(node, manager);
+        public ITrigger Create(StateManager manager, XmlNode node, Rectangle clip) {
+            return Create(manager, node);
         }
     }
     public class SkeletonLostTrigger : ITrigger {

@@ -392,7 +392,7 @@ namespace Chimera.Overlay {
                 return null;
             }
 
-            return mClipLoaded ? factory.Create(node, this, mClip) : factory.Create(node, this);
+            return mClipLoaded ? factory.Create(this, node, mClip) : factory.Create(this, node);
         }
 
         public ITrigger GetTrigger(XmlNode node) {
@@ -428,7 +428,7 @@ namespace Chimera.Overlay {
         }
 
         private T Create<T>(IFactory<T> factory, XmlNode node) {
-            return mClipLoaded ? factory.Create(node, this, mClip) : factory.Create(node, this);
+            return mClipLoaded ? factory.Create(this, node, mClip) : factory.Create(this, node);
         }
 
         public IHoverSelectorRenderer GetRenderer(XmlNode node) {

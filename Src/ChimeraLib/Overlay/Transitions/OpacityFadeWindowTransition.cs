@@ -34,15 +34,15 @@ namespace Chimera.Overlay.Transitions {
             get { return "OpacityTransition"; }
         }
 
-        public IWindowTransitionFactory Create(XmlNode node, StateManager manager) {
+        public IWindowTransitionFactory Create(StateManager manager, XmlNode node) {
             string transition = GetString(node, "Fade", "Transition");
             double length = GetDouble(node, 5000.0, "Length");
             bool fadeOut = GetBool(node, true, "FadeOut");
             return new OpacityFadeWindowTransitionFactory(length, fadeOut);
         }
 
-        public IWindowTransitionFactory Create(XmlNode node, StateManager manager, Rectangle clip) {
-            return Create(node, manager);
+        public IWindowTransitionFactory Create(StateManager manager, XmlNode node, Rectangle clip) {
+            return Create(manager, node);
         }
     }
     public class OpacityFadeWindowTransitionFactory : IWindowTransitionFactory {

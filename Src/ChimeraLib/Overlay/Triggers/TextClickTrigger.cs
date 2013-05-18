@@ -40,11 +40,11 @@ namespace Chimera.Overlay.Triggers {
             get { return "TextClickTrigger"; }
         }
 
-        public ITrigger Create(XmlNode node, StateManager manager) {
+        public ITrigger Create(StateManager manager, XmlNode node) {
             return new TextClickTrigger(manager, node);
         }
 
-        public ITrigger Create(XmlNode node, StateManager manager, Rectangle clip) {
+        public ITrigger Create(StateManager manager, XmlNode node, Rectangle clip) {
             return new TextClickTrigger(manager, node, clip);
         }
     }

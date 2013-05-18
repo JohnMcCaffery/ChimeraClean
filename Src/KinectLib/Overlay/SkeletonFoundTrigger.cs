@@ -40,12 +40,12 @@ namespace Chimera.Kinect.Overlay {    public class SkeletonFoundFactory : ITrig
             get { return "SkeletonFound"; }
         }
 
-        public ITrigger Create(XmlNode node, StateManager manager) {
+        public ITrigger Create(StateManager manager, XmlNode node) {
             return new SkeletonFoundTrigger();
         }
 
-        public ITrigger Create(XmlNode node, StateManager manager, Rectangle clip) {
-            return Create(node, manager);
+        public ITrigger Create(StateManager manager, XmlNode node, Rectangle clip) {
+            return Create(manager, node);
         }
     }
     public class SkeletonFoundTrigger : ITrigger {

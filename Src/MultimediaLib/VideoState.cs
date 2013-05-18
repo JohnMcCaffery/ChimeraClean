@@ -15,6 +15,20 @@ using Chimera.Overlay.States;
 using System.Xml;
 
 namespace Chimera.Multimedia {
+    public class VideoStateFactory : IStateFactory {
+        public string Name {
+            get { return "VideoState"; }
+        }
+
+        public State Create(StateManager manager, XmlNode node) {
+            return new VideoState(manager, node);
+        }
+
+        public State Create(StateManager manager, XmlNode node, Rectangle clip) {
+            return Create(manager, node);
+        }
+    }
+
     public class VideoState : ImageBGState {
         private string mVideo;
         private WindowOverlayManager mMainWindow;

@@ -34,12 +34,12 @@ namespace Chimera.Overlay.States {
             get { return "ImageBG"; }
         }
 
-        public State Create(XmlNode node, StateManager manager) {
+        public State Create(StateManager manager, XmlNode node) {
             return new ImageBGState(manager, node);
         }
 
-        public State Create(XmlNode node, StateManager manager, Rectangle clip) {
-            return Create(node, manager);
+        public State Create(StateManager manager, XmlNode node, Rectangle clip) {
+            return Create(manager, node);
         }
 
         #endregion
