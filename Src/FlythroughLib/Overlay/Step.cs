@@ -9,16 +9,17 @@ using System.IO;
 
 namespace Chimera.Flythrough.Overlay {
     public class Step {
-        private int mStep;
-        private Coordinator mCoordinator;
-        private Action mTickListener;
-        private string mVoiceoverFile;
-        private Text mSubtitlesText;
+        private readonly int mStep;
+
+        private readonly Coordinator mCoordinator;
+        private readonly Text mSubtitlesText;
+        private readonly Action mTickListener;
+        private readonly string mVoiceoverFile;
+
+        private readonly Dictionary<int, OverlayImage> mImages = new Dictionary<int, OverlayImage>();
+        private readonly Dictionary<int, string> mSubtitles = new Dictionary<int, string>();
+
         private OverlayImage mCurrentImage;
-
-        private Dictionary<int, OverlayImage> mImages = new Dictionary<int, OverlayImage>();
-        private Dictionary<int, string> mSubtitles = new Dictionary<int, string>();
-
         private Queue<int> mImageTimes;
         private Queue<int> mSubtitleTimes;
 
@@ -82,21 +83,16 @@ namespace Chimera.Flythrough.Overlay {
         }
 
         private void mCoordinator_Tick() {
-            HashSet<string> redraw = new HashSet<string>();
             if (mImageTimes.Count > 0 && DateTime.Now.Subtract(mStarted).TotalSeconds > mImageTimes.Peek()) {
                 if (mCurrentImage != null)
                     mCurrentImage.Active = false;
                 mCurrentImage = mImages[mImageTimes.Dequeue()];
                 mCurrentImage.Active = true;
-                redraw.Add(mCurrentImage.Window);
+                mCoordinator[mCurrentImage.Window].OverlayManager.ForceRedrawStatic();
             }
             if (mSubtitleTimes.Count > 0 && DateTime.Now.Subtract(mStarted).TotalSeconds > mSubtitleTimes.Peek()) {
-                mSubtitlesText.Active = true;
                 mSubtitlesText.TextString = mSubtitles[mSubtitleTimes.Dequeue()];
-                redraw.Add(mSubtitlesText.Window);
             }
-            foreach (var window in redraw)
-                mCoordinator[window].OverlayManager.ForceRedrawStatic();
         }
     }
 }

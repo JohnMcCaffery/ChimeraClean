@@ -80,7 +80,7 @@ namespace Chimera.Launcher {
                 if (mConfig.IdleState != "None") {
                     State idle = mCoordinator.StateManager.States.FirstOrDefault(s => s.Name == mConfig.IdleState);
                     if (idle != null && home != null)
-                        InitIdle(idle, home, new OpacityFadeInTransitionFactory(mConfig.IdleFadeTime), new OpacityFadeOutTransitionFactory(mConfig.IdleFadeTime), mConfig.IdleTimeoutMs);
+                        InitIdle(idle, home, new OpacityFadeInWindowTransitionFactory(mConfig.IdleFadeTime), new OpacityFadeOutWindowTransitionFactory(mConfig.IdleFadeTime), mConfig.IdleTimeoutMs);
                     else
                         Console.WriteLine("Unable to create idle state. The idle state specified (" + mConfig.IdleState + ") was not found.");
                 }
@@ -211,6 +211,7 @@ namespace Chimera.Launcher {
             switch (new LauncherConfig().Launcher) {
                 case "Chimera.Launcher.ExampleOverlayLauncher": return new ExampleOverlayLauncher();
                 case "Chimera.Launcher.FlythroughLauncher": return new FlythroughLauncher();
+                case "Chimera.Launcher.XmlOverlayLauncher": return new XmlOverlayLauncher();
             }
 
             return new MinimumLauncher();

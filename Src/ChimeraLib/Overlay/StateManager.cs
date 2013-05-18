@@ -231,27 +231,8 @@ namespace Chimera.Overlay {
             ProcessWrangler.Dump(Statistics, reason + ".html");
         }
 
-        private static readonly bool USE_CLICKS_DEFAULT = false;
-
-        private bool GetUseClicks(XmlDocument doc) {
-            XmlNodeList overlayNodes = doc.GetElementsByTagName("Overlay");
-            if (overlayNodes.Count == 0)
-                return USE_CLICKS_DEFAULT;
-            XmlNode overlayNode = overlayNodes[0];
-            if (overlayNode == null)
-                return USE_CLICKS_DEFAULT;
-            return GetUseClicks(overlayNode);
-        }
-
-        private bool GetUseClicks(XmlNode node) {
-            XmlAttribute useClicksAttr = node.Attributes["UseClicks"];
-            if (useClicksAttr == null)
-                return USE_CLICKS_DEFAULT;
-
-            return bool.Parse(useClicksAttr.Value);
-        }
-
         IEnumerable<ITriggerFactory> mTriggerFactories;
+        Dictionary<string, IDrawable> mDrawables = new Dictionary<string, IDrawable>();
         Dictionary<string, ITrigger> mTriggers = new Dictionary<string, ITrigger>();
         Dictionary<string, IWindowTransitionFactory> mTransitionStyles = new Dictionary<string, IWindowTransitionFactory>();
         Dictionary<string, IHoverSelectorRenderer> mRenderers = new Dictionary<string, IHoverSelectorRenderer>();
@@ -275,6 +256,7 @@ namespace Chimera.Overlay {
         public void LoadXML(
                 string xml, 
                 string mode,
+                IEnumerable<IDrawableFactory> drawableFactories, 
                 IEnumerable<ITriggerFactory> triggerFactories, 
                 IEnumerable<ISelectionRendererFactory> selectionRendererFactories, 
                 IEnumerable<ITransitionStyleFactory> transitionStyleFactories, 
@@ -288,8 +270,9 @@ namespace Chimera.Overlay {
 
             LoadClip(doc);
 
+            LoadComponent(doc, mode, drawableFactories, mDrawables, "Drawables");
             LoadComponent(doc, mode, triggerFactories, mTriggers, "Triggers");
-            LoadComponent(doc, mode, transitionStyleFactories, mTransitionStyles, "States");
+            LoadComponent(doc, mode, transitionStyleFactories, mTransitionStyles, "TransitionStyles");
             LoadComponent(doc, mode, selectionRendererFactories, mRenderers, "SelectionRenderers");
             LoadComponent(doc, mode, stateFactories, mStates, "States");
 
@@ -388,20 +371,20 @@ namespace Chimera.Overlay {
             return mTriggers[triggerAttr.Value];
         }
 
-        private WindowOverlayManager GetWindow(XmlNode node) {
-            XmlAttribute windowAttr = node.Attributes["Window"];
-            if (windowAttr == null)
-                return Coordinator.Windows.FirstOrDefault().OverlayManager;
-
-            return Coordinator.Windows.FirstOrDefault(w => w.Name == windowAttr.Value).OverlayManager;
-        }
-
         public IHoverSelectorRenderer GetRenderer(XmlNode node) {
             XmlAttribute rendererNode = node.Attributes["Renderer"];
             if (rendererNode == null || !mRenderers.ContainsKey(rendererNode.Value))
                 return mRenderers.FirstOrDefault().Value;
 
             return mRenderers[rendererNode.Value];
+        }
+
+        public IDrawable GetDrawable(XmlNode node) {
+            XmlAttribute drawableNode = node.Attributes["Drawalbe"];
+            if (drawableNode == null || !mRenderers.ContainsKey(drawableNode.Value))
+                return mDrawables.FirstOrDefault().Value;
+
+            return mDrawables[drawableNode.Value];
         }
 
         private void LoadFactory<T>(XmlNode node, IEnumerable<IFactory<T>> factories, Dictionary<string, T> triggers) {

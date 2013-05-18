@@ -26,9 +26,29 @@ using Chimera.Interfaces.Overlay;
 using System.Runtime.InteropServices;
 using System.Drawing.Imaging;
 using Chimera.Overlay;
+using System.Xml;
 
 namespace Chimera.Overlay.Transitions {
-    public class BitmapFadeTransitionFactory : IWindowTransitionFactory {
+    public class BitmapTransitionFactory : XmlLoader, ITransitionStyleFactory {
+        public string Name {
+            get { return "BitmapTransition"; }
+        }
+
+        public IWindowTransitionFactory Create(XmlNode node, StateManager manager) {
+            string transition = GetString(node, "Fade", "Transition");
+            double length = GetDouble(node, 5000.0, "Length");
+            switch (transition) {
+                case "Fade": return new BitmapWindowTransitionFactory(new BitmapFadeFactory(), length); 
+            }
+            return new BitmapWindowTransitionFactory(new BitmapFadeFactory(), length);
+        }
+
+        public IWindowTransitionFactory Create(XmlNode node, StateManager manager, Rectangle clip) {
+            return Create(node, manager);
+        }
+    }
+
+    public class BitmapWindowTransitionFactory : IWindowTransitionFactory {
         /// <summary>
         /// How long the transition should last.
         /// </summary>
@@ -38,7 +58,7 @@ namespace Chimera.Overlay.Transitions {
         /// </summary>
         private IImageTransitionFactory mFactory;
 
-        public BitmapFadeTransitionFactory(IImageTransitionFactory factory, double lengthMS) {
+        public BitmapWindowTransitionFactory(IImageTransitionFactory factory, double lengthMS) {
             mFactory = factory;
             mLengthMS = lengthMS;
         }

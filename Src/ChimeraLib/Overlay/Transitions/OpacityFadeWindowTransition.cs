@@ -26,34 +26,46 @@ using Chimera.Interfaces.Overlay;
 using System.Runtime.InteropServices;
 using System.Drawing.Imaging;
 using Chimera.Overlay;
+using System.Xml;
 
 namespace Chimera.Overlay.Transitions {
-    public class OpacityFadeOutTransitionFactory : IWindowTransitionFactory {
+    public class OpacityTransitionFactory : XmlLoader, ITransitionStyleFactory {
+        public string Name {
+            get { return "OpacityTransition"; }
+        }
+
+        public IWindowTransitionFactory Create(XmlNode node, StateManager manager) {
+            string transition = GetString(node, "Fade", "Transition");
+            double length = GetDouble(node, 5000.0, "Length");
+            bool fadeOut = GetBool(node, true, "FadeOut");
+            return new OpacityFadeWindowTransitionFactory(length, fadeOut);
+        }
+
+        public IWindowTransitionFactory Create(XmlNode node, StateManager manager, Rectangle clip) {
+            return Create(node, manager);
+        }
+    }
+    public class OpacityFadeWindowTransitionFactory : IWindowTransitionFactory {
         /// <summary>
         /// How long the transition should last.
         /// </summary>
         private double mLengthMS;
+        private bool mFadeOut;
 
-        public OpacityFadeOutTransitionFactory(double lengthMS) {
+        public OpacityFadeWindowTransitionFactory(double lengthMS, bool fadeOut) {
             mLengthMS = lengthMS;
+            mFadeOut = fadeOut;
         }
 
         public IWindowTransition Create(StateTransition transition, Window window) {
-            return new OpacityFadeWindowTransition(transition, window, mLengthMS, false);
+            return new OpacityFadeWindowTransition(transition, window, mLengthMS, !mFadeOut);
         }
-    }public class OpacityFadeInTransitionFactory : IWindowTransitionFactory {
-        /// <summary>
-        /// How long the transition should last.
-        /// </summary>
-        private double mLengthMS;
-
-        public OpacityFadeInTransitionFactory(double lengthMS) {
-            mLengthMS = lengthMS;
-        }
-
-        public IWindowTransition Create(StateTransition transition, Window window) {
-            return new OpacityFadeWindowTransition(transition, window, mLengthMS, true);
-        }
+    }
+    public class OpacityFadeOutWindowTransitionFactory : OpacityFadeWindowTransitionFactory {
+        public OpacityFadeOutWindowTransitionFactory(double lengthMS) : base(lengthMS, true) { }
+    }
+    public class OpacityFadeInWindowTransitionFactory : OpacityFadeWindowTransitionFactory {
+        public OpacityFadeInWindowTransitionFactory(double lengthMS) : base (lengthMS, false) { }
     }
     public class OpacityFadeWindowTransition : WindowTransition {
         /// <summary>

@@ -25,4 +25,6 @@ namespace Chimera.Interfaces.Overlay {
     public interface ISelectionRendererFactory : IFactory<IHoverSelectorRenderer> { }
 
     public interface IStateFactory : IFactory<State> { }
+
+    public interface IDrawableFactory : IFactory<IDrawable> { }
 }

@@ -50,7 +50,7 @@ namespace Chimera.Launcher {
                 explore = new KinectControlState("ExploreFree", Coordinator.StateManager, false);
 
             Rectangle clip = new Rectangle(0, 0, 1920, 1080);
-            IWindowTransitionFactory fadeOut = new OpacityFadeOutTransitionFactory(5000);
+            IWindowTransitionFactory fadeOut = new OpacityFadeOutWindowTransitionFactory(5000);
 
             InvisTrans(splash, explore, new Point(300, 300), new Point(800, 600), clip, mMainWindowProxy.Window, fadeOut);
 

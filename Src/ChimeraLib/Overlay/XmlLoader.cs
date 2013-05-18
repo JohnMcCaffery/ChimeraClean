@@ -8,7 +8,8 @@ using System.Drawing;
 using System.IO;
 
 namespace Chimera.Overlay {
-    public class XmlLoader {        public const string DEFAULT_FONT = "Verdana";
+    public class XmlLoader {
+        public const string DEFAULT_FONT = "Verdana";
         public const float DEFAULT_FONT_SIZE = 12f;
         public const FontStyle DEFAULT_FONT_STYLE = FontStyle.Regular;
         public static readonly Color DEFAULT_FONT_COLOUR = Color.Black;
@@ -67,6 +68,17 @@ namespace Chimera.Overlay {
             int attr = 0;
             string attribute = attributes[attr++];
             while ((node == null || node.Attributes[attribute] == null) && attr < attributes.Length)
+                attribute = attributes[attr++];
+            return t;
+        }
+
+        public static double GetDouble(XmlNode node, double defalt, params string[] attributes) {
+            double t = defalt;
+            if (attributes.Length == 0)
+                return defalt;
+            int attr = 0;
+            string attribute = attributes[attr++];
+            while ((node == null || node.Attributes[attribute] == null || !double.TryParse(node.Attributes[attribute].Value, out t)) && attr < attributes.Length)
                 attribute = attributes[attr++];
             return t;
         }

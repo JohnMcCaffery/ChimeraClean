@@ -138,7 +138,7 @@ namespace Chimera.Flythrough.Overlay {
             }
 
             mStepText.TextString = mStep + "\\" + mInput.Count;
-            Manager.RedrawStatic();
+
         }
 
         void step_Triggered() {

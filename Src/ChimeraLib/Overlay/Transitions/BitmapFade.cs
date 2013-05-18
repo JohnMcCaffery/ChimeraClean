@@ -28,7 +28,7 @@ using System.Runtime.InteropServices;
 using System.Diagnostics;
 
 namespace Chimera.Overlay.Transitions {
-    public class FadeFactory : IImageTransitionFactory {
+    public class BitmapFadeFactory : IImageTransitionFactory {
         #region IImageTransitionFactory Members
 
         public IImageTransition Create(double length) {

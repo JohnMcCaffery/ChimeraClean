@@ -1,25 +1,15 @@
 <Overlay UseClicks="true">
   <Any>
-    <Triggers>
-      <Trigger Type="Fade" Name="SlowFade" Length="5000" />
-    </Triggers>
-    <Transitions>
-
-    </Transitions>
+    <!--<Triggers></Triggers>-->
+    <TransitionStyles>
+      <Transition Type="OpacityFade" name="FadeOut" length="2000" />
+    </TransitionStyles>
     <States>
-
+      <State Type="ImageBG" name="Splash" >
+        <window Window="MainWindow" file="../Images/Example/ExampleBG.png" />
+      </State>
     </States>
-    <Transitions>
-      <InvisibleTransition>
-
-      </InvisibleTransition>
-      <ImageTransition>
-
-      </ImageTransition>
-      <TextTransition>
-
-      </TextTransition>
-    </Transitions>
+    <!--<Transitions></Transitions>-->
   </Any>
 
   <!-- Settings specific to the overlay being instantiated based on click interactions -->
