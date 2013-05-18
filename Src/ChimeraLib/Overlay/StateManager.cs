@@ -270,15 +270,16 @@ namespace Chimera.Overlay {
 
             LoadClip(doc);
 
+            LoadComponent(doc, mode, selectionRendererFactories, mRenderers, "SelectionRenderers");
+            if (mRenderers.Count == 0)
+                //TODO add renderer factories
+                mRenderers.Add("CursorRenderer", new DialCursorRenderer());
+
             LoadComponent(doc, mode, drawableFactories, mDrawables, "Drawables");
             LoadComponent(doc, mode, triggerFactories, mTriggers, "Triggers");
             LoadComponent(doc, mode, transitionStyleFactories, mTransitionStyles, "TransitionStyles");
-            LoadComponent(doc, mode, selectionRendererFactories, mRenderers, "SelectionRenderers");
             LoadComponent(doc, mode, stateFactories, mStates, "States");
 
-
-            if (mRenderers.Count == 0)
-                mRenderers.Add("CircleRenderer", new CircleRenderer());
 
             foreach (var state in mStates.Values)
                 AddState(state);
@@ -286,16 +287,18 @@ namespace Chimera.Overlay {
 
             foreach (XmlNode transitionRoot in doc.GetElementsByTagName("Transitions"))
                 foreach (XmlNode transitionNode in transitionRoot.ChildNodes)
-                    LoadTransition(mode, transitionNode);
+                    if (transitionNode is XmlElement)
+                        LoadTransition(mode, transitionNode);
         }
 
         private void LoadComponent<T>(XmlDocument doc, string mMode, IEnumerable<IFactory<T>> factories, Dictionary<string, T> map, string nodeID) {
             foreach (XmlNode root in doc.GetElementsByTagName("Overlay")[0].ChildNodes)
-                if (root.Name == "Any" || root.Name == mMode) {
+                if (root is XmlElement && (root.Name == "Any" || root.Name == mMode)) {
                     XmlNode specificRoot = root.SelectSingleNode("child::" + nodeID);
                     if (specificRoot != null) {
                     foreach (XmlNode node in specificRoot.ChildNodes)
-                        LoadFactory(node, factories, map);
+                        if (node is XmlElement)
+                            LoadFactory(node, factories, map);
                     }
                 }
         }
@@ -378,7 +381,7 @@ namespace Chimera.Overlay {
         public IHoverSelectorRenderer GetRenderer(XmlNode node) {
             XmlAttribute rendererNode = node.Attributes["Renderer"];
             if (rendererNode == null || !mRenderers.ContainsKey(rendererNode.Value))
-                return mRenderers.FirstOrDefault().Value;
+                return mRenderers.First().Value;
 
             return mRenderers[rendererNode.Value];
         }

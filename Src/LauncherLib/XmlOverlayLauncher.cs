@@ -17,10 +17,13 @@ namespace Chimera.Launcher {
                 new IDrawableFactory[0],
                 new ITriggerFactory[] {
                     new HoverTriggerFactory(),
-                    new ClickTriggerFactory()
+                    new ClickTriggerFactory(),
+                    new TextHoverTriggerFactory(),
+                    new TextClickTriggerFactory()
                 },
                 new ISelectionRendererFactory[0],
                 new ITransitionStyleFactory[] { 
+                    new BitmapTransitionFactory(),
                     new OpacityTransitionFactory()
                 },
                 new IStateFactory[] { 

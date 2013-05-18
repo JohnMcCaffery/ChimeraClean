@@ -87,7 +87,7 @@ namespace Chimera.Overlay.Triggers {
             }
         }
 
-        public bool Active {
+        public override bool Active {
             get { return mActive; }
             set { 
                 mActive = value;

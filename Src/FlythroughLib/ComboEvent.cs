@@ -135,6 +135,8 @@ namespace Chimera.Flythrough {
 
         private void LoadNode<T>(XmlNode root) {
             foreach (XmlNode node in root.ChildNodes) {
+                if (!(node is XmlElement))
+                    continue;
                 if (typeof(T) == typeof(Vector3)) {
                     FlythroughEvent<Vector3> evt = null;
                     switch (node.Name) {

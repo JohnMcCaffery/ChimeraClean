@@ -261,10 +261,12 @@ namespace Chimera.Flythrough {
             Start = new Camera(startPos, new Rotation(startPitch, startYaw));
 
             foreach (XmlNode node in root.ChildNodes) {
-                ComboEvent evt = new ComboEvent(this);
-                evt.Load(node);
-                mEvents.AddEvent(evt);
-                start = evt.SequenceStartTime + evt.Length;
+                if (node is XmlElement) {
+                    ComboEvent evt = new ComboEvent(this);
+                    evt.Load(node);
+                    mEvents.AddEvent(evt);
+                    start = evt.SequenceStartTime + evt.Length;
+                }
             }
 
             mCoordinator.Update(Start.Position, Vector3.Zero, Start.Orientation, Rotation.Zero);

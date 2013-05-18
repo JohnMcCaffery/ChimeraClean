@@ -35,7 +35,7 @@ namespace Chimera.Overlay.Transitions {
         }
 
         public IWindowTransitionFactory Create(XmlNode node, StateManager manager) {
-            string transition = GetString(node, "Fade", "Transition");
+            string transition = GetString(node, "Fade", "Style");
             double length = GetDouble(node, 5000.0, "Length");
             switch (transition) {
                 case "Fade": return new BitmapWindowTransitionFactory(new BitmapFadeFactory(), length); 

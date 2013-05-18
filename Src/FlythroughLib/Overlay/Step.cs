@@ -6,9 +6,10 @@ using Chimera.Overlay.Drawables;
 using Chimera.Interfaces.Overlay;
 using System.Xml;
 using System.IO;
+using Chimera.Overlay;
 
 namespace Chimera.Flythrough.Overlay {
-    public class Step {
+    public class Step : XmlLoader {
         private readonly int mStep;
 
         private readonly Coordinator mCoordinator;
@@ -16,11 +17,9 @@ namespace Chimera.Flythrough.Overlay {
         private readonly Action mTickListener;
         private readonly string mVoiceoverFile;
 
-        private readonly Dictionary<int, OverlayImage> mImages = new Dictionary<int, OverlayImage>();
         private readonly Dictionary<int, string> mSubtitles = new Dictionary<int, string>();
 
-        private OverlayImage mCurrentImage;
-        private Queue<int> mImageTimes;
+        private OverlayImage mImage;
         private Queue<int> mSubtitleTimes;
 
         private DateTime mStarted;
@@ -29,12 +28,15 @@ namespace Chimera.Flythrough.Overlay {
             get { return mStep; }
         }
 
-        public Step(Coordinator coordinator, XmlNode node, Text subititlesText) {
-            if (node.Attributes["Step"] == null && !int.TryParse(node.Attributes["Step"].Value, out mStep))
+        public Step(FlythroughState state, XmlNode node, Text subititlesText) {
+            if (node.Attributes["Step"] == null && !int.TryParse(node.Attributes["Step"].Value, out mStep))
                 throw new ArgumentException("Unable to load slideshow step. A valid 'Step' attribute must be supplied.");
 
             mTickListener = new Action(mCoordinator_Tick);
-            mCoordinator = coordinator;
+            mCoordinator = state.Manager.Coordinator;
+            mStep = GetInt(node, -1, "Step");
+            if (mStep == -1)
+                throw new ArgumentException("Unable to load step ID. A valid Step attribute is expected.");
 
             XmlAttribute voiceoverAttribute = node.Attributes["Voiceover"];
             if (voiceoverAttribute != null && File.Exists(voiceoverAttribute.Value))
@@ -46,50 +48,43 @@ namespace Chimera.Flythrough.Overlay {
                 XmlNode subtitlesNode = node.SelectSingleNode("child::Subtitles");
                 if (subtitlesNode != null) {
                     foreach (XmlNode child in subtitlesNode.ChildNodes) {
-                        int time = child.Attributes["Time"] != null ? int.Parse(child.Attributes["Time"].Value) : 0;
-                        mSubtitles.Add(time, child.InnerText);
+                        if (child is XmlElement) {
+                            int time = child.Attributes["Time"] != null ? int.Parse(child.Attributes["Time"].Value) : 0;
+                            mSubtitles.Add(time, child.InnerText);
+                        }
                     }
                 }
             }
 
-            XmlNode imagesNode = node.SelectSingleNode("child::Images");
-            if (imagesNode != null) {
-                foreach (XmlNode child in imagesNode.ChildNodes) {
-                    int time = child.Attributes["Time"] != null ? int.Parse(child.Attributes["Time"].Value) : 0;
-                    mImages.Add(time, coordinator.StateManager.MakeImage(node));
-                }
-            }
-        }
+            XmlNode imageNode = node.SelectSingleNode("child::Image");
+            if (imageNode != null)
+                mImage = step.StateManager.MakeImage(imageNode);
+        }                     
 
         public void Trigger() {
-            mImageTimes = new Queue<int>(mImages.Keys.OrderBy(i=>i));
             mSubtitleTimes = new Queue<int>(mSubtitles.Keys.OrderBy(i=>i));
 
-            if (mImages.Count > 0 || mSubtitles.Count > 0) {
+            if (mSubtitles.Count > 0) {
                 mStarted = DateTime.Now;
                 mCoordinator.Tick += mTickListener;
             }
+
+            if (mImage != null)
+                mImage.Active = true;
 
             //TODO - play voiceover file
         }
 
         public void Finish() {
-            if (mCurrentImage != null)
-                mCurrentImage.Active = false;
+            if (mImage != null)
+                mImage.Active = false;
             if (mSubtitlesText != null)
                 mSubtitlesText.Active = false;
             mCoordinator.Tick += mTickListener;
-            mCurrentImage = null;
+            mImage = null;
         }
 
         private void mCoordinator_Tick() {
-            if (mImageTimes.Count > 0 && DateTime.Now.Subtract(mStarted).TotalSeconds > mImageTimes.Peek()) {
-                if (mCurrentImage != null)
-                    mCurrentImage.Active = false;
-                mCurrentImage = mImages[mImageTimes.Dequeue()];
-                mCurrentImage.Active = true;
-                mCoordinator[mCurrentImage.Window].OverlayManager.ForceRedrawStatic();
-            }
             if (mSubtitleTimes.Count > 0 && DateTime.Now.Subtract(mStarted).TotalSeconds > mSubtitleTimes.Peek()) {
                 mSubtitlesText.TextString = mSubtitles[mSubtitleTimes.Dequeue()];
             }

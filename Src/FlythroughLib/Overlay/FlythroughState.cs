@@ -59,8 +59,9 @@ namespace Chimera.Flythrough.Overlay {
         private SlideshowWindow mSlideshow;
         private IImageTransition mSlideshowTransition;
         private List<ITrigger> mStepTriggers = new List<ITrigger>();
-        private StaticText mStepText;
+        private Text mStepText;
         private Text mSubtitlesText;
+        private Step mCurrentStep;
         private string mSlideshowWindowName;
         private string mSlideshowFolder;
         private string mFlythrough;
@@ -108,24 +109,36 @@ namespace Chimera.Flythrough.Overlay {
 
             mInput = manager.Coordinator.GetPlugin<FlythroughPlugin>();
             bool displaySubtitles = GetBool(node, false, "DisplaySubtitles");
-            mStepping = GetBool(node, false, "Stepping");
             mFlythrough = GetString(node, null, "File");
+            mStepping = GetBool(node, false, "Stepping");
+
             if (mFlythrough == null)
                 throw new ArgumentException("Unable to load flythrough state. No flythrough file specified.");
 
-            if (displaySubtitles)
+            // ----------- Anything below here is only relevant in stepping mode ------
+            if (!mStepping)
+                return;
+
+            if (displaySubtitles) {
                 mSubtitlesText = Manager.MakeText(node.SelectSingleNode("child::SubtitleSetup"));
+                AddFeature(mSubtitlesText);
+            }
+            mStepText = Manager.MakeText(node.SelectSingleNode("child::StepTextSetup"));
+            AddFeature(mStepText);
+            mInput.CurrentEventChange += new Action<FlythroughEvent<Camera>,FlythroughEvent<Camera>>(mInput_CurrentEventChange);
 
             XmlNode triggersRoot = node.SelectSingleNode("child::Triggers");
             if (triggersRoot != null) {
                 foreach (XmlNode child in triggersRoot.ChildNodes)
                     AddStepTrigger(manager.GetTrigger(child));
             }
-            XmlNode stepsRoot = node.SelectSingleNode("child::Triggers");
+            XmlNode stepsRoot = node.SelectSingleNode("child::Steps");
             if (stepsRoot != null) {
                 foreach (XmlNode child in stepsRoot.ChildNodes) {
-                    Step step = new Step(manager.Coordinator, node, mSubtitlesText);
-                    mSteps.Add(step.StepNum, step);
+                    if (child is XmlElement) {
+                        Step step = new Step(manager.Coordinator, child, mSubtitlesText);
+                        mSteps.Add(step.StepNum, step);
+                    }
                 }
             }
         }
@@ -136,6 +149,8 @@ namespace Chimera.Flythrough.Overlay {
             if (mStep == mInput.Count) {
                 foreach (var trigger in mStepTriggers)
                     trigger.Active = false;
+                foreach (var window in Manager.Coordinator.Windows)
+                    window.OverlayManager.ForceRedrawStatic();
             }
 
             mStepText.TextString = mStep + "\\" + mInput.Count;

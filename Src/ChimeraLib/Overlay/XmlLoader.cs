@@ -20,31 +20,35 @@ namespace Chimera.Overlay {
             return node.Attributes["Name"].Value;
         }
 
-        public RectangleF GetBounds(XmlNode node) {
+        public RectangleF GetBounds(XmlNode node, string request) {
             if (node == null) {
-                Console.WriteLine("Unable to look up bounds. No node specified. Using defaults");
+                Console.WriteLine("No node specified when looking up bounds for " + request + ". Using defaults");
                 return new RectangleF(0f, 0f, 0f, 0f);
             }
-            return new RectangleF(GetFloat(node, 0f, "X"), GetFloat(node, 0f, "Y"), GetFloat(node, .1f, "W", "Width"), GetFloat(node, .1f, "H", "Height"));
-        }
 
-        public RectangleF GetBounds(XmlNode node, Rectangle clip) {
             if (node == null)
                 return new RectangleF(0f, 0f, 0f, 0f);
 
             if (node.Attributes["L"] == null)
-                return GetBounds(node);
+                return new RectangleF(GetFloat(node, 0f, "X"), GetFloat(node, 0f, "Y"), GetFloat(node, .1f, "W", "Width"), GetFloat(node, .1f, "H", "Height"));
 
             float l = GetFloat(node, 0, "L", "Left");
-            float r = GetFloat(node, clip.Width / 10, "R", "Right");
+            float r = GetFloat(node, .1f, "R", "Right");
             float t = GetFloat(node, 0, "T", "Top");
-            float b = GetFloat(node, clip.Height / 10, "B", "Bottom");
-            return new RectangleF(l / clip.Width, t / clip.Height, (r - l) / clip.Width, (b - t) / clip.Height);
+            float b = GetFloat(node, .1f, "B", "Bottom");
+            return new RectangleF(l, t, (r - l), (b - t));
         }
 
-        public static Bitmap GetImage(XmlNode node) {
+        public RectangleF GetBounds(XmlNode node, string request, Rectangle clip) {
+            if (node == null)
+                return GetBounds(node, request);
+            RectangleF bounds = GetBounds(node, request);
+            return new RectangleF(bounds.X / clip.Width, bounds.Y / clip.Height,  bounds.Width/ clip.Width, bounds.Height / clip.Height);
+        }
+
+        public static Bitmap GetImage(XmlNode node, string request) {
             if (node == null) {
-                Console.WriteLine("Unable to load image. No node specified.");
+                Console.WriteLine("Unable to load image for " + request + ". No node specified.");
                 return null;
             }
             if (node.Attributes["File"] == null) {
@@ -117,11 +121,12 @@ namespace Chimera.Overlay {
             return t;
         }
 
-        public static WindowOverlayManager GetManager(StateManager manager, XmlNode node) {
+        public static WindowOverlayManager GetManager(StateManager manager, XmlNode node, string request) {
             WindowOverlayManager mManager;
             if (node == null) {
                 mManager = manager.Coordinator.Windows[0].OverlayManager;
-                Console.WriteLine("No node specified when looking up window. Using default window " + mManager.Window.Name + ".");
+                Console.WriteLine("No node specified when looking up window for " + request + ". Using " + mManager.Window.Name + " as default.");
+                return mManager;
             }
             XmlAttribute windowAttr = node.Attributes["Window"];
             if (windowAttr == null) {
@@ -138,24 +143,24 @@ namespace Chimera.Overlay {
             return mManager;
         }
 
-        public static Font GetFont(XmlNode node) {
+        public static Font GetFont(XmlNode node, string request) {
             if (node == null) {
-                Console.WriteLine("No node specified when looking up font. Using defaults.");
+                Console.WriteLine("No node specified when looking up font for " + request + ". Using defaults.");
                 return new Font(DEFAULT_FONT, DEFAULT_FONT_SIZE, DEFAULT_FONT_STYLE);
             }
             FontStyle style = DEFAULT_FONT_STYLE;
             FontStyle styleT;
 
-            string fontName = node != null && node.Attributes["Font"] != null ? node.Attributes["Name"].Value : DEFAULT_FONT;
+            string fontName = node != null && node.Attributes["Font"] != null ? node.Attributes["Font"].Value : DEFAULT_FONT;
             float size = GetFloat(node, DEFAULT_FONT_SIZE, "Size");
             if (node != null && node.Attributes["Style"] != null && Enum.TryParse<FontStyle>(node.Attributes["Style"].Value, true, out styleT))
                 style = styleT;
             return new Font(fontName, size, style);
         }
 
-        public static Color GetColour(XmlNode node, Color defalt) {
+        public static Color GetColour(XmlNode node, string request, Color defalt) {
             if (node == null) {
-                Console.WriteLine("No node specified when looking up colour. Using defaults.");
+                Console.WriteLine("No node specified when looking up colour for " + request + ". Using defaults.");
                 return DEFAULT_FONT_COLOUR;
             }
             Color colour = defalt;

@@ -173,12 +173,12 @@
     <Compile Include="Overlay\Transitions\OpacityFadeWindowTransition.cs" />
     <Compile Include="Overlay\Transitions\CutWindowTransition.cs" />
     <Compile Include="Overlay\Triggers\CameraPositionTrigger.cs" />
-    <Compile Include="Overlay\Triggers\CircleRenderer.cs" />
-    <Compile Include="Overlay\Triggers\CursorRenderer.cs" />
+    <Compile Include="Overlay\Triggers\HoverRenderers\CircleRenderer.cs" />
+    <Compile Include="Overlay\Triggers\HoverRenderers\CursorRenderer.cs" />
     <Compile Include="Overlay\Triggers\CursorTrigger.cs" />
     <Compile Include="Overlay\Triggers\CustomTriggerTrigger.cs" />
-    <Compile Include="Overlay\Triggers\DialCursorRenderer.cs" />
-    <Compile Include="Overlay\Triggers\DialRenderer.cs" />
+    <Compile Include="Overlay\Triggers\HoverRenderers\DialCursorRenderer.cs" />
+    <Compile Include="Overlay\Triggers\HoverRenderers\DialRenderer.cs" />
     <Compile Include="Overlay\DrawableRoot.cs" />
     <Compile Include="GUI\Controls\ConditionalCheck.cs">
       <SubType>Component</SubType>

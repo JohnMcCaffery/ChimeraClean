@@ -37,12 +37,15 @@ namespace Chimera.Overlay.Drawables {
         public StaticText(StateManager manager, XmlNode node)
             : base(manager, node) {
 
-            mManager = GetManager(manager, node);
+            mManager = GetManager(manager, node, "text");
         }
 
         public StaticText(StateManager manager, XmlNode node, Rectangle clip)
             : base(manager, node, clip) {
-            mManager = GetManager(manager, node);        }
+
+            mManager = GetManager(manager, node, "text");
+        }
+
         public override string TextString {
             get { return base.TextString; }
             set {

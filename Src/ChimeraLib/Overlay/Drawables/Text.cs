@@ -80,12 +80,12 @@ namespace Chimera.Overlay.Drawables {
 
         public Text(StateManager manager, XmlNode node) {
             mText = node != null ? node.InnerText : "";
-            mWindow = GetManager(manager, node).Window.Name;
-            mFont = GetFont(node);
-            mColour = GetColour(node, DEFAULT_FONT_COLOUR);
-            mPosition = GetBounds(node).Location;
+            mWindow = GetManager(manager, node, "text").Window.Name;
+            mFont = GetFont(node, "text");
+            mColour = GetColour(node, "text", DEFAULT_FONT_COLOUR);
+            mPosition = GetBounds(node, "text").Location;
 
-            if (node.Attributes["Alignment"] != null) {
+            if (node != null && node.Attributes["Alignment"] != null) {
                 ContentAlignment alignment = ContentAlignment.TopLeft;
                 if (Enum.TryParse<ContentAlignment>(node.Attributes["Alignment"].Value, out alignment))
                     mAlignment = alignment;
@@ -94,7 +94,7 @@ namespace Chimera.Overlay.Drawables {
 
         public Text(StateManager manager, XmlNode node, Rectangle clip)
             : this(manager, node) {
-            mPosition = GetBounds(node, clip).Location;
+            mPosition = GetBounds(node, "text", clip).Location;
         }
 
         #region IDrawable Members
@@ -150,6 +150,10 @@ namespace Chimera.Overlay.Drawables {
 
         public Font Font {
             get { return mFont; }
+        }
+
+        public override string ToString() {
+            return mText != null ? mText : "";
         }
     }
 }

@@ -2,16 +2,36 @@
   <Any>
     <!--<Triggers></Triggers>-->
     <TransitionStyles>
-      <Transition Type="OpacityTransition" Name="FadeOut" length="2000" />
+      <Transition Type="OpacityTransition" Name="FadeOut" Length="2000" FadeOut="true" />
+      <Transition Type="BitmapTransition" Name="BitmapFade" Length="2000" Style="Fade" />
     </TransitionStyles>
     <States>
       <State Type="ImageBG" Name="Splash" >
         <window Window="MainWindow" File="../Images/Example/ExampleBG.png" />
       </State>
       <State Type="Flythrough" Name="Idle" File="../Flythroughs/Cathedral5.xml" />
+      <State Type="Flythrough" Name="FullFlythrough" File="../Flythroughs/Cathedral5.xml" Stepping="true" >
+        <StepTextSetup Window="MainWindow" Font="Verdana" Size="50" Color="Red" Style="Bold" Colour="Red" X="200" Y="200" />
+        <Triggers>
+          <TextTrigger X="1500" Y="900" Style="Bold" Size="35">Next</TextTrigger>
+        </Triggers>
+        <Steps>
+          <Step Step="0" DisplaySubtitles="false">
+            <Image File="../Images/Example/SlideshowImg1.png" X="50" Y="50"/>
+            <Subtitles>
+              <Subtitle>First Subtitle</Subtitle>
+              <Subtitle Time="5">Second Subtitle</Subtitle>
+            </Subtitles>
+          </Step>
+          <Step Step="2">
+            <Image File="../Images/Example/SlideshowImg3.png" X="100" Y="100"/>
+          </Step>
+        </Steps>
+      </State>
     </States>
     <Transitions>
-      <InvisibleTransition From="Splash" To="Idle" Transition="FadeOut" T="300" L="300" R="800" B="600" />
+      <!--<InvisibleTransition From="Splash" To="FullFlythrough" Transition="FadeOut" T="300" L="300" R="800" B="600" />-->
+      <TextTransition From="Splash" To="FullFlythrough" Transition="BitmapFade" X="1000" Y="300" Size="50" Style="Bold">Guided Tour</TextTransition>
     </Transitions>
   </Any>
 

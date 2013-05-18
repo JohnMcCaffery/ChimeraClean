@@ -36,12 +36,12 @@ namespace Chimera.Overlay.Drawables {
 
         public DynamicText(StateManager manager, XmlNode node)
             : base(manager, node) {
-            mManager = GetManager(manager, node);
+            mManager = GetManager(manager, node, "text");
         }
 
         public DynamicText(StateManager manager, XmlNode node, Rectangle clip)
             : base(manager, node, clip) {
-            mManager = GetManager(manager, node);
+            mManager = GetManager(manager, node, "text");
         }
 
         public override bool NeedsRedrawn {
