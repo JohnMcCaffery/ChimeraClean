@@ -10,21 +10,22 @@
         <window Window="MainWindow" File="../Images/Example/ExampleBG.png" />
       </State>
       <State Type="Flythrough" Name="Idle" File="../Flythroughs/Cathedral5.xml" />
-      <State Type="Flythrough" Name="FullFlythrough" File="../Flythroughs/Cathedral5.xml" Stepping="true" >
+      <State Type="Flythrough" Name="FullFlythrough" File="../Flythroughs/Cathedral5.xml" Stepping="true" DisplaySubtitles="true">
         <StepTextSetup Window="MainWindow" Font="Verdana" Size="50" Color="Red" Style="Bold" Colour="Red" X="200" Y="200" />
+        <SubtitleTextSetup Window="MainWindow" Font="Verdana" Size="30" Color="Red" Style="Bold" Colour="Red" X="200" Y="800" Alignment="TopMiddle" />
         <Triggers>
           <TextTrigger X="1500" Y="900" Style="Bold" Size="35">Next</TextTrigger>
         </Triggers>
         <Steps>
-          <Step Step="0" DisplaySubtitles="false">
-            <Image File="../Images/Example/SlideshowImg1.png" X="50" Y="50"/>
+          <Step Step="0">
+            <Image File="../Images/Example/SlideshowImg1.png" X="700" Y="50"/>
             <Subtitles>
               <Subtitle>First Subtitle</Subtitle>
               <Subtitle Time="5">Second Subtitle</Subtitle>
             </Subtitles>
           </Step>
           <Step Step="2">
-            <Image File="../Images/Example/SlideshowImg3.png" X="100" Y="100"/>
+            <Image File="../Images/Example/SlideshowImg3.png" X="600" Y="100"/>
           </Step>
         </Steps>
       </State>

@@ -120,7 +120,7 @@ namespace Chimera.Flythrough.Overlay {
                 return;
 
             if (displaySubtitles) {
-                mSubtitlesText = Manager.MakeText(node.SelectSingleNode("child::SubtitleSetup"));
+                mSubtitlesText = Manager.MakeText(node.SelectSingleNode("child::SubtitleTextSetup"));
                 AddFeature(mSubtitlesText);
             }
             mStepText = Manager.MakeText(node.SelectSingleNode("child::StepTextSetup"));
