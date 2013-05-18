@@ -31,7 +31,7 @@ namespace Chimera.Overlay.States {
         #region IFactory<State> Members
 
         public string Name {
-            get { return "ImageBGState"; }
+            get { return "ImageBG"; }
         }
 
         public State Create(XmlNode node, StateManager manager) {
@@ -65,7 +65,7 @@ namespace Chimera.Overlay.States {
             : base(GetName(node), manager) {
 
                 foreach (XmlNode child in node.ChildNodes) {
-                    Bitmap img = GetImage(node);
+                    Bitmap img = GetImage(child);
                     if (img != null) {
                         string window = GetManager(manager, child).Window.Name;
                         mWindowBGs.Add(window, img);

@@ -2,14 +2,17 @@
   <Any>
     <!--<Triggers></Triggers>-->
     <TransitionStyles>
-      <Transition Type="OpacityFade" name="FadeOut" length="2000" />
+      <Transition Type="OpacityTransition" Name="FadeOut" length="2000" />
     </TransitionStyles>
     <States>
-      <State Type="ImageBG" name="Splash" >
-        <window Window="MainWindow" file="../Images/Example/ExampleBG.png" />
+      <State Type="ImageBG" Name="Splash" >
+        <window Window="MainWindow" File="../Images/Example/ExampleBG.png" />
       </State>
+      <State Type="Flythrough" Name="Idle" File="../Flythroughs/Cathedral5.xml" />
     </States>
-    <!--<Transitions></Transitions>-->
+    <Transitions>
+      <InvisibleTransition From="Splash" To="Idle" Transition="FadeOut" T="300" L="300" R="800" B="600" />
+    </Transitions>
   </Any>
 
   <!-- Settings specific to the overlay being instantiated based on click interactions -->

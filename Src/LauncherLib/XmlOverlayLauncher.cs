@@ -5,6 +5,8 @@ using System.Text;
 using Chimera.Interfaces.Overlay;
 using Chimera.Overlay.Transitions;
 using Chimera.Overlay.States;
+using Chimera.Flythrough.Overlay;
+using Chimera.Overlay.Triggers;
 
 namespace Chimera.Launcher {
     public class XmlOverlayLauncher : Launcher {
@@ -13,13 +15,16 @@ namespace Chimera.Launcher {
                 Config.OverlayFile,
                 Config.InterfaceMode,
                 new IDrawableFactory[0],
-                new ITriggerFactory[0],
+                new ITriggerFactory[] {
+                    new HoverTriggerFactory()
+                },
                 new ISelectionRendererFactory[0],
                 new ITransitionStyleFactory[] { 
                     new OpacityTransitionFactory()
                 },
                 new IStateFactory[] { 
-                    new ImageBGStateFactory()
+                    new ImageBGStateFactory(),
+                    new FlythroughStateFactory()
                 });
         }
     }

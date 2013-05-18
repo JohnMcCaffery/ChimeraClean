@@ -291,9 +291,13 @@ namespace Chimera.Overlay {
 
         private void LoadComponent<T>(XmlDocument doc, string mMode, IEnumerable<IFactory<T>> factories, Dictionary<string, T> map, string nodeID) {
             foreach (XmlNode root in doc.GetElementsByTagName("Overlay")[0].ChildNodes)
-                if (root.Name == "Any" || root.Name == mMode)
-                    foreach (XmlNode node in root.SelectSingleNode("child::" + nodeID).ChildNodes)
+                if (root.Name == "Any" || root.Name == mMode) {
+                    XmlNode specificRoot = root.SelectSingleNode("child::" + nodeID);
+                    if (specificRoot != null) {
+                    foreach (XmlNode node in specificRoot.ChildNodes)
                         LoadFactory(node, factories, map);
+                    }
+                }
         }
 
         private void LoadTransition(
@@ -323,7 +327,7 @@ namespace Chimera.Overlay {
                 Console.WriteLine("Unable to load transition. " + toAttr.Value + " is not a known state.");
                 return;
             }
-            if (!mStates.ContainsKey(transitionAttr.Value)) {
+            if (!mTransitionStyles.ContainsKey(transitionAttr.Value)) {
                 Console.WriteLine("Unable to load transition. " + transitionAttr.Value + " is not a known transition style.");
                 return;
             }
@@ -400,7 +404,7 @@ namespace Chimera.Overlay {
             }
             IFactory<T> factory = factories.FirstOrDefault(f => f.Name == typeAttr.Value);
             if (factory == null) {
-                Console.WriteLine("Unable to load " + node.Name + " " + nameAttr.Value + ". Type " + typeAttr.Value + " is not mapped to a trigger factory. Check Ninject config to make sure the binding is correct.");
+                Console.WriteLine("Unable to load " + node.Name + " " + nameAttr.Value + ". Type " + typeAttr.Value + " is not mapped to a " + node.Name + " factory. Check Ninject config to make sure the binding is correct.");
                 return;
             }
 

@@ -34,7 +34,7 @@ namespace Chimera.Flythrough.Overlay {
         #region IFactory<State> Members
 
         public string Name {
-            get { return "FlythroughState"; }
+            get { return "Flythrough"; }
         }
 
         public State Create(XmlNode node, StateManager manager) {
@@ -106,14 +106,15 @@ namespace Chimera.Flythrough.Overlay {
         public FlythroughState(StateManager manager, XmlNode node)
             : base(GetName(node), manager) {
 
-            bool displaySubtitles = GetBool(node, true, "DisplaySubtitles");
-            mStepping = GetBool(node, true, "Stepping");
+            mInput = manager.Coordinator.GetPlugin<FlythroughPlugin>();
+            bool displaySubtitles = GetBool(node, false, "DisplaySubtitles");
+            mStepping = GetBool(node, false, "Stepping");
             mFlythrough = GetString(node, null, "File");
             if (mFlythrough == null)
                 throw new ArgumentException("Unable to load flythrough state. No flythrough file specified.");
 
             if (displaySubtitles)
-                mSubtitlesText = Manager.MakeText(node.SelectSingleNode("child::SubtitleText"));
+                mSubtitlesText = Manager.MakeText(node.SelectSingleNode("child::SubtitleSetup"));
 
             XmlNode triggersRoot = node.SelectSingleNode("child::Triggers");
             if (triggersRoot != null) {
