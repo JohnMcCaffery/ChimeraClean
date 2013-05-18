@@ -13,7 +13,7 @@
       </State>
 
       <State Type="Flythrough" Name="Idle" File="../Flythroughs/Cathedral5.xml" Idle="true">
-        <Trigger Trigger="SkeletonLost" />
+        <IdleTrigger Trigger="SkeletonLost" />
         <IdleTransition Transition="FadeOut" />
         <SplashTransition Transition="FadeIn" />
       </State>
@@ -44,7 +44,7 @@
     <Transitions>
       <!--<InvisibleTransition From="Splash" To="FullFlythrough" Transition="FadeOut" T="300" L="300" R="800" B="600" />-->
       <!--<TextTransition From="Splash" To="FullFlythrough" Transition="FadeOut" X="1000" Y="300" Size="50" Style="Bold">Guided Tour</TextTransition>-->
-      <ImageTransition From="Splash" To="FullFlythrough" Transition="FadeOut" X="1000" Y="300">Guided Tour</ImageTransition>
+      <ImageTransition From="Splash" To="FullFlythrough" Transition="FadeOut" X="1000" Y="300" File="../Images/Example/Button.png">Guided Tour</ImageTransition>
     </Transitions>
   </Any>
 

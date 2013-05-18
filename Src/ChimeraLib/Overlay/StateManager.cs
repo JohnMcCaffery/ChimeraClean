@@ -406,11 +406,11 @@ namespace Chimera.Overlay {
 
             XmlAttribute triggerAttr = node.Attributes["Trigger"];
             if (triggerAttr == null) {
-                Console.WriteLine("Unable to load transition. No trigger attribute specified."); 
+                Console.WriteLine("Unable to load trigger for " + node.Name + ". No trigger attribute specified."); 
                 return null;
             }
             if (!mTriggers.ContainsKey(triggerAttr.Value)) {
-                Console.WriteLine("Unable to load transition. " + triggerAttr.Value + " is not a known trigger.");
+                Console.WriteLine("Unable to load trigger for " + node.Name + ". " + triggerAttr.Value + " is not a known trigger.");
                 return null;
             }
 
@@ -466,7 +466,7 @@ namespace Chimera.Overlay {
             foreach (XmlNode child in node.ChildNodes) {
                 if (child is XmlElement) {
                     switch (child.Name) {
-                        case "Trigger": LoadIdleTrigger(child, GetTrigger(child)); return;
+                        case "IdleTrigger": LoadIdleTrigger(child, GetTrigger(child)); return;
                         case "IdleTransition": mSplashIdleTransition = GetTransition(child); return;
                         case "SplashTransition": mIdleSplashTransition = GetTransition(child); return;
                     }
@@ -475,9 +475,7 @@ namespace Chimera.Overlay {
         }
 
         private void LoadIdleTrigger(XmlNode node, ITrigger trigger) {
-            if (trigger == null)
-                Console.WriteLine("Unable to add idle trigger. " + node.Name + " does not referenced a known trigger.");
-            else
+            if (trigger != null)
                 mIdleTriggers.Add(trigger);
         }
 

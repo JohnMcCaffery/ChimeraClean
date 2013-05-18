@@ -18,6 +18,8 @@ namespace Chimera.Launcher {
                 new ITriggerFactory[] {
                     new HoverTriggerFactory(),
                     new ClickTriggerFactory(),
+                    new ImageHoverTriggerFactory(),
+                    new ImageClickTriggerFactory(),
                     new TextHoverTriggerFactory(),
                     new TextClickTriggerFactory()
                 },
