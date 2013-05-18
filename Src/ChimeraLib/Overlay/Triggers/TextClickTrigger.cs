@@ -51,7 +51,6 @@ namespace Chimera.Overlay.Triggers {
 
     public class TextClickTrigger : ClickTrigger, IDrawable {
         private Text mText;
-        private bool mActive;
         private Rectangle mClip;
 
         public TextClickTrigger(WindowOverlayManager manager, Text text, Rectangle clip)
@@ -88,9 +87,9 @@ namespace Chimera.Overlay.Triggers {
         }
 
         public override bool Active {
-            get { return mActive; }
+            get { return base.Active; }
             set { 
-                mActive = value;
+                base.Active = value;
                 mText.Active = value;
             }
         }
@@ -112,5 +111,9 @@ namespace Chimera.Overlay.Triggers {
         }
 
         #endregion
+
+        public override string ToString() {
+            return mText.ToString();
+        }
     }
 }

@@ -136,7 +136,7 @@ namespace Chimera.Flythrough.Overlay {
             if (stepsRoot != null) {
                 foreach (XmlNode child in stepsRoot.ChildNodes) {
                     if (child is XmlElement) {
-                        Step step = new Step(manager.Coordinator, child, mSubtitlesText);
+                        Step step = new Step(this, child, mSubtitlesText);
                         mSteps.Add(step.StepNum, step);
                     }
                 }
@@ -144,6 +144,13 @@ namespace Chimera.Flythrough.Overlay {
         }
 
         void mInput_CurrentEventChange(FlythroughEvent<Camera> old, FlythroughEvent<Camera> n) {
+            if (mCurrentStep != null)
+                mCurrentStep.Finish();
+            mCurrentStep = null;
+            if (mSteps.ContainsKey(mStep)) {
+                mCurrentStep = mSteps[mStep];
+                mCurrentStep.Start();
+            }
             mStep++;
 
             if (mStep == mInput.Count) {

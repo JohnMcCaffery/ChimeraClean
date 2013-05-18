@@ -51,7 +51,6 @@ namespace Chimera.Overlay.Triggers {
 
     public class TextHoverTrigger : HoverTrigger, IDrawable {
         private Text mText;
-        private bool mActive;
 
         public TextHoverTrigger(WindowOverlayManager manager, IHoverSelectorRenderer renderer, Text text, Rectangle clip)
             : base(manager, renderer, Text.GetBounds(text, clip)) {
@@ -87,9 +86,9 @@ namespace Chimera.Overlay.Triggers {
         }
 
         public override bool Active {
-            get { return mActive; }
+            get { return base.Active; }
             set { 
-                mActive = value;
+                base.Active = value;
                 mText.Active = value;
             }
         }
@@ -113,5 +112,9 @@ namespace Chimera.Overlay.Triggers {
         }
 
         #endregion
+
+        public override string ToString() {
+            return mText.ToString();
+        }
     }
 }

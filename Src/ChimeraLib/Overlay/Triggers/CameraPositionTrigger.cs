@@ -27,7 +27,7 @@ using System.Xml;
 
 namespace Chimera.Overlay.Triggers {
     public class CameraPositionTrigger : ITrigger {
-        private bool mActive;
+        private bool mActive = true;
         private bool mInArea;
         private Rectangle mActiveArea;
 

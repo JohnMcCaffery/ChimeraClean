@@ -45,7 +45,7 @@ namespace Chimera.Overlay {
         /// <summary>
         /// Whether this drawable is active and should therefore be drawn.
         /// </summary>
-        private bool mActive;
+        private bool mActive = true;
 
         protected DrawableRoot(string window) {
             mWindowName = window;
@@ -68,8 +68,8 @@ namespace Chimera.Overlay {
             get { return mActive; }
             set { 
                 mActive = value;
-                foreach (var feature in mFeatures)
-                    feature.Active = value;
+                //foreach (var feature in mFeatures)
+                    //feature.Active = value;
             }
         }
 

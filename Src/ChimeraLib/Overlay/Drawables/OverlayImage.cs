@@ -36,6 +36,7 @@ namespace Chimera.Overlay.Drawables {
         private bool mActive = true;
         private int mW;
         private int mH;
+        
         /// <summary>
         /// The clip rectangle bounding the area this item will be drawn to.
         /// </summary>
@@ -77,7 +78,9 @@ namespace Chimera.Overlay.Drawables {
 
         public bool Active {
             get { return mActive; }
-            set { mActive = value; }
+            set { 
+                mActive = value;
+            }
         }
 
         public void DrawStatic(Graphics graphics) {
@@ -177,7 +180,12 @@ namespace Chimera.Overlay.Drawables {
         }
 
         public OverlayImage(StateManager manager, XmlNode node) {
-            GetImage(node, "overlay image");
+            mImage = GetImage(node, "overlay image");
+            if (mImage == null)
+                throw new ArgumentException("Unable to load image.");
+
+            mW = mImage.Width;
+            mH = mImage.Height;
 
             float x = GetFloat(node, 0f, "X");
             float y = GetFloat(node, 0f, "Y");
@@ -188,18 +196,18 @@ namespace Chimera.Overlay.Drawables {
             mWindow = GetManager(manager, node, "overlay image").Window.Name;
         }
 
-        public OverlayImage(StateManager manager, XmlNode node, Rectangle clip) {
-            mImage = GetImage(node, "overlay image");
-            if (mImage == null)
-                throw new ArgumentException("Unable to load image.");
+        public OverlayImage(StateManager manager, XmlNode node, Rectangle clip)
+            : this(manager, node) {
 
-            float x = GetFloat(node, 0f, "X");
-            float y = GetFloat(node, 0f, "Y");
-            float w = GetFloat(node, -1f, "W", "Width");
-            float h = GetFloat(node, -1f, "H", "Height");
-            mBounds = new RectangleF(clip.Width / x, clip.Height / y, clip.Width / w, clip.Height / h);
-            mAspectRatio = (float) mImage.Height / (float) mImage.Width;
-            mWindow = GetManager(manager, node, "overlay image").Window.Name;
+            mBounds.X = mBounds.X / clip.Width;
+            mBounds.Y = mBounds.Y / clip.Height;
+            if (mBounds.Width > 0f) mBounds.Width = mBounds.Width / clip.Width;
+            if (mBounds.Height > 0f) mBounds.Height = mBounds.Height / clip.Height;
+        }
+
+        public override string ToString() {
+            return mW + "x" + mH + " Image";
         }
     }
 }
+

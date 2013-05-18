@@ -25,7 +25,7 @@ using Chimera.Interfaces.Overlay;
 
 namespace Chimera.Overlay.Triggers {
     public class CustomTriggerTrigger : ITrigger {
-        private bool mActive;
+        private bool mActive = true;
         private string mKey;
 
         public event Action Triggered;

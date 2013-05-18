@@ -37,7 +37,7 @@ namespace Chimera.Overlay.Drawables {
         }
 
         private string mText;
-        private bool mActive;
+        private bool mActive = true;
         private string mWindow;
         private SizeF mSize = new SizeF(10f, 10f);
         private ContentAlignment mAlignment = ContentAlignment.TopLeft;

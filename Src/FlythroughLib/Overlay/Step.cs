@@ -57,11 +57,14 @@ namespace Chimera.Flythrough.Overlay {
             }
 
             XmlNode imageNode = node.SelectSingleNode("child::Image");
-            if (imageNode != null)
-                mImage = step.StateManager.MakeImage(imageNode);
-        }                     
+            if (imageNode != null) {
+                mImage = state.Manager.MakeImage(imageNode);
+                state.AddFeature(mImage);
+                mImage.Active = false;
+            }
+        }
 
-        public void Trigger() {
+        public void Start() {
             mSubtitleTimes = new Queue<int>(mSubtitles.Keys.OrderBy(i=>i));
 
             if (mSubtitles.Count > 0) {
@@ -69,19 +72,22 @@ namespace Chimera.Flythrough.Overlay {
                 mCoordinator.Tick += mTickListener;
             }
 
-            if (mImage != null)
+            if (mImage != null) {
                 mImage.Active = true;
+                mCoordinator[mImage.Window].OverlayManager.ForceRedrawStatic();
+            }
 
             //TODO - play voiceover file
         }
 
         public void Finish() {
-            if (mImage != null)
+            if (mImage != null) {
                 mImage.Active = false;
+                mCoordinator[mImage.Window].OverlayManager.ForceRedrawStatic();
+            }
             if (mSubtitlesText != null)
                 mSubtitlesText.Active = false;
             mCoordinator.Tick += mTickListener;
-            mImage = null;
         }
 
         private void mCoordinator_Tick() {

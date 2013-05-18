@@ -38,7 +38,8 @@ namespace Chimera.Kinect.Overlay {
         private static Vector sCentreHip;
         private static Vector sCentreShoulder;
         private static Vector sHead;
-        private bool mActive;        /// <summary>
+        private bool mActive = true;
+        /// <summary>
         /// The clip rectangle bounding the area this item will be drawn to.
         /// </summary>
         private Rectangle mClip;

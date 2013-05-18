@@ -37,7 +37,7 @@ namespace Chimera.Overlay.Triggers {
         private bool mClicked = false;
         private Cursor mSelectCursor;
         private IHoverSelectorRenderer mRenderer;
-        private bool mActive;
+        private bool mActive = true;
         private Window mWindow;
         private int mR;
         /// <summary>
