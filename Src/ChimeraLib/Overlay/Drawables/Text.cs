@@ -114,7 +114,7 @@ namespace Chimera.Overlay.Drawables {
 
         public abstract void DrawStatic(Graphics graphics);
 
-        public abstract void DrawDynamic(System.Drawing.Graphics graphics);
+        public abstract void DrawDynamic(Graphics graphics);
 
         #endregion
 

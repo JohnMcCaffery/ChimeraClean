@@ -29,7 +29,8 @@ using Chimera.Overlay.Drawables;
 using System.Drawing;
 using System.Xml;
 
-namespace Chimera.Flythrough.Overlay {    public class FlythroughStateFactory : IStateFactory {
+namespace Chimera.Flythrough.Overlay {
+    public class FlythroughStateFactory : IStateFactory {
         #region IFactory<State> Members
 
         public string Name {
@@ -77,7 +78,7 @@ namespace Chimera.Flythrough.Overlay {    public class FlythroughStateFactory :
 
             mStepping = true;
             Font f = new Font(FONT, FONT_SIZE, FontStyle.Bold);
-            mStepText = new StaticText(mStep + "/" + mInput.Count, manager.Coordinator.Windows[0].Name, f, FONT_COLOUR, STEP_TEXT_POS);
+            mStepText = new StaticText(mStep + "/" + mInput.Count, manager.Coordinator.Windows[0].OverlayManager, f, FONT_COLOUR, STEP_TEXT_POS);
             AddFeature(mStepText);
 
             mInput.CurrentEventChange += new Action<FlythroughEvent<Camera>,FlythroughEvent<Camera>>(mInput_CurrentEventChange);

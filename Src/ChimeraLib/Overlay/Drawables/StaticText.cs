@@ -26,16 +26,29 @@ using System.Xml;
 
 namespace Chimera.Overlay.Drawables {
     public class StaticText : Text {
-        public StaticText(string text, string window, Font font, Color colour, PointF location)
-            : base(text, window, font, colour, location) {
+        private WindowOverlayManager mManager;
+        
+        public StaticText(string text, WindowOverlayManager manager, Font font, Color colour, PointF location)
+            : base(text, manager.Window.Name, font, colour, location) {
+
+            mManager = manager;
         }
 
         public StaticText(StateManager manager, XmlNode node)
             : base(manager, node) {
+
+            mManager = GetManager(manager, node);
         }
 
         public StaticText(StateManager manager, XmlNode node, Rectangle clip)
             : base(manager, node, clip) {
+            mManager = GetManager(manager, node);        }
+        public override string TextString {
+            get { return base.TextString; }
+            set {
+                base.TextString = value;
+                mManager.ForceRedrawStatic();
+            }
         }
 
         public override void DrawDynamic(Graphics graphics) { }

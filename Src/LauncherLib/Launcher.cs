@@ -141,7 +141,7 @@ namespace Chimera.Launcher {
         }
 
         protected void TxtTrans(State from, State to, string text, float x, float y, Font font, Color colour, Rectangle clip, Window window, IHoverSelectorRenderer renderer, IWindowTransitionFactory transition) {
-            Text txt = new StaticText(text, window.Name, font, colour, new PointF(x, y));
+            Text txt = new StaticText(text, window.OverlayManager, font, colour, new PointF(x, y));
             ITrigger trigger = TxtTrigger(text, x, y, font, colour, clip, window);
             StateTransition splashExploreTransition = new StateTransition(window.Coordinator.StateManager, from, to, trigger, transition);
             from.AddTransition(splashExploreTransition);
@@ -199,7 +199,7 @@ namespace Chimera.Launcher {
         }
 
         protected ITrigger TxtTrigger(string text, float x, float y, Font font, Color colour, Rectangle clip, Window window) {
-            Text txt = new StaticText(text, window.Name, font, colour, new PointF(x, y));
+            Text txt = new StaticText(text, window.OverlayManager, font, colour, new PointF(x, y));
             return mConfig.InterfaceMode == "ClickBased" ?
                 (ITrigger) new TextClickTrigger(window.OverlayManager, txt, clip) :
                 (ITrigger) new TextHoverTrigger(window.OverlayManager, mRenderer, txt, clip);
