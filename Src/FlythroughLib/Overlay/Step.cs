@@ -11,6 +11,7 @@ using Chimera.Overlay;
 namespace Chimera.Flythrough.Overlay {
     public class Step : XmlLoader {
         private readonly int mStep;
+        private readonly int mSubtitleTimeoutS = 20;
 
         private readonly Coordinator mCoordinator;
         private readonly Text mSubtitlesText;
@@ -23,12 +24,13 @@ namespace Chimera.Flythrough.Overlay {
         private Queue<int> mSubtitleTimes;
 
         private DateTime mStarted;
+        private DateTime mLastSubtitle;
 
         public int StepNum {
             get { return mStep; }
         }
 
-        public Step(FlythroughState state, XmlNode node, Text subititlesText) {
+        public Step(FlythroughState state, XmlNode node, Text subititlesText, int subtitleTimeoutS) {
             if (node.Attributes["Step"] == null && !int.TryParse(node.Attributes["Step"].Value, out mStep))
                 throw new ArgumentException("Unable to load slideshow step. A valid 'Step' attribute must be supplied.");
 
@@ -45,6 +47,7 @@ namespace Chimera.Flythrough.Overlay {
             mSubtitlesText = subititlesText;
 
             if (mSubtitlesText != null) {
+                mSubtitleTimeoutS = subtitleTimeoutS;
                 XmlNode subtitlesNode = node.SelectSingleNode("child::Subtitles");
                 if (subtitlesNode != null) {
                     foreach (XmlNode child in subtitlesNode.ChildNodes) {
@@ -93,7 +96,9 @@ namespace Chimera.Flythrough.Overlay {
         private void mCoordinator_Tick() {
             if (mSubtitleTimes.Count > 0 && DateTime.Now.Subtract(mStarted).TotalSeconds > mSubtitleTimes.Peek()) {
                 mSubtitlesText.TextString = mSubtitles[mSubtitleTimes.Dequeue()];
-            }
+                mLastSubtitle = DateTime.Now;
+            } else if (DateTime.Now.Subtract(mLastSubtitle).TotalSeconds > mSubtitleTimeoutS)
+                mSubtitlesText.TextString = "";
         }
     }
 }

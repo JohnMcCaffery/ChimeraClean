@@ -126,6 +126,7 @@ namespace Chimera.Flythrough.Overlay {
             mStepText = Manager.MakeText(node.SelectSingleNode("child::StepTextSetup"));
             AddFeature(mStepText);
             mInput.CurrentEventChange += new Action<FlythroughEvent<Camera>,FlythroughEvent<Camera>>(mInput_CurrentEventChange);
+            int subtitleTimeout = GetInt(node, 20, "SubtitleTimeout");
 
             XmlNode triggersRoot = node.SelectSingleNode("child::Triggers");
             if (triggersRoot != null) {
@@ -136,7 +137,7 @@ namespace Chimera.Flythrough.Overlay {
             if (stepsRoot != null) {
                 foreach (XmlNode child in stepsRoot.ChildNodes) {
                     if (child is XmlElement) {
-                        Step step = new Step(this, child, mSubtitlesText);
+                        Step step = new Step(this, child, mSubtitlesText, subtitleTimeout);
                         mSteps.Add(step.StepNum, step);
                     }
                 }

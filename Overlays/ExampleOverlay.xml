@@ -3,19 +3,31 @@
     <!--<Triggers></Triggers>-->
     <TransitionStyles>
       <Transition Type="OpacityTransition" Name="FadeOut" Length="2000" FadeOut="true" />
+      <Transition Type="OpacityTransition" Name="FadeIn" Length="2000" FadeOut="false" />
       <Transition Type="BitmapTransition" Name="BitmapFade" Length="2000" Style="Fade" />
     </TransitionStyles>
     <States>
+
       <State Type="ImageBG" Name="Splash" >
-        <window Window="MainWindow" File="../Images/Example/ExampleBG.png" />
+        <window Window="MainWindow" File="../Images/Example/ExampleBG.png" Splash="True"/>
       </State>
-      <State Type="Flythrough" Name="Idle" File="../Flythroughs/Cathedral5.xml" />
-      <State Type="Flythrough" Name="FullFlythrough" File="../Flythroughs/Cathedral5.xml" Stepping="true" DisplaySubtitles="true">
+
+      <State Type="Flythrough" Name="Idle" File="../Flythroughs/Cathedral5.xml" Idle="true">
+        <EntryTrigger Trigger="SkeletonLost" />
+        <ExitTrigger Trigger="SkeletonFound" />
+        <IdleTransition Transition="FadeOut" />
+        <SplashTransition Transition="FadeIn" />
+      </State>
+
+      <State Type="Flythrough" Name="FullFlythrough" File="../Flythroughs/Cathedral5.xml" Stepping="true" DisplaySubtitles="true" SubtitleTimeout="20">
+
         <StepTextSetup Window="MainWindow" Font="Verdana" Size="50" Color="Red" Style="Bold" Colour="Red" X="200" Y="200" />
         <SubtitleTextSetup Window="MainWindow" Font="Verdana" Size="30" Color="Red" Style="Bold" Colour="Red" X="200" Y="800" Alignment="TopMiddle" />
+
         <Triggers>
           <TextTrigger X="1500" Y="900" Style="Bold" Size="35">Next</TextTrigger>
         </Triggers>
+
         <Steps>
           <Step Step="0">
             <Image File="../Images/Example/SlideshowImg1.png" X="700" Y="50"/>

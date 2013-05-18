@@ -144,6 +144,10 @@ namespace Chimera.Overlay {
                 mCurrentState.Active = true;
                 foreach (var windowState in mCurrentState.WindowStates)
                     windowState.Manager.CurrentDisplay = windowState;
+                if (!mIdleEnabled) {
+                    foreach (var trigger in mIdleTriggers)
+                        trigger.Active = false;
+                }
                 if (StateChanged != null)
                     StateChanged(value);
             }
@@ -231,15 +235,34 @@ namespace Chimera.Overlay {
             ProcessWrangler.Dump(Statistics, reason + ".html");
         }
 
-        IEnumerable<ITriggerFactory> mTriggerFactories;
-        Dictionary<string, IDrawable> mDrawables = new Dictionary<string, IDrawable>();
-        Dictionary<string, ITrigger> mTriggers = new Dictionary<string, ITrigger>();
-        Dictionary<string, IWindowTransitionFactory> mTransitionStyles = new Dictionary<string, IWindowTransitionFactory>();
-        Dictionary<string, IHoverSelectorRenderer> mRenderers = new Dictionary<string, IHoverSelectorRenderer>();
-        Rectangle mClip = new Rectangle(0, 0, 1920, 1080);
+        public bool IdleEnabled {
+            get { return mIdleEnabled; }
+            set {
+                mIdleEnabled = value;
+                foreach (var trigger in mIdleTriggers)
+                    trigger.Active = value;
+            }
+        }
+
+        private IEnumerable<ITriggerFactory> mTriggerFactories;
+        private Dictionary<string, IDrawable> mDrawables = new Dictionary<string, IDrawable>();
+        private Dictionary<string, ITrigger> mTriggers = new Dictionary<string, ITrigger>();
+        private Dictionary<string, IWindowTransitionFactory> mTransitionStyles = new Dictionary<string, IWindowTransitionFactory>();
+        private Dictionary<string, IHoverSelectorRenderer> mRenderers = new Dictionary<string, IHoverSelectorRenderer>();
+
+        private List<ITrigger> mIdleExitTriggers = new List<ITrigger>();
+        private State mSplashState;
+        private IWindowTransitionFactory mIdleSplashTransition;
+        private IWindowTransitionFactory mSplashIdleTransition;
+
+        private Rectangle mClip = new Rectangle(0, 0, 1920, 1080);
+        private bool mClipLoaded;
+
         private string mMode;
 
-        private bool mClipLoaded;
+        private bool mIdleEnabled;
+        private State mIdleState;
+        private List<ITrigger> mIdleTriggers = new List<ITrigger>();
 
         private void LoadClip(XmlDocument doc) {
             XmlNodeList clipList = doc.GetElementsByTagName("Overlay");
@@ -289,6 +312,14 @@ namespace Chimera.Overlay {
                 foreach (XmlNode transitionNode in transitionRoot.ChildNodes)
                     if (transitionNode is XmlElement)
                         LoadTransition(mode, transitionNode);
+
+            if (mSplashState != null && mIdleState != null)
+                foreach (var state in mStates.Values)
+                    if (state != mIdleState)
+                        foreach (var trigger in mIdleTriggers)
+                            mIdleState.AddTransition(new StateTransition(this, state, mIdleState, trigger, mSplashIdleTransition));
+
+            IdleEnabled = mIdleEnabled;
         }
 
         private void LoadComponent<T>(XmlDocument doc, string mMode, IEnumerable<IFactory<T>> factories, Dictionary<string, T> map, string nodeID) {
@@ -318,10 +349,6 @@ namespace Chimera.Overlay {
                 Console.WriteLine("Unable to load transition. No To attribute specified.");
                 return;
             }
-            if (transitionAttr == null) {
-                Console.WriteLine("Unable to load transition. No Transition attribute specified.");
-                return;
-            }
             if (!mStates.ContainsKey(fromAttr.Value)) {
                 Console.WriteLine("Unable to load transition. " + fromAttr.Value + " is not a known state.");
                 return;
@@ -330,16 +357,29 @@ namespace Chimera.Overlay {
                 Console.WriteLine("Unable to load transition. " + toAttr.Value + " is not a known state.");
                 return;
             }
-            if (!mTransitionStyles.ContainsKey(transitionAttr.Value)) {
-                Console.WriteLine("Unable to load transition. " + transitionAttr.Value + " is not a known transition style.");
+
+            IWindowTransitionFactory style = GetTransition(node);
+            if (style == null)
                 return;
-            }
 
             ITrigger trigger = GetTrigger(node);
             if (trigger != null) {
-                StateTransition transition = new StateTransition(this, mStates[fromAttr.Value], mStates[toAttr.Value], trigger, mTransitionStyles[transitionAttr.Value]);
+                StateTransition transition = new StateTransition(this, mStates[fromAttr.Value], mStates[toAttr.Value], trigger, style);
                 transition.From.AddTransition(transition);
             }
+        }
+
+        public IWindowTransitionFactory GetTransition(XmlNode node) {
+            XmlAttribute transitionAttr = node.Attributes["Transition"];
+            if (transitionAttr == null) {
+                Console.WriteLine("Unable to load transition. No Transition attribute specified.");
+                return null;
+            }
+            if (!mTransitionStyles.ContainsKey(transitionAttr.Value)) {
+                Console.WriteLine("Unable to load transition. " + transitionAttr.Value + " is not a known transition style.");
+                return null;
+            }
+            return mTransitionStyles[transitionAttr.Value];
         }
 
         private ITrigger GetSpecialTrigger(SpecialTrigger type, XmlNode node) {
@@ -413,6 +453,38 @@ namespace Chimera.Overlay {
 
             T t = mClipLoaded ? factory.Create(node, this, mClip) : factory.Create(node, this);
             instances.Add(nameAttr.Value, t);
+
+            if (typeof(T) == typeof(State)) {
+                if (XmlLoader.GetBool(node, false, "Idle"))
+                    LoadIdle(node, t as State);
+                else if (XmlLoader.GetBool(node, false, "Splash"))
+                    LoadSplash(node, t as State);
+            }
+        }
+
+        private void LoadSplash(XmlNode node, State state) {
+            mSplashState = state;
+            if (mIdleState != null)
+                foreach (var trigger in mIdleExitTriggers)
+                    mIdleState.AddTransition(new StateTransition(this, mIdleState, mSplashState, trigger, mIdleSplashTransition));
+        }
+
+        private void LoadIdle(XmlNode node, State state) {
+            mIdleState = state;
+            foreach (XmlNode child in node.ChildNodes) {
+                if (child is XmlElement) {
+                    switch (child.Name) {
+                        case "EntryTrigger": mIdleTriggers.Add(GetTrigger(child)); return;
+                        case "ExitTrigger": mIdleExitTriggers.Add(GetTrigger(child)); return;
+                        case "IdleTransition": mSplashIdleTransition = GetTransition(child); return;
+                        case "SplashTransition": mIdleSplashTransition = GetTransition(child); return;
+                    }
+                }
+            }
+
+            if (mSplashState != null)
+                foreach (var trigger in mIdleExitTriggers)
+                    mIdleState.AddTransition(new StateTransition(this, mIdleState, mSplashState, trigger, mIdleSplashTransition));
         }
 
         public OverlayImage MakeImage(XmlNode node) {
