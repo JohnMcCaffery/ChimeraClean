@@ -176,7 +176,6 @@
     <Compile Include="Overlay\Triggers\HoverRenderers\CircleRenderer.cs" />
     <Compile Include="Overlay\Triggers\HoverRenderers\CursorRenderer.cs" />
     <Compile Include="Overlay\Triggers\CursorTrigger.cs" />
-    <Compile Include="Overlay\Triggers\CustomTriggerTrigger.cs" />
     <Compile Include="Overlay\Triggers\HoverRenderers\DialCursorRenderer.cs" />
     <Compile Include="Overlay\Triggers\HoverRenderers\DialRenderer.cs" />
     <Compile Include="Overlay\DrawableRoot.cs" />

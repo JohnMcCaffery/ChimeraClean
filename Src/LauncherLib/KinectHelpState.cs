@@ -85,29 +85,33 @@ namespace Chimera.Kinect.Overlay {
             Manager.Coordinator.EnableUpdates = false;
             mMainWindow.OverlayManager.ControlPointer = true;
             mClickTrigger.Active = true;
-            Manager.Coordinator.StateManager.TriggerCustom("Glow");
+            SendText("Glow", -40);
         }
 
         protected override void TransitionFromStart() { 
             foreach (var trigger in mActiveAreas)
                 trigger.Active = false;
             mClickTrigger.Active = false;
-            Manager.Coordinator.StateManager.TriggerCustom("NoGlow");
+            SendText("NoGlow", -40);
         }
 
         public override void TransitionToStart() {
-            Manager.Coordinator.StateManager.TriggerCustom("Glow");
+            SendText("Glow", -40);
             mInfoImages.Clear();
             foreach (var trigger in mActiveAreas)
                 trigger.Active = true;
         }
 
         private void SendText(string msg, int channel) {
+            foreach (var window in Manager.Coordinator.Windows) {
+                if (window is OpenSimController)
+                    (window as OpenSimController).ProxyController.Chat(msg, channel);
+            }
         }
 
         public override void TransitionFromFinish() {
             mClickTrigger.Active = false;
-            Manager.Coordinator.StateManager.TriggerCustom("NoGlow");
+            SendText("NoGlow", -40);
         }
 
         public void AddActiveArea(Rectangle area, Bitmap infoImage) {

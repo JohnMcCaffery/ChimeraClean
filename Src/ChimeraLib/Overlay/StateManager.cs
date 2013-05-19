@@ -60,11 +60,6 @@ namespace Chimera.Overlay {
         private Action<StateTransition> mTransitionComplete;
 
         /// <summary>
-        /// Generic mechanism for triggering events.
-        /// </summary>
-        public event Action<string> CustomTrigger;
-
-        /// <summary>
         /// Triggered whenever a new state is added.
         /// </summary>
         public event Action<State> StateAdded;
@@ -173,15 +168,6 @@ namespace Chimera.Overlay {
                 window.OverlayManager.Close();
                 window.OverlayManager.Launch();
             }
-        }
-
-        /// <summary>
-        /// Trigger a custom event.
-        /// </summary>
-        /// <param name="custom">The string tied to the custom event.</param>
-        public void TriggerCustom(string custom) {
-            if (CustomTrigger != null)
-                CustomTrigger(custom);
         }
 
         /// <summary>

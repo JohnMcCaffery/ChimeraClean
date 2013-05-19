@@ -431,11 +431,6 @@ namespace Chimera.GUI.Forms {
                 mCoordinator.TriggerKeyboard(false, e);
         }
 
-        private void triggerHelpButton_Click(object sender, EventArgs e) {
-            if (mCoordinator != null && mCoordinator.StateManager != null)
-                mCoordinator.StateManager.TriggerCustom("Help");
-        }
-
         private void Invoke(Action a) {
             if (!InvokeRequired)
                 a();

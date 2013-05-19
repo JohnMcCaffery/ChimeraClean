@@ -61,7 +61,6 @@ namespace Chimera.GUI.Forms {
             this.globalBox = new System.Windows.Forms.GroupBox();
             this.deltaModeButton = new System.Windows.Forms.RadioButton();
             this.absoluteModeButton = new System.Windows.Forms.RadioButton();
-            this.triggerHelpButton = new System.Windows.Forms.Button();
             this.eyePositionPanel = new Chimera.GUI.VectorPanel();
             this.virtualOrientationPanel = new Chimera.GUI.RotationPanel();
             this.virtualPositionPanel = new Chimera.GUI.VectorPanel();
@@ -243,9 +242,9 @@ namespace Chimera.GUI.Forms {
             // 
             // realSpacePanel
             // 
-            this.realSpacePanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.realSpacePanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.realSpacePanel.Cursor = System.Windows.Forms.Cursors.Hand;
             this.realSpacePanel.Location = new System.Drawing.Point(3, 16);
             this.realSpacePanel.Name = "realSpacePanel";
@@ -260,13 +259,13 @@ namespace Chimera.GUI.Forms {
             // 
             // realSpaceScale
             // 
-            this.realSpaceScale.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.realSpaceScale.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.realSpaceScale.Location = new System.Drawing.Point(5, 291);
             this.realSpaceScale.Maximum = 1000;
             this.realSpaceScale.Minimum = 1;
             this.realSpaceScale.Name = "realSpaceScale";
-            this.realSpaceScale.Size = new System.Drawing.Size(353, 42);
+            this.realSpaceScale.Size = new System.Drawing.Size(353, 45);
             this.realSpaceScale.TabIndex = 3;
             this.realSpaceScale.TickStyle = System.Windows.Forms.TickStyle.None;
             this.realSpaceScale.Value = 1000;
@@ -286,9 +285,9 @@ namespace Chimera.GUI.Forms {
             // 
             // heightmapPanel
             // 
-            this.heightmapPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.heightmapPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.heightmapPanel.Cursor = System.Windows.Forms.Cursors.Hand;
             this.heightmapPanel.Location = new System.Drawing.Point(3, 16);
             this.heightmapPanel.Name = "heightmapPanel";
@@ -303,13 +302,13 @@ namespace Chimera.GUI.Forms {
             // 
             // heightmapScale
             // 
-            this.heightmapScale.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.heightmapScale.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.heightmapScale.Location = new System.Drawing.Point(3, 291);
             this.heightmapScale.Maximum = 16000;
             this.heightmapScale.Minimum = 1000;
             this.heightmapScale.Name = "heightmapScale";
-            this.heightmapScale.Size = new System.Drawing.Size(275, 42);
+            this.heightmapScale.Size = new System.Drawing.Size(275, 45);
             this.heightmapScale.TabIndex = 2;
             this.heightmapScale.TickStyle = System.Windows.Forms.TickStyle.None;
             this.heightmapScale.Value = 1000;
@@ -319,7 +318,6 @@ namespace Chimera.GUI.Forms {
             // 
             this.globalBox.Controls.Add(this.deltaModeButton);
             this.globalBox.Controls.Add(this.absoluteModeButton);
-            this.globalBox.Controls.Add(this.triggerHelpButton);
             this.globalBox.Controls.Add(this.eyePositionPanel);
             this.globalBox.Controls.Add(this.virtualOrientationPanel);
             this.globalBox.Controls.Add(this.virtualPositionPanel);
@@ -358,22 +356,10 @@ namespace Chimera.GUI.Forms {
             this.absoluteModeButton.UseVisualStyleBackColor = true;
             this.absoluteModeButton.CheckedChanged += new System.EventHandler(this.absoluteModeButton_CheckedChanged);
             // 
-            // triggerHelpButton
-            // 
-            this.triggerHelpButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.triggerHelpButton.Location = new System.Drawing.Point(7, 288);
-            this.triggerHelpButton.Name = "triggerHelpButton";
-            this.triggerHelpButton.Size = new System.Drawing.Size(248, 23);
-            this.triggerHelpButton.TabIndex = 3;
-            this.triggerHelpButton.Text = "CustomTrigger Help";
-            this.triggerHelpButton.UseVisualStyleBackColor = true;
-            this.triggerHelpButton.Click += new System.EventHandler(this.triggerHelpButton_Click);
-            // 
             // eyePositionPanel
             // 
-            this.eyePositionPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.eyePositionPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.eyePositionPanel.Location = new System.Drawing.Point(3, 195);
             this.eyePositionPanel.Max = 5000F;
             this.eyePositionPanel.MaxV = ((OpenMetaverse.Vector3)(resources.GetObject("eyePositionPanel.MaxV")));
@@ -391,8 +377,8 @@ namespace Chimera.GUI.Forms {
             // 
             // virtualOrientationPanel
             // 
-            this.virtualOrientationPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.virtualOrientationPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.virtualOrientationPanel.Location = new System.Drawing.Point(3, 105);
             this.virtualOrientationPanel.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("virtualOrientationPanel.LookAtVector")));
             this.virtualOrientationPanel.MinimumSize = new System.Drawing.Size(252, 95);
@@ -411,8 +397,8 @@ namespace Chimera.GUI.Forms {
             // 
             // virtualPositionPanel
             // 
-            this.virtualPositionPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.virtualPositionPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.virtualPositionPanel.Location = new System.Drawing.Point(3, 12);
             this.virtualPositionPanel.Max = 1024F;
             this.virtualPositionPanel.MaxV = ((OpenMetaverse.Vector3)(resources.GetObject("virtualPositionPanel.MaxV")));
@@ -512,9 +498,9 @@ namespace Chimera.GUI.Forms {
             // 
             // overlayStatsBox
             // 
-            this.overlayStatsBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.overlayStatsBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.overlayStatsBox.Enabled = false;
             this.overlayStatsBox.Location = new System.Drawing.Point(111, -2);
             this.overlayStatsBox.Name = "overlayStatsBox";
@@ -653,7 +639,6 @@ namespace Chimera.GUI.Forms {
         private Chimera.GUI.VectorPanel virtualPositionPanel;
         private Chimera.GUI.VectorPanel eyePositionPanel;
         private Chimera.GUI.RotationPanel virtualOrientationPanel;
-        private System.Windows.Forms.Button triggerHelpButton;
         private System.Windows.Forms.SplitContainer diagSplit;
         private System.Windows.Forms.GroupBox realSpaceGroup;
         private System.Windows.Forms.Button button1;
