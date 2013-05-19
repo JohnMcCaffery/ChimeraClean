@@ -614,7 +614,6 @@ namespace Chimera.OpenSim {
                         //ToggleHUD();
                     if (mClient != null)
                         ProcessWrangler.PressKey(mClient, "U", true, false, true);
-                    mWindow.OverlayManager.ForegroundOverlay();
                 }).Start();
             } else {
             }

@@ -184,7 +184,7 @@ namespace Chimera.Overlay {
         }
 
         void Coordinator_WindowAdded(Window window, EventArgs args) {
-            IWindowTransition transition = mWindowTransitionFactory.Create(this, window);
+            IWindowTransition transition = mWindowTransitionFactory.Create(this, Manager[window.Name]);
             mWindowTransitions.Add(window.Name, transition);
             transition.Finished += new Action<IWindowTransition>(transition_Finished);
         }

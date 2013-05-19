@@ -31,7 +31,6 @@ using Chimera.GUI.Controls;
 using System.Threading;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
-using Chimera.Overlay;
 
 namespace Chimera.GUI.Forms {
     public partial class CoordinatorForm : Form {
@@ -113,7 +112,6 @@ namespace Chimera.GUI.Forms {
             mCoordinator.Tick += mTickListener;
             //mCoordinator.HeightmapChanged += mHeightmapChangedListener;
             mCoordinator.WindowAdded += new Action<Window,EventArgs>(mCoordinator_WindowAdded);
-            mCoordinator.StateManager.StateChanged += new Action<Overlay.State>(StateManager_StateChanged);
 
             mCoordinator_CameraModeChanged(coordinator, coordinator.ControlMode);
 
@@ -175,10 +173,6 @@ namespace Chimera.GUI.Forms {
             }
             
             inputsTab.Controls.Add(statisticsTab);
-        }
-
-        private void StateManager_StateChanged(State state) {
-            Invoke(() => overlayStatsBox.Text = mCoordinator.StateManager.Statistics);
         }
 
         private void mCoordinator_WindowAdded(Window window, EventArgs args) {

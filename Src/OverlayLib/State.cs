@@ -75,7 +75,7 @@ namespace Chimera.Overlay {
 
         protected virtual void Coordinator_WindowAdded(Window window, EventArgs args) {
             if (!mWindowStates.ContainsKey(window.Name))
-                mWindowStates.Add(window.Name, CreateWindowState(window));
+                mWindowStates.Add(window.Name, CreateWindowState(mManager[window.Name]));
         }
 
         public IWindowState this[string window] {
@@ -187,7 +187,7 @@ namespace Chimera.Overlay {
         /// CreateWindowState a window state for drawing this state to the specified window.
         /// </summary>
         /// <param name="window">The window the new window state is to draw on.</param>
-        public abstract IWindowState CreateWindowState(Window window);
+        public abstract IWindowState CreateWindowState(WindowOverlayManager manager);
 
         /// <summary>
         /// Called before a transition to this state begins, set up any graphics that need to be in place before the transition begins.

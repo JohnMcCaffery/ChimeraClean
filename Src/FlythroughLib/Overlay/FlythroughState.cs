@@ -31,7 +31,8 @@ using System.Xml;
 using Chimera.Interfaces;
 
 namespace Chimera.Flythrough.Overlay {
-    public class FlythroughStateFactory : IStateFactory {        private IMediaPlayer mPlayer = null;
+    public class FlythroughStateFactory : IStateFactory {
+        private IMediaPlayer mPlayer = null;
 
         public FlythroughStateFactory() { }
 
@@ -90,7 +91,7 @@ namespace Chimera.Flythrough.Overlay {
 
             mStepping = true;
             Font f = new Font(FONT, FONT_SIZE, FontStyle.Bold);
-            mStepText = new StaticText(mStep + "/" + mInput.Count, manager.Coordinator.Windows[0].OverlayManager, f, FONT_COLOUR, STEP_TEXT_POS);
+            mStepText = new StaticText(mStep + "/" + mInput.Count, manager[0], f, FONT_COLOUR, STEP_TEXT_POS);
             AddFeature(mStepText);
 
             mInput.CurrentEventChange += new Action<FlythroughEvent<Camera>,FlythroughEvent<Camera>>(mInput_CurrentEventChange);
@@ -131,7 +132,7 @@ namespace Chimera.Flythrough.Overlay {
 
             mPlayer = player;
             if (mPlayer != null)
-                mDefaultWindow = Manager.Coordinator.Windows[0].OverlayManager;
+                mDefaultWindow = Manager[0];
 
             if (displaySubtitles) {
                 mSubtitlesText = Manager.MakeText(node.SelectSingleNode("child::SubtitleTextSetup"));
@@ -171,8 +172,8 @@ namespace Chimera.Flythrough.Overlay {
             if (mStep == mInput.Count) {
                 foreach (var trigger in mStepTriggers)
                     trigger.Active = false;
-                foreach (var window in Manager.Coordinator.Windows)
-                    window.OverlayManager.ForceRedrawStatic();
+                foreach (var manager in Manager.OverlayManagers)
+                    manager.ForceRedrawStatic();
             }
 
             mStepText.TextString = mStep + "\\" + mInput.Count;
@@ -186,12 +187,12 @@ namespace Chimera.Flythrough.Overlay {
         }
 
 
-        public override IWindowState CreateWindowState(Window window) {
-            if (window.Name.Equals(mSlideshowWindowName)) {
-                mSlideshow = new SlideshowWindow(window.OverlayManager, mSlideshowFolder, mSlideshowTransition);
+        public override IWindowState CreateWindowState(WindowOverlayManager manager) {
+            if (manager.Name.Equals(mSlideshowWindowName)) {
+                mSlideshow = new SlideshowWindow(manager, mSlideshowFolder, mSlideshowTransition);
                 return mSlideshow;
             }
-            return new WindowState(window.OverlayManager);
+            return new WindowState(manager);
         }
 
         protected override void TransitionToFinish() {
@@ -201,7 +202,8 @@ namespace Chimera.Flythrough.Overlay {
 
         protected override void TransitionFromStart() { }
 
-        public override void TransitionToStart() {            if (mPlayer != null) {
+        public override void TransitionToStart() {
+            if (mPlayer != null) {
                 mDefaultWindow.AddControl(mPlayer.Player, new RectangleF(0f, 0f, 0f, 0f));
             }
 

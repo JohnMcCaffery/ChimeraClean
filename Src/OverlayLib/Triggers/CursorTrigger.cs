@@ -38,17 +38,17 @@ namespace Chimera.Overlay.Triggers {
         private Cursor mSelectCursor;
         private IHoverSelectorRenderer mRenderer;
         private bool mActive = true;
-        private Window mWindow;
+        private WindowOverlayManager mManager;
         private int mR;
         /// <summary>
         /// The clip rectangle bounding the area this item will be drawn to.
         /// </summary>
         private Rectangle mClip;
  
-        public CursorTrigger(IHoverSelectorRenderer renderer, Window window) {
-            mWindow = window;
+        public CursorTrigger(IHoverSelectorRenderer renderer, WindowOverlayManager manager) {
+            mManager = manager;
             mRenderer = renderer;
-            mWindow.Coordinator.Tick += new Action(coordinator_Tick);
+            mManager.Window.Coordinator.Tick += new Action(coordinator_Tick);
             //mSelectCursor = new Cursor(new IntPtr(65571));
             mSelectCursor = new Cursor(new IntPtr(65567));
         }
@@ -76,12 +76,12 @@ namespace Chimera.Overlay.Triggers {
                     Thread.Sleep(20);
                     ProcessWrangler.Click();
                     mRenderer.Clear();
-                    mWindow.OverlayManager.ForceRedraw();
+                    mManager.ForceRedraw();
                     if (Triggered != null)
                         Triggered();
                 }
             } else if (mHovering) {
-                mWindow.OverlayManager.ForceRedraw();
+                mManager.ForceRedraw();
                 mRenderer.Clear();
                 mHovering = false;
                 mClicked = false;
@@ -116,15 +116,15 @@ namespace Chimera.Overlay.Triggers {
         }
 
         public string Window {
-            get { return mWindow.Name; }
+            get { return mManager.Name; }
         }
 
         public void DrawStatic(Graphics graphics) { }
 
         public void DrawDynamic(Graphics graphics) {
             if (mHovering && !mClicked) {
-                int x = (int)(mClip.Width * mWindow.OverlayManager.CursorX);
-                int y = (int)(mClip.Height * mWindow.OverlayManager.CursorY);
+                int x = (int)(mClip.Width * mManager.CursorX);
+                int y = (int)(mClip.Height * mManager.CursorY);
                 Rectangle r = new Rectangle(x - mR, y - mR, mR * 2, mR * 2);
                 mRenderer.DrawHover(graphics, r, HoverTime / mSelectMS );
             }

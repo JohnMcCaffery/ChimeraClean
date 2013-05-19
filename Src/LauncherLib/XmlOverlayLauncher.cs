@@ -13,6 +13,7 @@ using Chimera.Multimedia;
 namespace Chimera.Launcher {
     public class XmlOverlayLauncher : Launcher {
         protected override void InitOverlay() {
+            /*
             Coordinator.StateManager.LoadXML(
                 Config.OverlayFile,
                 Config.InterfaceMode,
@@ -41,6 +42,7 @@ namespace Chimera.Launcher {
                     new VideoStateFactory(new WMPMediaPlayer()),
                     new SlideshowStateFactory()
                 });
+            */
         }
     }
 }

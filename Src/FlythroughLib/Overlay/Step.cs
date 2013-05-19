@@ -14,7 +14,7 @@ namespace Chimera.Flythrough.Overlay {
         private readonly int mStep;
         private readonly int mSubtitleTimeoutS = 20;
 
-        private readonly Coordinator mCoordinator;
+        private readonly StateManager mManager;
         private readonly IMediaPlayer mPlayer;
         private readonly Text mSubtitlesText;
         private readonly Action mTickListener;
@@ -38,7 +38,7 @@ namespace Chimera.Flythrough.Overlay {
 
             mPlayer = player;
             mTickListener = new Action(mCoordinator_Tick);
-            mCoordinator = state.Manager.Coordinator;
+            mManager = state.Manager;
             mStep = GetInt(node, -1, "Step");
             if (mStep == -1)
                 throw new ArgumentException("Unable to load step ID. A valid Step attribute is expected.");
@@ -79,7 +79,7 @@ namespace Chimera.Flythrough.Overlay {
 
             if (mSubtitles.Count > 0) {
                 mStarted = DateTime.Now;
-                mCoordinator.Tick += mTickListener;
+                mManager.Coordinator.Tick += mTickListener;
             }
 
             if (mVoiceoverFile != null)
@@ -87,7 +87,7 @@ namespace Chimera.Flythrough.Overlay {
 
             if (mImage != null) {
                 mImage.Active = true;
-                mCoordinator[mImage.Window].OverlayManager.ForceRedrawStatic();
+                mManager[mImage.Window].ForceRedrawStatic();
             }
 
             //TODO - play voiceover file
@@ -96,7 +96,7 @@ namespace Chimera.Flythrough.Overlay {
         public void Finish() {
             if (mImage != null) {
                 mImage.Active = false;
-                mCoordinator[mImage.Window].OverlayManager.ForceRedrawStatic();
+                mManager[mImage.Window].ForceRedrawStatic();
             }
 
             if (mVoiceoverFile != null)
@@ -104,7 +104,7 @@ namespace Chimera.Flythrough.Overlay {
 
             if (mSubtitlesText != null)
                 mSubtitlesText.Active = false;
-            mCoordinator.Tick += mTickListener;
+            mManager.Coordinator.Tick += mTickListener;
         }
 
         private void mCoordinator_Tick() {

@@ -37,8 +37,8 @@ namespace Chimera.Kinect.Overlay {
         private Rotation mStartOrientation;
         private Vector3 mStartPosition;
 
-        public override IWindowState CreateWindowState(Window window) {
-            return new KinectControlWindowState(window.OverlayManager);
+        public override IWindowState CreateWindowState(WindowOverlayManager manager) {
+            return new KinectControlWindowState(manager);
         }
 
         public KinectControlState(string name, StateManager manager, bool avatar)
@@ -76,8 +76,8 @@ namespace Chimera.Kinect.Overlay {
                 Manager.Coordinator.EnableUpdates = false;
             }
             Manager.Coordinator.EnableUpdates = true; 
-            foreach (var window in Manager.Coordinator.Windows)
-                window.OverlayManager.ControlPointer = false;
+            foreach (var manager in Manager.OverlayManagers)
+                manager.ControlPointer = false;
         }
 
         public override void TransitionFromFinish() { }

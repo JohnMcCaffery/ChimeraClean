@@ -28,7 +28,6 @@ using System.IO;
 using System.Windows.Forms;
 using Chimera.GUI.Forms;
 using Chimera.Interfaces;
-using Chimera.Overlay;
 using Chimera.Plugins;
 using Chimera.Config;
 
@@ -64,9 +63,6 @@ namespace Chimera {
         /// The system which this input is registered with.
         /// </summary>
         private Coordinator mCoordinator;     
-        /// The manager for the overlay which can be renderered on this window.
-        /// </summary>
-        private WindowOverlayManager mOverlayManager;        
         /// <summary>
         /// Output object used to actually render the view 'through' the input. Can be null.
         /// </summary>
@@ -148,7 +144,6 @@ namespace Chimera {
             mHeight = cfg.Height;
             mTopLeft = cfg.TopLeft;
             mOrientation = new Rotation(cfg.Pitch, cfg.Yaw);
-            mOverlayManager = new WindowOverlayManager(this);
             mCentre = Centre;
 
             mOrientation.Changed += mOrientation_Changed;
@@ -425,13 +420,6 @@ namespace Chimera {
         }
 
         /// <summary>
-        /// The manager for the overlay which sits on top of this window.
-        /// </summary>
-        public WindowOverlayManager OverlayManager {
-            get { return mOverlayManager; }
-        }
-
-        /// <summary>
         /// Initialise the input, giving it a reference to the input it is linked to.
         /// </summary>
         /// <param name="input">The input object the input can control.</param>
@@ -440,9 +428,6 @@ namespace Chimera {
             mCoordinator.EyeUpdated += new Action<Chimera.Coordinator,EventArgs>(mCoordinator_EyeUpdated);
             if (mOutput != null)
                 mOutput.Init(this);
-
-            if (mOverlayManager.Visible)
-                OverlayManager.Launch();
         }
 
         /// <summary>
@@ -597,6 +582,15 @@ namespace Chimera {
 
         public override string ToString() {
             return mName;
+        }
+
+        public event Action Restarted;
+
+        internal void Restart() {
+            if (Restarted != null)
+                Restarted();
+            if (mOutput != null)
+                mOutput.Restart("User");
         }
     }
 }

@@ -25,6 +25,7 @@ namespace Touchscreen {
         private VerticalAxis mL;
         private VerticalAxis mR;
 
+        private StateManager mStateManager;
         private WindowOverlayManager mManager;
         private TouchscreenForm mWindow;
 
@@ -69,8 +70,10 @@ namespace Touchscreen {
             get { return mConfig; }
         }
 
-        public TouchscreenPlugin()
-            : base("Touchscreen") { }
+        public TouchscreenPlugin(StateManager manager)
+            : base("Touchscreen") {
+            mStateManager = manager;
+        }
 
         public override void Init(Coordinator input) {
             base.Init(input);
@@ -88,7 +91,7 @@ namespace Touchscreen {
 
         void input_WindowAdded(Window w, EventArgs args) {
             if (mConfig.Window == null || w.Name.Equals(mConfig.Window)) {
-                mManager = w.OverlayManager;
+                mManager = mStateManager[w.Name];
 
                 mL = new VerticalAxis(mManager);
                 mR = new VerticalAxis(mManager);

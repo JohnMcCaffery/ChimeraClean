@@ -94,6 +94,7 @@ namespace Chimera.Launcher {
             if (mConfig.InterfaceMode != StateManager.CLICK_MODE)
                 mRenderer = new DialCursorRenderer();
 
+            /*
             if (mConfig.InitOverlay) {
                 InitOverlay();
                 State home = mCoordinator.StateManager.States.FirstOrDefault(s => s.Name == mConfig.HomeState);
@@ -109,6 +110,7 @@ namespace Chimera.Launcher {
                 if (home != null)
                     mCoordinator.StateManager.CurrentState = home;
             }
+            */
         }
 
         protected virtual Window[] GetWindows() {
@@ -150,6 +152,7 @@ namespace Chimera.Launcher {
 
         protected abstract void InitOverlay();
 
+        /*
         protected void InvisTrans(State from, State to, Point topLeft, Point bottomRight, Rectangle clip, Window window, IWindowTransitionFactory transition) {
             ITrigger trigger  = InvisTrigger(topLeft, bottomRight, clip, window);
             StateTransition splashExploreTransition = new StateTransition(window.Coordinator.StateManager, from, to, trigger, transition);
@@ -185,6 +188,7 @@ namespace Chimera.Launcher {
                 inactiveTriggers.Add(new JoystickInactiveTrigger(timeout, Coordinator));
             }
 
+            /*
             foreach (var inactiveTrigger in inactiveTriggers) {
                 foreach (var state in Coordinator.StateManager.States) {
                     if (state != idle) {
@@ -229,6 +233,7 @@ namespace Chimera.Launcher {
                 (ITrigger) new TextClickTrigger(window.OverlayManager, txt, clip) :
                 (ITrigger) new TextHoverTrigger(window.OverlayManager, mRenderer, txt, clip);
         }
+        */
 
         public static Launcher Create() {
             //Assembly ass = typeof(Launcher).Assembly;

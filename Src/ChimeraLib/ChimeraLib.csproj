@@ -101,6 +101,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Config\ConfigFolderBase.cs" />
+    <Compile Include="Config\PluginConfig.cs" />
     <Compile Include="Config\ProjectorConfig.cs" />
     <Compile Include="Interfaces\IOutputFactory.cs" />
     <Compile Include="Plugins\Projector.cs" />
@@ -160,12 +161,6 @@
     <Compile Include="GUI\Controls\ConditionalCheck.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="GUI\Controls\Plugins\MousePluginPanel.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="GUI\Controls\Plugins\MousePluginPanel.Designer.cs">
-      <DependentUpon>MousePluginPanel.cs</DependentUpon>
-    </Compile>
     <Compile Include="GUI\Controls\ScalarPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -184,16 +179,8 @@
     <Compile Include="GUI\Controls\UpdatedVectorPanel.Designer.cs">
       <DependentUpon>UpdatedVectorPanel.cs</DependentUpon>
     </Compile>
-    <Compile Include="GUI\Forms\OverlayWindow.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="GUI\Forms\OverlayWindow.Designer.cs">
-      <DependentUpon>OverlayWindow.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Config\PluginConfig.cs" />
     <Compile Include="Interfaces\IPlugin.cs" />
     <Compile Include="Plugins\DeltaBasedPlugin.cs" />
-    <Compile Include="Plugins\MousePlugin.cs" />
     <Compile Include="Interfaces\IUpdater.cs" />
     <Compile Include="Interfaces\ITickSource.cs" />
     <Compile Include="GUI\Forms\Inputs\CameraControlForm.cs">
@@ -269,9 +256,6 @@
     <EmbeddedResource Include="GUI\Controls\Plugins\ConstrainedAxisPanel.resx">
       <DependentUpon>ConstrainedAxisPanel.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="GUI\Controls\Plugins\MousePluginPanel.resx">
-      <DependentUpon>MousePluginPanel.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="GUI\Controls\Plugins\PluginSelectorPanel.resx">
       <DependentUpon>PluginSelectorPanel.cs</DependentUpon>
     </EmbeddedResource>
@@ -310,9 +294,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\Controls\Plugins\KBMousePanel.resx">
       <DependentUpon>KBMousePanel.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="GUI\Forms\OverlayWindow.resx">
-      <DependentUpon>OverlayWindow.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

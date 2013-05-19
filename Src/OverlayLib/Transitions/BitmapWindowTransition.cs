@@ -65,8 +65,8 @@ namespace Chimera.Overlay.Transitions {
             mLengthMS = lengthMS;
         }
 
-        public IWindowTransition Create(StateTransition transition, Window window) {
-            return new BitmapWindowTransition(transition, window, mFactory.Create(mLengthMS));
+        public IWindowTransition Create(StateTransition transition, WindowOverlayManager manager) {
+            return new BitmapWindowTransition(transition, manager, mFactory.Create(mLengthMS));
         }
     }
     public class BitmapWindowTransition : WindowTransition {
@@ -85,10 +85,10 @@ namespace Chimera.Overlay.Transitions {
         /// Initialise the fade transition, specifying how long the fade should last, in ms.
         /// </summary>
         /// <param name="transition">The transition this fade is part of.</param>
-        /// <param name="window">The window this fade is to be drawn on.</param>
+        /// <param name="manager">The window this fade is to be drawn on.</param>
         /// <param name="lengthMS">The length of time, in ms, the fade should last.</param>
-        public BitmapWindowTransition(StateTransition transition, Window window, IImageTransition transitionEffect)
-            : base(transition, window) {
+        public BitmapWindowTransition(StateTransition transition, WindowOverlayManager manager, IImageTransition transitionEffect)
+            : base(transition, manager) {
 
             mTransition = transitionEffect;
             transitionEffect.Finished += new Action(transitionEffect_Finished);

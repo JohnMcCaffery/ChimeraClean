@@ -69,7 +69,7 @@ namespace Chimera.Overlay.States {
         }
 
         public VideoState(string name, WindowOverlayManager mainWindow, string video, State parent, IWindowTransitionFactory transition, IMediaPlayer player)
-            : base(name, mainWindow.Window.Coordinator.StateManager, DefaultBG) {
+            : base(name, mainWindow.Manager, DefaultBG) {
 
             mPlayer = player;
             mMainWindow = mainWindow;
@@ -143,8 +143,8 @@ namespace Chimera.Overlay.States {
         public override void TransitionToStart() {
             SetTriggers(true);
             ControlTriggers(mResetTriggers, true);
-            foreach (var window in Manager.Coordinator.Windows)
-                window.OverlayManager.ControlPointer = false;
+            foreach (var manager in Manager.OverlayManagers)
+                manager.ControlPointer = false;
         }
 
         protected override void TransitionToFinish() {
@@ -187,7 +187,8 @@ namespace Chimera.Overlay.States {
                     ControlTriggers(mResetTriggers, false);
                 }
             }
-        }
+        }
+
         private void SetTriggers(bool start) {
             ControlTriggers(mStartTriggers, start);
             ControlTriggers(mStopTriggers, !start);

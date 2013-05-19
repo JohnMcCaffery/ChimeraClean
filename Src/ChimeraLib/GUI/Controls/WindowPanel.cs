@@ -51,11 +51,6 @@ namespace Chimera.GUI.Controls {
         public void Init(Window window) {
             mWindow = window;
 
-            controlCursor.Checked = mWindow.OverlayManager.ControlPointer;
-            mTickListener = new Action(Coordinator_Tick);
-
-            mWindow.OverlayManager.OverlayClosed += new EventHandler(mWindow_OverlayClosed);
-            mWindow.OverlayManager.OverlayLaunched += new EventHandler(mWindow_OverlayLaunched);
             mWindow.Changed += new Action<Window, EventArgs>(mWindow_Changed);
             mWindow.Coordinator.Tick += mTickListener;
 
@@ -76,30 +71,8 @@ namespace Chimera.GUI.Controls {
 
                 mainTab.Controls.Add(tab);
             }
-            if (mWindow.OverlayManager.Visible) {
-                launchOverlayButton.Text =  "Close Overlay";
-            }
 
             mWindow_Changed(window, null);
-        }
-
-        private void Coordinator_Tick() {
-            if (Created && !IsDisposed && !Disposing)
-                BeginInvoke(new Action(() => {
-                    if (mWindow.OverlayManager.Statistics == null)
-                        return;
-                    tpsLabel.Text = "Ticks / Second: " + mWindow.OverlayManager.Statistics.TicksPerSecond;
-
-                    meanTickLabel.Text = "Mean Tick Length: " + mWindow.OverlayManager.Statistics.MeanTickLength;
-                    longestTickLabel.Text = "Longest Tick: " + mWindow.OverlayManager.Statistics.LongestTick;
-                    shortestTickLabel.Text = "Shortest Tick: " + mWindow.OverlayManager.Statistics.ShortestTick;
-
-                    meanWorkLabel.Text = "Mean Work Length: " + mWindow.OverlayManager.Statistics.MeanWorkLength;
-                    longestWorkLabel.Text = "Longest Work: " + mWindow.OverlayManager.Statistics.LongestWork;
-                    shortestWorkLabel.Text = "Shortest Work: " + mWindow.OverlayManager.Statistics.ShortestWork;
-
-                    tickCountLabel.Text = "Tick Count: " + mWindow.OverlayManager.Statistics.TickCount;
-                }));
         }
 
         void mWindow_Changed(Window source, EventArgs args) {
@@ -143,14 +116,6 @@ namespace Chimera.GUI.Controls {
                 a();
         }
 
-        void mWindow_OverlayLaunched(object sender, EventArgs e) {
-            launchOverlayButton.Text = "Close Overlay";
-        }
-
-        void mWindow_OverlayClosed(object sender, EventArgs e) {
-            launchOverlayButton.Text = "Launch Overlay";
-        }
-
         private void mainTab_KeyDown(object sender, KeyEventArgs e) {
             if (mWindow != null)
                 mWindow.Coordinator.TriggerKeyboard(true, e);
@@ -166,33 +131,8 @@ namespace Chimera.GUI.Controls {
                 mWindow.Monitor = (Screen)monitorPulldown.SelectedItem;
         }
 
-        private void launchOverlayButton_Click(object sender, EventArgs e) {
-            if (launchOverlayButton.Text == "Launch Overlay") {
-                mWindow.OverlayManager.Launch();
-                launchOverlayButton.Text = "Close Overlay";
-            } else {
-                mWindow.OverlayManager.Close();
-                launchOverlayButton.Text = "Launch Overlay";
-            }
-        }
-
-        private void bringToFrontButtin_Click(object sender, EventArgs e) {
-            mWindow.OverlayManager.ForegroundOverlay();
-        }
-
-        private void showBordersTextBox_CheckedChanged(object sender, EventArgs e) {
-            mWindow.OverlayManager.Fullscreen = fullscreenCheck.Checked;
-        }
-
-        private void controlCursor_CheckedChanged(object sender, EventArgs e) {
-            mWindow.OverlayManager.ControlPointer = controlCursor.Checked;
-        }
-
         private void restartButton_Click(object sender, EventArgs e) {
-            mWindow.Coordinator.StateManager.Reset();
-            mWindow.OverlayManager.MoveCursorOffScreen();
-            if (mWindow.Output != null)
-                mWindow.Output.Restart("User");
+            mWindow.Restart();
         }
 
         private void distancePanel_ValueChanged(float obj) {

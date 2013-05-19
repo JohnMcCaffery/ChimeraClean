@@ -11,18 +11,18 @@ namespace Touchscreen.Overlay {
         private TouchscreenPlugin mPlugin;
         private bool mAvatar;
 
-        public TouchscreenState(string name, bool avatar, Coordinator coordinator)
-            : base(name, coordinator.StateManager) {
+        public TouchscreenState(string name, bool avatar, StateManager manager)
+            : base(name, manager) {
 
-            mPlugin = coordinator.GetPlugin<TouchscreenPlugin>();
+            mPlugin = manager.Coordinator.GetPlugin<TouchscreenPlugin>();
             mPlugin.Enabled = false;
             mAvatar = avatar;
         }
 
-        public override IWindowState CreateWindowState(Chimera.Window window) {
-            if (window.Name.Equals(mPlugin.Manager.Window.Name))
-                return new TouchscreenWindow(window.OverlayManager, mPlugin);
-            return new WindowState(window.OverlayManager);
+        public override IWindowState CreateWindowState(WindowOverlayManager manager) {
+            if (manager.Name.Equals(mPlugin.Manager.Window.Name))
+                return new TouchscreenWindow(manager, mPlugin);
+            return new WindowState(manager);
         }
 
         public override void TransitionToStart() {

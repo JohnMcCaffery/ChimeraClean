@@ -27,15 +27,15 @@ using System.Drawing;
 
 namespace Chimera.Overlay.Transitions {
     public class CutWindowTransitionFactory : IWindowTransitionFactory {
-        public IWindowTransition Create(StateTransition transition, Window window) {
-            return new CutWindowTransition(transition, window);
+        public IWindowTransition Create(StateTransition transition, WindowOverlayManager manager) {
+            return new CutWindowTransition(transition, manager);
         }
     }
     public class CutWindowTransition : WindowTransition {
         public override event Action<IWindowTransition> Finished;
 
-        public CutWindowTransition(StateTransition transition, Window window)
-            : base(transition, window) {
+        public CutWindowTransition(StateTransition transition, WindowOverlayManager manager)
+            : base(transition, manager) {
         }
 
         public override void Begin() {

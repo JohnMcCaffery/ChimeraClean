@@ -83,6 +83,10 @@ namespace Chimera.Overlay {
         /// The configuration for this manager.
         /// </summary>
         private OverlayConfig mConfig;
+        /// <summary>
+        /// The state manager which controls this window specific overlay.
+        /// </summary>
+        private StateManager mManager;
 
         /// <summary>
         /// Triggered when the overlay window is launched.
@@ -247,6 +251,10 @@ namespace Chimera.Overlay {
             }
         }
 
+        public StateManager Manager {
+            get { return mManager; }
+        }
+
         /// <summary>
         /// Set the position of the cursor on the window, specified as values percentages of the width and height.
         /// 0,0 is top left, 1,1 is bottom right.
@@ -314,7 +322,8 @@ namespace Chimera.Overlay {
             }
         }
 
-        public WindowOverlayManager(Window window) {
+        public WindowOverlayManager(StateManager manager, Window window) {
+            mManager = manager;
             mWindow = window;
 
             mConfig = new OverlayConfig();
@@ -366,5 +375,7 @@ namespace Chimera.Overlay {
             if (mOverlayWindow != null)
                 mOverlayWindow.RemoveControl(control);
         }
+
+        public string Name { get { return mWindow.Name; } }
     }
 }

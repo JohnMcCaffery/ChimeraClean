@@ -84,19 +84,6 @@ namespace Chimera.GUI.Controls {
             this.orientationPanel = new Chimera.GUI.RotationPanel();
             this.centrePanel = new Chimera.GUI.VectorPanel();
             this.topLeftPanel = new Chimera.GUI.VectorPanel();
-            this.overlayTab = new System.Windows.Forms.TabPage();
-            this.tickCountLabel = new System.Windows.Forms.Label();
-            this.shortestWorkLabel = new System.Windows.Forms.Label();
-            this.longestWorkLabel = new System.Windows.Forms.Label();
-            this.meanWorkLabel = new System.Windows.Forms.Label();
-            this.longestTickLabel = new System.Windows.Forms.Label();
-            this.shortestTickLabel = new System.Windows.Forms.Label();
-            this.meanTickLabel = new System.Windows.Forms.Label();
-            this.tpsLabel = new System.Windows.Forms.Label();
-            this.controlCursor = new System.Windows.Forms.CheckBox();
-            this.bringToFrontButtin = new System.Windows.Forms.Button();
-            this.fullscreenCheck = new System.Windows.Forms.CheckBox();
-            this.launchOverlayButton = new System.Windows.Forms.Button();
             this.mainTab.SuspendLayout();
             this.configTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -108,13 +95,11 @@ namespace Chimera.GUI.Controls {
             ((System.ComponentModel.ISupportInitialize)(this.aspectRatioWValue)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.aspectRatioValue)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.aspectRatioHValue)).BeginInit();
-            this.overlayTab.SuspendLayout();
             this.SuspendLayout();
             // 
             // mainTab
             // 
             this.mainTab.Controls.Add(this.configTab);
-            this.mainTab.Controls.Add(this.overlayTab);
             this.mainTab.Dock = System.Windows.Forms.DockStyle.Fill;
             this.mainTab.Location = new System.Drawing.Point(0, 0);
             this.mainTab.Name = "mainTab";
@@ -644,142 +629,6 @@ namespace Chimera.GUI.Controls {
             this.topLeftPanel.Z = 0F;
             this.topLeftPanel.ValueChanged += new System.EventHandler(this.topLeftPanel_ValueChanged);
             // 
-            // overlayTab
-            // 
-            this.overlayTab.Controls.Add(this.tickCountLabel);
-            this.overlayTab.Controls.Add(this.shortestWorkLabel);
-            this.overlayTab.Controls.Add(this.longestWorkLabel);
-            this.overlayTab.Controls.Add(this.meanWorkLabel);
-            this.overlayTab.Controls.Add(this.longestTickLabel);
-            this.overlayTab.Controls.Add(this.shortestTickLabel);
-            this.overlayTab.Controls.Add(this.meanTickLabel);
-            this.overlayTab.Controls.Add(this.tpsLabel);
-            this.overlayTab.Controls.Add(this.controlCursor);
-            this.overlayTab.Controls.Add(this.bringToFrontButtin);
-            this.overlayTab.Controls.Add(this.fullscreenCheck);
-            this.overlayTab.Controls.Add(this.launchOverlayButton);
-            this.overlayTab.Location = new System.Drawing.Point(4, 22);
-            this.overlayTab.Name = "overlayTab";
-            this.overlayTab.Padding = new System.Windows.Forms.Padding(3);
-            this.overlayTab.Size = new System.Drawing.Size(833, 599);
-            this.overlayTab.TabIndex = 1;
-            this.overlayTab.Text = "Overlay";
-            this.overlayTab.UseVisualStyleBackColor = true;
-            // 
-            // tickCountLabel
-            // 
-            this.tickCountLabel.AutoSize = true;
-            this.tickCountLabel.Location = new System.Drawing.Point(3, 199);
-            this.tickCountLabel.Name = "tickCountLabel";
-            this.tickCountLabel.Size = new System.Drawing.Size(59, 13);
-            this.tickCountLabel.TabIndex = 15;
-            this.tickCountLabel.Text = "Tick Count";
-            // 
-            // shortestWorkLabel
-            // 
-            this.shortestWorkLabel.AutoSize = true;
-            this.shortestWorkLabel.Location = new System.Drawing.Point(3, 186);
-            this.shortestWorkLabel.Name = "shortestWorkLabel";
-            this.shortestWorkLabel.Size = new System.Drawing.Size(75, 13);
-            this.shortestWorkLabel.TabIndex = 14;
-            this.shortestWorkLabel.Text = "Shortest Work";
-            // 
-            // longestWorkLabel
-            // 
-            this.longestWorkLabel.AutoSize = true;
-            this.longestWorkLabel.Location = new System.Drawing.Point(3, 173);
-            this.longestWorkLabel.Name = "longestWorkLabel";
-            this.longestWorkLabel.Size = new System.Drawing.Size(74, 13);
-            this.longestWorkLabel.TabIndex = 13;
-            this.longestWorkLabel.Text = "Longest Work";
-            // 
-            // meanWorkLabel
-            // 
-            this.meanWorkLabel.AutoSize = true;
-            this.meanWorkLabel.Location = new System.Drawing.Point(3, 160);
-            this.meanWorkLabel.Name = "meanWorkLabel";
-            this.meanWorkLabel.Size = new System.Drawing.Size(99, 13);
-            this.meanWorkLabel.TabIndex = 12;
-            this.meanWorkLabel.Text = "Mean Work Length";
-            // 
-            // longestTickLabel
-            // 
-            this.longestTickLabel.AutoSize = true;
-            this.longestTickLabel.Location = new System.Drawing.Point(3, 134);
-            this.longestTickLabel.Name = "longestTickLabel";
-            this.longestTickLabel.Size = new System.Drawing.Size(69, 13);
-            this.longestTickLabel.TabIndex = 11;
-            this.longestTickLabel.Text = "Longest Tick";
-            // 
-            // shortestTickLabel
-            // 
-            this.shortestTickLabel.AutoSize = true;
-            this.shortestTickLabel.Location = new System.Drawing.Point(3, 147);
-            this.shortestTickLabel.Name = "shortestTickLabel";
-            this.shortestTickLabel.Size = new System.Drawing.Size(70, 13);
-            this.shortestTickLabel.TabIndex = 10;
-            this.shortestTickLabel.Text = "Shortest Tick";
-            // 
-            // meanTickLabel
-            // 
-            this.meanTickLabel.AutoSize = true;
-            this.meanTickLabel.Location = new System.Drawing.Point(3, 121);
-            this.meanTickLabel.Name = "meanTickLabel";
-            this.meanTickLabel.Size = new System.Drawing.Size(94, 13);
-            this.meanTickLabel.TabIndex = 9;
-            this.meanTickLabel.Text = "Mean Tick Length";
-            // 
-            // tpsLabel
-            // 
-            this.tpsLabel.AutoSize = true;
-            this.tpsLabel.Location = new System.Drawing.Point(3, 108);
-            this.tpsLabel.Name = "tpsLabel";
-            this.tpsLabel.Size = new System.Drawing.Size(81, 13);
-            this.tpsLabel.TabIndex = 8;
-            this.tpsLabel.Text = "Ticks / Second";
-            // 
-            // controlCursor
-            // 
-            this.controlCursor.AutoSize = true;
-            this.controlCursor.Location = new System.Drawing.Point(7, 88);
-            this.controlCursor.Name = "controlCursor";
-            this.controlCursor.Size = new System.Drawing.Size(92, 17);
-            this.controlCursor.TabIndex = 4;
-            this.controlCursor.Text = "Control Cursor";
-            this.controlCursor.UseVisualStyleBackColor = true;
-            this.controlCursor.CheckedChanged += new System.EventHandler(this.controlCursor_CheckedChanged);
-            // 
-            // bringToFrontButtin
-            // 
-            this.bringToFrontButtin.Location = new System.Drawing.Point(6, 35);
-            this.bringToFrontButtin.Name = "bringToFrontButtin";
-            this.bringToFrontButtin.Size = new System.Drawing.Size(121, 23);
-            this.bringToFrontButtin.TabIndex = 3;
-            this.bringToFrontButtin.Text = "Bring To Front";
-            this.bringToFrontButtin.UseVisualStyleBackColor = true;
-            this.bringToFrontButtin.Click += new System.EventHandler(this.bringToFrontButtin_Click);
-            // 
-            // fullscreenCheck
-            // 
-            this.fullscreenCheck.AutoSize = true;
-            this.fullscreenCheck.Location = new System.Drawing.Point(6, 64);
-            this.fullscreenCheck.Name = "fullscreenCheck";
-            this.fullscreenCheck.Size = new System.Drawing.Size(74, 17);
-            this.fullscreenCheck.TabIndex = 2;
-            this.fullscreenCheck.Text = "Fullscreen";
-            this.fullscreenCheck.UseVisualStyleBackColor = true;
-            this.fullscreenCheck.CheckedChanged += new System.EventHandler(this.showBordersTextBox_CheckedChanged);
-            // 
-            // launchOverlayButton
-            // 
-            this.launchOverlayButton.Location = new System.Drawing.Point(6, 6);
-            this.launchOverlayButton.Name = "launchOverlayButton";
-            this.launchOverlayButton.Size = new System.Drawing.Size(121, 23);
-            this.launchOverlayButton.TabIndex = 1;
-            this.launchOverlayButton.Text = "Launch Overlay";
-            this.launchOverlayButton.UseVisualStyleBackColor = true;
-            this.launchOverlayButton.Click += new System.EventHandler(this.launchOverlayButton_Click);
-            // 
             // WindowPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -801,8 +650,6 @@ namespace Chimera.GUI.Controls {
             ((System.ComponentModel.ISupportInitialize)(this.aspectRatioWValue)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.aspectRatioValue)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.aspectRatioHValue)).EndInit();
-            this.overlayTab.ResumeLayout(false);
-            this.overlayTab.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -811,10 +658,6 @@ namespace Chimera.GUI.Controls {
 
         private System.Windows.Forms.TabControl mainTab;
         private System.Windows.Forms.TabPage configTab;
-        private System.Windows.Forms.TabPage overlayTab;
-        private System.Windows.Forms.Button launchOverlayButton;
-        private System.Windows.Forms.CheckBox fullscreenCheck;
-        private System.Windows.Forms.Button bringToFrontButtin;
         private Chimera.GUI.VectorPanel topLeftPanel;
         private Chimera.GUI.RotationPanel orientationPanel;
         private System.Windows.Forms.Label label2;
@@ -822,7 +665,6 @@ namespace Chimera.GUI.Controls {
         private Chimera.GUI.ScalarPanel heightPanel;
         private Chimera.GUI.ScalarPanel widthPanel;
         private System.Windows.Forms.ComboBox monitorPulldown;
-        private System.Windows.Forms.CheckBox controlCursor;
         private System.Windows.Forms.Button restartButton;
         private System.Windows.Forms.SplitContainer splitContainer1;
         private VectorPanel centrePanel;
@@ -851,14 +693,6 @@ namespace Chimera.GUI.Controls {
         private System.Windows.Forms.RadioButton centreAnchorButton;
         private ScalarPanel diagonalPanel;
         private System.Windows.Forms.Label label12;
-        private System.Windows.Forms.Label tickCountLabel;
-        private System.Windows.Forms.Label shortestWorkLabel;
-        private System.Windows.Forms.Label longestWorkLabel;
-        private System.Windows.Forms.Label meanWorkLabel;
-        private System.Windows.Forms.Label longestTickLabel;
-        private System.Windows.Forms.Label shortestTickLabel;
-        private System.Windows.Forms.Label meanTickLabel;
-        private System.Windows.Forms.Label tpsLabel;
         private System.Windows.Forms.CheckBox drawEyeCheck;
         private ProjectorPanel projectorPanel;
         private System.Windows.Forms.Button aspectRatioButton;

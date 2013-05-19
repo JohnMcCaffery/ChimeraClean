@@ -58,6 +58,10 @@ namespace Chimera.Overlay {
         /// Delegate for listening for transition end events.
         /// </summary>
         private Action<StateTransition> mTransitionComplete;
+        /// <summary>
+        /// Window managers for each window in the system.
+        /// </summary>
+        private readonly Dictionary<string, WindowOverlayManager> mWindowManagers = new Dictionary<string, WindowOverlayManager>();
 
         /// <summary>
         /// Triggered whenever a new state is added.
@@ -83,9 +87,26 @@ namespace Chimera.Overlay {
         /// CreateWindowState the manager. Linking it with a coordinator.
         /// </summary>
         /// <param name="coordinator">The coordinator which this state form manages state for.</param>
-        public StateManager(Coordinator coordinator) {
+        public void Init(Coordinator coordinator) {
             mCoordinator = coordinator;
             mTransitionComplete = new Action<StateTransition>(transition_Finished);
+            mCoordinator.WindowAdded += new Action<Window,EventArgs>(mCoordinator_WindowAdded);
+        }
+
+        void mCoordinator_WindowAdded(Window window, EventArgs args) {
+            mWindowManagers.Add(window.Name, new WindowOverlayManager(this, window));
+        }
+
+        public WindowOverlayManager this[string windowName] {
+            get { return mWindowManagers[windowName]; }
+        }
+
+        public WindowOverlayManager this[int windowIndex] {
+            get { return mWindowManagers[mCoordinator.Windows[0].Name]; }
+        }
+
+        public WindowOverlayManager[] OverlayManagers {
+            get { return mWindowManagers.Values.ToArray(); }
         }
 
         public string Statistics {
@@ -164,9 +185,9 @@ namespace Chimera.Overlay {
 
         public void Reset() {
             CurrentState = mFirstState;
-            foreach (var window in Coordinator.Windows) {
-                window.OverlayManager.Close();
-                window.OverlayManager.Launch();
+            foreach (var manager in OverlayManagers) {
+                manager.Close();
+                manager.Launch();
             }
         }
 
@@ -203,8 +224,8 @@ namespace Chimera.Overlay {
         }
 
         public void RedrawStatic() {
-            foreach (var window in Coordinator.Windows)
-                window.OverlayManager.ForceRedrawStatic();
+            foreach (var manager in OverlayManagers)
+                manager.ForceRedrawStatic();
         }
 
         private void transition_Finished(StateTransition transition) {

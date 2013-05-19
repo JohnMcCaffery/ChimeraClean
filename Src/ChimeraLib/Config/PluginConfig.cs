@@ -24,7 +24,7 @@ using System.Text;
 using Chimera.Util;
 
 namespace Chimera.Config {
-    class PluginConfig : ConfigBase {
+    public class PluginConfig : ConfigBase {
         public bool KeyboardEnabled;
         public bool MouseEnabled;
 

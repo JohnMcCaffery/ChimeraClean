@@ -46,13 +46,13 @@ namespace Chimera {
         /// <param name="transition"></param>
         /// <param name="window"></param>
         /// <exception cref="InvalidArgumentException">Thrown if there is no window state for the To or From state.</exception>
-        public WindowTransition(StateTransition transition, Window window)
-            : base(window.Name) {
-            mManager = window.OverlayManager;
+        public WindowTransition(StateTransition transition, WindowOverlayManager manager)
+            : base(manager.Name) {
+            mManager = manager;
             mTransition = transition;
 
-            mFrom = transition.From[window.Name];
-            mTo = transition.To[window.Name];
+            mFrom = transition.From[manager.Name];
+            mTo = transition.To[manager.Name];
         }
 
         public StateTransition StateTransition {

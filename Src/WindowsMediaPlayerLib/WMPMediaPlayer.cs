@@ -5,7 +5,6 @@ using System.Text;
 using AxWMPLib;
 using System.Windows.Forms;
 using Chimera.Interfaces;
-using Chimera.Overlay;
 using System.Drawing;
 using System.Threading;
 
@@ -26,7 +25,8 @@ namespace Chimera.Multimedia {
                 }
                 return sVideoPlayer;
             }
-        }
+        }
+
         private static void videoPlayer_PlayStateChange(object source, _WMPOCXEvents_PlayStateChangeEvent args) {
             if (args.newState == 1 && sPlaybackFinished != null) {
                 sVideoPlayer.Visible = false;

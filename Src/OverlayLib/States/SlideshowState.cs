@@ -121,9 +121,9 @@ namespace Chimera.Overlay.States {
             }
         }
 
-        public override IWindowState CreateWindowState(Window window) {
+        public override IWindowState CreateWindowState(WindowOverlayManager manager) {
             IImageTransition trans = mTransition.Create(mFadeLengthMS);
-            SlideshowWindow windowState = new SlideshowWindow(window.OverlayManager, mFolder, trans);
+            SlideshowWindow windowState = new SlideshowWindow(manager, mFolder, trans);
             /*
             if (mNext is IDrawable) {
                 IDrawable next = mNext as IDrawable;

@@ -29,8 +29,6 @@ using System.Reflection;
 using Chimera.Interfaces;
 using System.IO;
 using System.Threading;
-using Chimera.Overlay;
-using Chimera.Util;
 using Chimera.Config;
 
 namespace Chimera {
@@ -168,10 +166,6 @@ namespace Chimera {
         /// The windows which define where, in real space, each 'view' onto the virtual space is located.
         /// </summary>
         private readonly List<Window> mWindows = new List<Window>();
-        /// <summary>
-        /// The state manager which will control what state the overlay is in.
-        /// </summary>
-        private readonly StateManager mStateManager;
 
         /// <summary>
         /// File to log information about any crash to.
@@ -253,7 +247,6 @@ namespace Chimera {
             mServer = new StatisticsServer(this);
 
             mConfig = new CoordinatorConfig();
-            mStateManager = new StateManager(this);
 
             mPlugins = new List<ISystemPlugin>(plugins);
             mOrientation = new Rotation(mRotationLock, mConfig.Pitch, mConfig.Yaw);
@@ -406,13 +399,6 @@ namespace Chimera {
         }
 
         /// <summary>
-        /// The manager which controls the state of the overlay.
-        /// </summary>
-        public StateManager StateManager {
-            get { return mStateManager; }
-        }
-
-        /// <summary>
         /// Object which will supply information about how long ticks are taking.
         /// </summary>
         public TickStatistics Statistics {
@@ -548,8 +534,6 @@ namespace Chimera {
             }
             foreach (var window in mWindows)
                 window.Close();
-
-            StateManager.Dump(reason);
 
             if (Closed != null)
                 Closed(this, null);

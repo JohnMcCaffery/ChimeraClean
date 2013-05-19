@@ -10,8 +10,8 @@ namespace Chimera.Overlay.States {
             : base(name, manager) {
         }
 
-        public override IWindowState CreateWindowState(Window window) {
-            return new WindowState(window.OverlayManager);
+        public override IWindowState CreateWindowState(WindowOverlayManager manager) {
+            return new WindowState(manager);
         }
 
         public override void TransitionToStart() {

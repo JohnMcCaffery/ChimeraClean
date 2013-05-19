@@ -64,6 +64,7 @@ namespace Chimera.Kinect {
         private bool mListening;
 
         private WindowOverlayManager mManager;
+        private StateManager mStateManager;
 
         public Vector Anchor { get { return mAnchor; } }
         public Vector HandR { get { return mHandR; } }
@@ -91,8 +92,10 @@ namespace Chimera.Kinect {
         private static readonly int ANCHOR_SMOOTHING_FRAMES = 15;
         private static readonly int ANCHOR = Nui.Hip_Centre;
 
-        public SimpleKinectCursor() 
+        public SimpleKinectCursor(StateManager manager) 
             : this (false) {
+
+            mStateManager = manager;
         }
         public SimpleKinectCursor(bool test) {
             mSmoothingFactor = Scalar.Create(HAND_SMOOTHING_FRAMES);
@@ -230,7 +233,7 @@ namespace Chimera.Kinect {
         }
 
         private void coordinator_WindowAdded(Window window, EventArgs args) {
-            mManager = window.OverlayManager;
+            mManager = mStateManager[window.Name];
             window.Coordinator.WindowAdded -= mWindowAddedListener;
         }
 

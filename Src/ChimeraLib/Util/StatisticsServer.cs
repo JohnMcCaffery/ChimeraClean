@@ -74,8 +74,8 @@ namespace Chimera.Util {
 
             Console.WriteLine("Received: " + str);
 
-            byte[] outBuff = Encoding.ASCII.GetBytes(mCoordinator.StateManager.Statistics);
-            stream.Write(outBuff, 0, outBuff.Length);
+            //byte[] outBuff = Encoding.ASCII.GetBytes(mCoordinator.StateManager.Statistics);
+            //stream.Write(outBuff, 0, outBuff.Length);
         }
     }
 }

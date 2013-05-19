@@ -124,21 +124,21 @@ namespace Chimera.Overlay {
         public static WindowOverlayManager GetManager(StateManager manager, XmlNode node, string request) {
             WindowOverlayManager mManager;
             if (node == null) {
-                mManager = manager.Coordinator.Windows[0].OverlayManager;
+                mManager = manager[0];
                 Console.WriteLine("No node specified when looking up window for " + request + ". Using " + mManager.Window.Name + " as default.");
                 return mManager;
             }
             XmlAttribute windowAttr = node.Attributes["Window"];
             if (windowAttr == null) {
-                mManager = manager.Coordinator.Windows[0].OverlayManager;
+                mManager = manager[0];
                 Console.WriteLine("No window specified whilst resolving " + node.Name + ". Using " + mManager.Window.Name + " as default.");
             } else {
                 Window window = manager.Coordinator.Windows.FirstOrDefault(w => w.Name == windowAttr.Value);
                 if (windowAttr == null) {
-                    mManager = manager.Coordinator.Windows[0].OverlayManager;
+                    mManager = manager[0];
                     Console.WriteLine(windowAttr.Value + " is not a known window. Using " + mManager.Window.Name + " as default.");
                 } else
-                    mManager = manager.Coordinator[windowAttr.Value].OverlayManager;
+                    mManager = manager[windowAttr.Value];
             }
             return mManager;
         }
