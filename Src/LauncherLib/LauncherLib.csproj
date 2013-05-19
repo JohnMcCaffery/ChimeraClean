@@ -80,13 +80,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ExampleOverlayLauncher.cs" />
-    <Compile Include="FlythroughLauncher.cs" />
     <Compile Include="Launcher.cs" />
-    <Compile Include="MinimumLauncher.cs" />
     <Compile Include="LaunchConfig.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="XmlOverlayLauncher.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

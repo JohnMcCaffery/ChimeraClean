@@ -48,7 +48,7 @@ using Ninject.Extensions.Xml;
 using Chimera.Interfaces;
 
 namespace Chimera.Launcher {
-    public abstract class Launcher {
+    public class Launcher {
         private readonly List<Window> mWindows = new List<Window>();
         private readonly Coordinator mCoordinator;
         private LauncherConfig mConfig;
@@ -93,158 +93,11 @@ namespace Chimera.Launcher {
 
             if (mConfig.InterfaceMode != StateManager.CLICK_MODE)
                 mRenderer = new DialCursorRenderer();
-
-            /*
-            if (mConfig.InitOverlay) {
-                InitOverlay();
-                State home = mCoordinator.StateManager.States.FirstOrDefault(s => s.Name == mConfig.HomeState);
-                if (mConfig.IdleState != "None") {
-                    Coordinator.StateManager.IdleEnabled = true;
-                    State idle = mCoordinator.StateManager.States.FirstOrDefault(s => s.Name == mConfig.IdleState);
-                    if (idle != null && home != null)
-                        InitIdle(idle, home, new OpacityFadeInWindowTransitionFactory(mConfig.IdleFadeTime), new OpacityFadeOutWindowTransitionFactory(mConfig.IdleFadeTime), mConfig.IdleTimeoutMs);
-                    else
-                        Console.WriteLine("Unable to create idle state. The idle state specified (" + mConfig.IdleState + ") was not found.");
-                }
-
-                if (home != null)
-                    mCoordinator.StateManager.CurrentState = home;
-            }
-            */
         }
 
-        protected virtual Window[] GetWindows() {
-            return mWindows.ToArray();
-        }
-
-        protected virtual ISystemPlugin[] GetInputs() {
-            List<ISystemPlugin> plugins = new List<ISystemPlugin>();
-            //Control
-            //if (Config.InterfaceMode == StateManager.CLICK_MODE)
-                //plugins.Add(new TouchscreenPlugin());
-            plugins.Add(new KBMousePlugin());
-            plugins.Add(new XBoxControllerPlugin());
-            if (mFirstWindowOutput is ISystemPlugin)
-                plugins.Add(mFirstWindowOutput as ISystemPlugin);
-
-            //Flythrough
-            plugins.Add(new FlythroughPlugin());
-
-            //Overlay
-            plugins.Add(new MousePlugin());
-
-            //Heightmap
-            plugins.Add(new HeightmapPlugin());
-
-            //Projectors
-            plugins.Add(new ProjectorPlugin());
-
-            //Kinect
-            if (Config.InterfaceMode != StateManager.CLICK_MODE) {
-                plugins.Add(new KinectCamera());
-                plugins.Add(new KinectMovementPlugin());
-                plugins.Add(new SimpleKinectCursor());
-                plugins.Add(new RaiseArmHelpTrigger());
-            }
-
-            return plugins.ToArray();
-        }
-
-        protected abstract void InitOverlay();
-
-        /*
-        protected void InvisTrans(State from, State to, Point topLeft, Point bottomRight, Rectangle clip, Window window, IWindowTransitionFactory transition) {
-            ITrigger trigger  = InvisTrigger(topLeft, bottomRight, clip, window);
-            StateTransition splashExploreTransition = new StateTransition(window.Coordinator.StateManager, from, to, trigger, transition);
-            from.AddTransition(splashExploreTransition);
-        }
-
-        protected void ImgTrans(State from, State to, string image, float x, float y, Window window, IWindowTransitionFactory transition) {
-            ImgTrans(from, to, image, x, y, -1f, window, transition);
-        }
-        protected void ImgTrans(State from, State to, string image, float x, float y, float w, Window window, IWindowTransitionFactory transition) {
-            ITrigger trigger = ImgTrigger(window, image, x, y, w);
-            StateTransition splashExploreTransition = new StateTransition(window.Coordinator.StateManager, from, to, trigger, transition);
-            from.AddTransition(splashExploreTransition);
-        }
-
-        protected void TxtTrans(State from, State to, string text, float x, float y, Font font, Color colour, Rectangle clip, Window window, IHoverSelectorRenderer renderer, IWindowTransitionFactory transition) {
-            Text txt = new StaticText(text, window.OverlayManager, font, colour, new PointF(x, y));
-            ITrigger trigger = TxtTrigger(text, x, y, font, colour, clip, window);
-            StateTransition splashExploreTransition = new StateTransition(window.Coordinator.StateManager, from, to, trigger, transition);
-            from.AddTransition(splashExploreTransition);
-        }
-
-        protected void InitIdle(State idle, State home, IWindowTransitionFactory fadeInTransition, IWindowTransitionFactory fadeOutTransition, int timeout) {
-            List<ITrigger> inactiveTriggers = new List<ITrigger>();
-            List<ITrigger> activeTriggers = new List<ITrigger>();
-
-            if (Config.InterfaceMode != StateManager.CLICK_MODE) {
-                activeTriggers.Add(new SkeletonFoundTrigger());
-                inactiveTriggers.Add(new SkeletonLostTrigger(Coordinator, timeout));
-            }
-            if (Coordinator.HasPlugin<XBoxControllerPlugin>()) {
-                activeTriggers.Add(new JoystickActivatedTrigger(Coordinator));
-                inactiveTriggers.Add(new JoystickInactiveTrigger(timeout, Coordinator));
-            }
-
-            /*
-            foreach (var inactiveTrigger in inactiveTriggers) {
-                foreach (var state in Coordinator.StateManager.States) {
-                    if (state != idle) {
-                        StateTransition trans = new StateTransition(Coordinator.StateManager, state, idle, inactiveTrigger, fadeOutTransition);
-                        state.AddTransition(trans);
-                    }
-                }
-            }
-
-            foreach (var activeTrigger in activeTriggers) {
-                StateTransition back = new StateTransition(Coordinator.StateManager, idle, home, activeTrigger, fadeInTransition);
-                idle.AddTransition(back);
-            }
-        }
-
-        protected ITrigger ImgTrigger(Window window, string image, float x, float y) {
-            return ImgTrigger(window, image, x, y, -1f);
-        }
-        protected ITrigger ImgTrigger(Window window, string image, float x, float y, float w) {
-            OverlayImage img = new OverlayImage(new Bitmap(Path.Combine(mButtonFolder, image + ".png")), x, y, w, window.Name);
-            return mConfig.InterfaceMode == StateManager.CLICK_MODE ? 
-                (ITrigger) new ImageClickTrigger(window.OverlayManager, img) :
-                (ITrigger) new ImageHoverTrigger(window.OverlayManager, mRenderer, img);
-        }
-
-        protected ITrigger InvisTrigger(Point topLeft, Point bottomRight, Rectangle clip, Window window) {
-            return mConfig.InterfaceMode == StateManager.CLICK_MODE ?
-                (ITrigger) new ClickTrigger(window.OverlayManager, topLeft.X, topLeft.Y, bottomRight.X - topLeft.X, bottomRight.Y - topLeft.Y, clip) :
-                (ITrigger) new HoverTrigger(
-                window.OverlayManager, 
-                mRenderer, 
-                topLeft.X, 
-                topLeft.Y, 
-                bottomRight.X - topLeft.X, 
-                bottomRight.Y - topLeft.Y, 
-                clip);
-        }
-
-        protected ITrigger TxtTrigger(string text, float x, float y, Font font, Color colour, Rectangle clip, Window window) {
-            Text txt = new StaticText(text, window.OverlayManager, font, colour, new PointF(x, y));
-            return mConfig.InterfaceMode == StateManager.CLICK_MODE ?
-                (ITrigger) new TextClickTrigger(window.OverlayManager, txt, clip) :
-                (ITrigger) new TextHoverTrigger(window.OverlayManager, mRenderer, txt, clip);
-        }
-        */
 
         public static Launcher Create() {
-            //Assembly ass = typeof(Launcher).Assembly;
-            //return (Launcher) ass.CreateInstance(new LauncherConfig().Launcher);
-            switch (new LauncherConfig().Launcher) {
-                case "Chimera.Launcher.ExampleOverlayLauncher": return new ExampleOverlayLauncher();
-                case "Chimera.Launcher.FlythroughLauncher": return new FlythroughLauncher();
-                case "Chimera.Launcher.XmlOverlayLauncher": return new XmlOverlayLauncher();
-            }
-
-            return new MinimumLauncher();
+            return new Launcher();
         }
 
         public void Launch() {
