@@ -25,6 +25,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using Chimera.Interfaces.Overlay;
 using System.Xml;
+using System.Threading;
 
 namespace Chimera.Overlay.Triggers {
     public class HoverTriggerFactory : ITriggerFactory {
@@ -165,7 +166,7 @@ namespace Chimera.Overlay.Triggers {
 
                 if (!mTriggered && DateTime.Now.Subtract(mHoverStart).TotalMilliseconds > mSelectTimeMS) {
                     if (Triggered != null)
-                        Triggered();
+                        new Thread(() => Triggered()).Start();
                     mTriggered = true;
                     mHovering = false;
                     mRenderer.Clear();
