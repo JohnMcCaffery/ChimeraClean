@@ -20,6 +20,9 @@ namespace Chimera.Overlay.States {
     public class VideoStateFactory : IStateFactory {
         private IMediaPlayer mPlayer;
 
+        public VideoStateFactory() {
+            throw new Exception("Unable to load VideoState factory. No MediaPlayer supplied.");
+        }
         public VideoStateFactory(IMediaPlayer player) {
             mPlayer = player;
         }

@@ -44,7 +44,7 @@
         </Triggers>
 
         <Steps>
-          <Step Step="0">
+          <Step Step="0" Voiceover="C:\Users\Iain\Music\An Awesome Wave (converted)\01 Intro.m4a">
             <Image File="../Images/Example/SlideshowImg1.png" X="700" Y="50"/>
             <Subtitles>
               <Subtitle>First Subtitle</Subtitle>
@@ -53,6 +53,8 @@
           </Step>
           <Step Step="2">
             <Image File="../Images/Example/SlideshowImg3.png" X="600" Y="100"/>
+          </Step>
+          <Step Step="3" Voiceover="C:\Users\Iain\Music\An Awesome Wave (converted)\10 Fitzpleasure.m4a">
           </Step>
         </Steps>
       </State>
