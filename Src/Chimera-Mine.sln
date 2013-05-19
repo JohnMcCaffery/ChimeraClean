@@ -22,10 +22,10 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Config", "Config", "{AD5F2EE2-5D80-4DC5-924F-C5636B2103E4}"
 	ProjectSection(SolutionItems) = preProject
 		..\Config\ExampleRoom.xml = ..\Config\ExampleRoom.xml
+		..\Config\FullSetup.xml = ..\Config\FullSetup.xml
 		..\Config\Heightmap.ini = ..\Config\Heightmap.ini
 		..\Config\Kinect.ini = ..\Config\Kinect.ini
 		..\Config\Launch.ini = ..\Config\Launch.ini
-		..\Config\Main.ini = ..\Config\Main.ini
 		..\Config\OpenSim.ini = ..\Config\OpenSim.ini
 		..\Config\Overlay.ini = ..\Config\Overlay.ini
 		..\Config\OverlayNone.ini = ..\Config\OverlayNone.ini
@@ -44,6 +44,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Overlays", "Overlays", "{AA
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsMediaPlayerLib", "WindowsMediaPlayerLib\WindowsMediaPlayerLib.csproj", "{ED985A0A-C964-494D-88BB-E78ACE4F13D1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OverlayLib", "OverlayLib\OverlayLib.csproj", "{F1421BBF-6313-4C3D-9AF4-1898528728D0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -395,6 +397,34 @@ Global
 		{ED985A0A-C964-494D-88BB-E78ACE4F13D1}.ReleaseVisual|x64.ActiveCfg = Release|x86
 		{ED985A0A-C964-494D-88BB-E78ACE4F13D1}.ReleaseVisual|x86.ActiveCfg = Release|x86
 		{ED985A0A-C964-494D-88BB-E78ACE4F13D1}.ReleaseVisual|x86.Build.0 = Release|x86
+		{F1421BBF-6313-4C3D-9AF4-1898528728D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F1421BBF-6313-4C3D-9AF4-1898528728D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F1421BBF-6313-4C3D-9AF4-1898528728D0}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{F1421BBF-6313-4C3D-9AF4-1898528728D0}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{F1421BBF-6313-4C3D-9AF4-1898528728D0}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{F1421BBF-6313-4C3D-9AF4-1898528728D0}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{F1421BBF-6313-4C3D-9AF4-1898528728D0}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{F1421BBF-6313-4C3D-9AF4-1898528728D0}.DebugVisual|Any CPU.ActiveCfg = Debug|Any CPU
+		{F1421BBF-6313-4C3D-9AF4-1898528728D0}.DebugVisual|Any CPU.Build.0 = Debug|Any CPU
+		{F1421BBF-6313-4C3D-9AF4-1898528728D0}.DebugVisual|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{F1421BBF-6313-4C3D-9AF4-1898528728D0}.DebugVisual|Mixed Platforms.Build.0 = Debug|Any CPU
+		{F1421BBF-6313-4C3D-9AF4-1898528728D0}.DebugVisual|Win32.ActiveCfg = Debug|Any CPU
+		{F1421BBF-6313-4C3D-9AF4-1898528728D0}.DebugVisual|x64.ActiveCfg = Debug|Any CPU
+		{F1421BBF-6313-4C3D-9AF4-1898528728D0}.DebugVisual|x86.ActiveCfg = Debug|Any CPU
+		{F1421BBF-6313-4C3D-9AF4-1898528728D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F1421BBF-6313-4C3D-9AF4-1898528728D0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F1421BBF-6313-4C3D-9AF4-1898528728D0}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{F1421BBF-6313-4C3D-9AF4-1898528728D0}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{F1421BBF-6313-4C3D-9AF4-1898528728D0}.Release|Win32.ActiveCfg = Release|Any CPU
+		{F1421BBF-6313-4C3D-9AF4-1898528728D0}.Release|x64.ActiveCfg = Release|Any CPU
+		{F1421BBF-6313-4C3D-9AF4-1898528728D0}.Release|x86.ActiveCfg = Release|Any CPU
+		{F1421BBF-6313-4C3D-9AF4-1898528728D0}.ReleaseVisual|Any CPU.ActiveCfg = Release|Any CPU
+		{F1421BBF-6313-4C3D-9AF4-1898528728D0}.ReleaseVisual|Any CPU.Build.0 = Release|Any CPU
+		{F1421BBF-6313-4C3D-9AF4-1898528728D0}.ReleaseVisual|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{F1421BBF-6313-4C3D-9AF4-1898528728D0}.ReleaseVisual|Mixed Platforms.Build.0 = Release|Any CPU
+		{F1421BBF-6313-4C3D-9AF4-1898528728D0}.ReleaseVisual|Win32.ActiveCfg = Release|Any CPU
+		{F1421BBF-6313-4C3D-9AF4-1898528728D0}.ReleaseVisual|x64.ActiveCfg = Release|Any CPU
+		{F1421BBF-6313-4C3D-9AF4-1898528728D0}.ReleaseVisual|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

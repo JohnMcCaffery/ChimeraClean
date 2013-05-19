@@ -25,7 +25,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using Chimera.Core;
+using Chimera.Plugins;
 
 namespace Chimera.GUI.Controls {
     public partial class WindowPanel : UserControl {
@@ -80,7 +80,6 @@ namespace Chimera.GUI.Controls {
                 launchOverlayButton.Text =  "Close Overlay";
             }
 
-            projectorPanel.Projector = mWindow.Projector;
             mWindow_Changed(window, null);
         }
 
@@ -241,16 +240,6 @@ namespace Chimera.GUI.Controls {
                 mWindow.AspectRatio = (float)decimal.ToDouble(aspectRatioValue.Value);
         }
 
-        private void aspectRatioHValue_ValueChanged(object sender, EventArgs e) {
-            if (!mMassUpdated)
-                aspectRatioValue.Value = aspectRatioWValue.Value / aspectRatioHValue.Value;
-        }
-
-        private void aspectRatioWValue_ValueChanged(object sender, EventArgs e) {
-            if (!mMassUpdated)
-                aspectRatioValue.Value = aspectRatioWValue.Value / aspectRatioHValue.Value;
-        }
-
         private void fovHPanel_ValueChanged(float obj) {
             if (!mMassUpdated)
                 mWindow.HFieldOfView = fovHPanel.Value * (Math.PI / 180.0);
@@ -282,7 +271,10 @@ namespace Chimera.GUI.Controls {
 
         private void drawEyeCheck_CheckedChanged(object sender, EventArgs e) {
             mWindow.DrawEye = drawEyeCheck.Checked;
-            mWindow.Projector.Redraw();
+        }
+
+        private void aspectRatioButton_Click(object sender, EventArgs e) {
+            mWindow.AspectRatio = decimal.ToDouble(aspectRatioHValue.Value / aspectRatioWValue.Value);
         }
     }
 }

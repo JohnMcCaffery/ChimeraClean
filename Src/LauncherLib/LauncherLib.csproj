@@ -24,6 +24,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>SecurityRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -37,9 +38,23 @@
   <PropertyGroup>
     <StartupObject />
   </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="log4net">
       <HintPath>..\..\..\libopenmetaverse\bin\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Ninject, Version=3.0.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\ninject\build\release\Ninject.dll</HintPath>
+    </Reference>
+    <Reference Include="Ninject.Extensions.Xml">
+      <HintPath>..\..\..\ninject.extensions.xml\build\release\Ninject.Extensions.Xml.dll</HintPath>
     </Reference>
     <Reference Include="NuiLib-DotNet">
       <HintPath>..\..\Lib\NuiLib-DotNet.dll</HintPath>
@@ -112,6 +127,10 @@
     <ProjectReference Include="..\OpenSimLib\OpenSimLib.csproj">
       <Project>{D1978D10-E5B0-40F9-BDB7-11BF03C7A6CB}</Project>
       <Name>OpenSimLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OverlayLib\OverlayLib.csproj">
+      <Project>{F1421BBF-6313-4C3D-9AF4-1898528728D0}</Project>
+      <Name>OverlayLib</Name>
     </ProjectReference>
     <ProjectReference Include="..\TouchscreenLib\TouchscreenLib.csproj">
       <Project>{7780A366-F9CE-4E9F-8C91-0763F73A3A8A}</Project>

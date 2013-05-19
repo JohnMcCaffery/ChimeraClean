@@ -95,12 +95,8 @@ namespace Chimera.Kinect {
         }
 
         void mTrigger_OnChange() {
-            if (mEnabled && mTrigger.Value) {
-                mCoordinator.StateManager.TriggerCustom("Help");
-                if (Triggered != null)
-                    Triggered(this);
-            }
-
+            if (mEnabled && mTrigger.Value && Triggered != null)
+                Triggered(this);
         }
 
         #region IPlugin Members

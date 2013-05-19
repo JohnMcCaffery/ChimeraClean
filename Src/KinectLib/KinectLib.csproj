@@ -116,7 +116,6 @@
       <DependentUpon>KinectCamera.cs</DependentUpon>
     </Compile>
     <Compile Include="Axes\LeanAxis.cs" />
-    <Compile Include="Overlay\KinectHelpState.cs" />
     <Compile Include="Overlay\SkeletonFoundTrigger.cs" />
     <Compile Include="Overlay\KinectControlState.cs" />
     <Compile Include="Overlay\KinectControlWindowState.cs" />

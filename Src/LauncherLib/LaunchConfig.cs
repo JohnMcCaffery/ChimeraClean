@@ -20,6 +20,10 @@ namespace Chimera.Launcher {
         public bool GUI;
         public double IdleFadeTime;
 
+        public bool BackwardsCompatible;
+        public string Windows;
+        public String BindingsFile;
+
         public override string Group {
             get { return "Launch"; }
         }
@@ -41,6 +45,10 @@ namespace Chimera.Launcher {
             ButtonFolder = Get(true, "ButtonFolder", "../Images/", "The folder where all button images are kept.");
 
             GUI = Get(true, "GUI", true, "Whether to launch the GUI when the system starts.");
+
+            Windows = Get(true, "Windows", "MainWindow", "The name of all the windows to load, separated by commas.");
+
+            BindingsFile = Get(true, "BindingsFile", "../Config/FullSetup.xml", "The XML file describing the dependency injection bindings used to instantiate the system.");
         }
     }
 }

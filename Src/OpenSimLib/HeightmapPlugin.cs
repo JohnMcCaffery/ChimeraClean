@@ -132,7 +132,7 @@ namespace Chimera.OpenSim {
                 return;
             Thread t = new Thread(() => {
                 string startLocation = NetworkManager.StartLocation(mConfig.StartIsland, (int)mConfig.StartLocation.X, (int)mConfig.StartLocation.Y, (int)mConfig.StartLocation.Z);
-                Client.Settings.LOGIN_SERVER = new ProxyConfig().ProxyLoginURI;
+                Client.Settings.LOGIN_SERVER = new ViewerConfig().ProxyLoginURI;
                 Client.Terrain.LandPatchReceived += Terrain_LandPatchReceived;
                 Client.Network.LoggedOut += Network_LoggedOut;
                 if (Client.Network.Login(mConfig.FirstName, mConfig.LastName, mConfig.Password, "Monitor", startLocation, "1.0")) {

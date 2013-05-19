@@ -42,15 +42,24 @@ using System.Reflection;
 using Chimera.Util;
 using System.Threading;
 using Joystick.Overlay;
+using Ninject;
+using Ninject.Parameters;
+using Ninject.Extensions.Xml;
+using Chimera.Interfaces;
 
 namespace Chimera.Launcher {
     public abstract class Launcher {
+        private readonly List<Window> mWindows = new List<Window>();
         private readonly Coordinator mCoordinator;
         private LauncherConfig mConfig;
         private CoordinatorForm mForm;
         private IHoverSelectorRenderer mRenderer;
         private string mButtonFolder = "../Images/Examples/";
-        protected SetWindowViewerOutput mMainWindowProxy = new SetWindowViewerOutput("MainWindow");
+        protected IOutput mFirstWindowOutput;
+
+        protected IOutput MakeOutput(string name) {
+            return new OpenSimController();
+        }
 
         public Coordinator Coordinator {
             get { return mCoordinator; }
@@ -68,7 +77,18 @@ namespace Chimera.Launcher {
 
         public Launcher(params string[] args) {
             mConfig = new LauncherConfig(args);
-            mCoordinator = new Coordinator(GetWindows(), GetInputs());
+
+            var settings = new NinjectSettings { LoadExtensions = false };
+            IKernel k = new StandardKernel(settings, new XmlExtensionModule());
+            k.Load(mConfig.BindingsFile);
+
+            mCoordinator = k.Get<Coordinator>();
+            IOutputFactory outputFactory = k.Get<IOutputFactory>();
+
+            foreach (string windowName in mConfig.Windows.Split(',')) {
+                Coordinator.AddWindow(new Window(windowName, outputFactory.Create()));
+            }
+
             mButtonFolder = Path.GetFullPath(mConfig.ButtonFolder);
 
             if (mConfig.InterfaceMode != StateManager.CLICK_MODE)
@@ -92,7 +112,7 @@ namespace Chimera.Launcher {
         }
 
         protected virtual Window[] GetWindows() {
-            return new Window[] { new Window("MainWindow", mMainWindowProxy)};
+            return mWindows.ToArray();
         }
 
         protected virtual ISystemPlugin[] GetInputs() {
@@ -102,7 +122,8 @@ namespace Chimera.Launcher {
                 //plugins.Add(new TouchscreenPlugin());
             plugins.Add(new KBMousePlugin());
             plugins.Add(new XBoxControllerPlugin());
-            plugins.Add(mMainWindowProxy);
+            if (mFirstWindowOutput is ISystemPlugin)
+                plugins.Add(mFirstWindowOutput as ISystemPlugin);
 
             //Flythrough
             plugins.Add(new FlythroughPlugin());
@@ -112,6 +133,9 @@ namespace Chimera.Launcher {
 
             //Heightmap
             plugins.Add(new HeightmapPlugin());
+
+            //Projectors
+            plugins.Add(new ProjectorPlugin());
 
             //Kinect
             if (Config.InterfaceMode != StateManager.CLICK_MODE) {

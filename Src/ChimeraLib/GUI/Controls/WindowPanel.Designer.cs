@@ -17,6 +17,7 @@ You should have received a copy of the GNU General Public License
 along with Chimera.  If not, see <http://www.gnu.org/licenses/>.
 
 **************************************************************************/
+using Chimera.GUI.Controls.Plugins;
 namespace Chimera.GUI.Controls {
     partial class WindowPanel {
         /// <summary> 
@@ -48,30 +49,41 @@ namespace Chimera.GUI.Controls {
             this.configTab = new System.Windows.Forms.TabPage();
             this.restartButton = new System.Windows.Forms.Button();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.aspectRatioButton = new System.Windows.Forms.Button();
             this.drawEyeCheck = new System.Windows.Forms.CheckBox();
+            this.diagonalPanel = new Chimera.GUI.ScalarPanel();
             this.label12 = new System.Windows.Forms.Label();
             this.linkFOVCheck = new System.Windows.Forms.CheckBox();
             this.anchorBox = new System.Windows.Forms.GroupBox();
             this.centreAnchorButton = new System.Windows.Forms.RadioButton();
             this.topLeftAnchorButton = new System.Windows.Forms.RadioButton();
+            this.widthPanel = new Chimera.GUI.ScalarPanel();
             this.projectionGroup = new System.Windows.Forms.GroupBox();
             this.calculatedProjectionButton = new System.Windows.Forms.RadioButton();
             this.simpleProjectionButton = new System.Windows.Forms.RadioButton();
             this.label11 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.monitorPulldown = new System.Windows.Forms.ComboBox();
+            this.heightPanel = new Chimera.GUI.ScalarPanel();
             this.label10 = new System.Windows.Forms.Label();
+            this.fovVPanel = new Chimera.GUI.ScalarPanel();
+            this.distancePanel = new Chimera.GUI.ScalarPanel();
             this.label6 = new System.Windows.Forms.Label();
+            this.skewHPanel = new Chimera.GUI.ScalarPanel();
             this.label2 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
+            this.vSkewPanel = new Chimera.GUI.ScalarPanel();
             this.aspectRatioWValue = new System.Windows.Forms.NumericUpDown();
             this.label9 = new System.Windows.Forms.Label();
             this.aspectRatioValue = new System.Windows.Forms.NumericUpDown();
+            this.fovHPanel = new Chimera.GUI.ScalarPanel();
             this.aspectRatioHValue = new System.Windows.Forms.NumericUpDown();
             this.label4 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
+            this.orientationPanel = new Chimera.GUI.RotationPanel();
+            this.centrePanel = new Chimera.GUI.VectorPanel();
+            this.topLeftPanel = new Chimera.GUI.VectorPanel();
             this.overlayTab = new System.Windows.Forms.TabPage();
             this.tickCountLabel = new System.Windows.Forms.Label();
             this.shortestWorkLabel = new System.Windows.Forms.Label();
@@ -85,19 +97,6 @@ namespace Chimera.GUI.Controls {
             this.bringToFrontButtin = new System.Windows.Forms.Button();
             this.fullscreenCheck = new System.Windows.Forms.CheckBox();
             this.launchOverlayButton = new System.Windows.Forms.Button();
-            this.projectorTab = new System.Windows.Forms.TabPage();
-            this.diagonalPanel = new Chimera.GUI.ScalarPanel();
-            this.widthPanel = new Chimera.GUI.ScalarPanel();
-            this.heightPanel = new Chimera.GUI.ScalarPanel();
-            this.fovVPanel = new Chimera.GUI.ScalarPanel();
-            this.distancePanel = new Chimera.GUI.ScalarPanel();
-            this.skewHPanel = new Chimera.GUI.ScalarPanel();
-            this.vSkewPanel = new Chimera.GUI.ScalarPanel();
-            this.fovHPanel = new Chimera.GUI.ScalarPanel();
-            this.orientationPanel = new Chimera.GUI.RotationPanel();
-            this.centrePanel = new Chimera.GUI.VectorPanel();
-            this.topLeftPanel = new Chimera.GUI.VectorPanel();
-            this.projectorPanel = new Chimera.GUI.Controls.ProjectorPanel();
             this.mainTab.SuspendLayout();
             this.configTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -110,14 +109,12 @@ namespace Chimera.GUI.Controls {
             ((System.ComponentModel.ISupportInitialize)(this.aspectRatioValue)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.aspectRatioHValue)).BeginInit();
             this.overlayTab.SuspendLayout();
-            this.projectorTab.SuspendLayout();
             this.SuspendLayout();
             // 
             // mainTab
             // 
             this.mainTab.Controls.Add(this.configTab);
             this.mainTab.Controls.Add(this.overlayTab);
-            this.mainTab.Controls.Add(this.projectorTab);
             this.mainTab.Dock = System.Windows.Forms.DockStyle.Fill;
             this.mainTab.Location = new System.Drawing.Point(0, 0);
             this.mainTab.Name = "mainTab";
@@ -141,9 +138,9 @@ namespace Chimera.GUI.Controls {
             // 
             // restartButton
             // 
-            this.restartButton.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.restartButton.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.restartButton.BackColor = System.Drawing.Color.Red;
             this.restartButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 27.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.restartButton.Location = new System.Drawing.Point(3, 313);
@@ -156,14 +153,15 @@ namespace Chimera.GUI.Controls {
             // 
             // splitContainer1
             // 
-            this.splitContainer1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.splitContainer1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.splitContainer1.FixedPanel = System.Windows.Forms.FixedPanel.Panel2;
             this.splitContainer1.Location = new System.Drawing.Point(3, 0);
             this.splitContainer1.Name = "splitContainer1";
             // 
             // splitContainer1.Panel1
             // 
+            this.splitContainer1.Panel1.Controls.Add(this.aspectRatioButton);
             this.splitContainer1.Panel1.Controls.Add(this.drawEyeCheck);
             this.splitContainer1.Panel1.Controls.Add(this.diagonalPanel);
             this.splitContainer1.Panel1.Controls.Add(this.label12);
@@ -190,7 +188,6 @@ namespace Chimera.GUI.Controls {
             this.splitContainer1.Panel1.Controls.Add(this.fovHPanel);
             this.splitContainer1.Panel1.Controls.Add(this.aspectRatioHValue);
             this.splitContainer1.Panel1.Controls.Add(this.label4);
-            this.splitContainer1.Panel1.Controls.Add(this.label7);
             this.splitContainer1.Panel1.Controls.Add(this.label8);
             // 
             // splitContainer1.Panel2
@@ -202,6 +199,16 @@ namespace Chimera.GUI.Controls {
             this.splitContainer1.SplitterDistance = 465;
             this.splitContainer1.TabIndex = 8;
             // 
+            // aspectRatioButton
+            // 
+            this.aspectRatioButton.Location = new System.Drawing.Point(193, 186);
+            this.aspectRatioButton.Name = "aspectRatioButton";
+            this.aspectRatioButton.Size = new System.Drawing.Size(39, 23);
+            this.aspectRatioButton.TabIndex = 38;
+            this.aspectRatioButton.Text = "=";
+            this.aspectRatioButton.UseVisualStyleBackColor = true;
+            this.aspectRatioButton.Click += new System.EventHandler(this.aspectRatioButton_Click);
+            // 
             // drawEyeCheck
             // 
             this.drawEyeCheck.AutoSize = true;
@@ -212,6 +219,20 @@ namespace Chimera.GUI.Controls {
             this.drawEyeCheck.Text = "Draw Eye";
             this.drawEyeCheck.UseVisualStyleBackColor = true;
             this.drawEyeCheck.CheckedChanged += new System.EventHandler(this.drawEyeCheck_CheckedChanged);
+            // 
+            // diagonalPanel
+            // 
+            this.diagonalPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.diagonalPanel.Location = new System.Drawing.Point(78, 163);
+            this.diagonalPanel.Max = 500F;
+            this.diagonalPanel.Min = 0F;
+            this.diagonalPanel.MinimumSize = new System.Drawing.Size(95, 20);
+            this.diagonalPanel.Name = "diagonalPanel";
+            this.diagonalPanel.Size = new System.Drawing.Size(382, 20);
+            this.diagonalPanel.TabIndex = 35;
+            this.diagonalPanel.Value = 0F;
+            this.diagonalPanel.ValueChanged += new System.Action<float>(this.diagonalPanel_ValueChanged);
             // 
             // label12
             // 
@@ -270,6 +291,20 @@ namespace Chimera.GUI.Controls {
             this.topLeftAnchorButton.UseVisualStyleBackColor = true;
             this.topLeftAnchorButton.CheckedChanged += new System.EventHandler(this.AnchorButton_CheckedChanged);
             // 
+            // widthPanel
+            // 
+            this.widthPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.widthPanel.Location = new System.Drawing.Point(78, 111);
+            this.widthPanel.Max = 500F;
+            this.widthPanel.Min = 1F;
+            this.widthPanel.MinimumSize = new System.Drawing.Size(95, 20);
+            this.widthPanel.Name = "widthPanel";
+            this.widthPanel.Size = new System.Drawing.Size(382, 20);
+            this.widthPanel.TabIndex = 2;
+            this.widthPanel.Value = 1F;
+            this.widthPanel.ValueChanged += new System.Action<float>(this.widthPanel_Changed);
+            // 
             // projectionGroup
             // 
             this.projectionGroup.Controls.Add(this.calculatedProjectionButton);
@@ -325,8 +360,8 @@ namespace Chimera.GUI.Controls {
             // 
             // monitorPulldown
             // 
-            this.monitorPulldown.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.monitorPulldown.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.monitorPulldown.DisplayMember = "DeviceName";
             this.monitorPulldown.FormattingEnabled = true;
             this.monitorPulldown.Location = new System.Drawing.Point(78, 6);
@@ -334,6 +369,20 @@ namespace Chimera.GUI.Controls {
             this.monitorPulldown.Size = new System.Drawing.Size(382, 21);
             this.monitorPulldown.TabIndex = 6;
             this.monitorPulldown.SelectedIndexChanged += new System.EventHandler(this.monitorPulldown_SelectedIndexChanged);
+            // 
+            // heightPanel
+            // 
+            this.heightPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.heightPanel.Location = new System.Drawing.Point(78, 137);
+            this.heightPanel.Max = 500F;
+            this.heightPanel.Min = 1F;
+            this.heightPanel.MinimumSize = new System.Drawing.Size(95, 20);
+            this.heightPanel.Name = "heightPanel";
+            this.heightPanel.Size = new System.Drawing.Size(382, 20);
+            this.heightPanel.TabIndex = 3;
+            this.heightPanel.Value = 1F;
+            this.heightPanel.ValueChanged += new System.Action<float>(this.heightPanel_Changed);
             // 
             // label10
             // 
@@ -344,6 +393,34 @@ namespace Chimera.GUI.Controls {
             this.label10.TabIndex = 30;
             this.label10.Text = "Distance(cm)";
             // 
+            // fovVPanel
+            // 
+            this.fovVPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.fovVPanel.Location = new System.Drawing.Point(79, 244);
+            this.fovVPanel.Max = 179.9F;
+            this.fovVPanel.Min = 0.1F;
+            this.fovVPanel.MinimumSize = new System.Drawing.Size(95, 20);
+            this.fovVPanel.Name = "fovVPanel";
+            this.fovVPanel.Size = new System.Drawing.Size(381, 20);
+            this.fovVPanel.TabIndex = 8;
+            this.fovVPanel.Value = 90F;
+            this.fovVPanel.ValueChanged += new System.Action<float>(this.fovVPanel_ValueChanged);
+            // 
+            // distancePanel
+            // 
+            this.distancePanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.distancePanel.Location = new System.Drawing.Point(78, 33);
+            this.distancePanel.Max = 1000F;
+            this.distancePanel.Min = 0F;
+            this.distancePanel.MinimumSize = new System.Drawing.Size(95, 20);
+            this.distancePanel.Name = "distancePanel";
+            this.distancePanel.Size = new System.Drawing.Size(382, 20);
+            this.distancePanel.TabIndex = 29;
+            this.distancePanel.Value = 0F;
+            this.distancePanel.ValueChanged += new System.Action<float>(this.distancePanel_ValueChanged);
+            // 
             // label6
             // 
             this.label6.AutoSize = true;
@@ -352,6 +429,20 @@ namespace Chimera.GUI.Controls {
             this.label6.Size = new System.Drawing.Size(68, 13);
             this.label6.TabIndex = 20;
             this.label6.Text = "Aspect(W:H)";
+            // 
+            // skewHPanel
+            // 
+            this.skewHPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.skewHPanel.Location = new System.Drawing.Point(78, 59);
+            this.skewHPanel.Max = 1000F;
+            this.skewHPanel.Min = -1000F;
+            this.skewHPanel.MinimumSize = new System.Drawing.Size(95, 20);
+            this.skewHPanel.Name = "skewHPanel";
+            this.skewHPanel.Size = new System.Drawing.Size(382, 20);
+            this.skewHPanel.TabIndex = 25;
+            this.skewHPanel.Value = 0F;
+            this.skewHPanel.ValueChanged += new System.Action<float>(this.skewHPanel_ValueChanged);
             // 
             // label2
             // 
@@ -380,6 +471,20 @@ namespace Chimera.GUI.Controls {
             this.label3.TabIndex = 7;
             this.label3.Text = "FoV - V (deg)";
             // 
+            // vSkewPanel
+            // 
+            this.vSkewPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.vSkewPanel.Location = new System.Drawing.Point(78, 85);
+            this.vSkewPanel.Max = 1000F;
+            this.vSkewPanel.Min = -1000F;
+            this.vSkewPanel.MinimumSize = new System.Drawing.Size(95, 20);
+            this.vSkewPanel.Name = "vSkewPanel";
+            this.vSkewPanel.Size = new System.Drawing.Size(382, 20);
+            this.vSkewPanel.TabIndex = 26;
+            this.vSkewPanel.Value = 0F;
+            this.vSkewPanel.ValueChanged += new System.Action<float>(this.skewVPanel_ValueChanged);
+            // 
             // aspectRatioWValue
             // 
             this.aspectRatioWValue.Location = new System.Drawing.Point(78, 189);
@@ -401,7 +506,6 @@ namespace Chimera.GUI.Controls {
             0,
             0,
             0});
-            this.aspectRatioWValue.ValueChanged += new System.EventHandler(this.aspectRatioWValue_ValueChanged);
             // 
             // label9
             // 
@@ -414,19 +518,33 @@ namespace Chimera.GUI.Controls {
             // 
             // aspectRatioValue
             // 
-            this.aspectRatioValue.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.aspectRatioValue.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.aspectRatioValue.DecimalPlaces = 4;
-            this.aspectRatioValue.Location = new System.Drawing.Point(196, 189);
+            this.aspectRatioValue.Location = new System.Drawing.Point(238, 189);
             this.aspectRatioValue.Maximum = new decimal(new int[] {
             10000000,
             0,
             0,
             0});
             this.aspectRatioValue.Name = "aspectRatioValue";
-            this.aspectRatioValue.Size = new System.Drawing.Size(264, 20);
+            this.aspectRatioValue.Size = new System.Drawing.Size(222, 20);
             this.aspectRatioValue.TabIndex = 22;
             this.aspectRatioValue.ValueChanged += new System.EventHandler(this.aspectRatioValue_ValueChanged);
+            // 
+            // fovHPanel
+            // 
+            this.fovHPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.fovHPanel.Location = new System.Drawing.Point(79, 215);
+            this.fovHPanel.Max = 179.9F;
+            this.fovHPanel.Min = 0.1F;
+            this.fovHPanel.MinimumSize = new System.Drawing.Size(95, 20);
+            this.fovHPanel.Name = "fovHPanel";
+            this.fovHPanel.Size = new System.Drawing.Size(381, 20);
+            this.fovHPanel.TabIndex = 1;
+            this.fovHPanel.Value = 90F;
+            this.fovHPanel.ValueChanged += new System.Action<float>(this.fovHPanel_ValueChanged);
             // 
             // aspectRatioHValue
             // 
@@ -445,11 +563,10 @@ namespace Chimera.GUI.Controls {
             this.aspectRatioHValue.Size = new System.Drawing.Size(52, 20);
             this.aspectRatioHValue.TabIndex = 21;
             this.aspectRatioHValue.Value = new decimal(new int[] {
-            10,
+            9,
             0,
             0,
             0});
-            this.aspectRatioHValue.ValueChanged += new System.EventHandler(this.aspectRatioHValue_ValueChanged);
             // 
             // label4
             // 
@@ -460,16 +577,6 @@ namespace Chimera.GUI.Controls {
             this.label4.TabIndex = 6;
             this.label4.Text = "FoV - H (deg)";
             // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.Location = new System.Drawing.Point(180, 192);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(22, 13);
-            this.label7.TabIndex = 23;
-            this.label7.Text = " = ";
-            // 
             // label8
             // 
             this.label8.AutoSize = true;
@@ -479,6 +586,63 @@ namespace Chimera.GUI.Controls {
             this.label8.Size = new System.Drawing.Size(19, 13);
             this.label8.TabIndex = 24;
             this.label8.Text = " : ";
+            // 
+            // orientationPanel
+            // 
+            this.orientationPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.orientationPanel.Location = new System.Drawing.Point(6, 203);
+            this.orientationPanel.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("orientationPanel.LookAtVector")));
+            this.orientationPanel.MinimumSize = new System.Drawing.Size(252, 95);
+            this.orientationPanel.Name = "orientationPanel";
+            this.orientationPanel.Pitch = 0D;
+            this.orientationPanel.Quaternion = ((OpenMetaverse.Quaternion)(resources.GetObject("orientationPanel.Quaternion")));
+            this.orientationPanel.Size = new System.Drawing.Size(352, 95);
+            this.orientationPanel.TabIndex = 1;
+            rotation1.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("rotation1.LookAtVector")));
+            rotation1.Pitch = 0D;
+            rotation1.Quaternion = ((OpenMetaverse.Quaternion)(resources.GetObject("rotation1.Quaternion")));
+            rotation1.Yaw = 0D;
+            this.orientationPanel.Value = rotation1;
+            this.orientationPanel.Yaw = 0D;
+            // 
+            // centrePanel
+            // 
+            this.centrePanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.centrePanel.Location = new System.Drawing.Point(6, 3);
+            this.centrePanel.Max = 1024F;
+            this.centrePanel.MaxV = ((OpenMetaverse.Vector3)(resources.GetObject("centrePanel.MaxV")));
+            this.centrePanel.Min = -1024F;
+            this.centrePanel.MinimumSize = new System.Drawing.Size(103, 95);
+            this.centrePanel.MinV = ((OpenMetaverse.Vector3)(resources.GetObject("centrePanel.MinV")));
+            this.centrePanel.Name = "centrePanel";
+            this.centrePanel.Size = new System.Drawing.Size(349, 95);
+            this.centrePanel.TabIndex = 1;
+            this.centrePanel.Value = ((OpenMetaverse.Vector3)(resources.GetObject("centrePanel.Value")));
+            this.centrePanel.X = 0F;
+            this.centrePanel.Y = 0F;
+            this.centrePanel.Z = 0F;
+            this.centrePanel.ValueChanged += new System.EventHandler(this.centrePanel_ValueChanged);
+            // 
+            // topLeftPanel
+            // 
+            this.topLeftPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.topLeftPanel.Location = new System.Drawing.Point(6, 102);
+            this.topLeftPanel.Max = 1024F;
+            this.topLeftPanel.MaxV = ((OpenMetaverse.Vector3)(resources.GetObject("topLeftPanel.MaxV")));
+            this.topLeftPanel.Min = -1024F;
+            this.topLeftPanel.MinimumSize = new System.Drawing.Size(103, 95);
+            this.topLeftPanel.MinV = ((OpenMetaverse.Vector3)(resources.GetObject("topLeftPanel.MinV")));
+            this.topLeftPanel.Name = "topLeftPanel";
+            this.topLeftPanel.Size = new System.Drawing.Size(349, 95);
+            this.topLeftPanel.TabIndex = 0;
+            this.topLeftPanel.Value = ((OpenMetaverse.Vector3)(resources.GetObject("topLeftPanel.Value")));
+            this.topLeftPanel.X = 0F;
+            this.topLeftPanel.Y = 0F;
+            this.topLeftPanel.Z = 0F;
+            this.topLeftPanel.ValueChanged += new System.EventHandler(this.topLeftPanel_ValueChanged);
             // 
             // overlayTab
             // 
@@ -616,194 +780,6 @@ namespace Chimera.GUI.Controls {
             this.launchOverlayButton.UseVisualStyleBackColor = true;
             this.launchOverlayButton.Click += new System.EventHandler(this.launchOverlayButton_Click);
             // 
-            // projectorTab
-            // 
-            this.projectorTab.Controls.Add(this.projectorPanel);
-            this.projectorTab.Location = new System.Drawing.Point(4, 22);
-            this.projectorTab.Name = "projectorTab";
-            this.projectorTab.Padding = new System.Windows.Forms.Padding(3);
-            this.projectorTab.Size = new System.Drawing.Size(833, 599);
-            this.projectorTab.TabIndex = 2;
-            this.projectorTab.Text = "Projector";
-            this.projectorTab.UseVisualStyleBackColor = true;
-            // 
-            // diagonalPanel
-            // 
-            this.diagonalPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.diagonalPanel.Location = new System.Drawing.Point(78, 163);
-            this.diagonalPanel.Max = 500F;
-            this.diagonalPanel.Min = 0F;
-            this.diagonalPanel.MinimumSize = new System.Drawing.Size(95, 20);
-            this.diagonalPanel.Name = "diagonalPanel";
-            this.diagonalPanel.Size = new System.Drawing.Size(382, 20);
-            this.diagonalPanel.TabIndex = 35;
-            this.diagonalPanel.Value = 0F;
-            this.diagonalPanel.ValueChanged += new System.Action<float>(this.diagonalPanel_ValueChanged);
-            // 
-            // widthPanel
-            // 
-            this.widthPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.widthPanel.Location = new System.Drawing.Point(78, 111);
-            this.widthPanel.Max = 500F;
-            this.widthPanel.Min = 1F;
-            this.widthPanel.MinimumSize = new System.Drawing.Size(95, 20);
-            this.widthPanel.Name = "widthPanel";
-            this.widthPanel.Size = new System.Drawing.Size(382, 20);
-            this.widthPanel.TabIndex = 2;
-            this.widthPanel.Value = 1F;
-            this.widthPanel.ValueChanged += new System.Action<float>(this.widthPanel_Changed);
-            // 
-            // heightPanel
-            // 
-            this.heightPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.heightPanel.Location = new System.Drawing.Point(78, 137);
-            this.heightPanel.Max = 500F;
-            this.heightPanel.Min = 1F;
-            this.heightPanel.MinimumSize = new System.Drawing.Size(95, 20);
-            this.heightPanel.Name = "heightPanel";
-            this.heightPanel.Size = new System.Drawing.Size(382, 20);
-            this.heightPanel.TabIndex = 3;
-            this.heightPanel.Value = 1F;
-            this.heightPanel.ValueChanged += new System.Action<float>(this.heightPanel_Changed);
-            // 
-            // fovVPanel
-            // 
-            this.fovVPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.fovVPanel.Location = new System.Drawing.Point(79, 244);
-            this.fovVPanel.Max = 179.9F;
-            this.fovVPanel.Min = 0.1F;
-            this.fovVPanel.MinimumSize = new System.Drawing.Size(95, 20);
-            this.fovVPanel.Name = "fovVPanel";
-            this.fovVPanel.Size = new System.Drawing.Size(381, 20);
-            this.fovVPanel.TabIndex = 8;
-            this.fovVPanel.Value = 90F;
-            this.fovVPanel.ValueChanged += new System.Action<float>(this.fovVPanel_ValueChanged);
-            // 
-            // distancePanel
-            // 
-            this.distancePanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.distancePanel.Location = new System.Drawing.Point(78, 33);
-            this.distancePanel.Max = 1000F;
-            this.distancePanel.Min = 0F;
-            this.distancePanel.MinimumSize = new System.Drawing.Size(95, 20);
-            this.distancePanel.Name = "distancePanel";
-            this.distancePanel.Size = new System.Drawing.Size(382, 20);
-            this.distancePanel.TabIndex = 29;
-            this.distancePanel.Value = 0F;
-            this.distancePanel.ValueChanged += new System.Action<float>(this.distancePanel_ValueChanged);
-            // 
-            // skewHPanel
-            // 
-            this.skewHPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.skewHPanel.Location = new System.Drawing.Point(78, 59);
-            this.skewHPanel.Max = 1000F;
-            this.skewHPanel.Min = -1000F;
-            this.skewHPanel.MinimumSize = new System.Drawing.Size(95, 20);
-            this.skewHPanel.Name = "skewHPanel";
-            this.skewHPanel.Size = new System.Drawing.Size(382, 20);
-            this.skewHPanel.TabIndex = 25;
-            this.skewHPanel.Value = 0F;
-            this.skewHPanel.ValueChanged += new System.Action<float>(this.skewHPanel_ValueChanged);
-            // 
-            // vSkewPanel
-            // 
-            this.vSkewPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.vSkewPanel.Location = new System.Drawing.Point(78, 85);
-            this.vSkewPanel.Max = 1000F;
-            this.vSkewPanel.Min = -1000F;
-            this.vSkewPanel.MinimumSize = new System.Drawing.Size(95, 20);
-            this.vSkewPanel.Name = "vSkewPanel";
-            this.vSkewPanel.Size = new System.Drawing.Size(382, 20);
-            this.vSkewPanel.TabIndex = 26;
-            this.vSkewPanel.Value = 0F;
-            this.vSkewPanel.ValueChanged += new System.Action<float>(this.skewVPanel_ValueChanged);
-            // 
-            // fovHPanel
-            // 
-            this.fovHPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.fovHPanel.Location = new System.Drawing.Point(79, 215);
-            this.fovHPanel.Max = 179.9F;
-            this.fovHPanel.Min = 0.1F;
-            this.fovHPanel.MinimumSize = new System.Drawing.Size(95, 20);
-            this.fovHPanel.Name = "fovHPanel";
-            this.fovHPanel.Size = new System.Drawing.Size(381, 20);
-            this.fovHPanel.TabIndex = 1;
-            this.fovHPanel.Value = 90F;
-            this.fovHPanel.ValueChanged += new System.Action<float>(this.fovHPanel_ValueChanged);
-            // 
-            // orientationPanel
-            // 
-            this.orientationPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.orientationPanel.Location = new System.Drawing.Point(6, 203);
-            this.orientationPanel.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("orientationPanel.LookAtVector")));
-            this.orientationPanel.MinimumSize = new System.Drawing.Size(252, 95);
-            this.orientationPanel.Name = "orientationPanel";
-            this.orientationPanel.Pitch = 0D;
-            this.orientationPanel.Quaternion = ((OpenMetaverse.Quaternion)(resources.GetObject("orientationPanel.Quaternion")));
-            this.orientationPanel.Size = new System.Drawing.Size(352, 95);
-            this.orientationPanel.TabIndex = 1;
-            rotation1.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("rotation1.LookAtVector")));
-            rotation1.Pitch = 0D;
-            rotation1.Quaternion = ((OpenMetaverse.Quaternion)(resources.GetObject("rotation1.Quaternion")));
-            rotation1.Yaw = 0D;
-            this.orientationPanel.Value = rotation1;
-            this.orientationPanel.Yaw = 0D;
-            // 
-            // centrePanel
-            // 
-            this.centrePanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.centrePanel.Location = new System.Drawing.Point(6, 3);
-            this.centrePanel.Max = 1024F;
-            this.centrePanel.MaxV = ((OpenMetaverse.Vector3)(resources.GetObject("centrePanel.MaxV")));
-            this.centrePanel.Min = -1024F;
-            this.centrePanel.MinimumSize = new System.Drawing.Size(103, 95);
-            this.centrePanel.MinV = ((OpenMetaverse.Vector3)(resources.GetObject("centrePanel.MinV")));
-            this.centrePanel.Name = "centrePanel";
-            this.centrePanel.Size = new System.Drawing.Size(349, 95);
-            this.centrePanel.TabIndex = 1;
-            this.centrePanel.Value = ((OpenMetaverse.Vector3)(resources.GetObject("centrePanel.Value")));
-            this.centrePanel.X = 0F;
-            this.centrePanel.Y = 0F;
-            this.centrePanel.Z = 0F;
-            this.centrePanel.ValueChanged += new System.EventHandler(this.centrePanel_ValueChanged);
-            // 
-            // topLeftPanel
-            // 
-            this.topLeftPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.topLeftPanel.Location = new System.Drawing.Point(6, 102);
-            this.topLeftPanel.Max = 1024F;
-            this.topLeftPanel.MaxV = ((OpenMetaverse.Vector3)(resources.GetObject("topLeftPanel.MaxV")));
-            this.topLeftPanel.Min = -1024F;
-            this.topLeftPanel.MinimumSize = new System.Drawing.Size(103, 95);
-            this.topLeftPanel.MinV = ((OpenMetaverse.Vector3)(resources.GetObject("topLeftPanel.MinV")));
-            this.topLeftPanel.Name = "topLeftPanel";
-            this.topLeftPanel.Size = new System.Drawing.Size(349, 95);
-            this.topLeftPanel.TabIndex = 0;
-            this.topLeftPanel.Value = ((OpenMetaverse.Vector3)(resources.GetObject("topLeftPanel.Value")));
-            this.topLeftPanel.X = 0F;
-            this.topLeftPanel.Y = 0F;
-            this.topLeftPanel.Z = 0F;
-            this.topLeftPanel.ValueChanged += new System.EventHandler(this.topLeftPanel_ValueChanged);
-            // 
-            // projectorPanel
-            // 
-            this.projectorPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.projectorPanel.Location = new System.Drawing.Point(3, 3);
-            this.projectorPanel.Name = "projectorPanel";
-            this.projectorPanel.Size = new System.Drawing.Size(827, 593);
-            this.projectorPanel.TabIndex = 0;
-            // 
             // WindowPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -827,7 +803,6 @@ namespace Chimera.GUI.Controls {
             ((System.ComponentModel.ISupportInitialize)(this.aspectRatioHValue)).EndInit();
             this.overlayTab.ResumeLayout(false);
             this.overlayTab.PerformLayout();
-            this.projectorTab.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -856,7 +831,6 @@ namespace Chimera.GUI.Controls {
         private System.Windows.Forms.Label label4;
         private ScalarPanel fovVPanel;
         private System.Windows.Forms.NumericUpDown aspectRatioHValue;
-        private System.Windows.Forms.Label label7;
         private System.Windows.Forms.NumericUpDown aspectRatioValue;
         private System.Windows.Forms.NumericUpDown aspectRatioWValue;
         private System.Windows.Forms.Label label6;
@@ -885,8 +859,8 @@ namespace Chimera.GUI.Controls {
         private System.Windows.Forms.Label shortestTickLabel;
         private System.Windows.Forms.Label meanTickLabel;
         private System.Windows.Forms.Label tpsLabel;
-        private System.Windows.Forms.TabPage projectorTab;
         private System.Windows.Forms.CheckBox drawEyeCheck;
         private ProjectorPanel projectorPanel;
+        private System.Windows.Forms.Button aspectRatioButton;
     }
 }

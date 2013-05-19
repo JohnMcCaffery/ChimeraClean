@@ -1,0 +1,18 @@
+<module name="ChimeraConfig">
+  <bind service="Chimera.ISystemPlugin, ChimeraLib" to="Chimera.Plugins.KBMousePlugin, ChimeraLib" scope="singleton" />
+  <bind service="Chimera.ISystemPlugin, ChimeraLib" to="Chimera.OpenSim.OpenSimController, OpenSimLib" scope="singleton" />
+  <bind service="Chimera.ISystemPlugin, ChimeraLib" to="Chimera.Flythrough.FlythroughPlugin, FlythroughLib" scope="singleton" />
+  <!--
+  <bind service="Chimera.ISystemPlugin, ChimeraLib" to="Touchscreen.TouchscreenPlugin, TouchscreenLib" scope="singleton" />
+  <bind service="Chimera.ISystemPlugin, ChimeraLib" to="Joystick.XBoxControllerPlugin, JoystickLib" scope="singleton" />
+  <bind service="Chimera.ISystemPlugin, ChimeraLib" to="Chimera.MousePlugin, ChimeraLib" scope="singleton" />
+  <bind service="Chimera.ISystemPlugin, ChimeraLib" to="Chimera.OpenSim.HeightmapPlugin, OpenSimLib" scope="singleton" />
+  <bind service="Chimera.ISystemPlugin, ChimeraLib" to="Chimera.Plugins.ProjectorPlugin, ChimeraLib" scope="singleton" />
+  <bind service="Chimera.ISystemPlugin, ChimeraLib" to="Chimera.Kinect.GUI.KinectCamera, KinectLib" scope="singleton" />
+  <bind service="Chimera.ISystemPlugin, ChimeraLib" to="Chimera.Kinect.KinectMovementPlugin, KinectLib" scope="singleton" />
+  <bind service="Chimera.ISystemPlugin, ChimeraLib" to="Chimera.Kinect.SimpleKinectCursor, KinectLib" scope="singleton" />
+  <bind service="Chimera.ISystemPlugin, ChimeraLib" to="Chimera.Kinect.RaiseArmHelpTrigger, KinectLib" scope="singleton" />
+  -->
+
+  <bind service="Chimera.Interfaces.IOutputFactory, ChimeraLib" to="Chimera.OpenSim.OpenSimViewerFactory, OpenSimLib" scope="singleton" />
+</module>

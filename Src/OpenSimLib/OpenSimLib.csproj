@@ -89,12 +89,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="GUI\HeightmapInputPanel.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="GUI\HeightmapInputPanel.designer.cs">
-      <DependentUpon>HeightmapInputPanel.cs</DependentUpon>
-    </Compile>
+    <Compile Include="BackwardCompatibleController.cs" />
+    <Compile Include="FullController.cs" />
     <Compile Include="GUI\InputPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -107,14 +103,37 @@
     <Compile Include="GUI\OutputPanel.designer.cs">
       <DependentUpon>OutputPanel.cs</DependentUpon>
     </Compile>
+    <Compile Include="GUI\HeightmapInputPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\HeightmapInputPanel.designer.cs">
+      <DependentUpon>HeightmapInputPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\DeprecatedOutputPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\DeprecatedOutputPanel.designer.cs">
+      <DependentUpon>DeprecatedOutputPanel.cs</DependentUpon>
+    </Compile>
     <Compile Include="HeightmapConfig.cs" />
     <Compile Include="HeightmapPlugin.cs" />
+    <Compile Include="Interfaces\IViewerController.cs" />
+    <Compile Include="OpenSimController.cs" />
+    <Compile Include="OpenSimViewerFactory.cs" />
+    <Compile Include="Packets\ClearRemoteControlPacket.cs" />
+    <Compile Include="Packets\ClearFrustumPacket.cs" />
+    <Compile Include="Packets\ClearCameraPacket.cs" />
+    <Compile Include="Packets\RemoteControlPacket.cs" />
+    <Compile Include="Packets\SetWindowPacket.cs" />
+    <Compile Include="Packets\SetFrustumPacket.cs" />
+    <Compile Include="Packets\SetCameraPacket.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ProxyConfig.cs" />
+    <Compile Include="ViewerConfig.cs" />
+    <Compile Include="ProxyControllerBase.cs" />
     <Compile Include="SetFollowCamProperties.cs" />
     <Compile Include="SetFollowCamPropertiesViewerOutput.cs" />
-    <Compile Include="CustomPackets.cs" />
     <Compile Include="SetWindowViewerOutput.cs" />
+    <Compile Include="ViewerController.cs" />
     <Compile Include="ViewerProxy.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -124,15 +143,18 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="GUI\HeightmapInputPanel.resx">
-      <DependentUpon>HeightmapInputPanel.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="GUI\InputPanel.resx">
       <DependentUpon>InputPanel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\OutputPanel.resx">
       <DependentUpon>OutputPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\HeightmapInputPanel.resx">
+      <DependentUpon>HeightmapInputPanel.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\DeprecatedOutputPanel.resx">
+      <DependentUpon>DeprecatedOutputPanel.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

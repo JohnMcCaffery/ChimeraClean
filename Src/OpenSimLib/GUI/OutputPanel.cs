@@ -33,44 +33,48 @@ using OpenMetaverse;
 
 namespace Chimera.OpenSim.GUI {
     public partial class OutputPanel : UserControl {
-        private ViewerProxy proxy;
+        private OpenSimController mController;
+        private ViewerConfig mConfig;
 
-        public ViewerProxy Proxy { 
-            get { return proxy; }
+        public OpenSimController Controller { 
+            get { return mController; }
             set { 
-                proxy = value;
-                if (proxy == null)
+                mController = value;
+                if (mController == null)
                     return;
 
-                proxy.OnProxyStarted += (source, args) => ProxyStarted() ;
-                proxy.OnClientLoggedIn += (source, args) => ClientLoggedIn();
-                proxy.OnViewerExit += (source, args) => ViewerExit();
+                mController.ProxyController.ProxyStarted += ProxyStarted;
+                mController.ProxyController.OnClientLoggedIn += (source, args) => ClientLoggedIn();
+                mController.ViewerController.Exited += () => ViewerExit();
+
+                mConfig = mController.Config as ViewerConfig;
 
                 Action init = () => {
-                    portBox.Text = proxy.ProxyConfig.ProxyPort.ToString();
-                    loginURIBox.Text = proxy.ProxyConfig.ProxyLoginURI;
-                    viewerExeBox.Text = proxy.ProxyConfig.ViewerExecutable;
-                    workingDirectoryBox.Text = proxy.ProxyConfig.ViewerWorkingDirectory;
-                    firstNameBox.Text = proxy.ProxyConfig.LoginFirstName;
-                    lastNameBox.Text = proxy.ProxyConfig.LoginLastName;
-                    passwordBox.Text = proxy.ProxyConfig.LoginPassword;
-                    gridBox.Text = proxy.ProxyConfig.LoginGrid;
-                    gridBox.Enabled = proxy.ProxyConfig.UseGrid;
-                    gridCheck.Checked = proxy.ProxyConfig.UseGrid;
-                    autoRestartBox.Checked = proxy.AutoRestart;
-                    fullscreenCheck.Checked = proxy.Fullscreen;
-                    controlCamera.Checked = proxy.ControlCamera;
-
+                    portBox.Text = mConfig.ProxyPort.ToString();
+                    loginURIBox.Text = mConfig.ProxyLoginURI;
+                    viewerExeBox.Text = mConfig.ViewerExecutable;
+                    workingDirectoryBox.Text = mConfig.ViewerWorkingDirectory;
+                    firstNameBox.Text = mConfig.LoginFirstName;
+                    lastNameBox.Text = mConfig.LoginLastName;
+                    passwordBox.Text = mConfig.LoginPassword;
+                    gridBox.Text = mConfig.LoginGrid;
+                    gridBox.Enabled = mConfig.UseGrid;
+                    gridCheck.Checked = mConfig.UseGrid;
+                    autoRestartBox.Checked = mController.AutoRestart;
+                    fullscreenCheck.Checked = mController.Fullscreen;
+                    controlCameraCheck.Checked = mController.ControlCamera;
+                    controlFrustumCheck.Checked = mController.ControlFrustum;
+                    backwardsCompatibleLabel.Text = mConfig.BackwardsCompatible ? "Backwards Compatible" : "";
                 };
                 if (InvokeRequired)
                     Invoke(init);
                 else
                     init();
 
-                if (proxy.ProxyRunning)
+                if (mController.ProxyController.Started)
                     ProxyStarted();
 
-                if (proxy.ClientLoggedIn)
+                if (mController.ViewerController.Started)
                     ClientLoggedIn();
             }
         }
@@ -130,7 +134,7 @@ namespace Chimera.OpenSim.GUI {
                 a();
         }
 
-        public bool HasStarted { get { return proxy != null; } }
+        public bool HasStarted { get { return mController != null; } }
 
         public string Port {
             get { return portBox.Text; }
@@ -145,29 +149,29 @@ namespace Chimera.OpenSim.GUI {
             InitializeComponent();
         }
 
-        public OutputPanel(ViewerProxy proxy)
+        public OutputPanel(OpenSimController proxy)
             : this() {
-            Proxy = proxy;
+            Controller = proxy;
         }
 
         private void connectButton_Click(object sender, EventArgs e) {
-            if (proxy == null)
+            if (mController == null)
                 return;
             if (proxyStartButton.Text.Equals("Begin Proxy")) {
-                if (proxy.ProxyRunning)
-                    proxy.Close();
+                if (mController.ProxyController.Started)
+                    mController.Close();
                 string file = AppDomain.CurrentDomain.SetupInformation.ConfigurationFile;
 
-                for (int i = 0; i < 5 && !proxy.StartProxy(); i++, proxy.ProxyConfig.ProxyPort++) {
-                    int port = proxy.ProxyConfig.ProxyPort;
+                for (int i = 0; i < 5 && !mController.StartProxy(); i++, mConfig.ProxyPort++) {
+                    int port = mConfig.ProxyPort;
                     Logger.Log("Unable to start proxy on port " + (port - 1) + ", trying " + port + ".", Helpers.LogLevel.Info);
                 }
-                if (!proxy.ProxyRunning) {
+                if (!mController.ProxyController.Started) {
                     Logger.Log("Unable to start proxy.", Helpers.LogLevel.Info);
                     proxyStatusLabel.Text = "Unable to start";
                 }
-            } else if (proxy != null) {
-                proxy.Close();
+            } else if (mController != null) {
+                mController.Close();
 
                 proxyStartButton.Text = "Begin Proxy";
                 proxyStatusLabel.Text = "Stopped";
@@ -179,10 +183,10 @@ namespace Chimera.OpenSim.GUI {
 
         private void viewerLaunchButton_Click(object sender, EventArgs e) {
             if (viewerLaunchButton.Text.Equals("Launch Viewer")) {
-                if (proxy != null && !proxy.ProxyRunning)
-                    proxy.StartProxy();
+                if (mController != null && !mController.ProxyController.Started)
+                    mController.StartProxy();
 
-                proxy.Launch();
+                mController.Launch();
             } else {
                 /*
                 clientStatusLabel.Text = "Stopped";
@@ -195,8 +199,8 @@ namespace Chimera.OpenSim.GUI {
                 gridCheck.Active = true;
                 gridBox.Active = proxy.ProxyConfig.UseGrid;
                 */
-                if (proxy != null)
-                    proxy.CloseViewer();
+                if (mController != null)
+                    mController.ProxyController.Stop();
                 //SendMEssage(proxyAddress.Id, 
             }
         }
@@ -220,75 +224,80 @@ namespace Chimera.OpenSim.GUI {
         private void portBox_TextChanged(object sender, EventArgs e) {
             if (gridBox.Text.Equals("")) {
                 gridBox.Text = portBox.Text;
-                if (proxy != null)
-                    proxy.ProxyConfig.LoginGrid = portBox.Text;
+                if (mController != null)
+                    mConfig.LoginGrid = portBox.Text;
             }
-            if (proxy != null)
-                proxy.ProxyConfig.ProxyPort = Int32.Parse(portBox.Text);
+            if (mController != null)
+                mConfig.ProxyPort = Int32.Parse(portBox.Text);
         }
 
         private void gridCheck_CheckedChanged(object sender, EventArgs e) {
             gridBox.Enabled = gridCheck.Checked;
-            proxy.ProxyConfig.UseGrid = gridCheck.Checked;
+            mConfig.UseGrid = gridCheck.Checked;
             if (gridCheck.Checked && gridBox.Text.Equals(""))
                 gridBox.Text = portBox.Text;
-            else if (gridCheck.Checked && proxy != null)
-                proxy.ProxyConfig.LoginGrid = gridBox.Text;
+            else if (gridCheck.Checked && mController != null)
+                mConfig.LoginGrid = gridBox.Text;
         }
 
         private void loginURIBox_TextChanged(object sender, EventArgs e) {
-            if (proxy != null)
-                proxy.ProxyConfig.ProxyLoginURI = loginURIBox.Text;
+            if (mController != null)
+                mConfig.ProxyLoginURI = loginURIBox.Text;
         }
 
         private void firstNameBox_TextChanged(object sender, EventArgs e) {
-            if (proxy != null)
-                proxy.ProxyConfig.LoginFirstName = firstNameBox.Text;
+            if (mController != null)
+                mConfig.LoginFirstName = firstNameBox.Text;
         }
 
         private void lastNameBox_TextChanged(object sender, EventArgs e) {
-            if (proxy != null)
-                proxy.ProxyConfig.LoginLastName = lastNameBox.Text;
+            if (mController != null)
+                mConfig.LoginLastName = lastNameBox.Text;
         }
 
         private void passwordBox_TextChanged(object sender, EventArgs e) {
-            if (proxy != null)
-                proxy.ProxyConfig.LoginPassword = passwordBox.Text;
+            if (mController != null)
+                mConfig.LoginPassword = passwordBox.Text;
         }
 
         private void targetBox_TextChanged(object sender, EventArgs e) {
-            if (proxy != null)
-                proxy.ProxyConfig.ViewerExecutable = viewerExeBox.Text;
+            if (mController != null)
+                mConfig.ViewerExecutable = viewerExeBox.Text;
         }
 
         private void gridBox_TextChanged(object sender, EventArgs e) {
-            if (proxy != null)
-                proxy.ProxyConfig.LoginGrid = gridBox.Text;
+            if (mController != null)
+                mConfig.LoginGrid = gridBox.Text;
         }
 
         private void workingDirectory_TextChanged(object sender, EventArgs e) {
-            if (proxy != null)
-                proxy.ProxyConfig.ViewerWorkingDirectory = workingDirectoryBox.Text;
+            if (mController != null)
+                mConfig.ViewerWorkingDirectory = workingDirectoryBox.Text;
         }
 
         private void controlCamera_CheckedChanged(object sender, EventArgs e) {
-            if (proxy != null)
-                proxy.ControlCamera = controlCamera.Checked;
+            if (mController != null)
+                mController.ControlCamera = controlCameraCheck.Checked;
         }
 
         private void autoRestartBox_CheckedChanged(object sender, EventArgs e) {
-            if (proxy != null)
-                proxy.AutoRestart = autoRestartBox.Checked;
+            if (mController != null)
+                mController.AutoRestart = autoRestartBox.Checked;
         }
 
         private void hudButton_Click(object sender, EventArgs e) {
-            if (proxy != null)
-                proxy.ToggleHUD();
+            if (mController != null)
+                mController.ViewerController.ToggleHUD();
         }
 
         private void borderCheck_CheckedChanged(object sender, EventArgs e) {
-            if (proxy != null)
-                proxy.Fullscreen = fullscreenCheck.Checked;
+            if (mController != null)
+                mController.Fullscreen = fullscreenCheck.Checked;
+        }
+
+        private void controlFrustumCheck_CheckedChanged(object sender, EventArgs e) {
+            if (mController != null)
+                mController.ControlFrustum = controlFrustumCheck.Checked;
         }
     }
 }

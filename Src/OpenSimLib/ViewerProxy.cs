@@ -39,6 +39,7 @@ using System.IO;
 using Nwc.XmlRpc;
 using Chimera.Config;
 using System.Drawing;
+using Chimera.OpenSim.Packets;
 
 namespace Chimera.OpenSim {
     public abstract class ViewerProxy : IOutput, ISystemPlugin {
@@ -64,9 +65,9 @@ namespace Chimera.OpenSim {
 
         private SetFollowCamProperties mFollowCamProperties;
         private Window mWindow;
-        private OutputPanel mOutputPanel;
+        private DeprecatedOutputPanel mOutputPanel;
         private InputPanel mInputPanel;
-        private ProxyConfig mConfig;
+        private ViewerConfig mConfig;
 
         /// <summary>
         /// Whther to restart the viewer if the camera stops updating, or just clear the camera then set it again."
@@ -102,7 +103,7 @@ namespace Chimera.OpenSim {
         /// </summary>
         public event EventHandler OnViewerExit;
 
-        internal ProxyConfig ProxyConfig {
+        internal ViewerConfig ProxyConfig {
             get { return mConfig; }
         }
 
@@ -238,60 +239,6 @@ namespace Chimera.OpenSim {
             }
         }
 
-        private void mProxy_LoginResponse(XmlRpcResponse response) {
-            mClientLoggedIn = true;
-            Hashtable t = (Hashtable)response.Value;
-
-            if (bool.Parse(t["login"].ToString())) {
-                mSessionID = UUID.Parse(t["session_id"].ToString());
-                mSecureSessionID = UUID.Parse(t["secure_session_id"].ToString());
-                mAgentID = UUID.Parse(t["agent_id"].ToString());
-                mFirstName = t["first_name"].ToString();
-                mLastName = t["last_name"].ToString();
-
-                lock (processLock)
-                    Monitor.PulseAll(processLock);
-
-                //TODO - get client process if not started through GUI
-                if (mClient != null) {
-                    ProcessWrangler.SetMonitor(mClient, mWindow.Monitor);
-                    if (mFullscreen)
-                        ProcessWrangler.SetBorder(mClient, mWindow.Monitor, !mFullscreen);
-                }
-
-                new Thread(() => {
-                    if (mControlCamera && mWindow.Coordinator.ControlMode == ControlMode.Absolute)
-                        SetCamera();
-                    SetWindow();
-                    if (mMaster && mFollowCamProperties.SendPackets)
-                        mProxy.InjectPacket(mFollowCamProperties.Packet, Direction.Incoming);
-                    if (OnClientLoggedIn != null)
-                        OnClientLoggedIn(mProxy, null);
-
-                    Thread.Sleep(30000);
-                    //if (mFullscreen)
-                        //ToggleHUD();
-                    if (mClient != null)
-                        ProcessWrangler.PressKey(mClient, "U", true, false, true);
-                    mWindow.OverlayManager.ForegroundOverlay();
-                }).Start();
-            } else {
-            }
-        }
-
-        private void mClient_Exited(object sender, EventArgs e) {
-            bool unexpected = !mClosing;
-            mClosing = false;
-            mClientLoggedIn = false;
-            if (OnViewerExit != null)
-                OnViewerExit(this, null);
-            lock (processLock)
-                Monitor.PulseAll(processLock);
-            if (mAutoRestart && unexpected) {
-                Restart("Crash");
-            }
-        }
-
         /// <summary>
         /// Return control of the camera to the viewer.
         /// </summary>
@@ -365,7 +312,7 @@ namespace Chimera.OpenSim {
         UserControl IOutput.ControlPanel {
             get {
                 if (mOutputPanel == null)
-                    mOutputPanel = new OutputPanel(this);
+                    mOutputPanel = new DeprecatedOutputPanel(this);
                 return mOutputPanel;
             }
         }
@@ -392,11 +339,8 @@ namespace Chimera.OpenSim {
             }
         }
 
-        public ViewerProxy(string windowName, params string[] args) {
-            mConfig = new ProxyConfig(windowName, args);
-        }
-
         public void Init(Window window) {
+            mConfig = new ViewerConfig(window.Name);
             mLogger = LogManager.GetLogger(mConfig.Section);
             mWindow = window;
             mWindow.Coordinator.CameraUpdated += Coordinator_CameraUpdated;
@@ -404,7 +348,6 @@ namespace Chimera.OpenSim {
             mWindow.Coordinator.Tick += new Action(Coordinator_Tick);
             mWindow.Coordinator.CameraModeChanged += new Action<Coordinator,ControlMode>(Coordinator_CameraModeChanged);
             mWindow.Coordinator.DeltaUpdated += new Action<Chimera.Coordinator,DeltaUpdateEventArgs>(Coordinator_DeltaUpdated);
-            mWindow.Coordinator.StateManager.CustomTrigger += new Action<string>(StateManager_CustomTrigger);
             mWindow.MonitorChanged += new Action<Chimera.Window,Screen>(mWindow_MonitorChanged);
             mWindow.Changed += new Action<Chimera.Window,EventArgs>(mWindow_Changed);
             mFullscreen = mConfig.Fullscreen;
@@ -418,22 +361,6 @@ namespace Chimera.OpenSim {
             ControlCamera = mConfig.ControlCamera;
         }
 
-        void StateManager_CustomTrigger(string trigger) {
-            if (trigger == "Glow")
-                Glow();
-            else if (trigger == "NoGlow")
-                NoGlow();
-        }
-
-        void mWindow_Changed(Window w, EventArgs args) {
-            if (w.Coordinator.ControlMode == ControlMode.Absolute)
-                SetWindow();
-        }
-
-        void Coordinator_Tick() {
-            if (mClientLoggedIn && mClient != null && DateTime.Now.Minute % 5 == 0 && DateTime.Now.Second % 60 == 0)
-                ProcessWrangler.PressKey(mClient, "{ENTER}");
-        }
 
         public bool Launch() {
             if (mConfig == null)
@@ -613,7 +540,7 @@ namespace Chimera.OpenSim {
             if (mMaster) {
                 if (mode == ControlMode.Delta) {
                     ClearCamera();
-                    if (mProxy != null && mFollowCamProperties.SendPackets)
+                    if (mProxy != null && mFollowCamProperties.ControlCamera)
                         mProxy.InjectPacket(mFollowCamProperties.Packet, Direction.Incoming);
                 } else {
                     SetCamera();
@@ -634,5 +561,76 @@ namespace Chimera.OpenSim {
                 //TODO - Would be nice if pitching the view 'stuck'.
             }
         }
+
+        void StateManager_CustomTrigger(string trigger) {
+            if (trigger == "Glow")
+                Glow();
+            else if (trigger == "NoGlow")
+                NoGlow();
+        }
+
+        void mWindow_Changed(Window w, EventArgs args) {
+            if (w.Coordinator.ControlMode == ControlMode.Absolute)
+                SetWindow();
+        }
+
+        void Coordinator_Tick() {
+            if (mClientLoggedIn && mClient != null && DateTime.Now.Minute % 5 == 0 && DateTime.Now.Second % 60 == 0)
+                ProcessWrangler.PressKey(mClient, "{ENTER}");
+        }
+
+        private void mProxy_LoginResponse(XmlRpcResponse response) {
+            mClientLoggedIn = true;
+            Hashtable t = (Hashtable)response.Value;
+
+            if (bool.Parse(t["login"].ToString())) {
+                mSessionID = UUID.Parse(t["session_id"].ToString());
+                mSecureSessionID = UUID.Parse(t["secure_session_id"].ToString());
+                mAgentID = UUID.Parse(t["agent_id"].ToString());
+                mFirstName = t["first_name"].ToString();
+                mLastName = t["last_name"].ToString();
+
+                lock (processLock)
+                    Monitor.PulseAll(processLock);
+
+                //TODO - get client process if not started through GUI
+                if (mClient != null) {
+                    ProcessWrangler.SetMonitor(mClient, mWindow.Monitor);
+                    if (mFullscreen)
+                        ProcessWrangler.SetBorder(mClient, mWindow.Monitor, !mFullscreen);
+                }
+
+                new Thread(() => {
+                    if (mControlCamera && mWindow.Coordinator.ControlMode == ControlMode.Absolute)
+                        SetCamera();
+                    SetWindow();
+                    if (mMaster && mFollowCamProperties.ControlCamera)
+                        mProxy.InjectPacket(mFollowCamProperties.Packet, Direction.Incoming);
+                    if (OnClientLoggedIn != null)
+                        OnClientLoggedIn(mProxy, null);
+
+                    Thread.Sleep(30000);
+                    //if (mFullscreen)
+                        //ToggleHUD();
+                    if (mClient != null)
+                        ProcessWrangler.PressKey(mClient, "U", true, false, true);
+                    mWindow.OverlayManager.ForegroundOverlay();
+                }).Start();
+            } else {
+            }
+        }
+
+        private void mClient_Exited(object sender, EventArgs e) {
+            bool unexpected = !mClosing;
+            mClosing = false;
+            mClientLoggedIn = false;
+            if (OnViewerExit != null)
+                OnViewerExit(this, null);
+            lock (processLock)
+                Monitor.PulseAll(processLock);
+            if (mAutoRestart && unexpected) {
+                Restart("Crash");
+            }
+        }   
     }
 }

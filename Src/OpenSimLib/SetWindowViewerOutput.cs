@@ -25,13 +25,10 @@ using OpenMetaverse.Packets;
 using Chimera.Util;
 using OpenMetaverse;
 using Chimera;
+using Chimera.OpenSim.Packets;
 
 namespace Chimera.OpenSim {
     public class SetWindowViewerOutput : ViewerProxy {
-        public SetWindowViewerOutput(string name, params string[] args)
-            : base(name, args) {
-        }
-
         public override void ClearCamera() {
             if (ProxyRunning)
                 InjectPacket(new ClearCameraPacket());
@@ -39,31 +36,36 @@ namespace Chimera.OpenSim {
 
         public override void SetCamera() {
             if (ProxyRunning && ControlCamera)
-                InjectPacket(MakePacket(Window.Coordinator.Position, Vector3.Zero, Window.Coordinator.Orientation, Rotation.Zero));
+                InjectPacket(new SetCameraPacket(MakeCameraBlock(Window.Coordinator.Position, Vector3.Zero, Window.Coordinator.Orientation, Rotation.Zero)));
         }
 
         public override void SetWindow() {
-            if (ProxyRunning && ControlCamera)
-                InjectPacket(new SetWindowPacket(Window.ProjectionMatrix));
+            if (ProxyRunning && ControlCamera) {
+                InjectPacket(new SetWindowPacket(Window.ProjectionMatrix, MakeCameraBlock()));
+                SetCamera();
+            }
         }
 
         protected override void ProcessCameraUpdate (Coordinator coordinator, CameraUpdateEventArgs args) {
             if (ProxyRunning && ControlCamera)
-                InjectPacket(MakePacket(args.position, args.positionDelta, args.rotation, args.rotationDelta));
+                InjectPacket(new SetCameraPacket(MakeCameraBlock(args.position, args.positionDelta, args.rotation, args.rotationDelta)));
         }
 
-        private Packet MakePacket(Vector3 position, Vector3 positionDelta, Rotation rotation, Rotation rotationDelta) {
+        private SetCameraPacket.CameraBlock MakeCameraBlock() {
+            return MakeCameraBlock(Window.Coordinator.Position, Vector3.Zero, Window.Coordinator.Orientation, Rotation.Zero);
+        }
+        private SetCameraPacket.CameraBlock MakeCameraBlock(Vector3 position, Vector3 positionDelta, Rotation rotation, Rotation rotationDelta) {
             //Vector3 focus = Window.Coordinator.Position + Window.Coordinator.Orientation.LookAtVector;
-            Vector3 lookAt = (rotation + Window.Orientation).LookAtVector;
+            Vector3 lookAt = (rotation - Window.Orientation).LookAtVector;
             Vector3 eyePos = new Vector3(Window.Coordinator.EyePosition.Y, Window.Coordinator.EyePosition.X, -Window.Coordinator.EyePosition.Z);
 
-            SetCameraPacket p = new SetCameraPacket();
-            p.Camera.Position = position - (eyePos / 1000f);
-            p.Camera.PositionDelta = positionDelta;
-            p.Camera.LookAt = lookAt;
-            p.Camera.LookAtDelta = rotationDelta.LookAtVector;
-            p.Camera.TickLength = (uint) Window.Coordinator.TickLength * 1000;
-            return p;
+            SetCameraPacket.CameraBlock block = new SetCameraPacket.CameraBlock();
+            block.Position = position - (eyePos / 1000f);
+            block.PositionDelta = positionDelta;
+            block.LookAt = lookAt;
+            block.LookAtDelta = rotationDelta.LookAtVector;
+            block.TickLength = (uint) Window.Coordinator.TickLength * 1000;
+            return block;
         }
     }
 }
