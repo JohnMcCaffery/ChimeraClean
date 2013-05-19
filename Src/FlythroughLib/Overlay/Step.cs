@@ -7,6 +7,7 @@ using Chimera.Interfaces.Overlay;
 using System.Xml;
 using System.IO;
 using Chimera.Overlay;
+using Chimera.Interfaces;
 
 namespace Chimera.Flythrough.Overlay {
     public class Step : XmlLoader {
@@ -14,6 +15,7 @@ namespace Chimera.Flythrough.Overlay {
         private readonly int mSubtitleTimeoutS = 20;
 
         private readonly Coordinator mCoordinator;
+        private readonly IMediaPlayer mPlayer;
         private readonly Text mSubtitlesText;
         private readonly Action mTickListener;
         private readonly string mVoiceoverFile;
@@ -30,10 +32,11 @@ namespace Chimera.Flythrough.Overlay {
             get { return mStep; }
         }
 
-        public Step(FlythroughState state, XmlNode node, Text subititlesText, int subtitleTimeoutS) {
+        public Step(FlythroughState state, XmlNode node, Text subititlesText, int subtitleTimeoutS, IMediaPlayer player) {
             if (node.Attributes["Step"] == null && !int.TryParse(node.Attributes["Step"].Value, out mStep))
                 throw new ArgumentException("Unable to load slideshow step. A valid 'Step' attribute must be supplied.");
 
+            mPlayer = player;
             mTickListener = new Action(mCoordinator_Tick);
             mCoordinator = state.Manager.Coordinator;
             mStep = GetInt(node, -1, "Step");
@@ -41,8 +44,12 @@ namespace Chimera.Flythrough.Overlay {
                 throw new ArgumentException("Unable to load step ID. A valid Step attribute is expected.");
 
             XmlAttribute voiceoverAttribute = node.Attributes["Voiceover"];
-            if (voiceoverAttribute != null && File.Exists(voiceoverAttribute.Value))
-                mVoiceoverFile = Path.GetFullPath(voiceoverAttribute.Value);
+            if (voiceoverAttribute != null && File.Exists(voiceoverAttribute.Value)) {
+                if (mPlayer != null)
+                    mVoiceoverFile = Path.GetFullPath(voiceoverAttribute.Value);
+                else
+                    Console.WriteLine("Unable to load voiceover for flythrough step. No MediaPlayer supplied.");
+            }
 
             mSubtitlesText = subititlesText;
 

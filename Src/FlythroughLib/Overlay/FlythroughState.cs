@@ -28,9 +28,17 @@ using Chimera.Overlay.Triggers;
 using Chimera.Overlay.Drawables;
 using System.Drawing;
 using System.Xml;
+using Chimera.Interfaces;
 
 namespace Chimera.Flythrough.Overlay {
-    public class FlythroughStateFactory : IStateFactory {
+    public class FlythroughStateFactory : IStateFactory {        private IMediaPlayer mPlayer = null;
+
+        public FlythroughStateFactory() { }
+
+        public FlythroughStateFactory(IMediaPlayer player) {
+            mPlayer = player;
+        }
+
         #region IFactory<State> Members
 
         public string Name {
@@ -39,7 +47,7 @@ namespace Chimera.Flythrough.Overlay {
 
         public State Create(StateManager manager, XmlNode node) {
             Console.WriteLine("Creating Flythrough State");
-            return new FlythroughState(manager, node);
+            return new FlythroughState(manager, node, mPlayer);
         }
 
         public State Create(StateManager manager, XmlNode node, Rectangle clip) {
@@ -60,6 +68,7 @@ namespace Chimera.Flythrough.Overlay {
         private SlideshowWindow mSlideshow;
         private IImageTransition mSlideshowTransition;
         private List<ITrigger> mStepTriggers = new List<ITrigger>();
+        private IMediaPlayer mPlayer;
         private Text mStepText;
         private Text mSubtitlesText;
         private Step mCurrentStep;
@@ -105,9 +114,10 @@ namespace Chimera.Flythrough.Overlay {
                 AddFeature(trigger as IDrawable);
         }
 
-        public FlythroughState(StateManager manager, XmlNode node)
+        public FlythroughState(StateManager manager, XmlNode node, IMediaPlayer player)
             : base(GetName(node), manager) {
 
+            mPlayer = player;
             mInput = manager.Coordinator.GetPlugin<FlythroughPlugin>();
             bool displaySubtitles = GetBool(node, false, "DisplaySubtitles");
             mFlythrough = GetString(node, null, "File");
@@ -138,7 +148,7 @@ namespace Chimera.Flythrough.Overlay {
             if (stepsRoot != null) {
                 foreach (XmlNode child in stepsRoot.ChildNodes) {
                     if (child is XmlElement) {
-                        Step step = new Step(this, child, mSubtitlesText, subtitleTimeout);
+                        Step step = new Step(this, child, mSubtitlesText, subtitleTimeout, mPlayer);
                         mSteps.Add(step.StepNum, step);
                     }
                 }
