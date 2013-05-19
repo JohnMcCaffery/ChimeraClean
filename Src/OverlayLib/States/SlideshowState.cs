@@ -26,6 +26,7 @@ using System.Drawing;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Xml;
+using Chimera.Overlay.Transitions;
 
 namespace Chimera.Overlay.States {
     public class SlideshowStateFactory : IStateFactory {
@@ -67,11 +68,7 @@ namespace Chimera.Overlay.States {
         public SlideshowState(OverlayPlugin manager, XmlNode node)
             : base(GetName(node), manager) {
 
-            mTransition = manager.GetImageTransition(node, "slideshow state");
-            if (mTransition == null) {
-                Console.WriteLine("Unable to parse transition for slideshow state. Using default transition " + manager.DefaultImageTransition.Name + ".");
-                mTransition = manager.DefaultImageTransition;
-            }
+            mTransition = manager.GetImageTransition(node, "slideshow state", new BitmapFadeFactory());
             mFolder = GetString(node, null, "Folder");
             if (mFolder == null)
                 throw new ArgumentException("Unable to load slideshow state. No Folder specified.");

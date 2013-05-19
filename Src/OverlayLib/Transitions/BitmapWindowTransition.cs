@@ -37,7 +37,7 @@ namespace Chimera.Overlay.Transitions {
         public IWindowTransitionFactory Create(OverlayPlugin manager, XmlNode node) {
             Console.WriteLine("Creating Bitmap Window Transition");
             double length = GetDouble(node, 5000.0, "Length");
-            IImageTransitionFactory transition = manager.GetImageTransition(node, "bitmap window transition");
+            IImageTransitionFactory transition = manager.GetImageTransition(node, "window state transition", new BitmapFadeFactory());
             if (transition == null) {
                 Console.WriteLine("Unable to get specified transition. Using default " + manager.DefaultImageTransition.Name + ".");
                 transition = manager.DefaultImageTransition;

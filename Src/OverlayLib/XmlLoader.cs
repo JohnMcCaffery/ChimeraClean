@@ -175,5 +175,23 @@ namespace Chimera.Overlay {
                 return new XmlElement[0];
             return childParent.ChildNodes.OfType<XmlElement>();
         }
+
+        public static T GetFromNode<T>(XmlNode node, Dictionary<string, T> map, string target, string reason, string attribute, T defalt) {
+            string ifDefault = defalt != null ? "Using default " + defalt.GetType().Name + "." : "";
+            if (node == null) {
+                Console.WriteLine("Unable to get " + target + " for " + reason + ". No node." + ifDefault);
+                return defalt;
+            }
+            XmlAttribute attr = node.Attributes[attribute];
+            if (attr == null) {
+                Console.WriteLine("Unable to load " + target + ". No " + attribute + " attribute specified." + ifDefault);
+                return defalt;
+            }
+            if (!map.ContainsKey(attr.Value)) {
+                Console.WriteLine("Unable to load " + target + ". " + attr.Value + " is not a known " + target + "." + ifDefault);
+                return defalt;
+            }
+            return map[attr.Value];
+        }
     }
 }

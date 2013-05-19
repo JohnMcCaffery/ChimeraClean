@@ -399,7 +399,7 @@ namespace Chimera.Overlay {
                 return;
             }
 
-            IWindowTransitionFactory style = GetTransition(node, new BitmapWindowTransitionFactory(new BitmapFadeFactory(), 2000));
+            IWindowTransitionFactory style = GetTransition(node, "state transition", new BitmapWindowTransitionFactory(new BitmapFadeFactory(), 2000));
             if (style == null)
                 return;
 
@@ -409,35 +409,12 @@ namespace Chimera.Overlay {
                 transition.From.AddTransition(transition);
             }
         }
-
-        public IWindowTransitionFactory GetTransition(XmlNode node, IWindowTransitionFactory defalt) {
-            XmlAttribute transitionAttr = node.Attributes["Transition"];
-            if (transitionAttr == null) {
-                Console.WriteLine("Unable to load transition. No Transition attribute specified. Using default " + defalt.GetType().Name + ".");
-                return defalt;
-            }
-            if (!mTransitionStyles.ContainsKey(transitionAttr.Value)) {
-                Console.WriteLine("Unable to load transition. " + transitionAttr.Value + " is not a known transition style. Using default " + defalt.GetType().Name + ".");
-                return defalt;
-            }
-            return mTransitionStyles[transitionAttr.Value];
+        public IWindowTransitionFactory GetTransition(XmlNode node, string reason, IWindowTransitionFactory defalt) {
+            return GetFromNode(node, mTransitionStyles, "transition style", reason, "Transition", defalt);
         }
 
-        public IImageTransitionFactory GetImageTransition(XmlNode node, string reason) {
-            if (node == null) {
-                Console.WriteLine("Unable to get image transition for " + reason + ". No node.");
-                return null;
-            }
-            XmlAttribute transitionAttr = node.Attributes["Transition"];
-            if (transitionAttr == null) {
-                Console.WriteLine("Unable to get image transition from " + node.Name + " for " + reason + ". No Transition attribute.");
-                return null;
-            }
-            if (!mImageTransitions.ContainsKey(transitionAttr.Value)) {
-                Console.WriteLine("Unable to get image transition from " + node.Name + " for " + reason + ". " + transitionAttr.Value + " is not a known transition.");
-                return null;
-            }
-            return mImageTransitions[transitionAttr.Value];
+        public IImageTransitionFactory GetImageTransition(XmlNode node, string reason, IImageTransitionFactory defalt) {
+            return GetFromNode(node, mImageTransitions, "image transition", reason, "Transition", defalt);
         }
 
         //TODO Get<T>(XmlNode node, Dictionary<string,T> map, string reason, params string[] keys)
@@ -543,8 +520,8 @@ namespace Chimera.Overlay {
             foreach (XmlNode child in node.ChildNodes) {
                 if (child is XmlElement) {
                     switch (child.Name) {
-                        case "IdleTransition": mSplashIdleTransition = GetTransition(child, new OpacityFadeOutWindowTransitionFactory(5000)); return;
-                        case "SplashTransition": mIdleSplashTransition = GetTransition(child, new OpacityFadeInWindowTransitionFactory(5000)); return;
+                        case "IdleTransition": mSplashIdleTransition = GetTransition(child, "to idle transition", new OpacityFadeOutWindowTransitionFactory(5000)); return;
+                        case "SplashTransition": mIdleSplashTransition = GetTransition(child, "from idle transition", new OpacityFadeInWindowTransitionFactory(5000)); return;
                         default: LoadIdleTrigger(child, GetTrigger(child)); return;
                     }
                 }

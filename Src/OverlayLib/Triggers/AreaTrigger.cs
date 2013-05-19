@@ -22,7 +22,6 @@ namespace Chimera.Overlay.Triggers {
         /// </summary>
         private bool mActive = true;
 
-
         /// <summary>
         /// The bounds defining the area which the cursor can hover over to trigger this selector. The bounds are specified as scaled values between 0,0 and 1,1. 0,0 is top left. 1,1 bottom right.
         /// </summary>
@@ -85,5 +84,9 @@ namespace Chimera.Overlay.Triggers {
         }
 
         #endregion
+
+        public override string ToString() {
+            return "Trigger: " + mBounds.X + "," + mBounds.Height;
+        }
     }
 }

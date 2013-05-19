@@ -99,7 +99,7 @@ namespace Chimera.Overlay.States {
             XmlAttribute toAttr = node.Attributes["FinishState"];
             if (toAttr != null && manager.GetState(toAttr.Value) != null) {
                 mTrigger = new SimpleTrigger();
-                IWindowTransitionFactory transition = manager.GetTransition(node, new BitmapWindowTransitionFactory(new BitmapFadeFactory(), 2000));
+                IWindowTransitionFactory transition = manager.GetTransition(node, "video state finish transition", new BitmapWindowTransitionFactory(new BitmapFadeFactory(), 2000));
                 if (transition == null) {
                     Console.WriteLine("No transition specified for VideoState. using default transition " + manager.DefaultTransition.GetType().Name.Replace("Factory", "") + ".");
                     transition = manager.DefaultTransition;
@@ -132,8 +132,10 @@ namespace Chimera.Overlay.States {
             foreach (XmlElement child in GetChildrenOfChild(node, triggerType)) {
                 ITrigger trigger = manager.GetTrigger(child);
                 if (trigger != null) {
-                    if (!GetBool(child, false, "AlwaysOn"))
+                    if (!GetBool(child, false, "AlwaysOn")) {
                         list.Add(trigger);
+                        trigger.Active = false;
+                    }
                     if (trigger is IDrawable)
                         AddFeature(trigger as IDrawable);
                     trigger.Triggered += onTrigger;
