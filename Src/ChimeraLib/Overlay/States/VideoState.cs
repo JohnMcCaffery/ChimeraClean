@@ -16,7 +16,7 @@ using System.Xml;
 using System.Windows.Forms;
 using Chimera.Interfaces;
 
-namespace Chimera.Multimedia {
+namespace Chimera.Overlay.States {
     public class VideoStateFactory : IStateFactory {
         private IMediaPlayer mPlayer;
 

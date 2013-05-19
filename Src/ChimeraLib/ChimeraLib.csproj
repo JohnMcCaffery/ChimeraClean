@@ -143,6 +143,7 @@
     <Compile Include="Interfaces\IMediaPlayer.cs" />
     <Compile Include="Interfaces\Overlay\IFactory.cs" />
     <Compile Include="Overlay\States\ExploreState.cs" />
+    <Compile Include="Overlay\States\VideoState.cs" />
     <Compile Include="Overlay\Triggers\AreaTrigger.cs" />
     <Compile Include="Overlay\Triggers\ClickTrigger.cs" />
     <Compile Include="Overlay\Triggers\TextClickTrigger.cs" />
