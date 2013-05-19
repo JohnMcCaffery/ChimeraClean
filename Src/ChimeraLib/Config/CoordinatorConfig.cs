@@ -38,6 +38,7 @@ namespace Chimera.Config {
         public int YRegions;
         public float HeightmapDefault;
         public double OverlayOpacity;
+        public string[] Windows;
 
         public CoordinatorConfig(params string[] args)
             : base("Main", args) {
@@ -69,6 +70,7 @@ namespace Chimera.Config {
             XRegions = Get("Heightmap", "XRegions", 1, "The number of contiguous regions along the X axis that make up the environment.");
             YRegions = Get("Heightmap", "YRegions", 1, "The number of contiguous regions along the Y axis that make up the environment.");
             HeightmapDefault = Get("Heightmap", "HeightmapDefault", 0f, "The default heightmap height. Any square that does not have heightmap data set will revert to this.");
+            Windows = Get(true, "Windows", "MainWindow", "The name of all the windows to load, separated by commas.").Split(',');
 
             Get("Plugins", "|PLUGIN|Enabled", true, "Set whether |PLUGIN| is enabled at start-up.");
         }

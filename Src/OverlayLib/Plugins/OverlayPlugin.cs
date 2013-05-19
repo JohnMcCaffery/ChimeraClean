@@ -560,7 +560,7 @@ namespace Chimera.Overlay {
 
         public event Action<IPlugin, bool> EnabledChanged;
 
-        public System.Windows.Forms.UserControl ControlPanel {
+        public UserControl ControlPanel {
             get { throw new NotImplementedException(); }
         }
 
@@ -598,6 +598,9 @@ namespace Chimera.Overlay {
             mTransitionComplete = new Action<StateTransition>(transition_Finished);
             mCoordinator.WindowAdded += new Action<Window,EventArgs>(mCoordinator_WindowAdded);
 
+            foreach (var window in mCoordinator.Windows)
+                mCoordinator_WindowAdded(window, null);
+
             if (mConfig.OverlayFile != null)
                 LoadXML(mConfig.OverlayFile);
         }
@@ -607,5 +610,9 @@ namespace Chimera.Overlay {
         public void Draw(Func<OpenMetaverse.Vector3, Point> to2D, Graphics graphics, Action redraw, Perspective perspective) { }
 
         #endregion
+
+        public bool IsKnownWindow(string window) {
+            return mWindowManagers.ContainsKey(window);
+        }
     }
 }

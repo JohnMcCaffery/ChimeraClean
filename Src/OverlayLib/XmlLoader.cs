@@ -133,8 +133,7 @@ namespace Chimera.Overlay {
                 mManager = manager[0];
                 Console.WriteLine("No window specified whilst resolving " + node.Name + ". Using " + mManager.Window.Name + " as default.");
             } else {
-                Window window = manager.Coordinator.Windows.FirstOrDefault(w => w.Name == windowAttr.Value);
-                if (windowAttr == null) {
+                if (!manager.IsKnownWindow(windowAttr.Value)) {
                     mManager = manager[0];
                     Console.WriteLine(windowAttr.Value + " is not a known window. Using " + mManager.Window.Name + " as default.");
                 } else

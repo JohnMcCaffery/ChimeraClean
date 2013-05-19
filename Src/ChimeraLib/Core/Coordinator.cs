@@ -243,7 +243,7 @@ namespace Chimera {
         /// Initialise this coordinator, specifying a collection of plugins to work with.
         /// </summary>
         /// <param name="plugins">The plugins which control this coordinator.</param>
-        public Coordinator(params ISystemPlugin[] plugins) {
+        public Coordinator(IOutputFactory outputFactory, params ISystemPlugin[] plugins) {
             mServer = new StatisticsServer(this);
 
             mConfig = new CoordinatorConfig();
@@ -264,6 +264,9 @@ namespace Chimera {
                 }
             }
 
+            foreach (string window in mConfig.Windows)
+                AddWindow(new Window(window, outputFactory.Create()));
+
             foreach (var plugin in mPlugins) {
                 plugin.Init(this);
                 plugin.Enabled = mConfig.PluginEnabled(plugin);
@@ -280,20 +283,9 @@ namespace Chimera {
                     Thread.Sleep(Math.Max(0, (int) (mTickLength - DateTime.Now.Subtract(tickStart).TotalMilliseconds)));
                 }
             });
+
             tickThread.Name = "Tick Thread";
             tickThread.Start();
-        }
-
-        /// <summary>
-        /// Initialise this coordinator, specifying a collection of plugins to work with and a collection of windows coordinated by this coordinator.
-        /// </summary>
-        /// <param name="windows">The windows which are coordinated by this coordinator.</param>
-        /// <param name="plugins">The plugins which control the camera through this coordinator.</param>
-        public Coordinator(IEnumerable<Window> windows, params ISystemPlugin[] plugins)
-            : this(plugins) {
-
-            foreach (var window in windows)
-                AddWindow(window);
         }
 
         /// <summary>

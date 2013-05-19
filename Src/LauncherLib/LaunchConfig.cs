@@ -10,7 +10,6 @@ namespace Chimera.Launcher {
         public bool GUI;
 
         public bool BackwardsCompatible;
-        public string Windows;
         public String BindingsFile;
 
         public override string Group {
@@ -22,7 +21,6 @@ namespace Chimera.Launcher {
 
         protected override void InitConfig() {
             GUI = Get(true, "GUI", true, "Whether to launch the GUI when the system starts.");
-            Windows = Get(true, "Windows", "MainWindow", "The name of all the windows to load, separated by commas.");
             BindingsFile = Get(true, "BindingsFile", "../Config/FullSetup.xml", "The XML file describing the dependency injection bindings used to instantiate the system.");
         }
     }

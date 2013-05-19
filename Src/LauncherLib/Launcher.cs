@@ -81,10 +81,6 @@ namespace Chimera.Launcher {
 
             mCoordinator = k.Get<Coordinator>();
             IOutputFactory outputFactory = k.Get<IOutputFactory>();
-
-            foreach (string windowName in mConfig.Windows.Split(',')) {
-                Coordinator.AddWindow(new Window(windowName, outputFactory.Create()));
-            }
         }
 
 

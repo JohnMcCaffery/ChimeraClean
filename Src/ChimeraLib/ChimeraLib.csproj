@@ -230,8 +230,6 @@
     <Compile Include="Interfaces\ISystemPlugin.cs" />
     <Compile Include="Interfaces\IOutput.cs" />
     <Compile Include="Core\Coordinator.cs" />
-    <Compile Include="Core\NetworkMaster.cs" />
-    <Compile Include="Core\NetworkSlave.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Core\Window.cs" />
     <Compile Include="Util\TickStatistics.cs" />
