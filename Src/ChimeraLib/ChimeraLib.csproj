@@ -140,6 +140,7 @@
     <Compile Include="GUI\Controls\ProjectorPanel.Designer.cs">
       <DependentUpon>ProjectorPanel.cs</DependentUpon>
     </Compile>
+    <Compile Include="Interfaces\IMediaPlayer.cs" />
     <Compile Include="Interfaces\Overlay\IFactory.cs" />
     <Compile Include="Overlay\States\ExploreState.cs" />
     <Compile Include="Overlay\Triggers\AreaTrigger.cs" />

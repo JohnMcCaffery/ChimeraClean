@@ -14,16 +14,23 @@ using Chimera.Overlay;
 using Chimera.Overlay.States;
 using System.Xml;
 using System.Windows.Forms;
+using Chimera.Interfaces;
 
 namespace Chimera.Multimedia {
     public class VideoStateFactory : IStateFactory {
+        private IMediaPlayer mPlayer;
+
+        public VideoStateFactory(IMediaPlayer player) {
+            mPlayer = player;
+        }
+
         public string Name {
             get { return "Video"; }
         }
 
         public State Create(StateManager manager, XmlNode node) {
             Console.WriteLine("Creating Video State");
-            return new VideoState(manager, node);
+            return new VideoState(manager, node, mPlayer);
         }
 
         public State Create(StateManager manager, XmlNode node, Rectangle clip) {
@@ -34,10 +41,10 @@ namespace Chimera.Multimedia {
     public class VideoState : ImageBGState {
         private string mVideo;
         private WindowOverlayManager mMainWindow;
-        private Process mPlayer;
         private SimpleTrigger mTrigger;
         private RectangleF mBounds = new RectangleF(0f, 0f, 1f, 1f);
         private bool mAdded;
+        private IMediaPlayer mPlayer;
 
         private List<ITrigger> mStartTriggers = new List<ITrigger>();
         private List<ITrigger> mStopTriggers = new List<ITrigger>();
@@ -55,20 +62,22 @@ namespace Chimera.Multimedia {
             }
         }
 
-        public VideoState(string name, WindowOverlayManager mainWindow, string video, State parent, IWindowTransitionFactory transition)
+        public VideoState(string name, WindowOverlayManager mainWindow, string video, State parent, IWindowTransitionFactory transition, IMediaPlayer player)
             : base(name, mainWindow.Window.Coordinator.StateManager, DefaultBG) {
 
+            mPlayer = player;
             mMainWindow = mainWindow;
             mVideo = Path.GetFullPath(video);
-            VideoManager.VideoFinished += VideoManager_VideoFinished;
+            mPlayer.PlaybackFinished += mPlayer_VideoFinished;
 
             mTrigger = new SimpleTrigger();
             AddTransition(new StateTransition(Manager, this, parent, mTrigger, transition));
         }
 
-        public VideoState(StateManager manager, XmlNode node)
+        public VideoState(StateManager manager, XmlNode node, IMediaPlayer player)
             : base(manager, node) {
 
+            mPlayer = player;
             mVideo = GetString(node, null, "File");
             if (mVideo == null)
                 throw new ArgumentException("Unable to load VideoState. No File attribute specified.");
@@ -76,7 +85,7 @@ namespace Chimera.Multimedia {
             if (!File.Exists(mVideo))
                 throw new ArgumentException("Unable to load VideoState. The file '" + mVideo + "' does not exist.");
 
-            VideoManager.VideoFinished += new Action(VideoManager_VideoFinished);
+            mPlayer.PlaybackFinished += new Action(mPlayer_VideoFinished);
             mMainWindow = GetManager(manager, node, "video state");
             mBounds = manager.GetBounds(node, "video state");
 
@@ -113,15 +122,15 @@ namespace Chimera.Multimedia {
             Start();
         }
 
-        void VideoManager_VideoFinished() {
+        void mPlayer_VideoFinished() {
             if (mTrigger != null)
                 mTrigger.Trigger();
-            mMainWindow.RemoveControl(VideoManager.Player);
+            mMainWindow.RemoveControl(mPlayer.Player);
             mAdded = false;
         }
 
         protected override void TransitionFromStart() {
-            VideoManager.StopPlayback();
+            mPlayer.StopPlayback();
             foreach (var trigger in mStartTriggers)
                 trigger.Active = false;
             foreach (var trigger in mStopTriggers)
@@ -130,15 +139,15 @@ namespace Chimera.Multimedia {
 
         public override void TransitionFromFinish() {
             if (mAdded) {
-                mMainWindow.RemoveControl(VideoManager.Player);
+                mMainWindow.RemoveControl(mPlayer.Player);
                 mAdded = false;
             }
         }
 
         private void Start() {
-            mMainWindow.AddControl(VideoManager.Player, mBounds);
+            mMainWindow.AddControl(mPlayer.Player, mBounds);
             mAdded = true;
-            VideoManager.PlayVideo(mVideo);
+            mPlayer.PlayVideo(mVideo);
             foreach (var trigger in mStartTriggers)
                 trigger.Active = false;
             foreach (var trigger in mStopTriggers)
@@ -146,7 +155,7 @@ namespace Chimera.Multimedia {
         }
 
         private void Stop() {
-            VideoManager.StopPlayback();
+            mPlayer.StopPlayback();
             foreach (var trigger in mStartTriggers)
                 trigger.Active = false;
             foreach (var trigger in mStopTriggers)

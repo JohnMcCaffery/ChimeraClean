@@ -4,12 +4,13 @@ using System.Linq;
 using System.Text;
 using AxWMPLib;
 using System.Windows.Forms;
+using Chimera.Interfaces;
 
 namespace Chimera.Multimedia {
-    public static class VideoManager {
-        private static AxWMPLib.AxWindowsMediaPlayer sVideoPlayer;
+    public class WMPMediaPlayer : IMediaPlayer {
+        private static AxWindowsMediaPlayer sVideoPlayer;
 
-        public static AxWindowsMediaPlayer Player {
+        private static AxWindowsMediaPlayer sPlayer {
             get {
                 if (sVideoPlayer == null)  {
                     sVideoPlayer = new AxWindowsMediaPlayer();
@@ -25,35 +26,62 @@ namespace Chimera.Multimedia {
         }
 
         private static void videoPlayer_PlayStateChange(object source, _WMPOCXEvents_PlayStateChangeEvent args) {
-            if (args.newState == 1 && VideoFinished != null) {
+            if (args.newState == 1 && sVideoFinished != null) {
                 sVideoPlayer.Visible = false;
-                VideoFinished();
+                sVideoFinished();
             }
         }
 
         /// <summary>
         /// Triggered whenever a video that has been played through the interface finishes.
         /// </summary>
-        public static event Action VideoFinished;
+        private static event Action sVideoFinished;
         
 
-        public static void PlayVideo(string uri) {
+        private static void sPlayVideo(string uri) {
             //videoPlayer.uiMode = "Mini";
-            sVideoPlayer.Visible = true;
-            sVideoPlayer.URL = uri;
+            sPlayer.Visible = true;
+            sPlayer.URL = uri;
 
-            sVideoPlayer.uiMode = "none";
-            sVideoPlayer.stretchToFit = true;
-            sVideoPlayer.windowlessVideo = true;
-            sVideoPlayer.Ctlcontrols.play();
+            sPlayer.uiMode = "none";
+            sPlayer.stretchToFit = true;
+            sPlayer.windowlessVideo = true;
+            sPlayer.Ctlcontrols.play();
         }
 
-        public static void PlayAudio(string uri) {
-            sVideoPlayer.URL = uri;
+        public static void sPlayAudio(string uri) {
+            sPlayer.URL = uri;
         }
 
-        internal static void StopPlayback() {
-            sVideoPlayer.Ctlcontrols.stop();
+        internal static void sStopPlayback() {
+            sPlayer.Ctlcontrols.stop();
+        }
+
+
+
+
+        public Control Player {
+            get { return sPlayer; }
+        }
+
+        /// <summary>
+        /// Triggered whenever a video that has been played through the interface finishes.
+        /// </summary>
+        public event Action PlaybackFinished {
+            add { sVideoFinished += value; }
+            remove { sVideoFinished -= value; }
+        }
+
+        public void PlayVideo(string uri) {
+            sPlayVideo(uri);
+        }
+
+        public void PlayAudio(string uri) {
+            sPlayAudio(uri);
+        }
+
+        public void StopPlayback() {
+            sStopPlayback();
         }
     }
 }
