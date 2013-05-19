@@ -25,6 +25,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using Chimera.Interfaces.Overlay;
 using System.Xml;
+using System.Threading;
 
 namespace Chimera.Overlay.Triggers {
     public class ClickTriggerFactory : ITriggerFactory {
@@ -84,7 +85,7 @@ namespace Chimera.Overlay.Triggers {
 
         void mManager_OnRelease(int index) {
             if (Active && Bounds.Contains(Manager.CursorPosition) && Triggered != null) 
-                Triggered();
+                new Thread(() => Triggered()).Start();
         }
 
 

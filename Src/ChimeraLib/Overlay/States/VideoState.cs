@@ -47,10 +47,13 @@ namespace Chimera.Overlay.States {
         private SimpleTrigger mTrigger;
         private RectangleF mBounds = new RectangleF(0f, 0f, 1f, 1f);
         private bool mAdded;
+        private bool mRestartMode;
+        private bool mRestarted = true;
         private IMediaPlayer mPlayer;
 
         private List<ITrigger> mStartTriggers = new List<ITrigger>();
         private List<ITrigger> mStopTriggers = new List<ITrigger>();
+        private List<ITrigger> mResetTriggers = new List<ITrigger>();
 
         private static Bitmap mDefaultBG;
 
@@ -103,66 +106,96 @@ namespace Chimera.Overlay.States {
                 AddTransition(new StateTransition(Manager, this, manager.GetState(toAttr.Value), mTrigger, transition));
             }
 
-            foreach (XmlElement child in node.ChildNodes) {
-                if (child is XmlElement) {
-                    ITrigger trigger = manager.GetTrigger(child);
-                    if (trigger != null) {
-                        if (GetBool(child, false, "TriggerStart"))
-                            mStartTriggers.Add(trigger);
-                        else
-                            mStopTriggers.Add(trigger);
-                    }
+            LoadTriggers(node, manager, "StartTriggers", mStartTriggers, new Action(StartTriggered));
+            LoadTriggers(node, manager, "StopTriggers", mStopTriggers, new Action(StopTriggered));
+
+            mRestartMode = GetBool(node, false, "RestartMode");
+            if (mRestartMode) {
+                LoadTriggers(node, manager, "ResetTriggers", mResetTriggers, new Action(RestartTriggered));
+            }
+        }
+
+        private void StartTriggered() {
+            Start();
+        }
+
+        private void StopTriggered() {
+            Stop(false);
+        }
+
+        private void RestartTriggered() {
+            mRestarted = true;
+        }
+
+        private void LoadTriggers(XmlNode node, StateManager manager, string triggerType, List<ITrigger> list, Action onTrigger) {
+            foreach (XmlElement child in GetChildrenOfChild(node, triggerType)) {
+                ITrigger trigger = manager.GetTrigger(child);
+                if (trigger != null) {
+                    if (!GetBool(child, false, "AlwaysOn"))
+                        list.Add(trigger);
+                    if (trigger is IDrawable)
+                        AddFeature(trigger as IDrawable);
+                    trigger.Triggered += onTrigger;
                 }
             }
         }
 
         public override void TransitionToStart() {
+            SetTriggers(true);
+            ControlTriggers(mResetTriggers, true);
             foreach (var window in Manager.Coordinator.Windows)
                 window.OverlayManager.ControlPointer = false;
         }
 
         protected override void TransitionToFinish() {
-            Start();
+            if (!mRestartMode || mRestarted) {
+                mRestarted = false;
+                Start();
+            }
         }
 
         void mPlayer_VideoFinished() {
             if (mTrigger != null)
                 mTrigger.Trigger();
-            mMainWindow.RemoveControl(mPlayer.Player);
-            mAdded = false;
         }
 
         protected override void TransitionFromStart() {
-            mPlayer.StopPlayback();
-            foreach (var trigger in mStartTriggers)
-                trigger.Active = false;
-            foreach (var trigger in mStopTriggers)
-                trigger.Active = false;
+            Stop(true);
         }
 
         public override void TransitionFromFinish() {
-            if (mAdded) {
-                mMainWindow.RemoveControl(mPlayer.Player);
-                mAdded = false;
-            }
+            Stop(true);
         }
 
         private void Start() {
-            mMainWindow.AddControl(mPlayer.Player, mBounds);
-            mAdded = true;
+            if (!mAdded) {
+                mMainWindow.AddControl(mPlayer.Player, mBounds);
+                mAdded = true;
+            }
             mPlayer.PlayVideo(mVideo);
-            foreach (var trigger in mStartTriggers)
-                trigger.Active = false;
-            foreach (var trigger in mStopTriggers)
-                trigger.Active = true;
+            SetTriggers(false);
         }
 
-        private void Stop() {
-            mPlayer.StopPlayback();
-            foreach (var trigger in mStartTriggers)
-                trigger.Active = false;
-            foreach (var trigger in mStopTriggers)
-                trigger.Active = true;
+        private void Stop(bool remove) {
+            if (mAdded) {
+                mPlayer.StopPlayback();
+                SetTriggers(true);
+                mMainWindow.RemoveControl(mPlayer.Player);
+                mAdded = false;
+                if (remove) {
+                    ControlTriggers(mStartTriggers, false);
+                    ControlTriggers(mResetTriggers, false);
+                }
+            }
+        }
+        private void SetTriggers(bool start) {
+            ControlTriggers(mStartTriggers, start);
+            ControlTriggers(mStopTriggers, !start);
+        }
+
+        private void ControlTriggers(List<ITrigger> triggers, bool active) {
+            foreach (var trigger in triggers)
+                trigger.Active = active;
         }
     }
 }

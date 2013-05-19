@@ -169,5 +169,12 @@ namespace Chimera.Overlay {
             Console.WriteLine("Unable to get colour for " + node.Name + ". No Colour attribute specified.");
             return defalt;
         }
+
+        public static IEnumerable<XmlElement> GetChildrenOfChild(XmlNode root, string childName) {
+            XmlNode childParent = root.SelectSingleNode("child::" + childName);
+            if (childParent == null)
+                return new XmlElement[0];
+            return childParent.ChildNodes.OfType<XmlElement>();
+        }
     }
 }

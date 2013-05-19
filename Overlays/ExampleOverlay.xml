@@ -30,8 +30,17 @@
         </PrevTriggers>
       </State>
 
-      <State Type="Video" Name="Video" File="E:\Video\Edit\Out\vid.mpg" FinishState="None" L="310" T="310" R="790" B="590" >
+      <State Type="Video" Name="Video" File="E:\Video\Edit\Out\vid.mpg" FinishState="None" L="310" T="310" R="790" B="590" RestartMode="true">
         <window Window="MainWindow" File="../Images/Example/ExampleBGVideo.png" Splash="True"/>
+        <StartTriggers>
+          <InvisibleTrigger T="310" L="310" R="790" B="590" />
+        </StartTriggers>
+        <StopTriggers>
+          <InvisibleTrigger T="30" L="30" R="800" B="600" />
+        </StopTriggers>
+        <ResetTriggers>
+          <ImageTrigger X="1000" Y="300" File="../Images/Example/Button.png" AlwaysOn="false" />
+        </ResetTriggers>
       </State>
 
       <State Type="Flythrough" Name="FullFlythrough" File="../Flythroughs/Cathedral5.xml" Stepping="true" DisplaySubtitles="true" SubtitleTimeout="20">
@@ -64,6 +73,7 @@
       <InvisibleTransition From="Splash" To="Slideshow" Transition="FadeOut" T="300" L="300" R="800" B="600" />
       <TextTransition From="Splash" To="Video" Transition="BitmapFade" X="1400" Y="300" Size="50" Style="Bold">Video</TextTransition>
       <ImageTransition From="Splash" To="FullFlythrough" Transition="FadeOut" X="1000" Y="300" File="../Images/Example/Button.png" />
+      <TextTransition From="Video" To="Splash" Transition="BitmapFade" X="1400" Y="300" Size="50" Style="Bold">Back</TextTransition>
     </Transitions>
   </Any>
 

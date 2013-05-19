@@ -7,6 +7,7 @@ using System.Windows.Forms;
 using Chimera.Interfaces;
 using Chimera.Overlay;
 using System.Drawing;
+using System.Threading;
 
 namespace Chimera.Multimedia {
     public class WMPMediaPlayer : IMediaPlayer {
@@ -40,14 +41,23 @@ namespace Chimera.Multimedia {
         
 
         private static void sPlayVideo(string uri) {
-            //videoPlayer.uiMode = "Mini";
-            sPlayer.Visible = true;
-            sPlayer.URL = uri;
+            Invoke(() => {
+                //videoPlayer.uiMode = "Mini";
+                sPlayer.Visible = true;
+                sPlayer.URL = uri;
 
-            sPlayer.uiMode = "none";
-            sPlayer.stretchToFit = true;
-            sPlayer.windowlessVideo = true;
-            sPlayer.Ctlcontrols.play();
+                sPlayer.uiMode = "none";
+                sPlayer.stretchToFit = true;
+                sPlayer.windowlessVideo = true;
+                sPlayer.Ctlcontrols.play();
+            });
+        }
+
+        private static void Invoke(Action a) {
+            if (sPlayer.InvokeRequired)
+                sPlayer.Invoke(a);
+            else
+                a();
         }
 
         /// <summary>
@@ -56,14 +66,16 @@ namespace Chimera.Multimedia {
         /// </summary>
         /// <param name="uri"></param>
         public static void sPlayAudio(string uri) {
-            sPlayer.Bounds = new Rectangle(0, 0, 0, 0);
-            sPlayer.Visible = true;
-            sPlayer.URL = uri;
-            sPlayer.Ctlcontrols.play();
+            Invoke(() => {
+                sPlayer.Bounds = new Rectangle(0, 0, 0, 0);
+                sPlayer.Visible = true;
+                sPlayer.URL = uri;
+                sPlayer.Ctlcontrols.play();
+            });
         }
 
         internal static void sStopPlayback() {
-            sPlayer.Ctlcontrols.stop();
+            Invoke(() => sPlayer.Ctlcontrols.stop());
         }
 
 
