@@ -27,6 +27,7 @@ using System.Text;
 using System.Windows.Forms;
 using Chimera.Plugins;
 using Chimera.Util;
+using Chimera.Overlay.Plugins;
 
 namespace Chimera.GUI.Controls.Plugins {
     public partial class MousePluginPanel : UserControl {

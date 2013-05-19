@@ -5,10 +5,11 @@
   <bind service="Chimera.ISystemPlugin, ChimeraLib" to="Chimera.Plugins.KBMousePlugin, ChimeraLib" scope="singleton" />
   <bind service="Chimera.ISystemPlugin, ChimeraLib" to="Chimera.OpenSim.OpenSimController, OpenSimLib" scope="singleton" />
   <bind service="Chimera.ISystemPlugin, ChimeraLib" to="Chimera.Flythrough.FlythroughPlugin, FlythroughLib" scope="singleton" />
-  <bind service="Chimera.ISystemPlugin, ChimeraLib" to="Chimera.Overlay.OverlayPlugin, FlythroughLib" scope="singleton" />
+  <bind service="Chimera.ISystemPlugin, ChimeraLib" to="Chimera.Overlay.OverlayPlugin, OverlayLib" scope="singleton" />
+  <!-- Requires overlay to be bound -->
+  <bind service="Chimera.ISystemPlugin, ChimeraLib" to="Chimera.Overlay.Plugins.MousePlugin, OverlayLib" scope="singleton" />
   <!--
   <bind service="Chimera.ISystemPlugin, ChimeraLib" to="Touchscreen.TouchscreenPlugin, TouchscreenLib" scope="singleton" />
-  <bind service="Chimera.ISystemPlugin, ChimeraLib" to="Chimera.MousePlugin, ChimeraLib" scope="singleton" />
   <bind service="Chimera.ISystemPlugin, ChimeraLib" to="Chimera.Plugins.ProjectorPlugin, ChimeraLib" scope="singleton" />
   -->
 
@@ -27,12 +28,12 @@
   <!--<bind service="Chimera.Interfaces.Overlay.ISelectionRendererFactory, OverlayLib" to="Chimera.Overlay.Triggers.TextClickTriggerFactory, OverlayLib" />-->
   <!-- Transition Styles -->
   <bind service="Chimera.Interfaces.Overlay.ITransitionStyleFactory, OverlayLib" to="Chimera.Overlay.Transitions.BitmapTransitionFactory, OverlayLib" />
-  <bind service="Chimera.Interfaces.Overlay.ITransitionStyleFactory, OverlayLib" to="Chimera.Flythrough.Overlay.FlythroughStateFactory, FlythroughLib" />
+  <bind service="Chimera.Interfaces.Overlay.ITransitionStyleFactory, OverlayLib" to="Chimera.Overlay.Transitions.OpacityTransitionFactory, OverlayLib" />
   <!-- States -->
-  <bind service="Chimera.Interfaces.Overlay.IState, OverlayLib" to="Chimera.Overlay.States.ImageBGStateFactory, OverlayLib" />
-  <bind service="Chimera.Interfaces.Overlay.IState, OverlayLib" to="Chimera.Overlay.States.VideoStateFactory, OverlayLib" />
-  <bind service="Chimera.Interfaces.Overlay.IState, OverlayLib" to="Chimera.Overlay.States.SlideshowStateFactory, OverlayLib" />
-  <bind service="Chimera.Interfaces.Overlay.IState, OverlayLib" to="Chimera.Overlay.States.SlideshowStateFactory, OverlayLib" />
+  <bind service="Chimera.Interfaces.Overlay.IStateFactory, OverlayLib" to="Chimera.Overlay.States.ImageBGStateFactory, OverlayLib" />
+  <bind service="Chimera.Interfaces.Overlay.IStateFactory, OverlayLib" to="Chimera.Overlay.States.VideoStateFactory, OverlayLib" />
+  <bind service="Chimera.Interfaces.Overlay.IStateFactory, OverlayLib" to="Chimera.Overlay.States.SlideshowStateFactory, OverlayLib" />
+  <bind service="Chimera.Interfaces.Overlay.IStateFactory, OverlayLib" to="Chimera.Flythrough.Overlay.FlythroughStateFactory, FlythroughLib" />
 
 
   <!--                        LIBRARY SPECIFIC BINDINGS                         -->

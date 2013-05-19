@@ -27,18 +27,21 @@ using Chimera.GUI.Controls.Plugins;
 using System.Drawing;
 using OpenMetaverse;
 using Chimera.Config;
+using Chimera.Overlay;
 
-namespace Chimera.Plugins {
+namespace Chimera.Overlay.Plugins {
     public class MousePlugin : ISystemPlugin {
         private Coordinator mCoordinator;
         private MousePluginPanel mPanel;
+        private OverlayPlugin mOverlayPlugin;
         private Point mLastMouse;
         private bool mEnabled;
 
         public event Action<int, int> MouseMoved;
 
-        public MousePlugin() {
+        public MousePlugin(OverlayPlugin overlayPlugin) {
             PluginConfig cfg = new PluginConfig();
+            mOverlayPlugin = overlayPlugin;
         }
 
         void coordinator_Tick() {
@@ -61,7 +64,7 @@ namespace Chimera.Plugins {
         }
 
         private void Update(Window window, Rectangle bounds, int x, int y) {
-            //window.OverlayManager.UpdateCursor((double)x / (double)bounds.Width, (double)y / (double)bounds.Height);
+            mOverlayPlugin[window.Name].UpdateCursor((double)x / (double)bounds.Width, (double)y / (double)bounds.Height);
         }
 
         #region ISystemPluginMembers

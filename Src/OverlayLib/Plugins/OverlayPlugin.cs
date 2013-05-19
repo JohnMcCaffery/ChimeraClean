@@ -309,7 +309,6 @@ namespace Chimera.Overlay {
         }
 
         public void LoadXML(string xml) {
-
             foreach (var imageTrans in mImageTransitionFactories)
                 mImageTransitions.Add(imageTrans.Name, imageTrans);
 
