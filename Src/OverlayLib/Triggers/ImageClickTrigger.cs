@@ -35,19 +35,19 @@ namespace Chimera.Overlay.Triggers {
         }
 
         public string Mode {
-            get { return StateManager.CLICK_MODE; }
+            get { return OverlayPlugin.CLICK_MODE; }
         }
 
         public string Name {
             get { return "ImageClickTrigger"; }
         }
 
-        public ITrigger Create(StateManager manager, XmlNode node) {
+        public ITrigger Create(OverlayPlugin manager, XmlNode node) {
             OverlayImage img = new OverlayImage(manager, node);
             return new ImageClickTrigger(manager[img.Window], img);
         }
 
-        public ITrigger Create(StateManager manager, XmlNode node, Rectangle clip) {
+        public ITrigger Create(OverlayPlugin manager, XmlNode node, Rectangle clip) {
             OverlayImage img = new OverlayImage(manager, node, clip);
             return new ImageClickTrigger(manager[img.Window], img);
         }

@@ -9,8 +9,8 @@ using System.Drawing;
 namespace Chimera.Interfaces.Overlay {
     public interface IFactory<T> {
         string Name { get; }
-        T Create(StateManager manager, XmlNode node);
-        T Create(StateManager manager, XmlNode node, Rectangle clip);
+        T Create(OverlayPlugin manager, XmlNode node);
+        T Create(OverlayPlugin manager, XmlNode node, Rectangle clip);
     }
 
     public enum SpecialTrigger { Invisible, Text, Image, None }

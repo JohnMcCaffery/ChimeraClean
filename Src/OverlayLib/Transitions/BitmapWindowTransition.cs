@@ -34,7 +34,7 @@ namespace Chimera.Overlay.Transitions {
             get { return "BitmapTransition"; }
         }
 
-        public IWindowTransitionFactory Create(StateManager manager, XmlNode node) {
+        public IWindowTransitionFactory Create(OverlayPlugin manager, XmlNode node) {
             Console.WriteLine("Creating Bitmap Window Transition");
             double length = GetDouble(node, 5000.0, "Length");
             IImageTransitionFactory transition = manager.GetImageTransition(node, "bitmap window transition");
@@ -45,7 +45,7 @@ namespace Chimera.Overlay.Transitions {
             return new BitmapWindowTransitionFactory(transition, length);
         }
 
-        public IWindowTransitionFactory Create(StateManager manager, XmlNode node, Rectangle clip) {
+        public IWindowTransitionFactory Create(OverlayPlugin manager, XmlNode node, Rectangle clip) {
             return Create(manager, node);
         }
     }

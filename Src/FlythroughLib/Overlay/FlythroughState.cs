@@ -46,12 +46,12 @@ namespace Chimera.Flythrough.Overlay {
             get { return "Flythrough"; }
         }
 
-        public State Create(StateManager manager, XmlNode node) {
+        public State Create(OverlayPlugin manager, XmlNode node) {
             Console.WriteLine("Creating Flythrough State");
             return new FlythroughState(manager, node, mPlayer);
         }
 
-        public State Create(StateManager manager, XmlNode node, Rectangle clip) {
+        public State Create(OverlayPlugin manager, XmlNode node, Rectangle clip) {
             return Create(manager, node);
         }
 
@@ -79,14 +79,14 @@ namespace Chimera.Flythrough.Overlay {
         private bool mStepping = false;
         private int mStep = 1;
 
-        public FlythroughState(string name, StateManager manager, string flythrough)
+        public FlythroughState(string name, OverlayPlugin manager, string flythrough)
             : base(name, manager) {
 
             mFlythrough = flythrough;
             mInput = manager.Coordinator.GetPlugin<FlythroughPlugin>();
         }
 
-        public FlythroughState(string name, StateManager manager, string flythrough, params ITrigger[] stepTriggers)
+        public FlythroughState(string name, OverlayPlugin manager, string flythrough, params ITrigger[] stepTriggers)
             : this(name, manager, flythrough) {
 
             mStepping = true;
@@ -100,7 +100,7 @@ namespace Chimera.Flythrough.Overlay {
                 AddStepTrigger(trigger);
         }
 
-        public FlythroughState(string name, StateManager manager, string flythrough, string slideshowWindow, string slideshowFolder, IImageTransition slideshowTransition, params ITrigger[] steps)
+        public FlythroughState(string name, OverlayPlugin manager, string flythrough, string slideshowWindow, string slideshowFolder, IImageTransition slideshowTransition, params ITrigger[] steps)
             : this(name, manager, flythrough, steps) {
 
             mSlideshowWindowName = slideshowWindow;
@@ -115,7 +115,7 @@ namespace Chimera.Flythrough.Overlay {
                 AddFeature(trigger as IDrawable);
         }
 
-        public FlythroughState(StateManager manager, XmlNode node, IMediaPlayer player)
+        public FlythroughState(OverlayPlugin manager, XmlNode node, IMediaPlayer player)
             : base(GetName(node), manager) {
 
             mInput = manager.Coordinator.GetPlugin<FlythroughPlugin>();

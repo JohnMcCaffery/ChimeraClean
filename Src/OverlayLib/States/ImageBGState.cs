@@ -34,12 +34,12 @@ namespace Chimera.Overlay.States {
             get { return "ImageBG"; }
         }
 
-        public State Create(StateManager manager, XmlNode node) {
+        public State Create(OverlayPlugin manager, XmlNode node) {
             Console.WriteLine("Creating Image Background State");
             return new ImageBGState(manager, node);
         }
 
-        public State Create(StateManager manager, XmlNode node, Rectangle clip) {
+        public State Create(OverlayPlugin manager, XmlNode node, Rectangle clip) {
             return Create(manager, node);
         }
 
@@ -51,18 +51,18 @@ namespace Chimera.Overlay.States {
         private readonly Dictionary<string, ImageBGWindow> mWindows = new Dictionary<string, ImageBGWindow>();
         private Bitmap mDefaultBG;
 
-        public ImageBGState(string name, StateManager manager, Bitmap defaultBG)
+        public ImageBGState(string name, OverlayPlugin manager, Bitmap defaultBG)
             : base(name, manager) {
             mDefaultBG = defaultBG;
             foreach (var window in mWindows.Values)
                 window.BackgroundImage = defaultBG;
         }
 
-        public ImageBGState(string name, StateManager manager, string defaultBG)
+        public ImageBGState(string name, OverlayPlugin manager, string defaultBG)
             : this(name, manager, new Bitmap(defaultBG)) {
         }
 
-        public ImageBGState(StateManager manager, XmlNode node)
+        public ImageBGState(OverlayPlugin manager, XmlNode node)
             : base(GetName(node), manager) {
 
                 foreach (XmlNode child in node.ChildNodes) {

@@ -33,7 +33,7 @@ namespace Chimera.Overlay.States {
         private Vector3 mPosition;
         private Rotation mOrientation;
 
-        public SeeThroughMenuState(string name, StateManager manager, Vector3 position, Rotation orientation)
+        public SeeThroughMenuState(string name, OverlayPlugin manager, Vector3 position, Rotation orientation)
             : base(name, manager) {
 
             mPosition = position;

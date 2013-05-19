@@ -78,7 +78,7 @@ namespace Chimera.Overlay.Drawables {
             : this(text, window, font, colour, new PointF((float)location.X / (float)clip.Width, (float)location.Y / (float)clip.Height)) {
         }
 
-        public Text(StateManager manager, XmlNode node) {
+        public Text(OverlayPlugin manager, XmlNode node) {
             mText = node != null ? node.InnerText : "";
             mWindow = GetManager(manager, node, "text").Window.Name;
             mFont = GetFont(node, "text");
@@ -92,7 +92,7 @@ namespace Chimera.Overlay.Drawables {
             }
         }
 
-        public Text(StateManager manager, XmlNode node, Rectangle clip)
+        public Text(OverlayPlugin manager, XmlNode node, Rectangle clip)
             : this(manager, node) {
             mPosition = GetBounds(node, "text", clip).Location;
         }

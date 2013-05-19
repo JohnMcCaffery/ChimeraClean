@@ -49,12 +49,9 @@ using Chimera.Interfaces;
 
 namespace Chimera.Launcher {
     public class Launcher {
-        private readonly List<Window> mWindows = new List<Window>();
         private readonly Coordinator mCoordinator;
         private LauncherConfig mConfig;
         private CoordinatorForm mForm;
-        private IHoverSelectorRenderer mRenderer;
-        private string mButtonFolder = "../Images/Examples/";
         protected IOutput mFirstWindowOutput;
 
         protected IOutput MakeOutput(string name) {
@@ -88,11 +85,6 @@ namespace Chimera.Launcher {
             foreach (string windowName in mConfig.Windows.Split(',')) {
                 Coordinator.AddWindow(new Window(windowName, outputFactory.Create()));
             }
-
-            mButtonFolder = Path.GetFullPath(mConfig.ButtonFolder);
-
-            if (mConfig.InterfaceMode != StateManager.CLICK_MODE)
-                mRenderer = new DialCursorRenderer();
         }
 
 

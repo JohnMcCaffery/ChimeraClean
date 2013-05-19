@@ -30,7 +30,7 @@ using System.Drawing;
 using Chimera.Overlay.Triggers;
 
 namespace Chimera.Overlay {
-    public class StateManager : XmlLoader {
+    public class OverlayPlugin : XmlLoader, ISystemPlugin {
         public static readonly string CLICK_MODE = "ClickBased";
         public static readonly string HOVER_MODE = "HoverBased";
 
@@ -82,16 +82,6 @@ namespace Chimera.Overlay {
         /// Triggered whenever the current state changes.
         /// </summary>
         public event Action<State> StateChanged;
-        
-        /// <summary>
-        /// CreateWindowState the manager. Linking it with a coordinator.
-        /// </summary>
-        /// <param name="coordinator">The coordinator which this state form manages state for.</param>
-        public void Init(Coordinator coordinator) {
-            mCoordinator = coordinator;
-            mTransitionComplete = new Action<StateTransition>(transition_Finished);
-            mCoordinator.WindowAdded += new Action<Window,EventArgs>(mCoordinator_WindowAdded);
-        }
 
         void mCoordinator_WindowAdded(Window window, EventArgs args) {
             mWindowManagers.Add(window.Name, new WindowOverlayManager(this, window));
@@ -259,7 +249,34 @@ namespace Chimera.Overlay {
             get { return mImageTransitions.First().Value; }
         }
 
-        private IEnumerable<ITriggerFactory> mTriggerFactories;
+        IEnumerable<IImageTransitionFactory> mImageTransitionFactories;
+        IEnumerable<IDrawableFactory> mDrawableFactories;
+        IEnumerable<ITriggerFactory> mTriggerFactories;
+        IEnumerable<ISelectionRendererFactory> mSelectionRendererFactories;
+        IEnumerable<ITransitionStyleFactory> mTransitionStyleFactories;
+        IEnumerable<IStateFactory> mStateFactories;
+
+        private OverlayConfig mConfig;
+
+        public OverlayPlugin(
+                IEnumerable<IImageTransitionFactory> imageTransitionFactories, 
+                IEnumerable<IDrawableFactory> drawableFactories, 
+                IEnumerable<ITriggerFactory> triggerFactories, 
+                IEnumerable<ISelectionRendererFactory> selectionRendererFactories, 
+                IEnumerable<ITransitionStyleFactory> transitionStyleFactories, 
+                IEnumerable<IStateFactory> stateFactories) {
+
+            this.mImageTransitionFactories = imageTransitionFactories;
+            this.mDrawableFactories = drawableFactories;
+            this.mTriggerFactories = triggerFactories;
+            this.mSelectionRendererFactories = selectionRendererFactories;
+            this.mTransitionStyleFactories = transitionStyleFactories;
+            this.mStateFactories = stateFactories;
+
+            mConfig = new OverlayConfig();
+            mMode = mConfig.InterfaceMode;
+        }
+
         private Dictionary<string, IDrawable> mDrawables = new Dictionary<string, IDrawable>();
         private Dictionary<string, ITrigger> mTriggers = new Dictionary<string, ITrigger>();
         private Dictionary<string, IWindowTransitionFactory> mTransitionStyles = new Dictionary<string, IWindowTransitionFactory>();
@@ -291,37 +308,25 @@ namespace Chimera.Overlay {
             }
         }
 
-        public void LoadXML(
-                string xml, 
-                string mode,
-                IEnumerable<IImageTransitionFactory> imageTransitionFactories, 
-                IEnumerable<IDrawableFactory> drawableFactories, 
-                IEnumerable<ITriggerFactory> triggerFactories, 
-                IEnumerable<ISelectionRendererFactory> selectionRendererFactories, 
-                IEnumerable<ITransitionStyleFactory> transitionStyleFactories, 
-                IEnumerable<IStateFactory> stateFactories) {
+        public void LoadXML(string xml) {
 
-
-            foreach (var imageTrans in imageTransitionFactories)
+            foreach (var imageTrans in mImageTransitionFactories)
                 mImageTransitions.Add(imageTrans.Name, imageTrans);
-
-            mTriggerFactories = triggerFactories;
-            mMode = mode;
 
             XmlDocument doc = new XmlDocument();
             doc.Load(xml);
 
             LoadClip(doc);
 
-            LoadComponent(doc, mode, selectionRendererFactories, mRenderers, "SelectionRenderers");
+            LoadComponent(doc, mSelectionRendererFactories, mRenderers, "SelectionRenderers");
             if (mRenderers.Count == 0)
                 //TODO add renderer factories
                 mRenderers.Add("CursorRenderer", new DialCursorRenderer());
 
-            LoadComponent(doc, mode, drawableFactories, mDrawables, "Drawables");
-            LoadComponent(doc, mode, triggerFactories, mTriggers, "Triggers");
-            LoadComponent(doc, mode, transitionStyleFactories, mTransitionStyles, "TransitionStyles");
-            LoadComponent(doc, mode, stateFactories, mStates, "States");
+            LoadComponent(doc, mDrawableFactories, mDrawables, "Drawables");
+            LoadComponent(doc, mTriggerFactories, mTriggers, "Triggers");
+            LoadComponent(doc, mTransitionStyleFactories, mTransitionStyles, "TransitionStyles");
+            LoadComponent(doc, mStateFactories, mStates, "States");
 
 
             foreach (var state in mStates.Values)
@@ -332,7 +337,7 @@ namespace Chimera.Overlay {
             foreach (XmlNode transitionRoot in doc.GetElementsByTagName("Transitions"))
                 foreach (XmlNode transitionNode in transitionRoot.ChildNodes)
                     if (transitionNode is XmlElement)
-                        LoadTransition(mode, transitionNode);
+                        LoadTransition(transitionNode);
 
             if (mSplashState != null && mIdleState != null)
                 foreach (var state in mStates.Values)
@@ -343,7 +348,7 @@ namespace Chimera.Overlay {
             IdleEnabled = mIdleEnabled;
         }
 
-        private void LoadComponent<T>(XmlDocument doc, string mMode, IEnumerable<IFactory<T>> factories, Dictionary<string, T> map, string nodeID) {
+        private void LoadComponent<T>(XmlDocument doc, IEnumerable<IFactory<T>> factories, Dictionary<string, T> map, string nodeID) {
             foreach (XmlNode root in doc.GetElementsByTagName("Overlay")[0].ChildNodes)
                 if (root is XmlElement && (root.Name == "Any" || root.Name == mMode)) {
                     XmlNode specificRoot = root.SelectSingleNode("child::" + nodeID);
@@ -355,9 +360,7 @@ namespace Chimera.Overlay {
                 }
         }
 
-        private void LoadTransition(
-                string mMode,
-                XmlNode node) {
+        private void LoadTransition(XmlNode node) {
             XmlAttribute fromAttr = node.Attributes["From"];
             XmlAttribute toAttr = node.Attributes["To"];
             XmlAttribute transitionAttr = node.Attributes["Transition"];
@@ -551,5 +554,59 @@ namespace Chimera.Overlay {
         public RectangleF GetBounds(XmlNode node, string reason) {
             return mClipLoaded ? GetBounds(node, reason, mClip) : GetBounds(node, reason);
         }
+
+        private bool mEnabled;
+
+        #region ISystemInput members
+
+        public event Action<IPlugin, bool> EnabledChanged;
+
+        public System.Windows.Forms.UserControl ControlPanel {
+            get { throw new NotImplementedException(); }
+        }
+
+        public bool Enabled {
+            get {
+                return mEnabled;
+            }
+            set {
+                if (mEnabled != value) {
+                    mEnabled = value;
+                    if (EnabledChanged != null)
+                        EnabledChanged(this, value);
+                }
+            }
+        }
+
+        public string Name {
+            get { return "Overlay"; }
+        }
+
+        public string State {
+            get { throw new NotImplementedException(); }
+        }
+
+        public Config.ConfigBase Config {
+            get { return mConfig; }
+        }
+        
+        /// <summary>
+        /// CreateWindowState the manager. Linking it with a coordinator.
+        /// </summary>
+        /// <param name="coordinator">The coordinator which this state form manages state for.</param>
+        public void Init(Coordinator coordinator) {
+            mCoordinator = coordinator;
+            mTransitionComplete = new Action<StateTransition>(transition_Finished);
+            mCoordinator.WindowAdded += new Action<Window,EventArgs>(mCoordinator_WindowAdded);
+
+            if (mConfig.OverlayFile != null)
+                LoadXML(mConfig.OverlayFile);
+        }
+
+        public void Close() { }
+
+        public void Draw(Func<OpenMetaverse.Vector3, Point> to2D, Graphics graphics, Action redraw, Perspective perspective) { }
+
+        #endregion
     }
 }

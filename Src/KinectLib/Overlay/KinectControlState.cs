@@ -41,7 +41,7 @@ namespace Chimera.Kinect.Overlay {
             return new KinectControlWindowState(manager);
         }
 
-        public KinectControlState(string name, StateManager manager, bool avatar)
+        public KinectControlState(string name, OverlayPlugin manager, bool avatar)
             : base(name, manager) {
 
             mInput = manager.Coordinator.GetPlugin<KinectMovementPlugin>();

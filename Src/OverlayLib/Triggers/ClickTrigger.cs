@@ -34,18 +34,18 @@ namespace Chimera.Overlay.Triggers {
         }
 
         public string Mode {
-            get { return StateManager.CLICK_MODE; }
+            get { return OverlayPlugin.CLICK_MODE; }
         }
 
         public string Name {
             get { return "ClickTrigger"; }
         }
 
-        public ITrigger Create(StateManager manager, XmlNode node) {
+        public ITrigger Create(OverlayPlugin manager, XmlNode node) {
             return new ClickTrigger(manager, node);
         }
 
-        public ITrigger Create(StateManager manager, XmlNode node, Rectangle clip) {
+        public ITrigger Create(OverlayPlugin manager, XmlNode node, Rectangle clip) {
             return new ClickTrigger(manager, node, clip);
         }
     }
@@ -73,12 +73,12 @@ namespace Chimera.Overlay.Triggers {
             Manager.OnRelease += new Action<int>(mManager_OnRelease);
         }
 
-        public ClickTrigger(StateManager manager, XmlNode node)
+        public ClickTrigger(OverlayPlugin manager, XmlNode node)
             : base(manager, node) {
             Manager.OnRelease += new Action<int>(mManager_OnRelease);
         }
 
-        public ClickTrigger(StateManager manager, XmlNode node, Rectangle clip)
+        public ClickTrigger(OverlayPlugin manager, XmlNode node, Rectangle clip)
             : base(manager, node, clip) {
             Manager.OnRelease += new Action<int>(mManager_OnRelease);
         }

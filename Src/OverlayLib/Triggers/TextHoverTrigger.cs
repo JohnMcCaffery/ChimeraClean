@@ -33,18 +33,18 @@ namespace Chimera.Overlay.Triggers {
         }
 
         public string Mode {
-            get { return StateManager.HOVER_MODE; }
+            get { return OverlayPlugin.HOVER_MODE; }
         }
 
         public string Name {
             get { return "TextHoverTrigger"; }
         }
 
-        public ITrigger Create(StateManager manager, XmlNode node) {
+        public ITrigger Create(OverlayPlugin manager, XmlNode node) {
             return new TextHoverTrigger(manager, node);
         }
 
-        public ITrigger Create(StateManager manager, XmlNode node, Rectangle clip) {
+        public ITrigger Create(OverlayPlugin manager, XmlNode node, Rectangle clip) {
             return new TextHoverTrigger(manager, node, clip);
         }
     }
@@ -58,13 +58,13 @@ namespace Chimera.Overlay.Triggers {
                 Clip = clip;
         }
 
-        public TextHoverTrigger(StateManager manager, XmlNode node)
+        public TextHoverTrigger(OverlayPlugin manager, XmlNode node)
             : base(manager, node) {
             mText = new StaticText(manager, node);
             throw new NotImplementedException("What happens if Clip is not set?");
         }
 
-        public TextHoverTrigger(StateManager manager, XmlNode node, Rectangle clip)
+        public TextHoverTrigger(OverlayPlugin manager, XmlNode node, Rectangle clip)
             : base(manager, node, clip) {
             mText = new StaticText(manager, node, clip);
             Clip = clip;

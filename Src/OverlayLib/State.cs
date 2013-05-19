@@ -37,7 +37,7 @@ namespace Chimera.Overlay {
         /// <summary>
         /// The form which will coordinate the state.
         /// </summary>
-        private readonly StateManager mManager;
+        private readonly OverlayPlugin mManager;
         /// <summary>
         /// The name for the state.
         /// </summary>
@@ -57,7 +57,7 @@ namespace Chimera.Overlay {
         /// </summary>
         /// <param name="name">The name of the state. All state names should be unique.</param>
         /// <param name="form">The form which will control this state.</param>
-        public State(string name, StateManager manager) {
+        public State(string name, OverlayPlugin manager) {
             mName = name;
             mManager = manager;
 
@@ -154,7 +154,7 @@ namespace Chimera.Overlay {
         /// <summary>
         /// The manager which will coordiante the state.
         /// </summary>
-        public StateManager Manager {
+        public OverlayPlugin Manager {
             get { return mManager; }
         }
 

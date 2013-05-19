@@ -38,7 +38,8 @@ namespace Chimera.OpenSim {
                 mConfig.Fullscreen = value;
                 mViewerController.FullScreen = value;
             }
-        }
+        }
+
         public bool ControlFrustum {
             get { return mConfig.ControlFrustum; }
             set {
@@ -175,7 +176,7 @@ namespace Chimera.OpenSim {
             mViewerController.Exited += new Action(mViewerController_Exited);
 
 
-            if (mConfig.AutoLoginClient)
+            if (mConfig.AutoStartViewer)
                 Launch();
             else if (mConfig.AutoStartProxy)
                 StartProxy();

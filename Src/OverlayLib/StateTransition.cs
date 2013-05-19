@@ -40,7 +40,7 @@ namespace Chimera.Overlay {
         /// <summary>
         /// The manager which this transition works transition.
         /// </summary>
-        private StateManager mManager;
+        private OverlayPlugin mManager;
         /// <summary>
         /// The trigger which will start this transition.
         /// </summary>
@@ -72,7 +72,7 @@ namespace Chimera.Overlay {
         public event Action<StateTransition> Finished;
 
         /// <param name="manager">The manager this transition works transition.</param>
-        public StateTransition(StateManager manager, State from, State to, ITrigger trigger, IWindowTransitionFactory factory) {
+        public StateTransition(OverlayPlugin manager, State from, State to, ITrigger trigger, IWindowTransitionFactory factory) {
             mManager = manager;
             mFrom = from;
             mTo = to;
@@ -118,7 +118,7 @@ namespace Chimera.Overlay {
         /// <summary>
         /// Controller object to notify of the transition.
         /// </summary>
-        public StateManager Manager {
+        public OverlayPlugin Manager {
             get { return mManager; }
         }
 

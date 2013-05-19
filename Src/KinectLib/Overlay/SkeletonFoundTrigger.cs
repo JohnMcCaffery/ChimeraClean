@@ -33,18 +33,18 @@ namespace Chimera.Kinect.Overlay {    public class SkeletonFoundFactory : ITrig
         }
 
         public string Mode {
-            get { return StateManager.HOVER_MODE; }
+            get { return OverlayPlugin.HOVER_MODE; }
         }
 
         public string Name {
             get { return "SkeletonFound"; }
         }
 
-        public ITrigger Create(StateManager manager, XmlNode node) {
+        public ITrigger Create(OverlayPlugin manager, XmlNode node) {
             return new SkeletonFoundTrigger();
         }
 
-        public ITrigger Create(StateManager manager, XmlNode node, Rectangle clip) {
+        public ITrigger Create(OverlayPlugin manager, XmlNode node, Rectangle clip) {
             return Create(manager, node);
         }
     }

@@ -34,19 +34,19 @@ namespace Chimera.Kinect.Overlay {
         }
 
         public string Mode {
-            get { return StateManager.HOVER_MODE; }
+            get { return OverlayPlugin.HOVER_MODE; }
         }
 
         public string Name {
             get { return "SkeletonLost"; }
         }
 
-        public ITrigger Create(StateManager manager, XmlNode node) {
+        public ITrigger Create(OverlayPlugin manager, XmlNode node) {
             double timeout = GetDouble(node, 30000, "Timeout");
             return new SkeletonLostTrigger(manager.Coordinator, timeout);
         }
 
-        public ITrigger Create(StateManager manager, XmlNode node, Rectangle clip) {
+        public ITrigger Create(OverlayPlugin manager, XmlNode node, Rectangle clip) {
             return Create(manager, node);
         }
     }

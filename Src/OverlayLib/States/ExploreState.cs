@@ -6,7 +6,7 @@ using Chimera.Interfaces.Overlay;
 
 namespace Chimera.Overlay.States {
     public class ExploreState : State {
-        public ExploreState(string name, StateManager manager)
+        public ExploreState(string name, OverlayPlugin manager)
             : base(name, manager) {
         }
 

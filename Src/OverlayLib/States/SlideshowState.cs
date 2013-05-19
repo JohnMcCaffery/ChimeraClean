@@ -33,12 +33,12 @@ namespace Chimera.Overlay.States {
             get { return "Slideshow"; }
         }
 
-        public State Create(StateManager manager, XmlNode node) {
+        public State Create(OverlayPlugin manager, XmlNode node) {
             Console.WriteLine("Creating Slideshow State");
             return new SlideshowState(manager, node);
         }
 
-        public State Create(StateManager manager, XmlNode node, Rectangle clip) {
+        public State Create(OverlayPlugin manager, XmlNode node, Rectangle clip) {
             return Create(manager, node);
         }
     }
@@ -52,7 +52,7 @@ namespace Chimera.Overlay.States {
         private List<ITrigger> mTriggers = new List<ITrigger>();
 
 
-        public SlideshowState(string name, StateManager manager, string folder, ITrigger next, ITrigger prev, IImageTransitionFactory transition, double fadeLengthMS)
+        public SlideshowState(string name, OverlayPlugin manager, string folder, ITrigger next, ITrigger prev, IImageTransitionFactory transition, double fadeLengthMS)
             : base(name, manager) {
 
             mFolder = folder;
@@ -64,7 +64,7 @@ namespace Chimera.Overlay.States {
             AddTrigger(false, prev);
         }
 
-        public SlideshowState(StateManager manager, XmlNode node)
+        public SlideshowState(OverlayPlugin manager, XmlNode node)
             : base(GetName(node), manager) {
 
             mTransition = manager.GetImageTransition(node, "slideshow state");
@@ -80,7 +80,7 @@ namespace Chimera.Overlay.States {
             LoadTriggers(manager, node, false);
         }
 
-        private void LoadTriggers(StateManager manager, XmlNode node, bool next) {
+        private void LoadTriggers(OverlayPlugin manager, XmlNode node, bool next) {
             XmlNode nextTriggersNode = node.SelectSingleNode("child::" + (next ? "Next" : "Prev") + "Triggers");
             //TODO - put this pattern into XML Loader
             if (nextTriggersNode != null) {

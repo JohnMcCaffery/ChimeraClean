@@ -34,13 +34,13 @@ namespace Chimera.Overlay.Drawables {
             mManager = manager;
         }
 
-        public StaticText(StateManager manager, XmlNode node)
+        public StaticText(OverlayPlugin manager, XmlNode node)
             : base(manager, node) {
 
             mManager = GetManager(manager, node, "text");
         }
 
-        public StaticText(StateManager manager, XmlNode node, Rectangle clip)
+        public StaticText(OverlayPlugin manager, XmlNode node, Rectangle clip)
             : base(manager, node, clip) {
 
             mManager = GetManager(manager, node, "text");

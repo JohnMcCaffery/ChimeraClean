@@ -14,7 +14,7 @@ namespace Chimera.Flythrough.Overlay {
         private readonly int mStep;
         private readonly int mSubtitleTimeoutS = 20;
 
-        private readonly StateManager mManager;
+        private readonly OverlayPlugin mManager;
         private readonly IMediaPlayer mPlayer;
         private readonly Text mSubtitlesText;
         private readonly Action mTickListener;

@@ -54,12 +54,12 @@ namespace Chimera.Overlay.Triggers {
             mBounds = bounds;
         }
 
-        public AreaTrigger(StateManager manager, XmlNode node) {
+        public AreaTrigger(OverlayPlugin manager, XmlNode node) {
             mManager = GetManager(manager, node, "trigger");
             mBounds = GetBounds(node, "trigger");
         }
 
-        public AreaTrigger(StateManager manager, XmlNode node, Rectangle clip) {
+        public AreaTrigger(OverlayPlugin manager, XmlNode node, Rectangle clip) {
             mManager = GetManager(manager, node, "trigger");
             mBounds = GetBounds(node, "trigger", clip);
         }

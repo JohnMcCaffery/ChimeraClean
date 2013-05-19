@@ -31,12 +31,12 @@ namespace Chimera.Overlay.States {
             get { return "Video"; }
         }
 
-        public State Create(StateManager manager, XmlNode node) {
+        public State Create(OverlayPlugin manager, XmlNode node) {
             Console.WriteLine("Creating Video State");
             return new VideoState(manager, node, mPlayer);
         }
 
-        public State Create(StateManager manager, XmlNode node, Rectangle clip) {
+        public State Create(OverlayPlugin manager, XmlNode node, Rectangle clip) {
             return Create(manager, node);
         }
     }
@@ -80,7 +80,7 @@ namespace Chimera.Overlay.States {
             AddTransition(new StateTransition(Manager, this, parent, mTrigger, transition));
         }
 
-        public VideoState(StateManager manager, XmlNode node, IMediaPlayer player)
+        public VideoState(OverlayPlugin manager, XmlNode node, IMediaPlayer player)
             : base(manager, node) {
 
             mPlayer = player;
@@ -127,7 +127,7 @@ namespace Chimera.Overlay.States {
             mRestarted = true;
         }
 
-        private void LoadTriggers(XmlNode node, StateManager manager, string triggerType, List<ITrigger> list, Action onTrigger) {
+        private void LoadTriggers(XmlNode node, OverlayPlugin manager, string triggerType, List<ITrigger> list, Action onTrigger) {
             foreach (XmlElement child in GetChildrenOfChild(node, triggerType)) {
                 ITrigger trigger = manager.GetTrigger(child);
                 if (trigger != null) {

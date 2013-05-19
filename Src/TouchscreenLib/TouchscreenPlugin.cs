@@ -25,7 +25,7 @@ namespace Touchscreen {
         private VerticalAxis mL;
         private VerticalAxis mR;
 
-        private StateManager mStateManager;
+        private OverlayPlugin mStateManager;
         private WindowOverlayManager mManager;
         private TouchscreenForm mWindow;
 
@@ -70,7 +70,7 @@ namespace Touchscreen {
             get { return mConfig; }
         }
 
-        public TouchscreenPlugin(StateManager manager)
+        public TouchscreenPlugin(OverlayPlugin manager)
             : base("Touchscreen") {
             mStateManager = manager;
         }

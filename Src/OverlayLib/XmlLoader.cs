@@ -121,7 +121,7 @@ namespace Chimera.Overlay {
             return t;
         }
 
-        public static WindowOverlayManager GetManager(StateManager manager, XmlNode node, string request) {
+        public static WindowOverlayManager GetManager(OverlayPlugin manager, XmlNode node, string request) {
             WindowOverlayManager mManager;
             if (node == null) {
                 mManager = manager[0];

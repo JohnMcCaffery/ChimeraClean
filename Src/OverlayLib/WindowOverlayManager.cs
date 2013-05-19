@@ -86,7 +86,7 @@ namespace Chimera.Overlay {
         /// <summary>
         /// The state manager which controls this window specific overlay.
         /// </summary>
-        private StateManager mManager;
+        private OverlayPlugin mManager;
 
         /// <summary>
         /// Triggered when the overlay window is launched.
@@ -251,7 +251,7 @@ namespace Chimera.Overlay {
             }
         }
 
-        public StateManager Manager {
+        public OverlayPlugin Manager {
             get { return mManager; }
         }
 
@@ -322,7 +322,7 @@ namespace Chimera.Overlay {
             }
         }
 
-        public WindowOverlayManager(StateManager manager, Window window) {
+        public WindowOverlayManager(OverlayPlugin manager, Window window) {
             mManager = manager;
             mWindow = window;
 

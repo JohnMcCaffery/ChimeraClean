@@ -11,7 +11,7 @@ namespace Touchscreen.Overlay {
         private TouchscreenPlugin mPlugin;
         private bool mAvatar;
 
-        public TouchscreenState(string name, bool avatar, StateManager manager)
+        public TouchscreenState(string name, bool avatar, OverlayPlugin manager)
             : base(name, manager) {
 
             mPlugin = manager.Coordinator.GetPlugin<TouchscreenPlugin>();
