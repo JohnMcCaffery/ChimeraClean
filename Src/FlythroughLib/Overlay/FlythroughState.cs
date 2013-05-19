@@ -117,7 +117,6 @@ namespace Chimera.Flythrough.Overlay {
         public FlythroughState(StateManager manager, XmlNode node, IMediaPlayer player)
             : base(GetName(node), manager) {
 
-            mPlayer = player;
             mInput = manager.Coordinator.GetPlugin<FlythroughPlugin>();
             bool displaySubtitles = GetBool(node, false, "DisplaySubtitles");
             mFlythrough = GetString(node, null, "File");
@@ -129,6 +128,10 @@ namespace Chimera.Flythrough.Overlay {
             // ----------- Anything below here is only relevant in stepping mode ------
             if (!mStepping)
                 return;
+
+            mPlayer = player;
+            if (mPlayer != null)
+                mDefaultWindow = Manager.Coordinator.Windows[0].OverlayManager;
 
             if (displaySubtitles) {
                 mSubtitlesText = Manager.MakeText(node.SelectSingleNode("child::SubtitleTextSetup"));
@@ -198,9 +201,13 @@ namespace Chimera.Flythrough.Overlay {
 
         protected override void TransitionFromStart() { }
 
-        public override void TransitionToStart() {
+        public override void TransitionToStart() {            if (mPlayer != null) {
+                mDefaultWindow.AddControl(mPlayer.Player, new RectangleF(0f, 0f, 0f, 0f));
+            }
+
             if (mSubtitlesText != null)
                 mSubtitlesText.Active = true;
+
             mStep = 0;
             Manager.Coordinator.ControlMode = ControlMode.Absolute;
             mInput.Enabled = true;
@@ -220,9 +227,13 @@ namespace Chimera.Flythrough.Overlay {
             mInput.Play();
         }
 
+        private WindowOverlayManager mDefaultWindow;
+
         public override void TransitionFromFinish() {
             mInput.Paused = true;
             mInput.Enabled = false;
+            if (mPlayer != null)
+                mDefaultWindow.RemoveControl(mPlayer.Player);
             if (mSubtitlesText != null)
                 mSubtitlesText.Active = false;
         }

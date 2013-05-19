@@ -5,6 +5,8 @@ using System.Text;
 using AxWMPLib;
 using System.Windows.Forms;
 using Chimera.Interfaces;
+using Chimera.Overlay;
+using System.Drawing;
 
 namespace Chimera.Multimedia {
     public class WMPMediaPlayer : IMediaPlayer {
@@ -19,23 +21,22 @@ namespace Chimera.Multimedia {
                     sVideoPlayer.TabIndex = 1;
                     sVideoPlayer.Visible = true;
 
-                    sVideoPlayer.PlayStateChange += new _WMPOCXEvents_PlayStateChangeEventHandler(videoPlayer_PlayStateChange);
+                    sVideoPlayer.PlayStateChange += new AxWMPLib._WMPOCXEvents_PlayStateChangeEventHandler(videoPlayer_PlayStateChange);
                 }
                 return sVideoPlayer;
             }
-        }
-
+        }
         private static void videoPlayer_PlayStateChange(object source, _WMPOCXEvents_PlayStateChangeEvent args) {
-            if (args.newState == 1 && sVideoFinished != null) {
+            if (args.newState == 1 && sPlaybackFinished != null) {
                 sVideoPlayer.Visible = false;
-                sVideoFinished();
+                sPlaybackFinished();
             }
         }
 
         /// <summary>
         /// Triggered whenever a video that has been played through the interface finishes.
         /// </summary>
-        private static event Action sVideoFinished;
+        private static event Action sPlaybackFinished;
         
 
         private static void sPlayVideo(string uri) {
@@ -49,15 +50,21 @@ namespace Chimera.Multimedia {
             sPlayer.Ctlcontrols.play();
         }
 
+        /// <summary>
+        /// Note - before playing the control will have to be added to a form.
+        /// TODO Fix this
+        /// </summary>
+        /// <param name="uri"></param>
         public static void sPlayAudio(string uri) {
+            sPlayer.Bounds = new Rectangle(0, 0, 0, 0);
+            sPlayer.Visible = true;
             sPlayer.URL = uri;
+            sPlayer.Ctlcontrols.play();
         }
 
         internal static void sStopPlayback() {
             sPlayer.Ctlcontrols.stop();
         }
-
-
 
 
         public Control Player {
@@ -68,8 +75,8 @@ namespace Chimera.Multimedia {
         /// Triggered whenever a video that has been played through the interface finishes.
         /// </summary>
         public event Action PlaybackFinished {
-            add { sVideoFinished += value; }
-            remove { sVideoFinished -= value; }
+            add { sPlaybackFinished += value; }
+            remove { sPlaybackFinished -= value; }
         }
 
         public void PlayVideo(string uri) {

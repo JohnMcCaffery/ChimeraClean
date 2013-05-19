@@ -37,7 +37,7 @@ namespace Chimera.Launcher {
                 },
                 new IStateFactory[] { 
                     new ImageBGStateFactory(),
-                    new FlythroughStateFactory(),
+                    new FlythroughStateFactory(new WMPMediaPlayer()),
                     new VideoStateFactory(new WMPMediaPlayer()),
                     new SlideshowStateFactory()
                 });

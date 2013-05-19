@@ -82,6 +82,9 @@ namespace Chimera.Flythrough.Overlay {
                 mCoordinator.Tick += mTickListener;
             }
 
+            if (mVoiceoverFile != null)
+                mPlayer.PlayAudio(mVoiceoverFile);
+
             if (mImage != null) {
                 mImage.Active = true;
                 mCoordinator[mImage.Window].OverlayManager.ForceRedrawStatic();
@@ -95,6 +98,10 @@ namespace Chimera.Flythrough.Overlay {
                 mImage.Active = false;
                 mCoordinator[mImage.Window].OverlayManager.ForceRedrawStatic();
             }
+
+            if (mVoiceoverFile != null)
+                mPlayer.StopPlayback();
+
             if (mSubtitlesText != null)
                 mSubtitlesText.Active = false;
             mCoordinator.Tick += mTickListener;

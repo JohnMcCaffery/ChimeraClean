@@ -26,14 +26,15 @@ using Chimera.Interfaces.Overlay;
 namespace Chimera.Overlay.Triggers {
     public class SimpleTrigger : ITrigger {
         public event Action Triggered;
+        private bool mActive = true;
 
         public bool Active {
-            get { return true; }
-            set { }
+            get { return mActive; }
+            set { mActive = value; }
         }
 
         public void Trigger() {
-            if (Triggered != null)
+            if (mActive && Triggered != null)
                 Triggered();
         }
     }
