@@ -31,7 +31,6 @@ using Chimera.Overlay;
 
 namespace Chimera.Overlay.Plugins {
     public class MousePlugin : ISystemPlugin {
-        private Coordinator mCoordinator;
         private MousePluginPanel mPanel;
         private OverlayPlugin mOverlayPlugin;
         private Point mLastMouse;
@@ -39,9 +38,8 @@ namespace Chimera.Overlay.Plugins {
 
         public event Action<int, int> MouseMoved;
 
-        public MousePlugin(OverlayPlugin overlayPlugin) {
+        public MousePlugin() {
             PluginConfig cfg = new PluginConfig();
-            mOverlayPlugin = overlayPlugin;
         }
 
         void coordinator_Tick() {
@@ -51,11 +49,11 @@ namespace Chimera.Overlay.Plugins {
             if (MouseMoved != null)
                 MouseMoved(Cursor.Position.X, Cursor.Position.Y);
 
-            foreach (var window in mCoordinator.Windows) {
-                Rectangle bounds = window.Monitor.Bounds;
+            foreach (var manager in mOverlayPlugin.OverlayManagers) {
+                Rectangle bounds = manager.Window.Monitor.Bounds;
                 if (bounds.Contains(Cursor.Position)) {
                     if (mLastMouse.X != Cursor.Position.X || mLastMouse.Y != Cursor.Position.Y) {
-                        Update(window, bounds, Cursor.Position.X - bounds.Left, Cursor.Position.Y - bounds.Top);
+                        Update(manager, bounds, Cursor.Position.X - bounds.Left, Cursor.Position.Y - bounds.Top);
                         mLastMouse = Cursor.Position;
                     } 
                     return;
@@ -63,9 +61,8 @@ namespace Chimera.Overlay.Plugins {
             }
         }
 
-        private void Update(Window window, Rectangle bounds, int x, int y) {
-            if (mOverlayPlugin.IsKnownWindow(window.Name))
-                mOverlayPlugin[window.Name].UpdateCursor((double)x / (double)bounds.Width, (double)y / (double)bounds.Height);
+        private void Update(WindowOverlayManager manager, Rectangle bounds, int x, int y) {
+            mOverlayPlugin[manager.Name].UpdateCursor((double)x / (double)bounds.Width, (double)y / (double)bounds.Height);
         }
 
         #region ISystemPluginMembers
@@ -73,7 +70,9 @@ namespace Chimera.Overlay.Plugins {
         public event Action<IPlugin, bool> EnabledChanged;
 
         public void Init(Coordinator coordinator) {
-            mCoordinator = coordinator;
+            if (!coordinator.HasPlugin<OverlayPlugin>())
+                throw new ArgumentException("Unable to initialise MousePlugin. No OverlayPlugin registered with the coordinator.");
+            mOverlayPlugin = coordinator.GetPlugin<OverlayPlugin>();
             coordinator.Tick += new Action(coordinator_Tick);
         }
 

@@ -174,7 +174,7 @@ namespace Chimera.Overlay.States {
                 mAdded = true;
             }
             mPlayer.PlayVideo(mVideo);
-            SetTriggers(false);
+            new Thread(() => SetTriggers(false)).Start();
         }
 
         private void Stop(bool remove) {

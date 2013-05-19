@@ -148,7 +148,6 @@
     <Compile Include="GUI\Controls\Plugins\ProjectorPanel.Designer.cs">
       <DependentUpon>ProjectorPanel.cs</DependentUpon>
     </Compile>
-    <Compile Include="Interfaces\IMediaPlayer.cs" />
     <Compile Include="Plugins\AxisBasedDelta.cs" />
     <Compile Include="Plugins\ConstrainedAxis.cs" />
     <Compile Include="Plugins\ProjectorPlugin.cs" />

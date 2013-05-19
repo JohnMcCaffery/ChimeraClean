@@ -74,6 +74,7 @@
       <TextTransition From="Splash" To="Video" Transition="BitmapFade" X="1400" Y="300" Size="50" Style="Bold">Video</TextTransition>
       <ImageTransition From="Splash" To="FullFlythrough" Transition="FadeOut" X="1000" Y="300" File="../Images/Example/Button.png" />
       <TextTransition From="Video" To="Splash" Transition="BitmapFade" X="1400" Y="300" Size="50" Style="Bold">Back</TextTransition>
+      <TextTransition From="FullFlythrough" To="Splash" Transition="FadeIn" X="850" Y="950" Size="50" Style="Bold">Main Menu</TextTransition>
     </Transitions>
   </Any>
 

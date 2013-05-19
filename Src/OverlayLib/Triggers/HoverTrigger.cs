@@ -166,7 +166,7 @@ namespace Chimera.Overlay.Triggers {
 
                 if (!mTriggered && DateTime.Now.Subtract(mHoverStart).TotalMilliseconds > mSelectTimeMS) {
                     if (Triggered != null)
-                        new Thread(() => Triggered()).Start();
+                        Triggered();
                     mTriggered = true;
                     mHovering = false;
                     mRenderer.Clear();

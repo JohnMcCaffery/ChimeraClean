@@ -167,7 +167,11 @@ namespace Chimera.GUI.Forms {
         }
 
         public void AddControl(Control control, RectangleF pos) {
-            control.Bounds = new Rectangle((int) (Width * pos.X), (int) (Height * pos.Y), (int) (Width * pos.Width), (int) (Height * pos.Height));
+            Action setBounds = () => control.Bounds = new Rectangle((int) (Width * pos.X), (int) (Height * pos.Y), (int) (Width * pos.Width), (int) (Height * pos.Height));
+            if (control.InvokeRequired)
+                control.Invoke(setBounds);
+            else
+                setBounds();
             Invoke(() => drawPanel.Controls.Add(control));
         }
 

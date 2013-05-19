@@ -106,6 +106,7 @@
     <Compile Include="Interfaces\IHoverSelectionRenderer.cs" />
     <Compile Include="Interfaces\IImageTransition.cs" />
     <Compile Include="Interfaces\IImageTransitionFactory.cs" />
+    <Compile Include="Interfaces\IMediaPlayer.cs" />
     <Compile Include="Interfaces\ITrigger.cs" />
     <Compile Include="Interfaces\IWindowState.cs" />
     <Compile Include="Interfaces\IWindowTransition.cs" />

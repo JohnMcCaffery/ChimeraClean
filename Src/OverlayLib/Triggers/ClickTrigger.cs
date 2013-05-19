@@ -85,7 +85,7 @@ namespace Chimera.Overlay.Triggers {
 
         void mManager_OnRelease(int index) {
             if (Active && Bounds.Contains(Manager.CursorPosition) && Triggered != null) 
-                new Thread(() => Triggered()).Start();
+                Triggered();
         }
 
 
