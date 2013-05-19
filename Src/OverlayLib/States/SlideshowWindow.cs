@@ -74,6 +74,8 @@ namespace Chimera.Overlay.States {
                     return;
                 mImages = new Bitmap[mRawImages.Length];
                 for (int i = 0; i < mRawImages.Length; i++) {
+                    if (mImages[i] != null)
+                        mImages[i].Dispose();
                     lock (mRawImages) {
                         Bitmap img = mRawImages[i];
                         Bitmap n = new Bitmap(Clip.Width, Clip.Height);

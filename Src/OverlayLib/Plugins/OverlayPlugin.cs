@@ -32,6 +32,7 @@ using System.Windows.Forms;
 using Chimera.Overlay.GUI.Plugins;
 using Chimera.Config;
 using Chimera.Overlay.Transitions;
+using Chimera.Interfaces;
 
 namespace Chimera.Overlay {
     public class OverlayPlugin : XmlLoader, ISystemPlugin {
@@ -269,8 +270,10 @@ namespace Chimera.Overlay {
         IEnumerable<IStateFactory> mStateFactories;
 
         private OverlayConfig mConfig;
+        private IMediaPlayer mPlayer;
 
         public OverlayPlugin(
+                IMediaPlayer player,
                 IEnumerable<IImageTransitionFactory> imageTransitionFactories, 
                 IEnumerable<IDrawableFactory> drawableFactories, 
                 IEnumerable<ITriggerFactory> triggerFactories, 
@@ -278,12 +281,13 @@ namespace Chimera.Overlay {
                 IEnumerable<ITransitionStyleFactory> transitionStyleFactories, 
                 IEnumerable<IStateFactory> stateFactories) {
 
-            this.mImageTransitionFactories = imageTransitionFactories;
-            this.mDrawableFactories = drawableFactories;
-            this.mTriggerFactories = triggerFactories;
-            this.mSelectionRendererFactories = selectionRendererFactories;
-            this.mTransitionStyleFactories = transitionStyleFactories;
-            this.mStateFactories = stateFactories;
+            mPlayer = player; 
+            mImageTransitionFactories = imageTransitionFactories;
+            mDrawableFactories = drawableFactories;
+            mTriggerFactories = triggerFactories;
+            mSelectionRendererFactories = selectionRendererFactories;
+            mTransitionStyleFactories = transitionStyleFactories;
+            mStateFactories = stateFactories;
 
             mConfig = new OverlayConfig();
             mMode = mConfig.InterfaceMode;
@@ -577,6 +581,10 @@ namespace Chimera.Overlay {
         public UserControl ControlPanel {
             get {
                 if (mPanel == null) {
+                    if (mPlayer != null) {
+                        //Hack to make sure the video control is created on the right thread.
+                        Control c = mPlayer.Player;
+                    }
                     mPanel = new OverlayPluginPanel(this);
                 }
                 return mPanel;

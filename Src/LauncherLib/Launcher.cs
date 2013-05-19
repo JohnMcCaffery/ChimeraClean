@@ -79,6 +79,9 @@ namespace Chimera.Launcher {
             IKernel k = new StandardKernel(settings, new XmlExtensionModule());
             k.Load(mConfig.BindingsFile);
 
+            if (k.TryGet<IMediaPlayer>() == null)
+                k.Bind<IMediaPlayer>().To<DummyPlayer>().InSingletonScope();
+
             mCoordinator = k.Get<Coordinator>();
             IOutputFactory outputFactory = k.Get<IOutputFactory>();
         }

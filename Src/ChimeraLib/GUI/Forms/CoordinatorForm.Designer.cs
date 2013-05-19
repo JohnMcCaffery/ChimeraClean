@@ -587,6 +587,7 @@ namespace Chimera.GUI.Forms {
             this.ClientSize = new System.Drawing.Size(911, 822);
             this.Controls.Add(this.hSplit);
             this.Name = "CoordinatorForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "Caen Control Panel";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.CoordinatorForm_FormClosing);
