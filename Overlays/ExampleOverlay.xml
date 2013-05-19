@@ -11,7 +11,7 @@
     </TransitionStyles>
 
     <States>
-      <State Type="ImageBG" Name="Splash" >
+      <State Type="ImageBG" Name="Splash" Splash="true">
         <window Window="MainWindow" File="../Images/Example/ExampleBG.png" Splash="True"/>
       </State>
 

@@ -83,10 +83,10 @@
     <Compile Include="Drawables\OverlayImage.cs" />
     <Compile Include="Drawables\StaticText.cs" />
     <Compile Include="Drawables\Text.cs" />
-    <Compile Include="GUI\MousePluginPanel.cs">
+    <Compile Include="GUI\Plugins\MousePluginPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="GUI\MousePluginPanel.Designer.cs">
+    <Compile Include="GUI\Plugins\MousePluginPanel.Designer.cs">
       <DependentUpon>MousePluginPanel.cs</DependentUpon>
     </Compile>
     <Compile Include="GUI\OverlayWindow.cs">
@@ -94,6 +94,12 @@
     </Compile>
     <Compile Include="GUI\OverlayWindow.Designer.cs">
       <DependentUpon>OverlayWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\Plugins\OverlayPluginPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\Plugins\OverlayPluginPanel.Designer.cs">
+      <DependentUpon>OverlayPluginPanel.cs</DependentUpon>
     </Compile>
     <Compile Include="Interfaces\IDrawable.cs" />
     <Compile Include="Interfaces\IFactory.cs" />
@@ -147,7 +153,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="GUI\MousePluginPanel.resx">
+    <EmbeddedResource Include="GUI\Plugins\MousePluginPanel.resx">
       <DependentUpon>MousePluginPanel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\OverlayWindow.resx">

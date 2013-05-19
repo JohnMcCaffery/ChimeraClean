@@ -15,6 +15,7 @@ using Chimera.Overlay.States;
 using System.Xml;
 using System.Windows.Forms;
 using Chimera.Interfaces;
+using Chimera.Overlay.Transitions;
 
 namespace Chimera.Overlay.States {
     public class VideoStateFactory : IStateFactory {
@@ -98,7 +99,7 @@ namespace Chimera.Overlay.States {
             XmlAttribute toAttr = node.Attributes["FinishState"];
             if (toAttr != null && manager.GetState(toAttr.Value) != null) {
                 mTrigger = new SimpleTrigger();
-                IWindowTransitionFactory transition = manager.GetTransition(node);
+                IWindowTransitionFactory transition = manager.GetTransition(node, new BitmapWindowTransitionFactory(new BitmapFadeFactory(), 2000));
                 if (transition == null) {
                     Console.WriteLine("No transition specified for VideoState. using default transition " + manager.DefaultTransition.GetType().Name.Replace("Factory", "") + ".");
                     transition = manager.DefaultTransition;

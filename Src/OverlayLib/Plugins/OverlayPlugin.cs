@@ -28,6 +28,10 @@ using System.Xml;
 using Chimera.Overlay.Drawables;
 using System.Drawing;
 using Chimera.Overlay.Triggers;
+using System.Windows.Forms;
+using Chimera.Overlay.GUI.Plugins;
+using Chimera.Config;
+using Chimera.Overlay.Transitions;
 
 namespace Chimera.Overlay {
     public class OverlayPlugin : XmlLoader, ISystemPlugin {
@@ -62,6 +66,10 @@ namespace Chimera.Overlay {
         /// Window managers for each window in the system.
         /// </summary>
         private readonly Dictionary<string, WindowOverlayManager> mWindowManagers = new Dictionary<string, WindowOverlayManager>();
+        /// <summary>
+        /// The control panel for the overlay.
+        /// </summary>
+        private OverlayPluginPanel mPanel;
 
         /// <summary>
         /// Triggered whenever a new state is added.
@@ -84,7 +92,11 @@ namespace Chimera.Overlay {
         public event Action<State> StateChanged;
 
         void mCoordinator_WindowAdded(Window window, EventArgs args) {
-            mWindowManagers.Add(window.Name, new WindowOverlayManager(this, window));
+            WindowOverlayManager manager = new WindowOverlayManager(this, window);
+            mWindowManagers.Add(window.Name, manager);
+
+            if (mConfig.LaunchOverlay)
+                manager.Launch();
         }
 
         public WindowOverlayManager this[string windowName] {
@@ -284,8 +296,8 @@ namespace Chimera.Overlay {
         private Dictionary<string, IImageTransitionFactory> mImageTransitions = new Dictionary<string, IImageTransitionFactory>();
 
         private State mSplashState;
-        private IWindowTransitionFactory mIdleSplashTransition;
-        private IWindowTransitionFactory mSplashIdleTransition;
+        private IWindowTransitionFactory mIdleSplashTransition = new OpacityFadeInWindowTransitionFactory(2000);
+        private IWindowTransitionFactory mSplashIdleTransition = new OpacityFadeOutWindowTransitionFactory(2000);
 
         private Rectangle mClip = new Rectangle(0, 0, 1920, 1080);
         private bool mClipLoaded;
@@ -345,6 +357,8 @@ namespace Chimera.Overlay {
                             mIdleState.AddTransition(new StateTransition(this, state, mIdleState, trigger, mSplashIdleTransition));
 
             IdleEnabled = mIdleEnabled;
+            if (mSplashState != null)
+                CurrentState = mSplashState;
         }
 
         private void LoadComponent<T>(XmlDocument doc, IEnumerable<IFactory<T>> factories, Dictionary<string, T> map, string nodeID) {
@@ -381,7 +395,7 @@ namespace Chimera.Overlay {
                 return;
             }
 
-            IWindowTransitionFactory style = GetTransition(node);
+            IWindowTransitionFactory style = GetTransition(node, new BitmapWindowTransitionFactory(new BitmapFadeFactory(), 2000));
             if (style == null)
                 return;
 
@@ -392,15 +406,15 @@ namespace Chimera.Overlay {
             }
         }
 
-        public IWindowTransitionFactory GetTransition(XmlNode node) {
+        public IWindowTransitionFactory GetTransition(XmlNode node, IWindowTransitionFactory defalt) {
             XmlAttribute transitionAttr = node.Attributes["Transition"];
             if (transitionAttr == null) {
-                Console.WriteLine("Unable to load transition. No Transition attribute specified.");
-                return null;
+                Console.WriteLine("Unable to load transition. No Transition attribute specified. Using default " + defalt.GetType().Name + ".");
+                return defalt;
             }
             if (!mTransitionStyles.ContainsKey(transitionAttr.Value)) {
-                Console.WriteLine("Unable to load transition. " + transitionAttr.Value + " is not a known transition style.");
-                return null;
+                Console.WriteLine("Unable to load transition. " + transitionAttr.Value + " is not a known transition style. Using default " + defalt.GetType().Name + ".");
+                return defalt;
             }
             return mTransitionStyles[transitionAttr.Value];
         }
@@ -525,8 +539,8 @@ namespace Chimera.Overlay {
             foreach (XmlNode child in node.ChildNodes) {
                 if (child is XmlElement) {
                     switch (child.Name) {
-                        case "IdleTransition": mSplashIdleTransition = GetTransition(child); return;
-                        case "SplashTransition": mIdleSplashTransition = GetTransition(child); return;
+                        case "IdleTransition": mSplashIdleTransition = GetTransition(child, new OpacityFadeOutWindowTransitionFactory(5000)); return;
+                        case "SplashTransition": mIdleSplashTransition = GetTransition(child, new OpacityFadeInWindowTransitionFactory(5000)); return;
                         default: LoadIdleTrigger(child, GetTrigger(child)); return;
                     }
                 }
@@ -561,7 +575,12 @@ namespace Chimera.Overlay {
         public event Action<IPlugin, bool> EnabledChanged;
 
         public UserControl ControlPanel {
-            get { throw new NotImplementedException(); }
+            get {
+                if (mPanel == null) {
+                    mPanel = new OverlayPluginPanel(this);
+                }
+                return mPanel;
+            }
         }
 
         public bool Enabled {
@@ -585,7 +604,7 @@ namespace Chimera.Overlay {
             get { throw new NotImplementedException(); }
         }
 
-        public Config.ConfigBase Config {
+        public ConfigBase Config {
             get { return mConfig; }
         }
         

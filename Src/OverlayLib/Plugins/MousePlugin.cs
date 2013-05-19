@@ -64,7 +64,8 @@ namespace Chimera.Overlay.Plugins {
         }
 
         private void Update(Window window, Rectangle bounds, int x, int y) {
-            mOverlayPlugin[window.Name].UpdateCursor((double)x / (double)bounds.Width, (double)y / (double)bounds.Height);
+            if (mOverlayPlugin.IsKnownWindow(window.Name))
+                mOverlayPlugin[window.Name].UpdateCursor((double)x / (double)bounds.Width, (double)y / (double)bounds.Height);
         }
 
         #region ISystemPluginMembers
