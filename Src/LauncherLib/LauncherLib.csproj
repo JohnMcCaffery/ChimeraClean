@@ -51,10 +51,10 @@
     </Reference>
     <Reference Include="Ninject, Version=3.0.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\ninject\build\release\Ninject.dll</HintPath>
+      <HintPath>..\..\Lib\Ninject.dll</HintPath>
     </Reference>
     <Reference Include="Ninject.Extensions.Xml">
-      <HintPath>..\..\..\ninject.extensions.xml\build\release\Ninject.Extensions.Xml.dll</HintPath>
+      <HintPath>..\..\Lib\Ninject.Extensions.Xml.dll</HintPath>
     </Reference>
     <Reference Include="NuiLib-DotNet">
       <HintPath>..\..\Lib\NuiLib-DotNet.dll</HintPath>
