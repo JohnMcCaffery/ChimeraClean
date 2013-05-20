@@ -103,6 +103,7 @@
     <Compile Include="Config\ConfigFolderBase.cs" />
     <Compile Include="Config\PluginConfig.cs" />
     <Compile Include="Config\ProjectorConfig.cs" />
+    <Compile Include="Interfaces\IDiagramDrawable.cs" />
     <Compile Include="Interfaces\IOutputFactory.cs" />
     <Compile Include="Plugins\Projector.cs" />
     <Compile Include="GUI\Controls\Plugins\AxisBasedDeltaPanel.cs">
@@ -240,7 +241,6 @@
     <None Include="Core.cd" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Interfaces\Overlay\" />
     <Folder Include="Statistics\" />
   </ItemGroup>
   <ItemGroup>

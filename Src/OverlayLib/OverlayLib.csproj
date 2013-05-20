@@ -78,6 +78,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DrawableRoot.cs" />
+    <Compile Include="Drawables\ActiveArea.cs" />
     <Compile Include="Drawables\DynamicText.cs" />
     <Compile Include="Drawables\FadingText.cs" />
     <Compile Include="Drawables\OverlayImage.cs" />
