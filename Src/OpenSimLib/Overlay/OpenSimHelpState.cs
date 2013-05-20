@@ -28,37 +28,35 @@ using System.Drawing;
 using Chimera.Overlay.Triggers;
 using Chimera.OpenSim;
 using OpenMetaverse;
+using System.Xml;
 
 namespace Chimera.Kinect.Overlay {
     public class KinectHelpState : State {
         private readonly List<ActiveArea> mActiveAreas = new List<ActiveArea>();
-        private readonly HashSet<OverlayImage> mInfoImages = new HashSet<OverlayImage>();
         private List<OpenSimController> mControllers = new List<OpenSimController>();
-        private readonly CursorTrigger mClickTrigger;
-
-        private ImageHoverTrigger mWhereButton;
-        private ImageHoverTrigger mCloseWhereButton;
         private WindowOverlayManager mMainWindow;
         private OverlayPlugin mPlugin;
+        private string mGlowString;
+        private string mNoGlowString;
+        private int mGlowChannel;
 
-        private string mHelpImages = "../Images/Caen/Misc/HelpSidebar.png";
-        private string mWhereAmIImage = "../Images/Caen/Buttons/WhereAmIButton.png";
-        private string mWhereWindow;
-
-        private class ActiveArea {
-            private OverlayImage mImage;
+        private class ActiveArea : XmlLoader {
+            private IFeature mImage;
             private WindowOverlayManager mManager;
-            private List<Vector2> mPoints;
+            private List<PointF> mPoints;
 
-            private Vector2 FinalPoint {
+            public IFeature Image {
+                get { return mImage; }
+            }
+            private PointF FinalPoint {
                 get { return mPoints[mPoints.Count - 1]; }
             }
             private bool Active {
                 get {
                     Vector3 p = mManager.Manager.Coordinator.Position;
-                    Vector2 p1 = FinalPoint;
+                    PointF p1 = FinalPoint;
                     int c = 0;
-                    foreach (Vector2 p2 in mPoints) {
+                    foreach (PointF p2 in mPoints) {
                         float delta = p1.X * p2.Y - p1.Y * p2.X;
                         if (delta == 0)
                             continue;
@@ -76,9 +74,23 @@ namespace Chimera.Kinect.Overlay {
                 }
             }
 
+            public ActiveArea(OverlayPlugin manager, XmlNode node) {
+                mImage = manager.GetFeature(node, "help state active area", null);
+                foreach (var child in GetChildrenOfChild(node, "Points")) {
+                    float x = GetFloat(node, -1f, "X");
+                    float y = GetFloat(node, -1f, "Y");
+                    if (x > 0f && y > 0f)
+                        mPoints.Add(new PointF(x, y));
+                }
+            }
+
+            public void Test() {
+                mImage.Active = Active;
+            }
+
             public void Draw(Graphics g, Func<Vector3, Point> to2D) {
-                Vector2 final = FinalPoint;
-                g.DrawPolygon(Pens.Red, mPoints.Concat(new Vector2[] { FinalPoint }).Select(p => to2D(new Vector3(p, 0f))).ToArray());
+                PointF final = FinalPoint;
+                g.DrawPolygon(Pens.Red, mPoints.Concat(new PointF[] { FinalPoint }).Select(p => to2D(new Vector3(p.X, p.Y, 0f))).ToArray());
             }
         }
 
@@ -91,63 +103,48 @@ namespace Chimera.Kinect.Overlay {
 
             mPlugin = manager;
             mMainWindow = manager[mainWindow];
-
-            mWhereWindow = whereWindow;
-            mWhereButton = new ImageHoverTrigger(mMainWindow, manager.Renderers[0], new OverlayImage(new Bitmap(mWhereAmIImage), .65f, .25f, mainWindow));
-            mWhereButton.Triggered += new Action(mWhereButton_Triggered);
-
-            mCloseWhereButton = new ImageHoverTrigger(Manager[whereWindow], manager.Renderers[0], mWhereButton.Image);
-            mCloseWhereButton.Triggered += new Action(mCloseWhereButton_Triggered);
-
-            mClickTrigger = new CursorTrigger(new CircleRenderer(100), mMainWindow);
-
-            //SkeletonFeature helpSkeleton = new SkeletonFeature(.065f, 0f, .13f, 125f, mainWindow);
-            //AddFeature(helpSkeleton);
-            AddFeature(new OverlayImage(new Bitmap(mHelpImages), .05f, .1f, mainWindow));
-            AddFeature(mClickTrigger);
-            //AddFeature(mWhereButton);
-
-            mWhereButton.Active = false;
-            mCloseWhereButton.Active = false;
         }
 
-        void mCloseWhereButton_Triggered() {
-            mCloseWhereButton.Active = false;
-        }
+        public KinectHelpState(OverlayPlugin manager, XmlNode node)
+            : base(GetName(node), manager) {
 
-        void mWhereButton_Triggered() {
-            mCloseWhereButton.Image = mInfoImages.First();
-            mCloseWhereButton.Active = true;
-        }
+            mGlowString = GetString(node, "Glow", "GlowMessage");
+            mNoGlowString = GetString(node, "NoGlow", "NoGlowMessage");
+            mGlowChannel = GetInt(node, -40, "GlowChannel");
 
-        protected override void TransitionToFinish() {
-            Manager.Coordinator.EnableUpdates = false;
-            mMainWindow.ControlPointer = true;
-            mClickTrigger.Active = true;
-            Chat("Glow");
-        }
-
-        protected override void TransitionFromStart() { 
-            mClickTrigger.Active = false;
-            Chat("NoGlow");
+            foreach (var child in GetChildrenOfChild(node, "ActiveAreas")) {
+                ActiveArea area = new ActiveArea(manager, child);
+                AddFeature(area.Image);
+                mActiveAreas.Add(area);
+            }
         }
 
         public override void TransitionToStart() {
-            Chat("Glow");
-            mInfoImages.Clear();
+            TransitionToFinish();
+        }
+        protected override void TransitionToFinish() {
+            Manager.Coordinator.EnableUpdates = false;
+            foreach (var manager in mPlugin.OverlayManagers)
+                manager.ControlPointer = true;
+            foreach (var area in mActiveAreas)
+                area.Test();
+            Chat(mGlowString);
+        }
+
+        protected override void TransitionFromStart() {
+            Chat(mNoGlowString);
         }
 
         public override void TransitionFromFinish() {
-            mClickTrigger.Active = false;
-            Chat("NoGlow");
+            Chat(mNoGlowString);
         }
 
         private void Chat(string msg) {
             foreach (var input in mControllers)
-                input.ProxyController.Chat(msg, -40);
+                input.ProxyController.Chat(msg, mGlowChannel);
         }
 
-        public override void Draw(Graphics graphics, Func<Vector3, Point> to2D, Perspective perspective) {
+        public override void Draw(Graphics graphics, Func<Vector3, Point> to2D, Action redraw, Perspective perspective) {
             if (perspective == Perspective.Map) {
                 foreach (var activeArea in mActiveAreas)
                     activeArea.Draw(graphics, to2D);

@@ -159,7 +159,7 @@ namespace Chimera.Plugins {
 
         public abstract void Close();
 
-        public abstract void Draw(Func<Vector3, Point> to2D, Graphics graphics, Action redraw, Perspective perspective);
+        public abstract void Draw(Graphics graphics, Func<Vector3, Point> to2D, Action redraw, Perspective perspective);
 
         #endregion
 

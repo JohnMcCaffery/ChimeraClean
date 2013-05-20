@@ -495,7 +495,7 @@ namespace Chimera {
         /// <param name="origin">The origin on the panel to draw transition.</param>
         public void Draw(Func<Vector3, Point> to2D, Graphics graphics, Rectangle clip, Action redraw, Perspective perspective) {
             foreach (var plugin in mPlugins)
-                plugin.Draw(to2D, graphics, redraw, perspective);
+                plugin.Draw(graphics, to2D, redraw, perspective);
 
             foreach (var window in mWindows)
                 window.Draw(to2D, graphics, clip, redraw, perspective);

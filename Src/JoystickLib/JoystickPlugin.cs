@@ -148,7 +148,7 @@ namespace Joystick{
 
         public override void Close() { }
 
-        public override void Draw(Func<OSVector, Point> to2D, Graphics graphics, Action redraw, Perspective perspective) { }
+        public override void Draw(Graphics graphics, Func<OSVector, Point> to2D, Action redraw, Perspective perspective) { }
 
         #endregion
     }

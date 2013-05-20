@@ -135,9 +135,9 @@ namespace Chimera.Plugins {
                 input.Close();
         }
 
-        public void Draw(Func<Vector3, Point> to2D, Graphics graphics, Action redraw, Perspective perspective) {
+        public void Draw(Graphics graphics, Func<Vector3, Point> to2D, Action redraw, Perspective perspective) {
             if (mCurrentInput != null)
-                mCurrentInput.Draw(to2D, graphics, redraw, perspective);
+                mCurrentInput.Draw(graphics, to2D, redraw, perspective);
         }
 
         #endregion

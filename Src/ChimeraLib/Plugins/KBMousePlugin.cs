@@ -149,7 +149,7 @@ namespace Chimera.Plugins {
                 mControlPanel.Stop();
         }
 
-        public override void Draw(Func<Vector3, Point> to2D, System.Drawing.Graphics graphics, Action redraw, Perspective perspective) {
+        public override void Draw(System.Drawing.Graphics graphics, Func<Vector3, Point> to2D, Action redraw, Perspective perspective) {
             //Do nothing
         }
 

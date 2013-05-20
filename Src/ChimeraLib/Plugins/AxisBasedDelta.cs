@@ -163,7 +163,7 @@ namespace Chimera.Plugins {
 
         public override void Close() { }
 
-        public override void Draw(Func<Vector3, Point> to2D, Graphics graphics, Action redraw, Perspective perspective) { }
+        public override void Draw(Graphics graphics, Func<Vector3, Point> to2D, Action redraw, Perspective perspective) { }
 
         #endregion
 

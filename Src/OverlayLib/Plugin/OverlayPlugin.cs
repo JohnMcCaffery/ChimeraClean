@@ -33,6 +33,7 @@ using Chimera.Overlay.GUI.Plugins;
 using Chimera.Config;
 using Chimera.Overlay.Transitions;
 using Chimera.Interfaces;
+using OpenMetaverse;
 
 namespace Chimera.Overlay {
     public partial class OverlayPlugin : XmlLoader, ISystemPlugin {
@@ -128,11 +129,11 @@ namespace Chimera.Overlay {
 
         public void Close() { }
 
-        public void Draw(Func<OpenMetaverse.Vector3, Point> to2D, Graphics graphics, Action redraw, Perspective perspective) {
-            if (mCurrentState != null && perspective == Perspective.Map) {
+        public void Draw(Graphics graphics, Func<Vector3, Point> to2D, Action redraw, Perspective perspective) {
+            if (mCurrentState != null) {
                 if (mRedraw == null)
                     mRedraw = redraw;
-                mCurrentState.Draw(graphics, to2D, perspective);
+                mCurrentState.Draw(graphics, to2D, redraw, perspective);
             }
         }
 

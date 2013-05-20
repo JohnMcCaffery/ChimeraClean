@@ -471,7 +471,7 @@ namespace Chimera.OpenSim {
             get { return mConfig; }
         }
 
-        public void Draw(Func<Vector3, Point> to2D, Graphics graphics, Action redraw, Perspective perspective) {
+        public void Draw(Graphics graphics, Func<Vector3, Point> to2D, Action redraw, Perspective perspective) {
             //Do nothing
         }
 

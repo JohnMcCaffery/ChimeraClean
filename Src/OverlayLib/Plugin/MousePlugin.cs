@@ -115,7 +115,7 @@ namespace Chimera.Overlay.Plugins {
 
         public void Close() { }
 
-        public void Draw(Func<Vector3, Point> to2D, System.Drawing.Graphics graphics, Action redraw, Perspective perspective) {
+        public void Draw(System.Drawing.Graphics graphics, Func<Vector3, Point> to2D, Action redraw, Perspective perspective) {
             //Do nothing
         }
 

@@ -166,7 +166,7 @@ namespace Chimera.Plugins {
 
         public void Close() { }
 
-        public void Draw(Func<Vector3, Point> to2D, Graphics g, Action redraw, Perspective perspective) {
+        public void Draw(Graphics g, Func<Vector3, Point> to2D, Action redraw, Perspective perspective) {
             if (!mRedraws.Contains(redraw))
                 mRedraws.Add(redraw);
             
