@@ -58,7 +58,9 @@ namespace Chimera.Overlay {
             if (node == null)
                 return GetBounds(node, request);
             RectangleF bounds = GetBounds(node, request);
-            return new RectangleF(bounds.X / clip.Width, bounds.Y / clip.Height,  bounds.Width/ clip.Width, bounds.Height / clip.Height);
+            if (bounds.X > 0 || bounds.Y > 0 || bounds.Width > 1f || bounds.Height > 1f)
+                return new RectangleF(bounds.X / clip.Width, bounds.Y / clip.Height,  bounds.Width/ clip.Width, bounds.Height / clip.Height);
+            return bounds;
         }
 
         public static Bitmap GetImage(XmlNode node, string request) {

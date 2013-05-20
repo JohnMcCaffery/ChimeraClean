@@ -99,7 +99,7 @@ namespace Chimera.Overlay.States {
             XmlAttribute toAttr = node.Attributes["FinishState"];
             if (toAttr != null && manager.GetState(toAttr.Value) != null) {
                 mTrigger = new SimpleTrigger();
-                ITransitionStyle transition = manager.GetTransition(node, "video state finish transition", new BitmapWindowTransitionFactory(new BitmapFadeFactory(), 2000));
+                ITransitionStyle transition = manager.GetTransition(node, "video state finish transition", new BitmapWindowTransitionFactory(new BitmapFadeFactory(), 2000), "Transition");
                 if (transition == null) {
                     Console.WriteLine("No transition specified for VideoState. using default 2s bitmap fade transition.");
                     transition = new BitmapWindowTransitionFactory(new BitmapFadeFactory(), 2000);

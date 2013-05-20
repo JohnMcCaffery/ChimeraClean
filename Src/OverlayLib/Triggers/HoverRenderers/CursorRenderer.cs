@@ -82,13 +82,15 @@ namespace Chimera.Overlay.Triggers {
                 mCompletedCursor = new Cursor(ProcessWrangler.GetGlobalCursor());
 
             for (double i = 0.0; i < sSteps; i++) {
-                Bitmap b = new Bitmap(size.Width, size.Height);
-                using (Graphics g = Graphics.FromImage(b)) {
-                    drawStep(g, new Rectangle(new Point(0, 0), size), i / sSteps);
+                //TODO - using means the bmp is disposed which could cause issues.
+                using (Bitmap b = new Bitmap(size.Width, size.Height)) {
+                    using (Graphics g = Graphics.FromImage(b)) {
+                        drawStep(g, new Rectangle(new Point(0, 0), size), i / sSteps);
+                    }
+                    Cursor c = CreateCursor(b, size.Width / 2, size.Height / 2);
+                    sCursors.Add(c.Handle);
+                    mCursors[(int)i] = c;
                 }
-                Cursor c = CreateCursor(b, size.Width / 2, size.Height / 2);
-                sCursors.Add(c.Handle);
-                mCursors[(int)i] = c;
             }
         }
 

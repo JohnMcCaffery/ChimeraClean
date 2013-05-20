@@ -179,10 +179,10 @@ namespace Chimera.Overlay.Drawables {
             mBounds = new RectangleF(x, y, w, h);
         }
 
-        public OverlayImage(OverlayPlugin manager, XmlNode node) {
-            mImage = GetImage(node, "overlay image");
+        public OverlayImage(OverlayPlugin manager, XmlNode node, string reason) {
+            mImage = GetImage(node, reason);
             if (mImage == null)
-                throw new ArgumentException("Unable to load image.");
+                throw new ArgumentException("Problem loading image.");
 
             mW = mImage.Width;
             mH = mImage.Height;
@@ -196,8 +196,8 @@ namespace Chimera.Overlay.Drawables {
             mWindow = GetManager(manager, node, "overlay image").Window.Name;
         }
 
-        public OverlayImage(OverlayPlugin manager, XmlNode node, Rectangle clip)
-            : this(manager, node) {
+        public OverlayImage(OverlayPlugin manager, XmlNode node, Rectangle clip, string reason)
+            : this(manager, node, reason) {
 
             mBounds.X = mBounds.X / clip.Width;
             mBounds.Y = mBounds.Y / clip.Height;

@@ -43,13 +43,13 @@ namespace Chimera.Overlay.Triggers {
         }
 
         public ITrigger Create(OverlayPlugin manager, XmlNode node) {
-            OverlayImage img = new OverlayImage(manager, node);
-            return new ImageHoverTrigger(manager[img.Window], manager.GetRenderer(node, "image hover trigger", new DialCursorRenderer()), img);
+            OverlayImage img = new OverlayImage(manager, node, "image trigger");
+            return new ImageHoverTrigger(manager[img.Window], manager.GetRenderer(node, "image hover trigger", manager.Renderers[0]), img);
         }
 
         public ITrigger Create(OverlayPlugin manager, XmlNode node, Rectangle clip) {
-            OverlayImage img = new OverlayImage(manager, node, clip);
-            return new ImageHoverTrigger(manager[img.Window], manager.GetRenderer(node, "image hover trigger", new DialCursorRenderer()), img);
+            OverlayImage img = new OverlayImage(manager, node, clip, "image trigger");
+            return new ImageHoverTrigger(manager[img.Window], manager.GetRenderer(node, "image hover trigger", manager.Renderers[0]), img);
         }
     }
 

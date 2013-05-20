@@ -47,6 +47,25 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsMediaPlayerLib", "Wi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OverlayLib", "OverlayLib\OverlayLib.csproj", "{F1421BBF-6313-4C3D-9AF4-1898528728D0}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BinConfig", "BinConfig", "{5909846D-F897-4EA2-88A1-81FABC9E77B6}"
+	ProjectSection(SolutionItems) = preProject
+		..\Bin\Config\Bindings.xml = ..\Bin\Config\Bindings.xml
+		..\Bin\Config\Core.ini = ..\Bin\Config\Core.ini
+		..\Bin\Config\ExampleRoom.xml = ..\Bin\Config\ExampleRoom.xml
+		..\Bin\Config\Heightmap.ini = ..\Bin\Config\Heightmap.ini
+		..\Bin\Config\Kinect.ini = ..\Bin\Config\Kinect.ini
+		..\Bin\Config\LaptopOverlay.ini = ..\Bin\Config\LaptopOverlay.ini
+		..\Bin\Config\Launch.ini = ..\Bin\Config\Launch.ini
+		..\Bin\Config\Main.ini = ..\Bin\Config\Main.ini
+		..\Bin\Config\OpenSim.ini = ..\Bin\Config\OpenSim.ini
+		..\Bin\Config\Overlay.ini = ..\Bin\Config\Overlay.ini
+		..\Bin\Config\TimespanOverlay.xml = ..\Bin\Config\TimespanOverlay.xml
+		..\Bin\Config\Touchscreen.ini = ..\Bin\Config\Touchscreen.ini
+		..\Bin\Config\TouchscreenOverlay.ini = ..\Bin\Config\TouchscreenOverlay.ini
+		..\Bin\Config\Windows.ini = ..\Bin\Config\Windows.ini
+		..\Bin\Config\XBoxController.ini = ..\Bin\Config\XBoxController.ini
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

@@ -53,8 +53,7 @@
         </Triggers>
 
         <Steps>
-          <!--<Step Step="0" Voiceover="E:\Video\Edit\Out\vid.mpg">-->
-          <Step Step="0" Voiceover="C:\Users\Iain\Music\An Awesome Wave (converted)\01 Intro.m4a">
+          <Step Step="0" Voiceover="../Voiceovers/Voiceover1.wma" >
             <Image File="../Images/Example/SlideshowImg1.png" X="700" Y="50"/>
             <Subtitles>
               <Subtitle>First Subtitle</Subtitle>
@@ -64,7 +63,7 @@
           <Step Step="2">
             <Image File="../Images/Example/SlideshowImg3.png" X="600" Y="100"/>
           </Step>
-          <Step Step="3" Voiceover="C:\Users\Iain\Music\An Awesome Wave (converted)\10 Fitzpleasure.m4a">
+          <Step Step="3" Voiceover="../Voiceovers/Voiceover2.wma" >
           </Step>
         </Steps>
       </State>

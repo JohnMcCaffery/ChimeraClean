@@ -37,9 +37,9 @@ namespace Chimera.Overlay.Transitions {
         public ITransitionStyle Create(OverlayPlugin manager, XmlNode node) {
             Console.WriteLine("Creating Bitmap Window Transition");
             double length = GetDouble(node, 5000.0, "Length");
-            IImageTransitionFactory transition = manager.GetImageTransitionFactory(node, "window state transition");
+            IImageTransitionFactory transition = manager.GetImageTransitionFactory(node, "transition style", "Style");
             if (transition == null) {
-                Console.WriteLine("Unable to look up custom transition for window transition. Using default, fade.");
+                Console.WriteLine("Unable to look up custom transition for transition style. Using default, fade.");
                 transition = new BitmapFadeFactory();
             }
             return new BitmapWindowTransitionFactory(transition, length);

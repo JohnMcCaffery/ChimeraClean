@@ -160,8 +160,10 @@ namespace Chimera.Overlay {
             ITrigger trigger = GetTrigger(node, "transition");
             ITransitionStyle style = GetTransition(node, "state transition", new BitmapWindowTransitionFactory(new BitmapFadeFactory(), 2000));
 
-            if (from == null || to == null || trigger == null)
+            if (from == null || to == null || trigger == null) {
+                Console.WriteLine("Unable to create transition.");
                 return;
+            }
 
             StateTransition transition = new StateTransition(this, from, to, trigger, style);
             transition.From.AddTransition(transition);
@@ -232,28 +234,28 @@ namespace Chimera.Overlay {
             return mClipLoaded ? GetBounds(node, reason, mClip) : GetBounds(node, reason);
         }
 
-        public OverlayImage MakeImage(XmlNode node) {
-            return mClipLoaded ?  new OverlayImage(this, node, mClip) : new OverlayImage(this, node);
+        public OverlayImage MakeImage(XmlNode node, string reason) {
+            return mClipLoaded ?  new OverlayImage(this, node, mClip, reason) : new OverlayImage(this, node, reason);
         }
 
         public Text MakeText(XmlNode node) {
             return mClipLoaded ?  new StaticText(this, node, mClip) : new StaticText(this, node);
         }
 
-        public ITransitionStyle GetTransition(XmlNode node, string reason, ITransitionStyle defalt) {
-            return GetInstance(node, mTransitionStyles, "transition style", reason, defalt, "Transition");
+        public ITransitionStyle GetTransition(XmlNode node, string reason, ITransitionStyle defalt, params string[] attributes) {
+            return GetInstance(node, mTransitionStyles, "transition style", reason, defalt, attributes.Length == 0 ? new string[] { "Transition" } : attributes);
         }
 
-        public IImageTransition GetImageTransition(XmlNode node, string reason, IImageTransition defalt) {
-            return GetInstance(node, mImageTransitions, "image transition", reason, defalt, "Transition");
+        public IImageTransition GetImageTransition(XmlNode node, string reason, IImageTransition defalt, params string[] attributes) {
+            return GetInstance(node, mImageTransitions, "image transition", reason, defalt, attributes.Length == 0 ? new string[] { "Transition" } : attributes);
         }
 
-        public ISelectionRenderer GetRenderer(XmlNode node, string reason, ISelectionRenderer defalt) {
-            return GetInstance(node, mSelectionRenderers, "hover selection renderer", reason, defalt, "Renderer");
+        public ISelectionRenderer GetRenderer(XmlNode node, string reason, ISelectionRenderer defalt, params string[] attributes) {
+            return GetInstance(node, mSelectionRenderers, "hover selection renderer", reason, defalt, attributes.Length == 0 ? new string[] { "Renderer" } : attributes);
         }
 
-        public IFeature GetFeature(XmlNode node, string reason, IFeature defalt) {
-            return GetInstance(node, mFeatures, "feature", reason, defalt, "Feature");
+        public IFeature GetFeature(XmlNode node, string reason, IFeature defalt, params string[] attributes) {
+            return GetInstance(node, mFeatures, "feature", reason, defalt, attributes.Length == 0 ? new string[] { "Feature" } : attributes);
         }
 
         public ITrigger GetTrigger(XmlNode node, string reason) {
@@ -295,7 +297,7 @@ namespace Chimera.Overlay {
 
         #region Generic Getters
         private T GetInstance<T>(XmlNode node, Dictionary<string, T> map, string target, string reason, T defalt, params string[] attributes) {
-            string ifDefault = defalt != null ? "Using default " + defalt.GetType().Name + "." : "";
+            string ifDefault = defalt != null ? "Using default: " + defalt.GetType().Name + "." : "";
             string unable = "Unable to get " + target + " for " + reason + ". ";
             if (node == null) {
                 Console.WriteLine(unable + "No node." + ifDefault);
@@ -304,12 +306,13 @@ namespace Chimera.Overlay {
             XmlAttribute nameAttr = attributes.Where(a => node.Attributes[a] != null).Select(a => node.Attributes[a]).FirstOrDefault();
             XmlAttribute factoryAttr = node.Attributes["Factory"];
             if (nameAttr == null && factoryAttr == null) {
-                Console.WriteLine(unable + "No '" + attributes + "' or 'Factory' attributes specified." + ifDefault);
+                string attributesL = attributes.Aggregate((sum, next) => sum + "','" + next);
+                Console.WriteLine(unable + "No '" + attributesL + "' attribute specified. " + ifDefault);
                 return defalt;
             }
             if (nameAttr != null) {
                 if (!map.ContainsKey(nameAttr.Value)) {
-                    Console.WriteLine(unable + nameAttr.Value + " is not a known " + target + "." + ifDefault);
+                    Console.WriteLine(unable + nameAttr.Value + " is not a known " + target + ". " + ifDefault);
                     return defalt;
                 }
                 return map[nameAttr.Value];
@@ -358,14 +361,16 @@ namespace Chimera.Overlay {
                 Console.WriteLine(unable + ". No factories found for that type.");
                 return null;
             }
-            XmlAttribute factoryAttr = attributes.Union(new String[] { "Factory" }).Where(a => node.Attributes[a] != null).Select(a => node.Attributes[a]).FirstOrDefault();
+            if (attributes.Length == 0)
+                attributes = new string[] { "Factory" };
+            XmlAttribute factoryAttr = attributes.Where(a => node.Attributes[a] != null).Select(a => node.Attributes[a]).FirstOrDefault();
             if (factoryAttr == null) {
                 Console.WriteLine(unable + " No Factory attribute specified.");
                 return null;
             }
             IFactory<T> factory = factories.FirstOrDefault(f => f.Name == factoryAttr.Value);
             if (factory == null) {
-                Console.WriteLine(unable + "There is no mapping for that name and factory. Check Ninject config to make sure the binding is correct.");
+                Console.WriteLine(unable + factoryAttr.Value + " is not a mapped " + typeof(T).Name + " factory. Check Ninject config to make sure the binding exists.");
             }
             return factory;
         }

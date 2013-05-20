@@ -68,9 +68,11 @@ namespace Chimera.Flythrough.Overlay {
 
             XmlNode imageNode = node.SelectSingleNode("child::Image");
             if (imageNode != null) {
-                mImage = state.Manager.MakeImage(imageNode);
-                state.AddFeature(mImage);
-                mImage.Active = false;
+                try {
+                    mImage = state.Manager.MakeImage(imageNode, "flythrough step " + (mStep + 1));
+                    state.AddFeature(mImage);
+                    mImage.Active = false;
+                } catch (Exception e) { }
             }
         }
 
