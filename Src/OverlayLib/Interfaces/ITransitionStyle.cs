@@ -21,29 +21,17 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Drawing;
+using Chimera.Overlay;
+using System.Xml;
 using Chimera.Overlay.Interfaces;
 
-namespace Chimera {
-    public interface ISelectionRenderer : IControllable {
+namespace Chimera.Interfaces.Overlay {
+    public interface ITransitionStyle : IControllable {
         /// <summary>
-        /// Draw the selector hovering.
+        /// CreateWindowState a state transition for the specified window.
         /// </summary>
-        /// <param name="graphics">The graphics object to draw with.</param>
-        /// <param name="bounds">The area which surrounds the selection.</param>
-        /// <param name="percentageDone">How long the hovering has being going on. 0, just started, 1, complete.</param>
-        void DrawHover(Graphics graphics, Rectangle bounds, double percentageDone);
-
-        /// <summary>
-        /// Draw the selection after it has been selected.
-        /// </summary>
-        /// <param name="graphics">The graphics object to draw with.</param>
-        /// <param name="bounds">The area which surrounds the selection.</param>
-        void DrawSelected(Graphics graphics, Rectangle bounds);
-
-        /// <summary>
-        /// Clear up anything that needs to be cleared up after the selection has completed.
-        /// </summary>
-        void Clear();
+        /// <param name="transition">The transition which the new window transition will be part of.</param>
+        /// <param name="manager">The window for the factory to create the transition for.</param>
+        IWindowTransition Create(StateTransition transition, WindowOverlayManager manager);
     }
 }

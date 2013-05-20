@@ -59,7 +59,7 @@ namespace Chimera.Overlay.Triggers {
         /// <summary>
         /// The render object used to draw a visual representation of how close the selector is to triggering.
         /// </summary>
-        private IHoverSelectorRenderer mRenderer;
+        private ISelectionRenderer mRenderer;
         /// <summary>
         /// The time when the cursor started hovering over the area.
         /// </summary>
@@ -95,15 +95,15 @@ namespace Chimera.Overlay.Triggers {
         /// <param name="y">The y coordinate for where the image is to be positioned, specified between 0 and 1. 0 is flush to the top, 1 flush to the bottom.</param>
         /// <param name="x">The width of the image, specified between 0 and 1. 1 will fill the entire width, 0 will be invisible.</param>
         /// <param name="y">The width of the image, specified between 0 and 1. 1 will fill the entire height, 0 will be invisible.</param>
-        public HoverTrigger(WindowOverlayManager manager, IHoverSelectorRenderer renderer, float x, float y, float w, float h)
+        public HoverTrigger(WindowOverlayManager manager, ISelectionRenderer renderer, float x, float y, float w, float h)
             : this(manager, renderer, new RectangleF(x, y, w, h)) {
         }
 
-        public HoverTrigger(WindowOverlayManager manager, IHoverSelectorRenderer renderer, int x, int y, int w, int h, Rectangle clip)
+        public HoverTrigger(WindowOverlayManager manager, ISelectionRenderer renderer, int x, int y, int w, int h, Rectangle clip)
             : this(manager, renderer, (float) x / (float) clip.Width, (float) y / (float) clip.Height, (float) w / (float) clip.Width, (float) h / (float) clip.Height) {
         }
 
-        public HoverTrigger(WindowOverlayManager manager, IHoverSelectorRenderer renderer, RectangleF bounds)
+        public HoverTrigger(WindowOverlayManager manager, ISelectionRenderer renderer, RectangleF bounds)
             : base(manager, bounds) {
             mRenderer = renderer;
 

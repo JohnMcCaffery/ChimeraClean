@@ -24,7 +24,7 @@ using System.Text;
 using System.Drawing;
 
 namespace Chimera.Overlay.Triggers {
-    public class DialRenderer : XmlLoader, IHoverSelectorRenderer {
+    public class DialRenderer : XmlLoader, ISelectionRenderer {
         private Color mHoverColour = Color.Red;
         private Color mSelectionColour = Color.Blue;
         private bool mFill;

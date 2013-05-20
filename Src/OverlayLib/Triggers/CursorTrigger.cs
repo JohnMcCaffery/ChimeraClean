@@ -36,7 +36,7 @@ namespace Chimera.Overlay.Triggers {
         private bool mHovering = false;
         private bool mClicked = false;
         private Cursor mSelectCursor;
-        private IHoverSelectorRenderer mRenderer;
+        private ISelectionRenderer mRenderer;
         private bool mActive = true;
         private WindowOverlayManager mManager;
         private int mR;
@@ -45,7 +45,7 @@ namespace Chimera.Overlay.Triggers {
         /// </summary>
         private Rectangle mClip;
  
-        public CursorTrigger(IHoverSelectorRenderer renderer, WindowOverlayManager manager) {
+        public CursorTrigger(ISelectionRenderer renderer, WindowOverlayManager manager) {
             mManager = manager;
             mRenderer = renderer;
             mManager.Window.Coordinator.Tick += new Action(coordinator_Tick);

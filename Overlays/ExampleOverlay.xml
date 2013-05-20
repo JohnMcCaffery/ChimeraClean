@@ -1,27 +1,27 @@
 <Overlay Width="1920" Height="1080" >
   <Any>
     <Triggers>
-      <Trigger Type="SkeletonLost" Timeout="30000" Name="SkeletonLost" />
+      <Trigger Factory="SkeletonLost" Timeout="30000" Name="SkeletonLost" />
     </Triggers>
 
     <TransitionStyles>
-      <Transition Type="BitmapTransition" Name="BitmapFade" Length="2000" Style="Fade" />
-      <Transition Type="OpacityTransition" Name="FadeOut" Length="2000" FadeOut="true" />
-      <Transition Type="OpacityTransition" Name="FadeIn" Length="2000" FadeOut="false" />
+      <Transition Factory="BitmapTransition" Name="BitmapFade" Length="2000" Style="Fade" />
+      <Transition Factory="OpacityTransition" Name="FadeOut" Length="2000" FadeOut="true" />
+      <Transition Factory="OpacityTransition" Name="FadeIn" Length="2000" FadeOut="false" />
     </TransitionStyles>
 
     <States>
-      <State Type="ImageBG" Name="Splash" Splash="true">
+      <State Factory="ImageBG" Name="Splash" Splash="true">
         <window Window="MainWindow" File="../Images/Example/ExampleBG.png" Splash="True"/>
       </State>
 
-      <State Type="Flythrough" Name="Idle" File="../Flythroughs/Cathedral5.xml" Idle="true">
-        <IdleTrigger Type="SkeletonLost" />
+      <State Factory="Flythrough" Name="Idle" File="../Flythroughs/Cathedral5.xml" Idle="true">
+        <IdleTrigger Factory="SkeletonLost" />
         <IdleTransition Transition="FadeOut" />
         <SplashTransition Transition="FadeIn" />
       </State>
 
-      <State Type="Slideshow" Name="Slideshow" Folder="C:\Users\Iain\Pictures\Helmsdale Demo - 18-2-2013" >
+      <State Factory="Slideshow" Name="Slideshow" Folder="C:\Users\Iain\Pictures\Helmsdale Demo - 18-2-2013" >
         <NextTriggers>
           <TextTrigger X="1600" Y="950" Size="50" Colour="Red" Style="Bold">Next</TextTrigger>
         </NextTriggers>
@@ -30,7 +30,7 @@
         </PrevTriggers>
       </State>
 
-      <State Type="Video" Name="Video" File="E:\Video\Edit\Out\vid.mpg" FinishState="None" L="310" T="310" R="790" B="590" RestartMode="true">
+      <State Factory="Video" Name="Video" File="E:\Video\Edit\Out\vid.mpg" FinishState="None" L="310" T="310" R="790" B="590" RestartMode="true">
         <window Window="MainWindow" File="../Images/Example/ExampleBGVideo.png" Splash="True"/>
         <StartTriggers>
           <!--<InvisibleTrigger T="310" L="310" R="790" B="590" />-->
@@ -43,7 +43,7 @@
         </ResetTriggers>
       </State>
 
-      <State Type="Flythrough" Name="FullFlythrough" File="../Flythroughs/Cathedral5.xml" Stepping="true" DisplaySubtitles="true" SubtitleTimeout="20">
+      <State Factory="Flythrough" Name="FullFlythrough" File="../Flythroughs/Cathedral5.xml" Stepping="true" DisplaySubtitles="true" SubtitleTimeout="20">
 
         <StepTextSetup Window="MainWindow" Font="Verdana" Size="50" Color="Red" Style="Bold" Colour="Red" X="200" Y="200" />
         <SubtitleTextSetup Window="MainWindow" Font="Verdana" Size="30" Color="Red" Style="Bold" Colour="Red" X="200" Y="800" Alignment="TopMiddle" />

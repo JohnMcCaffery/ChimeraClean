@@ -9,22 +9,31 @@ using System.Windows.Forms;
 using Chimera.Overlay.Interfaces;
 
 namespace Chimera.Overlay.GUI {
-    public partial class ControllableSelector : UserControl {
+    public partial class ControllableSelector<T> : UserControl where T : IControllable {
+        public T SelectedItem {
+            get {  return (T)namesBox.SelectedItem; }
+            set { namesBox.SelectedItem = value; }
+        }
+
         public ControllableSelector() {
             InitializeComponent();
         }
-        public ControllableSelector(IEnumerable<IControllable> items)
+        public ControllableSelector(IEnumerable<T> items)
             : this() {
 
-                foreach (var item in items)
-                    namesBox.Items.Add(item);
+                Init(items);
+        }
+
+        public void Init(IEnumerable<T> items) {
+            foreach (var item in items)
+                namesBox.Items.Add(item);
         }
 
         private void namesBox_SelectedIndexChanged(object sender, EventArgs e) {
             while (controlPanel.Controls.Count > 0)
                 controlPanel.Controls.Remove(controlPanel.Controls[0]);
 
-            controlPanel.Controls.Add(((IControllable)namesBox.SelectedItem).ControlPanel);
+            controlPanel.Controls.Add(((T)namesBox.SelectedItem).ControlPanel);
         }
     }
 }

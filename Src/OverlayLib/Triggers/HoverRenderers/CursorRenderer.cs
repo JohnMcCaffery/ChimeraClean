@@ -27,7 +27,7 @@ using System.Runtime.InteropServices;
 using Chimera.Util;
 
 namespace Chimera.Overlay.Triggers {
-    public class CursorRenderer : XmlLoader, IHoverSelectorRenderer {
+    public class CursorRenderer : XmlLoader, ISelectionRenderer {
         [DllImport("user32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool GetIconInfo(IntPtr hIcon, ref IconInfo pIconInfo);

@@ -200,7 +200,10 @@ namespace Chimera.Flythrough.Overlay {
                 TransitionToStart();
         }
 
-        protected override void TransitionFromStart() { }
+        protected override void TransitionFromStart() {
+            if (mCurrentStep != null)
+                mCurrentStep.Finish();
+        }
 
         public override void TransitionToStart() {
             if (mPlayer != null) {

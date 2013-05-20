@@ -34,23 +34,23 @@ namespace Chimera.Overlay.Transitions {
             get { return "BitmapTransition"; }
         }
 
-        public IWindowTransitionFactory Create(OverlayPlugin manager, XmlNode node) {
+        public ITransitionStyle Create(OverlayPlugin manager, XmlNode node) {
             Console.WriteLine("Creating Bitmap Window Transition");
             double length = GetDouble(node, 5000.0, "Length");
             IImageTransitionFactory transition = manager.GetImageTransitionFactory(node, "window state transition");
             if (transition == null) {
-                Console.WriteLine("Unable to get specified transition. Using default.");
+                Console.WriteLine("Unable to look up custom transition for window transition. Using default, fade.");
                 transition = new BitmapFadeFactory();
             }
             return new BitmapWindowTransitionFactory(transition, length);
         }
 
-        public IWindowTransitionFactory Create(OverlayPlugin manager, XmlNode node, Rectangle clip) {
+        public ITransitionStyle Create(OverlayPlugin manager, XmlNode node, Rectangle clip) {
             return Create(manager, node);
         }
     }
 
-    public class BitmapWindowTransitionFactory : XmlLoader, IWindowTransitionFactory {
+    public class BitmapWindowTransitionFactory : XmlLoader, ITransitionStyle {
         /// <summary>
         /// How long the transition should last.
         /// </summary>

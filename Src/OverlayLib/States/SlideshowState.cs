@@ -68,7 +68,11 @@ namespace Chimera.Overlay.States {
         public SlideshowState(OverlayPlugin manager, XmlNode node)
             : base(GetName(node), manager) {
 
-            mTransition =  manager.GetImageTransitionFactory(node, "slideshow state");
+            mTransition =  manager.GetImageTransitionFactory(node, "slideshow state", "Transition");
+            if (mTransition == null) {
+                Console.WriteLine("Unable to look up custom transition for slideshow. Using default, fade.");
+                mTransition = new BitmapFadeFactory();
+            }
             mFolder = GetString(node, null, "Folder");
             if (mFolder == null)
                 throw new ArgumentException("Unable to load slideshow state. No Folder specified.");

@@ -69,7 +69,7 @@ namespace Chimera.Overlay.States {
             }
         }
 
-        public VideoState(string name, WindowOverlayManager mainWindow, string video, State parent, IWindowTransitionFactory transition, IMediaPlayer player)
+        public VideoState(string name, WindowOverlayManager mainWindow, string video, State parent, ITransitionStyle transition, IMediaPlayer player)
             : base(name, mainWindow.Manager, DefaultBG) {
 
             mPlayer = player;
@@ -99,7 +99,7 @@ namespace Chimera.Overlay.States {
             XmlAttribute toAttr = node.Attributes["FinishState"];
             if (toAttr != null && manager.GetState(toAttr.Value) != null) {
                 mTrigger = new SimpleTrigger();
-                IWindowTransitionFactory transition = manager.GetTransition(node, "video state finish transition", new BitmapWindowTransitionFactory(new BitmapFadeFactory(), 2000));
+                ITransitionStyle transition = manager.GetTransition(node, "video state finish transition", new BitmapWindowTransitionFactory(new BitmapFadeFactory(), 2000));
                 if (transition == null) {
                     Console.WriteLine("No transition specified for VideoState. using default 2s bitmap fade transition.");
                     transition = new BitmapWindowTransitionFactory(new BitmapFadeFactory(), 2000);

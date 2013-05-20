@@ -24,7 +24,7 @@ using System.Text;
 using Chimera.Interfaces.Overlay;
 
 namespace Chimera.Overlay {
-    public class StateTransition {
+    public class StateTransition : XmlLoader {
         /// <summary>
         /// The individual transitions for each window in the system.
         /// </summary>
@@ -36,7 +36,7 @@ namespace Chimera.Overlay {
         /// <summary>
         /// Factory for creating new window transitions when new windows are added to the system.
         /// </summary>
-        private IWindowTransitionFactory mWindowTransitionFactory;
+        private ITransitionStyle mWindowTransitionFactory;
         /// <summary>
         /// The manager which this transition works transition.
         /// </summary>
@@ -72,7 +72,7 @@ namespace Chimera.Overlay {
         public event Action<StateTransition> Finished;
 
         /// <param name="manager">The manager this transition works transition.</param>
-        public StateTransition(OverlayPlugin manager, State from, State to, ITrigger trigger, IWindowTransitionFactory factory) {
+        public StateTransition(OverlayPlugin manager, State from, State to, ITrigger trigger, ITransitionStyle factory) {
             mManager = manager;
             mFrom = from;
             mTo = to;

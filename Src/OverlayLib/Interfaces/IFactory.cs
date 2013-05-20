@@ -23,9 +23,9 @@ namespace Chimera.Interfaces.Overlay {
         string Mode { get; }
     }
 
-    public interface ITransitionStyleFactory : IFactory<IWindowTransitionFactory> { }
+    public interface ITransitionStyleFactory : IFactory<ITransitionStyle> { }
 
-    public interface ISelectionRendererFactory : IFactory<IHoverSelectorRenderer> { }
+    public interface ISelectionRendererFactory : IFactory<ISelectionRenderer> { }
 
     public interface IStateFactory : IFactory<State> { }
 

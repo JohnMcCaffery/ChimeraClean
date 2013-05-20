@@ -1,5 +1,5 @@
 ﻿namespace Chimera.Overlay.GUI {
-    partial class ControllableSelector {
+    partial class ControllableSelector<T> {
         /// <summary> 
         /// Required designer variable.
         /// </summary>

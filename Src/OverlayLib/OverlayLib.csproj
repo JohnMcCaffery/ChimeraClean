@@ -89,6 +89,21 @@
     <Compile Include="GUI\ControllableSelector.Designer.cs">
       <DependentUpon>ControllableSelector.cs</DependentUpon>
     </Compile>
+    <Compile Include="GUI\StateSelector.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\FeatureSelector.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\TransitionStyleSelector.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\RendererSelector.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\ImageTransitionSelector.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="GUI\Plugins\MousePluginPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -107,6 +122,9 @@
     <Compile Include="GUI\Plugins\OverlayPluginPanel.Designer.cs">
       <DependentUpon>OverlayPluginPanel.cs</DependentUpon>
     </Compile>
+    <Compile Include="GUI\TriggerSelector.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="GUI\WizardPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -122,7 +140,7 @@
     <Compile Include="Interfaces\ITrigger.cs" />
     <Compile Include="Interfaces\IWindowState.cs" />
     <Compile Include="Interfaces\IWindowTransition.cs" />
-    <Compile Include="Interfaces\IWindowTransitionFactory.cs" />
+    <Compile Include="Interfaces\ITransitionStyle.cs" />
     <Compile Include="Plugins\OverlayPlugin.State.cs" />
     <Compile Include="Plugins\OverlayPlugin.XML.cs" />
     <Compile Include="Plugins\OverlayConfig.cs" />
@@ -176,6 +194,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\OverlayWindow.resx">
       <DependentUpon>OverlayWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\Plugins\OverlayPluginPanel.resx">
+      <DependentUpon>OverlayPluginPanel.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

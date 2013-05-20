@@ -34,7 +34,7 @@ namespace Chimera.Overlay.Transitions {
             get { return "OpacityTransition"; }
         }
 
-        public IWindowTransitionFactory Create(OverlayPlugin manager, XmlNode node) {
+        public ITransitionStyle Create(OverlayPlugin manager, XmlNode node) {
             Console.WriteLine("Creating Opacity Window Transition");
             string transition = GetString(node, "Fade", "Transition");
             double length = GetDouble(node, 5000.0, "Length");
@@ -42,11 +42,11 @@ namespace Chimera.Overlay.Transitions {
             return new OpacityFadeWindowTransitionFactory(length, fadeOut);
         }
 
-        public IWindowTransitionFactory Create(OverlayPlugin manager, XmlNode node, Rectangle clip) {
+        public ITransitionStyle Create(OverlayPlugin manager, XmlNode node, Rectangle clip) {
             return Create(manager, node);
         }
     }
-    public class OpacityFadeWindowTransitionFactory : XmlLoader, IWindowTransitionFactory {
+    public class OpacityFadeWindowTransitionFactory : XmlLoader, ITransitionStyle {
         /// <summary>
         /// How long the transition should last.
         /// </summary>
