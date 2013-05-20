@@ -77,13 +77,23 @@ namespace Chimera.Launcher {
 
             var settings = new NinjectSettings { LoadExtensions = false };
             IKernel k = new StandardKernel(settings, new XmlExtensionModule());
-            k.Load(mConfig.BindingsFile);
-
+            if (mConfig.BindingsFile == null) {
+                Console.WriteLine("Unable to launch. No bindings file specified.");
+                return;
+            }
+            try {
+                k.Load(mConfig.BindingsFile);
+            } catch (Exception e) {
+                Console.WriteLine("Unable to launch. Problem loading bindings. " + e.Message);
+            }
             if (k.TryGet<IMediaPlayer>() == null)
                 k.Bind<IMediaPlayer>().To<DummyPlayer>().InSingletonScope();
 
-            mCoordinator = k.Get<Coordinator>();
-            IOutputFactory outputFactory = k.Get<IOutputFactory>();
+            try {
+                mCoordinator = k.Get<Coordinator>();
+            } catch (Exception e) {
+                Console.WriteLine("Unable to launch. Problem instantiating coordinator. " + e.Message);
+            }
         }
 
 
