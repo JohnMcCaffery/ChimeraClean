@@ -38,6 +38,7 @@ namespace Chimera.Overlay {
     public partial class OverlayPlugin : XmlLoader, ISystemPlugin {
         private OverlayConfig mConfig;
         private IMediaPlayer mPlayer;
+        private Action mRedraw;
 
         public string Statistics {
             get {
@@ -127,7 +128,13 @@ namespace Chimera.Overlay {
 
         public void Close() { }
 
-        public void Draw(Func<OpenMetaverse.Vector3, Point> to2D, Graphics graphics, Action redraw, Perspective perspective) { }
+        public void Draw(Func<OpenMetaverse.Vector3, Point> to2D, Graphics graphics, Action redraw, Perspective perspective) {
+            if (mCurrentState != null && perspective == Perspective.Map) {
+                if (mRedraw == null)
+                    mRedraw = redraw;
+                mCurrentState.Draw(graphics, to2D, perspective);
+            }
+        }
 
         #endregion
     }

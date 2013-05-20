@@ -454,7 +454,7 @@ namespace Chimera.GUI.Forms {
                 map = new Bitmap(map, e.ClipRectangle.Width, e.ClipRectangle.Height);
                 mHeightmapPerspective.Clip = e.ClipRectangle;
                 e.Graphics.DrawImage(map, Point.Empty);
-                mCoordinator.Draw(mHeightmapPerspective.To2D, e.Graphics, e.ClipRectangle, mRedrawHeightmap, Perspective.Heightmap);
+                mCoordinator.Draw(mHeightmapPerspective.To2D, e.Graphics, e.ClipRectangle, mRedrawHeightmap, Perspective.Map);
             }
         }
 

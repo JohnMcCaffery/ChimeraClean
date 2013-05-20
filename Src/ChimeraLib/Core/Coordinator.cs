@@ -51,7 +51,7 @@ namespace Chimera {
         /// <summary>
         /// The perspective is top down and drawn on the heightmap.
         /// </summary>
-        Heightmap
+        Map
     }
     public class DeltaUpdateEventArgs : EventArgs {
         /// <summary>

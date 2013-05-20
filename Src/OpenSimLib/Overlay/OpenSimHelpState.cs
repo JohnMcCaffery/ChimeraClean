@@ -147,8 +147,8 @@ namespace Chimera.Kinect.Overlay {
                 input.ProxyController.Chat(msg, -40);
         }
 
-        public override void Draw(Graphics graphics, Func<Vector3, Point> to2D, Rectangle clip, Action redraw, Perspective perspective) {
-            if (perspective == Perspective.Heightmap) {
+        public override void Draw(Graphics graphics, Func<Vector3, Point> to2D, Perspective perspective) {
+            if (perspective == Perspective.Map) {
                 foreach (var activeArea in mActiveAreas)
                     activeArea.Draw(graphics, to2D);
             }

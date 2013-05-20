@@ -142,6 +142,8 @@ namespace Chimera.Overlay {
                     foreach (var trigger in mIdleTriggers)
                         trigger.Active = false;
                 }
+                if (mRedraw != null)
+                    mRedraw();
                 if (StateChanged != null)
                     StateChanged(value);
             }

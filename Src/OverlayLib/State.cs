@@ -185,7 +185,7 @@ namespace Chimera.Overlay {
             this[feature.Window].AddFeature(feature);
         }
 
-        public virtual void Draw(Graphics graphics, Func<Vector3, Point> to2D, Rectangle clip, Action redraw, Perspective perspective) { }
+        public virtual void Draw(Graphics graphics, Func<Vector3, Point> to2D, Perspective perspective) { }
 
         /// <summary>
         /// CreateWindowState a window state for drawing this state to the specified window.
