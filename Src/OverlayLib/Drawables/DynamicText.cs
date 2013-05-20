@@ -23,8 +23,30 @@ using System.Linq;
 using System.Text;
 using System.Drawing;
 using System.Xml;
+using Chimera.Interfaces.Overlay;
 
 namespace Chimera.Overlay.Drawables {
+    public class DynamicTextFactory : IFeatureFactory {
+        #region IFactory<IFeature> Members
+
+        public IFeature Create(OverlayPlugin manager, XmlNode node) {
+            return new DynamicText(manager, node);
+        }
+
+        public IFeature Create(OverlayPlugin manager, XmlNode node, Rectangle clip) {
+            return new DynamicText(manager, node, clip);
+        }
+
+        #endregion
+
+        #region IFactory Members
+
+        public string Name {
+            get { return "DynamicText"; }
+        }
+
+        #endregion
+    }
     public class DynamicText : Text {
         private WindowOverlayManager mManager;
         private bool mNeedsRedrawn;

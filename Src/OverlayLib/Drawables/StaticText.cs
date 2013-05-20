@@ -23,8 +23,31 @@ using System.Linq;
 using System.Text;
 using System.Drawing;
 using System.Xml;
+using Chimera.Interfaces.Overlay;
 
 namespace Chimera.Overlay.Drawables {
+    public class StaticTextFactory : IFeatureFactory {
+        #region IFactory<IFeature> Members
+
+        public IFeature Create(OverlayPlugin manager, XmlNode node) {
+            return new StaticText(manager, node);
+        }
+
+        public IFeature Create(OverlayPlugin manager, XmlNode node, Rectangle clip) {
+            return new StaticText(manager, node, clip);
+        }
+
+        #endregion
+
+        #region IFactory Members
+
+        public string Name {
+            get { return "StaticText"; }
+        }
+
+        #endregion
+    }
+
     public class StaticText : Text {
         private WindowOverlayManager mManager;
         

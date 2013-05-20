@@ -28,6 +28,28 @@ using System.Xml;
 using System.IO;
 
 namespace Chimera.Overlay.Drawables {
+    public class OverlayImageFactory : IFeatureFactory {
+        #region IFactory<IFeature> Members
+
+        public IFeature Create(OverlayPlugin manager, XmlNode node) {
+            return new OverlayImage(manager, node, "factory creation");
+        }
+
+        public IFeature Create(OverlayPlugin manager, XmlNode node, Rectangle clip) {
+            return new OverlayImage(manager, node, clip, "factory creation");
+        }
+
+        #endregion
+
+        #region IFactory Members
+
+        public string Name {
+            get { return "Image"; }
+        }
+
+        #endregion
+    }
+
     public class OverlayImage : XmlLoader, IFeature {
         private RectangleF mBounds;
         private Bitmap mImage;
