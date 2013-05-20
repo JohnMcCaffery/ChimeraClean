@@ -23,6 +23,8 @@ using System.Linq;
 using System.Text;
 using Chimera.Interfaces.Overlay;
 using Chimera.Util;
+using System.Drawing;
+using OpenMetaverse;
 
 namespace Chimera.Overlay {
     public abstract class State : XmlLoader {
@@ -182,6 +184,8 @@ namespace Chimera.Overlay {
         public void AddFeature(IDrawable feature) {
             this[feature.Window].AddFeature(feature);
         }
+
+        public virtual void Draw(Graphics graphics, Func<Vector3, Point> to2D, Rectangle clip, Action redraw, Perspective perspective) { }
 
         /// <summary>
         /// CreateWindowState a window state for drawing this state to the specified window.
