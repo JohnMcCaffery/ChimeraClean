@@ -30,7 +30,7 @@ using Chimera.OpenSim;
 using OpenMetaverse;
 using System.Xml;
 
-namespace Chimera.Kinect.Overlay {
+namespace Chimera.OpenSim.Overlay {
     public class InfoStateFactory : IStateFactory {
         public string Name {
             get { return "Info"; }

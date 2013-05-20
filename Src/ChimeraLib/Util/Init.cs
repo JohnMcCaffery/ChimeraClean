@@ -361,7 +361,7 @@ namespace Chimera.Util {
 
             AddFile(config, file);
 
-            LogManager.GetLogger("Master").Info("Creating Master.");
+            LogManager.GetLogger("Master").Info("\nCreating Master.");
 
             Config proxyConfig = new Config(args, "Master", AppDomain.CurrentDomain.SetupInformation.ConfigurationFile);
             Coordinator m = new Coordinator(proxyConfig);
@@ -420,7 +420,7 @@ namespace Chimera.Util {
                 return null;
             }
 
-            LogManager.GetLogger(name).Info("Creating " + name + ".");
+            LogManager.GetLogger(name).Info("\nCreating " + name + ".");
 
             Config proxyConfig = new Config(args, name, AppDomain.CurrentDomain.SetupInformation.ConfigurationFile);
             Window s = new Window(name, proxyConfig);

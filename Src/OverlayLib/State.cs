@@ -187,14 +187,12 @@ namespace Chimera.Overlay {
         }
 
         public virtual void Draw(Graphics graphics, Func<Vector3, Point> to2D, Action redraw, Perspective perspective) {
-            if (perspective == Perspective.Map) {
-                foreach (var activeArea in WindowStates.
-                    Aggregate(new List<IDiagramDrawable>(), (l, w) => {
-                        l.AddRange(w.Features.Where(f => f is IDiagramDrawable).Select(f => f as IDiagramDrawable));
-                        return l;
-                    }))
-                    activeArea.Draw(graphics, to2D, redraw, perspective);
-            }
+            foreach (var activeArea in WindowStates.
+                Aggregate(new List<IDiagramDrawable>(), (l, w) => {
+                    l.AddRange(w.Features.Where(f => f is IDiagramDrawable).Select(f => f as IDiagramDrawable));
+                    return l;
+                }))
+                activeArea.Draw(graphics, to2D, redraw, perspective);
         }
 
         /// <summary>

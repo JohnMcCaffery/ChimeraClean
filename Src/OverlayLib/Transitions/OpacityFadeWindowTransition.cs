@@ -35,7 +35,7 @@ namespace Chimera.Overlay.Transitions {
         }
 
         public ITransitionStyle Create(OverlayPlugin manager, XmlNode node) {
-            Console.WriteLine("Creating Opacity Window Transition");
+            Console.WriteLine("\nCreating Opacity Window Transition");
             string transition = GetString(node, "Fade", "Transition");
             double length = GetDouble(node, 5000.0, "Length");
             bool fadeOut = GetBool(node, true, "FadeOut");

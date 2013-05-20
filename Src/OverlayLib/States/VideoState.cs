@@ -33,7 +33,6 @@ namespace Chimera.Overlay.States {
         }
 
         public State Create(OverlayPlugin manager, XmlNode node) {
-            Console.WriteLine("Creating Video State");
             return new VideoState(manager, node, mPlayer);
         }
 

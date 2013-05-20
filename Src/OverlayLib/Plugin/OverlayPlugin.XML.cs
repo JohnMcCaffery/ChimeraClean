@@ -101,7 +101,7 @@ namespace Chimera.Overlay {
                 mSelectionRenderers.Add("CursorRenderer", new DialCursorRenderer());
 
             LoadComponent(doc, mImageTransitions, "ImageTransitions");
-            LoadComponent(doc, mFeatures, "Drawables");
+            LoadComponent(doc, mFeatures, "Features");
             LoadComponent(doc, mTriggers, "Triggers");
             LoadComponent(doc, mTransitionStyles, "TransitionStyles");
             LoadComponent(doc, mStates, "States");
@@ -123,7 +123,7 @@ namespace Chimera.Overlay {
         }
 
         private void LoadTransitions(XmlDocument doc) {
-            Console.WriteLine("Creating Transitions");
+            Console.WriteLine("\nCreating Transitions");
             foreach (XmlNode transitionRoot in doc.GetElementsByTagName("Transitions"))
                 foreach (XmlNode transitionNode in transitionRoot.ChildNodes)
                     if (transitionNode is XmlElement)
@@ -179,6 +179,8 @@ namespace Chimera.Overlay {
             IFactory<T> factory = GetFactory<T>(node, nameAttr.Value);
             if (factory == null)
                 return;
+            if (typeof(T) == typeof(State))
+                Console.WriteLine("\nCreating " + node.Attributes["Factory"].Value + " State");
             T t = Create(factory, node);
             t.Name = nameAttr.Value;
             if (typeof(T) != typeof(State))
@@ -318,24 +320,28 @@ namespace Chimera.Overlay {
                 return defalt;
             }
             XmlAttribute nameAttr = attributes.Where(a => node.Attributes[a] != null).Select(a => node.Attributes[a]).FirstOrDefault();
-            XmlAttribute factoryAttr = node.Attributes["Factory"];
-            if (nameAttr == null && factoryAttr == null) {
+            if (nameAttr == null) {
                 string attributesL = attributes.Aggregate((sum, next) => sum + "','" + next);
                 Console.WriteLine(unable + "No '" + attributesL + "' attribute specified. " + ifDefault);
                 return defalt;
             }
-            if (nameAttr != null) {
-                if (!map.ContainsKey(nameAttr.Value)) {
-                    Console.WriteLine(unable + nameAttr.Value + " is not a known " + target + ". " + ifDefault);
-                    return defalt;
-                }
-                return map[nameAttr.Value];
+            if (nameAttr == null) {
+                Console.WriteLine(unable + nameAttr.Value + " is not a known " + target + ". " + ifDefault);
+                return defalt;
             }
+            if (map.ContainsKey(nameAttr.Value))
+                return map[nameAttr.Value];
+            IFactory<T> factory = GetFactory<T>(node, reason);
+            if (factory == null)
+                return defalt;
+            return Create(factory, node);
+            /*
             IFactory<T> factory = GetFactory<T>(node, reason);
             if (factory == null) {
                 return defalt;
             }
             return Create(factory, node);
+            */
         }
 
         public string[] GetFactoryNames<T>() {

@@ -35,7 +35,6 @@ namespace Chimera.Overlay.States {
         }
 
         public State Create(OverlayPlugin manager, XmlNode node) {
-            Console.WriteLine("Creating Image Background State");
             return new ImageBGState(manager, node);
         }
 

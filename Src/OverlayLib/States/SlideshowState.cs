@@ -35,7 +35,6 @@ namespace Chimera.Overlay.States {
         }
 
         public State Create(OverlayPlugin manager, XmlNode node) {
-            Console.WriteLine("Creating Slideshow State");
             return new SlideshowState(manager, node);
         }
 

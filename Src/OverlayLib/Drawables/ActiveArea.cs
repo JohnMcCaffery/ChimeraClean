@@ -9,6 +9,28 @@ using System.Xml;
 using Chimera.Interfaces;
 
 namespace Chimera.Overlay.Drawables {
+    public class ActiveAreaFactory : IFeatureFactory {
+        #region IFactory<IFeature> Members
+
+        public IFeature Create(OverlayPlugin manager, XmlNode node) {
+            return new ActiveArea(manager, node);
+        }
+
+        public IFeature Create(OverlayPlugin manager, XmlNode node, Rectangle clip) {
+            return Create(manager, node);
+        }
+
+        #endregion
+
+        #region IFactory Members
+
+        public string Name {
+            get { return "ActiveArea"; }
+        }
+
+        #endregion
+    }
+
         public class ActiveArea : XmlLoader, IFeature, IDiagramDrawable {
             private IFeature mImage;
             private OverlayPlugin mManager;
@@ -65,7 +87,7 @@ namespace Chimera.Overlay.Drawables {
             }
 
             public void Draw(Graphics graphics, Func<Vector3, Point> to2D, Action redraw, Perspective perspective) {
-                if (perspective != Perspective.Map)
+                if (!mActive || perspective != Perspective.Map)
                     return;
                 PointF final = FinalPoint;
                 graphics.DrawPolygon(Pens.Red, mPoints.Concat(new PointF[] { FinalPoint }).Select(p => to2D(new Vector3(p.X, p.Y, 0f))).ToArray());
