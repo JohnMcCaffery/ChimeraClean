@@ -120,8 +120,7 @@
     <Compile Include="Interfaces\IViewerController.cs" />
     <Compile Include="OpenSimController.cs" />
     <Compile Include="OpenSimViewerFactory.cs" />
-    <Compile Include="Overlay\OpenSimHelpState.cs" />
-    <Compile Include="Overlay\OpenSimHelpWindowState.cs" />
+    <Compile Include="Overlay\InfoState.cs" />
     <Compile Include="Packets\ClearRemoteControlPacket.cs" />
     <Compile Include="Packets\ClearFrustumPacket.cs" />
     <Compile Include="Packets\ClearCameraPacket.cs" />
