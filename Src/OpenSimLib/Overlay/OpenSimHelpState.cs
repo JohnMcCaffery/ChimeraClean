@@ -42,8 +42,8 @@ namespace Chimera.Kinect.Overlay {
 
         private class ActiveArea : XmlLoader {
             private IFeature mImage;
-            private WindowOverlayManager mManager;
-            private List<PointF> mPoints;
+            private OverlayPlugin mManager;
+            private List<PointF> mPoints = new List<PointF>();
 
             public IFeature Image {
                 get { return mImage; }
@@ -53,7 +53,7 @@ namespace Chimera.Kinect.Overlay {
             }
             private bool Active {
                 get {
-                    Vector3 p = mManager.Manager.Coordinator.Position;
+                    Vector3 p = mManager.Coordinator.Position;
                     PointF p1 = FinalPoint;
                     int c = 0;
                     foreach (PointF p2 in mPoints) {
@@ -75,6 +75,7 @@ namespace Chimera.Kinect.Overlay {
             }
 
             public ActiveArea(OverlayPlugin manager, XmlNode node) {
+                mManager = manager;
                 mImage = manager.GetFeature(node, "help state active area", null);
                 foreach (var child in GetChildrenOfChild(node, "Points")) {
                     float x = GetFloat(node, -1f, "X");
