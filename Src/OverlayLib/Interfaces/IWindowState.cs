@@ -24,12 +24,12 @@ using System.Text;
 using Chimera.Overlay;
 
 namespace Chimera.Interfaces.Overlay {
-    public interface IWindowState : IDrawable {
+    public interface IWindowState : IFeature {
 
         /// <summary>
         /// All features which are to be drawn onto the window state.
         /// </summary>
-        IDrawable[] Features {
+        IFeature[] Features {
             get;
         }
 
@@ -52,6 +52,6 @@ namespace Chimera.Interfaces.Overlay {
         /// Add a drawable feature to the state. Any features added will be drawn on top of content drawn as part of the state itself.
         /// </summary>
         /// <param name="feature">The feature to add.</param>
-        void AddFeature(IDrawable feature);
+        void AddFeature(IFeature feature);
     }
 }

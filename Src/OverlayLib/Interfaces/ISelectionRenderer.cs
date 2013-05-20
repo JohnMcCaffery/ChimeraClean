@@ -22,9 +22,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Drawing;
+using Chimera.Overlay.Interfaces;
 
 namespace Chimera {
-    public interface IHoverSelectorRenderer {
+    public interface IHoverSelectorRenderer : IControllable {
         /// <summary>
         /// Draw the selector hovering.
         /// </summary>

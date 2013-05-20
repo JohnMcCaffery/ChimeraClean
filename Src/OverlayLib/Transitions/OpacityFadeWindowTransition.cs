@@ -46,7 +46,7 @@ namespace Chimera.Overlay.Transitions {
             return Create(manager, node);
         }
     }
-    public class OpacityFadeWindowTransitionFactory : IWindowTransitionFactory {
+    public class OpacityFadeWindowTransitionFactory : XmlLoader, IWindowTransitionFactory {
         /// <summary>
         /// How long the transition should last.
         /// </summary>

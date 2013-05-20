@@ -49,7 +49,7 @@ namespace Chimera.Overlay.Triggers {
         }
     }
 
-    public class TextHoverTrigger : HoverTrigger, IDrawable {
+    public class TextHoverTrigger : HoverTrigger, IFeature {
         private Text mText;
 
         public TextHoverTrigger(WindowOverlayManager manager, IHoverSelectorRenderer renderer, Text text, Rectangle clip)
@@ -97,16 +97,16 @@ namespace Chimera.Overlay.Triggers {
             get { return mText.NeedsRedrawn || base.NeedsRedrawn; }
         }
 
-        string IDrawable.Window {
+        string IFeature.Window {
             get { return mText.Window; }
         }
 
-        void IDrawable.DrawStatic(Graphics graphics) {
+        void IFeature.DrawStatic(Graphics graphics) {
             mText.DrawStatic(graphics);
             base.DrawStatic(graphics);
         }
 
-        void IDrawable.DrawDynamic(Graphics graphics) {
+        void IFeature.DrawDynamic(Graphics graphics) {
             mText.DrawDynamic(graphics);
             base.DrawDynamic(graphics);
         }

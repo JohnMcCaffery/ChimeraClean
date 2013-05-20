@@ -53,7 +53,7 @@ namespace Chimera.Overlay.Triggers {
         }
     }
 
-    public class ImageClickTrigger : ClickTrigger, IDrawable {
+    public class ImageClickTrigger : ClickTrigger, IFeature {
         private OverlayImage mImage;
 
         protected override RectangleF Bounds {

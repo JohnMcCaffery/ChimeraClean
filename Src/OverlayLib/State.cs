@@ -171,8 +171,8 @@ namespace Chimera.Overlay {
                 mTransitions[stateTransition.To.Name].AddTriggers(stateTransition.Triggers);
             } else {
                 mTransitions.Add(stateTransition.To.Name, stateTransition);
-                if (stateTransition is IDrawable)
-                    AddFeature(stateTransition as IDrawable);
+                if (stateTransition is IFeature)
+                    AddFeature(stateTransition as IFeature);
             }
         }
         
@@ -181,7 +181,7 @@ namespace Chimera.Overlay {
         /// </summary>
         /// <param name="window">The window to draw the feature on.</param>
         /// <param name="feature">The feature to draw.</param>
-        public void AddFeature(IDrawable feature) {
+        public void AddFeature(IFeature feature) {
             this[feature.Window].AddFeature(feature);
         }
 

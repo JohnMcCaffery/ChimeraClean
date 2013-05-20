@@ -7,9 +7,23 @@ using Chimera.Overlay.Drawables;
 using System.Drawing;
 using System.IO;
 using Chimera.Interfaces.Overlay;
+using Chimera.Overlay.Interfaces;
+using System.Windows.Forms;
 
 namespace Chimera.Overlay {
-    public class XmlLoader {
+    public class XmlLoader : IControllable {
+        private Panel mPanel = new Panel();
+        private string mName = null;
+
+        public virtual Control ControlPanel {
+            get { return mPanel; }
+        }
+
+        public virtual string Name {
+            get { return mName == null ? GetType().Name : mName; }
+            set { mName = value; }
+        }
+
         public const string DEFAULT_FONT = "Verdana";
         public const float DEFAULT_FONT_SIZE = 12f;
         public const FontStyle DEFAULT_FONT_STYLE = FontStyle.Regular;

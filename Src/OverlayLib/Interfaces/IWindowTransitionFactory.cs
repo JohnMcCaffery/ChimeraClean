@@ -23,9 +23,10 @@ using System.Linq;
 using System.Text;
 using Chimera.Overlay;
 using System.Xml;
+using Chimera.Overlay.Interfaces;
 
 namespace Chimera.Interfaces.Overlay {
-    public interface IWindowTransitionFactory {
+    public interface IWindowTransitionFactory : IControllable {
         /// <summary>
         /// CreateWindowState a state transition for the specified window.
         /// </summary>

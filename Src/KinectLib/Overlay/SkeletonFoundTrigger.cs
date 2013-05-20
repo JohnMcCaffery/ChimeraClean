@@ -27,7 +27,8 @@ using Chimera.Overlay;
 using System.Xml;
 using System.Drawing;
 
-namespace Chimera.Kinect.Overlay {    public class SkeletonFoundFactory : ITriggerFactory {
+namespace Chimera.Kinect.Overlay {
+    public class SkeletonFoundFactory : ITriggerFactory {
         public SpecialTrigger Special {
             get { return SpecialTrigger.None; }
         }
@@ -48,7 +49,7 @@ namespace Chimera.Kinect.Overlay {    public class SkeletonFoundFactory : ITrig
             return Create(manager, node);
         }
     }
-    public class SkeletonFoundTrigger : ITrigger {
+    public class SkeletonFoundTrigger : XmlLoader, ITrigger {
         private bool mActive;
 
         public event Action Triggered;

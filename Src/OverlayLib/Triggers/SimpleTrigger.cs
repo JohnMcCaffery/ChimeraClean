@@ -24,7 +24,7 @@ using System.Text;
 using Chimera.Interfaces.Overlay;
 
 namespace Chimera.Overlay.Triggers {
-    public class SimpleTrigger : ITrigger {
+    public class SimpleTrigger : XmlLoader, ITrigger {
         public event Action Triggered;
         private bool mActive = true;
 

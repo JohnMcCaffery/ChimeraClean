@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using Chimera.Interfaces.Overlay;
 using Chimera;
+using Chimera.Overlay;
 
 namespace Joystick.Overlay {
-    public class JoystickInactiveTrigger : ITrigger {
+    public class JoystickInactiveTrigger : XmlLoader, ITrigger {
         private bool mActive;
         private double mTimeout;
         private bool mTriggered = false;

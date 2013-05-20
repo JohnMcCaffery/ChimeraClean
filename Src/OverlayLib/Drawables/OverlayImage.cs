@@ -28,7 +28,7 @@ using System.Xml;
 using System.IO;
 
 namespace Chimera.Overlay.Drawables {
-    public class OverlayImage : XmlLoader, IDrawable {
+    public class OverlayImage : XmlLoader, IFeature {
         private RectangleF mBounds;
         private Bitmap mImage;
         private float mAspectRatio;

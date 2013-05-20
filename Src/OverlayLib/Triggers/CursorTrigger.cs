@@ -30,7 +30,7 @@ using Chimera.Interfaces.Overlay;
 using System.Xml;
 
 namespace Chimera.Overlay.Triggers {
-    public class CursorTrigger : ITrigger, IDrawable {
+    public class CursorTrigger : XmlLoader, ITrigger, IFeature {
         private DateTime mEnter;
         private float mSelectMS = 1000f;
         private bool mHovering = false;

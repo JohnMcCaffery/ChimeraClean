@@ -25,11 +25,11 @@ using System.Drawing;
 using Chimera.Interfaces.Overlay;
 
 namespace Chimera.Overlay {
-    public abstract class DrawableRoot : IDrawable {
+    public abstract class DrawableRoot : XmlLoader, IFeature {
         /// <summary>
         /// The features which will be drawn on this window state.
         /// </summary>
-        private readonly List<IDrawable> mFeatures = new List<IDrawable>();
+        private readonly List<IFeature> mFeatures = new List<IFeature>();
         /// <summary>
         /// True if the state needs to be redrawn.
         /// </summary>
@@ -83,7 +83,7 @@ namespace Chimera.Overlay {
         /// <summary>
         /// Features which need to be drawn in the window.
         /// </summary>
-        public IDrawable[] Features {
+        public IFeature[] Features {
             get { return mFeatures.ToArray(); }
         }
 
@@ -120,7 +120,7 @@ namespace Chimera.Overlay {
         /// Add a drawable feature to the state. Any features added will be drawn on top of content drawn as part of the state itself.
         /// </summary>
         /// <param name="feature">The feature to add.</param>
-        public virtual void AddFeature(IDrawable feature) {
+        public virtual void AddFeature(IFeature feature) {
             mFeatures.Add(feature);
         }
     }

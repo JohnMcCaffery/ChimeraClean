@@ -24,7 +24,7 @@ using System.Text;
 using Chimera.Overlay;
 
 namespace Chimera.Interfaces.Overlay {
-    public interface IWindowTransition : IDrawable {
+    public interface IWindowTransition : IFeature {
         /// <summary>
         /// Triggered when the transition has finished.
         /// </summary>

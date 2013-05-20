@@ -25,9 +25,10 @@ using Chimera.Interfaces.Overlay;
 using System.Drawing;
 using NuiLibDotNet;
 using OpenMetaverse;
+using Chimera.Overlay;
 
 namespace Chimera.Kinect.Overlay {
-    public class SkeletonFeature : IDrawable {
+    public class SkeletonFeature : XmlLoader, IFeature {
         private static Vector sLeftHand, sRightHand;
         private static Vector sLeftElbow, sRightElbow;
         private static Vector sLeftShoulder, sRightShoulder;

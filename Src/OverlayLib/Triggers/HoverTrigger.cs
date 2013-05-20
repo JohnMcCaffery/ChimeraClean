@@ -50,7 +50,7 @@ namespace Chimera.Overlay.Triggers {
         }
     }
 
-    public class HoverTrigger : AreaTrigger, IDrawable {
+    public class HoverTrigger : AreaTrigger, IFeature {
         /// <summary>
         /// How many ms to the hover must be maintened before the selector is triggered.
         /// </summary>

@@ -111,8 +111,8 @@ namespace Chimera.Flythrough.Overlay {
         private void AddStepTrigger(ITrigger trigger) {
             mStepTriggers.Add(trigger);
             trigger.Triggered += new Action(step_Triggered);
-            if (trigger is IDrawable)
-                AddFeature(trigger as IDrawable);
+            if (trigger is IFeature)
+                AddFeature(trigger as IFeature);
         }
 
         public FlythroughState(OverlayPlugin manager, XmlNode node, IMediaPlayer player)

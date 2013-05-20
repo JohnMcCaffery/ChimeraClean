@@ -5,9 +5,10 @@ using System.Text;
 using Chimera.Interfaces.Overlay;
 using Chimera;
 using OpenMetaverse;
+using Chimera.Overlay;
 
 namespace Joystick.Overlay {
-    public class JoystickActivatedTrigger : ITrigger {
+    public class JoystickActivatedTrigger : XmlLoader, ITrigger {
         private static readonly double TIMEOUT = 10000.0;
         private bool mActive;
         private Coordinator mCoordinator;

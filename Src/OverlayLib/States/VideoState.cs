@@ -136,8 +136,8 @@ namespace Chimera.Overlay.States {
                         list.Add(trigger);
                         trigger.Active = false;
                     }
-                    if (trigger is IDrawable)
-                        AddFeature(trigger as IDrawable);
+                    if (trigger is IFeature)
+                        AddFeature(trigger as IFeature);
                     trigger.Triggered += onTrigger;
                 }
             }

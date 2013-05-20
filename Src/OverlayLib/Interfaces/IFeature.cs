@@ -23,9 +23,10 @@ using System.Linq;
 using System.Text;
 using System.Drawing;
 using Chimera.Overlay;
+using Chimera.Overlay.Interfaces;
 
 namespace Chimera.Interfaces.Overlay {
-    public interface IDrawable {
+    public interface IFeature : IControllable {
         /// <summary>
         /// The clip rectangle this drawable is to be drawn on. Will always be updated before either of the draw methods are called.
         /// If you are drawing a drawable on another drawable and NOT using DrawableRoot you MUST remember to update clip on the child

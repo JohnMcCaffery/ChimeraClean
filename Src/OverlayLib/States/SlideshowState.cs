@@ -68,7 +68,7 @@ namespace Chimera.Overlay.States {
         public SlideshowState(OverlayPlugin manager, XmlNode node)
             : base(GetName(node), manager) {
 
-            mTransition = (IImageTransitionFactory) manager.GetFactory<IImageTransition>(node, "slideshow state");
+            mTransition =  manager.GetImageTransitionFactory(node, "slideshow state");
             mFolder = GetString(node, null, "Folder");
             if (mFolder == null)
                 throw new ArgumentException("Unable to load slideshow state. No Folder specified.");
@@ -90,8 +90,8 @@ namespace Chimera.Overlay.States {
 
             mTriggers.Add(trigger);
 
-            if (trigger is IDrawable)
-                AddFeature(trigger as IDrawable);
+            if (trigger is IFeature)
+                AddFeature(trigger as IFeature);
         }
 
         void prev_Triggered() {

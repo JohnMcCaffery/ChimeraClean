@@ -50,7 +50,7 @@ namespace Chimera.Kinect.Overlay {
             return Create(manager, node);
         }
     }
-    public class SkeletonLostTrigger : ITrigger {
+    public class SkeletonLostTrigger : XmlLoader, ITrigger {
         private bool mActive;
         private DateTime mLost;
         private bool mTriggered = false;

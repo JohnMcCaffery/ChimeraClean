@@ -24,7 +24,7 @@ using System.Text;
 using System.Drawing;
 
 namespace Chimera.Interfaces.Overlay {
-    public interface IImageTransition : IDrawable {
+    public interface IImageTransition : IFeature {
         event Action Finished;
         void Init(Bitmap from, Bitmap to);
         void Begin();

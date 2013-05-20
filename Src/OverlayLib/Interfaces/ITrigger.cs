@@ -22,9 +22,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Xml;
+using Chimera.Overlay.Interfaces; 
 
 namespace Chimera.Interfaces.Overlay {
-    public interface ITrigger {
+    public interface ITrigger : IControllable {
         /// <summary>
         /// The trigger has been activated.
         /// </summary>

@@ -70,7 +70,7 @@ namespace Chimera.Overlay {
         /// <summary>
         /// The drawable which should currently be drawn to the window.
         /// </summary>
-        private IDrawable mCurrentDisplay;
+        private IFeature mCurrentDisplay;
         /// <summary>
         /// The current opacity for the overlay window.
         /// </summary>
@@ -222,7 +222,7 @@ namespace Chimera.Overlay {
             }
         }
 
-        public IDrawable CurrentDisplay {
+        public IFeature CurrentDisplay {
             get { return mCurrentDisplay; }
             set { 
                 mCurrentDisplay = value;

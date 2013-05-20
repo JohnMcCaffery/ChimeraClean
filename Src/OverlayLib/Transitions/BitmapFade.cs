@@ -50,7 +50,7 @@ namespace Chimera.Overlay.Transitions {
         #endregion
 
     }
-    public class FadeTransition : IImageTransition {
+    public class FadeTransition : XmlLoader, IImageTransition {
         /// <summary>
         /// When the transition began.
         /// </summary>

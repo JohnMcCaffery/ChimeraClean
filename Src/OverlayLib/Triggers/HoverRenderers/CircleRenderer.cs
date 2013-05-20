@@ -24,7 +24,7 @@ using System.Text;
 using System.Drawing;
 
 namespace Chimera.Overlay.Triggers {
-    public class CircleRenderer : IHoverSelectorRenderer {
+    public class CircleRenderer : XmlLoader, IHoverSelectorRenderer {
         private Color mHoverColour = Color.Red;
         private Color mSelectionColour = Color.Blue;
         private int mR;

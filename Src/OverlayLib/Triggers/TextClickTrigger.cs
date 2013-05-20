@@ -49,7 +49,7 @@ namespace Chimera.Overlay.Triggers {
         }
     }
 
-    public class TextClickTrigger : ClickTrigger, IDrawable {
+    public class TextClickTrigger : ClickTrigger, IFeature {
         private Text mText;
         private Rectangle mClip;
 
@@ -98,15 +98,15 @@ namespace Chimera.Overlay.Triggers {
             get { return mText.NeedsRedrawn; }
         }
 
-        string IDrawable.Window {
+        string IFeature.Window {
             get { return mText.Window; }
         }
 
-        void IDrawable.DrawStatic(Graphics graphics) {
+        void IFeature.DrawStatic(Graphics graphics) {
             mText.DrawStatic(graphics);
         }
 
-        void IDrawable.DrawDynamic(Graphics graphics) {
+        void IFeature.DrawDynamic(Graphics graphics) {
             mText.DrawDynamic(graphics);
         }
 

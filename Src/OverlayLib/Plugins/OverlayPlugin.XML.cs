@@ -33,22 +33,23 @@ using Chimera.Overlay.GUI.Plugins;
 using Chimera.Config;
 using Chimera.Overlay.Transitions;
 using Chimera.Interfaces;
+using Chimera.Overlay.Interfaces;
 
 namespace Chimera.Overlay {
     public partial class OverlayPlugin : XmlLoader, ISystemPlugin {
         public static readonly string CLICK_MODE = "ClickBased";
         public static readonly string HOVER_MODE = "HoverBased";
         public IEnumerable<IImageTransitionFactory> mImageTransitionFactories;
-        public IEnumerable<IDrawableFactory> mDrawableFactories;
+        public IEnumerable<IFeatureFactory> mDrawableFactories;
         public IEnumerable<ITriggerFactory> mTriggerFactories;
         public IEnumerable<ISelectionRendererFactory> mSelectionRendererFactories;
         public IEnumerable<ITransitionStyleFactory> mTransitionStyleFactories;
         public IEnumerable<IStateFactory> mStateFactories;
 
-        private Dictionary<string, IDrawable> mDrawables = new Dictionary<string, IDrawable>();
+        private Dictionary<string, IFeature> mFeatures = new Dictionary<string, IFeature>();
         private Dictionary<string, ITrigger> mTriggers = new Dictionary<string, ITrigger>();
         private Dictionary<string, IWindowTransitionFactory> mTransitionStyles = new Dictionary<string, IWindowTransitionFactory>();
-        private Dictionary<string, IHoverSelectorRenderer> mRenderers = new Dictionary<string, IHoverSelectorRenderer>();
+        private Dictionary<string, IHoverSelectorRenderer> mSelectionRenderers = new Dictionary<string, IHoverSelectorRenderer>();
         private Dictionary<string, IImageTransition> mImageTransitions = new Dictionary<string, IImageTransition>();
 
         private State mSplashState;
@@ -67,7 +68,7 @@ namespace Chimera.Overlay {
         public OverlayPlugin(
                 IMediaPlayer player,
                 IEnumerable<IImageTransitionFactory> imageTransitionFactories, 
-                IEnumerable<IDrawableFactory> drawableFactories, 
+                IEnumerable<IFeatureFactory> drawableFactories, 
                 IEnumerable<ITriggerFactory> triggerFactories, 
                 IEnumerable<ISelectionRendererFactory> selectionRendererFactories, 
                 IEnumerable<ITransitionStyleFactory> transitionStyleFactories, 
@@ -85,17 +86,7 @@ namespace Chimera.Overlay {
             mMode = mConfig.InterfaceMode;
         }
 
-        private void LoadClip(XmlDocument doc) {
-            XmlNodeList clipList = doc.GetElementsByTagName("Overlay");
-            if (clipList.Count == 0)
-                return;
-
-            XmlNode node = clipList[0];
-            if (node.Attributes["Width"] != null && node.Attributes["Height"] != null) {
-                mClip = new Rectangle(0, 0, GetInt(node, mClip.Width, "X"), GetInt(node, mClip.Height, "Y"));
-                mClipLoaded = true;
-            }
-        }
+        #region Loading
 
         public void LoadXML(string xml) {
             XmlDocument doc = new XmlDocument();
@@ -103,13 +94,13 @@ namespace Chimera.Overlay {
 
             LoadClip(doc);
 
-            LoadComponent(doc, mRenderers, "SelectionRenderers");
-            if (mRenderers.Count == 0)
+            LoadComponent(doc, mSelectionRenderers, "SelectionRenderers");
+            if (mSelectionRenderers.Count == 0)
                 //TODO add renderer factories
-                mRenderers.Add("CursorRenderer", new DialCursorRenderer());
+                mSelectionRenderers.Add("CursorRenderer", new DialCursorRenderer());
 
             LoadComponent(doc, mImageTransitions, "ImageTransitions");
-            LoadComponent(doc, mDrawables, "Drawables");
+            LoadComponent(doc, mFeatures, "Drawables");
             LoadComponent(doc, mTriggers, "Triggers");
             LoadComponent(doc, mTransitionStyles, "TransitionStyles");
             LoadComponent(doc, mStates, "States");
@@ -120,6 +111,17 @@ namespace Chimera.Overlay {
 
             LoadTransitions(doc);
             LoadSpeciStates();
+        }
+        private void LoadClip(XmlDocument doc) {
+            XmlNodeList clipList = doc.GetElementsByTagName("Overlay");
+            if (clipList.Count == 0)
+                return;
+
+            XmlNode node = clipList[0];
+            if (node.Attributes["Width"] != null && node.Attributes["Height"] != null) {
+                mClip = new Rectangle(0, 0, GetInt(node, mClip.Width, "X"), GetInt(node, mClip.Height, "Y"));
+                mClipLoaded = true;
+            }
         }
 
         private void LoadTransitions(XmlDocument doc) {            Console.WriteLine("Creating Transitions");
@@ -140,7 +142,7 @@ namespace Chimera.Overlay {
                 CurrentState = mSplashState;
         }
 
-        private void LoadComponent<T>(XmlDocument doc, Dictionary<string, T> map, string nodeID) {
+        private void LoadComponent<T>(XmlDocument doc, Dictionary<string, T> map, string nodeID) where T : IControllable {
             foreach (XmlNode root in doc.GetElementsByTagName("Overlay")[0].ChildNodes)
                 if (root is XmlElement && (root.Name == "Any" || root.Name == mMode)) {
                     XmlNode specificRoot = root.SelectSingleNode("child::" + nodeID);
@@ -165,61 +167,74 @@ namespace Chimera.Overlay {
             transition.From.AddTransition(transition);
         }
 
-        private T GetInstance<T>(XmlNode node, Dictionary<string, T> map, string target, string reason, T defalt, params string[] attribute) {
-            string ifDefault = defalt != null ? "Using default " + defalt.GetType().Name + "." : "";
-            string unable = "Unable to get " + target + " for " + reason + ". ";
-            if (node == null) {
-                Console.WriteLine(unable + "No node." + ifDefault);
-                return defalt;
+        private void LoadFactory<T>(XmlNode node, Dictionary<string, T> instances) where T : IControllable {
+            XmlAttribute nameAttr = node.Attributes["Name"];
+            if (nameAttr == null) {
+                Console.WriteLine("Unable to load " + node.Name + ". No Name attribute specified.");
+                return;
             }
-            XmlAttribute nameAttr = attribute.Where(a => node.Attributes[a] != null).Select(a => node.Attributes[a]).FirstOrDefault();
-            XmlAttribute factoryAttr = node.Attributes["Factory"];
-            if (nameAttr == null && factoryAttr == null) {
-                Console.WriteLine(unable + "No '" + attribute + "' or 'Factory' attributes specified." + ifDefault);
-                return defalt;
+
+            IFactory<T> factory = GetFactory<T>(node, nameAttr.Value);
+            if (factory == null)
+                return;
+            T t = Create(factory, node);
+            t.Name = nameAttr.Value;
+            instances.Add(nameAttr.Value, t);
+
+            if (typeof(T) == typeof(State)) {
+                if (GetBool(node, false, "Idle"))
+                    LoadIdle(node, t as State);
+                else if (GetBool(node, false, "Splash"))
+                    mSplashState = t as State;
             }
-            if (nameAttr != null) {
-                if (!map.ContainsKey(nameAttr.Value)) {
-                    Console.WriteLine(unable + nameAttr.Value + " is not a known " + target + "." + ifDefault);
-                    return defalt;
+        }
+        private void LoadIdle(XmlNode node, State state) {
+            mIdleState = state;
+            foreach (XmlNode child in node.ChildNodes) {
+                if (child is XmlElement) {
+                    switch (child.Name) {
+                        case "IdleTransition": mSplashIdleTransition = GetTransition(child, "to idle transition", new OpacityFadeOutWindowTransitionFactory(5000)); return;
+                        case "SplashTransition": mIdleSplashTransition = GetTransition(child, "from idle transition", new OpacityFadeInWindowTransitionFactory(5000)); return;
+                        default: LoadIdleTrigger(child, GetTrigger(child, "idle transition")); return;
+                    }
                 }
-                return map[nameAttr.Value];
             }
-            IEnumerable<IFactory<T>> factories = GetFactories<T>();
-            if (factories == null) {
-                Console.WriteLine(unable + "No factories bound for " + typeof(T).Name + "." + ifDefault);
-                return defalt;
-            }
-            IFactory<T> factory = GetFactory<T>(factoryAttr.Value, factories);
-            if (factory == null) {
-                Console.WriteLine(unable + factoryAttr.Value + " is not a known " + target + " factory." + ifDefault);
-                return defalt;
-            }
-            return Create(factory, node);
         }
 
-        public IEnumerable<IFactory<T>> GetFactories<T>() {
-            if (typeof(T).FullName == typeof(IDrawable).FullName)
-                return (IEnumerable<IFactory<T>>)mDrawableFactories;
-            else if (typeof(T).FullName == typeof(IWindowTransitionFactory).FullName)
-                return (IEnumerable<IFactory<T>>)mDrawableFactories;
-            else if (typeof(T).FullName == typeof(IImageTransition).FullName)
-                return (IEnumerable<IFactory<T>>)mDrawableFactories;
-            else if (typeof(T).FullName == typeof(IHoverSelectorRenderer).FullName)
-                return (IEnumerable<IFactory<T>>)mDrawableFactories;
-            else if (typeof(T).FullName == typeof(State).FullName)
-                return (IEnumerable<IFactory<T>>)mDrawableFactories;
-            else if (typeof(T).FullName == typeof(ITrigger).FullName)
-                return (IEnumerable<IFactory<T>>)mDrawableFactories;
-            else {
-                return null;
-            }
+        private void LoadIdleTrigger(XmlNode node, ITrigger trigger) {
+            if (trigger != null)
+                mIdleTriggers.Add(trigger);
         }
-        public IFactory<T> GetFactory<T>(string name, IEnumerable<IFactory<T>> factories ) {
-            return factories.FirstOrDefault(f => f.Name == name);
-        }
-        private T Create<T>(IFactory<T> factory, XmlNode node) {
-            return mClipLoaded ? factory.Create(this, node, mClip) : factory.Create(this, node);
+
+        #endregion
+
+        #region Specific Getters
+        public IWindowTransitionFactory[] Transitions {
+            get { return mTransitionStyles.Values.ToArray(); }
+        }
+
+        public IImageTransition[] ImageTransitions {
+            get { return mImageTransitions.Values.ToArray(); }
+        }
+
+        public IHoverSelectorRenderer[] Renderers {
+            get { return mSelectionRenderers.Values.ToArray(); }
+        }
+
+        public IFeature[] Features {
+            get { return mFeatures.Values.ToArray(); }
+        }
+
+        public RectangleF GetBounds(XmlNode node, string reason) {
+            return mClipLoaded ? GetBounds(node, reason, mClip) : GetBounds(node, reason);
+        }
+
+        public OverlayImage MakeImage(XmlNode node) {
+            return mClipLoaded ?  new OverlayImage(this, node, mClip) : new OverlayImage(this, node);
+        }
+
+        public Text MakeText(XmlNode node) {
+            return mClipLoaded ?  new StaticText(this, node, mClip) : new StaticText(this, node);
         }
 
         public IWindowTransitionFactory GetTransition(XmlNode node, string reason, IWindowTransitionFactory defalt) {
@@ -228,13 +243,14 @@ namespace Chimera.Overlay {
 
         public IImageTransition GetImageTransition(XmlNode node, string reason, IImageTransition defalt) {
             return GetInstance(node, mImageTransitions, "image transition", reason, defalt, "Transition");
-        }
-        public IHoverSelectorRenderer GetRenderer(XmlNode node, string reason, IHoverSelectorRenderer defalt) {
-            return GetInstance(node, mRenderers, "hover selection renderer", reason, defalt, "Renderer");
         }
 
-        public IDrawable GetFeature(XmlNode node, string reason, IDrawable defalt) {
-            return GetInstance(node, mDrawables, "feature", reason, defalt, "Feature");
+        public IHoverSelectorRenderer GetRenderer(XmlNode node, string reason, IHoverSelectorRenderer defalt) {
+            return GetInstance(node, mSelectionRenderers, "hover selection renderer", reason, defalt, "Renderer");
+        }
+
+        public IFeature GetFeature(XmlNode node, string reason, IFeature defalt) {
+            return GetInstance(node, mFeatures, "feature", reason, defalt, "Feature");
         }
 
         public ITrigger GetTrigger(XmlNode node, string reason) {
@@ -255,30 +271,80 @@ namespace Chimera.Overlay {
             }
 
             return mClipLoaded ? factory.Create(this, node, mClip) : factory.Create(this, node);
+        }
+        public IImageTransitionFactory GetImageTransitionFactory(XmlNode node, string reason) {
+            return (IImageTransitionFactory) GetFactory<IImageTransition>(node, reason);
         }
 
-        private void LoadFactory<T>(XmlNode node, Dictionary<string, T> instances) {
-            XmlAttribute nameAttr = node.Attributes["Name"];
-            if (nameAttr == null) {
-                Console.WriteLine("Unable to load " + node.Name + ". No Name attribute specified.");
-                return;
+        public ITriggerFactory GetTriggerFactory(XmlNode node, string reason) {
+            return (ITriggerFactory) GetFactory<ITrigger>(node, reason);
+        }
+
+        public ISelectionRendererFactory GetSelectionRendererFactory(XmlNode node, string reason) {
+            return (ISelectionRendererFactory) GetFactory<IHoverSelectorRenderer>(node, reason);
+        }
+
+        public IFeatureFactory GetDrawableFactory(XmlNode node, string reason) {
+            return (IFeatureFactory) GetFactory<IFeature>(node, reason);
+        }
+
+        #endregion
+
+        #region Generic Getters
+        private T GetInstance<T>(XmlNode node, Dictionary<string, T> map, string target, string reason, T defalt, params string[] attribute) {
+            string ifDefault = defalt != null ? "Using default " + defalt.GetType().Name + "." : "";
+            string unable = "Unable to get " + target + " for " + reason + ". ";
+            if (node == null) {
+                Console.WriteLine(unable + "No node." + ifDefault);
+                return defalt;
             }
+            XmlAttribute nameAttr = attribute.Where(a => node.Attributes[a] != null).Select(a => node.Attributes[a]).FirstOrDefault();
+            XmlAttribute factoryAttr = node.Attributes["Factory"];
+            if (nameAttr == null && factoryAttr == null) {
+                Console.WriteLine(unable + "No '" + attribute + "' or 'Factory' attributes specified." + ifDefault);
+                return defalt;
+            }
+            if (nameAttr != null) {
+                if (!map.ContainsKey(nameAttr.Value)) {
+                    Console.WriteLine(unable + nameAttr.Value + " is not a known " + target + "." + ifDefault);
+                    return defalt;
+                }
+                return map[nameAttr.Value];
+            }
+            IFactory<T> factory = GetFactory<T>(node, reason);
+            if (factory == null) {
+                return defalt;
+            }
+            return Create(factory, node);
+        }
 
-            IFactory<T> factory = GetFactory<T>(node, nameAttr.Value);
-            if (factory == null)
-                return;
-            T t = Create(factory, node);
-            instances.Add(nameAttr.Value, t);
+        public string[] GetFactoryNames<T>() {
+            return GetFactories<T>().Select(f => f.Name).ToArray();
+        }
 
-            if (typeof(T) == typeof(State)) {
-                if (GetBool(node, false, "Idle"))
-                    LoadIdle(node, t as State);
-                else if (GetBool(node, false, "Splash"))
-                    mSplashState = t as State;
+        public IEnumerable<IFactory<T>> GetFactories<T>() {
+            if (typeof(T).FullName == typeof(IFeature).FullName)
+                return (IEnumerable<IFactory<T>>)mDrawableFactories;
+            else if (typeof(T).FullName == typeof(IWindowTransitionFactory).FullName)
+                return (IEnumerable<IFactory<T>>)mTransitionStyleFactories;
+            else if (typeof(T).FullName == typeof(IImageTransition).FullName)
+                return (IEnumerable<IFactory<T>>)mImageTransitionFactories;
+            else if (typeof(T).FullName == typeof(IHoverSelectorRenderer).FullName)
+                return (IEnumerable<IFactory<T>>)mSelectionRenderers;
+            else if (typeof(T).FullName == typeof(State).FullName)
+                return (IEnumerable<IFactory<T>>)mStateFactories;
+            else if (typeof(T).FullName == typeof(ITrigger).FullName)
+                return (IEnumerable<IFactory<T>>)mTriggerFactories;
+            else {
+                return null;
             }
         }
 
-        public IFactory<T> GetFactory<T>(XmlNode node, string reason) {
+        private T Create<T>(IFactory<T> factory, XmlNode node) {
+            return mClipLoaded ? factory.Create(this, node, mClip) : factory.Create(this, node);
+        }
+
+        private IFactory<T> GetFactory<T>(XmlNode node, string reason) {
             string unable = "Unable to get " + typeof(T).Name + " factory for " + reason + ". ";
             if (node == null) {
                 Console.WriteLine(unable + " No node.");
@@ -294,41 +360,13 @@ namespace Chimera.Overlay {
                 Console.WriteLine(unable + " No Factory attribute specified.");
                 return null;
             }
-            IFactory<T> factory = GetFactory<T>(factoryAttr.Value, factories);
+            IFactory<T> factory = factories.FirstOrDefault(f => f.Name == factoryAttr.Value);
             if (factory == null) {
                 Console.WriteLine(unable + "There is no mapping for that name and factory. Check Ninject config to make sure the binding is correct.");
             }
             return factory;
         }
 
-        private void LoadIdle(XmlNode node, State state) {
-            mIdleState = state;
-            foreach (XmlNode child in node.ChildNodes) {
-                if (child is XmlElement) {
-                    switch (child.Name) {
-                        case "IdleTransition": mSplashIdleTransition = GetTransition(child, "to idle transition", new OpacityFadeOutWindowTransitionFactory(5000)); return;
-                        case "SplashTransition": mIdleSplashTransition = GetTransition(child, "from idle transition", new OpacityFadeInWindowTransitionFactory(5000)); return;
-                        default: LoadIdleTrigger(child, GetTrigger(child, "idle transition")); return;
-                    }
-                }
-            }
-        }
-
-        private void LoadIdleTrigger(XmlNode node, ITrigger trigger) {
-            if (trigger != null)
-                mIdleTriggers.Add(trigger);
-        }
-
-        public OverlayImage MakeImage(XmlNode node) {
-            return mClipLoaded ?  new OverlayImage(this, node, mClip) : new OverlayImage(this, node);
-        }
-
-        public Text MakeText(XmlNode node) {
-            return mClipLoaded ?  new StaticText(this, node, mClip) : new StaticText(this, node);
-        }
-
-        public RectangleF GetBounds(XmlNode node, string reason) {
-            return mClipLoaded ? GetBounds(node, reason, mClip) : GetBounds(node, reason);
-        }
+        #endregion
     }
 }
