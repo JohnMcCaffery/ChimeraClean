@@ -102,6 +102,8 @@ namespace Chimera.Launcher {
         }
 
         public void Launch() {
+            if (mCoordinator == null)
+                return;
             if (mConfig.GUI)
                 ProcessWrangler.BlockingRunForm(Form, Coordinator);
             else {
