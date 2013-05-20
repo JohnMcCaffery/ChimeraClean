@@ -26,8 +26,31 @@ using System.Drawing;
 using NuiLibDotNet;
 using OpenMetaverse;
 using Chimera.Overlay;
+using System.Xml;
 
 namespace Chimera.Kinect.Overlay {
+    public class SkeletonFeatureFactory : IFeatureFactory {
+        #region IFactory<IFeature> Members
+
+        public IFeature Create(OverlayPlugin manager, XmlNode node) {
+            return new SkeletonFeature(manager, node);
+        }
+
+        public IFeature Create(OverlayPlugin manager, XmlNode node, Rectangle clip) {
+            return new SkeletonFeature(manager, node, clip);
+        }
+
+        #endregion
+
+        #region IFactory Members
+
+        public string Name {
+            get { return "Skeleton"; }
+        }
+
+        #endregion
+    }
+
     public class SkeletonFeature : XmlLoader, IFeature {
         private static Vector sLeftHand, sRightHand;
         private static Vector sLeftElbow, sRightElbow;
@@ -64,6 +87,7 @@ namespace Chimera.Kinect.Overlay {
         private static bool sNeedsRedrawn = false;
 
         private float mRoomW = 3f;
+        private RectangleF mBounds;
         /// <summary>
         /// <summary>
         /// Where the x coordinate the skeleton can be positioned at starts.
@@ -91,11 +115,20 @@ namespace Chimera.Kinect.Overlay {
         }
 
         public SkeletonFeature (float xStart, float xRange, float y, float scale, string windowName) {
-            mXStart = xStart;
-            mXRange = xRange;
-            mY = y;
+            mBounds = new RectangleF(xStart, y, xRange, 0f);
             mScale = scale;
             mWindowName = windowName;
+        }
+
+        public SkeletonFeature(OverlayPlugin plugin, XmlNode node) {
+            mScale = GetFloat(node, 100f, "Scale");
+            mWindowName = GetManager(plugin, node, "skeleton feature").Name;
+            mBounds = GetBounds(node, "skeleton feature");
+        }
+
+        public SkeletonFeature(OverlayPlugin plugin, XmlNode node, Rectangle clip)
+            : this(plugin, node) {
+            mBounds = GetBounds(node, "skeleton feature", clip);
         }
 
         public virtual Rectangle Clip {
@@ -128,8 +161,8 @@ namespace Chimera.Kinect.Overlay {
                 return;
 
             float scaledPos = ((sCentreHip.X + mRoomW / 2f) / mRoomW);
-            float x = mXStart + (mXRange * scaledPos);
-            Point centreP = new Point((int)(Clip.Width * x), (int) (mY * Clip.Height));
+            float x = mBounds.X + (mBounds.Width * scaledPos);
+            Point centreP = new Point((int)(Clip.Width * x), (int) (mBounds.Y * Clip.Height));
             Vector3 centre = V3toVector(sCentreHip);
             float lineW = 16f;
             using (Pen p = new Pen(sSkeletonColour, lineW)) {
