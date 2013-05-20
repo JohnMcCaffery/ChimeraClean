@@ -95,7 +95,7 @@ namespace Chimera.Kinect.Overlay {
             public ActiveArea(OverlayPlugin manager, XmlNode node) {
                 mManager = manager;
                 mImage = manager.GetFeature(node, "help state active area", null);
-                foreach (var child in GetChildrenOfChild(node, "Points")) {
+                foreach (var child in node.ChildNodes.OfType<XmlElement>()) {
                     float x = GetFloat(node, -1f, "X");
                     float y = GetFloat(node, -1f, "Y");
                     if (x > 0f && y > 0f)
@@ -131,7 +131,7 @@ namespace Chimera.Kinect.Overlay {
             mNoGlowString = GetString(node, "NoGlow", "NoGlowMessage");
             mGlowChannel = GetInt(node, -40, "GlowChannel");
 
-            foreach (var child in GetChildrenOfChild(node, "ActiveAreas")) {
+            foreach (var child in node.ChildNodes.OfType<XmlElement>()) {
                 ActiveArea area = new ActiveArea(manager, child);
                 AddFeature(area.Image);
                 mActiveAreas.Add(area);

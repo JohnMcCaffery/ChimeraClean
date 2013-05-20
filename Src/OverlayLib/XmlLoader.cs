@@ -191,6 +191,6 @@ namespace Chimera.Overlay {
             if (childParent == null)
                 return new XmlElement[0];
             return childParent.ChildNodes.OfType<XmlElement>();
-        }
+        } 
     }
 }
