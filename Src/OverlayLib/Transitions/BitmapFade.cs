@@ -26,18 +26,29 @@ using Chimera.Interfaces.Overlay;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 using System.Diagnostics;
+using System.Xml;
 
 namespace Chimera.Overlay.Transitions {
-    public class BitmapFadeFactory : IImageTransitionFactory {
+    public class BitmapFadeFactory : XmlLoader, IImageTransitionFactory {
         #region IImageTransitionFactory Members
 
         public string Name { get { return "Fade"; } }
+
+        public IImageTransition Create(OverlayPlugin manager, XmlNode node) {
+            double length = GetDouble(node, 2000, "Length");
+            return new FadeTransition(length);
+        }
+
+        public IImageTransition Create(OverlayPlugin manager, XmlNode node, Rectangle clip) {
+            return Create(manager, node);
+        }
 
         public IImageTransition Create(double length) {
             return new FadeTransition(length);
         }
 
         #endregion
+
     }
     public class FadeTransition : IImageTransition {
         /// <summary>

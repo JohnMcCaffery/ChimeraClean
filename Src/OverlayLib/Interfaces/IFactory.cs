@@ -27,4 +27,8 @@ namespace Chimera.Interfaces.Overlay {
     public interface IStateFactory : IFactory<State> { }
 
     public interface IDrawableFactory : IFactory<IDrawable> { }
+
+    public interface IImageTransitionFactory : IFactory<IImageTransition> {
+        IImageTransition Create(double length);
+    }
 }

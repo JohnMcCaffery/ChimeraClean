@@ -68,7 +68,7 @@ namespace Chimera.Overlay.States {
         public SlideshowState(OverlayPlugin manager, XmlNode node)
             : base(GetName(node), manager) {
 
-            mTransition = manager.GetImageTransition(node, "slideshow state", new BitmapFadeFactory());
+            mTransition = (IImageTransitionFactory) manager.GetFactory<IImageTransition>(node, "slideshow state");
             mFolder = GetString(node, null, "Folder");
             if (mFolder == null)
                 throw new ArgumentException("Unable to load slideshow state. No Folder specified.");
@@ -78,14 +78,8 @@ namespace Chimera.Overlay.States {
         }
 
         private void LoadTriggers(OverlayPlugin manager, XmlNode node, bool next) {
-            XmlNode nextTriggersNode = node.SelectSingleNode("child::" + (next ? "Next" : "Prev") + "Triggers");
-            //TODO - put this pattern into XML Loader
-            if (nextTriggersNode != null) {
-                foreach (XmlNode child in nextTriggersNode.ChildNodes) {
-                    if (child is XmlElement)
-                        AddTrigger(next, manager.GetTrigger(child));
-                }
-            }
+            foreach (XmlNode child in GetChildrenOfChild(node, (next ? "Next" : "Prev") + "Triggers"))
+                AddTrigger(next, manager.GetTrigger(child, "slideshow state " + (next ? "next" : "prev")));
         }
 
         private void AddTrigger(bool next, ITrigger trigger) {

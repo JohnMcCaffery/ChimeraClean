@@ -146,7 +146,7 @@ namespace Chimera.Flythrough.Overlay {
             XmlNode triggersRoot = node.SelectSingleNode("child::Triggers");
             if (triggersRoot != null) {
                 foreach (XmlNode child in triggersRoot.ChildNodes)
-                    AddStepTrigger(manager.GetTrigger(child));
+                    AddStepTrigger(manager.GetTrigger(child, "flythrough step"));
             }
             XmlNode stepsRoot = node.SelectSingleNode("child::Steps");
             if (stepsRoot != null) {
