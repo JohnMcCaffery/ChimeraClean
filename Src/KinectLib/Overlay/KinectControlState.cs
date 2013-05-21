@@ -28,8 +28,31 @@ using System.Drawing;
 using Chimera.Overlay.Triggers;
 using Chimera.Util;
 using OpenMetaverse;
+using System.Xml;
 
 namespace Chimera.Kinect.Overlay {
+    public class KinectControlStateFactory : IStateFactory {
+        #region IFactory<State> Members
+
+        public State Create(OverlayPlugin manager, XmlNode node) {
+            return new KinectControlState(manager, node);
+        }
+
+        public State Create(OverlayPlugin manager, XmlNode node, Rectangle clip) {
+            return Create(manager, node);
+        }
+
+        #endregion
+
+        #region IFactory Members
+
+        public string Name {
+            get { return "KinectControl"; }
+        }
+
+        #endregion
+    }
+
     public class KinectControlState : State {
         private KinectMovementPlugin mInput;
         private bool mAvatar;
@@ -49,23 +72,28 @@ namespace Chimera.Kinect.Overlay {
 
             mStartOrientation = new Rotation(manager.Coordinator.Orientation);
             mStartPosition = manager.Coordinator.Position;
+        }
+        public KinectControlState(OverlayPlugin manager, XmlNode node)
+            : base(GetName(node), manager) {
 
-            mInput.FlyEnabled = false;
-            mInput.WalkEnabled = false;
-            mInput.YawEnabled = false;
+            mInput = manager.Coordinator.GetPlugin<KinectMovementPlugin>();
+            mAvatar = GetBool(node, true, "Avatar");
+
+            double pitch = GetDouble(node, manager.Coordinator.Orientation.Pitch);
+            double yaw = GetDouble(node, manager.Coordinator.Orientation.Yaw);
+            float x = GetFloat(node, manager.Coordinator.Position.X, "X");
+            float y = GetFloat(node, manager.Coordinator.Position.Y, "Y");
+            float z = GetFloat(node, manager.Coordinator.Position.Z, "Z");
+            mStartOrientation = new Rotation(pitch, yaw);
+            mStartPosition = new Vector3(x, y, z);
         }
 
         protected override void TransitionToFinish() {
-            mInput.FlyEnabled = true;
-            mInput.WalkEnabled = true;
-            mInput.YawEnabled = true;
             mInput.Enabled = true;
         }
 
         protected override void TransitionFromStart() { 
-            mInput.FlyEnabled = false;
-            mInput.WalkEnabled = false;
-            mInput.YawEnabled = false;       
+            mInput.Enabled = false;    
         }
 
         public override void TransitionToStart() {

@@ -68,8 +68,8 @@ namespace Chimera.Overlay {
             get { return mActive; }
             set { 
                 mActive = value;
-                //foreach (var feature in mFeatures)
-                    //feature.Active = value;
+                foreach (var feature in mFeatures)
+                    feature.Active = value;
             }
         }
 

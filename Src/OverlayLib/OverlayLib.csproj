@@ -78,7 +78,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DrawableRoot.cs" />
-    <Compile Include="Drawables\ActiveArea.cs" />
+    <Compile Include="Drawables\ActiveAreaFeature.cs" />
+    <Compile Include="Drawables\ConditionalFeature.cs" />
     <Compile Include="Drawables\DynamicText.cs" />
     <Compile Include="Drawables\FadingText.cs" />
     <Compile Include="Drawables\OverlayImage.cs" />
@@ -161,6 +162,7 @@
     <Compile Include="Transitions\BitmapWindowTransition.cs" />
     <Compile Include="Transitions\CutWindowTransition.cs" />
     <Compile Include="Transitions\OpacityFadeWindowTransition.cs" />
+    <Compile Include="Triggers\ActiveAreaTrigger.cs" />
     <Compile Include="Triggers\AreaTrigger.cs" />
     <Compile Include="Triggers\CameraPositionTrigger.cs" />
     <Compile Include="Triggers\ClickTrigger.cs" />

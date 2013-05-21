@@ -8,15 +8,15 @@ using OpenMetaverse;
 using System.Xml;
 using Chimera.Interfaces;
 
-namespace Chimera.Overlay.Drawables {
-    public class ActiveAreaFactory : IFeatureFactory {
-        #region IFactory<IFeature> Members
+namespace Chimera.Overlay.Triggers {
+    public class ActiveAreaTriggerFactory : ITriggerFactory {
+        #region ITriggerFactory Members
 
-        public IFeature Create(OverlayPlugin manager, XmlNode node) {
-            return new ActiveArea(manager, node);
+        public ITrigger Create(OverlayPlugin manager, XmlNode node) {
+            return new ActiveAreaTrigger(manager, node);
         }
 
-        public IFeature Create(OverlayPlugin manager, XmlNode node, Rectangle clip) {
+        public ITrigger Create(OverlayPlugin manager, XmlNode node, Rectangle clip) {
             return Create(manager, node);
         }
 
@@ -29,28 +29,37 @@ namespace Chimera.Overlay.Drawables {
         }
 
         #endregion
+
+        #region ITriggerFactory Members
+
+        public SpecialTrigger Special {
+            get { return SpecialTrigger.None; }
+        }
+
+        public string Mode {
+            get { return null; }
+        }
+
+        #endregion
     }
 
-        public class ActiveArea : XmlLoader, IFeature, IDiagramDrawable {
-            private IFeature mImage;
+        public class ActiveAreaTrigger : XmlLoader, ITrigger, IDiagramDrawable {
             private OverlayPlugin mManager;
             private List<PointF> mPoints = new List<PointF>();
             private DateTime mLastCheck;
+            private DateTime mEntered;
+            private Action mTickListener;
             private double mCheckWaitS;
             private bool mActive;
-
-            public IFeature Image {
-                get { return mImage; }
-            }
+            private bool mInside;
+            private bool mTriggered;
 
             private PointF FinalPoint {
                 get { return mPoints[mPoints.Count - 1]; }
             }
 
-            public bool Active {
+            public bool Inside {
                 get {
-                    if (!mActive)
-                        return false;
                     Vector3 p = mManager.Coordinator.Position;
                     PointF p1 = FinalPoint;
                     int c = 0;
@@ -68,19 +77,17 @@ namespace Chimera.Overlay.Drawables {
                             c++;
                         p1 = p2;
                     }
-                    mImage.Active = c % 2 != 0;
-                    return mImage.Active;
+                    return c % 2 != 0;
                 }
-                set { mActive = value; }
             }
 
-            public ActiveArea(OverlayPlugin manager, XmlNode node) {
+            public ActiveAreaTrigger(OverlayPlugin manager, XmlNode node) {
+                mTickListener = new Action(Coordinator_Tick);
                 mManager = manager;
-                mImage = manager.GetFeature(node, "help state active area", null);
                 mCheckWaitS = GetDouble(node, 2, "CheckWaitS");
                 foreach (var child in node.ChildNodes.OfType<XmlElement>()) {
-                    float x = GetFloat(node, -1f, "X");
-                    float y = GetFloat(node, -1f, "Y");
+                    float x = GetFloat(child, -1f, "X");
+                    float y = GetFloat(child, -1f, "Y");
                     if (x > 0f && y > 0f)
                         mPoints.Add(new PointF(x, y));
                 }
@@ -93,39 +100,35 @@ namespace Chimera.Overlay.Drawables {
                 graphics.DrawPolygon(Pens.Red, mPoints.Concat(new PointF[] { FinalPoint }).Select(p => to2D(new Vector3(p.X, p.Y, 0f))).ToArray());
             }
 
-            #region IFeature Members
+            #region ITrigger Members
 
-            public Rectangle Clip {
-                get { return mImage.Clip; }
-                set { mImage.Clip = value; }
-            }
+            public event Action Triggered;
 
-            private bool mNeedsRedraw;
-
-            public bool NeedsRedrawn {
-                get {
-                    if (DateTime.Now.Subtract(mLastCheck).TotalSeconds > mCheckWaitS) {
-                        bool val = mNeedsRedraw;
-                        bool ret = Active;
-                        if (val != ret)
-                            mManager[mImage.Window].ForceRedrawStatic();
-                        mNeedsRedraw = ret;
-                        mLastCheck = DateTime.Now;
+            public bool Active {
+                get { return mActive; }
+                set {
+                    if (value != mActive) {
+                        mActive = value;
+                        if (value)
+                            mManager.Coordinator.Tick += mTickListener;
+                        else
+                            mManager.Coordinator.Tick -= mTickListener;
                     }
-                    return mNeedsRedraw;
                 }
             }
 
-            public string Window {
-                get { return mImage.Window; }
-            }
-
-            public void DrawStatic(Graphics graphics) {
-                mImage.DrawStatic(graphics);
-            }
-
-            public void DrawDynamic(Graphics graphics) {
-                mImage.DrawDynamic(graphics);
+            void Coordinator_Tick() {
+                if (Triggered == null)
+                    return;
+                if (Inside) {
+                    if (!mInside) {
+                        mInside = true;
+                        Triggered();
+                    }
+                } else if (mInside) {
+                    mInside = false;
+                    mTriggered = false;
+                }
             }
 
             #endregion

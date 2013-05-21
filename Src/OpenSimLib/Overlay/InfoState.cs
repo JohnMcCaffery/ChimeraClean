@@ -71,6 +71,7 @@ namespace Chimera.OpenSim.Overlay {
         public InfoState(OverlayPlugin manager, XmlNode node)
             : base(GetName(node), manager) {
 
+            mPlugin = manager;
             mGlowString = GetString(node, "Glow", "GlowMessage");
             mNoGlowString = GetString(node, "NoGlow", "NoGlowMessage");
             mGlowChannel = GetInt(node, -40, "GlowChannel");

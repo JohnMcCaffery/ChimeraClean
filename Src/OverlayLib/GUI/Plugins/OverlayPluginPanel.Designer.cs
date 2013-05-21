@@ -26,7 +26,6 @@
             this.mainTab = new System.Windows.Forms.TabControl();
             this.infoTab = new System.Windows.Forms.TabPage();
             this.changeStateButton = new System.Windows.Forms.Button();
-            this.statePulldown = new System.Windows.Forms.ComboBox();
             this.stateLabel = new System.Windows.Forms.Label();
             this.statesTab = new System.Windows.Forms.TabPage();
             this.stateSelector = new Chimera.Overlay.GUI.StateSelector();
@@ -58,6 +57,7 @@
             this.label5 = new System.Windows.Forms.Label();
             this.featuresFactoryList = new System.Windows.Forms.ListBox();
             this.label6 = new System.Windows.Forms.Label();
+            this.stateList = new System.Windows.Forms.ListBox();
             this.mainTab.SuspendLayout();
             this.infoTab.SuspendLayout();
             this.statesTab.SuspendLayout();
@@ -108,8 +108,8 @@
             // 
             // infoTab
             // 
+            this.infoTab.Controls.Add(this.stateList);
             this.infoTab.Controls.Add(this.changeStateButton);
-            this.infoTab.Controls.Add(this.statePulldown);
             this.infoTab.Controls.Add(this.stateLabel);
             this.infoTab.Location = new System.Drawing.Point(4, 22);
             this.infoTab.Name = "infoTab";
@@ -121,26 +121,15 @@
             // 
             // changeStateButton
             // 
-            this.changeStateButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.changeStateButton.Location = new System.Drawing.Point(10, 52);
+            this.changeStateButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.changeStateButton.Location = new System.Drawing.Point(6, 345);
             this.changeStateButton.Name = "changeStateButton";
-            this.changeStateButton.Size = new System.Drawing.Size(610, 23);
+            this.changeStateButton.Size = new System.Drawing.Size(614, 23);
             this.changeStateButton.TabIndex = 2;
             this.changeStateButton.Text = "Change State";
             this.changeStateButton.UseVisualStyleBackColor = true;
             this.changeStateButton.Click += new System.EventHandler(this.changeStateButton_Click);
-            // 
-            // statePulldown
-            // 
-            this.statePulldown.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.statePulldown.DisplayMember = "Name";
-            this.statePulldown.FormattingEnabled = true;
-            this.statePulldown.Location = new System.Drawing.Point(10, 24);
-            this.statePulldown.Name = "statePulldown";
-            this.statePulldown.Size = new System.Drawing.Size(610, 21);
-            this.statePulldown.TabIndex = 1;
             // 
             // stateLabel
             // 
@@ -168,7 +157,7 @@
             this.stateSelector.Location = new System.Drawing.Point(3, 3);
             this.stateSelector.Name = "stateSelector";
             this.stateSelector.SelectedItem = null;
-            this.stateSelector.Size = new System.Drawing.Size(558, 417);
+            this.stateSelector.Size = new System.Drawing.Size(620, 368);
             this.stateSelector.TabIndex = 0;
             // 
             // triggersTab
@@ -188,7 +177,7 @@
             this.triggerSelector.Location = new System.Drawing.Point(3, 3);
             this.triggerSelector.Name = "triggerSelector";
             this.triggerSelector.SelectedItem = null;
-            this.triggerSelector.Size = new System.Drawing.Size(558, 417);
+            this.triggerSelector.Size = new System.Drawing.Size(620, 368);
             this.triggerSelector.TabIndex = 0;
             // 
             // windowTransitionsTab
@@ -208,7 +197,7 @@
             this.transitionStyleSelector.Location = new System.Drawing.Point(3, 3);
             this.transitionStyleSelector.Name = "transitionStyleSelector";
             this.transitionStyleSelector.SelectedItem = null;
-            this.transitionStyleSelector.Size = new System.Drawing.Size(558, 417);
+            this.transitionStyleSelector.Size = new System.Drawing.Size(620, 368);
             this.transitionStyleSelector.TabIndex = 0;
             // 
             // imageTransitionsTab
@@ -228,7 +217,7 @@
             this.imageTransitionSelector.Location = new System.Drawing.Point(3, 3);
             this.imageTransitionSelector.Name = "imageTransitionSelector";
             this.imageTransitionSelector.SelectedItem = null;
-            this.imageTransitionSelector.Size = new System.Drawing.Size(558, 417);
+            this.imageTransitionSelector.Size = new System.Drawing.Size(620, 368);
             this.imageTransitionSelector.TabIndex = 0;
             // 
             // rendererTab
@@ -331,9 +320,9 @@
             // 
             // stateFactoriesList
             // 
-            this.stateFactoriesList.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.stateFactoriesList.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.stateFactoriesList.DisplayMember = "Name";
             this.stateFactoriesList.FormattingEnabled = true;
             this.stateFactoriesList.Location = new System.Drawing.Point(3, 20);
@@ -343,9 +332,9 @@
             // 
             // transitionStyleFactoriesList
             // 
-            this.transitionStyleFactoriesList.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.transitionStyleFactoriesList.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.transitionStyleFactoriesList.DisplayMember = "Name";
             this.transitionStyleFactoriesList.FormattingEnabled = true;
             this.transitionStyleFactoriesList.Location = new System.Drawing.Point(4, 20);
@@ -402,9 +391,9 @@
             // 
             // triggerFactoriesList
             // 
-            this.triggerFactoriesList.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.triggerFactoriesList.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.triggerFactoriesList.DisplayMember = "Name";
             this.triggerFactoriesList.FormattingEnabled = true;
             this.triggerFactoriesList.Location = new System.Drawing.Point(3, 20);
@@ -423,9 +412,9 @@
             // 
             // selectionRendererFactoriesList
             // 
-            this.selectionRendererFactoriesList.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.selectionRendererFactoriesList.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.selectionRendererFactoriesList.DisplayMember = "Name";
             this.selectionRendererFactoriesList.FormattingEnabled = true;
             this.selectionRendererFactoriesList.Location = new System.Drawing.Point(5, 20);
@@ -464,9 +453,9 @@
             // 
             // imageTransitionFactoriesList
             // 
-            this.imageTransitionFactoriesList.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.imageTransitionFactoriesList.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.imageTransitionFactoriesList.DisplayMember = "Name";
             this.imageTransitionFactoriesList.FormattingEnabled = true;
             this.imageTransitionFactoriesList.Location = new System.Drawing.Point(4, 20);
@@ -485,9 +474,9 @@
             // 
             // featuresFactoryList
             // 
-            this.featuresFactoryList.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.featuresFactoryList.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.featuresFactoryList.DisplayMember = "Name";
             this.featuresFactoryList.FormattingEnabled = true;
             this.featuresFactoryList.Location = new System.Drawing.Point(1, 20);
@@ -503,6 +492,18 @@
             this.label6.Size = new System.Drawing.Size(48, 13);
             this.label6.TabIndex = 5;
             this.label6.Text = "Features";
+            // 
+            // stateList
+            // 
+            this.stateList.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.stateList.DisplayMember = "Name";
+            this.stateList.FormattingEnabled = true;
+            this.stateList.Location = new System.Drawing.Point(6, 23);
+            this.stateList.Name = "stateList";
+            this.stateList.Size = new System.Drawing.Size(614, 316);
+            this.stateList.TabIndex = 3;
             // 
             // OverlayPluginPanel
             // 
@@ -587,6 +588,6 @@
         private System.Windows.Forms.ListBox imageTransitionFactoriesList;
         private System.Windows.Forms.ListBox featuresFactoryList;
         private System.Windows.Forms.Button changeStateButton;
-        private System.Windows.Forms.ComboBox statePulldown;
+        private System.Windows.Forms.ListBox stateList;
     }
 }

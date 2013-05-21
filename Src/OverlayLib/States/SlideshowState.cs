@@ -82,7 +82,7 @@ namespace Chimera.Overlay.States {
 
         private void LoadTriggers(OverlayPlugin manager, XmlNode node, bool next) {
             foreach (XmlNode child in GetChildrenOfChild(node, (next ? "Next" : "Prev") + "Triggers"))
-                AddTrigger(next, manager.GetTrigger(child, "slideshow state " + (next ? "next" : "prev")));
+                AddTrigger(next, manager.GetTrigger(child, "slideshow state " + (next ? "next" : "prev"), null));
         }
 
         private void AddTrigger(bool next, ITrigger trigger) {

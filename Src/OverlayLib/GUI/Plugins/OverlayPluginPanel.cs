@@ -20,13 +20,15 @@ namespace Chimera.Overlay.GUI.Plugins {
             : this() {
             mOverlayPlugin = overlayPlugin;
 
-            if (overlayPlugin.CurrentState != null)
+            if (overlayPlugin.CurrentState != null) {
                 stateLabel.Text = "Current State: " + overlayPlugin.CurrentState.Name;
+                stateList.SelectedItem = overlayPlugin.CurrentState;
+            }
 
             mOverlayPlugin.StateChanged += new Action<State>(mOverlayPlugin_StateChanged);
 
             foreach (var state in mOverlayPlugin.States) {
-                statePulldown.Items.Add(state);
+                stateList.Items.Add(state);
             }
 
             stateSelector.Init(overlayPlugin.States);
@@ -51,7 +53,10 @@ namespace Chimera.Overlay.GUI.Plugins {
         }
 
         void mOverlayPlugin_StateChanged(State state) {
-            Invoke(() => stateLabel.Text = "Current State: " + state.Name);
+            Invoke(() => {
+                stateLabel.Text = "Current State: " + state.Name;
+                stateList.SelectedItem = state;
+            });
         }
 
         private void Invoke(Action a) {
@@ -62,8 +67,8 @@ namespace Chimera.Overlay.GUI.Plugins {
         }
 
         private void changeStateButton_Click(object sender, EventArgs e) {
-            if (statePulldown.SelectedItem != null)
-                mOverlayPlugin.CurrentState = (State) statePulldown.SelectedItem;
+            if (stateList.SelectedItem != null)
+                mOverlayPlugin.CurrentState = (State) stateList.SelectedItem;
         }
     }
 }

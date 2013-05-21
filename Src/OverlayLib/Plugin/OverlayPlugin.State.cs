@@ -175,8 +175,7 @@ namespace Chimera.Overlay {
         /// Add a state to the manager.
         /// </summary>
         public void AddState(State state) {
-            foreach (var window in mCoordinator.Windows)
-                state.Init();
+            state.Init();
 
             if (!mStates.ContainsKey(state.Name))
                 mStates.Add(state.Name, state);

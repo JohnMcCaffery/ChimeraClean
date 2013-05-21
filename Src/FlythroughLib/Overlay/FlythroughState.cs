@@ -108,6 +108,9 @@ namespace Chimera.Flythrough.Overlay {
         }
 
         private void AddStepTrigger(ITrigger trigger) {
+            if (trigger == null)
+                //TODO - debug?
+                return;
             mStepTriggers.Add(trigger);
             trigger.Triggered += new Action(step_Triggered);
             if (trigger is IFeature)
@@ -145,7 +148,7 @@ namespace Chimera.Flythrough.Overlay {
             XmlNode triggersRoot = node.SelectSingleNode("child::Triggers");
             if (triggersRoot != null) {
                 foreach (XmlNode child in triggersRoot.ChildNodes)
-                    AddStepTrigger(manager.GetTrigger(child, "flythrough step"));
+                    AddStepTrigger(manager.GetTrigger(child, "flythrough step", null));
             }
             XmlNode stepsRoot = node.SelectSingleNode("child::Steps");
             if (stepsRoot != null) {

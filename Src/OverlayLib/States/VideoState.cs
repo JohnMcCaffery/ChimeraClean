@@ -129,7 +129,7 @@ namespace Chimera.Overlay.States {
 
         private void LoadTriggers(XmlNode node, OverlayPlugin manager, string triggerType, List<ITrigger> list, Action onTrigger) {
             foreach (XmlElement child in GetChildrenOfChild(node, triggerType)) {
-                ITrigger trigger = manager.GetTrigger(child, "video " + triggerType.TrimEnd('s'));
+                ITrigger trigger = manager.GetTrigger(child, "video " + triggerType.TrimEnd('s'), null);
                 if (trigger != null) {
                     if (!GetBool(child, false, "AlwaysOn")) {
                         list.Add(trigger);

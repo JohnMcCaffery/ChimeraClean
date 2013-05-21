@@ -157,8 +157,8 @@ namespace Chimera.Overlay {
         private void LoadTransition(XmlNode node) {
             State from = GetInstance(node, mStates, "state", "transition start", null, "From");
             State to = GetInstance(node, mStates, "state", "transition target", null, "To");
-            ITrigger trigger = GetTrigger(node, "transition");
-            ITransitionStyle style = GetTransition(node, "state transition", new BitmapWindowTransitionFactory(new BitmapFadeFactory(), 2000));
+            ITrigger trigger = GetTrigger(node, "transition", null);
+            ITransitionStyle style = GetTransition(node, "state transition", new BitmapWindowTransitionFactory(new BitmapFadeFactory(), 2000), "Transition");
 
             if (from == null || to == null || trigger == null) {
                 Console.WriteLine("Unable to create transition.");
@@ -209,7 +209,7 @@ namespace Chimera.Overlay {
                     switch (child.Name) {
                         case "IdleTransition": mSplashIdleTransition = GetTransition(child, "to idle transition", new OpacityFadeOutWindowTransitionFactory(5000)); return;
                         case "SplashTransition": mIdleSplashTransition = GetTransition(child, "from idle transition", new OpacityFadeInWindowTransitionFactory(5000)); return;
-                        default: LoadIdleTrigger(child, GetTrigger(child, "idle transition")); return;
+                        default: LoadIdleTrigger(child, GetTrigger(child, "idle transition", null)); return;
                     }
                 }
             }
@@ -257,29 +257,29 @@ namespace Chimera.Overlay {
         }
 
         public ITransitionStyle GetTransition(XmlNode node, string reason, ITransitionStyle defalt, params string[] attributes) {
-            return GetInstance(node, mTransitionStyles, "transition style", reason, defalt, attributes.Length == 0 ? new string[] { "Transition" } : attributes);
+            return GetInstance(node, mTransitionStyles, "transition style", reason, defalt, attributes);
         }
 
         public IImageTransition GetImageTransition(XmlNode node, string reason, IImageTransition defalt, params string[] attributes) {
-            return GetInstance(node, mImageTransitions, "image transition", reason, defalt, attributes.Length == 0 ? new string[] { "Transition" } : attributes);
+            return GetInstance(node, mImageTransitions, "image transition", reason, defalt, attributes);
         }
 
         public ISelectionRenderer GetRenderer(XmlNode node, string reason, ISelectionRenderer defalt, params string[] attributes) {
-            return GetInstance(node, mSelectionRenderers, "hover selection renderer", reason, defalt, attributes.Length == 0 ? new string[] { "Renderer" } : attributes);
+            return GetInstance(node, mSelectionRenderers, "hover selection renderer", reason, defalt, attributes);
         }
 
         public IFeature GetFeature(XmlNode node, string reason, IFeature defalt, params string[] attributes) {
-            return GetInstance(node, mFeatures, "feature", reason, defalt, attributes.Length == 0 ? new string[] { "Feature" } : attributes);
+            return GetInstance(node, mFeatures, "feature", reason, defalt, attributes);
         }
 
-        public ITrigger GetTrigger(XmlNode node, string reason) {
+        public ITrigger GetTrigger(XmlNode node, string reason, ITrigger defalt) {
             if (node.Name.Contains("Invis"))
                     return GetSpecialTrigger(SpecialTrigger.Invisible, node);
             if (node.Name.Contains("Image"))
                     return GetSpecialTrigger(SpecialTrigger.Image, node);
             if (node.Name.Contains("Text"))
                     return GetSpecialTrigger(SpecialTrigger.Text, node);
-            return GetInstance(node, mTriggers, "trigger", reason, null, "Trigger");
+            return GetInstance(node, mTriggers, "trigger", reason, defalt, "Trigger");
         }
 
         private ITrigger GetSpecialTrigger(SpecialTrigger type, XmlNode node) {
@@ -319,30 +319,57 @@ namespace Chimera.Overlay {
                 Console.WriteLine(unable + "No node." + ifDefault);
                 return defalt;
             }
-            XmlAttribute nameAttr = attributes.Where(a => node.Attributes[a] != null).Select(a => node.Attributes[a]).FirstOrDefault();
-            if (nameAttr == null) {
+
+            if (attributes.Length > 0)
+                return GetInstanceFromAttributes(node, map, defalt, reason, unable, ifDefault, attributes);
+            return GetInstanceFromDefaults(node, map, defalt, reason, unable, ifDefault);
+        }
+
+        private T GetInstanceFromAttributes<T>(XmlNode node, Dictionary<string, T> map, T defalt, string reason, string unable, string ifDefault, string[] attributes) {
+            var factories = GetFactories<T>();
+            IEnumerable<XmlAttribute> attrs = attributes.Where(a => node.Attributes[a] != null).Select(a => node.Attributes[a]);
+            if (attrs.Count() == 0) {
                 string attributesL = attributes.Aggregate((sum, next) => sum + "','" + next);
                 Console.WriteLine(unable + "No '" + attributesL + "' attribute specified. " + ifDefault);
                 return defalt;
             }
-            if (nameAttr == null) {
-                Console.WriteLine(unable + nameAttr.Value + " is not a known " + target + ". " + ifDefault);
+            foreach (var attribute in attrs) {
+                if (map.ContainsKey(attribute.Value))
+                    return map[attribute.Value];
+                if (factories == null) continue;
+                IFactory<T> factory = factories.FirstOrDefault(f => f.Name == attribute.Value);
+                if (factory == null) continue;
+                return Create(factory, node);
+            }
+            string values = attrs.Select(a => a.Value).Aggregate((sum, next) => sum + "','" + next);
+            Console.WriteLine(unable + "'" + values + "' did not map to any factories or instances." + ifDefault);
+            return defalt;
+        }
+
+        private T GetInstanceFromDefaults<T>(XmlNode node, Dictionary<string, T> map, T defalt, string reason, string unable, string ifDefault) {
+            XmlAttribute nameAttr = node.Attributes["Name"];
+            XmlAttribute factoryAttr = node.Attributes["Factory"];
+            //No attributes are specified - screw it
+            if (nameAttr == null && factoryAttr == null) {
+                Console.WriteLine(unable + "No 'Name' or 'Factory' attribute mapped." + ifDefault);
                 return defalt;
             }
-            if (map.ContainsKey(nameAttr.Value))
+
+            //Use name - name value is bound or name attribute exists and factory attribute isn't bound
+            if (nameAttr != null && map.ContainsKey(nameAttr.Value))
                 return map[nameAttr.Value];
+            else if (factoryAttr == null) {
+                Console.WriteLine(unable + nameAttr.Value + " is not bound to a known instance. " + ifDefault);
+                return defalt;
+            }
+
+            //Name attribute didn't get anywhere, use factory attribute
             IFactory<T> factory = GetFactory<T>(node, reason);
             if (factory == null)
                 return defalt;
             return Create(factory, node);
-            /*
-            IFactory<T> factory = GetFactory<T>(node, reason);
-            if (factory == null) {
-                return defalt;
-            }
-            return Create(factory, node);
-            */
         }
+
 
         public string[] GetFactoryNames<T>() {
             return GetFactories<T>().Select(f => f.Name).ToArray();
