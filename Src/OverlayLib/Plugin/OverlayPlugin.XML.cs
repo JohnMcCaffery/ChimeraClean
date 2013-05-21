@@ -188,9 +188,12 @@ namespace Chimera.Overlay {
                 Console.WriteLine("\nCreating " + node.Attributes["Factory"].Value + " State");
             T t = Create(factory, node);
             t.Name = nameAttr.Value;
-            if (typeof(T) != typeof(State))
-                instances.Add(nameAttr.Value, t);
-            else
+            if (typeof(T) != typeof(State)) {
+                if (instances.ContainsKey(nameAttr.Value))
+                    Console.WriteLine("Unable to add {0} {1} another {0} has been bound with that name.", typeof(T).Name.TrimStart('I'), nameAttr.Value);
+                else
+                    instances.Add(nameAttr.Value, t);
+            } else
                 LoadState(t as State, node);
         }
 
@@ -209,20 +212,18 @@ namespace Chimera.Overlay {
 
         private void LoadIdle(XmlNode node, State state) {
             mIdleState = state;
-            foreach (XmlNode child in node.ChildNodes) {
-                if (child is XmlElement) {
-                    switch (child.Name) {
-                        case "IdleTransition": mSplashIdleTransition = GetTransition(child, "to idle transition", new OpacityFadeOutWindowTransitionFactory(5000)); return;
-                        case "SplashTransition": mIdleSplashTransition = GetTransition(child, "from idle transition", new OpacityFadeInWindowTransitionFactory(5000)); return;
-                        default: LoadIdleTrigger(child, GetTrigger(child, "idle transition", null)); return;
-                    }
+            foreach (XmlNode child in node.ChildNodes.OfType<XmlElement>()) {
+                switch (child.Name) {
+                    case "IdleTransition": mSplashIdleTransition = GetTransition(child, "to idle transition", new OpacityFadeOutWindowTransitionFactory(5000)); return;
+                    case "SplashTransition": mIdleSplashTransition = GetTransition(child, "from idle transition", new OpacityFadeInWindowTransitionFactory(5000)); return;
+                    default: ; return;
                 }
             }
-        }
-
-        private void LoadIdleTrigger(XmlNode node, ITrigger trigger) {
-            if (trigger != null)
-                mIdleTriggers.Add(trigger);
+            foreach (var child in GetChildrenOfChild(node, "Triggers")) {
+                ITrigger trigger = GetTrigger(child, "idle state trigger", null);
+                if (trigger != null)
+                    mIdleTriggers.Add(trigger);
+            }
         }
 
         #endregion

@@ -28,14 +28,15 @@ using System.Windows.Forms;
 using Chimera.Kinect.Overlay;
 
 namespace Chimera.Kinect.GUI {
-    public partial class RaiseArmHelpTriggerPanel : UserControl {
-        private RaiseArmHelpTrigger mInput;
+    public partial class RaiseArmTriggerPanel : UserControl {
+        private RaiseArmTrigger mInput;
 
-        public RaiseArmHelpTriggerPanel() {
+
+        public RaiseArmTriggerPanel() {
             InitializeComponent();
         }
 
-        public RaiseArmHelpTriggerPanel(RaiseArmHelpTrigger input)
+        public RaiseArmTriggerPanel(RaiseArmTrigger input)
             : this() {
 
             mInput = input;
@@ -49,6 +50,10 @@ namespace Chimera.Kinect.GUI {
             Trigger.Condition = new ConditionUpdater(mInput.Trigger);
             AngleThreshold.Scalar = new ScalarUpdater(mInput.AngleThreshold);
             HeightThreshold.Scalar = new ScalarUpdater(mInput.HeightThreshold);
+        }
+
+        private void forceTriggerButton_Click(object sender, EventArgs e) {
+            mInput.ForceTrigger();
         }
     }
 }

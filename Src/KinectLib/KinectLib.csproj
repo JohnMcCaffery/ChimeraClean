@@ -116,6 +116,7 @@
       <DependentUpon>KinectCamera.cs</DependentUpon>
     </Compile>
     <Compile Include="Axes\LeanAxis.cs" />
+    <Compile Include="Overlay\RaiseArmTrigger.cs" />
     <Compile Include="Overlay\SkeletonFoundTrigger.cs" />
     <Compile Include="Overlay\KinectControlState.cs" />
     <Compile Include="Overlay\KinectControlWindowState.cs" />
@@ -154,6 +155,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PointCursor.cs" />
     <Compile Include="RaiseArmHelpTrigger.cs" />
+    <Compile Include="GUI\RaiseArmTriggerPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\RaiseArmTriggerPanel.Designer.cs">
+      <DependentUpon>RaiseArmTriggerPanel.cs</DependentUpon>
+    </Compile>
     <Compile Include="SimpleKinectCursor.cs" />
     <Compile Include="Axes\TwistAxis.cs" />
   </ItemGroup>
@@ -195,6 +202,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\KinectCamera.resx">
       <DependentUpon>KinectCamera.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\RaiseArmTriggerPanel.resx">
+      <DependentUpon>RaiseArmTriggerPanel.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

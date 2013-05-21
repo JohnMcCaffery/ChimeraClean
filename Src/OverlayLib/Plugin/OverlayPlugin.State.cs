@@ -89,12 +89,40 @@ namespace Chimera.Overlay {
         /// </summary>
         public event Action<State> StateChanged;
 
+        /// <summary>
+        /// Triggered whenever the overlay windows are launched.
+        /// </summary>
+        public event Action OverlayLaunched;
+        /// <summary>
+        /// Triggered whenever the overlay windows are launched.
+        /// </summary>
+        public event Action OverlayClosed;
+
         void mCoordinator_WindowAdded(Window window, EventArgs args) {
             WindowOverlayManager manager = new WindowOverlayManager(this, window);
             mWindowManagers.Add(window.Name, manager);
 
             if (mConfig.LaunchOverlay)
                 manager.Launch();
+        }
+
+        public bool Launch {
+            get { return mConfig.LaunchOverlay; }
+            set {
+                if (mConfig.LaunchOverlay != value) {
+                    mConfig.LaunchOverlay = value;
+                    foreach (var manager in mWindowManagers.Values)
+                        if (value) {
+                            manager.Launch();
+                            if (OverlayLaunched != null)
+                                OverlayLaunched();
+                        } else {
+                            manager.Close();
+                            if (OverlayClosed != null)
+                                OverlayClosed();
+                        }
+                }
+            }
         }
 
         public WindowOverlayManager this[string windowName] {

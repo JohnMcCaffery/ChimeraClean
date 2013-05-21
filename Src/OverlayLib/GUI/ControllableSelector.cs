@@ -33,7 +33,9 @@ namespace Chimera.Overlay.GUI {
             while (controlPanel.Controls.Count > 0)
                 controlPanel.Controls.Remove(controlPanel.Controls[0]);
 
-            controlPanel.Controls.Add(((T)namesBox.SelectedItem).ControlPanel);
+            Control c = ((T)namesBox.SelectedItem).ControlPanel;
+            c.Dock = DockStyle.Fill;
+            controlPanel.Controls.Add(c);
         }
     }
 }

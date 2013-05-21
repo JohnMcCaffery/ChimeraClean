@@ -19,17 +19,16 @@ namespace Chimera.Overlay.GUI.Plugins {
         public OverlayPluginPanel(OverlayPlugin overlayPlugin)
             : this() {
             mOverlayPlugin = overlayPlugin;
+            if (mOverlayPlugin.Launch)
+                launchOverlayButton.Text = "Close Overlay";
 
-            if (overlayPlugin.CurrentState != null) {
-                stateLabel.Text = "Current State: " + overlayPlugin.CurrentState.Name;
+            if (overlayPlugin.CurrentState != null)
                 stateList.SelectedItem = overlayPlugin.CurrentState;
-            }
 
             mOverlayPlugin.StateChanged += new Action<State>(mOverlayPlugin_StateChanged);
 
-            foreach (var state in mOverlayPlugin.States) {
+            foreach (var state in mOverlayPlugin.States)
                 stateList.Items.Add(state);
-            }
 
             stateSelector.Init(overlayPlugin.States);
             triggerSelector.Init(overlayPlugin.Triggers);
@@ -53,10 +52,7 @@ namespace Chimera.Overlay.GUI.Plugins {
         }
 
         void mOverlayPlugin_StateChanged(State state) {
-            Invoke(() => {
-                stateLabel.Text = "Current State: " + state.Name;
-                stateList.SelectedItem = state;
-            });
+            Invoke(() => stateList.SelectedItem = state);
         }
 
         private void Invoke(Action a) {
@@ -69,6 +65,16 @@ namespace Chimera.Overlay.GUI.Plugins {
         private void changeStateButton_Click(object sender, EventArgs e) {
             if (stateList.SelectedItem != null)
                 mOverlayPlugin.CurrentState = (State) stateList.SelectedItem;
+        }
+
+        private void launchOverlayButton_Click(object sender, EventArgs e) {
+            if (mOverlayPlugin.Launch) {
+                mOverlayPlugin.Launch = false;
+                launchOverlayButton.Text = "Launch Overlay";
+            } else {
+                mOverlayPlugin.Launch = true;
+                launchOverlayButton.Text = "Close Overlay";
+            }
         }
     }
 }

@@ -109,7 +109,7 @@ namespace Chimera.Overlay.SelectionRenderers {
         }
 
         public CursorRenderer(OverlayPlugin manager, XmlNode node) {
-            ISelectionRenderer renderer = manager.GetRenderer(node, "cursor renderer", null, "Renderer");
+            ISelectionRenderer renderer = manager.GetRenderer(node, "cursor renderer", null, "InnerRenderer");
             mOverlayManager = GetManager(manager, node, "cursor renderer");
 
             Size size = new Size(GetInt(node, 80, "W"), GetInt(node, 80, "H"));
