@@ -64,16 +64,20 @@ namespace Chimera.Overlay.States {
         public ImageBGState(OverlayPlugin manager, XmlNode node)
             : base(GetName(node), manager) {
 
-                foreach (XmlNode child in node.ChildNodes) {
-                    if (!(child is XmlElement))
-                        continue;
-                    Bitmap img = GetImage(child, "image background state");
-                    if (img != null) {
-                        string window = GetManager(manager, child, "image background state").Window.Name;
-                        mWindowBGs.Add(window, img);
-                        if (mWindows.ContainsKey(window))
-                            mWindows[window].BackgroundImage = img;
-                    }
+            mDefaultBG = new Bitmap(manager.Clip.Width, manager.Clip.Height);
+            using (Graphics g = Graphics.FromImage(mDefaultBG))
+                g.FillRectangle(Brushes.Black, manager.Clip);
+
+            foreach (XmlNode child in node.ChildNodes) {
+                if (!(child is XmlElement))
+                    continue;
+                Bitmap img = GetImage(child, "image background state");
+                if (img != null) {
+                    string window = GetManager(manager, child, "image background state").Window.Name;
+                    mWindowBGs.Add(window, img);
+                    if (mWindows.ContainsKey(window))
+                        mWindows[window].BackgroundImage = img;
+                }
             }
         }
 

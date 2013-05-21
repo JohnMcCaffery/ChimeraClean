@@ -167,10 +167,10 @@
     <Compile Include="Triggers\CameraPositionTrigger.cs" />
     <Compile Include="Triggers\ClickTrigger.cs" />
     <Compile Include="Triggers\CursorTrigger.cs" />
-    <Compile Include="Triggers\HoverRenderers\CircleRenderer.cs" />
-    <Compile Include="Triggers\HoverRenderers\CursorRenderer.cs" />
-    <Compile Include="Triggers\HoverRenderers\DialCursorRenderer.cs" />
-    <Compile Include="Triggers\HoverRenderers\DialRenderer.cs" />
+    <Compile Include="HoverRenderers\CircleRenderer.cs" />
+    <Compile Include="HoverRenderers\CursorRenderer.cs" />
+    <Compile Include="HoverRenderers\DialCursorRenderer.cs" />
+    <Compile Include="HoverRenderers\DialRenderer.cs" />
     <Compile Include="Triggers\HoverTrigger.cs" />
     <Compile Include="Triggers\ImageClickTrigger.cs" />
     <Compile Include="Triggers\ImageHoverTrigger.cs" />

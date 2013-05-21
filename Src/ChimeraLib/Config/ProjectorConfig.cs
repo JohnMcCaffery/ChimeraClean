@@ -81,7 +81,7 @@ namespace Chimera.Config {
             LockHeight = Get(false, "LockHeight", false, "Whether to keep the height of the window the same and adjust the screen distance when updating the window from the projector.");
 
             string aspectRatioStr = Get(false, "AspectRatio", "9:16", "Aspect ratio the projector is set to.");
-            string nativeAspectRatioStr = Get(false, "AspectRatio", "9:16", "Native aspect ratio the projector supports.");
+            string nativeAspectRatioStr = Get(false, "NativeAspectRatio", "9:16", "Native aspect ratio the projector supports.");
             Enum.TryParse(aspectRatioStr, out AspectRatio);
             Enum.TryParse(nativeAspectRatioStr, out NativeAspectRatio);
         }

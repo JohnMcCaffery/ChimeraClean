@@ -34,6 +34,7 @@ using Chimera.Config;
 using Chimera.Overlay.Transitions;
 using Chimera.Interfaces;
 using Chimera.Overlay.Interfaces;
+using Chimera.Overlay.SelectionRenderers;
 
 namespace Chimera.Overlay {
     public partial class OverlayPlugin : XmlLoader, ISystemPlugin {
@@ -65,6 +66,10 @@ namespace Chimera.Overlay {
         private bool mIdleEnabled;
         private State mIdleState;
         private List<ITrigger> mIdleTriggers = new List<ITrigger>();
+
+        public Rectangle Clip {
+            get { return mClip; }
+        }
 
         public OverlayPlugin(
                 IMediaPlayer player,
@@ -98,7 +103,7 @@ namespace Chimera.Overlay {
             LoadComponent(doc, mSelectionRenderers, "SelectionRenderers");
             if (mSelectionRenderers.Count == 0)
                 //TODO add renderer factories
-                mSelectionRenderers.Add("CursorRenderer", new DialCursorRenderer());
+                mSelectionRenderers.Add("CursorRenderer", new DialCursorRenderer(this));
 
             LoadComponent(doc, mImageTransitions, "ImageTransitions");
             LoadComponent(doc, mFeatures, "Features");
@@ -313,7 +318,7 @@ namespace Chimera.Overlay {
         #region Generic Getters
 
         private T GetInstance<T>(XmlNode node, Dictionary<string, T> map, string target, string reason, T defalt, params string[] attributes) {
-            string ifDefault = defalt != null ? "Using default: " + defalt.GetType().Name + "." : "";
+            string ifDefault = defalt != null ? " Using default: " + defalt.GetType().Name + "." : "";
             string unable = "Unable to get " + target + " for " + reason + ". ";
             if (node == null) {
                 Console.WriteLine(unable + "No node." + ifDefault);

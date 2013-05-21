@@ -59,6 +59,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BinConfig", "BinConfig", "{
 		..\Bin\Config\Overlay.ini = ..\Bin\Config\Overlay.ini
 		..\Bin\Config\Projectors.ini = ..\Bin\Config\Projectors.ini
 		..\Bin\Config\TimespanOverlay.xml = ..\Bin\Config\TimespanOverlay.xml
+		..\Bin\Config\TimespanOverlayFull.xml = ..\Bin\Config\TimespanOverlayFull.xml
 		..\Bin\Config\TimespanRoom.xml = ..\Bin\Config\TimespanRoom.xml
 		..\Bin\Config\Touchscreen.ini = ..\Bin\Config\Touchscreen.ini
 		..\Bin\Config\TouchscreenOverlay.ini = ..\Bin\Config\TouchscreenOverlay.ini

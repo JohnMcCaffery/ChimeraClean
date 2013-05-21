@@ -43,13 +43,11 @@ namespace Chimera.Overlay.Triggers {
         }
 
         public ITrigger Create(OverlayPlugin manager, XmlNode node) {
-            OverlayImage img = new OverlayImage(manager, node, "image trigger");
-            return new ImageHoverTrigger(manager[img.Window], manager.GetRenderer(node, "image hover trigger", manager.Renderers[0]), img);
+            return new ImageHoverTrigger(manager, node);
         }
 
         public ITrigger Create(OverlayPlugin manager, XmlNode node, Rectangle clip) {
-            OverlayImage img = new OverlayImage(manager, node, clip, "image trigger");
-            return new ImageHoverTrigger(manager[img.Window], manager.GetRenderer(node, "image hover trigger", manager.Renderers[0]), img);
+            return new ImageHoverTrigger(manager, node, clip);
         }
     }
 
@@ -81,6 +79,18 @@ namespace Chimera.Overlay.Triggers {
         public ImageHoverTrigger(WindowOverlayManager manager, ISelectionRenderer render, OverlayImage image)
             : base(manager, render, image.Bounds) {
             mImage = image;
+        }
+
+        public ImageHoverTrigger(OverlayPlugin manager, XmlNode node)
+            : base(manager, node) {
+            mImage = new OverlayImage(manager, node, "image trigger");
+            Bounds = mImage.Bounds;
+        }
+
+        public ImageHoverTrigger(OverlayPlugin manager, XmlNode node, Rectangle clip)
+            : base(manager, node) {
+            mImage = new OverlayImage(manager, node, clip, "image trigger");
+            Bounds = mImage.Bounds;
         }
 
         #region IDrawable Members
