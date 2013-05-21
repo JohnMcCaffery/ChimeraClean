@@ -187,6 +187,7 @@ namespace Chimera.OpenSim {
         }
 
         public void Restart(string reason) {
+            Console.WriteLine("Restarting viewer because of " + reason + ".");
             new Thread(() => {
                 mViewerController.Close(true);
                 mProxyController.Stop();
@@ -214,10 +215,10 @@ namespace Chimera.OpenSim {
         }
 
         public bool StartViewer() {
-            string args = mConfig.ViewerArguments;
-            args += mProxyController.LoginURI;
+            string args = mProxyController.LoginURI;
             if (mConfig.LoginFirstName != null && mConfig.LoginLastName != null && mConfig.LoginPassword != null)
                 args += " --login " + mConfig.LoginFirstName + " " + mConfig.LoginLastName + " " + mConfig.LoginPassword;
+            args += " " + mConfig.ViewerArguments.Trim();
             return mViewerController.Start(mConfig.ViewerExecutable, mConfig.ViewerWorkingDirectory, args);
         }
 
@@ -253,7 +254,6 @@ namespace Chimera.OpenSim {
                     mProxyController.ClearCamera();
                     mFollowCamProperties.Update();
                 }
-
             }
         }
 

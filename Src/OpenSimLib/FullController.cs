@@ -7,14 +7,15 @@ using Chimera.Util;
 using Chimera.OpenSim.Packets;
 
 namespace Chimera.OpenSim {
-    class FullController : ProxyControllerBase {        internal FullController(Window window)
+    public class FullController : ProxyControllerBase {
+        public FullController(Window window)
             : base(window) {
         }        
-        public override void SetCamera() {
+        protected override void ActualSetCamera() {
             InjectPacket(new SetCameraPacket(MakeCameraBlock()));
         }
 
-        public override void SetCamera(OpenMetaverse.Vector3 positionDelta, Util.Rotation orientationDelta) {
+        protected override void ActualSetCamera(OpenMetaverse.Vector3 positionDelta, Util.Rotation orientationDelta) {
             InjectPacket(new SetCameraPacket(MakeCameraBlock()));
         }
 

@@ -42,6 +42,10 @@
     <Reference Include="NuiLib-DotNet_dv">
       <HintPath>..\..\Lib\NuiLib-DotNet_dv.dll</HintPath>
     </Reference>
+    <Reference Include="OpenMetaverse, Version=0.0.0.17443, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Lib\OpenMetaverse.dll</HintPath>
+    </Reference>
     <Reference Include="OpenMetaverseTypes, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Lib\OpenMetaverseTypes.dll</HintPath>
@@ -56,12 +60,20 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="XMLRPC, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Lib\XMLRPC.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\libopenmetaverse\Programs\GridProxy\GridProxy.csproj">
+      <Project>{C04A5541-444E-4312-97E7-F66457F87EF8}</Project>
+      <Name>GridProxy</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ChimeraLib\ChimeraLib.csproj">
       <Project>{58E39BFE-20D5-4C8D-BCFC-6B5E641C2DFF}</Project>
       <Name>ChimeraLib</Name>
@@ -69,6 +81,10 @@
     <ProjectReference Include="..\KinectLib\KinectLib.csproj">
       <Project>{D9D475BF-C0EE-4DF6-89A3-55199BB32ABE}</Project>
       <Name>KinectLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OpenSimLib\OpenSimLib.csproj">
+      <Project>{D1978D10-E5B0-40F9-BDB7-11BF03C7A6CB}</Project>
+      <Name>OpenSimLib</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

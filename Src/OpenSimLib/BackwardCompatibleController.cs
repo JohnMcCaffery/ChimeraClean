@@ -6,10 +6,11 @@ using OpenMetaverse.Packets;
 using OpenMetaverse;
 
 namespace Chimera.OpenSim {
-    internal class BackwardCompatibleController : ProxyControllerBase {
-        internal BackwardCompatibleController(Window window)
+    public class BackwardCompatibleController : ProxyControllerBase {
+        public BackwardCompatibleController(Window window)
             : base(window) {
-        }        private SetFollowCamPropertiesPacket MakePacket(bool enable) {
+        }
+        private SetFollowCamPropertiesPacket MakePacket(bool enable) {
             SetFollowCamPropertiesPacket cameraPacket = new SetFollowCamPropertiesPacket();
             cameraPacket.CameraProperty = new SetFollowCamPropertiesPacket.CameraPropertyBlock[22];
             for (int i = 0; i < 22; i++) {
@@ -42,11 +43,11 @@ namespace Chimera.OpenSim {
             cameraPacket.CameraProperty[21].Value = 1f;
             return cameraPacket;
         }
-        public override void SetCamera() {
+        protected override void ActualSetCamera() {
             InjectPacket(MakePacket(true));
         }
 
-        public override void SetCamera(OpenMetaverse.Vector3 positionDelta, Util.Rotation orientationDelta) {
+        protected override void ActualSetCamera(OpenMetaverse.Vector3 positionDelta, Util.Rotation orientationDelta) {
             InjectPacket(MakePacket(true));
         }
 

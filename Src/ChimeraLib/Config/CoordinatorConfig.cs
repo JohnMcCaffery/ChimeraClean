@@ -45,11 +45,11 @@ namespace Chimera.Config {
         }
 
         public CoordinatorConfig(string file, string[] args)
-            : base("Coordinator", args) {
+            : base("Main", args) {
         }
 
         public override string Group {
-            get { return "Core"; }
+            get { return "Main"; }
         }
 
         protected override void InitConfig() {

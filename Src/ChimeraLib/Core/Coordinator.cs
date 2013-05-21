@@ -265,7 +265,10 @@ namespace Chimera {
             }
 
             foreach (string window in mConfig.Windows)
-                AddWindow(new Window(window, outputFactory.Create()));
+                if (outputFactory != null)
+                    AddWindow(new Window(window, outputFactory.Create()));
+                else
+                    AddWindow(new Window(window));
 
             foreach (var plugin in mPlugins) {
                 plugin.Init(this);

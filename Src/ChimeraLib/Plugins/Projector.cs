@@ -215,7 +215,7 @@ namespace Chimera.Plugins {
             mProjectorPlugin = projectorPlugin;
             mWindow = window;
 
-            WindowConfig cfg = new WindowConfig(window.Name);
+            ProjectorConfig cfg = new ProjectorConfig(window.Name);
             AspectRatio = cfg.AspectRatio;
             NativeAspectRatio = cfg.NativeAspectRatio;
             mThrowRatio = cfg.ThrowRatio;
@@ -232,6 +232,9 @@ namespace Chimera.Plugins {
 
             mOrientation.Changed += new EventHandler(mOrientation_Changed);
             window.Changed += new Action<Window,EventArgs>(window_Changed);
+
+            if (mAutoUpdate && !mConfigureProjector)
+                ConfigureWindow();
         }
 
         void window_Changed(Window w, EventArgs args) {
@@ -241,7 +244,8 @@ namespace Chimera.Plugins {
 
         void mOrientation_Changed(object sender, EventArgs e) {
             Redraw();
-        }
+        }
+
         internal void Redraw() {
             if (!mRedrawing && mAutoUpdate && mWindow != null) {
                 mRedrawing = true;

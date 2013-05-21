@@ -6,7 +6,7 @@ using Chimera.Util;
 using System.Threading;
 
 namespace Chimera.OpenSim {
-    class ViewerController : ProcessController {
+    public class ViewerController : ProcessController {
         private string mToggleHudKey = "^%{F1}";
 
         public ViewerController(string exe, string workingDir, string args)
@@ -46,7 +46,7 @@ namespace Chimera.OpenSim {
                new Thread(close).Start();
         }
 
-        internal void ToggleHUD() {
+        public void ToggleHUD() {
             PressKey(mToggleHudKey);
         }
     }

@@ -34,23 +34,6 @@ namespace Chimera.Config {
         public double Pitch;
         public double Yaw;
         public double Width;
-        public string RoomFile;
-        public Vector3 RoomAnchor;
-
-        public Vector3 ProjectorPosition;
-        public double ProjectorPitch;
-        public double ProjectorYaw;
-        public float ThrowRatio;
-        public float VOffset;
-        public AspectRatio AspectRatio = AspectRatio.SixteenNine;
-        public AspectRatio NativeAspectRatio = AspectRatio.SixteenNine;
-        public bool Draw;
-        public bool DrawRoom;
-        public bool DrawLabels;
-        public bool AutoUpdate;
-        public bool UpsideDown;
-        public float WallDistance;
-        public bool ConfigureWindow;
 
         private string mWindow = "MainWindow";
 
@@ -72,39 +55,13 @@ namespace Chimera.Config {
             AddCommandLineKey(false, "MouseControl", "mc");
            
 
-            Monitor = Get(false, "Monitor", "CrashLog.log", "The monitor on which this window should render.");
+            Monitor = Get(false, "Monitor", "\\\\.\\DISPLAY2", "The monitor on which this window should render.");
 
             TopLeft = GetV(false, "TopLeft", new Vector3(1000f, -500f, 0f), "The position of the top left corner of the window in real world coordinates (mm).");
             Yaw = Get(false, "Yaw", 0.0, "The yaw for the direction the monitor faces in the real world.");
             Pitch = Get(false, "Pitch", 0.0, "The pitch for the direction the monitor faces in the real world.");
             Width = Get(false, "Width", 1000.0, "The width of the window in the real world (mm).");
             Height = Get(false, "Height", 1000.0, "The height of the window in the real world (mm).");
-
-            RoomFile = Get(true, "RoomFile", null, "The file containing the layout for the room the projector is in.");
-            RoomAnchor = GetV(true, "RoomAnchor", Vector3.Zero, "The anchor point for the room. All room position values will be offset by this in relation to the eye position.");
-
-
-
-
-            string projectorSection = Section + "Projector";
-
-            ProjectorPosition = GetV(projectorSection, "Position", new Vector3(0f, 1000f, -30f), "Where the projector is, relative to the Room Anchor.");
-            ProjectorPitch = Get(projectorSection, "Pitch", 5.0, "The pitch the projector is set at.");
-            ProjectorYaw = Get(projectorSection, "Yaw", 0.0, "The yaw the projector is set at.");
-            ThrowRatio = Get(projectorSection, "ThrowRatio", 1.7f, "The throw ratio of the projector. Throw ratio is the screen distance/screenWidth");
-            WallDistance = Get(projectorSection, "WallDistance", 2000f, "How far away from the projector the wall is.");
-            VOffset = Get(projectorSection, "VOffset", .09f, "How for that image is shifted up above the level of the projector.");
-            Draw = Get(projectorSection, "Draw", true, "Whether to draw the projector on the window diagrams.");
-            DrawRoom = Get(projectorSection, "DrawRoom", true, "Whether to draw the room on the window diagrams.");
-            DrawLabels = Get(projectorSection, "DrawLabels", true, "Whether to draw labels on the window diagrams.");
-            AutoUpdate = Get(projectorSection, "AutoUpdate", false, "Whether to automatically update the screen size based on the projector position.");
-            UpsideDown = Get(projectorSection, "UpsideDown", true, "Whether the projector is mounted upside down.");
-            ConfigureWindow = Get(projectorSection, "ConfigureWindow", true, "If true then changing the projector will update the window. False then changing the window will update the projector.");
-
-            string aspectRatioStr = Get(mWindow + "Projector", "AspectRatio", "9:16", "Aspect ratio the projector is set to.");
-            string nativeAspectRatioStr = Get(mWindow + "Projector", "AspectRatio", "9:16", "Native aspect ratio the projector supports.");
-            Enum.TryParse(aspectRatioStr, out AspectRatio);
-            Enum.TryParse(nativeAspectRatioStr, out NativeAspectRatio);
         }
     }
 }

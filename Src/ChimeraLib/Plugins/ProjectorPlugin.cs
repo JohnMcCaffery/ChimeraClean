@@ -92,12 +92,15 @@ namespace Chimera.Plugins {
 
         public void Init(Coordinator coordinator) {
             ProjectorConfig config = new ProjectorConfig();
+            mDrawLabels = config.DrawGlobalLabels;
+            mDrawRoom = config.DrawRoom;
+
             string roomFile = config.RoomFile;
             if (roomFile != null) {
                 XmlDocument doc = new XmlDocument();
                 doc.Load(roomFile);
 
-                foreach (XmlElement cornerNode in doc.GetElementsByTagName("Room")[0].ChildNodes) {
+                foreach (XmlElement cornerNode in doc.GetElementsByTagName("Room")[0].ChildNodes.OfType<XmlElement>()) {
                     XmlAttribute xAttr = cornerNode.Attributes["X"];
                     XmlAttribute yAttr = cornerNode.Attributes["Y"];
                     XmlAttribute zAttr = cornerNode.Attributes["Z"];

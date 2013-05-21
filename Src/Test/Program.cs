@@ -29,6 +29,11 @@ using OpenMetaverse;
 using Chimera.Kinect;
 using Nini.Config;
 using System.Configuration;
+using GridProxy;
+using OpenMetaverse.Packets;
+using System.Threading;
+using Chimera.OpenSim;
+using System.IO;
 
 namespace Test {
     public class Program {
@@ -43,9 +48,122 @@ namespace Test {
         static Vector mSide;
         static Scalar mX;
         static Scalar mY;
+        private static Coordinator mCoordinator;
+        private static Vector3 sCentre = new Vector3(128f, 128f, 60f);
+
+        private static Rotation GetRot(Vector3 pos) {
+            return new Rotation(sCentre - pos);
+        }
+
+        private static SetFollowCamPropertiesPacket MakePacket() {
+                SetFollowCamPropertiesPacket packet = new SetFollowCamPropertiesPacket();
+                packet.CameraProperty = new SetFollowCamPropertiesPacket.CameraPropertyBlock[22];
+                for (int i = 0; i < 22; i++) {
+                    packet.CameraProperty[i] = new SetFollowCamPropertiesPacket.CameraPropertyBlock();
+                    packet.CameraProperty[i].Type = i + 1;
+                }
+
+                packet.CameraProperty[0].Value = 0f;
+                packet.CameraProperty[1].Value = 0f;
+                packet.CameraProperty[2].Value = 0f;
+                packet.CameraProperty[3].Value = 0f;
+                packet.CameraProperty[4].Value = 0f;
+                packet.CameraProperty[5].Value = 0f;
+                packet.CameraProperty[6].Value = 0f;
+                packet.CameraProperty[7].Value = 0f;
+                packet.CameraProperty[8].Value = 0f;
+                packet.CameraProperty[9].Value = 0f;
+                packet.CameraProperty[10].Value = 0f;
+                packet.CameraProperty[11].Value = 1f;
+                packet.CameraProperty[12].Value = 0f; //Position
+                packet.CameraProperty[13].Value = 100f; //Position X
+                packet.CameraProperty[14].Value = 100f; //Position Y
+                packet.CameraProperty[15].Value = 60f; //Position Z
+                packet.CameraProperty[16].Value = 0f; //Focus
+                packet.CameraProperty[17].Value = 128f; //Focus X
+                packet.CameraProperty[18].Value = 128f; //Focus Y
+                packet.CameraProperty[19].Value = 60; //Focus Z
+                packet.CameraProperty[20].Value = 1f; //Lock Positon
+                packet.CameraProperty[21].Value = 1f; //Lock Focus
+
+                return packet;
+        }
 
         [STAThread]
-        public static void Main(string[] args) {
+        public static void Main(string[] a) {
+            /*
+            string localAddress = "127.0.0.1";
+            string portArg = "--proxy-login-port=8080";
+            string listenIPArg = "--proxy-proxyAddress-facing-address=" + localAddress;
+            string loginURIArg = "--proxy-remote-login-uri=http://localhost:9000";
+            string proxyCaps = "--proxy-caps=false";
+            string[] args = { portArg, listenIPArg, loginURIArg, proxyCaps };
+            ProxyConfig config = new ProxyConfig("Routing God", "jm726@st-andrews.ac.uk", args);
+            Proxy p = new Proxy(config);
+            bool send = false;
+            p.AddLoginResponseDelegate(response => {
+                new Thread(() => {
+                    Thread.Sleep(5000);
+                    send = true;
+                    Console.WriteLine("Starting to send packets.");
+                }).Start();
+            });
+            p.Start();
+            */
+
+            mCoordinator = new Coordinator(null);
+            Vector3 start = new Vector3(100f, 100f, 60f);
+            mCoordinator.Update(start, Vector3.Zero, GetRot(start), Rotation.Zero);
+            Window w = new Window("MainWindow");
+            mCoordinator.AddWindow(w);
+            FullController proxy = new FullController(w);
+            //BackwardCompatibleController proxy = new BackwardCompatibleController(w);
+            proxy.OnClientLoggedIn += (source, args) => new Thread(SendPackets).Start(proxy);
+            proxy.StartProxy(8080, "http://localhost:9000");
+            ViewerController viewer = new ViewerController("%^{F1}");
+
+            string exe = Path.GetFullPath("../../Armadillo-Phoenix/Armadillo/Bin/firestorm-bin.exe");
+            //string exe = "C:\\Program Files (x86)\\Firestorm-Release\\Firestorm-Release.exe";
+
+            string viewerArgs = proxy.LoginURI;
+            viewerArgs += " --login Master Client clientPassword";
+            viewerArgs += " --channel \"Firestorm-Release\" --settings settings_firestorm_release_v4.xml --set InstallLanguage en";
+
+            viewer.Start(exe, Path.GetDirectoryName(exe), viewerArgs);
+        }
+
+        private static void SendPackets(object param) {
+            ProxyControllerBase controller = (ProxyControllerBase)param;
+            SetFollowCamPropertiesPacket packet = MakePacket();
+            Thread.Sleep(10000);
+            Console.WriteLine("Sending packets");
+            while (true) {
+                for (int i = 0; i < 4; i++) {
+                    float xInc = .2f;
+                    float yInc = 0f;
+                    float zInc = 0f;
+                    switch (i) {
+                        case 1: xInc = 0; yInc = .2f; zInc = .022f; break;
+                        case 2: xInc = -.2f; yInc = 0f; break;
+                        case 3: xInc = 0; yInc = -.2f; zInc = -.022f; break;
+                    }
+                    for (int x = 0; x < 320; x++) {
+                        controller.InjectPacket(packet);
+                        Vector3 pos = mCoordinator.Position;
+                        pos.X += xInc;
+                        pos.Y += yInc;
+                        pos.Z += zInc;
+                        mCoordinator.Update(pos, Vector3.Zero, GetRot(pos), Rotation.Zero);
+                        controller.SetCamera();
+                        Thread.Sleep(20);
+                    }
+                }
+            }
+        }
+
+
+
+            /*
             DotNetConfigSource dotnet = new DotNetConfigSource();
             ArgvConfigSource arg = new ArgvConfigSource(args);
 
@@ -58,7 +176,6 @@ namespace Test {
 
             Console.WriteLine(test);
 
-            /*
             mPointStart = Vector.Create("PointStart", 0f, 0f, 0f);
             mPointDir = Vector.Create("PointDir", 0f, 0f, 0f);
 
@@ -83,7 +200,6 @@ namespace Test {
             Form form = new KinectCursorForm(cursor, window);
             ProcessWrangler.BlockingRunForm(form, null);
             */
-        }
 
         private static void Init() {
 			Nui.Init();

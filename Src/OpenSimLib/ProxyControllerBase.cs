@@ -13,7 +13,7 @@ using System.Net;
 using System.Collections;
 
 namespace Chimera.OpenSim {
-    internal abstract class ProxyControllerBase {
+    public abstract class ProxyControllerBase {
         private readonly Window mWindow;
         private Proxy mProxy;
         private PacketDelegate mAgentUpdateListener;
@@ -24,6 +24,10 @@ namespace Chimera.OpenSim {
         private string mLastName = "NotLoggedIn";
         private string mLoginURI;
         private GridProxyConfig mConfig;
+
+        private readonly Dictionary<string, DateTime> mUnackedUpdates = new Dictionary<string,DateTime>();
+        private int mUnackedCountThresh = 5;
+        private long mUnackedDiscardMS = 1000;
 
         /// <summary>
         /// Selected whenever the client proxy starts up.
@@ -48,7 +52,7 @@ namespace Chimera.OpenSim {
         /// <summary>
         /// Selected whenever a client logs in to the proxy.
         /// </summary>
-        internal event EventHandler OnClientLoggedIn;
+        public event EventHandler OnClientLoggedIn;
 
         public Proxy Proxy {
             get { return mProxy; }
@@ -71,7 +75,7 @@ namespace Chimera.OpenSim {
             mAgentUpdateListener = new PacketDelegate(mProxy_AgentUpdatePacketReceived);
         }
 
-        internal bool StartProxy(int port, string loginURI) {
+        public bool StartProxy(int port, string loginURI) {
             if (Started)
                 Stop();
             string file = AppDomain.CurrentDomain.SetupInformation.ConfigurationFile;
@@ -83,12 +87,12 @@ namespace Chimera.OpenSim {
             string proxyCaps = "--proxy-caps=false";
             string[] args = { portArg, listenIPArg, loginURIArg, proxyCaps };
             mConfig = new GridProxyConfig("Routing God", "jm726@st-andrews.ac.uk", args);
-            mLoginURI = localAddress + ":" + port;
+            mLoginURI = " --loginuri http://" + localAddress + ":" + port;
 
             return Start();
         }
 
-        internal bool Start() {
+        public bool Start() {
             if (mConfig == null)
                 throw new ArgumentException("Unable to start proxy. No configuration specified.");
             try {
@@ -112,14 +116,15 @@ namespace Chimera.OpenSim {
             return true;
         }
 
-        internal void Stop() {
+        public void Stop() {
             if (mProxy != null) {
                 mProxy.Stop();
                 mProxy = null;
             }
         }
 
-        internal void Chat(string message, int channel) {            if (Started) {
+        public void Chat(string message, int channel) {
+            if (Started) {
                 ChatFromViewerPacket p = new ChatFromViewerPacket();
                 p.ChatData.Channel = channel;
                 p.ChatData.Message = Utils.StringToBytes(message);
@@ -151,19 +156,73 @@ namespace Chimera.OpenSim {
     
         Packet mProxy_AgentUpdatePacketReceived(Packet p, IPEndPoint ep) {
             AgentUpdatePacket packet = p as AgentUpdatePacket;
+            Vector3 pos = packet.AgentData.CameraCenter;
+
+            if (mWindow.Coordinator.ControlMode == ControlMode.Absolute) {
+                //new Thread(() => {
+                string key = MakeKey(pos);
+                lock (mUnackedUpdates) {
+                    if (mUnackedUpdates.ContainsKey(key))
+                        mUnackedUpdates.Remove(key);
+                }
+
+                CheckForPause();
+                //}).Start();
+            }
+
             if (pPositionChanged != null)
-                pPositionChanged(packet.AgentData.CameraCenter, new Rotation(packet.AgentData.CameraAtAxis));
+                pPositionChanged(pos, new Rotation(packet.AgentData.CameraAtAxis));
             return p;
         }
 
-        protected void InjectPacket(Packet p) {
+        private string MakeKey(Vector3 v) {
+            return String.Format("{0},{1},{2}", Math.Round(v.X), Math.Round(v.Y), Math.Round(v.Z));
+        }
+
+        private void CheckForPause() {
+            Queue<KeyValuePair<string, DateTime>> q;
+            lock (mUnackedUpdates)
+                q = new Queue<KeyValuePair<string, DateTime>>(mUnackedUpdates.OrderBy(u => u.Value));
+            while (q.Count > 0 && DateTime.Now.Subtract(q.Peek().Value).TotalMilliseconds > mUnackedDiscardMS)
+                mUnackedUpdates.Remove(q.Dequeue().Key);
+
+            if (mUnackedUpdates.Count > mUnackedCountThresh) {
+                Console.WriteLine("Freeze detected. " + mUnackedUpdates.Count + " unacked packets.");
+                mUnackedUpdates.Clear();
+                ClearCamera();
+                SetCamera();
+            }
+        }
+
+        public void InjectPacket(Packet p) {
             if (Started)
                 mProxy.InjectPacket(p, Direction.Incoming);
         }
 
+        public void SetCamera() {
+            if (mWindow.Coordinator.ControlMode == ControlMode.Absolute)
+                MarkUntracked();
+
+            ActualSetCamera();
+        }
+        public void SetCamera(Vector3 positionDelta, Rotation orientationDelta) {
+            if (mWindow.Coordinator.ControlMode == ControlMode.Absolute)
+                MarkUntracked();
+
+            ActualSetCamera(positionDelta, orientationDelta);
+        }
+
+        private void MarkUntracked() {
+                string str = MakeKey(mWindow.Coordinator.Position);
+                lock (mUnackedUpdates)
+                    if (mUnackedUpdates.ContainsKey(str))
+                        mUnackedUpdates[str] = DateTime.Now;
+                    else
+                        mUnackedUpdates.Add(str, DateTime.Now);
+        }
         
-        public abstract void SetCamera();
-        public abstract void SetCamera(Vector3 positionDelta, Rotation orientationDelta);
+        protected abstract void ActualSetCamera();
+        protected abstract void ActualSetCamera(Vector3 positionDelta, Rotation orientationDelta);
         /// <summary>
         /// Set the view frustum on the viewer. Specify whether to control the position of the camer at the same time.
         /// </summary>
