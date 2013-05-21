@@ -464,6 +464,12 @@ namespace Chimera {
                     to2D(mTopLeft + top + side),
                     to2D(mTopLeft + side)
                 });
+                graphics.DrawPolygon(Pens.Black, new Point[] {
+                    to2D(mTopLeft),
+                    to2D(mTopLeft + top),
+                    to2D(mTopLeft + top + side),
+                    to2D(mTopLeft + side)
+                });
             }
 
             if (mDrawEye) {

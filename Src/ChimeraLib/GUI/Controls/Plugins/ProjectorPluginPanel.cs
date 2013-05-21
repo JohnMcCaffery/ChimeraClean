@@ -24,6 +24,8 @@ namespace Chimera.GUI.Controls.Plugins {
             mPlugin.Change += new Action(mPlugin_Change);
             mPlugin.ProjectorAdded += new Action<Projector>(mPlugin_ProjectorAdded);
 
+            mPlugin_Change();
+
             foreach (var projector in mPlugin.Projectors)
                 mPlugin_ProjectorAdded(projector);
         }
@@ -43,10 +45,11 @@ namespace Chimera.GUI.Controls.Plugins {
         void mPlugin_Change() {
             mExternalUpdate = true;
             roomPositionPanel.Value = mPlugin.RoomPosition / 10f;
-            projectorDrawRoomCheck.Checked = mPlugin.DrawRoom;
-            projectorDrawLabelsCheck.Checked = mPlugin.DrawLabels;
+            drawRoomCheck.Checked = mPlugin.DrawRoom;
+            drawLabelsCheck.Checked = mPlugin.DrawLabels;
             mExternalUpdate = false;
-        }
+        }
+
         private void roomPosition_ValueChanged(object sender, EventArgs e) {
             if (!mExternalUpdate)
                 mPlugin.RoomPosition = roomPositionPanel.Value * 10f;
@@ -54,12 +57,12 @@ namespace Chimera.GUI.Controls.Plugins {
 
         private void projectorDrawRoomChecked_CheckedChanged(object sender, EventArgs e) {
             if (!mExternalUpdate)
-                mPlugin.DrawRoom = projectorDrawRoomCheck.Checked;
+                mPlugin.DrawRoom = drawRoomCheck.Checked;
         }
 
         private void projectorDrawLabelsCheck_CheckedChanged(object sender, EventArgs e) {
             if (!mExternalUpdate)
-                mPlugin.DrawLabels = projectorDrawLabelsCheck.Checked;
+                mPlugin.DrawLabels = drawLabelsCheck.Checked;
         }   
     }
 }

@@ -46,6 +46,7 @@ namespace Chimera.Config {
         public bool UpsideDown;
         public float WallDistance;
         public bool ConfigureWindow;
+        public bool LockHeight;
 
         private string mWindow = "MainWindow";
 
@@ -77,6 +78,7 @@ namespace Chimera.Config {
             AutoUpdate = Get(false, "AutoUpdate", false, "Whether to automatically update the screen size based on the projector position.");
             UpsideDown = Get(false, "UpsideDown", true, "Whether the projector is mounted upside down.");
             ConfigureWindow = Get(false, "ConfigureWindow", true, "If true then changing the projector will update the window. False then changing the window will update the projector.");
+            LockHeight = Get(false, "LockHeight", false, "Whether to keep the height of the window the same and adjust the screen distance when updating the window from the projector.");
 
             string aspectRatioStr = Get(false, "AspectRatio", "9:16", "Aspect ratio the projector is set to.");
             string nativeAspectRatioStr = Get(false, "AspectRatio", "9:16", "Native aspect ratio the projector supports.");

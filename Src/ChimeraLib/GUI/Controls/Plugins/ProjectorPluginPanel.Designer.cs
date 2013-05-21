@@ -25,18 +25,18 @@
         private void InitializeComponent() {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ProjectorPluginPanel));
             this.roomTab = new System.Windows.Forms.TabPage();
-            this.projectorDrawRoomCheck = new System.Windows.Forms.CheckBox();
-            this.mainTab = new System.Windows.Forms.TabControl();
-            this.projectorDrawLabelsCheck = new System.Windows.Forms.CheckBox();
+            this.drawLabelsCheck = new System.Windows.Forms.CheckBox();
+            this.drawRoomCheck = new System.Windows.Forms.CheckBox();
             this.roomPositionPanel = new Chimera.GUI.VectorPanel();
+            this.mainTab = new System.Windows.Forms.TabControl();
             this.roomTab.SuspendLayout();
             this.mainTab.SuspendLayout();
             this.SuspendLayout();
             // 
             // roomTab
             // 
-            this.roomTab.Controls.Add(this.projectorDrawLabelsCheck);
-            this.roomTab.Controls.Add(this.projectorDrawRoomCheck);
+            this.roomTab.Controls.Add(this.drawLabelsCheck);
+            this.roomTab.Controls.Add(this.drawRoomCheck);
             this.roomTab.Controls.Add(this.roomPositionPanel);
             this.roomTab.Location = new System.Drawing.Point(4, 22);
             this.roomTab.Name = "roomTab";
@@ -46,42 +46,32 @@
             this.roomTab.Text = "Room";
             this.roomTab.UseVisualStyleBackColor = true;
             // 
-            // projectorDrawRoomCheck
+            // drawLabelsCheck
             // 
-            this.projectorDrawRoomCheck.AutoSize = true;
-            this.projectorDrawRoomCheck.Location = new System.Drawing.Point(6, 101);
-            this.projectorDrawRoomCheck.Name = "projectorDrawRoomCheck";
-            this.projectorDrawRoomCheck.Size = new System.Drawing.Size(82, 17);
-            this.projectorDrawRoomCheck.TabIndex = 54;
-            this.projectorDrawRoomCheck.Text = "Draw Room";
-            this.projectorDrawRoomCheck.UseVisualStyleBackColor = true;
-            this.projectorDrawRoomCheck.CheckedChanged += new System.EventHandler(this.projectorDrawRoomChecked_CheckedChanged);
+            this.drawLabelsCheck.AutoSize = true;
+            this.drawLabelsCheck.Location = new System.Drawing.Point(94, 101);
+            this.drawLabelsCheck.Name = "drawLabelsCheck";
+            this.drawLabelsCheck.Size = new System.Drawing.Size(85, 17);
+            this.drawLabelsCheck.TabIndex = 55;
+            this.drawLabelsCheck.Text = "Draw Labels";
+            this.drawLabelsCheck.UseVisualStyleBackColor = true;
+            this.drawLabelsCheck.CheckedChanged += new System.EventHandler(this.projectorDrawLabelsCheck_CheckedChanged);
             // 
-            // mainTab
+            // drawRoomCheck
             // 
-            this.mainTab.Controls.Add(this.roomTab);
-            this.mainTab.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.mainTab.Location = new System.Drawing.Point(0, 0);
-            this.mainTab.Name = "mainTab";
-            this.mainTab.SelectedIndex = 0;
-            this.mainTab.Size = new System.Drawing.Size(548, 506);
-            this.mainTab.TabIndex = 0;
-            // 
-            // projectorDrawLabelsCheck
-            // 
-            this.projectorDrawLabelsCheck.AutoSize = true;
-            this.projectorDrawLabelsCheck.Location = new System.Drawing.Point(94, 101);
-            this.projectorDrawLabelsCheck.Name = "projectorDrawLabelsCheck";
-            this.projectorDrawLabelsCheck.Size = new System.Drawing.Size(85, 17);
-            this.projectorDrawLabelsCheck.TabIndex = 55;
-            this.projectorDrawLabelsCheck.Text = "Draw Labels";
-            this.projectorDrawLabelsCheck.UseVisualStyleBackColor = true;
-            this.projectorDrawLabelsCheck.CheckedChanged += new System.EventHandler(this.projectorDrawLabelsCheck_CheckedChanged);
+            this.drawRoomCheck.AutoSize = true;
+            this.drawRoomCheck.Location = new System.Drawing.Point(6, 101);
+            this.drawRoomCheck.Name = "drawRoomCheck";
+            this.drawRoomCheck.Size = new System.Drawing.Size(82, 17);
+            this.drawRoomCheck.TabIndex = 54;
+            this.drawRoomCheck.Text = "Draw Room";
+            this.drawRoomCheck.UseVisualStyleBackColor = true;
+            this.drawRoomCheck.CheckedChanged += new System.EventHandler(this.projectorDrawRoomChecked_CheckedChanged);
             // 
             // roomPositionPanel
             // 
-            this.roomPositionPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.roomPositionPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.roomPositionPanel.Location = new System.Drawing.Point(0, 0);
             this.roomPositionPanel.Max = 10000F;
             this.roomPositionPanel.MaxV = ((OpenMetaverse.Vector3)(resources.GetObject("roomPositionPanel.MaxV")));
@@ -96,6 +86,16 @@
             this.roomPositionPanel.Y = 0F;
             this.roomPositionPanel.Z = 0F;
             this.roomPositionPanel.ValueChanged += new System.EventHandler(this.roomPosition_ValueChanged);
+            // 
+            // mainTab
+            // 
+            this.mainTab.Controls.Add(this.roomTab);
+            this.mainTab.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.mainTab.Location = new System.Drawing.Point(0, 0);
+            this.mainTab.Name = "mainTab";
+            this.mainTab.SelectedIndex = 0;
+            this.mainTab.Size = new System.Drawing.Size(548, 506);
+            this.mainTab.TabIndex = 0;
             // 
             // ProjectorPluginPanel
             // 
@@ -116,8 +116,8 @@
         private System.Windows.Forms.TabPage roomTab;
         private System.Windows.Forms.TabControl mainTab;
         private VectorPanel roomPositionPanel;
-        private System.Windows.Forms.CheckBox projectorDrawRoomCheck;
-        private System.Windows.Forms.CheckBox projectorDrawLabelsCheck;
+        private System.Windows.Forms.CheckBox drawRoomCheck;
+        private System.Windows.Forms.CheckBox drawLabelsCheck;
 
     }
 }

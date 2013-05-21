@@ -46,8 +46,10 @@ namespace Chimera.Plugins {
         private float mThrowRatio;
         private AspectRatio mAspectRatio;
         private AspectRatio mNativeAspectRatio;
+        private double mTargetH;
         private float mH;
         private float mW;
+        private bool mLockHeight;
         private bool mDraw;
         private bool mDrawLabels;
         private bool mAutoUpdate;
@@ -70,6 +72,7 @@ namespace Chimera.Plugins {
                 Redraw();
             }
         }
+
         public Vector3 Position {
             get { return mPosition; }
             set { 
@@ -91,6 +94,17 @@ namespace Chimera.Plugins {
 
         public Rotation Orientation {
             get { return mOrientation; }
+        }
+
+        public bool LockHeight {
+            get { return mLockHeight; }
+            set {
+                if (value != mLockHeight) {
+                    mLockHeight = value;
+                    if (value)
+                        mTargetH = mWindow.Height;
+                }
+            }
         }
 
         public bool AutoUpdate {
@@ -207,13 +221,15 @@ namespace Chimera.Plugins {
                 bool mIntersects = denominator != 0f;
                 if (!mIntersects)
                     return -1f;
-                return (-numerator / denominator) + (mH - mProjectorPlugin.RoomPosition.Z);
+                //return (-numerator / denominator) + (mProjectorPlugin.Small.Z - mProjectorPlugin.RoomPosition.Z);
+                return (-numerator / denominator) + (mProjectorPlugin.Size.Z - mProjectorPlugin.RoomPosition.Z);
             }
         }
 
         public Projector(Window window, ProjectorPlugin projectorPlugin) {
             mProjectorPlugin = projectorPlugin;
             mWindow = window;
+            mTargetH = window.Height;
 
             ProjectorConfig cfg = new ProjectorConfig(window.Name);
             AspectRatio = cfg.AspectRatio;
@@ -225,21 +241,31 @@ namespace Chimera.Plugins {
             mConfigureProjector = !cfg.ConfigureWindow;
             mUpsideDown = cfg.UpsideDown;
             mVOffset = cfg.VOffset;
+            mLockHeight = cfg.LockHeight;
 
             mDraw = cfg.Draw;
             mDrawLabels = cfg.DrawLabels;
             mAutoUpdate = cfg.AutoUpdate;
 
+            mProjectorPlugin.RoomChanged += new Action(mProjectorPlugin_RoomChanged);
             mOrientation.Changed += new EventHandler(mOrientation_Changed);
             window.Changed += new Action<Window,EventArgs>(window_Changed);
 
+            if (mAutoUpdate)
+                Configure();
+        }
+
+        void mProjectorPlugin_RoomChanged() {
             if (mAutoUpdate && !mConfigureProjector)
                 ConfigureWindow();
         }
 
         void window_Changed(Window w, EventArgs args) {
-            if (mAutoUpdate && mConfigureProjector)
-                Redraw();
+            if (mConfigureProjector) {
+                mTargetH = w.Height;
+                if (mAutoUpdate)
+                    Redraw();
+            }
         }
 
         void mOrientation_Changed(object sender, EventArgs e) {
@@ -268,9 +294,30 @@ namespace Chimera.Plugins {
         }
 
         private void ConfigureWindow() {
+            /*
+            if (mLockHeight) {
+                float m = ((mH / 2f) + mVOffset) * (mUpsideDown ? -1f : 1f);
+
+                float zT = m + (mH / 2f);
+                Vector3 originalVectorT = new Vector3(mThrowRatio, (mW / 2f), zT);
+                Vector3 cornerT = originalVectorT * new Rotation(mOrientation.Pitch, 0.0).Quaternion;
+                cornerT *= mScreenDistance / cornerT.X;
+
+                float zB = m + (mH / -2f);
+                Vector3 originalVectorB = new Vector3(mThrowRatio, (mW / 2f), zB);
+                Vector3 cornerB = originalVectorB * new Rotation(mOrientation.Pitch, 0.0).Quaternion;
+                cornerB *= mScreenDistance / cornerB.X;
+
+                float h = cornerT.Z - cornerB.Z;
+
+                float x = mScreenDistance;
+                ScreenDistance = x;
+            //TODO - solve this maths problem
+            }
+            */
+            mWindow.Orientation.Quaternion = new Rotation(0.0, mOrientation.Yaw).Quaternion;
             mWindow.Width = Vector3.Mag(new Vector3(TopLeft.X, TopLeft.Y, 0f) - new Vector3(TopRight.X, TopRight.Y, 0f));
             mWindow.Height = TopLeft.Z - BottomLeft.Z;
-            mWindow.Orientation.Quaternion = new Rotation(0.0, mOrientation.Yaw).Quaternion;
             mWindow.TopLeft = TopLeft;
         }
 

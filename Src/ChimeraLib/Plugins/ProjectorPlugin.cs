@@ -43,6 +43,8 @@ namespace Chimera.Plugins {
             get { return mAnchor; }
             set { 
                 mAnchor = value;
+                if (RoomChanged != null)
+                    RoomChanged();
                 Redraw();
             }
         }
@@ -83,6 +85,8 @@ namespace Chimera.Plugins {
         public Projector[] Projectors {
             get { return mProjectors.ToArray(); }
         }
+
+        public event Action RoomChanged;
 
         public event Action<Projector> ProjectorAdded;
 
@@ -181,21 +185,20 @@ namespace Chimera.Plugins {
                 if (mDrawLabels) {
                     Font font = SystemFonts.DefaultFont;
 
-                    Vector3 s = Big - Small;
                     Vector3 edgeB = Big + RoomPosition;
                     Vector3 edgeS = Small + RoomPosition;
-                    Vector3 centre = (s / 2f) + RoomPosition;
+                    Vector3 centre = edgeS + (Size / 2f);
 
-                    string w = String.Format("Width: {0:.#}", s.Y);
-                    string h = String.Format("Height: {0:.#}", s.Z);
-                    string d = String.Format("Depth: {0:.#}", s.X);
+                    string w = String.Format("Width: {0:.#}", Size.Y);
+                    string h = String.Format("Height: {0:.#}", Size.Z);
+                    string d = String.Format("Depth: {0:.#}", Size.X);
 
                     if (perspective == Perspective.X) {
                         PH(g, new Vector3(0f, edgeB.Y, centre.Z), h, to2D, font);
                         PW(g, new Vector3(0f, centre.Y, edgeS.Z), w, to2D, font);
                     }
                     if (perspective == Perspective.Y) {
-                        PH(g, new Vector3(edgeB.X, 0f, centre.Z), h, to2D, font);
+                        PH(g, new Vector3(edgeS.X, 0f, centre.Z), h, to2D, font);
                         PW(g, new Vector3(centre.X, 0f, edgeS.Z), d, to2D, font);
                     }
                     if (perspective == Perspective.Z) {
@@ -224,5 +227,7 @@ namespace Chimera.Plugins {
             p.X -= (int)(s.Width / 2f);
             g.DrawString(txt, font, Brushes.Black, p);
         }
+
+        public Vector3 Size { get { return mBig - mSmall; } }
     }
 }
