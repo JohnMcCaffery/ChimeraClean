@@ -186,7 +186,8 @@ namespace Chimera {
         public IOutput Output {
             get { return mOutput ; }
             set { mOutput  = value; }
-        }
+        }
+
         /// <summary>
         /// Whether to draw the eye and resulting perspective lines when drawing the diagram.
         /// </summary>

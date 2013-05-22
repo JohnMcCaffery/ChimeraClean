@@ -38,7 +38,8 @@ namespace Chimera.GUI.Controls.Plugins {
 
             HandleCreated += new EventHandler(ProjectorPanel_HandleCreated);
             Disposed += new EventHandler(ProjectorPanel_Disposed);
-        }
+        }
+
         public ProjectorPanel(Projector projector)
             : this() {
 
@@ -57,9 +58,9 @@ namespace Chimera.GUI.Controls.Plugins {
 
         void mProjector_Change() {
             mExternalUpdate = true;
-            projectorThrowRatioPanel.Value = mProjector.ThrowRatio;
+            projectorThrowRatioPanel.Value = (float) mProjector.ThrowRatio;
             projectorPositionPanel.Value = mProjector.Position / 10f;
-            projectorWallDistancePanel.Value = mProjector.ScreenDistance / 10f;
+            projectorWallDistancePanel.Value = (float) (mProjector.ScreenDistance / 10);
             projectorOrientationPanel.Value = mProjector.Orientation;
             projectorDrawCheck.Checked = mProjector.DrawDiagram;
             projectorDrawLabelsCheck.Checked = mProjector.DrawLabels;
@@ -69,7 +70,8 @@ namespace Chimera.GUI.Controls.Plugins {
             configureProjectorButton.Checked = mProjector.ConfigureFromProjector;
             configureWindowButton.Checked = !mProjector.ConfigureFromProjector;
             upsideDownCheck.Checked = mProjector.UpsideDown;
-            vOffsetPanel.Value = mProjector.VOffset;
+            lockHeightCheck.Checked = mProjector.LockHeight;
+            vOffsetPanel.Value = (float) mProjector.VOffset;
 
             projectorDrawLabelsCheck.Enabled = mProjector.DrawDiagram;
 
@@ -143,6 +145,11 @@ namespace Chimera.GUI.Controls.Plugins {
         private void vOffsetPanel_ValueChanged(float obj) {
             if (!mExternalUpdate)
                 mProjector.VOffset = vOffsetPanel.Value;
+        }
+
+        private void lockHeightCheck_CheckedChanged(object sender, EventArgs e) {
+            if (!mExternalUpdate)
+                mProjector.LockHeight = lockHeightCheck.Checked;
         }
     }
 }
