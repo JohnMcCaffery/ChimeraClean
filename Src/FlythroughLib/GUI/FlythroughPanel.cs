@@ -35,6 +35,8 @@ namespace Chimera.Flythrough.GUI {
         private ComboEvent mStartEvt;
         private bool GUIUpdate;
         private bool TickUpdate;
+
+        private Action<int> mTickListener;
         
         private Action<int> mContainer_TickListener;
 
@@ -53,13 +55,16 @@ namespace Chimera.Flythrough.GUI {
 
             mContainer_TickListener = new Action<int>(mContainer_Tick);
 
-            mContainer.TimeChange += mContainer_TickListener;
+            mTickListener = new Action<int>(mContainer_TickListener);
+            mContainer.TimeChange += mTickListener;
+
+            mContainer.LengthChange += mContainer_LengthChange;
             mContainer.UnPaused += mContainer_UnPaused;
             mContainer.OnPaused += mContainer_OnPaused;
-            mContainer.LengthChange += mContainer_LengthChange;
             mContainer.SequenceFinished += mContainer_SequenceFinished;
             mContainer.FlythroughLoaded += mContainer_FlythroughLoaded;
             mContainer.FlythroughLoading += mContainer_FlythroughLoading;
+
             Disposed += new EventHandler(FlythroughPanel_Disposed);
             HandleCreated += new EventHandler(FlythroughPanel_HandleCreated);
 
@@ -96,11 +101,7 @@ namespace Chimera.Flythrough.GUI {
         }
 
         void FlythroughPanel_Disposed(object sender, EventArgs e) {
-            mContainer.TimeChange -= mContainer_TickListener;
-            mContainer.LengthChange -= mContainer_LengthChange;
-            mContainer.SequenceFinished -= mContainer_SequenceFinished;
-            mContainer.FlythroughLoaded -= mContainer_FlythroughLoaded;
-            mContainer.FlythroughLoading -= mContainer_FlythroughLoading;
+            mContainer.TimeChange -= mTickListener;
         }
 
         void mContainer_FlythroughLoading() {
@@ -297,6 +298,25 @@ namespace Chimera.Flythrough.GUI {
 
         private void stepButton_Click(object sender, EventArgs e) {
             mContainer.Step();
+        }
+
+        private TabPage mPage;
+        private TabControl mTabContainer;
+
+        private void FlythroughPanel_Load(object sender, EventArgs e) {
+            mPage = (TabPage)Parent;
+            mTabContainer = (TabControl)Parent.Parent;
+
+            mTabContainer.TabIndexChanged += new EventHandler(mTabContainer_TabIndexChanged);
+            mTabContainer_TabIndexChanged(mTabContainer, null);
+        }
+
+        void mTabContainer_TabIndexChanged(object sender, EventArgs e) {
+            if (mPage == mTabContainer.SelectedTab) {
+                mContainer.TimeChange += mTickListener;
+            } else {
+                mContainer.TimeChange -= mTickListener;
+            }
         }
     }
 }

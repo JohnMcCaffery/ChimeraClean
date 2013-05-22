@@ -29,7 +29,7 @@ namespace Chimera.Config {
         public bool MouseEnabled;
 
         public override string Group {
-            get { return "Inputs"; }
+            get { return "Plugins"; }
         }
 
         protected override void InitConfig() {

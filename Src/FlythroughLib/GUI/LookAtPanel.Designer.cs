@@ -150,6 +150,7 @@ namespace Chimera.Flythrough.GUI {
             this.MinimumSize = new System.Drawing.Size(114, 207);
             this.Name = "LookAtPanel";
             this.Size = new System.Drawing.Size(114, 207);
+            this.VisibleChanged += new System.EventHandler(this.LookAtPanel_VisibleChanged);
             ((System.ComponentModel.ISupportInitialize)(this.lengthValue)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

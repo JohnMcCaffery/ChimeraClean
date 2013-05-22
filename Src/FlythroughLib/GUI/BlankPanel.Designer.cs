@@ -101,6 +101,7 @@ namespace Chimera.Flythrough.GUI {
             this.MinimumSize = new System.Drawing.Size(130, 48);
             this.Name = "BlankPanel";
             this.Size = new System.Drawing.Size(130, 48);
+            this.VisibleChanged += new System.EventHandler(this.BlankPanel_VisibleChanged);
             ((System.ComponentModel.ISupportInitialize)(this.lengthValue)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

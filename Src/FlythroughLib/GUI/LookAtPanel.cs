@@ -81,5 +81,14 @@ namespace Chimera.Flythrough.GUI {
             if (mEvent != null)
                 mEvent.Container.Coordinator.Update(mEvent.Target, Vector3.Zero, new Rotation(mEvent.Container.Coordinator.Orientation), Rotation.Zero);
         }
+
+        private void LookAtPanel_VisibleChanged(object sender, EventArgs e) {
+            if (Visible) {
+                mEvent.TimeChange += mTimeChangeListener;
+                progressBar.Maximum = mEvent.Length;
+                progressBar.Value = mEvent.Time;
+            } else
+                mEvent.TimeChange -= mTimeChangeListener;
+        }
     }
 }

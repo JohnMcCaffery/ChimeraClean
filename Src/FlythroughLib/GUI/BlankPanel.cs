@@ -28,6 +28,7 @@ using System.Windows.Forms;
 
 namespace Chimera.Flythrough.GUI {
     public partial class BlankPanel<T> : UserControl {
+        private Action<FlythroughEvent<T>, int> mTimeChangeListener;
         private BlankEvent<T> mEvent;
 
         public BlankPanel() {
@@ -44,12 +45,21 @@ namespace Chimera.Flythrough.GUI {
                 lengthValue.Value = mEvent.Length;
 
             lengthValue.ValueChanged += (source, args) => mEvent.Length = (int)lengthValue.Value;
-            evt.TimeChange += (e, time) => {
+            mTimeChangeListener = (e, time) => {
                 Invoke(new Action(() => {
                     progressBar.Maximum = evt.Length;
                     progressBar.Value = evt.Time;
                 }));
             };
+        }
+
+        private void BlankPanel_VisibleChanged(object sender, EventArgs e) {
+            if (Visible) {
+                mEvent.TimeChange += mTimeChangeListener;
+                progressBar.Maximum = mEvent.Length;
+                progressBar.Value = mEvent.Time;
+            } else
+                mEvent.TimeChange -= mTimeChangeListener;
         }
     }
 }

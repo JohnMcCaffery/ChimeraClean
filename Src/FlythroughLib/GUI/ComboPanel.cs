@@ -33,8 +33,10 @@ namespace Chimera.Flythrough.GUI {
         private ComboEvent mEvent;
         private UserControl mCurrentPositionPanel;
         private UserControl mCurrentOrientationPanel;
-        private Action<FlythroughEvent<Vector3>, int> mPositionTimeChanged;
-        private Action<FlythroughEvent<Rotation>, int> mOrientationTimeChanged;
+        private Action<FlythroughEvent<Vector3>, FlythroughEvent<Vector3>> mPositionEvtChanged;
+        private Action<FlythroughEvent<Rotation>, FlythroughEvent<Rotation>> mOrientationEvtChanged;
+        //private Action<FlythroughEvent<Vector3>, int> mPositionTimeChanged;
+        //private Action<FlythroughEvent<Rotation>, int> mOrientationTimeChanged;
         private bool mGuiUpdate;
 
         public ComboPanel() {
@@ -45,10 +47,10 @@ namespace Chimera.Flythrough.GUI {
             : this() {
             mEvent = evt;
 
-            mPositionTimeChanged = new Action<FlythroughEvent<Vector3>, int>(positionEvt_TimeChanged);
-            mOrientationTimeChanged = new Action<FlythroughEvent<Rotation>, int>(orientationEvt_TimeChanged);
-            mEvent.Positions.CurrentEventChange += new Action<FlythroughEvent<Vector3>,FlythroughEvent<Vector3>>(Positions_CurrentEventChange);
-            mEvent.Orientations.CurrentEventChange += new Action<FlythroughEvent<Rotation>,FlythroughEvent<Rotation>>(Orientations_CurrentEventChange);
+            //mPositionTimeChanged = new Action<FlythroughEvent<Vector3>, int>(positionEvt_TimeChanged);
+            //mOrientationTimeChanged = new Action<FlythroughEvent<Rotation>, int>(orientationEvt_TimeChanged);
+            mPositionEvtChanged += new Action<FlythroughEvent<Vector3>,FlythroughEvent<Vector3>>(Positions_CurrentEventChange);
+            mOrientationEvtChanged += new Action<FlythroughEvent<Rotation>,FlythroughEvent<Rotation>>(Orientations_CurrentEventChange);
 
             foreach (var e in mEvent.Positions) {
                 AddEvent(e, positionsList, positionPanel);
@@ -57,6 +59,7 @@ namespace Chimera.Flythrough.GUI {
             }
         }
 
+        /*
         private void positionEvt_TimeChanged(FlythroughEvent<Vector3> evt, int time) {
             TimeChanged(evt, positionsList);
         }
@@ -69,15 +72,16 @@ namespace Chimera.Flythrough.GUI {
             if (!mGuiUpdate && !IsDisposed && Created)
                 Invoke(new Action(() => { if (list.SelectedItem != evt) list.SelectedItem = evt; }));
         }
+        */
 
         private void AddEvent(FlythroughEvent<Vector3> evt) {
-            evt.TimeChange += mPositionTimeChanged;
+            //evt.TimeChange += mPositionTimeChanged;
             mEvent.AddEvent(evt);
             AddEvent(evt, positionsList, positionPanel);
         }
 
         private void AddEvent(FlythroughEvent<Rotation> evt) {
-            evt.TimeChange += mOrientationTimeChanged;
+            //evt.TimeChange += mOrientationTimeChanged;
             mEvent.AddEvent(evt);
             AddEvent(evt, orientationsList, orientationPanel);
         }
@@ -92,13 +96,13 @@ namespace Chimera.Flythrough.GUI {
         }
 
         private void RemoveEvent(FlythroughEvent<Vector3> evt) {
-            evt.TimeChange -= mPositionTimeChanged;
+            //evt.TimeChange -= mPositionTimeChanged;
             mEvent.RemoveEvent(evt);
             RemoveEvent(evt, positionsList, positionPanel);
         }
 
         private void RemoveEvent(FlythroughEvent<Rotation> evt) {
-            evt.TimeChange -= mOrientationTimeChanged;
+            //evt.TimeChange -= mOrientationTimeChanged;
             mEvent.RemoveEvent(evt);
             RemoveEvent(evt, orientationsList, orientationPanel);
         }
@@ -239,6 +243,18 @@ namespace Chimera.Flythrough.GUI {
         private void copyCurrentPairButton_Click(object sender, EventArgs e) {
             AddEvent(new MoveToEvent(mEvent.Container, 5000, mEvent.Container.Coordinator.Position));
             AddEvent(new RotateToEvent(mEvent.Container, 5000, new Rotation(mEvent.Container.Coordinator.Orientation)));
+        }
+
+        private void ComboPanel_VisibleChanged(object sender, EventArgs e) {
+            if (Visible) {
+                mEvent.CurrentOrientationEventChange += mOrientationEvtChanged;
+                mEvent.CurrentPositionEventChange += mPositionEvtChanged;
+                positionsList.SelectedItem = mEvent.CurrentPosition;
+                orientationsList.SelectedItem = mEvent.CurrentOrientation;
+            } else {
+                mEvent.CurrentOrientationEventChange -= mOrientationEvtChanged;
+                mEvent.CurrentPositionEventChange -= mPositionEvtChanged;
+            }
         }
     }
 }

@@ -31,6 +31,7 @@ using Chimera.Util;
 namespace Chimera.Flythrough.GUI {
     public partial class MoveToPanel : UserControl {
         private MoveToEvent mEvent;
+        private Action<FlythroughEvent<Vector3>, int> mTimeChangeListener;
 
         public MoveToPanel() {
             InitializeComponent();
@@ -55,15 +56,12 @@ namespace Chimera.Flythrough.GUI {
                 mEvent.Container.Coordinator.Update(mEvent.Target, Vector3.Zero, mEvent.Container.Coordinator.Orientation, Rotation.Zero);
             };
             lengthValue.ValueChanged += (source, args) => mEvent.Length = (int)lengthValue.Value;
-            mChangeListener = new Action<FlythroughEvent<Vector3>,int>(evt_TimeChange);
-            mEvent.TimeChange += mChangeListener;
+            mTimeChangeListener = new Action<FlythroughEvent<Vector3>,int>(evt_TimeChange);
         }
-
-        private Action<FlythroughEvent<Vector3>, int> mChangeListener;
 
         void MoveToPanel_Disposed(object sender, EventArgs e) {
             //mEvent.TimeChange -= evt_TimeChange;
-            mEvent.TimeChange -= mChangeListener;
+            mEvent.TimeChange -= mTimeChangeListener;
         }
 
         private void evt_TimeChange(FlythroughEvent<Vector3> evt, int time) {
@@ -77,6 +75,15 @@ namespace Chimera.Flythrough.GUI {
         private void moveToTakeCurrentButton_Click(object sender, EventArgs e) {
             mEvent.Target = mEvent.Container.Coordinator.Position;
             targetVectorPanel.Value = mEvent.Target;
+        }
+
+        private void MoveToPanel_VisibleChanged(object sender, EventArgs e) {
+            if (Visible) {
+                mEvent.TimeChange += mTimeChangeListener;
+                progressBar.Maximum = mEvent.Length;
+                progressBar.Value = mEvent.Time;
+            } else
+                mEvent.TimeChange -= mTimeChangeListener;
         }
     }
 }

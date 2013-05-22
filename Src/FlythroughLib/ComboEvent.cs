@@ -239,5 +239,9 @@ namespace Chimera.Flythrough {
                 dump += "  No current event";
             return dump;
         }
+
+        public object CurrentPosition { get { return mPositionSequence.CurrentEvent; } }
+
+        public object CurrentOrientation { get { return mOrientationSequence.CurrentEvent; } }
     }
 }

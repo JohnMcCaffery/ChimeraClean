@@ -67,7 +67,6 @@ namespace Chimera.Overlay {
             ProcessWrangler.Dump(Statistics, reason + ".html");
         }
 
-        private bool mEnabled;
 
         #region ISystemInput members
 
@@ -88,11 +87,25 @@ namespace Chimera.Overlay {
 
         public bool Enabled {
             get {
-                return mEnabled;
+                return mConfig.LaunchOverlay;
             }
             set {
-                if (mEnabled != value) {
-                    mEnabled = value;
+                if (mConfig.LaunchOverlay != value) {
+                    if (mConfig.LaunchOverlay != value) {
+                        mConfig.LaunchOverlay = value;
+                        foreach (var manager in mWindowManagers.Values) {
+                            if (value) {
+                                manager.Launch();
+                                if (OverlayLaunched != null)
+                                    OverlayLaunched();
+                            } else {
+                                manager.Close();
+                                if (OverlayClosed != null)
+                                    OverlayClosed();
+                            }
+                        }
+                    }
+                    mConfig.LaunchOverlay = value;
                     if (EnabledChanged != null)
                         EnabledChanged(this, value);
                 }

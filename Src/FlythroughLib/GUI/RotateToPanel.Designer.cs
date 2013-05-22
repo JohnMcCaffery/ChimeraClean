@@ -43,7 +43,7 @@ namespace Chimera.Flythrough.GUI {
         /// </summary>
         private void InitializeComponent() {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RotateToPanel));
-            Chimera.Util.Rotation rotation4 = new Chimera.Util.Rotation();
+            Chimera.Util.Rotation rotation1 = new Chimera.Util.Rotation();
             this.rotateToTakeCurrentButton = new System.Windows.Forms.Button();
             this.lengthValue = new System.Windows.Forms.NumericUpDown();
             this.Length = new System.Windows.Forms.Label();
@@ -113,16 +113,17 @@ namespace Chimera.Flythrough.GUI {
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.rotationPanel.Location = new System.Drawing.Point(0, 0);
             this.rotationPanel.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("rotationPanel.LookAtVector")));
+            this.rotationPanel.MinimumSize = new System.Drawing.Size(252, 95);
             this.rotationPanel.Name = "rotationPanel";
             this.rotationPanel.Pitch = 0D;
             this.rotationPanel.Quaternion = ((OpenMetaverse.Quaternion)(resources.GetObject("rotationPanel.Quaternion")));
-            this.rotationPanel.Size = new System.Drawing.Size(133, 95);
+            this.rotationPanel.Size = new System.Drawing.Size(252, 95);
             this.rotationPanel.TabIndex = 24;
-            rotation4.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("rotation4.LookAtVector")));
-            rotation4.Pitch = 0D;
-            rotation4.Quaternion = ((OpenMetaverse.Quaternion)(resources.GetObject("rotation4.Quaternion")));
-            rotation4.Yaw = 0D;
-            this.rotationPanel.Value = rotation4;
+            rotation1.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("rotation1.LookAtVector")));
+            rotation1.Pitch = 0D;
+            rotation1.Quaternion = ((OpenMetaverse.Quaternion)(resources.GetObject("rotation1.Quaternion")));
+            rotation1.Yaw = 0D;
+            this.rotationPanel.Value = rotation1;
             this.rotationPanel.Yaw = 0D;
             // 
             // RotateToPanel
@@ -137,6 +138,7 @@ namespace Chimera.Flythrough.GUI {
             this.MinimumSize = new System.Drawing.Size(133, 179);
             this.Name = "RotateToPanel";
             this.Size = new System.Drawing.Size(133, 179);
+            this.VisibleChanged += new System.EventHandler(this.RotateToPanel_VisibleChanged);
             ((System.ComponentModel.ISupportInitialize)(this.lengthValue)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

@@ -359,6 +359,7 @@ namespace Chimera.Flythrough.GUI {
             this.MinimumSize = new System.Drawing.Size(740, 320);
             this.Name = "ComboPanel";
             this.Size = new System.Drawing.Size(740, 320);
+            this.VisibleChanged += new System.EventHandler(this.ComboPanel_VisibleChanged);
             this.positionsContextMenu.ResumeLayout(false);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);

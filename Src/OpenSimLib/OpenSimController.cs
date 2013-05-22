@@ -272,6 +272,7 @@ namespace Chimera.OpenSim {
         }
 
         void mProxyController_OnClientLoggedIn(object sender, EventArgs e) {
+            mViewerController.Monitor = mWindow.Monitor;
             if (mConfig.Fullscreen)
                 mViewerController.FullScreen = true;
 

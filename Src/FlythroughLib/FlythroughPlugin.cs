@@ -345,8 +345,9 @@ namespace Chimera.Flythrough {
 
         public UserControl ControlPanel {
             get {
-                if (mPanel == null)
+                if (mPanel == null) {
                     mPanel = new FlythroughPanel(this);
+                }
                 return mPanel;
             }
         }

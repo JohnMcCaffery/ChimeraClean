@@ -59,9 +59,10 @@ namespace Chimera.Kinect {
         private Condition mOnScreenConditionLeft;
         private PointF mLocation = new PointF(-1f, -1f);
         private RectangleF mBounds = new RectangleF(0f, 0f, 1f, 1f);
-        private bool mOnScreen;
         private bool mEnabled = true;
         private bool mListening;
+        //TODO add init of this to the config
+        private string mWindow = "MainWindow";
 
         private WindowOverlayManager mManager;
         private OverlayPlugin mStateManager;
@@ -92,7 +93,7 @@ namespace Chimera.Kinect {
         private static readonly int ANCHOR_SMOOTHING_FRAMES = 15;
         private static readonly int ANCHOR = Nui.Hip_Centre;
 
-        public SimpleKinectCursor(OverlayPlugin manager) {
+        public SimpleKinectCursor() {
             mSmoothingFactor = Scalar.Create(HAND_SMOOTHING_FRAMES);
             /*
             mHandR = test ? Vector.Create("HandR", 0f, 0f, 0f) : Nui.smooth(Nui.joint(Nui.Hand_Right), mSmoothingFactor);
@@ -140,11 +141,9 @@ namespace Chimera.Kinect {
                 mLocation = new PointF(x, y);
 
                 if (mBounds.Contains(mLocation) && !OnScreen) {
-                    mOnScreen = true;
                     if (CursorEnter != null && mEnabled)
                         CursorEnter(this);
                 } else if (!mBounds.Contains(mLocation) && OnScreen) {
-                    mOnScreen = false;
                     if (CursorLeave != null && mEnabled)
                         CursorLeave(this);
                 }
@@ -164,11 +163,6 @@ namespace Chimera.Kinect {
             mY = 1f - Nui.ifScalar(C.And(mOnScreenConditionLeft, !mOnScreenConditionRight), mConstrainedYLeft, mConstrainedYRight);
             //mY = 1f - mConstrainedYRight;
 
-            if (!mListening) {
-                mListening = true;
-                Nui.Tick += new ChangeDelegate(Nui_Tick);
-                Nui.SkeletonLost += new SkeletonTrackDelegate(Nui_SkeletonLost);
-            }
         }
 
         void Nui_SkeletonLost() {
@@ -227,16 +221,19 @@ namespace Chimera.Kinect {
         private Action<Window, EventArgs> mWindowAddedListener;
 
         public void Init(Coordinator coordinator) {
-            mWindowAddedListener = new Action<Window, EventArgs>(coordinator_WindowAdded);
-            coordinator.WindowAdded += mWindowAddedListener;
+            if (!coordinator.HasPlugin<OverlayPlugin>())
+                throw new ArgumentException("Unable to load kinect cursor. Overlay plugin is not loaded.");
+            mStateManager = coordinator.GetPlugin<OverlayPlugin>();
+            if (coordinator.HasWindow(mWindow) != null) {
+                mManager = mStateManager[mWindow];
+                Nui.Tick += new ChangeDelegate(Nui_Tick);
+                Nui.SkeletonLost += new SkeletonTrackDelegate(Nui_SkeletonLost);
+            } else {
+                mWindowAddedListener = new Action<Chimera.Window, EventArgs>(coordinator_WindowAdded);
+                coordinator.WindowAdded += mWindowAddedListener;
+            }
             Init();
         }
-
-        private void coordinator_WindowAdded(Window window, EventArgs args) {
-            mManager = mStateManager[window.Name];
-            window.Coordinator.WindowAdded -= mWindowAddedListener;
-        }
-
         #endregion
 
         #region IPlugin Members
@@ -253,6 +250,22 @@ namespace Chimera.Kinect {
 
         public void Draw(Graphics graphics, Func<Vector3, Point> to2D, Action redraw, Perspective perspective) { }
 
-        #endregion
+        #endregion
+        private void coordinator_WindowAdded(Window window, EventArgs args) {
+            if (window.Name == mWindow) {
+                mManager = mStateManager[window.Name];
+                window.Coordinator.WindowAdded -= mWindowAddedListener;
+                Listen();
+            }
+        }
+
+        private void Listen() {
+            if (!mListening) {
+                mListening = true;
+                Nui.Tick += new ChangeDelegate(Nui_Tick);
+                Nui.SkeletonLost += new SkeletonTrackDelegate(Nui_SkeletonLost);
+            }
+        }
+
     }
 }

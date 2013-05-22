@@ -383,6 +383,7 @@ namespace Chimera.Flythrough.GUI {
             this.Controls.Add(this.timeSlider);
             this.Name = "FlythroughPanel";
             this.Size = new System.Drawing.Size(531, 348);
+            this.Load += new System.EventHandler(this.FlythroughPanel_Load);
             this.eventsContextMenu.ResumeLayout(false);
             this.eventPanel.ResumeLayout(false);
             this.startPanel.ResumeLayout(false);

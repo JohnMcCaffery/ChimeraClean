@@ -106,25 +106,6 @@ namespace Chimera.Overlay {
                 manager.Launch();
         }
 
-        public bool Launch {
-            get { return mConfig.LaunchOverlay; }
-            set {
-                if (mConfig.LaunchOverlay != value) {
-                    mConfig.LaunchOverlay = value;
-                    foreach (var manager in mWindowManagers.Values)
-                        if (value) {
-                            manager.Launch();
-                            if (OverlayLaunched != null)
-                                OverlayLaunched();
-                        } else {
-                            manager.Close();
-                            if (OverlayClosed != null)
-                                OverlayClosed();
-                        }
-                }
-            }
-        }
-
         public WindowOverlayManager this[string windowName] {
             get { return mWindowManagers[windowName]; }
         }

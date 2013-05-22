@@ -76,7 +76,7 @@ namespace Chimera.Config {
         }
 
         internal bool PluginEnabled(ISystemPlugin plugin) {
-            return Get(true, plugin.Name + "Enabled", true, "Find out whether a plugin is enabled.");
+            return Get("Plugins", plugin.Name, true, "Set whether a plugin is enabled.");
         }
     }
 }

@@ -30,6 +30,7 @@ using OpenMetaverse;
 
 namespace Chimera.Flythrough.GUI {
     public partial class RotateToPanel : UserControl {
+        private Action<FlythroughEvent<Rotation>, int> mTimeChangeListener;
         private RotateToEvent mEvent;
 
         public RotateToPanel() {
@@ -48,7 +49,7 @@ namespace Chimera.Flythrough.GUI {
                 mEvent.Target = rotationPanel.Value;
                 mEvent.Container.Coordinator.Update(mEvent.Container.Coordinator.Position, Vector3.Zero, rotationPanel.Value, Rotation.Zero);
             };
-            evt.TimeChange += (source, args) => {
+            mTimeChangeListener = (source, args) => {
                 Invoke(new Action(() => {
                     progressBar.Maximum = evt.Length;
                     progressBar.Value = evt.Time;
@@ -58,6 +59,15 @@ namespace Chimera.Flythrough.GUI {
 
         private void rotateToTakeCurrentButton_Click(object sender, EventArgs e) {
             rotationPanel.Value = new Rotation(mEvent.Container.Coordinator.Orientation);
+        }
+
+        private void RotateToPanel_VisibleChanged(object sender, EventArgs e) {
+            if (Visible) {
+                mEvent.TimeChange += mTimeChangeListener;
+                progressBar.Maximum = mEvent.Length;
+                progressBar.Value = mEvent.Time;
+            } else
+                mEvent.TimeChange -= mTimeChangeListener;
         }
     }
 }

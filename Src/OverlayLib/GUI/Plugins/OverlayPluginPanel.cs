@@ -19,8 +19,6 @@ namespace Chimera.Overlay.GUI.Plugins {
         public OverlayPluginPanel(OverlayPlugin overlayPlugin)
             : this() {
             mOverlayPlugin = overlayPlugin;
-            if (mOverlayPlugin.Launch)
-                launchOverlayButton.Text = "Close Overlay";
 
             if (overlayPlugin.CurrentState != null)
                 stateList.SelectedItem = overlayPlugin.CurrentState;
@@ -65,16 +63,6 @@ namespace Chimera.Overlay.GUI.Plugins {
         private void changeStateButton_Click(object sender, EventArgs e) {
             if (stateList.SelectedItem != null)
                 mOverlayPlugin.CurrentState = (State) stateList.SelectedItem;
-        }
-
-        private void launchOverlayButton_Click(object sender, EventArgs e) {
-            if (mOverlayPlugin.Launch) {
-                mOverlayPlugin.Launch = false;
-                launchOverlayButton.Text = "Launch Overlay";
-            } else {
-                mOverlayPlugin.Launch = true;
-                launchOverlayButton.Text = "Close Overlay";
-            }
         }
     }
 }

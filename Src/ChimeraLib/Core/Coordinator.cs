@@ -165,7 +165,7 @@ namespace Chimera {
         /// <summary>
         /// The windows which define where, in real space, each 'view' onto the virtual space is located.
         /// </summary>
-        private readonly List<Window> mWindows = new List<Window>();
+        private readonly Dictionary<string, Window> mWindows = new Dictionary<string, Window>();
 
         /// <summary>
         /// File to log information about any crash to.
@@ -298,7 +298,11 @@ namespace Chimera {
         /// <returns>The window called 'windowName'</returns>
         /// <exception cref="InvalidOperationException">Thrown if there is no window with the given name.</exception>
         public Window this[string windowName] {
-            get { return mWindows.First(w => w.Name.Equals(windowName)); }
+            get { return mWindows[windowName]; }
+        }
+
+        public bool HasWindow(string window) {
+            return mWindows.ContainsKey(window);
         }
 
         /// <summary>
@@ -321,7 +325,7 @@ namespace Chimera {
         /// The windows which define where, in real space, each 'view' onto the virtual space is located.
         /// </summary>
         public Window[] Windows {
-            get { return mWindows.ToArray() ; }
+            get { return mWindows.Values.ToArray() ; }
         }
 
         /// <summary>
@@ -481,7 +485,7 @@ namespace Chimera {
         /// </summary>
         /// <param name="window">The window to add.</param>
         public void AddWindow(Window window) {
-            mWindows.Add(window);
+            mWindows.Add(window.Name, window);
             window.Init(this);
             if (WindowAdded != null)
                 WindowAdded(window, null);
@@ -500,7 +504,7 @@ namespace Chimera {
             foreach (var plugin in mPlugins)
                 plugin.Draw(graphics, to2D, redraw, perspective);
 
-            foreach (var window in mWindows)
+            foreach (var window in Windows)
                 window.Draw(to2D, graphics, clip, redraw, perspective);
         }
 
@@ -527,7 +531,7 @@ namespace Chimera {
                 plugin.Enabled = false;
                 plugin.Close();
             }
-            foreach (var window in mWindows)
+            foreach (var window in Windows)
                 window.Close();
 
             if (Closed != null)
@@ -563,7 +567,7 @@ namespace Chimera {
 
             if (mWindows.Count > 0) {
                 dump += String.Format("{0}{0}--------Windows--------{0}", Environment.NewLine);
-                foreach (var window in mWindows) {
+                foreach (var window in Windows) {
                     try {
                         dump += Environment.NewLine + window.State;
                     } catch (Exception ex) {

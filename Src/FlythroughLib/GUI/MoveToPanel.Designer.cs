@@ -136,6 +136,7 @@ namespace Chimera.Flythrough.GUI {
             this.MinimumSize = new System.Drawing.Size(116, 179);
             this.Name = "MoveToPanel";
             this.Size = new System.Drawing.Size(116, 179);
+            this.VisibleChanged += new System.EventHandler(this.MoveToPanel_VisibleChanged);
             ((System.ComponentModel.ISupportInitialize)(this.lengthValue)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
