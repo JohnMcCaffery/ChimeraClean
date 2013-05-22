@@ -44,7 +44,7 @@ namespace Chimera.GUI.Controls {
         /// </summary>
         private void InitializeComponent() {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(WindowPanel));
-            Chimera.Util.Rotation rotation1 = new Chimera.Util.Rotation();
+            Chimera.Util.Rotation rotation3 = new Chimera.Util.Rotation();
             this.mainTab = new System.Windows.Forms.TabControl();
             this.configTab = new System.Windows.Forms.TabPage();
             this.restartButton = new System.Windows.Forms.Button();
@@ -84,6 +84,7 @@ namespace Chimera.GUI.Controls {
             this.orientationPanel = new Chimera.GUI.RotationPanel();
             this.centrePanel = new Chimera.GUI.VectorPanel();
             this.topLeftPanel = new Chimera.GUI.VectorPanel();
+            this.drawCheck = new System.Windows.Forms.CheckBox();
             this.mainTab.SuspendLayout();
             this.configTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -146,6 +147,7 @@ namespace Chimera.GUI.Controls {
             // 
             // splitContainer1.Panel1
             // 
+            this.splitContainer1.Panel1.Controls.Add(this.drawCheck);
             this.splitContainer1.Panel1.Controls.Add(this.aspectRatioButton);
             this.splitContainer1.Panel1.Controls.Add(this.drawEyeCheck);
             this.splitContainer1.Panel1.Controls.Add(this.diagonalPanel);
@@ -197,7 +199,7 @@ namespace Chimera.GUI.Controls {
             // drawEyeCheck
             // 
             this.drawEyeCheck.AutoSize = true;
-            this.drawEyeCheck.Location = new System.Drawing.Point(160, 281);
+            this.drawEyeCheck.Location = new System.Drawing.Point(162, 291);
             this.drawEyeCheck.Name = "drawEyeCheck";
             this.drawEyeCheck.Size = new System.Drawing.Size(72, 17);
             this.drawEyeCheck.TabIndex = 37;
@@ -584,11 +586,11 @@ namespace Chimera.GUI.Controls {
             this.orientationPanel.Quaternion = ((OpenMetaverse.Quaternion)(resources.GetObject("orientationPanel.Quaternion")));
             this.orientationPanel.Size = new System.Drawing.Size(352, 95);
             this.orientationPanel.TabIndex = 1;
-            rotation1.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("rotation1.LookAtVector")));
-            rotation1.Pitch = 0D;
-            rotation1.Quaternion = ((OpenMetaverse.Quaternion)(resources.GetObject("rotation1.Quaternion")));
-            rotation1.Yaw = 0D;
-            this.orientationPanel.Value = rotation1;
+            rotation3.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("rotation3.LookAtVector")));
+            rotation3.Pitch = 0D;
+            rotation3.Quaternion = ((OpenMetaverse.Quaternion)(resources.GetObject("rotation3.Quaternion")));
+            rotation3.Yaw = 0D;
+            this.orientationPanel.Value = rotation3;
             this.orientationPanel.Yaw = 0D;
             // 
             // centrePanel
@@ -628,6 +630,17 @@ namespace Chimera.GUI.Controls {
             this.topLeftPanel.Y = 0F;
             this.topLeftPanel.Z = 0F;
             this.topLeftPanel.ValueChanged += new System.EventHandler(this.topLeftPanel_ValueChanged);
+            // 
+            // drawCheck
+            // 
+            this.drawCheck.AutoSize = true;
+            this.drawCheck.Location = new System.Drawing.Point(162, 270);
+            this.drawCheck.Name = "drawCheck";
+            this.drawCheck.Size = new System.Drawing.Size(51, 17);
+            this.drawCheck.TabIndex = 39;
+            this.drawCheck.Text = "Draw";
+            this.drawCheck.UseVisualStyleBackColor = true;
+            this.drawCheck.CheckedChanged += new System.EventHandler(this.drawCheck_CheckedChanged);
             // 
             // WindowPanel
             // 
@@ -696,5 +709,6 @@ namespace Chimera.GUI.Controls {
         private System.Windows.Forms.CheckBox drawEyeCheck;
         private ProjectorPanel projectorPanel;
         private System.Windows.Forms.Button aspectRatioButton;
+        private System.Windows.Forms.CheckBox drawCheck;
     }
 }

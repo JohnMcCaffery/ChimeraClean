@@ -36,6 +36,8 @@ namespace Chimera.Config {
         public double Width;
 
         private string mWindow = "MainWindow";
+        public bool Draw;
+        public bool DrawEye;
 
         public WindowConfig() : base ("Windows") { }
 
@@ -62,6 +64,9 @@ namespace Chimera.Config {
             Pitch = Get(false, "Pitch", 0.0, "The pitch for the direction the monitor faces in the real world.");
             Width = Get(false, "Width", 1000.0, "The width of the window in the real world (mm).");
             Height = Get(false, "Height", 1000.0, "The height of the window in the real world (mm).");
+
+            Draw = Get(false, "Draw", true, "Whether to draw the window on the diagram.");
+            DrawEye = Get(false, "DrawEye", true, "Whether to draw perspective lines for the window on the diagram.");
         }
     }
 }

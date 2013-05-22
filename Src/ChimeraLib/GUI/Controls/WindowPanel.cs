@@ -93,6 +93,7 @@ namespace Chimera.GUI.Controls {
                 diagonalPanel.Value = (float) (mWindow.Diagonal / mScale);
                 fovHPanel.Value = (float)(mWindow.HFieldOfView * (180.0 / Math.PI));
                 fovVPanel.Value = (float)(mWindow.VFieldOfView * (180.0 / Math.PI));
+                drawCheck.Checked = mWindow.DrawWindow;
                 drawEyeCheck.Checked = mWindow.DrawEye;
 
                 switch (mWindow.Projection) {
@@ -215,6 +216,10 @@ namespace Chimera.GUI.Controls {
 
         private void aspectRatioButton_Click(object sender, EventArgs e) {
             mWindow.AspectRatio = decimal.ToDouble(aspectRatioHValue.Value / aspectRatioWValue.Value);
+        }
+
+        private void drawCheck_CheckedChanged(object sender, EventArgs e) {
+            mWindow.DrawWindow = drawCheck.Checked;
         }
     }
 }

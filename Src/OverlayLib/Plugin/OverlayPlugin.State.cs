@@ -158,6 +158,8 @@ namespace Chimera.Overlay {
         public State CurrentState {
             get { return mCurrentState; }
             set {
+                if (mCurrentState != null)
+                    mCurrentState.Active = false;
                 if (mFirstState == null)
                     mFirstState = value;
                 if (mCurrentTransition != null)

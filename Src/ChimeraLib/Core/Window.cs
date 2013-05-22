@@ -119,6 +119,14 @@ namespace Chimera {
         /// Whether to include the eye position and resulting perspective lines when drawing the diagram.
         /// </summary>
         private bool mDrawEye = true;
+        /// <summary>
+        /// Whether to draw this window onto the diagram.
+        /// </summary>
+        private bool mDraw = true;
+        /// <summary>
+        /// Redraw functions to force the GUI to re-draw;
+        /// </summary>
+        private HashSet<Action> mRedraws = new HashSet<Action>();
 
         /// <summary>
         /// Triggered whenever the position of this input changes.
@@ -145,6 +153,8 @@ namespace Chimera {
             mTopLeft = cfg.TopLeft;
             mOrientation = new Rotation(cfg.Pitch, cfg.Yaw);
             mCentre = Centre;
+            mDraw = cfg.Draw;
+            mDrawEye = cfg.DrawEye;
 
             mOrientation.Changed += mOrientation_Changed;
 
@@ -176,6 +186,17 @@ namespace Chimera {
         public IOutput Output {
             get { return mOutput ; }
             set { mOutput  = value; }
+        }
+        /// <summary>
+        /// Whether to draw the eye and resulting perspective lines when drawing the diagram.
+        /// </summary>
+        public bool DrawWindow {
+            get { return mDraw; }
+            set { 
+                mDraw = value;
+                foreach (var redraw in mRedraws)
+                    redraw();
+            }
         }
 
         /// <summary>
@@ -183,7 +204,11 @@ namespace Chimera {
         /// </summary>
         public bool DrawEye {
             get { return mDrawEye; }
-            set { mDrawEye = value; }
+            set { 
+                mDrawEye = value;
+                foreach (var redraw in mRedraws)
+                    redraw();
+            }
         }
 
         /// <summary>
@@ -444,6 +469,12 @@ namespace Chimera {
         /// <param name="perspective">The perspective to render along.</param>
         /// <param name="graphics">The graphics object to draw with.</param>
         public void Draw(Func<Vector3, Point> to2D, Graphics graphics, Rectangle clipRectangle, Action redraw, Perspective perspective) {
+            if (!mRedraws.Contains(redraw))
+                mRedraws.Add(redraw);
+
+            if (!mDraw)
+                return;
+
             Vector3 top = new Vector3(0f, (float)mWidth, 0f) * mOrientation.Quaternion;
             Vector3 side = new Vector3(0f, 0f, (float)-mHeight) * mOrientation.Quaternion;
             Vector3 miniTop = Vector3.Zero;
