@@ -72,16 +72,16 @@
     <Reference Include="Nini">
       <HintPath>..\..\Lib\Nini.dll</HintPath>
     </Reference>
-    <Reference Include="OpenMetaverse">
+    <Reference Include="OpenMetaverse, Version=0.0.0.33123, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Lib\OpenMetaverse.dll</HintPath>
     </Reference>
-    <Reference Include="OpenMetaverse.Skeletal">
-      <HintPath>..\..\Lib\OpenMetaverse.Skeletal.dll</HintPath>
-    </Reference>
-    <Reference Include="OpenMetaverse.StructuredData">
+    <Reference Include="OpenMetaverse.StructuredData, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Lib\OpenMetaverse.StructuredData.dll</HintPath>
     </Reference>
-    <Reference Include="OpenMetaverseTypes">
+    <Reference Include="OpenMetaverseTypes, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Lib\OpenMetaverseTypes.dll</HintPath>
     </Reference>
     <Reference Include="System" />

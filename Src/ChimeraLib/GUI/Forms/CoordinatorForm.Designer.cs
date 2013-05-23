@@ -79,6 +79,7 @@ namespace Chimera.GUI.Forms {
             this.shortestTickLabel = new System.Windows.Forms.Label();
             this.meanTickLabel = new System.Windows.Forms.Label();
             this.tpsLabel = new System.Windows.Forms.Label();
+            this.enableUpdates = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.hSplit)).BeginInit();
             this.hSplit.Panel1.SuspendLayout();
             this.hSplit.Panel2.SuspendLayout();
@@ -316,6 +317,7 @@ namespace Chimera.GUI.Forms {
             // 
             // globalBox
             // 
+            this.globalBox.Controls.Add(this.enableUpdates);
             this.globalBox.Controls.Add(this.deltaModeButton);
             this.globalBox.Controls.Add(this.absoluteModeButton);
             this.globalBox.Controls.Add(this.eyePositionPanel);
@@ -580,6 +582,17 @@ namespace Chimera.GUI.Forms {
             this.tpsLabel.TabIndex = 0;
             this.tpsLabel.Text = "Ticks / Second";
             // 
+            // enableUpdates
+            // 
+            this.enableUpdates.AutoSize = true;
+            this.enableUpdates.Location = new System.Drawing.Point(6, 291);
+            this.enableUpdates.Name = "enableUpdates";
+            this.enableUpdates.Size = new System.Drawing.Size(101, 17);
+            this.enableUpdates.TabIndex = 6;
+            this.enableUpdates.Text = "Control Enabled";
+            this.enableUpdates.UseVisualStyleBackColor = true;
+            this.enableUpdates.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
+            // 
             // CoordinatorForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -664,5 +677,6 @@ namespace Chimera.GUI.Forms {
         private System.Windows.Forms.RadioButton deltaModeButton;
         private System.Windows.Forms.RadioButton absoluteModeButton;
         private System.Windows.Forms.RichTextBox overlayStatsBox;
+        private System.Windows.Forms.CheckBox enableUpdates;
     }
 }

@@ -105,6 +105,7 @@ namespace Chimera.GUI.Forms {
             mTickListener = new Action(mCoordinator_Tick);
 
             mCoordinator.CameraModeChanged += mCameraModeChangedListener;
+            mCoordinator.EnableUpdatesChanged += new Action(mCoordinator_EnableUpdatesChanged);
             mCoordinator.CameraUpdated += mCameraUpdatedListener;
             mCoordinator.DeltaUpdated += mDeltaUpdatedListener;
             mCoordinator.EyeUpdated += mEyeUpdatedListener;
@@ -119,6 +120,7 @@ namespace Chimera.GUI.Forms {
             virtualPositionPanel.Value = mCoordinator.Position;
             virtualOrientationPanel.Value = orientation;
             eyePositionPanel.Value = mCoordinator.EyePosition;
+            enableUpdates.Checked = mCoordinator.EnableUpdates;
 
             mHeightmap = new Bitmap(mCoordinator.Heightmap.GetLength(0), mCoordinator.Heightmap.GetLength(1), PixelFormat.Format24bppRgb);
             mHeightmapPerspective = new HeightmapPerspective(mCoordinator, heightmapPanel);
@@ -173,6 +175,10 @@ namespace Chimera.GUI.Forms {
             }
             
             inputsTab.Controls.Add(statisticsTab);
+        }
+
+        void mCoordinator_EnableUpdatesChanged() {
+            Invoke(() => enableUpdates.Checked = mCoordinator.EnableUpdates);
         }
 
         private void mCoordinator_WindowAdded(Window window, EventArgs args) {
@@ -766,6 +772,10 @@ namespace Chimera.GUI.Forms {
                 virtualOrientationPanel.Yaw = mCoordinator.OrientationDelta.Yaw;
                 mExternalUpdate = false;
             }
+        }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e) {
+            mCoordinator.EnableUpdates = enableUpdates.Checked;
         }
     }
 }

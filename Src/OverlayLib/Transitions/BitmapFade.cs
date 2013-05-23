@@ -105,6 +105,10 @@ namespace Chimera.Overlay.Transitions {
 
         #region IImageTransition Members
 
+        public void Cancel() {
+            mCompleted = true;
+        }
+
         #endregion
 
         public virtual Rectangle Clip {

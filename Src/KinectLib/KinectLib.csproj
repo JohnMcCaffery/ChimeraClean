@@ -74,7 +74,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Bin\NuiLib-DotNet.dll</HintPath>
     </Reference>
-    <Reference Include="OpenMetaverseTypes">
+    <Reference Include="OpenMetaverseTypes, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Lib\OpenMetaverseTypes.dll</HintPath>
     </Reference>
     <Reference Include="System" />

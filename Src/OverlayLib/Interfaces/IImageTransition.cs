@@ -28,5 +28,7 @@ namespace Chimera.Interfaces.Overlay {
         event Action Finished;
         void Init(Bitmap from, Bitmap to);
         void Begin();
+
+        void Cancel();
     }
 }

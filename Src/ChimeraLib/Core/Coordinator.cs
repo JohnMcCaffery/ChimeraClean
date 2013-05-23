@@ -186,6 +186,12 @@ namespace Chimera {
 
         private StatisticsServer mServer;
 
+
+        /// <summary>
+        /// Triggered whenever the ability to control the view is switched on or off.
+        /// </summary>
+        public event Action EnableUpdatesChanged;
+
         /// <summary>
         /// Triggered when the camera control mode changes.
         /// </summary>
@@ -318,7 +324,11 @@ namespace Chimera {
         /// </summary>
         public bool EnableUpdates {
             get { return mEnableUpdates; }
-            set { mEnableUpdates = value; }
+            set { 
+                mEnableUpdates = value;
+                if (EnableUpdatesChanged != null)
+                    EnableUpdatesChanged();
+            }
         }
 
         /// <summary>

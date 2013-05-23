@@ -111,7 +111,7 @@ namespace Chimera.Overlay.Transitions {
         }
 
         public override void Cancel() {
-            throw new NotImplementedException();
+            mTransition.Cancel();
         }
 
         public override bool NeedsRedrawn {
