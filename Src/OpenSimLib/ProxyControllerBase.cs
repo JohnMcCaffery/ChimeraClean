@@ -26,7 +26,7 @@ namespace Chimera.OpenSim {
         private GridProxyConfig mConfig;
 
         private readonly Dictionary<string, DateTime> mUnackedUpdates = new Dictionary<string,DateTime>();
-        private int mUnackedCountThresh = 5;
+        private int mUnackedCountThresh = 10;
         private long mUnackedDiscardMS = 1000;
 
         /// <summary>
@@ -203,13 +203,40 @@ namespace Chimera.OpenSim {
             if (mWindow.Coordinator.ControlMode == ControlMode.Absolute)
                 MarkUntracked();
 
+            //PrintTickInfo();
             ActualSetCamera();
         }
         public void SetCamera(Vector3 positionDelta, Rotation orientationDelta) {
             if (mWindow.Coordinator.ControlMode == ControlMode.Absolute)
                 MarkUntracked();
 
+            //PrintTickInfo();
             ActualSetCamera(positionDelta, orientationDelta);
+        }
+
+
+        private DateTime mLastUpdate = DateTime.Now;
+        private double mTotalMS;
+        private double mUpdates;
+        private bool mFirstSet;
+
+        private void PrintTickInfo() {
+            if (!mFirstSet) {
+                if (DateTime.Now.Subtract(mLastUpdate).TotalSeconds > 30.0) {
+                    mFirstSet = true;
+                    mLastUpdate = DateTime.Now;
+                }
+                return;
+            }
+            if (mFirstName == "Master") {
+                double diff = DateTime.Now.Subtract(mLastUpdate).TotalMilliseconds;
+                mTotalMS += diff;
+                mUpdates++;
+                double mean = mTotalMS / mUpdates;
+                if (Math.Abs(mean - diff) > 1.0)
+                    Console.WriteLine("Unexpected update. Mean: {0:0.#} - Tick: {1:0.#}.", mean, diff);
+                mLastUpdate = DateTime.Now;
+            }
         }
 
         private void MarkUntracked() {

@@ -72,7 +72,8 @@ namespace Chimera.Kinect.Overlay {
 
             mStartOrientation = new Rotation(manager.Coordinator.Orientation);
             mStartPosition = manager.Coordinator.Position;
-        }
+        }
+
         public KinectControlState(OverlayPlugin manager, XmlNode node)
             : base(GetName(node), manager) {
 

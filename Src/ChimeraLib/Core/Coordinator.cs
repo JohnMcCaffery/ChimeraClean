@@ -462,6 +462,8 @@ namespace Chimera {
                     if (CameraUpdated != null && mAlive) {
                         CameraUpdateEventArgs args = new CameraUpdateEventArgs(position, postionDelta, orientation, orientationDelta);
                         CameraUpdated(this, args);
+                        //Console.WriteLine("TickFrequency - time since update: " + (mTickLength -  DateTime.Now.Subtract(mLastUpdate).TotalMilliseconds));
+                        mLastUpdate = DateTime.Now;
                     }
                 } else if (DeltaUpdated != null && mAlive) {
                     DeltaUpdateEventArgs args = new DeltaUpdateEventArgs(postionDelta, orientationDelta);
@@ -469,6 +471,8 @@ namespace Chimera {
                 }
             }
         }
+
+        private DateTime mLastUpdate;
 
         /// <summary>
         /// Register a key press or release.

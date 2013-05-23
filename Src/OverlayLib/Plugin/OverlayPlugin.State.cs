@@ -155,6 +155,7 @@ namespace Chimera.Overlay {
                 }
                 if (mRedraw != null)
                     mRedraw();
+                Console.WriteLine("Current state set to " + mCurrentState.Name + ".");
                 if (StateChanged != null)
                     StateChanged(value);
             }

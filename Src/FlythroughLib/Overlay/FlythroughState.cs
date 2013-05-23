@@ -197,10 +197,7 @@ namespace Chimera.Flythrough.Overlay {
             return new WindowState(manager);
         }
 
-        protected override void TransitionToFinish() {
-            if (mInput.Paused)
-                TransitionToStart();
-        }
+        protected override void TransitionToFinish() { }
 
         protected override void TransitionFromStart() {
             if (mCurrentStep != null)

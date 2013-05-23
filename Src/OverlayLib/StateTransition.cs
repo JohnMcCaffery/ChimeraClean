@@ -162,6 +162,7 @@ namespace Chimera.Overlay {
         /// </summary>
         public void Begin() {
             if (mActive) {
+                Console.WriteLine("Transitioning from " + mFrom.Name + " to " + mTo.Name + ".");
                 mFrom.Active = false;
                 mTo.TransitionToStart();
                 mCompletedWindows.Clear();

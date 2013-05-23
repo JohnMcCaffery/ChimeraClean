@@ -51,7 +51,8 @@ namespace Chimera.Flythrough {
         private EventSequence<Camera> mEvents = new EventSequence<Camera>();
         private Action mTickListener;
         private Coordinator mCoordinator;
-        private FlythroughPanel mPanel;        private DateTime mLastTick = DateTime.Now;
+        private FlythroughPanel mPanel;
+        private DateTime mLastTick = DateTime.Now;
         private Camera mPrev;
         private bool mEnabled = true;
         private bool mPlaying = false;
@@ -204,11 +205,16 @@ namespace Chimera.Flythrough {
             if (mEnabled && mEvents.Length > 0) {
                 if (mEvents.CurrentEvent == null)
                     Time = 0;
-                Camera next = mEvents.CurrentEvent.Value;
-                mCoordinator.Update(next.Position, Vector3.Zero, next.Orientation, Rotation.Zero);
-                mPrev = next;
+                mCurrent = mEvents.CurrentEvent.Value;
+                mCoordinator.Update(mCurrent.Position, Vector3.Zero, mCurrent.Orientation, Rotation.Zero);
+                mPrev = mCurrent;
                 mLastTick = DateTime.Now;
-                mCoordinator.Tick += mTickListener;
+                if (true) {
+                    Thread t = new Thread(FlythroughThread);
+                    t.Name = "Flythrough thread";
+                    t.Start();
+                } else
+                    mCoordinator.Tick += mTickListener;
             }
 
             mPlaying = true;
@@ -327,16 +333,27 @@ namespace Chimera.Flythrough {
                 LengthChange(length);
         }
 
-        private void Thread() {
+        private void FlythroughThread() {
             while (mPlaying && mEvents.Length > 0) {
-                mCoordinator_Tick();
+                IncrementTime();
+                mPrev = mCurrent;
+                mCurrent = mEvents.CurrentEvent.Value;
+
+                double wait = mCoordinator.TickLength - DateTime.Now.Subtract(mLastTick).TotalMilliseconds;
+                if (wait < 0)
+                    Console.WriteLine("Flythrough Tick overran by " + (wait * -1) + "ms.");
+                else
+                    System.Threading.Thread.Sleep((int)wait);
+
+                mLastTick = DateTime.Now;
+                mCoordinator.Update(mCurrent.Position, mCurrent.Position - mPrev.Position, mCurrent.Orientation, mCurrent.Orientation - mPrev.Orientation);
             }
         }
 
         private void IncrementTime() {
             mTicking = true;
             int newTime = mEvents.Time + mCoordinator.TickLength;
-            if (mEvents.Time < newTime)
+            if (newTime < mEvents.Length)
                 Time = newTime;
             else {
                 if (mLoop)
@@ -351,18 +368,14 @@ namespace Chimera.Flythrough {
             mTicking = false;
         }
 
-        void mCoordinator_Tick() {
-            IncrementTime();
-            Camera next = mEvents.CurrentEvent.Value;
+        private Camera mCurrent;
 
-            double wait = mCoordinator.TickLength - DateTime.Now.Subtract(mLastTick).TotalMilliseconds;
-            if (wait < 0)
-                Console.WriteLine("Flythrough Tick overran by " + (wait * -1) + "ms.");
-            else
-                System.Threading.Thread.Sleep((int)wait);
-            mLastTick = DateTime.Now;
-            mCoordinator.Update(next.Position, next.Position - mPrev.Position, next.Orientation, next.Orientation - mPrev.Orientation);
-            mPrev = next;
+        void mCoordinator_Tick() {
+            mCoordinator.Update(mCurrent.Position, mCurrent.Position - mPrev.Position, mCurrent.Orientation, mCurrent.Orientation - mPrev.Orientation);
+
+            IncrementTime();
+            mPrev = mCurrent;
+            mCurrent = mEvents.CurrentEvent.Value;
         }
 
         /*
@@ -382,7 +395,6 @@ namespace Chimera.Flythrough {
                 }
             }
         }
-        */
 
         private void DoTick(int time, Camera o) {
             mEvents.Time = time;
@@ -392,6 +404,7 @@ namespace Chimera.Flythrough {
             if (TimeChange != null)
                 TimeChange(time);
         }
+        */
 
         #region ISystemPlugin Members
 

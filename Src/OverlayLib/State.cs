@@ -145,10 +145,14 @@ namespace Chimera.Overlay {
                 foreach (var window in mWindowStates.Values)
                     window.Active = value;
                 if (value) {
+                    if (Manager.CurrentTransition == null)
+                        TransitionToStart();
                     TransitionToFinish();
                     mStatistics.Begin();
                 } else {
                     TransitionFromStart();
+                    if (Manager.CurrentTransition == null)
+                        TransitionFromFinish();
                     mStatistics.Tick();
                 }
             }
