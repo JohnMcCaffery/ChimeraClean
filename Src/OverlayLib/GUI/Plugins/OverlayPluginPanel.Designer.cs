@@ -28,17 +28,11 @@
             this.stateList = new System.Windows.Forms.ListBox();
             this.changeStateButton = new System.Windows.Forms.Button();
             this.statesTab = new System.Windows.Forms.TabPage();
-            this.stateSelector = new Chimera.Overlay.GUI.StateSelector();
             this.triggersTab = new System.Windows.Forms.TabPage();
-            this.triggerSelector = new Chimera.Overlay.GUI.TriggerSelector();
             this.windowTransitionsTab = new System.Windows.Forms.TabPage();
-            this.transitionStyleSelector = new Chimera.Overlay.GUI.TransitionStyleSelector();
             this.imageTransitionsTab = new System.Windows.Forms.TabPage();
-            this.imageTransitionSelector = new Chimera.Overlay.GUI.ImageTransitionSelector();
             this.rendererTab = new System.Windows.Forms.TabPage();
-            this.selectionRendererSelector = new Chimera.Overlay.GUI.SelectionRendererSelector();
             this.featuresTab = new System.Windows.Forms.TabPage();
-            this.featureSelector = new Chimera.Overlay.GUI.FeatureSelector();
             this.factoriesTab = new System.Windows.Forms.TabPage();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
@@ -57,6 +51,12 @@
             this.label5 = new System.Windows.Forms.Label();
             this.featuresFactoryList = new System.Windows.Forms.ListBox();
             this.label6 = new System.Windows.Forms.Label();
+            this.stateSelector = new Chimera.Overlay.GUI.StateSelector();
+            this.triggerSelector = new Chimera.Overlay.GUI.TriggerSelector();
+            this.transitionStyleSelector = new Chimera.Overlay.GUI.TransitionStyleSelector();
+            this.imageTransitionSelector = new Chimera.Overlay.GUI.ImageTransitionSelector();
+            this.selectionRendererSelector = new Chimera.Overlay.GUI.SelectionRendererSelector();
+            this.featureSelector = new Chimera.Overlay.GUI.FeatureSelector();
             this.mainTab.SuspendLayout();
             this.infoTab.SuspendLayout();
             this.statesTab.SuspendLayout();
@@ -128,6 +128,7 @@
             this.stateList.Name = "stateList";
             this.stateList.Size = new System.Drawing.Size(614, 329);
             this.stateList.TabIndex = 3;
+            this.stateList.DoubleClick += new System.EventHandler(this.stateList_DoubleClick);
             // 
             // changeStateButton
             // 
@@ -152,15 +153,6 @@
             this.statesTab.Text = "States";
             this.statesTab.UseVisualStyleBackColor = true;
             // 
-            // stateSelector
-            // 
-            this.stateSelector.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.stateSelector.Location = new System.Drawing.Point(3, 3);
-            this.stateSelector.Name = "stateSelector";
-            this.stateSelector.SelectedItem = null;
-            this.stateSelector.Size = new System.Drawing.Size(620, 368);
-            this.stateSelector.TabIndex = 0;
-            // 
             // triggersTab
             // 
             this.triggersTab.Controls.Add(this.triggerSelector);
@@ -171,15 +163,6 @@
             this.triggersTab.TabIndex = 2;
             this.triggersTab.Text = "Triggers";
             this.triggersTab.UseVisualStyleBackColor = true;
-            // 
-            // triggerSelector
-            // 
-            this.triggerSelector.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.triggerSelector.Location = new System.Drawing.Point(3, 3);
-            this.triggerSelector.Name = "triggerSelector";
-            this.triggerSelector.SelectedItem = null;
-            this.triggerSelector.Size = new System.Drawing.Size(620, 368);
-            this.triggerSelector.TabIndex = 0;
             // 
             // windowTransitionsTab
             // 
@@ -192,15 +175,6 @@
             this.windowTransitionsTab.Text = "Window Transitions";
             this.windowTransitionsTab.UseVisualStyleBackColor = true;
             // 
-            // transitionStyleSelector
-            // 
-            this.transitionStyleSelector.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.transitionStyleSelector.Location = new System.Drawing.Point(3, 3);
-            this.transitionStyleSelector.Name = "transitionStyleSelector";
-            this.transitionStyleSelector.SelectedItem = null;
-            this.transitionStyleSelector.Size = new System.Drawing.Size(620, 368);
-            this.transitionStyleSelector.TabIndex = 0;
-            // 
             // imageTransitionsTab
             // 
             this.imageTransitionsTab.Controls.Add(this.imageTransitionSelector);
@@ -211,15 +185,6 @@
             this.imageTransitionsTab.TabIndex = 4;
             this.imageTransitionsTab.Text = "Image Transitions";
             this.imageTransitionsTab.UseVisualStyleBackColor = true;
-            // 
-            // imageTransitionSelector
-            // 
-            this.imageTransitionSelector.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.imageTransitionSelector.Location = new System.Drawing.Point(3, 3);
-            this.imageTransitionSelector.Name = "imageTransitionSelector";
-            this.imageTransitionSelector.SelectedItem = null;
-            this.imageTransitionSelector.Size = new System.Drawing.Size(620, 368);
-            this.imageTransitionSelector.TabIndex = 0;
             // 
             // rendererTab
             // 
@@ -232,15 +197,6 @@
             this.rendererTab.Text = "Selection Renderers";
             this.rendererTab.UseVisualStyleBackColor = true;
             // 
-            // selectionRendererSelector
-            // 
-            this.selectionRendererSelector.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.selectionRendererSelector.Location = new System.Drawing.Point(3, 3);
-            this.selectionRendererSelector.Name = "selectionRendererSelector";
-            this.selectionRendererSelector.SelectedItem = null;
-            this.selectionRendererSelector.Size = new System.Drawing.Size(620, 368);
-            this.selectionRendererSelector.TabIndex = 0;
-            // 
             // featuresTab
             // 
             this.featuresTab.Controls.Add(this.featureSelector);
@@ -251,15 +207,6 @@
             this.featuresTab.TabIndex = 6;
             this.featuresTab.Text = "Features";
             this.featuresTab.UseVisualStyleBackColor = true;
-            // 
-            // featureSelector
-            // 
-            this.featureSelector.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.featureSelector.Location = new System.Drawing.Point(3, 3);
-            this.featureSelector.Name = "featureSelector";
-            this.featureSelector.SelectedItem = null;
-            this.featureSelector.Size = new System.Drawing.Size(620, 368);
-            this.featureSelector.TabIndex = 0;
             // 
             // factoriesTab
             // 
@@ -493,6 +440,60 @@
             this.label6.Size = new System.Drawing.Size(48, 13);
             this.label6.TabIndex = 5;
             this.label6.Text = "Features";
+            // 
+            // stateSelector
+            // 
+            this.stateSelector.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.stateSelector.Location = new System.Drawing.Point(3, 3);
+            this.stateSelector.Name = "stateSelector";
+            this.stateSelector.SelectedItem = null;
+            this.stateSelector.Size = new System.Drawing.Size(620, 368);
+            this.stateSelector.TabIndex = 0;
+            // 
+            // triggerSelector
+            // 
+            this.triggerSelector.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.triggerSelector.Location = new System.Drawing.Point(3, 3);
+            this.triggerSelector.Name = "triggerSelector";
+            this.triggerSelector.SelectedItem = null;
+            this.triggerSelector.Size = new System.Drawing.Size(620, 368);
+            this.triggerSelector.TabIndex = 0;
+            // 
+            // transitionStyleSelector
+            // 
+            this.transitionStyleSelector.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.transitionStyleSelector.Location = new System.Drawing.Point(3, 3);
+            this.transitionStyleSelector.Name = "transitionStyleSelector";
+            this.transitionStyleSelector.SelectedItem = null;
+            this.transitionStyleSelector.Size = new System.Drawing.Size(620, 368);
+            this.transitionStyleSelector.TabIndex = 0;
+            // 
+            // imageTransitionSelector
+            // 
+            this.imageTransitionSelector.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.imageTransitionSelector.Location = new System.Drawing.Point(3, 3);
+            this.imageTransitionSelector.Name = "imageTransitionSelector";
+            this.imageTransitionSelector.SelectedItem = null;
+            this.imageTransitionSelector.Size = new System.Drawing.Size(620, 368);
+            this.imageTransitionSelector.TabIndex = 0;
+            // 
+            // selectionRendererSelector
+            // 
+            this.selectionRendererSelector.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.selectionRendererSelector.Location = new System.Drawing.Point(3, 3);
+            this.selectionRendererSelector.Name = "selectionRendererSelector";
+            this.selectionRendererSelector.SelectedItem = null;
+            this.selectionRendererSelector.Size = new System.Drawing.Size(620, 368);
+            this.selectionRendererSelector.TabIndex = 0;
+            // 
+            // featureSelector
+            // 
+            this.featureSelector.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.featureSelector.Location = new System.Drawing.Point(3, 3);
+            this.featureSelector.Name = "featureSelector";
+            this.featureSelector.SelectedItem = null;
+            this.featureSelector.Size = new System.Drawing.Size(620, 368);
+            this.featureSelector.TabIndex = 0;
             // 
             // OverlayPluginPanel
             // 

@@ -138,12 +138,6 @@
     <Compile Include="GUI\PointCursorPanel.Designer.cs">
       <DependentUpon>PointCursorPanel.cs</DependentUpon>
     </Compile>
-    <Compile Include="GUI\RaiseArmHelpTriggerPanel.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="GUI\RaiseArmHelpTriggerPanel.Designer.cs">
-      <DependentUpon>RaiseArmHelpTriggerPanel.cs</DependentUpon>
-    </Compile>
     <Compile Include="GUI\SimpleCursorPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -154,7 +148,6 @@
     <Compile Include="KinectConfig.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PointCursor.cs" />
-    <Compile Include="RaiseArmHelpTrigger.cs" />
     <Compile Include="GUI\RaiseArmTriggerPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -193,9 +186,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\PointCursorPanel.resx">
       <DependentUpon>PointCursorPanel.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="GUI\RaiseArmHelpTriggerPanel.resx">
-      <DependentUpon>RaiseArmHelpTriggerPanel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\SimpleCursorPanel.resx">
       <DependentUpon>SimpleCursorPanel.cs</DependentUpon>

@@ -224,8 +224,8 @@ namespace Chimera.Overlay {
                 TransitionFinished(transition);
             lock (this) {
                 transition.Finished -= mTransitionComplete;
-                mCurrentTransition = null;
                 CurrentState = transition.To;
+                mCurrentTransition = null;
             }
         }
 

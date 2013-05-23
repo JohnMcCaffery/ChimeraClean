@@ -64,5 +64,9 @@ namespace Chimera.Overlay.GUI.Plugins {
             if (stateList.SelectedItem != null)
                 mOverlayPlugin.CurrentState = (State) stateList.SelectedItem;
         }
+
+        private void stateList_DoubleClick(object sender, EventArgs e) {
+            changeStateButton_Click(sender, e);
+        }
     }
 }
