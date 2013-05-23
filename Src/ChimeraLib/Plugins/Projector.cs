@@ -43,20 +43,21 @@ namespace Chimera.Plugins {
         private Window mWindow;
         private Vector3 mPosition;
         private Rotation mOrientation;
-        private float mThrowRatio;
+        private double mThrowRatio;
         private AspectRatio mAspectRatio;
         private AspectRatio mNativeAspectRatio;
         private double mTargetH;
-        private float mH;
-        private float mW;
+        private double mH;
+        private double mW;
         private bool mLockHeight;
         private bool mDraw;
         private bool mDrawLabels;
         private bool mAutoUpdate;
         private bool mConfigureProjector;
         private bool mUpsideDown;
-        private float mScreenDistance;
-        private float mVOffset;
+        private double mHScreenDistance;
+        private double mScreenDistance;
+        private double mVOffset;
         private bool mRedrawing;
 
         private ProjectorPlugin mProjectorPlugin;
@@ -184,31 +185,41 @@ namespace Chimera.Plugins {
             }
         }
 
-        public float VOffset {
+        public double VOffset {
             get { return mVOffset; }
             set {
                 mVOffset = value;
+                mAlpha = Math.Atan2(value, mThrowRatio);
                 Redraw();
             }
         }
 
-        public float ThrowRatio {
+        public double ThrowRatio {
             get { return mThrowRatio; }
             set {
                 mThrowRatio = value;
+                mAlpha = Math.Atan2(mVOffset, value);
                 Redraw();
             }
         }
 
-        public float ScreenDistance {
-            get { return mScreenDistance; }
+        /// <summary>
+        /// Pitch angle, in radians.
+        /// </summary>
+        private double P {
+            get { return mOrientation.Pitch * (Math.PI / 180.0); }
+        }
+
+        public double ScreenDistance {
+            get { return mHScreenDistance; }
             set {
-                mScreenDistance = value;
+                mHScreenDistance = value;
+                mScreenDistance = value / Math.Cos(P);
                 Redraw();
             }
         }
 
-        public float Clearance {
+        public double Clearance {
             get {
                 Vector3 bottomCentre = GetCorner(0f, -1f);
                 Vector3 projector = mProjectorPlugin.RoomPosition + mPosition;
@@ -236,12 +247,13 @@ namespace Chimera.Plugins {
             NativeAspectRatio = cfg.NativeAspectRatio;
             mThrowRatio = cfg.ThrowRatio;
             mPosition = cfg.ProjectorPosition;
-            mScreenDistance = cfg.WallDistance;
             mOrientation = new Rotation(cfg.ProjectorPitch, cfg.ProjectorYaw);
+            ScreenDistance = cfg.WallDistance;
             mConfigureProjector = !cfg.ConfigureWindow;
             mUpsideDown = cfg.UpsideDown;
             mVOffset = cfg.VOffset;
             mLockHeight = cfg.LockHeight;
+            mAlpha = Math.Atan2(mVOffset, mThrowRatio);
 
             mDraw = cfg.Draw;
             mDrawLabels = cfg.DrawLabels;
@@ -261,6 +273,7 @@ namespace Chimera.Plugins {
         }
 
         void window_Changed(Window w, EventArgs args) {
+            //if (mConfigureProjector || (mLockHeight && mTargetH != w.Height)) {
             if (mConfigureProjector) {
                 mTargetH = w.Height;
                 if (mAutoUpdate)
@@ -269,6 +282,10 @@ namespace Chimera.Plugins {
         }
 
         void mOrientation_Changed(object sender, EventArgs e) {
+            if (mLockHeight)
+                CalculateDistanceFromHeight();
+            else
+                mScreenDistance = mHScreenDistance / Math.Cos(P);
             Redraw();
         }
 
@@ -294,36 +311,35 @@ namespace Chimera.Plugins {
         }
 
         private void ConfigureWindow() {
-            /*
-            if (mLockHeight) {
-                float m = ((mH / 2f) + mVOffset) * (mUpsideDown ? -1f : 1f);
+            if (mLockHeight)
+                CalculateDistanceFromHeight();
 
-                float zT = m + (mH / 2f);
-                Vector3 originalVectorT = new Vector3(mThrowRatio, (mW / 2f), zT);
-                Vector3 cornerT = originalVectorT * new Rotation(mOrientation.Pitch, 0.0).Quaternion;
-                cornerT *= mScreenDistance / cornerT.X;
-
-                float zB = m + (mH / -2f);
-                Vector3 originalVectorB = new Vector3(mThrowRatio, (mW / 2f), zB);
-                Vector3 cornerB = originalVectorB * new Rotation(mOrientation.Pitch, 0.0).Quaternion;
-                cornerB *= mScreenDistance / cornerB.X;
-
-                float h = cornerT.Z - cornerB.Z;
-
-                float x = mScreenDistance;
-                ScreenDistance = x;
-            //TODO - solve this maths problem
-            }
-            */
             mWindow.Orientation.Quaternion = new Rotation(0.0, mOrientation.Yaw).Quaternion;
-            mWindow.Width = Vector3.Mag(new Vector3(TopLeft.X, TopLeft.Y, 0f) - new Vector3(TopRight.X, TopRight.Y, 0f));
+            Vector3 topLeft = TopLeft;
+            Vector3 topRight = TopRight;
+            mWindow.Width = Vector3.Mag(new Vector3(topLeft.X, topLeft.Y, 0f) - new Vector3(topRight.X, topRight.Y, 0f));
             mWindow.Height = TopLeft.Z - BottomLeft.Z;
-            mWindow.TopLeft = TopLeft;
+            mWindow.TopLeft = topLeft;
+        }
+
+        private double mAlpha;
+
+        private void CalculateDistanceFromHeight() {
+            double h = (mTargetH * Math.Cos(mAlpha - P)) / Math.Cos(mAlpha);
+
+            double a = mScreenDistance * Math.Cos(P);
+            double b = a * Math.Tan(P + mAlpha);
+            double ceta = Math.Atan2(mTargetH + b, a);
+            double v = mScreenDistance * Math.Tan(mAlpha);
+
+            mScreenDistance = (h * mThrowRatio) / mH;
         }
 
         private void ConfigureProjector() {
-            double w = mWindow.Width / mW;
-            double screenDistance = w * mThrowRatio;
+            double screenDistance = mLockHeight ?
+                (mWindow.Height * mThrowRatio) / mH :
+                (mWindow.Width * mThrowRatio) / mW;
+            
             Vector3 line = mWindow.Orientation.LookAtVector * (float) screenDistance;
             Vector3 target = mWindow.Centre;
             target.Z = mWindow.TopLeft.Z;
@@ -334,11 +350,7 @@ namespace Chimera.Plugins {
             mPosition.Z += (float)offset;
             mOrientation.Yaw = mWindow.Orientation.Yaw;
             mOrientation.Pitch = mWindow.Orientation.Pitch;
-            mScreenDistance = (float) (screenDistance * Math.Cos(mOrientation.Pitch * Math.PI / 180.0));
-        }
-
-        private float WallScale {
-            get { return (new Vector3(mScreenDistance, 0f, 0f) * new Rotation(0.0, mOrientation.Yaw).Quaternion).X; }
+            mScreenDistance = screenDistance * Math.Cos(mOrientation.Pitch * Math.PI / 180.0);
         }
 
         private Vector3 TopLeft {
@@ -355,14 +367,60 @@ namespace Chimera.Plugins {
         }
 
         private Vector3 GetCorner(float left, float up) {
-            float m = ((mH / 2f) + mVOffset) * (mUpsideDown ? -1f : 1f);
-            float z = m + ((mH / 2f) * up);
-            Vector3 originalVector = new Vector3(mThrowRatio, (mW / 2f) * left, z);
-            Vector3 corner = originalVector * new Rotation(mOrientation.Pitch, 0.0).Quaternion;
-            corner *= mScreenDistance / corner.X;
-            corner *= new Rotation(0.0, mOrientation.Yaw).Quaternion;
-            corner += mPosition + mProjectorPlugin.RoomPosition;
-            return corner;
+            /*
+            double m = ((mH / 2f) + mVOffset) * (mUpsideDown ? -1f : 1f);
+            double z = m + ((mH / 2f) * up);
+            Vector3 originalVector = new Vector3((float)mThrowRatio, (float)((mW / 2) * left), (float) z);
+            originalVector *= (float) mScreenDistance / originalVector.X;
+            originalVector *= new Rotation(mOrientation.Pitch, 0.0).Quaternion;
+            */
+
+            Vector3 original = GetProjectorCorner(left, up);
+            Vector3 lineD = Vector3.Normalize(original - (mPosition + mProjectorPlugin.RoomPosition));
+            Vector3 planeP = (new Vector3((float) mScreenDistance, 0f, 0f) * mOrientation.Quaternion) + mPosition + mProjectorPlugin.RoomPosition;
+            Vector3 planeN = new Rotation(0.0, mOrientation.Yaw).LookAtVector;
+
+            //Calculate the intersection of a line L and a plane P
+            //P is a plane defined by orientation of the projector and screen distance away from the project
+            //L is a line starting at where the corner of the projection would be if projecting onto an orthogonal surface in the direction the orthogonal projection was going
+            float numerator = Vector3.Dot(planeP - original, planeN);
+            float denominator = Vector3.Dot(lineD, planeN);
+            bool mIntersects = denominator != 0f;
+            if (!mIntersects)
+                return original;
+            //return (-numerator / denominator) + (mProjectorPlugin.Small.Z - mProjectorPlugin.RoomPosition.Z);
+            return original + (lineD * (numerator / denominator));
+
+            /*
+
+            float xDiff = (float)(ScreenDistance - (lineP * -mOrientation.Quaternion.X);
+            float scale = xDiff / lineP.X;
+
+            Vector3 targetVector = lineP + (lineP * scale);
+            targetVector *= new Rotation(0.0, mOrientation.Yaw).Quaternion;
+            return targetVector + mPosition + mProjectorPlugin.RoomPosition;
+            */
+        }
+
+        private Vector3 GetIntersection(Vector3 lineP, Vector3 lineD, Vector3 planeP, Vector3 planeN) {            //Calculate the intersection of a line L and a plane P
+            //P is a plane defined by orientation of the projector and screen distance away from the project
+            //L is a line starting at where the corner of the projection would be if projecting onto an orthogonal surface in the direction the orthogonal projection was going
+            float numerator = Vector3.Dot(planeP - lineP, planeN);
+            float denominator = Vector3.Dot(lineD, planeN);
+            bool mIntersects = denominator != 0f;
+            if (!mIntersects)
+                return lineD;
+            //return (-numerator / denominator) + (mProjectorPlugin.Small.Z - mProjectorPlugin.RoomPosition.Z);
+            return lineD + (lineD * (numerator / denominator));
+        }
+
+        private Vector3 GetProjectorCorner (float left, float up) {
+            double m = ((mH / 2f) + mVOffset) * (mUpsideDown ? -1f : 1f);
+            double z = m + ((mH / 2f) * up);
+            Vector3 originalVector = new Vector3((float)mThrowRatio, (float)((mW / 2) * left), (float) z);
+            originalVector *= (float) mScreenDistance / originalVector.X;
+            originalVector *= mOrientation.Quaternion;
+            return originalVector + mPosition + mProjectorPlugin.RoomPosition;
         }
 
         public void Draw(Graphics g, Func<Vector3, Point> to2D, Action redraw, Perspective perspective) {
@@ -373,10 +431,53 @@ namespace Chimera.Plugins {
                 g.DrawLine(Pens.Black, pos, to2D(BottomLeft));
                 g.DrawLine(Pens.Black, pos, to2D(BottomRight));
 
+                if (perspective == Perspective.X || perspective == Perspective.Y) {
+                    Vector3 tl = GetProjectorCorner(-1f, 1f);
+                    Vector3 tr = GetProjectorCorner(1f, 1f);
+                    Vector3 bl = GetProjectorCorner(-1f, -1f);
+                    Vector3 br = GetProjectorCorner(1f, -1f);
+
+                    /*
+                    double h = (mScreenDistance * mH) / mThrowRatio;
+                    double a = Math.Cos(mAlpha) * h;
+                    Rotation aRot = new Rotation(-mOrientation.Pitch - (mAlpha * (180 / Math.PI)));
+                    Vector3 aLine = new Vector3(0f, 0f, (float)a) * aRot.Quaternion;
+
+                    //Vector3 t = new Vector3(0f, 0f, 3000f);
+                    //t *= new Rotation((-180.0 * mAlpha) / Math.PI, 0.0).Quaternion;
+                    //g.DrawLine(Pens.Blue, to2D(b), to2D(b + t));
+
+                    g.DrawLine(Pens.LimeGreen, to2D(bl), to2D(bl - aLine));
+                    g.DrawLine(Pens.LimeGreen, pos, to2D(tl - aLine));
+
+                    /*
+                    //mWindow.Width = Vector3.Mag(new Vector3(topLeft.X, topLeft.Y, 0f) - new Vector3(topRight.X, topRight.Y, 0f));
+                    //mWindow.Height = TopLeft.Z - BottomLeft.Z;
+                    double h = (mScreenDistance * mH) / mThrowRatio;
+                    double H = a / Math.Cos(-P + mAlpha);
+                    mWindow.Height = H;
+                    mWindow.Width = (mW * H) / mH;
+                    */
+
+                    g.DrawPolygon(Pens.Red, new Point[] { 
+                        to2D(tl), 
+                        to2D(tr),
+                        to2D(br),
+                        to2D(bl),
+                        to2D(tl) 
+                    });
+
+                    Vector3 b = new Vector3((float) mScreenDistance, 0f, 0f) * mOrientation.Quaternion;
+                    b += mPosition + mProjectorPlugin.RoomPosition;
+
+                    g.DrawLine(Pens.Green, pos, to2D(b));
+                    g.DrawLine(Pens.Green, to2D(b), to2D(b + new Vector3(0f, 0f, mProjectorPlugin.Size.Z)));
+                }
+
                 if (mDrawLabels) {
-                    Vector3 toScreen = new Vector3(mScreenDistance, 0f, 0f) * new Rotation(0.0, mOrientation.Yaw).Quaternion;
+                    Vector3 toScreen = new Vector3((float) mScreenDistance, 0f, 0f) * new Rotation(0.0, mOrientation.Yaw).Quaternion;
                     Vector3 floor = new Vector3(0f, 0f, mProjectorPlugin.RoomPosition.Z + mProjectorPlugin.Small.Z);
-                    Vector3 clearance = new Vector3(0f, 0f, Clearance);
+                    Vector3 clearance = new Vector3(0f, 0f, (float) Clearance);
                     Vector3 toClearance = floor + clearance;
 
                     Font font = SystemFonts.DefaultFont;
