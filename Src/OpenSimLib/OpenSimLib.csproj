@@ -64,13 +64,13 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="GridProxy">
-      <HintPath>..\..\..\libopenmetaverse\bin\GridProxy.dll</HintPath>
+      <HintPath>..\..\Lib\GridProxy.dll</HintPath>
     </Reference>
     <Reference Include="log4net">
-      <HintPath>..\..\..\libopenmetaverse\bin\log4net.dll</HintPath>
+      <HintPath>..\..\Lib\log4net.dll</HintPath>
     </Reference>
     <Reference Include="OpenMetaverse">
-      <HintPath>..\..\..\libopenmetaverse\bin\OpenMetaverse.dll</HintPath>
+      <HintPath>..\..\Lib\OpenMetaverse.dll</HintPath>
     </Reference>
     <Reference Include="OpenMetaverseTypes">
       <HintPath>..\..\Lib\OpenMetaverseTypes.dll</HintPath>

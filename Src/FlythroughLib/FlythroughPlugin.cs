@@ -49,8 +49,10 @@ namespace Chimera.Flythrough {
 
     public class FlythroughPlugin : ISystemPlugin {
         private EventSequence<Camera> mEvents = new EventSequence<Camera>();
+        private Action mTickListener;
         private Coordinator mCoordinator;
-        private FlythroughPanel mPanel;
+        private FlythroughPanel mPanel;        private DateTime mLastTick = DateTime.Now;
+        private Camera mPrev;
         private bool mEnabled = true;
         private bool mPlaying = false;
         private bool mLoop = false;
@@ -105,6 +107,8 @@ namespace Chimera.Flythrough {
             get { return mEvents.Count; }
         }
 
+        private bool mTicking;
+
         /// <summary>
         /// Where in the current sequence playback has reached.
         /// Between 0 and Length.
@@ -115,10 +119,12 @@ namespace Chimera.Flythrough {
                 mTime = value;
                 mEvents.Time = value;
                 FlythroughEvent<Camera> evt = mEvents[value];
-                if (value == 0)
-                    mCoordinator.Update(mEvents.Start.Position, Vector3.Zero, mEvents.Start.Orientation, Rotation.Zero);
-                if (mEnabled && evt != null)
-                    mCoordinator.Update(evt.Value.Position, Vector3.Zero, evt.Value.Orientation, Rotation.Zero);
+                if (mEnabled && !mTicking) {
+                    if (mEvents.Length > 0 && value == 0)
+                        mCoordinator.Update(mEvents.Start.Position, Vector3.Zero, mEvents.Start.Orientation, Rotation.Zero);
+                    else if (evt != null)
+                        mCoordinator.Update(evt.Value.Position, Vector3.Zero, evt.Value.Orientation, Rotation.Zero);
+                }
                 if (TimeChange != null)
                     TimeChange(value);
             }
@@ -136,6 +142,7 @@ namespace Chimera.Flythrough {
             get { return mEvents.Start; }
             set { mEvents.Start = value; }
         }
+
         /// <summary>
         /// Whether auto playback is enabled.
         /// If false time will be continually incremented by the tick length specified in the input.
@@ -143,12 +150,15 @@ namespace Chimera.Flythrough {
         public bool Paused {
             get { return !mPlaying; }
             set {
-                if (value) {
-                    mPlaying = false;
-                    if (OnPaused != null)
-                        OnPaused();
-                } else
-                    Play();
+                if (value != mPlaying && mCoordinator != null) {
+                    if (value) {
+                        mPlaying = false;
+                        mCoordinator.Tick -= mTickListener;
+                        if (OnPaused != null)
+                            OnPaused();
+                    } else
+                        Play();
+                }
             }
         }
         /// <summary>
@@ -178,6 +188,7 @@ namespace Chimera.Flythrough {
             mEvents.Start = Start;
             mEvents.CurrentEventChange += new Action<FlythroughEvent<Camera>,FlythroughEvent<Camera>>(mEvents_CurrentEventChange);
             mEvents.LengthChange += new Action<EventSequence<Camera>,int>(mEvents_LengthChange);
+            mTickListener = new Action(mCoordinator_Tick);
 
             FlythroughConfig cfg = new FlythroughConfig();
             mEnabled = cfg.Enabled;
@@ -193,8 +204,11 @@ namespace Chimera.Flythrough {
             if (mEnabled && mEvents.Length > 0) {
                 if (mEvents.CurrentEvent == null)
                     Time = 0;
-                Camera n = mEvents.CurrentEvent.Value;
-                mCoordinator.Update(n.Position, Vector3.Zero, n.Orientation, Rotation.Zero);
+                Camera next = mEvents.CurrentEvent.Value;
+                mCoordinator.Update(next.Position, Vector3.Zero, next.Orientation, Rotation.Zero);
+                mPrev = next;
+                mLastTick = DateTime.Now;
+                mCoordinator.Tick += mTickListener;
             }
 
             mPlaying = true;
@@ -313,15 +327,45 @@ namespace Chimera.Flythrough {
                 LengthChange(length);
         }
 
-        private void DoTick(int time, Camera o) {
-            mEvents.Time = time;
-            Camera n = mEvents.CurrentEvent.Value;
-            if (mEnabled && mPlaying)
-                mCoordinator.Update(n.Position, n.Position - o.Position, n.Orientation, n.Orientation - o.Orientation);
-            if (TimeChange != null)
-                TimeChange(time);
+        private void Thread() {
+            while (mPlaying && mEvents.Length > 0) {
+                mCoordinator_Tick();
+            }
         }
 
+        private void IncrementTime() {
+            mTicking = true;
+            int newTime = mEvents.Time + mCoordinator.TickLength;
+            if (mEvents.Time < newTime)
+                Time = newTime;
+            else {
+                if (mLoop)
+                    Time = 0;
+                else {
+                    Time = mEvents.Length;
+                    mPlaying = false;
+                    if (SequenceFinished != null)
+                        SequenceFinished(this, null);
+                }
+            }
+            mTicking = false;
+        }
+
+        void mCoordinator_Tick() {
+            IncrementTime();
+            Camera next = mEvents.CurrentEvent.Value;
+
+            double wait = mCoordinator.TickLength - DateTime.Now.Subtract(mLastTick).TotalMilliseconds;
+            if (wait < 0)
+                Console.WriteLine("Flythrough Tick overran by " + (wait * -1) + "ms.");
+            else
+                System.Threading.Thread.Sleep((int)wait);
+            mLastTick = DateTime.Now;
+            mCoordinator.Update(next.Position, next.Position - mPrev.Position, next.Orientation, next.Orientation - mPrev.Orientation);
+            mPrev = next;
+        }
+
+        /*
         void mCoordinator_Tick() {
             if (mPlaying && mEvents.Length > 0) {
                 if (mEvents.Time + mCoordinator.TickLength < mEvents.Length)
@@ -337,6 +381,16 @@ namespace Chimera.Flythrough {
                     }
                 }
             }
+        }
+        */
+
+        private void DoTick(int time, Camera o) {
+            mEvents.Time = time;
+            Camera n = mEvents.CurrentEvent.Value;
+            if (mEnabled && mPlaying)
+                mCoordinator.Update(n.Position, n.Position - o.Position, n.Orientation, n.Orientation - o.Orientation);
+            if (TimeChange != null)
+                TimeChange(time);
         }
 
         #region ISystemPlugin Members
@@ -400,7 +454,6 @@ namespace Chimera.Flythrough {
 
         public void Init(Coordinator coordinator) {
             mCoordinator = coordinator;
-            mCoordinator.Tick += new Action(mCoordinator_Tick);
         }
 
         public void Close() { }
