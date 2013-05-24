@@ -94,19 +94,14 @@ namespace Chimera.Kinect.Overlay {
                 Nui_SkeletonLost();
         }
 
-        void Nui_SkeletonFound() {
-            mCoordinator.Tick -= mTickListener;
-            mWaiting = false;
-        }
-
         public SkeletonLostTrigger(Coordinator coordinator, double timeout)
             : this(coordinator) {
             mTimeout = timeout;
         }
 
-        void coordinator_Tick() {
-            if (Triggered != null && DateTime.Now.Subtract(mLost).TotalMilliseconds > mTimeout)
-                Triggered();
+        void Nui_SkeletonFound() {
+            mCoordinator.Tick -= mTickListener;
+            mWaiting = false;
         }
 
         void Nui_SkeletonLost() {
@@ -115,6 +110,11 @@ namespace Chimera.Kinect.Overlay {
                 mWaiting = true;
                 mCoordinator.Tick += mTickListener;
             }
+        }
+        void coordinator_Tick() {
+            if (Triggered != null && DateTime.Now.Subtract(mLost).TotalMilliseconds > mTimeout)
+                Triggered();
         }
+
     }
 }
