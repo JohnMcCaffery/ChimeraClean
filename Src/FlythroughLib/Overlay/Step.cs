@@ -37,7 +37,6 @@ namespace Chimera.Flythrough.Overlay {
                 throw new ArgumentException("Unable to load slideshow step. A valid 'Step' attribute must be supplied.");
 
             mPlayer = player;
-            mTickListener = new Action(mCoordinator_Tick);
             mManager = state.Manager;
             mStep = GetInt(node, -1, "Step");
             if (mStep == -1)
@@ -54,6 +53,7 @@ namespace Chimera.Flythrough.Overlay {
             mSubtitlesText = subititlesText;
 
             if (mSubtitlesText != null) {
+                mTickListener = new Action(mCoordinator_Tick);
                 mSubtitleTimeoutS = subtitleTimeoutS;
                 XmlNode subtitlesNode = node.SelectSingleNode("child::Subtitles");
                 if (subtitlesNode != null) {

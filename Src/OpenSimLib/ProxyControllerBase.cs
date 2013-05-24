@@ -26,7 +26,7 @@ namespace Chimera.OpenSim {
         private GridProxyConfig mConfig;
 
         private readonly Dictionary<string, DateTime> mUnackedUpdates = new Dictionary<string,DateTime>();
-        private int mUnackedCountThresh = 10;
+        private int mUnackedCountThresh = 40;
         private long mUnackedDiscardMS = 1000;
 
         /// <summary>

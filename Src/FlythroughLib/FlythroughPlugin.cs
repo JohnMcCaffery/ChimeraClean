@@ -153,15 +153,24 @@ namespace Chimera.Flythrough {
             set {
                 if (value == mPlaying && mCoordinator != null) {
                     if (value) {
-                        mPlaying = false;
-                        mCoordinator.Tick -= mTickListener;
-                        if (OnPaused != null)
-                            OnPaused();
+                        Pause();
                     } else
                         Play();
                 }
             }
         }
+
+        private void Pause() {
+            mPlaying = false;
+            mCoordinator.Tick -= mTickListener;
+            if (OnPaused != null)
+                OnPaused();
+
+            lock (mFinishLock)
+                if (!mFinished)
+                    Monitor.Wait(mFinishLock, 2000);
+        }
+
         /// <summary>
         /// If true then, whilst playing, whenever one event finishes in the main sequence the next will start to play.
         /// If false then playback will stop after each event and a new call to Play will be required to start it up.
@@ -334,6 +343,7 @@ namespace Chimera.Flythrough {
         }
 
         private void FlythroughThread() {
+            mFinished = false;
             while (mPlaying && mEvents.Length > 0) {
                 IncrementTime();
                 mPrev = mCurrent;
@@ -348,7 +358,14 @@ namespace Chimera.Flythrough {
                 mLastTick = DateTime.Now;
                 mCoordinator.Update(mCurrent.Position, mCurrent.Position - mPrev.Position, mCurrent.Orientation, mCurrent.Orientation - mPrev.Orientation);
             }
+            lock (mFinishLock) {
+                mFinished = true;
+                Monitor.PulseAll(mFinishLock);
+            }
         }
+
+        private readonly object mFinishLock = new object();
+        private bool mFinished;
 
         private void IncrementTime() {
             mTicking = true;
