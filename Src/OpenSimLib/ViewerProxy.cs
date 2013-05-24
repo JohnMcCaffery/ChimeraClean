@@ -37,6 +37,7 @@ using GridProxyConfig = GridProxy.ProxyConfig;
 using Chimera.Util;
 using System.IO;
 using Nwc.XmlRpc;
+using Chimera.OpenSim.Packets;
 
 namespace Chimera.OpenSim {
     public abstract class ViewerProxy : IOutput, ISystemPlugin {

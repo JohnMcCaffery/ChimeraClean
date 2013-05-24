@@ -24,7 +24,8 @@ using System.Text;
 using OpenMetaverse.Packets;
 using OpenMetaverse;
 
-namespace Chimera.OpenSim {
+namespace Chimera.OpenSim {
+
     /// <exclude/>
     public sealed class SetCameraPacket: Packet {
         /// <exclude/>
@@ -354,7 +355,8 @@ namespace Chimera.OpenSim {
             : this() {
             int packetEnd = bytes.Length - 1;
             FromBytes(bytes, ref i, ref packetEnd, null);
-        }
+        }
+
         public SetWindowPacket(Matrix4 matrix)
             : this() {
 
