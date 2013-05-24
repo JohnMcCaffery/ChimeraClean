@@ -54,7 +54,7 @@ namespace Chimera.Overlay.Drawables {
         }
 
         void mActiveTrigger_Triggered() {
-            mFeature.Active = mTrigger.Inside;
+            mFeature.Active = mTrigger.Condition;
         }
 
 
@@ -72,7 +72,7 @@ namespace Chimera.Overlay.Drawables {
                 if (!value)
                     mFeature.Active = false;
                 else
-                    mFeature.Active = mTrigger.Inside;
+                    mFeature.Active = mTrigger.Condition;
             }
         }
 

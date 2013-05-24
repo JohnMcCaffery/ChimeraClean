@@ -43,7 +43,7 @@ namespace Chimera.Overlay.Triggers {
         #endregion
     }
 
-        public class ActiveAreaTrigger : XmlLoader, ITrigger, IDiagramDrawable {
+        public class ActiveAreaTrigger : ConditionTrigger, IDiagramDrawable {
             private OverlayPlugin mManager;
             private List<PointF> mPoints = new List<PointF>();
             private DateTime mLastCheck;
@@ -58,7 +58,7 @@ namespace Chimera.Overlay.Triggers {
                 get { return mPoints[mPoints.Count - 1]; }
             }
 
-            public bool Inside {
+            public override bool Condition {
                 get {
                     Vector3 p = mManager.Coordinator.Position;
                     PointF p1 = FinalPoint;
@@ -81,8 +81,8 @@ namespace Chimera.Overlay.Triggers {
                 }
             }
 
-            public ActiveAreaTrigger(OverlayPlugin manager, XmlNode node) {
-                mTickListener = new Action(Coordinator_Tick);
+            public ActiveAreaTrigger(OverlayPlugin manager, XmlNode node)
+                : base(manager.Coordinator) {
                 mManager = manager;
                 mCheckWaitS = GetDouble(node, 2, "CheckWaitS");
                 foreach (var child in node.ChildNodes.OfType<XmlElement>()) {
@@ -99,38 +99,5 @@ namespace Chimera.Overlay.Triggers {
                 PointF final = FinalPoint;
                 graphics.DrawPolygon(Pens.Red, mPoints.Concat(new PointF[] { FinalPoint }).Select(p => to2D(new Vector3(p.X, p.Y, 0f))).ToArray());
             }
-
-            #region ITrigger Members
-
-            public event Action Triggered;
-
-            public bool Active {
-                get { return mActive; }
-                set {
-                    if (value != mActive) {
-                        mActive = value;
-                        if (value)
-                            mManager.Coordinator.Tick += mTickListener;
-                        else
-                            mManager.Coordinator.Tick -= mTickListener;
-                    }
-                }
-            }
-
-            void Coordinator_Tick() {
-                if (Triggered == null)
-                    return;
-                if (Inside) {
-                    if (!mInside) {
-                        mInside = true;
-                        Triggered();
-                    }
-                } else if (mInside) {
-                    mInside = false;
-                    mTriggered = false;
-                }
-            }
-
-            #endregion
         }
 }

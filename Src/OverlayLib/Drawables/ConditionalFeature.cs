@@ -42,7 +42,8 @@ namespace Chimera.Overlay.Drawables {
 
         void mActiveTrigger_Triggered() {
             mFeature.Active = true;
-        }
+        }
+
         void mInactiveTrigger_Triggered() {
             mFeature.Active = false;
         }

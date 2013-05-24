@@ -7,8 +7,32 @@ using Chimera;
 using OpenMetaverse;
 using Chimera.Overlay;
 using Chimera.Overlay.Triggers;
+using System.Xml;
 
 namespace Joystick.Overlay {
+    public class JoystickActivatedTriggerFactory : ITriggerFactory {
+        public SpecialTrigger Special {
+            get { return SpecialTrigger.None; }
+        }
+
+        public string Mode {
+            get { return ""; }
+        }
+
+        public ITrigger Create(OverlayPlugin manager, XmlNode node) {
+            return new JoystickActivatedTrigger(manager.Coordinator);
+        }
+
+        public ITrigger Create(OverlayPlugin manager, System.Xml.XmlNode node, System.Drawing.Rectangle clip) {
+            return Create(manager, node);
+        }
+
+        public string Name {
+            get { return "JostickActivated"; }
+        }
+    }
+
+
     public class JoystickActivatedTrigger : ConditionTrigger {
         private Coordinator mCoordinator;
         private XBoxControllerPlugin mPlugin;
