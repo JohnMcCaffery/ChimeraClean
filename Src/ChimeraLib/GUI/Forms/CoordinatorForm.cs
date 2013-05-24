@@ -171,7 +171,7 @@ namespace Chimera.GUI.Forms {
 
                 inputsTab.Controls.Add(inputTab);
 
-                input.EnabledChanged += (plugin, enabled) => enableCheck.Checked = enabled;
+                input.EnabledChanged += (plugin, enabled) => Invoke(() => enableCheck.Checked = enabled);
             }
             
             inputsTab.Controls.Add(statisticsTab);
@@ -413,6 +413,7 @@ namespace Chimera.GUI.Forms {
         }
 
         private void CoordinatorForm_FormClosing(object sender, FormClosingEventArgs e) {
+            mCoordinator.Tick -= mTickListener;
             mClosing = true;
             if (mCoordinator != null) {
                 mGuiUpdate = true;

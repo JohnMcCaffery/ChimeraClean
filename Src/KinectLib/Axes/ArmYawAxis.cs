@@ -48,7 +48,7 @@ namespace Chimera.Kinect.Axes {
         }
 
         public ArmYawAxis(bool right)
-            : this(right, AxisBinding.None) { }
+            : this(right, AxisBinding.NotSet) { }
 
         public override Condition Active {
             get { return mActive; }

@@ -33,7 +33,7 @@ namespace Chimera.Kinect.Axes {
         }
 
         public DotAxis(string name)
-            : this(name, AxisBinding.None) {
+            : this(name, AxisBinding.NotSet) {
         }
 
         public DotAxis(string name, AxisBinding binding)

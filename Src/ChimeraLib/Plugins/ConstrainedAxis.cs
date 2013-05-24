@@ -28,7 +28,7 @@ using Chimera.Util;
 
 namespace Chimera.Plugins {
     public abstract class ConstrainedAxis : IAxis {
-        private AxisBinding mBinding = AxisBinding.None;
+        private AxisBinding mBinding = AxisBinding.NotSet;
         private ConstrainedAxisPanel mPanel;
         private readonly string mName;
 

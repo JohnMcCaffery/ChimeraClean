@@ -167,6 +167,7 @@
     <Compile Include="Triggers\AreaTrigger.cs" />
     <Compile Include="Triggers\CameraPositionTrigger.cs" />
     <Compile Include="Triggers\ClickTrigger.cs" />
+    <Compile Include="Triggers\ConditionTrigger.cs" />
     <Compile Include="Triggers\CursorTrigger.cs" />
     <Compile Include="HoverRenderers\CircleRenderer.cs" />
     <Compile Include="HoverRenderers\CursorRenderer.cs" />

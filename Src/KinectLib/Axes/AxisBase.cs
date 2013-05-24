@@ -15,7 +15,7 @@ namespace Chimera.Kinect.Axes {
         private Condition mActive;
 
         public AxisBase()
-            : this(AxisBinding.None) {
+            : this(AxisBinding.NotSet) {
         }
 
         public AxisBase(AxisBinding binding)

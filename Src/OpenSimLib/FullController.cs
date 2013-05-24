@@ -29,8 +29,8 @@ namespace Chimera.OpenSim {
         public override void Move(Vector3 positionDelta, Rotation orientationDelta, float deltaScale) {
             RemoteControlPacket packet = new RemoteControlPacket();
             packet.Delta.Position = positionDelta * deltaScale;
-            packet.Delta.Pitch = (float)(orientationDelta.Pitch * (Math.PI / 45.0));
-            packet.Delta.Yaw = (float)(orientationDelta.Yaw * (Math.PI / 45.0));
+            packet.Delta.Pitch = (float)(orientationDelta.Pitch * (Math.PI / 45.0)) * deltaScale;
+            packet.Delta.Yaw = (float)(orientationDelta.Yaw * (Math.PI / 45.0)) * deltaScale;
             InjectPacket(packet);
         }
 

@@ -39,7 +39,7 @@ namespace Chimera.Kinect.Axes {
             new PushSingleAxis(right, false)) { }
 
         public PushAxis(bool right)
-            : this(right, AxisBinding.None) {
+            : this(right, AxisBinding.NotSet) {
         }
 
         public class PushSingleAxis : KinectAxis {
@@ -70,7 +70,7 @@ namespace Chimera.Kinect.Axes {
             }
 
             public PushSingleAxis(bool right, bool forward)
-                : this(right, forward, AxisBinding.None) { }
+                : this(right, forward, AxisBinding.NotSet) { }
 
             public PushSingleAxis(bool right, bool forward, AxisBinding binding)
                 : base("Push" + (right ? "Right" : "Left") + (forward ? "+" : "-"), binding) {

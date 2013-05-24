@@ -93,9 +93,8 @@ namespace Chimera.Plugins {
                 ax.Deadzone.Value = AxConfig.GetDeadzone(axis.Name);
                 ax.Scale.Value  = AxConfig.GetScale(axis.Name);
             }
-            AxisBinding binding = AxConfig.GetBinding(axis.Name);
-            if (binding != AxisBinding.None)
-                axis.Binding = binding;
+            if (axis.Binding == AxisBinding.NotSet)
+                axis.Binding = AxConfig.GetBinding(axis.Name);
             if (AxisAdded != null)
                 AxisAdded(axis);
         }
@@ -190,15 +189,15 @@ namespace Chimera.Plugins {
             }
 
             public float GetDeadzone(string name) {
-                return Get("Movement", "Deadzone" + name, .1f, "");
+                return Get("Deadzones", name, .1f, "");
             }
 
             public float GetScale(string name) {
-                return Get("Movement", "Scale" + name, 1f, "");
+                return Get("Scales", name, 1f, "");
             }
 
             public AxisBinding GetBinding(string name) {
-                return (AxisBinding) Enum.Parse(typeof(AxisBinding), Get("Movement", "Binding" + name, "None", ""));
+                return (AxisBinding) Enum.Parse(typeof(AxisBinding), Get("Bindings", name, "None", ""));
             }
         }
     }

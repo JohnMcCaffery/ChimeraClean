@@ -43,7 +43,7 @@ namespace Joystick {
         }
 
         public ThumbstickAxis(bool left, bool x)
-            : this (left, x, AxisBinding.None) {
+            : this (left, x, AxisBinding.NotSet) {
         }
 
         public void Init(ITickSource source) {

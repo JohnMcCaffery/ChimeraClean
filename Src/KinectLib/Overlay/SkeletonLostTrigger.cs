@@ -53,7 +53,9 @@ namespace Chimera.Kinect.Overlay {
     public class SkeletonLostTrigger : XmlLoader, ITrigger {
         private bool mActive;
         private DateTime mLost;
-        private bool mTriggered = false;
+        private Action mTickListener;
+        private Coordinator mCoordinator;
+        private bool mWaiting = false;
         private double mTimeout;
 
         #region ITrigger Members
@@ -62,7 +64,15 @@ namespace Chimera.Kinect.Overlay {
 
         public bool Active {
             get { return mActive; }
-            set { mActive = value; }
+            set {
+                if (mActive != value) {
+                    if (!value && mWaiting)
+                        Nui_SkeletonFound();
+                    else if (value && !Nui.HasSkeleton)
+                        Nui_SkeletonLost();
+                    mActive = value;
+                }
+            }
         }
 
         #endregion
@@ -76,9 +86,17 @@ namespace Chimera.Kinect.Overlay {
         }
 
         public SkeletonLostTrigger(Coordinator coordinator) {
+            mCoordinator = coordinator;
             Nui.SkeletonLost += new SkeletonTrackDelegate(Nui_SkeletonLost);
-            coordinator.Tick += new Action(coordinator_Tick);
-            mLost = DateTime.Now;
+            Nui.SkeletonFound += new SkeletonTrackDelegate(Nui_SkeletonFound);
+            mTickListener = new Action(coordinator_Tick);
+            if (!Nui.HasSkeleton)
+                Nui_SkeletonLost();
+        }
+
+        void Nui_SkeletonFound() {
+            mCoordinator.Tick -= mTickListener;
+            mWaiting = false;
         }
 
         public SkeletonLostTrigger(Coordinator coordinator, double timeout)
@@ -87,19 +105,15 @@ namespace Chimera.Kinect.Overlay {
         }
 
         void coordinator_Tick() {
-            if (mActive && Triggered != null && !mTriggered && mTimeout != 0.0 && !Nui.HasSkeleton && DateTime.Now.Subtract(mLost).TotalMilliseconds > mTimeout) {
-                mTriggered = true;
+            if (Triggered != null && DateTime.Now.Subtract(mLost).TotalMilliseconds > mTimeout)
                 Triggered();
-            }
         }
 
         void Nui_SkeletonLost() {
             if (mActive) {
-                mTriggered = false;
-                if (mTimeout == 0.0 && Triggered != null)
-                    Triggered();
-                else
-                    mLost = DateTime.Now;
+                mLost = DateTime.Now;
+                mWaiting = true;
+                mCoordinator.Tick += mTickListener;
             }
         }
     }

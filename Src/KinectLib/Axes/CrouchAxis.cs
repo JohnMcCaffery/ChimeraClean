@@ -53,6 +53,10 @@ namespace Chimera.Kinect.Axes {
             }
         }
 
+        public CrouchAxis()
+            : this(AxisBinding.NotSet) {
+        }
+
         public CrouchAxis(AxisBinding binding)
             : base("Crouch", binding) {
 

@@ -105,7 +105,7 @@ namespace Chimera.OpenSim {
             ViewerToggleHUDKey= Get(true, "ViewerToggleHUDKey", "%^{F1}", "The key press that will toggle the HUD on and off in the viewer.");
             ProxyLoginURI = Get(true, "LoginURI", DEFAULT_LOGINURI, "The URI of the server the proxy should proxy.");
             UseGrid = Get(true, "UseGrid", false, "Whether to login using the --grid or --loginuri command line parameter to specify the login target.");
-            DeltaScale = Get(true, "DeltaScale", 1f, "How much to scale delta values by when using remote control.");
+            DeltaScale = Get(true, "DeltaScale", .25f, "How much to scale delta values by when using remote control.");
 
             CrashLogFile = Get(true, "CrashLogFile", "CrashLog.log", "The log file to record crashes to.");
 

@@ -250,7 +250,8 @@ namespace Chimera.Kinect {
 
         public void Draw(Graphics graphics, Func<Vector3, Point> to2D, Action redraw, Perspective perspective) { }
 
-        #endregion
+        #endregion
+
         private void coordinator_WindowAdded(Window window, EventArgs args) {
             if (window.Name == mWindow) {
                 mManager = mStateManager[window.Name];

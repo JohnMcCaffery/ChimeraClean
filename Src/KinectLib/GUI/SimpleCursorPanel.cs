@@ -59,7 +59,7 @@ namespace Chimera.Kinect.GUI {
             ConstrainedYRight.Scalar = new ScalarUpdater(mInput.ConstrainedYRight);
             ConstrainedXLeft.Scalar = new ScalarUpdater(mInput.ConstrainedXLeft);
             ConstrainedYLeft.Scalar = new ScalarUpdater(mInput.ConstrainedYLeft);
-            RawXLeft.Scalar = new ScalarUpdater(mInput.RawXLeft);
+            RawXRight.Scalar = new ScalarUpdater(mInput.RawXRight);
             RawYRight.Scalar = new ScalarUpdater(mInput.RawYRight);
             RawXLeft.Scalar = new ScalarUpdater(mInput.RawXLeft);
             RawYLeft.Scalar = new ScalarUpdater(mInput.RawYLeft);

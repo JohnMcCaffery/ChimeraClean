@@ -38,7 +38,7 @@ namespace Joystick {
         }
        
         public TriggerAxis(bool leftUp)
-            : this(leftUp, AxisBinding.None) {
+            : this(leftUp, AxisBinding.NotSet) {
         }
 
         public void Init(ITickSource source) {

@@ -6,47 +6,28 @@ using Chimera.Interfaces.Overlay;
 using Chimera;
 using OpenMetaverse;
 using Chimera.Overlay;
+using Chimera.Overlay.Triggers;
 
 namespace Joystick.Overlay {
-    public class JoystickActivatedTrigger : XmlLoader, ITrigger {
-        private static readonly double TIMEOUT = 10000.0;
-        private bool mActive;
+    public class JoystickActivatedTrigger : ConditionTrigger {
         private Coordinator mCoordinator;
         private XBoxControllerPlugin mPlugin;
         private bool mInitialised;
 
-        public Coordinator Coordinator {
-            get { return mCoordinator; }
-        }
-
-        public bool Initialised {
-            get { return mInitialised; }
-        }
-
-        public JoystickActivatedTrigger(Coordinator coordinator) {
+        public JoystickActivatedTrigger(Coordinator coordinator)
+            : base(coordinator) {
             mCoordinator = coordinator;
             if (mCoordinator.HasPlugin<XBoxControllerPlugin>()) {
                 mPlugin = mCoordinator.GetPlugin<XBoxControllerPlugin>();
-                mCoordinator.Tick += new Action(coordinator_Tick);
                 mInitialised = true;
             }
         }
 
-        void coordinator_Tick() {
-            if (mActive && Triggered != null &&
-                (mPlugin.PositionDelta != Vector3.Zero || mPlugin.OrientationDelta.Pitch != 0.0 || mPlugin.OrientationDelta.Yaw != 0.0))
-                Triggered();
+        public override bool Condition {
+            get {
+                return mInitialised &&
+                (mPlugin.PositionDelta != Vector3.Zero || mPlugin.OrientationDelta.Pitch != 0.0 || mPlugin.OrientationDelta.Yaw != 0.0);
+            }
         }
-
-        #region ITrigger Members
-
-        public event Action Triggered;
-
-        public bool Active {
-            get { return mActive; }
-            set { mActive = value; }
-        }
-
-        #endregion
     }
 }

@@ -49,7 +49,7 @@ namespace Chimera.Kinect.Axes {
         }
 
         public TAxis(bool right)
-            : this(right, AxisBinding.None) {
+            : this(right, AxisBinding.NotSet) {
         }
 
         public override Condition Active {

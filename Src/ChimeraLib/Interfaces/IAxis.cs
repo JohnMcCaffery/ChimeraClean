@@ -29,6 +29,10 @@ namespace Chimera.Interfaces {
     /// </summary>
     public enum AxisBinding {
         /// <summary>
+        /// The input axis has not had a value assigned. These will get bound to None in startup.
+        /// </summary>
+        NotSet,
+        /// <summary>
         /// The input axis is not bound to any camera axis.
         /// </summary>
         None,

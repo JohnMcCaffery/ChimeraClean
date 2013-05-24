@@ -7,50 +7,23 @@ using Chimera;
 using Chimera.Overlay;
 
 namespace Joystick.Overlay {
-    public class JoystickInactiveTrigger : XmlLoader, ITrigger {
-        private bool mActive;
-        private double mTimeout;
-        private bool mTriggered = false;
+    public class JoystickInactiveTrigger : JoystickActivatedTrigger {
+        private double mTimeoutS;
         private DateTime mLastTrigger = DateTime.Now;
-        private JoystickActivatedTrigger mPressedTrigger;
 
-        public JoystickActivatedTrigger PressedTrigger {
-            get { return mPressedTrigger; }
+        public JoystickInactiveTrigger(double timeout, Coordinator coordinator)
+            : base(coordinator) {
+            mTimeoutS = timeout;
         }
 
-        public JoystickInactiveTrigger(double timeout, Coordinator coordinator) {
-
-            mTimeout = timeout;
-            mPressedTrigger = new JoystickActivatedTrigger(coordinator);
-            if (mPressedTrigger.Initialised) {
-                mPressedTrigger.Coordinator.Tick += new Action(Coordinator_Tick);
-                mPressedTrigger.Triggered += new Action(trigger_Triggered);
-            }        }
-
-        void trigger_Triggered() {
-            mLastTrigger = DateTime.Now;
-            mTriggered = false;
-        }
-
-        void Coordinator_Tick() {
-            if (mActive && !mTriggered && Triggered != null && DateTime.Now.Subtract(mLastTrigger).TotalMilliseconds > mTimeout) {
-                mTriggered = true;
-                Triggered();
+        public override bool Condition {
+            get {
+                if (base.Condition) {
+                    mLastTrigger = DateTime.Now;
+                    return false;
+                }
+                return DateTime.Now.Subtract(mLastTrigger).TotalSeconds > mTimeoutS;
             }
         }
-
-        #region ITrigger Members
-
-        public event Action Triggered;
-
-        public bool Active {
-            get { return mActive; }
-            set { 
-                mActive = value;
-                mPressedTrigger.Active = value;
-            }
-        }
-
-        #endregion
     }
 }

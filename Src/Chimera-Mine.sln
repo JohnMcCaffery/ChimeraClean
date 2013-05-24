@@ -26,6 +26,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Config", "Config", "{AD5F2E
 		..\Config\ExampleRoom.xml = ..\Config\ExampleRoom.xml
 		..\Config\Heightmap.ini = ..\Config\Heightmap.ini
 		..\Config\Kinect.ini = ..\Config\Kinect.ini
+		..\Config\KinectNew.ini = ..\Config\KinectNew.ini
 		..\Config\Launch.ini = ..\Config\Launch.ini
 		..\Config\OpenSim.ini = ..\Config\OpenSim.ini
 		..\Config\Overlay.ini = ..\Config\Overlay.ini
