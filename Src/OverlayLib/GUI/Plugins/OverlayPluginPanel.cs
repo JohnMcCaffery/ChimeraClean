@@ -68,5 +68,14 @@ namespace Chimera.Overlay.GUI.Plugins {
         private void stateList_DoubleClick(object sender, EventArgs e) {
             changeStateButton_Click(sender, e);
         }
+
+        private void mainTab_TabIndexChanged(object sender, EventArgs e) {
+            if (mainTab.SelectedTab == infoTab)
+                stateList.SelectedItem = mOverlayPlugin.CurrentState;
+        }
+
+        private void mainTab_VisibleChanged(object sender, EventArgs e) {
+            mainTab_TabIndexChanged(sender, e);
+        }
     }
 }

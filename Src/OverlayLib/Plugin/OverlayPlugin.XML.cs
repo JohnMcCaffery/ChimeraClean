@@ -54,7 +54,7 @@ namespace Chimera.Overlay {
         private Dictionary<string, ISelectionRenderer> mSelectionRenderers = new Dictionary<string, ISelectionRenderer>();
         private Dictionary<string, IImageTransition> mImageTransitions = new Dictionary<string, IImageTransition>();
 
-        private State mSplashState;
+        private State mStartState;
         private ITransitionStyle mIdleSplashTransition = new OpacityFadeInWindowTransitionFactory(2000);
         private ITransitionStyle mSplashIdleTransition = new OpacityFadeOutWindowTransitionFactory(2000);
 
@@ -89,6 +89,7 @@ namespace Chimera.Overlay {
             mStateFactories = stateFactories;
 
             mConfig = new OverlayConfig();
+            mIdleEnabled = mConfig.IdleEnabled;
             mMode = mConfig.InterfaceMode;
         }
 
@@ -112,7 +113,7 @@ namespace Chimera.Overlay {
             LoadComponent(doc, mStates, "States");
 
             LoadTransitions(doc);
-            LoadSpeciStates();
+            LoadSpecialStates();
         }
 
         private void LoadClip(XmlDocument doc) {
@@ -135,16 +136,15 @@ namespace Chimera.Overlay {
                         LoadTransition(transitionNode);
         }
 
-        private void LoadSpeciStates() {
-            if (mSplashState != null && mIdleState != null)
-                foreach (var state in mStates.Values)
-                    if (state != mIdleState)
-                        foreach (var trigger in mIdleTriggers)
-                            mIdleState.AddTransition(new StateTransition(this, state, mIdleState, trigger, mSplashIdleTransition));
+        private void LoadSpecialStates() {
+            if (mIdleState != null)
+                foreach (var state in mStates.Values.Where(s => s != mIdleState))
+                    foreach (var trigger in mIdleTriggers)
+                        state.AddTransition(new StateTransition(this, state, mIdleState, trigger, mSplashIdleTransition));
 
             IdleEnabled = mIdleEnabled;
-            if (mSplashState != null)
-                CurrentState = mSplashState;
+            if (mStartState != null)
+                CurrentState = mStartState;
         }
 
         private void LoadComponent<T>(XmlDocument doc, Dictionary<string, T> map, string nodeID) where T : IControllable {
@@ -162,7 +162,7 @@ namespace Chimera.Overlay {
         private void LoadTransition(XmlNode node) {
             State from = GetInstance(node, mStates, "state", "transition start", null, "From");
             State to = GetInstance(node, mStates, "state", "transition target", null, "To");
-            ITrigger trigger = GetTrigger(node, "transition", null);
+            ITrigger trigger = GetTrigger(node, "transition", null, "Trigger");
             ITransitionStyle style = GetTransition(node, "state transition", new BitmapWindowTransitionFactory(new BitmapFadeFactory(), 2000), "Transition");
 
             if (from == null || to == null || trigger == null) {
@@ -201,8 +201,8 @@ namespace Chimera.Overlay {
             AddState(state);
             if (GetBool(node, false, "Idle"))
                 LoadIdle(node, state);
-            else if (GetBool(node, false, "Splash"))
-                mSplashState = state;
+            if (GetBool(node, false, "Start"))
+                mStartState = state;
             foreach (var child in GetChildrenOfChild(node, "Features")) {
                 IFeature f = GetFeature(child, "state feature", null);
                 if (f != null)
@@ -214,9 +214,8 @@ namespace Chimera.Overlay {
             mIdleState = state;
             foreach (XmlNode child in node.ChildNodes.OfType<XmlElement>()) {
                 switch (child.Name) {
-                    case "IdleTransition": mSplashIdleTransition = GetTransition(child, "to idle transition", new OpacityFadeOutWindowTransitionFactory(5000)); return;
-                    case "SplashTransition": mIdleSplashTransition = GetTransition(child, "from idle transition", new OpacityFadeInWindowTransitionFactory(5000)); return;
-                    default: ; return;
+                    case "IdleTransition": mSplashIdleTransition = GetTransition(child, "to idle transition", new OpacityFadeOutWindowTransitionFactory(5000)); break;
+                    case "SplashTransition": mIdleSplashTransition = GetTransition(child, "from idle transition", new OpacityFadeInWindowTransitionFactory(5000)); break;
                 }
             }
             foreach (var child in GetChildrenOfChild(node, "Triggers")) {
@@ -278,14 +277,14 @@ namespace Chimera.Overlay {
             return GetInstance(node, mFeatures, "feature", reason, defalt, attributes);
         }
 
-        public ITrigger GetTrigger(XmlNode node, string reason, ITrigger defalt) {
+        public ITrigger GetTrigger(XmlNode node, string reason, ITrigger defalt, params string[] attributes) {
             if (node.Name.Contains("Invis"))
                     return GetSpecialTrigger(SpecialTrigger.Invisible, node);
             if (node.Name.Contains("Image"))
                     return GetSpecialTrigger(SpecialTrigger.Image, node);
             if (node.Name.Contains("Text"))
                     return GetSpecialTrigger(SpecialTrigger.Text, node);
-            return GetInstance(node, mTriggers, "trigger", reason, defalt, "Trigger");
+            return GetInstance(node, mTriggers, "trigger", reason, defalt, attributes);
         }
 
         private ITrigger GetSpecialTrigger(SpecialTrigger type, XmlNode node) {

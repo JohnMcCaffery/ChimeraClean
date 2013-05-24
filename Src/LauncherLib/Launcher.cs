@@ -92,7 +92,7 @@ namespace Chimera.Launcher {
             try {
                 mCoordinator = k.Get<Coordinator>();
             } catch (Exception e) {
-                Console.WriteLine("Unable to launch. Problem instantiating coordinator. " + e.Message);
+                Console.WriteLine("Unable to launch. Problem instantiating coordinator. " + (e.InnerException != null ? e.InnerException.Message :e.Message));
             }
         }
 

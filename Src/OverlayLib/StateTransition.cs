@@ -76,7 +76,6 @@ namespace Chimera.Overlay {
             mManager = manager;
             mFrom = from;
             mTo = to;
-            mTriggers.Add(trigger);
             mWindowTransitionFactory = factory;
 
             mManager.Coordinator.WindowAdded += new Action<Window,EventArgs>(Coordinator_WindowAdded);

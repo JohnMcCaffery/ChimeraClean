@@ -65,7 +65,7 @@ namespace Chimera.Overlay.States {
         }
 
         public SlideshowState(OverlayPlugin manager, XmlNode node)
-            : base(GetName(node), manager) {
+            : base(GetName(node, "slideshow state"), manager) {
 
             mTransition =  manager.GetImageTransitionFactory(node, "slideshow state", "Transition");
             if (mTransition == null) {
@@ -100,7 +100,7 @@ namespace Chimera.Overlay.States {
         void prev_Triggered() {
             if (Active) {
                 mFinishedCount = 0;
-                SetTriggerState(false);
+                //SetTriggerState(false);
                 foreach (var window in mWindows)
                     window.Prev();
             }
@@ -109,7 +109,7 @@ namespace Chimera.Overlay.States {
         void next_Triggered() {
             if (Active) {
                 mFinishedCount = 0;
-                SetTriggerState(false);
+                //SetTriggerState(false);
                 foreach (var window in mWindows)
                     window.Next();
             }
@@ -138,7 +138,7 @@ namespace Chimera.Overlay.States {
         void trans_Finished() {
             mFinishedCount++;
             if (mFinishedCount == mWindows.Count) {
-                SetTriggerState(true);
+                //SetTriggerState(true);
             }
         }
 
@@ -157,8 +157,8 @@ namespace Chimera.Overlay.States {
         }
 
         private void SetTriggerState(bool state) {
-            //foreach (var trigger in mTriggers)
-                //trigger.Active = state;
+            foreach (var trigger in mTriggers)
+                trigger.Active = state;
         }
     }
 }

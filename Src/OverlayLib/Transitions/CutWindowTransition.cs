@@ -26,7 +26,21 @@ using Chimera.Overlay;
 using System.Drawing;
 
 namespace Chimera.Overlay.Transitions {
-    public class CutWindowTransitionFactory : XmlLoader, ITransitionStyle {
+    public class CutTransitionFactory : ITransitionStyleFactory {
+        public ITransitionStyle Create(OverlayPlugin manager, System.Xml.XmlNode node) {
+            return new CutTransition();
+        }
+
+        public ITransitionStyle Create(OverlayPlugin manager, System.Xml.XmlNode node, Rectangle clip) {
+            return Create(manager, node);
+        }
+
+        public string Name {
+            get { return "Cut"; }
+        }
+    }
+
+    public class CutTransition : XmlLoader, ITransitionStyle {
         public IWindowTransition Create(StateTransition transition, WindowOverlayManager manager) {
             return new CutWindowTransition(transition, manager);
         }

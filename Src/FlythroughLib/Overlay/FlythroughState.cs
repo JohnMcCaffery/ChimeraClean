@@ -118,7 +118,7 @@ namespace Chimera.Flythrough.Overlay {
         }
 
         public FlythroughState(OverlayPlugin manager, XmlNode node, IMediaPlayer player)
-            : base(GetName(node), manager) {
+            : base(GetName(node, "flythrough state"), manager) {
 
             mInput = manager.Coordinator.GetPlugin<FlythroughPlugin>();
             bool displaySubtitles = GetBool(node, false, "DisplaySubtitles");

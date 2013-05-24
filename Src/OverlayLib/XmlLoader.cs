@@ -29,9 +29,9 @@ namespace Chimera.Overlay {
         public const FontStyle DEFAULT_FONT_STYLE = FontStyle.Regular;
         public static readonly Color DEFAULT_FONT_COLOUR = Color.Black;
 
-        public static string GetName(XmlNode node) {
+        public static string GetName(XmlNode node, string reason) {
             if (node.Attributes["Name"] == null)
-                throw new ArgumentException("Unable to load " + node.Name + ". No name attribute specified.");
+                throw new ArgumentException("Unable to load " + reason + ". No name attribute specified.");
             return node.Attributes["Name"].Value;
         }
 

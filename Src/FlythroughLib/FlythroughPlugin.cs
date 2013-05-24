@@ -151,7 +151,7 @@ namespace Chimera.Flythrough {
         public bool Paused {
             get { return !mPlaying; }
             set {
-                if (value != mPlaying && mCoordinator != null) {
+                if (value == mPlaying && mCoordinator != null) {
                     if (value) {
                         mPlaying = false;
                         mCoordinator.Tick -= mTickListener;

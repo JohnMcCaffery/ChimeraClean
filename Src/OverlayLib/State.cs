@@ -170,6 +170,8 @@ namespace Chimera.Overlay {
         /// </summary>
         /// <param name="stateTransition">The new transition to add.</param>
         public void AddTransition(StateTransition stateTransition) {
+            if (stateTransition.From != this)
+                throw new ArgumentException("Error. " + stateTransition.Name + " does not start at " + Name + " so cannot be added as a transition from it.");
             //TODO - this is a hack and will break things. Need to decide on how to handle multiple triggers.
             //What happens if new transition needs to be drawn?
             if (mTransitions.ContainsKey(stateTransition.To.Name)) {

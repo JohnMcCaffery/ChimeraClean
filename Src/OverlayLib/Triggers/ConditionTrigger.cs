@@ -50,7 +50,7 @@ namespace Chimera.Overlay.Triggers {
 
         }
 
-        public bool Active {
+        public virtual bool Active {
             get { return mActive; }
             set {
                 if (mActive != value) {

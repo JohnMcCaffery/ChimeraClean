@@ -62,7 +62,7 @@ namespace Chimera.Overlay.States {
         }
 
         public ImageBGState(OverlayPlugin manager, XmlNode node)
-            : base(GetName(node), manager) {
+            : base(GetName(node, "image background state"), manager) {
 
             mDefaultBG = new Bitmap(manager.Clip.Width, manager.Clip.Height);
             using (Graphics g = Graphics.FromImage(mDefaultBG))

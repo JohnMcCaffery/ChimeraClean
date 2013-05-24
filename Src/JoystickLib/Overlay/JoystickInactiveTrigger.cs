@@ -7,7 +7,8 @@ using Chimera;
 using Chimera.Overlay;
 using System.Xml;
 
-namespace Joystick.Overlay {    public class JoystickInactivatedTriggerFactory : ITriggerFactory {
+namespace Joystick.Overlay {
+    public class JoystickInactivatedTriggerFactory : ITriggerFactory {
         public SpecialTrigger Special {
             get { return SpecialTrigger.None; }
         }
@@ -25,7 +26,7 @@ namespace Joystick.Overlay {    public class JoystickInactivatedTriggerFactory 
         }
 
         public string Name {
-            get { return "JostickActivated"; }
+            get { return "JoystickInactive"; }
         }
     }
 
@@ -41,6 +42,16 @@ namespace Joystick.Overlay {    public class JoystickInactivatedTriggerFactory 
         public JoystickInactiveTrigger(Coordinator coordinator, XmlNode node)
             : base(coordinator) {
             mTimeoutS = GetDouble(node, 30, "TimeoutS");
+        }
+
+
+        public override bool Active {
+            get { return base.Active; }
+            set {
+                if (value)
+                    mLastTrigger = DateTime.Now;
+                base.Active = value;
+            }
         }
 
         public override bool Condition {

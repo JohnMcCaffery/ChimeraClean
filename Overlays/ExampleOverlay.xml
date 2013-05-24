@@ -12,7 +12,7 @@
 
     <States>
       <State Factory="ImageBG" Name="Splash" Splash="true">
-        <window Window="MainWindow" File="../Images/Example/ExampleBG.png" Splash="True"/>
+        <window Window="MainWindow" File="../Images/Example/ExampleBG.png" Start="True"/>
       </State>
 
       <State Factory="Flythrough" Name="Idle" File="../Flythroughs/Cathedral5.xml" Idle="true">

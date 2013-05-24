@@ -37,7 +37,7 @@ namespace Joystick.Overlay {
         private GamepadButtonFlags mButton = GamepadButtonFlags.A;
 
         public override bool Condition {
-            get { return GamepadManager.Gamepad.Buttons == mButton; }
+            get { return (GamepadManager.Gamepad.Buttons & mButton) == mButton; }
         }
 
         public JoystickButtonTrigger(Coordinator coordinator, XmlNode node)

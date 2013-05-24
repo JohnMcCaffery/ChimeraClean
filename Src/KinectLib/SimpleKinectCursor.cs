@@ -93,7 +93,10 @@ namespace Chimera.Kinect {
         private static readonly int ANCHOR_SMOOTHING_FRAMES = 15;
         private static readonly int ANCHOR = Nui.Hip_Centre;
 
+        private ChangeDelegate mTickListener;
+
         public SimpleKinectCursor() {
+            mTickListener = new ChangeDelegate(Nui_Tick);
             mSmoothingFactor = Scalar.Create(HAND_SMOOTHING_FRAMES);
             /*
             mHandR = test ? Vector.Create("HandR", 0f, 0f, 0f) : Nui.smooth(Nui.joint(Nui.Hand_Right), mSmoothingFactor);
@@ -208,6 +211,10 @@ namespace Chimera.Kinect {
             set {
                 if (value != mEnabled) {
                     mEnabled = value;
+                    if (value)
+                        Nui.Tick += mTickListener;
+                    else
+                        Nui.Tick -= mTickListener;
                     if (EnabledChanged != null)
                         EnabledChanged(this, value);
                 }
@@ -226,7 +233,6 @@ namespace Chimera.Kinect {
             mStateManager = coordinator.GetPlugin<OverlayPlugin>();
             if (coordinator.HasWindow(mWindow) != null) {
                 mManager = mStateManager[mWindow];
-                Nui.Tick += new ChangeDelegate(Nui_Tick);
                 Nui.SkeletonLost += new SkeletonTrackDelegate(Nui_SkeletonLost);
             } else {
                 mWindowAddedListener = new Action<Chimera.Window, EventArgs>(coordinator_WindowAdded);
@@ -256,17 +262,7 @@ namespace Chimera.Kinect {
             if (window.Name == mWindow) {
                 mManager = mStateManager[window.Name];
                 window.Coordinator.WindowAdded -= mWindowAddedListener;
-                Listen();
             }
         }
-
-        private void Listen() {
-            if (!mListening) {
-                mListening = true;
-                Nui.Tick += new ChangeDelegate(Nui_Tick);
-                Nui.SkeletonLost += new SkeletonTrackDelegate(Nui_SkeletonLost);
-            }
-        }
-
     }
 }

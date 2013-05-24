@@ -28,7 +28,7 @@ namespace Joystick.Overlay {
         }
 
         public string Name {
-            get { return "JostickActivated"; }
+            get { return "JoystickActivated"; }
         }
     }
 

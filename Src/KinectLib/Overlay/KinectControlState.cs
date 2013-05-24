@@ -75,7 +75,7 @@ namespace Chimera.Kinect.Overlay {
         }
 
         public KinectControlState(OverlayPlugin manager, XmlNode node)
-            : base(GetName(node), manager) {
+            : base(GetName(node, "kinect movement state"), manager) {
 
             mInput = manager.Coordinator.GetPlugin<KinectMovementPlugin>();
             mAvatar = GetBool(node, true, "Avatar");
