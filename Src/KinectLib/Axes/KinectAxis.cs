@@ -11,7 +11,8 @@ using G = Chimera.Kinect.GlobalConditions;
 namespace Chimera.Kinect.Axes {
     public abstract class KinectAxis : ConstrainedAxis {
         public abstract Condition Active { get; }
-        public abstract Scalar Raw { get; }        public abstract ConstrainedAxis Axis { get; }
+        public abstract Scalar Raw { get; }
+        public abstract ConstrainedAxis Axis { get; }
 
         private ChangeDelegate mTickListener;
 
@@ -20,7 +21,8 @@ namespace Chimera.Kinect.Axes {
         }
 
         public KinectAxis(string name, AxisBinding binding)
-            : base(name, binding) {
+            : base(name, binding) {
+
             Deadzone.Value = G.Cfg.GetDeadzone(name);
             Scale.Value = G.Cfg.GetScale(name);
 
@@ -30,7 +32,8 @@ namespace Chimera.Kinect.Axes {
 
             if (Nui.HasSkeleton)
                 Nui.Tick += mTickListener;
-        }
+        }
+
         void Nui_SkeletonFound() {
             Nui.Tick += mTickListener;
         }

@@ -38,7 +38,8 @@ namespace Chimera.Kinect.Overlay {
         private ImageHoverTrigger mCloseWhereButton;
         private Window mMainWindow;
 
-        private string mHelpImages = "../Images/Caen/Misc/HelpSidebar.png";
+        private string mHelpAvatarImages = "../Images/Caen/Misc/HelpSidebarAvatar.png";
+        private string mHelpFlycamImages = "../Images/Caen/Misc/HelpSidebarFlycam.png";
         private string mWhereAmIImage = "../Images/Caen/Buttons/WhereAmIButton.png";
         private string mWhereWindow;
 
@@ -46,7 +47,7 @@ namespace Chimera.Kinect.Overlay {
             return new WindowState(window.OverlayManager);
         }
 
-        public KinectHelpState(string name, StateManager manager, string mainWindow, string whereWindow)
+        public KinectHelpState(string name, StateManager manager, string mainWindow, string whereWindow, bool avatar)
             : base(name, manager) {
 
             mInput = manager.Coordinator.GetPlugin<TimespanAxisPlugin>();
@@ -62,9 +63,9 @@ namespace Chimera.Kinect.Overlay {
 
             mClickTrigger = new CursorTrigger(new CircleRenderer(100), mMainWindow);
 
-            SkeletonFeature helpSkeleton = new SkeletonFeature(.065f, 0f, .13f, 125f, mainWindow);
+            SkeletonFeature helpSkeleton = new SkeletonFeature(.065f, 0f, avatar ? .23f : .13f, 125f, mainWindow);
             AddFeature(helpSkeleton);
-            AddFeature(new OverlayImage(new Bitmap(mHelpImages), .05f, .1f, mainWindow));
+            AddFeature(new OverlayImage(new Bitmap(avatar ? mHelpAvatarImages : mHelpFlycamImages), .05f, avatar ? .2f : .1f, mainWindow));
             AddFeature(mClickTrigger);
             //AddFeature(mWhereButton);
 

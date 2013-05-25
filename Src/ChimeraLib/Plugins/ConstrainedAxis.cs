@@ -36,7 +36,8 @@ namespace Chimera.Plugins {
 
         private float mDelta = 0f;
         private IUpdater<float> mDeadzone = new Updater<float>("Deadzone", .1f);
-        private IUpdater<float> mScale  = new Updater<float>("Deadzone", 1f);        private IUpdater<float> mRaw = new Updater<float>("Raw", 0f);
+        private IUpdater<float> mScale  = new Updater<float>("Deadzone", 1f);
+        private IUpdater<float> mRaw = new Updater<float>("Raw", 0f);
         private IUpdater<float> mOutput  = new Updater<float>("Output", 0f);
 
         public IUpdater<float> Deadzone {
@@ -53,7 +54,8 @@ namespace Chimera.Plugins {
                 mScale = value;
                 Recalculate();
             }
-        }
+        }
+
         public IUpdater<float> Raw {
             get { return mRaw; }
             set { 
