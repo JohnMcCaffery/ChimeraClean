@@ -220,7 +220,8 @@ namespace Chimera.Flythrough.Overlay {
 
             if (mStepping) {
                 mInput.AutoStep = false;
-                mInput.Loop = false;
+                mInput.Loop = false;                foreach (var trigger in mStepTriggers)
+                    trigger.Active = true;
             } else {
                 mInput.Loop = true;
                 mInput.AutoStep = true;
@@ -240,6 +241,8 @@ namespace Chimera.Flythrough.Overlay {
                 mDefaultWindow.RemoveControl(mPlayer.Player);
             if (mSubtitlesText != null)
                 mSubtitlesText.Active = false;
+            foreach (var trigger in mStepTriggers)
+                trigger.Active = false;
         }
     }
 }

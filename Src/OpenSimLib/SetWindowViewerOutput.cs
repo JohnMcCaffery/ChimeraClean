@@ -29,6 +29,13 @@ using Chimera.OpenSim.Packets;
 
 namespace Chimera.OpenSim {
     public class SetWindowViewerOutput : ViewerProxy {
+        public SetWindowViewerOutput(params string[] args)
+            : base() {
+        }
+        public SetWindowViewerOutput(string name, string file, params string[] args)
+            : base() {
+        }
+
         public override void ClearCamera() {
             if (ProxyRunning)
                 InjectPacket(new ClearCameraPacket());
@@ -36,20 +43,20 @@ namespace Chimera.OpenSim {
 
         public override void SetCamera() {
             if (ProxyRunning && ControlCamera)
-                InjectPacket(new SetCameraPacket(MakeCameraBlock(Window.Coordinator.Position, Vector3.Zero, Window.Coordinator.Orientation, Rotation.Zero)));
+                InjectPacket(new SetCameraPacket(MakeCameraBlock()));
         }
 
         public override void SetWindow() {
-            if (ProxyRunning && ControlCamera) {
-                InjectPacket(new SetWindowPacket(Window.ProjectionMatrix, MakeCameraBlock()));
-                SetCamera();
-            }
+            if (ProxyRunning && ControlCamera)
+                InjectPacket(new SetFrustumPacket(Window.ProjectionMatrix));
         }
 
         protected override void ProcessCameraUpdate (Coordinator coordinator, CameraUpdateEventArgs args) {
             if (ProxyRunning && ControlCamera)
                 InjectPacket(new SetCameraPacket(MakeCameraBlock(args.position, args.positionDelta, args.rotation, args.rotationDelta)));
         }
+
+
 
         private SetCameraPacket.CameraBlock MakeCameraBlock() {
             return MakeCameraBlock(Window.Coordinator.Position, Vector3.Zero, Window.Coordinator.Orientation, Rotation.Zero);
@@ -64,7 +71,7 @@ namespace Chimera.OpenSim {
             block.PositionDelta = positionDelta;
             block.LookAt = lookAt;
             block.LookAtDelta = rotationDelta.LookAtVector;
-            block.TickLength = (uint) Window.Coordinator.TickLength * 1000;
+            block.TickLength = (uint)Window.Coordinator.TickLength * 1000;
             return block;
         }
     }

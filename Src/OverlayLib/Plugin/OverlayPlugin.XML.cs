@@ -55,7 +55,6 @@ namespace Chimera.Overlay {
         private Dictionary<string, IImageTransition> mImageTransitions = new Dictionary<string, IImageTransition>();
 
         private State mStartState;
-        private ITransitionStyle mIdleSplashTransition = new OpacityFadeInWindowTransitionFactory(2000);
         private ITransitionStyle mSplashIdleTransition = new OpacityFadeOutWindowTransitionFactory(2000);
 
         private Rectangle mClip = new Rectangle(0, 0, 1920, 1080);
@@ -215,7 +214,6 @@ namespace Chimera.Overlay {
             foreach (XmlNode child in node.ChildNodes.OfType<XmlElement>()) {
                 switch (child.Name) {
                     case "IdleTransition": mSplashIdleTransition = GetTransition(child, "to idle transition", new OpacityFadeOutWindowTransitionFactory(5000)); break;
-                    case "SplashTransition": mIdleSplashTransition = GetTransition(child, "from idle transition", new OpacityFadeInWindowTransitionFactory(5000)); break;
                 }
             }
             foreach (var child in GetChildrenOfChild(node, "Triggers")) {

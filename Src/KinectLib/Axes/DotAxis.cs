@@ -14,7 +14,7 @@ namespace Chimera.Kinect.Axes {
     /// </summary>
     public abstract class DotAxis : KinectAxis {
         private Scalar mRaw;
-        private Scalar mValue;
+        //private Scalar mValue;
         private DotAxisPanel mPanel;
 
         public abstract Vector A { get; }
@@ -54,21 +54,26 @@ namespace Chimera.Kinect.Axes {
             return Scalar.Create(1f);
         }
 
+        /*
+        protected float Sign(Perspective perspective) {
+
+        }
+        */
+
+        private Vector a;
+        private Vector b;
+        private Scalar dot;
+
         /// <summary>
         /// Will be called from constructor. To re-set up after setting up constructor variables call again.
         /// </summary>
         protected void Init() {
-            Scalar dot = Nui.acos(Nui.dot(Nui.normalize(A), Nui.normalize(B)));
+            a = Nui.normalize(A);
+            b = Nui.normalize(B);
+            dot = Nui.acos(Nui.dot(Nui.normalize(A), Nui.normalize(B)));
             mRaw = dot * Sign * (180f / (float)Math.PI);
             //mRaw = Nui.acos(Nui.dot(A, B)) * (180f / (float) Math.PI);
-
-            mValue = Nui.ifScalar(Active, mRaw, 0f);
-
-            Nui.Tick += new ChangeDelegate(Nui_Tick);
-        }
-
-        void Nui_Tick() {
-            SetRawValue(mValue.Value);
+            //mValue = Nui.ifScalar(Active, mRaw, 0f);
         }
 
         #region IKinectAxis Members

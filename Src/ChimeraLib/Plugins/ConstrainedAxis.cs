@@ -1,3 +1,4 @@
+
 ﻿/*************************************************************************
 Copyright (c) 2012 John McCaffery 
 
@@ -28,16 +29,17 @@ using Chimera.Util;
 
 namespace Chimera.Plugins {
     public abstract class ConstrainedAxis : IAxis {
-        private AxisBinding mBinding = AxisBinding.NotSet;
+        private AxisBinding mBinding = AxisBinding.None;
         private ConstrainedAxisPanel mPanel;
         private readonly string mName;
 
         protected bool mMirror = true;
 
-        private float mRaw = 0f;
         private float mDelta = 0f;
         private IUpdater<float> mDeadzone = new Updater<float>("Deadzone", .1f);
         private IUpdater<float> mScale  = new Updater<float>("Deadzone", 1f);
+        private IUpdater<float> mRaw = new Updater<float>("Raw", 0f);
+        private IUpdater<float> mOutput  = new Updater<float>("Output", 0f);
 
         public virtual IUpdater<float> Deadzone {
             get { return mDeadzone; }
@@ -51,6 +53,22 @@ namespace Chimera.Plugins {
             get { return mScale; }
             set { 
                 mScale = value;
+                Recalculate();
+            }
+        }
+
+        public IUpdater<float> Raw {
+            get { return mRaw; }
+            set { 
+                mRaw = value;
+                Recalculate();
+            }
+        }
+
+        public IUpdater<float> Output {
+            get { return mOutput; }
+            set { 
+                mOutput = value;
                 Recalculate();
             }
         }
@@ -83,17 +101,19 @@ namespace Chimera.Plugins {
         }
 
         protected void SetRawValue(float value) {
-            mRaw = value;
+            mRaw.Value = value;
             Recalculate();
         }
 
         private void Recalculate() {
-            float sign = mRaw < 0f ? -1f : 1f;
+            float raw = mRaw.Value;
+            float sign = raw < 0f ? -1f : 1f;
             if(mMirror)
-                mRaw = Math.Abs(mRaw);
-            mDelta = mRaw < mDeadzone.Value ? 0f : (mRaw - mDeadzone.Value) * mScale.Value;
+                raw = Math.Abs(raw);
+            mDelta = raw < mDeadzone.Value ? 0f : (raw - mDeadzone.Value) * mScale.Value;
             if (mMirror)
                 mDelta *= sign;
+            mOutput.Value = mDelta;
         }
 
         #region IAxis Members

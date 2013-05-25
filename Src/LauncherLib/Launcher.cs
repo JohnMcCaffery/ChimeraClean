@@ -34,7 +34,6 @@ using Touchscreen;
 using Chimera.Plugins;
 using Joystick;
 using Chimera.Flythrough;
-using Chimera.OpenSim;
 using Chimera.Kinect.GUI;
 using Chimera.Kinect;
 using System.IO;
@@ -46,6 +45,7 @@ using Ninject;
 using Ninject.Parameters;
 using Ninject.Extensions.Xml;
 using Chimera.Interfaces;
+using Chimera.OpenSim;
 
 namespace Chimera.Launcher {
     public class Launcher {

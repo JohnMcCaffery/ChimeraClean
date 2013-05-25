@@ -55,6 +55,8 @@ namespace Chimera.GUI.Controls.Plugins {
 
                 deadzonePanel.Scalar = mConstrainedAxis.Deadzone;
                 scalePanel.Scalar = mConstrainedAxis.Scale;
+                rawPanel.Scalar = mConstrainedAxis.Raw;
+                outputPanel.Scalar = mConstrainedAxis.Output;
             }
         }
     }
