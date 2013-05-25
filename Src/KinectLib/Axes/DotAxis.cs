@@ -55,21 +55,41 @@ namespace Chimera.Kinect.Axes {
             return Scalar.Create(1f);
         }
 
+        private Vector a;
+        private Vector b;
+        private Scalar dot;
+        private ChangeDelegate mTickListener;
+
         /// <summary>
         /// Will be called from constructor. To re-set up after setting up constructor variables call again.
         /// </summary>
         protected void Init() {
-            Scalar dot = Nui.acos(Nui.dot(Nui.normalize(A), Nui.normalize(B)));
+            a = Nui.normalize(A);
+            b = Nui.normalize(B);
+            dot = Nui.acos(Nui.dot(Nui.normalize(A), Nui.normalize(B)));
             mRaw = dot * Sign * (180f / (float)Math.PI);
             //mRaw = Nui.acos(Nui.dot(A, B)) * (180f / (float) Math.PI);
 
             mValue = Nui.ifScalar(Active, mRaw, 0f);
 
-            Nui.Tick += new ChangeDelegate(Nui_Tick);
+            mTickListener = new ChangeDelegate(Nui_Tick);
+            Nui.SkeletonFound += new SkeletonTrackDelegate(Nui_SkeletonFound);
+            Nui.SkeletonLost += new SkeletonTrackDelegate(Nui_SkeletonLost);
+
+            if (Nui.HasSkeleton)
+                Nui.Tick += mTickListener;
+        }
+
+        void Nui_SkeletonFound() {
+            Nui.Tick += mTickListener;
+        }
+
+        void Nui_SkeletonLost() {
+            Nui.Tick -= mTickListener;
         }
 
         void Nui_Tick() {
-            SetRawValue(mValue.Value);
+            SetRawValue(Nui.HasSkeleton ? mValue.Value : 0f);
         }
 
         #region IKinectAxis Members
