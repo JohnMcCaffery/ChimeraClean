@@ -20,13 +20,17 @@ namespace Chimera.Kinect.Axes {
 
         public KinectAxis(string name, IUpdater<float> deadzone, IUpdater<float> scale, AxisBinding binding)
             : base(name, deadzone, scale, binding) {
+            Init();
         }
 
         public KinectAxis(string name, AxisBinding binding)
             : base(name, binding) {
+            Init();
+        }
 
-            Deadzone.Value = G.Cfg.GetDeadzone(name);
-            Scale.Value = G.Cfg.GetScale(name);
+        private void Init() {
+            Deadzone.Value = G.Cfg.GetDeadzone(Name);
+            Scale.Value = G.Cfg.GetScale(Name);
 
             mTickListener = new ChangeDelegate(Nui_Tick);
             Nui.SkeletonFound += new SkeletonTrackDelegate(Nui_SkeletonFound);
