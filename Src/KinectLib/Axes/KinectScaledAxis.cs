@@ -9,7 +9,7 @@ using NuiLibDotNet;
 using Chimera.Kinect.GUI;
 
 namespace Chimera.Kinect.Axes {
-    public abstract class KinectScaledAxis : ConstrainedAxis {
+    public abstract class KinectScaledAxis : KinectAxis {
         private static Scalar sAnchor = Nui.smooth(Nui.magnitude(Nui.joint(Nui.Shoulder_Centre) - Nui.joint(Nui.Hip_Centre)), 50);
         private static Scalar sTmpDZScale = Scalar.Create(1f);
         private static Scalar sTmpSScale = Scalar.Create(1f);
@@ -35,10 +35,6 @@ namespace Chimera.Kinect.Axes {
             get { return mScaleScale; }
         }
 
-        public abstract ConstrainedAxis Axis { get; }
-        public abstract Scalar Raw { get; }
-        public abstract Condition Active { get; }
-
         public KinectScaledAxis(string name, AxisBinding binding)
             : base(name, new ScalarUpdater(sAnchor * MakeDZ()), new ScalarUpdater(sAnchor * MakeScale()), binding) {
 
@@ -47,12 +43,6 @@ namespace Chimera.Kinect.Axes {
 
             mDeadzoneScale.Value = G.Cfg.GetDeadzone(name);
             mScaleScale.Value = G.Cfg.GetScale(name);
-
-            Nui.SkeletonLost += new SkeletonTrackDelegate(Nui_SkeletonLost);
-        }
-
-        void Nui_SkeletonLost() {
-            SetRawValue(0f);
         }
     }
 }

@@ -15,7 +15,7 @@ namespace Chimera.Kinect.Axes {
     /// </summary>
     public abstract class DotAxis : KinectAxis {
         private Scalar mRaw;
-        private Scalar mValue;
+        //private Scalar mValue;
         private DotAxisPanel mPanel;
 
         public abstract Vector A { get; }
@@ -55,10 +55,15 @@ namespace Chimera.Kinect.Axes {
             return Scalar.Create(1f);
         }
 
+        /*
+        protected float Sign(Perspective perspective) {
+
+        }
+        */
+
         private Vector a;
         private Vector b;
         private Scalar dot;
-        private ChangeDelegate mTickListener;
 
         /// <summary>
         /// Will be called from constructor. To re-set up after setting up constructor variables call again.
@@ -69,27 +74,7 @@ namespace Chimera.Kinect.Axes {
             dot = Nui.acos(Nui.dot(Nui.normalize(A), Nui.normalize(B)));
             mRaw = dot * Sign * (180f / (float)Math.PI);
             //mRaw = Nui.acos(Nui.dot(A, B)) * (180f / (float) Math.PI);
-
-            mValue = Nui.ifScalar(Active, mRaw, 0f);
-
-            mTickListener = new ChangeDelegate(Nui_Tick);
-            Nui.SkeletonFound += new SkeletonTrackDelegate(Nui_SkeletonFound);
-            Nui.SkeletonLost += new SkeletonTrackDelegate(Nui_SkeletonLost);
-
-            if (Nui.HasSkeleton)
-                Nui.Tick += mTickListener;
-        }
-
-        void Nui_SkeletonFound() {
-            Nui.Tick += mTickListener;
-        }
-
-        void Nui_SkeletonLost() {
-            Nui.Tick -= mTickListener;
-        }
-
-        void Nui_Tick() {
-            SetRawValue(Nui.HasSkeleton ? mValue.Value : 0f);
+            //mValue = Nui.ifScalar(Active, mRaw, 0f);
         }
 
         #region IKinectAxis Members
@@ -98,11 +83,9 @@ namespace Chimera.Kinect.Axes {
             get { return this; }
         }
 
-        /*
         public override Scalar Raw {
             get { return mRaw; }
         }
-        */
 
         #endregion
     }
