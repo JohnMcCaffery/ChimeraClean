@@ -75,6 +75,7 @@ namespace Chimera.Plugins {
         public AxisBasedDelta(string name, params IAxis[] axes) {
             mName = name;
 
+            /*
             int i = 0;
             if (axes.Length > i && axes[i] != null && axes[i].Binding == AxisBinding.None)
                 axes[i].Binding = AxisBinding.X;
@@ -90,6 +91,7 @@ namespace Chimera.Plugins {
             i++;
             if (axes.Length > i && axes[i] != null && axes[i].Binding == AxisBinding.None)
                 axes[i].Binding = AxisBinding.Yaw;
+            */
 
             foreach (var axis in axes)
                 if (axis != null)
