@@ -58,8 +58,12 @@ namespace Chimera.Kinect.Axes {
             public override Condition Active {
                 get { return mActive; }
             }
-            public override Scalar Raw {
+            public override Scalar RawScalar {
                 get { return mRaw; }
+            }
+
+            public override float RawValue {
+                get { return mRaw.Value; }
             }
 
             public override UserControl ControlPanel {
@@ -92,11 +96,7 @@ namespace Chimera.Kinect.Axes {
                 //The value for the push gesture
                 mValue = Nui.ifScalar(mActive, mRaw, 0f);
 
-                Nui.Tick += new ChangeDelegate(Nui_Tick);
-            }
-
-            void Nui_Tick() {
-                SetRawValue(mValue.Value);
+                AddListener();
             }
         }
     }

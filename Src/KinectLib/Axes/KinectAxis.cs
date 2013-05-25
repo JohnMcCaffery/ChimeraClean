@@ -11,8 +11,10 @@ using G = Chimera.Kinect.GlobalConditions;
 namespace Chimera.Kinect.Axes {
     public abstract class KinectAxis : ConstrainedAxis {
         public abstract Condition Active { get; }
-        public abstract Scalar Raw { get; }
+        //public abstract Scalar Raw { get; }
         public abstract ConstrainedAxis Axis { get; }
+
+        public abstract float RawValue { get; }
 
         private ChangeDelegate mTickListener;
 
@@ -29,7 +31,9 @@ namespace Chimera.Kinect.Axes {
             mTickListener = new ChangeDelegate(Nui_Tick);
             Nui.SkeletonFound += new SkeletonTrackDelegate(Nui_SkeletonFound);
             Nui.SkeletonLost += new SkeletonTrackDelegate(Nui_SkeletonLost);
+        }
 
+        protected void AddListener() {
             if (Nui.HasSkeleton)
                 Nui.Tick += mTickListener;
         }
@@ -44,7 +48,7 @@ namespace Chimera.Kinect.Axes {
         }
 
         void Nui_Tick() {
-            SetRawValue(Nui.HasSkeleton && Active.Value ? Raw.Value : 0f);
+            SetRawValue(Nui.HasSkeleton && Active.Value ? RawValue : 0f);
         }   
     }
 }

@@ -17,6 +17,10 @@ namespace Chimera.Kinect.Axes {
         private Scalar mDeadzoneScale = Scalar.Create(1f);
         private Scalar mScaleScale = Scalar.Create(1f);
 
+        public abstract Scalar RawScalar {
+            get;
+        }
+
         private static Scalar MakeDZ() {
             sTmpDZScale = Scalar.Create(1f);
             return sTmpDZScale;
