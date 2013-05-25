@@ -78,9 +78,11 @@ namespace Chimera.Kinect.Axes {
             get { return this; }
         }
 
+        /*
         public override Scalar Raw {
             get { return mRaw; }
         }
+        */
 
         #endregion
     }

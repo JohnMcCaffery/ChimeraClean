@@ -43,14 +43,14 @@ namespace Chimera.Kinect.Axes {
             : this(right, AxisBinding.None) {
         }
 
-        public class PushSingleAxis : KinectAxis {
+        public class PushSingleAxis : KinectScaledAxis {
             private static readonly float DZ = .3f;
             private static readonly float SCALE = .05f;
             private static readonly float BACKDZ = DZ / 5f;
             private Condition mActive;
             private Scalar mRaw;
             private Scalar mValue;
-            private KinectAxisPanel mPanel;
+            private KinectScaledAxisPanel mPanel;
 
             public override ConstrainedAxis Axis {
                 get { return this; }
@@ -65,7 +65,7 @@ namespace Chimera.Kinect.Axes {
             public override UserControl ControlPanel {
                 get {
                     if (mPanel == null)
-                        mPanel = new KinectAxisPanel(this);
+                        mPanel = new KinectScaledAxisPanel(this);
                     return mPanel;
                 }
             }

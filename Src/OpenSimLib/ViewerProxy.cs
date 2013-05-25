@@ -640,6 +640,7 @@ namespace Chimera.OpenSim {
             if (mMaster && coordinator.ControlMode == ControlMode.Delta && mProxy != null) {
                 RemoteControlPacket packet = new RemoteControlPacket();
                 packet.Delta.Position = args.positionDelta * mDeltaScale;
+                packet.Delta.Position.Z = 0f;
                 packet.Delta.Pitch = (float) (args.rotationDelta.Pitch * (Math.PI / 45.0)) * mDeltaScale;
                 packet.Delta.Yaw = (float) (args.rotationDelta.Yaw * (Math.PI / 45.0)) * mDeltaScale;
                 mProxy.InjectPacket(packet, Direction.Incoming);

@@ -90,24 +90,30 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Axes\AxisBase.cs" />
     <Compile Include="Axes\ArmYawAxis.cs" />
     <Compile Include="Axes\CrouchAxis.cs" />
     <Compile Include="Axes\DotAxis.cs" />
+    <Compile Include="Axes\KinectAxis.cs" />
     <Compile Include="GlobalConditions.cs" />
-    <Compile Include="GUI\Axes\DotAxisPanel.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="GUI\Axes\DotAxisPanel.designer.cs">
-      <DependentUpon>DotAxisPanel.cs</DependentUpon>
-    </Compile>
     <Compile Include="GUI\Axes\KinectAxisPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="GUI\Axes\KinectAxisPanel.designer.cs">
       <DependentUpon>KinectAxisPanel.cs</DependentUpon>
     </Compile>
-    <Compile Include="Axes\KinectAxis.cs" />
+    <Compile Include="GUI\Axes\DotAxisPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\Axes\DotAxisPanel.designer.cs">
+      <DependentUpon>DotAxisPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\Axes\KinectScaledAxisPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\Axes\KinectScaledAxisPanel.designer.cs">
+      <DependentUpon>KinectScaledAxisPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Axes\KinectScaledAxis.cs" />
     <Compile Include="Axes\KinectAxisConfig.cs" />
     <Compile Include="GUI\KinectCamera.cs">
       <SubType>UserControl</SubType>
@@ -189,11 +195,14 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="GUI\Axes\KinectAxisPanel.resx">
+      <DependentUpon>KinectAxisPanel.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="GUI\Axes\DotAxisPanel.resx">
       <DependentUpon>DotAxisPanel.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="GUI\Axes\KinectAxisPanel.resx">
-      <DependentUpon>KinectAxisPanel.cs</DependentUpon>
+    <EmbeddedResource Include="GUI\Axes\KinectScaledAxisPanel.resx">
+      <DependentUpon>KinectScaledAxisPanel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\TimespanMovementPanel.resx">
       <DependentUpon>TimespanMovementPanel.cs</DependentUpon>

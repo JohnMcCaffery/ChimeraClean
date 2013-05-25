@@ -31,10 +31,10 @@ using Chimera.Kinect.Interfaces;
 using System.Windows.Forms;
 
 namespace Chimera.Kinect.Axes {
-    public class CrouchAxis : KinectAxis {
+    public class CrouchAxis : KinectScaledAxis {
         private Condition mActive = C.Create("CrouchActive", true);
         private Scalar mRaw;
-        private KinectAxisPanel mPanel;
+        private KinectScaledAxisPanel mPanel;
 
         public override ConstrainedAxis Axis {
             get { return this; }
@@ -49,7 +49,7 @@ namespace Chimera.Kinect.Axes {
         public override UserControl ControlPanel {
             get {
                 if (mPanel == null)
-                    mPanel = new KinectAxisPanel(this);
+                    mPanel = new KinectScaledAxisPanel(this);
                 return mPanel;
             }
         }
