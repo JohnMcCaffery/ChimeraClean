@@ -325,43 +325,50 @@ namespace Chimera.Plugins {
         private void ConfigureWindow() {
             double alpha = Math.Atan2(mVOffset, mThrowRatio);
             double beta = Math.Atan2(mVOffset + mH, mThrowRatio);
-            double ceta = Math.Atan2(mW / 2, mThrowRatio);
 
-            double flip = mUpsideDown ? -1.0 : 1.0;
 
             double h = mTargetH;
-            double d = mScreenDistance;
-            double angleT = mUpsideDown ? P - alpha : P + beta;
-            double angleB = mUpsideDown ? P - beta : P + alpha;
+            double angleT = !mUpsideDown ? P + beta : P - alpha;
+            double angleB = !mUpsideDown ? P + alpha : P - beta;
             double tan = Math.Tan(angleT) - Math.Tan(angleB);
-            if (mLockHeight)
-                d = h / tan;
-            else
-                h = d * tan;
+            if (mLockHeight) {
+                mScreenDistance = h / tan;
 
-            double t = d * Math.Tan(P + (mUpsideDown ?  -alpha : beta));
-            double w = d * Math.Tan(ceta) * 2;
-            Vector3 topLeft = new Vector3((float) d, (float) (w / -2), (float) t);
-            topLeft *= new Rotation(0.0, mOrientation.Yaw).Quaternion;
-            topLeft += Origin;
+                double offsetH = h * mVOffset / mH;
+                double offsetZ = offsetH * Math.Cos(P);
+                if (!mUpsideDown) {
+                    offsetZ += h;
+                    offsetZ *= -1.0;
+                }
 
-            mWindow.Height = h;
-            mWindow.Width = w;
-            mWindow.TopLeft = topLeft;
-                
+                Vector3 line = new Vector3((float)mScreenDistance, 0f, 0f);
+                line *= new Rotation(0.0, mWindow.Orientation.Yaw).Quaternion;
+                Vector3 target = mWindow.Centre;
+                double z = mScreenDistance * Math.Tan(angleT);
+                target.Z = mWindow.TopLeft.Z - (float) z; 
+                mPosition = (target - line) - mProjectorPlugin.RoomPosition;
+            } else {
+                mWindow.Height = mScreenDistance * tan;
 
-            //double b = t - (h * flip);
-            /*
-            if (mLockHeight)
-                CalculateDistanceFromHeight();
+                double t = mScreenDistance * Math.Tan(P + (mUpsideDown ? -alpha : beta));
+                Vector3 topLeft = new Vector3((float)mScreenDistance, (float)(W / -2), (float)t);
+                topLeft *= new Rotation(0.0, mOrientation.Yaw).Quaternion;
+                topLeft += Origin;
+                mWindow.TopLeft = topLeft;
+            }
 
-            mWindow.Orientation.Quaternion = new Rotation(0.0, mOrientation.Yaw).Quaternion;
-            Vector3 topLeft = TopLeft;
-            Vector3 topRight = TopRight;
-            mWindow.Width = Vector3.Mag(new Vector3(topLeft.X, topLeft.Y, 0f) - new Vector3(topRight.X, topRight.Y, 0f));
-            mWindow.Height = TopLeft.Z - BottomLeft.Z;
-            mWindow.TopLeft = topLeft;
-            */
+            mWindow.Width = W;
+        }
+
+        private double W {
+            get {
+                double offsetX = ((mScreenDistance / mThrowRatio) * mVOffset) * Math.Sin(P);
+                double minX = mScreenDistance - offsetX;
+                double minH = minX / Math.Cos(P);
+                double ceta = Math.Atan2(mW / 2, mThrowRatio);
+                double tanCeta = Math.Tan(ceta);
+                return (mScreenDistance / Math.Cos(P)) * tanCeta * 2;
+            }
         }
 
         private double mAlpha;
@@ -400,17 +407,49 @@ namespace Chimera.Plugins {
         public void Draw(Graphics g, Func<Vector3, Point> to2D, Action redraw, Perspective perspective) {
             if (mDraw) {
                 Func<Vector3, Point> to2DR = v => to2D(Origin + (v * new Rotation(0.0, mOrientation.Yaw).Quaternion));
-                Point pos = to2DR(Vector3.Zero);
-                float y = Origin.Y;
-
+                Point pos = to2DR(Vector3.Zero);
                 double alpha = Math.Atan2(mVOffset, mThrowRatio);
                 double beta = Math.Atan2(mVOffset + mH, mThrowRatio);
                 double ceta = Math.Atan2(mW / 2, mThrowRatio);
+                double range = 12500.0;
+
+                double y = range * Math.Tan(ceta);
+                double zt = range * Math.Tan(mUpsideDown ? alpha : beta) * (mUpsideDown ? -1 : 1);
+                double zb = range * Math.Tan(mUpsideDown ? beta : alpha) * (mUpsideDown ? -1 : 1);
+
+                Quaternion q = new Rotation(-mOrientation.Pitch, mOrientation.Yaw).Quaternion;
+                Vector3 bse = new Vector3((float)range, 0f, 0f) * q;
+                Vector3 tl = new Vector3((float)range, (float)-y, (float)zt) * q;
+                Vector3 tr = new Vector3((float)range, (float)y, (float)zt) * q;
+                Vector3 bl = new Vector3((float)range, (float)-y, (float)zb) * q;
+                Vector3 br = new Vector3((float)range, (float)y, (float)zb) * q;
+
+                g.DrawLine(Pens.Red, pos, to2DR(bse));
+                g.DrawLine(Pens.Green, pos, to2DR(bl));
+                g.DrawLine(Pens.Green, pos, to2DR(br));
+                g.DrawLine(Pens.Blue, pos, to2DR(tl));
+                g.DrawLine(Pens.Blue, pos, to2DR(tr));
+                g.DrawLine(Pens.Violet, to2DR(new Vector3((float)mScreenDistance, 0f, (float)-range)), to2DR(new Vector3((float)mScreenDistance, 0f, (float)range)));
+
+
+                double offsetX = ((mScreenDistance / mThrowRatio) * mVOffset) * Math.Tan(P);
+                double minX = mScreenDistance - offsetX;
+                double minH = minX / Math.Cos(P);
+                //double ceta = Math.Atan2(mW / 2, mThrowRatio);
+                double tanCeta = Math.Tan(ceta);
+                double w = minH * tanCeta * 2;
+
+                g.DrawLine(Pens.Purple, pos, to2DR(new Vector3((float) minX, 0f, 0f)));
+                g.DrawLine(Pens.Purple, pos, to2DR(new Vector3((float) minH, 0f, 0f) * q));
+
+                /*
+                double ceta = Math.Atan2((mW / 2) / Math.Cos(P), mThrowRatio);
+                float y = Origin.Y;
+
 
                 double alphaDeg = (180.0 / Math.PI) * alpha;
                 double betaDeg = (180.0 / Math.PI) * beta;
 
-                double range = 12500.0;
                 double bottomH = range * Math.Tan(alpha);
                 double topH = range * Math.Tan(beta);
 
@@ -421,38 +460,22 @@ namespace Chimera.Plugins {
                 double topZ = baseZ + (topH * Math.Cos(P) * flip);
 
                 double baseX = range * Math.Cos(P);
-                double bottomX = baseX - (bottomH * Math.Sin(P));
-                double topX = baseX - (topH * Math.Sin(P));
+                double bottomX = baseX - (bottomH * Math.Sin(P) * flip);
+                double topX = baseX - (topH * Math.Sin(P) * flip);
 
                 double bottomY = bottomX * Math.Tan(ceta);
                 double topY = topX * Math.Tan(ceta);
 
                 double pureBottomY = range * Math.Tan(alpha + P);
-                double pureTopY = range * Math.Tan(beta + P);
-
-                /*
-                double h = mTargetH;
-                double d = mScreenDistance;
-                if (mLockHeight)
-                    d = h / (Math.Tan(P + beta) - Math.Tan(P + alpha));
-                else
-                    h = d * (Math.Tan(beta + P) - Math.Tan(alpha + P));
-
-                double t = d * Math.Tan(P + (beta * flip));
-                */
-
+                double pureTopY = range * Math.Tan(beta + P);
                 g.DrawLine(Pens.Red, pos, to2DR(new Vector3((float) baseX, y, (float) baseZ)));
                 g.DrawLine(Pens.Green, pos, to2DR(new Vector3((float) bottomX, (float) -bottomY, (float) bottomZ)));
                 g.DrawLine(Pens.Green, pos, to2DR(new Vector3((float) bottomX, (float) bottomY, (float) bottomZ)));
                 g.DrawLine(Pens.Blue, pos, to2DR(new Vector3((float) topX, (float) -topY, (float) topZ)));
                 g.DrawLine(Pens.Blue, pos, to2DR(new Vector3((float) topX, (float) topY, (float) topZ)));
                 g.DrawLine(Pens.Violet, to2DR(new Vector3((float)mScreenDistance, 0f, (float) -range)), to2DR(new Vector3((float)mScreenDistance, 0f, (float)range)));
-
-                /*
-                using (Pen p = new Pen(Color.Red, 3f))
-                    g.DrawLine(p, to2DR(new Vector3((float) d, 0f, (float) t)), to2DR(new Vector3((float) d, 0f, (float) (t - h))));
                 */
-
+               
                 if (mDrawLabels) {
                     Vector3 toScreen = new Vector3((float) mScreenDistance, 0f, 0f) * new Rotation(0.0, mOrientation.Yaw).Quaternion;
                     Vector3 floor = new Vector3(0f, 0f, mProjectorPlugin.RoomPosition.Z + mProjectorPlugin.Small.Z);
