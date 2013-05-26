@@ -26,16 +26,12 @@ namespace Chimera.Kinect.Axes {
             get { return mB; }
         }
 
-        protected override Scalar Sign {
-            get { return MakeSign(Perspective.Z); }
-        }
-
         public LeanAxis(AxisBinding binding)
-            : base("Lean", binding) {
+            : base("Lean", binding, Perspective.Z) {
         }
 
         public LeanAxis()
-            : base("Lean") {
+            : base("Lean", Perspective.Z) {
         }
 
         public override Condition Active {

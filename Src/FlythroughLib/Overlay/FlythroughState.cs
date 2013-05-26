@@ -220,13 +220,15 @@ namespace Chimera.Flythrough.Overlay {
 
             if (mStepping) {
                 mInput.AutoStep = false;
-                mInput.Loop = false;                foreach (var trigger in mStepTriggers)
+                mInput.Loop = false;
+                foreach (var trigger in mStepTriggers)
                     trigger.Active = true;
             } else {
                 mInput.Loop = true;
                 mInput.AutoStep = true;
             }
 
+            Manager.Coordinator.ControlMode = ControlMode.Absolute;
             mInput.Time = 0;
             //mInput.CurrentEventChange += mInput_CurrentEventChange;
             mInput.Play();

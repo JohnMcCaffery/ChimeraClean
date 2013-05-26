@@ -48,7 +48,8 @@ namespace Touchscreen {
                 else
                     mWrappedAxis.Deadzone = value;
             }
-        }
+        }
+
         public override IUpdater<float> Scale {
             get { return mX ? base.Scale : mWrappedAxis.Scale; }
             set {

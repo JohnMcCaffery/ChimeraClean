@@ -25,16 +25,16 @@ namespace Chimera.Kinect.Axes {
             }
         }
 
-        protected override Scalar Sign {
+        public override float Sign {
             get { 
                 if (mRight)
-                    return MakeSign(Perspective.Z);
-                return MakeSign(Perspective.Z) * -1f;
+                    return base.Sign;
+                return base.Sign * -1f;
             }
         }
 
         public TAxis(bool right, AxisBinding binding)
-            : base((right ? "T-Right" : "T-Left"), binding) {
+            : base((right ? "T-Right" : "T-Left"), binding, Perspective.Z) {
 
             mRight = right;
             Vector h = Nui.joint(mRight ? Nui.Hand_Right : Nui.Hand_Left);

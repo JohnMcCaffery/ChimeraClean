@@ -119,11 +119,11 @@ namespace Chimera.Flythrough.GUI {
         }
 
         private void moveToEventToolStripMenuItem_Click(object sender, EventArgs e) {
-            AddEvent(new MoveToEvent(mEvent.Container, 5000, new Vector3(128f, 128f, 60f)));
+            AddEvent(new MoveToEvent(mEvent.Container, 1000, new Vector3(128f, 128f, 60f)));
         }
 
         private void blankPositionEventToolStripMenuItem_Click(object sender, EventArgs e) {
-            AddEvent(new BlankEvent<Vector3>(mEvent.Container, 5000));
+            AddEvent(new BlankEvent<Vector3>(mEvent.Container, 1000));
         }
 
         private void removePositionToolStripMenuItem_Click(object sender, EventArgs e) {
@@ -162,15 +162,15 @@ namespace Chimera.Flythrough.GUI {
         }
 
         private void rotateToEventToolStripMenuItem_Click(object sender, EventArgs e) {
-            AddEvent(new RotateToEvent(mEvent.Container, 5000));
+            AddEvent(new RotateToEvent(mEvent.Container, 1000));
         }
 
         private void lookAtEventToolStripMenuItem_Click(object sender, EventArgs e) {
-            AddEvent(new LookAtEvent(mEvent.Container, 5000));
+            AddEvent(new LookAtEvent(mEvent.Container, 1000));
         }
 
         private void blankOrientationEventToolStripItem_Click(object sender, EventArgs e) {
-            AddEvent(new BlankEvent<Rotation>(mEvent.Container, 5000));
+            AddEvent(new BlankEvent<Rotation>(mEvent.Container, 1000));
         }
 
         private void removeOrientationToolStripItem_Click(object sender, EventArgs e) {
@@ -233,16 +233,16 @@ namespace Chimera.Flythrough.GUI {
         }
 
         private void copyCurrentPositionButton_Click(object sender, EventArgs e) {
-            AddEvent(new MoveToEvent(mEvent.Container, 5000, mEvent.Container.Coordinator.Position));
+            AddEvent(new MoveToEvent(mEvent.Container, 1000, mEvent.Container.Coordinator.Position));
         }
 
         private void copyCurrentOrientationButton_Click(object sender, EventArgs e) {
-            AddEvent(new RotateToEvent(mEvent.Container, 5000, new Rotation(mEvent.Container.Coordinator.Orientation)));
+            AddEvent(new RotateToEvent(mEvent.Container, 1000, new Rotation(mEvent.Container.Coordinator.Orientation)));
         }
 
         private void copyCurrentPairButton_Click(object sender, EventArgs e) {
-            AddEvent(new MoveToEvent(mEvent.Container, 5000, mEvent.Container.Coordinator.Position));
-            AddEvent(new RotateToEvent(mEvent.Container, 5000, new Rotation(mEvent.Container.Coordinator.Orientation)));
+            AddEvent(new MoveToEvent(mEvent.Container, 1000, mEvent.Container.Coordinator.Position));
+            AddEvent(new RotateToEvent(mEvent.Container, 1000, new Rotation(mEvent.Container.Coordinator.Orientation)));
         }
 
         private void ComboPanel_VisibleChanged(object sender, EventArgs e) {

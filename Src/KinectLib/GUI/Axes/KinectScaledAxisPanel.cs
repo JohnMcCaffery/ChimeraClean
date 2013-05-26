@@ -23,7 +23,6 @@ namespace Chimera.Kinect.GUI.Axes {
                 stateLabel.Text = mAxis.Active.Value ? "Active" : "Disabled";
 
                 constrainedAxisPanel.Axis = mAxis.Axis;
-                rawPanel.Scalar = new ScalarUpdater(mAxis.Raw);
                 mChangeListener = new ChangeDelegate(Active_OnChange);
 
                 scalePanel.Scalar = new ScalarUpdater(mAxis.ScaleScale);

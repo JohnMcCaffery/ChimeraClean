@@ -7,6 +7,7 @@ using System.Xml;
 
 namespace Chimera.Overlay.States {
     public class ExploreStateFactory : IStateFactory {
+
         public State Create(OverlayPlugin manager, System.Xml.XmlNode node) {
             return new ExploreState(manager, node);
         }
@@ -22,12 +23,16 @@ namespace Chimera.Overlay.States {
 
 
     public class ExploreState : State {
+        private bool mAvatar;
+
         public ExploreState(string name, OverlayPlugin manager)
             : base(name, manager) {
         }
 
         public ExploreState(OverlayPlugin manager, XmlNode node)
             : base(GetName(node, "explore state"), manager) {
+
+            mAvatar = GetBool(node, false, "Avatar");
         }
 
         public override IWindowState CreateWindowState(WindowOverlayManager manager) {
@@ -36,6 +41,7 @@ namespace Chimera.Overlay.States {
 
         public override void TransitionToStart() {
             Manager.Coordinator.EnableUpdates = true;
+            Manager.Coordinator.ControlMode = mAvatar ? ControlMode.Delta : ControlMode.Absolute;
         }
 
         protected override void TransitionToFinish() { }

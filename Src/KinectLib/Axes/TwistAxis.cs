@@ -24,16 +24,16 @@ namespace Chimera.Kinect.Axes {
             get { return mB; }
         }
 
-        protected override Scalar Sign {
-            get { return MakeSign(Perspective.Y) * -1f; }
+        public override float Sign {
+            get { return base.Sign * -1f; }
         }
 
         public TwistAxis(AxisBinding binding)
-            : base("Twist", binding) {
+            : base("Twist", binding, Perspective.Y) {
         }
 
         public TwistAxis()
-            : base("Twist") {
+            : base("Twist", Perspective.Y) {
         }
 
         public override Condition Active {
