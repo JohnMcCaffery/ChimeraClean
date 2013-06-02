@@ -49,6 +49,7 @@ namespace Chimera.Config {
         public bool LockHeight;
 
         private string mWindow = "MainWindow";
+        public LockedVariable Lock;
 
         public ProjectorConfig() : base ("Projectors") { }
 
@@ -84,6 +85,9 @@ namespace Chimera.Config {
             string nativeAspectRatioStr = Get(false, "NativeAspectRatio", "9:16", "Native aspect ratio the projector supports.");
             Enum.TryParse(aspectRatioStr, out AspectRatio);
             Enum.TryParse(nativeAspectRatioStr, out NativeAspectRatio);
+
+            string lockStr = Get(false, "LockedVariable", "Nothing", "The variable that will remain constant as the properties of the system are altered. Valid choices are 'Nothing', 'Width', 'Height' and 'Position'.");
+            Enum.TryParse(lockStr, out Lock);
         }
     }
 }

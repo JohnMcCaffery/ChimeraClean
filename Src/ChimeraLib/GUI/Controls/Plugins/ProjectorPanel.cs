@@ -21,7 +21,7 @@ namespace Chimera.GUI.Controls.Plugins {
                 if (mProjector != null)
                     mProjector.Change -= mChangeListener;
                 mProjector = value;
-                projectorOrientationPanel.Value = mProjector.Orientation;
+                orientationPanel.Value = mProjector.Orientation;
                 if (Created)
                     mProjector.Change += mChangeListener;
                 mProjector_Change();
@@ -58,30 +58,28 @@ namespace Chimera.GUI.Controls.Plugins {
 
         void mProjector_Change() {
             mExternalUpdate = true;
-            projectorThrowRatioPanel.Value = (float) mProjector.ThrowRatio;
-            projectorPositionPanel.Value = mProjector.Position / 10f;
-            projectorWallDistancePanel.Value = (float) (mProjector.ScreenDistance / 10);
-            projectorOrientationPanel.Value = mProjector.Orientation;
+            throwRatioPanel.Value = (float) mProjector.ThrowRatio;
+            positionPanel.Value = mProjector.Position / 10f;
+            wallDistancePanel.Value = (float) (mProjector.D / 10);
+            orientationPanel.Value = mProjector.Orientation;
             projectorDrawCheck.Checked = mProjector.DrawDiagram;
             projectorDrawLabelsCheck.Checked = mProjector.DrawLabels;
-            projectorAutoUpdateCheck.Checked = mProjector.AutoUpdate;
             projectorAspectPulldown.SelectedItem = mProjector.AspectRatio;
             projectorNativeAspectPulldown.SelectedItem = mProjector.NativeAspectRatio;
-            configureProjectorButton.Checked = mProjector.ConfigureFromProjector;
-            configureWindowButton.Checked = !mProjector.ConfigureFromProjector;
             upsideDownCheck.Checked = mProjector.UpsideDown;
-            lockHeightCheck.Checked = mProjector.LockHeight;
             vOffsetPanel.Value = (float) mProjector.VOffset;
+            switch (mProjector.Lock) {
+                case LockedVariable.Nothing: noLockButton.Checked = true; break;
+                case LockedVariable.Width: lockWidthButton.Checked = true; break;
+                case LockedVariable.Height: lockHeightButton.Checked = true; break;
+                case LockedVariable.Position: lockPositionButton.Checked = true; break;
+            }
 
             projectorDrawLabelsCheck.Enabled = mProjector.DrawDiagram;
 
-            projectorOrientationPanel.Text = "Orientation (cm)";
-            projectorPositionPanel.Text = "Position (cm)";
+            orientationPanel.Text = "Orientation (cm)";
+            positionPanel.Text = "Position (cm)";
             mExternalUpdate = false;
-        }
-
-        private void projectorConfigureutton_Click(object sender, EventArgs e) {
-            mProjector.Configure();
         }
 
         private void projectorDrawCheck_CheckedChanged(object sender, EventArgs e) {
@@ -94,27 +92,22 @@ namespace Chimera.GUI.Controls.Plugins {
 
         private void throwRatioPanel_ValueChanged(float obj) {
             if (!mExternalUpdate)
-                mProjector.ThrowRatio = projectorThrowRatioPanel.Value;
+                mProjector.ThrowRatio = throwRatioPanel.Value;
         }
 
         private void projectorPositionPanel_ValueChanged(object sender, EventArgs e) {
             if (!mExternalUpdate)
-                mProjector.Position = projectorPositionPanel.Value * 10f;
+                mProjector.Position = positionPanel.Value * 10f;
         }
 
         private void wallDistancePanel_ValueChanged(float obj) {
             if (!mExternalUpdate)
-                mProjector.ScreenDistance = projectorWallDistancePanel.Value * 10f;
+                mProjector.D = wallDistancePanel.Value * 10f;
         }
 
         private void projectorDrawLabelsCheck_CheckedChanged(object sender, EventArgs e) {
             if (!mExternalUpdate)
                 mProjector.DrawLabels = projectorDrawLabelsCheck.Checked;
-        }
-
-        private void projectorAutoUpdate_CheckedChanged(object sender, EventArgs e) {
-            if (!mExternalUpdate)
-                mProjector.AutoUpdate = projectorAutoUpdateCheck.Checked;
         }
 
         private void projectorNativeAspectPulldown_SelectedIndexChanged(object sender, EventArgs e) {
@@ -127,16 +120,6 @@ namespace Chimera.GUI.Controls.Plugins {
                 mProjector.AspectRatio = (AspectRatio)projectorAspectPulldown.SelectedItem;
         }
 
-        private void configureWindowButton_CheckedChanged(object sender, EventArgs e) {
-            if (!mExternalUpdate && configureWindowButton.Checked)
-                mProjector.ConfigureFromProjector = false;
-        }
-
-        private void configureProjectorButton_CheckedChanged(object sender, EventArgs e) {
-            if (!mExternalUpdate && configureProjectorButton.Checked)
-                mProjector.ConfigureFromProjector = true;
-        }
-
         private void upsideDownCheck_CheckedChanged(object sender, EventArgs e) {
             if (!mExternalUpdate)
                 mProjector.UpsideDown = upsideDownCheck.Checked;
@@ -147,9 +130,41 @@ namespace Chimera.GUI.Controls.Plugins {
                 mProjector.VOffset = vOffsetPanel.Value;
         }
 
-        private void lockHeightCheck_CheckedChanged(object sender, EventArgs e) {
-            if (!mExternalUpdate)
-                mProjector.LockHeight = lockHeightCheck.Checked;
+        private void lockPositionButton_CheckedChanged(object sender, EventArgs e) {
+            if (lockPositionButton.Checked) {
+                mProjector.Lock = LockedVariable.Position;
+                positionPanel.Enabled = true;
+                wallDistancePanel.Enabled = true;
+                wallDistanceLabel.Enabled = true;
+                
+            }
+        }
+
+        private void lockWidthButton_CheckedChanged(object sender, EventArgs e) {
+            if (lockWidthButton.Checked) {
+                mProjector.Lock = LockedVariable.Width;
+                positionPanel.Enabled = false;
+                wallDistancePanel.Enabled = false;
+                wallDistanceLabel.Enabled = false;
+            }
+        }
+
+        private void lockHeightButton_CheckedChanged(object sender, EventArgs e) {
+            if (lockHeightButton.Checked) {
+                mProjector.Lock = LockedVariable.Height;
+                positionPanel.Enabled = false;
+                wallDistancePanel.Enabled = false;
+                wallDistanceLabel.Enabled = false;
+            }
+        }
+
+        private void noLockButton_CheckedChanged(object sender, EventArgs e) {
+            if (noLockButton.Checked) {
+                mProjector.Lock = LockedVariable.Nothing;
+                positionPanel.Enabled = true;
+                wallDistancePanel.Enabled = true;
+                wallDistanceLabel.Enabled = true;
+            }
         }
     }
 }
