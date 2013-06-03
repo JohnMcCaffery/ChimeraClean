@@ -241,5 +241,11 @@ namespace Chimera.Flythrough {
         IEnumerator IEnumerable.GetEnumerator() {
             return mEvents.GetEnumerator();
         }
+
+        public int CurrentEventIndex {
+            get {
+                return mEvents.IndexOf(mCurrentEvent);
+            }
+        }
     }
 }

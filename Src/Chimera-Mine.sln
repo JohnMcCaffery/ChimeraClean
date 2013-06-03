@@ -18,6 +18,27 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JoystickLib", "JoystickLib\JoystickLib.csproj", "{C184F128-6AE6-43D7-922E-B706E7B4E576}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Config", "Config", "{AD5F2EE2-5D80-4DC5-924F-C5636B2103E4}"
+	ProjectSection(SolutionItems) = preProject
+		..\Config\Bindings.xml = ..\Config\Bindings.xml
+		..\Config\Core.ini = ..\Config\Core.ini
+		..\Config\ExampleRoom.xml = ..\Config\ExampleRoom.xml
+		..\Config\Heightmap.ini = ..\Config\Heightmap.ini
+		..\Config\Kinect.ini = ..\Config\Kinect.ini
+		..\Config\KinectNew.ini = ..\Config\KinectNew.ini
+		..\Config\LaptopOverlay.ini = ..\Config\LaptopOverlay.ini
+		..\Config\Launch.ini = ..\Config\Launch.ini
+		..\Config\Main.ini = ..\Config\Main.ini
+		..\Config\NoOverlay.ini = ..\Config\NoOverlay.ini
+		..\Config\OpenSim.ini = ..\Config\OpenSim.ini
+		..\Config\Overlay.ini = ..\Config\Overlay.ini
+		..\Config\OverlayLaptop.ini = ..\Config\OverlayLaptop.ini
+		..\Config\OverlayNone.ini = ..\Config\OverlayNone.ini
+		..\Config\OverlayTouchscreen.ini = ..\Config\OverlayTouchscreen.ini
+		..\Config\Touchscreen.ini = ..\Config\Touchscreen.ini
+		..\Config\TouchscreenOverlay.ini = ..\Config\TouchscreenOverlay.ini
+		..\Config\Windows.ini = ..\Config\Windows.ini
+		..\Config\XBoxController.ini = ..\Config\XBoxController.ini
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TouchscreenLib", "TouchscreenLib\TouchscreenLib.csproj", "{7780A366-F9CE-4E9F-8C91-0763F73A3A8A}"
 EndProject

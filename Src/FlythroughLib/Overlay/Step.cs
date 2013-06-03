@@ -116,5 +116,9 @@ namespace Chimera.Flythrough.Overlay {
             } else if (DateTime.Now.Subtract(mLastSubtitle).TotalSeconds > mSubtitleTimeoutS)
                 mSubtitlesText.TextString = "";
         }
+
+        internal void Prep() {
+            mImage.Active = mStep == 0;
+        }
     }
 }

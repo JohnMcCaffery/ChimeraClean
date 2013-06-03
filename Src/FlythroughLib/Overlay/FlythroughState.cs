@@ -197,7 +197,11 @@ namespace Chimera.Flythrough.Overlay {
             return new WindowState(manager);
         }
 
-        protected override void TransitionToFinish() { }
+        protected override void TransitionToFinish() {
+            if (mStepping)
+                foreach (var step in mSteps.Values)
+                    step.Prep();
+        }
 
         protected override void TransitionFromStart() {
             if (mCurrentStep != null)
