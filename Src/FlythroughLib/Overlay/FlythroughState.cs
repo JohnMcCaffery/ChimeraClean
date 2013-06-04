@@ -75,8 +75,8 @@ namespace Chimera.Flythrough.Overlay {
         private string mSlideshowWindowName;
         private string mSlideshowFolder;
         private string mFlythrough;
-        private bool mStepping = false;
-        private int mStep = 1;
+        private bool mAutoStepping = false;
+        private bool mLoop = false;
 
         public FlythroughState(string name, OverlayPlugin manager, string flythrough)
             : base(name, manager) {
@@ -88,12 +88,13 @@ namespace Chimera.Flythrough.Overlay {
         public FlythroughState(string name, OverlayPlugin manager, string flythrough, params ITrigger[] stepTriggers)
             : this(name, manager, flythrough) {
 
-            mStepping = true;
+            mAutoStepping = true;
             Font f = new Font(FONT, FONT_SIZE, FontStyle.Bold);
-            mStepText = new StaticText(mStep + "/" + mInput.Count, manager[0], f, FONT_COLOUR, STEP_TEXT_POS);
+            mStepText = new StaticText("1/" + mInput.Count, manager[0], f, FONT_COLOUR, STEP_TEXT_POS);
             AddFeature(mStepText);
 
-            mInput.CurrentEventChange += new Action<FlythroughEvent<Camera>,FlythroughEvent<Camera>>(mInput_CurrentEventChange);
+            //mInput.CurrentEventChange += new Action<FlythroughEvent<Camera>,FlythroughEvent<Camera>>(mInput_CurrentEventChange);
+            mInput.StepStarted += new Action<int>(mInput_StepStarted);
 
             foreach (var trigger in stepTriggers)
                 AddStepTrigger(trigger);
@@ -107,6 +108,49 @@ namespace Chimera.Flythrough.Overlay {
             mSlideshowTransition = slideshowTransition;
         }
 
+        public FlythroughState(OverlayPlugin manager, XmlNode node, IMediaPlayer player)
+            : base(GetName(node, "flythrough state"), manager) {
+
+            mInput = manager.Coordinator.GetPlugin<FlythroughPlugin>();
+            bool displaySubtitles = GetBool(node, false, "DisplaySubtitles");
+            mFlythrough = GetString(node, null, "File");
+            mAutoStepping = GetBool(node, false, "AutoStep");
+            mLoop = GetBool(node, false, "Loop");
+
+            if (mFlythrough == null)
+                throw new ArgumentException("Unable to load flythrough state. No flythrough file specified.");
+
+            mPlayer = player;
+            if (mPlayer != null)
+                mDefaultWindow = Manager[0];
+
+            if (displaySubtitles) {
+                mSubtitlesText = Manager.MakeText(node.SelectSingleNode("child::SubtitleText"));
+                AddFeature(mSubtitlesText);
+            }
+
+            mStepText = Manager.MakeText(node.SelectSingleNode("child::StepText"));
+            AddFeature(mStepText);
+            //mInput.CurrentEventChange += new Action<FlythroughEvent<Camera>,FlythroughEvent<Camera>>(mInput_CurrentEventChange);
+            mInput.StepStarted += new Action<int>(mInput_StepStarted);
+            int subtitleTimeout = GetInt(node, 20, "SubtitleTimeout");
+
+            XmlNode triggersRoot = node.SelectSingleNode("child::Triggers");
+            if (triggersRoot != null) {
+                foreach (XmlNode child in triggersRoot.ChildNodes)
+                    AddStepTrigger(manager.GetTrigger(child, "flythrough step", null));
+            }
+
+            XmlNode stepsRoot = node.SelectSingleNode("child::Steps");
+            if (stepsRoot != null) {
+                foreach (XmlNode child in stepsRoot.ChildNodes) {
+                    if (child is XmlElement) {
+                        Step step = new Step(this, child, mSubtitlesText, subtitleTimeout, mPlayer);
+                        mSteps.Add(step.StepNum, step);
+                    }
+                }
+            }
+        }
         private void AddStepTrigger(ITrigger trigger) {
             if (trigger == null)
                 //TODO - debug?
@@ -117,69 +161,25 @@ namespace Chimera.Flythrough.Overlay {
                 AddFeature(trigger as IFeature);
         }
 
-        public FlythroughState(OverlayPlugin manager, XmlNode node, IMediaPlayer player)
-            : base(GetName(node, "flythrough state"), manager) {
-
-            mInput = manager.Coordinator.GetPlugin<FlythroughPlugin>();
-            bool displaySubtitles = GetBool(node, false, "DisplaySubtitles");
-            mFlythrough = GetString(node, null, "File");
-            mStepping = GetBool(node, false, "Stepping");
-
-            if (mFlythrough == null)
-                throw new ArgumentException("Unable to load flythrough state. No flythrough file specified.");
-
-            // ----------- Anything below here is only relevant in stepping mode ------
-            if (!mStepping)
-                return;
-
-            mPlayer = player;
-            if (mPlayer != null)
-                mDefaultWindow = Manager[0];
-
-            if (displaySubtitles) {
-                mSubtitlesText = Manager.MakeText(node.SelectSingleNode("child::SubtitleText"));
-                AddFeature(mSubtitlesText);
-            }
-            mStepText = Manager.MakeText(node.SelectSingleNode("child::StepText"));
-            AddFeature(mStepText);
-            mInput.CurrentEventChange += new Action<FlythroughEvent<Camera>,FlythroughEvent<Camera>>(mInput_CurrentEventChange);
-            int subtitleTimeout = GetInt(node, 20, "SubtitleTimeout");
-
-            XmlNode triggersRoot = node.SelectSingleNode("child::Triggers");
-            if (triggersRoot != null) {
-                foreach (XmlNode child in triggersRoot.ChildNodes)
-                    AddStepTrigger(manager.GetTrigger(child, "flythrough step", null));
-            }
-            XmlNode stepsRoot = node.SelectSingleNode("child::Steps");
-            if (stepsRoot != null) {
-                foreach (XmlNode child in stepsRoot.ChildNodes) {
-                    if (child is XmlElement) {
-                        Step step = new Step(this, child, mSubtitlesText, subtitleTimeout, mPlayer);
-                        mSteps.Add(step.StepNum, step);
-                    }
-                }
-            }
-        }
-
-        void mInput_CurrentEventChange(FlythroughEvent<Camera> old, FlythroughEvent<Camera> n) {
+        //void mInput_CurrentEventChange(FlythroughEvent<Camera> old, FlythroughEvent<Camera> n) {
+        void mInput_StepStarted(int step) {
             if (mCurrentStep != null)
                 mCurrentStep.Finish();
+
             mCurrentStep = null;
-            if (mSteps.ContainsKey(mStep)) {
-                mCurrentStep = mSteps[mStep];
+            if (mSteps.ContainsKey(step)) {
+                mCurrentStep = mSteps[step];
                 mCurrentStep.Start();
             }
-            mStep++;
 
-            if (mStep == mInput.Count) {
+            if (step == mInput.Count - 1) {
                 foreach (var trigger in mStepTriggers)
                     trigger.Active = false;
                 foreach (var manager in Manager.OverlayManagers)
                     manager.ForceRedrawStatic();
             }
 
-            mStepText.TextString = mStep + "\\" + mInput.Count;
-
+            mStepText.TextString = (step + 1) + "\\" + mInput.Count;
         }
 
         void step_Triggered() {
@@ -198,9 +198,8 @@ namespace Chimera.Flythrough.Overlay {
         }
 
         protected override void TransitionToFinish() {
-            if (mStepping)
-                foreach (var step in mSteps.Values)
-                    step.Prep();
+            foreach (var step in mSteps.Values)
+                step.Prep();
         }
 
         protected override void TransitionFromStart() {
@@ -209,32 +208,24 @@ namespace Chimera.Flythrough.Overlay {
         }
 
         public override void TransitionToStart() {
-            if (mPlayer != null) {
+            if (mPlayer != null)
                 mDefaultWindow.AddControl(mPlayer.Player, new RectangleF(0f, 0f, 0f, 0f));
-            }
 
             if (mSubtitlesText != null)
                 mSubtitlesText.Active = true;
 
-            mStep = 0;
             Manager.Coordinator.ControlMode = ControlMode.Absolute;
             mInput.Enabled = true;
             mInput.Coordinator.EnableUpdates = true;
             mInput.Load(mFlythrough);
 
-            if (mStepping) {
-                mInput.AutoStep = false;
-                mInput.Loop = false;
-                foreach (var trigger in mStepTriggers)
-                    trigger.Active = true;
-            } else {
-                mInput.Loop = true;
-                mInput.AutoStep = true;
-            }
+            mInput.AutoStep = mAutoStepping;
+            mInput.Loop = mLoop;
+            foreach (var trigger in mStepTriggers)
+                trigger.Active = true;
 
             Manager.Coordinator.ControlMode = ControlMode.Absolute;
             mInput.Time = 0;
-            //mInput.CurrentEventChange += mInput_CurrentEventChange;
             mInput.Play();
         }
 

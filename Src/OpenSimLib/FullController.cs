@@ -8,6 +8,8 @@ using Chimera.OpenSim.Packets;
 
 namespace Chimera.OpenSim {
     public class FullController : ProxyControllerBase {
+        private bool mAllowFly;
+
         public FullController(Window window)
             : base(window) {
         }        
@@ -29,6 +31,8 @@ namespace Chimera.OpenSim {
         public override void Move(Vector3 positionDelta, Rotation orientationDelta, float deltaScale) {
             RemoteControlPacket packet = new RemoteControlPacket();
             packet.Delta.Position = positionDelta * deltaScale;
+            if (!mAllowFly)
+                packet.Delta.Position.Z = 0f;
             packet.Delta.Pitch = (float)(orientationDelta.Pitch * (Math.PI / 45.0)) * deltaScale;
             packet.Delta.Yaw = (float)(orientationDelta.Yaw * (Math.PI / 45.0)) * deltaScale;
             InjectPacket(packet);

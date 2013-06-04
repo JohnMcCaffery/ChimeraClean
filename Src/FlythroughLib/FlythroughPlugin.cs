@@ -92,10 +92,6 @@ namespace Chimera.Flythrough {
         /// Triggered whenever a flythrough is loading.
         /// </summary>
         public event Action FlythroughLoading;
-        /// <summary>
-        /// Selected whenever the currently executing event changes.
-        /// </summary>
-        public event Action<FlythroughEvent<Camera>, FlythroughEvent<Camera>> CurrentEventChange;
 
         /// <summary>
         /// All the events queued up to play.
@@ -109,8 +105,8 @@ namespace Chimera.Flythrough {
         }
 
         private bool mTicking;
-        private Action<int> StepFinished;
-        private Action<int> StepStarted;
+        public event Action<int> StepFinished;
+        public event Action<int> StepStarted;
 
         /// <summary>
         /// Where in the current sequence playback has reached.
@@ -120,7 +116,7 @@ namespace Chimera.Flythrough {
             get { return mEvents.Time; }
             set {
                 FlythroughEvent<Camera> oldEvent = mEvents.CurrentEvent;
-                if (oldEvent.GlobalFinishTime <= value && !Paused && StepFinished != null)
+                if (oldEvent != null && oldEvent.GlobalFinishTime <= value && !Paused && StepFinished != null)
                     StepFinished(mEvents.CurrentEventIndex);
                 mTime = value;
                 mEvents.Time = value;
@@ -204,7 +200,6 @@ namespace Chimera.Flythrough {
         public FlythroughPlugin() {
             Start = new Camera(new Vector3(128f, 128f, 60f), Rotation.Zero);
             mEvents.Start = Start;
-            mEvents.CurrentEventChange += new Action<FlythroughEvent<Camera>,FlythroughEvent<Camera>>(mEvents_CurrentEventChange);
             mEvents.LengthChange += new Action<EventSequence<Camera>,int>(mEvents_LengthChange);
             mTickListener = new Action(mCoordinator_Tick);
 
@@ -255,12 +250,9 @@ namespace Chimera.Flythrough {
         }
 
         public void Step() {
-            if (Paused)
-                Paused = false;
-            else if (mEvents.CurrentEvent != null && mEvents.CurrentEvent.GlobalFinishTime + 1 < Length) {
+            if (mEvents.CurrentEvent != null && mEvents.CurrentEvent.GlobalFinishTime + 1 < Length) {
                 Time = CurrentEvent.GlobalFinishTime + 1;
                 Play();
-                //Time = CurrentEvent.GlobalStartTime;
             }
         }
 
@@ -278,7 +270,6 @@ namespace Chimera.Flythrough {
                 FlythroughLoading();
 
             mEvents = new EventSequence<Camera>();
-            mEvents.CurrentEventChange += new Action<FlythroughEvent<Camera>,FlythroughEvent<Camera>>(mEvents_CurrentEventChange);
             mEvents.LengthChange += new Action<EventSequence<Camera>,int>(mEvents_LengthChange);
 
             XmlDocument doc = new XmlDocument();
@@ -338,13 +329,6 @@ namespace Chimera.Flythrough {
             doc.Save(file);
         }
 
-        private void mEvents_CurrentEventChange(FlythroughEvent<Camera> oldEvent, FlythroughEvent<Camera> newEvent) {
-            if (!mAutoStep)
-                Paused = true;
-            if (CurrentEventChange != null)
-                CurrentEventChange(oldEvent, newEvent);
-        }
-
         private void mEvents_LengthChange(EventSequence<Camera> sequence, int length) {
             if (LengthChange != null)
                 LengthChange(length);
@@ -370,6 +354,7 @@ namespace Chimera.Flythrough {
                 mFinished = true;
                 Monitor.PulseAll(mFinishLock);
             }
+            mPlaying = false;
         }
 
         private readonly object mFinishLock = new object();
@@ -378,9 +363,14 @@ namespace Chimera.Flythrough {
         private void IncrementTime() {
             mTicking = true;
             int newTime = mEvents.Time + mCoordinator.TickLength;
-            if (newTime < mEvents.Length)
-                Time = newTime;
-            else {
+            if (newTime < mEvents.Length) {
+                if (mAutoStep || (newTime < mEvents.CurrentEvent.GlobalFinishTime))
+                    Time = newTime;
+                else {
+                    Time = mEvents.CurrentEvent.GlobalFinishTime;
+                    Pause();
+                }
+            } else {
                 if (mLoop)
                     Time = 0;
                 else {
