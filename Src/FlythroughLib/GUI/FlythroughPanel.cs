@@ -37,8 +37,6 @@ namespace Chimera.Flythrough.GUI {
         private bool TickUpdate;
 
         private Action<int> mTickListener;
-        
-        private Action<int> mContainer_TickListener;
 
         public FlythroughPanel() {
             InitializeComponent();
@@ -53,10 +51,7 @@ namespace Chimera.Flythrough.GUI {
         public void Init(FlythroughPlugin container) {
             mContainer = container;
 
-            mContainer_TickListener = new Action<int>(mContainer_Tick);
-
-            mTickListener = new Action<int>(mContainer_TickListener);
-            mContainer.TimeChange += mTickListener;
+            mTickListener = new Action<int>(mContainer_Tick);
 
             mContainer.LengthChange += mContainer_LengthChange;
             mContainer.UnPaused += mContainer_UnPaused;

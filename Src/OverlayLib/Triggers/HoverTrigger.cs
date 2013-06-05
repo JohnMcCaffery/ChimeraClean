@@ -177,7 +177,7 @@ namespace Chimera.Overlay.Triggers {
                 mTriggered = false;
                 mHovering = false;
                 mNeedsRedrawn = true;
-                Manager.ForceRedrawStatic();
+                //Manager.ForceRedrawStatic();
                 mRenderer.Clear();
             } else
                 mNeedsRedrawn = false;

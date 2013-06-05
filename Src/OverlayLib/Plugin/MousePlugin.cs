@@ -34,12 +34,17 @@ namespace Chimera.Overlay.Plugins {
         private MousePluginPanel mPanel;
         private OverlayPlugin mOverlayPlugin;
         private Point mLastMouse;
+        private PointF mLastCursor;
         private bool mEnabled;
 
         public event Action<int, int> MouseMoved;
 
         public MousePlugin() {
             PluginConfig cfg = new PluginConfig();
+        }
+
+        public PointF LastCursor {
+            get { return mLastCursor; }
         }
 
         void coordinator_Tick() {
@@ -55,6 +60,7 @@ namespace Chimera.Overlay.Plugins {
                     if (mLastMouse.X != Cursor.Position.X || mLastMouse.Y != Cursor.Position.Y) {
                         Update(manager, bounds, Cursor.Position.X - bounds.Left, Cursor.Position.Y - bounds.Top);
                         mLastMouse = Cursor.Position;
+                        mLastCursor = manager.CursorPosition;
                     } 
                     return;
                 } 

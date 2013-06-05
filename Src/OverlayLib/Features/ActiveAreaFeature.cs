@@ -54,7 +54,8 @@ namespace Chimera.Overlay.Drawables {
         }
 
         void mActiveTrigger_Triggered() {
-            mFeature.Active = mTrigger.Condition;
+            mFeature.Active = mTrigger.Inside;
+            mPlugin[Window].ForceRedrawStatic();
         }
 
 
@@ -66,7 +67,7 @@ namespace Chimera.Overlay.Drawables {
         }
 
         public bool Active {
-            get { return mTrigger.Active; }
+            get { return mTrigger.Active && mTrigger.Inside; }
             set {
                 mTrigger.Active = value;
                 if (!value)

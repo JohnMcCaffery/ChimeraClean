@@ -68,12 +68,12 @@ namespace Chimera.Overlay {
                 Console.WriteLine("Unable to load image for " + request + ". No node specified.");
                 return null;
             }
-            if (node.Attributes["File"] == null) {
+            if (node.InnerText == null) {
                 Console.WriteLine("Unable to load image. No file specified.");
                 return null;
             }
 
-            string file = Path.GetFullPath(node.Attributes["File"].Value);
+            string file = Path.GetFullPath(node.InnerText);
             if (!File.Exists(file)) {
                 Console.WriteLine("Unable to load image. " + file + " does not exist.");
                 return null;

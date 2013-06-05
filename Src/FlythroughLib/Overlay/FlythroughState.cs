@@ -114,8 +114,8 @@ namespace Chimera.Flythrough.Overlay {
             mInput = manager.Coordinator.GetPlugin<FlythroughPlugin>();
             bool displaySubtitles = GetBool(node, false, "DisplaySubtitles");
             mFlythrough = GetString(node, null, "File");
-            mAutoStepping = GetBool(node, false, "AutoStep");
-            mLoop = GetBool(node, false, "Loop");
+            mAutoStepping = GetBool(node, true, "AutoStep");
+            mLoop = GetBool(node, true, "Loop");
 
             if (mFlythrough == null)
                 throw new ArgumentException("Unable to load flythrough state. No flythrough file specified.");
@@ -150,7 +150,8 @@ namespace Chimera.Flythrough.Overlay {
                     }
                 }
             }
-        }
+        }
+
         private void AddStepTrigger(ITrigger trigger) {
             if (trigger == null)
                 //TODO - debug?

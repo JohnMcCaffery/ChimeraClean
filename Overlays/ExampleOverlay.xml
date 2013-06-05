@@ -12,7 +12,7 @@
 
     <States>
       <State Factory="ImageBG" Name="Splash" Splash="true">
-        <window Window="MainWindow" File="../Images/Example/ExampleBG.png" Start="True"/>
+        <window Window="MainWindow"  Start="True">../Images/Example/ExampleBG.png</window>
       </State>
 
       <State Factory="Flythrough" Name="Idle" File="../Flythroughs/Cathedral5.xml" Idle="true">
@@ -31,7 +31,7 @@
       </State>
 
       <State Factory="Video" Name="Video" File="E:\Video\Edit\Out\vid.mpg" FinishState="None" L="310" T="310" R="790" B="590" RestartMode="true">
-        <window Window="MainWindow" File="../Images/Example/ExampleBGVideo.png" Splash="True"/>
+        <window Window="MainWindow"  Splash="True">../Images/Example/ExampleBGVideo.png</window>
         <StartTriggers>
           <!--<InvisibleTrigger T="310" L="310" R="790" B="590" />-->
         </StartTriggers>
@@ -39,7 +39,7 @@
           <!--<InvisibleTrigger T="30" L="30" R="800" B="600" />-->
         </StopTriggers>
         <ResetTriggers>
-          <ImageTrigger X="1000" Y="300" File="../Images/Example/Button.png" AlwaysOn="false" />
+          <ImageTrigger X="1000" Y="300"  AlwaysOn="false" >../Images/Example/Button.png</ImageTrigger>
         </ResetTriggers>
       </State>
 
@@ -54,14 +54,14 @@
 
         <Steps>
           <Step Step="0" Voiceover="../Voiceovers/Voiceover1.wma" >
-            <Image File="../Images/Example/SlideshowImg1.png" X="700" Y="50"/>
+            <Image  X="700" Y="50">../Images/Example/SlideshowImg1.png</Image>
             <Subtitles>
               <Subtitle>First Subtitle</Subtitle>
               <Subtitle Time="5">Second Subtitle</Subtitle>
             </Subtitles>
           </Step>
           <Step Step="2">
-            <Image File="../Images/Example/SlideshowImg3.png" X="600" Y="100"/>
+            <Image  X="600" Y="100">../Images/Example/SlideshowImg3.png</Image>
           </Step>
           <Step Step="3" Voiceover="../Voiceovers/Voiceover2.wma" >
           </Step>
@@ -71,7 +71,7 @@
     <Transitions>
       <InvisibleTransition From="Splash" To="Slideshow" Transition="BitmapFade" T="300" L="300" R="800" B="600" />
       <TextTransition From="Splash" To="Video" Transition="BitmapFade" X="1400" Y="300" Size="50" Style="Bold">Video</TextTransition>
-      <ImageTransition From="Splash" To="FullFlythrough" Transition="FadeOut" X="1000" Y="300" File="../Images/Example/Button.png" />
+      <ImageTransition From="Splash" To="FullFlythrough" Transition="FadeOut" X="1000" Y="300"  >../Images/Example/Button.png</ImageTransition>
       <TextTransition From="Video" To="Splash" Transition="BitmapFade" X="1400" Y="300" Size="50" Style="Bold">Back</TextTransition>
       <TextTransition From="FullFlythrough" To="Splash" Transition="FadeIn" X="850" Y="950" Size="50" Style="Bold">Main Menu</TextTransition>
     </Transitions>

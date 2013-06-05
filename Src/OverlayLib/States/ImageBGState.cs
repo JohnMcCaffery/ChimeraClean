@@ -25,6 +25,7 @@ using Chimera.Overlay;
 using System.Drawing;
 using Chimera.Interfaces.Overlay;
 using System.Xml;
+using System.IO;
 
 namespace Chimera.Overlay.States {
     public class ImageBGStateFactory : IStateFactory {
@@ -71,12 +72,15 @@ namespace Chimera.Overlay.States {
             foreach (XmlNode child in node.ChildNodes) {
                 if (!(child is XmlElement))
                     continue;
-                Bitmap img = GetImage(child, "image background state");
-                if (img != null) {
-                    string window = GetManager(manager, child, "image background state").Window.Name;
-                    mWindowBGs.Add(window, img);
-                    if (mWindows.ContainsKey(window))
-                        mWindows[window].BackgroundImage = img;
+                string imgStr = GetString(child, null, "File");
+                if (imgStr != null && File.Exists(Path.GetFullPath(imgStr))) {
+                    Bitmap img = new Bitmap(imgStr);
+                    if (img != null) {
+                        string window = GetManager(manager, child, "image background state").Window.Name;
+                        mWindowBGs.Add(window, img);
+                        if (mWindows.ContainsKey(window))
+                            mWindows[window].BackgroundImage = img;
+                    }
                 }
             }
         }

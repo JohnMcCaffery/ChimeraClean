@@ -112,8 +112,8 @@ namespace Chimera.OpenSim {
 
         public void Close() {
             mClosingViewer = true;
-            mProxyController.Stop();
             mViewerController.Close(false);
+            mProxyController.Stop();
         }
 
         public void Draw(Graphics graphics, Func<Vector3, Point> to2D, Action redraw, Perspective perspective) { }
