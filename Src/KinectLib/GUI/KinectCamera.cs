@@ -95,7 +95,7 @@ namespace Chimera.Kinect.GUI {
         private void Nui_Tick() {
             bool depth = true;
             Image oldFrame = null;
-            Invoke(new Action(() => {
+            BeginInvoke(new Action(() => {
                 depth = depthFrameButton.Checked;
                 oldFrame = frameImage.Image;
             }));

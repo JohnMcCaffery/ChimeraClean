@@ -74,7 +74,7 @@ namespace Chimera.GUI {
 
         private void Invoke(Action a) {
             if (InvokeRequired && !IsDisposed && Created)
-                base.Invoke(a);
+                base.BeginInvoke(a);
             else
                 a();
         }

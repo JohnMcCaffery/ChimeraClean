@@ -46,7 +46,7 @@ namespace Chimera.Flythrough.GUI {
 
             lengthValue.ValueChanged += (source, args) => mEvent.Length = (int)lengthValue.Value;
             mTimeChangeListener = (e, time) => {
-                Invoke(new Action(() => {
+                BeginInvoke(new Action(() => {
                     progressBar.Maximum = evt.Length;
                     progressBar.Value = evt.Time;
                 }));
