@@ -80,7 +80,7 @@ namespace Chimera.Overlay.Drawables {
 
         public Text(OverlayPlugin manager, XmlNode node) {
             mText = node != null ? node.InnerText : "";
-            mWindow = GetManager(manager, node, "text").Window.Name;
+            mWindow = GetManager(manager, node, "text").Frame.Name;
             mFont = GetFont(node, "text");
             mColour = GetColour(node, "text", DEFAULT_FONT_COLOUR);
             mPosition = GetBounds(node, "text").Location;

@@ -34,7 +34,7 @@ namespace Chimera.Kinect {
     public class PointCursor : ISystemPlugin {
         public static float SCALE = 1000f;
 
-        private Window mWindow;
+        private Frame mFrame;
         private Rotation mOrientation;
         private Vector mPlaneTopLeft, mPlaneNormal;
         private Vector mPointDir, mPointStart;
@@ -96,17 +96,17 @@ namespace Chimera.Kinect {
         }
 
         private void ConfigureFromWindow() {
-            mWorldW.Value = (float) mWindow.Width;
-            mWorldH.Value = (float) mWindow.Height;
-            mScreenW.Value = mWindow.Monitor.Bounds.Width;
-            mScreenH.Value = mWindow.Monitor.Bounds.Height;
+            mWorldW.Value = (float) mFrame.Width;
+            mWorldH.Value = (float) mFrame.Height;
+            mScreenW.Value = mFrame.Monitor.Bounds.Width;
+            mScreenH.Value = mFrame.Monitor.Bounds.Height;
 
-            Vector3 topLeft = mWindow.TopLeft;
+            Vector3 topLeft = mFrame.TopLeft;
             //TODO - this should be set as property
             topLeft -= Vector3.Zero;
             topLeft *= mOrientation.Quaternion;
 
-            Vector3 normal = mWindow.Orientation.LookAtVector * mOrientation.Quaternion;
+            Vector3 normal = mFrame.Orientation.LookAtVector * mOrientation.Quaternion;
 
             mPlaneTopLeft.Set(topLeft.Y, topLeft.Z, topLeft.X);
             mPlaneNormal.Set(normal.Y, normal.Z, normal.X);
@@ -138,8 +138,8 @@ namespace Chimera.Kinect {
             }
         }
 
-        public Window Window {
-            get { return mWindow; }
+        public Frame Frame {
+            get { return mFrame; }
         }
 
         public string State {
@@ -161,20 +161,20 @@ namespace Chimera.Kinect {
             }
         }
 
-        public void Init(Window window) {
-            mWindow = window;
+        public void Init(Frame frame) {
+            mFrame = frame;
             //TODO - this should be set properly - as a property
             mOrientation = Rotation.Zero;
 
             mOrientation.Changed += orientation_Changed;
-            mWindow.Changed += (win, args) => ConfigureFromWindow();
+            mFrame.Changed += (win, args) => ConfigureFromWindow();
 
             mPlaneTopLeft = Vector.Create("PlanePoint", 1f, 1f, 0f);
             mPlaneNormal = Nui.normalize(Vector.Create("PlaneNormal", 0f, 0f, 1f));
-            mWorldW = Scalar.Create("WorldW", (float) mWindow.Width);
-            mWorldH = Scalar.Create("WorldH", (float) mWindow.Height);
-            mScreenW = Scalar.Create("ScreenW", mWindow.Monitor.Bounds.Width);
-            mScreenH = Scalar.Create("ScreenH", mWindow.Monitor.Bounds.Height);
+            mWorldW = Scalar.Create("WorldW", (float) mFrame.Width);
+            mWorldH = Scalar.Create("WorldH", (float) mFrame.Height);
+            mScreenW = Scalar.Create("ScreenW", mFrame.Monitor.Bounds.Width);
+            mScreenH = Scalar.Create("ScreenH", mFrame.Monitor.Bounds.Height);
 
             Vector pointEnd = Nui.joint(Nui.Hand_Right) * SCALE;
             if (mTest) {

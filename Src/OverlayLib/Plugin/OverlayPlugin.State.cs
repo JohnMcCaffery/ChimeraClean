@@ -98,9 +98,9 @@ namespace Chimera.Overlay {
         /// </summary>
         public event Action OverlayClosed;
 
-        void mCoordinator_WindowAdded(Window window, EventArgs args) {
-            WindowOverlayManager manager = new WindowOverlayManager(this, window);
-            mWindowManagers.Add(window.Name, manager);
+        void mCoordinator_FrameAdded(Frame frame, EventArgs args) {
+            WindowOverlayManager manager = new WindowOverlayManager(this, frame);
+            mWindowManagers.Add(frame.Name, manager);
 
             if (mConfig.LaunchOverlay)
                 manager.Launch();

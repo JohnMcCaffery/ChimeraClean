@@ -76,7 +76,7 @@ namespace Chimera.Overlay.States {
                 if (imgStr != null && File.Exists(Path.GetFullPath(imgStr))) {
                     Bitmap img = new Bitmap(imgStr);
                     if (img != null) {
-                        string window = GetManager(manager, child, "image background state").Window.Name;
+                        string window = GetManager(manager, child, "image background state").Frame.Name;
                         mWindowBGs.Add(window, img);
                         if (mWindows.ContainsKey(window))
                             mWindows[window].BackgroundImage = img;

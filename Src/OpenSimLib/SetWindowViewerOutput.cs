@@ -46,9 +46,9 @@ namespace Chimera.OpenSim {
                 InjectPacket(new SetCameraPacket(MakeCameraBlock()));
         }
 
-        public override void SetWindow() {
+        public override void SetFrame() {
             if (ProxyRunning && ControlCamera)
-                InjectPacket(new SetFrustumPacket(Window.ProjectionMatrix));
+                InjectPacket(new SetFrustumPacket(Frame.ProjectionMatrix));
         }
 
         protected override void ProcessCameraUpdate (Coordinator coordinator, CameraUpdateEventArgs args) {
@@ -59,19 +59,19 @@ namespace Chimera.OpenSim {
 
 
         private SetCameraPacket.CameraBlock MakeCameraBlock() {
-            return MakeCameraBlock(Window.Coordinator.Position, Vector3.Zero, Window.Coordinator.Orientation, Rotation.Zero);
+            return MakeCameraBlock(Frame.Coordinator.Position, Vector3.Zero, Frame.Coordinator.Orientation, Rotation.Zero);
         }
         private SetCameraPacket.CameraBlock MakeCameraBlock(Vector3 position, Vector3 positionDelta, Rotation rotation, Rotation rotationDelta) {
             //Vector3 focus = Window.Coordinator.Position + Window.Coordinator.Orientation.LookAtVector;
-            Vector3 lookAt = (rotation - Window.Orientation).LookAtVector;
-            Vector3 eyePos = new Vector3(Window.Coordinator.EyePosition.Y, Window.Coordinator.EyePosition.X, -Window.Coordinator.EyePosition.Z);
+            Vector3 lookAt = (rotation - Frame.Orientation).LookAtVector;
+            Vector3 eyePos = new Vector3(Frame.Coordinator.EyePosition.Y, Frame.Coordinator.EyePosition.X, -Frame.Coordinator.EyePosition.Z);
 
             SetCameraPacket.CameraBlock block = new SetCameraPacket.CameraBlock();
             block.Position = position - (eyePos / 1000f);
             block.PositionDelta = positionDelta;
             block.LookAt = lookAt;
             block.LookAtDelta = rotationDelta.LookAtVector;
-            block.TickLength = (uint)Window.Coordinator.TickLength * 1000;
+            block.TickLength = (uint)Frame.Coordinator.TickLength * 1000;
             return block;
         }
     }

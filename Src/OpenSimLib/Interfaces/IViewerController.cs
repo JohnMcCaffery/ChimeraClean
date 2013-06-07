@@ -18,7 +18,7 @@ namespace Chimera.OpenSim.Interfaces {
 
         void Chat(string msg, int channel);
 
-        void Init(Window window);
+        void Init(Frame frame);
 
         //-----------------------------
         

@@ -113,7 +113,7 @@ namespace Chimera.GUI.Forms {
             mCoordinator.Closed += mClosedListener;
             mCoordinator.Tick += mTickListener;
             //mCoordinator.HeightmapChanged += mHeightmapChangedListener;
-            mCoordinator.WindowAdded += new Action<Window,EventArgs>(mCoordinator_WindowAdded);
+            mCoordinator.FrameAdded += new Action<Frame,EventArgs>(mCoordinator_WindowAdded);
 
             mCoordinator_CameraModeChanged(coordinator, coordinator.ControlMode);
 
@@ -182,14 +182,14 @@ namespace Chimera.GUI.Forms {
             Invoke(() => enableUpdates.Checked = mCoordinator.EnableUpdates);
         }
 
-        private void mCoordinator_WindowAdded(Window window, EventArgs args) {
+        private void mCoordinator_WindowAdded(Frame frame, EventArgs args) {
             // 
             // windowPanel
             // 
-            WindowPanel windowPanel = new WindowPanel(window);
+            FramePanel windowPanel = new FramePanel(frame);
             windowPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             windowPanel.Location = new System.Drawing.Point(3, 3);
-            windowPanel.Name = window.Name + "Panel";
+            windowPanel.Name = frame.Name + "Panel";
             windowPanel.Size = new System.Drawing.Size(401, 233);
             windowPanel.TabIndex = 0;
             // 
@@ -198,15 +198,15 @@ namespace Chimera.GUI.Forms {
             TabPage windowTab = new System.Windows.Forms.TabPage();
             windowTab.Controls.Add(windowPanel);
             windowTab.Location = new System.Drawing.Point(4, 22);
-            windowTab.Name = window.Name + "Tab";
+            windowTab.Name = frame.Name + "Tab";
             windowTab.Padding = new System.Windows.Forms.Padding(3);
             windowTab.Size = new System.Drawing.Size(407, 239);
             windowTab.TabIndex = 0;
-            windowTab.Text = window.Name;
+            windowTab.Text = frame.Name;
             windowTab.UseVisualStyleBackColor = true;
 
             windowsTab.Controls.Add(windowTab);
-            window.Changed += new Action<Window, EventArgs>(window_Changed);
+            frame.Changed += new Action<Frame, EventArgs>(frame_Changed);
         }
 
         private void mCoordinator_Tick() {
@@ -228,7 +228,7 @@ namespace Chimera.GUI.Forms {
                 });
         }
 
-        private void window_Changed(Window window, EventArgs args) {
+        private void frame_Changed(Frame frame, EventArgs args) {
             Invoke(() => {
                 realSpacePanel.Invalidate();
                 heightmapPanel.Invalidate();
@@ -441,7 +441,7 @@ namespace Chimera.GUI.Forms {
             if (!InvokeRequired)
                 a();
             else if (!mClosing && !IsDisposed && !Disposing && Created)
-                base.Invoke(a);
+                base.BeginInvoke(a);
         }
 
         private void heightmapPanel_Paint(object sender, PaintEventArgs e) {

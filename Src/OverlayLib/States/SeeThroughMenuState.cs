@@ -78,9 +78,9 @@ namespace Chimera.Overlay.States {
             }
 
             internal void TransitionFromState() {
-                mFadeBG = new Bitmap(Manager.Window.Monitor.Bounds.Width, Manager.Window.Monitor.Bounds.Height);
+                mFadeBG = new Bitmap(Manager.Frame.Monitor.Bounds.Width, Manager.Frame.Monitor.Bounds.Height);
                 using (Graphics g = Graphics.FromImage(mFadeBG)) {
-                    g.CopyFromScreen(Manager.Window.Monitor.Bounds.Location, Point.Empty, Manager.Window.Monitor.Bounds.Size);
+                    g.CopyFromScreen(Manager.Frame.Monitor.Bounds.Location, Point.Empty, Manager.Frame.Monitor.Bounds.Size);
                 }
             }
 

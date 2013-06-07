@@ -43,7 +43,7 @@ namespace Touchscreen {
                 if (value && mManager != null) {
                     mWindow = new TouchscreenForm(this);
                     mWindow.Opacity = mConfig.Opacity;
-                    mWindow.Bounds = mManager.Window.Monitor.Bounds;
+                    mWindow.Bounds = mManager.Frame.Monitor.Bounds;
                     mWindow.MouseDown += new System.Windows.Forms.MouseEventHandler(mWindow_MouseDown);
                     mWindow.MouseUp += new System.Windows.Forms.MouseEventHandler(mWindow_MouseUp); mWindow.Show();
                     mWindow.Show();
@@ -79,19 +79,19 @@ namespace Touchscreen {
             base.Init(input);
 
             if (input.Windows.Count() == 0)
-                input.WindowAdded += new Action<Window, EventArgs>(input_WindowAdded);
+                input.FrameAdded += new Action<Frame, EventArgs>(input_FrameAdded);
             else {
-                Window w = input.Windows.First();
+                Frame f = input.Windows.First();
                 if (mConfig.Window != null)
-                    w = input[mConfig.Window];
-                input_WindowAdded(w, null);
+                    f = input[mConfig.Window];
+                input_FrameAdded(f, null);
             }
 
         }
 
-        void input_WindowAdded(Window w, EventArgs args) {
-            if (mConfig.Window == null || w.Name.Equals(mConfig.Window)) {
-                mManager = mStateManager[w.Name];
+        void input_FrameAdded(Frame f, EventArgs args) {
+            if (mConfig.Window == null || f.Name.Equals(mConfig.Window)) {
+                mManager = mStateManager[f.Name];
 
                 mL = new VerticalAxis(mManager);
                 mR = new VerticalAxis(mManager);
@@ -129,7 +129,7 @@ namespace Touchscreen {
                 AddAxis(mRightY);
                 AddAxis(mSingle);
 
-                Coordinator input = w.Coordinator;
+                Coordinator input = f.Coordinator;
 
                 if (Enabled)
                     Enabled = true;

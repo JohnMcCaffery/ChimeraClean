@@ -48,7 +48,7 @@ namespace Chimera.Overlay.Triggers {
         public CursorTrigger(ISelectionRenderer renderer, WindowOverlayManager manager) {
             mManager = manager;
             mRenderer = renderer;
-            mManager.Window.Coordinator.Tick += new Action(coordinator_Tick);
+            mManager.Frame.Coordinator.Tick += new Action(coordinator_Tick);
             //mSelectCursor = new Cursor(new IntPtr(65571));
             mSelectCursor = new Cursor(new IntPtr(65567));
         }

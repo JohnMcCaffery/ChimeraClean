@@ -215,7 +215,7 @@ namespace Chimera.Overlay.Drawables {
             float h = GetFloat(node, -1f, "H", "Height");
             mBounds = new RectangleF(x, y, w, h);
             mAspectRatio = (float) mImage.Height / (float) mImage.Width;
-            mWindow = GetManager(manager, node, "overlay image").Window.Name;
+            mWindow = GetManager(manager, node, "overlay image").Frame.Name;
         }
 
         public OverlayImage(OverlayPlugin manager, XmlNode node, Rectangle clip, string reason)

@@ -64,7 +64,7 @@ namespace Chimera.Overlay {
             mName = name;
             mManager = manager;
 
-            mManager.Coordinator.WindowAdded += new Action<Window,EventArgs>(Coordinator_WindowAdded);
+            mManager.Coordinator.FrameAdded += new Action<Frame,EventArgs>(Coordinator_FrameAdded);
         }
 
         /// <summary>
@@ -73,18 +73,18 @@ namespace Chimera.Overlay {
         /// </summary>
         public void Init() {
             foreach (var window in mManager.Coordinator.Windows)
-                Coordinator_WindowAdded(window, null);
+                Coordinator_FrameAdded(window, null);
         }
 
-        protected virtual void Coordinator_WindowAdded(Window window, EventArgs args) {
-            if (!mWindowStates.ContainsKey(window.Name))
-                mWindowStates.Add(window.Name, CreateWindowState(mManager[window.Name]));
+        protected virtual void Coordinator_FrameAdded(Frame frame, EventArgs args) {
+            if (!mWindowStates.ContainsKey(frame.Name))
+                mWindowStates.Add(frame.Name, CreateWindowState(mManager[frame.Name]));
         }
 
         public IWindowState this[string window] {
             get {
                 if (!mWindowStates.ContainsKey(window))
-                    Coordinator_WindowAdded(mManager.Coordinator[window], null);
+                    Coordinator_FrameAdded(mManager.Coordinator[window], null);
                 return mWindowStates[window];
             }
         }

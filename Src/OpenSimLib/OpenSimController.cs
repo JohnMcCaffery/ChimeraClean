@@ -16,7 +16,7 @@ namespace Chimera.OpenSim {
         private bool mEnabled;
         private bool mClosingViewer;
         private ViewerConfig mConfig;
-        private Window mWindow;
+        private Frame mFrame;
         private OutputPanel mOutputPanel;
         private InputPanel mInputPanel;
 
@@ -77,7 +77,7 @@ namespace Chimera.OpenSim {
         UserControl IPlugin.ControlPanel {
             get {
                 if (mInputPanel == null) {
-                    mFollowCamProperties = new SetFollowCamProperties(Window.Coordinator);
+                    mFollowCamProperties = new SetFollowCamProperties(Frame.Coordinator);
                     mInputPanel = new InputPanel(mFollowCamProperties);
                     if (mProxyController.Started)
                         mFollowCamProperties.SetProxy(mProxyController.Proxy);
@@ -135,8 +135,8 @@ namespace Chimera.OpenSim {
             get { throw new NotImplementedException(); }
         }
 
-        public Window Window {
-            get { return mWindow; }
+        public Frame Frame {
+            get { return mFrame; }
         }
 
         public Process Process {
@@ -152,25 +152,25 @@ namespace Chimera.OpenSim {
         }
 
         private ControlMode Mode {
-            get { return Window.Coordinator.ControlMode; }
+            get { return Frame.Coordinator.ControlMode; }
         }
 
-        public void Init(Window window) {
-            mWindow = window;
-            mConfig = new ViewerConfig(window.Name);
+        public void Init(Frame frame) {
+            mFrame = frame;
+            mConfig = new ViewerConfig(frame.Name);
 
             mViewerController = new ViewerController(mConfig.ViewerToggleHUDKey);
             if (mConfig.BackwardsCompatible)
-                mProxyController = new BackwardCompatibleController(window);
+                mProxyController = new BackwardCompatibleController(frame);
             else
-                mProxyController = new FullController(window);
+                mProxyController = new FullController(frame);
 
-            mWindow.Coordinator.DeltaUpdated += new Action<Coordinator,DeltaUpdateEventArgs>(Coordinator_DeltaUpdated);
-            mWindow.Coordinator.CameraUpdated += new Action<Coordinator,CameraUpdateEventArgs>(Coordinator_CameraUpdated);
-            mWindow.Coordinator.CameraModeChanged += new Action<Coordinator,ControlMode>(Coordinator_CameraModeChanged);
-            mWindow.Coordinator.EyeUpdated += new Action<Coordinator,EventArgs>(Coordinator_EyeUpdated);
-            mWindow.Changed += new Action<Chimera.Window,EventArgs>(mWindow_Changed);
-            mWindow.MonitorChanged += new Action<Chimera.Window,Screen>(mWindow_MonitorChanged);
+            mFrame.Coordinator.DeltaUpdated += new Action<Coordinator,DeltaUpdateEventArgs>(Coordinator_DeltaUpdated);
+            mFrame.Coordinator.CameraUpdated += new Action<Coordinator,CameraUpdateEventArgs>(Coordinator_CameraUpdated);
+            mFrame.Coordinator.CameraModeChanged += new Action<Coordinator,ControlMode>(Coordinator_CameraModeChanged);
+            mFrame.Coordinator.EyeUpdated += new Action<Coordinator,EventArgs>(Coordinator_EyeUpdated);
+            mFrame.Changed += new Action<Chimera.Frame,EventArgs>(mFrame_Changed);
+            mFrame.MonitorChanged += new Action<Chimera.Frame,Screen>(mFrame_MonitorChanged);
             mProxyController.OnClientLoggedIn += new EventHandler(mProxyController_OnClientLoggedIn);
             mProxyController.PositionChanged += new Action<Vector3,Rotation>(mProxyController_PositionChanged);
             mViewerController.Exited += new Action(mViewerController_Exited);
@@ -262,17 +262,17 @@ namespace Chimera.OpenSim {
                 mProxyController.SetFrustum(SetCamera);
         }
 
-        void mWindow_Changed(Window window, EventArgs args) {
+        void mFrame_Changed(Frame frame, EventArgs args) {
             if (ControlFrustum)
                 mProxyController.SetFrustum(SetCamera);
         }
 
-        void mWindow_MonitorChanged(Window window, Screen monitor) {
+        void mFrame_MonitorChanged(Frame frame, Screen monitor) {
             mViewerController.Monitor = monitor;
         }
 
         void mProxyController_OnClientLoggedIn(object sender, EventArgs e) {
-            mViewerController.Monitor = mWindow.Monitor;
+            mViewerController.Monitor = mFrame.Monitor;
             if (mConfig.Fullscreen)
                 mViewerController.FullScreen = true;
 
@@ -295,7 +295,7 @@ namespace Chimera.OpenSim {
 
         void mProxyController_PositionChanged(Vector3 position, Rotation rotation) {
             if (IsMaster && Mode == ControlMode.Delta)
-                mWindow.Coordinator.Update(position, Vector3.Zero, rotation, Rotation.Zero, ControlMode.Absolute);
+                mFrame.Coordinator.Update(position, Vector3.Zero, rotation, Rotation.Zero, ControlMode.Absolute);
         }
 
         void mViewerController_Exited() {

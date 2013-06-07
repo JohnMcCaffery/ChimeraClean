@@ -62,7 +62,7 @@ namespace Chimera.Overlay {
         /// <summary>
         /// The window this overlay covers.
         /// </summary>
-        private Window mWindow;
+        private Frame mFrame;
         /// <summary>
         /// The colour that will show up as transparent on this window's overlay.
         /// </summary>
@@ -140,7 +140,7 @@ namespace Chimera.Overlay {
         /// </summary>
         public Point MonitorCursor {
             get {
-                Rectangle b = mWindow.Monitor.Bounds;
+                Rectangle b = mFrame.Monitor.Bounds;
                 int x = (int)(mCursorX * b.Width) + b.X;
                 int y = (int)(mCursorY * b.Height) + b.Y;
                 return new Point(x, y);
@@ -188,8 +188,8 @@ namespace Chimera.Overlay {
             get { return mCursorY; }
         }
 
-        public Window Window {
-            get { return mWindow; }
+        public Frame Frame {
+            get { return mFrame; }
         }
 
         public OverlayWindow OverlayWindow {
@@ -262,18 +262,18 @@ namespace Chimera.Overlay {
         /// <param name="x">The percentage across the screen the cursor is (1 = all the way across).</param>
         /// <param name="y">The percentage down the screen the cursor is (1 = all the way down).</param>
         public void UpdateCursor(double x, double y) {
-            if (mWindow == null)
+            if (mFrame == null)
             //if (mWindow == null || mOverlayWindow == null)
                 return;
-            bool wasOn = mWindow.Monitor.Bounds.Contains(MonitorCursor);
+            bool wasOn = mFrame.Monitor.Bounds.Contains(MonitorCursor);
             mCursorX = x;
             mCursorY = y;
-            if (mControlPointer && mWindow.Monitor.Bounds.Contains(MonitorCursor))
+            if (mControlPointer && mFrame.Monitor.Bounds.Contains(MonitorCursor))
                 SystemCursor.Position = MonitorCursor;
             else if (wasOn && mControlPointer)
                 MoveCursorOffScreen();
 
-            if (CursorMoved != null && (mWindow.Monitor.Bounds.Contains(MonitorCursor) || wasOn))
+            if (CursorMoved != null && (mFrame.Monitor.Bounds.Contains(MonitorCursor) || wasOn))
                 CursorMoved(this, null);
         }
 
@@ -322,9 +322,9 @@ namespace Chimera.Overlay {
             }
         }
 
-        public WindowOverlayManager(OverlayPlugin manager, Window window) {
+        public WindowOverlayManager(OverlayPlugin manager, Frame frame) {
             mManager = manager;
-            mWindow = window;
+            mFrame = frame;
 
             mConfig = new OverlayConfig();
             mOverlayActive = mConfig.LaunchOverlay;
@@ -333,7 +333,7 @@ namespace Chimera.Overlay {
         }
 
         public void MoveCursorOffScreen() {
-            SystemCursor.Position = new Point(mWindow.Monitor.Bounds.X + mWindow.Monitor.Bounds.Width, mWindow.Monitor.Bounds.Y + mWindow.Monitor.Bounds.Height);
+            SystemCursor.Position = new Point(mFrame.Monitor.Bounds.X + mFrame.Monitor.Bounds.Width, mFrame.Monitor.Bounds.Y + mFrame.Monitor.Bounds.Height);
         }
 
         void mOverlayWindow_FormClosed(object sender, FormClosedEventArgs e) {
@@ -376,6 +376,6 @@ namespace Chimera.Overlay {
                 mOverlayWindow.RemoveControl(control);
         }
 
-        public string Name { get { return mWindow.Name; } }
+        public string Name { get { return mFrame.Name; } }
     }
 }

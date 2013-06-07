@@ -33,7 +33,7 @@ namespace Chimera.Overlay {
 
         /// <param name="manager">The manager which controls this window state.</param>
         public WindowState(WindowOverlayManager manager)
-            : base(manager.Window.Name) {
+            : base(manager.Frame.Name) {
             mManager = manager;
         }
 

@@ -78,12 +78,12 @@ namespace Chimera.Overlay {
             mTo = to;
             mWindowTransitionFactory = factory;
 
-            mManager.Coordinator.WindowAdded += new Action<Window,EventArgs>(Coordinator_WindowAdded);
+            mManager.Coordinator.FrameAdded += new Action<Frame,EventArgs>(Coordinator_FrameAdded);
 
             AddTrigger(trigger);
 
             foreach (var window in mManager.Coordinator.Windows)
-                Coordinator_WindowAdded(window, null);
+                Coordinator_FrameAdded(window, null);
         }
 
         /// <summary>
@@ -183,9 +183,9 @@ namespace Chimera.Overlay {
             }
         }
 
-        void Coordinator_WindowAdded(Window window, EventArgs args) {
-            IWindowTransition transition = mWindowTransitionFactory.Create(this, Manager[window.Name]);
-            mWindowTransitions.Add(window.Name, transition);
+        void Coordinator_FrameAdded(Frame frame, EventArgs args) {
+            IWindowTransition transition = mWindowTransitionFactory.Create(this, Manager[frame.Name]);
+            mWindowTransitions.Add(frame.Name, transition);
             transition.Finished += new Action<IWindowTransition>(transition_Finished);
         }
 

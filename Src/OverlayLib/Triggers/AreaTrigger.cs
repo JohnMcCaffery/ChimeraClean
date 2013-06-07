@@ -71,7 +71,7 @@ namespace Chimera.Overlay.Triggers {
         }
 
         public string Window {
-            get { return Manager.Window.Name; }
+            get { return Manager.Frame.Name; }
         }
 
         #region ITrigger Members

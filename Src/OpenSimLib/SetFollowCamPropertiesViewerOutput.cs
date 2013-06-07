@@ -38,7 +38,7 @@ namespace Chimera.OpenSim {
                 InjectPacket(MakePacket());
         }
 
-        public override void SetWindow() { }
+        public override void SetFrame() { }
 
         protected override void ProcessCameraUpdate (Coordinator coordinator, CameraUpdateEventArgs args) {
             SetCamera();
@@ -52,7 +52,7 @@ namespace Chimera.OpenSim {
                 cameraPacket.CameraProperty[i].Type = i + 1;
             }
 
-            Vector3 focus = Window.Coordinator.Position + Window.Coordinator.Orientation.LookAtVector;
+            Vector3 focus = Frame.Coordinator.Position + Frame.Coordinator.Orientation.LookAtVector;
             cameraPacket.CameraProperty[0].Value = 0;
             cameraPacket.CameraProperty[1].Value = 0f;
             cameraPacket.CameraProperty[2].Value = 0f;
@@ -66,9 +66,9 @@ namespace Chimera.OpenSim {
             cameraPacket.CameraProperty[10].Value = 0f;
             cameraPacket.CameraProperty[11].Value = 1f; //enable
             cameraPacket.CameraProperty[12].Value = 0f;
-            cameraPacket.CameraProperty[13].Value = Window.Coordinator.Position.X;
-            cameraPacket.CameraProperty[14].Value = Window.Coordinator.Position.Y;
-            cameraPacket.CameraProperty[15].Value = Window.Coordinator.Position.Z;
+            cameraPacket.CameraProperty[13].Value = Frame.Coordinator.Position.X;
+            cameraPacket.CameraProperty[14].Value = Frame.Coordinator.Position.Y;
+            cameraPacket.CameraProperty[15].Value = Frame.Coordinator.Position.Z;
             cameraPacket.CameraProperty[16].Value = 0f;
             cameraPacket.CameraProperty[17].Value = focus.X;
             cameraPacket.CameraProperty[18].Value = focus.Y;

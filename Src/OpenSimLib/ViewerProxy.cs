@@ -64,7 +64,7 @@ namespace Chimera.OpenSim {
         private object processLock = new object();
 
         private SetFollowCamProperties mFollowCamProperties;
-        private Window mWindow;
+        private Frame mFrame;
         private DeprecatedOutputPanel mOutputPanel;
         private InputPanel mInputPanel;
         private ViewerConfig mConfig;
@@ -112,7 +112,7 @@ namespace Chimera.OpenSim {
             set { 
                 mFullscreen = value;
                 if (mClientLoggedIn && mClient != null) {
-                    ProcessWrangler.SetBorder(mClient, mWindow.Monitor, !value);
+                    ProcessWrangler.SetBorder(mClient, mFrame.Monitor, !value);
                     //ToggleHUD();
                 }
             }
@@ -252,7 +252,7 @@ namespace Chimera.OpenSim {
         /// <summary>
         /// Take control of the window frustum and set it up as specified by the Window.
         /// </summary>
-        public abstract void SetWindow();
+        public abstract void SetFrame();
 
         /// <summary>
         /// Called whenever the camera position is updated.
@@ -305,8 +305,8 @@ namespace Chimera.OpenSim {
             get { return "Virtual World Viewer"; }
         }
 
-        public Window Window {
-            get { return mWindow; }
+        public Frame Frame {
+            get { return mFrame; }
         }
 
         UserControl IOutput.ControlPanel {
@@ -339,17 +339,17 @@ namespace Chimera.OpenSim {
             }
         }
 
-        public void Init(Window window) {
-            mConfig = new ViewerConfig(window.Name);
+        public void Init(Frame frame) {
+            mConfig = new ViewerConfig(frame.Name);
             mLogger = LogManager.GetLogger(mConfig.Section);
-            mWindow = window;
-            mWindow.Coordinator.CameraUpdated += Coordinator_CameraUpdated;
-            mWindow.Coordinator.EyeUpdated += Coordinator_EyeUpdated;
-            mWindow.Coordinator.Tick += new Action(Coordinator_Tick);
-            mWindow.Coordinator.CameraModeChanged += new Action<Coordinator,ControlMode>(Coordinator_CameraModeChanged);
-            mWindow.Coordinator.DeltaUpdated += new Action<Chimera.Coordinator,DeltaUpdateEventArgs>(Coordinator_DeltaUpdated);
-            mWindow.MonitorChanged += new Action<Chimera.Window,Screen>(mWindow_MonitorChanged);
-            mWindow.Changed += new Action<Chimera.Window,EventArgs>(mWindow_Changed);
+            mFrame = frame;
+            mFrame.Coordinator.CameraUpdated += Coordinator_CameraUpdated;
+            mFrame.Coordinator.EyeUpdated += Coordinator_EyeUpdated;
+            mFrame.Coordinator.Tick += new Action(Coordinator_Tick);
+            mFrame.Coordinator.CameraModeChanged += new Action<Coordinator,ControlMode>(Coordinator_CameraModeChanged);
+            mFrame.Coordinator.DeltaUpdated += new Action<Chimera.Coordinator,DeltaUpdateEventArgs>(Coordinator_DeltaUpdated);
+            mFrame.MonitorChanged += new Action<Chimera.Frame,Screen>(mFrame_MonitorChanged);
+            mFrame.Changed += new Action<Chimera.Frame,EventArgs>(mFrame_Changed);
             mFullscreen = mConfig.Fullscreen;
 
             if (mConfig.AutoStartViewer)
@@ -440,7 +440,7 @@ namespace Chimera.OpenSim {
             get {
                 if (mInputPanel == null) {
                     mMaster = true;
-                    mFollowCamProperties = new SetFollowCamProperties(Window.Coordinator);
+                    mFollowCamProperties = new SetFollowCamProperties(Frame.Coordinator);
                     mInputPanel = new InputPanel(mFollowCamProperties);
 
                 }
@@ -484,7 +484,7 @@ namespace Chimera.OpenSim {
         #endregion
 
 
-        private void mWindow_MonitorChanged(Window window, Screen monitor) {
+        private void mFrame_MonitorChanged(Frame frame, Screen monitor) {
             if (mClientLoggedIn && mClient != null)
                 ProcessWrangler.SetMonitor(mClient, monitor);
         }
@@ -518,9 +518,9 @@ namespace Chimera.OpenSim {
         /// <param name="input">The input which triggered the eye change.</param>
         /// <param name="args">The arguments about the change that was made.</param>
         private void Coordinator_EyeUpdated(Coordinator coordinator, EventArgs args) {
-            if (ProxyRunning && ControlCamera && Window.Coordinator.ControlMode == ControlMode.Absolute) {
+            if (ProxyRunning && ControlCamera && Frame.Coordinator.ControlMode == ControlMode.Absolute) {
                 SetCamera();
-                SetWindow();
+                SetFrame();
             }
         }
     
@@ -530,8 +530,8 @@ namespace Chimera.OpenSim {
                 mLastViewerPosition = packet.AgentData.CameraAtAxis;
                 mLastViewerUpdate =  DateTime.Now;
             }
-            if (mMaster && mWindow.Coordinator.ControlMode == ControlMode.Delta) {
-                mWindow.Coordinator.Update(packet.AgentData.CameraCenter, Vector3.Zero, new Rotation(packet.AgentData.CameraAtAxis), Rotation.Zero, ControlMode.Absolute);
+            if (mMaster && mFrame.Coordinator.ControlMode == ControlMode.Delta) {
+                mFrame.Coordinator.Update(packet.AgentData.CameraCenter, Vector3.Zero, new Rotation(packet.AgentData.CameraAtAxis), Rotation.Zero, ControlMode.Absolute);
             }
             return p;
         }
@@ -570,9 +570,9 @@ namespace Chimera.OpenSim {
                 NoGlow();
         }
 
-        void mWindow_Changed(Window w, EventArgs args) {
-            if (w.Coordinator.ControlMode == ControlMode.Absolute)
-                SetWindow();
+        void mFrame_Changed(Frame f, EventArgs args) {
+            if (f.Coordinator.ControlMode == ControlMode.Absolute)
+                SetFrame();
         }
 
         void Coordinator_Tick() {
@@ -596,15 +596,15 @@ namespace Chimera.OpenSim {
 
                 //TODO - get client process if not started through GUI
                 if (mClient != null) {
-                    ProcessWrangler.SetMonitor(mClient, mWindow.Monitor);
+                    ProcessWrangler.SetMonitor(mClient, mFrame.Monitor);
                     if (mFullscreen)
-                        ProcessWrangler.SetBorder(mClient, mWindow.Monitor, !mFullscreen);
+                        ProcessWrangler.SetBorder(mClient, mFrame.Monitor, !mFullscreen);
                 }
 
                 new Thread(() => {
-                    if (mControlCamera && mWindow.Coordinator.ControlMode == ControlMode.Absolute)
+                    if (mControlCamera && mFrame.Coordinator.ControlMode == ControlMode.Absolute)
                         SetCamera();
-                    SetWindow();
+                    SetFrame();
                     if (mMaster && mFollowCamProperties.ControlCamera)
                         mProxy.InjectPacket(mFollowCamProperties.Packet, Direction.Incoming);
                     if (OnClientLoggedIn != null)

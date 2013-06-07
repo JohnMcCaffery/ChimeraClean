@@ -93,8 +93,8 @@ namespace Chimera.GUI.Forms {
             get { return FormBorderStyle == FormBorderStyle.None; }
             set { 
                 FormBorderStyle = value ? FormBorderStyle.None : FormBorderStyle.Sizable;
-                Location = mManager.Window.Monitor.Bounds.Location;
-                Size = mManager.Window.Monitor.Bounds.Size;
+                Location = mManager.Frame.Monitor.Bounds.Location;
+                Size = mManager.Frame.Monitor.Bounds.Size;
             }
         }
 
