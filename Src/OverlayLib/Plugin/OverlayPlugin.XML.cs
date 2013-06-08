@@ -206,6 +206,7 @@ namespace Chimera.Overlay {
                 if (f != null)
                     state.AddFeature(f);
             }
+            Console.WriteLine("Created " + typeof(State).Name + " state " + state.Name + ".");
         }
 
         private void LoadIdle(XmlNode node, State state) {

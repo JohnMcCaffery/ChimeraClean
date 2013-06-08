@@ -78,6 +78,7 @@ namespace Chimera.Flythrough.Overlay {
 
         public void Start() {
             mSubtitleTimes = new Queue<int>(mSubtitles.Keys.OrderBy(i=>i));
+            mLastSubtitle = DateTime.Now;
 
             if (mSubtitles.Count > 0) {
                 mStarted = DateTime.Now;
@@ -105,15 +106,15 @@ namespace Chimera.Flythrough.Overlay {
                 mPlayer.StopPlayback();
 
             if (mSubtitlesText != null)
-                mSubtitlesText.Active = false;
-            mManager.Coordinator.Tick += mTickListener;
+                mSubtitlesText.TextString = "";
+            mManager.Coordinator.Tick -= mTickListener;
         }
 
         private void mCoordinator_Tick() {
             if (mSubtitleTimes.Count > 0 && DateTime.Now.Subtract(mStarted).TotalSeconds > mSubtitleTimes.Peek()) {
                 mSubtitlesText.TextString = mSubtitles[mSubtitleTimes.Dequeue()];
                 mLastSubtitle = DateTime.Now;
-            } else if (DateTime.Now.Subtract(mLastSubtitle).TotalSeconds > mSubtitleTimeoutS)
+            } else if (DateTime.Now.Subtract(mLastSubtitle).TotalSeconds > mSubtitleTimeoutS && mSubtitlesText.TextString.Length > 0)
                 mSubtitlesText.TextString = "";
         }
 
