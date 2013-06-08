@@ -4,13 +4,15 @@ using System.Linq;
 using System.Text;
 using Chimera.Interfaces.Overlay;
 using System.Drawing;
+using System.Xml;
 
 namespace Chimera.Overlay.Features {
-    public class ScreenshotFeature : IFeature {
+    public class ScreenshotFeature : XmlLoader, IFeature {
         private WindowOverlayManager mManager;
         private Bitmap mScreenshot;
         private Rectangle mClip;
         private bool mActive;
+        private string mName;
 
         #region IFeature Members
 
@@ -36,7 +38,7 @@ namespace Chimera.Overlay.Features {
             get { return false; }
         }
 
-        public string Window {
+        public string Frame {
             get { return mManager.Window.Name; }
         }
 
@@ -55,14 +57,15 @@ namespace Chimera.Overlay.Features {
         }
 
         public string Name {
-            get {
-                throw new NotImplementedException();
-            }
-            set {
-                throw new NotImplementedException();
-            }
+            get { return mName; }
+            set { mName = value; }
         }
 
         #endregion
+
+        public ScreenshotFeature(OverlayPlugin plugin, XmlNode node) {
+            mName = GetName(node, "Screenshot Feature");
+            mManager = GetManager(plugin, node, "Screenshot Feature");
+        }
     }
 }

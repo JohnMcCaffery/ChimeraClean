@@ -98,8 +98,8 @@ namespace Chimera.Overlay.Triggers {
             get { return mText.NeedsRedrawn; }
         }
 
-        string IFeature.Window {
-            get { return mText.Window; }
+        string IFeature.Frame {
+            get { return mText.Frame; }
         }
 
         void IFeature.DrawStatic(Graphics graphics) {

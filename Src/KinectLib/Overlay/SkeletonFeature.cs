@@ -137,7 +137,7 @@ namespace Chimera.Kinect.Overlay {
         }
 
 
-        public string Window {
+        public string Frame {
             get { return mWindowName; }
         }
 

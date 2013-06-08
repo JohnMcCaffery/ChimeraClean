@@ -189,7 +189,7 @@ namespace Chimera.Overlay {
         /// <param name="window">The window to draw the feature on.</param>
         /// <param name="feature">The feature to draw.</param>
         public void AddFeature(IFeature feature) {
-            this[feature.Window].AddFeature(feature);
+            this[feature.Frame].AddFeature(feature);
         }
 
         public virtual void Draw(Graphics graphics, Func<Vector3, Point> to2D, Action redraw, Perspective perspective) {

@@ -70,7 +70,7 @@ namespace Chimera.Overlay.Triggers {
             get { return mManager; }
         }
 
-        public string Window {
+        public string Frame {
             get { return Manager.Window.Name; }
         }
 

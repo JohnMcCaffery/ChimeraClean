@@ -89,7 +89,7 @@ namespace Chimera.Flythrough.Overlay {
 
             if (mImage != null) {
                 mImage.Active = true;
-                mManager[mImage.Window].ForceRedrawStatic();
+                mManager[mImage.Frame].ForceRedrawStatic();
             }
 
             //TODO - play voiceover file
@@ -98,7 +98,7 @@ namespace Chimera.Flythrough.Overlay {
         public void Finish() {
             if (mImage != null) {
                 mImage.Active = false;
-                mManager[mImage.Window].ForceRedrawStatic();
+                mManager[mImage.Frame].ForceRedrawStatic();
             }
 
             if (mVoiceoverFile != null)

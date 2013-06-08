@@ -69,8 +69,8 @@ namespace Chimera.Overlay.Drawables {
             get { return mFeature.NeedsRedrawn; }
         }
 
-        public string Window {
-            get { return mFeature.Window; }
+        public string Frame {
+            get { return mFeature.Frame; }
         }
 
         public void DrawStatic(Graphics graphics) {
