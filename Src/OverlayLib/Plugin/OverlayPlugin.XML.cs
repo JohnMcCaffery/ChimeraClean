@@ -130,9 +130,8 @@ namespace Chimera.Overlay {
         private void LoadTransitions(XmlDocument doc) {
             Console.WriteLine("\nCreating Transitions");
             foreach (XmlNode transitionRoot in doc.GetElementsByTagName("Transitions"))
-                foreach (XmlNode transitionNode in transitionRoot.ChildNodes)
-                    if (transitionNode is XmlElement)
-                        LoadTransition(transitionNode);
+                foreach (XmlNode transitionNode in transitionRoot.ChildNodes.OfType<XmlElement>())
+                    LoadTransition(transitionNode);
         }
 
         private void LoadSpecialStates() {

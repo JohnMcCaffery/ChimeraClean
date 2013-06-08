@@ -441,7 +441,7 @@ namespace Chimera.GUI.Forms {
             if (!InvokeRequired)
                 a();
             else if (!mClosing && !IsDisposed && !Disposing && Created)
-                base.Invoke(a);
+                base.BeginInvoke(a);
         }
 
         private void heightmapPanel_Paint(object sender, PaintEventArgs e) {
