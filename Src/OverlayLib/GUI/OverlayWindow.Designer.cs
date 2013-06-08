@@ -72,6 +72,7 @@ namespace Chimera.GUI.Forms {
             this.Controls.Add(this.drawPanel);
             this.Name = "OverlayWindow";
             this.Text = "OverlayWindow";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.OverlayWindow_FormClosing);
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.OverlayWindow_MouseDown);
             this.MouseUp += new System.Windows.Forms.MouseEventHandler(this.OverlayWindow_MouseUp);
             ((System.ComponentModel.ISupportInitialize)(this.drawPanel)).EndInit();

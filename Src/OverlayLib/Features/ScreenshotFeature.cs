@@ -33,6 +33,7 @@ namespace Chimera.Overlay.Features {    public class ScreenshotFeatureFactory :
         private Bitmap mScreenshot;
         private Rectangle mClip;
         private bool mActive;
+        private bool mIncludeOverlay;
 
         #region IFeature Members
 
@@ -47,13 +48,18 @@ namespace Chimera.Overlay.Features {    public class ScreenshotFeatureFactory :
                 mActive = value;
                 if (value) {
                     mScreenshot = new Bitmap(mManager.Window.Monitor.Bounds.Width, mManager.Window.Monitor.Bounds.Height);
-                    bool launched = mManager.Visible;
-                    mManager.Close();
+                    //bool launched = mManager.Visible;
+                    //mManager.Close();
                     using (Graphics g = Graphics.FromImage(mScreenshot)) {
                         g.CopyFromScreen(mManager.Window.Monitor.Bounds.Location, Point.Empty, mManager.Window.Monitor.Bounds.Size);
+                        if (mIncludeOverlay && mManager != null && mManager.CurrentDisplay != null) {
+                            mManager.CurrentDisplay.DrawStatic(g);
+                        }
                     }
-                    if (launched)
-                        mManager.Launch();
+                    mScreenshot.Save("Images/screenshot.jpg");
+
+                    //if (launched)
+                        //mManager.Launch();
                 }
             }
         }
@@ -76,6 +82,7 @@ namespace Chimera.Overlay.Features {    public class ScreenshotFeatureFactory :
 
         public ScreenshotFeature(OverlayPlugin plugin, XmlNode node) {
             mManager = GetManager(plugin, node, "Screenshot Feature");
+            mIncludeOverlay = GetBool(node, false, "IncludeOverlay");
         }
     }
 }

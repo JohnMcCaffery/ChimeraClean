@@ -133,12 +133,6 @@ namespace Chimera.Flythrough.Overlay {
             mInput.StepStarted += new Action<int>(mInput_StepStarted);
             int subtitleTimeout = GetInt(node, 20, "SubtitleTimeout");
 
-            XmlNode triggersRoot = node.SelectSingleNode("child::Triggers");
-            if (triggersRoot != null) {
-                foreach (XmlNode child in triggersRoot.ChildNodes)
-                    AddStepTrigger(manager.GetTrigger(child, "flythrough step", null));
-            }
-
             XmlNode stepsRoot = node.SelectSingleNode("child::Steps");
             if (stepsRoot != null) {
                 foreach (XmlNode child in stepsRoot.ChildNodes) {
@@ -151,7 +145,12 @@ namespace Chimera.Flythrough.Overlay {
             
             if (displaySubtitles)
                 AddFeature(mSubtitlesText);
-            AddFeature(mStepText);
+            AddFeature(mStepText);
+            XmlNode triggersRoot = node.SelectSingleNode("child::Triggers");
+            if (triggersRoot != null) {
+                foreach (XmlNode child in triggersRoot.ChildNodes)
+                    AddStepTrigger(manager.GetTrigger(child, "flythrough step", null));
+            }
         }
 
         private void AddStepTrigger(ITrigger trigger) {

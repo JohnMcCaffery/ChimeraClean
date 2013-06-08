@@ -34,6 +34,7 @@ namespace Chimera.Overlay.Features {
         private IFeature mStart;
         private IFeature mFinish;
         private IImageTransition mTransition;
+        private WindowOverlayManager mManager;
 
         private Rectangle mClip;
         private bool mActive;
@@ -43,7 +44,11 @@ namespace Chimera.Overlay.Features {
 
         public System.Drawing.Rectangle Clip {
             get { return mClip; }
-            set { mClip = value; }
+            set { 
+                mClip = value;
+                mStart.Clip = value;
+                mFinish.Clip = value;
+            }
         }
 
         public bool Active {
@@ -95,6 +100,12 @@ namespace Chimera.Overlay.Features {
             mStart = plugin.GetFeature(node.SelectSingleNode("child::Start"), "Fade Feature", null);
             mFinish = plugin.GetFeature(node.SelectSingleNode("child::Finish"), "Fade Feature", null);
             mTransition = plugin.GetImageTransition(node.SelectSingleNode("child::Transition"), "Fade Feature", null);
+            mManager = plugin[mStart.Frame];
+            mTransition.Finished += new Action(mTransition_Finished);
+        }
+
+        void mTransition_Finished() {
+            mManager.ForceRedrawStatic();
         }
     }
 }

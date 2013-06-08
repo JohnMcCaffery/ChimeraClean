@@ -202,6 +202,7 @@ namespace Chimera.Overlay.Drawables {
         }
 
         public OverlayImage(OverlayPlugin manager, XmlNode node, string reason) {
+            mFile = node.InnerText;
             mImage = GetImage(node, reason);
             if (mImage == null)
                 throw new ArgumentException("Problem loading image.");
@@ -228,8 +229,10 @@ namespace Chimera.Overlay.Drawables {
         }
 
         public override string ToString() {
-            return mW + "x" + mH + " Image";
+            return mFile != null && mFile.Length > 0 ? mFile : mW + "x" + mH + " Image";
         }
+
+        private string mFile;
     }
 }
 
