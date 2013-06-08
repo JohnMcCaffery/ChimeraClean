@@ -64,7 +64,8 @@ namespace Chimera.Plugins {
         private double mVOffset;
         private bool mRedrawing;
         private LockedVariable mLock;
-        private ProjectorPlugin mProjectorPlugin;
+        private ProjectorPlugin mProjectorPlugin;
+
 
         private double mOldW;
         private double mOldH;
@@ -82,7 +83,8 @@ namespace Chimera.Plugins {
                 if (value != LockedVariable.Nothing)
                     Redraw(LockedVariable.Nothing);
             }
-        }
+        }
+
         public bool UpsideDown {
             get { return mUpsideDown; }
             set {
@@ -315,7 +317,8 @@ namespace Chimera.Plugins {
 
             if (Change != null)
                 Change();
-        }
+        }
+
         private void CalculateAngles() {
             mAlpha = Math.Atan2(mVOffset, mThrowRatio);
             mBeta = Math.Atan2(mVOffset + mH, mThrowRatio);
@@ -481,7 +484,8 @@ namespace Chimera.Plugins {
         public void Draw(Graphics g, Func<Vector3, Point> to2D, Action redraw, Perspective perspective) {
             if (mDraw) {
                 Func<Vector3, Point> to2DR = v => to2D(Origin + (v * new Rotation(0.0, mOrientation.Yaw).Quaternion));
-                Point pos = to2DR(Vector3.Zero);
+                Point pos = to2DR(Vector3.Zero);
+
                 double alpha = Math.Atan2(mVOffset, mThrowRatio);
                 double beta = Math.Atan2(mVOffset + mH, mThrowRatio);
                 double ceta = Math.Atan2(mW / 2, mThrowRatio);
