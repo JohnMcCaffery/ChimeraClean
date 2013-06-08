@@ -631,6 +631,63 @@ namespace Chimera.OpenSim {
             if (mAutoRestart && unexpected) {
                 Restart("Crash");
             }
-        }   
+        }
+
+        #region IOutput Members
+
+        Window IOutput.Window {
+            get { throw new NotImplementedException(); }
+        }
+
+        bool IOutput.AutoRestart {
+            get {
+                throw new NotImplementedException();
+            }
+            set {
+                throw new NotImplementedException();
+            }
+        }
+
+        string IOutput.State {
+            get { throw new NotImplementedException(); }
+        }
+
+        string IOutput.Type {
+            get { throw new NotImplementedException(); }
+        }
+
+        bool IOutput.Active {
+            get { throw new NotImplementedException(); }
+        }
+
+        Process IOutput.Process {
+            get { throw new NotImplementedException(); }
+        }
+
+        void IOutput.Init(Window window) {
+            throw new NotImplementedException();
+        }
+
+        bool IOutput.Launch() {
+            throw new NotImplementedException();
+        }
+
+        void IOutput.Close() {
+            throw new NotImplementedException();
+        }
+
+        void IOutput.Restart(string reason) {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
+        #region ISystemPlugin Members
+
+
+        public void SetForm(Form form) {
+        }
+
+        #endregion
     }
 }

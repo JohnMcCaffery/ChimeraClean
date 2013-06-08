@@ -98,9 +98,14 @@ namespace Chimera.Overlay {
         /// </summary>
         public event Action OverlayClosed;
 
+        private Form mMasterForm;
+
         void mCoordinator_WindowAdded(Window window, EventArgs args) {
             WindowOverlayManager manager = new WindowOverlayManager(this, window);
             mWindowManagers.Add(window.Name, manager);
+
+            if (mMasterForm != null)
+                manager.SetForm(mMasterForm);
 
             if (mConfig.LaunchOverlay)
                 manager.Launch();

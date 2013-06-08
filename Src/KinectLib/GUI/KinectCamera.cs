@@ -174,5 +174,11 @@ namespace Chimera.Kinect.GUI {
         public void Draw(Graphics graphics, Func<Vector3, Point> to2D, Action redraw, Perspective perspective) { }
 
         #endregion
+
+        #region ISystemPlugin Members
+
+        public void SetForm(Form form) { }
+
+        #endregion
     }
 }

@@ -91,10 +91,12 @@ namespace Chimera.GUI.Forms {
         /// </summary>
         public bool Fullscreen {
             get { return FormBorderStyle == FormBorderStyle.None; }
-            set { 
-                FormBorderStyle = value ? FormBorderStyle.None : FormBorderStyle.Sizable;
-                Location = mManager.Window.Monitor.Bounds.Location;
-                Size = mManager.Window.Monitor.Bounds.Size;
+            set {
+                Invoke(() => {
+                    FormBorderStyle = value ? FormBorderStyle.None : FormBorderStyle.Sizable;
+                    Location = mManager.Window.Monitor.Bounds.Location;
+                    Size = mManager.Window.Monitor.Bounds.Size;
+                });
             }
         }
 
@@ -139,7 +141,7 @@ namespace Chimera.GUI.Forms {
             Invoke(() => Cursor = value);
         }
 
-        private void Invoke(Action a) {
+        public void Invoke(Action a) {
             if (!InvokeRequired)
                 a();
             else if (Created && !IsDisposed && !Disposing)

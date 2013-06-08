@@ -187,5 +187,13 @@ namespace Chimera.Plugins {
         public virtual void Init(Coordinator input) {
             mCoordinator = input;
         }
+
+        #region ISystemPlugin Members
+
+
+        public void SetForm(Form form) {
+        }
+
+        #endregion
     }
 }

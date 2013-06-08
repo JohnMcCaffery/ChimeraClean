@@ -491,5 +491,13 @@ namespace Chimera.Flythrough {
         }
 
         #endregion
+
+        #region ISystemPlugin Members
+
+
+        public void SetForm(Form form) {
+        }
+
+        #endregion
     }
 }

@@ -127,5 +127,13 @@ namespace Chimera.Overlay.Plugins {
 
 
         #endregion
+
+        #region ISystemPlugin Members
+
+
+        public void SetForm(Form form) {
+        }
+
+        #endregion
     }
 }

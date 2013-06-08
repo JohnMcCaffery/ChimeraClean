@@ -37,7 +37,6 @@ namespace Chimera.Overlay.Features {
 
         private Rectangle mClip;
         private bool mActive;
-        private string mName;
         private string mFrame;
 
         #region IFeature Members
@@ -55,7 +54,9 @@ namespace Chimera.Overlay.Features {
                 if (value == mActive)
                     return;
 
-                if (value) {
+                mStart.Active = value;
+                mFinish.Active = value;
+                if (value && Clip.Width > 0 && Clip.Height > 0) {
                     Bitmap from = new Bitmap(Clip.Width, Clip.Height);
                     Bitmap to = new Bitmap(Clip.Width, Clip.Height);
                     using (Graphics g = Graphics.FromImage(from))
@@ -90,7 +91,6 @@ namespace Chimera.Overlay.Features {
         #endregion
 
         public FadeFeature(OverlayPlugin plugin, XmlNode node) {
-            mName = GetName(node, "Fade Feature");
             mFrame = GetManager(plugin, node, "Fade Feature").Name;
             mStart = plugin.GetFeature(node.SelectSingleNode("child::Start"), "Fade Feature", null);
             mFinish = plugin.GetFeature(node.SelectSingleNode("child::Finish"), "Fade Feature", null);

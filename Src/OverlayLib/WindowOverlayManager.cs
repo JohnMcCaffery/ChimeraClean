@@ -89,6 +89,11 @@ namespace Chimera.Overlay {
         private OverlayPlugin mManager;
 
         /// <summary>
+        /// The form from which the main application is running.
+        /// </summary>
+        private Form mMasterForm;
+
+        /// <summary>
         /// Triggered when the overlay window is launched.
         /// </summary>
         public event EventHandler OverlayLaunched;
@@ -295,6 +300,16 @@ namespace Chimera.Overlay {
             return mPressedIDs.Contains(id);
         }
 
+        private void Show() {
+            if (FormSet) {
+                if (mMasterForm.InvokeRequired)
+                    mMasterForm.Invoke(new Action(() => mOverlayWindow.Show(mMasterForm)));
+                else
+                    mOverlayWindow.Show(mMasterForm);
+            } else
+                mOverlayWindow.Show();
+        }
+
         /// <summary>
         /// CreateWindowState and show the overlay window if it is not already created.
         /// </summary>
@@ -302,13 +317,14 @@ namespace Chimera.Overlay {
             if (mOverlayWindow == null) {
                 mOverlayActive = true;
                 mOverlayWindow = new OverlayWindow(this);
-                mOverlayWindow.Show();
+                Show();
                 mOverlayWindow.FormClosed += new FormClosedEventHandler(mOverlayWindow_FormClosed);
                 mOverlayWindow.AlwaysOnTop = mConfig.AlwaysOnTop;
                 if (mOverlayFullscreen)
                     mOverlayWindow.Fullscreen = true;
                 if (OverlayLaunched != null)
                     OverlayLaunched(this, null);
+                //mOverlayWindow.ForceRedraw();
             }
         }
 
@@ -317,7 +333,7 @@ namespace Chimera.Overlay {
         /// </summary>
         public void Close() {
             if (mOverlayWindow != null) {
-                mOverlayWindow.Close();
+                mOverlayWindow.Invoke(() => mOverlayWindow.Close());
                 mOverlayWindow = null;
             }
         }
@@ -377,5 +393,11 @@ namespace Chimera.Overlay {
         }
 
         public string Name { get { return mWindow.Name; } }
+
+        internal bool FormSet { get { return mMasterForm != null; } }
+
+        internal void SetForm(Form form) {
+            mMasterForm = form;
+        }
     }
 }

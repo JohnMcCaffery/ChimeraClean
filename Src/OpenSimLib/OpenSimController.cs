@@ -305,5 +305,13 @@ namespace Chimera.OpenSim {
         }
 
         #endregion
+
+        #region ISystemPlugin Members
+
+
+        public void SetForm(Form form) {
+        }
+
+        #endregion
     }
 }

@@ -132,20 +132,20 @@ namespace Chimera.GUI.Forms {
                 mCoordinator_WindowAdded(window, null);
             }
 
-            foreach (var input in mCoordinator.Plugins) {
+            foreach (var plugin in mCoordinator.Plugins) {
                 TabPage inputTab = new TabPage();
                 CheckBox enableCheck = new CheckBox();
                 // 
                 // inputTab
                 // 
                 inputTab.Controls.Add(enableCheck);
-                inputTab.Controls.Add(input.ControlPanel);
+                inputTab.Controls.Add(plugin.ControlPanel);
                 inputTab.Location = new System.Drawing.Point(4, 22);
-                inputTab.Name = input.Name + "Tab";
+                inputTab.Name = plugin.Name + "Tab";
                 inputTab.Padding = new System.Windows.Forms.Padding(3);
                 inputTab.Size = new System.Drawing.Size(419, 239);
                 inputTab.TabIndex = 0;
-                inputTab.Text = input.Name;
+                inputTab.Text = plugin.Name;
                 inputTab.UseVisualStyleBackColor = true;
                 // 
                 // enableCheck
@@ -154,25 +154,27 @@ namespace Chimera.GUI.Forms {
                 enableCheck.AutoSize = true;
                 enableCheck.BackColor = System.Drawing.Color.Transparent;
                 enableCheck.Location = new System.Drawing.Point(355, 6);
-                enableCheck.Name = "enable" + input.Name + "Check";
+                enableCheck.Name = "enable" + plugin.Name + "Check";
                 enableCheck.Size = new System.Drawing.Size(59, 17);
                 enableCheck.TabIndex = 1;
-                enableCheck.Text = input.Name;
-                enableCheck.Checked = input.Enabled;
+                enableCheck.Text = plugin.Name;
+                enableCheck.Checked = plugin.Enabled;
                 enableCheck.CheckStateChanged += new EventHandler((source, args) => 
                     mCoordinator.Plugins.First(i => enableCheck.Name.Equals("enable" + i.Name + "Check")).Enabled = enableCheck.Checked);
                 //enableCheck.UseVisualStyleBackColor = false;
                 // 
                 // inputPanel
                 // 
-                input.ControlPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-                input.ControlPanel.Location = new System.Drawing.Point(3, 3);
-                input.ControlPanel.Size = new System.Drawing.Size(413, 233);
-                input.ControlPanel.TabIndex = 0;
+                plugin.ControlPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+                plugin.ControlPanel.Location = new System.Drawing.Point(3, 3);
+                plugin.ControlPanel.Size = new System.Drawing.Size(413, 233);
+                plugin.ControlPanel.TabIndex = 0;
 
                 inputsTab.Controls.Add(inputTab);
 
-                input.EnabledChanged += (plugin, enabled) => Invoke(() => enableCheck.Checked = enabled);
+                plugin.EnabledChanged += (p, enabled) => Invoke(() => enableCheck.Checked = enabled);
+
+                plugin.SetForm(this);
             }
             
             inputsTab.Controls.Add(statisticsTab);

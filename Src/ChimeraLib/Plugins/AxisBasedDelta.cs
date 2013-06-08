@@ -200,5 +200,11 @@ namespace Chimera.Plugins {
                 return (AxisBinding) Enum.Parse(typeof(AxisBinding), Get("Bindings", name, "None", ""));
             }
         }
+
+        #region ISystemPlugin Members
+
+        void ISystemPlugin.SetForm(Form form) { }
+
+        #endregion
     }
 }
