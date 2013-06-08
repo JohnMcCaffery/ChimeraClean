@@ -6,7 +6,28 @@ using Chimera.Interfaces.Overlay;
 using System.Drawing;
 using System.Xml;
 
-namespace Chimera.Overlay.Features {
+namespace Chimera.Overlay.Features {    public class ScreenshotFeatureFactory : IFeatureFactory {
+        #region IFactory<IFeature> Members
+
+        public IFeature Create(OverlayPlugin manager, XmlNode node) {
+            return new ScreenshotFeature(manager, node);
+        }
+
+        public IFeature Create(OverlayPlugin manager, XmlNode node, Rectangle clip) {
+            return Create(manager, node);
+        }
+
+        #endregion
+
+        #region IFactory Members
+
+        public string Name {
+            get { return "Screenshot"; }
+        }
+
+        #endregion
+    }
+
     public class ScreenshotFeature : XmlLoader, IFeature {
         private WindowOverlayManager mManager;
         private Bitmap mScreenshot;

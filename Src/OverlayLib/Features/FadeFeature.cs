@@ -8,6 +8,28 @@ using System.Xml;
 using Chimera.Overlay.Transitions;
 
 namespace Chimera.Overlay.Features {
+    public class FadeFeatureFactory : IFeatureFactory {
+        #region IFactory<IFeature> Members
+
+        public IFeature Create(OverlayPlugin manager, XmlNode node) {
+            return new FadeFeature(manager, node);
+        }
+
+        public IFeature Create(OverlayPlugin manager, XmlNode node, Rectangle clip) {
+            return Create(manager, node);
+        }
+
+        #endregion
+
+        #region IFactory Members
+
+        public string Name {
+            get { return "Fade"; }
+        }
+
+        #endregion
+    }
+
     public class FadeFeature : XmlLoader, IFeature {
         private IFeature mStart;
         private IFeature mFinish;
