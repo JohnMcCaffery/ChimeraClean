@@ -32,6 +32,8 @@ namespace Chimera.Flythrough.GUI {
     public partial class RotateToPanel : UserControl {
         private Action<FlythroughEvent<Rotation>, int> mTimeChangeListener;
         private RotateToEvent mEvent;
+        private bool mExternalUpdate;
+        private bool mGuiUpdate;
 
         public RotateToPanel() {
             InitializeComponent();
@@ -41,14 +43,15 @@ namespace Chimera.Flythrough.GUI {
             : this() {
             mEvent = evt;
 
+            mEvent.LengthChange += new EventHandler<LengthChangeEventArgs<Rotation>>(mEvent_LengthChange);
             rotationPanel.Value = mEvent.Target;
             lengthValue.Value = mEvent.Length;
 
-            lengthValue.ValueChanged += (source, args) => mEvent.Length = (int)lengthValue.Value;
             rotationPanel.OnChange += (sender, args) => {
                 mEvent.Target = rotationPanel.Value;
                 mEvent.Container.Coordinator.Update(mEvent.Container.Coordinator.Position, Vector3.Zero, rotationPanel.Value, Rotation.Zero);
             };
+            mEvent.LengthChange += new EventHandler<LengthChangeEventArgs<Rotation>>(mEvent_LengthChange);
             mTimeChangeListener = (source, args) => {
                 Invoke(new Action(() => {
                     progressBar.Maximum = evt.Length;
@@ -68,6 +71,22 @@ namespace Chimera.Flythrough.GUI {
                 progressBar.Value = mEvent.Time;
             } else
                 mEvent.TimeChange -= mTimeChangeListener;
+        }
+
+        void mEvent_LengthChange(object source, LengthChangeEventArgs<Rotation> args) {
+            if (!mGuiUpdate) {
+                mExternalUpdate = true;
+                lengthValue.Value = mEvent.Length;
+                mExternalUpdate = false;
+            }
+        }
+
+        private void lengthValue_ValueChanged(object sender, EventArgs e) {
+            if (!mExternalUpdate) {
+                mGuiUpdate = true;
+                mEvent.Length = (int)lengthValue.Value;
+                mGuiUpdate = false;
+            }
         }
     }
 }

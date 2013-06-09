@@ -27,6 +27,18 @@ using System.Threading;
 using System.Windows.Forms;
 
 namespace Chimera.Flythrough {
+    public class LengthChangeEventArgs<T> : EventArgs {
+        public FlythroughEvent<T> Event;
+        public int OldLength;
+        public int NewLength;
+
+        public LengthChangeEventArgs(FlythroughEvent<T> flythroughEvent, int oldLength, int newLength) {
+            Event = flythroughEvent;
+            OldLength = oldLength;
+            NewLength = newLength;
+        }
+    }
+
     public abstract class FlythroughEvent<T> : IComparable<FlythroughEvent<T>> {
         /// <summary>
         /// The flythrough this event is part of.
@@ -64,7 +76,7 @@ namespace Chimera.Flythrough {
         /// <summary>
         /// Selected every value the length of the event is changed.
         /// </summary>
-        public event EventHandler LengthChange;
+        public event EventHandler<LengthChangeEventArgs<T>> LengthChange;
         /// <summary>
         /// Selected whenever the position of the camera when the event finishes changes.
         /// </summary>
@@ -123,10 +135,11 @@ namespace Chimera.Flythrough {
             set {
                 //if (value < 1)
                     //throw new ArgumentException("Event length cannot be less than 1");
+                int oldLength = mLength;
                 mLength = value;
                 LengthChanged(value);
                 if (LengthChange != null)
-                    LengthChange(this, null);
+                    LengthChange(this, new LengthChangeEventArgs<T>(this, oldLength, value));
             }
         }
 

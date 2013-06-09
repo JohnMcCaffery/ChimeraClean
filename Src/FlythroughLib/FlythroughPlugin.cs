@@ -58,6 +58,10 @@ namespace Chimera.Flythrough {
         private bool mPlaying = false;
         private bool mLoop = false;
         private bool mAutoStep = true;
+        private bool mTicking;
+        private bool mSynchLengths;
+        public event Action<int> StepFinished;
+        public event Action<int> StepStarted;
         /// <summary>
         /// The time, as it was last set. Used for debugging only.
         /// </summary>
@@ -104,9 +108,10 @@ namespace Chimera.Flythrough {
             get { return mEvents.Count; }
         }
 
-        private bool mTicking;
-        public event Action<int> StepFinished;
-        public event Action<int> StepStarted;
+        public bool SynchLengths {
+            get { return mSynchLengths; }
+            set { mSynchLengths = value; }
+        }
 
         /// <summary>
         /// Where in the current sequence playback has reached.
@@ -204,7 +209,7 @@ namespace Chimera.Flythrough {
             mTickListener = new Action(mCoordinator_Tick);
 
             FlythroughConfig cfg = new FlythroughConfig();
-            mEnabled = cfg.Enabled;
+            mSynchLengths = cfg.SynchLengths;
         }
 
         public void Play() {
@@ -488,13 +493,7 @@ namespace Chimera.Flythrough {
 
         public void Draw(System.Drawing.Graphics graphics, Func<Vector3, Point> to2D, Action redraw, Perspective perspective) {
             //Do nothing
-        }
-
-        #endregion
-
-        #region ISystemPlugin Members
-
-
+        }
         public void SetForm(Form form) {
         }
 

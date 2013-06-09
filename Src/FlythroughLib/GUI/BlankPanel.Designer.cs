@@ -50,8 +50,8 @@ namespace Chimera.Flythrough.GUI {
             // 
             // lengthValue
             // 
-            this.lengthValue.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.lengthValue.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.lengthValue.Increment = new decimal(new int[] {
             50,
             0,
@@ -71,6 +71,7 @@ namespace Chimera.Flythrough.GUI {
             0,
             0,
             0});
+            this.lengthValue.ValueChanged += new System.EventHandler(this.lengthValue_ValueChanged);
             // 
             // Length
             // 
@@ -83,8 +84,8 @@ namespace Chimera.Flythrough.GUI {
             // 
             // progressBar
             // 
-            this.progressBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.progressBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.progressBar.Location = new System.Drawing.Point(0, 25);
             this.progressBar.Name = "progressBar";
             this.progressBar.Size = new System.Drawing.Size(130, 23);

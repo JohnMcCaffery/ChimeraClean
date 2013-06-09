@@ -6,7 +6,8 @@ using Chimera.Interfaces.Overlay;
 using System.Drawing;
 using System.Xml;
 
-namespace Chimera.Overlay.Features {    public class ScreenshotFeatureFactory : IFeatureFactory {
+namespace Chimera.Overlay.Features {
+    public class ScreenshotFeatureFactory : IFeatureFactory {
         #region IFactory<IFeature> Members
 
         public IFeature Create(OverlayPlugin manager, XmlNode node) {
