@@ -91,27 +91,15 @@ namespace Chimera.GUI {
         }
 
         private void rollSlider_Scroll(object sender, EventArgs e) {
-            if (!mExternalChange) {
-                mGuiChange = true;
-                rollValue.Value = rollSlider.Value;
-                mGuiChange = false;
-            }
+            rollValue.Value = rollSlider.Value;
         }
 
         private void pitchSlider_Scroll(object sender, EventArgs e) {
-            if (!mExternalChange) {
-                mGuiChange = true;
-                pitchValue.Value = pitchSlider.Value;
-                mGuiChange = false;
-            }
+            pitchValue.Value = pitchSlider.Value;
         }
 
         private void yawSlider_Scroll(object sender, EventArgs e) {
-            if (!mExternalChange) {
-                mGuiChange = true;
-                yawValue.Value = yawSlider.Value;
-                mGuiChange = false;
-            }
+            yawValue.Value = yawSlider.Value;
         }
 
         private void rollValue_ValueChanged(object sender, EventArgs e) {
