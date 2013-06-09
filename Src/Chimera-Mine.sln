@@ -46,6 +46,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Overlays", "Overlays", "{AA
 	ProjectSection(SolutionItems) = preProject
 		..\Overlays\ExampleOverlay.xml = ..\Overlays\ExampleOverlay.xml
 		..\Overlays\ExampleSlideshow.xml = ..\Overlays\ExampleSlideshow.xml
+		..\Bin\Overlays\TimespanOverlay.xml = ..\Bin\Overlays\TimespanOverlay.xml
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsMediaPlayerLib", "WindowsMediaPlayerLib\WindowsMediaPlayerLib.csproj", "{ED985A0A-C964-494D-88BB-E78ACE4F13D1}"
@@ -72,6 +73,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BinConfig", "BinConfig", "{
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenSimLib", "OpenSimLib\OpenSimLib.csproj", "{D1978D10-E5B0-40F9-BDB7-11BF03C7A6CB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Flythroughs", "Flythroughs", "{C10ECBD1-23EB-42D0-86D1-9202F2AC0471}"
+	ProjectSection(SolutionItems) = preProject
+		..\Bin\Flythroughs\Caen-Guided.xml = ..\Bin\Flythroughs\Caen-Guided.xml
+		..\Bin\Flythroughs\Caen-GuidedHack.xml = ..\Bin\Flythroughs\Caen-GuidedHack.xml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

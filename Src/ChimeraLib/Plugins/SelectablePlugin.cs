@@ -141,5 +141,13 @@ namespace Chimera.Plugins {
         }
 
         #endregion
+
+        #region ISystemPlugin Members
+
+
+        public void SetForm(System.Windows.Forms.Form form) {
+        }
+
+        #endregion
     }
 }

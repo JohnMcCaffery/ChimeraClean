@@ -62,7 +62,6 @@ namespace Chimera.Overlay {
             ProcessWrangler.Dump(Statistics, reason + ".html");
         }
 
-
         #region ISystemInput members
 
         public event Action<IPlugin, bool> EnabledChanged;
@@ -117,6 +116,12 @@ namespace Chimera.Overlay {
 
         public ConfigBase Config {
             get { return mConfig; }
+        }
+
+        public void SetForm(Form form) {
+            mMasterForm = form;
+            foreach (var manager in mWindowManagers.Values)
+                manager.SetForm(form);
         }
         
         /// <summary>

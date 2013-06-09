@@ -261,5 +261,13 @@ namespace Chimera.Kinect {
         }
 
         #endregion
+
+        #region ISystemPlugin Members
+
+
+        public void SetForm(Form form) {
+        }
+
+        #endregion
     }
 }

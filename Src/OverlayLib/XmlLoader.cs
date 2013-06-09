@@ -147,19 +147,19 @@ namespace Chimera.Overlay {
             WindowOverlayManager mManager;
             if (node == null) {
                 mManager = manager[0];
-                Console.WriteLine("No node specified when looking up window for " + request + ". Using " + mManager.Frame.Name + " as default.");
+                Console.WriteLine("No node specified when looking up frame for " + request + ". Using " + mManager.Frame.Name + " as default.");
                 return mManager;
             }
-            XmlAttribute windowAttr = node.Attributes["Window"];
-            if (windowAttr == null) {
+            XmlAttribute frameAttr = node.Attributes["Frame"];
+            if (frameAttr == null) {
                 mManager = manager[0];
                 Console.WriteLine("No window specified whilst resolving " + node.Name + " from " + node.Name + ". Using " + mManager.Frame.Name + " as default.");
             } else {
-                if (!manager.IsKnownWindow(windowAttr.Value)) {
+                if (!manager.IsKnownWindow(frameAttr.Value)) {
                     mManager = manager[0];
-                    Console.WriteLine(windowAttr.Value + " is not a known window. Using " + mManager.Frame.Name + " as default.");
+                    Console.WriteLine(frameAttr.Value + " is not a known frame. Using " + mManager.Frame.Name + " as default.");
                 } else
-                    mManager = manager[windowAttr.Value];
+                    mManager = manager[frameAttr.Value];
             }
             return mManager;
         }

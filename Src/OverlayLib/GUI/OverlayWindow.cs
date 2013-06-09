@@ -28,6 +28,7 @@ using System.Windows.Forms;
 using Chimera.Overlay;
 using Chimera.Interfaces.Overlay;
 using Chimera.Util;
+using System.Threading;
 
 namespace Chimera.GUI.Forms {
     public partial class OverlayWindow : Form {
@@ -73,7 +74,26 @@ namespace Chimera.GUI.Forms {
             BackColor = manager.TransparencyKey;
             Opacity = manager.Opacity;
             refreshTimer.Interval = manager.FrameLength;
-            refreshTimer.Enabled = true;
+            //refreshTimer.Enabled = true;
+
+            Thread tickthread = new Thread(TickThread);
+            tickthread.Name = mManager.Name + " graphics thread.";
+            tickthread.Start();
+        }
+
+        private bool mCont;
+
+        private void TickThread() {
+            mCont = true;
+            while (mCont) {
+                DateTime start = DateTime.Now;
+                Tick();
+                int length = refreshTimer.Interval - (int) DateTime.Now.Subtract(start).TotalMilliseconds;
+                if (length > 0)
+                    Thread.Sleep(length);
+            }
+
+            Console.WriteLine(mManager.Name + " graphics thread exiting.");
         }
 
         public void RedrawStatic() {
@@ -91,10 +111,12 @@ namespace Chimera.GUI.Forms {
         /// </summary>
         public bool Fullscreen {
             get { return FormBorderStyle == FormBorderStyle.None; }
-            set { 
-                FormBorderStyle = value ? FormBorderStyle.None : FormBorderStyle.Sizable;
-                Location = mManager.Frame.Monitor.Bounds.Location;
-                Size = mManager.Frame.Monitor.Bounds.Size;
+            set {
+                Invoke(() => {
+                    FormBorderStyle = value ? FormBorderStyle.None : FormBorderStyle.Sizable;
+                    Location = mManager.Frame.Monitor.Bounds.Location;
+                    Size = mManager.Frame.Monitor.Bounds.Size;
+                });
             }
         }
 
@@ -127,6 +149,10 @@ namespace Chimera.GUI.Forms {
         }
 
         private void refreshTimer_Tick(object sender, EventArgs e) {
+            Tick();
+        }
+
+        private void Tick() {
             mStats.Begin();
             if (mManager.CurrentDisplay != null && mManager.CurrentDisplay.NeedsRedrawn)
                 drawPanel.Invalidate();
@@ -139,7 +165,7 @@ namespace Chimera.GUI.Forms {
             Invoke(() => Cursor = value);
         }
 
-        private void Invoke(Action a) {
+        public void Invoke(Action a) {
             if (!InvokeRequired)
                 a();
             else if (Created && !IsDisposed && !Disposing)
@@ -185,6 +211,10 @@ namespace Chimera.GUI.Forms {
 
         private void OverlayWindow_MouseUp(object sender, MouseEventArgs e) {
             mManager.Release(0);
+        }
+
+        private void OverlayWindow_FormClosing(object sender, FormClosingEventArgs e) {
+            mCont = false;
         }
     }
 }

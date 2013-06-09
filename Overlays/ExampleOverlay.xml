@@ -45,8 +45,8 @@
 
       <State Factory="Flythrough" Name="FullFlythrough" File="../Flythroughs/Cathedral5.xml" Stepping="true" DisplaySubtitles="true" SubtitleTimeout="20">
 
-        <StepTextSetup Window="MainWindow" Font="Verdana" Size="50" Color="Red" Style="Bold" Colour="Red" X="200" Y="200" />
-        <SubtitleTextSetup Window="MainWindow" Font="Verdana" Size="30" Color="Red" Style="Bold" Colour="Red" X="200" Y="800" Alignment="TopMiddle" />
+        <StepText Window="MainWindow" Font="Verdana" Size="50" Color="Red" Style="Bold" Colour="Red" X="200" Y="200" />
+        <SubtitleText Window="MainWindow" Font="Verdana" Size="30" Color="Red" Style="Bold" Colour="Red" X="200" Y="800" Alignment="TopMiddle" />
 
         <Triggers>
           <TextTrigger X="1500" Y="900" Style="Bold" Size="35">Next</TextTrigger>
@@ -54,14 +54,14 @@
 
         <Steps>
           <Step Step="0" Voiceover="../Voiceovers/Voiceover1.wma" >
-            <Image  X="700" Y="50">../Images/Example/SlideshowImg1.png</Image>
+            <Features> <Image  X="700" Y="50">../Images/Example/SlideshowImg1.png</Image> </Features>
             <Subtitles>
               <Subtitle>First Subtitle</Subtitle>
               <Subtitle Time="5">Second Subtitle</Subtitle>
             </Subtitles>
           </Step>
           <Step Step="2">
-            <Image  X="600" Y="100">../Images/Example/SlideshowImg3.png</Image>
+            <Features> <Image  X="600" Y="100">../Images/Example/SlideshowImg3.png</Image> </Features>
           </Step>
           <Step Step="3" Voiceover="../Voiceovers/Voiceover2.wma" >
           </Step>

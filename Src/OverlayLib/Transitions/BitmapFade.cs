@@ -128,7 +128,7 @@ namespace Chimera.Overlay.Transitions {
             get { return !mCompleted; }
         }
 
-        public string Window {
+        public string Frame {
             get { throw new NotImplementedException(); }
         }
 

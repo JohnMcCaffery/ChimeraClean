@@ -631,6 +631,14 @@ namespace Chimera.OpenSim {
             if (mAutoRestart && unexpected) {
                 Restart("Crash");
             }
-        }   
+        }
+
+        #region ISystemPlugin Members
+
+
+        public void SetForm(Form form) {
+        }
+
+        #endregion
     }
 }

@@ -60,7 +60,7 @@ namespace Chimera.Overlay {
             }
         }
 
-        public virtual string Window {
+        public virtual string Frame {
             get { return mWindowName; }
         }
 

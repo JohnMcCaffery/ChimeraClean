@@ -44,12 +44,12 @@ namespace Chimera.Overlay.Triggers {
 
         public ITrigger Create(OverlayPlugin manager, XmlNode node) {
             OverlayImage img = new OverlayImage(manager, node, "image trigger");
-            return new ImageClickTrigger(manager[img.Window], img);
+            return new ImageClickTrigger(manager[img.Frame], img);
         }
 
         public ITrigger Create(OverlayPlugin manager, XmlNode node, Rectangle clip) {
             OverlayImage img = new OverlayImage(manager, node, clip, "image trigger");
-            return new ImageClickTrigger(manager[img.Window], img);
+            return new ImageClickTrigger(manager[img.Frame], img);
         }
     }
 

@@ -229,5 +229,13 @@ namespace Chimera.Plugins {
         }
 
         public Vector3 Size { get { return mBig - mSmall; } }
+
+        #region ISystemPlugin Members
+
+
+        public void SetForm(Form form) {
+        }
+
+        #endregion
     }
 }

@@ -108,7 +108,7 @@ namespace Chimera.Overlay.Drawables {
             get { return false; }
         }
 
-        public virtual string Window {
+        public virtual string Frame {
             get { return mWindow; }
         }
 

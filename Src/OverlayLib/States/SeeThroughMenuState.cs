@@ -99,6 +99,7 @@ namespace Chimera.Overlay.States {
                     base.DrawStatic(graphics);
                 }
             }
+
         }
     }
 }

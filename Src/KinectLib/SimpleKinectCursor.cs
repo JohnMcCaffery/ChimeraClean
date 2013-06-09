@@ -264,5 +264,13 @@ namespace Chimera.Kinect {
                 frame.Coordinator.FrameAdded -= mWindowAddedListener;
             }
         }
+
+        #region ISystemPlugin Members
+
+
+        public void SetForm(Form form) {
+        }
+
+        #endregion
     }
 }

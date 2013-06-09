@@ -115,7 +115,7 @@ namespace Chimera.Overlay.Triggers {
             get { return mHovering && !mClicked; }
         }
 
-        public string Window {
+        public string Frame {
             get { return mManager.Name; }
         }
 

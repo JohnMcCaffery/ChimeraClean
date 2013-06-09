@@ -21,8 +21,8 @@ namespace Chimera.Flythrough.Overlay {
         private readonly string mVoiceoverFile;
 
         private readonly Dictionary<int, string> mSubtitles = new Dictionary<int, string>();
+        private readonly List<IFeature> mFeatures = new List<IFeature>();
 
-        private OverlayImage mImage;
         private Queue<int> mSubtitleTimes;
 
         private DateTime mStarted;
@@ -66,18 +66,19 @@ namespace Chimera.Flythrough.Overlay {
                 }
             }
 
-            XmlNode imageNode = node.SelectSingleNode("child::Image");
-            if (imageNode != null) {
-                try {
-                    mImage = state.Manager.MakeImage(imageNode, "flythrough step " + (mStep + 1));
-                    state.AddFeature(mImage);
-                    mImage.Active = false;
-                } catch (Exception e) { }
+            foreach (var featureNode in GetChildrenOfChild(node, "Features")) {
+                IFeature feature = mManager.GetFeature(featureNode, "flythrough step " + (mStep + 1), null);
+                if (feature != null) {
+                    mFeatures.Add(feature);
+                    state.AddFeature(feature);
+                    feature.Active = false;
+                }
             }
         }
 
         public void Start() {
             mSubtitleTimes = new Queue<int>(mSubtitles.Keys.OrderBy(i=>i));
+            mLastSubtitle = DateTime.Now;
 
             if (mSubtitles.Count > 0) {
                 mStarted = DateTime.Now;
@@ -87,38 +88,39 @@ namespace Chimera.Flythrough.Overlay {
             if (mVoiceoverFile != null)
                 mPlayer.PlayAudio(mVoiceoverFile);
 
-            if (mImage != null) {
-                mImage.Active = true;
-                mManager[mImage.Window].ForceRedrawStatic();
+            foreach(var feature in mFeatures) {
+                feature.Active = true;
+                mManager[feature.Frame].ForceRedrawStatic();
             }
 
             //TODO - play voiceover file
         }
 
         public void Finish() {
-            if (mImage != null) {
-                mImage.Active = false;
-                mManager[mImage.Window].ForceRedrawStatic();
+            foreach(var feature in mFeatures) {
+                feature.Active = false;
+                mManager[feature.Frame].ForceRedrawStatic();
             }
 
             if (mVoiceoverFile != null)
                 mPlayer.StopPlayback();
 
             if (mSubtitlesText != null)
-                mSubtitlesText.Active = false;
-            mManager.Coordinator.Tick += mTickListener;
+                mSubtitlesText.TextString = "";
+            mManager.Coordinator.Tick -= mTickListener;
         }
 
         private void mCoordinator_Tick() {
             if (mSubtitleTimes.Count > 0 && DateTime.Now.Subtract(mStarted).TotalSeconds > mSubtitleTimes.Peek()) {
                 mSubtitlesText.TextString = mSubtitles[mSubtitleTimes.Dequeue()];
                 mLastSubtitle = DateTime.Now;
-            } else if (DateTime.Now.Subtract(mLastSubtitle).TotalSeconds > mSubtitleTimeoutS)
+            } else if (DateTime.Now.Subtract(mLastSubtitle).TotalSeconds > mSubtitleTimeoutS && mSubtitlesText.TextString.Length > 0)
                 mSubtitlesText.TextString = "";
         }
 
         internal void Prep() {
-            mImage.Active = mStep == 0;
+            foreach (var feature in mFeatures)
+                feature.Active = mStep == 0;
         }
     }
 }
