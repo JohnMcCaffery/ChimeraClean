@@ -32,11 +32,11 @@ namespace Chimera.Overlay.Drawables {
         #region IFactory<IFeature> Members
 
         public IFeature Create(OverlayPlugin manager, XmlNode node) {
-            return new OverlayImage(manager, node, "factory creation");
+            return new OverlayImage(manager, node, "image factory");
         }
 
         public IFeature Create(OverlayPlugin manager, XmlNode node, Rectangle clip) {
-            return new OverlayImage(manager, node, clip, "factory creation");
+            return new OverlayImage(manager, node, clip, "image factory");
         }
 
         #endregion
@@ -204,7 +204,7 @@ namespace Chimera.Overlay.Drawables {
         public OverlayImage(OverlayPlugin manager, XmlNode node, string reason) {
             mImage = GetImage(node, reason);
             if (mImage == null)
-                throw new ArgumentException("Problem loading image.");
+                throw new ArgumentException("Problem loading image for " + reason + (node == null ? "." : " from " + node.Name + "."));
 
             mW = mImage.Width;
             mH = mImage.Height;

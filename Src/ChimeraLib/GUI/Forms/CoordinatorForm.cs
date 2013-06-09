@@ -343,8 +343,8 @@ namespace Chimera.GUI.Forms {
         }
 
         private void mCoordinator_CameraUpdated(Coordinator coordinator, CameraUpdateEventArgs args) {
-            if (DateTime.Now.Subtract(mLastUpdate).TotalMilliseconds < 100)
-                return;
+            //if (DateTime.Now.Subtract(mLastUpdate).TotalMilliseconds < 20)
+              //  return;
 
             mLastUpdate = DateTime.Now;
             if (!mGuiUpdate && Created && !IsDisposed && !Disposing && coordinator.ControlMode == ControlMode.Absolute) {

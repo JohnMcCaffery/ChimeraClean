@@ -248,39 +248,46 @@ namespace Chimera {
         /// </summary>
         /// <param name="plugins">The plugins which control this coordinator.</param>
         public Coordinator(IOutputFactory outputFactory, params ISystemPlugin[] plugins) {
-            mConfig = new CoordinatorConfig();
+            bool success = false;
+            try {
+                mConfig = new CoordinatorConfig();
 
-            mPlugins = new List<ISystemPlugin>(plugins);
-            mOrientation = new Rotation(mRotationLock, mConfig.Pitch, mConfig.Yaw);
-            mOrientationDelta = new Rotation(mRotationLock);
-            mPosition = mConfig.Position;
-            mEyePosition = mConfig.EyePosition;
-            mCrashLogFile = mConfig.CrashLogFile;
-            mTickLength = mConfig.TickLength;
-            mDefaultHeight = mConfig.HeightmapDefault;
-            mHeightmap = new float[mConfig.XRegions * 256, mConfig.YRegions * 256];
-            
-            for (int i = 0; i < mHeightmap.GetLength(0); i++) {
-                for (int j = 0; j < mHeightmap.GetLength(1); j++) {
-                    mHeightmap[i, j] = mDefaultHeight;
+                mPlugins = new List<ISystemPlugin>(plugins);
+                mOrientation = new Rotation(mRotationLock, mConfig.Pitch, mConfig.Yaw);
+                mOrientationDelta = new Rotation(mRotationLock);
+                mPosition = mConfig.Position;
+                mEyePosition = mConfig.EyePosition;
+                mCrashLogFile = mConfig.CrashLogFile;
+                mTickLength = mConfig.TickLength;
+                mDefaultHeight = mConfig.HeightmapDefault;
+                mHeightmap = new float[mConfig.XRegions * 256, mConfig.YRegions * 256];
+
+                for (int i = 0; i < mHeightmap.GetLength(0); i++) {
+                    for (int j = 0; j < mHeightmap.GetLength(1); j++) {
+                        mHeightmap[i, j] = mDefaultHeight;
+                    }
                 }
+
+                foreach (string window in mConfig.Windows)
+                    if (outputFactory != null)
+                        AddFrame(new Frame(window, outputFactory.Create()));
+                    else
+                        AddFrame(new Frame(window));
+
+                foreach (var plugin in mPlugins) {
+                    plugin.Init(this);
+                    plugin.Enabled = mConfig.PluginEnabled(plugin);
+                }
+
+                Thread tickThread = new Thread(TickMethod);
+
+                tickThread.Name = "Tick Thread";
+                tickThread.Start();
+                success = true;
+            } finally {
+                if (!success)
+                    Close();
             }
-
-            foreach (string window in mConfig.Windows)
-                if (outputFactory != null)
-                    AddFrame(new Frame(window, outputFactory.Create()));
-                else
-                    AddFrame(new Frame(window));
-
-            foreach (var plugin in mPlugins) {
-                plugin.Init(this);
-                plugin.Enabled = mConfig.PluginEnabled(plugin);
-            }
-
-            Thread tickThread = new Thread(TickMethod);
-
-            tickThread.Name = "Tick Thread";
-            tickThread.Start();
         }
 
         private void TickMethod() {

@@ -29,12 +29,12 @@ namespace Chimera.Overlay.States {
             return new WindowState(manager);
         }
 
-        public override void TransitionToStart() { }
+        protected override void TransitionToStart() { }
 
         protected override void TransitionToFinish() { }
 
         protected override void TransitionFromStart() { }
 
-        public override void TransitionFromFinish() { }
+        protected override void TransitionFromFinish() { }
     }
 }

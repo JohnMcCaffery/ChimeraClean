@@ -31,13 +31,13 @@ namespace Chimera.Overlay {
 
         public static string GetName(XmlNode node, string reason) {
             if (node.Attributes["Name"] == null)
-                throw new ArgumentException("Unable to load " + reason + ". No name attribute specified.");
+                throw new ArgumentException("Unable to load " + reason + " from " + node.Name + ". No name attribute specified.");
             return node.Attributes["Name"].Value;
         }
 
         public static RectangleF GetBounds(XmlNode node, string request) {
             if (node == null) {
-                Console.WriteLine("No node specified when looking up bounds for " + request + ". Using defaults (full screen).");
+                Console.WriteLine("No node specified when looking up bounds for " + request + " from. Using defaults (full screen).");
                 return new RectangleF(0f, 0f, 1f, 1f);
             }
 
@@ -69,17 +69,22 @@ namespace Chimera.Overlay {
                 return null;
             }
             if (node.InnerText == null) {
-                Console.WriteLine("Unable to load image. No file specified.");
+                Console.WriteLine("Unable to load image for " + request + " from " + node.Name + ". No file specified.");
                 return null;
             }
 
-            string file = Path.GetFullPath(node.InnerText);
-            if (!File.Exists(file)) {
-                Console.WriteLine("Unable to load image. " + file + " does not exist.");
-                return null;
+            try {
+                string file = Path.GetFullPath(node.InnerText);
+                if (!File.Exists(file)) {
+                    Console.WriteLine("Unable to load image for " + request + " from " + node.Name + ". #" + file + "' does not exist.");
+                    return null;
+                }
+                return new Bitmap(file);    
+            } catch (ArgumentException e) {
+                Console.WriteLine("Unable to load image for " + request + " from " + node.Name + ". '" + node.InnerText + "' is not a valid file name.");
+                    return null;
             }
 
-            return new Bitmap(file);    
         }
 
         public static string GetString(XmlNode node, string defalt, params string[] attributes) {
@@ -148,7 +153,7 @@ namespace Chimera.Overlay {
             XmlAttribute windowAttr = node.Attributes["Window"];
             if (windowAttr == null) {
                 mManager = manager[0];
-                Console.WriteLine("No window specified whilst resolving " + node.Name + ". Using " + mManager.Frame.Name + " as default.");
+                Console.WriteLine("No window specified whilst resolving " + node.Name + " from " + node.Name + ". Using " + mManager.Frame.Name + " as default.");
             } else {
                 if (!manager.IsKnownWindow(windowAttr.Value)) {
                     mManager = manager[0];

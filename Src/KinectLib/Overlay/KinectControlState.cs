@@ -93,22 +93,21 @@ namespace Chimera.Kinect.Overlay {
             mInput.Enabled = true;
         }
 
-        protected override void TransitionFromStart() { 
-            mInput.Enabled = false;    
+        protected override void TransitionFromStart() {
+            mInput.Enabled = false;
         }
 
-        public override void TransitionToStart() {
+        protected override void TransitionToStart() {
             Manager.Coordinator.ControlMode = mAvatar ? ControlMode.Delta : ControlMode.Absolute;
             if (!mAvatar) {
                 Manager.Coordinator.EnableUpdates = true;
                 Manager.Coordinator.Update(mStartPosition, Vector3.Zero, mStartOrientation, Rotation.Zero);
-                Manager.Coordinator.EnableUpdates = false;
             }
             Manager.Coordinator.EnableUpdates = true; 
             foreach (var manager in Manager.OverlayManagers)
                 manager.ControlPointer = false;
         }
 
-        public override void TransitionFromFinish() { }
+        protected override void TransitionFromFinish() { }
     }
 }

@@ -163,10 +163,10 @@ namespace Chimera.Overlay {
             if (mActive) {
                 Console.WriteLine("Transitioning from " + mFrom.Name + " to " + mTo.Name + ".");
                 mFrom.Active = false;
-                mTo.TransitionToStart();
+                mTo.StartTransitionTo();
                 mCompletedWindows.Clear();
                 foreach (var windowTrans in mWindowTransitions.Values) {
-                    windowTrans.From.Active = false;
+                    //windowTrans.From.Active = false;
                     windowTrans.Manager.CurrentDisplay = windowTrans;
                     windowTrans.Begin();
                 }
@@ -191,7 +191,7 @@ namespace Chimera.Overlay {
 
         void transition_Finished(IWindowTransition transition) {
             mCompletedWindows.Add(transition);
-            mFrom.TransitionFromFinish();
+            mFrom.FinishTransitionFrom();
             transition.To.Active = true;
             transition.Manager.CurrentDisplay = transition.To;
             transition.Manager.ForceRedrawStatic();

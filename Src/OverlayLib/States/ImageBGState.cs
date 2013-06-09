@@ -112,8 +112,8 @@ namespace Chimera.Overlay.States {
 
         protected override void TransitionFromStart() { }
 
-        public override void TransitionToStart() { }
+        protected override void TransitionToStart() { }
 
-        public override void TransitionFromFinish() { }
+        protected override void TransitionFromFinish() { }
     }
 }

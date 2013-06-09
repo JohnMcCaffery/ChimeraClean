@@ -51,7 +51,7 @@ namespace Chimera.Overlay.States {
             return new WindowState(manager);
         }
 
-        public override void TransitionToStart() {
+        protected override void TransitionToStart() {
             Manager.Coordinator.EnableUpdates = true;
             Manager.Coordinator.ControlMode = mAvatar ? ControlMode.Delta : ControlMode.Absolute;
             Vector3 pos = mSetPosition ? mStartPosition : Manager.Coordinator.Position;
@@ -66,6 +66,6 @@ namespace Chimera.Overlay.States {
 
         protected override void TransitionFromStart() { }
 
-        public override void TransitionFromFinish() { }
+        protected override void TransitionFromFinish() { }
     }
 }

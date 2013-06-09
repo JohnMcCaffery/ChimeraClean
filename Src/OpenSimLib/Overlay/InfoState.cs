@@ -77,7 +77,7 @@ namespace Chimera.OpenSim.Overlay {
             mGlowChannel = GetInt(node, -40, "GlowChannel");
         }
 
-        public override void TransitionToStart() {
+        protected override void TransitionToStart() {
             TransitionToFinish();
         }
         protected override void TransitionToFinish() {
@@ -91,7 +91,7 @@ namespace Chimera.OpenSim.Overlay {
             Chat(mNoGlowString);
         }
 
-        public override void TransitionFromFinish() {
+        protected override void TransitionFromFinish() {
             Chat(mNoGlowString);
         }
 

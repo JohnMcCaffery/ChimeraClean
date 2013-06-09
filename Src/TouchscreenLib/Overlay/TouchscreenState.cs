@@ -25,7 +25,7 @@ namespace Touchscreen.Overlay {
             return new WindowState(manager);
         }
 
-        public override void TransitionToStart() {
+        protected override void TransitionToStart() {
             Manager.Coordinator.ControlMode = mAvatar ? ControlMode.Delta : ControlMode.Absolute;
             mPlugin.Enabled = true;
         }
@@ -39,6 +39,6 @@ namespace Touchscreen.Overlay {
             mPlugin.Enabled = false;
         }
 
-        public override void TransitionFromFinish() { }
+        protected override void TransitionFromFinish() { }
     }
 }

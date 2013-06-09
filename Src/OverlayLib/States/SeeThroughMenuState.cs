@@ -46,7 +46,7 @@ namespace Chimera.Overlay.States {
             return stateWindow;
         }
 
-        public override void TransitionToStart() {
+        protected override void TransitionToStart() {
             Manager.Coordinator.EnableUpdates = true;
             Manager.Coordinator.ControlMode = ControlMode.Absolute;
             Manager.Coordinator.Update(mPosition, Vector3.Zero, mOrientation, Rotation.Zero);
@@ -65,7 +65,7 @@ namespace Chimera.Overlay.States {
                 window.TransitionFromState();
         }
 
-        public override void TransitionFromFinish() {
+        protected override void TransitionFromFinish() {
             foreach (var window in mWindows)
                 window.ResetToTransparent();
         }
