@@ -14,7 +14,7 @@ using System.Collections;
 
 namespace Chimera.OpenSim {
     public abstract class ProxyControllerBase {
-        private readonly Window mWindow;
+        private readonly Frame mFrame;
         private Proxy mProxy;
         private PacketDelegate mAgentUpdateListener;
         private UUID mSecureSessionID = UUID.Zero;
@@ -66,12 +66,12 @@ namespace Chimera.OpenSim {
             get { return mLoginURI; }
         }
 
-        protected Window Window {
-            get { return mWindow; }
+        protected Frame Frame {
+            get { return mFrame; }
         }
 
-        internal ProxyControllerBase(Window window) {
-            mWindow = window;
+        internal ProxyControllerBase(Frame frame) {
+            mFrame = frame;
             mAgentUpdateListener = new PacketDelegate(mProxy_AgentUpdatePacketReceived);
         }
 
@@ -158,7 +158,7 @@ namespace Chimera.OpenSim {
             AgentUpdatePacket packet = p as AgentUpdatePacket;
             Vector3 pos = packet.AgentData.CameraCenter;
 
-            if (mWindow.Coordinator.ControlMode == ControlMode.Absolute) {
+            if (mFrame.Coordinator.ControlMode == ControlMode.Absolute) {
                 //new Thread(() => {
                 string key = MakeKey(pos);
                 lock (mUnackedUpdates) {
@@ -200,14 +200,14 @@ namespace Chimera.OpenSim {
         }
 
         public void SetCamera() {
-            if (mWindow.Coordinator.ControlMode == ControlMode.Absolute)
+            if (mFrame.Coordinator.ControlMode == ControlMode.Absolute)
                 MarkUntracked();
 
             //PrintTickInfo();
             ActualSetCamera();
         }
         public void SetCamera(Vector3 positionDelta, Rotation orientationDelta) {
-            if (mWindow.Coordinator.ControlMode == ControlMode.Absolute)
+            if (mFrame.Coordinator.ControlMode == ControlMode.Absolute)
                 MarkUntracked();
 
             //PrintTickInfo();
@@ -240,7 +240,7 @@ namespace Chimera.OpenSim {
         }
 
         private void MarkUntracked() {
-                string str = MakeKey(mWindow.Coordinator.Position);
+                string str = MakeKey(mFrame.Coordinator.Position);
                 lock (mUnackedUpdates)
                     if (mUnackedUpdates.ContainsKey(str))
                         mUnackedUpdates[str] = DateTime.Now;

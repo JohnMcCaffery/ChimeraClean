@@ -114,9 +114,9 @@ namespace Test {
             mCoordinator = new Coordinator(null);
             Vector3 start = new Vector3(100f, 100f, 60f);
             mCoordinator.Update(start, Vector3.Zero, GetRot(start), Rotation.Zero);
-            Window w = new Window("MainWindow");
-            mCoordinator.AddWindow(w);
-            FullController proxy = new FullController(w);
+            Frame f = new Frame("MainWindow");
+            mCoordinator.AddFrame(f);
+            FullController proxy = new FullController(f);
             //BackwardCompatibleController proxy = new BackwardCompatibleController(w);
             proxy.OnClientLoggedIn += (source, args) => new Thread(SendPackets).Start(proxy);
             proxy.StartProxy(8080, "http://localhost:9000");

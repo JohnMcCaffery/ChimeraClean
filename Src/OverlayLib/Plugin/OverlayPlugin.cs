@@ -131,10 +131,10 @@ namespace Chimera.Overlay {
         public void Init(Coordinator coordinator) {
             mCoordinator = coordinator;
             mTransitionComplete = new Action<StateTransition>(transition_Finished);
-            mCoordinator.WindowAdded += new Action<Window,EventArgs>(mCoordinator_WindowAdded);
+            mCoordinator.FrameAdded += new Action<Frame,EventArgs>(mCoordinator_FrameAdded);
 
             foreach (var window in mCoordinator.Windows)
-                mCoordinator_WindowAdded(window, null);
+                mCoordinator_FrameAdded(window, null);
 
             if (mConfig.OverlayFile != null)
                 LoadXML(mConfig.OverlayFile);

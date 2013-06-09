@@ -73,8 +73,8 @@ namespace Chimera.Plugins {
                 Change();
         }
 
-        void coordinator_WindowAdded(Window window, EventArgs args) {
-            Projector p = new Projector(window, this);
+        void coordinator_FrameAdded(Frame frame, EventArgs args) {
+            Projector p = new Projector(frame, this);
             mProjectors.Add(p);
             if (ProjectorAdded != null)
                 ProjectorAdded(p);
@@ -133,9 +133,9 @@ namespace Chimera.Plugins {
                 mAnchor = config.RoomAnchor;
             }
 
-            coordinator.WindowAdded += new Action<Window,EventArgs>(coordinator_WindowAdded);
+            coordinator.FrameAdded += new Action<Frame,EventArgs>(coordinator_FrameAdded);
             foreach (var window in coordinator.Windows)
-                coordinator_WindowAdded(window, null);
+                coordinator_FrameAdded(window, null);
         }
 
         public event Action<IPlugin, bool> EnabledChanged;

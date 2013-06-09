@@ -56,7 +56,7 @@ namespace Chimera.GUI {
                 });
                 if (!IsDisposed && !Disposing) {
                     if (InvokeRequired && Created)
-                        Invoke(change);
+                        BeginInvoke(change);
                     else if (!InvokeRequired)
                         change();
                 }

@@ -83,7 +83,7 @@ namespace Chimera.OpenSim.GUI {
                 }
             };
             if (InvokeRequired)
-                Invoke(a);
+                BeginInvoke(a);
             else
                 a();
         }

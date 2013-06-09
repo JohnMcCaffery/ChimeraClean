@@ -57,7 +57,7 @@ namespace Chimera.Overlay.GUI.Plugins {
             if (!InvokeRequired)
                 a();
             else if (Created && !IsDisposed && !Disposing)
-                base.Invoke(a);
+                base.BeginInvoke(a);
         }
 
         private void changeStateButton_Click(object sender, EventArgs e) {

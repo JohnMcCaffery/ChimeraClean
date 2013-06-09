@@ -30,7 +30,7 @@ namespace Chimera {
         /// <summary>
         /// The input which this output is rendering the view through.
         /// </summary>
-        Window Window { get; }
+        Frame Frame { get; }
 
         /// <summary>
         /// The panel which can be added to a form to configure this output.
@@ -73,7 +73,7 @@ namespace Chimera {
         /// Initialise the input, giving it a reference to the input it is to render.
         /// </summary>
         /// <param name="input">The input which this output is supposed to render the view through.</param>
-        void Init(Window window);
+        void Init(Frame frame);
 
         /// <summary>
         /// CustomTrigger the output application to launch.

@@ -55,7 +55,7 @@ namespace Chimera.Multimedia {
 
         private static void Invoke(Action a) {
             if (sPlayer.InvokeRequired)
-                sPlayer.Invoke(a);
+                sPlayer.BeginInvoke(a);
             else
                 a();
         }

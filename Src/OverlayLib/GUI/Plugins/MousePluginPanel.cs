@@ -62,7 +62,7 @@ namespace Chimera.GUI.Controls.Plugins {
 
         private void mPlugin_MouseMoved(int x, int y) {
             if (Created && !IsDisposed && !Disposing)
-                Invoke(new Action(() => {
+                BeginInvoke(new Action(() => {
                     positionLabel.Text = string.Format("{0,-4},{1,-4} / {2:.000},{3:.000}", x, y, mPlugin.LastCursor.X, mPlugin.LastCursor.Y);
                     cursorHandleLabel.Text = ProcessWrangler.GetGlobalCursor().ToString();
                 }));

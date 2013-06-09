@@ -92,7 +92,7 @@ namespace Chimera.Flythrough.GUI {
             if (!InvokeRequired)
                 a();
             else if (Created && !IsDisposed && !Disposing)
-                base.Invoke(a);
+                base.BeginInvoke(a);
         }
 
         void FlythroughPanel_Disposed(object sender, EventArgs e) {

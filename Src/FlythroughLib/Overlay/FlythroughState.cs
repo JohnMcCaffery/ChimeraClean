@@ -209,7 +209,7 @@ namespace Chimera.Flythrough.Overlay {
                 mCurrentStep.Finish();
         }
 
-        public override void TransitionToStart() {
+        protected override void TransitionToStart() {
             if (mPlayer != null)
                 mDefaultWindow.AddControl(mPlayer.Player, new RectangleF(0f, 0f, 0f, 0f));
 
@@ -233,7 +233,7 @@ namespace Chimera.Flythrough.Overlay {
 
         private WindowOverlayManager mDefaultWindow;
 
-        public override void TransitionFromFinish() {
+        protected override void TransitionFromFinish() {
             mInput.Paused = true;
             mInput.Enabled = false;
             if (mPlayer != null)

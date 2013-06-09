@@ -69,7 +69,7 @@ namespace Chimera.Flythrough.GUI {
 
         private void evt_TimeChange(FlythroughEvent<Vector3> evt, int time) {
             if (!IsDisposed && !Disposing && Created)
-                Invoke(new Action(() => {
+                BeginInvoke(new Action(() => {
                     progressBar.Maximum = evt.Length;
                     progressBar.Value = evt.Time;
                 }));

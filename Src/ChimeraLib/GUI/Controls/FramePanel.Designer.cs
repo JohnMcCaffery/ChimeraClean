@@ -19,7 +19,7 @@ along with Chimera.  If not, see <http://www.gnu.org/licenses/>.
 **************************************************************************/
 using Chimera.GUI.Controls.Plugins;
 namespace Chimera.GUI.Controls {
-    partial class WindowPanel {
+    partial class FramePanel {
         /// <summary> 
         /// Required designer variable.
         /// </summary>
@@ -43,7 +43,7 @@ namespace Chimera.GUI.Controls {
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent() {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(WindowPanel));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FramePanel));
             Chimera.Util.Rotation rotation3 = new Chimera.Util.Rotation();
             this.mainTab = new System.Windows.Forms.TabControl();
             this.configTab = new System.Windows.Forms.TabPage();

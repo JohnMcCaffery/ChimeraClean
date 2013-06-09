@@ -28,13 +28,12 @@ using System.Windows.Forms;
 using Chimera.Plugins;
 
 namespace Chimera.GUI.Controls {
-    public partial class WindowPanel : UserControl {
+    public partial class FramePanel : UserControl {
         private bool mMassUpdated;
         private double mScale = 10.0;
-        private Window mWindow;
-        private Action mTickListener;
+        private Frame mFrame;
 
-        public WindowPanel() {
+        public FramePanel() {
             InitializeComponent();
 
             topLeftPanel.Text = "Top Left";
@@ -42,26 +41,25 @@ namespace Chimera.GUI.Controls {
             orientationPanel.Text = "Orientation";
         }
 
-        public WindowPanel(Window window)
+        public FramePanel(Frame frame)
             : this() {
             
-            Init(window);
+            Init(frame);
         }
 
-        public void Init(Window window) {
-            mWindow = window;
+        public void Init(Frame frame) {
+            mFrame = frame;
 
-            mWindow.Changed += new Action<Window, EventArgs>(mWindow_Changed);
-            mWindow.Coordinator.Tick += mTickListener;
+            mFrame.Changed += new Action<Frame, EventArgs>(mWindow_Changed);
 
             foreach (var screen in Screen.AllScreens) {
                 monitorPulldown.Items.Add(screen);
-                if (screen.DeviceName.Equals(window.Monitor.DeviceName))
+                if (screen.DeviceName.Equals(frame.Monitor.DeviceName))
                     monitorPulldown.SelectedItem = screen;
             }
 
-            if (window.Output != null) {
-                UserControl panel = window.Output.ControlPanel;
+            if (frame.Output != null) {
+                UserControl panel = frame.Output.ControlPanel;
                 panel.Dock = DockStyle.Fill;
 
                 TabPage tab = new TabPage();
@@ -72,154 +70,154 @@ namespace Chimera.GUI.Controls {
                 mainTab.Controls.Add(tab);
             }
 
-            mWindow_Changed(window, null);
+            mWindow_Changed(frame, null);
         }
 
-        void mWindow_Changed(Window source, EventArgs args) {
+        void mWindow_Changed(Frame source, EventArgs args) {
             Action a = () => {
                 mMassUpdated = true;
 
-                topLeftPanel.Value = mWindow.TopLeft / (float) mScale;
-                centrePanel.Value = mWindow.Centre / (float) mScale;
-                orientationPanel.Value = mWindow.Orientation;
-                distancePanel.Value = (float) (mWindow.ScreenDistance / mScale);
-                skewHPanel.Value = (float)(mWindow.HSkew / mScale);
-                vSkewPanel.Value = (float)(mWindow.VSkew / mScale);
-                widthPanel.Value = (float) (mWindow.Width / mScale);
-                heightPanel.Value = (float) (mWindow.Height / mScale);
-                aspectRatioWValue.Value = new decimal(Math.Max(1, mWindow.Width));
-                aspectRatioHValue.Value = new decimal(Math.Max(1, mWindow.Height));
-                aspectRatioValue.Value = new decimal(mWindow.AspectRatio);
-                diagonalPanel.Value = (float) (mWindow.Diagonal / mScale);
-                fovHPanel.Value = (float)(mWindow.HFieldOfView * (180.0 / Math.PI));
-                fovVPanel.Value = (float)(mWindow.VFieldOfView * (180.0 / Math.PI));
-                drawCheck.Checked = mWindow.DrawWindow;
-                drawEyeCheck.Checked = mWindow.DrawEye;
+                topLeftPanel.Value = mFrame.TopLeft / (float) mScale;
+                centrePanel.Value = mFrame.Centre / (float) mScale;
+                orientationPanel.Value = mFrame.Orientation;
+                distancePanel.Value = (float) (mFrame.ScreenDistance / mScale);
+                skewHPanel.Value = (float)(mFrame.HSkew / mScale);
+                vSkewPanel.Value = (float)(mFrame.VSkew / mScale);
+                widthPanel.Value = (float) (mFrame.Width / mScale);
+                heightPanel.Value = (float) (mFrame.Height / mScale);
+                aspectRatioWValue.Value = new decimal(Math.Max(1, mFrame.Width));
+                aspectRatioHValue.Value = new decimal(Math.Max(1, mFrame.Height));
+                aspectRatioValue.Value = new decimal(mFrame.AspectRatio);
+                diagonalPanel.Value = (float) (mFrame.Diagonal / mScale);
+                fovHPanel.Value = (float)(mFrame.HFieldOfView * (180.0 / Math.PI));
+                fovVPanel.Value = (float)(mFrame.VFieldOfView * (180.0 / Math.PI));
+                drawCheck.Checked = mFrame.DrawWindow;
+                drawEyeCheck.Checked = mFrame.DrawEye;
 
-                switch (mWindow.Projection) {
+                switch (mFrame.Projection) {
                     case ProjectionStyle.Simple: simpleProjectionButton.Checked = true; break;
                     case ProjectionStyle.Calculated: calculatedProjectionButton.Checked = true; break;
                 }
 
-                if (mWindow.Anchor == WindowAnchor.Centre)
+                if (mFrame.Anchor == WindowAnchor.Centre)
                     centreAnchorButton.Checked = true;
                 else
                     topLeftAnchorButton.Checked = true;
 
-                linkFOVCheck.Checked = mWindow.LinkFoVs;
+                linkFOVCheck.Checked = mFrame.LinkFoVs;
 
                 mMassUpdated = false;
             };
 
             if (InvokeRequired)
-                Invoke(a);
+                BeginInvoke(a);
             else
                 a();
         }
 
         private void mainTab_KeyDown(object sender, KeyEventArgs e) {
-            if (mWindow != null)
-                mWindow.Coordinator.TriggerKeyboard(true, e);
+            if (mFrame != null)
+                mFrame.Coordinator.TriggerKeyboard(true, e);
         }
 
         private void mainTab_KeyUp(object sender, KeyEventArgs e) {
-            if (mWindow != null)
-                mWindow.Coordinator.TriggerKeyboard(false, e);
+            if (mFrame != null)
+                mFrame.Coordinator.TriggerKeyboard(false, e);
         }
 
         private void monitorPulldown_SelectedIndexChanged(object sender, EventArgs e) {
-            if (mWindow != null)
-                mWindow.Monitor = (Screen)monitorPulldown.SelectedItem;
+            if (mFrame != null)
+                mFrame.Monitor = (Screen)monitorPulldown.SelectedItem;
         }
 
         private void restartButton_Click(object sender, EventArgs e) {
-            mWindow.Restart();
+            mFrame.Restart();
         }
 
         private void distancePanel_ValueChanged(float obj) {
             if (!mMassUpdated)
-                mWindow.ScreenDistance = distancePanel.Value * mScale;
+                mFrame.ScreenDistance = distancePanel.Value * mScale;
         }
 
         private void skewHPanel_ValueChanged(float obj) {
             if (!mMassUpdated)
-                mWindow.HSkew = skewHPanel.Value * mScale;
+                mFrame.HSkew = skewHPanel.Value * mScale;
         }
 
         private void skewVPanel_ValueChanged(float obj) {
             if (!mMassUpdated)
-                mWindow.VSkew = vSkewPanel.Value * mScale;
+                mFrame.VSkew = vSkewPanel.Value * mScale;
         }
 
         private void topLeftPanel_ValueChanged(object sender, EventArgs e) {
             if (!mMassUpdated)
-                mWindow.TopLeft = topLeftPanel.Value * (float) mScale;
+                mFrame.TopLeft = topLeftPanel.Value * (float) mScale;
         }
 
         private void centrePanel_ValueChanged(object sender, EventArgs e) {
             if (!mMassUpdated)
-                mWindow.Centre = centrePanel.Value * (float) mScale;
+                mFrame.Centre = centrePanel.Value * (float) mScale;
         }
 
         private void widthPanel_Changed(float obj) {
             if (!mMassUpdated)
-                mWindow.Width = widthPanel.Value * mScale;
+                mFrame.Width = widthPanel.Value * mScale;
         }
 
         private void heightPanel_Changed(float obj) {
             if (!mMassUpdated)
-                mWindow.Height = heightPanel.Value * mScale;
+                mFrame.Height = heightPanel.Value * mScale;
         }
 
         private void diagonalPanel_ValueChanged(float obj) {
             if (!mMassUpdated)
-                mWindow.Diagonal = (float)diagonalPanel.Value * mScale;
+                mFrame.Diagonal = (float)diagonalPanel.Value * mScale;
         }
 
         private void aspectRatioValue_ValueChanged(object sender, EventArgs e) {
             if (!mMassUpdated)
-                mWindow.AspectRatio = (float)decimal.ToDouble(aspectRatioValue.Value);
+                mFrame.AspectRatio = (float)decimal.ToDouble(aspectRatioValue.Value);
         }
 
         private void fovHPanel_ValueChanged(float obj) {
             if (!mMassUpdated)
-                mWindow.HFieldOfView = fovHPanel.Value * (Math.PI / 180.0);
+                mFrame.HFieldOfView = fovHPanel.Value * (Math.PI / 180.0);
         }
 
         private void fovVPanel_ValueChanged(float obj) {
             if (!mMassUpdated)
-                mWindow.VFieldOfView = fovVPanel.Value * (Math.PI / 180.0);
+                mFrame.VFieldOfView = fovVPanel.Value * (Math.PI / 180.0);
         }
 
         private void ProjectionButton_CheckedChanged(object sender, EventArgs e) {
             if (mMassUpdated)
                 return;
             if (simpleProjectionButton.Checked)
-                mWindow.Projection = ProjectionStyle.Simple;
+                mFrame.Projection = ProjectionStyle.Simple;
             else if (calculatedProjectionButton.Checked)
-                mWindow.Projection = ProjectionStyle.Calculated;
+                mFrame.Projection = ProjectionStyle.Calculated;
         }
 
         private void AnchorButton_CheckedChanged(object sender, EventArgs e) {
             if (!mMassUpdated)
-                mWindow.Anchor = topLeftAnchorButton.Checked ? WindowAnchor.TopLeft : WindowAnchor.Centre;
+                mFrame.Anchor = topLeftAnchorButton.Checked ? WindowAnchor.TopLeft : WindowAnchor.Centre;
         }
 
         private void linkFOVCheck_CheckedChanged(object sender, EventArgs e) {
             if (!mMassUpdated)
-                mWindow.LinkFoVs = linkFOVCheck.Checked;
+                mFrame.LinkFoVs = linkFOVCheck.Checked;
         }
 
         private void drawEyeCheck_CheckedChanged(object sender, EventArgs e) {
-            mWindow.DrawEye = drawEyeCheck.Checked;
+            mFrame.DrawEye = drawEyeCheck.Checked;
         }
 
         private void aspectRatioButton_Click(object sender, EventArgs e) {
-            mWindow.AspectRatio = decimal.ToDouble(aspectRatioHValue.Value / aspectRatioWValue.Value);
+            mFrame.AspectRatio = decimal.ToDouble(aspectRatioHValue.Value / aspectRatioWValue.Value);
         }
 
         private void drawCheck_CheckedChanged(object sender, EventArgs e) {
-            mWindow.DrawWindow = drawCheck.Checked;
+            mFrame.DrawWindow = drawCheck.Checked;
         }
     }
 }

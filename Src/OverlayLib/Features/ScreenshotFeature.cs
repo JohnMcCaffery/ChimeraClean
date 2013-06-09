@@ -48,9 +48,9 @@ namespace Chimera.Overlay.Features {
             set {
                 mActive = value;
                 if (value) {
-                    mScreenshot = new Bitmap(mManager.Window.Monitor.Bounds.Width, mManager.Window.Monitor.Bounds.Height);
+                    mScreenshot = new Bitmap(mManager.Frame.Monitor.Bounds.Width, mManager.Frame.Monitor.Bounds.Height);
                     using (Graphics g = Graphics.FromImage(mScreenshot)) {
-                        g.CopyFromScreen(mManager.Window.Monitor.Bounds.Location, Point.Empty, mManager.Window.Monitor.Bounds.Size);
+                        g.CopyFromScreen(mManager.Frame.Monitor.Bounds.Location, Point.Empty, mManager.Frame.Monitor.Bounds.Size);
                         if (mIncludeOverlay && mManager != null && mManager.CurrentDisplay != null) {
                             mManager.CurrentDisplay.DrawStatic(g);
                         }
@@ -64,7 +64,7 @@ namespace Chimera.Overlay.Features {
         }
 
         public string Frame {
-            get { return mManager.Window.Name; }
+            get { return mManager.Frame.Name; }
         }
 
         public void DrawStatic(System.Drawing.Graphics graphics) {

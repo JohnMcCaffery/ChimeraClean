@@ -288,7 +288,7 @@ namespace Chimera.Overlay {
         private ITrigger GetSpecialTrigger(SpecialTrigger type, XmlNode node) {
             ITriggerFactory factory = mTriggerFactories.FirstOrDefault(f => f.Special == type && f.Mode == mMode);
             if (factory == null) {
-                Console.WriteLine("Unable to load " + type + " trigger. No trigger factory mapped for " + mMode + ". Check the ninject configuration file.");
+                Console.WriteLine("Unable to load " + type + " trigger from " + node.Name + ". No trigger factory mapped for " + mMode + ". Check the ninject configuration file.");
                 return null;
             }
 
@@ -317,7 +317,7 @@ namespace Chimera.Overlay {
 
         private T GetInstance<T>(XmlNode node, Dictionary<string, T> map, string target, string reason, T defalt, params string[] attributes) {
             string ifDefault = defalt != null ? " Using default: " + defalt.GetType().Name + "." : "";
-            string unable = "Unable to get " + target + " for " + reason + ". ";
+            string unable = "Unable to get " + target + " for " + reason + " from " + node.Name + ". ";
             if (node == null) {
                 Console.WriteLine(unable + "No node." + ifDefault);
                 return defalt;

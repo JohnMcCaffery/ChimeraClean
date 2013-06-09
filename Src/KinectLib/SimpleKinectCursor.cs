@@ -194,8 +194,8 @@ namespace Chimera.Kinect {
             }
         }
 
-        public Window Window {
-            get { return mManager.Window; }
+        public Frame Frame {
+            get { return mManager.Frame; }
         }
 
         public string State {
@@ -225,18 +225,18 @@ namespace Chimera.Kinect {
 
         #region ISystemPlugin Members
 
-        private Action<Window, EventArgs> mWindowAddedListener;
+        private Action<Frame, EventArgs> mWindowAddedListener;
 
         public void Init(Coordinator coordinator) {
             if (!coordinator.HasPlugin<OverlayPlugin>())
                 throw new ArgumentException("Unable to load kinect cursor. Overlay plugin is not loaded.");
             mStateManager = coordinator.GetPlugin<OverlayPlugin>();
-            if (coordinator.HasWindow(mWindow) != null) {
+            if (coordinator.HasFrame(mWindow) != null) {
                 mManager = mStateManager[mWindow];
                 Nui.SkeletonLost += new SkeletonTrackDelegate(Nui_SkeletonLost);
             } else {
-                mWindowAddedListener = new Action<Chimera.Window, EventArgs>(coordinator_WindowAdded);
-                coordinator.WindowAdded += mWindowAddedListener;
+                mWindowAddedListener = new Action<Chimera.Frame, EventArgs>(coordinator_WindowAdded);
+                coordinator.FrameAdded += mWindowAddedListener;
             }
             Init();
         }
@@ -258,10 +258,10 @@ namespace Chimera.Kinect {
 
         #endregion
 
-        private void coordinator_WindowAdded(Window window, EventArgs args) {
-            if (window.Name == mWindow) {
-                mManager = mStateManager[window.Name];
-                window.Coordinator.WindowAdded -= mWindowAddedListener;
+        private void coordinator_WindowAdded(Frame frame, EventArgs args) {
+            if (frame.Name == mWindow) {
+                mManager = mStateManager[frame.Name];
+                frame.Coordinator.FrameAdded -= mWindowAddedListener;
             }
         }
 

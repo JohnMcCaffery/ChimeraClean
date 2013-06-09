@@ -107,19 +107,19 @@ namespace Chimera.Overlay.Triggers {
             : base(manager, bounds) {
             mRenderer = renderer;
 
-            Manager.Window.Coordinator.Tick += new Action(Coordinator_Tick);
+            Manager.Frame.Coordinator.Tick += new Action(Coordinator_Tick);
         }
 
         public HoverTrigger(OverlayPlugin manager, XmlNode node)
             : base(manager, node) {
             mRenderer = manager.GetRenderer(node, "hover trigger", manager.Renderers[0], "Renderer");
-            Manager.Window.Coordinator.Tick += new Action(Coordinator_Tick);
+            Manager.Frame.Coordinator.Tick += new Action(Coordinator_Tick);
         }
 
         public HoverTrigger(OverlayPlugin manager, XmlNode node, Rectangle clip)
             : base(manager, node, clip) {
             mRenderer = manager.GetRenderer(node, "hover trigger", manager.Renderers[0], "Renderer");
-            Manager.Window.Coordinator.Tick += new Action(Coordinator_Tick);
+            Manager.Frame.Coordinator.Tick += new Action(Coordinator_Tick);
         }
 
         /// <summary>

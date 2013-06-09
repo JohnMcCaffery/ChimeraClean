@@ -1511,20 +1511,25 @@ namespace Chimera.Util {
         }
 
         public static void Dump(string dump, string end) {
-            string t = DateTime.Now.ToString("dd-HH.mm");
-            string y = DateTime.Now.ToString("yyyy");
-            string m = DateTime.Now.ToString("MMM");
-            string file = Path.GetFullPath("../Logs/" + y + "/" + m + "/" + t + end);
-            if (!Directory.Exists(Path.GetDirectoryName(file)))
-                Directory.CreateDirectory(Path.GetDirectoryName(file));
-            Console.WriteLine("Dumping to " + file);
+            DumpConfig cfg = new DumpConfig();
 
-            if (new DumpConfig().Dump)
+            if (cfg.Dump) {
+                string t = DateTime.Now.ToString("dd-HH.mm");
+                string y = DateTime.Now.ToString("yyyy");
+                string m = DateTime.Now.ToString("MMM");
+
+                string file = Path.GetFullPath(cfg.Folder + y + "/" + m + "/" + t + end);
+                if (!Directory.Exists(Path.GetDirectoryName(file)))
+                    Directory.CreateDirectory(Path.GetDirectoryName(file));
+                Console.WriteLine("Dumping to " + file);
+
                 File.WriteAllText(file, dump);
+            }
         }
 
         private class DumpConfig : ConfigBase {
             public bool Dump;
+            public string Folder;
 
             public DumpConfig()
                 : base() {
@@ -1536,6 +1541,7 @@ namespace Chimera.Util {
 
             protected override void InitConfig() {
                 Dump = Get(true, "DumpLogs", true, "Whether to write logs which are dumped via the ProcessWrangler.Dump method.");
+                Folder = Get(true, "DumpFolder", "Logs/", "The folder to write log files to.");
             }
         }
     }

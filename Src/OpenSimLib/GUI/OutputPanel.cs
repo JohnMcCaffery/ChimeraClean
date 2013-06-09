@@ -49,7 +49,7 @@ namespace Chimera.OpenSim.GUI {
 
                 mConfig = mController.Config as ViewerConfig;
 
-                Action init = () => {
+                Invoke(() => {
                     portBox.Text = mConfig.ProxyPort.ToString();
                     loginURIBox.Text = mConfig.ProxyLoginURI;
                     viewerExeBox.Text = mConfig.ViewerExecutable;
@@ -65,11 +65,7 @@ namespace Chimera.OpenSim.GUI {
                     controlCameraCheck.Checked = mController.ControlCamera;
                     controlFrustumCheck.Checked = mController.ControlFrustum;
                     backwardsCompatibleLabel.Text = mConfig.BackwardsCompatible ? "Backwards Compatible" : "";
-                };
-                if (InvokeRequired)
-                    Invoke(init);
-                else
-                    init();
+                });
 
                 if (mController.ProxyController.Started)
                     ProxyStarted();
@@ -80,22 +76,17 @@ namespace Chimera.OpenSim.GUI {
         }
 
         private void ProxyStarted() {
-            Action a = new Action(() => {
+            Invoke(() => {
                 proxyStartButton.Text = "Disconnect SlaveProxy";
                 proxyStatusLabel.Text = "Started";
 
                 portBox.Enabled = false;
                 loginURIBox.Enabled = false;
             });
-
-            if (InvokeRequired)
-                Invoke(a);
-            else
-                a();
         }
 
         private void ClientLoggedIn() {
-            Action a = new Action(() => {
+            Invoke(() => {
                 clientStatusLabel.Text = "Started";
                 viewerLaunchButton.Text = "Stop Viewer";
                 proxyStatusLabel.Text = "Started + Client Logged In";
@@ -107,15 +98,10 @@ namespace Chimera.OpenSim.GUI {
                 gridBox.Enabled = false;
                 gridCheck.Enabled = false;
             });
-
-            if (InvokeRequired)
-                Invoke(a);
-            else
-                a();
         }
 
         private void ViewerExit() {
-            Action a = new Action(() => {
+            Invoke(() => {
                 clientStatusLabel.Text = "Exited";
                 viewerLaunchButton.Text = "Launch Viewer";
                 proxyStatusLabel.Text = "Started";
@@ -127,9 +113,10 @@ namespace Chimera.OpenSim.GUI {
                 gridBox.Enabled = true;
                 gridCheck.Enabled = true;
             });
+        }
 
-            if (InvokeRequired)
-                Invoke(a);
+        public void Invoke(Action a) {            if (InvokeRequired)
+                base.BeginInvoke(a);
             else
                 a();
         }

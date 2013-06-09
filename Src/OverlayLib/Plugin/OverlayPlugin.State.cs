@@ -100,9 +100,9 @@ namespace Chimera.Overlay {
 
         private Form mMasterForm;
 
-        void mCoordinator_WindowAdded(Window window, EventArgs args) {
-            WindowOverlayManager manager = new WindowOverlayManager(this, window);
-            mWindowManagers.Add(window.Name, manager);
+        void mCoordinator_FrameAdded(Frame frame, EventArgs args) {
+            WindowOverlayManager manager = new WindowOverlayManager(this, frame);
+            mWindowManagers.Add(frame.Name, manager);
 
             if (mMasterForm != null)
                 manager.SetForm(mMasterForm);

@@ -20,12 +20,12 @@ namespace Touchscreen.Overlay {
         }
 
         public override IWindowState CreateWindowState(WindowOverlayManager manager) {
-            if (manager.Name.Equals(mPlugin.Manager.Window.Name))
+            if (manager.Name.Equals(mPlugin.Manager.Frame.Name))
                 return new TouchscreenWindow(manager, mPlugin);
             return new WindowState(manager);
         }
 
-        public override void TransitionToStart() {
+        protected override void TransitionToStart() {
             Manager.Coordinator.ControlMode = mAvatar ? ControlMode.Delta : ControlMode.Absolute;
             mPlugin.Enabled = true;
         }
@@ -39,6 +39,6 @@ namespace Touchscreen.Overlay {
             mPlugin.Enabled = false;
         }
 
-        public override void TransitionFromFinish() { }
+        protected override void TransitionFromFinish() { }
     }
 }

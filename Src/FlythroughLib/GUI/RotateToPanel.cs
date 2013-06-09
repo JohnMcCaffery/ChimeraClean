@@ -53,10 +53,12 @@ namespace Chimera.Flythrough.GUI {
             };
             mEvent.LengthChange += new EventHandler<LengthChangeEventArgs<Rotation>>(mEvent_LengthChange);
             mTimeChangeListener = (source, args) => {
-                Invoke(new Action(() => {
-                    progressBar.Maximum = evt.Length;
-                    progressBar.Value = evt.Time;
-                }));
+                if (Created && !IsDisposed && !Disposing) {
+                    BeginInvoke(new Action(() => {
+                        progressBar.Maximum = evt.Length;
+                        progressBar.Value = evt.Time;
+                    }));
+                }
             };
         }
 

@@ -32,8 +32,8 @@ namespace Chimera.GUI.Controls.Plugins {
 
         void mPlugin_ProjectorAdded(Projector projector) {
             TabPage projectorTab = new TabPage();
-            projectorTab.Name = projector.Window.Name;
-            projectorTab.Text = projector.Window.Name;
+            projectorTab.Name = projector.Frame.Name;
+            projectorTab.Text = projector.Frame.Name;
             
             ProjectorPanel panel = new ProjectorPanel(projector);
             panel.Dock = DockStyle.Fill;

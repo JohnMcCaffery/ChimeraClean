@@ -59,7 +59,7 @@ namespace Joystick.GUI {
             panel.Value = 0F;
 
             mAxisPanels.Add(panel);
-            Invoke(new Action(() => Controls.Add(panel)));
+            BeginInvoke(new Action(() => Controls.Add(panel)));
         }
     }
 }

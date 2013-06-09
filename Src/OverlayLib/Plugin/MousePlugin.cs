@@ -55,7 +55,7 @@ namespace Chimera.Overlay.Plugins {
                 MouseMoved(Cursor.Position.X, Cursor.Position.Y);
 
             foreach (var manager in mOverlayPlugin.OverlayManagers) {
-                Rectangle bounds = manager.Window.Monitor.Bounds;
+                Rectangle bounds = manager.Frame.Monitor.Bounds;
                 if (bounds.Contains(Cursor.Position)) {
                     if (mLastMouse.X != Cursor.Position.X || mLastMouse.Y != Cursor.Position.Y) {
                         Update(manager, bounds, Cursor.Position.X - bounds.Left, Cursor.Position.Y - bounds.Top);

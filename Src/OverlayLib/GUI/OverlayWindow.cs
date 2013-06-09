@@ -114,8 +114,8 @@ namespace Chimera.GUI.Forms {
             set {
                 Invoke(() => {
                     FormBorderStyle = value ? FormBorderStyle.None : FormBorderStyle.Sizable;
-                    Location = mManager.Window.Monitor.Bounds.Location;
-                    Size = mManager.Window.Monitor.Bounds.Size;
+                    Location = mManager.Frame.Monitor.Bounds.Location;
+                    Size = mManager.Frame.Monitor.Bounds.Size;
                 });
             }
         }
@@ -169,7 +169,7 @@ namespace Chimera.GUI.Forms {
             if (!InvokeRequired)
                 a();
             else if (Created && !IsDisposed && !Disposing)
-                base.Invoke(a);
+                base.BeginInvoke(a);
         }
 
         internal void ForceRedraw() {
@@ -195,7 +195,7 @@ namespace Chimera.GUI.Forms {
         public void AddControl(Control control, RectangleF pos) {
             Action setBounds = () => control.Bounds = new Rectangle((int) (Width * pos.X), (int) (Height * pos.Y), (int) (Width * pos.Width), (int) (Height * pos.Height));
             if (control.InvokeRequired)
-                control.Invoke(setBounds);
+                control.BeginInvoke(setBounds);
             else
                 setBounds();
             Invoke(() => drawPanel.Controls.Add(control));

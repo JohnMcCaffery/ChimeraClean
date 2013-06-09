@@ -52,7 +52,7 @@ namespace Chimera.Overlay.Drawables {
         private bool mNeedsRedrawn;
 
         public DynamicText(string text, WindowOverlayManager manager, Font font, Color colour, PointF location)
-            : base(text, manager.Window.Name, font, colour, location) {
+            : base(text, manager.Frame.Name, font, colour, location) {
             mManager = manager;
         }
 

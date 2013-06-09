@@ -142,7 +142,7 @@ namespace Chimera.Overlay.States {
             }
         }
 
-        public override void TransitionToStart() {
+        protected override void TransitionToStart() {
             SetTriggers(true);
             ControlTriggers(mResetTriggers, true);
             foreach (var manager in Manager.OverlayManagers)
@@ -165,7 +165,7 @@ namespace Chimera.Overlay.States {
             Stop(true);
         }
 
-        public override void TransitionFromFinish() {
+        protected override void TransitionFromFinish() {
             Stop(true);
         }
 

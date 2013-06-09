@@ -32,11 +32,11 @@ namespace Chimera.Overlay.Drawables {
         #region IFactory<IFeature> Members
 
         public IFeature Create(OverlayPlugin manager, XmlNode node) {
-            return new OverlayImage(manager, node, "factory creation");
+            return new OverlayImage(manager, node, "image factory");
         }
 
         public IFeature Create(OverlayPlugin manager, XmlNode node, Rectangle clip) {
-            return new OverlayImage(manager, node, clip, "factory creation");
+            return new OverlayImage(manager, node, clip, "image factory");
         }
 
         #endregion
@@ -205,7 +205,7 @@ namespace Chimera.Overlay.Drawables {
             mFile = node.InnerText;
             mImage = GetImage(node, reason);
             if (mImage == null)
-                throw new ArgumentException("Problem loading image.");
+                throw new ArgumentException("Problem loading image for " + reason + (node == null ? "." : " from " + node.Name + "."));
 
             mW = mImage.Width;
             mH = mImage.Height;
@@ -216,7 +216,7 @@ namespace Chimera.Overlay.Drawables {
             float h = GetFloat(node, -1f, "H", "Height");
             mBounds = new RectangleF(x, y, w, h);
             mAspectRatio = (float) mImage.Height / (float) mImage.Width;
-            mWindow = GetManager(manager, node, "overlay image").Window.Name;
+            mWindow = GetManager(manager, node, "overlay image").Frame.Name;
         }
 
         public OverlayImage(OverlayPlugin manager, XmlNode node, Rectangle clip, string reason)

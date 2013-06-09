@@ -41,7 +41,7 @@ namespace Chimera.Overlay.States {
             mTransition = transition;
 
             List<Bitmap> images = new List<Bitmap>();
-            foreach (var file in Directory.GetFiles(Path.Combine(folder, manager.Window.Name))) {
+            foreach (var file in Directory.GetFiles(Path.Combine(folder, manager.Frame.Name))) {
                 if (Regex.IsMatch(Path.GetExtension(file), @"png$|jpe?g$|bmp$", RegexOptions.IgnoreCase)) {
                     images.Add(new Bitmap(file));
                 }

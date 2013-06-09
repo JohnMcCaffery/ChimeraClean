@@ -165,7 +165,7 @@ namespace Chimera {
         /// <summary>
         /// The windows which define where, in real space, each 'view' onto the virtual space is located.
         /// </summary>
-        private readonly Dictionary<string, Window> mWindows = new Dictionary<string, Window>();
+        private readonly Dictionary<string, Frame> mFrames = new Dictionary<string, Frame>();
 
         /// <summary>
         /// File to log information about any crash to.
@@ -184,8 +184,6 @@ namespace Chimera {
         /// </summary>
         private CoordinatorConfig mConfig;
 
-        private StatisticsServer mServer;
-
 
         /// <summary>
         /// Triggered whenever the ability to control the view is switched on or off.
@@ -200,12 +198,12 @@ namespace Chimera {
         /// <summary>
         /// Triggered whenever a window is added.
         /// </summary>
-        public event Action<Window, EventArgs> WindowAdded;
+        public event Action<Frame, EventArgs> FrameAdded;
 
         /// <summary>
         /// Triggered whenever a window is removed.
         /// </summary>
-        public event Action<Window, EventArgs> WindowRemoved;
+        public event Action<Frame, EventArgs> WindowRemoved;
 
         /// <summary>
         /// Selected whenever the delta controlling where the camera is is updated.
@@ -250,65 +248,75 @@ namespace Chimera {
         /// </summary>
         /// <param name="plugins">The plugins which control this coordinator.</param>
         public Coordinator(IOutputFactory outputFactory, params ISystemPlugin[] plugins) {
-            mServer = new StatisticsServer(this);
+            bool success = false;
+            try {
+                mConfig = new CoordinatorConfig();
 
-            mConfig = new CoordinatorConfig();
+                mPlugins = new List<ISystemPlugin>(plugins);
+                mOrientation = new Rotation(mRotationLock, mConfig.Pitch, mConfig.Yaw);
+                mOrientationDelta = new Rotation(mRotationLock);
+                mPosition = mConfig.Position;
+                mEyePosition = mConfig.EyePosition;
+                mCrashLogFile = mConfig.CrashLogFile;
+                mTickLength = mConfig.TickLength;
+                mDefaultHeight = mConfig.HeightmapDefault;
+                mHeightmap = new float[mConfig.XRegions * 256, mConfig.YRegions * 256];
 
-            mPlugins = new List<ISystemPlugin>(plugins);
-            mOrientation = new Rotation(mRotationLock, mConfig.Pitch, mConfig.Yaw);
-            mOrientationDelta = new Rotation(mRotationLock);
-            mPosition = mConfig.Position;
-            mEyePosition = mConfig.EyePosition;
-            mCrashLogFile = mConfig.CrashLogFile;
-            mTickLength = mConfig.TickLength;
-            mDefaultHeight = mConfig.HeightmapDefault;
-            mHeightmap = new float[mConfig.XRegions * 256, mConfig.YRegions * 256];
-            
-            for (int i = 0; i < mHeightmap.GetLength(0); i++) {
-                for (int j = 0; j < mHeightmap.GetLength(1); j++) {
-                    mHeightmap[i, j] = mDefaultHeight;
+                for (int i = 0; i < mHeightmap.GetLength(0); i++) {
+                    for (int j = 0; j < mHeightmap.GetLength(1); j++) {
+                        mHeightmap[i, j] = mDefaultHeight;
+                    }
                 }
-            }
 
-            foreach (string window in mConfig.Windows)
-                if (outputFactory != null)
-                    AddWindow(new Window(window, outputFactory.Create()));
-                else
-                    AddWindow(new Window(window));
+                foreach (string window in mConfig.Windows)
+                    if (outputFactory != null)
+                        AddFrame(new Frame(window, outputFactory.Create()));
+                    else
+                        AddFrame(new Frame(window));
 
-            foreach (var plugin in mPlugins) {
-                plugin.Init(this);
-                plugin.Enabled = mConfig.PluginEnabled(plugin);
-            }
-
-            Thread tickThread = new Thread(() => {
-                mAlive = true;
-                while (mAlive) {
-                    DateTime tickStart = DateTime.Now;
-                    mStats.Begin();
-                    if (Tick != null)
-                        Tick();
-                    mStats.Tick();
-                    Thread.Sleep(Math.Max(0, (int) (mTickLength - DateTime.Now.Subtract(tickStart).TotalMilliseconds)));
+                foreach (var plugin in mPlugins) {
+                    plugin.Init(this);
+                    plugin.Enabled = mConfig.PluginEnabled(plugin);
                 }
-            });
 
-            tickThread.Name = "Tick Thread";
-            tickThread.Start();
+                Thread tickThread = new Thread(TickMethod);
+
+                tickThread.Name = "Tick Thread";
+                tickThread.Start();
+                success = true;
+            } finally {
+                if (!success)
+                    Close();
+            }
+        }
+
+        private void TickMethod() {
+            mAlive = true;
+            while (mAlive) {
+                DateTime tickStart = DateTime.Now;
+                mStats.Begin();
+                if (Tick != null)
+                    Tick();
+                mStats.Tick();
+                int time = (int)(mTickLength - DateTime.Now.Subtract(tickStart).TotalMilliseconds);
+                if (mAlive && time > 0)
+                    Thread.Sleep(time);
+            }
+            Console.WriteLine("Tick Thread shut down.");
         }
 
         /// <summary>
         /// Look up a window by it's name.
         /// </summary>
-        /// <param name="windowName">The name of the window to look up.</param>
+        /// <param name="frameName">The name of the window to look up.</param>
         /// <returns>The window called 'windowName'</returns>
         /// <exception cref="InvalidOperationException">Thrown if there is no window with the given name.</exception>
-        public Window this[string windowName] {
-            get { return mWindows[windowName]; }
+        public Frame this[string frameName] {
+            get { return mFrames[frameName]; }
         }
 
-        public bool HasWindow(string window) {
-            return mWindows.ContainsKey(window);
+        public bool HasFrame(string window) {
+            return mFrames.ContainsKey(window);
         }
 
         /// <summary>
@@ -334,8 +342,8 @@ namespace Chimera {
         /// <summary>
         /// The windows which define where, in real space, each 'view' onto the virtual space is located.
         /// </summary>
-        public Window[] Windows {
-            get { return mWindows.Values.ToArray() ; }
+        public Frame[] Windows {
+            get { return mFrames.Values.ToArray() ; }
         }
 
         /// <summary>
@@ -497,12 +505,12 @@ namespace Chimera {
         /// <summary>
         /// Add a view to the system.
         /// </summary>
-        /// <param name="window">The window to add.</param>
-        public void AddWindow(Window window) {
-            mWindows.Add(window.Name, window);
-            window.Init(this);
-            if (WindowAdded != null)
-                WindowAdded(window, null);
+        /// <param name="frame">The window to add.</param>
+        public void AddFrame(Frame frame) {
+            mFrames.Add(frame.Name, frame);
+            frame.Init(this);
+            if (FrameAdded != null)
+                FrameAdded(frame, null);
         }
 
         /// <summary>
@@ -538,9 +546,10 @@ namespace Chimera {
         /// Called when the coordinator is to be disposed of.
         /// </summary>
         public void Close(string reason) {
-            mServer.Stop();
-
+            Console.WriteLine("Shutting down tick thread.");
             mAlive = false;
+            Thread.Sleep(mTickLength * 2);
+
             foreach (var plugin in mPlugins) {
                 plugin.Enabled = false;
                 plugin.Close();
@@ -579,7 +588,7 @@ namespace Chimera {
             }
             */
 
-            if (mWindows.Count > 0) {
+            if (mFrames.Count > 0) {
                 dump += String.Format("{0}{0}--------Windows--------{0}", Environment.NewLine);
                 foreach (var window in Windows) {
                     try {

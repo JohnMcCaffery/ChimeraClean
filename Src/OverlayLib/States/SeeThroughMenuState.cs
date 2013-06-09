@@ -46,7 +46,7 @@ namespace Chimera.Overlay.States {
             return stateWindow;
         }
 
-        public override void TransitionToStart() {
+        protected override void TransitionToStart() {
             Manager.Coordinator.EnableUpdates = true;
             Manager.Coordinator.ControlMode = ControlMode.Absolute;
             Manager.Coordinator.Update(mPosition, Vector3.Zero, mOrientation, Rotation.Zero);
@@ -65,7 +65,7 @@ namespace Chimera.Overlay.States {
                 window.TransitionFromState();
         }
 
-        public override void TransitionFromFinish() {
+        protected override void TransitionFromFinish() {
             foreach (var window in mWindows)
                 window.ResetToTransparent();
         }
@@ -78,9 +78,9 @@ namespace Chimera.Overlay.States {
             }
 
             internal void TransitionFromState() {
-                mFadeBG = new Bitmap(Manager.Window.Monitor.Bounds.Width, Manager.Window.Monitor.Bounds.Height);
+                mFadeBG = new Bitmap(Manager.Frame.Monitor.Bounds.Width, Manager.Frame.Monitor.Bounds.Height);
                 using (Graphics g = Graphics.FromImage(mFadeBG)) {
-                    g.CopyFromScreen(Manager.Window.Monitor.Bounds.Location, Point.Empty, Manager.Window.Monitor.Bounds.Size);
+                    g.CopyFromScreen(Manager.Frame.Monitor.Bounds.Location, Point.Empty, Manager.Frame.Monitor.Bounds.Size);
                 }
             }
 

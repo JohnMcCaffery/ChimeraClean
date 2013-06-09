@@ -115,7 +115,7 @@ namespace Chimera.Flythrough.GUI {
         // ----- Positions -----
 
         private void Positions_CurrentEventChange(FlythroughEvent<Vector3> o, FlythroughEvent<Vector3> n) {
-            Invoke(new Action(() => positionsList.SelectedItem = n));
+            BeginInvoke(new Action(() => positionsList.SelectedItem = n));
         }
 
         private void moveToEventToolStripMenuItem_Click(object sender, EventArgs e) {
@@ -158,7 +158,7 @@ namespace Chimera.Flythrough.GUI {
         // ----- Orientations -----
 
         private void Orientations_CurrentEventChange(FlythroughEvent<Rotation> o, FlythroughEvent<Rotation> n) {
-            Invoke(new Action(() => orientationsList.SelectedItem = n));
+            BeginInvoke(new Action(() => orientationsList.SelectedItem = n));
         }
 
         private void rotateToEventToolStripMenuItem_Click(object sender, EventArgs e) {
