@@ -45,8 +45,9 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Overlays", "Overlays", "{AA20755A-F03E-4FF6-A86E-DFC56F1994A9}"
 	ProjectSection(SolutionItems) = preProject
 		..\Overlays\ExampleOverlay.xml = ..\Overlays\ExampleOverlay.xml
-		..\Overlays\ExampleSlideshow.xml = ..\Overlays\ExampleSlideshow.xml
 		..\Bin\Overlays\TimespanOverlay.xml = ..\Bin\Overlays\TimespanOverlay.xml
+		..\Bin\Overlays\TimespanOverlayDemo.xml = ..\Bin\Overlays\TimespanOverlayDemo.xml
+		..\Bin\Overlays\TimespanOverlayDemo2.xml = ..\Bin\Overlays\TimespanOverlayDemo2.xml
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsMediaPlayerLib", "WindowsMediaPlayerLib\WindowsMediaPlayerLib.csproj", "{ED985A0A-C964-494D-88BB-E78ACE4F13D1}"
@@ -64,7 +65,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BinConfig", "BinConfig", "{
 		..\Bin\Config\OpenSim.ini = ..\Bin\Config\OpenSim.ini
 		..\Bin\Config\Overlay.ini = ..\Bin\Config\Overlay.ini
 		..\Bin\Config\Projectors.ini = ..\Bin\Config\Projectors.ini
-		..\Bin\Config\TimespanOverlay.xml = ..\Bin\Config\TimespanOverlay.xml
 		..\Bin\Config\TimespanRoom.xml = ..\Bin\Config\TimespanRoom.xml
 		..\Bin\Config\Touchscreen.ini = ..\Bin\Config\Touchscreen.ini
 		..\Bin\Config\TouchscreenOverlay.ini = ..\Bin\Config\TouchscreenOverlay.ini

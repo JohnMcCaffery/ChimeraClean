@@ -33,6 +33,8 @@ namespace Chimera.GUI {
     public partial class RotationPanel : UserControl {
         private Rotation rotation = Rotation.Zero;
         public event EventHandler OnChange;
+        private bool mExternalChange;
+        private bool mGuiChange;
 
         public Rotation Value {
             get { return rotation; }
@@ -45,13 +47,17 @@ namespace Chimera.GUI {
             }
         }
         private void RotationChanged(object source, EventArgs args) {
-            vectorPanel.Value = rotation.LookAtVector;
-            pitchValue.Value = Math.Max(pitchValue.Minimum, Math.Min(pitchValue.Maximum, new decimal(rotation.Pitch)));
-            pitchSlider.Value = Math.Max(pitchSlider.Minimum, Math.Min(pitchSlider.Maximum, (int)rotation.Pitch));
-            yawValue.Value = Math.Max(yawValue.Minimum, Math.Min(yawValue.Maximum, new decimal(rotation.Yaw)));
-            yawSlider.Value = Math.Max(yawSlider.Minimum, Math.Min(yawSlider.Maximum, (int)rotation.Yaw));
-            if (OnChange != null)
-                OnChange(this, null);
+            if (!mGuiChange) {
+                mExternalChange = true;
+                vectorPanel.Value = rotation.LookAtVector;
+                pitchValue.Value = Math.Max(pitchValue.Minimum, Math.Min(pitchValue.Maximum, new decimal(rotation.Pitch)));
+                pitchSlider.Value = Math.Max(pitchSlider.Minimum, Math.Min(pitchSlider.Maximum, (int)rotation.Pitch));
+                yawValue.Value = Math.Max(yawValue.Minimum, Math.Min(yawValue.Maximum, new decimal(rotation.Yaw)));
+                yawSlider.Value = Math.Max(yawSlider.Minimum, Math.Min(yawSlider.Maximum, (int)rotation.Yaw));
+                if (OnChange != null)
+                    OnChange(this, null);
+                mExternalChange = false;
+            }
         }
         public Quaternion Quaternion {
             get { return rotation.Quaternion; }
@@ -78,39 +84,67 @@ namespace Chimera.GUI {
 
         public override string Text {
             get { return nameLabel.Text; }
-            set { 
+            set {
                 vectorPanel.Text = value;
                 nameLabel.Text = value;
             }
         }
 
         private void rollSlider_Scroll(object sender, EventArgs e) {
-            rollValue.Value = rollSlider.Value;
+            if (!mExternalChange) {
+                mGuiChange = true;
+                rollValue.Value = rollSlider.Value;
+                mGuiChange = false;
+            }
         }
 
         private void pitchSlider_Scroll(object sender, EventArgs e) {
-            pitchValue.Value = pitchSlider.Value;
+            if (!mExternalChange) {
+                mGuiChange = true;
+                pitchValue.Value = pitchSlider.Value;
+                mGuiChange = false;
+            }
         }
 
         private void yawSlider_Scroll(object sender, EventArgs e) {
-            yawValue.Value = yawSlider.Value;
+            if (!mExternalChange) {
+                mGuiChange = true;
+                yawValue.Value = yawSlider.Value;
+                mGuiChange = false;
+            }
         }
 
         private void rollValue_ValueChanged(object sender, EventArgs e) {
-            //TODO implement Rotation.Roll
-            //rotation.Roll = (float) decimal.ToDouble(yawValue.Value);
+            if (!mExternalChange) {
+                mGuiChange = true;
+                //TODO implement Rotation.Roll
+                //rotation.Roll = (float) decimal.ToDouble(yawValue.Value);
+                mGuiChange = false;
+            }
         }
 
         private void pitchValue_ValueChanged(object sender, EventArgs e) {
-            rotation.Pitch = decimal.ToDouble(pitchValue.Value);
+            if (!mExternalChange) {
+                mGuiChange = true;
+                rotation.Pitch = decimal.ToDouble(pitchValue.Value);
+                mGuiChange = false;
+            }
         }
 
         private void yawValue_ValueChanged(object sender, EventArgs e) {
-            rotation.Yaw = decimal.ToDouble(yawValue.Value);
+            if (!mExternalChange) {
+                mGuiChange = true;
+                rotation.Yaw = decimal.ToDouble(yawValue.Value);
+                mGuiChange = false;
+            }
         }
 
         private void vectorPanel_OnChange(object sender, EventArgs e) {
-            rotation.LookAtVector = vectorPanel.Value;
+            if (!mExternalChange) {
+                mGuiChange = true;
+                rotation.LookAtVector = vectorPanel.Value;
+                mGuiChange = false;
+            }
         }
 
         private void rpyButton_CheckedChanged(object sender, EventArgs e) {
