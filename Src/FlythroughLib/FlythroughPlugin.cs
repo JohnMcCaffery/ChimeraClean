@@ -336,6 +336,7 @@ namespace Chimera.Flythrough {
 
         private void FlythroughThread() {
             mFinished = false;
+            mPlaying = true;
             while (mPlaying && mEvents.Length > 0) {
                 IncrementTime();
                 mPrev = mCurrent;

@@ -93,7 +93,7 @@ namespace Chimera.GUI.Forms {
                     Thread.Sleep(length);
             }
 
-            Console.WriteLine(mManager.Name + " graphics thread exiting.");
+            Console.WriteLine(mManager.Name + " graphics thread shut down.");
         }
 
         public void RedrawStatic() {

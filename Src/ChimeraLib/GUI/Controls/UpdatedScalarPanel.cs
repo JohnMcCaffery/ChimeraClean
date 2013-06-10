@@ -30,6 +30,7 @@ using Chimera.Interfaces;
 namespace Chimera.GUI {
     public partial class UpdatedScalarPanel : ScalarPanel {
         private IUpdater<float> mScalar;
+        private Action<float> mChangeListener;
         private bool mGuiChanged;
         private bool mExternalChanged;
 
@@ -38,6 +39,7 @@ namespace Chimera.GUI {
 
             ValueChanged += UpdatedScalarPanel_ValueChanged;
             Disposed += new EventHandler(UpdatedScalarPanel_Disposed);
+            mChangeListener = new Action<float>(mScalar_OnChange);
         }
 
         void UpdatedScalarPanel_Disposed(object sender, EventArgs e) {
@@ -49,11 +51,11 @@ namespace Chimera.GUI {
             get { return mScalar; }
             set {
                 if ( mScalar != null)
-                    mScalar.Changed -= mScalar_OnChange;
+                    mScalar.Changed -= mChangeListener;
                 mScalar = value;
                 if (mScalar != null) {
                     Value = value.Value;
-                    mScalar.Changed += mScalar_OnChange;
+                    mScalar.Changed += mChangeListener;
                 }
             }
         }
@@ -73,5 +75,18 @@ namespace Chimera.GUI {
                 mExternalChanged = false;
             }
         }
+
+        /*
+        private void UpdatedScalarPanel_VisibleChanged(object sender, EventArgs e) {
+            if (Visible)
+                mScalar.Changed += mChangeListener;
+            else
+                mScalar.Changed -= mChangeListener;
+        }
+
+        private void UpdatedScalarPanel_Load(object sender, EventArgs e) {
+            UpdatedScalarPanel_VisibleChanged(sender, e);
+        }
+        */
     }
 }

@@ -144,7 +144,7 @@ namespace Chimera.Plugins {
             get { return mEnabled; }
             set { 
                 mEnabled = value;
-                if (!value && !mEnabled && mCoordinator.ControlMode == ControlMode.Delta) {
+                if (!value && !mEnabled && mCoordinator != null && mCoordinator.ControlMode == ControlMode.Delta) {
                     bool enable = mCoordinator.EnableUpdates;
                     mCoordinator.EnableUpdates = true;
                     mCoordinator.Update(mCoordinator.Position, Vector3.Zero, mCoordinator.Orientation, Rotation.Zero);
