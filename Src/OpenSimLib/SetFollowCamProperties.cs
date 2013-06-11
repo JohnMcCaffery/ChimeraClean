@@ -42,7 +42,7 @@ namespace Chimera.OpenSim {
         private Vector3 mFocusOffset3D = new Vector3(0f, 1f, 0f);
 
         private Proxy mProxy;
-        private Coordinator mCoordinator;
+        private Core mCoordinator;
 
         public float Pitch {
             get { return mPitch; }
@@ -140,12 +140,12 @@ namespace Chimera.OpenSim {
             mProxy = proxy;
         }
 
-        public SetFollowCamProperties(Coordinator coordinator) {
+        public SetFollowCamProperties(Core coordinator) {
             mCoordinator = coordinator;
-            mCoordinator.CameraModeChanged += new Action<Coordinator,ControlMode>(mCoordinator_CameraModeChanged);
+            mCoordinator.CameraModeChanged += new Action<Core,ControlMode>(mCoordinator_CameraModeChanged);
         }
 
-        private void mCoordinator_CameraModeChanged(Coordinator coordinator, ControlMode mode) {
+        private void mCoordinator_CameraModeChanged(Core coordinator, ControlMode mode) {
             Update();
         }
 

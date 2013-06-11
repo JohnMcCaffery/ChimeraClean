@@ -60,7 +60,7 @@ namespace Chimera.Flythrough.Overlay {
                     foreach (XmlNode child in subtitlesNode.ChildNodes) {
                         if (child is XmlElement) {
                             int time = child.Attributes["Time"] != null ? int.Parse(child.Attributes["Time"].Value) : 0;
-                            mSubtitles.Add(time, child.InnerText);
+                            mSubtitles.Add(time, child.InnerText.Trim('\n', ' ', Environment.NewLine[0]).Replace("  ", ""));
                         }
                     }
                 }

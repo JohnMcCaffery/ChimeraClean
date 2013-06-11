@@ -118,7 +118,7 @@ namespace Joystick{
             get { return mRotation; }
         }
 
-        public override void Init(Coordinator input) {
+        public override void Init(Core input) {
             input.Tick += mTick;
         }
 

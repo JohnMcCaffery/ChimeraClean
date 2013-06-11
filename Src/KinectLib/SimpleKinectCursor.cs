@@ -59,7 +59,7 @@ namespace Chimera.Kinect {
         private Condition mOnScreenConditionLeft;
         private PointF mLocation = new PointF(-1f, -1f);
         private RectangleF mBounds = new RectangleF(0f, 0f, 1f, 1f);
-        private bool mEnabled = true;
+        private bool mEnabled;
         private bool mListening;
         //TODO add init of this to the config
         private string mWindow = "MainWindow";
@@ -227,7 +227,7 @@ namespace Chimera.Kinect {
 
         private Action<Frame, EventArgs> mWindowAddedListener;
 
-        public void Init(Coordinator coordinator) {
+        public void Init(Core coordinator) {
             if (!coordinator.HasPlugin<OverlayPlugin>())
                 throw new ArgumentException("Unable to load kinect cursor. Overlay plugin is not loaded.");
             mStateManager = coordinator.GetPlugin<OverlayPlugin>();

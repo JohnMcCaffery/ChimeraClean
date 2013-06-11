@@ -94,7 +94,7 @@ namespace Chimera.Plugins {
 
         #region ISystemPlugin Members
 
-        public void Init(Coordinator coordinator) {
+        public void Init(Core coordinator) {
             ProjectorConfig config = new ProjectorConfig();
             mDrawLabels = config.DrawGlobalLabels;
             mDrawRoom = config.DrawRoom;
@@ -134,7 +134,7 @@ namespace Chimera.Plugins {
             }
 
             coordinator.FrameAdded += new Action<Frame,EventArgs>(coordinator_FrameAdded);
-            foreach (var window in coordinator.Windows)
+            foreach (var window in coordinator.Frames)
                 coordinator_FrameAdded(window, null);
         }
 

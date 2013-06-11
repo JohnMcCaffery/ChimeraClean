@@ -157,7 +157,7 @@ namespace Chimera.Kinect {
             get { return new Rotation(mPitchDelta, mYawDelta); }
         }
 
-        public override void Init(Coordinator input)  {
+        public override void Init(Core input)  {
             base.Init(input);
             //Get the primary vectors.
             Vector shoulderR = Nui.joint(Nui.Shoulder_Right);

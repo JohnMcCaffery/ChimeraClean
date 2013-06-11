@@ -35,7 +35,7 @@ namespace Chimera.GUI.Forms {
             base.Dispose(disposing);
         }
 
-        #region Windows Form Designer generated code
+        #region Frames Form Designer generated code
 
         /// <summary>
         /// Required method for Designer support - do not modify
@@ -444,7 +444,7 @@ namespace Chimera.GUI.Forms {
             this.windowsGroup.Size = new System.Drawing.Size(445, 499);
             this.windowsGroup.TabIndex = 0;
             this.windowsGroup.TabStop = false;
-            this.windowsGroup.Text = "Windows";
+            this.windowsGroup.Text = "Frames";
             // 
             // windowsTab
             // 

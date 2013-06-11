@@ -128,7 +128,10 @@ namespace Chimera.Flythrough.Overlay {
                 mSubtitlesText = Manager.MakeText(node.SelectSingleNode("child::SubtitleText"));
             }
 
-            mStepText = Manager.MakeText(node.SelectSingleNode("child::StepText"));
+            XmlNode stepTextNode = node.SelectSingleNode("child::StepText");
+            if (stepTextNode != null)
+                mStepText = Manager.MakeText(stepTextNode);
+
             //mInput.CurrentEventChange += new Action<FlythroughEvent<Camera>,FlythroughEvent<Camera>>(mInput_CurrentEventChange);
             mInput.StepStarted += new Action<int>(mInput_StepStarted);
             int subtitleTimeout = GetInt(node, 20, "SubtitleTimeout");
@@ -145,7 +148,8 @@ namespace Chimera.Flythrough.Overlay {
             
             if (displaySubtitles)
                 AddFeature(mSubtitlesText);
-            AddFeature(mStepText);
+            if (mStepText != null)
+                AddFeature(mStepText);
             XmlNode triggersRoot = node.SelectSingleNode("child::Triggers");
             if (triggersRoot != null) {
                 foreach (XmlNode child in triggersRoot.ChildNodes)
@@ -181,7 +185,8 @@ namespace Chimera.Flythrough.Overlay {
                     manager.ForceRedrawStatic();
             }
 
-            mStepText.TextString = (step + 1) + "\\" + mInput.Count;
+            if (mStepText != null)
+                mStepText.TextString = (step + 1) + "\\" + mInput.Count;
         }
 
         void step_Triggered() {

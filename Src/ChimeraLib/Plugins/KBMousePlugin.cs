@@ -165,11 +165,11 @@ namespace Chimera.Plugins {
             get { return mOrientation; }
         }
 
-        public override void Init(Coordinator input) {
+        public override void Init(Core input) {
             base.Init(input);
             mInputSource = input;
-            input.KeyDown += new Action<Coordinator,KeyEventArgs>(mCoordinator_KeyDown);
-            input.KeyUp += new Action<Coordinator,KeyEventArgs>(mCoordinator_KeyUp);
+            input.KeyDown += new Action<Core,KeyEventArgs>(mCoordinator_KeyDown);
+            input.KeyUp += new Action<Core,KeyEventArgs>(mCoordinator_KeyUp);
             input.Tick += new Action(mCoordinator_Tick);
         }
 
@@ -204,7 +204,7 @@ namespace Chimera.Plugins {
             }
         }
 
-        private void mCoordinator_KeyDown(Coordinator coord, KeyEventArgs args) {
+        private void mCoordinator_KeyDown(Core coord, KeyEventArgs args) {
             switch (args.KeyData) {
                 case Keys.W: mDeltas.X = mWalkEnabled ? (float) mKBShift : 0f; break;
                 case Keys.S: mDeltas.X = mWalkEnabled ? (float) -mKBShift : 0f; break;
@@ -219,7 +219,7 @@ namespace Chimera.Plugins {
             }
         }
 
-        private void mCoordinator_KeyUp(Coordinator coord, KeyEventArgs args) {
+        private void mCoordinator_KeyUp(Core coord, KeyEventArgs args) {
             switch (args.KeyData) {
                 case Keys.W: mDeltas.X = 0f; break;
                 case Keys.S: mDeltas.X = 0f; break;

@@ -156,7 +156,7 @@ namespace Chimera.Util {
         private static readonly Int32 WS_EX_CLIENTEDGE = 0x00000200;
         /// <summary>
         /// Paints all descendants of a input in bottom-to-top painting order using double-buffering. For more information, see Remarks. This cannot be used if the input has a class style of either CS_OWNDC or CS_CLASSDC.
-        /// Windows 2000:  This style is not supported.
+        /// Frames 2000:  This style is not supported.
         /// </summary>
         private static readonly Int32 WS_EX_COMPOSITED = 0x02000000;
         /// <summary>
@@ -174,7 +174,7 @@ namespace Chimera.Util {
         private static readonly Int32 WS_EX_DLGMODALFRAME = 0x00000001;
         /// <summary>
         /// The input is a layered input. This style cannot be used if the input has a class style of either CS_OWNDC or CS_CLASSDC.
-        /// Windows 8:  The WS_EX_LAYERED style is supported for top-level windows and child windows. Previous Windows versions support WS_EX_LAYERED only for top-level windows.
+        /// Frames 8:  The WS_EX_LAYERED style is supported for top-level windows and child windows. Previous Frames versions support WS_EX_LAYERED only for top-level windows.
         /// </summary>
         private static readonly Int32 WS_EX_LAYERED = 0x00080000;
         /// <summary>

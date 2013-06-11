@@ -49,7 +49,7 @@ using Chimera.OpenSim;
 
 namespace Chimera.Launcher {
     public class Launcher {
-        private readonly Coordinator mCoordinator;
+        private readonly Core mCoordinator;
         private LauncherConfig mConfig;
         private CoordinatorForm mForm;
         protected IOutput mFirstWindowOutput;
@@ -58,7 +58,7 @@ namespace Chimera.Launcher {
             return new OpenSimController();
         }
 
-        public Coordinator Coordinator {
+        public Core Coordinator {
             get { return mCoordinator; }
         }
         public CoordinatorForm Form {
@@ -90,7 +90,7 @@ namespace Chimera.Launcher {
                 k.Bind<IMediaPlayer>().To<DummyPlayer>().InSingletonScope();
 
             try {
-                mCoordinator = k.Get<Coordinator>();
+                mCoordinator = k.Get<Core>();
             } catch (Exception e) {
                 Console.WriteLine("Unable to launch. Problem instantiating coordinator. " + (e.InnerException != null ? e.InnerException.Message :e.Message));
             }

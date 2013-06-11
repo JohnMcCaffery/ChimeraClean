@@ -62,7 +62,7 @@ namespace Chimera {
         /// <summary>
         /// The system which this input is registered with.
         /// </summary>
-        private Coordinator mCoordinator;     
+        private Core mCoordinator;     
         /// <summary>
         /// Output object used to actually render the view 'through' the input. Can be null.
         /// </summary>
@@ -175,7 +175,7 @@ namespace Chimera {
         /// <summary>
         /// The system which this input is registered with.
         /// </summary>
-        public Coordinator Coordinator {
+        public Core Coordinator {
             get { return mCoordinator ; }
             set { mCoordinator  = value; }
         }
@@ -449,9 +449,9 @@ namespace Chimera {
         /// Initialise the input, giving it a reference to the input it is linked to.
         /// </summary>
         /// <param name="input">The input object the input can control.</param>
-        public void Init(Coordinator coordinator) {
+        public void Init(Core coordinator) {
             mCoordinator = coordinator;
-            mCoordinator.EyeUpdated += new Action<Chimera.Coordinator,EventArgs>(mCoordinator_EyeUpdated);
+            mCoordinator.EyeUpdated += new Action<Chimera.Core,EventArgs>(mCoordinator_EyeUpdated);
             if (mOutput != null)
                 mOutput.Init(this);
         }
@@ -522,7 +522,7 @@ namespace Chimera {
             }
         }
 
-        void mCoordinator_EyeUpdated(Coordinator source, EventArgs args) {
+        void mCoordinator_EyeUpdated(Core source, EventArgs args) {
             TriggerChanged();
         }
 

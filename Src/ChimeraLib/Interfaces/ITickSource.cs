@@ -33,12 +33,12 @@ namespace Chimera {
         /// <summary>
         /// Selected whenever a key is pressed or released on the keyboard.
         /// </summary>
-        event Action<Coordinator, KeyEventArgs> KeyUp;
+        event Action<Core, KeyEventArgs> KeyUp;
 
         /// <summary>
         /// Selected whenever a key is pressed or released on the keyboard.
         /// </summary>
-        event Action<Coordinator, KeyEventArgs> KeyDown;
+        event Action<Core, KeyEventArgs> KeyDown;
 
         /// <summary>
         /// CustomTrigger a key event.

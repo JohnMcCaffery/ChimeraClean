@@ -40,7 +40,7 @@ namespace Chimera.OpenSim {
 
         public override void SetFrame() { }
 
-        protected override void ProcessCameraUpdate (Coordinator coordinator, CameraUpdateEventArgs args) {
+        protected override void ProcessCameraUpdate (Core coordinator, CameraUpdateEventArgs args) {
             SetCamera();
         }
 

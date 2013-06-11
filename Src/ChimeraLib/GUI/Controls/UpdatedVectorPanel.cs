@@ -32,6 +32,7 @@ using Chimera.Interfaces;
 namespace Chimera.GUI {
     public partial class UpdatedVectorPanel : VectorPanel {
         private IUpdater<Vector3> mVector;
+        private Action<Vector3> mChangeListener;
         private bool mGuiChanged;
         private bool mExternalChanged;
 
@@ -40,22 +41,23 @@ namespace Chimera.GUI {
 
             ValueChanged += UpdatedVectorPanel_ValueChanged;
             Disposed += new EventHandler(UpdatedVectorPanel_Disposed);
+            mChangeListener = new Action<Vector3>(mVector_OnChange);
         }
 
         void UpdatedVectorPanel_Disposed(object sender, EventArgs e) {
             if (mVector != null)
-                mVector.Changed -= mVector_OnChange;
+                mVector.Changed -= mChangeListener;
         }
 
         public IUpdater<Vector3> Vector {
             get { return mVector; }
             set {
-                if ( mVector != null)
-                    mVector.Changed -= mVector_OnChange;
+                if (mVector != null)
+                    mVector.Changed -= mChangeListener;
                 mVector = value;
                 if (mVector != null) {
                     Value = value.Value;
-                    mVector.Changed += mVector_OnChange;
+                    mVector.Changed += mChangeListener;
                     Text = mVector.Name;
                 }
             }
@@ -76,5 +78,22 @@ namespace Chimera.GUI {
                 mExternalChanged = false;
             }
         }
+
+        /*
+        private void UpdatedVectorPanel_VisibleChanged(object sender, EventArgs e) {
+            if (Visible)
+                mVector.Changed += mChangeListener;
+            else
+                mVector.Changed -= mChangeListener;
+        }
+
+        private void UpdatedVectorPanel_Load(object sender, EventArgs e) {
+            UpdatedVectorPanel_VisibleChanged(sender, e);
+        }
+
+        void UpdatedVectorPanel_HandleCreated(object sender, EventArgs e) {
+            UpdatedVectorPanel_VisibleChanged(sender, e);
+        }
+        */
     }
 }

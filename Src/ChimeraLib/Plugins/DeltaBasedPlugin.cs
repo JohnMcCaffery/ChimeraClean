@@ -29,7 +29,7 @@ using Chimera.Config;
 
 namespace Chimera.Plugins {
     public abstract class DeltaBasedPlugin : ISystemPlugin {
-        private Coordinator mCoordinator;
+        private Core mCoordinator;
         private bool mDeltaActive;
 
         private bool mEnableX = true;
@@ -144,7 +144,7 @@ namespace Chimera.Plugins {
             get { return mEnabled; }
             set { 
                 mEnabled = value;
-                if (!value && !mEnabled && mCoordinator.ControlMode == ControlMode.Delta) {
+                if (!value && !mEnabled && mCoordinator != null && mCoordinator.ControlMode == ControlMode.Delta) {
                     bool enable = mCoordinator.EnableUpdates;
                     mCoordinator.EnableUpdates = true;
                     mCoordinator.Update(mCoordinator.Position, Vector3.Zero, mCoordinator.Orientation, Rotation.Zero);
@@ -190,7 +190,7 @@ namespace Chimera.Plugins {
         /// Initialise the input. Linking it to an object that can provide information about keyboard input and ticks.
         /// </summary>
         /// <param name="input">The source of tick and keyboard events.</param>
-        public virtual void Init(Coordinator input) {
+        public virtual void Init(Core input) {
             mCoordinator = input;
         }
 

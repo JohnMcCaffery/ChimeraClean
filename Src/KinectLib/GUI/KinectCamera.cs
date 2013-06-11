@@ -142,7 +142,7 @@ namespace Chimera.Kinect.GUI {
 
         #region ISystemPlugin Members
 
-        public void Init(Coordinator coordinator) { }
+        public void Init(Core coordinator) { }
 
         #endregion
 

@@ -122,7 +122,7 @@ namespace Chimera.Plugins {
             }
         }
 
-        public override void Init(Coordinator input) {
+        public override void Init(Core input) {
             base.Init(input);
             mSource = input;
             foreach (var axis in mAxes)

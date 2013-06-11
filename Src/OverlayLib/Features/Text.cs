@@ -47,7 +47,7 @@ namespace Chimera.Overlay.Drawables {
         private Rectangle mClip;
  
         private Font mFont;
-        private PointF mPosition;
+        private RectangleF mPosition;
         protected readonly Color mColour;
 
         public virtual Rectangle Clip {
@@ -71,7 +71,7 @@ namespace Chimera.Overlay.Drawables {
             mWindow = window;
             mFont = font;
             mColour = colour;
-            mPosition = location;
+            mPosition = new RectangleF(location, new SizeF(1f, 1f));
         }
 
         public Text(string text, string window, Font font, Color colour, Point location, Rectangle clip)
@@ -83,7 +83,7 @@ namespace Chimera.Overlay.Drawables {
             mWindow = GetManager(manager, node, "text").Frame.Name;
             mFont = GetFont(node, "text");
             mColour = GetColour(node, "text", DEFAULT_FONT_COLOUR);
-            mPosition = GetBounds(node, "text").Location;
+            mPosition = GetBounds(node, "text");
 
             if (node != null && node.Attributes["Alignment"] != null) {
                 ContentAlignment alignment = ContentAlignment.TopLeft;
@@ -94,7 +94,7 @@ namespace Chimera.Overlay.Drawables {
 
         public Text(OverlayPlugin manager, XmlNode node, Rectangle clip)
             : this(manager, node) {
-            mPosition = GetBounds(node, "text", clip).Location;
+            mPosition = GetBounds(node, "text", clip);
         }
 
         #region IDrawable Members
@@ -125,6 +125,16 @@ namespace Chimera.Overlay.Drawables {
         protected void Draw(Graphics g, Brush b) {
             mSize = g.MeasureString(mText, mFont);
             g.DrawString(mText, mFont, b, GetPoint(Clip));
+            /*
+            StringFormat f = new StringFormat();
+            f.Alignment = StringAlignment.Near;
+            f.LineAlignment = StringAlignment.Near;
+            g.DrawString(mText, mFont, b, GetBounds());
+            */
+        }
+
+        protected RectangleF GetBounds() {
+            return new RectangleF(mPosition.X * Clip.Width, mPosition.Y * Clip.Height, mPosition.Width * Clip.Width, mPosition.Height * Clip.Height);
         }
 
         protected PointF GetPoint(Rectangle clip) {
@@ -145,7 +155,7 @@ namespace Chimera.Overlay.Drawables {
         }
 
         public PointF Position {
-            get { return mPosition; }
+            get { return mPosition.Location; }
         }
 
         public Font Font {
