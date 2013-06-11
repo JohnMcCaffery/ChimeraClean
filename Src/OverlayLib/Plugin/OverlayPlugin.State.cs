@@ -33,9 +33,11 @@ using Chimera.Overlay.GUI.Plugins;
 using Chimera.Config;
 using Chimera.Overlay.Transitions;
 using Chimera.Interfaces;
+using log4net;
 
 namespace Chimera.Overlay {
     public partial class OverlayPlugin : XmlLoader, ISystemPlugin {
+        private readonly ILog Logger = LogManager.GetLogger("Overlay");
         /// <summary>
         /// All the states this manager manages.
         /// </summary>
@@ -160,7 +162,7 @@ namespace Chimera.Overlay {
                 }
                 if (mRedraw != null)
                     mRedraw();
-                Console.WriteLine("Current state set to " + mCurrentState.Name + ".");
+                Logger.Info("Current state set to " + mCurrentState.Name + ".");
                 if (StateChanged != null)
                     StateChanged(value);
             }

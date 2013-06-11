@@ -10,9 +10,11 @@ using OpenMetaverse;
 using System.Diagnostics;
 using Chimera.OpenSim.GUI;
 using System.Threading;
+using log4net;
 
 namespace Chimera.OpenSim {
     public class OpenSimController : ISystemPlugin, IOutput {
+        private readonly ILog ThisLogger = LogManager.GetLogger("OpenSim");
         private bool mEnabled;
         private bool mClosingViewer;
         private ViewerConfig mConfig;
@@ -187,7 +189,7 @@ namespace Chimera.OpenSim {
         }
 
         public void Restart(string reason) {
-            Console.WriteLine("Restarting viewer because of " + reason + ".");
+            ThisLogger.Warn("Restarting viewer because of " + reason + ".");
             new Thread(() => {
                 mViewerController.Close(true);
                 mProxyController.Stop();

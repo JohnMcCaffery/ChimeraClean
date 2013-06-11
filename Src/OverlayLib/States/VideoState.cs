@@ -16,6 +16,7 @@ using System.Xml;
 using System.Windows.Forms;
 using Chimera.Interfaces;
 using Chimera.Overlay.Transitions;
+using log4net;
 
 namespace Chimera.Overlay.States {
     public class VideoStateFactory : IStateFactory {
@@ -42,6 +43,7 @@ namespace Chimera.Overlay.States {
     }
 
     public class VideoState : ImageBGState {
+        private readonly ILog Logger = LogManager.GetLogger("Overlay.Video");
         private string mVideo;
         private WindowOverlayManager mMainWindow;
         private SimpleTrigger mTrigger;
@@ -100,7 +102,7 @@ namespace Chimera.Overlay.States {
                 mTrigger = new SimpleTrigger();
                 ITransitionStyle transition = manager.GetTransition(node, "video state finish transition", new BitmapWindowTransitionFactory(new BitmapFadeFactory(), 2000), "Transition");
                 if (transition == null) {
-                    Console.WriteLine("No transition specified for VideoState. using default 2s bitmap fade transition.");
+                    Logger.Debug("No transition specified for VideoState. using default 2s bitmap fade transition.");
                     transition = new BitmapWindowTransitionFactory(new BitmapFadeFactory(), 2000);
                 }
                 AddTransition(new StateTransition(Manager, this, manager.GetState(toAttr.Value), mTrigger, transition));

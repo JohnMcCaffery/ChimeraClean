@@ -28,9 +28,11 @@ using Chimera.OpenSim.GUI;
 using System.Threading;
 using System.Drawing;
 using Chimera.Config;
+using log4net;
 
 namespace Chimera.OpenSim {
     public class HeightmapPlugin : ISystemPlugin {
+        private readonly ILog ThisLogger = LogManager.GetLogger("Heightmap");
         private readonly Dictionary<ulong, HashSet<string>> mMappedParcels = new Dictionary<ulong, HashSet<string>>();
         private readonly HashSet<ulong> mFinishedRegions = new HashSet<ulong>();
 
@@ -121,7 +123,7 @@ namespace Chimera.OpenSim {
             lock (mMappedParcels) {
                 if (mMappedParcels[handle].Count == 256) {
                     mFinishedRegions.Add(handle);
-                    Console.WriteLine("Finished mapping " + e.Simulator.Name);
+                    ThisLogger.Info("Finished mapping " + e.Simulator.Name);
                 } if (mFinishedRegions.Count == numRegions && mConfig.AutoLogout)
                     Logout();
             }

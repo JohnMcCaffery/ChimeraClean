@@ -49,7 +49,7 @@ namespace Chimera.Flythrough.GUI {
 
             rotationPanel.OnChange += (sender, args) => {
                 mEvent.Target = rotationPanel.Value;
-                mEvent.Container.Coordinator.Update(mEvent.Container.Coordinator.Position, Vector3.Zero, rotationPanel.Value, Rotation.Zero);
+                mEvent.Container.Core.Update(mEvent.Container.Core.Position, Vector3.Zero, rotationPanel.Value, Rotation.Zero);
             };
             mEvent.LengthChange += new EventHandler<LengthChangeEventArgs<Rotation>>(mEvent_LengthChange);
             mTimeChangeListener = (source, args) => {
@@ -63,7 +63,7 @@ namespace Chimera.Flythrough.GUI {
         }
 
         private void rotateToTakeCurrentButton_Click(object sender, EventArgs e) {
-            rotationPanel.Value = new Rotation(mEvent.Container.Coordinator.Orientation);
+            rotationPanel.Value = new Rotation(mEvent.Container.Core.Orientation);
         }
 
         private void RotateToPanel_VisibleChanged(object sender, EventArgs e) {

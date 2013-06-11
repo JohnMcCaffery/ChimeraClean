@@ -27,15 +27,18 @@ using System.Runtime.InteropServices;
 using System.Drawing.Imaging;
 using Chimera.Overlay;
 using System.Xml;
+using log4net;
 
 namespace Chimera.Overlay.Transitions {
     public class OpacityTransitionFactory : XmlLoader, ITransitionStyleFactory {
+        private readonly ILog Logger = LogManager.GetLogger("Overlay.OpacityTransition");
+
         public string Name {
             get { return "OpacityTransition"; }
         }
 
         public ITransitionStyle Create(OverlayPlugin manager, XmlNode node) {
-            Console.WriteLine("\nCreating Opacity Window Transition");
+            Logger.Info("\nCreating Opacity Window Transition");
             string transition = GetString(node, "Fade", "Transition");
             double length = GetDouble(node, 5000.0, "Length");
             bool fadeOut = GetBool(node, true, "FadeOut");

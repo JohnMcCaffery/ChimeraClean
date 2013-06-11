@@ -8,9 +8,11 @@ using System.Xml;
 using System.IO;
 using Chimera.Overlay;
 using Chimera.Interfaces;
+using log4net;
 
 namespace Chimera.Flythrough.Overlay {
     public class Step : XmlLoader {
+        private readonly ILog Logger = LogManager.GetLogger("Flythrough");
         private readonly int mStep;
         private readonly int mSubtitleTimeoutS = 20;
 
@@ -47,7 +49,7 @@ namespace Chimera.Flythrough.Overlay {
                 if (mPlayer != null)
                     mVoiceoverFile = Path.GetFullPath(voiceoverAttribute.Value);
                 else
-                    Console.WriteLine("Unable to load voiceover for flythrough step. No MediaPlayer supplied.");
+                    Logger.Warn("Unable to load voiceover for flythrough step. No MediaPlayer supplied.");
             }
 
             mSubtitlesText = subititlesText;
