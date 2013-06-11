@@ -11,9 +11,11 @@ using Chimera.Util;
 using OpenMetaverse;
 using System.Net;
 using System.Collections;
+using log4net;
 
 namespace Chimera.OpenSim {
     public abstract class ProxyControllerBase {
+        private readonly ILog ThisLogger = LogManager.GetLogger("OpenSim");
         private readonly Frame mFrame;
         private Proxy mProxy;
         private PacketDelegate mAgentUpdateListener;
@@ -187,7 +189,7 @@ namespace Chimera.OpenSim {
                 mUnackedUpdates.Remove(q.Dequeue().Key);
 
             if (mUnackedUpdates.Count > mUnackedCountThresh) {
-                Console.WriteLine("Freeze detected. " + mUnackedUpdates.Count + " unacked packets.");
+                ThisLogger.Debug("Freeze detected. " + mUnackedUpdates.Count + " unacked packets.");
                 mUnackedUpdates.Clear();
                 ClearCamera();
                 SetCamera();
@@ -234,7 +236,7 @@ namespace Chimera.OpenSim {
                 mUpdates++;
                 double mean = mTotalMS / mUpdates;
                 if (Math.Abs(mean - diff) > 1.0)
-                    Console.WriteLine("Unexpected update. Mean: {0:0.#} - Tick: {1:0.#}.", mean, diff);
+                    ThisLogger.Debug(String.Format("Unexpected update. Mean: {0:0.#} - Tick: {1:0.#}.", mean, diff));
                 mLastUpdate = DateTime.Now;
             }
         }

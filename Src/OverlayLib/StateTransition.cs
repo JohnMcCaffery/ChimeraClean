@@ -22,9 +22,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Chimera.Interfaces.Overlay;
+using log4net;
 
 namespace Chimera.Overlay {
     public class StateTransition : XmlLoader {
+        private readonly ILog Logger = LogManager.GetLogger("Overlay");
         /// <summary>
         /// The individual transitions for each window in the system.
         /// </summary>
@@ -161,7 +163,7 @@ namespace Chimera.Overlay {
         /// </summary>
         public void Begin() {
             if (mActive) {
-                Console.WriteLine("Transitioning from " + mFrom.Name + " to " + mTo.Name + ".");
+                Logger.Info("Transitioning from " + mFrom.Name + " to " + mTo.Name + ".");
                 mFrom.Active = false;
                 mTo.StartTransitionTo();
                 mCompletedWindows.Clear();

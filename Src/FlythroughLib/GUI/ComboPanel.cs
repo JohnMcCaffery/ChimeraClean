@@ -233,16 +233,16 @@ namespace Chimera.Flythrough.GUI {
         }
 
         private void copyCurrentPositionButton_Click(object sender, EventArgs e) {
-            AddEvent(new MoveToEvent(mEvent.Container, 1000, mEvent.Container.Coordinator.Position));
+            AddEvent(new MoveToEvent(mEvent.Container, 1000, mEvent.Container.Core.Position));
         }
 
         private void copyCurrentOrientationButton_Click(object sender, EventArgs e) {
-            AddEvent(new RotateToEvent(mEvent.Container, 1000, new Rotation(mEvent.Container.Coordinator.Orientation)));
+            AddEvent(new RotateToEvent(mEvent.Container, 1000, new Rotation(mEvent.Container.Core.Orientation)));
         }
 
         private void copyCurrentPairButton_Click(object sender, EventArgs e) {
-            AddEvent(new MoveToEvent(mEvent.Container, 1000, mEvent.Container.Coordinator.Position));
-            AddEvent(new RotateToEvent(mEvent.Container, 1000, new Rotation(mEvent.Container.Coordinator.Orientation)));
+            AddEvent(new MoveToEvent(mEvent.Container, 1000, mEvent.Container.Core.Position));
+            AddEvent(new RotateToEvent(mEvent.Container, 1000, new Rotation(mEvent.Container.Core.Orientation)));
         }
 
         private void ComboPanel_VisibleChanged(object sender, EventArgs e) {

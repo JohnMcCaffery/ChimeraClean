@@ -236,12 +236,12 @@ namespace Chimera.Flythrough.GUI {
         }
 
         private void startPositionPanel_OnChange(object sender, EventArgs e) {
-            mPlugin.Start = new Camera(startPositionPanel.Value, new Rotation(mPlugin.Coordinator.Orientation));
+            mPlugin.Start = new Camera(startPositionPanel.Value, new Rotation(mPlugin.Core.Orientation));
             mPlugin.Time = 0;
         }
 
         private void startOrientationPanel_OnChange(object sender, EventArgs e) {
-            mPlugin.Start = new Camera(mPlugin.Coordinator.Position, startOrientationPanel.Value);
+            mPlugin.Start = new Camera(mPlugin.Core.Position, startOrientationPanel.Value);
             mPlugin.Time = 0;
         }
 
@@ -268,18 +268,18 @@ namespace Chimera.Flythrough.GUI {
 
         private void currentPositionButton_Click(object sender, EventArgs e) {
             if (mPlugin != null)
-                startPositionPanel.Value = mPlugin.Coordinator.Position;
+                startPositionPanel.Value = mPlugin.Core.Position;
         }
 
         private void takeOrientationButton_Click(object sender, EventArgs e) {
             if (mPlugin != null)
-                startOrientationPanel.Value = new Rotation(mPlugin.Coordinator.Orientation);
+                startOrientationPanel.Value = new Rotation(mPlugin.Core.Orientation);
         }
 
         private void takeCurrentCameraButton_Click(object sender, EventArgs e) {
             if (mPlugin != null) {
-                Rotation orientation = mPlugin.Coordinator.Orientation;
-                startPositionPanel.Value = mPlugin.Coordinator.Position;
+                Rotation orientation = mPlugin.Core.Orientation;
+                startPositionPanel.Value = mPlugin.Core.Position;
                 startOrientationPanel.Value = new Rotation(orientation);
             }
         }

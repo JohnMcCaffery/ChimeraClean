@@ -352,6 +352,7 @@ namespace Chimera.Plugins {
             double tanGamma = 2 * Math.Tan(mGamma);
             double alphaD = (alphaA * mFrame.Width) / tanGamma;
             double betaD = (betaA * mFrame.Width) / tanGamma;
+            /*
             Console.WriteLine("{0,2} P: {1,6:.1} A: {2,6:.1} B: {3,6:.1} DiffA: {4,6:.1} DiffB: {5,6:.1}", 
                 alphaD > betaD ? "-1" : "1", 
                 mOrientation.Pitch, 
@@ -359,6 +360,7 @@ namespace Chimera.Plugins {
                 (180.0 * mBeta) / Math.PI,
                 (180.0 * (P + mAlpha * flip)) / Math.PI,
                 (180.0 * (P + mBeta * flip)) / Math.PI);
+            */
             return Math.Max(alphaD, betaD);
         }
 

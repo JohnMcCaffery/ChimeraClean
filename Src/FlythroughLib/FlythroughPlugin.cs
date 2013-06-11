@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 ﻿/*************************************************************************
 Copyright (c) 2012 John McCaffery 
 
@@ -33,6 +32,7 @@ using Chimera.Flythrough.GUI;
 using Chimera.Flythrough;
 using System.Drawing;
 using Chimera.Config;
+using log4net;
 
 namespace Chimera.Flythrough {
     public struct Camera {
@@ -49,9 +49,10 @@ namespace Chimera.Flythrough {
     }
 
     public class FlythroughPlugin : ISystemPlugin {
+        private ILog Logger = LogManager.GetLogger("Flythrough");
         private EventSequence<Camera> mEvents = new EventSequence<Camera>();
         private Action mTickListener;
-        private Coordinator mCoordinator;
+        private Core mCoordinator;
         private FlythroughPanel mPanel;
         private DateTime mLastTick = DateTime.Now;
         private Camera mPrev;
@@ -268,7 +269,7 @@ namespace Chimera.Flythrough {
         /// <param name="file">The file to load as a flythrough.</param>
         public void Load(string file) {
             if (!File.Exists(file)) {
-                Console.WriteLine("Unable to load " + file + ". Ignoring load request.");
+                Logger.Warn("Unable to load " + file + ". Ignoring load request.");
                 return;
             }
 
@@ -349,7 +350,7 @@ namespace Chimera.Flythrough {
 
                 double wait = mCoordinator.TickLength - DateTime.Now.Subtract(mLastTick).TotalMilliseconds;
                 if (wait < 0)
-                    Console.WriteLine("Flythrough Tick overran by " + (wait * -1) + "ms.");
+                    Logger.Debug("Flythrough Tick overran by " + (wait * -1) + "ms.");
                 else
                     System.Threading.Thread.Sleep((int)wait);
 
@@ -482,11 +483,11 @@ namespace Chimera.Flythrough {
             }
         }
 
-        public Coordinator Coordinator {
+        public Core Core {
             get { return mCoordinator; }
         }
 
-        public void Init(Coordinator coordinator) {
+        public void Init(Core coordinator) {
             mCoordinator = coordinator;
         }
 

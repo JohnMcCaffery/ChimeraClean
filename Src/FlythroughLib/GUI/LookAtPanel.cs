@@ -53,7 +53,7 @@ namespace Chimera.Flythrough.GUI {
 
             targetVectorPanel.ValueChanged += (source, args) => {
                 mEvent.Target = targetVectorPanel.Value;
-                mEvent.Container.Coordinator.Update(mEvent.Container.Coordinator.Position, Vector3.Zero, mEvent.Value, Rotation.Zero);
+                mEvent.Container.Core.Update(mEvent.Container.Core.Position, Vector3.Zero, mEvent.Value, Rotation.Zero);
             };
             lengthValue.ValueChanged += (source, args) => mEvent.Length = (int)lengthValue.Value;
             evt.TimeChange += mTimeChangeListener;
@@ -73,13 +73,13 @@ namespace Chimera.Flythrough.GUI {
         }
 
         private void moveToTakeCurrentButton_Click(object sender, EventArgs e) {
-            mEvent.Target = mEvent.Container.Coordinator.Position;
+            mEvent.Target = mEvent.Container.Core.Position;
             targetVectorPanel.Value = mEvent.Target;
         }
 
         private void goToTargetButton_Click(object sender, EventArgs e) {
             if (mEvent != null)
-                mEvent.Container.Coordinator.Update(mEvent.Target, Vector3.Zero, new Rotation(mEvent.Container.Coordinator.Orientation), Rotation.Zero);
+                mEvent.Container.Core.Update(mEvent.Target, Vector3.Zero, new Rotation(mEvent.Container.Core.Orientation), Rotation.Zero);
         }
 
         private void LookAtPanel_VisibleChanged(object sender, EventArgs e) {
