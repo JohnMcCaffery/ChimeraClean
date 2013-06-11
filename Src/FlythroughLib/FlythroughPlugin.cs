@@ -493,7 +493,8 @@ namespace Chimera.Flythrough {
 
         public void Draw(System.Drawing.Graphics graphics, Func<Vector3, Point> to2D, Action redraw, Perspective perspective) {
             //Do nothing
-        }
+        }
+
         public void SetForm(Form form) {
         }
 
