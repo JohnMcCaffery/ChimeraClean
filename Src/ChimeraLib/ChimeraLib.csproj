@@ -219,7 +219,7 @@
     </Compile>
     <Compile Include="Interfaces\ISystemPlugin.cs" />
     <Compile Include="Interfaces\IOutput.cs" />
-    <Compile Include="Core\Coordinator.cs" />
+    <Compile Include="Core\Core.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Core\Frame.cs" />
     <Compile Include="Util\TickStatistics.cs" />

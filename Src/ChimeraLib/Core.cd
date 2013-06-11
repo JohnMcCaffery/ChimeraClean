@@ -133,28 +133,32 @@
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
-  <Class Name="Chimera.Coordinator">
+  <Class Name="Chimera.Core">
     <Position X="14.25" Y="0.5" Width="2" />
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>AYRAIAAABQhQggAgEQgAgAAAEEACIQA6ABQAgECYSg0=</HashCode>
-      <FileName>Core\Coordinator.cs</FileName>
+      <HashCode>AEwCIAMBSblgggAkCRgAgCAAAGAQIIGoAhAgoQCQSiU=</HashCode>
+      <FileName>Core\Core.cs</FileName>
     </TypeIdentifier>
-    <ShowAsAssociation>
-      <Property Name="Overlay" />
-    </ShowAsAssociation>
-    <ShowAsCollectionAssociation>
-      <Property Name="Windows" />
-    </ShowAsCollectionAssociation>
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="Chimera.CameraUpdateEventArgs">
     <Position X="12" Y="0.5" Width="2" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAACAIAAAAAAAAIAgAAAAAAAAAAA=</HashCode>
-      <FileName>Core\Coordinator.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAACAIAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Core\Core.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Chimera.Frame">
+    <Position X="22.25" Y="1.5" Width="2" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>EBQAAAkMBSAABhAMRkCKgERAAhA4gggh0j4CBFiZCAI=</HashCode>
+      <FileName>Core\Frame.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Interface Name="Chimera.ISystemInput">
@@ -165,14 +169,11 @@
     </TypeIdentifier>
   </Interface>
   <Interface Name="Chimera.IOutput">
-    <Position X="21.5" Y="6.75" Width="1.5" />
+    <Position X="20.5" Y="1.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>IAAAAAAAQAAAAAAAAgAAAAAAAAAAAAAgARACDACAAAA=</HashCode>
+      <HashCode>EAAAAAAAQAAAAAAAAgAAAAAAAAAAAAIgARACBACAAAE=</HashCode>
       <FileName>Interfaces\IOutput.cs</FileName>
     </TypeIdentifier>
-    <ShowAsAssociation>
-      <Property Name="Window" />
-    </ShowAsAssociation>
   </Interface>
   <Interface Name="Chimera.IOverlayState">
     <Position X="11" Y="10" Width="1.5" />
@@ -218,25 +219,46 @@
       <FileName>Interfaces\IDeltaInput.cs</FileName>
     </TypeIdentifier>
   </Interface>
-  <Interface Name="Chimera.IInput">
+  <Interface Name="Chimera.IPlugin">
     <Position X="8.5" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAgAAAoAAAAAAAAQAAAAAAAIAAAAABACAAAA=</HashCode>
-      <FileName>Interfaces\IInput.cs</FileName>
+      <HashCode>AAAAAAAAAgAAAoAAAAAAAAQAAAAAAAIAAAAABQCAAAA=</HashCode>
+      <FileName>Interfaces\IPlugin.cs</FileName>
     </TypeIdentifier>
   </Interface>
-  <Interface Name="Chimera.IInputSource">
+  <Interface Name="Chimera.ITickSource">
     <Position X="10.25" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAgAAAAAgAAAAAAAAAAAAAAAAAAAAAQAA=</HashCode>
-      <FileName>Interfaces\ITicker.cs</FileName>
+      <HashCode>AAAAAAAAAAAAgAAAAAgAAAAAAAAAIAAAAAAAAAAAQAA=</HashCode>
+      <FileName>Interfaces\ITickSource.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Chimera.ISystemPlugin">
+    <Position X="6.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAACAAAAAAA=</HashCode>
+      <FileName>Interfaces\ISystemPlugin.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Enum Name="Chimera.Perspective" Collapsed="true">
     <Position X="12" Y="2.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAYAE=</HashCode>
-      <FileName>Core\Coordinator.cs</FileName>
+      <HashCode>AAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAYAE=</HashCode>
+      <FileName>Core\Core.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Chimera.ProjectionStyle" Collapsed="true">
+    <Position X="23.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAIAAAAQAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Core\Frame.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Chimera.WindowAnchor" Collapsed="true">
+    <Position X="25.25" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Core\Frame.cs</FileName>
     </TypeIdentifier>
   </Enum>
   <Font Name="Tahoma" Size="8.25" />

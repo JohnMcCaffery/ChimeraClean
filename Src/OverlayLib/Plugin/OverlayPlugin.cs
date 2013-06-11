@@ -128,12 +128,12 @@ namespace Chimera.Overlay {
         /// CreateWindowState the manager. Linking it with a coordinator.
         /// </summary>
         /// <param name="coordinator">The coordinator which this state form manages state for.</param>
-        public void Init(Coordinator coordinator) {
+        public void Init(Core coordinator) {
             mCoordinator = coordinator;
             mTransitionComplete = new Action<StateTransition>(transition_Finished);
             mCoordinator.FrameAdded += new Action<Frame,EventArgs>(mCoordinator_FrameAdded);
 
-            foreach (var window in mCoordinator.Windows)
+            foreach (var window in mCoordinator.Frames)
                 mCoordinator_FrameAdded(window, null);
 
             if (mConfig.OverlayFile != null)

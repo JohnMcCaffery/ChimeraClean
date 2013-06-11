@@ -35,7 +35,7 @@ namespace Chimera.OpenSim {
         private readonly HashSet<ulong> mFinishedRegions = new HashSet<ulong>();
 
         private  GridClient Client = new GridClient();
-        private Coordinator mCoordinator;
+        private Core mCoordinator;
         private HeightmapConfig mConfig;
         private HeightmapInputPanel mPanel;
         private bool mLoggedIn;
@@ -214,7 +214,7 @@ namespace Chimera.OpenSim {
 
         #region ISystemPlugin Members
 
-        public void Init(Coordinator coordinator) {
+        public void Init(Core coordinator) {
             mCoordinator = coordinator;
         }
 

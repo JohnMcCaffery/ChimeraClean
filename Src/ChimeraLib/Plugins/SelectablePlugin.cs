@@ -34,7 +34,7 @@ namespace Chimera.Plugins {
 
         private ISystemPlugin mCurrentInput;
         private PluginSelectorPanel mControlPanel;
-        private Coordinator mCoordinator;
+        private Core mCoordinator;
         private bool mEnabled;
 
         public event Action<ISystemPlugin> PluginAdded;
@@ -72,7 +72,7 @@ namespace Chimera.Plugins {
 
         #region ISystemPlugin Members
 
-        public void Init(Coordinator coordinator) {
+        public void Init(Core coordinator) {
             mCoordinator = coordinator;
             foreach (var plugin in mPlugins)
                 plugin.Init(coordinator);

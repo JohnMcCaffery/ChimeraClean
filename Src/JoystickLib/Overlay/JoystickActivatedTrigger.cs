@@ -34,11 +34,11 @@ namespace Joystick.Overlay {
 
 
     public class JoystickActivatedTrigger : ConditionTrigger {
-        private Coordinator mCoordinator;
+        private Core mCoordinator;
         private XBoxControllerPlugin mPlugin;
         private bool mInitialised;
 
-        public JoystickActivatedTrigger(Coordinator coordinator)
+        public JoystickActivatedTrigger(Core coordinator)
             : base(coordinator) {
             mCoordinator = coordinator;
             if (mCoordinator.HasPlugin<XBoxControllerPlugin>()) {

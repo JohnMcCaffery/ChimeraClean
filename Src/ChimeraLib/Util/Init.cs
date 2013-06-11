@@ -336,7 +336,7 @@ namespace Chimera.Util {
         }
 
         /*
-        public static Coordinator InitCoordinator(string[] args, out IConfig masterConfig ) {
+        public static Core InitCoordinator(string[] args, out IConfig masterConfig ) {
             ArgvConfigSource argConfig = InitArgConfig(args);
             argConfig.AddSwitch("Master", "AutoStartMaster", "am");
             argConfig.AddSwitch("Master", "AutoStartProxy", "ap");
@@ -364,7 +364,7 @@ namespace Chimera.Util {
             LogManager.GetLogger("Master").Info("\nCreating Master.");
 
             Config proxyConfig = new Config(args, "Master", AppDomain.CurrentDomain.SetupInformation.ConfigurationFile);
-            Coordinator m = new Coordinator(proxyConfig);
+            Core m = new Core(proxyConfig);
 
             bool autostartMaster = Get(masterConfig, "AutoStartMaster", true);
 

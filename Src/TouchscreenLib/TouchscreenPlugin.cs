@@ -75,13 +75,13 @@ namespace Touchscreen {
             mStateManager = manager;
         }
 
-        public override void Init(Coordinator input) {
+        public override void Init(Core input) {
             base.Init(input);
 
-            if (input.Windows.Count() == 0)
+            if (input.Frames.Count() == 0)
                 input.FrameAdded += new Action<Frame, EventArgs>(input_FrameAdded);
             else {
-                Frame f = input.Windows.First();
+                Frame f = input.Frames.First();
                 if (mConfig.Window != null)
                     f = input[mConfig.Window];
                 input_FrameAdded(f, null);
@@ -129,7 +129,7 @@ namespace Touchscreen {
                 AddAxis(mRightY);
                 AddAxis(mSingle);
 
-                Coordinator input = f.Coordinator;
+                Core input = f.Coordinator;
 
                 if (Enabled)
                     Enabled = true;

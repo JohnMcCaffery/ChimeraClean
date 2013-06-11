@@ -39,10 +39,10 @@ namespace Chimera.Config {
         public bool Draw;
         public bool DrawEye;
 
-        public WindowConfig() : base ("Windows") { }
+        public WindowConfig() : base ("Frames") { }
 
         public WindowConfig(string window, params string[] args)
-            : base(window, "Windows", args) {
+            : base(window, "Frames", args) {
             mWindow = window;
         }
 

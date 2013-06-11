@@ -37,15 +37,15 @@ namespace Chimera.GUI.Forms {
         private bool mGuiUpdate;
         private bool mExternalUpdate;
         private bool mClosing;
-        private Coordinator mCoordinator;
+        private Core mCoordinator;
         private Bitmap mHeightmap;
         private DateTime mLastUpdate = DateTime.Now;
 
-        private Action<Coordinator, CameraUpdateEventArgs> mCameraUpdatedListener;
-        private Action<Coordinator, DeltaUpdateEventArgs> mDeltaUpdatedListener;
-        private Action<Coordinator, ControlMode> mCameraModeChangedListener;
-        private Action<Coordinator, EventArgs> mEyeUpdatedListener;
-        private Action<Coordinator, KeyEventArgs> mClosedListener;
+        private Action<Core, CameraUpdateEventArgs> mCameraUpdatedListener;
+        private Action<Core, DeltaUpdateEventArgs> mDeltaUpdatedListener;
+        private Action<Core, ControlMode> mCameraModeChangedListener;
+        private Action<Core, EventArgs> mEyeUpdatedListener;
+        private Action<Core, KeyEventArgs> mClosedListener;
         private Action mTickListener;
         private EventHandler<HeightmapChangedEventArgs> mHeightmapChangedListener;
 
@@ -86,22 +86,22 @@ namespace Chimera.GUI.Forms {
             }
         }
 
-        public CoordinatorForm(Coordinator coordinator)
+        public CoordinatorForm(Core coordinator)
             : this() {
             Init(coordinator);
         }
 
 
-        public void Init(Coordinator coordinator) {
+        public void Init(Core coordinator) {
             mCoordinator = coordinator;
 
             Disposed += new EventHandler(CoordinatorForm_Disposed);
 
-            mCameraUpdatedListener = new Action<Coordinator, CameraUpdateEventArgs>(mCoordinator_CameraUpdated);
-            mDeltaUpdatedListener = new Action<Coordinator, DeltaUpdateEventArgs>(mCoordinator_DeltaUpdated);
-            mCameraModeChangedListener = new Action<Coordinator, ControlMode>(mCoordinator_CameraModeChanged);
-            mEyeUpdatedListener = new Action<Coordinator, EventArgs>(mCoordinator_EyeUpdated);
-            mClosedListener = new Action<Coordinator, KeyEventArgs>(mCoordinator_Closed);
+            mCameraUpdatedListener = new Action<Core, CameraUpdateEventArgs>(mCoordinator_CameraUpdated);
+            mDeltaUpdatedListener = new Action<Core, DeltaUpdateEventArgs>(mCoordinator_DeltaUpdated);
+            mCameraModeChangedListener = new Action<Core, ControlMode>(mCoordinator_CameraModeChanged);
+            mEyeUpdatedListener = new Action<Core, EventArgs>(mCoordinator_EyeUpdated);
+            mClosedListener = new Action<Core, KeyEventArgs>(mCoordinator_Closed);
             mHeightmapChangedListener = new EventHandler<HeightmapChangedEventArgs>(mCoordinator_HeightmapChanged);
             mTickListener = new Action(mCoordinator_Tick);
 
@@ -128,7 +128,7 @@ namespace Chimera.GUI.Forms {
 
 
 
-            foreach (var window in mCoordinator.Windows) {
+            foreach (var window in mCoordinator.Frames) {
                 mCoordinator_WindowAdded(window, null);
             }
 
@@ -306,7 +306,7 @@ namespace Chimera.GUI.Forms {
             }
         }
 
-        private void mCoordinator_CameraModeChanged(Coordinator coordinator, ControlMode mode) {
+        private void mCoordinator_CameraModeChanged(Core coordinator, ControlMode mode) {
             if (!mGuiUpdate) {
                 mExternalUpdate = true;
                 Invoke(() => {
@@ -332,7 +332,7 @@ namespace Chimera.GUI.Forms {
             }
         }
 
-        private void mCoordinator_DeltaUpdated(Coordinator coordinator, DeltaUpdateEventArgs args) {
+        private void mCoordinator_DeltaUpdated(Core coordinator, DeltaUpdateEventArgs args) {
             if (!mGuiUpdate && Created && !IsDisposed && !Disposing && coordinator.ControlMode == ControlMode.Delta) {
                 mExternalUpdate = true;
                 Invoke(() => {
@@ -344,7 +344,7 @@ namespace Chimera.GUI.Forms {
             }
         }
 
-        private void mCoordinator_CameraUpdated(Coordinator coordinator, CameraUpdateEventArgs args) {
+        private void mCoordinator_CameraUpdated(Core coordinator, CameraUpdateEventArgs args) {
             //if (DateTime.Now.Subtract(mLastUpdate).TotalMilliseconds < 20)
               //  return;
 
@@ -361,7 +361,7 @@ namespace Chimera.GUI.Forms {
             }
         }
 
-        private void mCoordinator_EyeUpdated(Coordinator coordinator, EventArgs args) {
+        private void mCoordinator_EyeUpdated(Core coordinator, EventArgs args) {
             if (!mGuiUpdate) {
                 mExternalUpdate = true;
                 eyePositionPanel.Value = coordinator.EyePosition;
@@ -411,7 +411,7 @@ namespace Chimera.GUI.Forms {
             new Thread(() => { throw new Exception("Crashy crashy. Not transition GUI."); }).Start();
         }
 
-        private void mCoordinator_Closed(Coordinator coordinator, EventArgs args) {
+        private void mCoordinator_Closed(Core coordinator, EventArgs args) {
             if (!mGuiUpdate) {
                 mExternalUpdate = true;
                 Close();
@@ -633,7 +633,7 @@ namespace Chimera.GUI.Forms {
         }
 
         private class HeightmapPerspective {
-            private Coordinator mCoordinator;
+            private Core mCoordinator;
             private Matrix4 mWorldMatrix;
             private Matrix4 mClipMatrix;
             private Matrix4 mWorldScale;
@@ -724,7 +724,7 @@ namespace Chimera.GUI.Forms {
                     mDrawPanel.Invalidate();
             }
 
-            public HeightmapPerspective(Coordinator coordinator, PictureBox drawPanel) {
+            public HeightmapPerspective(Core coordinator, PictureBox drawPanel) {
                 mCoordinator = coordinator;
                 mDrawPanel = drawPanel;
                 mSize = new Size(coordinator.Heightmap.GetLength(0), coordinator.Heightmap.GetLength(1));

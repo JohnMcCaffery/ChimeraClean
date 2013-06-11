@@ -34,15 +34,15 @@ namespace Chimera.Overlay.Triggers {
         public event Action Triggered;
         public event Action Left;
 
-        public CameraPositionTrigger(Coordinator coordinator) {
-            coordinator.CameraUpdated += new Action<Coordinator,CameraUpdateEventArgs>(coordinator_CameraUpdated);
+        public CameraPositionTrigger(Core coordinator) {
+            coordinator.CameraUpdated += new Action<Core,CameraUpdateEventArgs>(coordinator_CameraUpdated);
         }
 
         public CameraPositionTrigger(XmlNode node) {
             //TODO add logic for initialisation
         }
 
-        private void coordinator_CameraUpdated(Coordinator coordinator, CameraUpdateEventArgs args) {
+        private void coordinator_CameraUpdated(Core coordinator, CameraUpdateEventArgs args) {
             if (mActive) {
                 if (mActiveArea.Contains(new Point((int)args.position.X, (int)args.position.Y))) {
                     mInArea = true;

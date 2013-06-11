@@ -7,7 +7,7 @@ using Chimera.Interfaces.Overlay;
 namespace Chimera.Overlay.Triggers {
     public abstract class ConditionTrigger : XmlLoader, ITrigger {
         private static readonly double TIMEOUT = 10000.0;
-        private Coordinator mCoordinator;
+        private Core mCoordinator;
         private Action mTickListener;
         private bool mCondition;
         private bool mActive;
@@ -18,7 +18,7 @@ namespace Chimera.Overlay.Triggers {
             get;
         }
 
-        public ConditionTrigger(Coordinator coordinator) {
+        public ConditionTrigger(Core coordinator) {
             mCoordinator = coordinator;
             mTickListener = new Action(mCoordinator_Tick);
         }

@@ -50,7 +50,7 @@ namespace Chimera.Flythrough {
     public class FlythroughPlugin : ISystemPlugin {
         private EventSequence<Camera> mEvents = new EventSequence<Camera>();
         private Action mTickListener;
-        private Coordinator mCoordinator;
+        private Core mCoordinator;
         private FlythroughPanel mPanel;
         private DateTime mLastTick = DateTime.Now;
         private Camera mPrev;
@@ -477,11 +477,11 @@ namespace Chimera.Flythrough {
             }
         }
 
-        public Coordinator Coordinator {
+        public Core Coordinator {
             get { return mCoordinator; }
         }
 
-        public void Init(Coordinator coordinator) {
+        public void Init(Core coordinator) {
             mCoordinator = coordinator;
         }
 

@@ -70,7 +70,7 @@ namespace Chimera.OpenSim {
 
         #region ISystemPlugin Members
 
-        public void Init(Coordinator coordinator) { }
+        public void Init(Core coordinator) { }
 
         public event Action<IPlugin, bool> EnabledChanged;
 
@@ -165,10 +165,10 @@ namespace Chimera.OpenSim {
             else
                 mProxyController = new FullController(frame);
 
-            mFrame.Coordinator.DeltaUpdated += new Action<Coordinator,DeltaUpdateEventArgs>(Coordinator_DeltaUpdated);
-            mFrame.Coordinator.CameraUpdated += new Action<Coordinator,CameraUpdateEventArgs>(Coordinator_CameraUpdated);
-            mFrame.Coordinator.CameraModeChanged += new Action<Coordinator,ControlMode>(Coordinator_CameraModeChanged);
-            mFrame.Coordinator.EyeUpdated += new Action<Coordinator,EventArgs>(Coordinator_EyeUpdated);
+            mFrame.Coordinator.DeltaUpdated += new Action<Core,DeltaUpdateEventArgs>(Coordinator_DeltaUpdated);
+            mFrame.Coordinator.CameraUpdated += new Action<Core,CameraUpdateEventArgs>(Coordinator_CameraUpdated);
+            mFrame.Coordinator.CameraModeChanged += new Action<Core,ControlMode>(Coordinator_CameraModeChanged);
+            mFrame.Coordinator.EyeUpdated += new Action<Core,EventArgs>(Coordinator_EyeUpdated);
             mFrame.Changed += new Action<Chimera.Frame,EventArgs>(mFrame_Changed);
             mFrame.MonitorChanged += new Action<Chimera.Frame,Screen>(mFrame_MonitorChanged);
             mProxyController.OnClientLoggedIn += new EventHandler(mProxyController_OnClientLoggedIn);
@@ -236,17 +236,17 @@ namespace Chimera.OpenSim {
             get { return ControlCamera && Mode == ControlMode.Absolute || !IsMaster; }
         }
 
-        void Coordinator_DeltaUpdated(Coordinator coordinator, DeltaUpdateEventArgs args) {
+        void Coordinator_DeltaUpdated(Core coordinator, DeltaUpdateEventArgs args) {
             if (IsMaster && ControlCamera)
                 mProxyController.Move(args.positionDelta, args.rotationDelta, mConfig.DeltaScale);
         }
 
-        void Coordinator_CameraUpdated(Coordinator coordinator, CameraUpdateEventArgs args) {
+        void Coordinator_CameraUpdated(Core coordinator, CameraUpdateEventArgs args) {
             if (ControlCamera && mProxyController.Started && (Mode == ControlMode.Absolute || !IsMaster))
                 mProxyController.SetCamera(args.positionDelta, args.rotationDelta);
         }
 
-        void Coordinator_CameraModeChanged(Coordinator coordinator, ControlMode newMode) {
+        void Coordinator_CameraModeChanged(Core coordinator, ControlMode newMode) {
             if (ControlCamera && mProxyController.Started) {
                 if (Mode == ControlMode.Absolute)
                     mProxyController.SetCamera();
@@ -257,7 +257,7 @@ namespace Chimera.OpenSim {
             }
         }
 
-        void Coordinator_EyeUpdated(Coordinator coordinator, EventArgs args) {
+        void Coordinator_EyeUpdated(Core coordinator, EventArgs args) {
             if (ControlCamera && ControlFrustum && mProxyController.Started && Mode == ControlMode.Absolute)
                 mProxyController.SetFrustum(SetCamera);
         }

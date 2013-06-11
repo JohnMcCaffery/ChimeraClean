@@ -82,7 +82,7 @@ namespace Chimera.Overlay {
 
             AddTrigger(trigger);
 
-            foreach (var window in mManager.Coordinator.Windows)
+            foreach (var window in mManager.Coordinator.Frames)
                 Coordinator_FrameAdded(window, null);
         }
 

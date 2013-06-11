@@ -259,7 +259,7 @@ namespace Chimera.OpenSim {
         /// </summary>
         /// <param name="input">The input which triggered the camera change.</param>
         /// <param name="args">The arguments about the change that was made.</param>
-        protected abstract void ProcessCameraUpdate(Coordinator coordinator, CameraUpdateEventArgs args);
+        protected abstract void ProcessCameraUpdate(Core coordinator, CameraUpdateEventArgs args);
 
         /// <summary>
         /// Called whenever a packet is received transition the client.
@@ -346,8 +346,8 @@ namespace Chimera.OpenSim {
             mFrame.Coordinator.CameraUpdated += Coordinator_CameraUpdated;
             mFrame.Coordinator.EyeUpdated += Coordinator_EyeUpdated;
             mFrame.Coordinator.Tick += new Action(Coordinator_Tick);
-            mFrame.Coordinator.CameraModeChanged += new Action<Coordinator,ControlMode>(Coordinator_CameraModeChanged);
-            mFrame.Coordinator.DeltaUpdated += new Action<Chimera.Coordinator,DeltaUpdateEventArgs>(Coordinator_DeltaUpdated);
+            mFrame.Coordinator.CameraModeChanged += new Action<Core,ControlMode>(Coordinator_CameraModeChanged);
+            mFrame.Coordinator.DeltaUpdated += new Action<Chimera.Core,DeltaUpdateEventArgs>(Coordinator_DeltaUpdated);
             mFrame.MonitorChanged += new Action<Chimera.Frame,Screen>(mFrame_MonitorChanged);
             mFrame.Changed += new Action<Chimera.Frame,EventArgs>(mFrame_Changed);
             mFullscreen = mConfig.Fullscreen;
@@ -479,7 +479,7 @@ namespace Chimera.OpenSim {
 
         #region ISystemPlugin Members
 
-        public void Init(Coordinator coordinator) { }
+        public void Init(Core coordinator) { }
 
         #endregion
 
@@ -489,7 +489,7 @@ namespace Chimera.OpenSim {
                 ProcessWrangler.SetMonitor(mClient, monitor);
         }
 
-        private void Coordinator_CameraUpdated(Coordinator coordinator, CameraUpdateEventArgs args) {
+        private void Coordinator_CameraUpdated(Core coordinator, CameraUpdateEventArgs args) {
             if (coordinator.ControlMode == ControlMode.Absolute || !mMaster) {
                 double viewer = DateTime.Now.Subtract(mLastViewerUpdate).TotalSeconds;
                 double camera = DateTime.Now.Subtract(mLastCameraUpdate).TotalSeconds;
@@ -517,7 +517,7 @@ namespace Chimera.OpenSim {
         /// </summary>
         /// <param name="input">The input which triggered the eye change.</param>
         /// <param name="args">The arguments about the change that was made.</param>
-        private void Coordinator_EyeUpdated(Coordinator coordinator, EventArgs args) {
+        private void Coordinator_EyeUpdated(Core coordinator, EventArgs args) {
             if (ProxyRunning && ControlCamera && Frame.Coordinator.ControlMode == ControlMode.Absolute) {
                 SetCamera();
                 SetFrame();
@@ -536,7 +536,7 @@ namespace Chimera.OpenSim {
             return p;
         }
 
-        private void Coordinator_CameraModeChanged(Coordinator coordinator, ControlMode mode) {
+        private void Coordinator_CameraModeChanged(Core coordinator, ControlMode mode) {
             if (mMaster) {
                 if (mode == ControlMode.Delta) {
                     ClearCamera();
@@ -550,7 +550,7 @@ namespace Chimera.OpenSim {
             }
         }
 
-        private void Coordinator_DeltaUpdated(Coordinator coordinator, DeltaUpdateEventArgs args) {
+        private void Coordinator_DeltaUpdated(Core coordinator, DeltaUpdateEventArgs args) {
             if (mMaster && coordinator.ControlMode == ControlMode.Delta && mProxy != null) {
                 RemoteControlPacket packet = new RemoteControlPacket();
                 packet.Delta.Position = args.positionDelta * mDeltaScale;

@@ -43,7 +43,7 @@ namespace Chimera.Overlay {
         /// <summary>
         /// The coordinator this state manager is tied to.
         /// </summary>
-        private Coordinator mCoordinator;
+        private Core mCoordinator;
         /// <summary>
         /// The current state the manager is in. Will be null during a transition.
         /// </summary>
@@ -116,7 +116,7 @@ namespace Chimera.Overlay {
         }
 
         public WindowOverlayManager this[int windowIndex] {
-            get { return mWindowManagers[mCoordinator.Windows[0].Name]; }
+            get { return mWindowManagers[mCoordinator.Frames[0].Name]; }
         }
 
         public WindowOverlayManager[] OverlayManagers {
@@ -133,7 +133,7 @@ namespace Chimera.Overlay {
         /// <summary>
         /// The coordinator this state manager is tied to.
         /// </summary>
-        public Coordinator Coordinator {
+        public Core Coordinator {
             get { return mCoordinator; }
         }
 

@@ -72,7 +72,7 @@ namespace Chimera.Overlay {
         /// Relies on state being added to coordinator to add windows, i.e. quite late on during startup.
         /// </summary>
         public void Init() {
-            foreach (var window in mManager.Coordinator.Windows)
+            foreach (var window in mManager.Coordinator.Frames)
                 Coordinator_FrameAdded(window, null);
         }
 

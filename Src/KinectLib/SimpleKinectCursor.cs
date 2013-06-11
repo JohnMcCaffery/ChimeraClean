@@ -227,7 +227,7 @@ namespace Chimera.Kinect {
 
         private Action<Frame, EventArgs> mWindowAddedListener;
 
-        public void Init(Coordinator coordinator) {
+        public void Init(Core coordinator) {
             if (!coordinator.HasPlugin<OverlayPlugin>())
                 throw new ArgumentException("Unable to load kinect cursor. Overlay plugin is not loaded.");
             mStateManager = coordinator.GetPlugin<OverlayPlugin>();

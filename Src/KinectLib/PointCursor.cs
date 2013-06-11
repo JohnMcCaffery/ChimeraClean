@@ -237,7 +237,7 @@ namespace Chimera.Kinect {
 
         #region ISystemPlugin Members
 
-        public void Init(Coordinator coordinator) {
+        public void Init(Core coordinator) {
 
         }
 

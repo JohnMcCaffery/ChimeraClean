@@ -48,7 +48,7 @@ namespace Test {
         static Vector mSide;
         static Scalar mX;
         static Scalar mY;
-        private static Coordinator mCoordinator;
+        private static Core mCoordinator;
         private static Vector3 sCentre = new Vector3(128f, 128f, 60f);
 
         private static Rotation GetRot(Vector3 pos) {
@@ -111,7 +111,7 @@ namespace Test {
             p.Start();
             */
 
-            mCoordinator = new Coordinator(null);
+            mCoordinator = new Core(null);
             Vector3 start = new Vector3(100f, 100f, 60f);
             mCoordinator.Update(start, Vector3.Zero, GetRot(start), Rotation.Zero);
             Frame f = new Frame("MainWindow");

@@ -30,10 +30,10 @@ namespace Chimera.Util {
         private Socket mServer;
         private Thread mListenThread;
         private bool mCont;
-        private Coordinator mCoordinator;
+        private Core mCoordinator;
         private DateTime mStarted;
 
-        public StatisticsServer(Coordinator coordinator) {
+        public StatisticsServer(Core coordinator) {
             mCoordinator = coordinator;
             mStarted = DateTime.Now;
 

@@ -40,7 +40,7 @@ namespace Joystick.Overlay {
             get { return (GamepadManager.Gamepad.Buttons & mButton) == mButton; }
         }
 
-        public JoystickButtonTrigger(Coordinator coordinator, XmlNode node)
+        public JoystickButtonTrigger(Core coordinator, XmlNode node)
             : base(coordinator) {
             
             GamepadButtonFlags b = GamepadButtonFlags.A;

@@ -75,7 +75,7 @@ namespace Chimera.Overlay.Plugins {
 
         public event Action<IPlugin, bool> EnabledChanged;
 
-        public void Init(Coordinator coordinator) {
+        public void Init(Core coordinator) {
             if (!coordinator.HasPlugin<OverlayPlugin>())
                 throw new ArgumentException("Unable to initialise MousePlugin. No OverlayPlugin registered with the coordinator.");
             mOverlayPlugin = coordinator.GetPlugin<OverlayPlugin>();
