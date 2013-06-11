@@ -149,7 +149,8 @@ namespace Chimera.Flythrough.Overlay {
             if (displaySubtitles)
                 AddFeature(mSubtitlesText);
             if (mStepText != null)
-                AddFeature(mStepText);
+                AddFeature(mStepText);
+
             XmlNode triggersRoot = node.SelectSingleNode("child::Triggers");
             if (triggersRoot != null) {
                 foreach (XmlNode child in triggersRoot.ChildNodes)

@@ -52,17 +52,21 @@ namespace Chimera.GUI.Forms {
         /// Flag to force the static portion of the overlay to be redrawn.
         /// </summary>
         private bool mRedrawStatic;
-        private Cursor mDefaultCursor = new Cursor("../Cursors/cursor.cur");
+        private Cursor mDefaultCursor;
 
         public OverlayWindow() {
             InitializeComponent();
 
+            
+            OverlayConfig config = new OverlayConfig();
+            mDefaultCursor = new Cursor(config.DefaultCursor);
             Cursor = mDefaultCursor;
             TopMost = true;
         }
 
         public OverlayWindow(WindowOverlayManager manager)
             : this() {
+
             Init(manager);
         }
 
