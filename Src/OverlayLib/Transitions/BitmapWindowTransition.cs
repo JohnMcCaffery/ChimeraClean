@@ -27,19 +27,22 @@ using System.Runtime.InteropServices;
 using System.Drawing.Imaging;
 using Chimera.Overlay;
 using System.Xml;
+using log4net;
 
 namespace Chimera.Overlay.Transitions {
     public class BitmapTransitionFactory : XmlLoader, ITransitionStyleFactory {
+        private readonly ILog Logger = LogManager.GetLogger("Overlay.BitmapTransition");
+
         public string Name {
             get { return "BitmapTransition"; }
         }
 
         public ITransitionStyle Create(OverlayPlugin manager, XmlNode node) {
-            Console.WriteLine("\nCreating Bitmap Window Transition");
+            Logger.Info("\nCreating Bitmap Window Transition");
             double length = GetDouble(node, 5000.0, "Length");
             IImageTransitionFactory transition = manager.GetImageTransitionFactory(node, "transition style", "Style");
             if (transition == null) {
-                Console.WriteLine("Unable to look up custom transition for transition style. Using default, fade.");
+                Logger.Debug("Unable to look up custom transition for transition style. Using default, fade.");
                 transition = new BitmapFadeFactory();
             }
             return new BitmapWindowTransitionFactory(transition, length);

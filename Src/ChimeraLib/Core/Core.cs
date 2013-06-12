@@ -30,6 +30,7 @@ using Chimera.Interfaces;
 using System.IO;
 using System.Threading;
 using Chimera.Config;
+using log4net;
 
 namespace Chimera {
     /// <summary>
@@ -112,6 +113,7 @@ namespace Chimera {
     }
 
     public class Core : ICrashable, ITickSource {
+        private readonly ILog Logger = LogManager.GetLogger("Core");
         /// <summary>
         /// Statistics object which monitors how long ticks are taking.
         /// </summary>
@@ -277,6 +279,7 @@ namespace Chimera {
                 foreach (var plugin in mPlugins) {
                     plugin.Init(this);
                     plugin.Enabled = mConfig.PluginEnabled(plugin);
+                    Logger.Info("Loaded " + plugin.Name + ". " + (plugin.Enabled ? "Enabled" : "Disabled") + ".");
                 }
 
                 Thread tickThread = new Thread(TickMethod);
@@ -302,7 +305,7 @@ namespace Chimera {
                 if (mAlive && time > 0)
                     Thread.Sleep(time);
             }
-            Console.WriteLine("Tick Thread shut down.");
+            Logger.Info("Tick Thread shut down.");
         }
 
         /// <summary>
@@ -546,7 +549,7 @@ namespace Chimera {
         /// Called when the coordinator is to be disposed of.
         /// </summary>
         public void Close(string reason) {
-            Console.WriteLine("Shutting down tick thread.");
+            Logger.Debug("Shutting down tick thread.");
             mAlive = false;
             Thread.Sleep(mTickLength * 2);
 

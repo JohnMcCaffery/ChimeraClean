@@ -128,7 +128,7 @@ namespace Chimera.Overlay {
         }
 
         private void LoadTransitions(XmlDocument doc) {
-            Console.WriteLine("\nCreating Transitions");
+            Logger.Info("\nCreating Transitions");
             foreach (XmlNode transitionRoot in doc.GetElementsByTagName("Transitions"))
                 foreach (XmlNode transitionNode in transitionRoot.ChildNodes.OfType<XmlElement>())
                     LoadTransition(transitionNode);
@@ -164,7 +164,7 @@ namespace Chimera.Overlay {
             ITransitionStyle style = GetTransition(node, "state transition", new BitmapWindowTransitionFactory(new BitmapFadeFactory(), 2000), "Transition");
 
             if (from == null || to == null || trigger == null) {
-                Console.WriteLine("Unable to create transition.");
+                Logger.Debug("Unable to create transition.");
                 return;
             }
 
@@ -175,20 +175,18 @@ namespace Chimera.Overlay {
         private void LoadFactory<T>(XmlNode node, Dictionary<string, T> instances) where T : IControllable {
             XmlAttribute nameAttr = node.Attributes["Name"];
             if (nameAttr == null) {
-                Console.WriteLine("Unable to load " + node.Name + ". No Name attribute specified.");
+                Logger.Debug("Unable to load " + node.Name + ". No Name attribute specified.");
                 return;
             }
 
             IFactory<T> factory = GetFactory<T>(node, nameAttr.Value);
             if (factory == null)
                 return;
-            if (typeof(T) == typeof(State))
-                Console.WriteLine("\nCreating " + node.Attributes["Factory"].Value + " State");
             T t = Create(factory, node);
             t.Name = nameAttr.Value;
             if (typeof(T) != typeof(State)) {
                 if (instances.ContainsKey(nameAttr.Value))
-                    Console.WriteLine("Unable to add {0} {1} another {0} has been bound with that name.", typeof(T).Name.TrimStart('I'), nameAttr.Value);
+                    Logger.Debug(String.Format("Unable to add {0} {1} another {0} has been bound with that name.", typeof(T).Name.TrimStart('I'), nameAttr.Value));
                 else
                     instances.Add(nameAttr.Value, t);
             } else
@@ -206,7 +204,7 @@ namespace Chimera.Overlay {
                 if (f != null)
                     state.AddFeature(f);
             }
-            Console.WriteLine("Created " + typeof(State).Name + " state " + state.Name + ".");
+            Logger.Info("Created " + state.GetType().Name + " state " + state.Name + ".");
         }
 
         private void LoadIdle(XmlNode node, State state) {
@@ -288,7 +286,7 @@ namespace Chimera.Overlay {
         private ITrigger GetSpecialTrigger(SpecialTrigger type, XmlNode node) {
             ITriggerFactory factory = mTriggerFactories.FirstOrDefault(f => f.Special == type && f.Mode == mMode);
             if (factory == null) {
-                Console.WriteLine("Unable to load " + type + " trigger from " + node.Name + ". No trigger factory mapped for " + mMode + ". Check the ninject configuration file.");
+                Logger.Debug("Unable to load " + type + " trigger from " + node.Name + ". No trigger factory mapped for " + mMode + ". Check the ninject configuration file.");
                 return null;
             }
 
@@ -319,7 +317,7 @@ namespace Chimera.Overlay {
             string ifDefault = defalt != null ? " Using default: " + defalt.GetType().Name + "." : "";
             string unable = "Unable to get " + target + " for " + reason + " from " + node.Name + ". ";
             if (node == null) {
-                Console.WriteLine(unable + "No node." + ifDefault);
+                Logger.Debug(unable + "No node." + ifDefault);
                 return defalt;
             }
 
@@ -333,7 +331,7 @@ namespace Chimera.Overlay {
             IEnumerable<XmlAttribute> attrs = attributes.Where(a => node.Attributes[a] != null).Select(a => node.Attributes[a]);
             if (attrs.Count() == 0) {
                 string attributesL = attributes.Aggregate((sum, next) => sum + "','" + next);
-                Console.WriteLine(unable + "No '" + attributesL + "' attribute specified. " + ifDefault);
+                Logger.Debug(unable + "No '" + attributesL + "' attribute specified. " + ifDefault);
                 return defalt;
             }
             foreach (var attribute in attrs) {
@@ -345,7 +343,7 @@ namespace Chimera.Overlay {
                 return Create(factory, node);
             }
             string values = attrs.Select(a => a.Value).Aggregate((sum, next) => sum + "','" + next);
-            Console.WriteLine(unable + "'" + values + "' did not map to any factories or instances." + ifDefault);
+            Logger.Debug(unable + "'" + values + "' did not map to any factories or instances." + ifDefault);
             return defalt;
         }
 
@@ -354,7 +352,7 @@ namespace Chimera.Overlay {
             XmlAttribute factoryAttr = node.Attributes["Factory"];
             //No attributes are specified - screw it
             if (nameAttr == null && factoryAttr == null) {
-                Console.WriteLine(unable + "No 'Name' or 'Factory' attribute mapped." + ifDefault);
+                Logger.Debug(unable + "No 'Name' or 'Factory' attribute mapped." + ifDefault);
                 return defalt;
             }
 
@@ -362,7 +360,7 @@ namespace Chimera.Overlay {
             if (nameAttr != null && map.ContainsKey(nameAttr.Value))
                 return map[nameAttr.Value];
             else if (factoryAttr == null) {
-                Console.WriteLine(unable + nameAttr.Value + " is not bound to a known instance. " + ifDefault);
+                Logger.Debug(unable + nameAttr.Value + " is not bound to a known instance. " + ifDefault);
                 return defalt;
             }
 
@@ -403,24 +401,24 @@ namespace Chimera.Overlay {
         private IFactory<T> GetFactory<T>(XmlNode node, string reason, params string[] attributes) {
             string unable = "Unable to get " + typeof(T).Name + " factory for " + reason + ". ";
             if (node == null) {
-                Console.WriteLine(unable + " No node.");
+                Logger.Debug(unable + " No node.");
                 return null;
             }
             IEnumerable<IFactory<T>> factories = GetFactories<T>();
             if (factories == null) {
-                Console.WriteLine(unable + ". No factories found for that type.");
+                Logger.Debug(unable + ". No factories found for that type.");
                 return null;
             }
             if (attributes.Length == 0)
                 attributes = new string[] { "Factory" };
             XmlAttribute factoryAttr = attributes.Where(a => node.Attributes[a] != null).Select(a => node.Attributes[a]).FirstOrDefault();
             if (factoryAttr == null) {
-                Console.WriteLine(unable + " No Factory attribute specified.");
+                Logger.Debug(unable + " No Factory attribute specified.");
                 return null;
             }
             IFactory<T> factory = factories.FirstOrDefault(f => f.Name == factoryAttr.Value);
             if (factory == null) {
-                Console.WriteLine(unable + factoryAttr.Value + " is not a mapped " + typeof(T).Name + " factory. Check Ninject config to make sure the binding exists.");
+                Logger.Debug(unable + factoryAttr.Value + " is not a mapped " + typeof(T).Name + " factory. Check Ninject config to make sure the binding exists.");
             }
             return factory;
         }

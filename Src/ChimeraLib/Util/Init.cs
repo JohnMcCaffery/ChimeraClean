@@ -472,11 +472,13 @@ namespace Chimera.Util {
             return ret;
         }
 
+        private static ILog Logger = LogManager.GetLogger("Startup");
+
         public static ArgvConfigSource InitArgConfig(string[] args) {
             try {
                 return new ArgvConfigSource(args);
             } catch (Exception e) {
-                Console.WriteLine("Unable to load argument config." + e.Message + "\n" + e.StackTrace);
+                Logger.Warn("Unable to load argument config." + e.Message + "\n" + e.StackTrace);
                 return new ArgvConfigSource(new string[0]);
             }
         }
@@ -533,7 +535,7 @@ namespace Chimera.Util {
                     dotnet.Merge(config);
                     return dotnet;
                 } catch (Exception e) {
-                    Console.WriteLine("Unable to load app configuration file " + file + "'." + e.Message + ".\n" + e.StackTrace);
+                    Logger.Warn("Unable to load app configuration file " + file + "'." + e.Message + ".\n" + e.StackTrace);
                 }
             } else if (File.Exists(file) && Path.GetExtension(file).ToUpper().Equals(".INI")) {
                 try {
@@ -543,7 +545,7 @@ namespace Chimera.Util {
                     ini.Merge(config);
                     return ini;
                 } catch (Exception e) {
-                    Console.WriteLine("Unable to load ini configuration file " + file + "'." + e.Message + ".\n" + e.StackTrace);
+                    Logger.Warn("Unable to load ini configuration file " + file + "'." + e.Message + ".\n" + e.StackTrace);
                 }
             }
             return config;

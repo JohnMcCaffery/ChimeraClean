@@ -29,9 +29,11 @@ using Chimera.Overlay;
 using Chimera.Interfaces.Overlay;
 using Chimera.Util;
 using System.Threading;
+using log4net;
 
 namespace Chimera.GUI.Forms {
     public partial class OverlayWindow : Form {
+        private readonly ILog Logger = LogManager.GetLogger("Flythrough");
         /// <summary>
         /// Statistics object which monitors how long ticks are taking.
         /// </summary>
@@ -97,7 +99,7 @@ namespace Chimera.GUI.Forms {
                     Thread.Sleep(length);
             }
 
-            Console.WriteLine(mManager.Name + " graphics thread shut down.");
+            Logger.Info(mManager.Name + " graphics thread shut down.");
         }
 
         public void RedrawStatic() {

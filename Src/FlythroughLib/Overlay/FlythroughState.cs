@@ -224,7 +224,7 @@ namespace Chimera.Flythrough.Overlay {
 
             Manager.Coordinator.ControlMode = ControlMode.Absolute;
             mInput.Enabled = true;
-            mInput.Coordinator.EnableUpdates = true;
+            mInput.Core.EnableUpdates = true;
             mInput.Load(mFlythrough);
 
             mInput.AutoStep = mAutoStepping;

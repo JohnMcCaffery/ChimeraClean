@@ -5,6 +5,7 @@ using System.Text;
 using System.Diagnostics;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
+using log4net;
 
 namespace Chimera.Util {
     public class ProcessController {
@@ -399,9 +400,11 @@ namespace Chimera.Util {
             mProcess.EnableRaisingEvents = true;
             mProcess.Exited += new EventHandler(mProcess_Exited);
 
-            Console.WriteLine("Launching " + exe + " " + args + " from " + workingDir);
+            Logger.Info("Launching " + exe + " " + args + " from " + workingDir);
             return mProcess.Start();
         }
+
+        private static ILog Logger = LogManager.GetLogger("ProcessController");
 
         void mProcess_Exited(object sender, EventArgs e) {
             mProcess = null;

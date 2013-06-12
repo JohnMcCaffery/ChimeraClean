@@ -403,9 +403,8 @@ namespace Chimera.OpenSim {
         }
 
         public void Restart(string reason) {
-            Console.WriteLine("Restarting viewer");
+            Logger.Info("Restarting viewer " + reason);
 
-            Console.WriteLine("Viewer shutdown unexpectedly");
             string dump = "Viewer crashed at " + DateTime.Now.ToString("u") + Environment.NewLine;
             dump += " Login: " + mFirstName + " " + mLastName + Environment.NewLine;
             dump += " Exe: " + mConfig.ViewerExecutable + Environment.NewLine;
