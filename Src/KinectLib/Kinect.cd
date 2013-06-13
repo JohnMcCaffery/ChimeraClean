@@ -153,13 +153,6 @@
       <FileName>GUI\Axes\KinectScaledAxisPanel.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Chimera.Kinect.GUI.DolphinMovementPanel" Collapsed="true">
-    <Position X="15.5" Y="0.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>/4DCoIAhECgADBAAAACCIAACIAGSAQAACCgLAAFBoTA=</HashCode>
-      <FileName>GUI\DolphinMovementPanel.cs</FileName>
-    </TypeIdentifier>
-  </Class>
   <Class Name="Chimera.Kinect.GUI.KinectCamera" Collapsed="true" BaseTypeListCollapsed="true">
     <Position X="13.75" Y="1.5" Width="1.5" />
     <TypeIdentifier>

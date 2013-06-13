@@ -46,7 +46,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Overlays", "Overlays", "{AA
 	ProjectSection(SolutionItems) = preProject
 		..\Overlays\ExampleOverlay.xml = ..\Overlays\ExampleOverlay.xml
 		..\Bin\Overlays\TimespanOverlay.xml = ..\Bin\Overlays\TimespanOverlay.xml
-		..\Bin\Overlays\TimespanOverlayDemo.xml = ..\Bin\Overlays\TimespanOverlayDemo.xml
+		..\Bin\Overlays\Demo.xml = ..\Bin\Overlays\Demo.xml
 		..\Bin\Overlays\TimespanOverlayDemo2.xml = ..\Bin\Overlays\TimespanOverlayDemo2.xml
 	EndProjectSection
 EndProject
@@ -79,6 +79,18 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Flythroughs", "Flythroughs"
 		..\Bin\Flythroughs\Caen-Guided-Full.xml = ..\Bin\Flythroughs\Caen-Guided-Full.xml
 		..\Bin\Flythroughs\Caen-Guided.xml = ..\Bin\Flythroughs\Caen-Guided.xml
 		..\Bin\Flythroughs\Caen-GuidedHack.xml = ..\Bin\Flythroughs\Caen-GuidedHack.xml
+		..\Bin\Flythroughs\Caen-long - Copy.xml = ..\Bin\Flythroughs\Caen-long - Copy.xml
+		..\Bin\Flythroughs\Caen-long.xml = ..\Bin\Flythroughs\Caen-long.xml
+		..\Bin\Flythroughs\Caen-Walk.xml = ..\Bin\Flythroughs\Caen-Walk.xml
+		..\Bin\Flythroughs\Caen-Walk2.xml = ..\Bin\Flythroughs\Caen-Walk2.xml
+		..\Bin\Flythroughs\Cathedral.xml = ..\Bin\Flythroughs\Cathedral.xml
+		..\Bin\Flythroughs\Cathedral2.xml = ..\Bin\Flythroughs\Cathedral2.xml
+		..\Bin\Flythroughs\Cathedral3.xml = ..\Bin\Flythroughs\Cathedral3.xml
+		..\Bin\Flythroughs\Cathedral4.xml = ..\Bin\Flythroughs\Cathedral4.xml
+		..\Bin\Flythroughs\Cathedral5.xml = ..\Bin\Flythroughs\Cathedral5.xml
+		..\Bin\Flythroughs\CathedralFlythrough-LookAt.xml = ..\Bin\Flythroughs\CathedralFlythrough-LookAt.xml
+		..\Bin\Flythroughs\CathedralFlythrough.xml = ..\Bin\Flythroughs\CathedralFlythrough.xml
+		..\Bin\Flythroughs\TimespanFlythrough.xml = ..\Bin\Flythroughs\TimespanFlythrough.xml
 	EndProjectSection
 EndProject
 Global
