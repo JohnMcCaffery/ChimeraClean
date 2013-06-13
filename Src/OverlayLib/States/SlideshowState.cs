@@ -27,6 +27,7 @@ using System.IO;
 using System.Text.RegularExpressions;
 using System.Xml;
 using Chimera.Overlay.Transitions;
+using log4net;
 
 namespace Chimera.Overlay.States {
     public class SlideshowStateFactory : IStateFactory {
@@ -44,6 +45,7 @@ namespace Chimera.Overlay.States {
     }
 
     public class SlideshowState : State {
+        private readonly ILog Logger = LogManager.GetLogger("Overlay.Slideshow");
         private readonly List<SlideshowWindow> mWindows = new List<SlideshowWindow>();
         private readonly IImageTransitionFactory mTransition;
         private readonly string mFolder;
@@ -69,7 +71,7 @@ namespace Chimera.Overlay.States {
 
             mTransition =  manager.GetImageTransitionFactory(node, "slideshow state", "Transition");
             if (mTransition == null) {
-                Console.WriteLine("Unable to look up custom transition for slideshow. Using default, fade.");
+                Logger.Warn("Unable to look up custom transition for slideshow. Using default, fade.");
                 mTransition = new BitmapFadeFactory();
             }
             mFolder = GetString(node, null, "Folder");

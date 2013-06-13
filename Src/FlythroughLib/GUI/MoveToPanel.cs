@@ -32,6 +32,8 @@ namespace Chimera.Flythrough.GUI {
     public partial class MoveToPanel : UserControl {
         private MoveToEvent mEvent;
         private Action<FlythroughEvent<Vector3>, int> mTimeChangeListener;
+        private bool mExternalUpdate;
+        private bool mGuiUpdate;
 
         public MoveToPanel() {
             InitializeComponent();
@@ -42,6 +44,7 @@ namespace Chimera.Flythrough.GUI {
             : this() {
             mEvent = evt;
 
+            mEvent.LengthChange += new EventHandler<LengthChangeEventArgs<Vector3>>(mEvent_LengthChange);
             if (mEvent.Target == Vector3.Zero) {
                 mEvent.Target = targetVectorPanel.Value;
                 mEvent.Length = (int)lengthValue.Value;
@@ -53,9 +56,9 @@ namespace Chimera.Flythrough.GUI {
             targetVectorPanel.ValueChanged += (source, args) => {
                 mEvent.Target = targetVectorPanel.Value;
                 //mEvent.Container.Time = evt.GlobalFinishTime;
-                mEvent.Container.Coordinator.Update(mEvent.Target, Vector3.Zero, mEvent.Container.Coordinator.Orientation, Rotation.Zero);
+                mEvent.Container.Core.Update(mEvent.Target, Vector3.Zero, mEvent.Container.Core.Orientation, Rotation.Zero);
             };
-            lengthValue.ValueChanged += (source, args) => mEvent.Length = (int)lengthValue.Value;
+
             mTimeChangeListener = new Action<FlythroughEvent<Vector3>,int>(evt_TimeChange);
         }
 
@@ -73,7 +76,7 @@ namespace Chimera.Flythrough.GUI {
         }
 
         private void moveToTakeCurrentButton_Click(object sender, EventArgs e) {
-            mEvent.Target = mEvent.Container.Coordinator.Position;
+            mEvent.Target = mEvent.Container.Core.Position;
             targetVectorPanel.Value = mEvent.Target;
         }
 
@@ -84,6 +87,22 @@ namespace Chimera.Flythrough.GUI {
                 progressBar.Value = mEvent.Time;
             } else
                 mEvent.TimeChange -= mTimeChangeListener;
+        }
+
+        void mEvent_LengthChange(object source, LengthChangeEventArgs<Vector3> args) {
+            if (!mGuiUpdate) {
+                mExternalUpdate = true;
+                lengthValue.Value = mEvent.Length;
+                mExternalUpdate = false;
+            }
+        }
+
+        private void lengthValue_ValueChanged(object sender, EventArgs e) {
+            if (!mExternalUpdate) {
+                mGuiUpdate = true;
+                mEvent.Length = (int)lengthValue.Value;
+                mGuiUpdate = false;
+            }
         }
     }
 }

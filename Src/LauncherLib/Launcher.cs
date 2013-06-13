@@ -46,9 +46,11 @@ using Ninject.Parameters;
 using Ninject.Extensions.Xml;
 using Chimera.Interfaces;
 using Chimera.OpenSim;
+using log4net;
 
 namespace Chimera.Launcher {
     public class Launcher {
+        private static ILog Logger = LogManager.GetLogger("Startup");
         private readonly Core mCoordinator;
         private LauncherConfig mConfig;
         private CoordinatorForm mForm;
@@ -78,13 +80,13 @@ namespace Chimera.Launcher {
             var settings = new NinjectSettings { LoadExtensions = false };
             IKernel k = new StandardKernel(settings, new XmlExtensionModule());
             if (mConfig.BindingsFile == null) {
-                Console.WriteLine("Unable to launch. No bindings file specified.");
+                Logger.Warn("Unable to launch. No bindings file specified.");
                 return;
             }
             try {
                 k.Load(mConfig.BindingsFile);
             } catch (Exception e) {
-                Console.WriteLine("Unable to launch. Problem loading bindings. " + e.Message);
+                Logger.Warn("Unable to launch. Problem loading bindings. " + e.Message);
             }
             if (k.TryGet<IMediaPlayer>() == null)
                 k.Bind<IMediaPlayer>().To<DummyPlayer>().InSingletonScope();
@@ -92,7 +94,8 @@ namespace Chimera.Launcher {
             try {
                 mCoordinator = k.Get<Core>();
             } catch (Exception e) {
-                Console.WriteLine("Unable to launch. Problem instantiating coordinator. " + (e.InnerException != null ? e.InnerException.Message :e.Message));
+                Logger.Warn("Unable to launch. Problem instantiating coordinator. " + (e.InnerException != null ? e.InnerException.Message :e.Message));
+                Logger.Debug("", e);
             }
         }
 

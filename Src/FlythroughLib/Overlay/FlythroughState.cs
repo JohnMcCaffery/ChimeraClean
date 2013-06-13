@@ -149,7 +149,8 @@ namespace Chimera.Flythrough.Overlay {
             if (displaySubtitles)
                 AddFeature(mSubtitlesText);
             if (mStepText != null)
-                AddFeature(mStepText);
+                AddFeature(mStepText);
+
             XmlNode triggersRoot = node.SelectSingleNode("child::Triggers");
             if (triggersRoot != null) {
                 foreach (XmlNode child in triggersRoot.ChildNodes)
@@ -223,7 +224,7 @@ namespace Chimera.Flythrough.Overlay {
 
             Manager.Coordinator.ControlMode = ControlMode.Absolute;
             mInput.Enabled = true;
-            mInput.Coordinator.EnableUpdates = true;
+            mInput.Core.EnableUpdates = true;
             mInput.Load(mFlythrough);
 
             mInput.AutoStep = mAutoStepping;

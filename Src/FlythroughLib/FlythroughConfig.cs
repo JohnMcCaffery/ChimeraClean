@@ -27,13 +27,14 @@ using Chimera.Config;
 namespace Chimera.Flythrough {
     class FlythroughConfig : ConfigBase {
         public bool Enabled;
+        public bool SynchLengths;
 
         public override string Group {
             get { return "Flythrough"; }
         }
 
         protected override void InitConfig() {
-            Enabled = Get(true, "Active", true, "Whether to allow the flythrough form to control the camera at the start.");
+            SynchLengths = Get(true, "SynchLengths", true, "Whether updating a position event's length will change the corresponding orientation event's length and vice versa.");
         }
     }
 }

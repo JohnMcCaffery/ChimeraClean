@@ -30,7 +30,7 @@ using Chimera.Util;
 
 namespace Chimera.Flythrough.GUI {
     public partial class FlythroughPanel : UserControl {
-        private FlythroughPlugin mContainer;
+        private FlythroughPlugin mPlugin;
         private Control mCurrentPanel;
         private ComboEvent mStartEvt;
         private bool GUIUpdate;
@@ -49,35 +49,35 @@ namespace Chimera.Flythrough.GUI {
         }
 
         public void Init(FlythroughPlugin container) {
-            mContainer = container;
+            mPlugin = container;
 
             mTickListener = new Action<int>(mContainer_Tick);
 
-            mContainer.LengthChange += mContainer_LengthChange;
-            mContainer.UnPaused += mContainer_UnPaused;
-            mContainer.OnPaused += mContainer_OnPaused;
-            mContainer.SequenceFinished += mContainer_SequenceFinished;
-            mContainer.FlythroughLoaded += mContainer_FlythroughLoaded;
-            mContainer.FlythroughLoading += mContainer_FlythroughLoading;
+            mPlugin.LengthChange += mContainer_LengthChange;
+            mPlugin.UnPaused += mContainer_UnPaused;
+            mPlugin.OnPaused += mContainer_OnPaused;
+            mPlugin.SequenceFinished += mContainer_SequenceFinished;
+            mPlugin.FlythroughLoaded += mContainer_FlythroughLoaded;
+            mPlugin.FlythroughLoading += mContainer_FlythroughLoading;
 
             Disposed += new EventHandler(FlythroughPanel_Disposed);
             HandleCreated += new EventHandler(FlythroughPanel_HandleCreated);
 
-            autoStepCheck.Checked = mContainer.AutoStep;
-            loopCheck.Checked = mContainer.Loop;
+            autoStepCheck.Checked = mPlugin.AutoStep;
+            loopCheck.Checked = mPlugin.Loop;
 
-            mStartEvt = new ComboEvent(mContainer);
+            mStartEvt = new ComboEvent(mPlugin);
             mStartEvt.Name = "Begin";
             eventsList.Items.Add(mStartEvt);
             mCurrentPanel = startPanel;
         }
 
         void FlythroughPanel_HandleCreated(object sender, EventArgs e) {
-            foreach (var evt in mContainer.Events)
+            foreach (var evt in mPlugin.Events)
                 AddEventToGUI((ComboEvent)evt);
-            startPositionPanel.Value = mContainer.Start.Position;
-            startOrientationPanel.Value = mContainer.Start.Orientation;
-            timeSlider.Maximum = mContainer.Length;
+            startPositionPanel.Value = mPlugin.Start.Position;
+            startOrientationPanel.Value = mPlugin.Start.Orientation;
+            timeSlider.Maximum = mPlugin.Length;
         }
 
         void mContainer_UnPaused() {
@@ -96,12 +96,12 @@ namespace Chimera.Flythrough.GUI {
         }
 
         void FlythroughPanel_Disposed(object sender, EventArgs e) {
-            mContainer.TimeChange -= mTickListener;
+            mPlugin.TimeChange -= mTickListener;
         }
 
         void mContainer_FlythroughLoading() {
             Action a = () => {
-                foreach (var evt in mContainer.Events)
+                foreach (var evt in mPlugin.Events)
                     eventsList.Items.Remove(evt);
             };
             if (InvokeRequired)
@@ -113,11 +113,11 @@ namespace Chimera.Flythrough.GUI {
         void mContainer_FlythroughLoaded() {
             Invoke(() => {
                 //timeSlider.Maximum = mContainer.Length;
-                foreach (var evt in mContainer.Events)
+                foreach (var evt in mPlugin.Events)
                     AddEventToGUI((ComboEvent)evt);
-                startPositionPanel.Value = mContainer.Start.Position;
-                startOrientationPanel.Value = mContainer.Start.Orientation;
-                timeSlider.Maximum = mContainer.Length;
+                startPositionPanel.Value = mPlugin.Start.Position;
+                startOrientationPanel.Value = mPlugin.Start.Orientation;
+                timeSlider.Maximum = mPlugin.Length;
             });
         }
 
@@ -129,12 +129,12 @@ namespace Chimera.Flythrough.GUI {
             if (!GUIUpdate) {
                 TickUpdate = true;
                 Invoke(new Action(() => {
-                    timeSlider.Maximum = mContainer.Length;
+                    timeSlider.Maximum = mPlugin.Length;
                     timeSlider.Value = time;
                     timeLabel.Text = "Time: " + Math.Round((double) time / 1000.0, 2);
-                    playButton.Text = mContainer.Paused ? "Play" : "Pause";
-                    loopCheck.Checked = mContainer.Loop;
-                    autoStepCheck.Checked = mContainer.AutoStep;
+                    playButton.Text = mPlugin.Paused ? "Play" : "Pause";
+                    loopCheck.Checked = mPlugin.Loop;
+                    autoStepCheck.Checked = mPlugin.AutoStep;
                 }));
                 TickUpdate = false;
             }
@@ -152,7 +152,7 @@ namespace Chimera.Flythrough.GUI {
             eventsList.Items.Add(evt);
             eventsList.EndUpdate();
             evt.TimeChange += (e, time) => {
-                if (!GUIUpdate && !IsDisposed && Created && mContainer.Time > 0)
+                if (!GUIUpdate && !IsDisposed && Created && mPlugin.Time > 0)
                     Invoke(new Action(() => { if (eventsList.SelectedItem != evt) eventsList.SelectedItem = evt; }));
             };
             evt.ControlPanel.Dock = DockStyle.Fill;
@@ -163,31 +163,31 @@ namespace Chimera.Flythrough.GUI {
         private void playButton_Click(object sender, EventArgs e) {
             if (playButton.Text == "Play") {
                 playButton.Text = "Pause";
-                mContainer.Play();
+                mPlugin.Play();
             } else {
                 playButton.Text = "Play";
-                mContainer.Paused = true;
+                mPlugin.Paused = true;
             }
         }
 
         private void autoStepBox_CheckedChanged(object sender, EventArgs e) {
-            mContainer.AutoStep = autoStepCheck.Checked;
+            mPlugin.AutoStep = autoStepCheck.Checked;
         }
 
         private void loopCheck_CheckedChanged(object sender, EventArgs e) {
-            mContainer.Loop = loopCheck.Checked;
+            mPlugin.Loop = loopCheck.Checked;
         }
 
         private void addToolStripMenuItem_Click(object sender, EventArgs args) {
-            ComboEvent evt = new ComboEvent(mContainer);
-            mContainer.AddEvent(evt);
+            ComboEvent evt = new ComboEvent(mPlugin);
+            mPlugin.AddEvent(evt);
             AddEventToGUI(evt);
         }
 
         private void removeToolStripMenuItem_Click(object sender, EventArgs e) {
             if (eventsList.SelectedIndex > 0) {
                 ComboEvent evt = (ComboEvent)eventsList.SelectedItem;
-                mContainer.RemoveEvent(evt);
+                mPlugin.RemoveEvent(evt);
                 eventsList.Items.Remove(evt);
                 eventPanel.Controls.Remove(evt.ControlPanel);
             }
@@ -195,7 +195,7 @@ namespace Chimera.Flythrough.GUI {
 
         private void moveUpToolStripMenuItem_Click(object sender, EventArgs e) {
             if (eventsList.SelectedIndex > 1)
-                mContainer.MoveUp((ComboEvent)eventsList.SelectedItem);
+                mPlugin.MoveUp((ComboEvent)eventsList.SelectedItem);
         }
 
         private void eventsList_SelectedValueChanged(object sender, EventArgs e) {
@@ -203,8 +203,8 @@ namespace Chimera.Flythrough.GUI {
                 GUIUpdate = true;
                 ComboEvent evt = (ComboEvent) eventsList.SelectedItem;
                 //mContainer.Time = evt.GlobalStartTime;
-                timeLabel.Text = "Time: " + Math.Round((double) mContainer.Time / 1000.0, 2);
-                timeSlider.Value = mContainer.Time;
+                timeLabel.Text = "Time: " + Math.Round((double) mPlugin.Time / 1000.0, 2);
+                timeSlider.Value = mPlugin.Time;
                 UserControl panel = evt.ControlPanel;
                 if (mCurrentPanel != panel) {
                     if (mCurrentPanel != null)
@@ -223,76 +223,76 @@ namespace Chimera.Flythrough.GUI {
         }
 
         private void timeSlider_Scroll(object sender, EventArgs e) {
-            mContainer.Paused = true;
-            mContainer.Time = timeSlider.Value;
+            mPlugin.Paused = true;
+            mPlugin.Time = timeSlider.Value;
             timeLabel.Text = "Time: " + Math.Round((double)timeSlider.Value / 1000.0, 2);
             playButton.Text = "Play";
         }
 
         private void startButton_Click(object sender, EventArgs e) {
-            mContainer.Time = 0;
-            mContainer.Play();
+            mPlugin.Time = 0;
+            mPlugin.Play();
             playButton.Text = "Pause";
         }
 
         private void startPositionPanel_OnChange(object sender, EventArgs e) {
-            mContainer.Start = new Camera(startPositionPanel.Value, new Rotation(mContainer.Coordinator.Orientation));
-            mContainer.Time = 0;
+            mPlugin.Start = new Camera(startPositionPanel.Value, new Rotation(mPlugin.Core.Orientation));
+            mPlugin.Time = 0;
         }
 
         private void startOrientationPanel_OnChange(object sender, EventArgs e) {
-            mContainer.Start = new Camera(mContainer.Coordinator.Position, startOrientationPanel.Value);
-            mContainer.Time = 0;
+            mPlugin.Start = new Camera(mPlugin.Core.Position, startOrientationPanel.Value);
+            mPlugin.Time = 0;
         }
 
         private void saveButton_Click(object sender, EventArgs e) {
             if (saveSequenceDialog.ShowDialog(this) == DialogResult.OK) {
-                mContainer.Save(saveSequenceDialog.FileName);
+                mPlugin.Save(saveSequenceDialog.FileName);
             }
         }
 
         private void loadButton_Click(object sender, EventArgs e) {
             if (loadSequenceDialog.ShowDialog(this) == DialogResult.OK)
-                mContainer.Load(loadSequenceDialog.FileName);
+                mPlugin.Load(loadSequenceDialog.FileName);
         }
 
         private void stepBackButton_Click(object sender, EventArgs e) {
-            if (mContainer.Time > 0)
-                mContainer.Time--;
+            if (mPlugin.Time > 0)
+                mPlugin.Time--;
         }
 
         private void stepForwardButton_Click(object sender, EventArgs e) {
-            if (mContainer.Time < mContainer.Length - 1)
-                mContainer.Time++;
+            if (mPlugin.Time < mPlugin.Length - 1)
+                mPlugin.Time++;
         }
 
         private void currentPositionButton_Click(object sender, EventArgs e) {
-            if (mContainer != null)
-                startPositionPanel.Value = mContainer.Coordinator.Position;
+            if (mPlugin != null)
+                startPositionPanel.Value = mPlugin.Core.Position;
         }
 
         private void takeOrientationButton_Click(object sender, EventArgs e) {
-            if (mContainer != null)
-                startOrientationPanel.Value = new Rotation(mContainer.Coordinator.Orientation);
+            if (mPlugin != null)
+                startOrientationPanel.Value = new Rotation(mPlugin.Core.Orientation);
         }
 
         private void takeCurrentCameraButton_Click(object sender, EventArgs e) {
-            if (mContainer != null) {
-                Rotation orientation = mContainer.Coordinator.Orientation;
-                startPositionPanel.Value = mContainer.Coordinator.Position;
+            if (mPlugin != null) {
+                Rotation orientation = mPlugin.Core.Orientation;
+                startPositionPanel.Value = mPlugin.Core.Position;
                 startOrientationPanel.Value = new Rotation(orientation);
             }
         }
 
         private void eventsList_DoubleClick(object sender, EventArgs e) {
             if (eventsList.SelectedIndex > 0)
-                mContainer.Time = ((FlythroughEvent<Camera>)eventsList.SelectedItem).SequenceStartTime;
+                mPlugin.Time = ((FlythroughEvent<Camera>)eventsList.SelectedItem).SequenceStartTime;
             else if (eventsList.SelectedIndex == 0)
-                mContainer.Time = 0;
+                mPlugin.Time = 0;
         }
 
         private void stepButton_Click(object sender, EventArgs e) {
-            mContainer.Step();
+            mPlugin.Step();
         }
 
         private TabPage mPage;
@@ -308,10 +308,14 @@ namespace Chimera.Flythrough.GUI {
 
         void mTabContainer_TabIndexChanged(object sender, EventArgs e) {
             if (mPage == mTabContainer.SelectedTab) {
-                mContainer.TimeChange += mTickListener;
+                mPlugin.TimeChange += mTickListener;
             } else {
-                mContainer.TimeChange -= mTickListener;
+                mPlugin.TimeChange -= mTickListener;
             }
+        }
+
+        private void synchLengthsCheck_CheckedChanged(object sender, EventArgs e) {
+            mPlugin.SynchLengths = synchLengthsCheck.Checked;
         }
     }
 }

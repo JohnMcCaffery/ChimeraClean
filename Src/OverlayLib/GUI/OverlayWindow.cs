@@ -29,9 +29,11 @@ using Chimera.Overlay;
 using Chimera.Interfaces.Overlay;
 using Chimera.Util;
 using System.Threading;
+using log4net;
 
 namespace Chimera.GUI.Forms {
     public partial class OverlayWindow : Form {
+        private readonly ILog Logger = LogManager.GetLogger("Flythrough");
         /// <summary>
         /// Statistics object which monitors how long ticks are taking.
         /// </summary>
@@ -52,17 +54,21 @@ namespace Chimera.GUI.Forms {
         /// Flag to force the static portion of the overlay to be redrawn.
         /// </summary>
         private bool mRedrawStatic;
-        private Cursor mDefaultCursor = new Cursor("../Cursors/cursor.cur");
+        private Cursor mDefaultCursor;
 
         public OverlayWindow() {
             InitializeComponent();
 
+            
+            OverlayConfig config = new OverlayConfig();
+            mDefaultCursor = new Cursor(config.DefaultCursor);
             Cursor = mDefaultCursor;
             TopMost = true;
         }
 
         public OverlayWindow(WindowOverlayManager manager)
             : this() {
+
             Init(manager);
         }
 
@@ -93,7 +99,7 @@ namespace Chimera.GUI.Forms {
                     Thread.Sleep(length);
             }
 
-            Console.WriteLine(mManager.Name + " graphics thread shut down.");
+            Logger.Info(mManager.Name + " graphics thread shut down.");
         }
 
         public void RedrawStatic() {

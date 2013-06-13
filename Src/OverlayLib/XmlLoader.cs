@@ -9,9 +9,12 @@ using System.IO;
 using Chimera.Interfaces.Overlay;
 using Chimera.Overlay.Interfaces;
 using System.Windows.Forms;
+using log4net;
 
 namespace Chimera.Overlay {
     public class XmlLoader : IControllable {
+        private static readonly ILog Logger = LogManager.GetLogger("Overlay");
+
         private Panel mPanel = new Panel();
         private string mName = null;
 
@@ -37,7 +40,7 @@ namespace Chimera.Overlay {
 
         public static RectangleF GetBounds(XmlNode node, string request) {
             if (node == null) {
-                Console.WriteLine("No node specified when looking up bounds for " + request + " from. Using defaults (full screen).");
+                Logger.Debug("No node specified when looking up bounds for " + request + " from. Using defaults (full screen).");
                 return new RectangleF(0f, 0f, 1f, 1f);
             }
 
@@ -65,24 +68,24 @@ namespace Chimera.Overlay {
 
         public static Bitmap GetImage(XmlNode node, string request) {
             if (node == null) {
-                Console.WriteLine("Unable to load image for " + request + ". No node specified.");
+                Logger.Debug("Unable to load image for " + request + ". No node specified.");
                 return null;
             }
             if (node.InnerText == null) {
-                Console.WriteLine("Unable to load image for " + request + " from " + node.Name + ". No file specified.");
+                Logger.Debug("Unable to load image for " + request + " from " + node.Name + ". No file specified.");
                 return null;
             }
 
             try {
                 string file = Path.GetFullPath(node.InnerText);
                 if (!File.Exists(file)) {
-                    Console.WriteLine("Unable to load image for " + request + " from " + node.Name + ". #" + file + "' does not exist.");
+                    Logger.Debug("Unable to load image for " + request + " from " + node.Name + ". #" + file + "' does not exist.");
                     return null;
                 }
                 return new Bitmap(file);    
             } catch (ArgumentException e) {
-                Console.WriteLine("Unable to load image for " + request + " from " + node.Name + ". '" + node.InnerText + "' is not a valid file name.");
-                    return null;
+                Logger.Debug("Unable to load image for " + request + " from " + node.Name + ". '" + node.InnerText + "' is not a valid file name.");
+                return null;
             }
 
         }
@@ -147,17 +150,17 @@ namespace Chimera.Overlay {
             WindowOverlayManager mManager;
             if (node == null) {
                 mManager = manager[0];
-                Console.WriteLine("No node specified when looking up frame for " + request + ". Using " + mManager.Frame.Name + " as default.");
+                Logger.Debug("No node specified when looking up frame for " + request + ". Using " + mManager.Frame.Name + " as default.");
                 return mManager;
             }
             XmlAttribute frameAttr = node.Attributes["Frame"];
             if (frameAttr == null) {
                 mManager = manager[0];
-                Console.WriteLine("No window specified whilst resolving " + node.Name + " from " + node.Name + ". Using " + mManager.Frame.Name + " as default.");
+                Logger.Debug("No window specified whilst resolving " + node.Name + " from " + node.Name + ". Using " + mManager.Frame.Name + " as default.");
             } else {
                 if (!manager.IsKnownWindow(frameAttr.Value)) {
                     mManager = manager[0];
-                    Console.WriteLine(frameAttr.Value + " is not a known frame. Using " + mManager.Frame.Name + " as default.");
+                    Logger.Debug(frameAttr.Value + " is not a known frame. Using " + mManager.Frame.Name + " as default.");
                 } else
                     mManager = manager[frameAttr.Value];
             }
@@ -166,7 +169,7 @@ namespace Chimera.Overlay {
 
         public static Font GetFont(XmlNode node, string request) {
             if (node == null) {
-                Console.WriteLine("No node specified when looking up font for " + request + ". Using defaults.");
+                Logger.Debug("No node specified when looking up font for " + request + ". Using defaults.");
                 return new Font(DEFAULT_FONT, DEFAULT_FONT_SIZE, DEFAULT_FONT_STYLE);
             }
             FontStyle style = DEFAULT_FONT_STYLE;
@@ -181,13 +184,13 @@ namespace Chimera.Overlay {
 
         public static Color GetColour(XmlNode node, string request, Color defalt) {
             if (node == null) {
-                Console.WriteLine("No node specified when looking up colour for " + request + ". Using defaults.");
+                Logger.Debug("No node specified when looking up colour for " + request + ". Using defaults.");
                 return DEFAULT_FONT_COLOUR;
             }
             Color colour = defalt;
             if (node.Attributes["Colour"] != null)
                 return Color.FromName(node.Attributes["Colour"].Value);
-            Console.WriteLine("Unable to get colour for " + node.Name + ". No Colour attribute specified.");
+            Logger.Debug("Unable to get colour for " + node.Name + ". No Colour attribute specified.");
             return defalt;
         }
 

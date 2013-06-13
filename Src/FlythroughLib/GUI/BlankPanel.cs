@@ -30,6 +30,8 @@ namespace Chimera.Flythrough.GUI {
     public partial class BlankPanel<T> : UserControl {
         private Action<FlythroughEvent<T>, int> mTimeChangeListener;
         private BlankEvent<T> mEvent;
+        private bool mExternalUpdate;
+        private bool mGuiUpdate;
 
         public BlankPanel() {
             InitializeComponent();
@@ -44,7 +46,7 @@ namespace Chimera.Flythrough.GUI {
             else
                 lengthValue.Value = mEvent.Length;
 
-            lengthValue.ValueChanged += (source, args) => mEvent.Length = (int)lengthValue.Value;
+            mEvent.LengthChange += new EventHandler<LengthChangeEventArgs<T>>(mEvent_LengthChange);
             mTimeChangeListener = (e, time) => {
                 BeginInvoke(new Action(() => {
                     progressBar.Maximum = evt.Length;
@@ -60,6 +62,22 @@ namespace Chimera.Flythrough.GUI {
                 progressBar.Value = mEvent.Time;
             } else
                 mEvent.TimeChange -= mTimeChangeListener;
+        }
+
+        void mEvent_LengthChange(object source, LengthChangeEventArgs<T> args) {
+            if (!mGuiUpdate) {
+                mExternalUpdate = true;
+                lengthValue.Value = mEvent.Length;
+                mExternalUpdate = false;
+            }
+        }
+
+        private void lengthValue_ValueChanged(object sender, EventArgs e) {
+            if (!mExternalUpdate) {
+                mGuiUpdate = true;
+                mEvent.Length = (int)lengthValue.Value;
+                mGuiUpdate = false;
+            }
         }
     }
 }

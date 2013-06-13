@@ -16,6 +16,7 @@ namespace Chimera.Overlay {
         public bool LaunchOverlay;
         public bool Fullscreen;
         public bool IdleEnabled;
+        public string DefaultCursor;
 
         public override string Group {
             get { return "Overlay"; }
@@ -34,6 +35,8 @@ namespace Chimera.Overlay {
             InterfaceMode = Get(true, "InterfaceMode", "HoverBased", "The mode the overlay is in. Use this to choose between different configs embedded in the same Overlay config file.");
             OverlayFile = Get(true, "OverlayFile", null, "The overlay file to load.");
             IdleEnabled = Get(true, "IdleEnabled", true, "Whether the idle triggers should be activated.");
+
+            DefaultCursor = Get(true, "DefaultCursor", "Cursors/cursor.cur", "The default cursor file to use on the overlay as the overlay cursor.");
         }
     }
 }

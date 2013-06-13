@@ -32,6 +32,7 @@ using Chimera.Flythrough.GUI;
 using Chimera.Flythrough;
 using System.Drawing;
 using Chimera.Config;
+using log4net;
 
 namespace Chimera.Flythrough {
     public struct Camera {
@@ -48,6 +49,7 @@ namespace Chimera.Flythrough {
     }
 
     public class FlythroughPlugin : ISystemPlugin {
+        private ILog Logger = LogManager.GetLogger("Flythrough");
         private EventSequence<Camera> mEvents = new EventSequence<Camera>();
         private Action mTickListener;
         private Core mCoordinator;
@@ -58,6 +60,10 @@ namespace Chimera.Flythrough {
         private bool mPlaying = false;
         private bool mLoop = false;
         private bool mAutoStep = true;
+        private bool mTicking;
+        private bool mSynchLengths;
+        public event Action<int> StepFinished;
+        public event Action<int> StepStarted;
         /// <summary>
         /// The time, as it was last set. Used for debugging only.
         /// </summary>
@@ -104,9 +110,10 @@ namespace Chimera.Flythrough {
             get { return mEvents.Count; }
         }
 
-        private bool mTicking;
-        public event Action<int> StepFinished;
-        public event Action<int> StepStarted;
+        public bool SynchLengths {
+            get { return mSynchLengths; }
+            set { mSynchLengths = value; }
+        }
 
         /// <summary>
         /// Where in the current sequence playback has reached.
@@ -204,7 +211,7 @@ namespace Chimera.Flythrough {
             mTickListener = new Action(mCoordinator_Tick);
 
             FlythroughConfig cfg = new FlythroughConfig();
-            mEnabled = cfg.Enabled;
+            mSynchLengths = cfg.SynchLengths;
         }
 
         public void Play() {
@@ -262,7 +269,7 @@ namespace Chimera.Flythrough {
         /// <param name="file">The file to load as a flythrough.</param>
         public void Load(string file) {
             if (!File.Exists(file)) {
-                Console.WriteLine("Unable to load " + file + ". Ignoring load request.");
+                Logger.Warn("Unable to load " + file + ". Ignoring load request.");
                 return;
             }
 
@@ -336,7 +343,6 @@ namespace Chimera.Flythrough {
 
         private void FlythroughThread() {
             mFinished = false;
-            mPlaying = true;
             while (mPlaying && mEvents.Length > 0) {
                 IncrementTime();
                 mPrev = mCurrent;
@@ -344,7 +350,7 @@ namespace Chimera.Flythrough {
 
                 double wait = mCoordinator.TickLength - DateTime.Now.Subtract(mLastTick).TotalMilliseconds;
                 if (wait < 0)
-                    Console.WriteLine("Flythrough Tick overran by " + (wait * -1) + "ms.");
+                    Logger.Debug("Flythrough Tick overran by " + (wait * -1) + "ms.");
                 else
                     System.Threading.Thread.Sleep((int)wait);
 
@@ -477,7 +483,7 @@ namespace Chimera.Flythrough {
             }
         }
 
-        public Core Coordinator {
+        public Core Core {
             get { return mCoordinator; }
         }
 
@@ -490,11 +496,6 @@ namespace Chimera.Flythrough {
         public void Draw(System.Drawing.Graphics graphics, Func<Vector3, Point> to2D, Action redraw, Perspective perspective) {
             //Do nothing
         }
-
-        #endregion
-
-        #region ISystemPlugin Members
-
 
         public void SetForm(Form form) {
         }

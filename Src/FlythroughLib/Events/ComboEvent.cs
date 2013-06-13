@@ -32,6 +32,7 @@ namespace Chimera.Flythrough {
         private static int COUNT = 0;
         private readonly EventSequence<Vector3> mPositionSequence = new EventSequence<Vector3>();
         private readonly EventSequence<Rotation> mOrientationSequence = new EventSequence<Rotation>();
+        private readonly FlythroughPlugin mPlugin;
         private ComboPanel mControl;
 
         /// <summary>
@@ -64,6 +65,8 @@ namespace Chimera.Flythrough {
         /// <param name="length">The length of value the event will run (ms).</param>
         public ComboEvent(FlythroughPlugin flythrough)
             : base(flythrough, 1) {
+
+            mPlugin = flythrough;
 
             mPositionSequence.LengthChange += new Action<EventSequence<Vector3>,int>(mPositionSequence_LengthChange);
             mPositionSequence.FinishChange += new EventHandler(FinishChanged);
@@ -187,12 +190,34 @@ namespace Chimera.Flythrough {
             mPositionSequence.AddEvent(evt);
             if (evt is IOrientationListener)
                 ((IOrientationListener)evt).Init(mOrientationSequence);
+
+            evt.LengthChange += new EventHandler<LengthChangeEventArgs<Vector3>>(posEvt_LengthChange);
         }
 
         public void AddEvent(FlythroughEvent<Rotation> evt) {
             mOrientationSequence.AddEvent(evt);
             if (evt is IPositionListener)
                 ((IPositionListener)evt).Init(mPositionSequence);
+
+            evt.LengthChange += new EventHandler<LengthChangeEventArgs<Rotation>>(orientationEvt_LengthChange);
+        }
+
+        private bool mSynchUpdating;
+
+        void posEvt_LengthChange(object sender, LengthChangeEventArgs<Vector3> e) {
+            if (mPlugin.SynchLengths && !mSynchUpdating && mOrientationSequence.Length > e.Event.SequenceStartTime) {
+                mSynchUpdating = true;
+                mOrientationSequence[e.Event.SequenceStartTime].Length += e.NewLength - e.OldLength;
+                mSynchUpdating = false;
+            }
+        }
+
+        void orientationEvt_LengthChange(object sender, LengthChangeEventArgs<Rotation> e) {
+            if (mPlugin.SynchLengths && !mSynchUpdating && mPositionSequence.Length > e.Event.SequenceStartTime) {
+                mSynchUpdating = true;
+                mPositionSequence[e.Event.SequenceStartTime].Length += e.NewLength - e.OldLength;
+                mSynchUpdating = false;
+            }
         }
 
         public void RemoveEvent(FlythroughEvent<Vector3> evt) {

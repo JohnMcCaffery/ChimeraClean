@@ -29,6 +29,7 @@ using System.Reflection;
 using System.Threading;
 using Chimera.Interfaces;
 using Chimera.Config;
+using log4net;
 
 namespace Chimera.Util {
     public static class ProcessWrangler {
@@ -1471,19 +1472,21 @@ namespace Chimera.Util {
             return process;
         }
 
+        private static ILog Logger = LogManager.GetLogger("ProcessManager");
+
         public static void BlockingRunForm(Form form, ICrashable root) {
             Application.EnableVisualStyles();
             sForm = form;
             sRoot = root;
             if (!Debugger.IsAttached) {
             //if (true) {
-                Console.WriteLine("Listening for crashes.");
+                Logger.Info("Listening for crashes.");
                 AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
                 Application.ThreadException += new ThreadExceptionEventHandler(Application_ThreadException);
                 try {
                     Application.Run(form);
                 } catch (Exception e) {
-                    Console.WriteLine("Exception caught in GUI thread.");
+                    Logger.Warn("Exception caught in GUI thread.");
                     HandleException(e);
                 }
             } else
@@ -1491,20 +1494,20 @@ namespace Chimera.Util {
         }
 
         static void Application_ThreadException(object sender, System.Threading.ThreadExceptionEventArgs e) {
-            Console.WriteLine("Exception caught in Thread.");
+            Logger.Warn("Exception caught in Thread.");
             sForm.Close();
             HandleException(e.Exception);
         }
 
         static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e) {
-            Console.WriteLine("Exception caught in App Domain.");
+            Logger.Warn("Exception caught in App Domain.");
             sForm.Close();
             HandleException((Exception)e.ExceptionObject);
         }
 
         static void HandleException(Exception e) {
-            Console.WriteLine(e.Message);
-            Console.WriteLine(e.StackTrace);
+            Logger.Warn(e.Message);
+            Logger.Warn(e.StackTrace);
             sRoot.OnCrash(e);
             throw e;
             //Environment.Exit(42);
@@ -1521,7 +1524,7 @@ namespace Chimera.Util {
                 string file = Path.GetFullPath(cfg.Folder + y + "/" + m + "/" + t + end);
                 if (!Directory.Exists(Path.GetDirectoryName(file)))
                     Directory.CreateDirectory(Path.GetDirectoryName(file));
-                Console.WriteLine("Dumping to " + file);
+                Logger.Info("Dumping to " + file);
 
                 File.WriteAllText(file, dump);
             }

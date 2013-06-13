@@ -132,13 +132,6 @@
     <Compile Include="Axes\PushAxis.cs" />
     <Compile Include="Axes\TAxis.cs" />
     <Compile Include="KinectMovementPlugin.cs" />
-    <Compile Include="DolphinMovementInput.cs" />
-    <Compile Include="GUI\DolphinMovementPanel.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="GUI\DolphinMovementPanel.Designer.cs">
-      <DependentUpon>DolphinMovementPanel.cs</DependentUpon>
-    </Compile>
     <Compile Include="GUI\PointCursorPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -191,9 +184,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\Axes\KinectScaledAxisPanel.resx">
       <DependentUpon>KinectScaledAxisPanel.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="GUI\DolphinMovementPanel.resx">
-      <DependentUpon>DolphinMovementPanel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\PointCursorPanel.resx">
       <DependentUpon>PointCursorPanel.cs</DependentUpon>
