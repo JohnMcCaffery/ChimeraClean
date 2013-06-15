@@ -25,13 +25,19 @@ using Chimera.Overlay;
 
 namespace Chimera.Kinect.Overlay {
     public class KinectControlWindowState : WindowState {
+        private double mOpacity;
 
         public KinectControlWindowState(WindowOverlayManager manager)
             : base(manager) {
         }
 
+        public KinectControlWindowState(WindowOverlayManager manager, double mOpacity)
+            : this(manager) {
+            this.mOpacity = mOpacity;
+        }
+
         protected override void OnActivated() {
-            Manager.Opacity = .3;
+            Manager.Opacity = mOpacity;
             Manager.ControlPointer = false;
         }
     }

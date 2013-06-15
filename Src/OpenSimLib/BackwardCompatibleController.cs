@@ -43,12 +43,12 @@ namespace Chimera.OpenSim {
             cameraPacket.CameraProperty[21].Value = 1f;
             return cameraPacket;
         }
-        protected override void ActualSetCamera() {
-            InjectPacket(MakePacket(true));
+        protected override Packet ActualSetCamera() {
+            return MakePacket(true);
         }
 
-        protected override void ActualSetCamera(OpenMetaverse.Vector3 positionDelta, Util.Rotation orientationDelta) {
-            InjectPacket(MakePacket(true));
+        protected override Packet ActualSetCamera(OpenMetaverse.Vector3 positionDelta, Util.Rotation orientationDelta) {
+            return MakePacket(true);
         }
 
         public override void SetFrustum(bool setPosition) {

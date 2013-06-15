@@ -47,7 +47,7 @@
     <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
-    <OutputPath>bin\x86\Release\</OutputPath>
+    <OutputPath>..\..\Bin\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
@@ -131,6 +131,7 @@
     <Compile Include="Packets\SetFrustumPacket.cs" />
     <Compile Include="Packets\SetCameraPacket.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ProxyControllerPacketThread.cs" />
     <Compile Include="ViewerConfig.cs" />
     <Compile Include="ProxyControllerBase.cs" />
     <Compile Include="SetFollowCamProperties.cs" />

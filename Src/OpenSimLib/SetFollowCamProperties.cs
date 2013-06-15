@@ -162,9 +162,12 @@ namespace Chimera.OpenSim {
         private bool mFlying;
 
         void mCoordinator_CameraModeChanged(Core coordinator, ControlMode mode) {
-            if (mCoordinator.ControlMode == ControlMode.Delta)
+            if (mCoordinator.ControlMode == ControlMode.Delta) {
                 mCoordinator.DeltaUpdated += mDeltaListener;
-            else
+                mCoordinator.Update(Vector3.Zero, Vector3.Zero, new Rotation(0.0, 1.0), Rotation.Zero);
+                Thread.Sleep(1000);
+                mCoordinator.Update(Vector3.Zero, Vector3.Zero, new Rotation(0.0, 0.0), Rotation.Zero);
+            } else
                 mCoordinator.DeltaUpdated -= mDeltaListener;
 
             Update();

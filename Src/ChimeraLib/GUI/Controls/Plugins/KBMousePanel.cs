@@ -25,6 +25,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using Chimera.GUI.Forms;
 
 namespace Chimera.Plugins {
     public partial class KBMousePanel : UserControl {

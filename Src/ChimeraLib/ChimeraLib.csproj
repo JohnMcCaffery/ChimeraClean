@@ -80,6 +80,7 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Windows.Forms.DataVisualization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
@@ -92,6 +93,18 @@
     <Compile Include="Config\ConfigFolderBase.cs" />
     <Compile Include="Config\PluginConfig.cs" />
     <Compile Include="Config\ProjectorConfig.cs" />
+    <Compile Include="GUI\Controls\StatisticsPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\Controls\StatisticsPanel.Designer.cs">
+      <DependentUpon>StatisticsPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\Forms\StatisticsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\Forms\StatisticsForm.Designer.cs">
+      <DependentUpon>StatisticsForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Interfaces\IDiagramDrawable.cs" />
     <Compile Include="Interfaces\IOutputFactory.cs" />
     <Compile Include="Plugins\Projector.cs" />
@@ -172,10 +185,10 @@
     <Compile Include="Plugins\DeltaBasedPlugin.cs" />
     <Compile Include="Interfaces\IUpdater.cs" />
     <Compile Include="Interfaces\ITickSource.cs" />
-    <Compile Include="GUI\Forms\Inputs\CameraControlForm.cs">
+    <Compile Include="GUI\Forms\CameraControlForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="GUI\Forms\Inputs\CameraControlForm.Designer.cs">
+    <Compile Include="GUI\Forms\CameraControlForm.Designer.cs">
       <DependentUpon>CameraControlForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Plugins\KBMousePlugin.cs" />
@@ -261,6 +274,9 @@
     <EmbeddedResource Include="GUI\Controls\RotationPanel.resx">
       <DependentUpon>RotationPanel.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="GUI\Controls\StatisticsPanel.resx">
+      <DependentUpon>StatisticsPanel.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="GUI\Controls\UpdatedScalarPanel.resx">
       <DependentUpon>UpdatedScalarPanel.cs</DependentUpon>
     </EmbeddedResource>
@@ -276,11 +292,14 @@
     <EmbeddedResource Include="GUI\Forms\CoordinatorForm.resx">
       <DependentUpon>CoordinatorForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="GUI\Forms\Inputs\CameraControlForm.resx">
+    <EmbeddedResource Include="GUI\Forms\CameraControlForm.resx">
       <DependentUpon>CameraControlForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\Controls\Plugins\KBMousePanel.resx">
       <DependentUpon>KBMousePanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\Forms\StatisticsForm.resx">
+      <DependentUpon>StatisticsForm.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

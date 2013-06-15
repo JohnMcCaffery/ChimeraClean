@@ -117,7 +117,19 @@ namespace Chimera {
         /// <summary>
         /// Statistics object which monitors how long ticks are taking.
         /// </summary>
-        private readonly TickStatistics mStats = new TickStatistics();
+        private readonly TickStatistics mTickStats = new TickStatistics();
+        /// <summary>
+        /// Statistics object which monitors how long update operations are taking.
+        /// </summary>
+        private readonly TickStatistics mUpdateStats = new TickStatistics();
+        /// <summary>
+        /// Statistics object which monitors how camera updates are taking.
+        /// </summary>
+        private readonly TickStatistics mCameraStats = new TickStatistics();
+        /// <summary>
+        /// Statistics object which monitors how delta updates are taking.
+        /// </summary>
+        private readonly TickStatistics mDeltaStats = new TickStatistics();
         /// <summary>
         /// The authoratitive orientation of the camera in virtual space. This is read-only. To update it use the 'Update' method.
         /// </summary>
@@ -285,6 +297,7 @@ namespace Chimera {
                 Thread tickThread = new Thread(TickMethod);
 
                 tickThread.Name = "Tick Thread";
+                //tickThread.Priority = ThreadPriority.Highest;
                 tickThread.Start();
                 success = true;
             } finally {
@@ -297,10 +310,10 @@ namespace Chimera {
             mAlive = true;
             while (mAlive) {
                 DateTime tickStart = DateTime.Now;
-                mStats.Begin();
+                mTickStats.Begin();
                 if (Tick != null)
                     Tick();
-                mStats.Tick();
+                mTickStats.End();
                 int time = (int)(mTickLength - DateTime.Now.Subtract(tickStart).TotalMilliseconds);
                 if (mAlive && time > 0)
                     Thread.Sleep(time);
@@ -421,8 +434,29 @@ namespace Chimera {
         /// <summary>
         /// Object which will supply information about how long ticks are taking.
         /// </summary>
-        public TickStatistics Statistics {
-            get { return mStats; }
+        public TickStatistics TickStatistics {
+            get { return mTickStats; }
+        }
+
+        /// <summary>
+        /// Object which will supply information about how long camera updates are taking.
+        /// </summary>
+        public TickStatistics UpdateStatistics {
+            get { return mUpdateStats; }
+        }
+
+        /// <summary>
+        /// Object which will supply information about how long camera updates are taking.
+        /// </summary>
+        public TickStatistics CameraStatistics {
+            get { return mCameraStats; }
+        }
+
+        /// <summary>
+        /// Object which will supply information about how delta updates ticks are taking.
+        /// </summary>
+        public TickStatistics DeltaStatistics {
+            get { return mDeltaStats; }
         }
 
         /// <summary>
@@ -463,6 +497,7 @@ namespace Chimera {
         /// <param name="mode">How the camera is to be updated. Can override the current global ControlMode setting.</param>
         public void Update(Vector3 position, Vector3 postionDelta, Rotation orientation, Rotation orientationDelta, ControlMode mode) {
             if (mEnableUpdates) {
+                mUpdateStats.Begin();
                 mPositionDelta = postionDelta;
                 mOrientationDelta.Update(mRotationLock, orientationDelta);
                 if (mode == Chimera.ControlMode.Absolute) {
@@ -482,14 +517,19 @@ namespace Chimera {
                     mOrientation.Update(mRotationLock, orientation);
                     if (CameraUpdated != null && mAlive) {
                         CameraUpdateEventArgs args = new CameraUpdateEventArgs(position, postionDelta, orientation, orientationDelta);
+                        mCameraStats.Begin();
                         CameraUpdated(this, args);
+                        mCameraStats.End();
                         //Console.WriteLine("TickFrequency - time since update: " + (mTickLength -  DateTime.Now.Subtract(mLastUpdate).TotalMilliseconds));
                         mLastUpdate = DateTime.Now;
                     }
                 } else if (DeltaUpdated != null && mAlive) {
                     DeltaUpdateEventArgs args = new DeltaUpdateEventArgs(postionDelta, orientationDelta);
+                    mDeltaStats.Begin();
                     DeltaUpdated(this, args);
+                    mDeltaStats.End();
                 }
+                mUpdateStats.End();
             }
         }
 

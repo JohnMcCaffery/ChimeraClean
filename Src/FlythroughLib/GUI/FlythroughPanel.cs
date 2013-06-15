@@ -27,6 +27,7 @@ using System.Text;
 using System.Windows.Forms;
 using OpenMetaverse;
 using Chimera.Util;
+using Chimera.GUI.Forms;
 
 namespace Chimera.Flythrough.GUI {
     public partial class FlythroughPanel : UserControl {
@@ -316,6 +317,21 @@ namespace Chimera.Flythrough.GUI {
 
         private void synchLengthsCheck_CheckedChanged(object sender, EventArgs e) {
             mPlugin.SynchLengths = synchLengthsCheck.Checked;
+        }
+
+        private StatisticsForm mStatsForm;
+
+        private void statsButton_Click(object sender, EventArgs e) {
+            if (mStatsForm == null) {
+                mStatsForm = new StatisticsForm(mPlugin.Core, mPlugin.Statistics);
+                mStatsForm.FormClosed += new FormClosedEventHandler(mStatsForm_FormClosed);
+                mStatsForm.Show(this);
+            } else
+                mStatsForm.Close();
+        }
+
+        void mStatsForm_FormClosed(object sender, FormClosedEventArgs e) {
+            mStatsForm = null;
         }
     }
 }

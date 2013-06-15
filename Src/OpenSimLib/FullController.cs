@@ -5,6 +5,7 @@ using System.Text;
 using OpenMetaverse;
 using Chimera.Util;
 using Chimera.OpenSim.Packets;
+using OpenMetaverse.Packets;
 
 namespace Chimera.OpenSim {
     public class FullController : ProxyControllerBase {
@@ -13,12 +14,12 @@ namespace Chimera.OpenSim {
         public FullController(Frame frame)
             : base(frame) {
         }        
-        protected override void ActualSetCamera() {
-            InjectPacket(new SetCameraPacket(MakeCameraBlock()));
+        protected override Packet ActualSetCamera() {
+            return new SetCameraPacket(MakeCameraBlock());
         }
 
-        protected override void ActualSetCamera(OpenMetaverse.Vector3 positionDelta, Util.Rotation orientationDelta) {
-            InjectPacket(new SetCameraPacket(MakeCameraBlock()));
+        protected override Packet ActualSetCamera(OpenMetaverse.Vector3 positionDelta, Util.Rotation orientationDelta) {
+            return new SetCameraPacket(MakeCameraBlock());
         }
 
         public override void SetFrustum(bool setPosition) {

@@ -103,7 +103,6 @@ namespace Chimera.GUI.Forms {
             mEyeUpdatedListener = new Action<Core, EventArgs>(mCoordinator_EyeUpdated);
             mClosedListener = new Action<Core, KeyEventArgs>(mCoordinator_Closed);
             mHeightmapChangedListener = new EventHandler<HeightmapChangedEventArgs>(mCoordinator_HeightmapChanged);
-            mTickListener = new Action(mCoordinator_Tick);
 
             mCoordinator.CameraModeChanged += mCameraModeChangedListener;
             mCoordinator.EnableUpdatesChanged += new Action(mCoordinator_EnableUpdatesChanged);
@@ -126,11 +125,16 @@ namespace Chimera.GUI.Forms {
             mHeightmap = new Bitmap(mCoordinator.Heightmap.GetLength(0), mCoordinator.Heightmap.GetLength(1), PixelFormat.Format24bppRgb);
             mHeightmapPerspective = new HeightmapPerspective(mCoordinator, heightmapPanel);
 
-
+            tickStatsPanel.Init(coordinator.TickStatistics, coordinator);
+            updateStatsPanel.Init(coordinator.UpdateStatistics, coordinator);
+            cameraStatsPanel.Init(coordinator.CameraStatistics, coordinator);
+            deltaStatsPanel.Init(coordinator.DeltaStatistics, coordinator);
 
             foreach (var window in mCoordinator.Frames) {
                 mCoordinator_WindowAdded(window, null);
             }
+
+            pluginsTab.Controls.Remove(statisticsTab);
 
             foreach (var plugin in mCoordinator.Plugins) {
                 TabPage inputTab = new TabPage();
@@ -170,14 +174,14 @@ namespace Chimera.GUI.Forms {
                 plugin.ControlPanel.Size = new System.Drawing.Size(413, 233);
                 plugin.ControlPanel.TabIndex = 0;
 
-                inputsTab.Controls.Add(inputTab);
+                pluginsTab.Controls.Add(inputTab);
 
                 plugin.EnabledChanged += (p, enabled) => Invoke(() => enableCheck.Checked = enabled);
 
                 plugin.SetForm(this);
             }
             
-            inputsTab.Controls.Add(statisticsTab);
+            pluginsTab.Controls.Add(statisticsTab);
         }
 
         void mCoordinator_EnableUpdatesChanged() {
@@ -209,25 +213,6 @@ namespace Chimera.GUI.Forms {
 
             windowsTab.Controls.Add(windowTab);
             frame.Changed += new Action<Frame, EventArgs>(frame_Changed);
-        }
-
-        private void mCoordinator_Tick() {
-            if (Created && !IsDisposed && !Disposing)
-                Invoke(() => {
-                    if (inputsTab.SelectedTab != statisticsTab)
-                        return;
-                    tpsLabel.Text = "Ticks / Second: " + mCoordinator.Statistics.TicksPerSecond;
-
-                    meanTickLabel.Text = "Mean Tick Length: " + mCoordinator.Statistics.MeanTickLength;
-                    longestTickLabel.Text = "Longest Tick: " + mCoordinator.Statistics.LongestTick;
-                    shortestTickLabel.Text = "Shortest Tick: " + mCoordinator.Statistics.ShortestTick;
-
-                    meanWorkLabel.Text = "Mean Work Length: " + mCoordinator.Statistics.MeanWorkLength;
-                    longestWorkLabel.Text = "Longest Work: " + mCoordinator.Statistics.LongestWork;
-                    shortestWorkLabel.Text = "Shortest Work: " + mCoordinator.Statistics.ShortestWork;
-
-                    tickCountLabel.Text = "Tick Count: " + mCoordinator.Statistics.TickCount;
-                });
         }
 
         private void frame_Changed(Frame frame, EventArgs args) {
@@ -345,18 +330,19 @@ namespace Chimera.GUI.Forms {
         }
 
         private void mCoordinator_CameraUpdated(Core coordinator, CameraUpdateEventArgs args) {
+            //return;
             //if (DateTime.Now.Subtract(mLastUpdate).TotalMilliseconds < 20)
               //  return;
 
             mLastUpdate = DateTime.Now;
-            if (!mGuiUpdate && Created && !IsDisposed && !Disposing && coordinator.ControlMode == ControlMode.Absolute) {
+            if (!mGuiUpdate && coordinator.ControlMode == ControlMode.Absolute) {
                 Invoke(() => {
-                mExternalUpdate = true;
+                    mExternalUpdate = true;
                     virtualPositionPanel.Value = args.position;
                     virtualOrientationPanel.Pitch = args.rotation.Pitch;
                     virtualOrientationPanel.Yaw = args.rotation.Yaw;
                     //heightmapPanel.Invalidate();
-                mExternalUpdate = false;
+                    mExternalUpdate = false;
                 });
             }
         }
@@ -691,6 +677,8 @@ namespace Chimera.GUI.Forms {
             }
 
             private void CalculateWorldMatrix() {
+                return;
+
                 Matrix4 toWorldScale = Matrix4.CreateScale(new Vector3(.001f, -.001f, .001f));
                 Matrix4 toWorldOrientation = Matrix4.CreateRotationZ((float) (mCoordinator.Orientation.Yaw * Math.PI / 180.0));
                 Matrix4 toWorldCoords = Matrix4.CreateTranslation(mCoordinator.Position);
@@ -784,6 +772,20 @@ namespace Chimera.GUI.Forms {
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e) {
             mCoordinator.EnableUpdates = enableUpdates.Checked;
+        }
+
+        private void inputsTab_SelectedIndexChanged(object sender, EventArgs e) {
+            tickStatsPanel.Active = pluginsTab.SelectedTab == statisticsTab && statsTabs.SelectedTab == tickTab;
+            updateStatsPanel.Active = pluginsTab.SelectedTab == statisticsTab && statsTabs.SelectedTab == updatesTab;
+            cameraStatsPanel.Active = pluginsTab.SelectedTab == statisticsTab && statsTabs.SelectedTab == cameraTab;
+            deltaStatsPanel.Active = pluginsTab.SelectedTab == statisticsTab && statsTabs.SelectedTab == deltaTab;
+        }
+
+        private void statsTab_SelectedIndexChanged(object sender, EventArgs e) {
+            updateStatsPanel.Active = pluginsTab.SelectedTab == statisticsTab && statsTabs.SelectedTab == updatesTab;
+            tickStatsPanel.Active = pluginsTab.SelectedTab == statisticsTab && statsTabs.SelectedTab == tickTab;
+            cameraStatsPanel.Active = pluginsTab.SelectedTab == statisticsTab && statsTabs.SelectedTab == cameraTab;
+            deltaStatsPanel.Active = pluginsTab.SelectedTab == statisticsTab && statsTabs.SelectedTab == deltaTab;
         }
     }
 }

@@ -162,7 +162,7 @@ namespace Chimera.GUI.Forms {
             mStats.Begin();
             if (mManager.CurrentDisplay != null && mManager.CurrentDisplay.NeedsRedrawn)
                 drawPanel.Invalidate();
-            mStats.Tick();
+            mStats.End();
         }
 
         public TickStatistics Statistics { get { return mStats; } }

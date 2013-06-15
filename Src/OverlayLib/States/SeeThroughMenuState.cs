@@ -25,7 +25,7 @@ using Chimera.Interfaces.Overlay;
 using System.Drawing;
 using OpenMetaverse;
 using Chimera.Util;
-using Chimera.Overlay.Drawables;
+using Chimera.Overlay.Features;
 
 namespace Chimera.Overlay.States {
     public class SeeThroughMenuState : State {

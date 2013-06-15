@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Xml;
 using Chimera.Interfaces.Overlay;
+using Chimera.Overlay.Features;
+using System.Drawing;
 
 namespace Chimera.Overlay.States {
     public class BlankStateFactory : IStateFactory {
@@ -21,12 +23,26 @@ namespace Chimera.Overlay.States {
     }
 
     public class BlankState : State {
+        private bool mUseDefaultBG;
+        private Color mDefaultBG;
+
         public BlankState(OverlayPlugin plugin, XmlNode node)
             : base(GetName(node, "Blank State"), plugin) {
+
+            mDefaultBG = GetColour(node, "blank state bg colour", Color.Transparent);
+            if (mDefaultBG != Color.Transparent)
+                mUseDefaultBG = true;
+            else if (GetBool(node, false, "BlackBG")) {
+                mDefaultBG = Color.Black;
+                mUseDefaultBG = true;
+            }
         }
 
-        public override Chimera.Interfaces.Overlay.IWindowState CreateWindowState(WindowOverlayManager manager) {
-            return new WindowState(manager);
+        public override IWindowState CreateWindowState(WindowOverlayManager manager) {
+            IWindowState w = new WindowState(manager);
+            if (mUseDefaultBG)
+                w.AddFeature(new ColourFeature(mDefaultBG));
+            return w;
         }
 
         protected override void TransitionToStart() { }

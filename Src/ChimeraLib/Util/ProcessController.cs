@@ -495,21 +495,25 @@ namespace Chimera.Util {
         private static ILog Logger = LogManager.GetLogger("ProcessController");
 
         void mProcess_Exited(object sender, EventArgs e) {
-            mProcess = null;
-            if (Exited != null)
-                Exited();
+            lock (Logger) {
+                mProcess = null;
+                if (Exited != null)
+                    Exited();
+            }
         }
 
         public void PressKey(string str) {
             PressKey(str, false, false, false);
         }
         public void PressKey(string key, bool ctrl, bool alt, bool shift) {
-            if (!Started)
-                return;
-            Process foreground = Process.GetCurrentProcess();
-            SetForegroundWindow(mProcess.MainWindowHandle);
-            SendKeys.SendWait((ctrl ? "^" : "") + (alt ? "%" : "") + (shift ? "+" : "") + key);
-            SetForegroundWindow(foreground.MainWindowHandle);
+            lock (Logger) {
+                if (!Started)
+                    return;
+                Process foreground = Process.GetCurrentProcess();
+                SetForegroundWindow(mProcess.MainWindowHandle);
+                SendKeys.SendWait((ctrl ? "^" : "") + (alt ? "%" : "") + (shift ? "+" : "") + key);
+                SetForegroundWindow(foreground.MainWindowHandle);
+            }
         }
 
         public bool FullScreen {

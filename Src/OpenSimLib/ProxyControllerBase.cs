@@ -15,6 +15,7 @@ using log4net;
 
 namespace Chimera.OpenSim {
     public abstract class ProxyControllerBase {
+        private static ProxyControllerPacketThread CameraThread = null;
         private readonly ILog ThisLogger = LogManager.GetLogger("OpenSim");
         private readonly Frame mFrame;
         private Proxy mProxy;
@@ -26,6 +27,8 @@ namespace Chimera.OpenSim {
         private string mLastName = "NotLoggedIn";
         private string mLoginURI;
         private GridProxyConfig mConfig;
+
+        private Packet mCameraPacket;
 
         private readonly Dictionary<string, DateTime> mUnackedUpdates = new Dictionary<string,DateTime>();
         private int mUnackedCountThresh = 40;
@@ -73,6 +76,11 @@ namespace Chimera.OpenSim {
         }
 
         internal ProxyControllerBase(Frame frame) {
+            if (CameraThread == null)
+                CameraThread = new ProxyControllerPacketThread(frame.Coordinator, this);
+            else
+                CameraThread.AddController(this);
+
             mFrame = frame;
             mAgentUpdateListener = new PacketDelegate(mProxy_AgentUpdatePacketReceived);
         }
@@ -119,6 +127,8 @@ namespace Chimera.OpenSim {
         }
 
         public void Stop() {
+            CameraThread.Stop();
+
             if (mProxy != null) {
                 mProxy.Stop();
                 mProxy = null;
@@ -206,14 +216,18 @@ namespace Chimera.OpenSim {
                 MarkUntracked();
 
             //PrintTickInfo();
-            ActualSetCamera();
+            Packet p = ActualSetCamera();
+            lock (this)
+                mCameraPacket = p;
         }
         public void SetCamera(Vector3 positionDelta, Rotation orientationDelta) {
             if (mFrame.Coordinator.ControlMode == ControlMode.Absolute)
                 MarkUntracked();
 
             //PrintTickInfo();
-            ActualSetCamera(positionDelta, orientationDelta);
+            Packet p = ActualSetCamera(positionDelta, orientationDelta);
+            lock (this)
+                mCameraPacket = p;
         }
 
 
@@ -250,8 +264,8 @@ namespace Chimera.OpenSim {
                         mUnackedUpdates.Add(str, DateTime.Now);
         }
         
-        protected abstract void ActualSetCamera();
-        protected abstract void ActualSetCamera(Vector3 positionDelta, Rotation orientationDelta);
+        protected abstract Packet ActualSetCamera();
+        protected abstract Packet ActualSetCamera(Vector3 positionDelta, Rotation orientationDelta);
         /// <summary>
         /// Set the view frustum on the viewer. Specify whether to control the position of the camer at the same time.
         /// </summary>
@@ -262,5 +276,13 @@ namespace Chimera.OpenSim {
         public abstract void ClearCamera();
         public abstract void ClearFrustum();
         public abstract void ClearMovement();
+
+        internal void UpdateCamera() {
+            if (mProxy != null && mCameraPacket != null)
+                lock (this) {
+                    mProxy.InjectPacket(mCameraPacket, Direction.Incoming);
+                    mCameraPacket = null;
+                }
+        }
     }
 }

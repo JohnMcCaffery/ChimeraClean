@@ -49,10 +49,12 @@ namespace Chimera.Flythrough {
     }
 
     public class FlythroughPlugin : ISystemPlugin {
-        private ILog Logger = LogManager.GetLogger("Flythrough");
+        private readonly TickStatistics mStats = new TickStatistics();
+        private readonly ILog Logger = LogManager.GetLogger("Flythrough");
+        private readonly Action mTickListener;
+
         private EventSequence<Camera> mEvents = new EventSequence<Camera>();
-        private Action mTickListener;
-        private Core mCoordinator;
+        private Core mCore;
         private FlythroughPanel mPanel;
         private DateTime mLastTick = DateTime.Now;
         private Camera mPrev;
@@ -62,8 +64,10 @@ namespace Chimera.Flythrough {
         private bool mAutoStep = true;
         private bool mTicking;
         private bool mSynchLengths;
+
         public event Action<int> StepFinished;
         public event Action<int> StepStarted;
+
         /// <summary>
         /// The time, as it was last set. Used for debugging only.
         /// </summary>
@@ -132,9 +136,9 @@ namespace Chimera.Flythrough {
                     StepStarted(mEvents.CurrentEventIndex);
                 if (mEnabled && !mTicking) {
                     if (mEvents.Length > 0 && value == 0)
-                        mCoordinator.Update(mEvents.Start.Position, Vector3.Zero, mEvents.Start.Orientation, Rotation.Zero);
+                        mCore.Update(mEvents.Start.Position, Vector3.Zero, mEvents.Start.Orientation, Rotation.Zero);
                     else if (evt != null)
-                        mCoordinator.Update(evt.Value.Position, Vector3.Zero, evt.Value.Orientation, Rotation.Zero);
+                        mCore.Update(evt.Value.Position, Vector3.Zero, evt.Value.Orientation, Rotation.Zero);
                 }
                 if (TimeChange != null)
                     TimeChange(value);
@@ -162,7 +166,7 @@ namespace Chimera.Flythrough {
         public bool Paused {
             get { return !mPlaying; }
             set {
-                if (value == mPlaying && mCoordinator != null) {
+                if (value == mPlaying && mCore != null) {
                     if (value) {
                         Pause();
                     } else
@@ -173,7 +177,7 @@ namespace Chimera.Flythrough {
 
         private void Pause() {
             mPlaying = false;
-            mCoordinator.Tick -= mTickListener;
+            mCore.Tick -= mTickListener;
             if (OnPaused != null)
                 OnPaused();
 
@@ -204,6 +208,13 @@ namespace Chimera.Flythrough {
             get { return mEvents.Count == 0 ? null : mEvents.CurrentEvent; }
         }
 
+        /// <summary>
+        /// Statistics about how efficiently the update thread is running.
+        /// </summary>
+        public TickStatistics Statistics { 
+            get { return mStats; }
+        }
+
         public FlythroughPlugin() {
             Start = new Camera(new Vector3(128f, 128f, 60f), Rotation.Zero);
             mEvents.Start = Start;
@@ -225,15 +236,16 @@ namespace Chimera.Flythrough {
                 if (mEvents.CurrentEvent == null)
                     Time = 0;
                 mCurrent = mEvents.CurrentEvent.Value;
-                mCoordinator.Update(mCurrent.Position, Vector3.Zero, mCurrent.Orientation, Rotation.Zero);
+                mCore.Update(mCurrent.Position, Vector3.Zero, mCurrent.Orientation, Rotation.Zero);
                 mPrev = mCurrent;
                 mLastTick = DateTime.Now;
                 if (true) {
                     Thread t = new Thread(FlythroughThread);
                     t.Name = "Flythrough thread";
+                    t.Priority = ThreadPriority.Highest;
                     t.Start();
                 } else
-                    mCoordinator.Tick += mTickListener;
+                    mCore.Tick += mTickListener;
             }
         }
 
@@ -285,9 +297,9 @@ namespace Chimera.Flythrough {
             XmlAttribute startPositionAttr = root.Attributes["StartPosition"];
             XmlAttribute startPitchAttr = root.Attributes["StartPitch"];
             XmlAttribute startYawAttr = root.Attributes["StartYaw"];
-            Vector3 startPos = mCoordinator.Position;
-            double startPitch = mCoordinator.Orientation.Pitch;
-            double startYaw = mCoordinator.Orientation.Yaw;
+            Vector3 startPos = mCore.Position;
+            double startPitch = mCore.Orientation.Pitch;
+            double startYaw = mCore.Orientation.Yaw;
             if (startPositionAttr != null) Vector3.TryParse(startPositionAttr.Value, out startPos);
             if (startPitchAttr != null) double.TryParse(startPitchAttr.Value, out startPitch);
             if (startYawAttr != null) double.TryParse(startYawAttr.Value, out startYaw);
@@ -302,7 +314,7 @@ namespace Chimera.Flythrough {
                 }
             }
 
-            mCoordinator.Update(Start.Position, Vector3.Zero, Start.Orientation, Rotation.Zero);
+            mCore.Update(Start.Position, Vector3.Zero, Start.Orientation, Rotation.Zero);
 
             if (FlythroughLoaded != null)
                 FlythroughLoaded();
@@ -342,19 +354,22 @@ namespace Chimera.Flythrough {
         private void FlythroughThread() {
             mFinished = false;
             mPlaying = true;
+            mStats.Begin();
             while (mPlaying && mEvents.Length > 0) {
                 IncrementTime();
                 mPrev = mCurrent;
                 mCurrent = mEvents.CurrentEvent.Value;
+                mStats.End();
 
-                double wait = mCoordinator.TickLength - DateTime.Now.Subtract(mLastTick).TotalMilliseconds;
+                double wait = mCore.TickLength - DateTime.Now.Subtract(mLastTick).TotalMilliseconds;
                 if (wait < 0)
                     Logger.Debug("Flythrough Tick overran by " + (wait * -1) + "ms.");
                 else
                     System.Threading.Thread.Sleep((int)wait);
 
+                mStats.Begin();
                 mLastTick = DateTime.Now;
-                mCoordinator.Update(mCurrent.Position, mCurrent.Position - mPrev.Position, mCurrent.Orientation, mCurrent.Orientation - mPrev.Orientation);
+                mCore.Update(mCurrent.Position, mCurrent.Position - mPrev.Position, mCurrent.Orientation, mCurrent.Orientation - mPrev.Orientation);
             }
             lock (mFinishLock) {
                 mFinished = true;
@@ -367,7 +382,7 @@ namespace Chimera.Flythrough {
 
         private void IncrementTime() {
             mTicking = true;
-            int newTime = mEvents.Time + mCoordinator.TickLength;
+            int newTime = mEvents.Time + mCore.TickLength;
             if (newTime < mEvents.Length) {
                 if (mAutoStep || (newTime < mEvents.CurrentEvent.GlobalFinishTime))
                     Time = newTime;
@@ -391,7 +406,7 @@ namespace Chimera.Flythrough {
         private Camera mCurrent;
 
         void mCoordinator_Tick() {
-            mCoordinator.Update(mCurrent.Position, mCurrent.Position - mPrev.Position, mCurrent.Orientation, mCurrent.Orientation - mPrev.Orientation);
+            mCore.Update(mCurrent.Position, mCurrent.Position - mPrev.Position, mCurrent.Orientation, mCurrent.Orientation - mPrev.Orientation);
 
             IncrementTime();
             mPrev = mCurrent;
@@ -482,14 +497,16 @@ namespace Chimera.Flythrough {
         }
 
         public Core Core {
-            get { return mCoordinator; }
+            get { return mCore; }
         }
 
         public void Init(Core coordinator) {
-            mCoordinator = coordinator;
+            mCore = coordinator;
         }
 
-        public void Close() { }
+        public void Close() {
+            mPlaying = false;
+        }
 
         public void Draw(System.Drawing.Graphics graphics, Func<Vector3, Point> to2D, Action redraw, Perspective perspective) {
             //Do nothing

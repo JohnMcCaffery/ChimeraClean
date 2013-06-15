@@ -8,7 +8,7 @@
     <ProjectGuid>{F1421BBF-6313-4C3D-9AF4-1898528728D0}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Chimera.Overlay</RootNamespace>
+    <RootNamespace>Chimera.Features</RootNamespace>
     <AssemblyName>OverlayLib</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -47,7 +47,7 @@
     <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
-    <OutputPath>bin\x86\Release\</OutputPath>
+    <OutputPath>..\..\Bin\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
@@ -84,6 +84,7 @@
   <ItemGroup>
     <Compile Include="DrawableRoot.cs" />
     <Compile Include="Features\ActiveAreaFeature.cs" />
+    <Compile Include="Features\ColourFeature.cs" />
     <Compile Include="Features\ConditionalFeature.cs" />
     <Compile Include="Features\DynamicText.cs" />
     <Compile Include="Features\FadeFeature.cs" />
@@ -172,7 +173,6 @@
     <Compile Include="Transitions\OpacityFadeWindowTransition.cs" />
     <Compile Include="Triggers\ActiveAreaTrigger.cs" />
     <Compile Include="Triggers\AreaTrigger.cs" />
-    <Compile Include="Triggers\CameraPositionTrigger.cs" />
     <Compile Include="Triggers\ClickTrigger.cs" />
     <Compile Include="Triggers\ConditionTrigger.cs" />
     <Compile Include="Triggers\CursorTrigger.cs" />

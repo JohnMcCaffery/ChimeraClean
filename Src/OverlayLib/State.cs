@@ -154,7 +154,7 @@ namespace Chimera.Overlay {
                     TransitionFromStart();
                     if (Manager.CurrentTransition == null)
                         TransitionFromFinish();
-                    mStatistics.Tick();
+                    mStatistics.End();
                 }
             }
         }

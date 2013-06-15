@@ -25,8 +25,9 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using Chimera.Plugins;
 
-namespace Chimera.Plugins {
+namespace Chimera.GUI.Forms {
     public partial class CameraControlForm : Form {
         private KBMousePlugin mPlugin;
         private bool mCleared;

@@ -23,7 +23,7 @@ using System.Linq;
 using System.Text;
 using Chimera.Interfaces.Overlay;
 using Chimera.Overlay;
-using Chimera.Overlay.Drawables;
+using Chimera.Overlay.Features;
 using System.Drawing;
 using Chimera.Overlay.Triggers;
 using Chimera.Util;
@@ -60,9 +60,10 @@ namespace Chimera.Kinect.Overlay {
         private Rotation mStartOrientation;
         private Vector3 mStartPosition;
         private bool mSetPosition;
+        private double mOpacity = .7;
 
         public override IWindowState CreateWindowState(WindowOverlayManager manager) {
-            return new KinectControlWindowState(manager);
+            return new KinectControlWindowState(manager, mOpacity);
         }
 
         public KinectControlState(string name, OverlayPlugin manager, bool avatar)
@@ -80,6 +81,7 @@ namespace Chimera.Kinect.Overlay {
 
             mInput = manager.Coordinator.GetPlugin<KinectMovementPlugin>();
             mAvatar = GetBool(node, true, "Avatar");
+            mOpacity = GetDouble(node, mOpacity, "Opacity");
 
             double pitch = GetDouble(node, manager.Coordinator.Orientation.Pitch);
             double yaw = GetDouble(node, manager.Coordinator.Orientation.Yaw);
