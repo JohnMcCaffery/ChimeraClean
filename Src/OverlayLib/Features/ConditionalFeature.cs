@@ -6,7 +6,7 @@ using Chimera.Interfaces.Overlay;
 using System.Drawing;
 using System.Xml;
 
-namespace Chimera.Overlay.Drawables {
+namespace Chimera.Overlay.Features {
     public class ConditionalFeature : XmlLoader, IFeature {
         private OverlayPlugin mPlugin;
         private IFeature mFeature;

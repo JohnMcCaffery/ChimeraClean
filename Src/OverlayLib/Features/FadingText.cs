@@ -24,7 +24,7 @@ using System.Text;
 using Chimera.Interfaces.Overlay;
 using System.Drawing;
 
-namespace Chimera.Overlay.Drawables {
+namespace Chimera.Overlay.Features {
     public class FadingText : Text, IFeature {
         private DateTime mActivated;
         private double mSolidTime;

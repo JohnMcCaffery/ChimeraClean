@@ -25,7 +25,7 @@ using System.Drawing;
 using System.Xml;
 using Chimera.Interfaces.Overlay;
 
-namespace Chimera.Overlay.Drawables {
+namespace Chimera.Overlay.Features {
     public class StaticTextFactory : IFeatureFactory {
         #region IFactory<IFeature> Members
 

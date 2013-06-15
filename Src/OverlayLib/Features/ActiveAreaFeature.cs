@@ -7,7 +7,7 @@ using System.Xml;
 using System.Drawing;
 using Chimera.Overlay.Triggers;
 
-namespace Chimera.Overlay.Drawables {
+namespace Chimera.Overlay.Features {
     public class ActiveAreaFeatureFactory : IFeatureFactory {
         #region IFactory<IFeature> Members
 
