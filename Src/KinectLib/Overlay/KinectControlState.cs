@@ -59,6 +59,7 @@ namespace Chimera.Kinect.Overlay {
         private List<CursorTrigger> mClickTriggers = new List<CursorTrigger>();
         private Rotation mStartOrientation;
         private Vector3 mStartPosition;
+        private bool mSetPosition;
 
         public override IWindowState CreateWindowState(WindowOverlayManager manager) {
             return new KinectControlWindowState(manager);
@@ -87,6 +88,8 @@ namespace Chimera.Kinect.Overlay {
             float z = GetFloat(node, manager.Coordinator.Position.Z, "Z");
             mStartOrientation = new Rotation(pitch, yaw);
             mStartPosition = new Vector3(x, y, z);
+
+            mSetPosition = (node.Attributes["X"] !=  null && node.Attributes["Y"] != null && node.Attributes["Z"] != null) || node.Attributes["Pitch"] != null || node.Attributes["Yaw"] != null;
         }
 
         protected override void TransitionToFinish() {
@@ -101,7 +104,8 @@ namespace Chimera.Kinect.Overlay {
             Manager.Coordinator.ControlMode = mAvatar ? ControlMode.Delta : ControlMode.Absolute;
             if (!mAvatar) {
                 Manager.Coordinator.EnableUpdates = true;
-                Manager.Coordinator.Update(mStartPosition, Vector3.Zero, mStartOrientation, Rotation.Zero);
+                if (mSetPosition)
+                    Manager.Coordinator.Update(mStartPosition, Vector3.Zero, mStartOrientation, Rotation.Zero);
             }
             Manager.Coordinator.EnableUpdates = true; 
             foreach (var manager in Manager.OverlayManagers)

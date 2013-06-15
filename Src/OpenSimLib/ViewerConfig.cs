@@ -63,7 +63,7 @@ namespace Chimera.OpenSim {
         }
 
         public ViewerConfig(params string[] args)
-            : base("NoNameSpecified", args) {
+            : base("OpenSim", args) {
         }
 
         public ViewerConfig(string windowName, params string[] args)

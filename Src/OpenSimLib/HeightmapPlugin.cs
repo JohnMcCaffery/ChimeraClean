@@ -147,6 +147,7 @@ namespace Chimera.OpenSim {
                     if (LoggedInChanged != null)
                         LoggedInChanged(true);
                 } else {
+                    ThisLogger.Warn("Unable to log in heightmap bot. " + Client.Network.LoginMessage);
                     if (LoginFailed != null)
                         LoginFailed();
                 }

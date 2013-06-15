@@ -168,6 +168,10 @@ namespace Chimera.Overlay {
             }
         }
 
+        public State IdleState {
+            get { return mIdleState; }
+        }
+
         /// <summary>
         /// The current transition the manager is going through. Will be null if no transition is in progress.
         /// </summary>

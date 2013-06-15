@@ -274,12 +274,13 @@ namespace Chimera.OpenSim {
         }
 
         void mProxyController_OnClientLoggedIn(object sender, EventArgs e) {
-            mViewerController.Monitor = mFrame.Monitor;
             if (mConfig.Fullscreen)
                 mViewerController.FullScreen = true;
+            mViewerController.Monitor = mFrame.Monitor;
 
             new Thread(() => {
                 Thread.Sleep(5000);
+                //mViewerController.Monitor = mFrame.Monitor;
                 foreach (var key in mConfig.StartupKeyPresses.Split(','))
                     mViewerController.PressKey(key);
             }).Start();

@@ -334,13 +334,13 @@ namespace Chimera.GUI.Forms {
 
         private void mCoordinator_DeltaUpdated(Core coordinator, DeltaUpdateEventArgs args) {
             if (!mGuiUpdate && Created && !IsDisposed && !Disposing && coordinator.ControlMode == ControlMode.Delta) {
-                mExternalUpdate = true;
                 Invoke(() => {
+                    mExternalUpdate = true;
                     virtualPositionPanel.Value = args.positionDelta;
                     virtualOrientationPanel.Pitch = args.rotationDelta.Pitch;
                     virtualOrientationPanel.Yaw = args.rotationDelta.Yaw;
+                    mExternalUpdate = false;
                 });
-                mExternalUpdate = false;
             }
         }
 
@@ -350,14 +350,14 @@ namespace Chimera.GUI.Forms {
 
             mLastUpdate = DateTime.Now;
             if (!mGuiUpdate && Created && !IsDisposed && !Disposing && coordinator.ControlMode == ControlMode.Absolute) {
-                mExternalUpdate = true;
                 Invoke(() => {
+                mExternalUpdate = true;
                     virtualPositionPanel.Value = args.position;
                     virtualOrientationPanel.Pitch = args.rotation.Pitch;
                     virtualOrientationPanel.Yaw = args.rotation.Yaw;
                     //heightmapPanel.Invalidate();
-                });
                 mExternalUpdate = false;
+                });
             }
         }
 

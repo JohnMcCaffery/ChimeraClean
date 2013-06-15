@@ -214,7 +214,7 @@ namespace Chimera.Overlay {
                     case "IdleTransition": mSplashIdleTransition = GetTransition(child, "to idle transition", new OpacityFadeOutWindowTransitionFactory(5000)); break;
                 }
             }
-            foreach (var child in GetChildrenOfChild(node, "Triggers")) {
+            foreach (var child in GetChildrenOfChild(node, "IdleTriggers")) {
                 ITrigger trigger = GetTrigger(child, "idle state trigger", null);
                 if (trigger != null)
                     mIdleTriggers.Add(trigger);

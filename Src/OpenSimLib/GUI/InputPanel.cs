@@ -29,6 +29,8 @@ using System.Windows.Forms;
 namespace Chimera.OpenSim.GUI {
     public partial class InputPanel : UserControl {
         private SetFollowCamProperties mProperties;
+        private bool mGuiUpdate;
+        private bool mExternalUpdate;
 
         public InputPanel() {
             InitializeComponent();
@@ -39,6 +41,7 @@ namespace Chimera.OpenSim.GUI {
             : this() {
 
             mProperties = properties;
+            properties.ControlCameraChanged += new Action(properties_ControlCameraChanged);
 
             behindnessAnglePanel.Value = properties.BehindnessAngle;
             behindnessLagPanel.Value = properties.BehindnessLag;
@@ -53,6 +56,15 @@ namespace Chimera.OpenSim.GUI {
             lookAtThresholdPanel.Value = properties.LookAtThreshold;
             pitchPanel.Value = properties.Pitch;
             activeCheckbox.Checked = properties.ControlCamera;
+        }
+
+        void properties_ControlCameraChanged() {
+            if (!mGuiUpdate) {
+                mExternalUpdate = true;
+                Invoke(new Action(() => activeCheckbox.Checked = mProperties.ControlCamera));
+                mExternalUpdate = false;
+            }
+
         }
 
         private void focusOffset3DPanel_ValueChanged(object sender, EventArgs e) {
@@ -116,8 +128,12 @@ namespace Chimera.OpenSim.GUI {
         }
 
         private void activeCheckbox_CheckedChanged(object sender, EventArgs e) {
-            if (mProperties != null)
-                mProperties.ControlCamera = activeCheckbox.Checked;
+            if (!mExternalUpdate) {
+                mGuiUpdate = true;
+                if (mProperties != null)
+                    mProperties.ControlCamera = activeCheckbox.Checked;
+                mGuiUpdate = false;
+            } 
         }
     }
 }

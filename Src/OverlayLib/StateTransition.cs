@@ -23,6 +23,7 @@ using System.Linq;
 using System.Text;
 using Chimera.Interfaces.Overlay;
 using log4net;
+using System.Threading;
 
 namespace Chimera.Overlay {
     public class StateTransition : XmlLoader {
@@ -179,9 +180,13 @@ namespace Chimera.Overlay {
 
         void mTrigger_Triggered() {
             if (mActive) {
-                foreach (var trigger in mTriggers)
-                    trigger.Active = false;
-                mManager.BeginTransition(this);
+                Thread t = new Thread(() => {
+                    foreach (var trigger in mTriggers)
+                        trigger.Active = false;
+                    mManager.BeginTransition(this);
+                });
+                t.Name = "StateChange";
+                t.Start();
             }
         }
 
