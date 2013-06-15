@@ -235,8 +235,6 @@ namespace Chimera.Flythrough {
                 } else
                     mCoordinator.Tick += mTickListener;
             }
-
-            mPlaying = true;
         }
 
         internal void AddEvent(FlythroughEvent<Camera> evt) {
@@ -343,6 +341,7 @@ namespace Chimera.Flythrough {
 
         private void FlythroughThread() {
             mFinished = false;
+            mPlaying = true;
             while (mPlaying && mEvents.Length > 0) {
                 IncrementTime();
                 mPrev = mCurrent;
@@ -361,7 +360,6 @@ namespace Chimera.Flythrough {
                 mFinished = true;
                 Monitor.PulseAll(mFinishLock);
             }
-            mPlaying = false;
         }
 
         private readonly object mFinishLock = new object();

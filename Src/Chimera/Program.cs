@@ -27,6 +27,9 @@ using Chimera.Util;
 using Chimera.Plugins;
 using Chimera.Launcher;
 using System.Reflection;
+using log4net;
+
+[assembly: log4net.Config.XmlConfigurator(Watch=true)]
 
 namespace Chimera {
     public static class ChimeraLauncher {
@@ -35,6 +38,7 @@ namespace Chimera {
         /// </summary>
         [STAThread]
         public static void Main() {
+            LogManager.GetLogger("Init");
             Application.SetCompatibleTextRenderingDefault(false);
 
             Launcher.Launcher launcher = Launcher.Launcher.Create();

@@ -8,7 +8,7 @@ using Chimera.OpenSim.Packets;
 
 namespace Chimera.OpenSim {
     public class FullController : ProxyControllerBase {
-        private bool mAllowFly;
+        private bool mAllowFly = true;
 
         public FullController(Frame frame)
             : base(frame) {

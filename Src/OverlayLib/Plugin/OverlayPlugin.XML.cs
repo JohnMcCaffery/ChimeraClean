@@ -128,7 +128,7 @@ namespace Chimera.Overlay {
         }
 
         private void LoadTransitions(XmlDocument doc) {
-            Logger.Info("\nCreating Transitions");
+            Logger.Info("Creating Transitions");
             foreach (XmlNode transitionRoot in doc.GetElementsByTagName("Transitions"))
                 foreach (XmlNode transitionNode in transitionRoot.ChildNodes.OfType<XmlElement>())
                     LoadTransition(transitionNode);
@@ -214,7 +214,7 @@ namespace Chimera.Overlay {
                     case "IdleTransition": mSplashIdleTransition = GetTransition(child, "to idle transition", new OpacityFadeOutWindowTransitionFactory(5000)); break;
                 }
             }
-            foreach (var child in GetChildrenOfChild(node, "Triggers")) {
+            foreach (var child in GetChildrenOfChild(node, "IdleTriggers")) {
                 ITrigger trigger = GetTrigger(child, "idle state trigger", null);
                 if (trigger != null)
                     mIdleTriggers.Add(trigger);

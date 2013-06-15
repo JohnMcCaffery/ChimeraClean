@@ -173,6 +173,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="Kinect.cd" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="GUI\Axes\KinectAxisPanel.resx">

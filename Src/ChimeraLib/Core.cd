@@ -25,17 +25,6 @@
       <FileName>Core\NetworkSlave.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Chimera.Inputs.KBMouseInput">
-    <Position X="5.25" Y="4.75" Width="1.75" />
-    <Compartments>
-      <Compartment Name="Fields" Collapsed="true" />
-    </Compartments>
-    <TypeIdentifier>
-      <HashCode>ICgAqRgGRgABE6AAKAAAAEagAAAAMAKAwAAKBACKYAE=</HashCode>
-      <FileName>Inputs\KBMouseInput.cs</FileName>
-    </TypeIdentifier>
-    <Lollipop Position="0.2" />
-  </Class>
   <Class Name="Chimera.GUI.Forms.OverlayWindow">
     <Position X="23.5" Y="0.5" Width="2.25" />
     <TypeIdentifier>
@@ -107,14 +96,6 @@
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
-  <Class Name="Chimera.Inputs.DeltaBasedInput">
-    <Position X="3" Y="4.75" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAgEAgAAAoAAAAAAAAQAIACAAAIAQAACBACAAAA=</HashCode>
-      <FileName>Inputs\DeltaBasedInput.cs</FileName>
-    </TypeIdentifier>
-    <Lollipop Position="0.2" />
-  </Class>
   <Class Name="Chimera.OverlayController">
     <Position X="20.75" Y="0.5" Width="1.5" />
     <TypeIdentifier>
@@ -125,21 +106,13 @@
       <Property Name="Window" />
     </ShowAsAssociation>
   </Class>
-  <Class Name="Chimera.Inputs.MouseInput">
-    <Position X="0.75" Y="4.75" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAQgAAgEAgAAAsAAgAAAAAQAAAAAAAIAQAAGBACAAIA=</HashCode>
-      <FileName>Inputs\MouseInput.cs</FileName>
-    </TypeIdentifier>
-    <Lollipop Position="0.2" />
-  </Class>
   <Class Name="Chimera.Core">
     <Position X="14.25" Y="0.5" Width="2" />
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>AEwCIAMBSblgggAkCRgAgCAAAGAQIIGoAhAgoQCQSiU=</HashCode>
+      <HashCode>AEwCIAMBSbtgggAkCRgAgCAAAGAQIIGoAhAgoQCQSiU=</HashCode>
       <FileName>Core\Core.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
@@ -161,13 +134,6 @@
       <FileName>Core\Frame.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Interface Name="Chimera.ISystemInput">
-    <Position X="9.5" Y="4.75" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAACAAAAAAA=</HashCode>
-      <FileName>Interfaces\ISystemInput.cs</FileName>
-    </TypeIdentifier>
-  </Interface>
   <Interface Name="Chimera.IOutput">
     <Position X="20.5" Y="1.5" Width="1.5" />
     <TypeIdentifier>
@@ -211,13 +177,6 @@
     <ShowAsAssociation>
       <Property Name="Selectable" />
     </ShowAsAssociation>
-  </Interface>
-  <Interface Name="Chimera.IDeltaInput">
-    <Position X="7.5" Y="4.75" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AQAAAAAAAABIAAAgAAAAAAAAgCAAABEAAAACAAAAAAA=</HashCode>
-      <FileName>Interfaces\IDeltaInput.cs</FileName>
-    </TypeIdentifier>
   </Interface>
   <Interface Name="Chimera.IPlugin">
     <Position X="8.5" Y="0.5" Width="1.5" />
