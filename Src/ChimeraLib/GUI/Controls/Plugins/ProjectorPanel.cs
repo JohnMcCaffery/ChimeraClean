@@ -57,29 +57,38 @@ namespace Chimera.GUI.Controls.Plugins {
         }
 
         void mProjector_Change() {
-            mExternalUpdate = true;
-            throwRatioPanel.Value = (float) mProjector.ThrowRatio;
-            positionPanel.Value = mProjector.Position / 10f;
-            wallDistancePanel.Value = (float) (mProjector.D / 10);
-            orientationPanel.Value = mProjector.Orientation;
-            projectorDrawCheck.Checked = mProjector.DrawDiagram;
-            projectorDrawLabelsCheck.Checked = mProjector.DrawLabels;
-            projectorAspectPulldown.SelectedItem = mProjector.AspectRatio;
-            projectorNativeAspectPulldown.SelectedItem = mProjector.NativeAspectRatio;
-            upsideDownCheck.Checked = mProjector.UpsideDown;
-            vOffsetPanel.Value = (float) mProjector.VOffset;
-            switch (mProjector.Lock) {
-                case LockedVariable.Nothing: noLockButton.Checked = true; break;
-                case LockedVariable.Width: lockWidthButton.Checked = true; break;
-                case LockedVariable.Height: lockHeightButton.Checked = true; break;
-                case LockedVariable.Position: lockPositionButton.Checked = true; break;
-            }
+            Invoke(() => {
+                mExternalUpdate = true;
+                throwRatioPanel.Value = (float)mProjector.ThrowRatio;
+                positionPanel.Value = mProjector.Position / 10f;
+                wallDistancePanel.Value = (float)(mProjector.D / 10);
+                orientationPanel.Value = mProjector.Orientation;
+                projectorDrawCheck.Checked = mProjector.DrawDiagram;
+                projectorDrawLabelsCheck.Checked = mProjector.DrawLabels;
+                projectorAspectPulldown.SelectedItem = mProjector.AspectRatio;
+                projectorNativeAspectPulldown.SelectedItem = mProjector.NativeAspectRatio;
+                upsideDownCheck.Checked = mProjector.UpsideDown;
+                vOffsetPanel.Value = (float)mProjector.VOffset;
+                switch (mProjector.Lock) {
+                    case LockedVariable.Nothing: noLockButton.Checked = true; break;
+                    case LockedVariable.Width: lockWidthButton.Checked = true; break;
+                    case LockedVariable.Height: lockHeightButton.Checked = true; break;
+                    case LockedVariable.Position: lockPositionButton.Checked = true; break;
+                }
 
-            projectorDrawLabelsCheck.Enabled = mProjector.DrawDiagram;
+                projectorDrawLabelsCheck.Enabled = mProjector.DrawDiagram;
 
-            orientationPanel.Text = "Orientation (cm)";
-            positionPanel.Text = "Position (cm)";
-            mExternalUpdate = false;
+                orientationPanel.Text = "Orientation (cm)";
+                positionPanel.Text = "Position (cm)";
+                mExternalUpdate = false;
+            });
+        }
+
+        private void Invoke(Action a) {
+            if (InvokeRequired && Created && !IsDisposed && !Disposing)
+                BeginInvoke(a);
+            else
+                a();
         }
 
         private void projectorDrawCheck_CheckedChanged(object sender, EventArgs e) {

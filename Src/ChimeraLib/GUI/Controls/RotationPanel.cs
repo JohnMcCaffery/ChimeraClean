@@ -48,15 +48,17 @@ namespace Chimera.GUI {
         }
         private void RotationChanged(object source, EventArgs args) {
             if (!mGuiChange) {
-                mExternalChange = true;
-                vectorPanel.Value = rotation.LookAtVector;
-                pitchValue.Value = Math.Max(pitchValue.Minimum, Math.Min(pitchValue.Maximum, new decimal(rotation.Pitch)));
-                pitchSlider.Value = Math.Max(pitchSlider.Minimum, Math.Min(pitchSlider.Maximum, (int)rotation.Pitch));
-                yawValue.Value = Math.Max(yawValue.Minimum, Math.Min(yawValue.Maximum, new decimal(rotation.Yaw)));
-                yawSlider.Value = Math.Max(yawSlider.Minimum, Math.Min(yawSlider.Maximum, (int)rotation.Yaw));
-                if (OnChange != null)
-                    OnChange(this, null);
-                mExternalChange = false;
+                Invoke(() => {
+                    mExternalChange = true;
+                    vectorPanel.Value = rotation.LookAtVector;
+                    pitchValue.Value = Math.Max(pitchValue.Minimum, Math.Min(pitchValue.Maximum, new decimal(rotation.Pitch)));
+                    pitchSlider.Value = Math.Max(pitchSlider.Minimum, Math.Min(pitchSlider.Maximum, (int)rotation.Pitch));
+                    yawValue.Value = Math.Max(yawValue.Minimum, Math.Min(yawValue.Maximum, new decimal(rotation.Yaw)));
+                    yawSlider.Value = Math.Max(yawSlider.Minimum, Math.Min(yawSlider.Maximum, (int)rotation.Yaw));
+                    if (OnChange != null)
+                        OnChange(this, null);
+                    mExternalChange = false;
+                });
             }
         }
         public Quaternion Quaternion {
@@ -81,6 +83,12 @@ namespace Chimera.GUI {
             Value = Rotation.Zero;
         }
 
+        private void Invoke(Action a) {
+            if (InvokeRequired && Created && !IsDisposed && !Disposing)
+                BeginInvoke(a);
+            else
+                a();
+        }
 
         public override string Text {
             get { return nameLabel.Text; }

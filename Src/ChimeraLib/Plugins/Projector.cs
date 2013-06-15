@@ -26,6 +26,7 @@ using System.Drawing;
 using Chimera.Util;
 using Chimera.Config;
 using Chimera.Plugins;
+using System.Threading;
 
 namespace Chimera.Plugins {
     public enum AspectRatio {
@@ -116,44 +117,44 @@ namespace Chimera.Plugins {
         public AspectRatio AspectRatio {
             get { return mAspectRatio; }
             set {
-                switch (mNativeAspectRatio) {
-                    case AspectRatio.SixteenNine:
-                        mH = 9f / 16f; 
-                        switch (value) {
-                            case AspectRatio.SixteenNine:
-                                mW = 1f;
-                                break;
-                            case AspectRatio.FourThree:
-                                mW = 6 / 8f;
-                                break;
-                        }
-                        break;
-                    case AspectRatio.FourThree:
-                        mW = 1f;
-                        switch (value) {
-                            case AspectRatio.SixteenNine: 
-                                mH = 9f / 16f; 
-                                break;
-                            case AspectRatio.FourThree: 
-                                mH = 3f / 4f; 
-                                break;
-                        }
-                        break;
-                }
-                mAspectRatio = value;
+                SetAspectRatio(value);
                 CalculateAngles();
                 Redraw(LockedVariable.Position);
             }
+        }
+
+        private void SetAspectRatio(AspectRatio value) {
+            switch (mNativeAspectRatio) {
+                case AspectRatio.SixteenNine:
+                    mH = 9f / 16f;
+                    switch (value) {
+                        case AspectRatio.SixteenNine:
+                            mW = 1f;
+                            break;
+                        case AspectRatio.FourThree:
+                            mW = 6 / 8f;
+                            break;
+                    }
+                    break;
+                case AspectRatio.FourThree:
+                    mW = 1f;
+                    switch (value) {
+                        case AspectRatio.SixteenNine:
+                            mH = 9f / 16f;
+                            break;
+                        case AspectRatio.FourThree:
+                            mH = 3f / 4f;
+                            break;
+                    }
+                    break;
+            }
+            mAspectRatio = value;
         }
 
         public AspectRatio NativeAspectRatio {
             get { return mNativeAspectRatio; }
             set {
                 mNativeAspectRatio = value;
-                switch (value) {
-                    case AspectRatio.SixteenNine: mH = 9f / 16f; break;
-                    case AspectRatio.FourThree: mH = 3f / 4f; break;
-                }
                 AspectRatio = mAspectRatio;
             }
         }
@@ -261,20 +262,27 @@ namespace Chimera.Plugins {
             mTargetH = frame.Height;
 
             ProjectorConfig cfg = new ProjectorConfig(frame.Name);
-            mThrowRatio = cfg.ThrowRatio;
             mOrientation = new Rotation(cfg.ProjectorPitch, cfg.ProjectorYaw);
+
+            //Constants
+            mThrowRatio = cfg.ThrowRatio;
             mUpsideDown = cfg.UpsideDown;
             mVOffset = cfg.VOffset;
+            mNativeAspectRatio = cfg.NativeAspectRatio;
+            SetAspectRatio(cfg.AspectRatio);
+            CalculateAngles();
+
             mLock = cfg.Lock;
 
-            if (mLock == LockedVariable.Position || mLock == LockedVariable.Nothing) {
+            if (mLock == LockedVariable.Position/* || mLock == LockedVariable.Nothing*/) {
                 mPosition = cfg.ProjectorPosition;
                 mD = cfg.WallDistance;
+                mFrame.Orientation.Yaw = mOrientation.Yaw;
+            } else {
+                mD = mLock == LockedVariable.Width ? CalculateDFromW() :CalculateDFromH();
+                mPosition = CalculatePositionFromH();
+                mOrientation.Yaw = mFrame.Orientation.Yaw;
             }
-
-            CalculateAngles();
-            AspectRatio = cfg.AspectRatio;
-            NativeAspectRatio = cfg.NativeAspectRatio;
 
             mOldW = mFrame.Width;
             mOldH = mFrame.Height;
@@ -293,17 +301,32 @@ namespace Chimera.Plugins {
             Redraw(LockedVariable.Position);
         }
 
+        private bool mFrameChanged;
+        private bool mProjectorChanged;
+
         void frame_Changed(Frame f, EventArgs args) {
-            if (f.Width != mOldW)
-                Redraw(LockedVariable.Width);
-            else
-                Redraw(LockedVariable.Height);
-            mOldW = mFrame.Width;
-            mOldH = mFrame.Height;
+            new Thread(() => {
+                if (!mProjectorChanged) {
+                    mFrameChanged = true;
+                    mOrientation.Yaw = f.Orientation.Yaw;
+                    mFrameChanged = false;
+                }
+                if (f.Width != mOldW)
+                    Redraw(LockedVariable.Width);
+                else
+                    Redraw(LockedVariable.Height);
+                mOldW = mFrame.Width;
+                mOldH = mFrame.Height;
+            }).Start();
         }
 
         void mOrientation_Changed(object sender, EventArgs e) {
-            Redraw(LockedVariable.Position);
+            if (!mFrameChanged) {
+                mProjectorChanged = true;
+                mFrame.Orientation.Yaw = mOrientation.Yaw;
+                Redraw(LockedVariable.Position);
+                mProjectorChanged = false;
+            }
         }
 
         internal void Redraw(LockedVariable source) {
@@ -323,6 +346,7 @@ namespace Chimera.Plugins {
             mAlpha = Math.Atan2(mVOffset, mThrowRatio);
             mBeta = Math.Atan2(mVOffset + mH, mThrowRatio);
             mGamma = Math.Atan2(mW / 2.0, mThrowRatio);
+
         }
 
         private double CalculateW() {
@@ -488,16 +512,13 @@ namespace Chimera.Plugins {
                 Func<Vector3, Point> to2DR = v => to2D(Origin + (v * new Rotation(0.0, mOrientation.Yaw).Quaternion));
                 Point pos = to2DR(Vector3.Zero);
 
-                double alpha = Math.Atan2(mVOffset, mThrowRatio);
-                double beta = Math.Atan2(mVOffset + mH, mThrowRatio);
-                double ceta = Math.Atan2(mW / 2, mThrowRatio);
                 double range = 12500.0;
 
-                double y = range * Math.Tan(ceta);
-                double zt = range * Math.Tan(mUpsideDown ? -alpha : beta);
-                double zb = range * Math.Tan(mUpsideDown ? -beta : alpha);
+                double y = range * Math.Tan(mGamma);
+                double zt = range * Math.Tan(mUpsideDown ? -mAlpha : mBeta);
+                double zb = range * Math.Tan(mUpsideDown ? -mBeta : mAlpha);
 
-                Quaternion q = new Rotation(-mOrientation.Pitch, mOrientation.Yaw).Quaternion;
+                Quaternion q = new Rotation(-mOrientation.Pitch, 0.0).Quaternion;
                 Vector3 bse = new Vector3((float)range, 0f, 0f) * q;
                 Vector3 tl = new Vector3((float)range, (float)-y, (float)zt) * q;
                 Vector3 tr = new Vector3((float)range, (float)y, (float)zt) * q;

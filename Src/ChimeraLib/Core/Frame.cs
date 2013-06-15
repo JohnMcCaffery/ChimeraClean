@@ -146,7 +146,7 @@ namespace Chimera {
         public Frame(string frameName) {
             mName = frameName;
 
-            WindowConfig cfg = new WindowConfig(frameName);
+            FrameConfig cfg = new FrameConfig(frameName);
             mMonitor = Screen.AllScreens.FirstOrDefault(s => s.DeviceName.Equals(cfg.Monitor));
             mWidth = cfg.Width;
             mHeight = cfg.Height;
