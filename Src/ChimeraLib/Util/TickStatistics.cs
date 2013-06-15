@@ -30,6 +30,8 @@ namespace Chimera.Util {
         private DateTime mTickStart;
         private long mWorkTotal;
         private long mTickTotal;
+        private long mWorkDeviationTotal;
+        private long mTickDeviationTotal;
         private int mTickCount;
         private double mShortestTick = double.MaxValue;
         private double mShortestWork = double.MaxValue;
@@ -56,6 +58,10 @@ namespace Chimera.Util {
             get { return mTickTotal; }
         }
 
+        public long TickStandardDeviation {
+            get { lock (mTickTimes) return mTickCount > 0 ? mTickDeviationTotal / mTickCount : 0; }
+        }
+
         public long MeanWorkLength {
             get { lock (mTickTimes) return mTickCount > 0 ? mWorkTotal / mTickCount : 0; }
         }
@@ -70,6 +76,10 @@ namespace Chimera.Util {
 
         public long WorkTotal {
             get { return mWorkTotal; }
+        }
+
+        public long WorkStandardDeviation {
+            get { lock (mTickTimes) return mTickCount > 0 ? mWorkDeviationTotal / mTickCount : 0; }
         }
 
         public int TicksPerSecond {
@@ -88,13 +98,17 @@ namespace Chimera.Util {
                         mTickTotal = MeanTickLength;
                         mTickCount = 1;
                     }
-                    mTickTotal += (long)Math.Round(tickLength);
+                    long roundedTick = (long)Math.Round(tickLength);
+                    mTickTotal += roundedTick;
+                    mTickDeviationTotal += MeanTickLength - roundedTick;
                     mShortestTick = Math.Min(tickLength, mShortestTick);
                     mLongestTick = Math.Max(tickLength, mLongestTick);
                 }
 
                 double workLength = DateTime.Now.Subtract(mTickStart).TotalMilliseconds;
-                mWorkTotal += (long)Math.Round(workLength);
+                long roundedWork = (long)Math.Round(workLength);
+                mWorkTotal += roundedWork;
+                mWorkDeviationTotal += MeanWorkLength - roundedWork;
                 mShortestWork = Math.Min(workLength, mShortestWork);
                 mLongestWork = Math.Max(workLength, mLongestWork);
 

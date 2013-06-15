@@ -38,7 +38,7 @@ namespace Chimera.Overlay.Transitions {
         }
 
         public ITransitionStyle Create(OverlayPlugin manager, XmlNode node) {
-            Logger.Info("\nCreating Bitmap Window Transition");
+            Logger.Info("Creating Bitmap Window Transition");
             double length = GetDouble(node, 5000.0, "Length");
             IImageTransitionFactory transition = manager.GetImageTransitionFactory(node, "transition style", "Style");
             if (transition == null) {
