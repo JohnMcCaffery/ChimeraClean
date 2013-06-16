@@ -774,6 +774,7 @@ namespace Chimera.GUI.Forms {
 
         private void inputsTab_SelectedIndexChanged(object sender, EventArgs e) {
             tickStatsPanel.Active = pluginsTab.SelectedTab == statisticsTab && statsTabs.SelectedTab == tickTab;
+            tickListenersPanel.Active = pluginsTab.SelectedTab == statisticsTab && statsTabs.SelectedTab == tickListenersTab;
             updateStatsPanel.Active = pluginsTab.SelectedTab == statisticsTab && statsTabs.SelectedTab == updatesTab;
             cameraStatsPanel.Active = pluginsTab.SelectedTab == statisticsTab && statsTabs.SelectedTab == cameraTab;
             deltaStatsPanel.Active = pluginsTab.SelectedTab == statisticsTab && statsTabs.SelectedTab == deltaTab;
@@ -781,6 +782,7 @@ namespace Chimera.GUI.Forms {
 
         private void statsTab_SelectedIndexChanged(object sender, EventArgs e) {
             updateStatsPanel.Active = pluginsTab.SelectedTab == statisticsTab && statsTabs.SelectedTab == updatesTab;
+            tickListenersPanel.Active = pluginsTab.SelectedTab == statisticsTab && statsTabs.SelectedTab == tickListenersTab;
             tickStatsPanel.Active = pluginsTab.SelectedTab == statisticsTab && statsTabs.SelectedTab == tickTab;
             cameraStatsPanel.Active = pluginsTab.SelectedTab == statisticsTab && statsTabs.SelectedTab == cameraTab;
             deltaStatsPanel.Active = pluginsTab.SelectedTab == statisticsTab && statsTabs.SelectedTab == deltaTab;

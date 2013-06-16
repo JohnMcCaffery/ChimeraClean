@@ -192,9 +192,9 @@ namespace Chimera.Plugins {
             core.KeyDown += new Action<Core,KeyEventArgs>(mCoordinator_KeyDown);
             core.KeyUp += new Action<Core,KeyEventArgs>(mCoordinator_KeyUp);
 
-            if (mEnabled) {
-                core.Tick += mTickListener;
-            }
+            //if (mEnabled) {
+                //core.Tick += mTickListener;
+            //}
         }
 
         #endregion

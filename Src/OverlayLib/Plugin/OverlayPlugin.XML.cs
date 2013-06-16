@@ -200,9 +200,12 @@ namespace Chimera.Overlay {
             if (GetBool(node, false, "Start"))
                 mStartState = state;
             foreach (var child in GetChildrenOfChild(node, "Features")) {
-                IFeature f = GetFeature(child, "state feature", null);
-                if (f != null)
-                    state.AddFeature(f);
+                string frame = GetString(child, null, "Frame");
+                if (frame == null || mCoordinator.HasFrame(frame)) {
+                    IFeature f = GetFeature(child, "state feature", null);
+                    if (f != null)
+                        state.AddFeature(f);
+                }
             }
             Logger.Info("Created " + state.GetType().Name + " state " + state.Name + ".");
         }

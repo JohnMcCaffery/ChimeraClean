@@ -36,7 +36,7 @@ namespace Joystick {
             get { 
                 if (sController == null)
                     GetController();
-                if (!sController.IsConnected)
+                if (sController != null && !sController.IsConnected)
                     sController = null;
                 return sController != null && sController.IsConnected; 
             }
@@ -57,8 +57,10 @@ namespace Joystick {
         }
 
         static void source_Tick() {
+            sStatistics.Begin();
             if (sController != null && sController.IsConnected)
                 sGamepad = sController.GetState().Gamepad;
+            sStatistics.End();
         }
 
         public static Controller GetController() {

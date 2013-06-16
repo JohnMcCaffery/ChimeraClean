@@ -9,9 +9,12 @@ using System.IO;
 using Chimera.Overlay;
 using Chimera.Interfaces;
 using log4net;
+using Chimera.Util;
 
 namespace Chimera.Flythrough.Overlay {
     public class Step : XmlLoader {
+        private static TickStatistics sStatistics = null;
+
         private readonly ILog Logger = LogManager.GetLogger("Flythrough");
         private readonly int mStep;
         private readonly int mSubtitleTimeoutS = 20;
@@ -37,6 +40,11 @@ namespace Chimera.Flythrough.Overlay {
         public Step(FlythroughState state, XmlNode node, Text subititlesText, int subtitleTimeoutS, IMediaPlayer player) {
             if (node.Attributes["Step"] == null && !int.TryParse(node.Attributes["Step"].Value, out mStep))
                 throw new ArgumentException("Unable to load slideshow step. A valid 'Step' attribute must be supplied.");
+
+            if (sStatistics == null) {
+                sStatistics = new TickStatistics();
+                StatisticsCollection.AddStatistics(sStatistics, "Flythrough Steps");
+            }
 
             mPlayer = player;
             mManager = state.Manager;
@@ -113,11 +121,13 @@ namespace Chimera.Flythrough.Overlay {
         }
 
         private void mCoordinator_Tick() {
+            sStatistics.Begin();
             if (mSubtitleTimes.Count > 0 && DateTime.Now.Subtract(mStarted).TotalSeconds > mSubtitleTimes.Peek()) {
                 mSubtitlesText.TextString = mSubtitles[mSubtitleTimes.Dequeue()];
                 mLastSubtitle = DateTime.Now;
             } else if (DateTime.Now.Subtract(mLastSubtitle).TotalSeconds > mSubtitleTimeoutS && mSubtitlesText.TextString.Length > 0)
                 mSubtitlesText.TextString = "";
+            sStatistics.End();
         }
 
         internal void Prep() {

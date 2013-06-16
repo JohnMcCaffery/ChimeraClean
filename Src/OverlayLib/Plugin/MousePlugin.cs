@@ -91,15 +91,17 @@ namespace Chimera.Overlay.Plugins {
 
             mOverlayPlugin = core.GetPlugin<OverlayPlugin>();
             mCore = core;
-            if (mEnabled)
-                core.Tick += mTickListener;
+            //if (mEnabled)
+                //core.Tick += mTickListener;
         }
-
+
+
         public void SetForm(Form form) { }
 
         #endregion
 
-        #region IPlugin Members
+        #region IPlugin Members
+
         public event Action<IPlugin, bool> EnabledChanged;
 
         public UserControl ControlPanel {

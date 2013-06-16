@@ -31,11 +31,13 @@ namespace Chimera.GUI.Controls {
                 if (mActive != value) {
                     mActive = value;
                     if (value) {
-                        mCore.Tick += mTickListener;
+                        updateTimer.Enabled = true;
+                        //mCore.Tick += mTickListener;
                         if (mCurrentPanel != null)
                             mCurrentPanel.Active = true;
                     }  else {
-                        mCore.Tick -= mTickListener;
+                        //mCore.Tick -= mTickListener;
+                        updateTimer.Enabled = false;
                         if (mCurrentPanel != null)
                             mCurrentPanel.Active = false;
                     }
@@ -62,13 +64,18 @@ namespace Chimera.GUI.Controls {
                 Series current = new Series(name, 100);
                 Series mean = new Series(name + " Mean", 100);
 
+                current.ChartType = SeriesChartType.Line;
+                mean.ChartType = SeriesChartType.Line;
+
                 sharedGraph.Series.Add(current);
                 sharedGraph.Series.Add(mean);
 
                 namesList.Items.Add(name);
                 
-                ListViewItem row = new ListViewItem();
-                row.SubItems.Add(name);
+                ListViewItem row = new ListViewItem(name);
+                //row.SubItems.Add(name);
+                row.SubItems.Add("0");
+                row.SubItems.Add("0");
                 row.SubItems.Add("0");
                 row.SubItems.Add("0");
                 statsList.Items.Add(row);
@@ -93,6 +100,8 @@ namespace Chimera.GUI.Controls {
                     double s = Math.Round(DateTime.Now.Subtract(mStart).TotalSeconds, 2);
                     mRows[name].SubItems[1].Text = stats.MeanWorkLength.ToString(".##");
                     mRows[name].SubItems[2].Text = stats.LastWork.ToString(".##");
+                    mRows[name].SubItems[3].Text = stats.TickCount.ToString();
+                    mRows[name].SubItems[4].Text = stats.TicksPerSecond.ToString();
                 }
             }
         }
@@ -104,7 +113,18 @@ namespace Chimera.GUI.Controls {
             }
 
             if (mainTab.SelectedTab == graphsTab) {
+                //mCore.Tick -= mTickListener;
+                updateTimer.Enabled = false;
+
+                foreach (var series in mCurrentSeries.Values)
+                    series.Points.Clear();
+                foreach (var series in mMeanSeries.Values)
+                    series.Points.Clear();
+
                 mStart = DateTime.Now;
+
+                //mCore.Tick += mTickListener;
+                updateTimer.Enabled = true;
             } else if (mainTab.SelectedTab == individualTab && mCurrentPanel != null)
                 mCurrentPanel.Active = true;
         }
@@ -121,12 +141,17 @@ namespace Chimera.GUI.Controls {
                     StatisticsPanel panel = new StatisticsPanel(mCollection[name], mCore);
                     mPanels.Add(name, panel);
                     panel.Dock = DockStyle.Fill;
-                    individualPanel.Controls.Add(panel);
+                    individualSplit.Panel2.Controls.Add(panel);
                 }
 
                 mCurrentPanel = mPanels[name];
+                mCurrentPanel.Active = true;
                 mCurrentPanel.Visible = true;
             }
+        }
+
+        private void updateTimer_Tick(object sender, EventArgs e) {
+            core_Tick();
         }
     }
 }

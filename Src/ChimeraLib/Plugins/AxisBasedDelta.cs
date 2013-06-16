@@ -35,6 +35,7 @@ namespace Chimera.Plugins {
         private readonly List<IAxis> mAxes = new List<IAxis>();
         private readonly string mName;
         private readonly Action mTickListener;
+        private bool mAdded = false;
 
         private ITickSource mSource;
         private AxisConfig mConfig;
@@ -72,10 +73,13 @@ namespace Chimera.Plugins {
             set {
                 base.Enabled = value;
                 if (mSource != null) {
-                    if (value)
+                    if (value && !mAdded) {
                         mSource.Tick += mTickListener;
-                    else
+                        mAdded = true;
+                    } else if (!value && mAdded) {
                         mSource.Tick -= mTickListener;
+                        mAdded = false;
+                    }
                 }
 
                 foreach (var axis in mAxes)
@@ -153,8 +157,8 @@ namespace Chimera.Plugins {
                 if (axis is ITickListener)
                     (axis as ITickListener).Init(core);
 
-            if (Enabled)
-                core.Tick += mTickListener;
+            //if (Enabled)
+                //core.Tick += mTickListener;
         }
 
         void mCore_Tick() {

@@ -57,7 +57,8 @@ namespace Chimera.GUI.Controls {
             mTickListener = new Action(mCore_Tick);
         }
 
-        public StatisticsPanel(TickStatistics stats, Core core) {
+        public StatisticsPanel(TickStatistics stats, Core core)
+            : this() {
             Init(stats, core);
         }
 
