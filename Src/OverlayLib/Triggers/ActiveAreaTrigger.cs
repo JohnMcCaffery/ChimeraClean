@@ -79,7 +79,7 @@ namespace Chimera.Overlay.Triggers {
             public bool Inside {
                 get {
                     // http://stackoverflow.com/questions/563198/how-do-you-detect-where-two-line-segments-intersect
-                    Vector3 p3 = mManager.Coordinator.Position;
+                    Vector3 p3 = mManager.Core.Position;
                     Vector2 p = new Vector2(p3.X, p3.Y);
                     Vector2 r = new Vector2(0f, 100f) - p;
 
@@ -101,8 +101,8 @@ namespace Chimera.Overlay.Triggers {
 
                     bool insideH = c % 2 != 0;
 
-                    double pitch = mManager.Coordinator.Orientation.Pitch;
-                    double yaw = mManager.Coordinator.Orientation.Yaw;
+                    double pitch = mManager.Core.Orientation.Pitch;
+                    double yaw = mManager.Core.Orientation.Yaw;
                     bool yawMet = mUseYaw ? yaw >= mYawStart && yaw <= mYawFinish : true;
                     bool pitchMet = mUsePitch ? pitch >= mPitchStart && pitch <= mPitchFinish : true;
                     bool z = mUseZ ? p3.Z >= mZStart && p3.Z <= mZFinish : true;
@@ -124,7 +124,7 @@ namespace Chimera.Overlay.Triggers {
             }
 
             public ActiveAreaTrigger(OverlayPlugin manager, XmlNode node)
-                : base(manager.Coordinator) {
+                : base(manager.Core) {
                 mManager = manager;
                 mCheckWaitS = GetDouble(node, 2, "CheckWaitS");
                 foreach (var child in GetChildrenOfChild(node, "Points")) {

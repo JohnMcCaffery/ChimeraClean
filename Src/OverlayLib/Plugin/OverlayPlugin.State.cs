@@ -135,7 +135,7 @@ namespace Chimera.Overlay {
         /// <summary>
         /// The coordinator this state manager is tied to.
         /// </summary>
-        public Core Coordinator {
+        public Core Core {
             get { return mCoordinator; }
         }
 

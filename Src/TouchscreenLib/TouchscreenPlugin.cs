@@ -129,7 +129,7 @@ namespace Touchscreen {
                 AddAxis(mRightY);
                 AddAxis(mSingle);
 
-                Core input = f.Coordinator;
+                Core input = f.Core;
 
                 if (Enabled)
                     Enabled = true;

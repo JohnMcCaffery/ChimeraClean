@@ -21,7 +21,7 @@ namespace Joystick.Overlay {
         }
 
         public ITrigger Create(OverlayPlugin manager, XmlNode node) {
-            return new JoystickButtonTrigger(manager.Coordinator, node);
+            return new JoystickButtonTrigger(manager.Core, node);
         }
 
         public ITrigger Create(OverlayPlugin manager, XmlNode node, Rectangle clip) {

@@ -84,7 +84,7 @@ namespace Chimera.Flythrough.Overlay {
 
             if (mSubtitles.Count > 0) {
                 mStarted = DateTime.Now;
-                mManager.Coordinator.Tick += mTickListener;
+                mManager.Core.Tick += mTickListener;
             }
 
             if (mVoiceoverFile != null)
@@ -109,7 +109,7 @@ namespace Chimera.Flythrough.Overlay {
 
             if (mSubtitlesText != null)
                 mSubtitlesText.TextString = "";
-            mManager.Coordinator.Tick -= mTickListener;
+            mManager.Core.Tick -= mTickListener;
         }
 
         private void mCoordinator_Tick() {

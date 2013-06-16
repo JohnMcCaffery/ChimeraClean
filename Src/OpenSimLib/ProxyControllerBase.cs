@@ -77,7 +77,7 @@ namespace Chimera.OpenSim {
 
         internal ProxyControllerBase(Frame frame) {
             if (CameraThread == null)
-                CameraThread = new ProxyControllerPacketThread(frame.Coordinator, this);
+                CameraThread = new ProxyControllerPacketThread(frame.Core, this);
             else
                 CameraThread.AddController(this);
 
@@ -170,7 +170,7 @@ namespace Chimera.OpenSim {
             AgentUpdatePacket packet = p as AgentUpdatePacket;
             Vector3 pos = packet.AgentData.CameraCenter;
 
-            if (mFrame.Coordinator.ControlMode == ControlMode.Absolute) {
+            if (mFrame.Core.ControlMode == ControlMode.Absolute) {
                 //new Thread(() => {
                 string key = MakeKey(pos);
                 lock (mUnackedUpdates) {
@@ -212,7 +212,7 @@ namespace Chimera.OpenSim {
         }
 
         public void SetCamera() {
-            if (mFrame.Coordinator.ControlMode == ControlMode.Absolute)
+            if (mFrame.Core.ControlMode == ControlMode.Absolute)
                 MarkUntracked();
 
             //PrintTickInfo();
@@ -221,7 +221,7 @@ namespace Chimera.OpenSim {
                 mCameraPacket = p;
         }
         public void SetCamera(Vector3 positionDelta, Rotation orientationDelta) {
-            if (mFrame.Coordinator.ControlMode == ControlMode.Absolute)
+            if (mFrame.Core.ControlMode == ControlMode.Absolute)
                 MarkUntracked();
 
             //PrintTickInfo();
@@ -256,7 +256,7 @@ namespace Chimera.OpenSim {
         }
 
         private void MarkUntracked() {
-                string str = MakeKey(mFrame.Coordinator.Position);
+                string str = MakeKey(mFrame.Core.Position);
                 lock (mUnackedUpdates)
                     if (mUnackedUpdates.ContainsKey(str))
                         mUnackedUpdates[str] = DateTime.Now;

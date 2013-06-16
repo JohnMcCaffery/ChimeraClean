@@ -64,7 +64,7 @@ namespace Chimera.Overlay {
             mName = name;
             mManager = manager;
 
-            mManager.Coordinator.FrameAdded += new Action<Frame,EventArgs>(Coordinator_FrameAdded);
+            mManager.Core.FrameAdded += new Action<Frame,EventArgs>(Coordinator_FrameAdded);
         }
 
         /// <summary>
@@ -72,7 +72,7 @@ namespace Chimera.Overlay {
         /// Relies on state being added to coordinator to add windows, i.e. quite late on during startup.
         /// </summary>
         public void Init() {
-            foreach (var window in mManager.Coordinator.Frames)
+            foreach (var window in mManager.Core.Frames)
                 Coordinator_FrameAdded(window, null);
         }
 
@@ -84,7 +84,7 @@ namespace Chimera.Overlay {
         public IWindowState this[string window] {
             get {
                 if (!mWindowStates.ContainsKey(window))
-                    Coordinator_FrameAdded(mManager.Coordinator[window], null);
+                    Coordinator_FrameAdded(mManager.Core[window], null);
                 return mWindowStates[window];
             }
         }

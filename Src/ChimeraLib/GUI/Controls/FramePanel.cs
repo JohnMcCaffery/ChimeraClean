@@ -117,12 +117,12 @@ namespace Chimera.GUI.Controls {
 
         private void mainTab_KeyDown(object sender, KeyEventArgs e) {
             if (mFrame != null)
-                mFrame.Coordinator.TriggerKeyboard(true, e);
+                mFrame.Core.TriggerKeyboard(true, e);
         }
 
         private void mainTab_KeyUp(object sender, KeyEventArgs e) {
             if (mFrame != null)
-                mFrame.Coordinator.TriggerKeyboard(false, e);
+                mFrame.Core.TriggerKeyboard(false, e);
         }
 
         private void monitorPulldown_SelectedIndexChanged(object sender, EventArgs e) {

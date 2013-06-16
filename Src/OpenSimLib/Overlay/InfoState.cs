@@ -81,7 +81,7 @@ namespace Chimera.OpenSim.Overlay {
             TransitionToFinish();
         }
         protected override void TransitionToFinish() {
-            Manager.Coordinator.EnableUpdates = false;
+            Manager.Core.EnableUpdates = false;
             foreach (var manager in mPlugin.OverlayManagers)
                 manager.ControlPointer = true;
             Chat(mGlowString);

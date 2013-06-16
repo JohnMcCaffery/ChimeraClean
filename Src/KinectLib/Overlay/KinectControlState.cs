@@ -69,25 +69,25 @@ namespace Chimera.Kinect.Overlay {
         public KinectControlState(string name, OverlayPlugin manager, bool avatar)
             : base(name, manager) {
 
-            mInput = manager.Coordinator.GetPlugin<KinectMovementPlugin>();
+            mInput = manager.Core.GetPlugin<KinectMovementPlugin>();
             mAvatar = avatar;
 
-            mStartOrientation = new Rotation(manager.Coordinator.Orientation);
-            mStartPosition = manager.Coordinator.Position;
+            mStartOrientation = new Rotation(manager.Core.Orientation);
+            mStartPosition = manager.Core.Position;
         }
 
         public KinectControlState(OverlayPlugin manager, XmlNode node)
             : base(GetName(node, "kinect movement state"), manager) {
 
-            mInput = manager.Coordinator.GetPlugin<KinectMovementPlugin>();
+            mInput = manager.Core.GetPlugin<KinectMovementPlugin>();
             mAvatar = GetBool(node, true, "Avatar");
             mOpacity = GetDouble(node, mOpacity, "Opacity");
 
-            double pitch = GetDouble(node, manager.Coordinator.Orientation.Pitch);
-            double yaw = GetDouble(node, manager.Coordinator.Orientation.Yaw);
-            float x = GetFloat(node, manager.Coordinator.Position.X, "X");
-            float y = GetFloat(node, manager.Coordinator.Position.Y, "Y");
-            float z = GetFloat(node, manager.Coordinator.Position.Z, "Z");
+            double pitch = GetDouble(node, manager.Core.Orientation.Pitch);
+            double yaw = GetDouble(node, manager.Core.Orientation.Yaw);
+            float x = GetFloat(node, manager.Core.Position.X, "X");
+            float y = GetFloat(node, manager.Core.Position.Y, "Y");
+            float z = GetFloat(node, manager.Core.Position.Z, "Z");
             mStartOrientation = new Rotation(pitch, yaw);
             mStartPosition = new Vector3(x, y, z);
 
@@ -103,13 +103,13 @@ namespace Chimera.Kinect.Overlay {
         }
 
         protected override void TransitionToStart() {
-            Manager.Coordinator.ControlMode = mAvatar ? ControlMode.Delta : ControlMode.Absolute;
+            Manager.Core.ControlMode = mAvatar ? ControlMode.Delta : ControlMode.Absolute;
             if (!mAvatar) {
-                Manager.Coordinator.EnableUpdates = true;
+                Manager.Core.EnableUpdates = true;
                 if (mSetPosition)
-                    Manager.Coordinator.Update(mStartPosition, Vector3.Zero, mStartOrientation, Rotation.Zero);
+                    Manager.Core.Update(mStartPosition, Vector3.Zero, mStartOrientation, Rotation.Zero);
             }
-            Manager.Coordinator.EnableUpdates = true; 
+            Manager.Core.EnableUpdates = true; 
             foreach (var manager in Manager.OverlayManagers)
                 manager.ControlPointer = false;
         }

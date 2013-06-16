@@ -7,10 +7,14 @@ using Chimera.Interfaces.Overlay;
 namespace Chimera.Overlay.Triggers {
     public abstract class ConditionTrigger : XmlLoader, ITrigger {
         private static readonly double TIMEOUT = 10000.0;
-        private Core mCoordinator;
+        private Core mCore;
         private Action mTickListener;
-        private bool mCondition;
+        private double mWaitMS = 0.0;
         private bool mActive;
+
+        private bool mCondition;
+        private bool mHasTriggered;
+        private DateTime mStart;
 
         private event Action mTriggered;
 
@@ -18,19 +22,32 @@ namespace Chimera.Overlay.Triggers {
             get;
         }
 
-        public ConditionTrigger(Core coordinator) {
-            mCoordinator = coordinator;
+        public ConditionTrigger(Core core) {
+            mCore = core;
             mTickListener = new Action(mCoordinator_Tick);
+        }
+
+        public ConditionTrigger(Core core, double waitMS)
+            : this(core) {
+
+            mWaitMS = waitMS;
         }
 
         void mCoordinator_Tick() {
             if (Condition) {
                 if (!mCondition) {
                     mCondition = true;
+                    if (mWaitMS <= 0.0)
+                        mTriggered();
+                    else
+                        mStart = DateTime.Now;
+                } else if (!mHasTriggered && mWaitMS > 0.0 && DateTime.Now.Subtract(mStart).TotalMilliseconds > mWaitMS) {
+                    mHasTriggered = true;
                     mTriggered();
                 }
             } else if (mCondition) {
                 mCondition = false;
+                mHasTriggered = false;
             }
         }
 
@@ -39,13 +56,13 @@ namespace Chimera.Overlay.Triggers {
         public event Action Triggered {
             add {
                 if (mActive && mTriggered == null)
-                    mCoordinator.Tick += mTickListener;
+                    mCore.Tick += mTickListener;
                 mTriggered += value;
             }
             remove {
                 mTriggered -= value;
                 if (mActive && mTriggered == null)
-                    mCoordinator.Tick -= mTickListener;
+                    mCore.Tick -= mTickListener;
             }
 
         }
@@ -56,9 +73,9 @@ namespace Chimera.Overlay.Triggers {
                 if (mActive != value) {
                     mActive = value;
                     if (value)
-                        mCoordinator.Tick += mTickListener;
+                        mCore.Tick += mTickListener;
                     else
-                        mCoordinator.Tick -= mTickListener;
+                        mCore.Tick -= mTickListener;
                 }
             }
         }

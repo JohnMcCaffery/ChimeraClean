@@ -47,10 +47,10 @@ namespace Chimera.Overlay.States {
         }
 
         protected override void TransitionToStart() {
-            Manager.Coordinator.EnableUpdates = true;
-            Manager.Coordinator.ControlMode = ControlMode.Absolute;
-            Manager.Coordinator.Update(mPosition, Vector3.Zero, mOrientation, Rotation.Zero);
-            Manager.Coordinator.EnableUpdates = false;
+            Manager.Core.EnableUpdates = true;
+            Manager.Core.ControlMode = ControlMode.Absolute;
+            Manager.Core.Update(mPosition, Vector3.Zero, mOrientation, Rotation.Zero);
+            Manager.Core.EnableUpdates = false;
 
             foreach (var window in mWindows)
                 window.ResetToTransparent();

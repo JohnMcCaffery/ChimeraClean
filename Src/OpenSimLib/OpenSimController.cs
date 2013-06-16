@@ -79,7 +79,7 @@ namespace Chimera.OpenSim {
         UserControl IPlugin.ControlPanel {
             get {
                 if (mInputPanel == null) {
-                    mFollowCamProperties = new SetFollowCamProperties(Frame.Coordinator);
+                    mFollowCamProperties = new SetFollowCamProperties(Frame.Core);
                     mInputPanel = new InputPanel(mFollowCamProperties);
                     if (mProxyController.Started)
                         mFollowCamProperties.SetProxy(mProxyController.Proxy);
@@ -154,7 +154,7 @@ namespace Chimera.OpenSim {
         }
 
         private ControlMode Mode {
-            get { return Frame.Coordinator.ControlMode; }
+            get { return Frame.Core.ControlMode; }
         }
 
         public void Init(Frame frame) {
@@ -167,10 +167,10 @@ namespace Chimera.OpenSim {
             else
                 mProxyController = new FullController(frame);
 
-            mFrame.Coordinator.DeltaUpdated += new Action<Core,DeltaUpdateEventArgs>(Coordinator_DeltaUpdated);
-            mFrame.Coordinator.CameraUpdated += new Action<Core,CameraUpdateEventArgs>(Coordinator_CameraUpdated);
-            mFrame.Coordinator.CameraModeChanged += new Action<Core,ControlMode>(Coordinator_CameraModeChanged);
-            mFrame.Coordinator.EyeUpdated += new Action<Core,EventArgs>(Coordinator_EyeUpdated);
+            mFrame.Core.DeltaUpdated += new Action<Core,DeltaUpdateEventArgs>(Coordinator_DeltaUpdated);
+            mFrame.Core.CameraUpdated += new Action<Core,CameraUpdateEventArgs>(Coordinator_CameraUpdated);
+            mFrame.Core.CameraModeChanged += new Action<Core,ControlMode>(Coordinator_CameraModeChanged);
+            mFrame.Core.EyeUpdated += new Action<Core,EventArgs>(Coordinator_EyeUpdated);
             mFrame.Changed += new Action<Chimera.Frame,EventArgs>(mFrame_Changed);
             mFrame.MonitorChanged += new Action<Chimera.Frame,Screen>(mFrame_MonitorChanged);
             mProxyController.OnClientLoggedIn += new EventHandler(mProxyController_OnClientLoggedIn);
@@ -298,7 +298,7 @@ namespace Chimera.OpenSim {
 
         void mProxyController_PositionChanged(Vector3 position, Rotation rotation) {
             if (IsMaster && Mode == ControlMode.Delta)
-                mFrame.Coordinator.Update(position, Vector3.Zero, rotation, Rotation.Zero, ControlMode.Absolute);
+                mFrame.Core.Update(position, Vector3.Zero, rotation, Rotation.Zero, ControlMode.Absolute);
         }
 
         void mViewerController_Exited() {

@@ -14,7 +14,7 @@ namespace Touchscreen.Overlay {
         public TouchscreenState(string name, bool avatar, OverlayPlugin manager)
             : base(name, manager) {
 
-            mPlugin = manager.Coordinator.GetPlugin<TouchscreenPlugin>();
+            mPlugin = manager.Core.GetPlugin<TouchscreenPlugin>();
             mPlugin.Enabled = false;
             mAvatar = avatar;
         }
@@ -26,16 +26,16 @@ namespace Touchscreen.Overlay {
         }
 
         protected override void TransitionToStart() {
-            Manager.Coordinator.ControlMode = mAvatar ? ControlMode.Delta : ControlMode.Absolute;
+            Manager.Core.ControlMode = mAvatar ? ControlMode.Delta : ControlMode.Absolute;
             mPlugin.Enabled = true;
         }
 
         protected override void TransitionToFinish() {
-            Manager.Coordinator.EnableUpdates = true;
+            Manager.Core.EnableUpdates = true;
         }
 
         protected override void TransitionFromStart() {
-            Manager.Coordinator.EnableUpdates = false;
+            Manager.Core.EnableUpdates = false;
             mPlugin.Enabled = false;
         }
 

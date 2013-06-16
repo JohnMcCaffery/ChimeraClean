@@ -52,12 +52,12 @@ namespace Chimera.Overlay.States {
         }
 
         protected override void TransitionToStart() {
-            Manager.Coordinator.EnableUpdates = true;
-            Manager.Coordinator.ControlMode = mAvatar ? ControlMode.Delta : ControlMode.Absolute;
-            Vector3 pos = mSetPosition ? mStartPosition : Manager.Coordinator.Position;
-            Rotation rot = mSetOrientation ? mStartOrientation : Manager.Coordinator.Orientation;
+            Manager.Core.EnableUpdates = true;
+            Manager.Core.ControlMode = mAvatar ? ControlMode.Delta : ControlMode.Absolute;
+            Vector3 pos = mSetPosition ? mStartPosition : Manager.Core.Position;
+            Rotation rot = mSetOrientation ? mStartOrientation : Manager.Core.Orientation;
             if (mSetPosition || mSetOrientation)
-                Manager.Coordinator.Update(pos, Vector3.Zero, rot, Rotation.Zero);
+                Manager.Core.Update(pos, Vector3.Zero, rot, Rotation.Zero);
         }
 
         protected override void TransitionToFinish() {

@@ -81,11 +81,11 @@ namespace Chimera.Overlay {
             mTo = to;
             mWindowTransitionFactory = factory;
 
-            mManager.Coordinator.FrameAdded += new Action<Frame,EventArgs>(Coordinator_FrameAdded);
+            mManager.Core.FrameAdded += new Action<Frame,EventArgs>(Coordinator_FrameAdded);
 
             AddTrigger(trigger);
 
-            foreach (var window in mManager.Coordinator.Frames)
+            foreach (var window in mManager.Core.Frames)
                 Coordinator_FrameAdded(window, null);
         }
 

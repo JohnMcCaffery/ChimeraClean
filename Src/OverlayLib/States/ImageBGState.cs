@@ -107,7 +107,7 @@ namespace Chimera.Overlay.States {
         }
 
         protected override void TransitionToFinish() {
-            Manager.Coordinator.EnableUpdates = false;
+            Manager.Core.EnableUpdates = false;
         }
 
         protected override void TransitionFromStart() { }

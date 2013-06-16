@@ -343,11 +343,11 @@ namespace Chimera.OpenSim {
             mConfig = new ViewerConfig(frame.Name);
             mLogger = LogManager.GetLogger(mConfig.Section);
             mFrame = frame;
-            mFrame.Coordinator.CameraUpdated += Coordinator_CameraUpdated;
-            mFrame.Coordinator.EyeUpdated += Coordinator_EyeUpdated;
-            mFrame.Coordinator.Tick += new Action(Coordinator_Tick);
-            mFrame.Coordinator.CameraModeChanged += new Action<Core,ControlMode>(Coordinator_CameraModeChanged);
-            mFrame.Coordinator.DeltaUpdated += new Action<Chimera.Core,DeltaUpdateEventArgs>(Coordinator_DeltaUpdated);
+            mFrame.Core.CameraUpdated += Coordinator_CameraUpdated;
+            mFrame.Core.EyeUpdated += Coordinator_EyeUpdated;
+            mFrame.Core.Tick += new Action(Coordinator_Tick);
+            mFrame.Core.CameraModeChanged += new Action<Core,ControlMode>(Coordinator_CameraModeChanged);
+            mFrame.Core.DeltaUpdated += new Action<Chimera.Core,DeltaUpdateEventArgs>(Coordinator_DeltaUpdated);
             mFrame.MonitorChanged += new Action<Chimera.Frame,Screen>(mFrame_MonitorChanged);
             mFrame.Changed += new Action<Chimera.Frame,EventArgs>(mFrame_Changed);
             mFullscreen = mConfig.Fullscreen;
@@ -439,7 +439,7 @@ namespace Chimera.OpenSim {
             get {
                 if (mInputPanel == null) {
                     mMaster = true;
-                    mFollowCamProperties = new SetFollowCamProperties(Frame.Coordinator);
+                    mFollowCamProperties = new SetFollowCamProperties(Frame.Core);
                     mInputPanel = new InputPanel(mFollowCamProperties);
 
                 }
@@ -517,7 +517,7 @@ namespace Chimera.OpenSim {
         /// <param name="input">The input which triggered the eye change.</param>
         /// <param name="args">The arguments about the change that was made.</param>
         private void Coordinator_EyeUpdated(Core coordinator, EventArgs args) {
-            if (ProxyRunning && ControlCamera && Frame.Coordinator.ControlMode == ControlMode.Absolute) {
+            if (ProxyRunning && ControlCamera && Frame.Core.ControlMode == ControlMode.Absolute) {
                 SetCamera();
                 SetFrame();
             }
@@ -529,8 +529,8 @@ namespace Chimera.OpenSim {
                 mLastViewerPosition = packet.AgentData.CameraAtAxis;
                 mLastViewerUpdate =  DateTime.Now;
             }
-            if (mMaster && mFrame.Coordinator.ControlMode == ControlMode.Delta) {
-                mFrame.Coordinator.Update(packet.AgentData.CameraCenter, Vector3.Zero, new Rotation(packet.AgentData.CameraAtAxis), Rotation.Zero, ControlMode.Absolute);
+            if (mMaster && mFrame.Core.ControlMode == ControlMode.Delta) {
+                mFrame.Core.Update(packet.AgentData.CameraCenter, Vector3.Zero, new Rotation(packet.AgentData.CameraAtAxis), Rotation.Zero, ControlMode.Absolute);
             }
             return p;
         }
@@ -570,7 +570,7 @@ namespace Chimera.OpenSim {
         }
 
         void mFrame_Changed(Frame f, EventArgs args) {
-            if (f.Coordinator.ControlMode == ControlMode.Absolute)
+            if (f.Core.ControlMode == ControlMode.Absolute)
                 SetFrame();
         }
 
@@ -601,7 +601,7 @@ namespace Chimera.OpenSim {
                 }
 
                 new Thread(() => {
-                    if (mControlCamera && mFrame.Coordinator.ControlMode == ControlMode.Absolute)
+                    if (mControlCamera && mFrame.Core.ControlMode == ControlMode.Absolute)
                         SetCamera();
                     SetFrame();
                     if (mMaster && mFollowCamProperties.ControlCamera)

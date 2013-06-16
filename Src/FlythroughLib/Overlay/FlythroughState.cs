@@ -82,7 +82,7 @@ namespace Chimera.Flythrough.Overlay {
             : base(name, manager) {
 
             mFlythrough = flythrough;
-            mInput = manager.Coordinator.GetPlugin<FlythroughPlugin>();
+            mInput = manager.Core.GetPlugin<FlythroughPlugin>();
         }
 
         public FlythroughState(string name, OverlayPlugin manager, string flythrough, params ITrigger[] stepTriggers)
@@ -111,7 +111,7 @@ namespace Chimera.Flythrough.Overlay {
         public FlythroughState(OverlayPlugin manager, XmlNode node, IMediaPlayer player)
             : base(GetName(node, "flythrough state"), manager) {
 
-            mInput = manager.Coordinator.GetPlugin<FlythroughPlugin>();
+            mInput = manager.Core.GetPlugin<FlythroughPlugin>();
             bool displaySubtitles = GetBool(node, false, "DisplaySubtitles");
             mFlythrough = GetString(node, null, "File");
             mAutoStepping = GetBool(node, true, "AutoStep");
@@ -222,7 +222,7 @@ namespace Chimera.Flythrough.Overlay {
             if (mSubtitlesText != null)
                 mSubtitlesText.Active = true;
 
-            Manager.Coordinator.ControlMode = ControlMode.Absolute;
+            Manager.Core.ControlMode = ControlMode.Absolute;
             mInput.Enabled = true;
             mInput.Core.EnableUpdates = true;
             mInput.Load(mFlythrough);
@@ -232,7 +232,7 @@ namespace Chimera.Flythrough.Overlay {
             foreach (var trigger in mStepTriggers)
                 trigger.Active = true;
 
-            Manager.Coordinator.ControlMode = ControlMode.Absolute;
+            Manager.Core.ControlMode = ControlMode.Absolute;
             mInput.Time = 0;
             mInput.Play();
         }

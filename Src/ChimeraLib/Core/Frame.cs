@@ -175,7 +175,7 @@ namespace Chimera {
         /// <summary>
         /// The system which this input is registered with.
         /// </summary>
-        public Core Coordinator {
+        public Core Core {
             get { return mCoordinator ; }
             set { mCoordinator  = value; }
         }

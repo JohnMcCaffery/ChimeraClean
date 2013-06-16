@@ -30,9 +30,9 @@ using Chimera.Interfaces.Overlay;
 using System.Xml;
 
 namespace Chimera.Overlay.Triggers {
-    public class CursorTrigger : XmlLoader, ITrigger, IFeature {
+    public class CursorTrigger : ConditionTrigger, IFeature {
         private DateTime mEnter;
-        private float mSelectMS = 1000f;
+        private static float mSelectMS = 1000f;
         private bool mHovering = false;
         private bool mClicked = false;
         private Cursor mSelectCursor;
@@ -44,16 +44,17 @@ namespace Chimera.Overlay.Triggers {
         /// The clip rectangle bounding the area this item will be drawn to.
         /// </summary>
         private Rectangle mClip;
- 
-        public CursorTrigger(ISelectionRenderer renderer, WindowOverlayManager manager) {
+
+        public CursorTrigger(ISelectionRenderer renderer, WindowOverlayManager manager)
+            : base(manager.Frame.Core, mSelectMS) {
             mManager = manager;
             mRenderer = renderer;
-            mManager.Frame.Coordinator.Tick += new Action(coordinator_Tick);
             //mSelectCursor = new Cursor(new IntPtr(65571));
             mSelectCursor = new Cursor(new IntPtr(65567));
         }
 
-        public CursorTrigger(XmlNode node) {
+        public CursorTrigger(OverlayPlugin plugin, XmlNode node)
+            : base(plugin.Core) {
             //TODO add logic for initialisation
         }
 
@@ -61,47 +62,23 @@ namespace Chimera.Overlay.Triggers {
             get { return DateTime.Now.Subtract(mEnter).TotalMilliseconds; }
         }
 
-
-        void coordinator_Tick() {
-            if (mActive && ProcessWrangler.GetGlobalCursor().Equals(mSelectCursor.Handle)) {
-                if (mClicked)
-                    return;
-                if (!mHovering) {
-                    mHovering = true;
-                    mEnter = DateTime.Now;
-                }
-
-                if (HoverTime > mSelectMS) {
-                    mClicked = true;
-                    Thread.Sleep(20);
-                    ProcessWrangler.Click();
-                    mRenderer.Clear();
+        public override bool Condition {
+            get { 
+                bool ret = ProcessWrangler.GetGlobalCursor().Equals(mSelectCursor.Handle);
+                if (ret) {
+                    if (!mHovering) {
+                        mHovering = true;
+                        mEnter = DateTime.Now;
+                    }
+                } else if (mHovering) {
                     mManager.ForceRedraw();
-                    if (Triggered != null)
-                        Triggered();
-                }
-            } else if (mHovering) {
-                mManager.ForceRedraw();
-                mRenderer.Clear();
-                mHovering = false;
-                mClicked = false;
-            }
-        }
-
-        #region ITrigger Members
-
-        public event Action Triggered;
-
-        public bool Active {
-            get { return mActive; }
-            set {
-                mActive = value;
-                if (!mActive)
                     mRenderer.Clear();
+                    mHovering = false;
+                    mClicked = false;
+                }
+                return ret;
             }
         }
-
-        #endregion
 
         #region IDrawable Members
 

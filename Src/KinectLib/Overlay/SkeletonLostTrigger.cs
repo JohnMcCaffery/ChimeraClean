@@ -43,7 +43,7 @@ namespace Chimera.Kinect.Overlay {
 
         public ITrigger Create(OverlayPlugin manager, XmlNode node) {
             double timeout = GetDouble(node, 30000, "Timeout");
-            return new SkeletonLostTrigger(manager.Coordinator, timeout);
+            return new SkeletonLostTrigger(manager.Core, timeout);
         }
 
         public ITrigger Create(OverlayPlugin manager, XmlNode node, Rectangle clip) {

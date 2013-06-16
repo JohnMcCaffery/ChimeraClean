@@ -261,7 +261,7 @@ namespace Chimera.Kinect {
         private void coordinator_WindowAdded(Frame frame, EventArgs args) {
             if (frame.Name == mWindow) {
                 mManager = mStateManager[frame.Name];
-                frame.Coordinator.FrameAdded -= mWindowAddedListener;
+                frame.Core.FrameAdded -= mWindowAddedListener;
             }
         }
 

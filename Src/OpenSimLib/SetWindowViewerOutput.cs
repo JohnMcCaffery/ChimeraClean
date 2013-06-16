@@ -59,19 +59,19 @@ namespace Chimera.OpenSim {
 
 
         private SetCameraPacket.CameraBlock MakeCameraBlock() {
-            return MakeCameraBlock(Frame.Coordinator.Position, Vector3.Zero, Frame.Coordinator.Orientation, Rotation.Zero);
+            return MakeCameraBlock(Frame.Core.Position, Vector3.Zero, Frame.Core.Orientation, Rotation.Zero);
         }
         private SetCameraPacket.CameraBlock MakeCameraBlock(Vector3 position, Vector3 positionDelta, Rotation rotation, Rotation rotationDelta) {
             //Vector3 focus = Window.Core.Position + Window.Core.Orientation.LookAtVector;
             Vector3 lookAt = (rotation - Frame.Orientation).LookAtVector;
-            Vector3 eyePos = new Vector3(Frame.Coordinator.EyePosition.Y, Frame.Coordinator.EyePosition.X, -Frame.Coordinator.EyePosition.Z);
+            Vector3 eyePos = new Vector3(Frame.Core.EyePosition.Y, Frame.Core.EyePosition.X, -Frame.Core.EyePosition.Z);
 
             SetCameraPacket.CameraBlock block = new SetCameraPacket.CameraBlock();
             block.Position = position - (eyePos / 1000f);
             block.PositionDelta = positionDelta;
             block.LookAt = lookAt;
             block.LookAtDelta = rotationDelta.LookAtVector;
-            block.TickLength = (uint)Frame.Coordinator.TickLength * 1000;
+            block.TickLength = (uint)Frame.Core.TickLength * 1000;
             return block;
         }
     }

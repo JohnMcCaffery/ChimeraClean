@@ -18,7 +18,7 @@ namespace Joystick.Overlay {
         }
 
         public ITrigger Create(OverlayPlugin manager, XmlNode node) {
-            return new JoystickInactiveTrigger(manager.Coordinator, node);
+            return new JoystickInactiveTrigger(manager.Core, node);
         }
 
         public ITrigger Create(OverlayPlugin manager, System.Xml.XmlNode node, System.Drawing.Rectangle clip) {

@@ -99,7 +99,7 @@ namespace Chimera.Overlay.Transitions {
             : base(transition, manager) {
             mLengthMS = lengthMS;
             mFadeIn = fadeIn;
-            transition.Manager.Coordinator.Tick += new Action(Coordinator_Tick);
+            transition.Manager.Core.Tick += new Action(Coordinator_Tick);
         }
 
         void Coordinator_Tick() {
