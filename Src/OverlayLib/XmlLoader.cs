@@ -33,9 +33,9 @@ namespace Chimera.Overlay {
         public static readonly Color DEFAULT_FONT_COLOUR = Color.Black;
 
         public static string GetName(XmlNode node, string reason) {
-            if (node.Attributes["Name"] == null)
-                throw new ArgumentException("Unable to load " + reason + " from " + node.Name + ". No name attribute specified.");
-            return node.Attributes["Name"].Value;
+            //if (node.Attributes["Name"] == null)
+                //throw new ArgumentException("Unable to load " + reason + " from " + node.Name + ". No name attribute specified.");
+            return node.Attributes["Name"] == null ? node.Name : node.Attributes["Name"].Value;
         }
 
         public static RectangleF GetBounds(XmlNode node, string request) {

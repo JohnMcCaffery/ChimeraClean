@@ -124,7 +124,7 @@ namespace Chimera.Overlay.Triggers {
             }
 
             public ActiveAreaTrigger(OverlayPlugin manager, XmlNode node)
-                : base(manager.Core) {
+                : base(manager.Core, GetName(node, "ActiveAreaTrigger")) {
                 mManager = manager;
                 mCheckWaitS = GetDouble(node, 2, "CheckWaitS");
                 foreach (var child in GetChildrenOfChild(node, "Points")) {

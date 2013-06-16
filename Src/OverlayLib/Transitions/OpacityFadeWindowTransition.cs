@@ -28,6 +28,7 @@ using System.Drawing.Imaging;
 using Chimera.Overlay;
 using System.Xml;
 using log4net;
+using Chimera.Util;
 
 namespace Chimera.Overlay.Transitions {
     public class OpacityTransitionFactory : XmlLoader, ITransitionStyleFactory {
@@ -72,6 +73,7 @@ namespace Chimera.Overlay.Transitions {
         public OpacityFadeInWindowTransitionFactory(double lengthMS) : base (lengthMS, false) { }
     }
     public class OpacityFadeWindowTransition : WindowTransition {
+        private Action mTickListener;
         /// <summary>
         /// When the transition began.
         /// </summary>
@@ -89,6 +91,8 @@ namespace Chimera.Overlay.Transitions {
         /// </summary>
         private bool mFadeIn;
 
+        private TickStatistics mStatistics = new TickStatistics();
+
         /// <summary>
         /// Initialise the fade transition, specifying how long the fade should last, in ms.
         /// </summary>
@@ -99,13 +103,22 @@ namespace Chimera.Overlay.Transitions {
             : base(transition, manager) {
             mLengthMS = lengthMS;
             mFadeIn = fadeIn;
-            transition.Manager.Core.Tick += new Action(Coordinator_Tick);
+            mTickListener = new Action(Coordinator_Tick);
+
+            Finished += new Action<IWindowTransition>(OpacityFadeWindowTransition_Finished);
+
+            StatisticsCollection.AddStatistics(mStatistics, transition.Name + " " + manager.Name);
+        }
+
+        void OpacityFadeWindowTransition_Finished(IWindowTransition transition) {
+            Transition.Manager.Core.Tick -= mTickListener;
         }
 
         void Coordinator_Tick() {
             if (!mTransitioning)
                 return;
 
+            mStatistics.Begin();
             double time = DateTime.Now.Subtract(mTransitionStart).TotalMilliseconds;
             if (time > mLengthMS) {
                 mTransitioning = false;
@@ -118,6 +131,7 @@ namespace Chimera.Overlay.Transitions {
                 double done = time / mLengthMS;
                 Manager.Opacity = mFadeIn ? done : 1.0 - done;
             }
+            mStatistics.End();
         }
 
         #region IWindowTransition Members
@@ -128,6 +142,7 @@ namespace Chimera.Overlay.Transitions {
             base.Begin();
             mTransitionStart = DateTime.Now;
             mTransitioning = true;
+            Transition.Manager.Core.Tick += mTickListener;
         }
 
         public override void Cancel() {

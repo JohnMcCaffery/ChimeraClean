@@ -345,7 +345,7 @@ namespace Chimera.OpenSim {
             mFrame = frame;
             mFrame.Core.CameraUpdated += Coordinator_CameraUpdated;
             mFrame.Core.EyeUpdated += Coordinator_EyeUpdated;
-            mFrame.Core.Tick += new Action(Coordinator_Tick);
+            //mFrame.Core.Tick += new Action(Coordinator_Tick);
             mFrame.Core.CameraModeChanged += new Action<Core,ControlMode>(Coordinator_CameraModeChanged);
             mFrame.Core.DeltaUpdated += new Action<Chimera.Core,DeltaUpdateEventArgs>(Coordinator_DeltaUpdated);
             mFrame.MonitorChanged += new Action<Chimera.Frame,Screen>(mFrame_MonitorChanged);

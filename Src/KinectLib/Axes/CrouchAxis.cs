@@ -45,7 +45,7 @@ namespace Chimera.Kinect.Axes {
             get { return mRaw; }
         }
 
-        public override float RawValue {
+        public override float KinectRawValue {
             get { return mRaw.Value; }
         }
 
@@ -73,8 +73,6 @@ namespace Chimera.Kinect.Axes {
 
             mRaw = (anchor * 3) + raw;
             mRaw *= -1f;
-
-            AddListener();
         }
     }
 }

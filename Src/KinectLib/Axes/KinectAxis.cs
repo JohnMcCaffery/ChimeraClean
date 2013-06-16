@@ -14,7 +14,7 @@ namespace Chimera.Kinect.Axes {
         //public abstract Scalar Raw { get; }
         public abstract ConstrainedAxis Axis { get; }
 
-        public abstract float RawValue { get; }
+        public abstract float KinectRawValue { get; }
 
         private ChangeDelegate mTickListener;
 
@@ -31,28 +31,10 @@ namespace Chimera.Kinect.Axes {
         private void Init() {
             Deadzone.Value = G.Cfg.GetDeadzone(Name);
             Scale.Value = G.Cfg.GetScale(Name);
-
-            mTickListener = new ChangeDelegate(Nui_Tick);
-            Nui.SkeletonFound += new SkeletonTrackDelegate(Nui_SkeletonFound);
-            Nui.SkeletonLost += new SkeletonTrackDelegate(Nui_SkeletonLost);
         }
 
-        protected void AddListener() {
-            if (Nui.HasSkeleton)
-                Nui.Tick += mTickListener;
+        protected override float RawValue {
+            get { return Nui.HasSkeleton && Active.Value ? RawValue : 0f; }
         }
-
-        void Nui_SkeletonFound() {
-            Nui.Tick += mTickListener;
-        }
-
-        void Nui_SkeletonLost() {
-            Nui.Tick -= mTickListener;
-            SetRawValue(0f);
-        }
-
-        void Nui_Tick() {
-            SetRawValue(Nui.HasSkeleton && Active.Value ? RawValue : 0f);
-        }   
     }
 }

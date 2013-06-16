@@ -50,8 +50,6 @@ namespace Chimera.Kinect.Axes {
             //mRaw = dot * Sign * (180f / (float)Math.PI);
             //mRaw = Nui.acos(Nui.dot(A, B)) * (180f / (float) Math.PI);
             //mValue = Nui.ifScalar(Active, mRaw, 0f);
-
-            AddListener();
         }
 
         #region IKinectAxis Members
@@ -60,7 +58,7 @@ namespace Chimera.Kinect.Axes {
             get { return this; }
         }
 
-        public override float RawValue {
+        public override float KinectRawValue {
             get {
                 return mRaw.Value * Sign * TO_DEG;
             }

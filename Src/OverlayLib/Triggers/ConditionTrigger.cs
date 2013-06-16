@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Chimera.Interfaces.Overlay;
+using Chimera.Util;
 
 namespace Chimera.Overlay.Triggers {
     public abstract class ConditionTrigger : XmlLoader, ITrigger {
@@ -15,6 +16,8 @@ namespace Chimera.Overlay.Triggers {
         private bool mHasTriggered;
         private DateTime mStart;
 
+        private readonly TickStatistics mStatistics = new TickStatistics();
+
         private event Action mTriggered;
 
         public abstract bool Condition {
@@ -25,18 +28,21 @@ namespace Chimera.Overlay.Triggers {
             get { return mWaitMS; }
         }
 
-        public ConditionTrigger(Core core) {
+        public ConditionTrigger(Core core, string name) {
             mCore = core;
             mTickListener = new Action(mCoordinator_Tick);
+
+            StatisticsCollection.AddStatistics(mStatistics, name + " Trigger");
         }
 
-        public ConditionTrigger(Core core, double waitMS)
-            : this(core) {
+        public ConditionTrigger(Core core, string name, double waitMS)
+            : this(core, name) {
 
             mWaitMS = waitMS;
         }
 
         void mCoordinator_Tick() {
+            mStatistics.Begin();
             if (Condition) {
                 if (!mCondition) {
                     mCondition = true;
@@ -52,6 +58,7 @@ namespace Chimera.Overlay.Triggers {
                 mCondition = false;
                 mHasTriggered = false;
             }
+            mStatistics.End();
         }
 
         #region ITrigger Members

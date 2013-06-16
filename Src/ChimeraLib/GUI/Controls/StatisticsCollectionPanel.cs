@@ -65,11 +65,7 @@ namespace Chimera.GUI.Controls {
                 sharedGraph.Series.Add(current);
                 sharedGraph.Series.Add(mean);
 
-                TabPage p = new TabPage();
-                p.Name = name;
-                StatisticsPanel panel = new StatisticsPanel(collection[name], mCore);
-                p.Controls.Add(panel);
-                mainTab.Controls.Add(p);
+                namesList.Items.Add(name);
                 
                 ListViewItem row = new ListViewItem();
                 row.SubItems.Add(name);
@@ -80,7 +76,6 @@ namespace Chimera.GUI.Controls {
                 mCurrentSeries.Add(name, current);
                 mMeanSeries.Add(name, mean);
                 mRows.Add(name, row);
-                mPanels.Add(name, panel);
             }
         }
 
@@ -110,10 +105,27 @@ namespace Chimera.GUI.Controls {
 
             if (mainTab.SelectedTab == graphsTab) {
                 mStart = DateTime.Now;
-            } else if (mPanels.ContainsKey(mainTab.SelectedTab.Name)) {
-                StatisticsPanel panel = mPanels[mainTab.SelectedTab.Name];
-                panel.Active = true;
-                mCurrentPanel = panel;
+            } else if (mainTab.SelectedTab == individualTab && mCurrentPanel != null)
+                mCurrentPanel.Active = true;
+        }
+
+        private void namesList_SelectedIndexChanged(object sender, EventArgs e) {
+            if (mCurrentPanel != null) {
+                mCurrentPanel.Visible = false;
+                mCurrentPanel.Active = false;
+                mCurrentPanel = null;
+            }
+            if (namesList.SelectedItem != null) {
+                string name = namesList.SelectedItem as String;
+                if (!mPanels.ContainsKey(name)) {
+                    StatisticsPanel panel = new StatisticsPanel(mCollection[name], mCore);
+                    mPanels.Add(name, panel);
+                    panel.Dock = DockStyle.Fill;
+                    individualPanel.Controls.Add(panel);
+                }
+
+                mCurrentPanel = mPanels[name];
+                mCurrentPanel.Visible = true;
             }
         }
     }

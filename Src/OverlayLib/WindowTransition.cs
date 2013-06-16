@@ -39,6 +39,10 @@ namespace Chimera {
                 mTo.Clip = value;
             }
         }
+
+        public StateTransition Transition {
+            get { return mTransition; }
+        }
  
         /// <summary>
         /// 

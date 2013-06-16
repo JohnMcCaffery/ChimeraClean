@@ -23,12 +23,14 @@ using System.Linq;
 using System.Text;
 using SlimDX.XInput;
 using Chimera;
+using Chimera.Util;
 
 namespace Joystick {
     static class GamepadManager {
         private static Gamepad sGamepad;
         private static Controller sController;
-        private static bool mTracking;
+        private static bool sTracking;
+        private static TickStatistics sStatistics = new TickStatistics();
 
         public static bool Initialised {
             get { 
@@ -45,10 +47,12 @@ namespace Joystick {
         }
 
         public static void Init(ITickSource source) {
-            if (!mTracking) {
+            if (!sTracking) {
                 GetController();
                 source.Tick += new Action(source_Tick);
-                mTracking = true;
+                sTracking = true;
+
+                StatisticsCollection.AddStatistics(sStatistics, "GamepadManager");
             }
         }
 

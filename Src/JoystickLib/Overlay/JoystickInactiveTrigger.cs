@@ -34,13 +34,9 @@ namespace Joystick.Overlay {
         private double mTimeoutS;
         private DateTime mLastTrigger = DateTime.Now;
 
-        public JoystickInactiveTrigger(double timeout, Core coordinator)
-            : base(coordinator) {
-            mTimeoutS = timeout;
-        }
 
         public JoystickInactiveTrigger(Core coordinator, XmlNode node)
-            : base(coordinator) {
+            : base(coordinator, node) {
             mTimeoutS = GetDouble(node, 30, "TimeoutS");
         }
 

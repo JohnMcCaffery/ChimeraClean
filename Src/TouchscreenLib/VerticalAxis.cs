@@ -11,7 +11,7 @@ using Touchscreen.GUI;
 using System.Windows.Forms;
 
 namespace Touchscreen {
-    public class VerticalAxis : ConstrainedAxis, ITickListener {
+    public class VerticalAxis : ConstrainedAxis {
         private float mW;
         private float mH;
         private float mPaddingH;
@@ -38,10 +38,7 @@ namespace Touchscreen {
             : base("Single") {
             mManager = manager;
             mManager.OnPress += i => mDown = true;
-            mManager.OnRelease += i => {
-                mDown = false;
-                SetRawValue(0f);
-            };
+            mManager.OnRelease += i => mDown = false;
 
             Deadzone.Changed += d => Change();
         }
@@ -60,23 +57,13 @@ namespace Touchscreen {
                 SizeChanged();
         }
 
-        #region ITickListener Members
-
-        public void Init(ITickSource source) {
-            source.Tick += new Action(source_Tick);
-        }
-
-        void source_Tick() {
-            if (mDown && Bounds.Contains(mManager.CursorPosition)) {
-                SetRawValue(GetValue(mPaddingV, mH, mManager.CursorY));
-                mWasDown = true;
-            } else if (mWasDown) {
-                mWasDown = false;
-                SetRawValue(0f);
+        protected override float RawValue {
+            get {
+                return mDown && Bounds.Contains(mManager.CursorPosition) ?
+                    GetValue(mPaddingV, mH, mManager.CursorY) :
+                    0f;
             }
         }
-
-        #endregion
 
         public static float GetValue(float start, float w, double pos) {
             return (float) pos - (start + (w/2));

@@ -34,12 +34,16 @@ namespace Chimera.Plugins {
     public class AxisBasedDelta : DeltaBasedPlugin, ISystemPlugin {
         private readonly List<IAxis> mAxes = new List<IAxis>();
         private readonly string mName;
+        private readonly Action mTickListener;
+
         private ITickSource mSource;
         private AxisConfig mConfig;
 
         private AxisBasedDeltaPanel mPanel;
         private float mScale = 1f;
         private float mRotXMove = 3f;
+
+        private TickStatistics mStatistics = new TickStatistics();
 
         public event Action<IAxis> AxisAdded;
 
@@ -63,6 +67,22 @@ namespace Chimera.Plugins {
             get { return mAxes; }
         }
 
+        public override bool Enabled {
+            get { return base.Enabled; }
+            set {
+                base.Enabled = value;
+                if (mSource != null) {
+                    if (value)
+                        mSource.Tick += mTickListener;
+                    else
+                        mSource.Tick -= mTickListener;
+                }
+
+                foreach (var axis in mAxes)
+                    axis.Enabled = value;
+            }
+        }
+
         /// <summary>
         /// Input axes will automatically be assigned to camera axes if no axis is specified.
         /// The ordering is as follows:
@@ -79,9 +99,13 @@ namespace Chimera.Plugins {
             mName = name;
             mConfig = new AxisConfig(name);
 
+            mTickListener = new Action(mCore_Tick);
+
             foreach (var axis in axes)
                 if (axis != null)
                     AddAxis(axis);
+
+            StatisticsCollection.AddStatistics(mStatistics, name);
         }
 
         public void AddAxis(IAxis axis) {
@@ -122,18 +146,21 @@ namespace Chimera.Plugins {
             }
         }
 
-        public override void Init(Core input) {
-            base.Init(input);
-            mSource = input;
+        public override void Init(Core core) {
+            base.Init(core);
+            mSource = core;
             foreach (var axis in mAxes)
                 if (axis is ITickListener)
-                    (axis as ITickListener).Init(input);
+                    (axis as ITickListener).Init(core);
 
-            input.Tick += new Action(input_Tick);
+            if (Enabled)
+                core.Tick += mTickListener;
         }
 
-        void input_Tick() {
+        void mCore_Tick() {
+            mStatistics.Begin();
             TriggerChange(this);
+            mStatistics.End();
         }
 
         #endregion

@@ -45,19 +45,19 @@ namespace Chimera.Overlay.Triggers {
         }
 
         public AreaTrigger(WindowOverlayManager manager, RectangleF bounds, double time)
-            : base(manager.Frame.Core, time) {
+            : base(manager.Frame.Core, "AreaTrigger", time) {
             mManager = manager;
             mBounds = bounds;
         }
 
         public AreaTrigger(OverlayPlugin manager, XmlNode node, double time)
-            : base(manager.Core, time) {
+            : base(manager.Core, GetName(node, "AreaTrigger"), time) {
             mManager = GetManager(manager, node, "trigger");
             mBounds = GetBounds(node, "trigger");
         }
 
         public AreaTrigger(OverlayPlugin manager, XmlNode node, Rectangle clip, double time)
-            : base(manager.Core, time) {
+            : base(manager.Core, GetName(node, "AreaTrigger"), time) {
             mManager = GetManager(manager, node, "trigger");
             mBounds = GetBounds(node, "trigger", clip);
         }

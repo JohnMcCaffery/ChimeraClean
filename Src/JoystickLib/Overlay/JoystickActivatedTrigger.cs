@@ -20,7 +20,7 @@ namespace Joystick.Overlay {
         }
 
         public ITrigger Create(OverlayPlugin manager, XmlNode node) {
-            return new JoystickActivatedTrigger(manager.Core);
+            return new JoystickActivatedTrigger(manager.Core, node);
         }
 
         public ITrigger Create(OverlayPlugin manager, System.Xml.XmlNode node, System.Drawing.Rectangle clip) {
@@ -38,8 +38,8 @@ namespace Joystick.Overlay {
         private XBoxControllerPlugin mPlugin;
         private bool mInitialised;
 
-        public JoystickActivatedTrigger(Core coordinator)
-            : base(coordinator) {
+        public JoystickActivatedTrigger(Core coordinator, XmlNode node)
+            : base(coordinator, GetName(node, "Joystick Activated Trigger")) {
             mCoordinator = coordinator;
             if (mCoordinator.HasPlugin<XBoxControllerPlugin>()) {
                 mPlugin = mCoordinator.GetPlugin<XBoxControllerPlugin>();

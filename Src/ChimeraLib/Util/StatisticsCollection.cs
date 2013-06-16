@@ -29,6 +29,7 @@ namespace Chimera.Util {
 
         #region
 
+        private readonly Dictionary<string, int> mUsedNames = new Dictionary<string, int>();
         private readonly Dictionary<string, TickStatistics> mStatistics = new Dictionary<string, TickStatistics>();
 
         public string[] StatisticsNames {
@@ -40,7 +41,13 @@ namespace Chimera.Util {
         }
 
         private void AddStatisticsl(TickStatistics statistics, string name) {
-            mStatistics.Add(name, statistics);
+            if (mStatistics.ContainsKey(name)) {
+                mStatistics.Add(name + mUsedNames[name], statistics);
+                mUsedNames[name]++;
+            } else {
+                mStatistics.Add(name, statistics);
+                mUsedNames.Add(name, 1);
+            }
         }
 
         #endregion

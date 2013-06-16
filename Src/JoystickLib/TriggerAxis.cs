@@ -29,7 +29,6 @@ using Chimera.Interfaces;
 namespace Joystick {
     public class TriggerAxis : ConstrainedAxis, ITickListener {
         private bool mLeftUp;
-
         
         public TriggerAxis(bool leftUp, AxisBinding binding)
             : base("Trigger", 0, .0005f, binding) {
@@ -43,19 +42,20 @@ namespace Joystick {
 
         public void Init(ITickSource source) {
             GamepadManager.Init(source);
-            source.Tick += new Action(source_Tick);
         }
 
-        void source_Tick() {
-            if (!GamepadManager.Initialised)
-                return;
+        protected override float RawValue {
+            get {
+                if (!GamepadManager.Initialised)
+                    return 0f;
 
-            Gamepad g = GamepadManager.Gamepad;
+                Gamepad g = GamepadManager.Gamepad;
 
-            float l = g.LeftTrigger * (mLeftUp ? 1f : -1f);
-            float r = g.RightTrigger * (mLeftUp ? -1f : 1f);
+                float l = g.LeftTrigger * (mLeftUp ? 1f : -1f);
+                float r = g.RightTrigger * (mLeftUp ? -1f : 1f);
 
-            SetRawValue(l + r);
+                return l + r;
+            }
         }
     }
 }

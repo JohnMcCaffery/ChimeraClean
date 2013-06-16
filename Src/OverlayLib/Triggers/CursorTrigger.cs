@@ -45,7 +45,7 @@ namespace Chimera.Overlay.Triggers {
         private Rectangle mClip;
 
         public CursorTrigger(ISelectionRenderer renderer, WindowOverlayManager manager)
-            : base(manager.Frame.Core, mSelectMS) {
+            : base(manager.Frame.Core, "CursorTrigger", mSelectMS) {
             mManager = manager;
             mRenderer = renderer;
             //mSelectCursor = new Cursor(new IntPtr(65571));
@@ -53,7 +53,7 @@ namespace Chimera.Overlay.Triggers {
         }
 
         public CursorTrigger(OverlayPlugin plugin, XmlNode node)
-            : base(plugin.Core) {
+            : base(plugin.Core, GetName(node, "CursorTrigger")) {
             //TODO add logic for initialisation
         }
 

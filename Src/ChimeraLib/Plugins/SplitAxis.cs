@@ -10,6 +10,7 @@ namespace Chimera.Plugins {
         private readonly List<IAxis> mAxes = new List<IAxis>();
         private readonly string mName;
 
+        private bool mEnabled;
         private SplitAxisPanel mPanel;
         private AxisBinding mBinding;
         private IAxis mPositive;
@@ -86,6 +87,10 @@ namespace Chimera.Plugins {
 
                 return Math.Abs(mPositive.Delta) + (Math.Abs(mNegative.Delta) * -1f);
             }
+        }
+        public virtual bool Enabled {
+            get { return mEnabled; }
+            set { mEnabled = value; }
         }
 
         public AxisBinding Binding {

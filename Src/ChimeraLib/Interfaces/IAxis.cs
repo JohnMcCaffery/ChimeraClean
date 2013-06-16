@@ -80,5 +80,10 @@ namespace Chimera.Interfaces {
         /// The name by which this axis can be identified. Is not necessarily unique.
         /// </summary>
         string Name { get; }
+
+        /// <summary>
+        /// Whether the axis is enabled.
+        /// </summary>
+        bool Enabled { get; set; }
     }
 }

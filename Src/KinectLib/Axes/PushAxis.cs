@@ -61,7 +61,7 @@ namespace Chimera.Kinect.Axes {
                 get { return mRaw; }
             }
 
-            public override float RawValue {
+            public override float KinectRawValue {
                 get { return mRaw.Value; }
             }
 
@@ -94,8 +94,6 @@ namespace Chimera.Kinect.Axes {
                 //mActive = C.And(mActive, Nui.y(hand) > Nui.y(elbow));
                 //The value for the push gesture
                 mValue = Nui.ifScalar(mActive, mRaw, 0f);
-
-                AddListener();
             }
         }
     }

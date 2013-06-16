@@ -41,7 +41,7 @@ namespace Joystick.Overlay {
         }
 
         public JoystickButtonTrigger(Core coordinator, XmlNode node)
-            : base(coordinator) {
+            : base(coordinator, GetName(node, "Joystick Button Trigger")) {
             
             GamepadButtonFlags b = GamepadButtonFlags.A;
             if (Enum.TryParse<GamepadButtonFlags>(GetString(node, mButton.ToString(), "Button"), out b))

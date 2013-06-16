@@ -53,6 +53,8 @@ namespace Chimera.Flythrough {
         private readonly ILog Logger = LogManager.GetLogger("Flythrough");
         private readonly Action mTickListener;
 
+        private bool mSeparateThread = true;
+
         private EventSequence<Camera> mEvents = new EventSequence<Camera>();
         private Core mCore;
         private FlythroughPanel mPanel;
@@ -177,7 +179,8 @@ namespace Chimera.Flythrough {
 
         private void Pause() {
             mPlaying = false;
-            mCore.Tick -= mTickListener;
+            if (!mSeparateThread)
+                mCore.Tick -= mTickListener;
             if (OnPaused != null)
                 OnPaused();
 
@@ -239,7 +242,7 @@ namespace Chimera.Flythrough {
                 mCore.Update(mCurrent.Position, Vector3.Zero, mCurrent.Orientation, Rotation.Zero);
                 mPrev = mCurrent;
                 mLastTick = DateTime.Now;
-                if (true) {
+                if (mSeparateThread) {
                     Thread t = new Thread(FlythroughThread);
                     t.Name = "Flythrough thread";
                     t.Priority = ThreadPriority.Highest;
@@ -406,11 +409,13 @@ namespace Chimera.Flythrough {
         private Camera mCurrent;
 
         void mCoordinator_Tick() {
+            mStats.Begin();
             mCore.Update(mCurrent.Position, mCurrent.Position - mPrev.Position, mCurrent.Orientation, mCurrent.Orientation - mPrev.Orientation);
 
             IncrementTime();
             mPrev = mCurrent;
             mCurrent = mEvents.CurrentEvent.Value;
+            mStats.End();
         }
 
         /*

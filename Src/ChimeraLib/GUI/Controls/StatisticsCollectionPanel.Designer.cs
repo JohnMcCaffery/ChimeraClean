@@ -34,16 +34,21 @@
             this.nameCol = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.meanCol = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.currentCol = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.individualTab = new System.Windows.Forms.TabPage();
+            this.namesList = new System.Windows.Forms.ListBox();
+            this.individualPanel = new System.Windows.Forms.Panel();
             this.mainTab.SuspendLayout();
             this.graphsTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.sharedGraph)).BeginInit();
             this.valuesTab.SuspendLayout();
+            this.individualTab.SuspendLayout();
             this.SuspendLayout();
             // 
             // mainTab
             // 
             this.mainTab.Controls.Add(this.graphsTab);
             this.mainTab.Controls.Add(this.valuesTab);
+            this.mainTab.Controls.Add(this.individualTab);
             this.mainTab.Dock = System.Windows.Forms.DockStyle.Fill;
             this.mainTab.Location = new System.Drawing.Point(0, 0);
             this.mainTab.Name = "mainTab";
@@ -119,18 +124,51 @@
             // 
             this.currentCol.Text = "Current";
             // 
-            // StatisticsCollectionForm
+            // individualTab
+            // 
+            this.individualTab.Controls.Add(this.individualPanel);
+            this.individualTab.Controls.Add(this.namesList);
+            this.individualTab.Location = new System.Drawing.Point(4, 22);
+            this.individualTab.Name = "individualTab";
+            this.individualTab.Padding = new System.Windows.Forms.Padding(3);
+            this.individualTab.Size = new System.Drawing.Size(712, 453);
+            this.individualTab.TabIndex = 2;
+            this.individualTab.Text = "Individual Breakdowns";
+            this.individualTab.UseVisualStyleBackColor = true;
+            // 
+            // namesList
+            // 
+            this.namesList.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)));
+            this.namesList.FormattingEnabled = true;
+            this.namesList.Location = new System.Drawing.Point(3, 3);
+            this.namesList.Name = "namesList";
+            this.namesList.Size = new System.Drawing.Size(120, 446);
+            this.namesList.TabIndex = 0;
+            this.namesList.SelectedIndexChanged += new System.EventHandler(this.namesList_SelectedIndexChanged);
+            // 
+            // individualPanel
+            // 
+            this.individualPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.individualPanel.Location = new System.Drawing.Point(129, 6);
+            this.individualPanel.Name = "individualPanel";
+            this.individualPanel.Size = new System.Drawing.Size(577, 441);
+            this.individualPanel.TabIndex = 1;
+            // 
+            // StatisticsCollectionPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(720, 479);
             this.Controls.Add(this.mainTab);
-            this.Name = "StatisticsCollectionForm";
-            this.Text = "Statistics Collection";
+            this.Name = "StatisticsCollectionPanel";
+            this.Size = new System.Drawing.Size(720, 479);
             this.mainTab.ResumeLayout(false);
             this.graphsTab.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.sharedGraph)).EndInit();
             this.valuesTab.ResumeLayout(false);
+            this.individualTab.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -145,5 +183,8 @@
         private System.Windows.Forms.ColumnHeader nameCol;
         private System.Windows.Forms.ColumnHeader meanCol;
         private System.Windows.Forms.ColumnHeader currentCol;
+        private System.Windows.Forms.TabPage individualTab;
+        private System.Windows.Forms.ListBox namesList;
+        private System.Windows.Forms.Panel individualPanel;
     }
 }

@@ -28,6 +28,7 @@ using System.Drawing;
 using OpenMetaverse;
 using Chimera.Config;
 using Chimera.Overlay;
+using log4net;
 
 namespace Chimera.Overlay.Plugins {
     public class MousePlugin : ISystemPlugin {
@@ -37,20 +38,30 @@ namespace Chimera.Overlay.Plugins {
         private PointF mLastCursor;
         private bool mEnabled;
 
+        private TickStatistics mStatistics = new TickStatistics();
+        private Action mTickListener;
+        private Core mCore;
+
+        private ILog Logger = LogManager.GetLogger("MousePlugin");
+
         public event Action<int, int> MouseMoved;
 
         public MousePlugin() {
             PluginConfig cfg = new PluginConfig();
+            mTickListener = new Action(mCore_Tick);
+
+            StatisticsCollection.AddStatistics(mStatistics, "Mouse Plugin");
         }
 
         public PointF LastCursor {
             get { return mLastCursor; }
         }
 
-        void coordinator_Tick() {
+        void mCore_Tick() {
             if (!mEnabled)
                 return;
 
+            mStatistics.Begin();
             if (MouseMoved != null)
                 MouseMoved(Cursor.Position.X, Cursor.Position.Y);
 
@@ -73,14 +84,23 @@ namespace Chimera.Overlay.Plugins {
 
         #region ISystemPluginMembers
 
-        public event Action<IPlugin, bool> EnabledChanged;
+        public void Init(Core core) {
+            if (!core.HasPlugin<OverlayPlugin>()) {
+                Logger.Warn("Unable to initialise MousePlugin. No OverlayPlugin registered with the coordinator.");
+            }
 
-        public void Init(Core coordinator) {
-            if (!coordinator.HasPlugin<OverlayPlugin>())
-                throw new ArgumentException("Unable to initialise MousePlugin. No OverlayPlugin registered with the coordinator.");
-            mOverlayPlugin = coordinator.GetPlugin<OverlayPlugin>();
-            coordinator.Tick += new Action(coordinator_Tick);
+            mOverlayPlugin = core.GetPlugin<OverlayPlugin>();
+            mCore = core;
+            if (mEnabled)
+                core.Tick += mTickListener;
         }
+
+        public void SetForm(Form form) { }
+
+        #endregion
+
+        #region IPlugin Members
+        public event Action<IPlugin, bool> EnabledChanged;
 
         public UserControl ControlPanel {
             get {
@@ -90,16 +110,22 @@ namespace Chimera.Overlay.Plugins {
             }
         }
 
-        #endregion
-
-        #region IPlugin Members
-
         public virtual bool Enabled {
             get { return mEnabled; }
-            set { 
+            set {
+                if (mOverlayPlugin == null) {
+                    if (EnabledChanged != null)
+                        EnabledChanged(this, false);
+                    return;
+                }
+
                 mEnabled = value;
                 if (EnabledChanged != null)
                     EnabledChanged(this, value);
+                if (value)
+                    mCore.Tick += mTickListener;
+                else
+                    mCore.Tick -= mTickListener;
             }
         }
 
@@ -125,14 +151,6 @@ namespace Chimera.Overlay.Plugins {
             //Do nothing
         }
 
-
-        #endregion
-
-        #region ISystemPlugin Members
-
-
-        public void SetForm(Form form) {
-        }
 
         #endregion
     }

@@ -42,6 +42,8 @@ namespace Chimera.Plugins {
         private bool mPitchEnabled = true;
         private bool mActive = false;
 
+        private Action mTickListener;
+
         /// <summary>
         /// Triggered whenever the keyboard scale changes.
         /// </summary>
@@ -72,9 +74,27 @@ namespace Chimera.Plugins {
         /// </summary>
         ITickSource mInputSource;
 
+        private Core mCore;
+        private TickStatistics mStatistics = new TickStatistics();
+
+        public override bool Enabled {
+            get { return base.Enabled; }
+            set {
+                base.Enabled = value;
+                if (value)
+                    mCore.Tick += mTickListener;
+                else
+                    mCore.Tick -= mTickListener;
+            }
+        }
+
         public KBMousePlugin() {
             PluginConfig cfg = new PluginConfig();
             mEnabled = cfg.KeyboardEnabled;
+
+            mTickListener = new Action(mCoordinator_Tick);
+
+            StatisticsCollection.AddStatistics(mStatistics, Name);
         }
 
         /// <summary>
@@ -165,12 +185,16 @@ namespace Chimera.Plugins {
             get { return mOrientation; }
         }
 
-        public override void Init(Core input) {
-            base.Init(input);
-            mInputSource = input;
-            input.KeyDown += new Action<Core,KeyEventArgs>(mCoordinator_KeyDown);
-            input.KeyUp += new Action<Core,KeyEventArgs>(mCoordinator_KeyUp);
-            input.Tick += new Action(mCoordinator_Tick);
+        public override void Init(Core core) {
+            mCore = core;
+            base.Init(core);
+            mInputSource = core;
+            core.KeyDown += new Action<Core,KeyEventArgs>(mCoordinator_KeyDown);
+            core.KeyUp += new Action<Core,KeyEventArgs>(mCoordinator_KeyUp);
+
+            if (mEnabled) {
+                core.Tick += mTickListener;
+            }
         }
 
         #endregion
@@ -235,6 +259,7 @@ namespace Chimera.Plugins {
         }
 
         private void mCoordinator_Tick() {
+            mStatistics.Begin();
             if (mDeltas != Vector3.Zero || mOrientation.Pitch != 0.0 || mOrientation.Yaw != 0.0) {
                 mActive = true;
                 TriggerChange(this);
@@ -244,6 +269,7 @@ namespace Chimera.Plugins {
             }
             if (MouseDown)
                 mOrientation = Rotation.Zero;
+            mStatistics.End();
         }
     }
 }

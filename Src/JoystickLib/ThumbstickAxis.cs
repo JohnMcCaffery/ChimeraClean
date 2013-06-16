@@ -30,6 +30,7 @@ namespace Joystick {
     public class ThumbstickAxis : ConstrainedAxis, ITickListener {
         private bool mLeft;
         private bool mX;
+        private float mValue;
 
         private static string MakeName(bool left, bool x) {
             return (left ? "Left" : "Right") + "Thumbstick" + (x ? "X" : "Y");
@@ -48,18 +49,19 @@ namespace Joystick {
 
         public void Init(ITickSource source) {
             GamepadManager.Init(source);
-            source.Tick += new Action(source_Tick);
         }
 
-        void source_Tick() {
-            if (!GamepadManager.Initialised)
-                return;
+        protected override float RawValue {
+            get {
+                if (!GamepadManager.Initialised)
+                    return 0f;
 
-            Gamepad g = GamepadManager.Gamepad;
-            if (mLeft)
-                SetRawValue(mX ? g.LeftThumbX : g.LeftThumbY);
-            else
-                SetRawValue(mX ? g.RightThumbX : g.RightThumbY);
+                Gamepad g = GamepadManager.Gamepad;
+                if (mLeft)
+                    return mX ? g.LeftThumbX : g.LeftThumbY;
+                else
+                    return mX ? g.RightThumbX : g.RightThumbY;
+            }
         }
     }
 }

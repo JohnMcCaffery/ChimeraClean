@@ -8,7 +8,7 @@ using System.Windows.Forms;
 using Chimera.Interfaces;
 
 namespace Touchscreen {
-    public class TwoDAxis : ConstrainedAxis, ITickListener {
+    public class TwoDAxis : ConstrainedAxis {
         private VerticalAxis mWrappedAxis;
         private bool mX;
         private bool mDown;
@@ -21,10 +21,7 @@ namespace Touchscreen {
             mX = x;
             mWrappedAxis = axis;
             mWrappedAxis.Manager.OnPress += i => mDown = true;
-            mWrappedAxis.Manager.OnRelease += i => {
-                mDown = false;
-                SetRawValue(0f);
-            };
+            mWrappedAxis.Manager.OnRelease += i => mDown = false;
             if (!mX) {
                 Deadzone.Changed += v => mWrappedAxis.Deadzone.Value = v;
                 Scale.Changed += v => mWrappedAxis.Scale.Value = v;
@@ -60,26 +57,11 @@ namespace Touchscreen {
             }
         }
 
-        #region ITickListener Members
-
-        public void Init(Chimera.ITickSource source) {
-            if (mX)
-                source.Tick += new Action(source_Tick);
-            else
-                mWrappedAxis.Init(source);
-        }
-
-        void source_Tick() {
-            if (mDown && mWrappedAxis.Bounds.Contains(mWrappedAxis.Manager.CursorPosition)) {
-                mWasDown = true;
-                SetRawValue(VerticalAxis.GetValue(mWrappedAxis.StartH + mWrappedAxis.PaddingH, mWrappedAxis.W, mWrappedAxis.Manager.CursorX));
-            } else if (mWasDown) {
-                mWasDown = false;
-                SetRawValue(0f);
+        protected override float RawValue {
+            get { return mDown && mWrappedAxis.Bounds.Contains(mWrappedAxis.Manager.CursorPosition) ?
+                VerticalAxis.GetValue(mWrappedAxis.StartH + mWrappedAxis.PaddingH, mWrappedAxis.W, mWrappedAxis.Manager.CursorX) :
+                0f; 
             }
-
         }
-
-        #endregion
     }
 }

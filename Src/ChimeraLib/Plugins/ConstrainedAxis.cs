@@ -32,9 +32,9 @@ namespace Chimera.Plugins {
         private ConstrainedAxisPanel mPanel;
         private readonly string mName;
 
+        private bool mEnabled;
         protected bool mMirror = true;
 
-        private float mDelta = 0f;
         private IUpdater<float> mDeadzone = new Updater<float>("Deadzone", .1f);
         private IUpdater<float> mScale  = new Updater<float>("Deadzone", 1f);
         private IUpdater<float> mRaw = new Updater<float>("Raw", 0f);
@@ -42,35 +42,25 @@ namespace Chimera.Plugins {
 
         public virtual IUpdater<float> Deadzone {
             get { return mDeadzone; }
-            set { 
-                mDeadzone = value;
-                Recalculate();
-            }
+            set { mDeadzone = value; }
         }
 
         public virtual IUpdater<float> Scale {
             get { return mScale; }
-            set { 
-                mScale = value;
-                Recalculate();
-            }
+            set { mScale = value; }
         }
 
         public IUpdater<float> Raw {
             get { return mRaw; }
-            set { 
-                mRaw = value;
-                Recalculate();
-            }
+            set { mRaw = value; }
         }
 
         public IUpdater<float> Output {
             get { return mOutput; }
-            set { 
-                mOutput = value;
-                Recalculate();
-            }
+            set { mOutput = value; }
         }
+
+        protected abstract float RawValue { get; }
 
         protected ConstrainedAxis(string name) {
             mName = name;
@@ -99,20 +89,7 @@ namespace Chimera.Plugins {
             this(name, new Updater<float>("Deadzone", deadzone), new Updater<float>("Scale", scale), binding) {
         }
 
-        protected void SetRawValue(float value) {
-            mRaw.Value = value;
-            Recalculate();
-        }
-
         private void Recalculate() {
-            float raw = mRaw.Value;
-            float sign = raw < 0f ? -1f : 1f;
-            if(mMirror)
-                raw = Math.Abs(raw);
-            mDelta = raw < mDeadzone.Value ? 0f : (raw - mDeadzone.Value) * mScale.Value;
-            if (mMirror)
-                mDelta *= sign;
-            mOutput.Value = mDelta;
         }
 
         #region IAxis Members
@@ -125,8 +102,24 @@ namespace Chimera.Plugins {
             }
         }
 
+        public virtual bool Enabled {
+            get { return mEnabled; }
+            set { mEnabled = value; }
+        }
+
         public virtual float Delta {
-            get { return mDelta; }
+            get {
+                float raw = RawValue;
+                mRaw.Value = raw;
+                float sign = raw < 0f ? -1f : 1f;
+                if(mMirror)
+                raw = Math.Abs(raw);
+                float delta = raw < mDeadzone.Value ? 0f : (raw - mDeadzone.Value) * mScale.Value;
+                if (mMirror)
+                delta *= sign;
+                mOutput.Value = delta;
+                return delta;
+            }
         }
 
         public AxisBinding Binding {

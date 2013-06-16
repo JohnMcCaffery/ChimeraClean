@@ -110,10 +110,13 @@ namespace Chimera.Kinect.Overlay {
                 mWaiting = true;
                 mCoordinator.Tick += mTickListener;
             }
-        }
+        }
+
         void coordinator_Tick() {
-            if (Triggered != null && DateTime.Now.Subtract(mLost).TotalMilliseconds > mTimeout)
+            if (Triggered != null && DateTime.Now.Subtract(mLost).TotalMilliseconds > mTimeout) {
                 Triggered();
+                mCoordinator.Tick -= mTickListener;
+            }
         }
 
     }
