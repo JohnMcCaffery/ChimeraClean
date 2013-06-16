@@ -7,7 +7,7 @@ using System.Drawing;
 using System.Xml;
 
 namespace Chimera.Overlay.Triggers {
-    public abstract class AreaTrigger : XmlLoader, ITrigger {
+    public abstract class AreaTrigger : ConditionTrigger, ITrigger {
         /// <summary>
         /// The manager which will supply the cursor position.
         /// </summary>
@@ -17,10 +17,6 @@ namespace Chimera.Overlay.Triggers {
         /// The bounds defining the area which the cursor can hover over to trigger this selector. The bounds are specified as scaled values between 0,0 and 1,1. 0,0 is top left. 1,1 bottom right.
         /// </summary>
         private RectangleF mBounds;
-        /// <summary>
-        /// Whether the area is active. If false it will not draw or trigger.
-        /// </summary>
-        private bool mActive = true;
 
         /// <summary>
         /// The bounds defining the area which the cursor can hover over to trigger this selector. The bounds are specified as scaled values between 0,0 and 1,1. 0,0 is top left. 1,1 bottom right.
@@ -40,25 +36,28 @@ namespace Chimera.Overlay.Triggers {
         /// <param name="y">The y coordinate for where the image is to be positioned, specified between 0 and 1. 0 is flush to the top, 1 flush to the bottom.</param>
         /// <param name="x">The width of the image, specified between 0 and 1. 1 will fill the entire width, 0 will be invisible.</param>
         /// <param name="y">The width of the image, specified between 0 and 1. 1 will fill the entire height, 0 will be invisible.</param>
-        public AreaTrigger(WindowOverlayManager manager, float x, float y, float w, float h)
-            : this(manager, new RectangleF(x, y, w, h)) {
+        public AreaTrigger(WindowOverlayManager manager, float x, float y, float w, float h, double time)
+            : this(manager, new RectangleF(x, y, w, h), time) {
         }
 
-        public AreaTrigger(WindowOverlayManager manager, int x, int y, int w, int h, Rectangle clip)
-            : this(manager, (float) x / (float) clip.Width, (float) y / (float) clip.Height, (float) w / (float) clip.Width, (float) h / (float) clip.Height) {
+        public AreaTrigger(WindowOverlayManager manager, int x, int y, int w, int h, Rectangle clip, double time)
+            : this(manager, (float) x / (float) clip.Width, (float) y / (float) clip.Height, (float) w / (float) clip.Width, (float) h / (float) clip.Height, time) {
         }
 
-        public AreaTrigger(WindowOverlayManager manager, RectangleF bounds) {
+        public AreaTrigger(WindowOverlayManager manager, RectangleF bounds, double time)
+            : base(manager.Frame.Core, time) {
             mManager = manager;
             mBounds = bounds;
         }
 
-        public AreaTrigger(OverlayPlugin manager, XmlNode node) {
+        public AreaTrigger(OverlayPlugin manager, XmlNode node, double time)
+            : base(manager.Core, time) {
             mManager = GetManager(manager, node, "trigger");
             mBounds = GetBounds(node, "trigger");
         }
 
-        public AreaTrigger(OverlayPlugin manager, XmlNode node, Rectangle clip) {
+        public AreaTrigger(OverlayPlugin manager, XmlNode node, Rectangle clip, double time)
+            : base(manager.Core, time) {
             mManager = GetManager(manager, node, "trigger");
             mBounds = GetBounds(node, "trigger", clip);
         }
@@ -74,19 +73,12 @@ namespace Chimera.Overlay.Triggers {
             get { return Manager.Frame.Name; }
         }
 
-        #region ITrigger Members
-
-        public abstract event Action Triggered;
-
-        public virtual bool Active {
-            get { return mActive; }
-            set { mActive = value; }
-        }
-
-        #endregion
-
         public override string ToString() {
             return "Trigger: " + mBounds.X + "," + mBounds.Height;
+        }
+
+        public override bool Condition {
+            get { return Bounds.Contains(Manager.CursorPosition); }
         }
     }
 }

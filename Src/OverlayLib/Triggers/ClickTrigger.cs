@@ -69,30 +69,34 @@ namespace Chimera.Overlay.Triggers {
             : this(manager, (float) x / (float) clip.Width, (float) y / (float) clip.Height, (float) w / (float) clip.Width, (float) h / (float) clip.Height) {
         }
 
-        public ClickTrigger(WindowOverlayManager manager, RectangleF bounds) : base (manager, bounds) {
+        public ClickTrigger(WindowOverlayManager manager, RectangleF bounds)
+            : base(manager, bounds, 0.0) {
             Manager.OnRelease += new Action<int>(mManager_OnRelease);
         }
 
         public ClickTrigger(OverlayPlugin manager, XmlNode node)
-            : base(manager, node) {
+            : base(manager, node, 0.0) {
             Manager.OnRelease += new Action<int>(mManager_OnRelease);
         }
 
         public ClickTrigger(OverlayPlugin manager, XmlNode node, Rectangle clip)
-            : base(manager, node, clip) {
+            : base(manager, node, clip, 0.0) {
             Manager.OnRelease += new Action<int>(mManager_OnRelease);
         }
 
-        void mManager_OnRelease(int index) {
-            if (Active && Bounds.Contains(Manager.CursorPosition) && Triggered != null) 
-                Triggered();
+        private bool mTrigger;
+
+        public override bool Condition {
+            get {
+                bool ret = mTrigger;
+                mTrigger = false;
+                return ret;
+            }
         }
 
-
-        #region ITrigger Members
-
-        public override event Action Triggered;
-
-        #endregion
+        void mManager_OnRelease(int index) {
+            if (Active && base.Condition)
+                mTrigger = true;
+        }
     }
 }

@@ -37,9 +37,8 @@ namespace Chimera.Overlay.Triggers {
         private bool mClicked = false;
         private Cursor mSelectCursor;
         private ISelectionRenderer mRenderer;
-        private bool mActive = true;
         private WindowOverlayManager mManager;
-        private int mR;
+        private int mR = 100;
         /// <summary>
         /// The clip rectangle bounding the area this item will be drawn to.
         /// </summary>

@@ -54,7 +54,7 @@ namespace Chimera.Overlay.Triggers {
         /// <summary>
         /// How many ms to the hover must be maintened before the selector is triggered.
         /// </summary>
-        private readonly float mSelectTimeMS = 1500f;
+        private static readonly float sSelectTimeMS = 1500f;
 
         /// <summary>
         /// The render object used to draw a visual representation of how close the selector is to triggering.
@@ -104,22 +104,18 @@ namespace Chimera.Overlay.Triggers {
         }
 
         public HoverTrigger(WindowOverlayManager manager, ISelectionRenderer renderer, RectangleF bounds)
-            : base(manager, bounds) {
+            : base(manager, bounds, sSelectTimeMS) {
             mRenderer = renderer;
-
-            Manager.Frame.Core.Tick += new Action(Coordinator_Tick);
         }
 
         public HoverTrigger(OverlayPlugin manager, XmlNode node)
-            : base(manager, node) {
+            : base(manager, node, GetDouble(node, sSelectTimeMS, "Length")) {
             mRenderer = manager.GetRenderer(node, "hover trigger", manager.Renderers[0], "Renderer");
-            Manager.Frame.Core.Tick += new Action(Coordinator_Tick);
         }
 
         public HoverTrigger(OverlayPlugin manager, XmlNode node, Rectangle clip)
-            : base(manager, node, clip) {
+            : base(manager, node, clip, GetDouble(node, sSelectTimeMS, "Length")) {
             mRenderer = manager.GetRenderer(node, "hover trigger", manager.Renderers[0], "Renderer");
-            Manager.Frame.Core.Tick += new Action(Coordinator_Tick);
         }
 
         /// <summary>
@@ -157,38 +153,6 @@ namespace Chimera.Overlay.Triggers {
             set { mClip = value; }
         }
 
-        private void Coordinator_Tick() {
-            if (mActive && Bounds.Contains(Manager.CursorPosition)) {
-                if (!mHovering) {
-                    mHovering = true;
-                    mHoverStart = DateTime.Now;
-                }
-
-                if (!mTriggered && DateTime.Now.Subtract(mHoverStart).TotalMilliseconds > mSelectTimeMS) {
-                    if (Triggered != null)
-                        Triggered();
-                    mTriggered = true;
-                    mHovering = false;
-                    mRenderer.Clear();
-                }
-
-                mNeedsRedrawn = true;
-            } else if (mHovering || mTriggered) {
-                mTriggered = false;
-                mHovering = false;
-                mNeedsRedrawn = true;
-                //Manager.ForceRedrawStatic();
-                mRenderer.Clear();
-            } else
-                mNeedsRedrawn = false;
-        }
-
-        #region ITrigger Members
-
-        public override event Action Triggered;
-
-        #endregion
-
         #region IDrawable
 
         public virtual bool NeedsRedrawn {
@@ -203,7 +167,7 @@ namespace Chimera.Overlay.Triggers {
             if (mTriggered)
                 mRenderer.DrawSelected(graphics, ScaledBounds);
             else if (mHovering) {
-                mRenderer.DrawHover(graphics, ScaledBounds, DateTime.Now.Subtract(mHoverStart).TotalMilliseconds / mSelectTimeMS);
+                mRenderer.DrawHover(graphics, ScaledBounds, DateTime.Now.Subtract(mHoverStart).TotalMilliseconds / sSelectTimeMS);
             }
         }
 
