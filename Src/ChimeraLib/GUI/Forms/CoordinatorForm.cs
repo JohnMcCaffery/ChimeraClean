@@ -37,7 +37,7 @@ namespace Chimera.GUI.Forms {
         private bool mGuiUpdate;
         private bool mExternalUpdate;
         private bool mClosing;
-        private Core mCoordinator;
+        private Core mCore;
         private Bitmap mHeightmap;
         private DateTime mLastUpdate = DateTime.Now;
 
@@ -46,7 +46,6 @@ namespace Chimera.GUI.Forms {
         private Action<Core, ControlMode> mCameraModeChangedListener;
         private Action<Core, EventArgs> mEyeUpdatedListener;
         private Action<Core, KeyEventArgs> mClosedListener;
-        private Action mTickListener;
         private EventHandler<HeightmapChangedEventArgs> mHeightmapChangedListener;
 
         private static float sPerspectiveScaleMin = .0001f;
@@ -92,8 +91,8 @@ namespace Chimera.GUI.Forms {
         }
 
 
-        public void Init(Core coordinator) {
-            mCoordinator = coordinator;
+        public void Init(Core core) {
+            mCore = core;
 
             Disposed += new EventHandler(CoordinatorForm_Disposed);
 
@@ -104,39 +103,40 @@ namespace Chimera.GUI.Forms {
             mClosedListener = new Action<Core, KeyEventArgs>(mCoordinator_Closed);
             mHeightmapChangedListener = new EventHandler<HeightmapChangedEventArgs>(mCoordinator_HeightmapChanged);
 
-            mCoordinator.CameraModeChanged += mCameraModeChangedListener;
-            mCoordinator.EnableUpdatesChanged += new Action(mCoordinator_EnableUpdatesChanged);
-            mCoordinator.CameraUpdated += mCameraUpdatedListener;
-            mCoordinator.DeltaUpdated += mDeltaUpdatedListener;
-            mCoordinator.EyeUpdated += mEyeUpdatedListener;
-            mCoordinator.Closed += mClosedListener;
-            mCoordinator.Tick += mTickListener;
+            mCore.CameraModeChanged += mCameraModeChangedListener;
+            mCore.EnableUpdatesChanged += new Action(mCoordinator_EnableUpdatesChanged);
+            mCore.CameraUpdated += mCameraUpdatedListener;
+            mCore.DeltaUpdated += mDeltaUpdatedListener;
+            mCore.EyeUpdated += mEyeUpdatedListener;
+            mCore.Closed += mClosedListener;
             //mCoordinator.HeightmapChanged += mHeightmapChangedListener;
-            mCoordinator.FrameAdded += new Action<Frame,EventArgs>(mCoordinator_WindowAdded);
+            mCore.FrameAdded += new Action<Frame,EventArgs>(mCoordinator_WindowAdded);
 
-            mCoordinator_CameraModeChanged(coordinator, coordinator.ControlMode);
+            mCoordinator_CameraModeChanged(core, core.ControlMode);
 
-            Rotation orientation = new Rotation(mCoordinator.Orientation);
-            virtualPositionPanel.Value = mCoordinator.Position;
+            Rotation orientation = new Rotation(mCore.Orientation);
+            virtualPositionPanel.Value = mCore.Position;
             virtualOrientationPanel.Value = orientation;
-            eyePositionPanel.Value = mCoordinator.EyePosition;
-            enableUpdates.Checked = mCoordinator.EnableUpdates;
+            eyePositionPanel.Value = mCore.EyePosition;
+            enableUpdates.Checked = mCore.EnableUpdates;
 
-            mHeightmap = new Bitmap(mCoordinator.Heightmap.GetLength(0), mCoordinator.Heightmap.GetLength(1), PixelFormat.Format24bppRgb);
-            mHeightmapPerspective = new HeightmapPerspective(mCoordinator, heightmapPanel);
+            mHeightmap = new Bitmap(mCore.Heightmap.GetLength(0), mCore.Heightmap.GetLength(1), PixelFormat.Format24bppRgb);
+            mHeightmapPerspective = new HeightmapPerspective(mCore, heightmapPanel);
+            tickLengthPanel.Value = mCore.TickLength;
 
-            tickStatsPanel.Init(coordinator.TickStatistics, coordinator);
-            updateStatsPanel.Init(coordinator.UpdateStatistics, coordinator);
-            cameraStatsPanel.Init(coordinator.CameraStatistics, coordinator);
-            deltaStatsPanel.Init(coordinator.DeltaStatistics, coordinator);
+            tickStatsPanel.Init(core.TickStatistics, core);
+            tickListenersPanel.Init(StatisticsCollection.Collection, core);
+            updateStatsPanel.Init(core.UpdateStatistics, core);
+            cameraStatsPanel.Init(core.CameraStatistics, core);
+            deltaStatsPanel.Init(core.DeltaStatistics, core);
 
-            foreach (var window in mCoordinator.Frames) {
+            foreach (var window in mCore.Frames) {
                 mCoordinator_WindowAdded(window, null);
             }
 
             pluginsTab.Controls.Remove(statisticsTab);
 
-            foreach (var plugin in mCoordinator.Plugins) {
+            foreach (var plugin in mCore.Plugins) {
                 TabPage inputTab = new TabPage();
                 CheckBox enableCheck = new CheckBox();
                 // 
@@ -164,7 +164,7 @@ namespace Chimera.GUI.Forms {
                 enableCheck.Text = plugin.Name;
                 enableCheck.Checked = plugin.Enabled;
                 enableCheck.CheckStateChanged += new EventHandler((source, args) => 
-                    mCoordinator.Plugins.First(i => enableCheck.Name.Equals("enable" + i.Name + "Check")).Enabled = enableCheck.Checked);
+                    mCore.Plugins.First(i => enableCheck.Name.Equals("enable" + i.Name + "Check")).Enabled = enableCheck.Checked);
                 //enableCheck.UseVisualStyleBackColor = false;
                 // 
                 // inputPanel
@@ -185,7 +185,7 @@ namespace Chimera.GUI.Forms {
         }
 
         void mCoordinator_EnableUpdatesChanged() {
-            Invoke(() => enableUpdates.Checked = mCoordinator.EnableUpdates);
+            Invoke(() => enableUpdates.Checked = mCore.EnableUpdates);
         }
 
         private void mCoordinator_WindowAdded(Frame frame, EventArgs args) {
@@ -224,11 +224,10 @@ namespace Chimera.GUI.Forms {
 
         private void CoordinatorForm_Disposed(object sender, EventArgs e) {
             mClosing = true;
-            mCoordinator.CameraUpdated -= mCameraUpdatedListener;
-            mCoordinator.EyeUpdated -= mEyeUpdatedListener;
-            mCoordinator.Closed -= mClosedListener;
-            mCoordinator.HeightmapChanged -= mHeightmapChangedListener;
-            mCoordinator.Tick -= mTickListener;
+            mCore.CameraUpdated -= mCameraUpdatedListener;
+            mCore.EyeUpdated -= mEyeUpdatedListener;
+            mCore.Closed -= mClosedListener;
+            mCore.HeightmapChanged -= mHeightmapChangedListener;
         }
 
         private Thread mHeightmapUpdateThread;
@@ -295,22 +294,22 @@ namespace Chimera.GUI.Forms {
             if (!mGuiUpdate) {
                 mExternalUpdate = true;
                 Invoke(() => {
-                    if (mCoordinator.ControlMode == ControlMode.Absolute) {
+                    if (mCore.ControlMode == ControlMode.Absolute) {
                         deltaModeButton.Checked = false;
                         absoluteModeButton.Checked = true;
                         virtualPositionPanel.Text = "Camera Position";
                         virtualOrientationPanel.Text = "Camera Orientation";
-                        virtualPositionPanel.Value = mCoordinator.Position;
-                        virtualOrientationPanel.Pitch = mCoordinator.Orientation.Pitch;
-                        virtualOrientationPanel.Yaw = mCoordinator.Orientation.Yaw;
+                        virtualPositionPanel.Value = mCore.Position;
+                        virtualOrientationPanel.Pitch = mCore.Orientation.Pitch;
+                        virtualOrientationPanel.Yaw = mCore.Orientation.Yaw;
                     } else {
                         deltaModeButton.Checked = true;
                         absoluteModeButton.Checked = false;
                         virtualPositionPanel.Text = "Camera Position Delta";
                         virtualOrientationPanel.Text = "Camera Orientation Delta";
-                        virtualPositionPanel.Value = mCoordinator.PositionDelta;
-                        virtualOrientationPanel.Pitch = mCoordinator.OrientationDelta.Pitch;
-                        virtualOrientationPanel.Yaw = mCoordinator.OrientationDelta.Yaw;
+                        virtualPositionPanel.Value = mCore.PositionDelta;
+                        virtualOrientationPanel.Pitch = mCore.OrientationDelta.Pitch;
+                        virtualOrientationPanel.Yaw = mCore.OrientationDelta.Yaw;
                     }
                 });
                 mExternalUpdate = false;
@@ -359,7 +358,7 @@ namespace Chimera.GUI.Forms {
         private void virtualPositionPanel_OnChange(object sender, EventArgs e) {
             if (!mExternalUpdate) {
                 mGuiUpdate = true;
-                mCoordinator.Update(virtualPositionPanel.Value, Vector3.Zero, new Rotation(virtualOrientationPanel.Pitch, virtualOrientationPanel.Yaw), Rotation.Zero);
+                mCore.Update(virtualPositionPanel.Value, Vector3.Zero, new Rotation(virtualOrientationPanel.Pitch, virtualOrientationPanel.Yaw), Rotation.Zero);
                 //heightmapPanel.Invalidate();
                 mGuiUpdate = false;
             }
@@ -368,7 +367,7 @@ namespace Chimera.GUI.Forms {
         private void virtualRotation_OnChange(object sender, EventArgs e) {
             if (!mExternalUpdate) {
                 mGuiUpdate = true;
-                mCoordinator.Update(virtualPositionPanel.Value, Vector3.Zero, new Rotation(virtualOrientationPanel.Pitch, virtualOrientationPanel.Yaw), Rotation.Zero);
+                mCore.Update(virtualPositionPanel.Value, Vector3.Zero, new Rotation(virtualOrientationPanel.Pitch, virtualOrientationPanel.Yaw), Rotation.Zero);
                 //heightmapPanel.Invalidate();
                 mGuiUpdate = false;
             }
@@ -377,13 +376,13 @@ namespace Chimera.GUI.Forms {
         private void eyePositionPanel_OnChange(object sender, EventArgs e) {
             if (!mExternalUpdate) {
                 mGuiUpdate = true;
-                mCoordinator.EyePosition = eyePositionPanel.Value;
+                mCore.EyePosition = eyePositionPanel.Value;
                 mGuiUpdate = false;
             }
         }
 
         private void testButton_Click(object sender, EventArgs e) {
-            if (mCoordinator != null) {
+            if (mCore != null) {
                 throw new Exception("Test Exception");
                 //mCoordinator.Update(
                     //mCoordinator.Position + new Vector3(5f, 5f, 5f),
@@ -406,23 +405,22 @@ namespace Chimera.GUI.Forms {
         }
 
         private void CoordinatorForm_FormClosing(object sender, FormClosingEventArgs e) {
-            mCoordinator.Tick -= mTickListener;
             mClosing = true;
-            if (mCoordinator != null) {
+            if (mCore != null) {
                 mGuiUpdate = true;
-                mCoordinator.Close();
+                mCore.Close();
                 mGuiUpdate = false;
             }
         }
 
         private void CoordinatorForm_KeyDown(object sender, KeyEventArgs e) {
-            if (mCoordinator != null)
-                mCoordinator.TriggerKeyboard(true, e);
+            if (mCore != null)
+                mCore.TriggerKeyboard(true, e);
         }
 
         private void CoordinatorForm_KeyUp(object sender, KeyEventArgs e) {
-            if (mCoordinator != null)
-                mCoordinator.TriggerKeyboard(false, e);
+            if (mCore != null)
+                mCore.TriggerKeyboard(false, e);
         }
 
         private void Invoke(Action a) {
@@ -435,7 +433,7 @@ namespace Chimera.GUI.Forms {
         private void heightmapPanel_Paint(object sender, PaintEventArgs e) {
             if (mRedrawHeightmap == null)
                 mRedrawHeightmap = () => Invoke(() => heightmapPanel.Invalidate());
-            if (mCoordinator != null) {
+            if (mCore != null) {
                 /*
                 int x = (int)((mCoordinator.Position.X / (float)mCoordinator.Heightmap.GetLength(0)) * e.ClipRectangle.Width);
                 int y = e.ClipRectangle.Height - (int)((mCoordinator.Position.Y / (float)mCoordinator.Heightmap.GetLength(1)) * e.ClipRectangle.Height);
@@ -454,7 +452,7 @@ namespace Chimera.GUI.Forms {
                 map = new Bitmap(map, e.ClipRectangle.Width, e.ClipRectangle.Height);
                 mHeightmapPerspective.Clip = e.ClipRectangle;
                 e.Graphics.DrawImage(map, Point.Empty);
-                mCoordinator.Draw(mHeightmapPerspective.To2D, e.Graphics, e.ClipRectangle, mRedrawHeightmap, Perspective.Map);
+                mCore.Draw(mHeightmapPerspective.To2D, e.Graphics, e.ClipRectangle, mRedrawHeightmap, Perspective.Map);
             }
         }
 
@@ -466,7 +464,7 @@ namespace Chimera.GUI.Forms {
                     else
                         realSpacePanel.Invalidate();
                 };
-            if (mCoordinator != null) {
+            if (mCore != null) {
                 mCurrentPerspective.Clip = e.ClipRectangle;
                 float greenEdge = (e.ClipRectangle.Width * 2) / mCurrentPerspective.Scale;
                 float blueEdge = (e.ClipRectangle.Height * 2) / mCurrentPerspective.Scale;
@@ -475,7 +473,7 @@ namespace Chimera.GUI.Forms {
                 e.Graphics.DrawLine(Pens.Green, mCurrentPerspective.To2D(new Vector3(0f, -greenEdge, 0f)), mCurrentPerspective.To2D(new Vector3(0f, greenEdge, 0f)));
                 e.Graphics.DrawLine(Pens.Blue, mCurrentPerspective.To2D(new Vector3(0f, 0f, -blueEdge)), mCurrentPerspective.To2D(new Vector3(0f, 0f, blueEdge)));
 
-                mCoordinator.Draw(mCurrentPerspective.To2D, e.Graphics, e.ClipRectangle, mRedrawRealSpace, mCurrentPerspective.Perspective);
+                mCore.Draw(mCurrentPerspective.To2D, e.Graphics, e.ClipRectangle, mRedrawRealSpace, mCurrentPerspective.Perspective);
             }
         }
 
@@ -741,15 +739,15 @@ namespace Chimera.GUI.Forms {
         private void absoluteModeButton_CheckedChanged(object sender, EventArgs e) {
             if (!mExternalUpdate) {
                 mGuiUpdate = true;
-                mCoordinator.ControlMode = ControlMode.Absolute;
+                mCore.ControlMode = ControlMode.Absolute;
                 virtualPositionPanel.Text = "Camera Position";
                 virtualOrientationPanel.Text = "Camera Orientation";
                 mGuiUpdate = false;
 
                 mExternalUpdate = true;
-                virtualPositionPanel.Value = mCoordinator.Position;
-                virtualOrientationPanel.Pitch = mCoordinator.Orientation.Pitch;
-                virtualOrientationPanel.Yaw = mCoordinator.Orientation.Yaw;
+                virtualPositionPanel.Value = mCore.Position;
+                virtualOrientationPanel.Pitch = mCore.Orientation.Pitch;
+                virtualOrientationPanel.Yaw = mCore.Orientation.Yaw;
                 mExternalUpdate = false;
             }
         }
@@ -757,21 +755,21 @@ namespace Chimera.GUI.Forms {
         private void deltaModeButton_CheckedChanged(object sender, EventArgs e) {
             if (!mExternalUpdate) {
                 mGuiUpdate = true;
-                mCoordinator.ControlMode = ControlMode.Delta;
+                mCore.ControlMode = ControlMode.Delta;
                 virtualPositionPanel.Text = "Camera Position Delta";
                 virtualOrientationPanel.Text = "Camera Orientation Delta";
                 mGuiUpdate = false;
 
                 mExternalUpdate = true;
-                virtualPositionPanel.Value = mCoordinator.PositionDelta;
-                virtualOrientationPanel.Pitch = mCoordinator.OrientationDelta.Pitch;
-                virtualOrientationPanel.Yaw = mCoordinator.OrientationDelta.Yaw;
+                virtualPositionPanel.Value = mCore.PositionDelta;
+                virtualOrientationPanel.Pitch = mCore.OrientationDelta.Pitch;
+                virtualOrientationPanel.Yaw = mCore.OrientationDelta.Yaw;
                 mExternalUpdate = false;
             }
         }
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e) {
-            mCoordinator.EnableUpdates = enableUpdates.Checked;
+            mCore.EnableUpdates = enableUpdates.Checked;
         }
 
         private void inputsTab_SelectedIndexChanged(object sender, EventArgs e) {
@@ -786,6 +784,10 @@ namespace Chimera.GUI.Forms {
             tickStatsPanel.Active = pluginsTab.SelectedTab == statisticsTab && statsTabs.SelectedTab == tickTab;
             cameraStatsPanel.Active = pluginsTab.SelectedTab == statisticsTab && statsTabs.SelectedTab == cameraTab;
             deltaStatsPanel.Active = pluginsTab.SelectedTab == statisticsTab && statsTabs.SelectedTab == deltaTab;
+        }
+
+        private void tickLengthPanel_ValueChanged(float obj) {
+            mCore.TickLength = (int) tickLengthPanel.Value;
         }
     }
 }

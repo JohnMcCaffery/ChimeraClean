@@ -10,7 +10,7 @@ namespace Chimera.OpenSim {
     internal class ProxyControllerPacketThread {
         private readonly List<ProxyControllerBase> mControllers = new List<ProxyControllerBase>();
         private readonly TickStatistics mStatistics = new TickStatistics();
-        private readonly int mTickLength;
+        private readonly Core mCore;
         private bool mCont = true;
         private ILog Logger = LogManager.GetLogger("OpenSim");
 
@@ -20,7 +20,7 @@ namespace Chimera.OpenSim {
 
         public ProxyControllerPacketThread(Core core, ProxyControllerBase controller) {
             mControllers.Add(controller);
-            mTickLength = core.TickLength;
+            mCore = core;
 
             Thread t = new Thread(UpdateThread);
             t.Name = "CameraUpdate";
@@ -42,7 +42,7 @@ namespace Chimera.OpenSim {
                 DateTime mStart = DateTime.Now;
                 foreach (var controller in mControllers)
                     controller.UpdateCamera();
-                double t = DateTime.Now.Subtract(mStart).TotalMilliseconds - mTickLength;
+                double t = DateTime.Now.Subtract(mStart).TotalMilliseconds - mCore.TickLength;
                 mStatistics.End();
                 if (mCont && t > 0.0)
                     Thread.Sleep((int)t);

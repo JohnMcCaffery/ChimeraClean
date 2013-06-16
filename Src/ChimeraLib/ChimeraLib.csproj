@@ -99,6 +99,12 @@
     <Compile Include="GUI\Controls\StatisticsPanel.Designer.cs">
       <DependentUpon>StatisticsPanel.cs</DependentUpon>
     </Compile>
+    <Compile Include="GUI\Controls\StatisticsCollectionPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\Controls\StatisticsCollectionPanel.Designer.cs">
+      <DependentUpon>StatisticsCollectionPanel.cs</DependentUpon>
+    </Compile>
     <Compile Include="GUI\Forms\StatisticsForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -201,6 +207,7 @@
     <Compile Include="Interfaces\ICrashable.cs" />
     <Compile Include="Util\FireEventAppender.cs" />
     <Compile Include="Util\ProcessController.cs" />
+    <Compile Include="Util\StatisticsCollection.cs" />
     <Compile Include="Util\StatisticsServer.cs" />
     <Compile Include="Config\ConfigBase.cs" />
     <Compile Include="Util\Init.cs" />
@@ -297,6 +304,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\Controls\Plugins\KBMousePanel.resx">
       <DependentUpon>KBMousePanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\Controls\StatisticsCollectionPanel.resx">
+      <DependentUpon>StatisticsCollectionPanel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\Forms\StatisticsForm.resx">
       <DependentUpon>StatisticsForm.cs</DependentUpon>

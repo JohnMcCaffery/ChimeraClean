@@ -414,6 +414,7 @@ namespace Chimera {
         /// </summary>
         public int TickLength {
             get { return mTickLength; }
+            set { mTickLength = value; }
         }
 
         /// <summary>

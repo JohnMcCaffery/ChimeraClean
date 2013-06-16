@@ -43,7 +43,7 @@ namespace Chimera.GUI.Forms {
         /// </summary>
         private void InitializeComponent() {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CoordinatorForm));
-            Chimera.Util.Rotation rotation1 = new Chimera.Util.Rotation();
+            Chimera.Util.Rotation rotation2 = new Chimera.Util.Rotation();
             this.hSplit = new System.Windows.Forms.SplitContainer();
             this.diagramWorldSplit = new System.Windows.Forms.SplitContainer();
             this.diagSplit = new System.Windows.Forms.SplitContainer();
@@ -59,6 +59,8 @@ namespace Chimera.GUI.Forms {
             this.heightmapPanel = new System.Windows.Forms.PictureBox();
             this.heightmapScale = new System.Windows.Forms.TrackBar();
             this.globalBox = new System.Windows.Forms.GroupBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.tickLengthPanel = new Chimera.GUI.ScalarPanel();
             this.enableUpdates = new System.Windows.Forms.CheckBox();
             this.deltaModeButton = new System.Windows.Forms.RadioButton();
             this.absoluteModeButton = new System.Windows.Forms.RadioButton();
@@ -74,14 +76,16 @@ namespace Chimera.GUI.Forms {
             this.statsTabs = new System.Windows.Forms.TabControl();
             this.tickTab = new System.Windows.Forms.TabPage();
             this.tickStatsPanel = new Chimera.GUI.Controls.StatisticsPanel();
+            this.tickListenersTab = new System.Windows.Forms.TabPage();
+            this.tickListenersPanel = new Chimera.GUI.Controls.StatisticsCollectionPanel();
+            this.updatesTab = new System.Windows.Forms.TabPage();
+            this.updateStatsPanel = new Chimera.GUI.Controls.StatisticsPanel();
             this.cameraTab = new System.Windows.Forms.TabPage();
             this.cameraStatsPanel = new Chimera.GUI.Controls.StatisticsPanel();
             this.deltaTab = new System.Windows.Forms.TabPage();
             this.deltaStatsPanel = new Chimera.GUI.Controls.StatisticsPanel();
             this.usageTab = new System.Windows.Forms.TabPage();
             this.overlayStatsBox = new System.Windows.Forms.RichTextBox();
-            this.updatesTab = new System.Windows.Forms.TabPage();
-            this.updateStatsPanel = new Chimera.GUI.Controls.StatisticsPanel();
             ((System.ComponentModel.ISupportInitialize)(this.hSplit)).BeginInit();
             this.hSplit.Panel1.SuspendLayout();
             this.hSplit.Panel2.SuspendLayout();
@@ -111,10 +115,11 @@ namespace Chimera.GUI.Forms {
             this.statisticsTab.SuspendLayout();
             this.statsTabs.SuspendLayout();
             this.tickTab.SuspendLayout();
+            this.tickListenersTab.SuspendLayout();
+            this.updatesTab.SuspendLayout();
             this.cameraTab.SuspendLayout();
             this.deltaTab.SuspendLayout();
             this.usageTab.SuspendLayout();
-            this.updatesTab.SuspendLayout();
             this.SuspendLayout();
             // 
             // hSplit
@@ -326,6 +331,8 @@ namespace Chimera.GUI.Forms {
             // 
             // globalBox
             // 
+            this.globalBox.Controls.Add(this.label1);
+            this.globalBox.Controls.Add(this.tickLengthPanel);
             this.globalBox.Controls.Add(this.enableUpdates);
             this.globalBox.Controls.Add(this.deltaModeButton);
             this.globalBox.Controls.Add(this.absoluteModeButton);
@@ -340,6 +347,31 @@ namespace Chimera.GUI.Forms {
             this.globalBox.TabIndex = 0;
             this.globalBox.TabStop = false;
             this.globalBox.Text = "Global";
+            // 
+            // label1
+            // 
+            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(191, 277);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(64, 13);
+            this.label1.TabIndex = 8;
+            this.label1.Text = "Tick Length";
+            // 
+            // tickLengthPanel
+            // 
+            this.tickLengthPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.tickLengthPanel.Location = new System.Drawing.Point(104, 291);
+            this.tickLengthPanel.Max = 500F;
+            this.tickLengthPanel.Min = 0F;
+            this.tickLengthPanel.MinimumSize = new System.Drawing.Size(95, 20);
+            this.tickLengthPanel.Name = "tickLengthPanel";
+            this.tickLengthPanel.Size = new System.Drawing.Size(151, 20);
+            this.tickLengthPanel.TabIndex = 7;
+            this.tickLengthPanel.Value = 0F;
+            this.tickLengthPanel.ValueChanged += new System.Action<float>(this.tickLengthPanel_ValueChanged);
             // 
             // enableUpdates
             // 
@@ -409,11 +441,11 @@ namespace Chimera.GUI.Forms {
             this.virtualOrientationPanel.Quaternion = ((OpenMetaverse.Quaternion)(resources.GetObject("virtualOrientationPanel.Quaternion")));
             this.virtualOrientationPanel.Size = new System.Drawing.Size(255, 95);
             this.virtualOrientationPanel.TabIndex = 2;
-            rotation1.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("rotation1.LookAtVector")));
-            rotation1.Pitch = 0D;
-            rotation1.Quaternion = ((OpenMetaverse.Quaternion)(resources.GetObject("rotation1.Quaternion")));
-            rotation1.Yaw = 0D;
-            this.virtualOrientationPanel.Value = rotation1;
+            rotation2.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("rotation2.LookAtVector")));
+            rotation2.Pitch = 0D;
+            rotation2.Quaternion = ((OpenMetaverse.Quaternion)(resources.GetObject("rotation2.Quaternion")));
+            rotation2.Yaw = 0D;
+            this.virtualOrientationPanel.Value = rotation2;
             this.virtualOrientationPanel.Yaw = 0D;
             this.virtualOrientationPanel.OnChange += new System.EventHandler(this.virtualRotation_OnChange);
             // 
@@ -515,6 +547,7 @@ namespace Chimera.GUI.Forms {
             // statsTabs
             // 
             this.statsTabs.Controls.Add(this.tickTab);
+            this.statsTabs.Controls.Add(this.tickListenersTab);
             this.statsTabs.Controls.Add(this.updatesTab);
             this.statsTabs.Controls.Add(this.cameraTab);
             this.statsTabs.Controls.Add(this.deltaTab);
@@ -547,6 +580,47 @@ namespace Chimera.GUI.Forms {
             this.tickStatsPanel.ShowTick = true;
             this.tickStatsPanel.Size = new System.Drawing.Size(428, 416);
             this.tickStatsPanel.TabIndex = 0;
+            // 
+            // tickListenersTab
+            // 
+            this.tickListenersTab.Controls.Add(this.tickListenersPanel);
+            this.tickListenersTab.Location = new System.Drawing.Point(4, 22);
+            this.tickListenersTab.Name = "tickListenersTab";
+            this.tickListenersTab.Padding = new System.Windows.Forms.Padding(3);
+            this.tickListenersTab.Size = new System.Drawing.Size(434, 422);
+            this.tickListenersTab.TabIndex = 5;
+            this.tickListenersTab.Text = "Tick Listeners";
+            this.tickListenersTab.UseVisualStyleBackColor = true;
+            // 
+            // tickListenersPanel
+            // 
+            this.tickListenersPanel.Active = false;
+            this.tickListenersPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tickListenersPanel.Location = new System.Drawing.Point(3, 3);
+            this.tickListenersPanel.Name = "tickListenersPanel";
+            this.tickListenersPanel.Size = new System.Drawing.Size(428, 416);
+            this.tickListenersPanel.TabIndex = 0;
+            // 
+            // updatesTab
+            // 
+            this.updatesTab.Controls.Add(this.updateStatsPanel);
+            this.updatesTab.Location = new System.Drawing.Point(4, 22);
+            this.updatesTab.Name = "updatesTab";
+            this.updatesTab.Padding = new System.Windows.Forms.Padding(3);
+            this.updatesTab.Size = new System.Drawing.Size(434, 422);
+            this.updatesTab.TabIndex = 4;
+            this.updatesTab.Text = "Updates";
+            this.updatesTab.UseVisualStyleBackColor = true;
+            // 
+            // updateStatsPanel
+            // 
+            this.updateStatsPanel.Active = false;
+            this.updateStatsPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.updateStatsPanel.Location = new System.Drawing.Point(3, 3);
+            this.updateStatsPanel.Name = "updateStatsPanel";
+            this.updateStatsPanel.ShowTick = false;
+            this.updateStatsPanel.Size = new System.Drawing.Size(428, 416);
+            this.updateStatsPanel.TabIndex = 2;
             // 
             // cameraTab
             // 
@@ -611,27 +685,6 @@ namespace Chimera.GUI.Forms {
             this.overlayStatsBox.TabIndex = 8;
             this.overlayStatsBox.Text = "";
             // 
-            // updatesTab
-            // 
-            this.updatesTab.Controls.Add(this.updateStatsPanel);
-            this.updatesTab.Location = new System.Drawing.Point(4, 22);
-            this.updatesTab.Name = "updatesTab";
-            this.updatesTab.Padding = new System.Windows.Forms.Padding(3);
-            this.updatesTab.Size = new System.Drawing.Size(434, 422);
-            this.updatesTab.TabIndex = 4;
-            this.updatesTab.Text = "Updates";
-            this.updatesTab.UseVisualStyleBackColor = true;
-            // 
-            // updateStatsPanel
-            // 
-            this.updateStatsPanel.Active = false;
-            this.updateStatsPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.updateStatsPanel.Location = new System.Drawing.Point(3, 3);
-            this.updateStatsPanel.Name = "updateStatsPanel";
-            this.updateStatsPanel.ShowTick = false;
-            this.updateStatsPanel.Size = new System.Drawing.Size(428, 416);
-            this.updateStatsPanel.TabIndex = 2;
-            // 
             // CoordinatorForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -677,10 +730,11 @@ namespace Chimera.GUI.Forms {
             this.statisticsTab.ResumeLayout(false);
             this.statsTabs.ResumeLayout(false);
             this.tickTab.ResumeLayout(false);
+            this.tickListenersTab.ResumeLayout(false);
+            this.updatesTab.ResumeLayout(false);
             this.cameraTab.ResumeLayout(false);
             this.deltaTab.ResumeLayout(false);
             this.usageTab.ResumeLayout(false);
-            this.updatesTab.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -725,5 +779,9 @@ namespace Chimera.GUI.Forms {
         private Controls.StatisticsPanel deltaStatsPanel;
         private System.Windows.Forms.TabPage updatesTab;
         private Controls.StatisticsPanel updateStatsPanel;
+        private ScalarPanel tickLengthPanel;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TabPage tickListenersTab;
+        private Controls.StatisticsCollectionPanel tickListenersPanel;
     }
 }

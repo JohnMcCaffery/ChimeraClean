@@ -99,6 +99,12 @@
     <Compile Include="GUI\ControllableSelector.Designer.cs">
       <DependentUpon>ControllableSelector.cs</DependentUpon>
     </Compile>
+    <Compile Include="GUI\Plugins\StatsPluginPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\Plugins\StatsPluginPanel.Designer.cs">
+      <DependentUpon>StatsPluginPanel.cs</DependentUpon>
+    </Compile>
     <Compile Include="GUI\StateSelector.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -210,6 +216,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\Plugins\OverlayPluginPanel.resx">
       <DependentUpon>OverlayPluginPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\Plugins\StatsPluginPanel.resx">
+      <DependentUpon>StatsPluginPanel.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

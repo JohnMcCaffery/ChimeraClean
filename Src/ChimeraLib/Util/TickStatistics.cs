@@ -61,7 +61,11 @@ namespace Chimera.Util {
         }
 
         public double LastTick {
-            get { return mLastTickLength; }
+            get { 
+                double ret = mLastTickLength;
+                mLastTickLength = 0.0;
+                return ret;
+            }
         }
 
         public long TickStandardDeviation {
@@ -85,7 +89,11 @@ namespace Chimera.Util {
         }
 
         public double LastWork {
-            get { return mLastWorkLength; }
+            get { 
+                double ret = mLastWorkLength;
+                mLastWorkLength = 0.0;
+                return ret;
+            }
         }
 
         public long WorkStandardDeviation {
