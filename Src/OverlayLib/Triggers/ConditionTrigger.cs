@@ -6,7 +6,6 @@ using Chimera.Interfaces.Overlay;
 
 namespace Chimera.Overlay.Triggers {
     public abstract class ConditionTrigger : XmlLoader, ITrigger {
-        private static readonly double TIMEOUT = 10000.0;
         private Core mCore;
         private Action mTickListener;
         private double mWaitMS = 0.0;
@@ -20,6 +19,10 @@ namespace Chimera.Overlay.Triggers {
 
         public abstract bool Condition {
             get;
+        }
+
+        protected double WaitMS {
+            get { return mWaitMS; }
         }
 
         public ConditionTrigger(Core core) {

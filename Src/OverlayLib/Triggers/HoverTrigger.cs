@@ -153,6 +153,24 @@ namespace Chimera.Overlay.Triggers {
             set { mClip = value; }
         }
 
+        public override bool Condition {
+            get {
+                bool val = base.Condition;
+                if (val) {
+                    mNeedsRedrawn = true;
+                    if (!mHovering) {
+                        mHovering = true;
+                        mHoverStart = DateTime.Now;
+                    } else if (val && DateTime.Now.Subtract(mHoverStart).TotalMilliseconds > WaitMS)
+                        mTriggered = true;
+                } else if (mHovering) {
+                    mHovering = false;
+                    mNeedsRedrawn = false;
+                }
+                return val;
+            }
+        }
+
         #region IDrawable
 
         public virtual bool NeedsRedrawn {
