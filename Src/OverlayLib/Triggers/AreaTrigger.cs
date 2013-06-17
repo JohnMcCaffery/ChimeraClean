@@ -7,11 +7,12 @@ using System.Drawing;
 using System.Xml;
 
 namespace Chimera.Overlay.Triggers {
-    public abstract class AreaTrigger : ConditionTrigger, ITrigger {
+    public abstract class AreaTrigger : XmlLoader, ITrigger {
         /// <summary>
         /// The manager which will supply the cursor position.
         /// </summary>
         private readonly WindowOverlayManager mManager;
+        private Action<WindowOverlayManager, EventArgs> mMoveListener;
 
         /// <summary>
         /// The bounds defining the area which the cursor can hover over to trigger this selector. The bounds are specified as scaled values between 0,0 and 1,1. 0,0 is top left. 1,1 bottom right.
@@ -36,30 +37,26 @@ namespace Chimera.Overlay.Triggers {
         /// <param name="y">The y coordinate for where the image is to be positioned, specified between 0 and 1. 0 is flush to the top, 1 flush to the bottom.</param>
         /// <param name="x">The width of the image, specified between 0 and 1. 1 will fill the entire width, 0 will be invisible.</param>
         /// <param name="y">The width of the image, specified between 0 and 1. 1 will fill the entire height, 0 will be invisible.</param>
-        public AreaTrigger(WindowOverlayManager manager, float x, float y, float w, float h, double time)
-            : this(manager, new RectangleF(x, y, w, h), time) {
+        public AreaTrigger(WindowOverlayManager manager, float x, float y, float w, float h)
+            : this(manager, new RectangleF(x, y, w, h)) {
         }
 
-        public AreaTrigger(WindowOverlayManager manager, int x, int y, int w, int h, Rectangle clip, double time)
-            : this(manager, (float) x / (float) clip.Width, (float) y / (float) clip.Height, (float) w / (float) clip.Width, (float) h / (float) clip.Height, time) {
+        public AreaTrigger(WindowOverlayManager manager, int x, int y, int w, int h, Rectangle clip)
+            : this(manager, (float) x / (float) clip.Width, (float) y / (float) clip.Height, (float) w / (float) clip.Width, (float) h / (float) clip.Height) {
         }
 
-        public AreaTrigger(WindowOverlayManager manager, RectangleF bounds, double time)
-            : base(manager.Frame.Core, "AreaTrigger", time) {
+        public AreaTrigger(WindowOverlayManager manager, RectangleF bounds) {
             mManager = manager;
             mBounds = bounds;
+            mMoveListener = new Action<WindowOverlayManager,EventArgs>(mManager_CursorMoved);
         }
 
-        public AreaTrigger(OverlayPlugin manager, XmlNode node, double time)
-            : base(manager.Core, GetName(node, "AreaTrigger"), time) {
-            mManager = GetManager(manager, node, "trigger");
-            mBounds = GetBounds(node, "trigger");
+        public AreaTrigger(OverlayPlugin manager, XmlNode node) 
+            : this(GetManager(manager, node, "trigger"), GetBounds(node, "trigger")) { 
         }
 
-        public AreaTrigger(OverlayPlugin manager, XmlNode node, Rectangle clip, double time)
-            : base(manager.Core, GetName(node, "AreaTrigger"), time) {
-            mManager = GetManager(manager, node, "trigger");
-            mBounds = GetBounds(node, "trigger", clip);
+        public AreaTrigger(OverlayPlugin manager, XmlNode node, Rectangle clip) 
+            : this(GetManager(manager, node, "trigger"), GetBounds(node, "trigger", clip)) { 
         }
 
         /// <summary>
@@ -77,8 +74,48 @@ namespace Chimera.Overlay.Triggers {
             return "Trigger: " + mBounds.X + "," + mBounds.Height;
         }
 
-        public override bool Condition {
+        private bool mInside;
+
+        protected abstract void Entered();
+        protected abstract void Exited();
+
+        protected void Trigger() {
+            if (Triggered != null) {
+                Triggered();
+            }
+        }
+
+        public bool Inside {
             get { return Bounds.Contains(Manager.CursorPosition); }
+        }
+
+        void mManager_CursorMoved(WindowOverlayManager manager, EventArgs args) {
+            if (Inside) {
+                if (!mInside) {
+                    mInside = true;
+                    Entered();
+                }
+            } else if (mInside) {
+                mInside = false;
+                Exited();
+            }
+        }
+
+        private bool mActive;
+
+        public event Action Triggered;
+
+        public virtual bool Active {
+            get { return mActive; }
+            set {
+                if (mActive != value) {
+                    mActive = value;
+                    if (value)
+                        mManager.CursorMoved += mMoveListener;
+                    else
+                        mManager.CursorMoved -= mMoveListener;
+                }
+            }
         }
     }
 }

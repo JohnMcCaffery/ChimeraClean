@@ -87,7 +87,7 @@ namespace Chimera.Overlay {
                 if (mConfig.LaunchOverlay != value) {
                     if (mConfig.LaunchOverlay != value) {
                         mConfig.LaunchOverlay = value;
-                        foreach (var manager in mWindowManagers.Values) {
+                        foreach (var manager in mFrameManagers.Values) {
                             if (value) {
                                 manager.Launch();
                                 if (OverlayLaunched != null)
@@ -120,7 +120,7 @@ namespace Chimera.Overlay {
 
         public void SetForm(Form form) {
             mMasterForm = form;
-            foreach (var manager in mWindowManagers.Values)
+            foreach (var manager in mFrameManagers.Values)
                 manager.SetForm(form);
         }
         
@@ -151,5 +151,16 @@ namespace Chimera.Overlay {
         }
 
         #endregion
+
+        private bool mControlPointers = true;
+
+        public bool ControlPointers {
+            get { return mControlPointers; }
+            set {
+                mControlPointers = value;
+                foreach (var frame in mFrameManagers.Values)
+                    frame.ControlPointer = value;
+            }
+        }
     }
 }

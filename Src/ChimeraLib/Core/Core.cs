@@ -300,6 +300,9 @@ namespace Chimera {
                 //tickThread.Priority = ThreadPriority.Highest;
                 tickThread.Start();
                 success = true;
+            } catch (Exception e) {
+                Logger.Warn("Unable to instantiate core. " + e.Message);
+                Logger.Debug("Unable to instantiate core.", e);
             } finally {
                 if (!success)
                     Close();

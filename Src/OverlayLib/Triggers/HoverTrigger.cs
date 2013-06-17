@@ -104,17 +104,17 @@ namespace Chimera.Overlay.Triggers {
         }
 
         public HoverTrigger(WindowOverlayManager manager, ISelectionRenderer renderer, RectangleF bounds)
-            : base(manager, bounds, sSelectTimeMS) {
+            : base(manager, bounds) {
             mRenderer = renderer;
         }
 
         public HoverTrigger(OverlayPlugin manager, XmlNode node)
-            : base(manager, node, GetDouble(node, sSelectTimeMS, "Length")) {
+            : base(manager, node) {
             mRenderer = manager.GetRenderer(node, "hover trigger", manager.Renderers[0], "Renderer");
         }
 
         public HoverTrigger(OverlayPlugin manager, XmlNode node, Rectangle clip)
-            : base(manager, node, clip, GetDouble(node, sSelectTimeMS, "Length")) {
+            : base(manager, node, clip) {
             mRenderer = manager.GetRenderer(node, "hover trigger", manager.Renderers[0], "Renderer");
         }
 
@@ -153,28 +153,11 @@ namespace Chimera.Overlay.Triggers {
             set { mClip = value; }
         }
 
-        public override bool Condition {
-            get {
-                bool val = base.Condition;
-                if (val) {
-                    mNeedsRedrawn = true;
-                    if (!mHovering) {
-                        mHovering = true;
-                        mHoverStart = DateTime.Now;
-                    } else if (val && DateTime.Now.Subtract(mHoverStart).TotalMilliseconds > WaitMS)
-                        mTriggered = true;
-                } else if (mHovering) {
-                    mHovering = false;
-                    mNeedsRedrawn = false;
-                }
-                return val;
-            }
-        }
 
         #region IDrawable
 
         public virtual bool NeedsRedrawn {
-            get { return mNeedsRedrawn; }
+            get { return Inside; }
         }
 
         /// <summary>
@@ -182,10 +165,17 @@ namespace Chimera.Overlay.Triggers {
         /// </summary>
         /// <param name="graphics">The object with which to draw the elements.</param>
         public virtual void DrawDynamic(Graphics graphics) {
-            if (mTriggered)
-                mRenderer.DrawSelected(graphics, ScaledBounds);
-            else if (mHovering) {
-                mRenderer.DrawHover(graphics, ScaledBounds, DateTime.Now.Subtract(mHoverStart).TotalMilliseconds / sSelectTimeMS);
+            if (!Inside)
+                return;
+
+            double t = DateTime.Now.Subtract(mHoverStart).TotalMilliseconds;
+            if (t < sSelectTimeMS)
+                mRenderer.DrawHover(graphics, ScaledBounds, t / sSelectTimeMS);
+            else if (!mTriggered) {
+                mTriggered = true;
+                Trigger();
+                mRenderer.Clear();
+                //mRenderer.DrawSelected(graphics, ScaledBounds);
             }
         }
 
@@ -197,5 +187,15 @@ namespace Chimera.Overlay.Triggers {
         public virtual void DrawStatic(Graphics graphics) { }
 
         #endregion    
+
+        protected override void Entered() {
+            mHoverStart = DateTime.Now;
+            mTriggered = false;
+        }
+
+        protected override void Exited() {
+            Manager.ResetCursor();
+            mRenderer.Clear();
+        }
     }
 }

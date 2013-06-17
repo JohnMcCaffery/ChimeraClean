@@ -65,7 +65,7 @@ namespace Chimera.Overlay {
         /// <summary>
         /// Window managers for each window in the system.
         /// </summary>
-        private readonly Dictionary<string, WindowOverlayManager> mWindowManagers = new Dictionary<string, WindowOverlayManager>();
+        private readonly Dictionary<string, WindowOverlayManager> mFrameManagers = new Dictionary<string, WindowOverlayManager>();
         /// <summary>
         /// The control panel for the overlay.
         /// </summary>
@@ -104,7 +104,7 @@ namespace Chimera.Overlay {
 
         void mCoordinator_FrameAdded(Frame frame, EventArgs args) {
             WindowOverlayManager manager = new WindowOverlayManager(this, frame);
-            mWindowManagers.Add(frame.Name, manager);
+            mFrameManagers.Add(frame.Name, manager);
 
             if (mMasterForm != null)
                 manager.SetForm(mMasterForm);
@@ -114,15 +114,15 @@ namespace Chimera.Overlay {
         }
 
         public WindowOverlayManager this[string windowName] {
-            get { return mWindowManagers[windowName]; }
+            get { return mFrameManagers[windowName]; }
         }
 
         public WindowOverlayManager this[int windowIndex] {
-            get { return mWindowManagers[mCoordinator.Frames[0].Name]; }
+            get { return mFrameManagers[mCoordinator.Frames[0].Name]; }
         }
 
         public WindowOverlayManager[] OverlayManagers {
-            get { return mWindowManagers.Values.ToArray(); }
+            get { return mFrameManagers.Values.ToArray(); }
         }
 
         /// <summary>
@@ -254,7 +254,7 @@ namespace Chimera.Overlay {
         }
 
         public bool IsKnownWindow(string window) {
-            return mWindowManagers.ContainsKey(window);
+            return mFrameManagers.ContainsKey(window);
         }
     }
 }

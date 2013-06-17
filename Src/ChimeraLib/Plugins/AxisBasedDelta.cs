@@ -35,9 +35,8 @@ namespace Chimera.Plugins {
         private readonly List<IAxis> mAxes = new List<IAxis>();
         private readonly string mName;
         private readonly Action mTickListener;
-        private bool mAdded = false;
 
-        private ITickSource mSource;
+        private Core mCore;
         private AxisConfig mConfig;
 
         private AxisBasedDeltaPanel mPanel;
@@ -71,19 +70,19 @@ namespace Chimera.Plugins {
         public override bool Enabled {
             get { return base.Enabled; }
             set {
-                base.Enabled = value;
-                if (mSource != null) {
-                    if (value && !mAdded) {
-                        mSource.Tick += mTickListener;
-                        mAdded = true;
-                    } else if (!value && mAdded) {
-                        mSource.Tick -= mTickListener;
-                        mAdded = false;
-                    }
-                }
+                if (value != base.Enabled) {
+                    base.Enabled = value;
 
-                foreach (var axis in mAxes)
-                    axis.Enabled = value;
+                    if (mCore != null) {
+                        if (value)
+                            mCore.Tick += mTickListener;
+                        else
+                            mCore.Tick -= mTickListener;
+                    }
+
+                    foreach (var axis in mAxes)
+                        axis.Enabled = value;
+                }
             }
         }
 
@@ -114,8 +113,8 @@ namespace Chimera.Plugins {
 
         public void AddAxis(IAxis axis) {
             mAxes.Add(axis);
-            if (mSource != null && axis is ITickListener)
-                (axis as ITickListener).Init(mSource);
+            if (mCore != null && axis is ITickListener)
+                (axis as ITickListener).Init(mCore);
             if (axis is ConstrainedAxis) {
                 ConstrainedAxis ax = axis as ConstrainedAxis;
                 ax.Deadzone.Value = AxConfig.GetDeadzone(axis.Name);
@@ -152,13 +151,13 @@ namespace Chimera.Plugins {
 
         public override void Init(Core core) {
             base.Init(core);
-            mSource = core;
+            mCore = core;
             foreach (var axis in mAxes)
                 if (axis is ITickListener)
                     (axis as ITickListener).Init(core);
 
-            //if (Enabled)
-                //core.Tick += mTickListener;
+            if (Enabled)
+                core.Tick += mTickListener;
         }
 
         void mCore_Tick() {

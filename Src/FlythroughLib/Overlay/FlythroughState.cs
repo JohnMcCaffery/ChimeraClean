@@ -216,6 +216,8 @@ namespace Chimera.Flythrough.Overlay {
         }
 
         protected override void TransitionToStart() {
+            Manager.ControlPointers = false;
+
             if (mPlayer != null)
                 mDefaultWindow.AddControl(mPlayer.Player, new RectangleF(0f, 0f, 0f, 0f));
 

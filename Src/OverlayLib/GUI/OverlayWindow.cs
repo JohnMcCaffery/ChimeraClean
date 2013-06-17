@@ -94,7 +94,7 @@ namespace Chimera.GUI.Forms {
             while (mCont) {
                 DateTime start = DateTime.Now;
                 Tick();
-                int length = refreshTimer.Interval - (int) DateTime.Now.Subtract(start).TotalMilliseconds;
+                int length = mManager.Frame.Core.TickLength - (int) DateTime.Now.Subtract(start).TotalMilliseconds;
                 if (length > 0)
                     Thread.Sleep(length);
             }
