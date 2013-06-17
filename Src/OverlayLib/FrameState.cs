@@ -25,14 +25,14 @@ using Chimera.Interfaces.Overlay;
 using System.Drawing;
 
 namespace Chimera.Overlay {
-    public class WindowState : DrawableRoot, IWindowState {
+    public class FrameState : DrawableRoot, IWindowState {
         /// <summary>
         /// The overlay form for the window this window state is linked to.
         /// </summary>
-        private readonly WindowOverlayManager mManager;
+        private readonly FrameOverlayManager mManager;
 
         /// <param name="manager">The manager which controls this window state.</param>
-        public WindowState(WindowOverlayManager manager)
+        public FrameState(FrameOverlayManager manager)
             : base(manager.Frame.Name) {
             mManager = manager;
         }
@@ -40,7 +40,7 @@ namespace Chimera.Overlay {
         /// <summary>
         /// The manager which controls this window state.
         /// </summary>
-        public WindowOverlayManager Manager {
+        public FrameOverlayManager Manager {
             get { return mManager; }
         }
 

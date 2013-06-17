@@ -30,9 +30,12 @@ using Chimera.Util;
 using OpenMetaverse;
 using Chimera.Overlay;
 using Chimera.Config;
+using log4net;
 
 namespace Chimera.Kinect {
     public class SimpleKinectCursor : ISystemPlugin {
+        private ILog Logger = LogManager.GetLogger("KinectCursor");
+
         private SimpleCursorPanel mPanel;
         private Vector mHandR;
         private Vector mHandL;
@@ -64,8 +67,8 @@ namespace Chimera.Kinect {
         //TODO add init of this to the config
         private string mWindow = "MainWindow";
 
-        private WindowOverlayManager mManager;
-        private OverlayPlugin mStateManager;
+        private FrameOverlayManager mManager;
+        private OverlayPlugin mOverlayPlugin;
 
         public Vector Anchor { get { return mAnchor; } }
         public Vector HandR { get { return mHandR; } }
@@ -211,10 +214,12 @@ namespace Chimera.Kinect {
             set {
                 if (value != mEnabled) {
                     mEnabled = value;
-                    if (value)
-                        Nui.Tick += mTickListener;
-                    else
-                        Nui.Tick -= mTickListener;
+                    if (mOverlayPlugin != null) {
+                        if (value)
+                            Nui.Tick += mTickListener;
+                        else
+                            Nui.Tick -= mTickListener;
+                    }
                     if (EnabledChanged != null)
                         EnabledChanged(this, value);
                 }
@@ -227,16 +232,20 @@ namespace Chimera.Kinect {
 
         private Action<Frame, EventArgs> mWindowAddedListener;
 
-        public void Init(Core coordinator) {
-            if (!coordinator.HasPlugin<OverlayPlugin>())
-                throw new ArgumentException("Unable to load kinect cursor. Overlay plugin is not loaded.");
-            mStateManager = coordinator.GetPlugin<OverlayPlugin>();
-            if (coordinator.HasFrame(mWindow) != null) {
-                mManager = mStateManager[mWindow];
+        public void Init(Core core) {
+            if (!core.HasPlugin<OverlayPlugin>()) {
+                //throw new ArgumentException("Unable to load kinect cursor. Overlay plugin is not loaded.");
+                Logger.Warn("Unable to load kinect cursor. Overlay plugin is not loaded.");
+                Init();
+                return;
+            }
+            mOverlayPlugin = core.GetPlugin<OverlayPlugin>();
+            if (core.HasFrame(mWindow)) {
+                mManager = mOverlayPlugin[mWindow];
                 Nui.SkeletonLost += new SkeletonTrackDelegate(Nui_SkeletonLost);
             } else {
                 mWindowAddedListener = new Action<Chimera.Frame, EventArgs>(coordinator_WindowAdded);
-                coordinator.FrameAdded += mWindowAddedListener;
+                core.FrameAdded += mWindowAddedListener;
             }
             Init();
         }
@@ -260,7 +269,7 @@ namespace Chimera.Kinect {
 
         private void coordinator_WindowAdded(Frame frame, EventArgs args) {
             if (frame.Name == mWindow) {
-                mManager = mStateManager[frame.Name];
+                mManager = mOverlayPlugin[frame.Name];
                 frame.Core.FrameAdded -= mWindowAddedListener;
             }
         }

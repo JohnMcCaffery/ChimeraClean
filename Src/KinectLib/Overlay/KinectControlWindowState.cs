@@ -24,14 +24,14 @@ using System.Text;
 using Chimera.Overlay;
 
 namespace Chimera.Kinect.Overlay {
-    public class KinectControlWindowState : WindowState {
+    public class KinectControlWindowState : FrameState {
         private double mOpacity;
 
-        public KinectControlWindowState(WindowOverlayManager manager)
+        public KinectControlWindowState(FrameOverlayManager manager)
             : base(manager) {
         }
 
-        public KinectControlWindowState(WindowOverlayManager manager, double mOpacity)
+        public KinectControlWindowState(FrameOverlayManager manager, double mOpacity)
             : this(manager) {
             this.mOpacity = mOpacity;
         }

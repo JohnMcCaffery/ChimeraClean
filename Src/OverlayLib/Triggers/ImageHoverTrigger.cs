@@ -76,7 +76,7 @@ namespace Chimera.Overlay.Triggers {
             }
         }
 
-        public ImageHoverTrigger(WindowOverlayManager manager, ISelectionRenderer render, OverlayImage image)
+        public ImageHoverTrigger(FrameOverlayManager manager, ISelectionRenderer render, OverlayImage image)
             : base(manager, render, image.Bounds) {
             mImage = image;
         }

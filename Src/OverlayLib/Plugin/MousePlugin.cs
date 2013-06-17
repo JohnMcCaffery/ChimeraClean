@@ -78,7 +78,7 @@ namespace Chimera.Overlay.Plugins {
             }
         }
 
-        private void Update(WindowOverlayManager manager, Rectangle bounds, int x, int y) {
+        private void Update(FrameOverlayManager manager, Rectangle bounds, int x, int y) {
             mOverlayPlugin[manager.Name].UpdateCursor((double)x / (double)bounds.Width, (double)y / (double)bounds.Height);
         }
 

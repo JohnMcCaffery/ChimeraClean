@@ -54,7 +54,7 @@ namespace Chimera.Interfaces.Overlay {
         /// <summary>
         /// The manager for the overlay on the window this state transition is rendered on.
         /// </summary>
-        WindowOverlayManager Manager {
+        FrameOverlayManager Manager {
             get;
         }
 
@@ -67,5 +67,7 @@ namespace Chimera.Interfaces.Overlay {
         /// Cancel the transition before it has completed.
         /// </summary>
         void Cancel();
+
+        bool Selected { get; set; }
     }
 }

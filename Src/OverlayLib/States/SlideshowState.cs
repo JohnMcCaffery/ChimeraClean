@@ -47,14 +47,14 @@ namespace Chimera.Overlay.States {
     public class SlideshowState : State {
         private readonly ILog Logger = LogManager.GetLogger("Overlay.Slideshow");
         private readonly List<SlideshowWindow> mWindows = new List<SlideshowWindow>();
-        private readonly IImageTransitionFactory mTransition;
+        private readonly IFeatureTransitionFactory mTransition;
         private readonly string mFolder;
         private double mFadeLengthMS;
         private int mFinishedCount = 0;
         private List<ITrigger> mTriggers = new List<ITrigger>();
 
 
-        public SlideshowState(string name, OverlayPlugin manager, string folder, ITrigger next, ITrigger prev, IImageTransitionFactory transition, double fadeLengthMS)
+        public SlideshowState(string name, OverlayPlugin manager, string folder, ITrigger next, ITrigger prev, IFeatureTransitionFactory transition, double fadeLengthMS)
             : base(name, manager) {
 
             mFolder = folder;
@@ -72,7 +72,7 @@ namespace Chimera.Overlay.States {
             mTransition =  manager.GetImageTransitionFactory(node, "slideshow state", "Transition");
             if (mTransition == null) {
                 Logger.Warn("Unable to look up custom transition for slideshow. Using default, fade.");
-                mTransition = new BitmapFadeFactory();
+                mTransition = new FeatureFadeFactory();
             }
             mFolder = GetString(node, null, "Folder");
             if (mFolder == null)
@@ -117,8 +117,8 @@ namespace Chimera.Overlay.States {
             }
         }
 
-        public override IWindowState CreateWindowState(WindowOverlayManager manager) {
-            IImageTransition trans = mTransition.Create(mFadeLengthMS);
+        public override IWindowState CreateWindowState(FrameOverlayManager manager) {
+            IFeatureTransition trans = mTransition.Create(mFadeLengthMS);
             SlideshowWindow windowState = new SlideshowWindow(manager, mFolder, trans);
             /*
             if (mNext is IDrawable) {

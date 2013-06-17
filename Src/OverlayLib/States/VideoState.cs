@@ -45,7 +45,7 @@ namespace Chimera.Overlay.States {
     public class VideoState : ImageBGState {
         private readonly ILog Logger = LogManager.GetLogger("Overlay.Video");
         private string mVideo;
-        private WindowOverlayManager mMainWindow;
+        private FrameOverlayManager mMainWindow;
         private SimpleTrigger mTrigger;
         private RectangleF mBounds = new RectangleF(0f, 0f, 1f, 1f);
         private bool mAdded;
@@ -70,7 +70,7 @@ namespace Chimera.Overlay.States {
             }
         }
 
-        public VideoState(string name, WindowOverlayManager mainWindow, string video, State parent, ITransitionStyle transition, IMediaPlayer player)
+        public VideoState(string name, FrameOverlayManager mainWindow, string video, State parent, ITransitionStyle transition, IMediaPlayer player)
             : base(name, mainWindow.Manager, DefaultBG) {
 
             mPlayer = player;
@@ -100,10 +100,10 @@ namespace Chimera.Overlay.States {
             XmlAttribute toAttr = node.Attributes["FinishState"];
             if (toAttr != null && manager.GetState(toAttr.Value) != null) {
                 mTrigger = new SimpleTrigger();
-                ITransitionStyle transition = manager.GetTransition(node, "video state finish transition", new BitmapWindowTransitionFactory(new BitmapFadeFactory(), 2000), "Transition");
+                ITransitionStyle transition = manager.GetTransition(node, "video state finish transition", new FeatureFrameTransitionFactory(new FeatureFadeFactory(), 2000), "Transition");
                 if (transition == null) {
                     Logger.Debug("No transition specified for VideoState. using default 2s bitmap fade transition.");
-                    transition = new BitmapWindowTransitionFactory(new BitmapFadeFactory(), 2000);
+                    transition = new FeatureFrameTransitionFactory(new FeatureFadeFactory(), 2000);
                 }
                 AddTransition(new StateTransition(Manager, this, manager.GetState(toAttr.Value), mTrigger, transition));
             }

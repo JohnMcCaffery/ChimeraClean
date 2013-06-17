@@ -72,7 +72,7 @@ namespace Chimera.Overlay.SelectionRenderers {
         private static int sSteps = 100;
         private Cursor[] mCursors = new Cursor[sSteps];
         private Cursor mCompletedCursor;
-        private WindowOverlayManager mOverlayManager;
+        private FrameOverlayManager mOverlayManager;
 
         public static bool GlobalCursorIsHover() {
             return sCursors.Contains(ProcessWrangler.GetGlobalCursor());
@@ -97,12 +97,12 @@ namespace Chimera.Overlay.SelectionRenderers {
             }
         }
 
-        public CursorRenderer (Action<Graphics, Rectangle, double> drawStep, Size size, WindowOverlayManager manager) {
+        public CursorRenderer (Action<Graphics, Rectangle, double> drawStep, Size size, FrameOverlayManager manager) {
             mOverlayManager = manager;
 
             Init(size, drawStep);
         }
-        public CursorRenderer (ISelectionRenderer renderer, Size size, WindowOverlayManager manager) {
+        public CursorRenderer (ISelectionRenderer renderer, Size size, FrameOverlayManager manager) {
             mOverlayManager = manager;
 
             Init(size, renderer.DrawHover);

@@ -44,7 +44,7 @@ namespace Chimera.Interfaces.Overlay {
         /// <summary>
         /// The manager which controls the window state.
         /// </summary>
-        WindowOverlayManager Manager {
+        FrameOverlayManager Manager {
             get;
         }
 

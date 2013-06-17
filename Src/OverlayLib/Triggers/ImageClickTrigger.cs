@@ -78,7 +78,7 @@ namespace Chimera.Overlay.Triggers {
             }
         }
 
-        public ImageClickTrigger(WindowOverlayManager manager, OverlayImage image)
+        public ImageClickTrigger(FrameOverlayManager manager, OverlayImage image)
             : base(manager, image.Bounds) {
             mImage = image;
         }

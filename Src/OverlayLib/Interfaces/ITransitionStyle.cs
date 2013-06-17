@@ -32,6 +32,6 @@ namespace Chimera.Interfaces.Overlay {
         /// </summary>
         /// <param name="transition">The transition which the new window transition will be part of.</param>
         /// <param name="manager">The window for the factory to create the transition for.</param>
-        IWindowTransition Create(StateTransition transition, WindowOverlayManager manager);
+        IWindowTransition Create(StateTransition transition, FrameOverlayManager manager);
     }
 }

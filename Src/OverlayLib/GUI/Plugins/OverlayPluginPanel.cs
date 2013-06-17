@@ -7,10 +7,11 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using Chimera.Interfaces.Overlay;
+using Chimera.GUI.Controls;
 
 namespace Chimera.Overlay.GUI.Plugins {
     public partial class OverlayPluginPanel : UserControl {
-        private OverlayPlugin mOverlayPlugin;
+        private readonly Dictionary<string, StatisticsPanel> mStatsPanels = new Dictionary<string, StatisticsPanel>();        private OverlayPlugin mOverlayPlugin;        private StatisticsPanel mCurrentPanel;
 
         public OverlayPluginPanel() {
             InitializeComponent();
@@ -39,7 +40,7 @@ namespace Chimera.Overlay.GUI.Plugins {
                 stateFactoriesList.Items.Add(factory);
             foreach (var factory in overlayPlugin.GetFactories<ITrigger>())
                 triggerFactoriesList.Items.Add(factory);
-            foreach (var factory in overlayPlugin.GetFactories<IImageTransition>())
+            foreach (var factory in overlayPlugin.GetFactories<IFeatureTransition>())
                 imageTransitionFactoriesList.Items.Add(factory);
             foreach (var factory in overlayPlugin.GetFactories<ITransitionStyle>())
                 transitionStyleFactoriesList.Items.Add(factory);
@@ -47,6 +48,19 @@ namespace Chimera.Overlay.GUI.Plugins {
                 featuresFactoryList.Items.Add(factory);
             foreach (var factory in overlayPlugin.GetFactories<ISelectionRenderer>())
                 selectionRendererFactoriesList.Items.Add(factory);
+
+            foreach (var frameManager in mOverlayPlugin.OverlayManagers) {
+                StatisticsPanel p = new StatisticsPanel(frameManager.Statistics, mOverlayPlugin.Core);
+                p.Dock = DockStyle.Fill;
+                mStatsPanels.Add(frameManager.Name, p);
+
+                TabPage page = new TabPage();
+                page.Text = frameManager.Name;
+                page.Name = frameManager.Name;
+                page.Controls.Add(p);
+
+                statsTabs.Controls.Add(page);
+            }
         }
 
         void mOverlayPlugin_StateChanged(State state) {
@@ -76,6 +90,16 @@ namespace Chimera.Overlay.GUI.Plugins {
 
         private void mainTab_VisibleChanged(object sender, EventArgs e) {
             mainTab_TabIndexChanged(sender, e);
+        }
+
+        private void statsTabs_SelectedIndexChanged(object sender, EventArgs e) {
+            if (mCurrentPanel != null)
+                mCurrentPanel.Active = false;
+
+            if (mainTab.SelectedTab == statsTab) {
+                mCurrentPanel = mStatsPanels[statsTabs.SelectedTab.Name];
+                mCurrentPanel.Active = true;
+            }
         }
     }
 }

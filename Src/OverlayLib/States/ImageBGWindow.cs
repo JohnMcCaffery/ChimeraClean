@@ -25,7 +25,7 @@ using Chimera.Interfaces.Overlay;
 using System.Drawing;
 
 namespace Chimera.Overlay.States {
-    public class ImageBGWindow : WindowState {
+    public class ImageBGWindow : FrameState {
         private Bitmap mBG;
         private Bitmap mDefaultBG;
 
@@ -51,7 +51,7 @@ namespace Chimera.Overlay.States {
             }
         }
 
-        public ImageBGWindow(WindowOverlayManager manager, Bitmap BG)
+        public ImageBGWindow(FrameOverlayManager manager, Bitmap BG)
             : base(manager) {
             mBG = BG;
         }

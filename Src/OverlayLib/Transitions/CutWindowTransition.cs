@@ -41,14 +41,14 @@ namespace Chimera.Overlay.Transitions {
     }
 
     public class CutTransition : XmlLoader, ITransitionStyle {
-        public IWindowTransition Create(StateTransition transition, WindowOverlayManager manager) {
+        public IWindowTransition Create(StateTransition transition, FrameOverlayManager manager) {
             return new CutWindowTransition(transition, manager);
         }
     }
-    public class CutWindowTransition : WindowTransition {
+    public class CutWindowTransition : FrameTransition {
         public override event Action<IWindowTransition> Finished;
 
-        public CutWindowTransition(StateTransition transition, WindowOverlayManager manager)
+        public CutWindowTransition(StateTransition transition, FrameOverlayManager manager)
             : base(transition, manager) {
         }
 

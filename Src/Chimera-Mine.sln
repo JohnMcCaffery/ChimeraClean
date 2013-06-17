@@ -46,6 +46,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Overlays", "Overlays", "{AA
 	ProjectSection(SolutionItems) = preProject
 		..\Bin\Overlays\Demo.xml = ..\Bin\Overlays\Demo.xml
 		..\Overlays\ExampleOverlay.xml = ..\Overlays\ExampleOverlay.xml
+		..\Bin\Overlays\Test.xml = ..\Bin\Overlays\Test.xml
 		..\Bin\Overlays\TimespanOverlay.xml = ..\Bin\Overlays\TimespanOverlay.xml
 	EndProjectSection
 EndProject

@@ -19,10 +19,10 @@ namespace Touchscreen.Overlay {
             mAvatar = avatar;
         }
 
-        public override IWindowState CreateWindowState(WindowOverlayManager manager) {
+        public override IWindowState CreateWindowState(FrameOverlayManager manager) {
             if (manager.Name.Equals(mPlugin.Manager.Frame.Name))
                 return new TouchscreenWindow(manager, mPlugin);
-            return new WindowState(manager);
+            return new FrameState(manager);
         }
 
         protected override void TransitionToStart() {

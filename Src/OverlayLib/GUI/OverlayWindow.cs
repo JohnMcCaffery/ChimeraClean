@@ -35,13 +35,9 @@ namespace Chimera.GUI.Forms {
     public partial class OverlayWindow : Form {
         private readonly ILog Logger = LogManager.GetLogger("Flythrough");
         /// <summary>
-        /// Statistics object which monitors how long ticks are taking.
-        /// </summary>
-        private readonly TickStatistics mStats = new TickStatistics();
-        /// <summary>
         /// The manager which controls this overlay.
         /// </summary>
-        private WindowOverlayManager mManager;
+        private FrameOverlayManager mManager;
         /// <summary>
         /// Clip rectangle defining the drawable area any overlays draw on for this window.
         /// </summary>
@@ -66,13 +62,13 @@ namespace Chimera.GUI.Forms {
             TopMost = true;
         }
 
-        public OverlayWindow(WindowOverlayManager manager)
+        public OverlayWindow(FrameOverlayManager manager)
             : this() {
 
             Init(manager);
         }
 
-        public void Init(WindowOverlayManager manager) {
+        public void Init(FrameOverlayManager manager) {
             mManager = manager;
 
             drawPanel.BackColor = manager.TransparencyKey;
@@ -159,13 +155,11 @@ namespace Chimera.GUI.Forms {
         }
 
         private void Tick() {
-            mStats.Begin();
+            mManager.Statistics.Begin();
             if (mManager.CurrentDisplay != null && mManager.CurrentDisplay.NeedsRedrawn)
                 drawPanel.Invalidate();
-            mStats.End();
+            mManager.Statistics.End();
         }
-
-        public TickStatistics Statistics { get { return mStats; } }
 
         internal void SetCursor(Cursor value) {
             Invoke(() => Cursor = value);
@@ -175,7 +169,7 @@ namespace Chimera.GUI.Forms {
             if (!InvokeRequired)
                 a();
             else if (Created && !IsDisposed && !Disposing)
-                base.BeginInvoke(a);
+                BeginInvoke(a);
         }
 
         internal void ForceRedraw() {

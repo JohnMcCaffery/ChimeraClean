@@ -146,8 +146,8 @@ namespace Chimera.Overlay {
             return t;
         }
 
-        public static WindowOverlayManager GetManager(OverlayPlugin manager, XmlNode node, string request) {
-            WindowOverlayManager mManager;
+        public static FrameOverlayManager GetManager(OverlayPlugin manager, XmlNode node, string request) {
+            FrameOverlayManager mManager;
             if (node == null) {
                 mManager = manager[0];
                 Logger.Debug("No node specified when looking up frame for " + request + ". Using " + mManager.Frame.Name + " as default.");

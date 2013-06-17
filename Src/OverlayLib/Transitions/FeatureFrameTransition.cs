@@ -30,7 +30,7 @@ using System.Xml;
 using log4net;
 
 namespace Chimera.Overlay.Transitions {
-    public class BitmapTransitionFactory : XmlLoader, ITransitionStyleFactory {
+    public class FeatureTransitionFactory : XmlLoader, ITransitionStyleFactory {
         private readonly ILog Logger = LogManager.GetLogger("Overlay.BitmapTransition");
 
         public string Name {
@@ -40,12 +40,12 @@ namespace Chimera.Overlay.Transitions {
         public ITransitionStyle Create(OverlayPlugin manager, XmlNode node) {
             Logger.Info("Creating Bitmap Window Transition");
             double length = GetDouble(node, 5000.0, "Length");
-            IImageTransitionFactory transition = manager.GetImageTransitionFactory(node, "transition style", "Style");
+            IFeatureTransitionFactory transition = manager.GetImageTransitionFactory(node, "transition style", "Style");
             if (transition == null) {
                 Logger.Debug("Unable to look up custom transition for transition style. Using default, fade.");
-                transition = new BitmapFadeFactory();
+                transition = new FeatureFadeFactory();
             }
-            return new BitmapWindowTransitionFactory(transition, length);
+            return new FeatureFrameTransitionFactory(transition, length);
         }
 
         public ITransitionStyle Create(OverlayPlugin manager, XmlNode node, Rectangle clip) {
@@ -53,7 +53,7 @@ namespace Chimera.Overlay.Transitions {
         }
     }
 
-    public class BitmapWindowTransitionFactory : XmlLoader, ITransitionStyle {
+    public class FeatureFrameTransitionFactory : XmlLoader, ITransitionStyle {
         /// <summary>
         /// How long the transition should last.
         /// </summary>
@@ -61,18 +61,19 @@ namespace Chimera.Overlay.Transitions {
         /// <summary>
         /// The factory used to create the transitions which will be rendered.
         /// </summary>
-        private IImageTransitionFactory mFactory;
+        private IFeatureTransitionFactory mFactory;
 
-        public BitmapWindowTransitionFactory(IImageTransitionFactory factory, double lengthMS) {
+        public FeatureFrameTransitionFactory(IFeatureTransitionFactory factory, double lengthMS) {
             mFactory = factory;
             mLengthMS = lengthMS;
         }
 
-        public IWindowTransition Create(StateTransition transition, WindowOverlayManager manager) {
-            return new BitmapWindowTransition(transition, manager, mFactory.Create(mLengthMS));
+        public IWindowTransition Create(StateTransition transition, FrameOverlayManager manager) {
+            return new FeatureFrameTransition(transition, manager, mFactory.Create(mLengthMS));
         }
     }
-    public class BitmapWindowTransition : WindowTransition {
+
+    public class FeatureFrameTransition : FrameTransition {
         /// <summary>
         /// The last clip rectangle the images were redrawn for. Used to check if the images need to be recalculated.
         /// </summary>
@@ -80,7 +81,7 @@ namespace Chimera.Overlay.Transitions {
         /// <summary>
         /// The object which will handle the actual transition.
         /// </summary>
-        private IImageTransition mTransition;
+        private IFeatureTransition mTransition;
         private bool mBegun;
 
 
@@ -90,11 +91,13 @@ namespace Chimera.Overlay.Transitions {
         /// <param name="transition">The transition this fade is part of.</param>
         /// <param name="manager">The window this fade is to be drawn on.</param>
         /// <param name="lengthMS">The length of time, in ms, the fade should last.</param>
-        public BitmapWindowTransition(StateTransition transition, WindowOverlayManager manager, IImageTransition transitionEffect)
+        public FeatureFrameTransition(StateTransition transition, FrameOverlayManager manager, IFeatureTransition transitionEffect)
             : base(transition, manager) {
 
             mTransition = transitionEffect;
-            transitionEffect.Finished += new Action(transitionEffect_Finished);
+            mTransition.Start = From;
+            mTransition.Finish = To;
+            mTransition.Finished += new Action(transitionEffect_Finished);
 
             AddFeature(mTransition);
         }
@@ -119,23 +122,6 @@ namespace Chimera.Overlay.Transitions {
 
         public override bool NeedsRedrawn {
             get { return true; }
-        }
-
-        public override Rectangle Clip {
-            get { return base.Clip; }
-            set {
-                base.Clip = value;
-                Bitmap from = new Bitmap(Clip.Width, Clip.Height);
-                Bitmap to = new Bitmap(Clip.Width, Clip.Height);
-                From.Clip = value;
-                To.Clip = value;
-                using (Graphics g = Graphics.FromImage(from))
-                    From.DrawStatic(g);
-                using (Graphics g = Graphics.FromImage(to))
-                    To.DrawStatic(g);
-
-                mTransition.Init(from, to);
-            }
         }
 
         public override void DrawStatic(Graphics graphics) {

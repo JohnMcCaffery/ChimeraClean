@@ -31,7 +31,7 @@ namespace Chimera.Overlay {
         /// <summary>
         /// The individual transitions for each window in the system.
         /// </summary>
-        private readonly Dictionary<string, IWindowTransition> mWindowTransitions = new Dictionary<string, IWindowTransition>();
+        private readonly Dictionary<string, IWindowTransition> mFrameTransitions = new Dictionary<string, IWindowTransition>();
         /// <summary>
         /// During a transition, the windows which have completed the transition. The transition as a whole is only complete when all windows have completed.
         /// </summary>
@@ -93,7 +93,7 @@ namespace Chimera.Overlay {
         /// Transitions for each window.
         /// </summary>
         public IWindowTransition[] WindowTransitions {
-            get { return mWindowTransitions.Values.ToArray(); }
+            get { return mFrameTransitions.Values.ToArray(); }
         }
 
         /// <summary>
@@ -131,6 +131,9 @@ namespace Chimera.Overlay {
             get { return mActive; }
             set { 
                 mActive = value;
+                foreach (var frameTransition in mFrameTransitions.Values)
+                    frameTransition.Active = value;
+
                 foreach (var trigger in mTriggers)
                     trigger.Active = value;
             }
@@ -165,10 +168,12 @@ namespace Chimera.Overlay {
         public void Begin() {
             if (mActive) {
                 Logger.Info("Transitioning from " + mFrom.Name + " to " + mTo.Name + ".");
+                foreach (var windowTrans in mFrameTransitions.Values)
+                    windowTrans.Selected = true;
                 mFrom.Active = false;
                 mTo.StartTransitionTo();
                 mCompletedWindows.Clear();
-                foreach (var windowTrans in mWindowTransitions.Values) {
+                foreach (var windowTrans in mFrameTransitions.Values) {
                     //windowTrans.From.Active = false;
                     windowTrans.Manager.CurrentDisplay = windowTrans;
                     windowTrans.Begin();
@@ -192,7 +197,7 @@ namespace Chimera.Overlay {
 
         void Coordinator_FrameAdded(Frame frame, EventArgs args) {
             IWindowTransition transition = mWindowTransitionFactory.Create(this, Manager[frame.Name]);
-            mWindowTransitions.Add(frame.Name, transition);
+            mFrameTransitions.Add(frame.Name, transition);
             transition.Finished += new Action<IWindowTransition>(transition_Finished);
         }
 
@@ -202,7 +207,7 @@ namespace Chimera.Overlay {
             transition.To.Active = true;
             transition.Manager.CurrentDisplay = transition.To;
             transition.Manager.ForceRedrawStatic();
-            if (mCompletedWindows.Count == mWindowTransitions.Count) {
+            if (mCompletedWindows.Count == mFrameTransitions.Count) {
                 mInProgress = false;
                 if (Finished != null)
                     Finished(this);
@@ -213,7 +218,7 @@ namespace Chimera.Overlay {
         /// Cancel the transition that is currently happening.
         /// </summary>
         public void Cancel() {
-            foreach (var windowTransition in mWindowTransitions.Values)
+            foreach (var windowTransition in mFrameTransitions.Values)
                 windowTransition.Cancel();
         }
 

@@ -24,11 +24,14 @@ using System.Text;
 using System.Drawing;
 
 namespace Chimera.Interfaces.Overlay {
-    public interface IImageTransition : IFeature {
+    public interface IFeatureTransition : IFeature {
         event Action Finished;
-        void Init(Bitmap from, Bitmap to);
-        void Begin();
 
+        IFeature Start { get; set; }
+        IFeature Finish { get; set; }
+        bool Active { get; set; }
+
+        void Begin();
         void Cancel();
     }
 }

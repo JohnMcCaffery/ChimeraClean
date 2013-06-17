@@ -11,8 +11,8 @@ namespace Chimera.Overlay.Triggers {
         /// <summary>
         /// The manager which will supply the cursor position.
         /// </summary>
-        private readonly WindowOverlayManager mManager;
-        private Action<WindowOverlayManager, EventArgs> mMoveListener;
+        private readonly FrameOverlayManager mManager;
+        private Action<FrameOverlayManager, EventArgs> mMoveListener;
 
         /// <summary>
         /// The bounds defining the area which the cursor can hover over to trigger this selector. The bounds are specified as scaled values between 0,0 and 1,1. 0,0 is top left. 1,1 bottom right.
@@ -37,18 +37,18 @@ namespace Chimera.Overlay.Triggers {
         /// <param name="y">The y coordinate for where the image is to be positioned, specified between 0 and 1. 0 is flush to the top, 1 flush to the bottom.</param>
         /// <param name="x">The width of the image, specified between 0 and 1. 1 will fill the entire width, 0 will be invisible.</param>
         /// <param name="y">The width of the image, specified between 0 and 1. 1 will fill the entire height, 0 will be invisible.</param>
-        public AreaTrigger(WindowOverlayManager manager, float x, float y, float w, float h)
+        public AreaTrigger(FrameOverlayManager manager, float x, float y, float w, float h)
             : this(manager, new RectangleF(x, y, w, h)) {
         }
 
-        public AreaTrigger(WindowOverlayManager manager, int x, int y, int w, int h, Rectangle clip)
+        public AreaTrigger(FrameOverlayManager manager, int x, int y, int w, int h, Rectangle clip)
             : this(manager, (float) x / (float) clip.Width, (float) y / (float) clip.Height, (float) w / (float) clip.Width, (float) h / (float) clip.Height) {
         }
 
-        public AreaTrigger(WindowOverlayManager manager, RectangleF bounds) {
+        public AreaTrigger(FrameOverlayManager manager, RectangleF bounds) {
             mManager = manager;
             mBounds = bounds;
-            mMoveListener = new Action<WindowOverlayManager,EventArgs>(mManager_CursorMoved);
+            mMoveListener = new Action<FrameOverlayManager,EventArgs>(mManager_CursorMoved);
         }
 
         public AreaTrigger(OverlayPlugin manager, XmlNode node) 
@@ -62,7 +62,7 @@ namespace Chimera.Overlay.Triggers {
         /// <summary>
         /// The manager which controls the window this trigger renders on.
         /// </summary>
-        protected WindowOverlayManager Manager {
+        protected FrameOverlayManager Manager {
             get { return mManager; }
         }
 
@@ -89,7 +89,7 @@ namespace Chimera.Overlay.Triggers {
             get { return Bounds.Contains(Manager.CursorPosition); }
         }
 
-        void mManager_CursorMoved(WindowOverlayManager manager, EventArgs args) {
+        void mManager_CursorMoved(FrameOverlayManager manager, EventArgs args) {
             if (Inside) {
                 if (!mInside) {
                     mInside = true;

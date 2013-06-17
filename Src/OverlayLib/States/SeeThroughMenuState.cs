@@ -40,7 +40,7 @@ namespace Chimera.Overlay.States {
             mOrientation = orientation;
         }
 
-        public override IWindowState CreateWindowState(WindowOverlayManager manager) {
+        public override IWindowState CreateWindowState(FrameOverlayManager manager) {
             SeeThroughMenuWindow stateWindow = new SeeThroughMenuWindow(manager);
             mWindows.Add(stateWindow);
             return stateWindow;
@@ -70,10 +70,10 @@ namespace Chimera.Overlay.States {
                 window.ResetToTransparent();
         }
 
-        private class SeeThroughMenuWindow : WindowState {
+        private class SeeThroughMenuWindow : FrameState {
             private Bitmap mFadeBG;
 
-            public SeeThroughMenuWindow(WindowOverlayManager manager)
+            public SeeThroughMenuWindow(FrameOverlayManager manager)
                 : base(manager) {
             }
 

@@ -151,7 +151,7 @@
     <Compile Include="Interfaces\IFeature.cs" />
     <Compile Include="Interfaces\IFactory.cs" />
     <Compile Include="Interfaces\ISelectionRenderer.cs" />
-    <Compile Include="Interfaces\IImageTransition.cs" />
+    <Compile Include="Interfaces\IFeatureTransition.cs" />
     <Compile Include="Interfaces\IMediaPlayer.cs" />
     <Compile Include="Interfaces\ITrigger.cs" />
     <Compile Include="Interfaces\IWindowState.cs" />
@@ -174,10 +174,10 @@
     <Compile Include="States\SlideshowWindow.cs" />
     <Compile Include="States\VideoState.cs" />
     <Compile Include="StateTransition.cs" />
-    <Compile Include="Transitions\BitmapFade.cs" />
-    <Compile Include="Transitions\BitmapWindowTransition.cs" />
+    <Compile Include="Transitions\FeatureFade.cs" />
+    <Compile Include="Transitions\FeatureFrameTransition.cs" />
     <Compile Include="Transitions\CutWindowTransition.cs" />
-    <Compile Include="Transitions\OpacityFadeWindowTransition.cs" />
+    <Compile Include="Transitions\OpacityFadeFrameTransition.cs" />
     <Compile Include="Triggers\ActiveAreaTrigger.cs" />
     <Compile Include="Triggers\AreaTrigger.cs" />
     <Compile Include="Triggers\ClickTrigger.cs" />
@@ -193,9 +193,9 @@
     <Compile Include="Triggers\SimpleTrigger.cs" />
     <Compile Include="Triggers\TextClickTrigger.cs" />
     <Compile Include="Triggers\TextHoverTrigger.cs" />
-    <Compile Include="WindowOverlayManager.cs" />
-    <Compile Include="WindowState.cs" />
-    <Compile Include="WindowTransition.cs" />
+    <Compile Include="FrameOverlayManager.cs" />
+    <Compile Include="FrameState.cs" />
+    <Compile Include="FrameTransition.cs" />
     <Compile Include="XmlLoader.cs" />
   </ItemGroup>
   <ItemGroup>

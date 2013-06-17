@@ -31,7 +31,7 @@ namespace Chimera.Interfaces.Overlay {
 
     public interface IFeatureFactory : IFactory<IFeature> { }
 
-    public interface IImageTransitionFactory : IFactory<IImageTransition> {
-        IImageTransition Create(double length);
+    public interface IFeatureTransitionFactory : IFactory<IFeatureTransition> {
+        IFeatureTransition Create(double length);
     }
 }

@@ -206,7 +206,7 @@ namespace Chimera.Overlay {
         /// CreateWindowState a window state for drawing this state to the specified window.
         /// </summary>
         /// <param name="window">The window the new window state is to draw on.</param>
-        public abstract IWindowState CreateWindowState(WindowOverlayManager manager);
+        public abstract IWindowState CreateWindowState(FrameOverlayManager manager);
 
         public void StartTransitionTo() {
             foreach (var window in mWindowStates.Values)

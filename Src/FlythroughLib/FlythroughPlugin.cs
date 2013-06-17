@@ -245,7 +245,7 @@ namespace Chimera.Flythrough {
                 if (mSeparateThread) {
                     Thread t = new Thread(FlythroughThread);
                     t.Name = "Flythrough thread";
-                    t.Priority = ThreadPriority.Highest;
+                    //t.Priority = ThreadPriority.Highest;
                     t.Start();
                 } else
                     mCore.Tick += mTickListener;

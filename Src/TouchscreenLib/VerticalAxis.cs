@@ -19,7 +19,7 @@ namespace Touchscreen {
         private float mStartH;
         private bool mDown;
         private bool mWasDown;
-        private WindowOverlayManager mManager;
+        private FrameOverlayManager mManager;
         private VerticalAxisPanel mPanel;
 
         public event Action SizeChanged;
@@ -29,12 +29,12 @@ namespace Touchscreen {
         public float PaddingH { get { return mPaddingH; } set { if (mPaddingH != value) { mPaddingH = value; Change(); } } }
         public float PaddingV { get { return mPaddingV; } set { if (mPaddingV != value) { mPaddingV = value; Change(); } } }
         public float StartH { get { return mStartH; } set { if (mStartH != value) { mStartH = value; Change(); } } }
-        public WindowOverlayManager Manager { get { return mManager; } }
+        public FrameOverlayManager Manager { get { return mManager; } }
         public RectangleF Bounds {
             get { return new RectangleF(mStartH + mPaddingH, mPaddingV, mW, mH); }
         }
 
-        public VerticalAxis(WindowOverlayManager manager)
+        public VerticalAxis(FrameOverlayManager manager)
             : base("Single") {
             mManager = manager;
             mManager.OnPress += i => mDown = true;

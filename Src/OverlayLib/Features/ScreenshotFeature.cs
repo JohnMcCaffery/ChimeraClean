@@ -30,7 +30,7 @@ namespace Chimera.Overlay.Features {
     }
 
     public class ScreenshotFeature : XmlLoader, IFeature {
-        private WindowOverlayManager mManager;
+        private FrameOverlayManager mManager;
         private Bitmap mScreenshot;
         private Rectangle mClip;
         private bool mActive;
@@ -48,6 +48,8 @@ namespace Chimera.Overlay.Features {
             set {
                 mActive = value;
                 if (value) {
+                    if (mScreenshot != null)
+                        mScreenshot.Dispose();
                     mScreenshot = new Bitmap(mManager.Frame.Monitor.Bounds.Width, mManager.Frame.Monitor.Bounds.Height);
                     using (Graphics g = Graphics.FromImage(mScreenshot)) {
                         g.CopyFromScreen(mManager.Frame.Monitor.Bounds.Location, Point.Empty, mManager.Frame.Monitor.Bounds.Size);

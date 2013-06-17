@@ -61,15 +61,15 @@ namespace Chimera.Overlay.Triggers {
         /// <param name="y">The y coordinate for where the image is to be positioned, specified between 0 and 1. 0 is flush to the top, 1 flush to the bottom.</param>
         /// <param name="x">The width of the image, specified between 0 and 1. 1 will fill the entire width, 0 will be invisible.</param>
         /// <param name="y">The width of the image, specified between 0 and 1. 1 will fill the entire height, 0 will be invisible.</param>
-        public ClickTrigger(WindowOverlayManager manager, float x, float y, float w, float h)
+        public ClickTrigger(FrameOverlayManager manager, float x, float y, float w, float h)
             : this(manager, new RectangleF(x, y, w, h)) {
         }
 
-        public ClickTrigger(WindowOverlayManager manager, int x, int y, int w, int h, Rectangle clip)
+        public ClickTrigger(FrameOverlayManager manager, int x, int y, int w, int h, Rectangle clip)
             : this(manager, (float) x / (float) clip.Width, (float) y / (float) clip.Height, (float) w / (float) clip.Width, (float) h / (float) clip.Height) {
         }
 
-        public ClickTrigger(WindowOverlayManager manager, RectangleF bounds)
+        public ClickTrigger(FrameOverlayManager manager, RectangleF bounds)
             : base(manager, bounds) {
             Manager.OnRelease += new Action<int>(mManager_OnRelease);
         }

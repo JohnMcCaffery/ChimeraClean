@@ -30,7 +30,8 @@ using Chimera.Util;
 using Chimera.Config;
 
 namespace Chimera.Overlay {
-    public class WindowOverlayManager {
+    public class FrameOverlayManager {
+        private readonly TickStatistics mStatistics = new TickStatistics();
         /// <summary>
         /// Id's of any input devices pressing on the screen.
         /// </summary>
@@ -104,7 +105,7 @@ namespace Chimera.Overlay {
         /// <summary>
         /// Triggered whenever the position of the cursor on this input changes.
         /// </summary>
-        public event Action<WindowOverlayManager, EventArgs> CursorMoved;
+        public event Action<FrameOverlayManager, EventArgs> CursorMoved;
         /// <summary>
         /// Triggered whenever a device presses onto the screen.
         /// Mouse clicks will register as index 0.
@@ -116,7 +117,7 @@ namespace Chimera.Overlay {
         public event Action<int> OnRelease;
 
         public TickStatistics Statistics {
-            get { return mOverlayWindow != null ? mOverlayWindow.Statistics : null; }
+            get { return mStatistics; }
         }
 
         /// <summary>
@@ -338,7 +339,7 @@ namespace Chimera.Overlay {
             }
         }
 
-        public WindowOverlayManager(OverlayPlugin manager, Frame frame) {
+        public FrameOverlayManager(OverlayPlugin manager, Frame frame) {
             mManager = manager;
             mFrame = frame;
 

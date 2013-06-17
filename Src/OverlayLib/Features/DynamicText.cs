@@ -48,10 +48,10 @@ namespace Chimera.Overlay.Features {
         #endregion
     }
     public class DynamicText : Text {
-        private WindowOverlayManager mManager;
+        private FrameOverlayManager mManager;
         private bool mNeedsRedrawn;
 
-        public DynamicText(string text, WindowOverlayManager manager, Font font, Color colour, PointF location)
+        public DynamicText(string text, FrameOverlayManager manager, Font font, Color colour, PointF location)
             : base(text, manager.Frame.Name, font, colour, location) {
             mManager = manager;
         }

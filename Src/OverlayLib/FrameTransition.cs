@@ -26,11 +26,19 @@ using Chimera.Interfaces.Overlay;
 using System.Drawing;
 
 namespace Chimera {
-    public abstract class WindowTransition : DrawableRoot, IWindowTransition {
+    public abstract class FrameTransition : DrawableRoot, IWindowTransition {
         private StateTransition mTransition;
-        private WindowOverlayManager mManager;
+        private FrameOverlayManager mManager;
         private IWindowState mFrom;
         private IWindowState mTo;
+
+        public override bool Active {
+            get { return base.Active; }
+            set {
+                if (!mSelected)
+                    base.Active = value;
+            }
+        }
 
         public override Rectangle Clip {
             get { return base.Clip; }
@@ -50,13 +58,15 @@ namespace Chimera {
         /// <param name="transition"></param>
         /// <param name="window"></param>
         /// <exception cref="InvalidArgumentException">Thrown if there is no window state for the To or From state.</exception>
-        public WindowTransition(StateTransition transition, WindowOverlayManager manager)
+        public FrameTransition(StateTransition transition, FrameOverlayManager manager)
             : base(manager.Name) {
             mManager = manager;
             mTransition = transition;
 
             mFrom = transition.From[manager.Name];
             mTo = transition.To[manager.Name];
+
+            Finished += trans => mSelected = false;
         }
 
         public StateTransition StateTransition {
@@ -71,7 +81,7 @@ namespace Chimera {
             get { return mFrom; }
         }
 
-        public WindowOverlayManager Manager {
+        public FrameOverlayManager Manager {
             get { return mManager; }
         }
 
@@ -82,5 +92,16 @@ namespace Chimera {
         }
 
         public abstract void Cancel();
+
+        public bool Selected {
+            get { return mSelected; }
+            set { 
+                mSelected = value;
+                if (!value)
+                    base.Active = false;
+            }
+        }
+
+        private bool mSelected;
     }
 }

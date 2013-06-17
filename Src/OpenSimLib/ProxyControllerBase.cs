@@ -226,7 +226,7 @@ namespace Chimera.OpenSim {
                 Packet p = ActualSetCamera();
                 lock (this)
                     mCameraPacket = p;
-            } else
+            } else if (mProxy != null)
                 mProxy.InjectPacket(ActualSetCamera(), Direction.Incoming);
         }
         public void SetCamera(Vector3 positionDelta, Rotation orientationDelta) {

@@ -62,7 +62,7 @@ namespace Chimera.Overlay.Transitions {
             mFadeOut = fadeOut;
         }
 
-        public IWindowTransition Create(StateTransition transition, WindowOverlayManager manager) {
+        public IWindowTransition Create(StateTransition transition, FrameOverlayManager manager) {
             return new OpacityFadeWindowTransition(transition, manager, mLengthMS, !mFadeOut);
         }
     }
@@ -72,7 +72,7 @@ namespace Chimera.Overlay.Transitions {
     public class OpacityFadeInWindowTransitionFactory : OpacityFadeWindowTransitionFactory {
         public OpacityFadeInWindowTransitionFactory(double lengthMS) : base (lengthMS, false) { }
     }
-    public class OpacityFadeWindowTransition : WindowTransition {
+    public class OpacityFadeWindowTransition : FrameTransition {
         private Action mTickListener;
         /// <summary>
         /// When the transition began.
@@ -99,7 +99,7 @@ namespace Chimera.Overlay.Transitions {
         /// <param name="transition">The transition this fade is part of.</param>
         /// <param name="manager">The window this fade is to be drawn on.</param>
         /// <param name="lengthMS">The length of time, in ms, the fade should last.</param>
-        public OpacityFadeWindowTransition(StateTransition transition, WindowOverlayManager manager, double lengthMS, bool fadeIn)
+        public OpacityFadeWindowTransition(StateTransition transition, FrameOverlayManager manager, double lengthMS, bool fadeIn)
             : base(transition, manager) {
             mLengthMS = lengthMS;
             mFadeIn = fadeIn;

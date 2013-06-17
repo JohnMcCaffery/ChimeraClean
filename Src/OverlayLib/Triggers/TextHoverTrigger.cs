@@ -52,7 +52,7 @@ namespace Chimera.Overlay.Triggers {
     public class TextHoverTrigger : HoverTrigger, IFeature {
         private Text mText;
 
-        public TextHoverTrigger(WindowOverlayManager manager, ISelectionRenderer renderer, Text text, Rectangle clip)
+        public TextHoverTrigger(FrameOverlayManager manager, ISelectionRenderer renderer, Text text, Rectangle clip)
             : base(manager, renderer, Text.GetBounds(text, clip)) {
                 mText = text;
                 Clip = clip;

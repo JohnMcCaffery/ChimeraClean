@@ -51,14 +51,14 @@ namespace Chimera.OpenSim.Overlay {
 
     public class InfoState : State {
         private List<OpenSimController> mControllers = new List<OpenSimController>();
-        private WindowOverlayManager mMainWindow;
+        private FrameOverlayManager mMainWindow;
         private OverlayPlugin mPlugin;
         private string mGlowString;
         private string mNoGlowString;
         private int mGlowChannel;
 
-        public override IWindowState CreateWindowState(WindowOverlayManager manager) {
-            return new WindowState(manager);
+        public override IWindowState CreateWindowState(FrameOverlayManager manager) {
+            return new FrameState(manager);
         }
 
         public InfoState(string name, OverlayPlugin manager, string mainWindow, string whereWindow)

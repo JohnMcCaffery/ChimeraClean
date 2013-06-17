@@ -26,7 +26,7 @@ namespace Touchscreen {
         private VerticalAxis mR;
 
         private OverlayPlugin mStateManager;
-        private WindowOverlayManager mManager;
+        private FrameOverlayManager mManager;
         private TouchscreenForm mWindow;
 
         private TouchscreenConfig mConfig = new TouchscreenConfig();
@@ -54,7 +54,7 @@ namespace Touchscreen {
             }
         }
 
-        public WindowOverlayManager Manager {
+        public FrameOverlayManager Manager {
             get { return mManager; }
         }
 

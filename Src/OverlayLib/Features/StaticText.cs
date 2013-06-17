@@ -49,9 +49,9 @@ namespace Chimera.Overlay.Features {
     }
 
     public class StaticText : Text {
-        private WindowOverlayManager mManager;
+        private FrameOverlayManager mManager;
         
-        public StaticText(string text, WindowOverlayManager manager, Font font, Color colour, PointF location)
+        public StaticText(string text, FrameOverlayManager manager, Font font, Color colour, PointF location)
             : base(text, manager.Frame.Name, font, colour, location) {
 
             mManager = manager;

@@ -27,14 +27,14 @@ using System.IO;
 using System.Text.RegularExpressions;
 
 namespace Chimera.Overlay.States {
-    public class SlideshowWindow : WindowState {
-        private readonly IImageTransition mTransition;
+    public class SlideshowWindow : FrameState {
+        private readonly IFeatureTransition mTransition;
         private readonly Bitmap[] mRawImages;
         private readonly string mFolder;
         private Bitmap[] mImages;
         private int mCurrentImage = -1;
 
-        public SlideshowWindow(WindowOverlayManager manager, string folder, IImageTransition transition)
+        public SlideshowWindow(FrameOverlayManager manager, string folder, IFeatureTransition transition)
             : base(manager) {
 
             mFolder = folder;
@@ -49,21 +49,19 @@ namespace Chimera.Overlay.States {
 
             mRawImages = images.ToArray();
 
-            AddFeature(transition);
+            //AddFeature(transition);
         }
 
         public override bool Active {
             get { return base.Active; }
             set {
                 base.Active = value;
-                mTransition.Active = value;
+                //mTransition.Active = value;
             }
         }
 
         public override bool NeedsRedrawn {
-            get {
-                return base.NeedsRedrawn || mTransition.NeedsRedrawn;
-            }
+            get { return base.NeedsRedrawn || mTransition.NeedsRedrawn; }
         }
 
         public override Rectangle Clip {
@@ -94,7 +92,7 @@ namespace Chimera.Overlay.States {
         public override void DrawStatic(Graphics graphics) {
             if (mCurrentImage == -1) {
                 mCurrentImage = 0;
-                mTransition.Init(mImages[mCurrentImage], mImages[mCurrentImage]);
+                //mTransition.Init(mImages[mCurrentImage], mImages[mCurrentImage]);
             }
             base.DrawStatic(graphics);
         }
@@ -109,8 +107,8 @@ namespace Chimera.Overlay.States {
         }
 
         private void Transition(int next) {
-            mTransition.Init(mImages[mCurrentImage], mImages[next]);
-            mTransition.Begin();
+            //mTransition.Init();
+            //mTransition.Begin();
             mCurrentImage = next;
             Manager.OverlayWindow.RedrawStatic();
         }

@@ -38,8 +38,8 @@ namespace Chimera.Overlay.States {
             }
         }
 
-        public override IWindowState CreateWindowState(WindowOverlayManager manager) {
-            IWindowState w = new WindowState(manager);
+        public override IWindowState CreateWindowState(FrameOverlayManager manager) {
+            IWindowState w = new FrameState(manager);
             if (mUseDefaultBG)
                 w.AddFeature(new ColourFeature(mDefaultBG));
             return w;

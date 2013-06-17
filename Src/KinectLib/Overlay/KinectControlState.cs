@@ -62,7 +62,7 @@ namespace Chimera.Kinect.Overlay {
         private bool mSetPosition;
         private double mOpacity = .7;
 
-        public override IWindowState CreateWindowState(WindowOverlayManager manager) {
+        public override IWindowState CreateWindowState(FrameOverlayManager manager) {
             return new KinectControlWindowState(manager, mOpacity);
         }
 

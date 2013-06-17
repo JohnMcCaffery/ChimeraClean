@@ -7,10 +7,10 @@ using System.Drawing;
 using Touchscreen.GUI;
 
 namespace Touchscreen.Overlay {
-    public class TouchscreenWindow : WindowState {
+    public class TouchscreenWindow : FrameState {
         private TouchscreenPlugin mPlugin;
 
-        public TouchscreenWindow(WindowOverlayManager manager, TouchscreenPlugin plugin)
+        public TouchscreenWindow(FrameOverlayManager manager, TouchscreenPlugin plugin)
             : base(manager) {
             mPlugin = plugin;
             mPlugin.Left.SizeChanged += () => Manager.ForceRedrawStatic();

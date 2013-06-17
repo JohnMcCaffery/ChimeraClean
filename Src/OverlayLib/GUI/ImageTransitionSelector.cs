@@ -5,6 +5,6 @@ using System.Text;
 using Chimera.Interfaces.Overlay;
 
 namespace Chimera.Overlay.GUI {
-    public class ImageTransitionSelector : ControllableSelector<IImageTransition> {
+    public class ImageTransitionSelector : ControllableSelector<IFeatureTransition> {
     }
 }

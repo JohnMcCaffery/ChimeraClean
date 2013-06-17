@@ -53,7 +53,7 @@ namespace Chimera.Overlay.Triggers {
         private Text mText;
         private Rectangle mClip;
 
-        public TextClickTrigger(WindowOverlayManager manager, Text text, Rectangle clip)
+        public TextClickTrigger(FrameOverlayManager manager, Text text, Rectangle clip)
             : base(manager, Text.GetBounds(text, clip)) {
                 mText = text;
                 Clip = clip;
