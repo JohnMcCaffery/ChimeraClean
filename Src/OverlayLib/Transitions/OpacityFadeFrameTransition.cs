@@ -91,7 +91,9 @@ namespace Chimera.Overlay.Transitions {
         /// </summary>
         private bool mFadeIn;
 
+#if DEBUG
         private TickStatistics mStatistics = new TickStatistics();
+#endif
 
         /// <summary>
         /// Initialise the fade transition, specifying how long the fade should last, in ms.
@@ -107,7 +109,9 @@ namespace Chimera.Overlay.Transitions {
 
             Finished += new Action<IWindowTransition>(OpacityFadeWindowTransition_Finished);
 
+#if DEBUG
             StatisticsCollection.AddStatistics(mStatistics, transition.Name + " " + manager.Name);
+#endif
         }
 
         void OpacityFadeWindowTransition_Finished(IWindowTransition transition) {
@@ -118,7 +122,9 @@ namespace Chimera.Overlay.Transitions {
             if (!mTransitioning)
                 return;
 
+#if DEBUG
             mStatistics.Begin();
+#endif
             double time = DateTime.Now.Subtract(mTransitionStart).TotalMilliseconds;
             if (time > mLengthMS) {
                 mTransitioning = false;
@@ -131,7 +137,9 @@ namespace Chimera.Overlay.Transitions {
                 double done = time / mLengthMS;
                 Manager.Opacity = mFadeIn ? done : 1.0 - done;
             }
+#if DEBUG
             mStatistics.End();
+#endif
         }
 
         #region IWindowTransition Members

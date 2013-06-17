@@ -50,7 +50,8 @@ namespace Chimera.GUI.Forms {
         /// Flag to force the static portion of the overlay to be redrawn.
         /// </summary>
         private bool mRedrawStatic;
-        private Cursor mDefaultCursor;
+        private Cursor mDefaultCursor;
+        private bool mCont;
 
         public OverlayWindow() {
             InitializeComponent();
@@ -82,8 +83,6 @@ namespace Chimera.GUI.Forms {
             tickthread.Name = mManager.Name + " graphics thread.";
             tickthread.Start();
         }
-
-        private bool mCont;
 
         private void TickThread() {
             mCont = true;
@@ -155,10 +154,14 @@ namespace Chimera.GUI.Forms {
         }
 
         private void Tick() {
+#if DEBUG
             mManager.Statistics.Begin();
+#endif
             if (mManager.CurrentDisplay != null && mManager.CurrentDisplay.NeedsRedrawn)
                 drawPanel.Invalidate();
+#if DEBUG
             mManager.Statistics.End();
+#endif
         }
 
         internal void SetCursor(Cursor value) {

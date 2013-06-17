@@ -7,6 +7,9 @@ using Chimera.Util;
 
 namespace Chimera.Overlay.Triggers {
     public abstract class ConditionTrigger : XmlLoader, ITrigger {
+#if DEBUG
+        private readonly TickStatistics mStatistics = new TickStatistics();
+#endif
         private Core mCore;
         private Action mTickListener;
         private double mWaitMS = 0.0;
@@ -16,7 +19,6 @@ namespace Chimera.Overlay.Triggers {
         private bool mHasTriggered;
         private DateTime mStart;
 
-        private readonly TickStatistics mStatistics = new TickStatistics();
 
         private event Action mTriggered;
 
@@ -32,7 +34,9 @@ namespace Chimera.Overlay.Triggers {
             mCore = core;
             mTickListener = new Action(mCoordinator_Tick);
 
+#if DEBUG
             StatisticsCollection.AddStatistics(mStatistics, name + " Trigger");
+        #endif
         }
 
         public ConditionTrigger(Core core, string name, double waitMS)
@@ -42,7 +46,9 @@ namespace Chimera.Overlay.Triggers {
         }
 
         void mCoordinator_Tick() {
+#if DEBUG
             mStatistics.Begin();
+#endif
             if (Condition) {
                 if (!mCondition) {
                     mCondition = true;
@@ -58,7 +64,9 @@ namespace Chimera.Overlay.Triggers {
                 mCondition = false;
                 mHasTriggered = false;
             }
+#if DEBUG
             mStatistics.End();
+#endif
         }
 
         #region ITrigger Members

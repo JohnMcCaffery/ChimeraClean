@@ -27,10 +27,12 @@ using Chimera.Util;
 
 namespace Joystick {
     static class GamepadManager {
+#if DEBUG
+        private readonly static TickStatistics sStatistics = new TickStatistics();
+#endif
         private static Gamepad sGamepad;
         private static Controller sController;
         private static bool sTracking;
-        private static TickStatistics sStatistics = new TickStatistics();
 
         public static bool Initialised {
             get { 
@@ -52,15 +54,21 @@ namespace Joystick {
                 source.Tick += new Action(source_Tick);
                 sTracking = true;
 
+#if DEBUG
                 StatisticsCollection.AddStatistics(sStatistics, "GamepadManager");
+#endif
             }
         }
 
         static void source_Tick() {
+#if DEBUG
             sStatistics.Begin();
+#endif
             if (sController != null && sController.IsConnected)
                 sGamepad = sController.GetState().Gamepad;
+#if DEBUG
             sStatistics.End();
+#endif
         }
 
         public static Controller GetController() {

@@ -13,7 +13,9 @@ using Chimera.Util;
 
 namespace Chimera.Flythrough.Overlay {
     public class Step : XmlLoader {
+#if DEBUG
         private static TickStatistics sStatistics = null;
+#endif
 
         private readonly ILog Logger = LogManager.GetLogger("Flythrough");
         private readonly int mStep;
@@ -41,10 +43,12 @@ namespace Chimera.Flythrough.Overlay {
             if (node.Attributes["Step"] == null && !int.TryParse(node.Attributes["Step"].Value, out mStep))
                 throw new ArgumentException("Unable to load slideshow step. A valid 'Step' attribute must be supplied.");
 
+#if DEBUG
             if (sStatistics == null) {
                 sStatistics = new TickStatistics();
                 StatisticsCollection.AddStatistics(sStatistics, "Flythrough Steps");
             }
+#endif
 
             mPlayer = player;
             mManager = state.Manager;
@@ -121,13 +125,17 @@ namespace Chimera.Flythrough.Overlay {
         }
 
         private void mCoordinator_Tick() {
+#if DEBUG
             sStatistics.Begin();
+#endif
             if (mSubtitleTimes.Count > 0 && DateTime.Now.Subtract(mStarted).TotalSeconds > mSubtitleTimes.Peek()) {
                 mSubtitlesText.TextString = mSubtitles[mSubtitleTimes.Dequeue()];
                 mLastSubtitle = DateTime.Now;
             } else if (DateTime.Now.Subtract(mLastSubtitle).TotalSeconds > mSubtitleTimeoutS && mSubtitlesText.TextString.Length > 0)
                 mSubtitlesText.TextString = "";
+#if DEBUG
             sStatistics.End();
+#endif
         }
 
         internal void Prep() {

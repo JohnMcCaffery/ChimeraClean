@@ -74,7 +74,9 @@ namespace Chimera.Flythrough.GUI {
             this.stepForwardButton = new System.Windows.Forms.Button();
             this.stepButton = new System.Windows.Forms.Button();
             this.synchLengthsCheck = new System.Windows.Forms.CheckBox();
+#if DEBUG
             this.statsButton = new System.Windows.Forms.Button();
+#endif
             this.eventsContextMenu.SuspendLayout();
             this.eventPanel.SuspendLayout();
             this.startPanel.SuspendLayout();
@@ -377,6 +379,7 @@ namespace Chimera.Flythrough.GUI {
             this.synchLengthsCheck.Text = "Synch Lengths";
             this.synchLengthsCheck.UseVisualStyleBackColor = true;
             this.synchLengthsCheck.CheckedChanged += new System.EventHandler(this.synchLengthsCheck_CheckedChanged);
+#if DEBUG
             // 
             // statsButton
             // 
@@ -388,12 +391,15 @@ namespace Chimera.Flythrough.GUI {
             this.statsButton.Text = "Stats";
             this.statsButton.UseVisualStyleBackColor = true;
             this.statsButton.Click += new System.EventHandler(this.statsButton_Click);
+#endif
             // 
             // FlythroughPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+#if DEBUG
             this.Controls.Add(this.statsButton);
+#endif
             this.Controls.Add(this.stepForwardButton);
             this.Controls.Add(this.synchLengthsCheck);
             this.Controls.Add(this.timeLabel);
@@ -452,6 +458,8 @@ namespace Chimera.Flythrough.GUI {
         private System.Windows.Forms.Button takeCurrentCameraButton;
         private System.Windows.Forms.Button stepButton;
         private System.Windows.Forms.CheckBox synchLengthsCheck;
+#if DEBUG
         private System.Windows.Forms.Button statsButton;
+#endif
     }
 }

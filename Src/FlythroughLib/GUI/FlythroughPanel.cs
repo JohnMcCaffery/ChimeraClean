@@ -319,6 +319,8 @@ namespace Chimera.Flythrough.GUI {
             mPlugin.SynchLengths = synchLengthsCheck.Checked;
         }
 
+
+#if DEBUG
         private StatisticsForm mStatsForm;
 
         private void statsButton_Click(object sender, EventArgs e) {
@@ -333,5 +335,6 @@ namespace Chimera.Flythrough.GUI {
         void mStatsForm_FormClosed(object sender, FormClosedEventArgs e) {
             mStatsForm = null;
         }
+#endif
     }
 }

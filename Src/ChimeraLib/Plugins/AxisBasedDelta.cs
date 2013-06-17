@@ -43,7 +43,9 @@ namespace Chimera.Plugins {
         private float mScale = 1f;
         private float mRotXMove = 3f;
 
+#if DEBUG
         private TickStatistics mStatistics = new TickStatistics();
+#endif
 
         public event Action<IAxis> AxisAdded;
 
@@ -108,7 +110,9 @@ namespace Chimera.Plugins {
                 if (axis != null)
                     AddAxis(axis);
 
+#if DEBUG
             StatisticsCollection.AddStatistics(mStatistics, name);
+#endif
         }
 
         public void AddAxis(IAxis axis) {
@@ -161,9 +165,13 @@ namespace Chimera.Plugins {
         }
 
         void mCore_Tick() {
+#if DEBUG
             mStatistics.Begin();
+#endif
             TriggerChange(this);
+#if DEBUG
             mStatistics.End();
+#endif
         }
 
         #endregion

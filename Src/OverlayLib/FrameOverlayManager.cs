@@ -31,7 +31,9 @@ using Chimera.Config;
 
 namespace Chimera.Overlay {
     public class FrameOverlayManager {
+#if DEBUG
         private readonly TickStatistics mStatistics = new TickStatistics();
+#endif
         /// <summary>
         /// Id's of any input devices pressing on the screen.
         /// </summary>
@@ -116,9 +118,11 @@ namespace Chimera.Overlay {
         /// Mouse clicks will register as index 0.
         public event Action<int> OnRelease;
 
+#if DEBUG
         public TickStatistics Statistics {
             get { return mStatistics; }
         }
+#endif
 
         /// <summary>
         /// Where on the monitor the cursor is. Specified as percentages.

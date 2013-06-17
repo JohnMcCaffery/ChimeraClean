@@ -51,8 +51,10 @@
             this.label5 = new System.Windows.Forms.Label();
             this.featuresFactoryList = new System.Windows.Forms.ListBox();
             this.label6 = new System.Windows.Forms.Label();
+#if DEBUG
             this.statsTab = new System.Windows.Forms.TabPage();
             this.statsTabs = new System.Windows.Forms.TabControl();
+#endif
             this.stateSelector = new Chimera.Overlay.GUI.StateSelector();
             this.triggerSelector = new Chimera.Overlay.GUI.TriggerSelector();
             this.transitionStyleSelector = new Chimera.Overlay.GUI.TransitionStyleSelector();
@@ -88,7 +90,9 @@
             this.splitContainer4.Panel1.SuspendLayout();
             this.splitContainer4.Panel2.SuspendLayout();
             this.splitContainer4.SuspendLayout();
+#if DEBUG
             this.statsTab.SuspendLayout();
+#endif
             this.SuspendLayout();
             // 
             // mainTab
@@ -101,14 +105,18 @@
             this.mainTab.Controls.Add(this.rendererTab);
             this.mainTab.Controls.Add(this.featuresTab);
             this.mainTab.Controls.Add(this.factoriesTab);
+#if DEBUG
             this.mainTab.Controls.Add(this.statsTab);
+#endif
             this.mainTab.Dock = System.Windows.Forms.DockStyle.Fill;
             this.mainTab.Location = new System.Drawing.Point(0, 0);
             this.mainTab.Name = "mainTab";
             this.mainTab.SelectedIndex = 0;
             this.mainTab.Size = new System.Drawing.Size(634, 400);
             this.mainTab.TabIndex = 0;
+#if DEBUG
             this.mainTab.SelectedIndexChanged += new System.EventHandler(this.statsTabs_SelectedIndexChanged);
+#endif
             this.mainTab.TabIndexChanged += new System.EventHandler(this.mainTab_TabIndexChanged);
             this.mainTab.VisibleChanged += new System.EventHandler(this.mainTab_VisibleChanged);
             // 
@@ -447,6 +455,7 @@
             this.label6.Size = new System.Drawing.Size(48, 13);
             this.label6.TabIndex = 5;
             this.label6.Text = "Features";
+#if DEBUG
             // 
             // statsTab
             // 
@@ -468,6 +477,7 @@
             this.statsTabs.Size = new System.Drawing.Size(620, 368);
             this.statsTabs.TabIndex = 0;
             this.statsTabs.SelectedIndexChanged += new System.EventHandler(this.statsTabs_SelectedIndexChanged);
+#endif
             // 
             // stateSelector
             // 
@@ -565,7 +575,9 @@
             this.splitContainer4.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer4)).EndInit();
             this.splitContainer4.ResumeLayout(false);
+#if DEBUG
             this.statsTab.ResumeLayout(false);
+#endif
             this.ResumeLayout(false);
 
         }
@@ -606,7 +618,9 @@
         private System.Windows.Forms.ListBox featuresFactoryList;
         private System.Windows.Forms.Button changeStateButton;
         private System.Windows.Forms.ListBox stateList;
+#if DEBUG
         private System.Windows.Forms.TabPage statsTab;
         private System.Windows.Forms.TabControl statsTabs;
+#endif
     }
 }

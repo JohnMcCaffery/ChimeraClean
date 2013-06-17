@@ -105,6 +105,12 @@
     <Compile Include="GUI\Controls\StatisticsCollectionPanel.Designer.cs">
       <DependentUpon>StatisticsCollectionPanel.cs</DependentUpon>
     </Compile>
+    <Compile Include="GUI\Forms\SimpleForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\Forms\SimpleForm.Designer.cs">
+      <DependentUpon>SimpleForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="GUI\Forms\StatisticsForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -307,6 +313,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\Controls\StatisticsCollectionPanel.resx">
       <DependentUpon>StatisticsCollectionPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\Forms\SimpleForm.resx">
+      <DependentUpon>SimpleForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\Forms\StatisticsForm.resx">
       <DependentUpon>StatisticsForm.cs</DependentUpon>

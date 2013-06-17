@@ -221,7 +221,8 @@ namespace Chimera.Overlay.Transitions {
             }
         }
 
-        #endregion
+        #endregion
+
         private void Init() {
             if (mClip.Width == 0 || mClip.Height == 0)
                 return;

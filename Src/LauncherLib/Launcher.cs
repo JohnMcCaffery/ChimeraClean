@@ -54,6 +54,7 @@ namespace Chimera.Launcher {
         private readonly Core mCoordinator;
         private LauncherConfig mConfig;
         private CoordinatorForm mForm;
+        private SimpleForm mSimpleForm;
         protected IOutput mFirstWindowOutput;
 
         protected IOutput MakeOutput(string name) {
@@ -68,6 +69,13 @@ namespace Chimera.Launcher {
                 if (mForm == null)
                     mForm = new CoordinatorForm(mCoordinator);
                 return mForm;
+            }
+        }
+        public SimpleForm BasicForm {
+            get {
+                if (mSimpleForm == null)
+                    mSimpleForm = new SimpleForm(mCoordinator);
+                return mSimpleForm;
             }
         }
         protected LauncherConfig Config {
@@ -110,9 +118,13 @@ namespace Chimera.Launcher {
             if (mConfig.GUI)
                 ProcessWrangler.BlockingRunForm(Form, Coordinator);
             else {
-                //Thread t = new Thread(() => {
-                while (!Console.ReadLine().ToUpper().StartsWith("Q")) ;
-                mCoordinator.Close();
+                if (mConfig.BasicGUI) {
+                ProcessWrangler.BlockingRunForm(BasicForm, Coordinator);
+                } else {
+                    //Thread t = new Thread(() => {
+                    while (!Console.ReadLine().ToUpper().StartsWith("Q")) ;
+                    mCoordinator.Close();
+                }
                 //});
                 //t.Name = "Input Thread";
                 //t.Start();

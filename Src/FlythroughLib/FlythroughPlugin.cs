@@ -49,7 +49,9 @@ namespace Chimera.Flythrough {
     }
 
     public class FlythroughPlugin : ISystemPlugin {
+#if DEBUG
         private readonly TickStatistics mStats = new TickStatistics();
+#endif
         private readonly ILog Logger = LogManager.GetLogger("Flythrough");
         private readonly Action mTickListener;
 
@@ -211,12 +213,14 @@ namespace Chimera.Flythrough {
             get { return mEvents.Count == 0 ? null : mEvents.CurrentEvent; }
         }
 
+#if DEBUG
         /// <summary>
         /// Statistics about how efficiently the update thread is running.
         /// </summary>
         public TickStatistics Statistics { 
             get { return mStats; }
         }
+#endif
 
         public FlythroughPlugin() {
             Start = new Camera(new Vector3(128f, 128f, 60f), Rotation.Zero);
@@ -357,20 +361,25 @@ namespace Chimera.Flythrough {
         private void FlythroughThread() {
             mFinished = false;
             mPlaying = true;
+#if DEBUG
             mStats.Begin();
+#endif
             while (mPlaying && mEvents.Length > 0) {
                 IncrementTime();
                 mPrev = mCurrent;
                 mCurrent = mEvents.CurrentEvent.Value;
+#if DEBUG
                 mStats.End();
+#endif
 
                 double wait = mCore.TickLength - DateTime.Now.Subtract(mLastTick).TotalMilliseconds;
                 if (wait < 0)
                     Logger.Debug("Flythrough Tick overran by " + (wait * -1) + "ms.");
                 else
                     System.Threading.Thread.Sleep((int)wait);
-
+#if DEBUG
                 mStats.Begin();
+#endif
                 mLastTick = DateTime.Now;
                 mCore.Update(mCurrent.Position, mCurrent.Position - mPrev.Position, mCurrent.Orientation, mCurrent.Orientation - mPrev.Orientation);
             }
@@ -409,13 +418,17 @@ namespace Chimera.Flythrough {
         private Camera mCurrent;
 
         void mCoordinator_Tick() {
+#if DEBUG
             mStats.Begin();
+#endif
             mCore.Update(mCurrent.Position, mCurrent.Position - mPrev.Position, mCurrent.Orientation, mCurrent.Orientation - mPrev.Orientation);
 
             IncrementTime();
             mPrev = mCurrent;
             mCurrent = mEvents.CurrentEvent.Value;
+#if DEBUG
             mStats.End();
+#endif
         }
 
         /*

@@ -73,6 +73,7 @@ namespace Chimera.GUI.Forms {
             this.inputsGroup = new System.Windows.Forms.GroupBox();
             this.pluginsTab = new System.Windows.Forms.TabControl();
             this.statisticsTab = new System.Windows.Forms.TabPage();
+#if DEBUG
             this.statsTabs = new System.Windows.Forms.TabControl();
             this.tickTab = new System.Windows.Forms.TabPage();
             this.tickStatsPanel = new Chimera.GUI.Controls.StatisticsPanel();
@@ -85,6 +86,7 @@ namespace Chimera.GUI.Forms {
             this.deltaTab = new System.Windows.Forms.TabPage();
             this.deltaStatsPanel = new Chimera.GUI.Controls.StatisticsPanel();
             this.usageTab = new System.Windows.Forms.TabPage();
+#endif
             this.overlayStatsBox = new System.Windows.Forms.RichTextBox();
             ((System.ComponentModel.ISupportInitialize)(this.hSplit)).BeginInit();
             this.hSplit.Panel1.SuspendLayout();
@@ -113,6 +115,7 @@ namespace Chimera.GUI.Forms {
             this.inputsGroup.SuspendLayout();
             this.pluginsTab.SuspendLayout();
             this.statisticsTab.SuspendLayout();
+#if DEBUG
             this.statsTabs.SuspendLayout();
             this.tickTab.SuspendLayout();
             this.tickListenersTab.SuspendLayout();
@@ -120,6 +123,7 @@ namespace Chimera.GUI.Forms {
             this.cameraTab.SuspendLayout();
             this.deltaTab.SuspendLayout();
             this.usageTab.SuspendLayout();
+            #endif
             this.SuspendLayout();
             // 
             // hSplit
@@ -529,9 +533,12 @@ namespace Chimera.GUI.Forms {
             this.pluginsTab.SelectedIndex = 0;
             this.pluginsTab.Size = new System.Drawing.Size(456, 480);
             this.pluginsTab.TabIndex = 0;
+#if DEBUG
             this.pluginsTab.SelectedIndexChanged += new System.EventHandler(this.inputsTab_SelectedIndexChanged);
+#endif
             this.pluginsTab.KeyDown += new System.Windows.Forms.KeyEventHandler(this.CoordinatorForm_KeyDown);
             this.pluginsTab.KeyUp += new System.Windows.Forms.KeyEventHandler(this.CoordinatorForm_KeyUp);
+#if DEBUG
             // 
             // statisticsTab
             // 
@@ -684,6 +691,7 @@ namespace Chimera.GUI.Forms {
             this.overlayStatsBox.Size = new System.Drawing.Size(428, 416);
             this.overlayStatsBox.TabIndex = 8;
             this.overlayStatsBox.Text = "";
+#endif
             // 
             // CoordinatorForm
             // 
@@ -728,6 +736,7 @@ namespace Chimera.GUI.Forms {
             this.inputsGroup.ResumeLayout(false);
             this.pluginsTab.ResumeLayout(false);
             this.statisticsTab.ResumeLayout(false);
+#if DEBUG
             this.statsTabs.ResumeLayout(false);
             this.tickTab.ResumeLayout(false);
             this.tickListenersTab.ResumeLayout(false);
@@ -735,6 +744,7 @@ namespace Chimera.GUI.Forms {
             this.cameraTab.ResumeLayout(false);
             this.deltaTab.ResumeLayout(false);
             this.usageTab.ResumeLayout(false);
+#endif
             this.ResumeLayout(false);
 
         }
@@ -769,6 +779,7 @@ namespace Chimera.GUI.Forms {
         private System.Windows.Forms.RadioButton absoluteModeButton;
         private System.Windows.Forms.RichTextBox overlayStatsBox;
         private System.Windows.Forms.CheckBox enableUpdates;
+#if DEBUG
         private System.Windows.Forms.TabControl statsTabs;
         private System.Windows.Forms.TabPage tickTab;
         private System.Windows.Forms.TabPage cameraTab;
@@ -779,9 +790,10 @@ namespace Chimera.GUI.Forms {
         private Controls.StatisticsPanel deltaStatsPanel;
         private System.Windows.Forms.TabPage updatesTab;
         private Controls.StatisticsPanel updateStatsPanel;
-        private ScalarPanel tickLengthPanel;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TabPage tickListenersTab;
         private Controls.StatisticsCollectionPanel tickListenersPanel;
+        private System.Windows.Forms.TabPage tickListenersTab;
+#endif
+        private System.Windows.Forms.Label label1;
+        private ScalarPanel tickLengthPanel;
     }
 }

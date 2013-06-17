@@ -114,6 +114,7 @@ namespace Chimera {
 
     public class Core : ICrashable, ITickSource {
         private readonly ILog Logger = LogManager.GetLogger("Core");
+#if DEBUG
         /// <summary>
         /// Statistics object which monitors how long ticks are taking.
         /// </summary>
@@ -130,6 +131,7 @@ namespace Chimera {
         /// Statistics object which monitors how delta updates are taking.
         /// </summary>
         private readonly TickStatistics mDeltaStats = new TickStatistics();
+#endif
         /// <summary>
         /// The authoratitive orientation of the camera in virtual space. This is read-only. To update it use the 'Update' method.
         /// </summary>
@@ -313,10 +315,14 @@ namespace Chimera {
             mAlive = true;
             while (mAlive) {
                 DateTime tickStart = DateTime.Now;
+#if DEBUG
                 mTickStats.Begin();
+#endif
                 if (Tick != null)
                     Tick();
+#if DEBUG
                 mTickStats.End();
+#endif
                 int time = (int)(mTickLength - DateTime.Now.Subtract(tickStart).TotalMilliseconds);
                 if (mAlive && time > 0)
                     Thread.Sleep(time);
@@ -435,6 +441,7 @@ namespace Chimera {
             }
         }
 
+#if DEBUG
         /// <summary>
         /// Object which will supply information about how long ticks are taking.
         /// </summary>
@@ -462,6 +469,7 @@ namespace Chimera {
         public TickStatistics DeltaStatistics {
             get { return mDeltaStats; }
         }
+#endif
 
         /// <summary>
         /// Update a section of the heightmap.
@@ -501,7 +509,9 @@ namespace Chimera {
         /// <param name="mode">How the camera is to be updated. Can override the current global ControlMode setting.</param>
         public void Update(Vector3 position, Vector3 postionDelta, Rotation orientation, Rotation orientationDelta, ControlMode mode) {
             if (mEnableUpdates) {
+#if DEBUG
                 mUpdateStats.Begin();
+#endif
                 mPositionDelta = postionDelta;
                 mOrientationDelta.Update(mRotationLock, orientationDelta);
                 if (mode == Chimera.ControlMode.Absolute) {
@@ -521,19 +531,29 @@ namespace Chimera {
                     mOrientation.Update(mRotationLock, orientation);
                     if (CameraUpdated != null && mAlive) {
                         CameraUpdateEventArgs args = new CameraUpdateEventArgs(position, postionDelta, orientation, orientationDelta);
+#if DEBUG
                         mCameraStats.Begin();
+#endif
                         CameraUpdated(this, args);
+#if DEBUG
                         mCameraStats.End();
+#endif
                         //Console.WriteLine("TickFrequency - time since update: " + (mTickLength -  DateTime.Now.Subtract(mLastUpdate).TotalMilliseconds));
                         mLastUpdate = DateTime.Now;
                     }
                 } else if (DeltaUpdated != null && mAlive) {
                     DeltaUpdateEventArgs args = new DeltaUpdateEventArgs(postionDelta, orientationDelta);
+#if DEBUG
                     mDeltaStats.Begin();
+#endif
                     DeltaUpdated(this, args);
+#if DEBUG
                     mDeltaStats.End();
+#endif
                 }
+#if DEBUG
                 mUpdateStats.End();
+#endif
             }
         }
 

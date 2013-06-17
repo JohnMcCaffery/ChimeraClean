@@ -11,7 +11,9 @@ using Chimera.GUI.Controls;
 
 namespace Chimera.Overlay.GUI.Plugins {
     public partial class OverlayPluginPanel : UserControl {
-        private readonly Dictionary<string, StatisticsPanel> mStatsPanels = new Dictionary<string, StatisticsPanel>();        private OverlayPlugin mOverlayPlugin;        private StatisticsPanel mCurrentPanel;
+        private readonly Dictionary<string, StatisticsPanel> mStatsPanels = new Dictionary<string, StatisticsPanel>();
+        private OverlayPlugin mOverlayPlugin;
+        private StatisticsPanel mCurrentPanel;
 
         public OverlayPluginPanel() {
             InitializeComponent();
@@ -49,6 +51,7 @@ namespace Chimera.Overlay.GUI.Plugins {
             foreach (var factory in overlayPlugin.GetFactories<ISelectionRenderer>())
                 selectionRendererFactoriesList.Items.Add(factory);
 
+#if DEBUG
             foreach (var frameManager in mOverlayPlugin.OverlayManagers) {
                 StatisticsPanel p = new StatisticsPanel(frameManager.Statistics, mOverlayPlugin.Core);
                 p.Dock = DockStyle.Fill;
@@ -61,6 +64,7 @@ namespace Chimera.Overlay.GUI.Plugins {
 
                 statsTabs.Controls.Add(page);
             }
+#endif
         }
 
         void mOverlayPlugin_StateChanged(State state) {
@@ -92,6 +96,7 @@ namespace Chimera.Overlay.GUI.Plugins {
             mainTab_TabIndexChanged(sender, e);
         }
 
+#if DEBUG
         private void statsTabs_SelectedIndexChanged(object sender, EventArgs e) {
             if (mCurrentPanel != null)
                 mCurrentPanel.Active = false;
@@ -101,5 +106,6 @@ namespace Chimera.Overlay.GUI.Plugins {
                 mCurrentPanel.Active = true;
             }
         }
+#endif
     }
 }

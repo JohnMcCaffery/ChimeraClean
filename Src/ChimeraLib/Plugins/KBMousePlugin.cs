@@ -75,7 +75,9 @@ namespace Chimera.Plugins {
         ITickSource mInputSource;
 
         private Core mCore;
+#if DEBUG
         private TickStatistics mStatistics = new TickStatistics();
+#endif
 
         public override bool Enabled {
             get { return base.Enabled; }
@@ -94,7 +96,9 @@ namespace Chimera.Plugins {
 
             mTickListener = new Action(mCoordinator_Tick);
 
+#if DEBUG
             StatisticsCollection.AddStatistics(mStatistics, Name);
+#endif
         }
 
         /// <summary>
@@ -259,7 +263,9 @@ namespace Chimera.Plugins {
         }
 
         private void mCoordinator_Tick() {
+#if DEBUG
             mStatistics.Begin();
+#endif
             if (mDeltas != Vector3.Zero || mOrientation.Pitch != 0.0 || mOrientation.Yaw != 0.0) {
                 mActive = true;
                 TriggerChange(this);
@@ -269,7 +275,9 @@ namespace Chimera.Plugins {
             }
             if (MouseDown)
                 mOrientation = Rotation.Zero;
+#if DEBUG
             mStatistics.End();
+#endif
         }
     }
 }

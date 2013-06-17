@@ -14,13 +14,14 @@ namespace Chimera.OpenSim.Packets {
             public Vector3 PositionDelta;
             public Vector3 LookAt;
             public Vector3 LookAtDelta;
+            public Vector3 Up;
             public uint TickLength;
             public UUID Source;
 
             public override int Length {
                 get {
                     //Matrix (4x4 floats (4bit) + 4 vector3s (3x floats (4bits)) + (1 xint) UUID
-                    return (sizeof(float) * 3 * 4) + sizeof(int) + Source.GetBytes().Length;
+                    return (sizeof(float) * 3 * 5) + sizeof(int) + Source.GetBytes().Length;
                 }
             }
 
@@ -35,6 +36,7 @@ namespace Chimera.OpenSim.Packets {
                     PositionDelta.FromBytes(bytes, i); i += sizeof(float) * 3;
                     LookAt.FromBytes(bytes, i); i += sizeof(float) * 3;
                     LookAtDelta.FromBytes(bytes, i); i += sizeof(float) * 3;
+                    Up.FromBytes(bytes, i); i += sizeof(float) * 3;
 
                     TickLength = Utils.BytesToUInt(bytes, i); i += sizeof(int);
 
@@ -49,6 +51,7 @@ namespace Chimera.OpenSim.Packets {
                 PositionDelta.ToBytes(bytes, i); i += sizeof(float) * 3;
                 LookAt.ToBytes(bytes, i); i += sizeof(float) * 3;
                 LookAtDelta.ToBytes(bytes, i); i += sizeof(float) * 3;
+                Up.ToBytes(bytes, i); i += sizeof(float) * 3;
 
                 Utils.UIntToBytes(TickLength, bytes, i); i += sizeof(int);
 

@@ -32,13 +32,15 @@ using log4net;
 
 namespace Chimera.Overlay.Plugins {
     public class MousePlugin : ISystemPlugin {
+#if DEBUG
+        private readonly TickStatistics mStatistics = new TickStatistics();
+#endif
         private MousePluginPanel mPanel;
         private OverlayPlugin mOverlayPlugin;
         private Point mLastMouse;
         private PointF mLastCursor;
         private bool mEnabled;
 
-        private TickStatistics mStatistics = new TickStatistics();
         private Action mTickListener;
         private Core mCore;
 
@@ -50,7 +52,9 @@ namespace Chimera.Overlay.Plugins {
             PluginConfig cfg = new PluginConfig();
             mTickListener = new Action(mCore_Tick);
 
+#if DEBUG
             StatisticsCollection.AddStatistics(mStatistics, "Mouse Plugin");
+#endif
         }
 
         public PointF LastCursor {
@@ -61,7 +65,9 @@ namespace Chimera.Overlay.Plugins {
             if (!mEnabled)
                 return;
 
+#if DEBUG
             mStatistics.Begin();
+#endif
             if (MouseMoved != null)
                 MouseMoved(Cursor.Position.X, Cursor.Position.Y);
 
@@ -73,8 +79,14 @@ namespace Chimera.Overlay.Plugins {
                         mLastMouse = Cursor.Position;
                         mLastCursor = manager.CursorPosition;
                     } 
+#if DEBUG
+                    mStatistics.End();
+#endif
                     return;
                 } 
+#if DEBUG
+                mStatistics.End();
+#endif
             }
         }
 
