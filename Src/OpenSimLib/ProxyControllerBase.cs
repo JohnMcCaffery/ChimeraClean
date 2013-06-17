@@ -28,6 +28,8 @@ namespace Chimera.OpenSim {
         private string mLoginURI;
         private GridProxyConfig mConfig;
 
+        private ViewerConfig mViewerConfig;
+
         private Packet mCameraPacket;
 
         private readonly Dictionary<string, DateTime> mUnackedUpdates = new Dictionary<string,DateTime>();
@@ -76,10 +78,13 @@ namespace Chimera.OpenSim {
         }
 
         internal ProxyControllerBase(Frame frame) {
-            if (CameraThread == null)
-                CameraThread = new ProxyControllerPacketThread(frame.Core, this);
-            else
-                CameraThread.AddController(this);
+            mViewerConfig = new ViewerConfig(frame.Name);
+            if (mViewerConfig.UseThread) {
+                if (CameraThread == null)
+                    CameraThread = new ProxyControllerPacketThread(frame.Core, this);
+                else
+                    CameraThread.AddController(this);
+            }
 
             mFrame = frame;
             mAgentUpdateListener = new PacketDelegate(mProxy_AgentUpdatePacketReceived);
@@ -127,7 +132,8 @@ namespace Chimera.OpenSim {
         }
 
         public void Stop() {
-            CameraThread.Stop();
+            if (mViewerConfig.UseThread)
+                CameraThread.Stop();
 
             if (mProxy != null) {
                 mProxy.Stop();
@@ -215,19 +221,25 @@ namespace Chimera.OpenSim {
             if (mFrame.Core.ControlMode == ControlMode.Absolute)
                 MarkUntracked();
 
-            //PrintTickInfo();
-            Packet p = ActualSetCamera();
-            lock (this)
-                mCameraPacket = p;
+            if (mViewerConfig.UseThread) {
+                //PrintTickInfo();
+                Packet p = ActualSetCamera();
+                lock (this)
+                    mCameraPacket = p;
+            } else
+                mProxy.InjectPacket(ActualSetCamera(), Direction.Incoming);
         }
         public void SetCamera(Vector3 positionDelta, Rotation orientationDelta) {
             if (mFrame.Core.ControlMode == ControlMode.Absolute)
                 MarkUntracked();
 
             //PrintTickInfo();
-            Packet p = ActualSetCamera(positionDelta, orientationDelta);
-            lock (this)
-                mCameraPacket = p;
+            if (mViewerConfig.UseThread) {
+                Packet p = ActualSetCamera(positionDelta, orientationDelta);
+                lock (this)
+                    mCameraPacket = p;
+            } else
+                mProxy.InjectPacket(ActualSetCamera(positionDelta, orientationDelta), Direction.Incoming);
         }
 
 
