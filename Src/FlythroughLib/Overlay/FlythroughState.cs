@@ -65,6 +65,7 @@ namespace Chimera.Flythrough.Overlay {
 
         private Dictionary<int, Step> mSteps = new Dictionary<int, Step>();
         private FlythroughPlugin mInput;
+        private FrameOverlayManager mDefaultWindow;
         private SlideshowWindow mSlideshow;
         private IFeatureTransition mSlideshowTransition;
         private List<ITrigger> mStepTriggers = new List<ITrigger>();
@@ -78,11 +79,14 @@ namespace Chimera.Flythrough.Overlay {
         private bool mAutoStepping = false;
         private bool mLoop = false;
 
+        private Action<int> mStepListener;
+
         public FlythroughState(string name, OverlayPlugin manager, string flythrough)
             : base(name, manager) {
 
             mFlythrough = flythrough;
             mInput = manager.Core.GetPlugin<FlythroughPlugin>();
+            mStepListener = new Action<int>(mInput_StepStarted);
         }
 
         public FlythroughState(string name, OverlayPlugin manager, string flythrough, params ITrigger[] stepTriggers)
@@ -111,6 +115,8 @@ namespace Chimera.Flythrough.Overlay {
         public FlythroughState(OverlayPlugin manager, XmlNode node, IMediaPlayer player)
             : base(GetName(node, "flythrough state"), manager) {
 
+            mStepListener = new Action<int>(mInput_StepStarted);
+
             mInput = manager.Core.GetPlugin<FlythroughPlugin>();
             bool displaySubtitles = GetBool(node, false, "DisplaySubtitles");
             mFlythrough = GetString(node, null, "File");
@@ -133,7 +139,6 @@ namespace Chimera.Flythrough.Overlay {
                 mStepText = Manager.MakeText(stepTextNode);
 
             //mInput.CurrentEventChange += new Action<FlythroughEvent<Camera>,FlythroughEvent<Camera>>(mInput_CurrentEventChange);
-            mInput.StepStarted += new Action<int>(mInput_StepStarted);
             int subtitleTimeout = GetInt(node, 20, "SubtitleTimeout");
 
             XmlNode stepsRoot = node.SelectSingleNode("child::Steps");
@@ -216,6 +221,7 @@ namespace Chimera.Flythrough.Overlay {
         }
 
         protected override void TransitionToStart() {
+            mInput.StepStarted += mStepListener;
             Manager.ControlPointers = false;
 
             if (mPlayer != null)
@@ -239,9 +245,8 @@ namespace Chimera.Flythrough.Overlay {
             mInput.Play();
         }
 
-        private FrameOverlayManager mDefaultWindow;
-
         protected override void TransitionFromFinish() {
+            mInput.StepStarted -= mStepListener;
             mInput.Paused = true;
             mInput.Enabled = false;
             if (mPlayer != null)
