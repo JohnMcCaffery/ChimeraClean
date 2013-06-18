@@ -19,6 +19,7 @@ namespace Chimera.Flythrough.Overlay {
                 return;
             }
 
+            mFlythroughEndListener = new EventHandler(mPlugin_SequenceFinished);
             mPlugin = overlayPlugin.Core.GetPlugin<FlythroughPlugin>();
         }
 
