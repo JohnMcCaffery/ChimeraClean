@@ -8,7 +8,7 @@ using log4net;
 using System.Xml;
 
 namespace Chimera.Flythrough.Overlay {
-    public class FlythroughEndTriggerFactory : XmlLoader, ITriggerFactory {
+    public class FlythroughEndTriggerFactory : ITriggerFactory {
         public SpecialTrigger Special {
             get { return SpecialTrigger.None; }
         }
@@ -23,6 +23,10 @@ namespace Chimera.Flythrough.Overlay {
 
         public ITrigger Create(OverlayPlugin manager, System.Xml.XmlNode node, System.Drawing.Rectangle clip) {
             return Create(manager, node);
+        }
+
+        public string Name {
+            get { return "FlythroughEnd"; }
         }
     }
 
