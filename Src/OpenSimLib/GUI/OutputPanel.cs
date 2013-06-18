@@ -115,7 +115,8 @@ namespace Chimera.OpenSim.GUI {
             });
         }
 
-        public void Invoke(Action a) {            if (InvokeRequired)
+        public void Invoke(Action a) {
+            if (InvokeRequired)
                 base.BeginInvoke(a);
             else
                 a();

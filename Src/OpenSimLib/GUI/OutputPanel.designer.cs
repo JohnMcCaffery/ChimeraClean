@@ -398,7 +398,7 @@ namespace Chimera.OpenSim.GUI {
             this.Controls.Add(this.controlFrustumCheck);
             this.MinimumSize = new System.Drawing.Size(382, 193);
             this.Name = "OutputPanel";
-            this.Size = new System.Drawing.Size(382, 193);
+            this.Size = new System.Drawing.Size(382, 361);
             this.ResumeLayout(false);
             this.PerformLayout();
 
