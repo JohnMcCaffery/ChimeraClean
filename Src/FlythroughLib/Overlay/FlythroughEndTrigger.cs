@@ -5,15 +5,36 @@ using System.Text;
 using Chimera.Interfaces.Overlay;
 using Chimera.Overlay;
 using log4net;
+using System.Xml;
 
 namespace Chimera.Flythrough.Overlay {
+    public class FlythroughEndTriggerFactory : XmlLoader, ITriggerFactory {
+        public SpecialTrigger Special {
+            get { return SpecialTrigger.None; }
+        }
+
+        public string Mode {
+            get { return "None"; }
+        }
+
+        public ITrigger Create(OverlayPlugin manager, System.Xml.XmlNode node) {
+            return new FlythroughEndTrigger(manager, node);
+        }
+
+        public ITrigger Create(OverlayPlugin manager, System.Xml.XmlNode node, System.Drawing.Rectangle clip) {
+            return Create(manager, node);
+        }
+    }
+
+
     public class FlythroughEndTrigger : XmlLoader, ITrigger {
         private ILog Logger = LogManager.GetLogger("Flythrough.Overlay");
         private FlythroughPlugin mPlugin;
         private EventHandler mFlythroughEndListener;
         private bool mActive;
 
-        public FlythroughEndTrigger(OverlayPlugin overlayPlugin) {
+        public FlythroughEndTrigger(OverlayPlugin overlayPlugin, XmlNode node)
+            : base(node) {
             if (!overlayPlugin.Core.HasPlugin<FlythroughPlugin>()) {
                 Logger.Warn("Unable to instantiate FlythroughEndTrigger FlythroughPlugin is not registered.");
                 return;
