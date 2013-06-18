@@ -21,8 +21,8 @@ namespace Chimera.Launcher {
             : base("Launch", args) { }
 
         protected override void InitConfig() {
-            GUI = Get(true, "GUI", true, "Whether to launch the GUI when the system starts.");
-            BasicGUI = Get(true, "BasicGUI", true, "Whether to use a simple GUI or no GUI at all.");
+            BasicGUI = Get(true, "BasicGUI", true, "Whether to use a simple GUI. If not the system will either use the full GUI or no GUI depending on the GUI flag.");
+            GUI = Get(true, "GUI", true, "Whether to launch the full GUI or no GUI if not using the basic GUI.");
             BindingsFile = Get(true, "BindingsFile", null, "The XML file describing the dependency injection bindings used to instantiate the system.");
         }
     }
