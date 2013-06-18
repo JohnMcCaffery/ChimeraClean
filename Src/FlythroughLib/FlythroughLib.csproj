@@ -127,6 +127,7 @@
     <Compile Include="Interfaces\IOrientationListener.cs" />
     <Compile Include="Interfaces\IPositionListener.cs" />
     <Compile Include="Events\MoveToEvent.cs" />
+    <Compile Include="Overlay\FlythroughEndTrigger.cs" />
     <Compile Include="Overlay\FlythroughState.cs" />
     <Compile Include="Overlay\Step.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

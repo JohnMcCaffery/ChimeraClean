@@ -12,7 +12,7 @@ using System.Windows.Forms;
 using log4net;
 
 namespace Chimera.Overlay {
-    public class XmlLoader : IControllable {
+    public abstract class XmlLoader : IControllable {
         private static readonly ILog Logger = LogManager.GetLogger("Overlay");
 
         private Panel mPanel = new Panel();
@@ -26,6 +26,10 @@ namespace Chimera.Overlay {
             get { return mName == null ? GetType().Name : mName; }
             set { mName = value; }
         }
+
+        protected XmlLoader() { }
+        protected XmlLoader(string name) { mName = name; }
+        protected XmlLoader(XmlNode node) { mName = GetName(node, "XmlLoader"); }
 
         public const string DEFAULT_FONT = "Verdana";
         public const float DEFAULT_FONT_SIZE = 12f;
