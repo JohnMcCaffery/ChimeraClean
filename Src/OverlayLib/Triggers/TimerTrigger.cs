@@ -7,6 +7,28 @@ using Chimera.Overlay;
 using System.Xml;
 
 namespace Chimera.Features.Triggers {
+    public class TimerTriggerFactory : ITriggerFactory {
+        public SpecialTrigger Special {
+            get { return SpecialTrigger.None; }
+        }
+
+        public string Mode {
+            get { return "None"; }
+        }
+
+        public ITrigger Create(OverlayPlugin manager, XmlNode node) {
+            return new TimerTrigger(manager, node);
+        }
+
+        public ITrigger Create(OverlayPlugin manager, XmlNode node, System.Drawing.Rectangle clip) {
+            return Create(manager, node);
+        }
+
+        public string Name {
+            get { return "Timer"; }
+        }
+    }
+ 
     public class TimerTrigger : XmlLoader, ITrigger {
         private bool mActive;
         private double mLengthMS = 5000;

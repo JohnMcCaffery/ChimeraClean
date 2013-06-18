@@ -196,6 +196,7 @@
     <Compile Include="FrameOverlayManager.cs" />
     <Compile Include="FrameState.cs" />
     <Compile Include="FrameTransition.cs" />
+    <Compile Include="Triggers\TimerTrigger.cs" />
     <Compile Include="XmlLoader.cs" />
   </ItemGroup>
   <ItemGroup>
