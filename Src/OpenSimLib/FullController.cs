@@ -69,7 +69,7 @@ namespace Chimera.OpenSim {
             block.PositionDelta = positionDelta;
             block.LookAt = lookAt;
             block.LookAtDelta = rotationDelta.LookAtVector;
-            block.Up = Vector3.UnitZ * offset;
+            block.Up = (Vector3.UnitZ * rotation.Quaternion) * offset;
             block.TickLength = (uint) Frame.Core.TickLength * 1000;
             return block;
         }
