@@ -57,7 +57,7 @@ namespace Chimera.Flythrough.Overlay {
                 throw new ArgumentException("Unable to load step ID. A valid Step attribute is expected.");
 
             XmlAttribute voiceoverAttribute = node.Attributes["Voiceover"];
-            if (voiceoverAttribute != null && File.Exists(voiceoverAttribute.Value)) {
+            if (voiceoverAttribute != null && File.Exists(Path.GetFullPath(voiceoverAttribute.Value))) {
                 if (mPlayer != null)
                     mVoiceoverFile = Path.GetFullPath(voiceoverAttribute.Value);
                 else

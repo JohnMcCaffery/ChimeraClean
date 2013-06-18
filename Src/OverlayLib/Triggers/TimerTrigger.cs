@@ -6,7 +6,7 @@ using Chimera.Interfaces.Overlay;
 using Chimera.Overlay;
 using System.Xml;
 
-namespace Chimera.Features.Triggers {
+namespace Chimera.Overlay.Triggers {
     public class TimerTriggerFactory : ITriggerFactory {
         public SpecialTrigger Special {
             get { return SpecialTrigger.None; }
@@ -39,6 +39,7 @@ namespace Chimera.Features.Triggers {
         public TimerTrigger(OverlayPlugin plugin, XmlNode node)
             : base(node) {
 
+            mCore = plugin.Core;
             mTickListener = new Action(mCore_Tick);
             mLengthMS = GetDouble(node, mLengthMS, "LengthMS");
         }

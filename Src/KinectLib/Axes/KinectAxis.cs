@@ -11,12 +11,9 @@ using G = Chimera.Kinect.GlobalConditions;
 namespace Chimera.Kinect.Axes {
     public abstract class KinectAxis : ConstrainedAxis {
         public abstract Condition Active { get; }
-        //public abstract Scalar Raw { get; }
         public abstract ConstrainedAxis Axis { get; }
 
         public abstract float KinectRawValue { get; }
-
-        private ChangeDelegate mTickListener;
 
         public KinectAxis(string name, IUpdater<float> deadzone, IUpdater<float> scale, AxisBinding binding)
             : base(name, deadzone, scale, binding) {
@@ -34,7 +31,7 @@ namespace Chimera.Kinect.Axes {
         }
 
         protected override float RawValue {
-            get { return Nui.HasSkeleton && Active.Value ? RawValue : 0f; }
+            get { return Nui.HasSkeleton && Active.Value ? KinectRawValue : 0f; }
         }
     }
 }

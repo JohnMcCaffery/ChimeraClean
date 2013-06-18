@@ -63,8 +63,12 @@ namespace Chimera.OpenSim {
             Vector3 eyePos = new Vector3(Frame.Core.EyePosition.Y, Frame.Core.EyePosition.X, -Frame.Core.EyePosition.Z);
             Vector3 cameraUp = Vector3.UnitZ * rotation.Quaternion;
             Vector3 up = Vector3.UnitZ;
-            if (offset.Yaw != 0.0)
+            if (offset.Yaw != 0.0) {
                 up = offset.Yaw < 0.0 ? Vector3.Cross(lookAt, rotation.LookAtVector) : Vector3.Cross(rotation.LookAtVector, lookAt);
+                //Vector3 x = Vector3.Cross(offset.LookAtVector, rotation.LookAtVector);
+                //Vector3 y = Vector3.Cross(rotation.LookAtVector, offset.LookAtVector);
+                // up = x.Z > y.Z ? x : y;
+            }
 
             //up.Normalize();
 

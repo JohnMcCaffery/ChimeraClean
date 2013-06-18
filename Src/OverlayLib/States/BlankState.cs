@@ -24,11 +24,13 @@ namespace Chimera.Overlay.States {
 
     public class BlankState : State {
         private bool mUseDefaultBG;
+        private bool mEnableCursor;
         private Color mDefaultBG;
 
         public BlankState(OverlayPlugin plugin, XmlNode node)
             : base(GetName(node, "Blank State"), plugin) {
 
+            mEnableCursor = GetBool(node, true, "EnableCursor");
             mDefaultBG = GetColour(node, "blank state bg colour", Color.Transparent);
             if (mDefaultBG != Color.Transparent)
                 mUseDefaultBG = true;
@@ -47,7 +49,9 @@ namespace Chimera.Overlay.States {
 
         protected override void TransitionToStart() { }
 
-        protected override void TransitionToFinish() { }
+        protected override void TransitionToFinish() {
+            Manager.ControlPointers = mEnableCursor;
+        }
 
         protected override void TransitionFromStart() { }
 

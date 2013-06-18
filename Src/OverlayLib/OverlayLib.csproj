@@ -8,7 +8,7 @@
     <ProjectGuid>{F1421BBF-6313-4C3D-9AF4-1898528728D0}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Chimera.Features</RootNamespace>
+    <RootNamespace>Chimera.Overlay</RootNamespace>
     <AssemblyName>OverlayLib</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
