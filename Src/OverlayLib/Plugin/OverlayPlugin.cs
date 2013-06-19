@@ -140,7 +140,9 @@ namespace Chimera.Overlay {
                 LoadXML(mConfig.OverlayFile);
         }
 
-        public void Close() { }
+        public void Close() {
+            Dump("Shutdown");
+        }
 
         public void Draw(Graphics graphics, Func<Vector3, Point> to2D, Action redraw, Perspective perspective) {
             if (mCurrentState != null) {
