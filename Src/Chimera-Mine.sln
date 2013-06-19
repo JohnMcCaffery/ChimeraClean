@@ -48,6 +48,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Overlays", "Overlays", "{AA
 		..\Overlays\ExampleOverlay.xml = ..\Overlays\ExampleOverlay.xml
 		..\Bin\Overlays\Test.xml = ..\Bin\Overlays\Test.xml
 		..\Bin\Overlays\TimespanOverlay.xml = ..\Bin\Overlays\TimespanOverlay.xml
+		..\Bin\Overlays\TimespanOverlayDemo2.xml = ..\Bin\Overlays\TimespanOverlayDemo2.xml
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsMediaPlayerLib", "WindowsMediaPlayerLib\WindowsMediaPlayerLib.csproj", "{ED985A0A-C964-494D-88BB-E78ACE4F13D1}"
@@ -56,9 +57,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OverlayLib", "OverlayLib\Ov
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BinConfig", "BinConfig", "{5909846D-F897-4EA2-88A1-81FABC9E77B6}"
 	ProjectSection(SolutionItems) = preProject
-		..\Bin\Config\InstallBindings.xml = ..\Bin\Config\InstallBindings.xml
 		..\Bin\Config\Frames.ini = ..\Bin\Config\Frames.ini
 		..\Bin\Config\Heightmap.ini = ..\Bin\Config\Heightmap.ini
+		..\Bin\Config\InstallBindings.xml = ..\Bin\Config\InstallBindings.xml
 		..\Bin\Config\KinectMovement.ini = ..\Bin\Config\KinectMovement.ini
 		..\Bin\Config\LaptopOverlay.ini = ..\Bin\Config\LaptopOverlay.ini
 		..\Bin\Config\Launch.ini = ..\Bin\Config\Launch.ini

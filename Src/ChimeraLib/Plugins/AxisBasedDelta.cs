@@ -29,12 +29,14 @@ using Chimera.GUI.Controls.Plugins;
 using System.Drawing;
 using System.IO;
 using Chimera.Config;
+using log4net;
 
 namespace Chimera.Plugins {
     public class AxisBasedDelta : DeltaBasedPlugin, ISystemPlugin {
         private readonly List<IAxis> mAxes = new List<IAxis>();
         private readonly string mName;
         private readonly Action mTickListener;
+        private readonly ILog Logger;
 
         private Core mCore;
         private AxisConfig mConfig;
@@ -84,6 +86,8 @@ namespace Chimera.Plugins {
 
                     foreach (var axis in mAxes)
                         axis.Enabled = value;
+
+                    Logger.Debug(value ? "Enabled" : "Disabled");
                 }
             }
         }
@@ -101,6 +105,7 @@ namespace Chimera.Plugins {
         /// <param name="name"></param>
         /// <param name="axes"></param>
         public AxisBasedDelta(string name, params IAxis[] axes) {
+            Logger = LogManager.GetLogger(name);
             mName = name;
             mConfig = new AxisConfig(name);
 

@@ -1,0 +1,89 @@
+C:\Users\OpenVirtualWorlds\Documents\John\Chimera\Bin>Chimera.exe
+Nui Initialised.
+Nui tracking skeletons
+
+Thread running
+2013-06-19 13:31:26,029 [OpenMetaverse] INFO  Proxy ready at http://127.0.0.1:8080/
+2013-06-19 13:31:26,046 [ProcessController] INFO  Launching C:\Users\OpenVirtualWorlds\Documents\John\Armadillo-Phoenix\Armadillo\Bin\firestorm-bin.exe  --loginuri http://127.0.0.1:8080 --login Master Client clie
+2013-06-19 13:31:26,074 [OpenMetaverse] INFO  Proxy ready at http://127.0.0.1:8081/
+2013-06-19 13:31:26,092 [ProcessController] INFO  Launching C:\Users\OpenVirtualWorlds\Documents\John\Armadillo-Phoenix\Armadillo\Bin\firestorm-bin.exe  --loginuri http://127.0.0.1:8081 --login Slave1 Client clie
+2013-06-19 13:31:26,109 [OpenMetaverse] INFO  Proxy ready at http://127.0.0.1:8082/
+2013-06-19 13:31:26,111 [ProcessController] INFO  Launching C:\Users\OpenVirtualWorlds\Documents\John\Armadillo-Phoenix\Armadillo\Bin\firestorm-bin.exe  --loginuri http://127.0.0.1:8082 --login Slave2 Client clie
+2013-06-19 13:31:26,114 [Core] INFO  Loaded VW-Viewer. Enabled.
+2013-06-19 13:31:26,114 [Core] INFO  Loaded Flythrough. Enabled.
+2013-06-19 13:31:26,355 [Overlay] DEBUG No window specified whilst resolving Feature from Feature. Using MainWindow as default.
+2013-06-19 13:31:26,357 [Overlay] DEBUG No window specified whilst resolving Feature from Feature. Using MainWindow as default.
+2013-06-19 13:31:26,424 [Overlay] DEBUG No window specified whilst resolving Feature from Feature. Using MainWindow as default.
+2013-06-19 13:31:26,488 [Overlay] DEBUG No window specified whilst resolving Feature from Feature. Using MainWindow as default.
+2013-06-19 13:31:26,503 [Overlay] DEBUG Unable to get ITransitionStyle factory for Cut. CutTransition is not a mapped ITransitionStyle factory. Check Ninject config to make sure the binding exists.
+2013-06-19 13:31:26,504 [Overlay.OpacityTransition] INFO  Creating Opacity Window Transition
+2013-06-19 13:31:26,506 [Overlay.OpacityTransition] INFO  Creating Opacity Window Transition
+2013-06-19 13:31:26,509 [Overlay] DEBUG Unable to get colour for State. No Colour attribute specified.
+2013-06-19 13:31:26,601 [Overlay] INFO  Created BlankState state IdleOutro.
+2013-06-19 13:31:26,606 [Overlay] INFO  Created FlythroughState state Idle.
+2013-06-19 13:31:26,607 [Overlay] DEBUG Unable to get colour for State. No Colour attribute specified.
+2013-06-19 13:31:26,695 [Overlay] INFO  Created BlankState state Intro.
+2013-06-19 13:31:26,695 [Overlay] DEBUG Unable to get colour for State. No Colour attribute specified.
+2013-06-19 13:31:26,787 [Overlay] INFO  Created BlankState state Splash.
+2013-06-19 13:31:27,297 [Overlay] INFO  Created SlideshowState state Slideshow.
+2013-06-19 13:31:27,299 [Overlay] DEBUG Unable to get feature for state feature from Feature. HelpSidebarAvatar is not bound to a known instance.
+2013-06-19 13:31:27,300 [Overlay] INFO  Created InfoState state HelpAvatar.
+2013-06-19 13:31:27,300 [Overlay] DEBUG Unable to get feature for state feature from Feature. HelpSidebarFlycam is not bound to a known instance.
+2013-06-19 13:31:27,300 [Overlay] INFO  Created InfoState state HelpFlycam.
+2013-06-19 13:31:27,301 [Overlay] DEBUG Unable to get colour for State. No Colour attribute specified.
+2013-06-19 13:31:27,310 [Overlay] INFO  Created BlankState state Story1Confirm.
+2013-06-19 13:31:27,311 [Overlay] DEBUG Unable to get colour for State. No Colour attribute specified.
+2013-06-19 13:31:27,320 [Overlay] INFO  Created BlankState state Story2Confirm.
+2013-06-19 13:31:27,321 [Overlay] DEBUG Unable to get colour for State. No Colour attribute specified.
+2013-06-19 13:31:27,330 [Overlay] INFO  Created BlankState state Story3Confirm.
+2013-06-19 13:31:27,331 [Overlay] DEBUG Unable to get colour for State. No Colour attribute specified.
+2013-06-19 13:31:27,340 [Overlay] INFO  Created BlankState state Story4Confirm.
+2013-06-19 13:31:27,342 [Overlay] DEBUG Unable to get colour for State. No Colour attribute specified.
+2013-06-19 13:31:27,350 [Overlay] INFO  Created BlankState state Story5Confirm.
+2013-06-19 13:31:27,364 [Overlay] INFO  Created VideoState state Story1.
+2013-06-19 13:31:27,373 [Overlay] INFO  Created VideoState state Story2.
+2013-06-19 13:31:27,380 [Overlay] INFO  Created VideoState state Story3.
+2013-06-19 13:31:27,388 [Overlay] INFO  Created VideoState state Story4.
+2013-06-19 13:31:27,396 [Overlay] INFO  Created VideoState state Story5.
+2013-06-19 13:31:27,410 [Overlay] INFO  Created FlythroughState state GuidedTour.
+2013-06-19 13:31:27,413 [Overlay] DEBUG Unable to get feature for state feature from Feature. HelpSidebarAvatarL is not bound to a known instance.
+2013-06-19 13:31:27,413 [Overlay] INFO  Created KinectControlState state KinectAvatar.
+2013-06-19 13:31:27,414 [Overlay] DEBUG Unable to get feature for state feature from Feature. HelpSidebarFlycamL is not bound to a known instance.
+2013-06-19 13:31:27,414 [Overlay] INFO  Created KinectControlState state KinectFlycam.
+2013-06-19 13:31:27,415 [Overlay] INFO  Creating Transitions
+Skeleton found.
+2013-06-19 13:31:27,444 [Overlay] INFO  Transitioning from Idle to Intro.
+2013-06-19 13:31:27,561 [Core] WARN  Unable to instantiate core. Object reference not set to an instance of an object.
+2013-06-19 13:31:27,561 [Core] DEBUG Unable to instantiate core.
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at Chimera.Overlay.OverlayPlugin.set_CurrentState(State value) in C:\Users\OpenVirtualWorlds\Documents\John\Chimera\Src\OverlayLib\Plugin\OverlayPlugin.State.cs:line 157
+   at Chimera.Overlay.OverlayPlugin.LoadSpecialStates() in C:\Users\OpenVirtualWorlds\Documents\John\Chimera\Src\OverlayLib\Plugin\OverlayPlugin.XML.cs:line 145
+   at Chimera.Overlay.OverlayPlugin.LoadXML(String xml) in C:\Users\OpenVirtualWorlds\Documents\John\Chimera\Src\OverlayLib\Plugin\OverlayPlugin.XML.cs:line 115
+   at Chimera.Overlay.OverlayPlugin.Init(Core coordinator) in C:\Users\OpenVirtualWorlds\Documents\John\Chimera\Src\OverlayLib\Plugin\OverlayPlugin.cs:line 140
+   at Chimera.Core..ctor(IOutputFactory outputFactory, ISystemPlugin[] plugins) in C:\Users\OpenVirtualWorlds\Documents\John\Chimera\Src\ChimeraLib\Core\Core.cs:line 294
+2013-06-19 13:31:27,564 [Core] DEBUG Shutting down tick thread.
+2013-06-19 13:31:27,640 [ProcessManager] INFO  Dumping to C:\Users\OpenVirtualWorlds\Documents\John\Chimera\Bin\Logs\2013\Jun\19-13.31Shutdown.html
+2013-06-19 13:31:27,643 [Flythrough] INFO  RightWindow graphics thread shut down.
+2013-06-19 13:31:27,644 [KinectMovement] DEBUG Disabled
+2013-06-19 13:31:27,645 [Flythrough] INFO  MainWindow graphics thread shut down.
+2013-06-19 13:31:27,650 [Flythrough] INFO  LeftWindow graphics thread shut down.
+2013-06-19 13:31:27,650 [ProcessManager] INFO  Listening for crashes.
+Skeleton lost.
+Skeleton found.
+Skeleton lost.
+Skeleton found.
+Skeleton switched.
+Skeleton lost.
+Skeleton found.
+Skeleton lost.
+Skeleton found.
+Skeleton lost.
+Skeleton found.
+Skeleton lost.
+Skeleton found.
+Skeleton lost.
+Skeleton found.
+Skeleton lost.
+Skeleton found.
+Skeleton lost.
+
