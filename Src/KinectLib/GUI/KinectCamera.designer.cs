@@ -59,6 +59,7 @@ namespace Chimera.Kinect.GUI {
             this.colourFrameButton.TabIndex = 5;
             this.colourFrameButton.Text = "Colour";
             this.colourFrameButton.UseVisualStyleBackColor = false;
+            this.colourFrameButton.CheckedChanged += new System.EventHandler(this.colourFrameButton_CheckedChanged);
             // 
             // depthFrameButton
             // 
@@ -73,6 +74,7 @@ namespace Chimera.Kinect.GUI {
             this.depthFrameButton.TabStop = true;
             this.depthFrameButton.Text = "Depth";
             this.depthFrameButton.UseVisualStyleBackColor = false;
+            this.depthFrameButton.CheckedChanged += new System.EventHandler(this.depthFrameButton_CheckedChanged);
             // 
             // frameImage
             // 

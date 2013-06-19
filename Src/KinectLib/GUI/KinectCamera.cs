@@ -33,6 +33,7 @@ namespace Chimera.Kinect.GUI {
     public partial class KinectCamera : UserControl, ISystemPlugin {
         private static readonly int R = 5;
 
+        private bool mDepth;
         private Vector mHead;
         private Vector mHandR;
         private Vector mHandL;
@@ -93,16 +94,12 @@ namespace Chimera.Kinect.GUI {
         }
 
         private void Nui_Tick() {
-            bool depth = true;
             Image oldFrame = null;
-            BeginInvoke(new Action(() => {
-                depth = depthFrameButton.Checked;
-                oldFrame = frameImage.Image;
-            }));
+            BeginInvoke(new Action(() => oldFrame = frameImage.Image));
             if (mEnabled) {
-                Bitmap frame = depth ? Nui.DepthFrame : Nui.ColourFrame;
+                Bitmap frame = mDepth ? Nui.DepthFrame : Nui.ColourFrame;
                 Func<Vector, Point> toP = v => {
-                    Point p = depth ? Nui.SkeletonToDepth(v) : Nui.SkeletonToColour(v);
+                    Point p = mDepth ? Nui.SkeletonToDepth(v) : Nui.SkeletonToColour(v);
                     return new Point(p.X - R, p.Y - R);
                 };
 
@@ -180,5 +177,13 @@ namespace Chimera.Kinect.GUI {
         public void SetForm(Form form) { }
 
         #endregion
+
+        private void depthFrameButton_CheckedChanged(object sender, EventArgs e) {
+            mDepth = depthFrameButton.Checked;
+        }
+
+        private void colourFrameButton_CheckedChanged(object sender, EventArgs e) {
+            mDepth = depthFrameButton.Checked;
+        }
     }
 }
