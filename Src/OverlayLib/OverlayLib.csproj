@@ -89,6 +89,7 @@
     <Compile Include="Features\DynamicText.cs" />
     <Compile Include="Features\FadeFeature.cs" />
     <Compile Include="Features\FadingText.cs" />
+    <Compile Include="Features\OpacityFadeFeature.cs" />
     <Compile Include="Features\OverlayImage.cs" />
     <Compile Include="Features\ScreenshotFeature.cs" />
     <Compile Include="Features\StaticText.cs" />
