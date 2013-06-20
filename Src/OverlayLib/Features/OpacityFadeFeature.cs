@@ -7,6 +7,20 @@ using System.Drawing;
 using System.Xml;
 
 namespace Chimera.Overlay.Features {
+    public class OpacityFadeFeatureFactory : IFeatureFactory {
+        public IFeature Create(OverlayPlugin manager, XmlNode node) {
+            return new OpacityFadeFeature(manager, node);
+        }
+
+        public IFeature Create(OverlayPlugin manager, XmlNode node, Rectangle clip) {
+            return Create(manager, node);
+        }
+
+        public string Name {
+            get { return "OpacityFade"; }
+        }
+    }
+
     public class OpacityFadeFeature : XmlLoader, IFeature {
         private FrameOverlayManager mManager;
         private Rectangle mClip;
