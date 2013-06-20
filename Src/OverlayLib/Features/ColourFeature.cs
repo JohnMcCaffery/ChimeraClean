@@ -9,11 +9,11 @@ using System.Xml;
 namespace Chimera.Overlay.Features {
     public class ColourFeatureFactory : IFeatureFactory {
         public IFeature Create(OverlayPlugin manager, XmlNode node) {
-            return new ColourFeature(node);
+            return new ColourFeature(manager, node);
         }
 
         public IFeature Create(OverlayPlugin manager, XmlNode node, Rectangle clip) {
-            return new ColourFeature(node, clip);
+            return new ColourFeature(manager, node, clip);
         }
 
         public string Name {
@@ -44,14 +44,16 @@ namespace Chimera.Overlay.Features {
             mBounds = bounds;
         }
 
-        public ColourFeature(XmlNode node) {
+        public ColourFeature(OverlayPlugin manager, XmlNode node) {
             mColour = GetColour(node, "colour feature", mColour);
             mBounds = GetBounds(node, "colour feature");
+            mFrame = GetManager(manager, node, "colour feature.").Name;
         }
 
-        public ColourFeature(XmlNode node, Rectangle clip) {
+        public ColourFeature(OverlayPlugin manager, XmlNode node, Rectangle clip) {
             mColour = GetColour(node, "colour feature", mColour);
             mBounds = GetBounds(node, "colour feature", clip);
+            mFrame = GetManager(manager, node, "colour feature.").Name;
         }
 
         public Rectangle Clip {

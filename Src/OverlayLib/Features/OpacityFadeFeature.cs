@@ -40,7 +40,7 @@ namespace Chimera.Overlay.Features {
             }
 
             mStart = GetDouble(node, mStart, "Start");
-            mFinish = GetDouble(node, mStart, "Finish");
+            mFinish = GetDouble(node, mFinish, "Finish");
             mWait = GetDouble(node, 0.0, "Wait");
             mLength = GetDouble(node, mLength, "Length");
         }
@@ -58,6 +58,7 @@ namespace Chimera.Overlay.Features {
                     if (value) {
                         mFinished = false;
                         mActivated = DateTime.Now;
+                        mManager.Opacity = mStart;
                     }
                 }
             }

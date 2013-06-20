@@ -57,6 +57,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OverlayLib", "OverlayLib\Ov
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BinConfig", "BinConfig", "{5909846D-F897-4EA2-88A1-81FABC9E77B6}"
 	ProjectSection(SolutionItems) = preProject
+		..\Bin\Config\Bindings.xml = ..\Bin\Config\Bindings.xml
 		..\Bin\Config\Frames.ini = ..\Bin\Config\Frames.ini
 		..\Bin\Config\Heightmap.ini = ..\Bin\Config\Heightmap.ini
 		..\Bin\Config\InstallBindings.xml = ..\Bin\Config\InstallBindings.xml
