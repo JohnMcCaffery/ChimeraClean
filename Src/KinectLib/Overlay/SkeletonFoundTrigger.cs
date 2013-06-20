@@ -56,7 +56,13 @@ namespace Chimera.Kinect.Overlay {
 
         public bool Active {
             get { return mActive; }
-            set { mActive = value; }
+            set {
+                if (mActive != value) {
+                    mActive = value;
+                    if (value && Nui.HasSkeleton)
+                        Nui_SkeletonFound();
+                }
+            }
         }
 
         public SkeletonFoundTrigger() {

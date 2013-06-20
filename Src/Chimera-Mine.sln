@@ -89,6 +89,26 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Flythroughs", "Flythroughs"
 		..\Bin\Flythroughs\TimespanFlythrough.xml = ..\Bin\Flythroughs\TimespanFlythrough.xml
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestConfigs", "TestConfigs\TestConfigs.csproj", "{896676F6-4364-46F9-9762-1D9C6EACDF6F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TestConfig", "TestConfig", "{B2BC58C1-0EFE-49D2-89AA-0618EF957ADD}"
+	ProjectSection(SolutionItems) = preProject
+		..\Bin\TestConfig\Bindings.xml = ..\Bin\TestConfig\Bindings.xml
+		..\Bin\TestConfig\Core.ini = ..\Bin\TestConfig\Core.ini
+		..\Bin\TestConfig\Frames.ini = ..\Bin\TestConfig\Frames.ini
+		..\Bin\TestConfig\Heightmap.ini = ..\Bin\TestConfig\Heightmap.ini
+		..\Bin\TestConfig\InstallBindings.xml = ..\Bin\TestConfig\InstallBindings.xml
+		..\Bin\TestConfig\KinectMovement.ini = ..\Bin\TestConfig\KinectMovement.ini
+		..\Bin\TestConfig\LaptopOverlay.ini = ..\Bin\TestConfig\LaptopOverlay.ini
+		..\Bin\TestConfig\Launch.ini = ..\Bin\TestConfig\Launch.ini
+		..\Bin\TestConfig\Main.ini = ..\Bin\TestConfig\Main.ini
+		..\Bin\TestConfig\OpenSim.ini = ..\Bin\TestConfig\OpenSim.ini
+		..\Bin\TestConfig\Overlay.ini = ..\Bin\TestConfig\Overlay.ini
+		..\Bin\TestConfig\Projectors.ini = ..\Bin\TestConfig\Projectors.ini
+		..\Bin\TestConfig\Touchscreen.ini = ..\Bin\TestConfig\Touchscreen.ini
+		..\Bin\TestConfig\XBoxController.ini = ..\Bin\TestConfig\XBoxController.ini
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -470,6 +490,34 @@ Global
 		{D1978D10-E5B0-40F9-BDB7-11BF03C7A6CB}.ReleaseVisual|x64.ActiveCfg = Release|x86
 		{D1978D10-E5B0-40F9-BDB7-11BF03C7A6CB}.ReleaseVisual|x86.ActiveCfg = Release|x86
 		{D1978D10-E5B0-40F9-BDB7-11BF03C7A6CB}.ReleaseVisual|x86.Build.0 = Release|x86
+		{896676F6-4364-46F9-9762-1D9C6EACDF6F}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{896676F6-4364-46F9-9762-1D9C6EACDF6F}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{896676F6-4364-46F9-9762-1D9C6EACDF6F}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{896676F6-4364-46F9-9762-1D9C6EACDF6F}.Debug|Win32.ActiveCfg = Debug|x86
+		{896676F6-4364-46F9-9762-1D9C6EACDF6F}.Debug|x64.ActiveCfg = Debug|x86
+		{896676F6-4364-46F9-9762-1D9C6EACDF6F}.Debug|x86.ActiveCfg = Debug|x86
+		{896676F6-4364-46F9-9762-1D9C6EACDF6F}.Debug|x86.Build.0 = Debug|x86
+		{896676F6-4364-46F9-9762-1D9C6EACDF6F}.DebugVisual|Any CPU.ActiveCfg = Debug|x86
+		{896676F6-4364-46F9-9762-1D9C6EACDF6F}.DebugVisual|Mixed Platforms.ActiveCfg = Debug|x86
+		{896676F6-4364-46F9-9762-1D9C6EACDF6F}.DebugVisual|Mixed Platforms.Build.0 = Debug|x86
+		{896676F6-4364-46F9-9762-1D9C6EACDF6F}.DebugVisual|Win32.ActiveCfg = Debug|x86
+		{896676F6-4364-46F9-9762-1D9C6EACDF6F}.DebugVisual|x64.ActiveCfg = Debug|x86
+		{896676F6-4364-46F9-9762-1D9C6EACDF6F}.DebugVisual|x86.ActiveCfg = Debug|x86
+		{896676F6-4364-46F9-9762-1D9C6EACDF6F}.DebugVisual|x86.Build.0 = Debug|x86
+		{896676F6-4364-46F9-9762-1D9C6EACDF6F}.Release|Any CPU.ActiveCfg = Release|x86
+		{896676F6-4364-46F9-9762-1D9C6EACDF6F}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{896676F6-4364-46F9-9762-1D9C6EACDF6F}.Release|Mixed Platforms.Build.0 = Release|x86
+		{896676F6-4364-46F9-9762-1D9C6EACDF6F}.Release|Win32.ActiveCfg = Release|x86
+		{896676F6-4364-46F9-9762-1D9C6EACDF6F}.Release|x64.ActiveCfg = Release|x86
+		{896676F6-4364-46F9-9762-1D9C6EACDF6F}.Release|x86.ActiveCfg = Release|x86
+		{896676F6-4364-46F9-9762-1D9C6EACDF6F}.Release|x86.Build.0 = Release|x86
+		{896676F6-4364-46F9-9762-1D9C6EACDF6F}.ReleaseVisual|Any CPU.ActiveCfg = Release|x86
+		{896676F6-4364-46F9-9762-1D9C6EACDF6F}.ReleaseVisual|Mixed Platforms.ActiveCfg = Release|x86
+		{896676F6-4364-46F9-9762-1D9C6EACDF6F}.ReleaseVisual|Mixed Platforms.Build.0 = Release|x86
+		{896676F6-4364-46F9-9762-1D9C6EACDF6F}.ReleaseVisual|Win32.ActiveCfg = Release|x86
+		{896676F6-4364-46F9-9762-1D9C6EACDF6F}.ReleaseVisual|x64.ActiveCfg = Release|x86
+		{896676F6-4364-46F9-9762-1D9C6EACDF6F}.ReleaseVisual|x86.ActiveCfg = Release|x86
+		{896676F6-4364-46F9-9762-1D9C6EACDF6F}.ReleaseVisual|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
