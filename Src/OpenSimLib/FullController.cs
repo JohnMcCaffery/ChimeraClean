@@ -9,7 +9,7 @@ using OpenMetaverse.Packets;
 
 namespace Chimera.OpenSim {
     public class FullController : ProxyControllerBase {
-        private bool mAllowFly = true;
+        private bool mAllowFly = false;
 
         public FullController(Frame frame)
             : base(frame) {

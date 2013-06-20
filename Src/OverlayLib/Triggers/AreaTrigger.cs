@@ -110,9 +110,11 @@ namespace Chimera.Overlay.Triggers {
             set {
                 if (mActive != value) {
                     mActive = value;
-                    if (value)
+                    if (value) {
+                        if (Inside)
+                            mManager_CursorMoved(Manager, null);
                         mManager.CursorMoved += mMoveListener;
-                    else
+                    } else
                         mManager.CursorMoved -= mMoveListener;
                 }
             }

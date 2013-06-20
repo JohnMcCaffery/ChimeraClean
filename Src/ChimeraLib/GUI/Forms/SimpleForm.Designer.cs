@@ -33,6 +33,7 @@
             // hSplit
             // 
             this.hSplit.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.hSplit.FixedPanel = System.Windows.Forms.FixedPanel.Panel2;
             this.hSplit.IsSplitterFixed = true;
             this.hSplit.Location = new System.Drawing.Point(0, 0);
             this.hSplit.Name = "hSplit";
@@ -41,18 +42,20 @@
             // hSplit.Panel1
             // 
             this.hSplit.Panel1.Controls.Add(this.shutdownButton);
+            this.hSplit.Panel2MinSize = 0;
             this.hSplit.Size = new System.Drawing.Size(284, 262);
-            this.hSplit.SplitterDistance = 128;
+            this.hSplit.SplitterDistance = 230;
             this.hSplit.TabIndex = 0;
             // 
             // shutdownButton
             // 
             this.shutdownButton.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.shutdownButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 50F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.shutdownButton.Location = new System.Drawing.Point(0, 0);
             this.shutdownButton.Name = "shutdownButton";
-            this.shutdownButton.Size = new System.Drawing.Size(284, 128);
+            this.shutdownButton.Size = new System.Drawing.Size(284, 230);
             this.shutdownButton.TabIndex = 0;
-            this.shutdownButton.Text = "Shut down";
+            this.shutdownButton.Text = "Shut Down";
             this.shutdownButton.UseVisualStyleBackColor = true;
             this.shutdownButton.Click += new System.EventHandler(this.shutdownButton_Click);
             // 
@@ -63,7 +66,7 @@
             this.ClientSize = new System.Drawing.Size(284, 262);
             this.Controls.Add(this.hSplit);
             this.Name = "SimpleForm";
-            this.Text = "SimpleForm";
+            this.Text = "Control Panel";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.SimpleForm_FormClosing);
             this.hSplit.Panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.hSplit)).EndInit();

@@ -72,18 +72,18 @@ namespace Chimera.OpenSim {
 
         #region ISystemPlugin Members
 
-        public void Init(Core coordinator) { }
+        public void Init(Core coordinator) {
+            mFollowCamProperties = new SetFollowCamProperties(Frame.Core);
+            if (mProxyController.Started)
+                mFollowCamProperties.SetProxy(mProxyController.Proxy);
+        }
 
         public event Action<IPlugin, bool> EnabledChanged;
 
         UserControl IPlugin.ControlPanel {
             get {
-                if (mInputPanel == null) {
-                    mFollowCamProperties = new SetFollowCamProperties(Frame.Core);
+                if (mInputPanel == null)
                     mInputPanel = new InputPanel(mFollowCamProperties);
-                    if (mProxyController.Started)
-                        mFollowCamProperties.SetProxy(mProxyController.Proxy);
-                }
                 return mInputPanel;
             }
         }

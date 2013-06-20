@@ -43,8 +43,16 @@ namespace Chimera.OpenSim {
         private float mFocus;
         private Vector3 mFocusOffset3D = new Vector3(0f, 1f, 0f);
 
+        private bool mEnabled = true;
+        private bool mAdjustForFly = false;
+
         private Proxy mProxy;
         private Core mCoordinator;
+
+        public bool Enabled {
+            get { return mEnabled; }
+            set { mEnabled = value; }
+        }
 
         public float Pitch {
             get { return mPitch; }
@@ -154,7 +162,7 @@ namespace Chimera.OpenSim {
             mCoordinator = coordinator;
             mCoordinator.CameraModeChanged += new Action<Core,ControlMode>(mCoordinator_CameraModeChanged);
             mDeltaListener = new Action<Core,DeltaUpdateEventArgs>(mCoordinator_DeltaUpdated);
-            if (mCoordinator.ControlMode == ControlMode.Delta)
+            if (mAdjustForFly && mCoordinator.ControlMode == ControlMode.Delta)
                 mCoordinator.DeltaUpdated += mDeltaListener;
         }
 
@@ -162,43 +170,51 @@ namespace Chimera.OpenSim {
         private bool mFlying;
 
         void mCoordinator_CameraModeChanged(Core coordinator, ControlMode mode) {
-            if (mCoordinator.ControlMode == ControlMode.Delta) {
-                mCoordinator.DeltaUpdated += mDeltaListener;
-                mCoordinator.Update(Vector3.Zero, Vector3.Zero, new Rotation(0.0, 1.0), Rotation.Zero);
-                Thread.Sleep(1000);
-                mCoordinator.Update(Vector3.Zero, Vector3.Zero, new Rotation(0.0, 0.0), Rotation.Zero);
-            } else
-                mCoordinator.DeltaUpdated -= mDeltaListener;
+            //if (mAdjustForFly) {
+                if (mCoordinator.ControlMode == ControlMode.Delta) {
+                    mCoordinator.DeltaUpdated += mDeltaListener;
+                    //mCoordinator.Update(Vector3.Zero, Vector3.Zero, new Rotation(0.0, 1.0), Rotation.Zero);
+                    //Thread.Sleep(1000);
+                    //mCoordinator.Update(Vector3.Zero, Vector3.Zero, new Rotation(0.0, 0.0), Rotation.Zero);
+                } else
+                    mCoordinator.DeltaUpdated -= mDeltaListener;
+            //}
 
             Update();
         }
 
         void mCoordinator_DeltaUpdated(Core coordinator, DeltaUpdateEventArgs args) {
-            ControlCamera = args.positionDelta.Z == 0f && args.positionDelta.X >= 0f;
-            if (mFlying && args.positionDelta.Z <= 0f) {
-                mFlying = false;
-                if (args.rotationDelta.Yaw == 0.0) {
-                    mCoordinator.Update(Vector3.Zero, args.positionDelta, Rotation.Zero, new Rotation(args.rotationDelta.Pitch, -.5));
-                    Thread.Sleep(500);
-                    mCoordinator.Update(Vector3.Zero, args.positionDelta, Rotation.Zero, new Rotation(args.rotationDelta.Pitch, .5));
-                    Thread.Sleep(500);
-                    mCoordinator.Update(Vector3.Zero, args.positionDelta, Rotation.Zero, args.rotationDelta);
-                }
-            } else if (!mFlying && args.positionDelta.Z > 0f)
-                mFlying = true;
+            if (mAdjustForFly)
+                ControlCamera = args.positionDelta.Z == 0f && args.positionDelta.X >= 0f;
+            else
+                ControlCamera = args.positionDelta.X >= 0f;
+
+            if (mAdjustForFly) {
+                if (mFlying && args.positionDelta.Z <= 0f) {
+                    mFlying = false;
+                    if (args.rotationDelta.Yaw == 0.0) {
+                        mCoordinator.Update(Vector3.Zero, args.positionDelta, Rotation.Zero, new Rotation(args.rotationDelta.Pitch, -.5));
+                        Thread.Sleep(500);
+                        mCoordinator.Update(Vector3.Zero, args.positionDelta, Rotation.Zero, new Rotation(args.rotationDelta.Pitch, .5));
+                        Thread.Sleep(500);
+                        mCoordinator.Update(Vector3.Zero, args.positionDelta, Rotation.Zero, args.rotationDelta);
+                    }
+                } else if (!mFlying && args.positionDelta.Z > 0f)
+                    mFlying = true;
+            }
 
             if (mBackwards && args.positionDelta.X >= 0f) {
                 mBackwards = false;
                 if (args.positionDelta.X == 0f)
                     mCoordinator.Update(Vector3.Zero, new Vector3(1f, args.positionDelta.Y, args.positionDelta.Z), Rotation.Zero, args.rotationDelta);
-                    Thread.Sleep(500);
-                    mCoordinator.Update(Vector3.Zero, new Vector3(0f, args.positionDelta.Y, args.positionDelta.Z), Rotation.Zero, args.rotationDelta);
+                Thread.Sleep(500);
+                mCoordinator.Update(Vector3.Zero, new Vector3(0f, args.positionDelta.Y, args.positionDelta.Z), Rotation.Zero, args.rotationDelta);
             } else if (!mBackwards && args.positionDelta.X < 0f)
                 mBackwards = true;
         }
 
         public void Update() {
-            if (mProxy != null && mCoordinator.ControlMode == ControlMode.Delta)
+            if (mEnabled && mProxy != null && mCoordinator.ControlMode == ControlMode.Delta)
                 mProxy.InjectPacket(Packet, Direction.Incoming);
         }
 
