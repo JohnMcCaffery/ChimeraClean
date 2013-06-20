@@ -437,6 +437,7 @@ namespace Chimera {
                     //TODO - add code here so that when the value is changed the camera updates
                     if (CameraModeChanged != null)
                         CameraModeChanged(this, value);
+                    Logger.Debug("Control mode changed to " + value + ".");
                 }
             }
         }
