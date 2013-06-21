@@ -113,7 +113,7 @@ namespace Chimera.Launcher {
         }
 
         public void Launch() {
-            if (mCoordinator == null)
+            if (mCoordinator == null || !mCoordinator.Initialised)
                 return;
             if (mConfig.BasicGUI)
                 ProcessWrangler.BlockingRunForm(BasicForm, Coordinator);
