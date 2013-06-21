@@ -142,6 +142,12 @@
     <Compile Include="GUI\TriggerSelector.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="GUI\Triggers\TriggerPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\Triggers\TriggerPanel.Designer.cs">
+      <DependentUpon>TriggerPanel.cs</DependentUpon>
+    </Compile>
     <Compile Include="GUI\WizardPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -198,6 +204,7 @@
     <Compile Include="FrameState.cs" />
     <Compile Include="FrameTransition.cs" />
     <Compile Include="Triggers\TimerTrigger.cs" />
+    <Compile Include="Triggers\TriggerBase.cs" />
     <Compile Include="XmlLoader.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -221,6 +228,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\Plugins\StatsPluginPanel.resx">
       <DependentUpon>StatsPluginPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\Triggers\TriggerPanel.resx">
+      <DependentUpon>TriggerPanel.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
