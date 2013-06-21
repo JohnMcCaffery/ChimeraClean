@@ -25,6 +25,7 @@ namespace Chimera.Overlay.States {
     public class BlankState : State {
         private bool mUseDefaultBG;
         private bool mEnableCursor;
+        private double mOpacity;
         private Color mDefaultBG;
 
         public BlankState(OverlayPlugin plugin, XmlNode node)
@@ -38,6 +39,7 @@ namespace Chimera.Overlay.States {
                 mDefaultBG = Color.Black;
                 mUseDefaultBG = true;
             }
+            mOpacity = GetDouble(node, 1.0, "Opacity");
         }
 
         public override IWindowState CreateWindowState(FrameOverlayManager manager) {
@@ -51,6 +53,8 @@ namespace Chimera.Overlay.States {
 
         protected override void TransitionToFinish() {
             Manager.ControlPointers = mEnableCursor;
+            foreach (var frameManager in Manager.OverlayManagers)
+                frameManager.Opacity = mOpacity;
         }
 
         protected override void TransitionFromStart() { }
