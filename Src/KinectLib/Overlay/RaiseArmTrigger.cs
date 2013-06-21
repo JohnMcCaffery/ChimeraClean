@@ -110,7 +110,7 @@ namespace Chimera.Kinect.Overlay {
         }
 
         public RaiseArmTrigger() {
-            mHeightThreshold = Scalar.Create(.4f);
+            mHeightThreshold = Nui.magnitude(Nui.joint(Nui.Shoulder_Centre) - Nui.joint(Nui.Hip_Centre));
             mAngleThreshold = Scalar.Create(.48f);
 
             Vector up = Vector.Create(0f, 1f, 0f);
