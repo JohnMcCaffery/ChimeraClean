@@ -28,9 +28,11 @@ using System.Windows.Forms;
 using Chimera.Interfaces.Overlay;
 using Chimera.Util;
 using Chimera.Config;
+using log4net;
 
 namespace Chimera.Overlay {
     public class FrameOverlayManager {
+        private readonly ILog Logger;
 #if DEBUG
         private readonly TickStatistics mStatistics = new TickStatistics();
 #endif
@@ -166,6 +168,7 @@ namespace Chimera.Overlay {
                 mControlPointer = value && mConfig.ControlPointer;
                 if (!value)
                     MoveCursorOffScreen();
+                Logger.Debug((value ? "Enabling" : "Disabling") + " cursor control");
             }
         }
         /// <summary>
@@ -344,6 +347,7 @@ namespace Chimera.Overlay {
         }
 
         public FrameOverlayManager(OverlayPlugin manager, Frame frame) {
+            Logger = LogManager.GetLogger(frame.Name + "Overlay");
             mManager = manager;
             mFrame = frame;
 

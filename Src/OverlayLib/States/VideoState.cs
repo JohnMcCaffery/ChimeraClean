@@ -147,8 +147,7 @@ namespace Chimera.Overlay.States {
         protected override void TransitionToStart() {
             SetTriggers(true);
             ControlTriggers(mResetTriggers, true);
-            foreach (var manager in Manager.OverlayManagers)
-                manager.ControlPointer = false;
+            Manager.ControlPointers = false;
         }
 
         protected override void TransitionToFinish() {
@@ -156,6 +155,7 @@ namespace Chimera.Overlay.States {
                 mRestarted = false;
                 Start();
             }
+            Manager.ControlPointers = false;
         }
 
         void mPlayer_VideoFinished() {

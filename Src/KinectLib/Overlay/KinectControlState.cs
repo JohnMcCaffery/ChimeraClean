@@ -109,9 +109,8 @@ namespace Chimera.Kinect.Overlay {
                 if (mSetPosition)
                     Manager.Core.Update(mStartPosition, Vector3.Zero, mStartOrientation, Rotation.Zero);
             }
-            Manager.Core.EnableUpdates = true; 
-            foreach (var manager in Manager.OverlayManagers)
-                manager.ControlPointer = false;
+            Manager.Core.EnableUpdates = true;
+            Manager.ControlPointers = false;
         }
 
         protected override void TransitionFromFinish() { }
