@@ -6,7 +6,7 @@ using Chimera.Interfaces.Overlay;
 using Chimera.Util;
 
 namespace Chimera.Overlay.Triggers {
-    public abstract class ConditionTrigger : XmlLoader, ITrigger {
+    public abstract class ConditionTrigger : TriggerBase, ITrigger {
 #if DEBUG
         private readonly TickStatistics mStatistics = new TickStatistics();
 #endif
@@ -19,8 +19,12 @@ namespace Chimera.Overlay.Triggers {
         private bool mHasTriggered;
         private DateTime mStart;
 
-
         private event Action mTriggered;
+
+        public override void Trigger() {
+            if (Active && mTriggered != null)
+                mTriggered();
+        }
 
         public abstract bool Condition {
             get;
@@ -71,7 +75,7 @@ namespace Chimera.Overlay.Triggers {
 
         #region ITrigger Members
 
-        public event Action Triggered {
+        public override event Action Triggered {
             add {
                 if (mActive && mTriggered == null)
                     mCore.Tick += mTickListener;
@@ -85,7 +89,7 @@ namespace Chimera.Overlay.Triggers {
 
         }
 
-        public virtual bool Active {
+        public override bool Active {
             get { return mActive; }
             set {
                 if (mActive != value) {

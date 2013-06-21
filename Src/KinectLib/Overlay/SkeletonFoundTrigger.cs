@@ -26,6 +26,7 @@ using NuiLibDotNet;
 using Chimera.Overlay;
 using System.Xml;
 using System.Drawing;
+using Chimera.Overlay.Triggers;
 
 namespace Chimera.Kinect.Overlay {
     public class SkeletonFoundFactory : ITriggerFactory {
@@ -49,12 +50,10 @@ namespace Chimera.Kinect.Overlay {
             return Create(manager, node);
         }
     }
-    public class SkeletonFoundTrigger : XmlLoader, ITrigger {
+    public class SkeletonFoundTrigger : TriggerBase, ITrigger {
         private bool mActive;
 
-        public event Action Triggered;
-
-        public bool Active {
+        public override bool Active {
             get { return mActive; }
             set {
                 if (mActive != value) {
@@ -70,8 +69,7 @@ namespace Chimera.Kinect.Overlay {
         }
 
         void Nui_SkeletonFound() {
-            if (mActive && Triggered != null)
-                Triggered();
+            Trigger();
         }
     }
 }

@@ -7,7 +7,7 @@ using System.Drawing;
 using System.Xml;
 
 namespace Chimera.Overlay.Triggers {
-    public abstract class AreaTrigger : XmlLoader, ITrigger {
+    public abstract class AreaTrigger : TriggerBase, ITrigger {
         /// <summary>
         /// The manager which will supply the cursor position.
         /// </summary>
@@ -79,12 +79,6 @@ namespace Chimera.Overlay.Triggers {
         protected abstract void Entered();
         protected abstract void Exited();
 
-        protected void Trigger() {
-            if (Triggered != null) {
-                Triggered();
-            }
-        }
-
         public bool Inside {
             get { return Bounds.Contains(Manager.CursorPosition); }
         }
@@ -103,9 +97,7 @@ namespace Chimera.Overlay.Triggers {
 
         private bool mActive;
 
-        public event Action Triggered;
-
-        public virtual bool Active {
+        public override bool Active {
             get { return mActive; }
             set {
                 if (mActive != value) {

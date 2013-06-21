@@ -29,7 +29,7 @@ namespace Chimera.Overlay.Triggers {
         }
     }
  
-    public class TimerTrigger : XmlLoader, ITrigger {
+    public class TimerTrigger : TriggerBase, ITrigger {
         private bool mActive;
         private double mLengthMS = 5000;
         private Action mTickListener;
@@ -47,16 +47,13 @@ namespace Chimera.Overlay.Triggers {
         void mCore_Tick() {
             if (DateTime.Now.Subtract(mStart).TotalMilliseconds > mLengthMS) {
                 mCore.Tick -= mTickListener;
-                if (Triggered != null)
-                    Triggered();
+                Trigger();
             }
         }
 
         #region ITrigger Members
 
-        public event Action Triggered;
-
-        public bool Active {
+        public override bool Active {
             get { return mActive; }
             set {
                 if (mActive != value) {

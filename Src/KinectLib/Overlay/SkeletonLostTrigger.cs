@@ -26,6 +26,7 @@ using NuiLibDotNet;
 using Chimera.Overlay;
 using System.Xml;
 using System.Drawing;
+using Chimera.Overlay.Triggers;
 
 namespace Chimera.Kinect.Overlay {
     public class SkeletonLostFactory : XmlLoader, ITriggerFactory {
@@ -50,7 +51,7 @@ namespace Chimera.Kinect.Overlay {
             return Create(manager, node);
         }
     }
-    public class SkeletonLostTrigger : XmlLoader, ITrigger {
+    public class SkeletonLostTrigger : TriggerBase, ITrigger {
         private bool mActive;
         private DateTime mLost;
         private Action mTickListener;
@@ -60,9 +61,7 @@ namespace Chimera.Kinect.Overlay {
 
         #region ITrigger Members
 
-        public event Action Triggered;
-
-        public bool Active {
+        public override bool Active {
             get { return mActive; }
             set {
                 if (mActive != value) {
@@ -113,8 +112,8 @@ namespace Chimera.Kinect.Overlay {
         }
 
         void coordinator_Tick() {
-            if (Triggered != null && DateTime.Now.Subtract(mLost).TotalMilliseconds > mTimeout) {
-                Triggered();
+            if (DateTime.Now.Subtract(mLost).TotalMilliseconds > mTimeout) {
+                Trigger();
                 mCoordinator.Tick -= mTickListener;
             }
         }

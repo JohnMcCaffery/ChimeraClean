@@ -6,6 +6,7 @@ using Chimera.Interfaces.Overlay;
 using Chimera.Overlay;
 using log4net;
 using System.Xml;
+using Chimera.Overlay.Triggers;
 
 namespace Chimera.Flythrough.Overlay {
     public class FlythroughEndTriggerFactory : ITriggerFactory {
@@ -31,7 +32,7 @@ namespace Chimera.Flythrough.Overlay {
     }
 
 
-    public class FlythroughEndTrigger : XmlLoader, ITrigger {
+    public class FlythroughEndTrigger : TriggerBase, ITrigger {
         private ILog Logger = LogManager.GetLogger("Flythrough.Overlay");
         private FlythroughPlugin mPlugin;
         private EventHandler mFlythroughEndListener;
@@ -49,15 +50,12 @@ namespace Chimera.Flythrough.Overlay {
         }
 
         void mPlugin_SequenceFinished(object source, EventArgs args) {
-            if (Triggered != null)
-                Triggered();
+            Trigger();
         }
 
         #region ITrigger Members
 
-        public event Action Triggered;
-
-        public bool Active {
+        public override bool Active {
             get { return mActive; }
             set {
                 if (mActive != value) {

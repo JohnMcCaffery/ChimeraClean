@@ -24,18 +24,12 @@ using System.Text;
 using Chimera.Interfaces.Overlay;
 
 namespace Chimera.Overlay.Triggers {
-    public class SimpleTrigger : XmlLoader, ITrigger {
-        public event Action Triggered;
+    public class SimpleTrigger : TriggerBase, ITrigger {
         private bool mActive = true;
 
-        public bool Active {
+        public override bool Active {
             get { return mActive; }
             set { mActive = value; }
-        }
-
-        public void Trigger() {
-            if (mActive && Triggered != null)
-                Triggered();
         }
     }
 }

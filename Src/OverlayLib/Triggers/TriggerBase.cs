@@ -4,17 +4,25 @@ using System.Linq;
 using System.Text;
 using Chimera.Interfaces.Overlay;
 using Chimera.Overlay.GUI.Triggers;
+using System.Xml;
 
 namespace Chimera.Overlay.Triggers {
     public abstract class TriggerBase : XmlLoader, ITrigger {
         private TriggerPanel mPanel;
 
-        public void Trigger() {
-            if (Triggered != null)
+        public TriggerBase()
+            : base() {
+        }
+        public TriggerBase(XmlNode node)
+            : base(node) {
+        }
+
+        public virtual void Trigger() {
+            if (Active && Triggered != null)
                 Triggered();
         }
 
-        public event Action Triggered;
+        public virtual event Action Triggered;
 
         public abstract bool Active { get; set; }
 
