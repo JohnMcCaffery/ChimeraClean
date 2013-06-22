@@ -146,25 +146,27 @@ namespace Chimera.Overlay {
         public State CurrentState {
             get { return mCurrentState; }
             set {
-                if (mCurrentState != null)
-                    mCurrentState.Active = false;
-                if (mFirstState == null)
-                    mFirstState = value;
-                if (mCurrentTransition != null)
-                    mCurrentTransition.Cancel();
-                mCurrentState = value;
-                mCurrentState.Active = true;
-                foreach (var windowState in mCurrentState.WindowStates)
-                    windowState.Manager.CurrentDisplay = windowState;
-                if (!mIdleEnabled) {
-                    foreach (var trigger in mIdleTriggers)
-                        trigger.Active = false;
+                lock (this) {
+                    if (mCurrentState != null)
+                        mCurrentState.Active = false;
+                    if (mFirstState == null)
+                        mFirstState = value;
+                    if (mCurrentTransition != null)
+                        mCurrentTransition.Cancel();
+                    mCurrentState = value;
+                    mCurrentState.Active = true;
+                    foreach (var windowState in mCurrentState.WindowStates)
+                        windowState.Manager.CurrentDisplay = windowState;
+                    if (!mIdleEnabled) {
+                        foreach (var trigger in mIdleTriggers)
+                            trigger.Active = false;
+                    }
+                    if (mRedraw != null)
+                        mRedraw();
+                    Logger.Info("Current state set to " + mCurrentState.Name + ".");
+                    if (StateChanged != null)
+                        StateChanged(value);
                 }
-                if (mRedraw != null)
-                    mRedraw();
-                Logger.Info("Current state set to " + mCurrentState.Name + ".");
-                if (StateChanged != null)
-                    StateChanged(value);
             }
         }
 

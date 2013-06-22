@@ -190,11 +190,12 @@ namespace Chimera.OpenSim {
 
         public void Restart(string reason) {
             ThisLogger.Warn("Restarting viewer because of " + reason + ".");
-            new Thread(() => {
+            //new Thread(() => {
                 mViewerController.Close(true);
                 mProxyController.Stop();
                 mProxyController.Start();
-            }).Start();
+                mViewerController.Start();
+            //}).Start();
         }
 
         #endregion

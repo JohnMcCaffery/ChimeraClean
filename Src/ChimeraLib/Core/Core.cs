@@ -182,6 +182,10 @@ namespace Chimera {
         /// The windows which define where, in real space, each 'view' onto the virtual space is located.
         /// </summary>
         private readonly Dictionary<string, Frame> mFrames = new Dictionary<string, Frame>();
+        /// <summary>
+        /// Whether the core has been successfully initialised.
+        /// </summary>
+        private readonly bool mInitialised;
 
         /// <summary>
         /// File to log information about any crash to.
@@ -264,7 +268,6 @@ namespace Chimera {
         /// </summary>
         /// <param name="plugins">The plugins which control this coordinator.</param>
         public Core(IOutputFactory outputFactory, params ISystemPlugin[] plugins) {
-            bool success = false;
             try {
                 mConfig = new CoordinatorConfig();
 
@@ -301,12 +304,12 @@ namespace Chimera {
                 tickThread.Name = "Tick Thread";
                 //tickThread.Priority = ThreadPriority.Highest;
                 tickThread.Start();
-                success = true;
+                mInitialised = true;
             } catch (Exception e) {
                 Logger.Warn("Unable to instantiate core. " + e.Message);
                 Logger.Debug("Unable to instantiate core.", e);
             } finally {
-                if (!success)
+                if (!mInitialised)
                     Close();
             }
         }
@@ -328,6 +331,10 @@ namespace Chimera {
                     Thread.Sleep(time);
             }
             Logger.Info("Tick Thread shut down.");
+        }
+
+        public bool Initialised {
+            get { return mInitialised; }
         }
 
         /// <summary>

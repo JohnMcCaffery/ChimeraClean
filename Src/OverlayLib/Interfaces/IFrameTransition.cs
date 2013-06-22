@@ -40,14 +40,14 @@ namespace Chimera.Interfaces.Overlay {
         /// <summary>
         /// The window state the window is transitioning to.
         /// </summary>
-        IWindowState To {
+        IFrameState To {
             get;
         }
 
         /// <summary>
         /// The window state the window is transitioning from.
         /// </summary>
-        IWindowState From {
+        IFrameState From {
             get;
         }
 

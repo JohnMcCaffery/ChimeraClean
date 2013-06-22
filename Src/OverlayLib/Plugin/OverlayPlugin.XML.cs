@@ -65,6 +65,7 @@ namespace Chimera.Overlay {
         private bool mIdleEnabled;
         private State mIdleState;
         private List<ITrigger> mIdleTriggers = new List<ITrigger>();
+        private readonly Dictionary<string, List<ITrigger>> mOverrideIdleTriggers = new Dictionary<string, List<ITrigger>>();
 
         public Rectangle Clip {
             get { return mClip; }
@@ -134,17 +135,6 @@ namespace Chimera.Overlay {
                     LoadTransition(transitionNode);
         }
 
-        private void LoadSpecialStates() {
-            if (mIdleState != null)
-                foreach (var state in mStates.Values.Where(s => s != mIdleState))
-                    foreach (var trigger in mIdleTriggers)
-                        state.AddTransition(new StateTransition(this, state, mIdleState, trigger, mSplashIdleTransition));
-
-            IdleEnabled = mIdleEnabled;
-            if (mStartState != null)
-                CurrentState = mStartState;
-        }
-
         private void LoadComponent<T>(XmlDocument doc, Dictionary<string, T> map, string nodeID) where T : IControllable {
             foreach (XmlNode root in doc.GetElementsByTagName("Overlay")[0].ChildNodes)
                 if (root is XmlElement && (root.Name == "Any" || root.Name == mMode)) {
@@ -195,8 +185,20 @@ namespace Chimera.Overlay {
 
         private void LoadState(State state, XmlNode node) {
             AddState(state);
-            if (GetBool(node, false, "Idle"))
+
+            List<ITrigger> triggers = new List<ITrigger>();
+            foreach (var child in GetChildrenOfChild(node, "IdleTriggers")) {
+                ITrigger trigger = GetTrigger(child, "idle state trigger", null);
+                if (trigger != null)
+                    triggers.Add(trigger);
+            }
+
+            if (GetBool(node, false, "Idle")) {
                 LoadIdle(node, state);
+                mIdleTriggers = triggers;
+            } else if (triggers.Count > 0)
+                mOverrideIdleTriggers.Add(state.Name, triggers);
+
             if (GetBool(node, false, "Start"))
                 mStartState = state;
             foreach (var child in GetChildrenOfChild(node, "Features")) {
@@ -217,11 +219,19 @@ namespace Chimera.Overlay {
                     case "IdleTransition": mSplashIdleTransition = GetTransition(child, "to idle transition", new OpacityFadeOutWindowTransitionFactory(5000)); break;
                 }
             }
-            foreach (var child in GetChildrenOfChild(node, "IdleTriggers")) {
-                ITrigger trigger = GetTrigger(child, "idle state trigger", null);
-                if (trigger != null)
-                    mIdleTriggers.Add(trigger);
-            }
+        }
+        private void LoadSpecialStates() {
+            if (mIdleState != null)
+                foreach (var state in mStates.Values.Where(s => s != mIdleState))
+                    foreach (var trigger in 
+                            mOverrideIdleTriggers.ContainsKey(state.Name) ? 
+                                mOverrideIdleTriggers[state.Name] : 
+                                mIdleTriggers)
+                        state.AddTransition(new StateTransition(this, state, mIdleState, trigger, mSplashIdleTransition));
+
+            IdleEnabled = mIdleEnabled;
+            if (mStartState != null)
+                CurrentState = mStartState;
         }
 
         #endregion

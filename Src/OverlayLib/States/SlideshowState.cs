@@ -46,20 +46,14 @@ namespace Chimera.Overlay.States {
 
     public class SlideshowState : State {
         private readonly ILog Logger = LogManager.GetLogger("Overlay.Slideshow");
-        private readonly List<SlideshowWindow> mWindows = new List<SlideshowWindow>();
-        private readonly IFeatureTransitionFactory mTransition;
-        private readonly string mFolder;
-        private double mFadeLengthMS;
-        private int mFinishedCount = 0;
+        private int mCurrentStep = 0;
         private List<ITrigger> mTriggers = new List<ITrigger>();
+
+        private readonly List<IFeature>[] mSteps;
 
 
         public SlideshowState(string name, OverlayPlugin manager, string folder, ITrigger next, ITrigger prev, IFeatureTransitionFactory transition, double fadeLengthMS)
             : base(name, manager) {
-
-            mFolder = folder;
-            mTransition = transition;
-            mFadeLengthMS = fadeLengthMS;
 
 
             AddTrigger(true, next);
@@ -69,14 +63,25 @@ namespace Chimera.Overlay.States {
         public SlideshowState(OverlayPlugin manager, XmlNode node)
             : base(GetName(node, "slideshow state"), manager) {
 
-            mTransition =  manager.GetImageTransitionFactory(node, "slideshow state", "Transition");
-            if (mTransition == null) {
-                Logger.Warn("Unable to look up custom transition for slideshow. Using default, fade.");
-                mTransition = new FeatureFadeFactory();
+            int count = 1;
+            List<List<IFeature>> steps = new List<List<IFeature>>();
+            foreach (var step in GetChildrenOfChild(node, "Steps")) {
+                List<IFeature> stepFeatures = new List<IFeature>();
+                foreach (var stepFeature in step.ChildNodes.OfType<XmlElement>()) {
+                    IFeature feature = manager.GetFeature(stepFeature, "slideshow step " + count, null);
+                    if (feature != null) {
+                        stepFeatures.Add(feature);
+                        AddFeature(feature);
+                    }
+                }
+                steps.Add(stepFeatures);
+                count++;
             }
-            mFolder = GetString(node, null, "Folder");
-            if (mFolder == null)
-                throw new ArgumentException("Unable to load slideshow state. No Folder specified.");
+
+            if (steps.Count == 0)
+                throw new ArgumentException("Unable to create slideshow state. No steps specified.");
+
+            mSteps = steps.ToArray();
 
             LoadTriggers(manager, node, true);
             LoadTriggers(manager, node, false);
@@ -100,51 +105,36 @@ namespace Chimera.Overlay.States {
         }
 
         void prev_Triggered() {
-            if (Active) {
-                mFinishedCount = 0;
-                //SetTriggerState(false);
-                foreach (var window in mWindows)
-                    window.Prev();
-            }
+            if (Active)
+                Increment(-1);
         }
 
         void next_Triggered() {
-            if (Active) {
-                mFinishedCount = 0;
-                //SetTriggerState(false);
-                foreach (var window in mWindows)
-                    window.Next();
-            }
+            if (Active)
+                Increment(1);
         }
 
-        public override IWindowState CreateWindowState(FrameOverlayManager manager) {
-            IFeatureTransition trans = mTransition.Create(mFadeLengthMS);
-            SlideshowWindow windowState = new SlideshowWindow(manager, mFolder, trans);
-            /*
-            if (mNext is IDrawable) {
-                IDrawable next = mNext as IDrawable;
-                if (window.Name.Equals(next.Window))
-                    windowState.AddFeature(next);
-            }
-            if (mPrev is IDrawable) {
-                IDrawable prev = mPrev as IDrawable;
-                if (window.Name.Equals(prev.Window))
-                    windowState.AddFeature(prev);
-            }
-            */
-            mWindows.Add(windowState);
-            trans.Finished += new Action(trans_Finished);
-            return windowState;
+        private void Increment(int step) {
+            foreach (var feature in mSteps[mCurrentStep])
+                feature.Active = false;
+            mCurrentStep = (mCurrentStep + step) % mSteps.Length;
+            if (mCurrentStep < 0)
+                mCurrentStep = mSteps.Length - 1;
+            foreach (var feature in mSteps[mCurrentStep])
+                feature.Active = true;
+            foreach (var man in Manager.OverlayManagers)
+                man.ForceRedrawStatic();
         }
 
-        void trans_Finished() {
-            mFinishedCount++;
-            if (mFinishedCount == mWindows.Count) {
-                //SetTriggerState(true);
-            }
+
+        public override IFrameState CreateWindowState(FrameOverlayManager manager) {
+            return new FrameState(manager);
         }
 
-        protected override void TransitionToStart() { }
+        protected override void TransitionToStart() {
+            foreach (var feature in mSteps.Skip(1).Aggregate((seed, current) => new List<IFeature>(seed.Concat(current))))
+                feature.Active = false;
+        }
 
         protected override void TransitionToFinish() {
             SetTriggerState(true);

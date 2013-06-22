@@ -89,7 +89,7 @@ namespace Chimera.Overlay.States {
         /// CreateWindowState a window state for drawing this state to the specified window.
         /// </summary>
         /// <param name="window">The window the new window state is to draw on.</param>
-        public override IWindowState CreateWindowState(FrameOverlayManager manager) {
+        public override IFrameState CreateWindowState(FrameOverlayManager manager) {
             ImageBGWindow win = new ImageBGWindow(manager, mWindowBGs.ContainsKey(manager.Name) ?  mWindowBGs[manager.Name] : mDefaultBG);
             mWindows.Add(manager.Name, win);
             return win;

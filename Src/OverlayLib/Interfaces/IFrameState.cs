@@ -24,7 +24,7 @@ using System.Text;
 using Chimera.Overlay;
 
 namespace Chimera.Interfaces.Overlay {
-    public interface IWindowState : IFeature {
+    public interface IFrameState : IFeature {
 
         /// <summary>
         /// All features which are to be drawn onto the window state.

@@ -25,7 +25,7 @@ using Chimera.Interfaces.Overlay;
 using System.Drawing;
 
 namespace Chimera.Overlay {
-    public class FrameState : DrawableRoot, IWindowState {
+    public class FrameState : DrawableRoot, IFrameState {
         /// <summary>
         /// The overlay form for the window this window state is linked to.
         /// </summary>
