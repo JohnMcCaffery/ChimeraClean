@@ -47,7 +47,7 @@ namespace Chimera.Overlay.States {
             mStartPosition = new Vector3(GetFloat(node, 0f, "X"), GetFloat(node, 0f, "Y"), GetFloat(node, 0f, "Z"));
         }
 
-        public override IWindowState CreateWindowState(FrameOverlayManager manager) {
+        public override IFrameState CreateWindowState(FrameOverlayManager manager) {
             return new FrameState(manager);
         }
 

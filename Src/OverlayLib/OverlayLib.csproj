@@ -161,8 +161,8 @@
     <Compile Include="Interfaces\IFeatureTransition.cs" />
     <Compile Include="Interfaces\IMediaPlayer.cs" />
     <Compile Include="Interfaces\ITrigger.cs" />
-    <Compile Include="Interfaces\IWindowState.cs" />
-    <Compile Include="Interfaces\IWindowTransition.cs" />
+    <Compile Include="Interfaces\IFrameState.cs" />
+    <Compile Include="Interfaces\IFrameTransition.cs" />
     <Compile Include="Interfaces\ITransitionStyle.cs" />
     <Compile Include="Plugin\OverlayPlugin.State.cs" />
     <Compile Include="Plugin\OverlayPlugin.XML.cs" />

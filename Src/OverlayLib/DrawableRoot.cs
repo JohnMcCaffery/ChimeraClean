@@ -25,7 +25,7 @@ using System.Drawing;
 using Chimera.Interfaces.Overlay;
 
 namespace Chimera.Overlay {
-    public abstract class DrawableRoot : XmlLoader, IFeature {
+    public class DrawableRoot : XmlLoader, IFeature {
         /// <summary>
         /// The features which will be drawn on this window state.
         /// </summary>
@@ -47,7 +47,7 @@ namespace Chimera.Overlay {
         /// </summary>
         private bool mActive = true;
 
-        protected DrawableRoot(string window) {
+        public DrawableRoot(string window) {
             mWindowName = window;
         }
 

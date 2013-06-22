@@ -42,8 +42,8 @@ namespace Chimera.Overlay.States {
             mOpacity = GetDouble(node, 1.0, "Opacity");
         }
 
-        public override IWindowState CreateWindowState(FrameOverlayManager manager) {
-            IWindowState w = new FrameState(manager);
+        public override IFrameState CreateWindowState(FrameOverlayManager manager) {
+            IFrameState w = new FrameState(manager);
             if (mUseDefaultBG)
                 w.AddFeature(new ColourFeature(mDefaultBG));
             return w;

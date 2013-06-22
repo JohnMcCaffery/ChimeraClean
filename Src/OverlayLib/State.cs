@@ -32,7 +32,7 @@ namespace Chimera.Overlay {
         /// <summary>
         /// The window states, mapped to the names of the windows.
         /// </summary>
-        private readonly Dictionary<string, IWindowState> mWindowStates = new Dictionary<string,IWindowState>();
+        private readonly Dictionary<string, IFrameState> mWindowStates = new Dictionary<string,IFrameState>();
         /// <summary>
         /// Transitions transition this state to other states, mapped to the name of the other state.
         /// </summary>
@@ -81,7 +81,7 @@ namespace Chimera.Overlay {
                 mWindowStates.Add(frame.Name, CreateWindowState(mManager[frame.Name]));
         }
 
-        public IWindowState this[string window] {
+        public IFrameState this[string window] {
             get {
                 if (!mWindowStates.ContainsKey(window))
                     Coordinator_FrameAdded(mManager.Core[window], null);
@@ -89,7 +89,7 @@ namespace Chimera.Overlay {
             }
         }
     
-        public IWindowState[] WindowStates {
+        public IFrameState[] WindowStates {
             get { return mWindowStates.Values.ToArray(); }
         }
 
@@ -206,7 +206,7 @@ namespace Chimera.Overlay {
         /// CreateWindowState a window state for drawing this state to the specified window.
         /// </summary>
         /// <param name="window">The window the new window state is to draw on.</param>
-        public abstract IWindowState CreateWindowState(FrameOverlayManager manager);
+        public abstract IFrameState CreateWindowState(FrameOverlayManager manager);
 
         public void StartTransitionTo() {
             foreach (var window in mWindowStates.Values)

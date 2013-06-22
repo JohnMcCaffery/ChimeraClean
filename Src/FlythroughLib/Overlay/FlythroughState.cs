@@ -202,7 +202,7 @@ namespace Chimera.Flythrough.Overlay {
         }
 
 
-        public override IWindowState CreateWindowState(FrameOverlayManager manager) {
+        public override IFrameState CreateWindowState(FrameOverlayManager manager) {
             if (manager.Name.Equals(mSlideshowWindowName)) {
                 mSlideshow = new SlideshowWindow(manager, mSlideshowFolder, mSlideshowTransition);
                 return mSlideshow;

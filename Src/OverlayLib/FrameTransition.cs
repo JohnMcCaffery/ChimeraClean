@@ -29,8 +29,8 @@ namespace Chimera {
     public abstract class FrameTransition : DrawableRoot, IWindowTransition {
         private StateTransition mTransition;
         private FrameOverlayManager mManager;
-        private IWindowState mFrom;
-        private IWindowState mTo;
+        private IFrameState mFrom;
+        private IFrameState mTo;
 
         public override bool Active {
             get { return base.Active; }
@@ -73,11 +73,11 @@ namespace Chimera {
             get { return mTransition; }
         }
 
-        public IWindowState To {
+        public IFrameState To {
             get { return mTo; }
         }
 
-        public IWindowState From {
+        public IFrameState From {
             get { return mFrom; }
         }
 
