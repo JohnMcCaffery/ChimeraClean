@@ -140,7 +140,7 @@ namespace Chimera.Plugins {
 
         public event Action<IPlugin, bool> EnabledChanged;
 
-        public UserControl ControlPanel {
+        public Control ControlPanel {
             get {
                 if (mPanel == null)
                     mPanel = new ProjectorPluginPanel(this);

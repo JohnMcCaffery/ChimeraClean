@@ -183,7 +183,7 @@ namespace Chimera.Plugins {
 
         #region IInput Members
 
-        public override UserControl ControlPanel {
+        public override Control ControlPanel {
             get {
                 if (mPanel == null)
                     mPanel = new AxisBasedDeltaPanel(this);

@@ -117,6 +117,7 @@ namespace Chimera.OpenSim {
             if (mConfig == null)
                 throw new ArgumentException("Unable to start proxy. No configuration specified.");
             try {
+                mLastUpdatePacket = DateTime.Now;
                 mProxy = new Proxy(mConfig);
                 mProxy.AddLoginResponseDelegate(mProxy_LoginResponse);
                 mProxy.AddDelegate(PacketType.AgentUpdate, Direction.Outgoing, mProxy_AgentUpdatePacketReceived);

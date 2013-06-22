@@ -116,7 +116,7 @@ namespace Chimera.Overlay.Plugins {
 
         public event Action<IPlugin, bool> EnabledChanged;
 
-        public UserControl ControlPanel {
+        public Control ControlPanel {
             get {
                 if (mPanel == null)
                     mPanel = new MousePluginPanel(this);

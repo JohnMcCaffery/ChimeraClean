@@ -33,7 +33,6 @@ namespace Chimera.Plugins {
         internal bool MouseDown;
         private Rotation mOrientation = Rotation.Zero;
         private Vector3 mDeltas;
-        private double mStartPitch, mStartYaw;
         private bool mIgnorePitch;
         private bool mWalkEnabled = true;
         private bool mStrafeEnabled = true;
@@ -141,9 +140,7 @@ namespace Chimera.Plugins {
 
         #region ISystemPlugin Members
 
-        public event Action<IPlugin, bool> EnabledChanged;
-
-        public override UserControl ControlPanel {
+        public override Control ControlPanel {
             get {
                 if (mControlPanel == null)
                     mControlPanel = new KBMousePanel(this);

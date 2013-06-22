@@ -189,7 +189,7 @@ namespace Chimera.Kinect {
             get { return mLocation; }
         }
 
-        public UserControl ControlPanel {
+        public Control ControlPanel {
             get {
                 if (mPanel == null)
                     mPanel = new SimpleCursorPanel(this);

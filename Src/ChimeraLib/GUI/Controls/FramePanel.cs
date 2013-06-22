@@ -59,7 +59,7 @@ namespace Chimera.GUI.Controls {
             }
 
             if (frame.Output != null) {
-                UserControl panel = frame.Output.ControlPanel;
+                Control panel = frame.Output.ControlPanel;
                 panel.Dock = DockStyle.Fill;
 
                 TabPage tab = new TabPage();

@@ -82,7 +82,7 @@ namespace Chimera.OpenSim {
 
         public event Action<IPlugin, bool> EnabledChanged;
 
-        UserControl IPlugin.ControlPanel {
+        Control IPlugin.ControlPanel {
             get {
                 if (mInputPanel == null)
                     mInputPanel = new InputPanel(mFollowCamProperties);
@@ -147,7 +147,7 @@ namespace Chimera.OpenSim {
             get { return mViewerController.Process; }
         }
 
-        UserControl IOutput.ControlPanel {
+        Control IOutput.ControlPanel {
             get {
                 if (mOutputPanel == null)
                     mOutputPanel = new OutputPanel(this);

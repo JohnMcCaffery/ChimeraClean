@@ -84,7 +84,7 @@ namespace Chimera.Plugins {
 
         public event Action<IPlugin, bool> EnabledChanged;
 
-        public System.Windows.Forms.UserControl ControlPanel {
+        public System.Windows.Forms.Control ControlPanel {
             get {
                 if (mControlPanel == null)
                     mControlPanel = new PluginSelectorPanel(this);

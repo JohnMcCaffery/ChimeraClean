@@ -132,7 +132,7 @@ namespace Chimera.Plugins {
 
         public event Action<IPlugin, bool> EnabledChanged;
 
-        public abstract UserControl ControlPanel {
+        public abstract Control ControlPanel {
             get;
         }
 

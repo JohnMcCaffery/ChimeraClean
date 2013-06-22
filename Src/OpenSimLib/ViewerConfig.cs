@@ -118,7 +118,7 @@ namespace Chimera.OpenSim {
             AutoLoginClient = LoginFirstName != null && LoginLastName != null && LoginPassword != null;
 
             AutoStartProxy = Get(false, "AutoStartProxy", false, "Whether to automatically start the proxy when the system start.");
-            AutoStartViewer = Get(false, "AutoStartViewer", false, "Whether to automatically start the viewer when the system start.");
+            AutoStartViewer = Get(false, "AutoStartViewer", false, "Whether to automatically start the viewer when the system starts.");
             AutoRestartViewer = Get(true, "AutoRestart", false, "Whether to automatically restart the viewer if the process exits.");
             ControlCamera = Get(false, "ControlCamera", true, "Whether to control the position of the camera on the viewer.");
             ControlFrustum = Get(false, "ControlFrustum", true, "Whether to control the viewing frustum on the viewer.");

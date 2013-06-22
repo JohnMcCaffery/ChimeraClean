@@ -152,7 +152,7 @@ namespace Chimera.Kinect.GUI {
 
         public new event Action<IPlugin, bool> EnabledChanged;
 
-        public UserControl ControlPanel {
+        public Control ControlPanel {
             get { return this; }
         }
 
