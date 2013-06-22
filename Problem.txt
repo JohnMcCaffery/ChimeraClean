@@ -1,3 +1,26 @@
+Skeleton found.
+2013-06-22 13:38:15,346 [Overlay] INFO  Transitioning from Idle to Intro.
+2013-06-22 13:38:17,476 [MainWindowOverlay] DEBUG Disabling cursor control
+2013-06-22 13:38:17,476 [LeftWindowOverlay] DEBUG Disabling cursor control
+2013-06-22 13:38:17,477 [RightWindowOverlay] DEBUG Disabling cursor control
+2013-06-22 13:38:17,477 [Overlay] INFO  Current state set to Intro.
+2013-06-22 13:38:22,499 [Overlay] INFO  Transitioning from Intro to GuidedTour.
+2013-06-22 13:38:22,519 [MainWindowOverlay] DEBUG Disabling cursor control
+2013-06-22 13:38:22,519 [LeftWindowOverlay] DEBUG Disabling cursor control
+2013-06-22 13:38:22,519 [RightWindowOverlay] DEBUG Disabling cursor control
+2013-06-22 13:38:24,541 [Overlay] INFO  Current state set to GuidedTour.
+2013-06-22 13:40:39,065 [OpenMetaverse] WARN  Error in packet delegate
+System.ArgumentNullException: Value cannot be null.
+Parameter name: key
+   at System.Collections.Generic.Dictionary`2.Remove(TKey key)
+   at Chimera.OpenSim.ProxyControllerBase.CheckForPause()
+   at Chimera.OpenSim.ProxyControllerBase.mProxy_AgentUpdatePacketReceived(Packet p, IPEndPoint ep)
+   at GridProxy.Proxy.callDelegates(Dictionary`2 delegates, Packet packet, IPEndPoint remoteEndPoint)
+2013-06-22 13:40:39,145 [ProcessManager] WARN  Exception caught in App Domain.
+
+
+
+
 C:\Users\OpenVirtualWorlds\Documents\John\Chimera\Bin>Chimera.exe
 Nui Initialised.
 Nui tracking skeletons
