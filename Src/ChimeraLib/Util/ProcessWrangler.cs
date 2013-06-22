@@ -1221,6 +1221,7 @@ namespace Chimera.Util {
         }
         
 
+        private static ILog Logger = LogManager.GetLogger("ProcessManager");
         private static ICrashable sRoot;
         private static Form sForm;
         private static int sCurrentScreen = 0;
@@ -1471,8 +1472,6 @@ namespace Chimera.Util {
             process.StartInfo.Arguments =  args;
             return process;
         }
-
-        private static ILog Logger = LogManager.GetLogger("ProcessManager");
 
         public static void BlockingRunForm(Form form, ICrashable root) {
             Application.EnableVisualStyles();

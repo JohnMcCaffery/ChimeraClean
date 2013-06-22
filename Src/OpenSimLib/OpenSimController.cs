@@ -249,11 +249,13 @@ namespace Chimera.OpenSim {
         }
 
         void Coordinator_DeltaUpdated(Core coordinator, DeltaUpdateEventArgs args) {
+            CheckTimeout();
             if (IsMaster && ControlCamera)
                 mProxyController.Move(args.positionDelta, args.rotationDelta, mConfig.DeltaScale);
         }
 
         void Coordinator_CameraUpdated(Core coordinator, CameraUpdateEventArgs args) {
+            CheckTimeout();
             if (ControlCamera && mProxyController.Started && (Mode == ControlMode.Absolute || !IsMaster))
                 mProxyController.SetCamera(args.positionDelta, args.rotationDelta);
         }
@@ -321,6 +323,13 @@ namespace Chimera.OpenSim {
         }
 
         #endregion
+
+        private void CheckTimeout() {
+            if (DateTime.Now.Subtract(mProxyController.LastUpdatePacket).TotalMinutes > 1.0) {
+                mProxyController.LastUpdatePacket = DateTime.Now;
+                Restart("ViewerStoppedResponding");
+            }
+        }
 
         private void StopProxy() {
             if (sForm != null && sForm.Created && !sForm.Disposing && !sForm.IsDisposed)

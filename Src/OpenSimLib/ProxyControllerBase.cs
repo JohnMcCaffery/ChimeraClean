@@ -20,6 +20,7 @@ namespace Chimera.OpenSim {
         private readonly Frame mFrame;
         private Proxy mProxy;
         private PacketDelegate mAgentUpdateListener;
+        private DateTime mLastUpdatePacket = DateTime.Now;
         private UUID mSecureSessionID = UUID.Zero;
         private UUID mSessionID = UUID.Zero;
         private UUID mAgentID = UUID.Zero;
@@ -35,6 +36,11 @@ namespace Chimera.OpenSim {
         private readonly Dictionary<string, DateTime> mUnackedUpdates = new Dictionary<string,DateTime>();
         private int mUnackedCountThresh = 40;
         private long mUnackedDiscardMS = 1000;
+
+        public DateTime LastUpdatePacket {
+            get { return mLastUpdatePacket; }
+            set { mLastUpdatePacket = value; }
+        }
 
         /// <summary>
         /// Selected whenever the client proxy starts up.
@@ -175,6 +181,7 @@ namespace Chimera.OpenSim {
         Packet mProxy_AgentUpdatePacketReceived(Packet p, IPEndPoint ep) {
             AgentUpdatePacket packet = p as AgentUpdatePacket;
             Vector3 pos = packet.AgentData.CameraCenter;
+            mLastUpdatePacket = DateTime.Now;
 
             if (mFrame.Core.ControlMode == ControlMode.Absolute) {
                 //new Thread(() => {
