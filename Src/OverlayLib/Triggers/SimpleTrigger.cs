@@ -24,6 +24,28 @@ using System.Text;
 using Chimera.Interfaces.Overlay;
 
 namespace Chimera.Overlay.Triggers {
+    public class SimpleTriggerFactory : ITriggerFactory {
+        public SpecialTrigger Special {
+            get { return SpecialTrigger.None; }
+        }
+
+        public string Mode {
+            get { return "None"; }
+        }
+
+        public ITrigger Create(OverlayPlugin manager, System.Xml.XmlNode node) {
+            return new SimpleTrigger();
+        }
+
+        public ITrigger Create(OverlayPlugin manager, System.Xml.XmlNode node, System.Drawing.Rectangle clip) {
+            return Create(manager, node);
+        }
+
+        public string Name {
+            get { return "Simple"; }
+        }
+    }
+
     public class SimpleTrigger : TriggerBase, ITrigger {
         private bool mActive = true;
 

@@ -26,6 +26,7 @@ using Chimera.Util;
 using System.Drawing;
 using OpenMetaverse;
 using Chimera.Interfaces;
+using System.Xml;
 
 namespace Chimera.Overlay {
     public abstract class State : XmlLoader {
@@ -49,6 +50,10 @@ namespace Chimera.Overlay {
         /// Whether this state is currently active.
         /// </summary>
         private bool mActive;
+        /// <summary>
+        /// How opaque the overlays should be for this state. Set when the state is transitioned to.
+        /// </summary>
+        private double mOpacity = 1.0;
 
         /// <summary>
         /// Statistics object for tracking how this state is used.
@@ -65,6 +70,16 @@ namespace Chimera.Overlay {
             mManager = manager;
 
             mManager.Core.FrameAdded += new Action<Frame,EventArgs>(Coordinator_FrameAdded);
+        }
+        /// <summary>
+        /// CreateWindowState the state, specifying the name, form and the window factory for creating window states.
+        /// </summary>
+        /// <param name="name">The name of the state. All state names should be unique.</param>
+        /// <param name="form">The form which will control this state.</param>
+        public State(string name, OverlayPlugin manager, XmlNode node)
+            : this(name, manager) {
+
+            mOpacity = GetDouble(node, mOpacity, "Opacity");
         }
 
         /// <summary>
@@ -148,12 +163,14 @@ namespace Chimera.Overlay {
                 if (value) {
                     if (Manager.CurrentTransition == null)
                         TransitionToStart();
+                    foreach (var man in Manager.OverlayManagers)
+                        man.Opacity = mOpacity;
                     TransitionToFinish();
                     mStatistics.Begin();
                 } else {
                     TransitionFromStart();
                     if (Manager.CurrentTransition == null)
-                        TransitionFromFinish();
+                        FinishTransitionFrom();
                     mStatistics.End();
                 }
             }
