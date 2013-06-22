@@ -4,12 +4,20 @@ using System.Linq;
 using System.Text;
 using Chimera;
 using System.Windows.Forms;
+using System.Net.Sockets;
+using System.Threading;
+using System.Net;
 
 namespace Chimera.RemoteControl {
     public class RemoteControlPlugin : ISystemPlugin {
         public const string SHUTDOWN = "Exit";
+        public const int PORT = 8050;
+
         private Core mCore;
         private Form mForm;
+        private bool mEnabled;
+        private bool mListening;
+        private UdpClient mListener;
 
         public void Init(Core coordinator) {
             mCore = coordinator;
@@ -26,16 +34,21 @@ namespace Chimera.RemoteControl {
         }
 
         public bool Enabled {
-            get {
-                throw new NotImplementedException();
-            }
+            get { return mEnabled; }
             set {
-                throw new NotImplementedException();
+                if (value != mEnabled) {
+                    mEnabled = value;
+                    if (value)
+                        Listen();
+                    else if (mListening)
+                        StopListening();
+                        StopListening();
+                }
             }
         }
 
         public string Name {
-            get { throw new NotImplementedException(); }
+            get { return "RemoteControl"; }
         }
 
         public string State {
@@ -47,8 +60,33 @@ namespace Chimera.RemoteControl {
         }
 
         public void Close() {
+            StopListening();
         }
 
         public void Draw(System.Drawing.Graphics graphics, Func<OpenMetaverse.Vector3, System.Drawing.Point> to2D, Action redraw, Perspective perspective) { }
+
+        private void Listen() {
+            mListener = new UdpClient(PORT);
+            Thread listenThread = new Thread(ListenThread);
+            listenThread.Name = "RemoteControlListener";
+            listenThread.Start();
+        }
+
+        private void ListenThread() {
+            IPEndPoint ep = new IPEndPoint(IPAddress.Any, PORT);
+            byte[] data = mListener.Receive(ref ep);
+            string msg = Encoding.ASCII.GetString(data);
+
+            if (msg == SHUTDOWN)
+                mForm.Close();
+            else if (mCore.HasFrame(msg))
+                mCore[msg].Output.Restart("RemoteInstructionReceived");
+        }
+
+        private void StopListening() {
+            if (mListener != null) {
+                mListener.Close();
+            }
+        }
     }
 }
