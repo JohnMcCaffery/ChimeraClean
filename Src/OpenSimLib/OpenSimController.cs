@@ -14,6 +14,8 @@ using log4net;
 
 namespace Chimera.OpenSim {
     public class OpenSimController : ISystemPlugin, IOutput {
+        private static Form sForm = null;
+
         private readonly ILog ThisLogger = LogManager.GetLogger("OpenSim");
         private bool mEnabled;
         private bool mClosingViewer;
@@ -115,7 +117,7 @@ namespace Chimera.OpenSim {
         public void Close() {
             mClosingViewer = true;
             mViewerController.Close(false);
-            mProxyController.Stop();
+            StopProxy();
         }
 
         public void Draw(Graphics graphics, Func<Vector3, Point> to2D, Action redraw, Perspective perspective) { }
@@ -192,8 +194,8 @@ namespace Chimera.OpenSim {
             ThisLogger.Warn("Restarting viewer because of " + reason + ".");
             //new Thread(() => {
                 mViewerController.Close(true);
-                mProxyController.Stop();
-                mProxyController.Start();
+                StopProxy();
+                StartProxy();
                 mViewerController.Start();
             //}).Start();
         }
@@ -208,13 +210,20 @@ namespace Chimera.OpenSim {
             if (mProxyController.Proxy != null)
                 return true;
 
-            if (mProxyController.StartProxy(mConfig.ProxyPort, mConfig.ProxyLoginURI)) {
-                if (IsMaster)
-                    mFollowCamProperties.SetProxy(mProxyController.Proxy);
+            Func<bool> a = () => {
+                if (mProxyController.StartProxy(mConfig.ProxyPort, mConfig.ProxyLoginURI)) {
+                    if (IsMaster)
+                        mFollowCamProperties.SetProxy(mProxyController.Proxy);
 
-                return true;
-            }
-            return false;
+                    return true;
+                }
+                return false;
+            };
+
+            if (sForm != null && sForm.Created && !sForm.Disposing && !sForm.IsDisposed)
+                return (bool) sForm.Invoke(a);
+            else
+                return a();
         }
 
         public bool StartViewer() {
@@ -306,16 +315,18 @@ namespace Chimera.OpenSim {
             if (mConfig.AutoRestartViewer && !mClosingViewer)
                 Restart("UnexpectedViewerClose");
             mClosingViewer = false;
-        }
-
-        #endregion
-
-        #region ISystemPlugin Members
-
-
+        }
         public void SetForm(Form form) {
+            sForm = form;
         }
 
         #endregion
+
+        private void StopProxy() {
+            if (sForm != null && sForm.Created && !sForm.Disposing && !sForm.IsDisposed)
+                sForm.Invoke(new Action(() => mProxyController.Stop()));
+            else
+                mProxyController.Stop();
+        }
     }
 }

@@ -1494,7 +1494,7 @@ namespace Chimera.Util {
         }
 
         static void Application_ThreadException(object sender, System.Threading.ThreadExceptionEventArgs e) {
-            Logger.Warn("Exception caught in Thread.");
+            Logger.Warn("Exception caught from GUI Thread.");
             sForm.Close();
             HandleException(e.Exception);
         }
@@ -1509,8 +1509,8 @@ namespace Chimera.Util {
             Logger.Warn(e.Message);
             Logger.Warn(e.StackTrace);
             sRoot.OnCrash(e);
-            throw e;
-            //Environment.Exit(42);
+            //throw e;
+            Environment.Exit(42);
         }
 
         public static void Dump(string dump, string end) {
