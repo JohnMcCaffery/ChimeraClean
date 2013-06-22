@@ -178,7 +178,6 @@
     <Compile Include="States\ImageBGWindow.cs" />
     <Compile Include="States\SeeThroughMenuState.cs" />
     <Compile Include="States\SlideshowState.cs" />
-    <Compile Include="States\SlideshowWindow.cs" />
     <Compile Include="States\VideoState.cs" />
     <Compile Include="StateTransition.cs" />
     <Compile Include="Transitions\FeatureFade.cs" />

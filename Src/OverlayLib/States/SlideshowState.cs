@@ -46,11 +46,6 @@ namespace Chimera.Overlay.States {
 
     public class SlideshowState : State {
         private readonly ILog Logger = LogManager.GetLogger("Overlay.Slideshow");
-        private readonly List<SlideshowWindow> mWindows = new List<SlideshowWindow>();
-        private readonly IFeatureTransitionFactory mTransition;
-        private readonly string mFolder;
-        private double mFadeLengthMS;
-        private int mFinishedCount = 0;
         private int mCurrentStep = 0;
         private List<ITrigger> mTriggers = new List<ITrigger>();
 
@@ -59,10 +54,6 @@ namespace Chimera.Overlay.States {
 
         public SlideshowState(string name, OverlayPlugin manager, string folder, ITrigger next, ITrigger prev, IFeatureTransitionFactory transition, double fadeLengthMS)
             : base(name, manager) {
-
-            mFolder = folder;
-            mTransition = transition;
-            mFadeLengthMS = fadeLengthMS;
 
 
             AddTrigger(true, next);
