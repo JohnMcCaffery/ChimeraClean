@@ -65,11 +65,11 @@ namespace Chimera.Kinect.Overlay {
             get { return mActive; }
             set {
                 if (mActive != value) {
+                    mActive = value;
                     if (!value && mWaiting)
                         Nui_SkeletonFound();
                     else if (value && !Nui.HasSkeleton)
                         Nui_SkeletonLost();
-                    mActive = value;
                 }
             }
         }
