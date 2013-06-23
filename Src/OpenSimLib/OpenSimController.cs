@@ -11,6 +11,7 @@ using System.Diagnostics;
 using Chimera.OpenSim.GUI;
 using System.Threading;
 using log4net;
+using Chimera.Overlay;
 
 namespace Chimera.OpenSim {
     public class OpenSimController : ISystemPlugin, IOutput {
@@ -23,6 +24,7 @@ namespace Chimera.OpenSim {
         private Frame mFrame;
         private OutputPanel mOutputPanel;
         private InputPanel mInputPanel;
+        private FrameOverlayManager mManager;
 
         private SetFollowCamProperties mFollowCamProperties;
         private ProxyControllerBase mProxyController;
@@ -78,6 +80,13 @@ namespace Chimera.OpenSim {
             mFollowCamProperties = new SetFollowCamProperties(Frame.Core);
             if (mProxyController.Started)
                 mFollowCamProperties.SetProxy(mProxyController.Proxy);
+
+            coordinator.InitialisationFinished += new Action(coordinator_InitialisationFinished);
+        }
+
+        void coordinator_InitialisationFinished() {
+            if (mFrame.Core.HasPlugin<OverlayPlugin>())
+                mManager = mFrame.Core.GetPlugin<OverlayPlugin>()[mFrame.Name];
         }
 
         public event Action<IPlugin, bool> EnabledChanged;
@@ -295,9 +304,13 @@ namespace Chimera.OpenSim {
 
             new Thread(() => {
                 Thread.Sleep(5000);
-                //mViewerController.Monitor = mFrame.Monitor;
                 foreach (var key in mConfig.StartupKeyPresses.Split(','))
                     mViewerController.PressKey(key);
+
+                if (mManager != null) {
+                    mManager.AlwaysOnTop = true;
+                    mManager.BringToFront();
+                }
             }).Start();
 
 
