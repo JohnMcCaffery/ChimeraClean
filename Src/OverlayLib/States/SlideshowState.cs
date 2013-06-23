@@ -138,6 +138,7 @@ namespace Chimera.Overlay.States {
 
         protected override void TransitionToFinish() {
             SetTriggerState(true);
+            TransitionToStart();
         }
 
         protected override void TransitionFromStart() {
