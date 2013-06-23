@@ -193,10 +193,13 @@ namespace Chimera.OpenSim {
         public void Restart(string reason) {
             ThisLogger.Warn("Restarting viewer because of " + reason + ".");
             //new Thread(() => {
-                mViewerController.Close(true);
-                StopProxy();
-                StartProxy();
-                mViewerController.Start();
+            mClosingViewer = true;
+            mViewerController.Close(true);
+            StopProxy();
+            Thread.Sleep(1000);
+            mClosingViewer = false;
+            StartProxy();
+            mViewerController.Start();
             //}).Start();
         }
 
@@ -317,7 +320,8 @@ namespace Chimera.OpenSim {
             if (mConfig.AutoRestartViewer && !mClosingViewer)
                 Restart("UnexpectedViewerClose");
             mClosingViewer = false;
-        }
+        }
+
         public void SetForm(Form form) {
             sForm = form;
         }

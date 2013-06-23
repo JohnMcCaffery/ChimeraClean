@@ -11,16 +11,18 @@ using System.Net;
 namespace Chimera.RemoteControl {
     public class RemoteControlPlugin : ISystemPlugin {
         public const string SHUTDOWN = "Exit";
-        public const int PORT = 8050;
+        private int mPort = 8050;
 
         private Core mCore;
         private Form mForm;
         private bool mEnabled;
-        private bool mListening;
+        private IPEndPoint ep;
         private UdpClient mListener;
 
         public void Init(Core coordinator) {
             mCore = coordinator;
+            mPort = new RemoteControlConfig().Port;
+            ep = new IPEndPoint(IPAddress.Any, mPort);
         }
 
         public void SetForm(System.Windows.Forms.Form form) {
@@ -40,9 +42,11 @@ namespace Chimera.RemoteControl {
                     mEnabled = value;
                     if (value)
                         Listen();
-                    else if (mListening)
+                    else if (mListener != null)
                         StopListening();
-                        StopListening();
+
+                    if (EnabledChanged != null)
+                        EnabledChanged(this, value);
                 }
             }
         }
@@ -66,26 +70,30 @@ namespace Chimera.RemoteControl {
         public void Draw(System.Drawing.Graphics graphics, Func<OpenMetaverse.Vector3, System.Drawing.Point> to2D, Action redraw, Perspective perspective) { }
 
         private void Listen() {
-            mListener = new UdpClient(PORT);
+            mListener = new UdpClient(mPort);
             Thread listenThread = new Thread(ListenThread);
             listenThread.Name = "RemoteControlListener";
             listenThread.Start();
         }
 
         private void ListenThread() {
-            IPEndPoint ep = new IPEndPoint(IPAddress.Any, PORT);
-            byte[] data = mListener.Receive(ref ep);
-            string msg = Encoding.ASCII.GetString(data);
+            try {
+                byte[] data = mListener.Receive(ref ep);
+                string msg = Encoding.ASCII.GetString(data);
 
-            if (msg == SHUTDOWN)
-                mForm.Close();
-            else if (mCore.HasFrame(msg))
-                mCore[msg].Output.Restart("RemoteInstructionReceived");
+                if (msg == SHUTDOWN)
+                    mForm.Close();
+                else if (mCore.HasFrame(msg))
+                    mCore[msg].Output.Restart("RemoteInstructionReceived");
+            } catch (Exception e) {
+                //Do nothing
+            }
         }
 
         private void StopListening() {
             if (mListener != null) {
                 mListener.Close();
+                mListener = null;
             }
         }
     }

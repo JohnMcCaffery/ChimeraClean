@@ -63,9 +63,6 @@
     <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="GridProxy">
-      <HintPath>..\..\Lib\GridProxy.dll</HintPath>
-    </Reference>
     <Reference Include="log4net">
       <HintPath>..\..\Lib\log4net.dll</HintPath>
     </Reference>
@@ -141,6 +138,10 @@
     <Compile Include="ViewerProxy.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\libopenmetaverse\Programs\GridProxy\GridProxy.csproj">
+      <Project>{CF1DBF74-BDF4-462A-BDFA-5B6B1149781E}</Project>
+      <Name>GridProxy</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ChimeraLib\ChimeraLib.csproj">
       <Project>{58E39BFE-20D5-4C8D-BCFC-6B5E641C2DFF}</Project>
       <Name>ChimeraLib</Name>

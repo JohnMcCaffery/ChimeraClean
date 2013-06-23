@@ -469,7 +469,9 @@ namespace Chimera.Util {
         }
 
         public ProcessController(string exe, string workingDir, string args) {
-            Start(mExe, mWorkingDir, mArgs);
+            mExe = exe;
+            mWorkingDir = workingDir;
+            mArgs = args;
         }
 
         public bool Start() {
