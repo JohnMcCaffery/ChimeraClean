@@ -340,7 +340,7 @@ namespace Chimera.OpenSim {
         #endregion
 
         private void CheckTimeout() {
-            if (DateTime.Now.Subtract(mProxyController.LastUpdatePacket).TotalMinutes > 1.0) {
+            if (mProxyController.Started && DateTime.Now.Subtract(mProxyController.LastUpdatePacket).TotalMinutes > 1.0) {
                 mProxyController.LastUpdatePacket = DateTime.Now;
                 Restart("ViewerStoppedResponding");
             }
