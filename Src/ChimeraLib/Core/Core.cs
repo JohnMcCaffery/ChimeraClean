@@ -260,6 +260,11 @@ namespace Chimera {
         public event EventHandler<HeightmapChangedEventArgs> HeightmapChanged;
 
         /// <summary>
+        /// Triggered when all frames, output modules and plugins have been initialised.
+        /// </summary>
+        public event Action InitialisationComplete;
+
+        /// <summary>
         /// Triggered every tick. Listen for this to keep time across the system.
         /// </summary>
         public event Action Tick;
@@ -287,11 +292,11 @@ namespace Chimera {
                     }
                 }
 
-                foreach (string window in mConfig.Windows)
+                foreach (string frame in mConfig.Frames)
                     if (outputFactory != null)
-                        AddFrame(new Frame(window, outputFactory.Create()));
+                        AddFrame(new Frame(frame, outputFactory.Create()));
                     else
-                        AddFrame(new Frame(window));
+                        AddFrame(new Frame(frame));
 
                 foreach (var plugin in mPlugins) {
                     plugin.Init(this);
@@ -305,6 +310,9 @@ namespace Chimera {
                 //tickThread.Priority = ThreadPriority.Highest;
                 tickThread.Start();
                 mInitialised = true;
+
+                if (InitialisationComplete != null)
+                    InitialisationComplete();
             } catch (Exception e) {
                 Logger.Warn("Unable to instantiate core. " + e.Message);
                 Logger.Debug("Unable to instantiate core.", e);

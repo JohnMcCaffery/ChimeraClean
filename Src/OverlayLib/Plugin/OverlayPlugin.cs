@@ -66,7 +66,7 @@ namespace Chimera.Overlay {
 
         public event Action<IPlugin, bool> EnabledChanged;
 
-        public UserControl ControlPanel {
+        public override Control ControlPanel {
             get {
                 if (mPanel == null) {
                     if (mPlayer != null) {

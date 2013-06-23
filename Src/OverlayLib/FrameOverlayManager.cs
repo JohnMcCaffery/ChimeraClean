@@ -408,5 +408,10 @@ namespace Chimera.Overlay {
         internal void SetForm(Form form) {
             mMasterForm = form;
         }
+
+        public void BringToFront() {
+            if (mOverlayWindow != null)
+                mOverlayWindow.BringOverlayToFront();
+        }
     }
 }

@@ -11,6 +11,7 @@ using System.Diagnostics;
 using Chimera.OpenSim.GUI;
 using System.Threading;
 using log4net;
+using Chimera.Overlay;
 
 namespace Chimera.OpenSim {
     public class OpenSimController : ISystemPlugin, IOutput {
@@ -23,6 +24,7 @@ namespace Chimera.OpenSim {
         private Frame mFrame;
         private OutputPanel mOutputPanel;
         private InputPanel mInputPanel;
+        private FrameOverlayManager mManager = null;
 
         private SetFollowCamProperties mFollowCamProperties;
         private ProxyControllerBase mProxyController;
@@ -173,6 +175,7 @@ namespace Chimera.OpenSim {
             mFrame.Core.CameraUpdated += new Action<Core,CameraUpdateEventArgs>(Coordinator_CameraUpdated);
             mFrame.Core.CameraModeChanged += new Action<Core,ControlMode>(Coordinator_CameraModeChanged);
             mFrame.Core.EyeUpdated += new Action<Core,EventArgs>(Coordinator_EyeUpdated);
+            mFrame.Core.InitialisationComplete += new Action(Core_InitialisationComplete);
             mFrame.Changed += new Action<Chimera.Frame,EventArgs>(mFrame_Changed);
             mFrame.MonitorChanged += new Action<Chimera.Frame,Screen>(mFrame_MonitorChanged);
             mProxyController.OnClientLoggedIn += new EventHandler(mProxyController_OnClientLoggedIn);
@@ -184,6 +187,11 @@ namespace Chimera.OpenSim {
                 Launch();
             else if (mConfig.AutoStartProxy)
                 StartProxy();
+        }
+
+        void Core_InitialisationComplete() {
+            if (mFrame.Core.HasPlugin<OverlayPlugin>())
+                mManager = mFrame.Core.GetPlugin<OverlayPlugin>()[mFrame.Name];
         }
 
         public bool Launch() {
@@ -298,6 +306,9 @@ namespace Chimera.OpenSim {
                 //mViewerController.Monitor = mFrame.Monitor;
                 foreach (var key in mConfig.StartupKeyPresses.Split(','))
                     mViewerController.PressKey(key);
+
+                if (mManager != null)
+                    mManager.BringToFront();
             }).Start();
 
 
