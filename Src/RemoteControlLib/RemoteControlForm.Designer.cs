@@ -30,6 +30,7 @@
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.centreButton = new System.Windows.Forms.Button();
             this.rightButton = new System.Windows.Forms.Button();
+            this.shutdownCheck = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.hSplit)).BeginInit();
             this.hSplit.Panel1.SuspendLayout();
             this.hSplit.Panel2.SuspendLayout();
@@ -54,6 +55,7 @@
             // 
             // hSplit.Panel1
             // 
+            this.hSplit.Panel1.Controls.Add(this.shutdownCheck);
             this.hSplit.Panel1.Controls.Add(this.shutdownButton);
             // 
             // hSplit.Panel2
@@ -146,6 +148,18 @@
             this.rightButton.UseVisualStyleBackColor = true;
             this.rightButton.Click += new System.EventHandler(this.rightButton_Click);
             // 
+            // shutdownCheck
+            // 
+            this.shutdownCheck.AutoSize = true;
+            this.shutdownCheck.Checked = true;
+            this.shutdownCheck.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.shutdownCheck.Location = new System.Drawing.Point(13, 13);
+            this.shutdownCheck.Name = "shutdownCheck";
+            this.shutdownCheck.Size = new System.Drawing.Size(127, 17);
+            this.shutdownCheck.TabIndex = 1;
+            this.shutdownCheck.Text = "Shut Down Computer";
+            this.shutdownCheck.UseVisualStyleBackColor = true;
+            // 
             // RemoteControlForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -155,6 +169,7 @@
             this.Name = "RemoteControlForm";
             this.Text = "Caen Remote Control";
             this.hSplit.Panel1.ResumeLayout(false);
+            this.hSplit.Panel1.PerformLayout();
             this.hSplit.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.hSplit)).EndInit();
             this.hSplit.ResumeLayout(false);
@@ -179,5 +194,6 @@
         private System.Windows.Forms.SplitContainer splitContainer2;
         private System.Windows.Forms.Button centreButton;
         private System.Windows.Forms.Button rightButton;
+        private System.Windows.Forms.CheckBox shutdownCheck;
     }
 }

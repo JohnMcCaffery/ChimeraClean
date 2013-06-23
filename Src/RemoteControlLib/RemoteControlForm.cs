@@ -31,9 +31,11 @@ namespace Chimera.RemoteControl {
 
         private void shutdownButton_Click(object sender, EventArgs e) {
             Send(RemoteControlPlugin.SHUTDOWN);
-            mOpensim.PressKey("q{ENTER}");
-            Thread.Sleep(10000);
-            Process.Start("shutdown","/s /t 0");
+            if (shutdownCheck.Checked) {
+                mOpensim.PressKey("q{ENTER}");
+                Thread.Sleep(10000);
+                Process.Start("shutdown", "/s /t 0");
+            }
         }
 
         private void Send(string msg) {
