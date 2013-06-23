@@ -154,7 +154,6 @@
             this.Controls.Add(this.hSplit);
             this.Name = "RemoteControlForm";
             this.Text = "Caen Remote Control";
-            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.hSplit.Panel1.ResumeLayout(false);
             this.hSplit.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.hSplit)).EndInit();

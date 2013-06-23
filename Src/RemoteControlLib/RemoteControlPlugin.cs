@@ -16,6 +16,7 @@ namespace Chimera.RemoteControl {
         private Core mCore;
         private Form mForm;
         private bool mEnabled;
+        private bool mCont;
         private IPEndPoint ep;
         private UdpClient mListener;
 
@@ -77,20 +78,25 @@ namespace Chimera.RemoteControl {
         }
 
         private void ListenThread() {
-            try {
-                byte[] data = mListener.Receive(ref ep);
-                string msg = Encoding.ASCII.GetString(data);
+            mCont = true;
+            while (mCont) {
+                try {
+                    byte[] data = mListener.Receive(ref ep);
+                    string msg = Encoding.ASCII.GetString(data);
 
-                if (msg == SHUTDOWN)
-                    mForm.Close();
-                else if (mCore.HasFrame(msg))
-                    mCore[msg].Output.Restart("RemoteInstructionReceived");
-            } catch (Exception e) {
-                //Do nothing
+                    if (msg == SHUTDOWN) {
+                        mCont = false;
+                        mForm.Close();
+                    } else if (mCore.HasFrame(msg))
+                        mCore[msg].Output.Restart("RemoteInstructionReceived");
+                } catch (Exception e) {
+                    //Do nothing
+                }
             }
         }
 
         private void StopListening() {
+            mCont = false;
             if (mListener != null) {
                 mListener.Close();
                 mListener = null;

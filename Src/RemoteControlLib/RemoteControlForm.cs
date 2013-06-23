@@ -22,7 +22,8 @@ namespace Chimera.RemoteControl {
             InitializeComponent();
 
             mOpensim = new ProcessController(mConfig.OpenSimExe, Path.GetDirectoryName(mConfig.OpenSimExe), "");
-            mOpensim.Start();
+            if (File.Exists(mConfig.OpenSimExe))
+                mOpensim.Start();
 
             TopMost = true;
             Text = mConfig.Title;
@@ -54,6 +55,7 @@ namespace Chimera.RemoteControl {
                 Console.WriteLine("Unable to send " + msg + " to " + mConfig.ClientAddress + ":" + mConfig.Port + ". " + e.Message);
                 Console.WriteLine(e.StackTrace);
             }
+            sending_socket.Close();
         }
 
         private void leftButton_Click(object sender, EventArgs e) {
