@@ -1509,6 +1509,7 @@ namespace Chimera.Util {
             Logger.Warn(e.StackTrace);
             sRoot.OnCrash(e);
             //throw e;
+            Logger.Warn("Exiting with code 42");
             Environment.Exit(42);
         }
 

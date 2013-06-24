@@ -7,9 +7,11 @@ using System.Windows.Forms;
 using System.Net.Sockets;
 using System.Threading;
 using System.Net;
+using log4net;
 
 namespace Chimera.RemoteControl {
     public class RemoteControlPlugin : ISystemPlugin {
+        private static readonly ILog Logger = LogManager.GetLogger("RemoteControl");
         public const string SHUTDOWN = "Exit";
         private int mPort = 8050;
 
@@ -83,6 +85,8 @@ namespace Chimera.RemoteControl {
                 try {
                     byte[] data = mListener.Receive(ref ep);
                     string msg = Encoding.ASCII.GetString(data);
+
+                    Logger.Info("Received '" + msg + "'.");
 
                     if (msg == SHUTDOWN) {
                         mCont = false;
