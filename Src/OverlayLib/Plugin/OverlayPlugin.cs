@@ -53,7 +53,12 @@ namespace Chimera.Overlay {
                 table += "        <TD>Shortest Visit (m)</TD>" + Environment.NewLine;
                 table += "        <TD>Mean Visit Length (m)</TD>" + Environment.NewLine;
                 table += "    </TR>" + Environment.NewLine;
+
+                foreach (var state in mStates.Values)
+                    table += state.StatisticsRow;
+
                 table += "</TABLE>";
+
                 return table;
             }
         }

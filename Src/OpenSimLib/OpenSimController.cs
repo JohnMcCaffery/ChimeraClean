@@ -20,11 +20,14 @@ namespace Chimera.OpenSim {
         private readonly ILog ThisLogger = LogManager.GetLogger("OpenSim");
         private bool mEnabled;
         private bool mClosingViewer;
+        private bool mShuttingDown;
         private ViewerConfig mConfig;
         private Frame mFrame;
         private OutputPanel mOutputPanel;
         private InputPanel mInputPanel;
         private FrameOverlayManager mManager = null;
+
+        private Action mExitListener;
 
         private SetFollowCamProperties mFollowCamProperties;
         private ProxyControllerBase mProxyController;
@@ -122,9 +125,8 @@ namespace Chimera.OpenSim {
         }
 
         public void Close() {
-            mClosingViewer = true;
-            mViewerController.Close(false);
-            StopProxy();
+            mShuttingDown = true;
+            Stop();
         }
 
         public void Draw(Graphics graphics, Func<Vector3, Point> to2D, Action redraw, Perspective perspective) { }
@@ -170,11 +172,13 @@ namespace Chimera.OpenSim {
             mFrame = frame;
             mConfig = new ViewerConfig(frame.Name);
 
-            mViewerController = new ViewerController(mConfig.ViewerToggleHUDKey);
+            mViewerController = new ViewerController(mConfig.ViewerToggleHUDKey, mFrame.Name);
             if (mConfig.BackwardsCompatible)
                 mProxyController = new BackwardCompatibleController(frame);
             else
                 mProxyController = new FullController(frame);
+
+            mExitListener = new Action(mViewerController_Exited);
 
             mFrame.Core.DeltaUpdated += new Action<Core,DeltaUpdateEventArgs>(Coordinator_DeltaUpdated);
             mFrame.Core.CameraUpdated += new Action<Core,CameraUpdateEventArgs>(Coordinator_CameraUpdated);
@@ -185,7 +189,7 @@ namespace Chimera.OpenSim {
             mFrame.MonitorChanged += new Action<Chimera.Frame,Screen>(mFrame_MonitorChanged);
             mProxyController.OnClientLoggedIn += new EventHandler(mProxyController_OnClientLoggedIn);
             mProxyController.PositionChanged += new Action<Vector3,Rotation>(mProxyController_PositionChanged);
-            mViewerController.Exited += new Action(mViewerController_Exited);
+            mViewerController.Exited += mExitListener;
 
 
             if (mConfig.AutoStartViewer)
@@ -204,15 +208,17 @@ namespace Chimera.OpenSim {
         }
 
         public void Restart(string reason) {
-            ThisLogger.Warn("Restarting viewer because of " + reason + ".");
+            ThisLogger.Warn("Restarting " + mFrame.Name + " viewer because " + reason + ".");
             //new Thread(() => {
             mClosingViewer = true;
             mViewerController.Close(true);
             StopProxy();
-            Thread.Sleep(1000);
-            mClosingViewer = false;
-            StartProxy();
-            mViewerController.Start();
+            if (!mShuttingDown) {
+                Thread.Sleep(1000);
+                mClosingViewer = false;
+                StartProxy();
+                mViewerController.Start();
+            }
             //}).Start();
         }
 
@@ -356,6 +362,12 @@ namespace Chimera.OpenSim {
                 sForm.Invoke(new Action(() => mProxyController.Stop()));
             else
                 mProxyController.Stop();
+        }
+
+        public void Stop() {
+            mClosingViewer = true;
+            mViewerController.Close(false);
+            StopProxy();
         }
     }
 }

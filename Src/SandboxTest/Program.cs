@@ -120,7 +120,7 @@ namespace Test {
             //BackwardCompatibleController proxy = new BackwardCompatibleController(w);
             proxy.OnClientLoggedIn += (source, args) => new Thread(SendPackets).Start(proxy);
             proxy.StartProxy(8080, "http://localhost:9000");
-            ViewerController viewer = new ViewerController("%^{F1}");
+            ViewerController viewer = new ViewerController("%^{F1}", "MainWindow");
 
             string exe = Path.GetFullPath("../../Armadillo-Phoenix/Armadillo/Bin/firestorm-bin.exe");
             //string exe = "C:\\Program Files (x86)\\Firestorm-Release\\Firestorm-Release.exe";

@@ -81,20 +81,31 @@ namespace Chimera.RemoteControl {
 
         private void ListenThread() {
             mCont = true;
+            string msg = "Not Yet Received";
             while (mCont) {
                 try {
                     byte[] data = mListener.Receive(ref ep);
-                    string msg = Encoding.ASCII.GetString(data);
+                    msg = Encoding.ASCII.GetString(data);
 
                     Logger.Info("Received '" + msg + "'.");
 
                     if (msg == SHUTDOWN) {
                         mCont = false;
-                        mForm.Close();
+                        mForm.Invoke(new Action(() => mForm.Close()));
                     } else if (mCore.HasFrame(msg))
                         mCore[msg].Output.Restart("RemoteInstructionReceived");
                 } catch (Exception e) {
                     //Do nothing
+                    Logger.Warn("Problem processing '" + msg + "'.", e);
+                    if (!mCont) {
+                        try {
+                            mCore.Close();
+                        } catch (Exception ex) {
+                            Logger.Warn("Problem closing down on failed exit. ", ex);
+                        } finally {
+                            Environment.Exit(-1);
+                        }
+                    }
                 }
             }
         }

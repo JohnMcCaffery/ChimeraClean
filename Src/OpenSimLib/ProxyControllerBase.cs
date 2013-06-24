@@ -16,7 +16,7 @@ using log4net;
 namespace Chimera.OpenSim {
     public abstract class ProxyControllerBase {
         private static ProxyControllerPacketThread CameraThread = null;
-        private readonly ILog ThisLogger = LogManager.GetLogger("OpenSim");
+        private readonly ILog ThisLogger;
         private readonly Frame mFrame;
         private Proxy mProxy;
         private PacketDelegate mAgentUpdateListener;
@@ -84,6 +84,9 @@ namespace Chimera.OpenSim {
         }
 
         internal ProxyControllerBase(Frame frame) {
+            mFrame = frame;
+
+            ThisLogger = LogManager.GetLogger("OpenSim." + mFrame.Name + "Proxy");
             mViewerConfig = new ViewerConfig(frame.Name);
             if (mViewerConfig.UseThread) {
                 if (CameraThread == null)
@@ -92,7 +95,6 @@ namespace Chimera.OpenSim {
                     CameraThread.AddController(this);
             }
 
-            mFrame = frame;
             mAgentUpdateListener = new PacketDelegate(mProxy_AgentUpdatePacketReceived);
         }
 
@@ -144,9 +146,11 @@ namespace Chimera.OpenSim {
                 CameraThread.Stop();
 
             if (mProxy != null) {
+                ThisLogger.Debug("Closing");
                 mProxy.Stop();
                 mProxy = null;
             }
+            ThisLogger.Info("Closed");
         }
 
         public void Chat(string message, int channel) {

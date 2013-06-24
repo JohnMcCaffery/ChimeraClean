@@ -636,8 +636,8 @@ namespace Chimera {
                 plugin.Enabled = false;
                 plugin.Close();
             }
-            foreach (var window in Frames)
-                window.Close();
+            foreach (var frame in Frames)
+                frame.Close();
 
             if (Closed != null)
                 Closed(this, null);
