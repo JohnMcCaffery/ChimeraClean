@@ -36,17 +36,17 @@ namespace Chimera {
         /// </summary>
         [STAThread]
         public static void Main() {
-            /*
             LogManager.GetLogger("Init");
             Application.SetCompatibleTextRenderingDefault(false);
 
             Launcher.Launcher launcher = Launcher.Launcher.Create();
             launcher.Launch();
-            */
 
+            /*
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new RemoteControlForm());
+            */
         }
     }
 }
