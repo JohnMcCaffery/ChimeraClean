@@ -12,9 +12,11 @@ using System.Net.Sockets;
 using System.Net;
 using System.Diagnostics;
 using System.Threading;
+using log4net;
 
 namespace Chimera.RemoteControl {
     public partial class RemoteControlForm : Form {
+        private static readonly ILog Logger = LogManager.GetLogger("RemoteControl");
         private RemoteControlConfig mConfig = new RemoteControlConfig();
         private ProcessController mOpensim;
 
@@ -51,11 +53,11 @@ namespace Chimera.RemoteControl {
             byte[] send_buffer = Encoding.ASCII.GetBytes(msg);
 
             // Remind the user of where this is going.
-            Console.WriteLine("sending to address: {0} port: {1}", sending_end_point.Address, sending_end_point.Port);
+            Logger.Info(string.Format("sending {2} to {0}:{1}", sending_end_point.Address, sending_end_point.Port, msg));
             try {
                 sending_socket.SendTo(send_buffer, sending_end_point);
             } catch (Exception e) {
-                Console.WriteLine("Unable to send " + msg + " to " + mConfig.ClientAddress + ":" + mConfig.Port + ". " + e.Message);
+                Logger.Warn(string.Format("Unable to send {2} to {0}:{1}", sending_end_point.Address, sending_end_point.Port, msg), e);
                 Console.WriteLine(e.StackTrace);
             }
             sending_socket.Close();
