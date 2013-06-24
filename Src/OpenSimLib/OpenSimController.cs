@@ -24,7 +24,7 @@ namespace Chimera.OpenSim {
         private Frame mFrame;
         private OutputPanel mOutputPanel;
         private InputPanel mInputPanel;
-        private FrameOverlayManager mManager;
+        private FrameOverlayManager mManager = null;
 
         private SetFollowCamProperties mFollowCamProperties;
         private ProxyControllerBase mProxyController;
@@ -80,8 +80,6 @@ namespace Chimera.OpenSim {
             mFollowCamProperties = new SetFollowCamProperties(Frame.Core);
             if (mProxyController.Started)
                 mFollowCamProperties.SetProxy(mProxyController.Proxy);
-
-            coordinator.InitialisationFinished += new Action(coordinator_InitialisationFinished);
         }
 
         void coordinator_InitialisationFinished() {
@@ -182,6 +180,7 @@ namespace Chimera.OpenSim {
             mFrame.Core.CameraUpdated += new Action<Core,CameraUpdateEventArgs>(Coordinator_CameraUpdated);
             mFrame.Core.CameraModeChanged += new Action<Core,ControlMode>(Coordinator_CameraModeChanged);
             mFrame.Core.EyeUpdated += new Action<Core,EventArgs>(Coordinator_EyeUpdated);
+            mFrame.Core.InitialisationComplete += new Action(Core_InitialisationComplete);
             mFrame.Changed += new Action<Chimera.Frame,EventArgs>(mFrame_Changed);
             mFrame.MonitorChanged += new Action<Chimera.Frame,Screen>(mFrame_MonitorChanged);
             mProxyController.OnClientLoggedIn += new EventHandler(mProxyController_OnClientLoggedIn);
@@ -193,6 +192,11 @@ namespace Chimera.OpenSim {
                 Launch();
             else if (mConfig.AutoStartProxy)
                 StartProxy();
+        }
+
+        void Core_InitialisationComplete() {
+            if (mFrame.Core.HasPlugin<OverlayPlugin>())
+                mManager = mFrame.Core.GetPlugin<OverlayPlugin>()[mFrame.Name];
         }
 
         public bool Launch() {
@@ -308,7 +312,6 @@ namespace Chimera.OpenSim {
                     mViewerController.PressKey(key);
 
                 if (mManager != null) {
-                    mManager.AlwaysOnTop = true;
                     mManager.BringToFront();
                 }
             }).Start();
@@ -342,7 +345,7 @@ namespace Chimera.OpenSim {
         #endregion
 
         private void CheckTimeout() {
-            if (DateTime.Now.Subtract(mProxyController.LastUpdatePacket).TotalMinutes > 1.0) {
+            if (mProxyController.Started && DateTime.Now.Subtract(mProxyController.LastUpdatePacket).TotalMinutes > 1.0) {
                 mProxyController.LastUpdatePacket = DateTime.Now;
                 Restart("ViewerStoppedResponding");
             }
