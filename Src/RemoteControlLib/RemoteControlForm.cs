@@ -27,6 +27,7 @@ namespace Chimera.RemoteControl {
 
             TopMost = true;
             Text = mConfig.Title;
+            shutdownCheck.Checked = mConfig.ShutdownEverything;
         }
 
         private void shutdownButton_Click(object sender, EventArgs e) {
