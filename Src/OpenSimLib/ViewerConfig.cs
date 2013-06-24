@@ -58,6 +58,7 @@ namespace Chimera.OpenSim {
         public float DeltaScale;
         public bool ControlFrustum;
         public bool UseThread;
+        public bool CheckForPause;
 
         public override string Group {
             get { return "SecondLifeViewer"; }
@@ -129,6 +130,8 @@ namespace Chimera.OpenSim {
             BackwardsCompatible = Get(true, "BackwardsCompatible", false, "If true, no unusual packets will be injected into the viewer. This will disable remote control and frustum control.");
 
             UseThread = Get(true, "UseThread", false, "If true then each proxy will spawn a thread to deliver camera updates to the viewer at a constant rate. If false packets will be injected whenever CameraUpdate events are triggered.");
+
+            CheckForPause = Get(true, "CheckForPause", false, "Whether the proxy controller should check to see whether the updates have been received which correspond to the updates sent out.");
 
             //EnableWindowPackets = Init.Get(generalConfig, "EnableWindowPackets", true);
             //UseSetFollowCamPackets = !enableWindowPackets || Get(generalConfig, "UseSetFollowCamPackets", false);

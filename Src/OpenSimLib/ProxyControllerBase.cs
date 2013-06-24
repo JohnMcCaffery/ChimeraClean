@@ -122,6 +122,7 @@ namespace Chimera.OpenSim {
                 mProxy.AddLoginResponseDelegate(mProxy_LoginResponse);
                 mProxy.AddDelegate(PacketType.AgentUpdate, Direction.Outgoing, mProxy_AgentUpdatePacketReceived);
 
+                ThisLogger.Info("Proxying " + mConfig.remoteLoginUri);
                 mProxy.Start();
 
                 if (pPositionChanged != null)
@@ -186,13 +187,15 @@ namespace Chimera.OpenSim {
 
             if (mFrame.Core.ControlMode == ControlMode.Absolute) {
                 //new Thread(() => {
-                string key = MakeKey(pos);
-                lock (mUnackedUpdates) {
-                    if (mUnackedUpdates.ContainsKey(key))
-                        mUnackedUpdates.Remove(key);
-                }
+                if (mViewerConfig.CheckForPause) {
+                    string key = MakeKey(pos);
+                    lock (mUnackedUpdates) {
+                        if (mUnackedUpdates.ContainsKey(key))
+                            mUnackedUpdates.Remove(key);
+                    }
 
-                CheckForPause();
+                    CheckForPause();
+                }
                 //}).Start();
             }
 
@@ -229,7 +232,7 @@ namespace Chimera.OpenSim {
             if (mFrame.Core.ControlMode == ControlMode.Absolute)
                 MarkUntracked();
 
-            if (mViewerConfig.UseThread) {
+            if (mViewerConfig.CheckForPause && mViewerConfig.UseThread) {
                 //PrintTickInfo();
                 Packet p = ActualSetCamera();
                 lock (this)
@@ -238,7 +241,7 @@ namespace Chimera.OpenSim {
                 mProxy.InjectPacket(ActualSetCamera(), Direction.Incoming);
         }
         public void SetCamera(Vector3 positionDelta, Rotation orientationDelta) {
-            if (mFrame.Core.ControlMode == ControlMode.Absolute)
+            if (mViewerConfig.CheckForPause && mFrame.Core.ControlMode == ControlMode.Absolute)
                 MarkUntracked();
 
             //PrintTickInfo();
