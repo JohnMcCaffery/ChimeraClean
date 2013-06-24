@@ -13,29 +13,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LauncherLib", "LauncherLib\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JoystickLib", "JoystickLib\JoystickLib.csproj", "{C184F128-6AE6-43D7-922E-B706E7B4E576}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Config", "Config", "{AD5F2EE2-5D80-4DC5-924F-C5636B2103E4}"
-	ProjectSection(SolutionItems) = preProject
-		..\Config\Bindings.xml = ..\Config\Bindings.xml
-		..\Config\Core.ini = ..\Config\Core.ini
-		..\Config\ExampleRoom.xml = ..\Config\ExampleRoom.xml
-		..\Config\Heightmap.ini = ..\Config\Heightmap.ini
-		..\Config\Kinect.ini = ..\Config\Kinect.ini
-		..\Config\KinectNew.ini = ..\Config\KinectNew.ini
-		..\Config\LaptopOverlay.ini = ..\Config\LaptopOverlay.ini
-		..\Config\Launch.ini = ..\Config\Launch.ini
-		..\Config\Main.ini = ..\Config\Main.ini
-		..\Config\NoOverlay.ini = ..\Config\NoOverlay.ini
-		..\Config\OpenSim.ini = ..\Config\OpenSim.ini
-		..\Config\Overlay.ini = ..\Config\Overlay.ini
-		..\Config\OverlayLaptop.ini = ..\Config\OverlayLaptop.ini
-		..\Config\OverlayNone.ini = ..\Config\OverlayNone.ini
-		..\Config\OverlayTouchscreen.ini = ..\Config\OverlayTouchscreen.ini
-		..\Config\Touchscreen.ini = ..\Config\Touchscreen.ini
-		..\Config\TouchscreenOverlay.ini = ..\Config\TouchscreenOverlay.ini
-		..\Config\Windows.ini = ..\Config\Windows.ini
-		..\Config\XBoxController.ini = ..\Config\XBoxController.ini
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TouchscreenLib", "TouchscreenLib\TouchscreenLib.csproj", "{7780A366-F9CE-4E9F-8C91-0763F73A3A8A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Overlays", "Overlays", "{AA20755A-F03E-4FF6-A86E-DFC56F1994A9}"
@@ -145,7 +122,59 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Overlay", "Overlay", "{06FD
 		..\Bin\Overlays\Timespan\TimespanOverlay.xml = ..\Bin\Overlays\Timespan\TimespanOverlay.xml
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TimespanExe", "TimespanExe\TimespanExe.csproj", "{A4304EE2-9B06-416A-AD48-89434262E322}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{DB1A444F-C959-40FE-A90B-10FF61313DE7}"
+	ProjectSection(SolutionItems) = preProject
+		..\Bin\Scripts\launch.bat = ..\Bin\Scripts\launch.bat
+		..\Bin\Scripts\shutdown1.vbs = ..\Bin\Scripts\shutdown1.vbs
+		..\Bin\Scripts\shutdown2.vbs = ..\Bin\Scripts\shutdown2.vbs
+		..\Bin\Scripts\startup.bat = ..\Bin\Scripts\startup.bat
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Configs", "Configs", "{2C880FBA-0B83-43B9-9C64-69F9BD30D72A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{ED9701C7-AC45-41C5-A61A-788C9D636A73}"
+	ProjectSection(SolutionItems) = preProject
+		..\Bin\Configs\Test\Bindings.xml = ..\Bin\Configs\Test\Bindings.xml
+		..\Bin\Configs\Test\Core.ini = ..\Bin\Configs\Test\Core.ini
+		..\Bin\Configs\Test\Frames.ini = ..\Bin\Configs\Test\Frames.ini
+		..\Bin\Configs\Test\Heightmap.ini = ..\Bin\Configs\Test\Heightmap.ini
+		..\Bin\Configs\Test\KinectMovement.ini = ..\Bin\Configs\Test\KinectMovement.ini
+		..\Bin\Configs\Test\LaptopOverlay.ini = ..\Bin\Configs\Test\LaptopOverlay.ini
+		..\Bin\Configs\Test\Launch.ini = ..\Bin\Configs\Test\Launch.ini
+		..\Bin\Configs\Test\Main.ini = ..\Bin\Configs\Test\Main.ini
+		..\Bin\Configs\Test\OpenSim.ini = ..\Bin\Configs\Test\OpenSim.ini
+		..\Bin\Configs\Test\Overlay.ini = ..\Bin\Configs\Test\Overlay.ini
+		..\Bin\Configs\Test\Projectors.ini = ..\Bin\Configs\Test\Projectors.ini
+		..\Bin\Configs\Test\RemoteControl.ini = ..\Bin\Configs\Test\RemoteControl.ini
+		..\Bin\Configs\Test\TimespanRoom.xml = ..\Bin\Configs\Test\TimespanRoom.xml
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Timespan", "Timespan\Timespan.csproj", "{A4304EE2-9B06-416A-AD48-89434262E322}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Chimera", "Chimera", "{2E5DF2CA-8923-4171-8FAD-C5B15DE739B7}"
+	ProjectSection(SolutionItems) = preProject
+		..\Bin\Configs\Chimera\Bindings.xml = ..\Bin\Configs\Chimera\Bindings.xml
+		..\Bin\Configs\Chimera\Core.ini = ..\Bin\Configs\Chimera\Core.ini
+		..\Bin\Configs\Chimera\Frames.ini = ..\Bin\Configs\Chimera\Frames.ini
+		..\Bin\Configs\Chimera\Heightmap.ini = ..\Bin\Configs\Chimera\Heightmap.ini
+		..\Bin\Configs\Chimera\InstallBindings.xml = ..\Bin\Configs\Chimera\InstallBindings.xml
+		..\Bin\Configs\Chimera\KinectMovement.ini = ..\Bin\Configs\Chimera\KinectMovement.ini
+		..\Bin\Configs\Chimera\LaptopOverlay.ini = ..\Bin\Configs\Chimera\LaptopOverlay.ini
+		..\Bin\Configs\Chimera\Launch.ini = ..\Bin\Configs\Chimera\Launch.ini
+		..\Bin\Configs\Chimera\Main.ini = ..\Bin\Configs\Chimera\Main.ini
+		..\Bin\Configs\Chimera\NoOverlay.ini = ..\Bin\Configs\Chimera\NoOverlay.ini
+		..\Bin\Configs\Chimera\OpenSim.ini = ..\Bin\Configs\Chimera\OpenSim.ini
+		..\Bin\Configs\Chimera\Overlay.ini = ..\Bin\Configs\Chimera\Overlay.ini
+		..\Bin\Configs\Chimera\OverlayLaptop.ini = ..\Bin\Configs\Chimera\OverlayLaptop.ini
+		..\Bin\Configs\Chimera\OverlayNone.ini = ..\Bin\Configs\Chimera\OverlayNone.ini
+		..\Bin\Configs\Chimera\OverlayTouchscreen.ini = ..\Bin\Configs\Chimera\OverlayTouchscreen.ini
+		..\Bin\Configs\Chimera\Projectors.ini = ..\Bin\Configs\Chimera\Projectors.ini
+		..\Bin\Configs\Chimera\RemoteControl.ini = ..\Bin\Configs\Chimera\RemoteControl.ini
+		..\Bin\Configs\Chimera\TimespanRoom.xml = ..\Bin\Configs\Chimera\TimespanRoom.xml
+		..\Bin\Configs\Chimera\Touchscreen.ini = ..\Bin\Configs\Chimera\Touchscreen.ini
+		..\Bin\Configs\Chimera\TouchscreenOverlay.ini = ..\Bin\Configs\Chimera\TouchscreenOverlay.ini
+		..\Bin\Configs\Chimera\XBoxController.ini = ..\Bin\Configs\Chimera\XBoxController.ini
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -547,8 +576,8 @@ Global
 		{D5C5A295-5210-418E-85DD-CACB2FBCD863}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{D5C5A295-5210-418E-85DD-CACB2FBCD863}.Release|Win32.ActiveCfg = Release|Any CPU
 		{D5C5A295-5210-418E-85DD-CACB2FBCD863}.Release|x64.ActiveCfg = Release|Any CPU
-		{D5C5A295-5210-418E-85DD-CACB2FBCD863}.Release|x86.ActiveCfg = Release|Any CPU
-		{D5C5A295-5210-418E-85DD-CACB2FBCD863}.Release|x86.Build.0 = Release|Any CPU
+		{D5C5A295-5210-418E-85DD-CACB2FBCD863}.Release|x86.ActiveCfg = Release|x86
+		{D5C5A295-5210-418E-85DD-CACB2FBCD863}.Release|x86.Build.0 = Release|x86
 		{D5C5A295-5210-418E-85DD-CACB2FBCD863}.ReleaseVisual|Any CPU.ActiveCfg = Release|Any CPU
 		{D5C5A295-5210-418E-85DD-CACB2FBCD863}.ReleaseVisual|Any CPU.Build.0 = Release|Any CPU
 		{D5C5A295-5210-418E-85DD-CACB2FBCD863}.ReleaseVisual|Mixed Platforms.ActiveCfg = Release|Any CPU
@@ -605,7 +634,7 @@ Global
 		{CF1DBF74-BDF4-462A-BDFA-5B6B1149781E}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{CF1DBF74-BDF4-462A-BDFA-5B6B1149781E}.Release|Win32.ActiveCfg = Release|Any CPU
 		{CF1DBF74-BDF4-462A-BDFA-5B6B1149781E}.Release|x64.ActiveCfg = Release|Any CPU
-		{CF1DBF74-BDF4-462A-BDFA-5B6B1149781E}.Release|x86.ActiveCfg = Release|Any CPU
+		{CF1DBF74-BDF4-462A-BDFA-5B6B1149781E}.Release|x86.ActiveCfg = Release|x86
 		{CF1DBF74-BDF4-462A-BDFA-5B6B1149781E}.ReleaseVisual|Any CPU.ActiveCfg = Release|Any CPU
 		{CF1DBF74-BDF4-462A-BDFA-5B6B1149781E}.ReleaseVisual|Any CPU.Build.0 = Release|Any CPU
 		{CF1DBF74-BDF4-462A-BDFA-5B6B1149781E}.ReleaseVisual|Mixed Platforms.ActiveCfg = Release|Any CPU
@@ -649,5 +678,8 @@ Global
 		{48AD0346-709E-4D74-9F75-5F0D9820157F} = {B100C9B2-813B-4180-95BB-434A197819F1}
 		{CE093C7A-73E9-4099-BC51-C829AE71D482} = {B100C9B2-813B-4180-95BB-434A197819F1}
 		{06FD37A2-167A-47CA-9DF6-79B90A6A97F5} = {B100C9B2-813B-4180-95BB-434A197819F1}
+		{ED9701C7-AC45-41C5-A61A-788C9D636A73} = {2C880FBA-0B83-43B9-9C64-69F9BD30D72A}
+		{B100C9B2-813B-4180-95BB-434A197819F1} = {2C880FBA-0B83-43B9-9C64-69F9BD30D72A}
+		{2E5DF2CA-8923-4171-8FAD-C5B15DE739B7} = {2C880FBA-0B83-43B9-9C64-69F9BD30D72A}
 	EndGlobalSection
 EndGlobal

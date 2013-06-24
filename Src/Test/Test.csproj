@@ -61,6 +61,10 @@
       <Project>{FE0EAF99-0485-4B17-BFCD-D5D9A2890DB3}</Project>
       <Name>LauncherLib</Name>
     </ProjectReference>
+    <ProjectReference Include="..\RemoteControlLib\RemoteControlLib.csproj">
+      <Project>{D5C5A295-5210-418E-85DD-CACB2FBCD863}</Project>
+      <Name>RemoteControlLib</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">
