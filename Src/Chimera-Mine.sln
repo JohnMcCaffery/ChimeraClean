@@ -63,25 +63,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Flythroughs", "Flythroughs"
 		..\Bin\Flythroughs\TimespanFlythrough.xml = ..\Bin\Flythroughs\TimespanFlythrough.xml
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TestConfig", "TestConfig", "{B2BC58C1-0EFE-49D2-89AA-0618EF957ADD}"
-	ProjectSection(SolutionItems) = preProject
-		..\Bin\TestConfig\Bindings.xml = ..\Bin\TestConfig\Bindings.xml
-		..\Bin\TestConfig\Core.ini = ..\Bin\TestConfig\Core.ini
-		..\Bin\TestConfig\Frames.ini = ..\Bin\TestConfig\Frames.ini
-		..\Bin\TestConfig\Heightmap.ini = ..\Bin\TestConfig\Heightmap.ini
-		..\Bin\TestConfig\InstallBindings.xml = ..\Bin\TestConfig\InstallBindings.xml
-		..\Bin\TestConfig\KinectMovement.ini = ..\Bin\TestConfig\KinectMovement.ini
-		..\Bin\TestConfig\LaptopOverlay.ini = ..\Bin\TestConfig\LaptopOverlay.ini
-		..\Bin\TestConfig\Launch.ini = ..\Bin\TestConfig\Launch.ini
-		..\Bin\TestConfig\Main.ini = ..\Bin\TestConfig\Main.ini
-		..\Bin\TestConfig\OpenSim.ini = ..\Bin\TestConfig\OpenSim.ini
-		..\Bin\TestConfig\Overlay.ini = ..\Bin\TestConfig\Overlay.ini
-		..\Bin\TestConfig\Projectors.ini = ..\Bin\TestConfig\Projectors.ini
-		..\Bin\TestConfig\RemoteControl.ini = ..\Bin\TestConfig\RemoteControl.ini
-		..\Bin\TestConfig\Touchscreen.ini = ..\Bin\TestConfig\Touchscreen.ini
-		..\Bin\TestConfig\XBoxController.ini = ..\Bin\TestConfig\XBoxController.ini
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SandboxTest", "SandboxTest\SandboxTest.csproj", "{0C11639E-BC1A-4A0B-853B-2ABC822A2208}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", "{896676F6-4364-46F9-9762-1D9C6EACDF6F}"
@@ -138,15 +119,23 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{ED9701C7-A
 		..\Bin\Configs\Test\Core.ini = ..\Bin\Configs\Test\Core.ini
 		..\Bin\Configs\Test\Frames.ini = ..\Bin\Configs\Test\Frames.ini
 		..\Bin\Configs\Test\Heightmap.ini = ..\Bin\Configs\Test\Heightmap.ini
+		..\Bin\Configs\Test\InstallBindings.xml = ..\Bin\Configs\Test\InstallBindings.xml
 		..\Bin\Configs\Test\KinectMovement.ini = ..\Bin\Configs\Test\KinectMovement.ini
 		..\Bin\Configs\Test\LaptopOverlay.ini = ..\Bin\Configs\Test\LaptopOverlay.ini
 		..\Bin\Configs\Test\Launch.ini = ..\Bin\Configs\Test\Launch.ini
 		..\Bin\Configs\Test\Main.ini = ..\Bin\Configs\Test\Main.ini
+		..\Bin\Configs\Test\NoOverlay.ini = ..\Bin\Configs\Test\NoOverlay.ini
 		..\Bin\Configs\Test\OpenSim.ini = ..\Bin\Configs\Test\OpenSim.ini
 		..\Bin\Configs\Test\Overlay.ini = ..\Bin\Configs\Test\Overlay.ini
+		..\Bin\Configs\Test\OverlayLaptop.ini = ..\Bin\Configs\Test\OverlayLaptop.ini
+		..\Bin\Configs\Test\OverlayNone.ini = ..\Bin\Configs\Test\OverlayNone.ini
+		..\Bin\Configs\Test\OverlayTouchscreen.ini = ..\Bin\Configs\Test\OverlayTouchscreen.ini
 		..\Bin\Configs\Test\Projectors.ini = ..\Bin\Configs\Test\Projectors.ini
 		..\Bin\Configs\Test\RemoteControl.ini = ..\Bin\Configs\Test\RemoteControl.ini
 		..\Bin\Configs\Test\TimespanRoom.xml = ..\Bin\Configs\Test\TimespanRoom.xml
+		..\Bin\Configs\Test\Touchscreen.ini = ..\Bin\Configs\Test\Touchscreen.ini
+		..\Bin\Configs\Test\TouchscreenOverlay.ini = ..\Bin\Configs\Test\TouchscreenOverlay.ini
+		..\Bin\Configs\Test\XBoxController.ini = ..\Bin\Configs\Test\XBoxController.ini
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Timespan", "Timespan\Timespan.csproj", "{A4304EE2-9B06-416A-AD48-89434262E322}"
@@ -174,6 +163,23 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Chimera", "Chimera", "{2E5D
 		..\Bin\Configs\Chimera\Touchscreen.ini = ..\Bin\Configs\Chimera\Touchscreen.ini
 		..\Bin\Configs\Chimera\TouchscreenOverlay.ini = ..\Bin\Configs\Chimera\TouchscreenOverlay.ini
 		..\Bin\Configs\Chimera\XBoxController.ini = ..\Bin\Configs\Chimera\XBoxController.ini
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TimespanTest", "TimespanTest", "{841CCD0E-5783-4D42-887D-A8DCBD21AB23}"
+	ProjectSection(SolutionItems) = preProject
+		..\Bin\Configs\TimespanTest\Bindings.xml = ..\Bin\Configs\TimespanTest\Bindings.xml
+		..\Bin\Configs\TimespanTest\Core.ini = ..\Bin\Configs\TimespanTest\Core.ini
+		..\Bin\Configs\TimespanTest\Frames.ini = ..\Bin\Configs\TimespanTest\Frames.ini
+		..\Bin\Configs\TimespanTest\Heightmap.ini = ..\Bin\Configs\TimespanTest\Heightmap.ini
+		..\Bin\Configs\TimespanTest\KinectMovement.ini = ..\Bin\Configs\TimespanTest\KinectMovement.ini
+		..\Bin\Configs\TimespanTest\LaptopOverlay.ini = ..\Bin\Configs\TimespanTest\LaptopOverlay.ini
+		..\Bin\Configs\TimespanTest\Launch.ini = ..\Bin\Configs\TimespanTest\Launch.ini
+		..\Bin\Configs\TimespanTest\Main.ini = ..\Bin\Configs\TimespanTest\Main.ini
+		..\Bin\Configs\TimespanTest\OpenSim.ini = ..\Bin\Configs\TimespanTest\OpenSim.ini
+		..\Bin\Configs\TimespanTest\Overlay.ini = ..\Bin\Configs\TimespanTest\Overlay.ini
+		..\Bin\Configs\TimespanTest\Projectors.ini = ..\Bin\Configs\TimespanTest\Projectors.ini
+		..\Bin\Configs\TimespanTest\RemoteControl.ini = ..\Bin\Configs\TimespanTest\RemoteControl.ini
+		..\Bin\Configs\TimespanTest\TimespanRoom.xml = ..\Bin\Configs\TimespanTest\TimespanRoom.xml
 	EndProjectSection
 EndProject
 Global
@@ -681,5 +687,6 @@ Global
 		{ED9701C7-AC45-41C5-A61A-788C9D636A73} = {2C880FBA-0B83-43B9-9C64-69F9BD30D72A}
 		{B100C9B2-813B-4180-95BB-434A197819F1} = {2C880FBA-0B83-43B9-9C64-69F9BD30D72A}
 		{2E5DF2CA-8923-4171-8FAD-C5B15DE739B7} = {2C880FBA-0B83-43B9-9C64-69F9BD30D72A}
+		{841CCD0E-5783-4D42-887D-A8DCBD21AB23} = {2C880FBA-0B83-43B9-9C64-69F9BD30D72A}
 	EndGlobalSection
 EndGlobal
