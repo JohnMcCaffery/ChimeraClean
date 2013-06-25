@@ -518,12 +518,13 @@ namespace Chimera {
                 graphics.DrawLine(Pens.DarkViolet, eye, to2D(bottomRightLine));
 
                 Vector3 look = new Vector3((float)ScreenDistance, 0f, 0f) * mOrientation.Quaternion;
-                graphics.DrawLine(Pens.DarkViolet, eye, to2D(look + mCoordinator.EyePosition));
+                graphics.DrawLine(Pens.CornflowerBlue, eye, to2D(look + mCoordinator.EyePosition));
 
                 Vector3 normal = new Vector3((float)(Diagonal / 2.0), 0f, 0f) * mOrientation.Quaternion;
-                graphics.DrawLine(Pens.DarkViolet, to2D(Centre), to2D(normal + Centre));
+                graphics.DrawLine(Pens.Crimson, to2D(Centre), to2D(normal + Centre));
 
-                graphics.DrawLine(Pens.DarkViolet, to2D(look + mCoordinator.EyePosition), to2D(Centre));
+                using (Pen p = new Pen(Color.BlueViolet, 4f))
+                    graphics.DrawLine(p, to2D(look + mCoordinator.EyePosition), to2D(Centre));
             }
         }
 

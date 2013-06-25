@@ -369,5 +369,10 @@ namespace Chimera.OpenSim {
             mViewerController.Close(false);
             StopProxy();
         }
+
+        internal void CloseViewer(bool blocking) {
+            mClosingViewer = true;
+            mViewerController.Close(blocking);
+        }
     }
 }

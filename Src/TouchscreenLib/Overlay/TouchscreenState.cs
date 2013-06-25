@@ -20,7 +20,7 @@ namespace Touchscreen.Overlay {
         }
 
         public override IFrameState CreateWindowState(FrameOverlayManager manager) {
-            if (manager.Name.Equals(mPlugin.Manager.Frame.Name))
+            if (manager.Name.Equals(mPlugin.Frame.Name))
                 return new TouchscreenWindow(manager, mPlugin);
             return new FrameState(manager);
         }

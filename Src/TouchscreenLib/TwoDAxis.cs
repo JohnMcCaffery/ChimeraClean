@@ -6,6 +6,7 @@ using Chimera.Plugins;
 using Chimera.GUI.Controls.Plugins;
 using System.Windows.Forms;
 using Chimera.Interfaces;
+using Touchscreen.Interfaces;
 
 namespace Touchscreen {
     public class TwoDAxis : ConstrainedAxis {
@@ -15,13 +16,23 @@ namespace Touchscreen {
         private bool mWasDown;
         private ConstrainedAxisPanel mPanel;
 
+        private ITouchSource mCurrentlyDown;
+
         public TwoDAxis(VerticalAxis axis, bool x, bool right)
             : base((right ? "Right" : "Left") + (x ? "X" : "Y")) {
 
             mX = x;
             mWrappedAxis = axis;
-            mWrappedAxis.Manager.OnPress += i => mDown = true;
-            mWrappedAxis.Manager.OnRelease += i => mDown = false;
+            foreach (var source in mWrappedAxis.Sources) {
+                source.OnPress += i => {
+                    mDown = true;
+                    mCurrentlyDown = source;
+                };
+                source.OnRelease += i => {
+                    mDown = false;
+                    mCurrentlyDown = null;
+                };
+            }
             if (!mX) {
                 Deadzone.Changed += v => mWrappedAxis.Deadzone.Value = v;
                 Scale.Changed += v => mWrappedAxis.Scale.Value = v;
@@ -58,9 +69,10 @@ namespace Touchscreen {
         }
 
         protected override float RawValue {
-            get { return mDown && mWrappedAxis.Bounds.Contains(mWrappedAxis.Manager.CursorPosition) ?
-                VerticalAxis.GetValue(mWrappedAxis.StartH + mWrappedAxis.PaddingH, mWrappedAxis.W, mWrappedAxis.Manager.CursorX) :
-                0f; 
+            get { 
+                return mDown && mWrappedAxis.Bounds.Contains(mCurrentlyDown.Position) ?
+                    VerticalAxis.GetValue(mWrappedAxis.StartH + mWrappedAxis.PaddingH, mWrappedAxis.W, mCurrentlyDown.Position.X) :
+                    0f; 
             }
         }
     }

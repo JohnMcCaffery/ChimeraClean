@@ -9,6 +9,7 @@ using System.Drawing;
 using Chimera.Overlay;
 using Touchscreen.GUI;
 using System.Windows.Forms;
+using Touchscreen.Interfaces;
 
 namespace Touchscreen {
     public class VerticalAxis : ConstrainedAxis {
@@ -19,8 +20,10 @@ namespace Touchscreen {
         private float mStartH;
         private bool mDown;
         private bool mWasDown;
-        private FrameOverlayManager mManager;
+        private ITouchSource[] mSources;
         private VerticalAxisPanel mPanel;
+
+        private ITouchSource mCurrentlyDown;
 
         public event Action SizeChanged;
 
@@ -29,16 +32,26 @@ namespace Touchscreen {
         public float PaddingH { get { return mPaddingH; } set { if (mPaddingH != value) { mPaddingH = value; Change(); } } }
         public float PaddingV { get { return mPaddingV; } set { if (mPaddingV != value) { mPaddingV = value; Change(); } } }
         public float StartH { get { return mStartH; } set { if (mStartH != value) { mStartH = value; Change(); } } }
-        public FrameOverlayManager Manager { get { return mManager; } }
+        internal ITouchSource[] Sources { get { return mSources; } }
         public RectangleF Bounds {
             get { return new RectangleF(mStartH + mPaddingH, mPaddingV, mW, mH); }
         }
 
-        public VerticalAxis(FrameOverlayManager manager)
+        internal VerticalAxis(params ITouchSource[] sources)
             : base("Single") {
-            mManager = manager;
-            mManager.OnPress += i => mDown = true;
-            mManager.OnRelease += i => mDown = false;
+
+            mSources = sources;
+
+            foreach (var source in mSources) {
+                source.OnPress += i => {
+                    mDown = true;
+                    mCurrentlyDown = source;
+                };
+                source.OnRelease += i => {
+                    mDown = false;
+                    mCurrentlyDown = null;
+                };
+            }
 
             Deadzone.Changed += d => Change();
         }
@@ -59,8 +72,8 @@ namespace Touchscreen {
 
         protected override float RawValue {
             get {
-                return mDown && Bounds.Contains(mManager.CursorPosition) ?
-                    GetValue(mPaddingV, mH, mManager.CursorY) :
+                return mDown && Bounds.Contains(mCurrentlyDown.Position) ?
+                    GetValue(mPaddingV, mH, mCurrentlyDown.Position.Y) :
                     0f;
             }
         }

@@ -188,7 +188,7 @@ namespace Chimera.OpenSim.GUI {
                 gridBox.Active = proxy.ProxyConfig.UseGrid;
                 */
                 if (mController != null)
-                    mController.ProxyController.Stop();
+                    mController.CloseViewer(false);
                 //SendMEssage(proxyAddress.Id, 
             }
         }
