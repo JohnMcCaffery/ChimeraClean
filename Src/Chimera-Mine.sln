@@ -126,17 +126,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Chimera", "Chimera", "{2E5D
 		..\Bin\Configs\Chimera\LaptopOverlay.ini = ..\Bin\Configs\Chimera\LaptopOverlay.ini
 		..\Bin\Configs\Chimera\Launch.ini = ..\Bin\Configs\Chimera\Launch.ini
 		..\Bin\Configs\Chimera\Main.ini = ..\Bin\Configs\Chimera\Main.ini
-		..\Bin\Configs\Chimera\NoOverlay.ini = ..\Bin\Configs\Chimera\NoOverlay.ini
 		..\Bin\Configs\Chimera\OpenSim.ini = ..\Bin\Configs\Chimera\OpenSim.ini
 		..\Bin\Configs\Chimera\Overlay.ini = ..\Bin\Configs\Chimera\Overlay.ini
-		..\Bin\Configs\Chimera\OverlayLaptop.ini = ..\Bin\Configs\Chimera\OverlayLaptop.ini
-		..\Bin\Configs\Chimera\OverlayNone.ini = ..\Bin\Configs\Chimera\OverlayNone.ini
-		..\Bin\Configs\Chimera\OverlayTouchscreen.ini = ..\Bin\Configs\Chimera\OverlayTouchscreen.ini
 		..\Bin\Configs\Chimera\Projectors.ini = ..\Bin\Configs\Chimera\Projectors.ini
 		..\Bin\Configs\Chimera\RemoteControl.ini = ..\Bin\Configs\Chimera\RemoteControl.ini
 		..\Bin\Configs\Chimera\TimespanRoom.xml = ..\Bin\Configs\Chimera\TimespanRoom.xml
 		..\Bin\Configs\Chimera\Touchscreen.ini = ..\Bin\Configs\Chimera\Touchscreen.ini
-		..\Bin\Configs\Chimera\TouchscreenOverlay.ini = ..\Bin\Configs\Chimera\TouchscreenOverlay.ini
 		..\Bin\Configs\Chimera\XBoxController.ini = ..\Bin\Configs\Chimera\XBoxController.ini
 	EndProjectSection
 EndProject

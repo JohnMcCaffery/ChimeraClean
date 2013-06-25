@@ -154,13 +154,13 @@ namespace Touchscreen {
         }
 
         void mWindow_MouseUp(object sender, System.Windows.Forms.MouseEventArgs e) {
-            if (OnPress != null)
-                OnPress(0);
+            if (OnRelease != null)
+                OnRelease(0);
         }
 
         void mWindow_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e) {
-            if (OnRelease != null)
-                OnRelease(0);
+            if (OnPress != null)
+                OnPress(0);
         }
 
         public void OnChange() {
@@ -208,7 +208,7 @@ namespace Touchscreen {
         void mWindow_MouseMove(object sender, MouseEventArgs e) {
             if (mWindow != null) {
                 float x = (float)e.X / (float)mWindow.Width;
-                float y = (float)e.Y / (float)mWindow.Width;
+                float y = (float)e.Y / (float)mWindow.Height;
                 mMousePosition = new PointF(x, y);
             } else
                 mMousePosition = new PointF(-1f, -1f);
