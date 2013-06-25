@@ -8,6 +8,7 @@ using System.Net.Sockets;
 using System.Threading;
 using System.Net;
 using log4net;
+using System.IO;
 
 namespace Chimera.RemoteControl {
     public class RemoteControlPlugin : ISystemPlugin {
@@ -95,7 +96,9 @@ namespace Chimera.RemoteControl {
                     } else if (mCore.HasFrame(msg))
                         mCore[msg].Output.Restart("RemoteInstructionReceived");
                 } catch (Exception e) {
-                    //Do nothing
+                    if (e is SocketException && e.Message == "A blocking operation was interrupted by a call to WSACancelBlockingCall")
+                        return;
+
                     Logger.Warn("Problem processing '" + msg + "'.", e);
                     if (!mCont) {
                         try {

@@ -132,11 +132,12 @@ namespace Chimera.GUI.Forms {
             deltaStatsPanel.Init(core.DeltaStatistics, core);
 #endif
 
-            foreach (var window in mCore.Frames) {
+            foreach (var window in mCore.Frames)
                 mCoordinator_WindowAdded(window, null);
-            }
 
+#if DEBUG
             pluginsTab.Controls.Remove(statisticsTab);
+#endif
 
             foreach (var plugin in mCore.Plugins) {
                 TabPage inputTab = new TabPage();
@@ -183,7 +184,9 @@ namespace Chimera.GUI.Forms {
                 plugin.SetForm(this);
             }
             
+#if DEBUG
             pluginsTab.Controls.Add(statisticsTab);
+#endif
         }
 
         void mCoordinator_EnableUpdatesChanged() {
