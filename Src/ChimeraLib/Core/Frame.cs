@@ -519,6 +519,11 @@ namespace Chimera {
 
                 Vector3 look = new Vector3((float)ScreenDistance, 0f, 0f) * mOrientation.Quaternion;
                 graphics.DrawLine(Pens.DarkViolet, eye, to2D(look + mCoordinator.EyePosition));
+
+                Vector3 normal = new Vector3((float)(Diagonal / 2.0), 0f, 0f) * mOrientation.Quaternion;
+                graphics.DrawLine(Pens.DarkViolet, to2D(Centre), to2D(normal + Centre));
+
+                graphics.DrawLine(Pens.DarkViolet, to2D(look + mCoordinator.EyePosition), to2D(Centre));
             }
         }
 
