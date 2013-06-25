@@ -7,6 +7,7 @@ using Chimera.Plugins;
 using Chimera.Overlay;
 using Chimera.GUI.Forms;
 using Touchscreen.GUI;
+using System.Windows.Forms;
 
 namespace Touchscreen {
     public enum SinglePos {
@@ -14,6 +15,7 @@ namespace Touchscreen {
         Middle,
         Right
     }
+
     public class TouchscreenPlugin : AxisBasedDelta {
         private SinglePos mSinglePos = SinglePos.Right;
 
@@ -28,6 +30,7 @@ namespace Touchscreen {
         private OverlayPlugin mStateManager;
         private FrameOverlayManager mManager;
         private TouchscreenForm mWindow;
+        private Form mForm;
 
         private TouchscreenConfig mConfig = new TouchscreenConfig();
 
@@ -46,9 +49,15 @@ namespace Touchscreen {
                     mWindow.Bounds = mManager.Frame.Monitor.Bounds;
                     mWindow.MouseDown += new System.Windows.Forms.MouseEventHandler(mWindow_MouseDown);
                     mWindow.MouseUp += new System.Windows.Forms.MouseEventHandler(mWindow_MouseUp); mWindow.Show();
-                    mWindow.Show();
+                    if (mForm == null)
+                        mWindow.Show();
+                    else
+                        mWindow.Show(mForm);
                 } else if (mWindow != null) {
-                    mWindow.Close();
+                    if (mForm == null)
+                        mWindow.Close();
+                    else
+                        mForm.Invoke(new Action(() => mWindow.Close()));
                     mWindow = null;
                 }
             }
@@ -161,6 +170,10 @@ namespace Touchscreen {
                     mSingle.StartH = mR.StartH + mR.PaddingH + mR.W;
                     break;
             }
+        }
+
+        public override void SetForm(Form form) {
+            mForm = form;
         }
     }
 }

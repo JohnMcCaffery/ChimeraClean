@@ -197,7 +197,7 @@ namespace Chimera.Plugins {
         #region ISystemPlugin Members
 
 
-        public void SetForm(Form form) {
+        public virtual void SetForm(Form form) {
         }
 
         #endregion
