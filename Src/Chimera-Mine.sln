@@ -153,6 +153,28 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TimespanTest", "TimespanTes
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{FCF1B486-05B8-4DC0-9EF4-C88359331724}"
+	ProjectSection(SolutionItems) = preProject
+		..\Bin\Configs\Common\Bindings.xml = ..\Bin\Configs\Common\Bindings.xml
+		..\Bin\Configs\Common\Core.ini = ..\Bin\Configs\Common\Core.ini
+		..\Bin\Configs\Common\Frames.ini = ..\Bin\Configs\Common\Frames.ini
+		..\Bin\Configs\Common\Heightmap.ini = ..\Bin\Configs\Common\Heightmap.ini
+		..\Bin\Configs\Common\KinectMovement.ini = ..\Bin\Configs\Common\KinectMovement.ini
+		..\Bin\Configs\Common\LaptopOverlay.ini = ..\Bin\Configs\Common\LaptopOverlay.ini
+		..\Bin\Configs\Common\Launch.ini = ..\Bin\Configs\Common\Launch.ini
+		..\Bin\Configs\Common\Main.ini = ..\Bin\Configs\Common\Main.ini
+		..\Bin\Configs\Common\NoOverlay.ini = ..\Bin\Configs\Common\NoOverlay.ini
+		..\Bin\Configs\Common\OpenSim.ini = ..\Bin\Configs\Common\OpenSim.ini
+		..\Bin\Configs\Common\Overlay.ini = ..\Bin\Configs\Common\Overlay.ini
+		..\Bin\Configs\Common\OverlayLaptop.ini = ..\Bin\Configs\Common\OverlayLaptop.ini
+		..\Bin\Configs\Common\OverlayNone.ini = ..\Bin\Configs\Common\OverlayNone.ini
+		..\Bin\Configs\Common\OverlayTouchscreen.ini = ..\Bin\Configs\Common\OverlayTouchscreen.ini
+		..\Bin\Configs\Common\Projectors.ini = ..\Bin\Configs\Common\Projectors.ini
+		..\Bin\Configs\Common\RemoteControl.ini = ..\Bin\Configs\Common\RemoteControl.ini
+		..\Bin\Configs\Common\TimespanRoom.xml = ..\Bin\Configs\Common\TimespanRoom.xml
+		..\Bin\Configs\Common\Touchscreen.ini = ..\Bin\Configs\Common\Touchscreen.ini
+		..\Bin\Configs\Common\TouchscreenOverlay.ini = ..\Bin\Configs\Common\TouchscreenOverlay.ini
+		..\Bin\Configs\Common\XBoxController.ini = ..\Bin\Configs\Common\XBoxController.ini
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
