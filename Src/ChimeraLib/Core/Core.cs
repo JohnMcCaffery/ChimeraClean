@@ -112,7 +112,8 @@ namespace Chimera {
         public int StartY;
     }
 
-    public class Core : ICrashable, ITickSource {        /// <summary>
+    public class Core : ICrashable, ITickSource {
+        /// <summary>
         /// The heightmap for the region. Camera positions below this will be ignored.
         /// </summary>
         private readonly float[,] mHeightmap;
@@ -641,6 +642,8 @@ namespace Chimera {
 
             if (Closed != null)
                 Closed(this, null);
+
+            Logger.Info("System shutdown for " + reason + ".");
         }
 
         /// <summary>

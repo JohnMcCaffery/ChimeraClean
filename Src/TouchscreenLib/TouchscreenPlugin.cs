@@ -212,7 +212,8 @@ namespace Touchscreen {
                 mMousePosition = new PointF(x, y);
             } else
                 mMousePosition = new PointF(-1f, -1f);
-        }
+        }
+
         private void CreateWindow() {
             mWindow = new TouchscreenForm(this);
             mWindow.Opacity = mConfig.Opacity;
