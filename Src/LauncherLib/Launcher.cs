@@ -114,20 +114,20 @@ namespace Chimera.Launcher {
         public void Launch() {
             if (mCore == null || !mCore.Initialised)
                 return;
-            if (mConfig.BasicGUI)
-                ProcessWrangler.BlockingRunForm(BasicForm, Coordinator);
-            else {
-                if (mConfig.GUI)
+
+            if (mConfig.GUI) {
+                if (mConfig.BasicGUI)
+                    ProcessWrangler.BlockingRunForm(BasicForm, Coordinator);
+                else
                     ProcessWrangler.BlockingRunForm(Form, Coordinator);
-                else {
-                    //Thread t = new Thread(() => {
-                    while (!Console.ReadLine().ToUpper().StartsWith("Q")) ;
-                    mCore.Close();
-                }
-                //});
-                //t.Name = "Input Thread";
-                //t.Start();
+            } else {
+                //Thread t = new Thread(() => {
+                while (!Console.ReadLine().ToUpper().StartsWith("Q")) ;
+                mCore.Close();
             }
+            //});
+            //t.Name = "Input Thread";
+            //t.Start();
         }
     }
 }
