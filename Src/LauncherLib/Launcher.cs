@@ -124,10 +124,10 @@ namespace Chimera.Launcher {
                 //Thread t = new Thread(() => {
                 while (!Console.ReadLine().ToUpper().StartsWith("Q")) ;
                 mCore.Close();
+                //});
+                //t.Name = "Input Thread";
+                //t.Start();
             }
-            //});
-            //t.Name = "Input Thread";
-            //t.Start();
         }
     }
 }
