@@ -44,6 +44,8 @@ namespace Chimera.GUI {
                 rotation = value;
                 rotation.Changed += RotationChanged;
                 RotationChanged(this, null);
+                if (OnChange != null)
+                    OnChange(this, null);
             }
         }
         private void RotationChanged(object source, EventArgs args) {
