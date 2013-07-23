@@ -28,6 +28,7 @@ using C = NuiLibDotNet.Condition;
 using Chimera.Config;
 using Chimera.Interfaces.Overlay;
 using Chimera.Overlay;
+using System.Xml;
 
 namespace Chimera.Kinect.Overlay {
     public class RaiseArmTriggerFactory : ITriggerFactory {
@@ -46,7 +47,7 @@ namespace Chimera.Kinect.Overlay {
         #region IFactory<ITrigger> Members
 
         public ITrigger Create(OverlayPlugin manager, System.Xml.XmlNode node) {
-            return new RaiseArmTrigger();
+            return new RaiseArmTrigger(node);
         }
 
         public ITrigger Create(OverlayPlugin manager, System.Xml.XmlNode node, System.Drawing.Rectangle clip) {
@@ -69,6 +70,7 @@ namespace Chimera.Kinect.Overlay {
         private RaiseArmTriggerPanel mPanel;
         private bool mEnabled = true;
 
+        private Vector mBody;
         private Vector mArmR;
         private Vector mArmL;
         private Scalar mAngleR;
@@ -76,9 +78,12 @@ namespace Chimera.Kinect.Overlay {
         private Condition mTriggerR;
         private Condition mTriggerL;
         private Condition mTrigger;
+        private Scalar mDepthThreshold;
         private Scalar mAngleThreshold;
         private Scalar mHeightThreshold;
+        private Scalar mWidthThreshold;
 
+        public Vector Body { get { return mBody; } }
         public Vector ArmR { get { return mArmR; } }
         public Vector ArmL { get { return mArmL; } }
         public Scalar AngleR { get { return mAngleR; } }
@@ -88,6 +93,8 @@ namespace Chimera.Kinect.Overlay {
         public Condition Trigger { get { return mTrigger; } }
         public Scalar AngleThreshold { get { return mAngleThreshold; } }
         public Scalar HeightThreshold { get { return mHeightThreshold; } }
+        public Scalar DepthThreshold { get { return mDepthThreshold; } }
+        public Scalar WidthThreshold { get { return mWidthThreshold; } }
 
         public event Action Triggered;
 
@@ -109,9 +116,17 @@ namespace Chimera.Kinect.Overlay {
             set { mEnabled = value; }
         }
 
-        public RaiseArmTrigger() {
+        public RaiseArmTrigger(XmlNode node) {
             mHeightThreshold = Nui.magnitude(Nui.joint(Nui.Shoulder_Centre) - Nui.joint(Nui.Hip_Centre));
             mAngleThreshold = Scalar.Create(.48f);
+            mDepthThreshold = Scalar.Create(GetFloat(node, 3.6f, "DepthThreshold"));
+            mWidthThreshold = Scalar.Create(GetFloat(node, 1f, "WidthThreshold"));
+
+            mBody = Nui.joint(Nui.Hip_Centre);
+
+            Condition inWidth = Nui.abs(Nui.x(Nui.joint(Nui.Hip_Centre))) < mWidthThreshold;
+            Condition inDepth = Nui.z(Nui.joint(Nui.Hip_Centre)) < mDepthThreshold;
+            Condition inRange = C.And(inWidth, inDepth);
 
             Vector up = Vector.Create(0f, 1f, 0f);
             mArmR = Nui.joint(Nui.Hand_Right) - Nui.joint(Nui.Shoulder_Right);
@@ -121,7 +136,7 @@ namespace Chimera.Kinect.Overlay {
 
             mTriggerR = C.And(Nui.y(mArmR) > mHeightThreshold, mAngleR > mAngleThreshold);
             mTriggerL = C.And(Nui.y(mArmL) > mHeightThreshold, mAngleL > mAngleThreshold);
-            mTrigger = C.Or(mTriggerR, mTriggerL);
+            mTrigger = C.And(C.Or(mTriggerR, mTriggerL), inRange);
 
             mTrigger.OnChange += new ChangeDelegate(mTrigger_OnChange);
         }
