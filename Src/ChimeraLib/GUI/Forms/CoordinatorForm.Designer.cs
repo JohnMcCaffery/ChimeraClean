@@ -72,7 +72,6 @@ namespace Chimera.GUI.Forms {
             this.windowsTab = new System.Windows.Forms.TabControl();
             this.inputsGroup = new System.Windows.Forms.GroupBox();
             this.pluginsTab = new System.Windows.Forms.TabControl();
-            this.statisticsTab = new System.Windows.Forms.TabPage();
 #if DEBUG
             this.statsTabs = new System.Windows.Forms.TabControl();
             this.tickTab = new System.Windows.Forms.TabPage();
@@ -86,7 +85,9 @@ namespace Chimera.GUI.Forms {
             this.deltaTab = new System.Windows.Forms.TabPage();
             this.deltaStatsPanel = new Chimera.GUI.Controls.StatisticsPanel();
             this.usageTab = new System.Windows.Forms.TabPage();
+            this.statisticsTab = new System.Windows.Forms.TabPage();
 #endif
+
             this.overlayStatsBox = new System.Windows.Forms.RichTextBox();
             ((System.ComponentModel.ISupportInitialize)(this.hSplit)).BeginInit();
             this.hSplit.Panel1.SuspendLayout();
@@ -114,7 +115,6 @@ namespace Chimera.GUI.Forms {
             this.windowsGroup.SuspendLayout();
             this.inputsGroup.SuspendLayout();
             this.pluginsTab.SuspendLayout();
-            this.statisticsTab.SuspendLayout();
 #if DEBUG
             this.statsTabs.SuspendLayout();
             this.tickTab.SuspendLayout();
@@ -123,7 +123,9 @@ namespace Chimera.GUI.Forms {
             this.cameraTab.SuspendLayout();
             this.deltaTab.SuspendLayout();
             this.usageTab.SuspendLayout();
-            #endif
+            this.statisticsTab.SuspendLayout();
+#endif
+
             this.SuspendLayout();
             // 
             // hSplit
@@ -526,7 +528,9 @@ namespace Chimera.GUI.Forms {
             // 
             // pluginsTab
             // 
+#if DEBUG
             this.pluginsTab.Controls.Add(this.statisticsTab);
+#endif
             this.pluginsTab.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pluginsTab.Location = new System.Drawing.Point(3, 16);
             this.pluginsTab.Name = "pluginsTab";
@@ -735,8 +739,8 @@ namespace Chimera.GUI.Forms {
             this.windowsGroup.ResumeLayout(false);
             this.inputsGroup.ResumeLayout(false);
             this.pluginsTab.ResumeLayout(false);
-            this.statisticsTab.ResumeLayout(false);
 #if DEBUG
+            this.statisticsTab.ResumeLayout(false);
             this.statsTabs.ResumeLayout(false);
             this.tickTab.ResumeLayout(false);
             this.tickListenersTab.ResumeLayout(false);
@@ -774,12 +778,12 @@ namespace Chimera.GUI.Forms {
         private System.Windows.Forms.RadioButton xPerspectiveButton;
         private System.Windows.Forms.TrackBar heightmapScale;
         private System.Windows.Forms.TrackBar realSpaceScale;
-        private System.Windows.Forms.TabPage statisticsTab;
         private System.Windows.Forms.RadioButton deltaModeButton;
         private System.Windows.Forms.RadioButton absoluteModeButton;
         private System.Windows.Forms.RichTextBox overlayStatsBox;
         private System.Windows.Forms.CheckBox enableUpdates;
 #if DEBUG
+        private System.Windows.Forms.TabPage statisticsTab;
         private System.Windows.Forms.TabControl statsTabs;
         private System.Windows.Forms.TabPage tickTab;
         private System.Windows.Forms.TabPage cameraTab;

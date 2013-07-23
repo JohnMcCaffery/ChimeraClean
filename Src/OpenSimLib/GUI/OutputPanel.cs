@@ -147,7 +147,7 @@ namespace Chimera.OpenSim.GUI {
                 return;
             if (proxyStartButton.Text.Equals("Begin Proxy")) {
                 if (mController.ProxyController.Started)
-                    mController.Close();
+                    mController.Stop();
                 string file = AppDomain.CurrentDomain.SetupInformation.ConfigurationFile;
 
                 for (int i = 0; i < 5 && !mController.StartProxy(); i++, mConfig.ProxyPort++) {
@@ -159,7 +159,7 @@ namespace Chimera.OpenSim.GUI {
                     proxyStatusLabel.Text = "Unable to start";
                 }
             } else if (mController != null) {
-                mController.Close();
+                mController.Stop();
 
                 proxyStartButton.Text = "Begin Proxy";
                 proxyStatusLabel.Text = "Stopped";
@@ -188,7 +188,7 @@ namespace Chimera.OpenSim.GUI {
                 gridBox.Active = proxy.ProxyConfig.UseGrid;
                 */
                 if (mController != null)
-                    mController.ProxyController.Stop();
+                    mController.CloseViewer(false);
                 //SendMEssage(proxyAddress.Id, 
             }
         }

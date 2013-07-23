@@ -5,7 +5,7 @@
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{0C11639E-BC1A-4A0B-853B-2ABC822A2208}</ProjectGuid>
+    <ProjectGuid>{896676F6-4364-46F9-9762-1D9C6EACDF6F}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Test</RootNamespace>
@@ -29,45 +29,24 @@
     <PlatformTarget>x86</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>..\..\Bin\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="GridProxy, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Lib\GridProxy.dll</HintPath>
-    </Reference>
-    <Reference Include="Nini, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Lib\Nini.dll</HintPath>
-    </Reference>
-    <Reference Include="NuiLib-DotNet_dv">
-      <HintPath>..\..\Lib\NuiLib-DotNet_dv.dll</HintPath>
-    </Reference>
-    <Reference Include="OpenMetaverse, Version=0.0.0.17443, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Lib\OpenMetaverse.dll</HintPath>
-    </Reference>
-    <Reference Include="OpenMetaverseTypes, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Lib\OpenMetaverseTypes.dll</HintPath>
+      <HintPath>..\..\Lib\log4net.dll</HintPath>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="XMLRPC, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Lib\XMLRPC.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Program.cs" />
@@ -78,17 +57,19 @@
       <Project>{58E39BFE-20D5-4C8D-BCFC-6B5E641C2DFF}</Project>
       <Name>ChimeraLib</Name>
     </ProjectReference>
-    <ProjectReference Include="..\KinectLib\KinectLib.csproj">
-      <Project>{D9D475BF-C0EE-4DF6-89A3-55199BB32ABE}</Project>
-      <Name>KinectLib</Name>
+    <ProjectReference Include="..\LauncherLib\LauncherLib.csproj">
+      <Project>{FE0EAF99-0485-4B17-BFCD-D5D9A2890DB3}</Project>
+      <Name>LauncherLib</Name>
     </ProjectReference>
-    <ProjectReference Include="..\OpenSimLib\OpenSimLib.csproj">
-      <Project>{D1978D10-E5B0-40F9-BDB7-11BF03C7A6CB}</Project>
-      <Name>OpenSimLib</Name>
+    <ProjectReference Include="..\RemoteControlLib\RemoteControlLib.csproj">
+      <Project>{D5C5A295-5210-418E-85DD-CACB2FBCD863}</Project>
+      <Name>RemoteControlLib</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

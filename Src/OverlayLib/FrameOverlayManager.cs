@@ -37,10 +37,6 @@ namespace Chimera.Overlay {
         private readonly TickStatistics mStatistics = new TickStatistics();
 #endif
         /// <summary>
-        /// Id's of any input devices pressing on the screen.
-        /// </summary>
-        private readonly HashSet<int> mPressedIDs = new HashSet<int>();
-        /// <summary>
         /// Where on the window the cursor is.
         /// </summary>
         private double mCursorX;
@@ -92,11 +88,14 @@ namespace Chimera.Overlay {
         /// The state manager which controls this window specific overlay.
         /// </summary>
         private OverlayPlugin mManager;
-
         /// <summary>
         /// The form from which the main application is running.
         /// </summary>
         private Form mMasterForm;
+        /// <summary>
+        /// Id's of any input devices pressing on the screen.
+        /// </summary>
+        private bool mPressed = false;
 
         /// <summary>
         /// Triggered when the overlay window is launched.
@@ -114,11 +113,11 @@ namespace Chimera.Overlay {
         /// Triggered whenever a device presses onto the screen.
         /// Mouse clicks will register as index 0.
         /// </summary>
-        public event Action<int> OnPress;
+        public event Action OnPress;
         /// <summary>
         /// Triggered whenever a device releases its pressure on the screen onto the screen.
         /// Mouse clicks will register as index 0.
-        public event Action<int> OnRelease;
+        public event Action OnRelease;
 
 #if DEBUG
         public TickStatistics Statistics {
@@ -290,22 +289,22 @@ namespace Chimera.Overlay {
                 CursorMoved(this, null);
         }
 
-        public void Press(int index) {
-            mPressedIDs.Add(index);
+        public void Press() {
+            mPressed = true;
             if (OnPress != null)
-                OnPress(index);
+                OnPress();
         }
 
-        public void Release(int index) {
-            if (mPressedIDs.Contains(index)) {
-                mPressedIDs.Remove(index);
+        public void Release() {
+            if (mPressed) {
+                mPressed = false;
                 if (OnRelease != null)
-                    OnRelease(index);
+                    OnRelease();
             }
         }
 
-        public bool IsPressed(int id) {
-            return mPressedIDs.Contains(id);
+        public bool IsPressed() {
+            return mPressed;
         }
 
         private void Show() {
@@ -407,6 +406,11 @@ namespace Chimera.Overlay {
 
         internal void SetForm(Form form) {
             mMasterForm = form;
+        }
+
+        public void BringToFront() {
+            if (mOverlayWindow != null)
+                mOverlayWindow.BringOverlayToFront();
         }
     }
 }

@@ -113,53 +113,6 @@ namespace Chimera {
     }
 
     public class Core : ICrashable, ITickSource {
-        private readonly ILog Logger = LogManager.GetLogger("Core");
-#if DEBUG
-        /// <summary>
-        /// Statistics object which monitors how long ticks are taking.
-        /// </summary>
-        private readonly TickStatistics mTickStats = new TickStatistics();
-        /// <summary>
-        /// Statistics object which monitors how long update operations are taking.
-        /// </summary>
-        private readonly TickStatistics mUpdateStats = new TickStatistics();
-        /// <summary>
-        /// Statistics object which monitors how camera updates are taking.
-        /// </summary>
-        private readonly TickStatistics mCameraStats = new TickStatistics();
-        /// <summary>
-        /// Statistics object which monitors how delta updates are taking.
-        /// </summary>
-        private readonly TickStatistics mDeltaStats = new TickStatistics();
-#endif
-        /// <summary>
-        /// The authoratitive orientation of the camera in virtual space. This is read-only. To update it use the 'Update' method.
-        /// </summary>
-        private readonly Rotation mOrientation;
-        /// <summary>
-        /// Current orientation delta.
-        /// </summary>
-        private readonly Rotation mOrientationDelta;
-        /// <summary>
-        /// The authoratitive position of the camera in virtual space.
-        /// </summary>
-        private Vector3 mPosition;
-        /// <summary>
-        /// Current position delta.
-        /// </summary>
-        private Vector3 mPositionDelta;
-        /// <summary>
-        /// The position of the eye in the real world, in mm.
-        /// </summary>
-        private Vector3 mEyePosition;
-        /// <summary>
-        /// Whether to accept updates to the camera position.
-        /// </summary>
-        private bool mEnableUpdates = true;
-        /// <summary>
-        /// Whether the tick thread should continue running.
-        /// </summary>
-        private bool mAlive;
         /// <summary>
         /// The heightmap for the region. Camera positions below this will be ignored.
         /// </summary>
@@ -186,7 +139,66 @@ namespace Chimera {
         /// Whether the core has been successfully initialised.
         /// </summary>
         private readonly bool mInitialised;
+        /// <summary>
+        /// The object containing the configuration for the system.
+        /// </summary>
+        private readonly CoordinatorConfig mConfig;
+        /// <summary>
+        /// Logger for recording details of how the core is operating.
+        /// </summary>
+        private readonly ILog Logger = LogManager.GetLogger("Core");
+        /// <summary>
+        /// The authoratitive orientation of the camera in virtual space. This is read-only. To update it use the 'Update' method.
+        /// </summary>
+        private readonly Rotation mOrientation;
+        /// <summary>
+        /// Current orientation delta.
+        /// </summary>
+        private readonly Rotation mOrientationDelta;
+        /// <summary>
+        /// When the system was started.
+        /// </summary>
+        private readonly DateTime mStart = DateTime.Now;
 
+#if DEBUG
+        /// <summary>
+        /// Statistics object which monitors how long ticks are taking.
+        /// </summary>
+        private readonly TickStatistics mTickStats = new TickStatistics();
+        /// <summary>
+        /// Statistics object which monitors how long update operations are taking.
+        /// </summary>
+        private readonly TickStatistics mUpdateStats = new TickStatistics();
+        /// <summary>
+        /// Statistics object which monitors how camera updates are taking.
+        /// </summary>
+        private readonly TickStatistics mCameraStats = new TickStatistics();
+        /// <summary>
+        /// Statistics object which monitors how delta updates are taking.
+        /// </summary>
+        private readonly TickStatistics mDeltaStats = new TickStatistics();
+#endif
+
+        /// <summary>
+        /// The authoratitive position of the camera in virtual space.
+        /// </summary>
+        private Vector3 mPosition;
+        /// <summary>
+        /// Current position delta.
+        /// </summary>
+        private Vector3 mPositionDelta;
+        /// <summary>
+        /// The position of the eye in the real world, in mm.
+        /// </summary>
+        private Vector3 mEyePosition;
+        /// <summary>
+        /// Whether to accept updates to the camera position.
+        /// </summary>
+        private bool mEnableUpdates = true;
+        /// <summary>
+        /// Whether the tick thread should continue running.
+        /// </summary>
+        private bool mAlive;
         /// <summary>
         /// File to log information about any crash to.
         /// </summary>
@@ -200,31 +212,27 @@ namespace Chimera {
         /// </summary>
         private ControlMode mControlMode = ControlMode.Absolute;
         /// <summary>
-        /// The object containing the configuration for the system.
+        /// When the view was last updated.
         /// </summary>
-        private CoordinatorConfig mConfig;
+        private DateTime mLastUpdate;
 
 
         /// <summary>
         /// Triggered whenever the ability to control the view is switched on or off.
         /// </summary>
         public event Action EnableUpdatesChanged;
-
         /// <summary>
         /// Triggered when the camera control mode changes.
         /// </summary>
         public event Action<Core, ControlMode> CameraModeChanged;
-
         /// <summary>
         /// Triggered whenever a window is added.
         /// </summary>
         public event Action<Frame, EventArgs> FrameAdded;
-
         /// <summary>
         /// Triggered whenever a window is removed.
         /// </summary>
         public event Action<Frame, EventArgs> WindowRemoved;
-
         /// <summary>
         /// Selected whenever the delta controlling where the camera is is updated.
         /// </summary>
@@ -233,36 +241,35 @@ namespace Chimera {
         /// Selected whenever the virtual camera position/orientation is changed.
         /// </summary>
         public event Action<Core, CameraUpdateEventArgs> CameraUpdated;
-
         /// <summary>
         /// Selected whenever the location of the eye in real space is updated.
         /// </summary>
         public event Action<Core, EventArgs> EyeUpdated;
-
         /// <summary>
         /// Triggered whenever a key is pressed or released on the keyboard.
         /// </summary>
         public event Action<Core, KeyEventArgs> KeyDown;
-
         /// <summary>
         /// Triggered whenever a key is pressed or released on the keyboard.
         /// </summary>
         public event Action<Core, KeyEventArgs> KeyUp;
-
         /// <summary>
         /// Selected whenever a key is pressed or released on the keyboard.
         /// </summary>
         public event Action<Core, KeyEventArgs> Closed;
-
         /// <summary>
         /// Triggered whenever the heightmap changes.
         /// </summary>
         public event EventHandler<HeightmapChangedEventArgs> HeightmapChanged;
-
+        /// <summary>
+        /// Triggered when all frames, output modules and plugins have been initialised.
+        /// </summary>
+        public event Action InitialisationComplete;
         /// <summary>
         /// Triggered every tick. Listen for this to keep time across the system.
         /// </summary>
         public event Action Tick;
+
         /// <summary>
         /// Initialise this coordinator, specifying a collection of plugins to work with.
         /// </summary>
@@ -287,11 +294,11 @@ namespace Chimera {
                     }
                 }
 
-                foreach (string window in mConfig.Windows)
+                foreach (string frame in mConfig.Frames)
                     if (outputFactory != null)
-                        AddFrame(new Frame(window, outputFactory.Create()));
+                        AddFrame(new Frame(frame, outputFactory.Create()));
                     else
-                        AddFrame(new Frame(window));
+                        AddFrame(new Frame(frame));
 
                 foreach (var plugin in mPlugins) {
                     plugin.Init(this);
@@ -305,6 +312,8 @@ namespace Chimera {
                 //tickThread.Priority = ThreadPriority.Highest;
                 tickThread.Start();
                 mInitialised = true;
+                if (InitialisationComplete != null)
+                    InitialisationComplete();
             } catch (Exception e) {
                 Logger.Warn("Unable to instantiate core. " + e.Message);
                 Logger.Debug("Unable to instantiate core.", e);
@@ -565,8 +574,6 @@ namespace Chimera {
             }
         }
 
-        private DateTime mLastUpdate;
-
         /// <summary>
         /// Register a key press or release.
         /// </summary>
@@ -613,6 +620,7 @@ namespace Chimera {
         public Point GetPoint(Func<Vector3, Point> to2D, Vector3 realPoint) {
             throw new System.NotImplementedException();
         }
+
         public void Close() {
             Close("-Shutdown");
         }
@@ -629,14 +637,14 @@ namespace Chimera {
                 plugin.Enabled = false;
                 plugin.Close();
             }
-            foreach (var window in Frames)
-                window.Close();
+            foreach (var frame in Frames)
+                frame.Close();
 
             if (Closed != null)
                 Closed(this, null);
-        }
 
-        private DateTime mStart = DateTime.Now;
+            Logger.Info("System shutdown for " + reason + ".");
+        }
 
         /// <summary>
         /// Handle a crash event,

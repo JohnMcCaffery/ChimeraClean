@@ -43,9 +43,22 @@ namespace Chimera.Overlay {
         /// </summary>
         private readonly Dictionary<string, State> mStates = new Dictionary<string,State>();
         /// <summary>
+        /// Window managers for each window in the system.
+        /// </summary>
+        private readonly Dictionary<string, FrameOverlayManager> mFrameManagers = new Dictionary<string, FrameOverlayManager>();
+        /// <summary>
         /// The coordinator this state manager is tied to.
         /// </summary>
         private Core mCoordinator;
+        /// <summary>
+        /// The control panel for the overlay.
+        /// </summary>
+        private OverlayPluginPanel mPanel;
+        /// <summary>
+        /// Delegate for listening for transition end events.
+        /// </summary>
+        private Action<StateTransition> mTransitionCompleteListener;
+
         /// <summary>
         /// The current state the manager is in. Will be null during a transition.
         /// </summary>
@@ -59,38 +72,26 @@ namespace Chimera.Overlay {
         /// </summary>
         private StateTransition mCurrentTransition;
         /// <summary>
-        /// Delegate for listening for transition end events.
+        /// Whether to allow the system to move the cursor.
         /// </summary>
-        private Action<StateTransition> mTransitionComplete;
-        /// <summary>
-        /// Window managers for each window in the system.
-        /// </summary>
-        private readonly Dictionary<string, FrameOverlayManager> mFrameManagers = new Dictionary<string, FrameOverlayManager>();
-        /// <summary>
-        /// The control panel for the overlay.
-        /// </summary>
-        private OverlayPluginPanel mPanel;
+        private bool mControlPointers = true;
 
         /// <summary>
         /// Triggered whenever a new state is added.
         /// </summary>
         public event Action<State> StateAdded;
-
         /// <summary>
         /// Triggered whenever a transition starts.
         /// </summary>
         public event Action<StateTransition> TransitionStarting;
-
         /// <summary>
         /// Triggered whenever a transition finishes.
         /// </summary>
         public event Action<StateTransition> TransitionFinished;
-
         /// <summary>
         /// Triggered whenever the current state changes.
         /// </summary>
         public event Action<State> StateChanged;
-
         /// <summary>
         /// Triggered whenever the overlay windows are launched.
         /// </summary>
@@ -99,19 +100,6 @@ namespace Chimera.Overlay {
         /// Triggered whenever the overlay windows are launched.
         /// </summary>
         public event Action OverlayClosed;
-
-        private Form mMasterForm;
-
-        void mCoordinator_FrameAdded(Frame frame, EventArgs args) {
-            FrameOverlayManager manager = new FrameOverlayManager(this, frame);
-            mFrameManagers.Add(frame.Name, manager);
-
-            if (mMasterForm != null)
-                manager.SetForm(mMasterForm);
-
-            if (mConfig.LaunchOverlay)
-                manager.Launch();
-        }
 
         public FrameOverlayManager this[string windowName] {
             get { return mFrameManagers[windowName]; }
@@ -186,6 +174,22 @@ namespace Chimera.Overlay {
         /// </summary>
         public bool Transitioning {
             get { return mCurrentState == null; }
+        }
+        public bool IdleEnabled {
+            get { return mIdleEnabled; }
+            set {
+                mIdleEnabled = value;
+                foreach (var trigger in mIdleTriggers)
+                    trigger.Active = value;
+            }
+        }
+        public bool ControlPointers {
+            get { return mControlPointers; }
+            set {
+                mControlPointers = value;
+                foreach (var frame in mFrameManagers.Values)
+                    frame.ControlPointer = value;
+            }
         }
 
         public void Reset() {
@@ -220,7 +224,7 @@ namespace Chimera.Overlay {
             lock (this) {
                 mCurrentState = null;
                 mCurrentTransition = transition;
-                transition.Finished += mTransitionComplete;
+                transition.Finished += mTransitionCompleteListener;
             }
             if (TransitionStarting != null)
                 TransitionStarting(transition);
@@ -236,18 +240,9 @@ namespace Chimera.Overlay {
             if (TransitionFinished != null)
                 TransitionFinished(transition);
             lock (this) {
-                transition.Finished -= mTransitionComplete;
+                transition.Finished -= mTransitionCompleteListener;
                 CurrentState = transition.To;
                 mCurrentTransition = null;
-            }
-        }
-
-        public bool IdleEnabled {
-            get { return mIdleEnabled; }
-            set {
-                mIdleEnabled = value;
-                foreach (var trigger in mIdleTriggers)
-                    trigger.Active = value;
             }
         }
 
@@ -258,5 +253,16 @@ namespace Chimera.Overlay {
         public bool IsKnownWindow(string window) {
             return mFrameManagers.ContainsKey(window);
         }
+
+        void mCoordinator_FrameAdded(Frame frame, EventArgs args) {
+            FrameOverlayManager manager = new FrameOverlayManager(this, frame);
+            mFrameManagers.Add(frame.Name, manager);
+
+            if (mMasterForm != null)
+                manager.SetForm(mMasterForm);
+
+            if (mConfig.LaunchOverlay)
+                manager.Launch();
+        }    
     }
 }

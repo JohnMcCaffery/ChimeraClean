@@ -16,10 +16,11 @@ using log4net;
 namespace Chimera.OpenSim {
     public abstract class ProxyControllerBase {
         private static ProxyControllerPacketThread CameraThread = null;
-        private readonly ILog ThisLogger = LogManager.GetLogger("OpenSim");
+        private readonly ILog ThisLogger;
         private readonly Frame mFrame;
         private Proxy mProxy;
         private PacketDelegate mAgentUpdateListener;
+        private DateTime mLastUpdatePacket = DateTime.Now;
         private UUID mSecureSessionID = UUID.Zero;
         private UUID mSessionID = UUID.Zero;
         private UUID mAgentID = UUID.Zero;
@@ -35,6 +36,11 @@ namespace Chimera.OpenSim {
         private readonly Dictionary<string, DateTime> mUnackedUpdates = new Dictionary<string,DateTime>();
         private int mUnackedCountThresh = 40;
         private long mUnackedDiscardMS = 1000;
+
+        public DateTime LastUpdatePacket {
+            get { return mLastUpdatePacket; }
+            set { mLastUpdatePacket = value; }
+        }
 
         /// <summary>
         /// Selected whenever the client proxy starts up.
@@ -78,6 +84,9 @@ namespace Chimera.OpenSim {
         }
 
         internal ProxyControllerBase(Frame frame) {
+            mFrame = frame;
+
+            ThisLogger = LogManager.GetLogger("OpenSim." + mFrame.Name + "Proxy");
             mViewerConfig = new ViewerConfig(frame.Name);
             if (mViewerConfig.UseThread) {
                 if (CameraThread == null)
@@ -86,7 +95,6 @@ namespace Chimera.OpenSim {
                     CameraThread.AddController(this);
             }
 
-            mFrame = frame;
             mAgentUpdateListener = new PacketDelegate(mProxy_AgentUpdatePacketReceived);
         }
 
@@ -111,10 +119,12 @@ namespace Chimera.OpenSim {
             if (mConfig == null)
                 throw new ArgumentException("Unable to start proxy. No configuration specified.");
             try {
+                mLastUpdatePacket = DateTime.Now;
                 mProxy = new Proxy(mConfig);
                 mProxy.AddLoginResponseDelegate(mProxy_LoginResponse);
                 mProxy.AddDelegate(PacketType.AgentUpdate, Direction.Outgoing, mProxy_AgentUpdatePacketReceived);
 
+                ThisLogger.Info("Proxying " + mConfig.remoteLoginUri);
                 mProxy.Start();
 
                 if (pPositionChanged != null)
@@ -136,9 +146,11 @@ namespace Chimera.OpenSim {
                 CameraThread.Stop();
 
             if (mProxy != null) {
+                ThisLogger.Debug("Closing");
                 mProxy.Stop();
                 mProxy = null;
             }
+            ThisLogger.Info("Closed");
         }
 
         public void Chat(string message, int channel) {
@@ -175,16 +187,19 @@ namespace Chimera.OpenSim {
         Packet mProxy_AgentUpdatePacketReceived(Packet p, IPEndPoint ep) {
             AgentUpdatePacket packet = p as AgentUpdatePacket;
             Vector3 pos = packet.AgentData.CameraCenter;
+            mLastUpdatePacket = DateTime.Now;
 
             if (mFrame.Core.ControlMode == ControlMode.Absolute) {
                 //new Thread(() => {
-                string key = MakeKey(pos);
-                lock (mUnackedUpdates) {
-                    if (mUnackedUpdates.ContainsKey(key))
-                        mUnackedUpdates.Remove(key);
-                }
+                if (mViewerConfig.CheckForPause) {
+                    string key = MakeKey(pos);
+                    lock (mUnackedUpdates) {
+                        if (mUnackedUpdates.ContainsKey(key))
+                            mUnackedUpdates.Remove(key);
+                    }
 
-                CheckForPause();
+                    CheckForPause();
+                }
                 //}).Start();
             }
 
@@ -221,7 +236,7 @@ namespace Chimera.OpenSim {
             if (mFrame.Core.ControlMode == ControlMode.Absolute)
                 MarkUntracked();
 
-            if (mViewerConfig.UseThread) {
+            if (mViewerConfig.CheckForPause && mViewerConfig.UseThread) {
                 //PrintTickInfo();
                 Packet p = ActualSetCamera();
                 lock (this)
@@ -230,7 +245,7 @@ namespace Chimera.OpenSim {
                 mProxy.InjectPacket(ActualSetCamera(), Direction.Incoming);
         }
         public void SetCamera(Vector3 positionDelta, Rotation orientationDelta) {
-            if (mFrame.Core.ControlMode == ControlMode.Absolute)
+            if (mViewerConfig.CheckForPause && mFrame.Core.ControlMode == ControlMode.Absolute)
                 MarkUntracked();
 
             //PrintTickInfo();

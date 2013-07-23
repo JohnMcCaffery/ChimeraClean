@@ -1221,6 +1221,7 @@ namespace Chimera.Util {
         }
         
 
+        private static ILog Logger = LogManager.GetLogger("ProcessManager");
         private static ICrashable sRoot;
         private static Form sForm;
         private static int sCurrentScreen = 0;
@@ -1472,8 +1473,6 @@ namespace Chimera.Util {
             return process;
         }
 
-        private static ILog Logger = LogManager.GetLogger("ProcessManager");
-
         public static void BlockingRunForm(Form form, ICrashable root) {
             Application.EnableVisualStyles();
             sForm = form;
@@ -1494,7 +1493,7 @@ namespace Chimera.Util {
         }
 
         static void Application_ThreadException(object sender, System.Threading.ThreadExceptionEventArgs e) {
-            Logger.Warn("Exception caught in Thread.");
+            Logger.Warn("Exception caught from GUI Thread.");
             sForm.Close();
             HandleException(e.Exception);
         }
@@ -1509,8 +1508,9 @@ namespace Chimera.Util {
             Logger.Warn(e.Message);
             Logger.Warn(e.StackTrace);
             sRoot.OnCrash(e);
-            throw e;
-            //Environment.Exit(42);
+            //throw e;
+            Logger.Warn("Exiting with code 42");
+            Environment.Exit(42);
         }
 
         public static void Dump(string dump, string end) {

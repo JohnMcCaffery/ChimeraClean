@@ -11,16 +11,23 @@ using System.Diagnostics;
 using Chimera.OpenSim.GUI;
 using System.Threading;
 using log4net;
+using Chimera.Overlay;
 
 namespace Chimera.OpenSim {
     public class OpenSimController : ISystemPlugin, IOutput {
+        private static Form sForm = null;
+
         private readonly ILog ThisLogger = LogManager.GetLogger("OpenSim");
         private bool mEnabled;
         private bool mClosingViewer;
+        private bool mShuttingDown;
         private ViewerConfig mConfig;
         private Frame mFrame;
         private OutputPanel mOutputPanel;
         private InputPanel mInputPanel;
+        private FrameOverlayManager mManager = null;
+
+        private Action mExitListener;
 
         private SetFollowCamProperties mFollowCamProperties;
         private ProxyControllerBase mProxyController;
@@ -78,9 +85,14 @@ namespace Chimera.OpenSim {
                 mFollowCamProperties.SetProxy(mProxyController.Proxy);
         }
 
+        void coordinator_InitialisationFinished() {
+            if (mFrame.Core.HasPlugin<OverlayPlugin>())
+                mManager = mFrame.Core.GetPlugin<OverlayPlugin>()[mFrame.Name];
+        }
+
         public event Action<IPlugin, bool> EnabledChanged;
 
-        UserControl IPlugin.ControlPanel {
+        Control IPlugin.ControlPanel {
             get {
                 if (mInputPanel == null)
                     mInputPanel = new InputPanel(mFollowCamProperties);
@@ -113,9 +125,8 @@ namespace Chimera.OpenSim {
         }
 
         public void Close() {
-            mClosingViewer = true;
-            mViewerController.Close(false);
-            mProxyController.Stop();
+            mShuttingDown = true;
+            Stop();
         }
 
         public void Draw(Graphics graphics, Func<Vector3, Point> to2D, Action redraw, Perspective perspective) { }
@@ -145,7 +156,7 @@ namespace Chimera.OpenSim {
             get { return mViewerController.Process; }
         }
 
-        UserControl IOutput.ControlPanel {
+        Control IOutput.ControlPanel {
             get {
                 if (mOutputPanel == null)
                     mOutputPanel = new OutputPanel(this);
@@ -161,21 +172,24 @@ namespace Chimera.OpenSim {
             mFrame = frame;
             mConfig = new ViewerConfig(frame.Name);
 
-            mViewerController = new ViewerController(mConfig.ViewerToggleHUDKey);
+            mViewerController = new ViewerController(mConfig.ViewerToggleHUDKey, mFrame.Name);
             if (mConfig.BackwardsCompatible)
                 mProxyController = new BackwardCompatibleController(frame);
             else
                 mProxyController = new FullController(frame);
 
+            mExitListener = new Action(mViewerController_Exited);
+
             mFrame.Core.DeltaUpdated += new Action<Core,DeltaUpdateEventArgs>(Coordinator_DeltaUpdated);
             mFrame.Core.CameraUpdated += new Action<Core,CameraUpdateEventArgs>(Coordinator_CameraUpdated);
             mFrame.Core.CameraModeChanged += new Action<Core,ControlMode>(Coordinator_CameraModeChanged);
             mFrame.Core.EyeUpdated += new Action<Core,EventArgs>(Coordinator_EyeUpdated);
+            mFrame.Core.InitialisationComplete += new Action(Core_InitialisationComplete);
             mFrame.Changed += new Action<Chimera.Frame,EventArgs>(mFrame_Changed);
             mFrame.MonitorChanged += new Action<Chimera.Frame,Screen>(mFrame_MonitorChanged);
             mProxyController.OnClientLoggedIn += new EventHandler(mProxyController_OnClientLoggedIn);
             mProxyController.PositionChanged += new Action<Vector3,Rotation>(mProxyController_PositionChanged);
-            mViewerController.Exited += new Action(mViewerController_Exited);
+            mViewerController.Exited += mExitListener;
 
 
             if (mConfig.AutoStartViewer)
@@ -184,17 +198,27 @@ namespace Chimera.OpenSim {
                 StartProxy();
         }
 
+        void Core_InitialisationComplete() {
+            if (mFrame.Core.HasPlugin<OverlayPlugin>())
+                mManager = mFrame.Core.GetPlugin<OverlayPlugin>()[mFrame.Name];
+        }
+
         public bool Launch() {
             return StartProxy() && StartViewer();
         }
 
         public void Restart(string reason) {
-            ThisLogger.Warn("Restarting viewer because of " + reason + ".");
+            ThisLogger.Warn("Restarting " + mFrame.Name + " viewer because " + reason + ".");
             //new Thread(() => {
-                mViewerController.Close(true);
-                mProxyController.Stop();
-                mProxyController.Start();
+            mClosingViewer = true;
+            mViewerController.Close(true);
+            StopProxy();
+            if (!mShuttingDown) {
+                Thread.Sleep(1000);
+                mClosingViewer = false;
+                StartProxy();
                 mViewerController.Start();
+            }
             //}).Start();
         }
 
@@ -208,13 +232,20 @@ namespace Chimera.OpenSim {
             if (mProxyController.Proxy != null)
                 return true;
 
-            if (mProxyController.StartProxy(mConfig.ProxyPort, mConfig.ProxyLoginURI)) {
-                if (IsMaster)
-                    mFollowCamProperties.SetProxy(mProxyController.Proxy);
+            Func<bool> a = () => {
+                if (mProxyController.StartProxy(mConfig.ProxyPort, mConfig.ProxyLoginURI)) {
+                    if (IsMaster)
+                        mFollowCamProperties.SetProxy(mProxyController.Proxy);
 
-                return true;
-            }
-            return false;
+                    return true;
+                }
+                return false;
+            };
+
+            if (sForm != null && sForm.Created && !sForm.Disposing && !sForm.IsDisposed)
+                return (bool) sForm.Invoke(a);
+            else
+                return a();
         }
 
         public bool StartViewer() {
@@ -240,11 +271,13 @@ namespace Chimera.OpenSim {
         }
 
         void Coordinator_DeltaUpdated(Core coordinator, DeltaUpdateEventArgs args) {
+            CheckTimeout();
             if (IsMaster && ControlCamera)
                 mProxyController.Move(args.positionDelta, args.rotationDelta, mConfig.DeltaScale);
         }
 
         void Coordinator_CameraUpdated(Core coordinator, CameraUpdateEventArgs args) {
+            CheckTimeout();
             if (ControlCamera && mProxyController.Started && (Mode == ControlMode.Absolute || !IsMaster))
                 mProxyController.SetCamera(args.positionDelta, args.rotationDelta);
         }
@@ -281,9 +314,12 @@ namespace Chimera.OpenSim {
 
             new Thread(() => {
                 Thread.Sleep(5000);
-                //mViewerController.Monitor = mFrame.Monitor;
                 foreach (var key in mConfig.StartupKeyPresses.Split(','))
                     mViewerController.PressKey(key);
+
+                if (mManager != null) {
+                    mManager.BringToFront();
+                }
             }).Start();
 
 
@@ -308,14 +344,35 @@ namespace Chimera.OpenSim {
             mClosingViewer = false;
         }
 
-        #endregion
-
-        #region ISystemPlugin Members
-
-
         public void SetForm(Form form) {
+            sForm = form;
         }
 
         #endregion
+
+        private void CheckTimeout() {
+            if (mProxyController.Started && DateTime.Now.Subtract(mProxyController.LastUpdatePacket).TotalMinutes > 1.0) {
+                mProxyController.LastUpdatePacket = DateTime.Now;
+                Restart("ViewerStoppedResponding");
+            }
+        }
+
+        private void StopProxy() {
+            if (sForm != null && sForm.Created && !sForm.Disposing && !sForm.IsDisposed)
+                sForm.Invoke(new Action(() => mProxyController.Stop()));
+            else
+                mProxyController.Stop();
+        }
+
+        public void Stop() {
+            mClosingViewer = true;
+            mViewerController.Close(false);
+            StopProxy();
+        }
+
+        internal void CloseViewer(bool blocking) {
+            mClosingViewer = true;
+            mViewerController.Close(blocking);
+        }
     }
 }

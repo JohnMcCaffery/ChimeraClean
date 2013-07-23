@@ -71,20 +71,20 @@ namespace Chimera.Overlay.Triggers {
 
         public ClickTrigger(FrameOverlayManager manager, RectangleF bounds)
             : base(manager, bounds) {
-            Manager.OnRelease += new Action<int>(mManager_OnRelease);
+            Manager.OnRelease += new Action(mManager_OnRelease);
         }
 
         public ClickTrigger(OverlayPlugin manager, XmlNode node)
             : base(manager, node) {
-            Manager.OnRelease += new Action<int>(mManager_OnRelease);
+            Manager.OnRelease += new Action(mManager_OnRelease);
         }
 
         public ClickTrigger(OverlayPlugin manager, XmlNode node, Rectangle clip)
             : base(manager, node, clip) {
-            Manager.OnRelease += new Action<int>(mManager_OnRelease);
+            Manager.OnRelease += new Action(mManager_OnRelease);
         }
 
-        void mManager_OnRelease(int index) {
+        void mManager_OnRelease() {
             if (Active && Inside)
                 Trigger();
         }

@@ -4,24 +4,31 @@ using System.Linq;
 using System.Text;
 using Chimera.Util;
 using System.Threading;
+using log4net;
 
 namespace Chimera.OpenSim {
     public class ViewerController : ProcessController {
+        private ILog Logger;
         private string mToggleHudKey = "^%{F1}";
 
-        public ViewerController(string exe, string workingDir, string args)
+        public ViewerController(string exe, string workingDir, string args, string name)
             : base(exe, workingDir, args) {
+
+            Logger = LogManager.GetLogger("OpenSim." + name + "Viewer");
         }
 
-        public ViewerController(string toggleHUDKey) {
+        public ViewerController(string toggleHUDKey, string name) {
             mToggleHudKey = toggleHUDKey;
+
+            Logger = LogManager.GetLogger("OpenSim." + name + "Viewer");
         }
 
         public void Close(bool blocking) {
             if (!Started)
                 return;
-            
-           ThreadStart close = () => {
+
+            ThreadStart close = () => {
+                Logger.Debug("Closing");
                 bool closed = false;
                 object closeLock = new object();
                 Action closeListener = () => {
@@ -37,13 +44,14 @@ namespace Chimera.OpenSim {
                         System.Threading.Monitor.Wait(closeLock, (i + 1) * 5000);
                 }
 
+                Logger.Info("Closed");
                 Exited -= closeListener;
             };
 
-           if (blocking)
-               close();
+            if (blocking)
+                close();
             else
-               new Thread(close).Start();
+                new Thread(close).Start();
         }
 
         public void ToggleHUD() {

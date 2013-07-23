@@ -309,7 +309,7 @@ namespace Chimera.OpenSim {
             get { return mFrame; }
         }
 
-        UserControl IOutput.ControlPanel {
+        Control IOutput.ControlPanel {
             get {
                 if (mOutputPanel == null)
                     mOutputPanel = new DeprecatedOutputPanel(this);
@@ -435,7 +435,7 @@ namespace Chimera.OpenSim {
 
         public event Action<IPlugin, bool> EnabledChanged;
 
-        UserControl IPlugin.ControlPanel {
+        Control IPlugin.ControlPanel {
             get {
                 if (mInputPanel == null) {
                     mMaster = true;

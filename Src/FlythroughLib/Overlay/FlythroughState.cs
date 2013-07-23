@@ -71,6 +71,7 @@ namespace Chimera.Flythrough.Overlay {
         private IMediaPlayer mPlayer;
         private Text mStepText;
         private Text mSubtitlesText;
+        private Text mSubtitlesFont;
         private Step mCurrentStep;
         private string mSlideshowWindowName;
         private string mSlideshowFolder;
@@ -112,7 +113,7 @@ namespace Chimera.Flythrough.Overlay {
         }
 
         public FlythroughState(OverlayPlugin manager, XmlNode node, IMediaPlayer player)
-            : base(GetName(node, "flythrough state"), manager) {
+            : base(GetName(node, "flythrough state"), manager, node) {
 
             mStepListener = new Action<int>(mInput_StepStarted);
 
@@ -131,6 +132,7 @@ namespace Chimera.Flythrough.Overlay {
 
             if (displaySubtitles) {
                 mSubtitlesText = Manager.MakeText(node.SelectSingleNode("child::SubtitleText"));
+                mSubtitlesFont = Manager.MakeText(node.SelectSingleNode("child::SubtitleText"));
             }
 
             XmlNode stepTextNode = node.SelectSingleNode("child::StepText");
@@ -196,16 +198,10 @@ namespace Chimera.Flythrough.Overlay {
 
         void step_Triggered() {
             mInput.Step();
-            //foreach (var step in mStepTriggers)
-                //step.Active = false;
         }
 
 
         public override IFrameState CreateWindowState(FrameOverlayManager manager) {
-            if (manager.Name.Equals(mSlideshowWindowName)) {
-                //mSlideshow = new SlideshowWindow(manager, mSlideshowFolder, mSlideshowTransition);
-                //return mSlideshow;
-            }
             return new FrameState(manager);
         }
 
@@ -220,6 +216,13 @@ namespace Chimera.Flythrough.Overlay {
         }
 
         protected override void TransitionToStart() {
+            if (mSubtitlesText != null) {
+                mSubtitlesText.Alignment = mSubtitlesFont.Alignment;
+                mSubtitlesText.Font = mSubtitlesFont.Font;
+                mSubtitlesText.Position = mSubtitlesFont.Position;
+                mSubtitlesText.Colour = mSubtitlesFont.Colour;
+            }
+
             mInput.StepStarted += mStepListener;
             Manager.ControlPointers = false;
 

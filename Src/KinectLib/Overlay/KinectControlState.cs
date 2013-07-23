@@ -60,10 +60,9 @@ namespace Chimera.Kinect.Overlay {
         private Rotation mStartOrientation;
         private Vector3 mStartPosition;
         private bool mSetPosition;
-        private double mOpacity = .7;
 
         public override IFrameState CreateWindowState(FrameOverlayManager manager) {
-            return new KinectControlWindowState(manager, mOpacity);
+            return new KinectControlWindowState(manager);
         }
 
         public KinectControlState(string name, OverlayPlugin manager, bool avatar)
@@ -77,11 +76,10 @@ namespace Chimera.Kinect.Overlay {
         }
 
         public KinectControlState(OverlayPlugin manager, XmlNode node)
-            : base(GetName(node, "kinect movement state"), manager) {
+            : base(GetName(node, "kinect movement state"), manager, node) {
 
             mInput = manager.Core.GetPlugin<KinectMovementPlugin>();
             mAvatar = GetBool(node, true, "Avatar");
-            mOpacity = GetDouble(node, mOpacity, "Opacity");
 
             double pitch = GetDouble(node, manager.Core.Orientation.Pitch);
             double yaw = GetDouble(node, manager.Core.Orientation.Yaw);

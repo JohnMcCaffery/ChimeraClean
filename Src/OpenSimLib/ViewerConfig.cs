@@ -58,6 +58,7 @@ namespace Chimera.OpenSim {
         public float DeltaScale;
         public bool ControlFrustum;
         public bool UseThread;
+        public bool CheckForPause;
 
         public override string Group {
             get { return "SecondLifeViewer"; }
@@ -99,7 +100,6 @@ namespace Chimera.OpenSim {
             AddCommandLineParam(Name, "Fullscreen", "pw");
             */
             
-
             ViewerExecutable = Path.GetFullPath(Get(true, "ViewerExe", DEFAULT_CLIENT_EXE, "The executable that runs the viewer."));
             ViewerWorkingDirectory = Get(true, "WorkingDirectory", Path.GetDirectoryName(ViewerExecutable), "The workign directory for the viewer executable.");
             ViewerArguments = Get(true, "ViewerArguments", "", "Any arguments to be passed to the viewer when it starts.");
@@ -118,7 +118,7 @@ namespace Chimera.OpenSim {
             AutoLoginClient = LoginFirstName != null && LoginLastName != null && LoginPassword != null;
 
             AutoStartProxy = Get(false, "AutoStartProxy", false, "Whether to automatically start the proxy when the system start.");
-            AutoStartViewer = Get(false, "AutoStartViewer", false, "Whether to automatically start the viewer when the system start.");
+            AutoStartViewer = Get(false, "AutoStartViewer", false, "Whether to automatically start the viewer when the system starts.");
             AutoRestartViewer = Get(true, "AutoRestart", false, "Whether to automatically restart the viewer if the process exits.");
             ControlCamera = Get(false, "ControlCamera", true, "Whether to control the position of the camera on the viewer.");
             ControlFrustum = Get(false, "ControlFrustum", true, "Whether to control the viewing frustum on the viewer.");
@@ -129,6 +129,8 @@ namespace Chimera.OpenSim {
             BackwardsCompatible = Get(true, "BackwardsCompatible", false, "If true, no unusual packets will be injected into the viewer. This will disable remote control and frustum control.");
 
             UseThread = Get(true, "UseThread", false, "If true then each proxy will spawn a thread to deliver camera updates to the viewer at a constant rate. If false packets will be injected whenever CameraUpdate events are triggered.");
+
+            CheckForPause = Get(true, "CheckForPause", false, "Whether the proxy controller should check to see whether the updates have been received which correspond to the updates sent out.");
 
             //EnableWindowPackets = Init.Get(generalConfig, "EnableWindowPackets", true);
             //UseSetFollowCamPackets = !enableWindowPackets || Get(generalConfig, "UseSetFollowCamPackets", false);

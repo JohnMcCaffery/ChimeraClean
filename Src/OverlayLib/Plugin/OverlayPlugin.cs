@@ -37,9 +37,22 @@ using OpenMetaverse;
 
 namespace Chimera.Overlay {
     public partial class OverlayPlugin : XmlLoader, ISystemPlugin {
+        /// <summary>
+        /// Configuration for the system.
+        /// </summary>
         private OverlayConfig mConfig;
+        /// <summary>
+        /// The media player that will be used to render videos.
+        /// </summary>
         private IMediaPlayer mPlayer;
+        /// <summary>
+        /// Delegate that can be used to redraw the GUI panel.
+        /// </summary>
         private Action mRedraw;
+        /// <summary>
+        /// The form that the system has been launched from.
+        /// </summary>
+        private Form mMasterForm;
 
         public string Statistics {
             get {
@@ -53,7 +66,12 @@ namespace Chimera.Overlay {
                 table += "        <TD>Shortest Visit (m)</TD>" + Environment.NewLine;
                 table += "        <TD>Mean Visit Length (m)</TD>" + Environment.NewLine;
                 table += "    </TR>" + Environment.NewLine;
+
+                foreach (var state in mStates.Values)
+                    table += state.StatisticsRow;
+
                 table += "</TABLE>";
+
                 return table;
             }
         }
@@ -66,7 +84,7 @@ namespace Chimera.Overlay {
 
         public event Action<IPlugin, bool> EnabledChanged;
 
-        public UserControl ControlPanel {
+        public override Control ControlPanel {
             get {
                 if (mPanel == null) {
                     if (mPlayer != null) {
@@ -130,7 +148,7 @@ namespace Chimera.Overlay {
         /// <param name="coordinator">The coordinator which this state form manages state for.</param>
         public void Init(Core coordinator) {
             mCoordinator = coordinator;
-            mTransitionComplete = new Action<StateTransition>(transition_Finished);
+            mTransitionCompleteListener = new Action<StateTransition>(transition_Finished);
             mCoordinator.FrameAdded += new Action<Frame,EventArgs>(mCoordinator_FrameAdded);
 
             foreach (var window in mCoordinator.Frames)
@@ -153,16 +171,5 @@ namespace Chimera.Overlay {
         }
 
         #endregion
-
-        private bool mControlPointers = true;
-
-        public bool ControlPointers {
-            get { return mControlPointers; }
-            set {
-                mControlPointers = value;
-                foreach (var frame in mFrameManagers.Values)
-                    frame.ControlPointer = value;
-            }
-        }
     }
 }

@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("TestConfigs")]
+[assembly: AssemblyTitle("RemoteControl")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("TestConfigs")]
+[assembly: AssemblyProduct("RemoteControl")]
 [assembly: AssemblyCopyright("Copyright ©  2013")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("472982af-1a1a-4fc1-9ebf-8d21ad4fdac7")]
+[assembly: Guid("cb7a212a-7f6c-4175-ba04-d47b8354d2f9")]
 
 // Version information for an assembly consists of the following four values:
 //

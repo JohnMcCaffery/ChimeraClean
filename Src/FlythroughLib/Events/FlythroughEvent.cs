@@ -137,6 +137,8 @@ namespace Chimera.Flythrough {
                     //throw new ArgumentException("Event length cannot be less than 1");
                 int oldLength = mLength;
                 mLength = value;
+                if (mTime > mLength)
+                    mTime = mLength - 1;
                 LengthChanged(value);
                 if (LengthChange != null)
                     LengthChange(this, new LengthChangeEventArgs<T>(this, oldLength, value));

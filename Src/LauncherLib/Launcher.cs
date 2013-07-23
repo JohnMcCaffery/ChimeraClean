@@ -51,7 +51,7 @@ using log4net;
 namespace Chimera.Launcher {
     public class Launcher {
         private static ILog Logger = LogManager.GetLogger("Startup");
-        private readonly Core mCoordinator;
+        private readonly Core mCore;
         private LauncherConfig mConfig;
         private CoordinatorForm mForm;
         private SimpleForm mSimpleForm;
@@ -62,19 +62,19 @@ namespace Chimera.Launcher {
         }
 
         public Core Coordinator {
-            get { return mCoordinator; }
+            get { return mCore; }
         }
         public CoordinatorForm Form {
             get {
                 if (mForm == null)
-                    mForm = new CoordinatorForm(mCoordinator);
+                    mForm = new CoordinatorForm(mCore);
                 return mForm;
             }
         }
         public SimpleForm BasicForm {
             get {
                 if (mSimpleForm == null)
-                    mSimpleForm = new SimpleForm(mCoordinator);
+                    mSimpleForm = new SimpleForm(mCore);
                 return mSimpleForm;
             }
         }
@@ -100,31 +100,30 @@ namespace Chimera.Launcher {
                 k.Bind<IMediaPlayer>().To<DummyPlayer>().InSingletonScope();
 
             try {
-                mCoordinator = k.Get<Core>();
+                mCore = k.Get<Core>();
             } catch (Exception e) {
                 Logger.Warn("Unable to launch. Problem instantiating coordinator. " + (e.InnerException != null ? e.InnerException.Message :e.Message));
                 Logger.Debug("", e);
             }
         }
 
-
         public static Launcher Create() {
             return new Launcher();
         }
 
         public void Launch() {
-            if (mCoordinator == null || !mCoordinator.Initialised)
+            if (mCore == null || !mCore.Initialised)
                 return;
-            if (mConfig.BasicGUI)
-                ProcessWrangler.BlockingRunForm(BasicForm, Coordinator);
-            else {
-                if (mConfig.GUI)
+
+            if (mConfig.GUI) {
+                if (mConfig.BasicGUI)
+                    ProcessWrangler.BlockingRunForm(BasicForm, Coordinator);
+                else
                     ProcessWrangler.BlockingRunForm(Form, Coordinator);
-                else {
-                    //Thread t = new Thread(() => {
-                    while (!Console.ReadLine().ToUpper().StartsWith("Q")) ;
-                    mCoordinator.Close();
-                }
+            } else {
+                //Thread t = new Thread(() => {
+                while (!Console.ReadLine().ToUpper().StartsWith("Q")) ;
+                mCore.Close();
                 //});
                 //t.Name = "Input Thread";
                 //t.Start();

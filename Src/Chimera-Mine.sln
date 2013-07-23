@@ -7,47 +7,17 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChimeraLib", "ChimeraLib\Ch
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlythroughLib", "FlythroughLib\FlythroughLib.csproj", "{D0708045-6CCA-4764-B438-A2D6E8635978}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GridProxy", "..\..\libopenmetaverse\Programs\GridProxy\GridProxy.csproj", "{CF1DBF74-BDF4-462A-BDFA-5B6B1149781E}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KinectLib", "KinectLib\KinectLib.csproj", "{D9D475BF-C0EE-4DF6-89A3-55199BB32ABE}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", "{0C11639E-BC1A-4A0B-853B-2ABC822A2208}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LauncherLib", "LauncherLib\LauncherLib.csproj", "{FE0EAF99-0485-4B17-BFCD-D5D9A2890DB3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JoystickLib", "JoystickLib\JoystickLib.csproj", "{C184F128-6AE6-43D7-922E-B706E7B4E576}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Config", "Config", "{AD5F2EE2-5D80-4DC5-924F-C5636B2103E4}"
-	ProjectSection(SolutionItems) = preProject
-		..\Config\Bindings.xml = ..\Config\Bindings.xml
-		..\Config\Core.ini = ..\Config\Core.ini
-		..\Config\ExampleRoom.xml = ..\Config\ExampleRoom.xml
-		..\Config\Heightmap.ini = ..\Config\Heightmap.ini
-		..\Config\Kinect.ini = ..\Config\Kinect.ini
-		..\Config\KinectNew.ini = ..\Config\KinectNew.ini
-		..\Config\LaptopOverlay.ini = ..\Config\LaptopOverlay.ini
-		..\Config\Launch.ini = ..\Config\Launch.ini
-		..\Config\Main.ini = ..\Config\Main.ini
-		..\Config\NoOverlay.ini = ..\Config\NoOverlay.ini
-		..\Config\OpenSim.ini = ..\Config\OpenSim.ini
-		..\Config\Overlay.ini = ..\Config\Overlay.ini
-		..\Config\OverlayLaptop.ini = ..\Config\OverlayLaptop.ini
-		..\Config\OverlayNone.ini = ..\Config\OverlayNone.ini
-		..\Config\OverlayTouchscreen.ini = ..\Config\OverlayTouchscreen.ini
-		..\Config\Touchscreen.ini = ..\Config\Touchscreen.ini
-		..\Config\TouchscreenOverlay.ini = ..\Config\TouchscreenOverlay.ini
-		..\Config\Windows.ini = ..\Config\Windows.ini
-		..\Config\XBoxController.ini = ..\Config\XBoxController.ini
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TouchscreenLib", "TouchscreenLib\TouchscreenLib.csproj", "{7780A366-F9CE-4E9F-8C91-0763F73A3A8A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Overlays", "Overlays", "{AA20755A-F03E-4FF6-A86E-DFC56F1994A9}"
 	ProjectSection(SolutionItems) = preProject
-		..\Bin\Overlays\Demo.xml = ..\Bin\Overlays\Demo.xml
-		..\Overlays\ExampleOverlay.xml = ..\Overlays\ExampleOverlay.xml
 		..\Bin\Overlays\Test.xml = ..\Bin\Overlays\Test.xml
-		..\Bin\Overlays\TimespanOverlay.xml = ..\Bin\Overlays\TimespanOverlay.xml
 		..\Bin\Overlays\TimespanOverlayDemo2.xml = ..\Bin\Overlays\TimespanOverlayDemo2.xml
 	EndProjectSection
 EndProject
@@ -55,59 +25,118 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsMediaPlayerLib", "Wi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OverlayLib", "OverlayLib\OverlayLib.csproj", "{F1421BBF-6313-4C3D-9AF4-1898528728D0}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BinConfig", "BinConfig", "{5909846D-F897-4EA2-88A1-81FABC9E77B6}"
-	ProjectSection(SolutionItems) = preProject
-		..\Bin\Config\Bindings.xml = ..\Bin\Config\Bindings.xml
-		..\Bin\Config\Frames.ini = ..\Bin\Config\Frames.ini
-		..\Bin\Config\Heightmap.ini = ..\Bin\Config\Heightmap.ini
-		..\Bin\Config\InstallBindings.xml = ..\Bin\Config\InstallBindings.xml
-		..\Bin\Config\KinectMovement.ini = ..\Bin\Config\KinectMovement.ini
-		..\Bin\Config\LaptopOverlay.ini = ..\Bin\Config\LaptopOverlay.ini
-		..\Bin\Config\Launch.ini = ..\Bin\Config\Launch.ini
-		..\Bin\Config\Main.ini = ..\Bin\Config\Main.ini
-		..\Bin\Config\OpenSim.ini = ..\Bin\Config\OpenSim.ini
-		..\Bin\Config\Overlay.ini = ..\Bin\Config\Overlay.ini
-		..\Bin\Config\Projectors.ini = ..\Bin\Config\Projectors.ini
-		..\Bin\Config\TimespanRoom.xml = ..\Bin\Config\TimespanRoom.xml
-		..\Bin\Config\Touchscreen.ini = ..\Bin\Config\Touchscreen.ini
-		..\Bin\Config\TouchscreenOverlay.ini = ..\Bin\Config\TouchscreenOverlay.ini
-		..\Bin\Config\XBoxController.ini = ..\Bin\Config\XBoxController.ini
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenSimLib", "OpenSimLib\OpenSimLib.csproj", "{D1978D10-E5B0-40F9-BDB7-11BF03C7A6CB}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Flythroughs", "Flythroughs", "{C10ECBD1-23EB-42D0-86D1-9202F2AC0471}"
 	ProjectSection(SolutionItems) = preProject
-		..\Bin\Flythroughs\Caen-Guided-Full.xml = ..\Bin\Flythroughs\Caen-Guided-Full.xml
 		..\Bin\Flythroughs\Caen-Guided.xml = ..\Bin\Flythroughs\Caen-Guided.xml
 		..\Bin\Flythroughs\Caen-GuidedHack.xml = ..\Bin\Flythroughs\Caen-GuidedHack.xml
-		..\Bin\Flythroughs\Caen-long - Copy.xml = ..\Bin\Flythroughs\Caen-long - Copy.xml
 		..\Bin\Flythroughs\Caen-long.xml = ..\Bin\Flythroughs\Caen-long.xml
 		..\Bin\Flythroughs\Caen-Walk.xml = ..\Bin\Flythroughs\Caen-Walk.xml
-		..\Bin\Flythroughs\Caen-Walk2.xml = ..\Bin\Flythroughs\Caen-Walk2.xml
 		..\Bin\Flythroughs\CathedralFlythrough-LookAt.xml = ..\Bin\Flythroughs\CathedralFlythrough-LookAt.xml
 		..\Bin\Flythroughs\CathedralFlythrough.xml = ..\Bin\Flythroughs\CathedralFlythrough.xml
 		..\Bin\Flythroughs\TimespanFlythrough.xml = ..\Bin\Flythroughs\TimespanFlythrough.xml
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestConfigs", "TestConfigs\TestConfigs.csproj", "{896676F6-4364-46F9-9762-1D9C6EACDF6F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SandboxTest", "SandboxTest\SandboxTest.csproj", "{0C11639E-BC1A-4A0B-853B-2ABC822A2208}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TestConfig", "TestConfig", "{B2BC58C1-0EFE-49D2-89AA-0618EF957ADD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", "{896676F6-4364-46F9-9762-1D9C6EACDF6F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RemoteControlLib", "RemoteControlLib\RemoteControlLib.csproj", "{D5C5A295-5210-418E-85DD-CACB2FBCD863}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RemoteControl", "RemoteControl\RemoteControl.csproj", "{22F020D0-3A7E-4E76-B008-AD9E26F85D21}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GridProxy", "..\..\libopenmetaverse\Programs\GridProxy\GridProxy.csproj", "{C04A5541-444E-4312-97E7-F66457F87EF8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Timespan", "Timespan", "{B100C9B2-813B-4180-95BB-434A197819F1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Config", "Config", "{48AD0346-709E-4D74-9F75-5F0D9820157F}"
 	ProjectSection(SolutionItems) = preProject
-		..\Bin\TestConfig\Bindings.xml = ..\Bin\TestConfig\Bindings.xml
-		..\Bin\TestConfig\Core.ini = ..\Bin\TestConfig\Core.ini
-		..\Bin\TestConfig\Frames.ini = ..\Bin\TestConfig\Frames.ini
-		..\Bin\TestConfig\Heightmap.ini = ..\Bin\TestConfig\Heightmap.ini
-		..\Bin\TestConfig\InstallBindings.xml = ..\Bin\TestConfig\InstallBindings.xml
-		..\Bin\TestConfig\KinectMovement.ini = ..\Bin\TestConfig\KinectMovement.ini
-		..\Bin\TestConfig\LaptopOverlay.ini = ..\Bin\TestConfig\LaptopOverlay.ini
-		..\Bin\TestConfig\Launch.ini = ..\Bin\TestConfig\Launch.ini
-		..\Bin\TestConfig\Main.ini = ..\Bin\TestConfig\Main.ini
-		..\Bin\TestConfig\OpenSim.ini = ..\Bin\TestConfig\OpenSim.ini
-		..\Bin\TestConfig\Overlay.ini = ..\Bin\TestConfig\Overlay.ini
-		..\Bin\TestConfig\Projectors.ini = ..\Bin\TestConfig\Projectors.ini
-		..\Bin\TestConfig\Touchscreen.ini = ..\Bin\TestConfig\Touchscreen.ini
-		..\Bin\TestConfig\XBoxController.ini = ..\Bin\TestConfig\XBoxController.ini
+		..\Bin\Configs\Timespan\Bindings.xml = ..\Bin\Configs\Timespan\Bindings.xml
+		..\Bin\Configs\Timespan\Core.ini = ..\Bin\Configs\Timespan\Core.ini
+		..\Bin\Configs\Timespan\Frames.ini = ..\Bin\Configs\Timespan\Frames.ini
+		..\Bin\Configs\Timespan\Heightmap.ini = ..\Bin\Configs\Timespan\Heightmap.ini
+		..\Bin\Configs\Timespan\KinectMovement.ini = ..\Bin\Configs\Timespan\KinectMovement.ini
+		..\Bin\Configs\Timespan\LaptopOverlay.ini = ..\Bin\Configs\Timespan\LaptopOverlay.ini
+		..\Bin\Configs\Timespan\Launch.ini = ..\Bin\Configs\Timespan\Launch.ini
+		..\Bin\Configs\Timespan\Main.ini = ..\Bin\Configs\Timespan\Main.ini
+		..\Bin\Configs\Timespan\OpenSim.ini = ..\Bin\Configs\Timespan\OpenSim.ini
+		..\Bin\Configs\Timespan\Overlay.ini = ..\Bin\Configs\Timespan\Overlay.ini
+		..\Bin\Configs\Timespan\Projectors.ini = ..\Bin\Configs\Timespan\Projectors.ini
+		..\Bin\Configs\Timespan\RemoteControl.ini = ..\Bin\Configs\Timespan\RemoteControl.ini
+		..\Bin\Configs\Timespan\TimespanRoom.xml = ..\Bin\Configs\Timespan\TimespanRoom.xml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Flythroughs", "Flythroughs", "{CE093C7A-73E9-4099-BC51-C829AE71D482}"
+	ProjectSection(SolutionItems) = preProject
+		..\Bin\Flythroughs\Timespan\Caen-Guided-Full.xml = ..\Bin\Flythroughs\Timespan\Caen-Guided-Full.xml
+		..\Bin\Flythroughs\Timespan\Caen-long.xml = ..\Bin\Flythroughs\Timespan\Caen-long.xml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Overlay", "Overlay", "{06FD37A2-167A-47CA-9DF6-79B90A6A97F5}"
+	ProjectSection(SolutionItems) = preProject
+		..\Bin\Overlays\Timespan\TimespanOverlay.xml = ..\Bin\Overlays\Timespan\TimespanOverlay.xml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{DB1A444F-C959-40FE-A90B-10FF61313DE7}"
+	ProjectSection(SolutionItems) = preProject
+		..\Bin\Scripts\launch.bat = ..\Bin\Scripts\launch.bat
+		..\Bin\Scripts\shutdown1.vbs = ..\Bin\Scripts\shutdown1.vbs
+		..\Bin\Scripts\shutdown2.vbs = ..\Bin\Scripts\shutdown2.vbs
+		..\Bin\Scripts\startup.bat = ..\Bin\Scripts\startup.bat
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Configs", "Configs", "{2C880FBA-0B83-43B9-9C64-69F9BD30D72A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{ED9701C7-AC45-41C5-A61A-788C9D636A73}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Timespan", "Timespan\Timespan.csproj", "{A4304EE2-9B06-416A-AD48-89434262E322}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Chimera", "Chimera", "{2E5DF2CA-8923-4171-8FAD-C5B15DE739B7}"
+	ProjectSection(SolutionItems) = preProject
+		..\Bin\Configs\Chimera\Bindings.xml = ..\Bin\Configs\Chimera\Bindings.xml
+		..\Bin\Configs\Chimera\Frames.ini = ..\Bin\Configs\Chimera\Frames.ini
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{FCF1B486-05B8-4DC0-9EF4-C88359331724}"
+	ProjectSection(SolutionItems) = preProject
+		..\Bin\Configs\Common\Bindings.xml = ..\Bin\Configs\Common\Bindings.xml
+		..\Bin\Configs\Common\Core.ini = ..\Bin\Configs\Common\Core.ini
+		..\Bin\Configs\Common\Frames.ini = ..\Bin\Configs\Common\Frames.ini
+		..\Bin\Configs\Common\Heightmap.ini = ..\Bin\Configs\Common\Heightmap.ini
+		..\Bin\Configs\Common\KinectMovement.ini = ..\Bin\Configs\Common\KinectMovement.ini
+		..\Bin\Configs\Common\LaptopOverlay.ini = ..\Bin\Configs\Common\LaptopOverlay.ini
+		..\Bin\Configs\Common\Launch.ini = ..\Bin\Configs\Common\Launch.ini
+		..\Bin\Configs\Common\Main.ini = ..\Bin\Configs\Common\Main.ini
+		..\Bin\Configs\Common\NoOverlay.ini = ..\Bin\Configs\Common\NoOverlay.ini
+		..\Bin\Configs\Common\OpenSim.ini = ..\Bin\Configs\Common\OpenSim.ini
+		..\Bin\Configs\Common\Overlay.ini = ..\Bin\Configs\Common\Overlay.ini
+		..\Bin\Configs\Common\OverlayLaptop.ini = ..\Bin\Configs\Common\OverlayLaptop.ini
+		..\Bin\Configs\Common\OverlayNone.ini = ..\Bin\Configs\Common\OverlayNone.ini
+		..\Bin\Configs\Common\OverlayTouchscreen.ini = ..\Bin\Configs\Common\OverlayTouchscreen.ini
+		..\Bin\Configs\Common\Projectors.ini = ..\Bin\Configs\Common\Projectors.ini
+		..\Bin\Configs\Common\RemoteControl.ini = ..\Bin\Configs\Common\RemoteControl.ini
+		..\Bin\Configs\Common\TimespanRoom.xml = ..\Bin\Configs\Common\TimespanRoom.xml
+		..\Bin\Configs\Common\Touchscreen.ini = ..\Bin\Configs\Common\Touchscreen.ini
+		..\Bin\Configs\Common\TouchscreenOverlay.ini = ..\Bin\Configs\Common\TouchscreenOverlay.ini
+		..\Bin\Configs\Common\XBoxController.ini = ..\Bin\Configs\Common\XBoxController.ini
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TimespanTest", "TimespanTest", "{22DC0F45-3E0B-4D99-B8C9-15ED2AD17EBC}"
+	ProjectSection(SolutionItems) = preProject
+		..\Bin\Configs\TimespanTest\Bindings.xml = ..\Bin\Configs\TimespanTest\Bindings.xml
+		..\Bin\Configs\TimespanTest\Core.ini = ..\Bin\Configs\TimespanTest\Core.ini
+		..\Bin\Configs\TimespanTest\Frames.ini = ..\Bin\Configs\TimespanTest\Frames.ini
+		..\Bin\Configs\TimespanTest\Heightmap.ini = ..\Bin\Configs\TimespanTest\Heightmap.ini
+		..\Bin\Configs\TimespanTest\KinectMovement.ini = ..\Bin\Configs\TimespanTest\KinectMovement.ini
+		..\Bin\Configs\TimespanTest\LaptopOverlay.ini = ..\Bin\Configs\TimespanTest\LaptopOverlay.ini
+		..\Bin\Configs\TimespanTest\Launch.ini = ..\Bin\Configs\TimespanTest\Launch.ini
+		..\Bin\Configs\TimespanTest\Main.ini = ..\Bin\Configs\TimespanTest\Main.ini
+		..\Bin\Configs\TimespanTest\OpenSim.ini = ..\Bin\Configs\TimespanTest\OpenSim.ini
+		..\Bin\Configs\TimespanTest\Overlay.ini = ..\Bin\Configs\TimespanTest\Overlay.ini
+		..\Bin\Configs\TimespanTest\Projectors.ini = ..\Bin\Configs\TimespanTest\Projectors.ini
+		..\Bin\Configs\TimespanTest\RemoteControl.ini = ..\Bin\Configs\TimespanTest\RemoteControl.ini
+		..\Bin\Configs\TimespanTest\TimespanRoom.xml = ..\Bin\Configs\TimespanTest\TimespanRoom.xml
 	EndProjectSection
 EndProject
 Global
@@ -224,36 +253,6 @@ Global
 		{D0708045-6CCA-4764-B438-A2D6E8635978}.ReleaseVisual|Win32.ActiveCfg = Release|Any CPU
 		{D0708045-6CCA-4764-B438-A2D6E8635978}.ReleaseVisual|x64.ActiveCfg = Release|Any CPU
 		{D0708045-6CCA-4764-B438-A2D6E8635978}.ReleaseVisual|x86.ActiveCfg = Release|Any CPU
-		{CF1DBF74-BDF4-462A-BDFA-5B6B1149781E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CF1DBF74-BDF4-462A-BDFA-5B6B1149781E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CF1DBF74-BDF4-462A-BDFA-5B6B1149781E}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{CF1DBF74-BDF4-462A-BDFA-5B6B1149781E}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{CF1DBF74-BDF4-462A-BDFA-5B6B1149781E}.Debug|Win32.ActiveCfg = Debug|Any CPU
-		{CF1DBF74-BDF4-462A-BDFA-5B6B1149781E}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{CF1DBF74-BDF4-462A-BDFA-5B6B1149781E}.Debug|x86.ActiveCfg = Debug|x86
-		{CF1DBF74-BDF4-462A-BDFA-5B6B1149781E}.Debug|x86.Build.0 = Debug|x86
-		{CF1DBF74-BDF4-462A-BDFA-5B6B1149781E}.DebugVisual|Any CPU.ActiveCfg = Debug|Any CPU
-		{CF1DBF74-BDF4-462A-BDFA-5B6B1149781E}.DebugVisual|Any CPU.Build.0 = Debug|Any CPU
-		{CF1DBF74-BDF4-462A-BDFA-5B6B1149781E}.DebugVisual|Mixed Platforms.ActiveCfg = Debug|x86
-		{CF1DBF74-BDF4-462A-BDFA-5B6B1149781E}.DebugVisual|Mixed Platforms.Build.0 = Debug|x86
-		{CF1DBF74-BDF4-462A-BDFA-5B6B1149781E}.DebugVisual|Win32.ActiveCfg = Debug|Any CPU
-		{CF1DBF74-BDF4-462A-BDFA-5B6B1149781E}.DebugVisual|x64.ActiveCfg = Debug|Any CPU
-		{CF1DBF74-BDF4-462A-BDFA-5B6B1149781E}.DebugVisual|x86.ActiveCfg = Debug|x86
-		{CF1DBF74-BDF4-462A-BDFA-5B6B1149781E}.DebugVisual|x86.Build.0 = Debug|x86
-		{CF1DBF74-BDF4-462A-BDFA-5B6B1149781E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CF1DBF74-BDF4-462A-BDFA-5B6B1149781E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CF1DBF74-BDF4-462A-BDFA-5B6B1149781E}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{CF1DBF74-BDF4-462A-BDFA-5B6B1149781E}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{CF1DBF74-BDF4-462A-BDFA-5B6B1149781E}.Release|Win32.ActiveCfg = Release|Any CPU
-		{CF1DBF74-BDF4-462A-BDFA-5B6B1149781E}.Release|x64.ActiveCfg = Release|Any CPU
-		{CF1DBF74-BDF4-462A-BDFA-5B6B1149781E}.Release|x86.ActiveCfg = Release|Any CPU
-		{CF1DBF74-BDF4-462A-BDFA-5B6B1149781E}.ReleaseVisual|Any CPU.ActiveCfg = Release|Any CPU
-		{CF1DBF74-BDF4-462A-BDFA-5B6B1149781E}.ReleaseVisual|Any CPU.Build.0 = Release|Any CPU
-		{CF1DBF74-BDF4-462A-BDFA-5B6B1149781E}.ReleaseVisual|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{CF1DBF74-BDF4-462A-BDFA-5B6B1149781E}.ReleaseVisual|Mixed Platforms.Build.0 = Release|Any CPU
-		{CF1DBF74-BDF4-462A-BDFA-5B6B1149781E}.ReleaseVisual|Win32.ActiveCfg = Release|Any CPU
-		{CF1DBF74-BDF4-462A-BDFA-5B6B1149781E}.ReleaseVisual|x64.ActiveCfg = Release|Any CPU
-		{CF1DBF74-BDF4-462A-BDFA-5B6B1149781E}.ReleaseVisual|x86.ActiveCfg = Release|Any CPU
 		{D9D475BF-C0EE-4DF6-89A3-55199BB32ABE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D9D475BF-C0EE-4DF6-89A3-55199BB32ABE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D9D475BF-C0EE-4DF6-89A3-55199BB32ABE}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
@@ -285,34 +284,6 @@ Global
 		{D9D475BF-C0EE-4DF6-89A3-55199BB32ABE}.ReleaseVisual|Win32.ActiveCfg = Release|Any CPU
 		{D9D475BF-C0EE-4DF6-89A3-55199BB32ABE}.ReleaseVisual|x64.ActiveCfg = Release|Any CPU
 		{D9D475BF-C0EE-4DF6-89A3-55199BB32ABE}.ReleaseVisual|x86.ActiveCfg = Release|Any CPU
-		{0C11639E-BC1A-4A0B-853B-2ABC822A2208}.Debug|Any CPU.ActiveCfg = Debug|x86
-		{0C11639E-BC1A-4A0B-853B-2ABC822A2208}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
-		{0C11639E-BC1A-4A0B-853B-2ABC822A2208}.Debug|Mixed Platforms.Build.0 = Debug|x86
-		{0C11639E-BC1A-4A0B-853B-2ABC822A2208}.Debug|Win32.ActiveCfg = Debug|x86
-		{0C11639E-BC1A-4A0B-853B-2ABC822A2208}.Debug|x64.ActiveCfg = Debug|x86
-		{0C11639E-BC1A-4A0B-853B-2ABC822A2208}.Debug|x86.ActiveCfg = Debug|x86
-		{0C11639E-BC1A-4A0B-853B-2ABC822A2208}.Debug|x86.Build.0 = Debug|x86
-		{0C11639E-BC1A-4A0B-853B-2ABC822A2208}.DebugVisual|Any CPU.ActiveCfg = Debug|x86
-		{0C11639E-BC1A-4A0B-853B-2ABC822A2208}.DebugVisual|Mixed Platforms.ActiveCfg = Debug|x86
-		{0C11639E-BC1A-4A0B-853B-2ABC822A2208}.DebugVisual|Mixed Platforms.Build.0 = Debug|x86
-		{0C11639E-BC1A-4A0B-853B-2ABC822A2208}.DebugVisual|Win32.ActiveCfg = Debug|x86
-		{0C11639E-BC1A-4A0B-853B-2ABC822A2208}.DebugVisual|x64.ActiveCfg = Debug|x86
-		{0C11639E-BC1A-4A0B-853B-2ABC822A2208}.DebugVisual|x86.ActiveCfg = Debug|x86
-		{0C11639E-BC1A-4A0B-853B-2ABC822A2208}.DebugVisual|x86.Build.0 = Debug|x86
-		{0C11639E-BC1A-4A0B-853B-2ABC822A2208}.Release|Any CPU.ActiveCfg = Release|x86
-		{0C11639E-BC1A-4A0B-853B-2ABC822A2208}.Release|Mixed Platforms.ActiveCfg = Release|x86
-		{0C11639E-BC1A-4A0B-853B-2ABC822A2208}.Release|Mixed Platforms.Build.0 = Release|x86
-		{0C11639E-BC1A-4A0B-853B-2ABC822A2208}.Release|Win32.ActiveCfg = Release|x86
-		{0C11639E-BC1A-4A0B-853B-2ABC822A2208}.Release|x64.ActiveCfg = Release|x86
-		{0C11639E-BC1A-4A0B-853B-2ABC822A2208}.Release|x86.ActiveCfg = Release|x86
-		{0C11639E-BC1A-4A0B-853B-2ABC822A2208}.Release|x86.Build.0 = Release|x86
-		{0C11639E-BC1A-4A0B-853B-2ABC822A2208}.ReleaseVisual|Any CPU.ActiveCfg = Release|x86
-		{0C11639E-BC1A-4A0B-853B-2ABC822A2208}.ReleaseVisual|Mixed Platforms.ActiveCfg = Release|x86
-		{0C11639E-BC1A-4A0B-853B-2ABC822A2208}.ReleaseVisual|Mixed Platforms.Build.0 = Release|x86
-		{0C11639E-BC1A-4A0B-853B-2ABC822A2208}.ReleaseVisual|Win32.ActiveCfg = Release|x86
-		{0C11639E-BC1A-4A0B-853B-2ABC822A2208}.ReleaseVisual|x64.ActiveCfg = Release|x86
-		{0C11639E-BC1A-4A0B-853B-2ABC822A2208}.ReleaseVisual|x86.ActiveCfg = Release|x86
-		{0C11639E-BC1A-4A0B-853B-2ABC822A2208}.ReleaseVisual|x86.Build.0 = Release|x86
 		{FE0EAF99-0485-4B17-BFCD-D5D9A2890DB3}.Debug|Any CPU.ActiveCfg = Debug|x86
 		{FE0EAF99-0485-4B17-BFCD-D5D9A2890DB3}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
 		{FE0EAF99-0485-4B17-BFCD-D5D9A2890DB3}.Debug|Mixed Platforms.Build.0 = Debug|x86
@@ -491,6 +462,34 @@ Global
 		{D1978D10-E5B0-40F9-BDB7-11BF03C7A6CB}.ReleaseVisual|x64.ActiveCfg = Release|x86
 		{D1978D10-E5B0-40F9-BDB7-11BF03C7A6CB}.ReleaseVisual|x86.ActiveCfg = Release|x86
 		{D1978D10-E5B0-40F9-BDB7-11BF03C7A6CB}.ReleaseVisual|x86.Build.0 = Release|x86
+		{0C11639E-BC1A-4A0B-853B-2ABC822A2208}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{0C11639E-BC1A-4A0B-853B-2ABC822A2208}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{0C11639E-BC1A-4A0B-853B-2ABC822A2208}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{0C11639E-BC1A-4A0B-853B-2ABC822A2208}.Debug|Win32.ActiveCfg = Debug|x86
+		{0C11639E-BC1A-4A0B-853B-2ABC822A2208}.Debug|x64.ActiveCfg = Debug|x86
+		{0C11639E-BC1A-4A0B-853B-2ABC822A2208}.Debug|x86.ActiveCfg = Debug|x86
+		{0C11639E-BC1A-4A0B-853B-2ABC822A2208}.Debug|x86.Build.0 = Debug|x86
+		{0C11639E-BC1A-4A0B-853B-2ABC822A2208}.DebugVisual|Any CPU.ActiveCfg = Debug|x86
+		{0C11639E-BC1A-4A0B-853B-2ABC822A2208}.DebugVisual|Mixed Platforms.ActiveCfg = Debug|x86
+		{0C11639E-BC1A-4A0B-853B-2ABC822A2208}.DebugVisual|Mixed Platforms.Build.0 = Debug|x86
+		{0C11639E-BC1A-4A0B-853B-2ABC822A2208}.DebugVisual|Win32.ActiveCfg = Debug|x86
+		{0C11639E-BC1A-4A0B-853B-2ABC822A2208}.DebugVisual|x64.ActiveCfg = Debug|x86
+		{0C11639E-BC1A-4A0B-853B-2ABC822A2208}.DebugVisual|x86.ActiveCfg = Debug|x86
+		{0C11639E-BC1A-4A0B-853B-2ABC822A2208}.DebugVisual|x86.Build.0 = Debug|x86
+		{0C11639E-BC1A-4A0B-853B-2ABC822A2208}.Release|Any CPU.ActiveCfg = Release|x86
+		{0C11639E-BC1A-4A0B-853B-2ABC822A2208}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{0C11639E-BC1A-4A0B-853B-2ABC822A2208}.Release|Mixed Platforms.Build.0 = Release|x86
+		{0C11639E-BC1A-4A0B-853B-2ABC822A2208}.Release|Win32.ActiveCfg = Release|x86
+		{0C11639E-BC1A-4A0B-853B-2ABC822A2208}.Release|x64.ActiveCfg = Release|x86
+		{0C11639E-BC1A-4A0B-853B-2ABC822A2208}.Release|x86.ActiveCfg = Release|x86
+		{0C11639E-BC1A-4A0B-853B-2ABC822A2208}.Release|x86.Build.0 = Release|x86
+		{0C11639E-BC1A-4A0B-853B-2ABC822A2208}.ReleaseVisual|Any CPU.ActiveCfg = Release|x86
+		{0C11639E-BC1A-4A0B-853B-2ABC822A2208}.ReleaseVisual|Mixed Platforms.ActiveCfg = Release|x86
+		{0C11639E-BC1A-4A0B-853B-2ABC822A2208}.ReleaseVisual|Mixed Platforms.Build.0 = Release|x86
+		{0C11639E-BC1A-4A0B-853B-2ABC822A2208}.ReleaseVisual|Win32.ActiveCfg = Release|x86
+		{0C11639E-BC1A-4A0B-853B-2ABC822A2208}.ReleaseVisual|x64.ActiveCfg = Release|x86
+		{0C11639E-BC1A-4A0B-853B-2ABC822A2208}.ReleaseVisual|x86.ActiveCfg = Release|x86
+		{0C11639E-BC1A-4A0B-853B-2ABC822A2208}.ReleaseVisual|x86.Build.0 = Release|x86
 		{896676F6-4364-46F9-9762-1D9C6EACDF6F}.Debug|Any CPU.ActiveCfg = Debug|x86
 		{896676F6-4364-46F9-9762-1D9C6EACDF6F}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
 		{896676F6-4364-46F9-9762-1D9C6EACDF6F}.Debug|Mixed Platforms.Build.0 = Debug|x86
@@ -519,8 +518,133 @@ Global
 		{896676F6-4364-46F9-9762-1D9C6EACDF6F}.ReleaseVisual|x64.ActiveCfg = Release|x86
 		{896676F6-4364-46F9-9762-1D9C6EACDF6F}.ReleaseVisual|x86.ActiveCfg = Release|x86
 		{896676F6-4364-46F9-9762-1D9C6EACDF6F}.ReleaseVisual|x86.Build.0 = Release|x86
+		{D5C5A295-5210-418E-85DD-CACB2FBCD863}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D5C5A295-5210-418E-85DD-CACB2FBCD863}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D5C5A295-5210-418E-85DD-CACB2FBCD863}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{D5C5A295-5210-418E-85DD-CACB2FBCD863}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{D5C5A295-5210-418E-85DD-CACB2FBCD863}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{D5C5A295-5210-418E-85DD-CACB2FBCD863}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{D5C5A295-5210-418E-85DD-CACB2FBCD863}.Debug|x86.ActiveCfg = Debug|x86
+		{D5C5A295-5210-418E-85DD-CACB2FBCD863}.Debug|x86.Build.0 = Debug|x86
+		{D5C5A295-5210-418E-85DD-CACB2FBCD863}.DebugVisual|Any CPU.ActiveCfg = Debug|Any CPU
+		{D5C5A295-5210-418E-85DD-CACB2FBCD863}.DebugVisual|Any CPU.Build.0 = Debug|Any CPU
+		{D5C5A295-5210-418E-85DD-CACB2FBCD863}.DebugVisual|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{D5C5A295-5210-418E-85DD-CACB2FBCD863}.DebugVisual|Mixed Platforms.Build.0 = Debug|Any CPU
+		{D5C5A295-5210-418E-85DD-CACB2FBCD863}.DebugVisual|Win32.ActiveCfg = Debug|Any CPU
+		{D5C5A295-5210-418E-85DD-CACB2FBCD863}.DebugVisual|x64.ActiveCfg = Debug|Any CPU
+		{D5C5A295-5210-418E-85DD-CACB2FBCD863}.DebugVisual|x86.ActiveCfg = Debug|Any CPU
+		{D5C5A295-5210-418E-85DD-CACB2FBCD863}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D5C5A295-5210-418E-85DD-CACB2FBCD863}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D5C5A295-5210-418E-85DD-CACB2FBCD863}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{D5C5A295-5210-418E-85DD-CACB2FBCD863}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{D5C5A295-5210-418E-85DD-CACB2FBCD863}.Release|Win32.ActiveCfg = Release|Any CPU
+		{D5C5A295-5210-418E-85DD-CACB2FBCD863}.Release|x64.ActiveCfg = Release|Any CPU
+		{D5C5A295-5210-418E-85DD-CACB2FBCD863}.Release|x86.ActiveCfg = Release|x86
+		{D5C5A295-5210-418E-85DD-CACB2FBCD863}.Release|x86.Build.0 = Release|x86
+		{D5C5A295-5210-418E-85DD-CACB2FBCD863}.ReleaseVisual|Any CPU.ActiveCfg = Release|Any CPU
+		{D5C5A295-5210-418E-85DD-CACB2FBCD863}.ReleaseVisual|Any CPU.Build.0 = Release|Any CPU
+		{D5C5A295-5210-418E-85DD-CACB2FBCD863}.ReleaseVisual|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{D5C5A295-5210-418E-85DD-CACB2FBCD863}.ReleaseVisual|Mixed Platforms.Build.0 = Release|Any CPU
+		{D5C5A295-5210-418E-85DD-CACB2FBCD863}.ReleaseVisual|Win32.ActiveCfg = Release|Any CPU
+		{D5C5A295-5210-418E-85DD-CACB2FBCD863}.ReleaseVisual|x64.ActiveCfg = Release|Any CPU
+		{D5C5A295-5210-418E-85DD-CACB2FBCD863}.ReleaseVisual|x86.ActiveCfg = Release|Any CPU
+		{22F020D0-3A7E-4E76-B008-AD9E26F85D21}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{22F020D0-3A7E-4E76-B008-AD9E26F85D21}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{22F020D0-3A7E-4E76-B008-AD9E26F85D21}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{22F020D0-3A7E-4E76-B008-AD9E26F85D21}.Debug|Win32.ActiveCfg = Debug|x86
+		{22F020D0-3A7E-4E76-B008-AD9E26F85D21}.Debug|x64.ActiveCfg = Debug|x86
+		{22F020D0-3A7E-4E76-B008-AD9E26F85D21}.Debug|x86.ActiveCfg = Debug|x86
+		{22F020D0-3A7E-4E76-B008-AD9E26F85D21}.Debug|x86.Build.0 = Debug|x86
+		{22F020D0-3A7E-4E76-B008-AD9E26F85D21}.DebugVisual|Any CPU.ActiveCfg = Debug|x86
+		{22F020D0-3A7E-4E76-B008-AD9E26F85D21}.DebugVisual|Mixed Platforms.ActiveCfg = Debug|x86
+		{22F020D0-3A7E-4E76-B008-AD9E26F85D21}.DebugVisual|Mixed Platforms.Build.0 = Debug|x86
+		{22F020D0-3A7E-4E76-B008-AD9E26F85D21}.DebugVisual|Win32.ActiveCfg = Debug|x86
+		{22F020D0-3A7E-4E76-B008-AD9E26F85D21}.DebugVisual|x64.ActiveCfg = Debug|x86
+		{22F020D0-3A7E-4E76-B008-AD9E26F85D21}.DebugVisual|x86.ActiveCfg = Debug|x86
+		{22F020D0-3A7E-4E76-B008-AD9E26F85D21}.DebugVisual|x86.Build.0 = Debug|x86
+		{22F020D0-3A7E-4E76-B008-AD9E26F85D21}.Release|Any CPU.ActiveCfg = Release|x86
+		{22F020D0-3A7E-4E76-B008-AD9E26F85D21}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{22F020D0-3A7E-4E76-B008-AD9E26F85D21}.Release|Mixed Platforms.Build.0 = Release|x86
+		{22F020D0-3A7E-4E76-B008-AD9E26F85D21}.Release|Win32.ActiveCfg = Release|x86
+		{22F020D0-3A7E-4E76-B008-AD9E26F85D21}.Release|x64.ActiveCfg = Release|x86
+		{22F020D0-3A7E-4E76-B008-AD9E26F85D21}.Release|x86.ActiveCfg = Release|x86
+		{22F020D0-3A7E-4E76-B008-AD9E26F85D21}.Release|x86.Build.0 = Release|x86
+		{22F020D0-3A7E-4E76-B008-AD9E26F85D21}.ReleaseVisual|Any CPU.ActiveCfg = Release|x86
+		{22F020D0-3A7E-4E76-B008-AD9E26F85D21}.ReleaseVisual|Mixed Platforms.ActiveCfg = Release|x86
+		{22F020D0-3A7E-4E76-B008-AD9E26F85D21}.ReleaseVisual|Mixed Platforms.Build.0 = Release|x86
+		{22F020D0-3A7E-4E76-B008-AD9E26F85D21}.ReleaseVisual|Win32.ActiveCfg = Release|x86
+		{22F020D0-3A7E-4E76-B008-AD9E26F85D21}.ReleaseVisual|x64.ActiveCfg = Release|x86
+		{22F020D0-3A7E-4E76-B008-AD9E26F85D21}.ReleaseVisual|x86.ActiveCfg = Release|x86
+		{22F020D0-3A7E-4E76-B008-AD9E26F85D21}.ReleaseVisual|x86.Build.0 = Release|x86
+		{C04A5541-444E-4312-97E7-F66457F87EF8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C04A5541-444E-4312-97E7-F66457F87EF8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C04A5541-444E-4312-97E7-F66457F87EF8}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{C04A5541-444E-4312-97E7-F66457F87EF8}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{C04A5541-444E-4312-97E7-F66457F87EF8}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{C04A5541-444E-4312-97E7-F66457F87EF8}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{C04A5541-444E-4312-97E7-F66457F87EF8}.Debug|x86.ActiveCfg = Debug|x86
+		{C04A5541-444E-4312-97E7-F66457F87EF8}.Debug|x86.Build.0 = Debug|x86
+		{C04A5541-444E-4312-97E7-F66457F87EF8}.DebugVisual|Any CPU.ActiveCfg = Debug|Any CPU
+		{C04A5541-444E-4312-97E7-F66457F87EF8}.DebugVisual|Any CPU.Build.0 = Debug|Any CPU
+		{C04A5541-444E-4312-97E7-F66457F87EF8}.DebugVisual|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{C04A5541-444E-4312-97E7-F66457F87EF8}.DebugVisual|Mixed Platforms.Build.0 = Debug|Any CPU
+		{C04A5541-444E-4312-97E7-F66457F87EF8}.DebugVisual|Win32.ActiveCfg = Debug|Any CPU
+		{C04A5541-444E-4312-97E7-F66457F87EF8}.DebugVisual|x64.ActiveCfg = Debug|Any CPU
+		{C04A5541-444E-4312-97E7-F66457F87EF8}.DebugVisual|x86.ActiveCfg = Debug|Any CPU
+		{C04A5541-444E-4312-97E7-F66457F87EF8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C04A5541-444E-4312-97E7-F66457F87EF8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C04A5541-444E-4312-97E7-F66457F87EF8}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{C04A5541-444E-4312-97E7-F66457F87EF8}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{C04A5541-444E-4312-97E7-F66457F87EF8}.Release|Win32.ActiveCfg = Release|Any CPU
+		{C04A5541-444E-4312-97E7-F66457F87EF8}.Release|x64.ActiveCfg = Release|Any CPU
+		{C04A5541-444E-4312-97E7-F66457F87EF8}.Release|x86.ActiveCfg = Release|x86
+		{C04A5541-444E-4312-97E7-F66457F87EF8}.ReleaseVisual|Any CPU.ActiveCfg = Release|Any CPU
+		{C04A5541-444E-4312-97E7-F66457F87EF8}.ReleaseVisual|Any CPU.Build.0 = Release|Any CPU
+		{C04A5541-444E-4312-97E7-F66457F87EF8}.ReleaseVisual|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{C04A5541-444E-4312-97E7-F66457F87EF8}.ReleaseVisual|Mixed Platforms.Build.0 = Release|Any CPU
+		{C04A5541-444E-4312-97E7-F66457F87EF8}.ReleaseVisual|Win32.ActiveCfg = Release|Any CPU
+		{C04A5541-444E-4312-97E7-F66457F87EF8}.ReleaseVisual|x64.ActiveCfg = Release|Any CPU
+		{C04A5541-444E-4312-97E7-F66457F87EF8}.ReleaseVisual|x86.ActiveCfg = Release|Any CPU
+		{A4304EE2-9B06-416A-AD48-89434262E322}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{A4304EE2-9B06-416A-AD48-89434262E322}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{A4304EE2-9B06-416A-AD48-89434262E322}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{A4304EE2-9B06-416A-AD48-89434262E322}.Debug|Win32.ActiveCfg = Debug|x86
+		{A4304EE2-9B06-416A-AD48-89434262E322}.Debug|x64.ActiveCfg = Debug|x86
+		{A4304EE2-9B06-416A-AD48-89434262E322}.Debug|x86.ActiveCfg = Debug|x86
+		{A4304EE2-9B06-416A-AD48-89434262E322}.Debug|x86.Build.0 = Debug|x86
+		{A4304EE2-9B06-416A-AD48-89434262E322}.DebugVisual|Any CPU.ActiveCfg = Debug|x86
+		{A4304EE2-9B06-416A-AD48-89434262E322}.DebugVisual|Mixed Platforms.ActiveCfg = Debug|x86
+		{A4304EE2-9B06-416A-AD48-89434262E322}.DebugVisual|Mixed Platforms.Build.0 = Debug|x86
+		{A4304EE2-9B06-416A-AD48-89434262E322}.DebugVisual|Win32.ActiveCfg = Debug|x86
+		{A4304EE2-9B06-416A-AD48-89434262E322}.DebugVisual|x64.ActiveCfg = Debug|x86
+		{A4304EE2-9B06-416A-AD48-89434262E322}.DebugVisual|x86.ActiveCfg = Debug|x86
+		{A4304EE2-9B06-416A-AD48-89434262E322}.DebugVisual|x86.Build.0 = Debug|x86
+		{A4304EE2-9B06-416A-AD48-89434262E322}.Release|Any CPU.ActiveCfg = Release|x86
+		{A4304EE2-9B06-416A-AD48-89434262E322}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{A4304EE2-9B06-416A-AD48-89434262E322}.Release|Mixed Platforms.Build.0 = Release|x86
+		{A4304EE2-9B06-416A-AD48-89434262E322}.Release|Win32.ActiveCfg = Release|x86
+		{A4304EE2-9B06-416A-AD48-89434262E322}.Release|x64.ActiveCfg = Release|x86
+		{A4304EE2-9B06-416A-AD48-89434262E322}.Release|x86.ActiveCfg = Release|x86
+		{A4304EE2-9B06-416A-AD48-89434262E322}.Release|x86.Build.0 = Release|x86
+		{A4304EE2-9B06-416A-AD48-89434262E322}.ReleaseVisual|Any CPU.ActiveCfg = Release|x86
+		{A4304EE2-9B06-416A-AD48-89434262E322}.ReleaseVisual|Mixed Platforms.ActiveCfg = Release|x86
+		{A4304EE2-9B06-416A-AD48-89434262E322}.ReleaseVisual|Mixed Platforms.Build.0 = Release|x86
+		{A4304EE2-9B06-416A-AD48-89434262E322}.ReleaseVisual|Win32.ActiveCfg = Release|x86
+		{A4304EE2-9B06-416A-AD48-89434262E322}.ReleaseVisual|x64.ActiveCfg = Release|x86
+		{A4304EE2-9B06-416A-AD48-89434262E322}.ReleaseVisual|x86.ActiveCfg = Release|x86
+		{A4304EE2-9B06-416A-AD48-89434262E322}.ReleaseVisual|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{B100C9B2-813B-4180-95BB-434A197819F1} = {2C880FBA-0B83-43B9-9C64-69F9BD30D72A}
+		{ED9701C7-AC45-41C5-A61A-788C9D636A73} = {2C880FBA-0B83-43B9-9C64-69F9BD30D72A}
+		{2E5DF2CA-8923-4171-8FAD-C5B15DE739B7} = {2C880FBA-0B83-43B9-9C64-69F9BD30D72A}
+		{FCF1B486-05B8-4DC0-9EF4-C88359331724} = {2C880FBA-0B83-43B9-9C64-69F9BD30D72A}
+		{22DC0F45-3E0B-4D99-B8C9-15ED2AD17EBC} = {2C880FBA-0B83-43B9-9C64-69F9BD30D72A}
+		{CE093C7A-73E9-4099-BC51-C829AE71D482} = {B100C9B2-813B-4180-95BB-434A197819F1}
+		{06FD37A2-167A-47CA-9DF6-79B90A6A97F5} = {B100C9B2-813B-4180-95BB-434A197819F1}
+		{48AD0346-709E-4D74-9F75-5F0D9820157F} = {B100C9B2-813B-4180-95BB-434A197819F1}
 	EndGlobalSection
 EndGlobal

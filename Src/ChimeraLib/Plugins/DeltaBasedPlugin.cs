@@ -37,7 +37,7 @@ namespace Chimera.Plugins {
         private bool mEnableZ = true;
         private bool mEnablePitch = true;
         private bool mEnableYaw = true;
-        private bool mEnabled = true;
+        private bool mEnabled;
 
         public Action<DeltaBasedPlugin> Change;
 
@@ -132,7 +132,7 @@ namespace Chimera.Plugins {
 
         public event Action<IPlugin, bool> EnabledChanged;
 
-        public abstract UserControl ControlPanel {
+        public abstract Control ControlPanel {
             get;
         }
 
@@ -185,21 +185,13 @@ namespace Chimera.Plugins {
             get;
         }
 
-
         /// <summary>
         /// Initialise the input. Linking it to an object that can provide information about keyboard input and ticks.
         /// </summary>
         /// <param name="input">The source of tick and keyboard events.</param>
         public virtual void Init(Core input) {
             mCoordinator = input;
-        }
-
-        #region ISystemPlugin Members
-
-
-        public void SetForm(Form form) {
-        }
-
-        #endregion
+        }
+        public virtual void SetForm(Form form) { }
     }
 }

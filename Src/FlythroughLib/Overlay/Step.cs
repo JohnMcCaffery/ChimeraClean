@@ -24,13 +24,14 @@ namespace Chimera.Flythrough.Overlay {
         private readonly OverlayPlugin mManager;
         private readonly IMediaPlayer mPlayer;
         private readonly Text mSubtitlesText;
+        private readonly Text mNewSubtitlesFont;
         private readonly Action mTickListener;
         private readonly string mVoiceoverFile;
 
-        private readonly Dictionary<int, string> mSubtitles = new Dictionary<int, string>();
+        private readonly Dictionary<double, string> mSubtitles = new Dictionary<double, string>();
         private readonly List<IFeature> mFeatures = new List<IFeature>();
 
-        private Queue<int> mSubtitleTimes;
+        private Queue<double> mSubtitleTimes;
 
         private DateTime mStarted;
         private DateTime mLastSubtitle;
@@ -39,7 +40,7 @@ namespace Chimera.Flythrough.Overlay {
             get { return mStep; }
         }
 
-        public Step(FlythroughState state, XmlNode node, Text subititlesText, int subtitleTimeoutS, IMediaPlayer player) {
+        public Step(FlythroughState state, XmlNode node, Text subtitlesText, int subtitleTimeoutS, IMediaPlayer player) {
             if (node.Attributes["Step"] == null && !int.TryParse(node.Attributes["Step"].Value, out mStep))
                 throw new ArgumentException("Unable to load slideshow step. A valid 'Step' attribute must be supplied.");
 
@@ -64,7 +65,11 @@ namespace Chimera.Flythrough.Overlay {
                     Logger.Warn("Unable to load voiceover for flythrough step. No MediaPlayer supplied.");
             }
 
-            mSubtitlesText = subititlesText;
+            mSubtitlesText = subtitlesText;
+
+            XmlNode newFontNode = node.SelectSingleNode("child::SubtitlesFont");
+            if (newFontNode != null)
+                mNewSubtitlesFont = state.Manager.MakeText(newFontNode);
 
             if (mSubtitlesText != null) {
                 mTickListener = new Action(mCoordinator_Tick);
@@ -73,7 +78,7 @@ namespace Chimera.Flythrough.Overlay {
                 if (subtitlesNode != null) {
                     foreach (XmlNode child in subtitlesNode.ChildNodes) {
                         if (child is XmlElement) {
-                            int time = child.Attributes["Time"] != null ? int.Parse(child.Attributes["Time"].Value) : 0;
+                            double time = child.Attributes["Time"] != null ? double.Parse(child.Attributes["Time"].Value) : 0;
                             mSubtitles.Add(time, child.InnerText.Trim('\n', ' ', Environment.NewLine[0]).Replace("  ", ""));
                         }
                     }
@@ -91,7 +96,14 @@ namespace Chimera.Flythrough.Overlay {
         }
 
         public void Start() {
-            mSubtitleTimes = new Queue<int>(mSubtitles.Keys.OrderBy(i=>i));
+            if (mNewSubtitlesFont != null) {
+                mSubtitlesText.Alignment = mNewSubtitlesFont.Alignment;
+                mSubtitlesText.Font = mNewSubtitlesFont.Font;
+                mSubtitlesText.Position = mNewSubtitlesFont.Position;
+                mSubtitlesText.Colour = mNewSubtitlesFont.Colour;
+            }
+
+            mSubtitleTimes = new Queue<double>(mSubtitles.Keys.OrderBy(i=>i));
             mLastSubtitle = DateTime.Now;
 
             if (mSubtitles.Count > 0) {

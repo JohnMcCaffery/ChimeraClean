@@ -50,7 +50,8 @@ namespace Chimera.GUI.Forms {
         /// Flag to force the static portion of the overlay to be redrawn.
         /// </summary>
         private bool mRedrawStatic;
-        private Cursor mDefaultCursor;
+        private Cursor mDefaultCursor;
+
         private bool mCont;
 
         public OverlayWindow() {
@@ -209,11 +210,11 @@ namespace Chimera.GUI.Forms {
         }
 
         private void OverlayWindow_MouseDown(object sender, MouseEventArgs e) {
-            mManager.Press(0);
+            mManager.Press();
         }
 
         private void OverlayWindow_MouseUp(object sender, MouseEventArgs e) {
-            mManager.Release(0);
+            mManager.Release();
         }
 
         private void OverlayWindow_FormClosing(object sender, FormClosingEventArgs e) {

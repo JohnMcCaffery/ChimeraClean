@@ -7,6 +7,11 @@ using Chimera.Plugins;
 using Chimera.Overlay;
 using Chimera.GUI.Forms;
 using Touchscreen.GUI;
+using System.Windows.Forms;
+using log4net;
+using Touchscreen.Interfaces;
+using Touchscreen.Overlay;
+using System.Drawing;
 
 namespace Touchscreen {
     public enum SinglePos {
@@ -14,7 +19,9 @@ namespace Touchscreen {
         Middle,
         Right
     }
-    public class TouchscreenPlugin : AxisBasedDelta {
+
+    public class TouchscreenPlugin : AxisBasedDelta, ITouchSource {
+        private static readonly ILog Logger = LogManager.GetLogger("Touchscreen");
         private SinglePos mSinglePos = SinglePos.Right;
 
         private TwoDAxis mLeftX;
@@ -25,10 +32,12 @@ namespace Touchscreen {
         private VerticalAxis mL;
         private VerticalAxis mR;
 
-        private OverlayPlugin mStateManager;
-        private FrameOverlayManager mManager;
+        private OverlayPlugin mOverlayPlugin;
+        private Frame mFrame;
         private TouchscreenForm mWindow;
+        private Form mForm;
 
+        private PointF mMousePosition;
         private TouchscreenConfig mConfig = new TouchscreenConfig();
 
         public SinglePos SinglePos {
@@ -39,23 +48,23 @@ namespace Touchscreen {
         public override bool Enabled {
             get { return base.Enabled; }
             set {
-                base.Enabled = value;
-                if (value && mManager != null) {
-                    mWindow = new TouchscreenForm(this);
-                    mWindow.Opacity = mConfig.Opacity;
-                    mWindow.Bounds = mManager.Frame.Monitor.Bounds;
-                    mWindow.MouseDown += new System.Windows.Forms.MouseEventHandler(mWindow_MouseDown);
-                    mWindow.MouseUp += new System.Windows.Forms.MouseEventHandler(mWindow_MouseUp); mWindow.Show();
-                    mWindow.Show();
-                } else if (mWindow != null) {
-                    mWindow.Close();
-                    mWindow = null;
+                if (value != base.Enabled) {
+                    base.Enabled = value;
+                    if (value && mFrame != null) {
+                        CreateWindow();
+                    } else if (mWindow != null) {
+                        if (mForm == null)
+                            mWindow.Close();
+                        else
+                            mForm.Invoke(new Action(() => mWindow.Close()));
+                        mWindow = null;
+                    }
                 }
             }
         }
 
-        public FrameOverlayManager Manager {
-            get { return mManager; }
+        public Frame Frame {
+            get { return mFrame; }
         }
 
         public VerticalAxis Left { get { return mL; } }
@@ -70,36 +79,44 @@ namespace Touchscreen {
             get { return mConfig; }
         }
 
-        public TouchscreenPlugin(OverlayPlugin manager)
+        public TouchscreenPlugin()
             : base("Touchscreen") {
-            mStateManager = manager;
         }
 
         public override void Init(Core input) {
             base.Init(input);
 
+            if (input.HasPlugin<OverlayPlugin>()) {
+                mOverlayPlugin = input.GetPlugin<OverlayPlugin>();
+            }
+
             if (input.Frames.Count() == 0)
                 input.FrameAdded += new Action<Frame, EventArgs>(input_FrameAdded);
             else {
-                Frame f = input.Frames.First();
-                if (mConfig.Window != null)
-                    f = input[mConfig.Window];
-                input_FrameAdded(f, null);
+                mFrame = input.Frames.First();
+                if (mConfig.Frame != null)
+                    mFrame = input[mConfig.Frame];
+                input_FrameAdded(mFrame, null);
             }
 
         }
 
-        void input_FrameAdded(Frame f, EventArgs args) {
-            if (mConfig.Window == null || f.Name.Equals(mConfig.Window)) {
-                mManager = mStateManager[f.Name];
+        void input_FrameAdded(Frame rame, EventArgs args) {
+            if (mConfig.Frame == null || rame.Name.Equals(mConfig.Frame)) {
+                mFrame = rame;
 
-                mL = new VerticalAxis(mManager);
-                mR = new VerticalAxis(mManager);
+                List<ITouchSource> sources = new List<ITouchSource>();
+                sources.Add(this);
+                if (mOverlayPlugin != null) 
+                    sources.Add(new OverlayTouchSource(mOverlayPlugin[rame.Name]));
+
+                mL = new VerticalAxis(sources.ToArray());
+                mR = new VerticalAxis(sources.ToArray());
                 mLeftX = new TwoDAxis(mL, true, false);
                 mLeftY = new TwoDAxis(mL, false, false);
                 mRightX = new TwoDAxis(mR, true, true);
                 mRightY = new TwoDAxis(mR, false, true);
-                mSingle = new VerticalAxis(mManager);
+                mSingle = new VerticalAxis(sources.ToArray());
 
                 mL.W = mConfig.LeftW;
                 mL.H = mConfig.LeftH;
@@ -129,7 +146,7 @@ namespace Touchscreen {
                 AddAxis(mRightY);
                 AddAxis(mSingle);
 
-                Core input = f.Core;
+                Core input = rame.Core;
 
                 if (Enabled)
                     Enabled = true;
@@ -137,11 +154,13 @@ namespace Touchscreen {
         }
 
         void mWindow_MouseUp(object sender, System.Windows.Forms.MouseEventArgs e) {
-            mManager.Release(0);
+            if (OnRelease != null)
+                OnRelease(0);
         }
 
         void mWindow_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e) {
-            mManager.Press(0);
+            if (OnPress != null)
+                OnPress(0);
         }
 
         public void OnChange() {
@@ -161,6 +180,53 @@ namespace Touchscreen {
                     mSingle.StartH = mR.StartH + mR.PaddingH + mR.W;
                     break;
             }
+        }
+
+        public override void SetForm(Form form) {
+            mForm = form;
+        }
+
+        public event Action<int> OnPress;
+
+        public event Action<int> OnRelease;
+
+        public PointF Position {
+            get {
+                if (mWindow == null)
+                    return new PointF(0f, 0f);
+
+                return mMousePosition;
+            }
+        }
+
+        void mWindow_MouseLeave(object sender, EventArgs e) {
+            mMousePosition = new PointF(-1f, -1f);
+            if (OnRelease != null)
+                OnRelease(0);
+        }
+
+        void mWindow_MouseMove(object sender, MouseEventArgs e) {
+            if (mWindow != null) {
+                float x = (float)e.X / (float)mWindow.Width;
+                float y = (float)e.Y / (float)mWindow.Height;
+                mMousePosition = new PointF(x, y);
+            } else
+                mMousePosition = new PointF(-1f, -1f);
+        }
+
+        private void CreateWindow() {
+            mWindow = new TouchscreenForm(this);
+            mWindow.Opacity = mConfig.Opacity;
+            mWindow.Bounds = mFrame.Monitor.Bounds;
+            mWindow.MouseDown += new System.Windows.Forms.MouseEventHandler(mWindow_MouseDown);
+            mWindow.MouseUp += new System.Windows.Forms.MouseEventHandler(mWindow_MouseUp); mWindow.Show();
+            mWindow.MouseMove += new MouseEventHandler(mWindow_MouseMove);
+            mWindow.MouseLeave += new EventHandler(mWindow_MouseLeave);
+
+            if (mForm == null)
+                mWindow.Show();
+            else
+                mWindow.Show(mForm);
         }
     }
 }

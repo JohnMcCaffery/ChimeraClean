@@ -29,7 +29,7 @@ using log4net;
 [assembly: log4net.Config.XmlConfigurator(Watch=true)]
 
 namespace Chimera {
-    public static class ChimeraLauncher {
+    public static class TimespanLauncher {
         /// <summary>
         /// The main entry point for the application.
         /// </summary>

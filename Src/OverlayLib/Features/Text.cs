@@ -48,7 +48,7 @@ namespace Chimera.Overlay.Features {
  
         private Font mFont;
         private RectangleF mPosition;
-        protected readonly Color mColour;
+        protected Color mColour;
 
         public virtual Rectangle Clip {
             get { return mClip; }
@@ -154,12 +154,19 @@ namespace Chimera.Overlay.Features {
             return p;
         }
 
+        public Color Colour {
+            get { return mColour; }
+            set { mColour = value; }
+        }
+
         public PointF Position {
             get { return mPosition.Location; }
+            set { mPosition = new RectangleF(value, new SizeF(1f, 1f)); }
         }
 
         public Font Font {
             get { return mFont; }
+            set { mFont = value; }
         }
 
         public override string ToString() {

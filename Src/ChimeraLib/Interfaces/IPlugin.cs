@@ -37,7 +37,7 @@ namespace Chimera {
         /// <summary>
         /// The panel which can be added to a form to configure this input.
         /// </summary>
-        UserControl ControlPanel {
+        Control ControlPanel {
             get;
         }
 
