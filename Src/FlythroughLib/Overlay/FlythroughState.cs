@@ -66,7 +66,6 @@ namespace Chimera.Flythrough.Overlay {
         private Dictionary<int, Step> mSteps = new Dictionary<int, Step>();
         private FlythroughPlugin mInput;
         private FrameOverlayManager mDefaultWindow;
-        private SlideshowWindow mSlideshow;
         private IFeatureTransition mSlideshowTransition;
         private List<ITrigger> mStepTriggers = new List<ITrigger>();
         private IMediaPlayer mPlayer;
@@ -204,8 +203,8 @@ namespace Chimera.Flythrough.Overlay {
 
         public override IFrameState CreateWindowState(FrameOverlayManager manager) {
             if (manager.Name.Equals(mSlideshowWindowName)) {
-                mSlideshow = new SlideshowWindow(manager, mSlideshowFolder, mSlideshowTransition);
-                return mSlideshow;
+                //mSlideshow = new SlideshowWindow(manager, mSlideshowFolder, mSlideshowTransition);
+                //return mSlideshow;
             }
             return new FrameState(manager);
         }
