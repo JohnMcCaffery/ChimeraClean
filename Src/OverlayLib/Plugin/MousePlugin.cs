@@ -99,10 +99,11 @@ namespace Chimera.Overlay.Plugins {
         public void Init(Core core) {
             if (!core.HasPlugin<OverlayPlugin>()) {
                 Logger.Warn("Unable to initialise MousePlugin. No OverlayPlugin registered with the coordinator.");
+            } else {
+                mOverlayPlugin = core.GetPlugin<OverlayPlugin>();
+                mCore = core;
             }
 
-            mOverlayPlugin = core.GetPlugin<OverlayPlugin>();
-            mCore = core;
             //if (mEnabled)
                 //core.Tick += mTickListener;
         }
@@ -136,10 +137,13 @@ namespace Chimera.Overlay.Plugins {
                 mEnabled = value;
                 if (EnabledChanged != null)
                     EnabledChanged(this, value);
-                if (value)
-                    mCore.Tick += mTickListener;
-                else
-                    mCore.Tick -= mTickListener;
+
+                if (mOverlayPlugin != null) {
+                    if (value)
+                        mCore.Tick += mTickListener;
+                    else
+                        mCore.Tick -= mTickListener;
+                }
             }
         }
 

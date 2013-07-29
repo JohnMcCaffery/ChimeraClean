@@ -625,12 +625,15 @@ namespace Chimera {
         }
 
         private Matrix4 CalculateOrthogonalMatrix() {
-            float w = (float) mWidth;
-            float h = (float) mHeight;
+            float dn = .1f;
+            float df = 1024f;
+            double scale = 1f / ScreenDistance;
+            float r = (float) ((mWidth * scale) / 2.0);
+            float t = (float) ((mHeight * scale) / 2.0);
             return new Matrix4(
-                2f / w, 0f, 0f, 0f,
-                0f, 2f / h, 0f, 0f,
-                0f, 0f, -2f / 999f, -1001f / 999f,
+                1f / r, 0f, 0f, 0f,
+                0f, 1f / t, 0f, 0f,
+                0f, 0f, -2f / (df - dn), (df + dn) / (df - dn),
                 0f, 0f, 0f, 1f);
         }
 

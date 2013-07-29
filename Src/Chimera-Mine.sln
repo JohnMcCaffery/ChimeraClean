@@ -74,9 +74,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Flythroughs", "Flythroughs"
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Overlay", "Overlay", "{06FD37A2-167A-47CA-9DF6-79B90A6A97F5}"
-	ProjectSection(SolutionItems) = preProject
-		..\Bin\Overlays\Timespan\TimespanOverlay.xml = ..\Bin\Overlays\Timespan\TimespanOverlay.xml
-	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{DB1A444F-C959-40FE-A90B-10FF61313DE7}"
 	ProjectSection(SolutionItems) = preProject
@@ -94,7 +91,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Timespan", "Timespan\Timesp
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Chimera", "Chimera", "{2E5DF2CA-8923-4171-8FAD-C5B15DE739B7}"
 	ProjectSection(SolutionItems) = preProject
-		..\Bin\Configs\Chimera\Bindings.xml = ..\Bin\Configs\Chimera\Bindings.xml
 		..\Bin\Configs\Chimera\Frames.ini = ..\Bin\Configs\Chimera\Frames.ini
 	EndProjectSection
 EndProject
@@ -124,20 +120,19 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{FCF1B4
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TimespanTest", "TimespanTest", "{22DC0F45-3E0B-4D99-B8C9-15ED2AD17EBC}"
 	ProjectSection(SolutionItems) = preProject
-		..\Bin\Configs\TimespanTest\Bindings.xml = ..\Bin\Configs\TimespanTest\Bindings.xml
 		..\Bin\Configs\TimespanTest\Core.ini = ..\Bin\Configs\TimespanTest\Core.ini
 		..\Bin\Configs\TimespanTest\Frames.ini = ..\Bin\Configs\TimespanTest\Frames.ini
 		..\Bin\Configs\TimespanTest\Heightmap.ini = ..\Bin\Configs\TimespanTest\Heightmap.ini
-		..\Bin\Configs\TimespanTest\KinectMovement.ini = ..\Bin\Configs\TimespanTest\KinectMovement.ini
 		..\Bin\Configs\TimespanTest\LaptopOverlay.ini = ..\Bin\Configs\TimespanTest\LaptopOverlay.ini
 		..\Bin\Configs\TimespanTest\Launch.ini = ..\Bin\Configs\TimespanTest\Launch.ini
 		..\Bin\Configs\TimespanTest\Main.ini = ..\Bin\Configs\TimespanTest\Main.ini
-		..\Bin\Configs\TimespanTest\OpenSim.ini = ..\Bin\Configs\TimespanTest\OpenSim.ini
 		..\Bin\Configs\TimespanTest\Overlay.ini = ..\Bin\Configs\TimespanTest\Overlay.ini
 		..\Bin\Configs\TimespanTest\Projectors.ini = ..\Bin\Configs\TimespanTest\Projectors.ini
 		..\Bin\Configs\TimespanTest\RemoteControl.ini = ..\Bin\Configs\TimespanTest\RemoteControl.ini
 		..\Bin\Configs\TimespanTest\TimespanRoom.xml = ..\Bin\Configs\TimespanTest\TimespanRoom.xml
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExperimentalLib", "ExperimentalLib\ExperimentalLib.csproj", "{6288745C-11BE-4CFC-83F1-F37B71CF53D6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -633,6 +628,35 @@ Global
 		{A4304EE2-9B06-416A-AD48-89434262E322}.ReleaseVisual|x64.ActiveCfg = Release|x86
 		{A4304EE2-9B06-416A-AD48-89434262E322}.ReleaseVisual|x86.ActiveCfg = Release|x86
 		{A4304EE2-9B06-416A-AD48-89434262E322}.ReleaseVisual|x86.Build.0 = Release|x86
+		{6288745C-11BE-4CFC-83F1-F37B71CF53D6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6288745C-11BE-4CFC-83F1-F37B71CF53D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6288745C-11BE-4CFC-83F1-F37B71CF53D6}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{6288745C-11BE-4CFC-83F1-F37B71CF53D6}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{6288745C-11BE-4CFC-83F1-F37B71CF53D6}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{6288745C-11BE-4CFC-83F1-F37B71CF53D6}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{6288745C-11BE-4CFC-83F1-F37B71CF53D6}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{6288745C-11BE-4CFC-83F1-F37B71CF53D6}.DebugVisual|Any CPU.ActiveCfg = Debug|Any CPU
+		{6288745C-11BE-4CFC-83F1-F37B71CF53D6}.DebugVisual|Any CPU.Build.0 = Debug|Any CPU
+		{6288745C-11BE-4CFC-83F1-F37B71CF53D6}.DebugVisual|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{6288745C-11BE-4CFC-83F1-F37B71CF53D6}.DebugVisual|Mixed Platforms.Build.0 = Debug|Any CPU
+		{6288745C-11BE-4CFC-83F1-F37B71CF53D6}.DebugVisual|Win32.ActiveCfg = Debug|Any CPU
+		{6288745C-11BE-4CFC-83F1-F37B71CF53D6}.DebugVisual|x64.ActiveCfg = Debug|Any CPU
+		{6288745C-11BE-4CFC-83F1-F37B71CF53D6}.DebugVisual|x86.ActiveCfg = Debug|Any CPU
+		{6288745C-11BE-4CFC-83F1-F37B71CF53D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6288745C-11BE-4CFC-83F1-F37B71CF53D6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6288745C-11BE-4CFC-83F1-F37B71CF53D6}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{6288745C-11BE-4CFC-83F1-F37B71CF53D6}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{6288745C-11BE-4CFC-83F1-F37B71CF53D6}.Release|Win32.ActiveCfg = Release|Any CPU
+		{6288745C-11BE-4CFC-83F1-F37B71CF53D6}.Release|x64.ActiveCfg = Release|Any CPU
+		{6288745C-11BE-4CFC-83F1-F37B71CF53D6}.Release|x86.ActiveCfg = Release|Any CPU
+		{6288745C-11BE-4CFC-83F1-F37B71CF53D6}.Release|x86.Build.0 = Release|Any CPU
+		{6288745C-11BE-4CFC-83F1-F37B71CF53D6}.ReleaseVisual|Any CPU.ActiveCfg = Release|Any CPU
+		{6288745C-11BE-4CFC-83F1-F37B71CF53D6}.ReleaseVisual|Any CPU.Build.0 = Release|Any CPU
+		{6288745C-11BE-4CFC-83F1-F37B71CF53D6}.ReleaseVisual|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{6288745C-11BE-4CFC-83F1-F37B71CF53D6}.ReleaseVisual|Mixed Platforms.Build.0 = Release|Any CPU
+		{6288745C-11BE-4CFC-83F1-F37B71CF53D6}.ReleaseVisual|Win32.ActiveCfg = Release|Any CPU
+		{6288745C-11BE-4CFC-83F1-F37B71CF53D6}.ReleaseVisual|x64.ActiveCfg = Release|Any CPU
+		{6288745C-11BE-4CFC-83F1-F37B71CF53D6}.ReleaseVisual|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

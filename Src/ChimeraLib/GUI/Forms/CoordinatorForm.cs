@@ -621,125 +621,6 @@ namespace Chimera.GUI.Forms {
             public Perspective Perspective { get { return mPerspective; } }
         }
 
-        private class HeightmapPerspective {
-            private Core mCoordinator;
-            private Matrix4 mWorldMatrix;
-            private Matrix4 mClipMatrix;
-            private Matrix4 mWorldScale;
-            private Size mSize;
-            private RectangleF mCrop;
-            private Rectangle mClip;
-            private float mScale = 1f;
-            private PictureBox mDrawPanel;
-            private bool mResized = false;
-
-            public Rectangle Crop {
-                get { return new Rectangle((int) mCrop.X, (int) mCrop.Y, (int) mCrop.Width, (int) mCrop.Height); }
-            }
-
-            public Rectangle Clip {
-                get { return mClip; }
-                set { 
-                    mClip = value;
-                    if (mResized) {
-                        mResized = false;
-                        CalculateClipMatrix();
-                    }
-                }
-            }
-
-            public float Scale {
-                get { return mScale; }
-                set {
-                    mScale = value;
-                    mCrop.X += ((mSize.Width / value) - mCrop.Width) / 2f;
-                    mCrop.Y += ((mSize.Height / value) - mCrop.Height) / 2f;
-                    mCrop.Width = mSize.Width / value;
-                    mCrop.Height = mSize.Height / value;
-                    CheckTopLeft();
-                    CalculateClipMatrix();
-                }
-            }
-
-            public void Drag(int xDelta, int yDelta) {
-                Vector3 delta = new Vector3(xDelta, yDelta, 0f);
-                delta *= mWorldScale;
-
-                mCrop.X += delta.X;
-                mCrop.Y += delta.Y;
-
-                CheckTopLeft();
-                CalculateClipMatrix();
-            }
-
-            private void CheckTopLeft() {
-                mCrop.X = Math.Min(0f, mCrop.X);
-                mCrop.Y = Math.Min(0f, mCrop.Y);
-                mCrop.X = Math.Max(mCrop.Width - mSize.Width , mCrop.X);
-                mCrop.Y = Math.Max(mCrop.Height - mSize.Height, mCrop.Y);
-            }
-
-            private void CalculateWorldMatrix() {
-                return;
-
-                Matrix4 toWorldScale = Matrix4.CreateScale(new Vector3(.001f, -.001f, .001f));
-                Matrix4 toWorldOrientation = Matrix4.CreateRotationZ((float) (mCoordinator.Orientation.Yaw * Math.PI / 180.0));
-                Matrix4 toWorldCoords = Matrix4.CreateTranslation(mCoordinator.Position);
-                mWorldMatrix = Matrix4.Identity;
-                mWorldMatrix *= toWorldScale;
-                mWorldMatrix *= toWorldOrientation;
-                mWorldMatrix *= toWorldCoords;
-
-                CalculateClipMatrix();
-            }
-
-            private void CalculateClipMatrix() {
-                mWorldScale = Matrix4.CreateScale(
-                    new Vector3(mSize.Width / (mScale * mClip.Width), mSize.Height / (mScale * mClip.Height), 1f));
-
-                //TODO - mSize.[W,H] may have to be reversed
-                Matrix4 toClipScale = Matrix4.CreateScale(
-                    new Vector3((mScale * mClip.Width) / mSize.Width, (mScale * mClip.Height) / mSize.Height, 1f));
-
-                Vector3 topLeft = new Vector3(mCrop.X, mCrop.Y, 0f);
-                Matrix4 toClipTranslate = Matrix4.CreateTranslation(topLeft);
-
-                mClipMatrix = Matrix4.Identity;
-                //mClipMatrix *= mWorldMatrix;
-                mClipMatrix *= toClipTranslate;
-                mClipMatrix *= toClipScale;
-
-                if (mDrawPanel.InvokeRequired)
-                    mDrawPanel.BeginInvoke(new Action(() => mDrawPanel.Invalidate()));
-                else
-                    mDrawPanel.Invalidate();
-            }
-
-            public HeightmapPerspective(Core coordinator, PictureBox drawPanel) {
-                mCoordinator = coordinator;
-                mDrawPanel = drawPanel;
-                mSize = new Size(coordinator.Heightmap.GetLength(0), coordinator.Heightmap.GetLength(1));
-                mCrop = new Rectangle(0, 0, mSize.Width, mSize.Height);
-                mClip = new Rectangle(0, 0, mSize.Width, mSize.Height);
-                mCoordinator.CameraUpdated += (coord, args) => CalculateWorldMatrix();
-                mCoordinator.EyeUpdated += (coord, args) => CalculateWorldMatrix();
-                mDrawPanel.Resize += new EventHandler(mDrawPanel_Resize);
-
-                CalculateWorldMatrix();
-            }
-
-            void mDrawPanel_Resize(object sender, EventArgs e) {
-                mResized = true;
-            }
-
-            public Point To2D(Vector3 point) {
-                point *= mWorldMatrix;
-                //TODO put this flip into the matrices - translate to middle, rotate 180 deg around yaw, translate back from middle
-                point.Y = mSize.Height - point.Y;
-                point *= mClipMatrix;
-                return new Point((int) point.X, (int) point.Y);
-            }
-        }
 
         private void absoluteModeButton_CheckedChanged(object sender, EventArgs e) {
             if (!mExternalUpdate) {
@@ -797,6 +678,132 @@ namespace Chimera.GUI.Forms {
 
         private void tickLengthPanel_ValueChanged(float obj) {
             mCore.TickLength = (int) tickLengthPanel.Value;
+        }
+
+        private class HeightmapPerspective {
+            private Core mCoordinator;
+            private Matrix4 mWorldMatrix;
+            private Matrix4 mClipMatrix;
+            private Matrix4 mWorldScale;
+            private Size mSize;
+            private RectangleF mCrop;
+            private Rectangle mClip;
+            private float mScale = 1f;
+            private PictureBox mDrawPanel;
+            private bool mResized = false;
+
+            public Rectangle Crop {
+                get { return new Rectangle((int)mCrop.X, (int)mCrop.Y, (int)mCrop.Width, (int)mCrop.Height); }
+            }
+
+            public Rectangle Clip {
+                get { return mClip; }
+                set {
+                    mClip = value;
+                    if (mResized) {
+                        mResized = false;
+                        CalculateClipMatrix();
+                    }
+                }
+            }
+
+            public float Scale {
+                get { return mScale; }
+                set {
+                    mScale = value;
+                    mCrop.X += ((mSize.Width / value) - mCrop.Width) / 2f;
+                    mCrop.Y += ((mSize.Height / value) - mCrop.Height) / 2f;
+                    mCrop.Width = mSize.Width / value;
+                    mCrop.Height = mSize.Height / value;
+                    CheckTopLeft();
+                    CalculateClipMatrix();
+                }
+            }
+
+            public void Drag(int xDelta, int yDelta) {
+                Vector3 delta = new Vector3(xDelta, yDelta, 0f);
+                delta *= mWorldScale;
+
+                mCrop.X += delta.X;
+                mCrop.Y += delta.Y;
+
+                CheckTopLeft();
+                CalculateClipMatrix();
+            }
+
+            private void CheckTopLeft() {
+                mCrop.X = Math.Min(0f, mCrop.X);
+                mCrop.Y = Math.Min(0f, mCrop.Y);
+                mCrop.X = Math.Max(mCrop.Width - mSize.Width, mCrop.X);
+                mCrop.Y = Math.Max(mCrop.Height - mSize.Height, mCrop.Y);
+            }
+
+            private void CalculateWorldMatrix() {
+                return;
+                Matrix4 toWorldScale = Matrix4.CreateScale(new Vector3(.001f, -.001f, .001f));
+                Matrix4 toWorldOrientation = Matrix4.CreateRotationZ((float)(mCoordinator.Orientation.Yaw * Math.PI / 180.0));
+                Matrix4 toWorldCoords = Matrix4.CreateTranslation(mCoordinator.Position);
+                mWorldMatrix = Matrix4.Identity;
+                mWorldMatrix *= toWorldScale;
+                mWorldMatrix *= toWorldOrientation;
+                mWorldMatrix *= toWorldCoords;
+
+                CalculateClipMatrix();
+            }
+
+            private void CalculateClipMatrix() {
+                mWorldScale = Matrix4.CreateScale(
+                    new Vector3(mSize.Width / (mScale * mClip.Width), mSize.Height / (mScale * mClip.Height), 1f));
+
+                //TODO - mSize.[W,H] may have to be reversed
+                Matrix4 toClipScale = Matrix4.CreateScale(
+                    new Vector3((mScale * mClip.Width) / mSize.Width, (mScale * mClip.Height) / mSize.Height, 1f));
+
+                Vector3 topLeft = new Vector3(mCrop.X, mCrop.Y, 0f);
+                Matrix4 toClipTranslate = Matrix4.CreateTranslation(topLeft);
+
+                mClipMatrix = Matrix4.Identity;
+                //mClipMatrix *= mWorldMatrix;
+                mClipMatrix *= toClipTranslate;
+                mClipMatrix *= toClipScale;
+
+                if (mDrawPanel.InvokeRequired)
+                    mDrawPanel.BeginInvoke(new Action(() => mDrawPanel.Invalidate()));
+                else
+                    mDrawPanel.Invalidate();
+            }
+
+            public HeightmapPerspective(Core coordinator, PictureBox drawPanel) {
+                mCoordinator = coordinator;
+                mDrawPanel = drawPanel;
+                mSize = new Size(coordinator.Heightmap.GetLength(0), coordinator.Heightmap.GetLength(1));
+                mCrop = new Rectangle(0, 0, mSize.Width, mSize.Height);
+                mClip = new Rectangle(0, 0, mSize.Width, mSize.Height);
+                mCoordinator.CameraUpdated += (coord, args) => CalculateWorldMatrix();
+                mCoordinator.EyeUpdated += (coord, args) => CalculateWorldMatrix();
+                mDrawPanel.Resize += new EventHandler(mDrawPanel_Resize);
+
+                CalculateWorldMatrix();
+            }
+
+            void mDrawPanel_Resize(object sender, EventArgs e) {
+                mResized = true;
+            }
+
+            public Point To2D(Vector3 point) {
+                /*
+                point *= mWorldMatrix;
+                //TODO put this flip into the matrices - translate to middle, rotate 180 deg around yaw, translate back from middle
+                point.Y = mSize.Height - point.Y;
+                point *= mClipMatrix;
+                return new Point((int)point.X, (int)point.Y);
+                */
+
+                Vector3 scaled = point /  new Vector3(256f, 256f, 1f);
+                float x = mClip.Width - (mClip.Width * scaled.X);
+                float y = mClip.Height * scaled.Y;
+                return new Point((int)x, (int)y);
+            }
         }
     }
 }

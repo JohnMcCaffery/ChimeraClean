@@ -30,8 +30,8 @@ namespace Chimera {
         /// <summary>
         /// Initialise the plugin, giving it a reference to the plugin it is to control.
         /// </summary>
-        /// <param name="coordinator">The coordinator object the plugin can control.</param>
-        void Init(Core coordinator);
+        /// <param name="core">The coordinator object the plugin can control.</param>
+        void Init(Core core);
 
         /// <summary>
         /// Set the form which is controlling the coordinator. May never be called if the coordinator has been initialised without a form.
