@@ -60,6 +60,9 @@ namespace Chimera.Kinect.GUI {
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.forceTriggerButton = new System.Windows.Forms.Button();
+            this.hipCentrePanel = new Chimera.GUI.UpdatedVectorPanel();
+            this.label5 = new System.Windows.Forms.Label();
+            this.DepthThreshold = new Chimera.GUI.UpdatedScalarPanel();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -70,8 +73,8 @@ namespace Chimera.Kinect.GUI {
             // 
             // AngleL
             // 
-            this.AngleL.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.AngleL.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.AngleL.Location = new System.Drawing.Point(44, 120);
             this.AngleL.Max = 1F;
             this.AngleL.Min = 0F;
@@ -84,8 +87,8 @@ namespace Chimera.Kinect.GUI {
             // 
             // AngleR
             // 
-            this.AngleR.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.AngleR.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.AngleR.Location = new System.Drawing.Point(46, 120);
             this.AngleR.Max = 1F;
             this.AngleR.Min = 0F;
@@ -98,8 +101,8 @@ namespace Chimera.Kinect.GUI {
             // 
             // AngleThreshold
             // 
-            this.AngleThreshold.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.AngleThreshold.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.AngleThreshold.Location = new System.Drawing.Point(98, 202);
             this.AngleThreshold.Max = 1F;
             this.AngleThreshold.Min = 0F;
@@ -112,8 +115,8 @@ namespace Chimera.Kinect.GUI {
             // 
             // HeightThreshold
             // 
-            this.HeightThreshold.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.HeightThreshold.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.HeightThreshold.Location = new System.Drawing.Point(98, 176);
             this.HeightThreshold.Max = 1F;
             this.HeightThreshold.Min = 0F;
@@ -126,8 +129,8 @@ namespace Chimera.Kinect.GUI {
             // 
             // splitContainer1
             // 
-            this.splitContainer1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.splitContainer1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.splitContainer1.Location = new System.Drawing.Point(0, 0);
             this.splitContainer1.Name = "splitContainer1";
             // 
@@ -158,8 +161,8 @@ namespace Chimera.Kinect.GUI {
             // 
             // ArmL
             // 
-            this.ArmL.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.ArmL.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.ArmL.Location = new System.Drawing.Point(7, 19);
             this.ArmL.Max = 10F;
             this.ArmL.MaxV = ((OpenMetaverse.Vector3)(resources.GetObject("ArmL.MaxV")));
@@ -211,8 +214,8 @@ namespace Chimera.Kinect.GUI {
             // 
             // ArmR
             // 
-            this.ArmR.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.ArmR.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.ArmR.Location = new System.Drawing.Point(6, 19);
             this.ArmR.Max = 10F;
             this.ArmR.MaxV = ((OpenMetaverse.Vector3)(resources.GetObject("ArmR.MaxV")));
@@ -253,7 +256,7 @@ namespace Chimera.Kinect.GUI {
             this.Trigger.AutoSize = true;
             this.Trigger.Condition = null;
             this.Trigger.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Trigger.Location = new System.Drawing.Point(6, 227);
+            this.Trigger.Location = new System.Drawing.Point(6, 248);
             this.Trigger.Name = "Trigger";
             this.Trigger.Size = new System.Drawing.Size(80, 17);
             this.Trigger.TabIndex = 9;
@@ -280,9 +283,9 @@ namespace Chimera.Kinect.GUI {
             // 
             // forceTriggerButton
             // 
-            this.forceTriggerButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.forceTriggerButton.Location = new System.Drawing.Point(92, 227);
+            this.forceTriggerButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.forceTriggerButton.Location = new System.Drawing.Point(92, 248);
             this.forceTriggerButton.Name = "forceTriggerButton";
             this.forceTriggerButton.Size = new System.Drawing.Size(447, 23);
             this.forceTriggerButton.TabIndex = 12;
@@ -290,10 +293,55 @@ namespace Chimera.Kinect.GUI {
             this.forceTriggerButton.UseVisualStyleBackColor = true;
             this.forceTriggerButton.Click += new System.EventHandler(this.forceTriggerButton_Click);
             // 
+            // hipCentrePanel
+            // 
+            this.hipCentrePanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.hipCentrePanel.Location = new System.Drawing.Point(3, 277);
+            this.hipCentrePanel.Max = 10F;
+            this.hipCentrePanel.MaxV = ((OpenMetaverse.Vector3)(resources.GetObject("hipCentrePanel.MaxV")));
+            this.hipCentrePanel.Min = -10F;
+            this.hipCentrePanel.MinimumSize = new System.Drawing.Size(103, 95);
+            this.hipCentrePanel.MinV = ((OpenMetaverse.Vector3)(resources.GetObject("hipCentrePanel.MinV")));
+            this.hipCentrePanel.Name = "hipCentrePanel";
+            this.hipCentrePanel.Size = new System.Drawing.Size(539, 95);
+            this.hipCentrePanel.TabIndex = 13;
+            this.hipCentrePanel.Value = ((OpenMetaverse.Vector3)(resources.GetObject("hipCentrePanel.Value")));
+            this.hipCentrePanel.Vector = null;
+            this.hipCentrePanel.X = 0F;
+            this.hipCentrePanel.Y = 0F;
+            this.hipCentrePanel.Z = 0F;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(4, 228);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(86, 13);
+            this.label5.TabIndex = 15;
+            this.label5.Text = "Depth Threshold";
+            // 
+            // DepthThreshold
+            // 
+            this.DepthThreshold.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.DepthThreshold.Location = new System.Drawing.Point(98, 228);
+            this.DepthThreshold.Max = 1F;
+            this.DepthThreshold.Min = 0F;
+            this.DepthThreshold.MinimumSize = new System.Drawing.Size(95, 20);
+            this.DepthThreshold.Name = "DepthThreshold";
+            this.DepthThreshold.Scalar = null;
+            this.DepthThreshold.Size = new System.Drawing.Size(444, 20);
+            this.DepthThreshold.TabIndex = 14;
+            this.DepthThreshold.Value = 0F;
+            // 
             // RaiseArmTriggerPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.DepthThreshold);
+            this.Controls.Add(this.hipCentrePanel);
             this.Controls.Add(this.forceTriggerButton);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
@@ -335,5 +383,8 @@ namespace Chimera.Kinect.GUI {
         private System.Windows.Forms.Button forceTriggerButton;
         private Chimera.GUI.UpdatedVectorPanel ArmL;
         private Chimera.GUI.UpdatedVectorPanel ArmR;
+        private Chimera.GUI.UpdatedVectorPanel hipCentrePanel;
+        private System.Windows.Forms.Label label5;
+        private Chimera.GUI.UpdatedScalarPanel DepthThreshold;
     }
 }

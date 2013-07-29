@@ -50,6 +50,8 @@ namespace Chimera.Kinect.GUI {
             Trigger.Condition = new ConditionUpdater(mInput.Trigger);
             AngleThreshold.Scalar = new ScalarUpdater(mInput.AngleThreshold);
             HeightThreshold.Scalar = new ScalarUpdater(mInput.HeightThreshold);
+            DepthThreshold.Scalar = new ScalarUpdater(mInput.DepthThreshold);
+            hipCentrePanel.Vector = new VectorUpdater(mInput.Body);
         }
 
         private void forceTriggerButton_Click(object sender, EventArgs e) {
