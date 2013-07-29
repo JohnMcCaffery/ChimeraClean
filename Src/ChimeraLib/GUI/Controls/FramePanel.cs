@@ -95,7 +95,7 @@ namespace Chimera.GUI.Controls {
                 drawEyeCheck.Checked = mFrame.DrawEye;
 
                 switch (mFrame.Projection) {
-                    case ProjectionStyle.Simple: simpleProjectionButton.Checked = true; break;
+                    case ProjectionStyle.Orthogonal: simpleProjectionButton.Checked = true; break;
                     case ProjectionStyle.Calculated: calculatedProjectionButton.Checked = true; break;
                 }
 
@@ -193,7 +193,7 @@ namespace Chimera.GUI.Controls {
             if (mMassUpdated)
                 return;
             if (simpleProjectionButton.Checked)
-                mFrame.Projection = ProjectionStyle.Simple;
+                mFrame.Projection = ProjectionStyle.Orthogonal;
             else if (calculatedProjectionButton.Checked)
                 mFrame.Projection = ProjectionStyle.Calculated;
         }

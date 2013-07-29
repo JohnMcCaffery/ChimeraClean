@@ -44,11 +44,12 @@ namespace Chimera.GUI.Controls {
         /// </summary>
         private void InitializeComponent() {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FramePanel));
-            Chimera.Util.Rotation rotation3 = new Chimera.Util.Rotation();
+            Chimera.Util.Rotation rotation1 = new Chimera.Util.Rotation();
             this.mainTab = new System.Windows.Forms.TabControl();
             this.configTab = new System.Windows.Forms.TabPage();
             this.restartButton = new System.Windows.Forms.Button();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.drawCheck = new System.Windows.Forms.CheckBox();
             this.aspectRatioButton = new System.Windows.Forms.Button();
             this.drawEyeCheck = new System.Windows.Forms.CheckBox();
             this.diagonalPanel = new Chimera.GUI.ScalarPanel();
@@ -84,7 +85,6 @@ namespace Chimera.GUI.Controls {
             this.orientationPanel = new Chimera.GUI.RotationPanel();
             this.centrePanel = new Chimera.GUI.VectorPanel();
             this.topLeftPanel = new Chimera.GUI.VectorPanel();
-            this.drawCheck = new System.Windows.Forms.CheckBox();
             this.mainTab.SuspendLayout();
             this.configTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -185,6 +185,17 @@ namespace Chimera.GUI.Controls {
             this.splitContainer1.Size = new System.Drawing.Size(830, 311);
             this.splitContainer1.SplitterDistance = 465;
             this.splitContainer1.TabIndex = 8;
+            // 
+            // drawCheck
+            // 
+            this.drawCheck.AutoSize = true;
+            this.drawCheck.Location = new System.Drawing.Point(162, 270);
+            this.drawCheck.Name = "drawCheck";
+            this.drawCheck.Size = new System.Drawing.Size(51, 17);
+            this.drawCheck.TabIndex = 39;
+            this.drawCheck.Text = "Draw";
+            this.drawCheck.UseVisualStyleBackColor = true;
+            this.drawCheck.CheckedChanged += new System.EventHandler(this.drawCheck_CheckedChanged);
             // 
             // aspectRatioButton
             // 
@@ -320,10 +331,10 @@ namespace Chimera.GUI.Controls {
             this.simpleProjectionButton.AutoSize = true;
             this.simpleProjectionButton.Location = new System.Drawing.Point(6, 19);
             this.simpleProjectionButton.Name = "simpleProjectionButton";
-            this.simpleProjectionButton.Size = new System.Drawing.Size(56, 17);
+            this.simpleProjectionButton.Size = new System.Drawing.Size(51, 17);
             this.simpleProjectionButton.TabIndex = 0;
             this.simpleProjectionButton.TabStop = true;
-            this.simpleProjectionButton.Text = "Simple";
+            this.simpleProjectionButton.Text = "Ortho";
             this.simpleProjectionButton.UseVisualStyleBackColor = true;
             this.simpleProjectionButton.CheckedChanged += new System.EventHandler(this.ProjectionButton_CheckedChanged);
             // 
@@ -586,11 +597,11 @@ namespace Chimera.GUI.Controls {
             this.orientationPanel.Quaternion = ((OpenMetaverse.Quaternion)(resources.GetObject("orientationPanel.Quaternion")));
             this.orientationPanel.Size = new System.Drawing.Size(352, 95);
             this.orientationPanel.TabIndex = 1;
-            rotation3.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("rotation3.LookAtVector")));
-            rotation3.Pitch = 0D;
-            rotation3.Quaternion = ((OpenMetaverse.Quaternion)(resources.GetObject("rotation3.Quaternion")));
-            rotation3.Yaw = 0D;
-            this.orientationPanel.Value = rotation3;
+            rotation1.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("rotation1.LookAtVector")));
+            rotation1.Pitch = 0D;
+            rotation1.Quaternion = ((OpenMetaverse.Quaternion)(resources.GetObject("rotation1.Quaternion")));
+            rotation1.Yaw = 0D;
+            this.orientationPanel.Value = rotation1;
             this.orientationPanel.Yaw = 0D;
             // 
             // centrePanel
@@ -631,23 +642,12 @@ namespace Chimera.GUI.Controls {
             this.topLeftPanel.Z = 0F;
             this.topLeftPanel.ValueChanged += new System.EventHandler(this.topLeftPanel_ValueChanged);
             // 
-            // drawCheck
-            // 
-            this.drawCheck.AutoSize = true;
-            this.drawCheck.Location = new System.Drawing.Point(162, 270);
-            this.drawCheck.Name = "drawCheck";
-            this.drawCheck.Size = new System.Drawing.Size(51, 17);
-            this.drawCheck.TabIndex = 39;
-            this.drawCheck.Text = "Draw";
-            this.drawCheck.UseVisualStyleBackColor = true;
-            this.drawCheck.CheckedChanged += new System.EventHandler(this.drawCheck_CheckedChanged);
-            // 
-            // WindowPanel
+            // FramePanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.mainTab);
-            this.Name = "WindowPanel";
+            this.Name = "FramePanel";
             this.Size = new System.Drawing.Size(841, 625);
             this.mainTab.ResumeLayout(false);
             this.configTab.ResumeLayout(false);

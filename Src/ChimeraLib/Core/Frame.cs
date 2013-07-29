@@ -37,9 +37,9 @@ namespace Chimera {
     /// </summary>
     public enum ProjectionStyle { 
         /// <summary>
-        /// Just uses Field of View and Aspect Ratio. The same as the SL Viewer's projection matrix.
+        /// Use an orthogonal projection matrix rather than a perspective matrix.
         /// </summary>
-        Simple, 
+        Orthogonal, 
         /// <summary>
         /// Calculated using the method from this paper http://lds62-112-144-233.my-simplyroot.de/wp-content/uploads/downloads/2011/12/0008.pdf.
         /// </summary>
@@ -365,7 +365,7 @@ namespace Chimera {
         public Matrix4 ProjectionMatrix {
             get { 
                 switch (mProjection) {
-                    case ProjectionStyle.Simple: return SimpleProjection();
+                    case ProjectionStyle.Orthogonal: return CalculateOrthogonalMatrix();
                     case ProjectionStyle.Calculated: return CalculatedProjection();
                 }
                 throw new NotImplementedException();
@@ -622,6 +622,16 @@ namespace Chimera {
                 0f,     vFoV,   vShift, 0f,
                 0f,     0f,     clip1,  clip2,
                 0f,     0f,     -1f,    0f);
+        }
+
+        private Matrix4 CalculateOrthogonalMatrix() {
+            float w = (float) mWidth;
+            float h = (float) mHeight;
+            return new Matrix4(
+                2f / w, 0f, 0f, 0f,
+                0f, 2f / h, 0f, 0f,
+                0f, 0f, -2f / 999f, -1001f / 999f,
+                0f, 0f, 0f, 1f);
         }
 
         public override string ToString() {
