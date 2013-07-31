@@ -539,7 +539,7 @@ namespace Chimera.OpenSim {
             if (mMaster) {
                 if (mode == ControlMode.Delta) {
                     ClearCamera();
-                    if (mProxy != null && mFollowCamProperties.ControlCamera)
+                    if (mProxy != null && mFollowCamProperties.Enabled && mFollowCamProperties.ControlCamera)
                         mProxy.InjectPacket(mFollowCamProperties.Packet, Direction.Incoming);
                 } else {
                     SetCamera();
@@ -604,7 +604,7 @@ namespace Chimera.OpenSim {
                     if (mControlCamera && mFrame.Core.ControlMode == ControlMode.Absolute)
                         SetCamera();
                     SetFrame();
-                    if (mMaster && mFollowCamProperties.ControlCamera)
+                    if (mMaster && mFollowCamProperties.Enabled && mFollowCamProperties.ControlCamera)
                         mProxy.InjectPacket(mFollowCamProperties.Packet, Direction.Incoming);
                     if (OnClientLoggedIn != null)
                         OnClientLoggedIn(mProxy, null);

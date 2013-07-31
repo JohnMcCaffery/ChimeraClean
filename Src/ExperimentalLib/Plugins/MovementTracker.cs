@@ -24,7 +24,7 @@ namespace Chimera.Experimental.Plugins {
             mCore = core;
             mCore.CameraUpdated += new Action<Core,CameraUpdateEventArgs>(mCore_CameraUpdated);
 
-            mMap = new Bitmap("Images/Maps/PerspectiveMap.png");
+            mMap = new Bitmap("Images/Maps/OrthogonalMap.png");
         }
 
         public void SetForm(System.Windows.Forms.Form form) { }
@@ -74,9 +74,15 @@ namespace Chimera.Experimental.Plugins {
                     mRedraws.Add(redraw);
 
                 Point bottomRight = to2D(new Vector3(0f, 256f, 100f));
-                graphics.DrawImage(mMap, 0f, 0f, bottomRight.X, bottomRight.Y);
+                graphics.DrawImage(mMap, -bottomRight.X * .75f, -bottomRight.Y, bottomRight.X * 2.5f, bottomRight.Y * 3f);
+                //graphics.DrawImage(mMap, 0f, 0f, bottomRight.X * 2, bottomRight.Y * 2);
                 float r = 2.5f;
                 Point location = to2D(mCore.Position);
+                location.X = (int) (location.X * 2.5);
+                location.Y *= 3;
+                location.X -= (int) (bottomRight.X * .75);
+                location.Y -= bottomRight.Y;
+                //graphics.FillEllipse(Brushes.Red, location.X - r, location.Y - r, r * 2, r * 2);
                 graphics.FillEllipse(Brushes.Red, location.X - r, location.Y - r, r * 2, r * 2);
             }
         }

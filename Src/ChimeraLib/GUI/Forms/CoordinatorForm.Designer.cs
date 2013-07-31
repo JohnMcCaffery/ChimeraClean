@@ -43,7 +43,7 @@ namespace Chimera.GUI.Forms {
         /// </summary>
         private void InitializeComponent() {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CoordinatorForm));
-            Chimera.Util.Rotation rotation2 = new Chimera.Util.Rotation();
+            Chimera.Util.Rotation rotation1 = new Chimera.Util.Rotation();
             this.hSplit = new System.Windows.Forms.SplitContainer();
             this.diagramWorldSplit = new System.Windows.Forms.SplitContainer();
             this.diagSplit = new System.Windows.Forms.SplitContainer();
@@ -72,22 +72,6 @@ namespace Chimera.GUI.Forms {
             this.windowsTab = new System.Windows.Forms.TabControl();
             this.inputsGroup = new System.Windows.Forms.GroupBox();
             this.pluginsTab = new System.Windows.Forms.TabControl();
-#if DEBUG
-            this.statsTabs = new System.Windows.Forms.TabControl();
-            this.tickTab = new System.Windows.Forms.TabPage();
-            this.tickStatsPanel = new Chimera.GUI.Controls.StatisticsPanel();
-            this.tickListenersTab = new System.Windows.Forms.TabPage();
-            this.tickListenersPanel = new Chimera.GUI.Controls.StatisticsCollectionPanel();
-            this.updatesTab = new System.Windows.Forms.TabPage();
-            this.updateStatsPanel = new Chimera.GUI.Controls.StatisticsPanel();
-            this.cameraTab = new System.Windows.Forms.TabPage();
-            this.cameraStatsPanel = new Chimera.GUI.Controls.StatisticsPanel();
-            this.deltaTab = new System.Windows.Forms.TabPage();
-            this.deltaStatsPanel = new Chimera.GUI.Controls.StatisticsPanel();
-            this.usageTab = new System.Windows.Forms.TabPage();
-            this.statisticsTab = new System.Windows.Forms.TabPage();
-#endif
-
             this.overlayStatsBox = new System.Windows.Forms.RichTextBox();
             ((System.ComponentModel.ISupportInitialize)(this.hSplit)).BeginInit();
             this.hSplit.Panel1.SuspendLayout();
@@ -114,18 +98,6 @@ namespace Chimera.GUI.Forms {
             this.windowsPluginsSplit.SuspendLayout();
             this.windowsGroup.SuspendLayout();
             this.inputsGroup.SuspendLayout();
-            this.pluginsTab.SuspendLayout();
-#if DEBUG
-            this.statsTabs.SuspendLayout();
-            this.tickTab.SuspendLayout();
-            this.tickListenersTab.SuspendLayout();
-            this.updatesTab.SuspendLayout();
-            this.cameraTab.SuspendLayout();
-            this.deltaTab.SuspendLayout();
-            this.usageTab.SuspendLayout();
-            this.statisticsTab.SuspendLayout();
-#endif
-
             this.SuspendLayout();
             // 
             // hSplit
@@ -447,11 +419,11 @@ namespace Chimera.GUI.Forms {
             this.virtualOrientationPanel.Quaternion = ((OpenMetaverse.Quaternion)(resources.GetObject("virtualOrientationPanel.Quaternion")));
             this.virtualOrientationPanel.Size = new System.Drawing.Size(255, 95);
             this.virtualOrientationPanel.TabIndex = 2;
-            rotation2.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("rotation2.LookAtVector")));
-            rotation2.Pitch = 0D;
-            rotation2.Quaternion = ((OpenMetaverse.Quaternion)(resources.GetObject("rotation2.Quaternion")));
-            rotation2.Yaw = 0D;
-            this.virtualOrientationPanel.Value = rotation2;
+            rotation1.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("rotation1.LookAtVector")));
+            rotation1.Pitch = 0D;
+            rotation1.Quaternion = ((OpenMetaverse.Quaternion)(resources.GetObject("rotation1.Quaternion")));
+            rotation1.Yaw = 0D;
+            this.virtualOrientationPanel.Value = rotation1;
             this.virtualOrientationPanel.Yaw = 0D;
             this.virtualOrientationPanel.OnChange += new System.EventHandler(this.virtualRotation_OnChange);
             // 
@@ -528,174 +500,22 @@ namespace Chimera.GUI.Forms {
             // 
             // pluginsTab
             // 
-#if DEBUG
-            this.pluginsTab.Controls.Add(this.statisticsTab);
-#endif
             this.pluginsTab.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pluginsTab.Location = new System.Drawing.Point(3, 16);
             this.pluginsTab.Name = "pluginsTab";
             this.pluginsTab.SelectedIndex = 0;
             this.pluginsTab.Size = new System.Drawing.Size(456, 480);
             this.pluginsTab.TabIndex = 0;
-#if DEBUG
-            this.pluginsTab.SelectedIndexChanged += new System.EventHandler(this.inputsTab_SelectedIndexChanged);
-#endif
             this.pluginsTab.KeyDown += new System.Windows.Forms.KeyEventHandler(this.CoordinatorForm_KeyDown);
             this.pluginsTab.KeyUp += new System.Windows.Forms.KeyEventHandler(this.CoordinatorForm_KeyUp);
-#if DEBUG
-            // 
-            // statisticsTab
-            // 
-            this.statisticsTab.Controls.Add(this.statsTabs);
-            this.statisticsTab.Location = new System.Drawing.Point(4, 22);
-            this.statisticsTab.Name = "statisticsTab";
-            this.statisticsTab.Padding = new System.Windows.Forms.Padding(3);
-            this.statisticsTab.Size = new System.Drawing.Size(448, 454);
-            this.statisticsTab.TabIndex = 0;
-            this.statisticsTab.Text = "Statistics";
-            this.statisticsTab.UseVisualStyleBackColor = true;
-            // 
-            // statsTabs
-            // 
-            this.statsTabs.Controls.Add(this.tickTab);
-            this.statsTabs.Controls.Add(this.tickListenersTab);
-            this.statsTabs.Controls.Add(this.updatesTab);
-            this.statsTabs.Controls.Add(this.cameraTab);
-            this.statsTabs.Controls.Add(this.deltaTab);
-            this.statsTabs.Controls.Add(this.usageTab);
-            this.statsTabs.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.statsTabs.Location = new System.Drawing.Point(3, 3);
-            this.statsTabs.Name = "statsTabs";
-            this.statsTabs.SelectedIndex = 0;
-            this.statsTabs.Size = new System.Drawing.Size(442, 448);
-            this.statsTabs.TabIndex = 0;
-            this.statsTabs.SelectedIndexChanged += new System.EventHandler(this.statsTab_SelectedIndexChanged);
-            // 
-            // tickTab
-            // 
-            this.tickTab.Controls.Add(this.tickStatsPanel);
-            this.tickTab.Location = new System.Drawing.Point(4, 22);
-            this.tickTab.Name = "tickTab";
-            this.tickTab.Padding = new System.Windows.Forms.Padding(3);
-            this.tickTab.Size = new System.Drawing.Size(434, 422);
-            this.tickTab.TabIndex = 0;
-            this.tickTab.Text = "Ticks";
-            this.tickTab.UseVisualStyleBackColor = true;
-            // 
-            // tickStatsPanel
-            // 
-            this.tickStatsPanel.Active = false;
-            this.tickStatsPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tickStatsPanel.Location = new System.Drawing.Point(3, 3);
-            this.tickStatsPanel.Name = "tickStatsPanel";
-            this.tickStatsPanel.ShowTick = true;
-            this.tickStatsPanel.Size = new System.Drawing.Size(428, 416);
-            this.tickStatsPanel.TabIndex = 0;
-            // 
-            // tickListenersTab
-            // 
-            this.tickListenersTab.Controls.Add(this.tickListenersPanel);
-            this.tickListenersTab.Location = new System.Drawing.Point(4, 22);
-            this.tickListenersTab.Name = "tickListenersTab";
-            this.tickListenersTab.Padding = new System.Windows.Forms.Padding(3);
-            this.tickListenersTab.Size = new System.Drawing.Size(434, 422);
-            this.tickListenersTab.TabIndex = 5;
-            this.tickListenersTab.Text = "Tick Listeners";
-            this.tickListenersTab.UseVisualStyleBackColor = true;
-            // 
-            // tickListenersPanel
-            // 
-            this.tickListenersPanel.Active = false;
-            this.tickListenersPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tickListenersPanel.Location = new System.Drawing.Point(3, 3);
-            this.tickListenersPanel.Name = "tickListenersPanel";
-            this.tickListenersPanel.Size = new System.Drawing.Size(428, 416);
-            this.tickListenersPanel.TabIndex = 0;
-            // 
-            // updatesTab
-            // 
-            this.updatesTab.Controls.Add(this.updateStatsPanel);
-            this.updatesTab.Location = new System.Drawing.Point(4, 22);
-            this.updatesTab.Name = "updatesTab";
-            this.updatesTab.Padding = new System.Windows.Forms.Padding(3);
-            this.updatesTab.Size = new System.Drawing.Size(434, 422);
-            this.updatesTab.TabIndex = 4;
-            this.updatesTab.Text = "Updates";
-            this.updatesTab.UseVisualStyleBackColor = true;
-            // 
-            // updateStatsPanel
-            // 
-            this.updateStatsPanel.Active = false;
-            this.updateStatsPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.updateStatsPanel.Location = new System.Drawing.Point(3, 3);
-            this.updateStatsPanel.Name = "updateStatsPanel";
-            this.updateStatsPanel.ShowTick = false;
-            this.updateStatsPanel.Size = new System.Drawing.Size(428, 416);
-            this.updateStatsPanel.TabIndex = 2;
-            // 
-            // cameraTab
-            // 
-            this.cameraTab.Controls.Add(this.cameraStatsPanel);
-            this.cameraTab.Location = new System.Drawing.Point(4, 22);
-            this.cameraTab.Name = "cameraTab";
-            this.cameraTab.Padding = new System.Windows.Forms.Padding(3);
-            this.cameraTab.Size = new System.Drawing.Size(434, 422);
-            this.cameraTab.TabIndex = 1;
-            this.cameraTab.Text = "Camera Updates";
-            this.cameraTab.UseVisualStyleBackColor = true;
-            // 
-            // cameraStatsPanel
-            // 
-            this.cameraStatsPanel.Active = false;
-            this.cameraStatsPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.cameraStatsPanel.Location = new System.Drawing.Point(3, 3);
-            this.cameraStatsPanel.Name = "cameraStatsPanel";
-            this.cameraStatsPanel.ShowTick = false;
-            this.cameraStatsPanel.Size = new System.Drawing.Size(428, 416);
-            this.cameraStatsPanel.TabIndex = 1;
-            // 
-            // deltaTab
-            // 
-            this.deltaTab.Controls.Add(this.deltaStatsPanel);
-            this.deltaTab.Location = new System.Drawing.Point(4, 22);
-            this.deltaTab.Name = "deltaTab";
-            this.deltaTab.Padding = new System.Windows.Forms.Padding(3);
-            this.deltaTab.Size = new System.Drawing.Size(434, 422);
-            this.deltaTab.TabIndex = 2;
-            this.deltaTab.Text = "Delta Updates";
-            this.deltaTab.UseVisualStyleBackColor = true;
-            // 
-            // deltaStatsPanel
-            // 
-            this.deltaStatsPanel.Active = false;
-            this.deltaStatsPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.deltaStatsPanel.Location = new System.Drawing.Point(3, 3);
-            this.deltaStatsPanel.Name = "deltaStatsPanel";
-            this.deltaStatsPanel.ShowTick = false;
-            this.deltaStatsPanel.Size = new System.Drawing.Size(428, 416);
-            this.deltaStatsPanel.TabIndex = 1;
-            // 
-            // usageTab
-            // 
-            this.usageTab.Controls.Add(this.overlayStatsBox);
-            this.usageTab.Location = new System.Drawing.Point(4, 22);
-            this.usageTab.Name = "usageTab";
-            this.usageTab.Padding = new System.Windows.Forms.Padding(3);
-            this.usageTab.Size = new System.Drawing.Size(434, 422);
-            this.usageTab.TabIndex = 3;
-            this.usageTab.Text = "Usage";
-            this.usageTab.UseVisualStyleBackColor = true;
             // 
             // overlayStatsBox
             // 
-            this.overlayStatsBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.overlayStatsBox.Enabled = false;
-            this.overlayStatsBox.Location = new System.Drawing.Point(3, 3);
+            this.overlayStatsBox.Location = new System.Drawing.Point(0, 0);
             this.overlayStatsBox.Name = "overlayStatsBox";
-            this.overlayStatsBox.Size = new System.Drawing.Size(428, 416);
-            this.overlayStatsBox.TabIndex = 8;
+            this.overlayStatsBox.Size = new System.Drawing.Size(100, 96);
+            this.overlayStatsBox.TabIndex = 0;
             this.overlayStatsBox.Text = "";
-#endif
             // 
             // CoordinatorForm
             // 
@@ -706,7 +526,6 @@ namespace Chimera.GUI.Forms {
             this.Name = "CoordinatorForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "Caen Control Panel";
-            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.CoordinatorForm_FormClosing);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.CoordinatorForm_KeyDown);
             this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.CoordinatorForm_KeyUp);
@@ -738,17 +557,6 @@ namespace Chimera.GUI.Forms {
             this.windowsPluginsSplit.ResumeLayout(false);
             this.windowsGroup.ResumeLayout(false);
             this.inputsGroup.ResumeLayout(false);
-            this.pluginsTab.ResumeLayout(false);
-#if DEBUG
-            this.statisticsTab.ResumeLayout(false);
-            this.statsTabs.ResumeLayout(false);
-            this.tickTab.ResumeLayout(false);
-            this.tickListenersTab.ResumeLayout(false);
-            this.updatesTab.ResumeLayout(false);
-            this.cameraTab.ResumeLayout(false);
-            this.deltaTab.ResumeLayout(false);
-            this.usageTab.ResumeLayout(false);
-#endif
             this.ResumeLayout(false);
 
         }
