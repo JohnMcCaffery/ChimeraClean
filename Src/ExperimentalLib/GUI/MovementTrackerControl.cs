@@ -21,11 +21,13 @@ namespace Chimera.Experimental.GUI {
             mPlugin = movementTracker;
             mPlugin.TimeChanged += new Action(mPlugin_TimeChanged);
             mPlugin.StateChanged += new Action(mPlugin_StateChanged);
+
+            stateLabel.Text = "State: " + movementTracker.ExperimentState;
         }
 
         void mPlugin_StateChanged() {
             InvokeExtension.Invoke(this, () => {
-                stateLabel.Text = mPlugin.ExperimentState.ToString();
+                stateLabel.Text = "State: " + mPlugin.ExperimentState.ToString();
                 prepCheck.Checked = mPlugin.Prep;
 
                 timeLabel.Text = mPlugin.ExperimentState == State.Running || mPlugin.ExperimentState == State.Finished ? 
@@ -44,6 +46,7 @@ namespace Chimera.Experimental.GUI {
 
         private void prepCheck_CheckedChanged(object sender, EventArgs e) {
             mPlugin.Prep = prepCheck.Checked;
+            stateLabel.Text = "State: " + mPlugin.ExperimentState;
         } 
 
     }

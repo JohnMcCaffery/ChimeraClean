@@ -16,8 +16,8 @@ namespace Chimera.Util {
                 float y = (pva.X * m2) + c2;
 
                 return
-                    Math.Min(pla.X, plb.X) < pva.X && Math.Max(pla.X, plb.X) > pva.X &&
-                    Math.Min(pva.X, pvb.X) < y && Math.Max(pva.X, pvb.X) > y;
+                    Math.Min(pla.X, plb.X) <= pva.X && Math.Max(pla.X, plb.X) >= pva.X &&
+                    Math.Min(pva.Y, pvb.Y) <= y && Math.Max(pva.Y, pvb.Y) >= y;
         }
 
         public static bool LineIntersects(Vector2 p1a, Vector2 p1b, Vector2 p2a, Vector2 p2b) {
@@ -46,10 +46,10 @@ namespace Chimera.Util {
             float y = (m1 * x) + c1;
 
             return
-                Math.Min(p1a.X, p1b.X) < x && Math.Max(p1a.X, p1b.X) > x &&
-                Math.Min(p1a.Y, p1b.Y) < y && Math.Max(p1a.Y, p1b.Y) > y &&
-                Math.Min(p2a.X, p2b.X) < x && Math.Max(p2a.X, p2b.X) > x &&
-                Math.Min(p2a.Y, p2b.Y) < y && Math.Max(p2a.Y, p2b.Y) > y;
+                Math.Min(p1a.X, p1b.X) <= x && Math.Max(p1a.X, p1b.X) >= x &&
+                Math.Min(p1a.Y, p1b.Y) <= y && Math.Max(p1a.Y, p1b.Y) >= y &&
+                Math.Min(p2a.X, p2b.X) <= x && Math.Max(p2a.X, p2b.X) >= x &&
+                Math.Min(p2a.Y, p2b.Y) <= y && Math.Max(p2a.Y, p2b.Y) >= y;
         }
 
         public static bool PolygonContains(Vector2 p, params Vector2[] points) {

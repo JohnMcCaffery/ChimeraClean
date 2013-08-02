@@ -53,9 +53,9 @@
             this.stateLabel.AutoSize = true;
             this.stateLabel.Location = new System.Drawing.Point(4, 0);
             this.stateLabel.Name = "stateLabel";
-            this.stateLabel.Size = new System.Drawing.Size(75, 13);
+            this.stateLabel.Size = new System.Drawing.Size(81, 13);
             this.stateLabel.TabIndex = 2;
-            this.stateLabel.Text = "State: Nothing";
+            this.stateLabel.Text = "State: FirstLoad";
             // 
             // MovementTrackerControl
             // 

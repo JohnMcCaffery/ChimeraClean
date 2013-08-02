@@ -11,14 +11,14 @@ using System.IO;
 using Chimera.Util;
 
 namespace Chimera.Experimental.Plugins {
-    public enum State { Ready, Running, Finished, Nothing, Prepped }
+    public enum State { FirstLoad, Running, Finished, Prepped }
     public class MovementTracker : XmlLoader, ISystemPlugin {
         private readonly HashSet<Action> mRedraws = new HashSet<Action>();
 
-        private List<Vector3> mStarts;
         private List<Vector3> mTargets;
-        private Vector2[] mStartVectors;
         private Vector2[] mTargetVectors;
+        private Vector3 mStartA;
+        private Vector3 mStartB;
 
         private MovementTrackerControl mControl;
         private Core mCore;
@@ -33,9 +33,10 @@ namespace Chimera.Experimental.Plugins {
         private float mR = 2.5f;
 
         private bool mPrep;
-        private State mState = Plugins.State.Nothing;
+        private State mState = Plugins.State.FirstLoad;
         private DateTime mStart;
         private DateTime mFinish;
+
 
         private int mUpdate = 0;
         private const int REDRAW = 5;
@@ -47,6 +48,7 @@ namespace Chimera.Experimental.Plugins {
         public event Action StateChanged;
 
         private List<Vector3> mRoute = new List<Vector3>();
+        private Vector3 mPrev = Vector3.Zero;
 
         public TimeSpan Time {
             get { return mState == Plugins.State.Running ? DateTime.Now.Subtract(mStart) : mFinish.Subtract(mStart); }
@@ -56,7 +58,7 @@ namespace Chimera.Experimental.Plugins {
             get { return mPrep; }
             set { 
                 mPrep = value;
-                if (mState == Plugins.State.Ready)
+                if (mState == Plugins.State.FirstLoad || mState == Plugins.State.Finished)
                     mState = Plugins.State.Prepped;
             }
         }
@@ -68,18 +70,15 @@ namespace Chimera.Experimental.Plugins {
         void mCore_CameraUpdated(Core core, CameraUpdateEventArgs args) {
             mUpdate++;
 
-            if (Algorithms.PolygonContains(new Vector2(mCore.Position.X, mCore.Position.Y), mStartVectors)) {
+            if (mState == Plugins.State.Running || (mState == Plugins.State.Prepped && Started())) {
+                /*
                 mState = mPrep ? Plugins.State.Prepped : Plugins.State.Ready;
                 if (StateChanged != null)
                     StateChanged();
             } else {
+                */
                 if (mState == Plugins.State.Prepped)
                     OnStart();
-                else if (mState == Plugins.State.Ready) {
-                    mState = Plugins.State.Nothing;
-                    if (StateChanged != null)
-                        StateChanged();
-                }
 
                 if (mState == Plugins.State.Running) {
                     if (Algorithms.PolygonContains(new Vector2(mCore.Position.X, mCore.Position.Y), mTargetVectors))
@@ -94,6 +93,7 @@ namespace Chimera.Experimental.Plugins {
                 foreach (var redraw in mRedraws)
                     redraw();
             }
+            mPrev = mCore.Position;
         }
 
         void mCore_Tick() {
@@ -135,15 +135,19 @@ namespace Chimera.Experimental.Plugins {
             mLeftScaleX = (mScaleX - 1f) / 2f;
             mLeftScaleY = (mScaleY - 1f) / 2f;
 
+            /*
             mStarts = new List<Vector3>();
             foreach (var node in GetChildrenOfChild(root, "Start"))
                 mStarts.Add(GetVector(node, Vector3.Zero));
+            */
+            mStartA = GetVector(root.SelectSingleNode("child::Start/A"), Vector3.Zero);
+            mStartB = GetVector(root.SelectSingleNode("child::Start/B"), Vector3.Zero);
 
             mTargets = new List<Vector3>();
             foreach (var node in GetChildrenOfChild(root, "Target"))
                 mTargets.Add(GetVector(node, Vector3.Zero));
 
-            mStartVectors = mStarts.Select(v => new Vector2(v.X, v.Y)).ToArray();
+            //mStartVectors = mStarts.Select(v => new Vector2(v.X, v.Y)).ToArray();
             mTargetVectors = mTargets.Select(v => new Vector2(v.X, v.Y)).ToArray();
         }
 
@@ -196,18 +200,19 @@ namespace Chimera.Experimental.Plugins {
                 Point bottomRight = to2D(mFarCorner);
                 graphics.DrawImage(mMap, -bottomRight.X * mLeftScaleX, -bottomRight.Y * mLeftScaleY, bottomRight.X * mScaleX, bottomRight.Y * mScaleY);
 
-                if (mState == Plugins.State.Ready || mState == Plugins.State.Prepped) {
-                    graphics.FillPolygon(Brushes.Blue, mStarts.Select(v => GetPoint(v, to2D, bottomRight)).ToArray());
+                if (mState == Plugins.State.FirstLoad || mState == Plugins.State.Prepped) {
+                    //graphics.FillPolygon(Brushes.Blue, mStarts.Select(v => GetPoint(v, to2D, bottomRight)).ToArray());
+                    graphics.DrawLine(Pens.Blue, GetPoint(mStartA, to2D, bottomRight), GetPoint(mStartB, to2D, bottomRight));
                     graphics.DrawPolygon(Pens.Red, mTargets.Select(v => GetPoint(v, to2D, bottomRight)).ToArray());
                 } else {
-                    graphics.DrawPolygon(Pens.Red, mStarts.Select(v => GetPoint(v, to2D, bottomRight)).ToArray());
+                    //graphics.DrawPolygon(Pens.Red, mStarts.Select(v => GetPoint(v, to2D, bottomRight)).ToArray());
+                    graphics.DrawLine(Pens.Red, GetPoint(mStartA, to2D, bottomRight), GetPoint(mStartB, to2D, bottomRight));
                     if (mState == Plugins.State.Finished)
                         graphics.FillPolygon(Brushes.Blue, mTargets.Select(v => GetPoint(v, to2D, bottomRight)).ToArray());
                     else
                         graphics.DrawPolygon(Pens.Red, mTargets.Select(v => GetPoint(v, to2D, bottomRight)).ToArray());
 
-                    if (mRoute.Count > 1)
-                        graphics.DrawLines(Pens.Red, mRoute.Select(v => GetPoint(v, to2D, bottomRight)).ToArray());
+                    graphics.DrawLines(Pens.Red, mRoute.Select(v => GetPoint(v, to2D, bottomRight)).ToArray());
                 }
 
 
@@ -222,6 +227,7 @@ namespace Chimera.Experimental.Plugins {
         private void OnStart() {
             mState = Plugins.State.Running;
             mRoute.Clear();
+            mRoute.Add(mPrev);
             mStart = DateTime.Now;
             mCore.Tick += mTickListener;
             mPrep = false;
@@ -237,6 +243,21 @@ namespace Chimera.Experimental.Plugins {
                 StateChanged();
             if (TimeChanged != null)
                 TimeChanged();
+        }
+        private bool Started() {
+            return Algorithms.LineIntersects(To2(mStartA), To2(mStartB), To2(mPrev), To2(mCore.Position));
+        }
+
+        private Vector2 To2(Vector3 three) {
+            return new Vector2(three.X, three.Y);
+        }
+
+        /*
+        private bool Finished() {
+        }
+        */
+
+        private void DrawTarget() {
         }
 
         private Point GetPoint(Vector3 original, Func<Vector3, Point> to2D, Point bottomRight) {
