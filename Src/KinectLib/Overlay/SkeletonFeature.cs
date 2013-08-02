@@ -51,7 +51,7 @@ namespace Chimera.Kinect.Overlay {
         #endregion
     }
 
-    public class SkeletonFeature : XmlLoader, IFeature {
+    public class SkeletonFeature : OverlayXmlLoader, IFeature {
         private static Vector sLeftHand, sRightHand;
         private static Vector sLeftElbow, sRightElbow;
         private static Vector sLeftShoulder, sRightShoulder;

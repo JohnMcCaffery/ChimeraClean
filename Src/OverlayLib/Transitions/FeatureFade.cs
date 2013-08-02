@@ -32,7 +32,7 @@ using System.Threading;
 
 
 namespace Chimera.Overlay.Transitions {
-    public class FeatureFadeFactory : XmlLoader, IFeatureTransitionFactory {
+    public class FeatureFadeFactory : OverlayXmlLoader, IFeatureTransitionFactory {
         #region IImageTransitionFactory Members
 
         public string Name { get { return "Fade"; } }
@@ -52,7 +52,7 @@ namespace Chimera.Overlay.Transitions {
         #endregion
     }
 
-    public class FadeTransition : XmlLoader, IFeatureTransition {
+    public class FadeTransition : OverlayXmlLoader, IFeatureTransition {
         /// <summary>
         /// When the transition began.
         /// </summary>

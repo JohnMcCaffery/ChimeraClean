@@ -204,7 +204,7 @@
     <Compile Include="FrameTransition.cs" />
     <Compile Include="Triggers\TimerTrigger.cs" />
     <Compile Include="Triggers\TriggerBase.cs" />
-    <Compile Include="XmlLoader.cs" />
+    <Compile Include="OverlayXmlLoader.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ChimeraLib\ChimeraLib.csproj">

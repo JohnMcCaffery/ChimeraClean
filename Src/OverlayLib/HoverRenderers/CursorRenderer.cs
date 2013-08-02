@@ -52,7 +52,7 @@ namespace Chimera.Overlay.SelectionRenderers {
     }
 
 
-    public class CursorRenderer : XmlLoader, ISelectionRenderer {
+    public class CursorRenderer : OverlayXmlLoader, ISelectionRenderer {
         [DllImport("user32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool GetIconInfo(IntPtr hIcon, ref IconInfo pIconInfo);

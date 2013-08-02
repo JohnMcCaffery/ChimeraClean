@@ -8,7 +8,7 @@ using System.Xml;
 using System.Drawing;
 
 namespace Chimera.Overlay.Features {
-    public class FadeFeatureFactory : XmlLoader, IFeatureFactory {
+    public class FadeFeatureFactory : OverlayXmlLoader, IFeatureFactory {
         #region IImageTransitionFactory Members
 
         public string Name { get { return "Fade"; } }

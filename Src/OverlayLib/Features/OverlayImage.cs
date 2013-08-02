@@ -50,7 +50,7 @@ namespace Chimera.Overlay.Features {
         #endregion
     }
 
-    public class OverlayImage : XmlLoader, IFeature {
+    public class OverlayImage : OverlayXmlLoader, IFeature {
         private RectangleF mBounds;
         private Bitmap mImage;
         private string mFile;

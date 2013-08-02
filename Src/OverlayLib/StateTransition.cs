@@ -26,7 +26,7 @@ using log4net;
 using System.Threading;
 
 namespace Chimera.Overlay {
-    public class StateTransition : XmlLoader {
+    public class StateTransition : OverlayXmlLoader {
         private readonly ILog Logger = LogManager.GetLogger("Overlay");
         /// <summary>
         /// The individual transitions for each window in the system.

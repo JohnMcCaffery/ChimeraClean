@@ -36,7 +36,7 @@ using Chimera.Interfaces;
 using log4net;
 
 namespace Chimera.Overlay {
-    public partial class OverlayPlugin : XmlLoader, ISystemPlugin {
+    public partial class OverlayPlugin : OverlayXmlLoader, ISystemPlugin {
         private readonly ILog Logger = LogManager.GetLogger("Overlay");
         /// <summary>
         /// All the states this manager manages.

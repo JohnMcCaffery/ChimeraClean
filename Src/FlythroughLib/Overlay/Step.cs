@@ -12,7 +12,7 @@ using log4net;
 using Chimera.Util;
 
 namespace Chimera.Flythrough.Overlay {
-    public class Step : XmlLoader {
+    public class Step : OverlayXmlLoader {
 #if DEBUG
         private static TickStatistics sStatistics = null;
 #endif

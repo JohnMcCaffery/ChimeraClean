@@ -26,7 +26,7 @@ using Chimera.Interfaces.Overlay;
 using System.Xml;
 
 namespace Chimera.Overlay.SelectionRenderers {
-    public class DialRendererFactory : XmlLoader, ISelectionRendererFactory {
+    public class DialRendererFactory : OverlayXmlLoader, ISelectionRendererFactory {
         #region IFactory<ISelectionRenderer> Members
 
         public ISelectionRenderer Create(OverlayPlugin manager, XmlNode node) {
@@ -48,7 +48,7 @@ namespace Chimera.Overlay.SelectionRenderers {
         #endregion
     }
 
-    public class DialRenderer : XmlLoader, ISelectionRenderer {
+    public class DialRenderer : OverlayXmlLoader, ISelectionRenderer {
         private Color mHoverColour = Color.Red;
         private Color mSelectionColour = Color.Blue;
         private bool mFill;

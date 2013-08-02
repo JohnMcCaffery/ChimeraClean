@@ -22,7 +22,7 @@ namespace Chimera.Overlay.Features {
     }
 
 
-    public class ColourFeature : XmlLoader, IFeature {
+    public class ColourFeature : OverlayXmlLoader, IFeature {
         private RectangleF mBounds = new RectangleF(0f, 0f, 1f, 1f);
         private Rectangle mClip;
         private Color mColour = Color.Black;

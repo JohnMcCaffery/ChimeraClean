@@ -30,7 +30,7 @@ using System.Xml;
 using log4net;
 
 namespace Chimera.Overlay.Transitions {
-    public class FeatureTransitionFactory : XmlLoader, ITransitionStyleFactory {
+    public class FeatureTransitionFactory : OverlayXmlLoader, ITransitionStyleFactory {
         private readonly ILog Logger = LogManager.GetLogger("Overlay.BitmapTransition");
 
         public string Name {
@@ -53,7 +53,7 @@ namespace Chimera.Overlay.Transitions {
         }
     }
 
-    public class FeatureFrameTransitionFactory : XmlLoader, ITransitionStyle {
+    public class FeatureFrameTransitionFactory : OverlayXmlLoader, ITransitionStyle {
         /// <summary>
         /// How long the transition should last.
         /// </summary>

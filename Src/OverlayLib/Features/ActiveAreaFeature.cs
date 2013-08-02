@@ -30,7 +30,7 @@ namespace Chimera.Overlay.Features {
         #endregion
     }
 
-    public class ActiveAreaFeature : XmlLoader, IFeature {
+    public class ActiveAreaFeature : OverlayXmlLoader, IFeature {
         private OverlayPlugin mPlugin;
         private IFeature mFeature;
         private ActiveAreaTrigger mTrigger;

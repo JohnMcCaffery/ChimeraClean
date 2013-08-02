@@ -66,7 +66,7 @@ namespace Chimera.Kinect.Overlay {
     }
 
 
-    public class RaiseArmTrigger : XmlLoader, ITrigger {
+    public class RaiseArmTrigger : OverlayXmlLoader, ITrigger {
         private RaiseArmTriggerPanel mPanel;
         private bool mEnabled = true;
 

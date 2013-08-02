@@ -6,7 +6,7 @@ using Chimera.Overlay;
 using Chimera.Util;
 
 namespace Chimera.Features.Plugin {
-    public class OverlayStatsPlugin : XmlLoader, ISystemPlugin {
+    public class OverlayStatsPlugin : OverlayXmlLoader, ISystemPlugin {
         private readonly Dictionary<string, TickStatistics> mStatistics = new Dictionary<string,TickStatistics>();
         private TickStatistics mCurrentStats;
         private bool mEnabled;

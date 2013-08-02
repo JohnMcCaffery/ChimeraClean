@@ -98,6 +98,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{FCF1B4
 	ProjectSection(SolutionItems) = preProject
 		..\Bin\Configs\Common\Bindings.xml = ..\Bin\Configs\Common\Bindings.xml
 		..\Bin\Configs\Common\Core.ini = ..\Bin\Configs\Common\Core.ini
+		..\Bin\Configs\Common\Experiments.ini = ..\Bin\Configs\Common\Experiments.ini
 		..\Bin\Configs\Common\Frames.ini = ..\Bin\Configs\Common\Frames.ini
 		..\Bin\Configs\Common\Heightmap.ini = ..\Bin\Configs\Common\Heightmap.ini
 		..\Bin\Configs\Common\KinectMovement.ini = ..\Bin\Configs\Common\KinectMovement.ini
@@ -133,6 +134,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TimespanTest", "TimespanTes
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExperimentalLib", "ExperimentalLib\ExperimentalLib.csproj", "{6288745C-11BE-4CFC-83F1-F37B71CF53D6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Experiments", "Experiments", "{CA5E6F57-AE17-4E20-A63A-C80D61FF8774}"
+	ProjectSection(SolutionItems) = preProject
+		..\Bin\Experiments\Maze.xml = ..\Bin\Experiments\Maze.xml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

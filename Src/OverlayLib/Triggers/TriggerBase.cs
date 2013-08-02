@@ -7,7 +7,7 @@ using Chimera.Overlay.GUI.Triggers;
 using System.Xml;
 
 namespace Chimera.Overlay.Triggers {
-    public abstract class TriggerBase : XmlLoader, ITrigger {
+    public abstract class TriggerBase : OverlayXmlLoader, ITrigger {
         private TriggerPanel mPanel;
 
         public TriggerBase()

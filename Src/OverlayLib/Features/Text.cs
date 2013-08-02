@@ -26,7 +26,7 @@ using System.Drawing;
 using System.Xml;
 
 namespace Chimera.Overlay.Features {
-    public abstract class Text : XmlLoader, IFeature {
+    public abstract class Text : OverlayXmlLoader, IFeature {
         public static RectangleF GetBounds(Text text, Rectangle clip) {
             using (Bitmap b = new Bitmap(1, 1)) {
                 using (Graphics g = Graphics.FromImage(b)) {

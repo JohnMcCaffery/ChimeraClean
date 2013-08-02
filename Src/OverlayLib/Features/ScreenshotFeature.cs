@@ -29,7 +29,7 @@ namespace Chimera.Overlay.Features {
         #endregion
     }
 
-    public class ScreenshotFeature : XmlLoader, IFeature {
+    public class ScreenshotFeature : OverlayXmlLoader, IFeature {
         private FrameOverlayManager mManager;
         private Bitmap mScreenshot;
         private Rectangle mClip;

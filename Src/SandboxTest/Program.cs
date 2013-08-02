@@ -111,6 +111,7 @@ namespace Test {
             p.Start();
             */
 
+            /*
             mCoordinator = new Core(null);
             Vector3 start = new Vector3(100f, 100f, 60f);
             mCoordinator.Update(start, Vector3.Zero, GetRot(start), Rotation.Zero);
@@ -130,6 +131,33 @@ namespace Test {
             viewerArgs += " --channel \"Firestorm-Release\" --settings settings_firestorm_release_v4.xml --set InstallLanguage en";
 
             viewer.Start(exe, Path.GetDirectoryName(exe), viewerArgs);
+            */
+
+            double total = 250;
+            double paid = 250;
+            for (int i = 0; i < 12; i++) {
+                total += (total * .06) / 12.0;
+                total += 300;
+                paid += 300;
+            }
+
+            Console.WriteLine("£" + total + " after 12 months. £" + paid + " paid in, £" + (total - paid) + " interest.");
+
+
+            total = 5510;
+            //paid = 250;
+            double interest = 0;
+            for (int i = 0; i < 12; i++) {
+                double interestM = (total * .03) / 12.0;
+                interest += interestM;
+                total += interestM;
+                total -= 300;
+                //paid += 250;
+            }
+
+            Console.WriteLine("£" + total + " left after 12 months. £" + interest + " interest.");
+
+            Console.ReadLine();
         }
 
         private static void SendPackets(object param) {

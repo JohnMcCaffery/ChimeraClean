@@ -211,7 +211,10 @@
       <DependentUpon>KBMousePanel.cs</DependentUpon>
     </Compile>
     <Compile Include="Interfaces\ICrashable.cs" />
+    <Compile Include="Util\Algorithms.cs" />
     <Compile Include="Util\FireEventAppender.cs" />
+    <Compile Include="Util\InvokeExtension.cs" />
+    <Compile Include="Util\XmlLoader.cs" />
     <Compile Include="Util\ProcessController.cs" />
     <Compile Include="Util\StatisticsCollection.cs" />
     <Compile Include="Util\StatisticsServer.cs" />

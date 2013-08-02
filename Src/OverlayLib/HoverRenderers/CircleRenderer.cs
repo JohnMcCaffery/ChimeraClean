@@ -26,7 +26,7 @@ using System.Xml;
 using Chimera.Interfaces.Overlay;
 
 namespace Chimera.Overlay.SelectionRenderers {
-    public class CircleRendererFactory : XmlLoader, ISelectionRendererFactory {
+    public class CircleRendererFactory : OverlayXmlLoader, ISelectionRendererFactory {
         #region IFactory<ISelectionRenderer> Members
 
         public ISelectionRenderer Create(OverlayPlugin manager, XmlNode node) {
@@ -48,7 +48,7 @@ namespace Chimera.Overlay.SelectionRenderers {
         #endregion
     }
 
-    public class CircleRenderer : XmlLoader, ISelectionRenderer {
+    public class CircleRenderer : OverlayXmlLoader, ISelectionRenderer {
         private Color mHoverColour = Color.Red;
         private Color mSelectionColour = Color.Blue;
         private int mR;

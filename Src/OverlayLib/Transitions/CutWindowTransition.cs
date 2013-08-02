@@ -40,7 +40,7 @@ namespace Chimera.Overlay.Transitions {
         }
     }
 
-    public class CutTransition : XmlLoader, ITransitionStyle {
+    public class CutTransition : OverlayXmlLoader, ITransitionStyle {
         public IWindowTransition Create(StateTransition transition, FrameOverlayManager manager) {
             return new CutWindowTransition(transition, manager);
         }

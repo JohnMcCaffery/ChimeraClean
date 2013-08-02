@@ -29,7 +29,7 @@ using System.Drawing;
 using Chimera.Overlay.Triggers;
 
 namespace Chimera.Kinect.Overlay {
-    public class SkeletonLostFactory : XmlLoader, ITriggerFactory {
+    public class SkeletonLostFactory : OverlayXmlLoader, ITriggerFactory {
         public SpecialTrigger Special {
             get { return SpecialTrigger.None; }
         }

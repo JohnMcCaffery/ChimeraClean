@@ -21,7 +21,7 @@ namespace Chimera.Overlay.Features {
         }
     }
 
-    public class OpacityFadeFeature : XmlLoader, IFeature {
+    public class OpacityFadeFeature : OverlayXmlLoader, IFeature {
         private FrameOverlayManager mManager;
         private Rectangle mClip;
         private DateTime mActivated;

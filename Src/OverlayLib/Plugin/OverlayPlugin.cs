@@ -36,7 +36,7 @@ using Chimera.Interfaces;
 using OpenMetaverse;
 
 namespace Chimera.Overlay {
-    public partial class OverlayPlugin : XmlLoader, ISystemPlugin {
+    public partial class OverlayPlugin : OverlayXmlLoader, ISystemPlugin {
         /// <summary>
         /// Configuration for the system.
         /// </summary>

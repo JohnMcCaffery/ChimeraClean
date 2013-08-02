@@ -7,7 +7,7 @@ using System.Drawing;
 using System.Xml;
 
 namespace Chimera.Overlay.Features {
-    public class ConditionalFeature : XmlLoader, IFeature {
+    public class ConditionalFeature : OverlayXmlLoader, IFeature {
         private OverlayPlugin mPlugin;
         private IFeature mFeature;
         private ITrigger mActiveTrigger;

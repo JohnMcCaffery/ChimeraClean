@@ -37,7 +37,7 @@ using Chimera.Overlay.Interfaces;
 using Chimera.Overlay.SelectionRenderers;
 
 namespace Chimera.Overlay {
-    public partial class OverlayPlugin : XmlLoader, ISystemPlugin {
+    public partial class OverlayPlugin : OverlayXmlLoader, ISystemPlugin {
         public static readonly string CLICK_MODE = "ClickBased";
         public static readonly string HOVER_MODE = "HoverBased";
 

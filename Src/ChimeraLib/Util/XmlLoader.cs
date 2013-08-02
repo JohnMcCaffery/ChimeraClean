@@ -3,33 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Xml;
-using Chimera.Overlay.Features;
 using System.Drawing;
 using System.IO;
-using Chimera.Interfaces.Overlay;
-using Chimera.Overlay.Interfaces;
 using System.Windows.Forms;
 using log4net;
+using OpenMetaverse;
+using Chimera.Util;
 
 namespace Chimera.Overlay {
-    public abstract class XmlLoader : IControllable {
-        private static readonly ILog Logger = LogManager.GetLogger("Overlay");
-
-        private Panel mPanel = new Panel();
-        private string mName = null;
-
-        public virtual Control ControlPanel {
-            get { return mPanel; }
-        }
-
-        public virtual string Name {
-            get { return mName == null ? GetType().Name : mName; }
-            set { mName = value; }
-        }
-
-        protected XmlLoader() { }
-        protected XmlLoader(string name) { mName = name; }
-        protected XmlLoader(XmlNode node) { mName = GetName(node, "XmlLoader"); }
+    public abstract class XmlLoader {
+        private static readonly ILog Logger = LogManager.GetLogger("XmlLoader");
 
         public const string DEFAULT_FONT = "Verdana";
         public const float DEFAULT_FONT_SIZE = 12f;
@@ -93,6 +76,11 @@ namespace Chimera.Overlay {
             }
 
         }
+        public static string GetText(XmlNode node, string defalt) {
+            if (node.InnerText == null)
+                return defalt;
+            return node.InnerText;
+        }
 
         public static string GetString(XmlNode node, string defalt, params string[] attributes) {
             if (attributes.Length == 0)
@@ -150,25 +138,32 @@ namespace Chimera.Overlay {
             return t;
         }
 
-        public static FrameOverlayManager GetManager(OverlayPlugin manager, XmlNode node, string request) {
-            FrameOverlayManager mManager;
-            if (node == null) {
-                mManager = manager[0];
-                Logger.Debug("No node specified when looking up frame for " + request + ". Using " + mManager.Frame.Name + " as default.");
-                return mManager;
-            }
-            XmlAttribute frameAttr = node.Attributes["Frame"];
-            if (frameAttr == null) {
-                mManager = manager[0];
-                Logger.Debug("No window specified whilst resolving " + node.Name + " from " + node.Name + ". Using " + mManager.Frame.Name + " as default.");
-            } else {
-                if (!manager.IsKnownWindow(frameAttr.Value)) {
-                    mManager = manager[0];
-                    Logger.Debug(frameAttr.Value + " is not a known frame. Using " + mManager.Frame.Name + " as default.");
-                } else
-                    mManager = manager[frameAttr.Value];
-            }
-            return mManager;
+        public static Vector3 GetVector(XmlNode node, Vector3 defalt) {
+            XmlAttribute xAttr = node.Attributes["X"];
+            XmlAttribute yAttr = node.Attributes["Y"];
+            XmlAttribute zAttr = node.Attributes["Z"];
+
+            if (xAttr == null || yAttr == null || zAttr == null)
+                return defalt;
+
+            float x = defalt.X;
+            float y = defalt.Y;
+            float z = defalt.Z;
+
+            float.TryParse(xAttr.Value, out x);
+            float.TryParse(yAttr.Value, out y);
+            float.TryParse(zAttr.Value, out z);
+
+            return new Vector3(x, y, z);
+        }
+
+        public static Vector3 GetVector(XmlNode node, Vector3 defalt, params string[] attributes) {
+            string raw = GetString(node, null, attributes);
+            Vector3 ret;
+            if (raw == null || !Vector3.TryParse(raw, out ret))
+                return defalt;
+
+            return ret;
         }
 
         public static Font GetFont(XmlNode node, string request) {
@@ -203,6 +198,6 @@ namespace Chimera.Overlay {
             if (childParent == null)
                 return new XmlElement[0];
             return childParent.ChildNodes.OfType<XmlElement>();
-        } 
+        }
     }
 }

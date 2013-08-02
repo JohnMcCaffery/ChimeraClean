@@ -29,7 +29,7 @@ using Chimera.Interfaces;
 using System.Xml;
 
 namespace Chimera.Overlay {
-    public abstract class State : XmlLoader {
+    public abstract class State : OverlayXmlLoader {
         /// <summary>
         /// The window states, mapped to the names of the windows.
         /// </summary>

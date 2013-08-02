@@ -72,34 +72,10 @@ namespace Chimera.Overlay.Triggers {
                 get { return mPoints[mPoints.Count - 1]; }
             }
 
-            private float Cross(Vector2 v, Vector2 w) {
-                return (v.X * w.Y) - (v.Y * w.X);
-            }
-
             public bool Inside {
                 get {
-                    // http://stackoverflow.com/questions/563198/how-do-you-detect-where-two-line-segments-intersect
                     Vector3 p3 = mManager.Core.Position;
-                    Vector2 p = new Vector2(p3.X, p3.Y);
-                    Vector2 r = new Vector2(0f, 100f) - p;
-
-                    Vector2 q = FinalPoint;
-                    int c = 0;
-                    foreach (Vector2 sAbs in mPoints) {
-                        Vector2 s = sAbs - q;
-                        //Parallel
-                        if (Cross(r, s) != 0f) {
-                            float t = Cross(q - p, s / Cross(r, s));
-                            float u = Cross(q - p, r / Cross(r, s));
-
-                            if (t >= 0f && t <= 1f &&
-                                u >= 0f && u <= 1f)
-                                c++;
-                        }
-                        q = sAbs;
-                    }
-
-                    bool insideH = c % 2 != 0;
+                    bool insideH = Algorithms.PolygonContains(new Vector2(p3.X, p3.Y), mPoints.ToArray());
 
                     double pitch = mManager.Core.Orientation.Pitch;
                     double yaw = mManager.Core.Orientation.Yaw;

@@ -31,7 +31,7 @@ using log4net;
 using Chimera.Util;
 
 namespace Chimera.Overlay.Transitions {
-    public class OpacityTransitionFactory : XmlLoader, ITransitionStyleFactory {
+    public class OpacityTransitionFactory : OverlayXmlLoader, ITransitionStyleFactory {
         private readonly ILog Logger = LogManager.GetLogger("Overlay.OpacityTransition");
 
         public string Name {
@@ -50,7 +50,7 @@ namespace Chimera.Overlay.Transitions {
             return Create(manager, node);
         }
     }
-    public class OpacityFadeWindowTransitionFactory : XmlLoader, ITransitionStyle {
+    public class OpacityFadeWindowTransitionFactory : OverlayXmlLoader, ITransitionStyle {
         /// <summary>
         /// How long the transition should last.
         /// </summary>
