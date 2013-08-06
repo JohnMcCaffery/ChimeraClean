@@ -95,6 +95,7 @@
     <Compile Include="Axes\CrouchAxis.cs" />
     <Compile Include="Axes\DotAxis.cs" />
     <Compile Include="Axes\KinectAxis.cs" />
+    <Compile Include="EyeTrackerPlugin.cs" />
     <Compile Include="GlobalConditions.cs" />
     <Compile Include="GUI\Axes\KinectAxisPanel.cs">
       <SubType>UserControl</SubType>
@@ -116,6 +117,12 @@
     </Compile>
     <Compile Include="Axes\KinectScaledAxis.cs" />
     <Compile Include="Axes\KinectAxisConfig.cs" />
+    <Compile Include="GUI\EyeTrackerPluginControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\EyeTrackerPluginControl.Designer.cs">
+      <DependentUpon>EyeTrackerPluginControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="GUI\KinectCamera.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -184,6 +191,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\Axes\KinectScaledAxisPanel.resx">
       <DependentUpon>KinectScaledAxisPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\EyeTrackerPluginControl.resx">
+      <DependentUpon>EyeTrackerPluginControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\PointCursorPanel.resx">
       <DependentUpon>PointCursorPanel.cs</DependentUpon>
