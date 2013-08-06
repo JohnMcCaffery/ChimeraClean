@@ -34,9 +34,9 @@
             this.positionPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.positionPanel.Location = new System.Drawing.Point(3, 0);
-            this.positionPanel.Max = 10F;
+            this.positionPanel.Max = 5000F;
             this.positionPanel.MaxV = ((OpenMetaverse.Vector3)(resources.GetObject("positionPanel.MaxV")));
-            this.positionPanel.Min = -10F;
+            this.positionPanel.Min = -5000F;
             this.positionPanel.MinimumSize = new System.Drawing.Size(103, 95);
             this.positionPanel.MinV = ((OpenMetaverse.Vector3)(resources.GetObject("positionPanel.MinV")));
             this.positionPanel.Name = "positionPanel";

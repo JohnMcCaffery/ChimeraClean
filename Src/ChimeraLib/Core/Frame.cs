@@ -470,6 +470,9 @@ namespace Chimera {
         /// <param name="perspective">The perspective to render along.</param>
         /// <param name="graphics">The graphics object to draw with.</param>
         public void Draw(Func<Vector3, Point> to2D, Graphics graphics, Rectangle clipRectangle, Action redraw, Perspective perspective) {
+            if (perspective == Perspective.Map)
+                return;
+
             if (!mRedraws.Contains(redraw))
                 mRedraws.Add(redraw);
 

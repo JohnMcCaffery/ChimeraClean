@@ -37,8 +37,6 @@ namespace Chimera.Kinect {
 
         private Core mCore;
         private bool mEnabled;
-        private bool mKinectStarted;
-        private bool mHeadEnabled;
         private Vector3 mKinectPosition;
         private Rotation mKinectOrientation;
         private EyeTrackerPluginControl mPanel;
@@ -71,23 +69,6 @@ namespace Chimera.Kinect {
             }
         }
 
-        public bool KinectStarted {
-            get { return mKinectStarted; }
-        }
-
-        public bool HeadEnabled {
-            get { return mHeadEnabled; }
-            set {
-                mHeadEnabled = value;
-                if (value)
-                    mHead_OnChange();
-                else
-                    mCore.EyePosition = Vector3.Zero;
-                if (EnabledChanged != null)
-                    EnabledChanged(this, mEnabled);
-            }
-        }
-
         public EyeTrackerPlugin() {
             KinectConfig cfg = new KinectConfig();
 
@@ -96,8 +77,6 @@ namespace Chimera.Kinect {
             mKinectPosition = cfg.Position;
             mKinectOrientation = new Rotation(cfg.Pitch, cfg.Yaw);
             mKinectOrientation.Changed += new EventHandler(mKinectOrientation_Changed);
-            mEnabled = cfg.Enabled;
-            mHeadEnabled = cfg.EnableHead;
 
             Nui.SkeletonLost += new SkeletonTrackDelegate(Nui_SkeletonLost);
 
@@ -112,7 +91,7 @@ namespace Chimera.Kinect {
         }
 
         void mHead_OnChange() {
-            if (mHeadEnabled) {
+            if (mEnabled) {
                 Vector3 hKinect = new Vector3(mHead.Z, -mHead.X, mHead.Y) * 1000f;
                 //if (Nui.HasSkeleton)
                 if (!hKinect.Equals(Vector3.Zero))
@@ -126,14 +105,6 @@ namespace Chimera.Kinect {
             KinectSetupChanged();
             if (OrientationChanged != null)
                 OrientationChanged(mKinectOrientation);
-        }
-        public void StartKinect() {
-            if (!mKinectStarted) {
-                Nui.Init();
-                Nui.SetAutoPoll(true);
-                Nui.SkeletonLost += new SkeletonTrackDelegate(Nui_SkeletonLost);
-                mKinectStarted = true;
-            }
         }
 
         void Nui_SkeletonLost() {
@@ -191,6 +162,9 @@ namespace Chimera.Kinect {
         }
 
         public void Draw(Graphics graphics, Func<Vector3, Point> to2D, Action redraw, Perspective perspective) {
+            if (perspective == Perspective.Map)
+                return;
+
             if (!mRedraws.Contains(redraw))
                 mRedraws.Add(redraw);
             if (mEnabled) {

@@ -26,29 +26,23 @@ using OpenMetaverse;
 using Chimera.Config;
 
 namespace Chimera.Kinect {
-    class KinectConfig : ConfigBase {
+    class KinectConfig : ConfigFolderBase {
         public Vector3 Position;
         public double Pitch;
         public double Yaw;
-        public bool Autostart;
-        public bool Enabled;
-        public bool EnableHead;
 
         public override string Group {
-            get { return "Kinect"; }
+            get { return "EyeTracker"; }
+        }
+
+        public KinectConfig()
+            : base("EyeTracker") {
         }
 
         protected override void InitConfig() {
-            AddCommandLineKey(true, "KinectPosition");
-            AddCommandLineKey(true, "KinectPitch");
-            AddCommandLineKey(true, "KinectYaw");
-
-            Position = GetV(true, "KinectPosition", Vector3.Zero, "The position of the kinect in real world coordinates (mm).");
-            Pitch = Get(true, "KinectPitch", 0.0, "The pitch of where the kinect is looking in real space.");
-            Yaw = Get(true, "KinectYaw", 0.0, "the yaw of where the kinect is looking in real space.");
-            Autostart = Get(true, "KinectAutostart", false, "Whether to start the kinect when the system starts.");
-            Enabled = Get(true, "KinectEnabled", true, "Whether to start with kinect input controlling the system.");
-            EnableHead = Get(true, "KinectHeadEnabled", false, "Whether to start with the kinect mapping the user's head position into the 'eye' position for calculating views.");
+            Position = GetV(true, "Position", Vector3.Zero, "The position of the kinect in real world coordinates (mm).");
+            Pitch = Get(true, "Pitch", 0, "The pitch of where the kinect is looking in real space.");
+            Yaw = Get(true, "Yaw", 180.0, "the yaw of where the kinect is looking in real space.");
         }
     }
 }

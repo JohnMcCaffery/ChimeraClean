@@ -314,12 +314,14 @@ namespace Chimera.OpenSim {
 
             new Thread(() => {
                 Thread.Sleep(5000);
-                foreach (var key in mConfig.StartupKeyPresses.Split(','))
-                    mViewerController.PressKey(key);
 
                 if (mManager != null) {
                     mManager.BringToFront();
                 }
+
+                Thread.Sleep(20000);
+                foreach (var key in mConfig.StartupKeyPresses.Split(','))
+                    mViewerController.PressKey(key);
             }).Start();
 
 
