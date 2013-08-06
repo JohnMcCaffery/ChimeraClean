@@ -33,7 +33,7 @@ namespace Chimera.Util {
 
             //Neither line vertical
             float m1 = (p1b.Y - p1a.Y) / (p1b.X - p1a.X);
-            float c1 = (m1 * p1a.X) + p1a.Y;
+            float c1 = p1a.Y - (m1 * p1a.X);
 
             float m2 = (p2b.Y - p2a.Y) / (p2b.X - p2a.X);
             float c2 = p2a.Y - (m2 * p2a.X);

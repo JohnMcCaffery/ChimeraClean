@@ -81,7 +81,7 @@ namespace Chimera.Experimental.Plugins {
                     OnStart();
 
                 if (mState == Plugins.State.Running) {
-                    if (Algorithms.PolygonContains(new Vector2(mCore.Position.X, mCore.Position.Y), mTargetVectors))
+                    if (Finished())
                         OnFinish();
                     else if (mRoute.Count < 1 || mRoute[mRoute.Count - 1] != mCore.Position)
                         mRoute.Add(mCore.Position);
@@ -200,21 +200,14 @@ namespace Chimera.Experimental.Plugins {
                 Point bottomRight = to2D(mFarCorner);
                 graphics.DrawImage(mMap, -bottomRight.X * mLeftScaleX, -bottomRight.Y * mLeftScaleY, bottomRight.X * mScaleX, bottomRight.Y * mScaleY);
 
-                if (mState == Plugins.State.FirstLoad || mState == Plugins.State.Prepped) {
-                    //graphics.FillPolygon(Brushes.Blue, mStarts.Select(v => GetPoint(v, to2D, bottomRight)).ToArray());
-                    graphics.DrawLine(Pens.Blue, GetPoint(mStartA, to2D, bottomRight), GetPoint(mStartB, to2D, bottomRight));
-                    graphics.DrawPolygon(Pens.Red, mTargets.Select(v => GetPoint(v, to2D, bottomRight)).ToArray());
-                } else {
-                    //graphics.DrawPolygon(Pens.Red, mStarts.Select(v => GetPoint(v, to2D, bottomRight)).ToArray());
-                    graphics.DrawLine(Pens.Red, GetPoint(mStartA, to2D, bottomRight), GetPoint(mStartB, to2D, bottomRight));
-                    if (mState == Plugins.State.Finished)
-                        graphics.FillPolygon(Brushes.Blue, mTargets.Select(v => GetPoint(v, to2D, bottomRight)).ToArray());
-                    else
-                        graphics.DrawPolygon(Pens.Red, mTargets.Select(v => GetPoint(v, to2D, bottomRight)).ToArray());
+                DrawTarget(graphics, to2D, bottomRight);
 
+                if (mState == Plugins.State.FirstLoad || mState == Plugins.State.Prepped)
+                    graphics.DrawLine(Pens.Blue, GetPoint(mStartA, to2D, bottomRight), GetPoint(mStartB, to2D, bottomRight));
+                else {
+                    graphics.DrawLine(Pens.Red, GetPoint(mStartA, to2D, bottomRight), GetPoint(mStartB, to2D, bottomRight));
                     graphics.DrawLines(Pens.Red, mRoute.Select(v => GetPoint(v, to2D, bottomRight)).ToArray());
                 }
-
 
                 Point location = GetPoint(mCore.Position, to2D, bottomRight);
                 graphics.FillEllipse(Brushes.Red, location.X - mR, location.Y - mR, mR * 2, mR * 2);
@@ -243,7 +236,8 @@ namespace Chimera.Experimental.Plugins {
                 StateChanged();
             if (TimeChanged != null)
                 TimeChanged();
-        }
+        }
+
         private bool Started() {
             return Algorithms.LineIntersects(To2(mStartA), To2(mStartB), To2(mPrev), To2(mCore.Position));
         }
@@ -252,12 +246,16 @@ namespace Chimera.Experimental.Plugins {
             return new Vector2(three.X, three.Y);
         }
 
-        /*
         private bool Finished() {
+            return Algorithms.PolygonContains(new Vector2(mCore.Position.X, mCore.Position.Y), mTargetVectors);
         }
-        */
 
-        private void DrawTarget() {
+        private void DrawTarget(Graphics graphics, Func<Vector3, Point> to2D, Point bottomRight) {
+            if (mState == Plugins.State.Finished)
+                graphics.FillPolygon(Brushes.Blue, mTargets.Select(v => GetPoint(v, to2D, bottomRight)).ToArray());
+            else
+                graphics.DrawPolygon(Pens.Red, mTargets.Select(v => GetPoint(v, to2D, bottomRight)).ToArray());
+
         }
 
         private Point GetPoint(Vector3 original, Func<Vector3, Point> to2D, Point bottomRight) {
