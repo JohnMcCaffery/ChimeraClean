@@ -25,7 +25,7 @@ using Chimera.Util;
 using Chimera.Config;
 
 namespace Chimera.Flythrough {
-    class FlythroughConfig : ConfigBase {
+    class FlythroughConfig : ConfigFolderBase {
         public bool SynchLengths;
         public bool Loop;
         public bool Autostart;

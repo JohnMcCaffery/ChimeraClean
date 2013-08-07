@@ -524,10 +524,18 @@ namespace Chimera.Flythrough {
             FlythroughConfig cfg = new FlythroughConfig();
             mLoop = cfg.Loop;
 
-            if (cfg.StartFile != null) {
-                Load(cfg.StartFile);
-                if (cfg.Autostart)
-                    Play();
+            if (cfg.StartFile != null)
+                mCore.InitialisationComplete += new Action(mCore_InitialisationComplete);
+        }
+
+        void mCore_InitialisationComplete() {
+            FlythroughConfig cfg = new FlythroughConfig();
+            string file = Path.GetFullPath(cfg.StartFile);
+            Logger.Info("Auto loading " + file + ".");
+            Load(file);
+            if (cfg.Autostart) {
+                Logger.Info("Auto playing " + file + ".");
+                Play();
             }
         }
 
