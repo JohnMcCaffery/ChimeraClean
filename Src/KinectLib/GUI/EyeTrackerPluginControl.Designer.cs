@@ -27,6 +27,7 @@
             Chimera.Util.Rotation rotation1 = new Chimera.Util.Rotation();
             this.positionPanel = new Chimera.GUI.VectorPanel();
             this.orientationPanel = new Chimera.GUI.RotationPanel();
+            this.controlXBox = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // positionPanel
@@ -67,15 +68,28 @@
             this.orientationPanel.Value = rotation1;
             this.orientationPanel.Yaw = 0D;
             // 
+            // controlXBox
+            // 
+            this.controlXBox.AutoSize = true;
+            this.controlXBox.Location = new System.Drawing.Point(4, 191);
+            this.controlXBox.Name = "controlXBox";
+            this.controlXBox.Size = new System.Drawing.Size(69, 17);
+            this.controlXBox.TabIndex = 2;
+            this.controlXBox.Text = "Control X";
+            this.controlXBox.UseVisualStyleBackColor = true;
+            this.controlXBox.CheckedChanged += new System.EventHandler(this.controlXBox_CheckedChanged);
+            // 
             // EyeTrackerPluginControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.controlXBox);
             this.Controls.Add(this.orientationPanel);
             this.Controls.Add(this.positionPanel);
             this.Name = "EyeTrackerPluginControl";
             this.Size = new System.Drawing.Size(357, 268);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -83,5 +97,6 @@
 
         private Chimera.GUI.VectorPanel positionPanel;
         private Chimera.GUI.RotationPanel orientationPanel;
+        private System.Windows.Forms.CheckBox controlXBox;
     }
 }

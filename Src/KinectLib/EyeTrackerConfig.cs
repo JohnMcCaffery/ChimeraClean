@@ -26,16 +26,17 @@ using OpenMetaverse;
 using Chimera.Config;
 
 namespace Chimera.Kinect {
-    class KinectConfig : ConfigFolderBase {
+    class EyeTrackerConfig : ConfigFolderBase {
         public Vector3 Position;
         public double Pitch;
         public double Yaw;
+        public bool ControlX;
 
         public override string Group {
             get { return "EyeTracker"; }
         }
 
-        public KinectConfig()
+        public EyeTrackerConfig()
             : base("EyeTracker") {
         }
 
@@ -43,6 +44,7 @@ namespace Chimera.Kinect {
             Position = GetV(true, "Position", Vector3.Zero, "The position of the kinect in real world coordinates (mm).");
             Pitch = Get(true, "Pitch", 0, "The pitch of where the kinect is looking in real space.");
             Yaw = Get(true, "Yaw", 180.0, "the yaw of where the kinect is looking in real space.");
+            ControlX = Get(true, "ControlX", true, "Whether to control the X (Z from the Kinect's perspective) axis. Turning this off should help with 'concertina' effects.");
         }
     }
 }

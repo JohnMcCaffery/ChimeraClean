@@ -25,10 +25,16 @@ namespace Chimera.Kinect.GUI {
 
             positionPanel.Value = mPlugin.Position;
             orientationPanel.Value = mPlugin.Orientation;
+
+            controlXBox.Checked = mPlugin.ControlX;
         }
 
         private void positionPanel_ValueChanged(object sender, EventArgs e) {
             mPlugin.Position = positionPanel.Value;
+        }
+
+        private void controlXBox_CheckedChanged(object sender, EventArgs e) {
+            mPlugin.ControlX = controlXBox.Checked;
         }
     }
 }

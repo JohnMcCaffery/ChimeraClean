@@ -42,11 +42,17 @@ namespace Chimera.Kinect {
         private EyeTrackerPluginControl mPanel;
         private Matrix4 mKinectToRealSpace;
         private EventHandler mOrientationChangeHandler;
+        private bool mControlX;
 
         private Vector mHead;
 
         public event Action<Vector3> PositionChanged;
         public event Action<Rotation> OrientationChanged;
+
+        public bool ControlX {
+            get { return mControlX; }
+            set { mControlX = value; }
+        }
 
         public Vector3 Position {
             get { return mKinectPosition; }
@@ -70,12 +76,13 @@ namespace Chimera.Kinect {
         }
 
         public EyeTrackerPlugin() {
-            KinectConfig cfg = new KinectConfig();
+            EyeTrackerConfig cfg = new EyeTrackerConfig();
 
             mOrientationChangeHandler = new EventHandler(mKinectOrientation_Changed);
 
             mKinectPosition = cfg.Position;
             mKinectOrientation = new Rotation(cfg.Pitch, cfg.Yaw);
+            mControlX = cfg.ControlX;
             mKinectOrientation.Changed += new EventHandler(mKinectOrientation_Changed);
 
             Nui.SkeletonLost += new SkeletonTrackDelegate(Nui_SkeletonLost);
@@ -94,9 +101,15 @@ namespace Chimera.Kinect {
             if (mEnabled) {
                 Vector3 hKinect = new Vector3(mHead.Z, -mHead.X, mHead.Y) * 1000f;
                 //if (Nui.HasSkeleton)
-                if (!hKinect.Equals(Vector3.Zero))
-                    mCore.EyePosition = hKinect * mKinectToRealSpace;
-                else
+                if (!hKinect.Equals(Vector3.Zero)) {
+                    if (mControlX)
+                        mCore.EyePosition = hKinect * mKinectToRealSpace;
+                    else {
+                        Vector3 head = hKinect * mKinectToRealSpace;
+                        head.X = 0f;
+                        mCore.EyePosition = head;
+                    }
+                } else
                     mCore.EyePosition = Vector3.Zero;
             }
         }
