@@ -190,17 +190,16 @@ namespace Chimera.OpenSim {
             mProxyController.OnClientLoggedIn += new EventHandler(mProxyController_OnClientLoggedIn);
             mProxyController.PositionChanged += new Action<Vector3,Rotation>(mProxyController_PositionChanged);
             mViewerController.Exited += mExitListener;
-
-
-            if (mConfig.AutoStartViewer)
-                Launch();
-            else if (mConfig.AutoStartProxy)
-                StartProxy();
         }
 
         void Core_InitialisationComplete() {
             if (mFrame.Core.HasPlugin<OverlayPlugin>())
                 mManager = mFrame.Core.GetPlugin<OverlayPlugin>()[mFrame.Name];
+
+            if (mConfig.AutoStartViewer)
+                Launch();
+            else if (mConfig.AutoStartProxy)
+                StartProxy();
         }
 
         public bool Launch() {

@@ -71,6 +71,12 @@ namespace Chimera.OpenSim.GUI {
             this.hudButton = new System.Windows.Forms.Button();
             this.backwardsCompatibleLabel = new System.Windows.Forms.Label();
             this.controlFrustumCheck = new System.Windows.Forms.CheckBox();
+            this.inputKeyButton = new System.Windows.Forms.Button();
+            this.keyBox = new System.Windows.Forms.TextBox();
+            this.chatButton = new System.Windows.Forms.Button();
+            this.chatBox = new System.Windows.Forms.TextBox();
+            this.channelSpinner = new System.Windows.Forms.NumericUpDown();
+            ((System.ComponentModel.ISupportInitialize)(this.channelSpinner)).BeginInit();
             this.SuspendLayout();
             // 
             // loginURIBox
@@ -364,10 +370,69 @@ namespace Chimera.OpenSim.GUI {
             this.controlFrustumCheck.UseVisualStyleBackColor = true;
             this.controlFrustumCheck.CheckedChanged += new System.EventHandler(this.controlFrustumCheck_CheckedChanged);
             // 
+            // inputKeyButton
+            // 
+            this.inputKeyButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.inputKeyButton.Location = new System.Drawing.Point(303, 200);
+            this.inputKeyButton.Name = "inputKeyButton";
+            this.inputKeyButton.Size = new System.Drawing.Size(75, 23);
+            this.inputKeyButton.TabIndex = 42;
+            this.inputKeyButton.Text = "Press Key";
+            this.inputKeyButton.UseVisualStyleBackColor = true;
+            this.inputKeyButton.Click += new System.EventHandler(this.inputKeyButton_Click);
+            // 
+            // keyBox
+            // 
+            this.keyBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.keyBox.Location = new System.Drawing.Point(4, 202);
+            this.keyBox.Name = "keyBox";
+            this.keyBox.Size = new System.Drawing.Size(292, 20);
+            this.keyBox.TabIndex = 43;
+            this.keyBox.KeyUp += new System.Windows.Forms.KeyEventHandler(this.keyBox_KeyUp);
+            // 
+            // chatButton
+            // 
+            this.chatButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.chatButton.Location = new System.Drawing.Point(340, 230);
+            this.chatButton.Name = "chatButton";
+            this.chatButton.Size = new System.Drawing.Size(37, 23);
+            this.chatButton.TabIndex = 44;
+            this.chatButton.Text = "Chat";
+            this.chatButton.UseVisualStyleBackColor = true;
+            this.chatButton.Click += new System.EventHandler(this.chatButton_Click);
+            // 
+            // chatBox
+            // 
+            this.chatBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.chatBox.Location = new System.Drawing.Point(48, 232);
+            this.chatBox.Name = "chatBox";
+            this.chatBox.Size = new System.Drawing.Size(286, 20);
+            this.chatBox.TabIndex = 45;
+            this.chatBox.KeyUp += new System.Windows.Forms.KeyEventHandler(this.chatBox_KeyUp);
+            // 
+            // channelSpinner
+            // 
+            this.channelSpinner.Location = new System.Drawing.Point(6, 231);
+            this.channelSpinner.Minimum = new decimal(new int[] {
+            100,
+            0,
+            0,
+            -2147483648});
+            this.channelSpinner.Name = "channelSpinner";
+            this.channelSpinner.Size = new System.Drawing.Size(36, 20);
+            this.channelSpinner.TabIndex = 46;
+            // 
             // OutputPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.channelSpinner);
+            this.Controls.Add(this.chatBox);
+            this.Controls.Add(this.chatButton);
+            this.Controls.Add(this.keyBox);
+            this.Controls.Add(this.inputKeyButton);
             this.Controls.Add(this.backwardsCompatibleLabel);
             this.Controls.Add(this.hudButton);
             this.Controls.Add(this.fullscreenCheck);
@@ -399,6 +464,7 @@ namespace Chimera.OpenSim.GUI {
             this.MinimumSize = new System.Drawing.Size(382, 193);
             this.Name = "OutputPanel";
             this.Size = new System.Drawing.Size(382, 361);
+            ((System.ComponentModel.ISupportInitialize)(this.channelSpinner)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -434,5 +500,10 @@ namespace Chimera.OpenSim.GUI {
         private System.Windows.Forms.Button hudButton;
         private System.Windows.Forms.Label backwardsCompatibleLabel;
         private System.Windows.Forms.CheckBox controlFrustumCheck;
+        private System.Windows.Forms.Button inputKeyButton;
+        private System.Windows.Forms.TextBox keyBox;
+        private System.Windows.Forms.Button chatButton;
+        private System.Windows.Forms.TextBox chatBox;
+        private System.Windows.Forms.NumericUpDown channelSpinner;
     }
 }

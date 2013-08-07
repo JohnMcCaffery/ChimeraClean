@@ -287,5 +287,26 @@ namespace Chimera.OpenSim.GUI {
             if (mController != null)
                 mController.ControlFrustum = controlFrustumCheck.Checked;
         }
+
+        private void inputKeyButton_Click(object sender, EventArgs e) {
+            if (mController != null)
+                mController.ViewerController.PressKey(keyBox.Text);
+        }
+
+        private void chatButton_Click(object sender, EventArgs e) {
+            if (mController != null)
+                mController.ProxyController.Chat(chatBox.Text, decimal.ToInt32(channelSpinner.Value));
+        }
+
+        private void keyBox_KeyUp(object sender, KeyEventArgs e) {
+            if (e.KeyData == Keys.Enter)
+                inputKeyButton_Click(sender, e);
+        }
+
+        private void chatBox_KeyUp(object sender, KeyEventArgs e) {
+            if (e.KeyData == Keys.Enter)
+                chatButton_Click(sender, e);
+
+        }
     }
 }

@@ -17,7 +17,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TouchscreenLib", "Touchscre
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Overlays", "Overlays", "{AA20755A-F03E-4FF6-A86E-DFC56F1994A9}"
 	ProjectSection(SolutionItems) = preProject
-		..\Bin\Overlays\Test.xml = ..\Bin\Overlays\Test.xml
 		..\Bin\Overlays\TimespanOverlayDemo2.xml = ..\Bin\Overlays\TimespanOverlayDemo2.xml
 	EndProjectSection
 EndProject
@@ -69,8 +68,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Config", "Config", "{48AD03
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Flythroughs", "Flythroughs", "{CE093C7A-73E9-4099-BC51-C829AE71D482}"
 	ProjectSection(SolutionItems) = preProject
-		..\Bin\Flythroughs\Timespan\Caen-Guided-Full.xml = ..\Bin\Flythroughs\Timespan\Caen-Guided-Full.xml
-		..\Bin\Flythroughs\Timespan\Caen-long.xml = ..\Bin\Flythroughs\Timespan\Caen-long.xml
+		..\Bin\Flythroughs\Timespan\Guided.xml = ..\Bin\Flythroughs\Timespan\Guided.xml
+		..\Bin\Flythroughs\Timespan\Idle.xml = ..\Bin\Flythroughs\Timespan\Idle.xml
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Overlay", "Overlay", "{06FD37A2-167A-47CA-9DF6-79B90A6A97F5}"
@@ -90,9 +89,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Timespan", "Timespan\Timespan.csproj", "{A4304EE2-9B06-416A-AD48-89434262E322}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Chimera", "Chimera", "{2E5DF2CA-8923-4171-8FAD-C5B15DE739B7}"
-	ProjectSection(SolutionItems) = preProject
-		..\Bin\Configs\Chimera\Frames.ini = ..\Bin\Configs\Chimera\Frames.ini
-	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{FCF1B486-05B8-4DC0-9EF4-C88359331724}"
 	ProjectSection(SolutionItems) = preProject
@@ -128,6 +124,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TimespanTest", "TimespanTes
 		..\Bin\Configs\TimespanTest\LaptopOverlay.ini = ..\Bin\Configs\TimespanTest\LaptopOverlay.ini
 		..\Bin\Configs\TimespanTest\Launch.ini = ..\Bin\Configs\TimespanTest\Launch.ini
 		..\Bin\Configs\TimespanTest\Main.ini = ..\Bin\Configs\TimespanTest\Main.ini
+		..\Bin\Configs\TimespanTest\OpenSim.ini = ..\Bin\Configs\TimespanTest\OpenSim.ini
 		..\Bin\Configs\TimespanTest\Overlay.ini = ..\Bin\Configs\TimespanTest\Overlay.ini
 		..\Bin\Configs\TimespanTest\Projectors.ini = ..\Bin\Configs\TimespanTest\Projectors.ini
 		..\Bin\Configs\TimespanTest\RemoteControl.ini = ..\Bin\Configs\TimespanTest\RemoteControl.ini
