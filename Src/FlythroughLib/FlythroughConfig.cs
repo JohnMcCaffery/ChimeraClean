@@ -26,15 +26,24 @@ using Chimera.Config;
 
 namespace Chimera.Flythrough {
     class FlythroughConfig : ConfigBase {
-        public bool Enabled;
         public bool SynchLengths;
+        public bool Loop;
+        public bool Autostart;
+        public string StartFile;
 
         public override string Group {
             get { return "Flythrough"; }
         }
 
+        public FlythroughConfig()
+            : base("Flythrough") {
+        }
+
         protected override void InitConfig() {
             SynchLengths = Get(true, "SynchLengths", true, "Whether updating a position event's length will change the corresponding orientation event's length and vice versa.");
+            Loop = Get(true, "Loop", false, "Whether to loop playback by default.");
+            StartFile = Get(true, "DefaultFile", null, "Default file to load at startup.");
+            Autostart = Get(true, "Autostart", false, "If a default file is specified whether to start playing on system startup.");
         }
     }
 }

@@ -520,6 +520,15 @@ namespace Chimera.Flythrough {
 
         public void Init(Core coordinator) {
             mCore = coordinator;
+
+            FlythroughConfig cfg = new FlythroughConfig();
+            mLoop = cfg.Loop;
+
+            if (cfg.StartFile != null) {
+                Load(cfg.StartFile);
+                if (cfg.Autostart)
+                    Play();
+            }
         }
 
         public void Close() {
