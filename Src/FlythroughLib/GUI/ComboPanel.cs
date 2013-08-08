@@ -35,9 +35,11 @@ namespace Chimera.Flythrough.GUI {
         private UserControl mCurrentOrientationPanel;
         private Action<FlythroughEvent<Vector3>, FlythroughEvent<Vector3>> mPositionEvtChanged;
         private Action<FlythroughEvent<Rotation>, FlythroughEvent<Rotation>> mOrientationEvtChanged;
-        //private Action<FlythroughEvent<Vector3>, int> mPositionTimeChanged;
-        //private Action<FlythroughEvent<Rotation>, int> mOrientationTimeChanged;
         private bool mGuiUpdate;
+
+        private FlythroughEvent<Vector3> mDraggedPosition = null;
+        private FlythroughEvent<Rotation> mDraggedOrientation = null;
+        private int mH = -1;
 
         public ComboPanel() {
             InitializeComponent();
@@ -52,11 +54,29 @@ namespace Chimera.Flythrough.GUI {
             mPositionEvtChanged += new Action<FlythroughEvent<Vector3>,FlythroughEvent<Vector3>>(Positions_CurrentEventChange);
             mOrientationEvtChanged += new Action<FlythroughEvent<Rotation>,FlythroughEvent<Rotation>>(Orientations_CurrentEventChange);
 
+            evt.PositionOrderChanged += new Action<FlythroughEvent<Vector3>>(evt_PositionOrderChanged);
+            evt.OrientationOrderChanged += new Action<FlythroughEvent<Rotation>>(evt_OrientationOrderChanged);
+
             foreach (var e in mEvent.Positions) {
                 AddEvent(e, positionsList, positionPanel);
             } foreach (var e in mEvent.Orientations) {
                 AddEvent(e, orientationsList, orientationPanel);
             }
+        }
+
+        void evt_PositionOrderChanged(FlythroughEvent<Vector3> evt) {
+            MoveUpInList(evt, positionsList);
+        }
+
+        void evt_OrientationOrderChanged(FlythroughEvent<Rotation> evt) {
+            MoveUpInList(evt, orientationsList);
+        }
+
+        private void MoveUpInList<T>(FlythroughEvent<T> evt, ListBox list) {
+            int index = list.Items.IndexOf(evt);
+            list.Items[index] = list.Items[index -1];
+            list.Items[index - 1] = evt;
+            list.SelectedItem = evt;
         }
 
         /*
@@ -112,6 +132,42 @@ namespace Chimera.Flythrough.GUI {
             panel.Controls.Remove(evt.ControlPanel);
         }
 
+        private void MoveUp(FlythroughEvent<Vector3> evt) {
+            MoveUp(evt, positionsList);
+        }
+
+        private void MoveUp(FlythroughEvent<Rotation> evt) {
+            MoveUp(evt, positionsList);
+        }
+
+        private void MoveUp<T>(FlythroughEvent<T> evt, ListBox list) {
+            int index = list.Items.IndexOf(evt);
+            if (index > 0) {
+                mEvent.MoveUp(evt);
+                //list.Items[index] = list.Items[index - 1];
+                //list.Items[index - 1] = evt;
+                //list.SelectedIndex = index - 1;
+            }
+        }
+
+        private void Drag<T>(FlythroughEvent<T> evt, MouseEventArgs e, ListBox list) {
+            if (evt != null) {
+                int h = e.Y - (e.Y % list.ItemHeight);
+                if (h != mH) {
+                    if (h < mH)
+                        MoveUp(evt, list);
+                    else {
+                        FlythroughEvent<T> next = mEvent.Next(evt);
+                        if (next != null) {
+                            MoveUp(next, list);
+                            list.SelectedItem = evt;
+                        }
+                    }
+                    mH = h;
+                }
+            }
+        }
+
         // ----- Positions -----
 
         private void Positions_CurrentEventChange(FlythroughEvent<Vector3> o, FlythroughEvent<Vector3> n) {
@@ -119,11 +175,11 @@ namespace Chimera.Flythrough.GUI {
         }
 
         private void moveToEventToolStripMenuItem_Click(object sender, EventArgs e) {
-            AddEvent(new MoveToEvent(mEvent.Container, 1000, new Vector3(128f, 128f, 60f)));
+            AddEvent(new MoveToEvent(mEvent.Container, mEvent.Container.DefaultLength, new Vector3(128f, 128f, 60f)));
         }
 
         private void blankPositionEventToolStripMenuItem_Click(object sender, EventArgs e) {
-            AddEvent(new BlankEvent<Vector3>(mEvent.Container, 1000));
+            AddEvent(new BlankEvent<Vector3>(mEvent.Container, mEvent.Container.DefaultLength));
         }
 
         private void removePositionToolStripMenuItem_Click(object sender, EventArgs e) {
@@ -132,13 +188,8 @@ namespace Chimera.Flythrough.GUI {
         }
 
         private void moveUpPositionToolStripMenuItem_Click(object sender, EventArgs e) {
-            if (positionsList.SelectedItem != null && positionsList.SelectedIndex > 0) {
-                FlythroughEvent<Vector3> up = (FlythroughEvent<Vector3>)positionsList.SelectedItem;
-                positionsList.Items[positionsList.SelectedIndex] = positionsList.Items[positionsList.SelectedIndex - 1];
-                positionsList.Items[positionsList.SelectedIndex - 1] = up;
-                mEvent.Positions.MoveUp(up);
-                positionsList.SelectedIndex--;
-            }
+            if (positionsList.SelectedItem != null)
+                MoveUp((FlythroughEvent<Vector3>)positionsList.SelectedItem);
         }
 
         private void positionsList_SelectedValueChanged(object sender, EventArgs e) {
@@ -153,6 +204,43 @@ namespace Chimera.Flythrough.GUI {
                 }
                 mGuiUpdate = false;
             }
+        }
+        private void positionStartButton_Click(object sender, EventArgs e) {
+            if (positionsList.SelectedItem != null)
+                mEvent.Container.Time = ((FlythroughEvent<Vector3>)positionsList.SelectedItem).GlobalStartTime;
+        }
+
+        private void positionEndButton_Click(object sender, EventArgs e) {
+            if (positionsList.SelectedItem != null)
+                mEvent.Container.Time = ((FlythroughEvent<Vector3>)positionsList.SelectedItem).GlobalFinishTime;
+        }
+
+        private void copyCurrentPositionButton_Click(object sender, EventArgs e) {
+            AddEvent(new MoveToEvent(mEvent.Container, mEvent.Container.DefaultLength, mEvent.Container.Core.Position));
+        }
+
+        private void positionsList_MouseDown(object sender, MouseEventArgs e) {
+            mDraggedPosition = (FlythroughEvent<Vector3>) positionsList.SelectedItem;
+            mH = e.Y - (e.Y % positionsList.ItemHeight);
+        }
+
+        private void positionsList_MouseMove(object sender, MouseEventArgs e) {
+            Drag(mDraggedPosition, e, positionsList);
+        }
+
+        private void positionsList_MouseUp(object sender, MouseEventArgs e) {
+            mDraggedPosition = null;
+            mH = -1;
+        }
+
+        private void positionsList_MouseLeave(object sender, EventArgs e) {
+            mDraggedPosition = null;
+            mH = -1;
+        }
+
+        private void positionsList_KeyUp(object sender, KeyEventArgs e) {
+            if ((e.KeyCode == Keys.Delete || e.KeyCode == Keys.Back) && positionsList.SelectedItem != null)
+                removePositionToolStripMenuItem_Click(sender, e);
         }
 
         // ----- Orientations -----
@@ -162,15 +250,15 @@ namespace Chimera.Flythrough.GUI {
         }
 
         private void rotateToEventToolStripMenuItem_Click(object sender, EventArgs e) {
-            AddEvent(new RotateToEvent(mEvent.Container, 1000));
+            AddEvent(new RotateToEvent(mEvent.Container, mEvent.Container.DefaultLength));
         }
 
         private void lookAtEventToolStripMenuItem_Click(object sender, EventArgs e) {
-            AddEvent(new LookAtEvent(mEvent.Container, 1000));
+            AddEvent(new LookAtEvent(mEvent.Container, mEvent.Container.DefaultLength));
         }
 
         private void blankOrientationEventToolStripItem_Click(object sender, EventArgs e) {
-            AddEvent(new BlankEvent<Rotation>(mEvent.Container, 1000));
+            AddEvent(new BlankEvent<Rotation>(mEvent.Container, mEvent.Container.DefaultLength));
         }
 
         private void removeOrientationToolStripItem_Click(object sender, EventArgs e) {
@@ -179,13 +267,8 @@ namespace Chimera.Flythrough.GUI {
         }
 
         private void moveUpOrientationToolStripItem_Click(object sender, EventArgs e) {
-            if (orientationsList.SelectedItem != null) {
-                FlythroughEvent<Rotation> up = (FlythroughEvent<Rotation>)orientationsList.SelectedItem;
-                orientationsList.Items[orientationsList.SelectedIndex] = orientationsList.Items[orientationsList.SelectedIndex - 1];
-                orientationsList.Items[orientationsList.SelectedIndex - 1] = up;
-                mEvent.Orientations.MoveUp(up);
-                orientationsList.SelectedIndex--;
-            }
+            if (orientationsList.SelectedItem != null)
+                MoveUp((FlythroughEvent<Rotation>)orientationsList.SelectedItem);
         }
 
         private void orientationsList_SelectedValueChanged(object sender, EventArgs e) {
@@ -200,16 +283,26 @@ namespace Chimera.Flythrough.GUI {
                 }
                 mGuiUpdate = false;
             }
+        }
+        private void copyCurrentOrientationButton_Click(object sender, EventArgs e) {
+            AddEvent(new RotateToEvent(mEvent.Container, mEvent.Container.DefaultLength, new Rotation(mEvent.Container.Core.Orientation)));
         }
 
-        private void positionStartButton_Click(object sender, EventArgs e) {
-            if (positionsList.SelectedItem != null)
-                mEvent.Container.Time = ((FlythroughEvent<Vector3>)positionsList.SelectedItem).GlobalStartTime;
+        private void orientationsList_MouseDown(object sender, MouseEventArgs e) {
+            mDraggedOrientation = (FlythroughEvent<Rotation>) orientationsList.SelectedItem;
+            mH = e.Y - (e.Y % orientationsList.ItemHeight);
         }
 
-        private void positionEndButton_Click(object sender, EventArgs e) {
-            if (positionsList.SelectedItem != null)
-                mEvent.Container.Time = ((FlythroughEvent<Vector3>)positionsList.SelectedItem).GlobalFinishTime;
+        private void orientationsList_MouseMove(object sender, MouseEventArgs e) {
+            Drag(mDraggedOrientation, e, orientationsList);
+        }
+
+        private void orientationsList_MouseUp(object sender, MouseEventArgs e) {
+            mDraggedOrientation = null;
+        }
+
+        private void orientationsList_MouseLeave(object sender, EventArgs e) {
+            mDraggedOrientation = null;
         }
 
         private void orientationStartButton_Click(object sender, EventArgs e) {
@@ -232,17 +325,9 @@ namespace Chimera.Flythrough.GUI {
                 mEvent.Container.Time = ((FlythroughEvent<Rotation>)orientationsList.SelectedItem).GlobalFinishTime;
         }
 
-        private void copyCurrentPositionButton_Click(object sender, EventArgs e) {
-            AddEvent(new MoveToEvent(mEvent.Container, 1000, mEvent.Container.Core.Position));
-        }
-
-        private void copyCurrentOrientationButton_Click(object sender, EventArgs e) {
-            AddEvent(new RotateToEvent(mEvent.Container, 1000, new Rotation(mEvent.Container.Core.Orientation)));
-        }
-
         private void copyCurrentPairButton_Click(object sender, EventArgs e) {
-            AddEvent(new MoveToEvent(mEvent.Container, 1000, mEvent.Container.Core.Position));
-            AddEvent(new RotateToEvent(mEvent.Container, 1000, new Rotation(mEvent.Container.Core.Orientation)));
+            AddEvent(new MoveToEvent(mEvent.Container, mEvent.Container.DefaultLength, mEvent.Container.Core.Position));
+            AddEvent(new RotateToEvent(mEvent.Container, mEvent.Container.DefaultLength, new Rotation(mEvent.Container.Core.Orientation)));
         }
 
         private void ComboPanel_VisibleChanged(object sender, EventArgs e) {
@@ -256,5 +341,11 @@ namespace Chimera.Flythrough.GUI {
                 mEvent.CurrentPositionEventChange -= mPositionEvtChanged;
             }
         }
+
+        private void orientationsList_KeyUp(object sender, KeyEventArgs e) {
+            if ((e.KeyCode == Keys.Delete || e.KeyCode == Keys.Back) && orientationsList.SelectedItem != null)
+                removeOrientationToolStripItem_Click(sender, e);
+        }
+
     }
 }

@@ -124,6 +124,7 @@ namespace Chimera.GUI.Forms {
             mHeightmapPerspective = new HeightmapPerspective(mCore, heightmapPanel);
             tickLengthPanel.Value = mCore.TickLength;
 
+            /*
 #if DEBUG
             tickStatsPanel.Init(core.TickStatistics, core);
             tickListenersPanel.Init(StatisticsCollection.Collection, core);
@@ -131,13 +132,16 @@ namespace Chimera.GUI.Forms {
             cameraStatsPanel.Init(core.CameraStatistics, core);
             deltaStatsPanel.Init(core.DeltaStatistics, core);
 #endif
+            */
 
             foreach (var window in mCore.Frames)
                 mCoordinator_WindowAdded(window, null);
 
+            /*
 #if DEBUG
             pluginsTab.Controls.Remove(statisticsTab);
 #endif
+            */
 
             foreach (var plugin in mCore.Plugins) {
                 TabPage inputTab = new TabPage();
@@ -184,9 +188,11 @@ namespace Chimera.GUI.Forms {
                 plugin.SetForm(this);
             }
             
+            /*
 #if DEBUG
             pluginsTab.Controls.Add(statisticsTab);
 #endif
+            */
         }
 
         void mCoordinator_EnableUpdatesChanged() {

@@ -96,6 +96,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{FCF1B4
 		..\Bin\Configs\Common\Core.ini = ..\Bin\Configs\Common\Core.ini
 		..\Bin\Configs\Common\Experiments.ini = ..\Bin\Configs\Common\Experiments.ini
 		..\Bin\Configs\Common\EyeTracker.ini = ..\Bin\Configs\Common\EyeTracker.ini
+		..\Bin\Configs\Common\Flythrough.ini = ..\Bin\Configs\Common\Flythrough.ini
 		..\Bin\Configs\Common\Frames.ini = ..\Bin\Configs\Common\Frames.ini
 		..\Bin\Configs\Common\Heightmap.ini = ..\Bin\Configs\Common\Heightmap.ini
 		..\Bin\Configs\Common\KinectMovement.ini = ..\Bin\Configs\Common\KinectMovement.ini

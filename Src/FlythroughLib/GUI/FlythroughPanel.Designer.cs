@@ -44,7 +44,7 @@ namespace Chimera.Flythrough.GUI {
         private void InitializeComponent() {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FlythroughPanel));
-            Chimera.Util.Rotation rotation5 = new Chimera.Util.Rotation();
+            Chimera.Util.Rotation rotation1 = new Chimera.Util.Rotation();
             this.saveSequenceDialog = new System.Windows.Forms.SaveFileDialog();
             this.eventsList = new System.Windows.Forms.ListBox();
             this.eventsContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -73,10 +73,7 @@ namespace Chimera.Flythrough.GUI {
             this.stepBackButton = new System.Windows.Forms.Button();
             this.stepForwardButton = new System.Windows.Forms.Button();
             this.stepButton = new System.Windows.Forms.Button();
-            this.synchLengthsCheck = new System.Windows.Forms.CheckBox();
-#if DEBUG
-            this.statsButton = new System.Windows.Forms.Button();
-#endif
+            this.synchBoxCheck = new System.Windows.Forms.CheckBox();
             this.eventsContextMenu.SuspendLayout();
             this.eventPanel.SuspendLayout();
             this.startPanel.SuspendLayout();
@@ -268,11 +265,11 @@ namespace Chimera.Flythrough.GUI {
             this.startOrientationPanel.Quaternion = ((OpenMetaverse.Quaternion)(resources.GetObject("startOrientationPanel.Quaternion")));
             this.startOrientationPanel.Size = new System.Drawing.Size(256, 95);
             this.startOrientationPanel.TabIndex = 1;
-            rotation5.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("rotation5.LookAtVector")));
-            rotation5.Pitch = 0D;
-            rotation5.Quaternion = ((OpenMetaverse.Quaternion)(resources.GetObject("rotation5.Quaternion")));
-            rotation5.Yaw = 0D;
-            this.startOrientationPanel.Value = rotation5;
+            rotation1.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("rotation1.LookAtVector")));
+            rotation1.Pitch = 0D;
+            rotation1.Quaternion = ((OpenMetaverse.Quaternion)(resources.GetObject("rotation1.Quaternion")));
+            rotation1.Yaw = 0D;
+            this.startOrientationPanel.Value = rotation1;
             this.startOrientationPanel.Yaw = 0D;
             this.startOrientationPanel.OnChange += new System.EventHandler(this.startOrientationPanel_OnChange);
             // 
@@ -368,40 +365,24 @@ namespace Chimera.Flythrough.GUI {
             this.stepButton.UseVisualStyleBackColor = true;
             this.stepButton.Click += new System.EventHandler(this.stepButton_Click);
             // 
-            // synchLengthsCheck
+            // synchBoxCheck
             // 
-            this.synchLengthsCheck.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.synchLengthsCheck.AutoSize = true;
-            this.synchLengthsCheck.Location = new System.Drawing.Point(159, 352);
-            this.synchLengthsCheck.Name = "synchLengthsCheck";
-            this.synchLengthsCheck.Size = new System.Drawing.Size(97, 17);
-            this.synchLengthsCheck.TabIndex = 20;
-            this.synchLengthsCheck.Text = "Synch Lengths";
-            this.synchLengthsCheck.UseVisualStyleBackColor = true;
-            this.synchLengthsCheck.CheckedChanged += new System.EventHandler(this.synchLengthsCheck_CheckedChanged);
-#if DEBUG
-            // 
-            // statsButton
-            // 
-            this.statsButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.statsButton.Location = new System.Drawing.Point(112, 317);
-            this.statsButton.Name = "statsButton";
-            this.statsButton.Size = new System.Drawing.Size(41, 23);
-            this.statsButton.TabIndex = 21;
-            this.statsButton.Text = "Stats";
-            this.statsButton.UseVisualStyleBackColor = true;
-            this.statsButton.Click += new System.EventHandler(this.statsButton_Click);
-#endif
+            this.synchBoxCheck.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.synchBoxCheck.AutoSize = true;
+            this.synchBoxCheck.Location = new System.Drawing.Point(159, 352);
+            this.synchBoxCheck.Name = "synchBoxCheck";
+            this.synchBoxCheck.Size = new System.Drawing.Size(97, 17);
+            this.synchBoxCheck.TabIndex = 20;
+            this.synchBoxCheck.Text = "Synch Streams";
+            this.synchBoxCheck.UseVisualStyleBackColor = true;
+            this.synchBoxCheck.CheckedChanged += new System.EventHandler(this.synchLengthsCheck_CheckedChanged);
             // 
             // FlythroughPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-#if DEBUG
-            this.Controls.Add(this.statsButton);
-#endif
             this.Controls.Add(this.stepForwardButton);
-            this.Controls.Add(this.synchLengthsCheck);
+            this.Controls.Add(this.synchBoxCheck);
             this.Controls.Add(this.timeLabel);
             this.Controls.Add(this.playButton);
             this.Controls.Add(this.stepBackButton);
@@ -457,7 +438,7 @@ namespace Chimera.Flythrough.GUI {
         private System.Windows.Forms.Button takeOrientationButton;
         private System.Windows.Forms.Button takeCurrentCameraButton;
         private System.Windows.Forms.Button stepButton;
-        private System.Windows.Forms.CheckBox synchLengthsCheck;
+        private System.Windows.Forms.CheckBox synchBoxCheck;
 #if DEBUG
         private System.Windows.Forms.Button statsButton;
 #endif

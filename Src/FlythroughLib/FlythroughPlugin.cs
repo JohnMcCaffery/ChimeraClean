@@ -67,6 +67,7 @@ namespace Chimera.Flythrough {
         private bool mLoop = false;
         private bool mAutoStep = true;
         private bool mTicking;
+        private int mDefaultLength = 7000;
         private bool mSynchLengths;
 
         public event Action<int> StepFinished;
@@ -114,11 +115,19 @@ namespace Chimera.Flythrough {
             get { return mEvents.ToArray(); }
         }
 
+        /// <summary>
+        /// The default length for new events
+        /// </summary>
+        public int DefaultLength { 
+            get { return mDefaultLength; }
+            set { mDefaultLength = value; }
+        }
+
         public int Count {
             get { return mEvents.Count; }
         }
 
-        public bool SynchLengths {
+        public bool SynchStreams {
             get { return mSynchLengths; }
             set { mSynchLengths = value; }
         }

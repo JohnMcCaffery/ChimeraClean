@@ -49,8 +49,8 @@ namespace Chimera.Flythrough.GUI {
             Init(container);
         }
 
-        public void Init(FlythroughPlugin container) {
-            mPlugin = container;
+        public void Init(FlythroughPlugin plugin) {
+            mPlugin = plugin;
 
             mTickListener = new Action<int>(mContainer_Tick);
 
@@ -60,6 +60,8 @@ namespace Chimera.Flythrough.GUI {
             mPlugin.SequenceFinished += mContainer_SequenceFinished;
             mPlugin.FlythroughLoaded += mContainer_FlythroughLoaded;
             mPlugin.FlythroughLoading += mContainer_FlythroughLoading;
+
+            synchBoxCheck.Checked = mPlugin.SynchStreams;
 
             Disposed += new EventHandler(FlythroughPanel_Disposed);
             HandleCreated += new EventHandler(FlythroughPanel_HandleCreated);
@@ -316,9 +318,8 @@ namespace Chimera.Flythrough.GUI {
         }
 
         private void synchLengthsCheck_CheckedChanged(object sender, EventArgs e) {
-            mPlugin.SynchLengths = synchLengthsCheck.Checked;
+            mPlugin.SynchStreams = synchBoxCheck.Checked;
         }
-
 
 #if DEBUG
         private StatisticsForm mStatsForm;
@@ -334,6 +335,11 @@ namespace Chimera.Flythrough.GUI {
 
         void mStatsForm_FormClosed(object sender, FormClosedEventArgs e) {
             mStatsForm = null;
+        }
+
+        private void synchBox_CheckedChanged()
+        {
+        
         }
 #endif
     }

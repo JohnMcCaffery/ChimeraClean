@@ -52,10 +52,18 @@ namespace Chimera.Flythrough {
             remove { mOrientationSequence.CurrentEventChange -= value; }
         }
 
+        /*
         public EventSequence<Vector3> Positions {
             get { return mPositionSequence; }
         }
         public EventSequence<Rotation> Orientations {
+            get { return mOrientationSequence; }
+        }
+        */
+        public IEnumerable<FlythroughEvent<Vector3>> Positions {
+            get { return mPositionSequence; }
+        }
+        public IEnumerable<FlythroughEvent<Rotation>> Orientations {
             get { return mOrientationSequence; }
         }
 
@@ -205,7 +213,7 @@ namespace Chimera.Flythrough {
         private bool mSynchUpdating;
 
         void posEvt_LengthChange(object sender, LengthChangeEventArgs<Vector3> e) {
-            if (mPlugin.SynchLengths && !mSynchUpdating && mOrientationSequence.Length > e.Event.SequenceStartTime) {
+            if (mPlugin.SynchStreams && !mSynchUpdating && mOrientationSequence.Length > e.Event.SequenceStartTime) {
                 mSynchUpdating = true;
                 mOrientationSequence[e.Event.SequenceStartTime].Length += e.NewLength - e.OldLength;
                 mSynchUpdating = false;
@@ -213,7 +221,7 @@ namespace Chimera.Flythrough {
         }
 
         void orientationEvt_LengthChange(object sender, LengthChangeEventArgs<Rotation> e) {
-            if (mPlugin.SynchLengths && !mSynchUpdating && mPositionSequence.Length > e.Event.SequenceStartTime) {
+            if (mPlugin.SynchStreams && !mSynchUpdating && mPositionSequence.Length > e.Event.SequenceStartTime) {
                 mSynchUpdating = true;
                 mPositionSequence[e.Event.SequenceStartTime].Length += e.NewLength - e.OldLength;
                 mSynchUpdating = false;
@@ -268,5 +276,63 @@ namespace Chimera.Flythrough {
         public object CurrentPosition { get { return mPositionSequence.CurrentEvent; } }
 
         public object CurrentOrientation { get { return mOrientationSequence.CurrentEvent; } }
+
+        public void MoveUp<T>(FlythroughEvent<T> evt) {
+            if (evt is FlythroughEvent<Vector3>)
+                MoveUp(evt as FlythroughEvent<Vector3>);
+            else if (evt is FlythroughEvent<Rotation>)
+                MoveUp(evt as FlythroughEvent<Rotation>);
+        }
+
+        public void MoveUp<T, TP>(
+                FlythroughEvent<T> evt, 
+                EventSequence<TP> mainSequence, 
+                EventSequence<T> parallelSequence, 
+                Action<FlythroughEvent<TP>> parralelChangeEvt, 
+                Action<FlythroughEvent<T>> changeEvt) {
+
+            if (mPlugin.SynchStreams && evt.SequenceStartTime < mainSequence.Length) {
+                FlythroughEvent<TP> pair = mainSequence[evt.SequenceStartTime];
+                if (pair != null && pair.SequenceStartTime == evt.SequenceStartTime) {
+                    mainSequence.MoveUp(pair);
+                    if (parralelChangeEvt != null)
+                        parralelChangeEvt(pair);
+                }
+            }
+            parallelSequence.MoveUp(evt);
+            if (PositionOrderChanged != null)
+                changeEvt(evt);
+        }
+
+        public void MoveUp(FlythroughEvent<Vector3> evt) {
+            MoveUp(evt, mOrientationSequence, mPositionSequence, OrientationOrderChanged, PositionOrderChanged);
+        }
+
+        public void MoveUp(FlythroughEvent<Rotation> evt) {
+            MoveUp(evt, mPositionSequence, mOrientationSequence, PositionOrderChanged, OrientationOrderChanged);
+        }
+        /*
+            if (mPlugin.SynchStreams) {
+                FlythroughEvent<Vector3> pair = mPositionSequence[evt.SequenceStartTime];
+                if (pair != null && pair.SequenceStartTime == evt.SequenceStartTime) {
+                    mPositionSequence.MoveUp(pair);
+                    if (PositionOrderChanged != null)
+                        PositionOrderChanged(pair);
+                }
+            }
+            mOrientationSequence.MoveUp(evt);
+            if (OrientationOrderChanged != null)
+                OrientationOrderChanged(evt);
+        }
+        */
+
+        public FlythroughEvent<T> Next<T>(FlythroughEvent<T> evt) {
+            if (evt is FlythroughEvent<Vector3>)
+                return mPositionSequence.Next(evt as FlythroughEvent<Vector3>) as FlythroughEvent<T>;
+            return mOrientationSequence.Next(evt as FlythroughEvent<Rotation>) as FlythroughEvent<T>;
+        }
+
+        public event Action<FlythroughEvent<Vector3>> PositionOrderChanged;
+        public event Action<FlythroughEvent<Rotation>> OrientationOrderChanged;
     }
 }

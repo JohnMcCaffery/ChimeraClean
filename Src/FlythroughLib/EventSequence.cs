@@ -185,10 +185,23 @@ namespace Chimera.Flythrough {
         public virtual void RemoveEvent(FlythroughEvent<T> evt) {
             int time = Time;
             mEvents.Remove(evt);
-            //Shift all events back by the length of the removed event.
-            foreach (var after in mEvents.Where(e => e.SequenceStartTime > evt.SequenceStartTime))
-                after.SequenceStartTime -= evt.Length;
 
+            FlythroughEvent<T> first = null;
+
+            //Shift all events back by the length of the removed event.
+            foreach (var after in mEvents.Where(e => e.SequenceStartTime > evt.SequenceStartTime)) {
+                after.SequenceStartTime -= evt.Length;
+                if (first == null)
+                    first = after;
+            }
+
+            if (first != null) {
+                first.StartValue = first.SequenceStartTime == 0 ?
+                    Start :
+                    mEvents.Last(e => e.SequenceStartTime < first.SequenceStartTime).FinishValue;
+            }
+
+            bool last = mLastEvent == evt;
             mLastEvent = mEvents.Count > 0 ? mEvents[mEvents.Count - 1] : null;
 
             //Set value to take account the change to the chronology.
@@ -196,6 +209,18 @@ namespace Chimera.Flythrough {
             evt.FinishChange -= evt_FinishChange;
             if (LengthChange != null)
                 LengthChange(this, Length);
+
+            if (last && FinishChange != null)
+                FinishChange(this, null);
+
+        }
+
+        public FlythroughEvent<T> Next(FlythroughEvent<T> evt) {
+            return mEvents.FirstOrDefault(e => e.SequenceStartTime > evt.SequenceStartTime);
+        }
+
+        public FlythroughEvent<T> Prev(FlythroughEvent<T> evt) {
+            return mEvents.LastOrDefault(e => e.SequenceStartTime < evt.SequenceStartTime);
         }
 
         public void MoveUp(FlythroughEvent<T> evt) {
@@ -203,9 +228,11 @@ namespace Chimera.Flythrough {
                 throw new ArgumentException("Unable to modify the position of an event that is not in the sequence.");
 
             FlythroughEvent<T> prev = null;
+            FlythroughEvent<T> prevPrev = null;
             foreach (var current in mEvents) {
                 if (current == evt)
                     break;
+                prevPrev = prev;
                 prev = current;
             }
 
@@ -217,6 +244,11 @@ namespace Chimera.Flythrough {
                 mLastEvent = prev;
 
             mEvents.Sort();
+
+            evt.StartValue = 
+                prevPrev == null ?
+                    Start :
+                    prevPrev.FinishValue;
 
             T finish = evt.FinishValue;
             foreach (var e in mEvents.Where(e => e.SequenceStartTime > evt.SequenceStartTime)) {

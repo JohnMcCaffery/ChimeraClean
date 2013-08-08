@@ -91,6 +91,11 @@ namespace Chimera.Flythrough.GUI {
             this.positionsList.TabIndex = 13;
             this.positionsList.SelectedValueChanged += new System.EventHandler(this.positionsList_SelectedValueChanged);
             this.positionsList.DoubleClick += new System.EventHandler(this.positionsList_DoubleClick);
+            this.positionsList.KeyUp += new System.Windows.Forms.KeyEventHandler(this.positionsList_KeyUp);
+            this.positionsList.MouseDown += new System.Windows.Forms.MouseEventHandler(this.positionsList_MouseDown);
+            this.positionsList.MouseLeave += new System.EventHandler(this.positionsList_MouseLeave);
+            this.positionsList.MouseMove += new System.Windows.Forms.MouseEventHandler(this.positionsList_MouseMove);
+            this.positionsList.MouseUp += new System.Windows.Forms.MouseEventHandler(this.positionsList_MouseUp);
             // 
             // positionsContextMenu
             // 
@@ -285,6 +290,11 @@ namespace Chimera.Flythrough.GUI {
             this.orientationsList.TabIndex = 16;
             this.orientationsList.SelectedValueChanged += new System.EventHandler(this.orientationsList_SelectedValueChanged);
             this.orientationsList.DoubleClick += new System.EventHandler(this.orientationsList_DoubleClick);
+            this.orientationsList.KeyUp += new System.Windows.Forms.KeyEventHandler(this.orientationsList_KeyUp);
+            this.orientationsList.MouseDown += new System.Windows.Forms.MouseEventHandler(this.orientationsList_MouseDown);
+            this.orientationsList.MouseLeave += new System.EventHandler(this.orientationsList_MouseLeave);
+            this.orientationsList.MouseMove += new System.Windows.Forms.MouseEventHandler(this.orientationsList_MouseMove);
+            this.orientationsList.MouseUp += new System.Windows.Forms.MouseEventHandler(this.orientationsList_MouseUp);
             // 
             // orientationsContextMenu
             // 
