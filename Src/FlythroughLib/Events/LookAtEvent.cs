@@ -70,7 +70,7 @@ namespace Chimera.Flythrough {
 
             Name = "Look At " + (++COUNT);
             StartValue = Rotation.Zero;
-            Target = Vector3.Zero;
+            Target = container.Core.Position;
         }
 
         /// <summary>
