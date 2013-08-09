@@ -102,7 +102,10 @@ namespace Chimera.Flythrough {
                     FlythroughEvent<Vector3> evt = mPositions[time];
                     pos = evt[time - evt.SequenceStartTime];
                 }
-                return new Rotation(mTarget - pos); 
+                Vector3 lookAt = mTarget - pos;
+                Rotation ret = new Rotation(lookAt);
+                return ret;
+                //return new Rotation(mTarget - pos); 
             }
         }
         public override Rotation FinishValue {

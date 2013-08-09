@@ -43,13 +43,15 @@ namespace Chimera.Flythrough.GUI {
 
             mTimeChangeListener = new Action<FlythroughEvent<Rotation>, int>(TimeChanged);
 
+            /*
             if (mEvent.Target == Vector3.Zero) {
                 mEvent.Target = targetVectorPanel.Value;
                 mEvent.Length = (int)lengthValue.Value;
             } else {
+                */
                 targetVectorPanel.Value = mEvent.Target;
                 lengthValue.Value = mEvent.Length;
-            }
+            //}
 
             targetVectorPanel.ValueChanged += (source, args) => {
                 mEvent.Target = targetVectorPanel.Value;

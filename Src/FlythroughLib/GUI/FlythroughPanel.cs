@@ -233,7 +233,7 @@ namespace Chimera.Flythrough.GUI {
         }
 
         private void startButton_Click(object sender, EventArgs e) {
-            mPlugin.Time = 0;
+            mPlugin.Time = mPlugin.AutoStep ? 0 : mPlugin.CurrentEvent.GlobalStartTime;
             mPlugin.Play();
             playButton.Text = "Pause";
         }
