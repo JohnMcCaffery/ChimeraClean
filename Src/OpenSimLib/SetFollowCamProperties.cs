@@ -37,7 +37,7 @@ namespace Chimera.OpenSim {
         private float mBehindnessLag = .5f;
         private float mLookAtThreshold;
         private float mFocusThreshold;
-        private bool mSendPackets = true;
+        private bool mSendPackets = false;
         private float mFocusOffset;
         private float mLookAt;
         private float mFocus;
