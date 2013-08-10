@@ -85,7 +85,7 @@
             this.targetVectorPanel.MinimumSize = new System.Drawing.Size(103, 95);
             this.targetVectorPanel.MinV = ((OpenMetaverse.Vector3)(resources.GetObject("targetVectorPanel.MinV")));
             this.targetVectorPanel.Name = "targetVectorPanel";
-            this.targetVectorPanel.Size = new System.Drawing.Size(325, 98);
+            this.targetVectorPanel.Size = new System.Drawing.Size(214, 98);
             this.targetVectorPanel.TabIndex = 10;
             this.targetVectorPanel.Value = ((OpenMetaverse.Vector3)(resources.GetObject("targetVectorPanel.Value")));
             this.targetVectorPanel.X = 128F;
@@ -98,7 +98,7 @@
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.progressBar.Location = new System.Drawing.Point(3, 125);
             this.progressBar.Name = "progressBar";
-            this.progressBar.Size = new System.Drawing.Size(322, 23);
+            this.progressBar.Size = new System.Drawing.Size(211, 23);
             this.progressBar.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
             this.progressBar.TabIndex = 14;
             // 
@@ -108,7 +108,7 @@
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.goToTargetButton.Location = new System.Drawing.Point(217, 96);
             this.goToTargetButton.Name = "goToTargetButton";
-            this.goToTargetButton.Size = new System.Drawing.Size(105, 23);
+            this.goToTargetButton.Size = new System.Drawing.Size(0, 23);
             this.goToTargetButton.TabIndex = 15;
             this.goToTargetButton.Text = "Go To Target";
             this.goToTargetButton.UseVisualStyleBackColor = true;
@@ -126,7 +126,7 @@
             this.Controls.Add(this.targetVectorPanel);
             this.MinimumSize = new System.Drawing.Size(214, 149);
             this.Name = "LookAtPanel";
-            this.Size = new System.Drawing.Size(325, 149);
+            this.Size = new System.Drawing.Size(214, 149);
             ((System.ComponentModel.ISupportInitialize)(this.lengthValue)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

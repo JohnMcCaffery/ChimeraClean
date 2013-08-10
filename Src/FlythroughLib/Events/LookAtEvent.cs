@@ -109,7 +109,7 @@ namespace Chimera.Flythrough {
             }
         }
         public override Rotation FinishValue {
-            get { return this[SequenceFinishTime]; }
+            get { return this[Length]; }
         }
         public override Rotation Value {
             get { return this[Time]; }

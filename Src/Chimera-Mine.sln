@@ -67,10 +67,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Config", "Config", "{48AD03
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Flythroughs", "Flythroughs", "{CE093C7A-73E9-4099-BC51-C829AE71D482}"
-	ProjectSection(SolutionItems) = preProject
-		..\Bin\Flythroughs\Timespan\Guided.xml = ..\Bin\Flythroughs\Timespan\Guided.xml
-		..\Bin\Flythroughs\Timespan\Idle.xml = ..\Bin\Flythroughs\Timespan\Idle.xml
-	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Overlay", "Overlay", "{06FD37A2-167A-47CA-9DF6-79B90A6A97F5}"
 EndProject
@@ -93,28 +89,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{FCF1B486-05B8-4DC0-9EF4-C88359331724}"
 	ProjectSection(SolutionItems) = preProject
 		..\Bin\Configs\Common\Bindings.xml = ..\Bin\Configs\Common\Bindings.xml
-		..\Bin\Configs\Common\Core.ini = ..\Bin\Configs\Common\Core.ini
-		..\Bin\Configs\Common\Experiments.ini = ..\Bin\Configs\Common\Experiments.ini
-		..\Bin\Configs\Common\EyeTracker.ini = ..\Bin\Configs\Common\EyeTracker.ini
 		..\Bin\Configs\Common\Flythrough.ini = ..\Bin\Configs\Common\Flythrough.ini
-		..\Bin\Configs\Common\Frames.ini = ..\Bin\Configs\Common\Frames.ini
-		..\Bin\Configs\Common\Heightmap.ini = ..\Bin\Configs\Common\Heightmap.ini
-		..\Bin\Configs\Common\KinectMovement.ini = ..\Bin\Configs\Common\KinectMovement.ini
-		..\Bin\Configs\Common\LaptopOverlay.ini = ..\Bin\Configs\Common\LaptopOverlay.ini
-		..\Bin\Configs\Common\Launch.ini = ..\Bin\Configs\Common\Launch.ini
 		..\Bin\Configs\Common\Main.ini = ..\Bin\Configs\Common\Main.ini
-		..\Bin\Configs\Common\NoOverlay.ini = ..\Bin\Configs\Common\NoOverlay.ini
-		..\Bin\Configs\Common\OpenSim.ini = ..\Bin\Configs\Common\OpenSim.ini
-		..\Bin\Configs\Common\Overlay.ini = ..\Bin\Configs\Common\Overlay.ini
-		..\Bin\Configs\Common\OverlayLaptop.ini = ..\Bin\Configs\Common\OverlayLaptop.ini
-		..\Bin\Configs\Common\OverlayNone.ini = ..\Bin\Configs\Common\OverlayNone.ini
-		..\Bin\Configs\Common\OverlayTouchscreen.ini = ..\Bin\Configs\Common\OverlayTouchscreen.ini
-		..\Bin\Configs\Common\Projectors.ini = ..\Bin\Configs\Common\Projectors.ini
-		..\Bin\Configs\Common\RemoteControl.ini = ..\Bin\Configs\Common\RemoteControl.ini
-		..\Bin\Configs\Common\TimespanRoom.xml = ..\Bin\Configs\Common\TimespanRoom.xml
-		..\Bin\Configs\Common\Touchscreen.ini = ..\Bin\Configs\Common\Touchscreen.ini
-		..\Bin\Configs\Common\TouchscreenOverlay.ini = ..\Bin\Configs\Common\TouchscreenOverlay.ini
-		..\Bin\Configs\Common\XBoxController.ini = ..\Bin\Configs\Common\XBoxController.ini
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TimespanTest", "TimespanTest", "{22DC0F45-3E0B-4D99-B8C9-15ED2AD17EBC}"
@@ -135,9 +111,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExperimentalLib", "ExperimentalLib\ExperimentalLib.csproj", "{6288745C-11BE-4CFC-83F1-F37B71CF53D6}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Experiments", "Experiments", "{CA5E6F57-AE17-4E20-A63A-C80D61FF8774}"
-	ProjectSection(SolutionItems) = preProject
-		..\Bin\Experiments\Maze.xml = ..\Bin\Experiments\Maze.xml
-	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
