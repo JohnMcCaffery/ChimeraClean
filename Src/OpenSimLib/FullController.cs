@@ -60,20 +60,18 @@ namespace Chimera.OpenSim {
         private SetCameraPacket.CameraBlock MakeCameraBlock(Vector3 position, Vector3 positionDelta, Rotation rotation, Rotation rotationDelta) {
             Rotation offset = new Rotation(Frame.Orientation.Pitch, -Frame.Orientation.Yaw);
             Vector3 lookAt = offset.LookAtVector * rotation.Quaternion;
-            Vector3 eyePos = new Vector3(Frame.Core.EyePosition.Y, Frame.Core.EyePosition.X, -Frame.Core.EyePosition.Z);
+            //Vector3 eyePos = new Vector3(Frame.Core.EyePosition.Y, Frame.Core.EyePosition.X, -Frame.Core.EyePosition.Z);
+            Vector3 eyePos = Frame.Core.EyePosition;
+            eyePos *= rotation.Quaternion;
+
+            
             Vector3 cameraUp = Vector3.UnitZ * rotation.Quaternion;
             Vector3 up = Vector3.UnitZ;
-            if (offset.Yaw != 0.0) {
+            if (offset.Yaw != 0.0)
                 up = offset.Yaw < 0.0 ? Vector3.Cross(lookAt, rotation.LookAtVector) : Vector3.Cross(rotation.LookAtVector, lookAt);
-                //Vector3 x = Vector3.Cross(offset.LookAtVector, rotation.LookAtVector);
-                //Vector3 y = Vector3.Cross(rotation.LookAtVector, offset.LookAtVector);
-                // up = x.Z > y.Z ? x : y;
-            }
-
-            //up.Normalize();
 
             SetCameraPacket.CameraBlock block = new SetCameraPacket.CameraBlock();
-            block.Position = position - (eyePos / 1000f);
+            block.Position = position + (Frame.Core.ControlMode == ControlMode.Absolute ? (eyePos / 1000f) : Vector3.Zero);
             block.PositionDelta = positionDelta;
             block.LookAt = lookAt;
             block.LookAtDelta = rotationDelta.LookAtVector;

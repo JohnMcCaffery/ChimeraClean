@@ -169,7 +169,7 @@ namespace Chimera.OpenSim {
             new Thread(() => {
                 Hashtable t = (Hashtable)response.Value;
 
-                if (bool.Parse(t["login"].ToString())) {
+                if (t.ContainsKey("login") && bool.Parse(t["login"].ToString())) {
                     mSessionID = UUID.Parse(t["session_id"].ToString());
                     mSecureSessionID = UUID.Parse(t["secure_session_id"].ToString());
                     mAgentID = UUID.Parse(t["agent_id"].ToString());
@@ -179,7 +179,8 @@ namespace Chimera.OpenSim {
                     Thread.Sleep(50);
                     if (OnClientLoggedIn != null)
                         OnClientLoggedIn(mProxy, null);
-                } else {
+                } else if (t.ContainsKey("faultstring")) {
+                    ThisLogger.Warn("Unable to parse login response. " + t["faultstring"]);
                 }
             }).Start();
         }

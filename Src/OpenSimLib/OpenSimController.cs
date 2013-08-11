@@ -293,8 +293,8 @@ namespace Chimera.OpenSim {
         }
 
         void Coordinator_EyeUpdated(Core coordinator, EventArgs args) {
-            if (ControlCamera && ControlFrustum && mProxyController.Started && Mode == ControlMode.Absolute)
-                mProxyController.SetFrustum(SetCamera);
+            //if (ControlCamera && ControlFrustum && mProxyController.Started && Mode == ControlMode.Absolute)
+                //mProxyController.SetFrustum(SetCamera);
         }
 
         void mFrame_Changed(Frame frame, EventArgs args) {

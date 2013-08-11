@@ -112,12 +112,6 @@
     <Compile Include="GUI\HeightmapInputPanel.designer.cs">
       <DependentUpon>HeightmapInputPanel.cs</DependentUpon>
     </Compile>
-    <Compile Include="GUI\DeprecatedOutputPanel.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="GUI\DeprecatedOutputPanel.designer.cs">
-      <DependentUpon>DeprecatedOutputPanel.cs</DependentUpon>
-    </Compile>
     <Compile Include="HeightmapConfig.cs" />
     <Compile Include="HeightmapPlugin.cs" />
     <Compile Include="Interfaces\IViewerController.cs" />
@@ -136,10 +130,7 @@
     <Compile Include="ViewerConfig.cs" />
     <Compile Include="ProxyControllerBase.cs" />
     <Compile Include="SetFollowCamProperties.cs" />
-    <Compile Include="SetFollowCamPropertiesViewerOutput.cs" />
-    <Compile Include="SetWindowViewerOutput.cs" />
     <Compile Include="ViewerController.cs" />
-    <Compile Include="ViewerProxy.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ChimeraLib\ChimeraLib.csproj">
@@ -161,9 +152,6 @@
     <EmbeddedResource Include="GUI\HeightmapInputPanel.resx">
       <DependentUpon>HeightmapInputPanel.cs</DependentUpon>
       <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="GUI\DeprecatedOutputPanel.resx">
-      <DependentUpon>DeprecatedOutputPanel.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />
