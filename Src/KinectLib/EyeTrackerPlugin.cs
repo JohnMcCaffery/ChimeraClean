@@ -99,7 +99,7 @@ namespace Chimera.Kinect {
 
         void mHead_OnChange() {
             if (mEnabled) {
-                Vector3 hKinect = new Vector3(mHead.Z, -mHead.X, mHead.Y) * 1000f;
+                Vector3 hKinect = new Vector3(mHead.Z, mHead.X, mHead.Y) * 1000f;
                 //if (Nui.HasSkeleton)
                 if (!hKinect.Equals(Vector3.Zero)) {
                     if (mControlX)
