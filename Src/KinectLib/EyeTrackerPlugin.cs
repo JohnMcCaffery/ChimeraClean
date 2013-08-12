@@ -98,7 +98,7 @@ namespace Chimera.Kinect {
         }
 
         void mHead_OnChange() {
-            if (mEnabled) {
+            if (mEnabled && mCore.ControlMode == ControlMode.Absolute) {
                 Vector3 hKinect = new Vector3(mHead.Z, mHead.X, mHead.Y) * 1000f;
                 //if (Nui.HasSkeleton)
                 if (!hKinect.Equals(Vector3.Zero)) {
@@ -124,6 +124,11 @@ namespace Chimera.Kinect {
             mCore.EyePosition = Vector3.Zero;
             if (mCore.ControlMode == ControlMode.Delta)
                 mCore.Update(Vector3.Zero, Vector3.Zero, Rotation.Zero, Rotation.Zero);
+        }
+
+        void mCore_CameraModeChanged(Core core, ControlMode mode) {
+            if (mCore.ControlMode == ControlMode.Delta)
+                mCore.EyePosition = Vector3.Zero;
         }
 
         #region ISystemPlugin Members
@@ -167,6 +172,7 @@ namespace Chimera.Kinect {
 
         public void Init(Core core) {
             mCore = core;
+            mCore.CameraModeChanged += new Action<Core,ControlMode>(mCore_CameraModeChanged);
         }
 
         public void Close() {
