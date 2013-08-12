@@ -103,7 +103,7 @@ namespace Chimera.GUI.Forms {
             mClosedListener = new Action<Core, KeyEventArgs>(mCoordinator_Closed);
             mHeightmapChangedListener = new EventHandler<HeightmapChangedEventArgs>(mCoordinator_HeightmapChanged);
 
-            mCore.CameraModeChanged += mCameraModeChangedListener;
+            mCore.ControlModeChanged += mCameraModeChangedListener;
             mCore.EnableUpdatesChanged += new Action(mCoordinator_EnableUpdatesChanged);
             mCore.CameraUpdated += mCameraUpdatedListener;
             mCore.DeltaUpdated += mDeltaUpdatedListener;

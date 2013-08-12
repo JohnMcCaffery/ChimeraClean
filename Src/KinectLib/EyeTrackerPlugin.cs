@@ -126,7 +126,7 @@ namespace Chimera.Kinect {
                 mCore.Update(Vector3.Zero, Vector3.Zero, Rotation.Zero, Rotation.Zero);
         }
 
-        void mCore_CameraModeChanged(Core core, ControlMode mode) {
+        void mCore_ControlModeChanged(Core core, ControlMode mode) {
             if (mCore.ControlMode == ControlMode.Delta)
                 mCore.EyePosition = Vector3.Zero;
         }
@@ -172,7 +172,7 @@ namespace Chimera.Kinect {
 
         public void Init(Core core) {
             mCore = core;
-            mCore.CameraModeChanged += new Action<Core,ControlMode>(mCore_CameraModeChanged);
+            mCore.ControlModeChanged += new Action<Core,ControlMode>(mCore_ControlModeChanged);
         }
 
         public void Close() {

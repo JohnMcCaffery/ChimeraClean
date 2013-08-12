@@ -160,7 +160,7 @@ namespace Chimera.OpenSim {
 
         public SetFollowCamProperties(Core coordinator) {
             mCoordinator = coordinator;
-            mCoordinator.CameraModeChanged += new Action<Core,ControlMode>(mCoordinator_CameraModeChanged);
+            mCoordinator.ControlModeChanged += new Action<Core,ControlMode>(mCoordinator_CameraModeChanged);
             mDeltaListener = new Action<Core,DeltaUpdateEventArgs>(mCoordinator_DeltaUpdated);
             if (mAdjustForFly && mCoordinator.ControlMode == ControlMode.Delta)
                 mCoordinator.DeltaUpdated += mDeltaListener;

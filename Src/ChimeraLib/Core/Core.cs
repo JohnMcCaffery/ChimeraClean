@@ -224,7 +224,7 @@ namespace Chimera {
         /// <summary>
         /// Triggered when the camera control mode changes.
         /// </summary>
-        public event Action<Core, ControlMode> CameraModeChanged;
+        public event Action<Core, ControlMode> ControlModeChanged;
         /// <summary>
         /// Triggered whenever a window is added.
         /// </summary>
@@ -451,8 +451,8 @@ namespace Chimera {
                 if (value != mControlMode) {
                     mControlMode = value;
                     //TODO - add code here so that when the value is changed the camera updates
-                    if (CameraModeChanged != null)
-                        CameraModeChanged(this, value);
+                    if (ControlModeChanged != null)
+                        ControlModeChanged(this, value);
                     Logger.Debug("Control mode changed to " + value + ".");
                 }
             }

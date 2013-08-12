@@ -182,7 +182,7 @@ namespace Chimera.OpenSim {
 
             mFrame.Core.DeltaUpdated += new Action<Core,DeltaUpdateEventArgs>(Coordinator_DeltaUpdated);
             mFrame.Core.CameraUpdated += new Action<Core,CameraUpdateEventArgs>(Coordinator_CameraUpdated);
-            mFrame.Core.CameraModeChanged += new Action<Core,ControlMode>(Coordinator_CameraModeChanged);
+            mFrame.Core.ControlModeChanged += new Action<Core,ControlMode>(Coordinator_CameraModeChanged);
             mFrame.Core.EyeUpdated += new Action<Core,EventArgs>(Coordinator_EyeUpdated);
             mFrame.Core.InitialisationComplete += new Action(Core_InitialisationComplete);
             mFrame.Changed += new Action<Chimera.Frame,EventArgs>(mFrame_Changed);
