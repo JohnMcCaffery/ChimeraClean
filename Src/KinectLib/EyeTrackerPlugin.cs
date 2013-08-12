@@ -202,10 +202,10 @@ namespace Chimera.Kinect {
                     Vector3 bottomRight = range * (new Rotation(-vFoV, hFoV) + mKinectOrientation).Quaternion;
 
                     Point centreP = to2D(mKinectPosition);
-                    Point topLeftP = to2D(topLeft);
-                    Point topRightP = to2D(topRight);
-                    Point bottomLeftP = to2D(bottomLeft);
-                    Point bottomRightP = to2D(bottomRight);
+                    Point topLeftP = to2D(topLeft + mKinectPosition);
+                    Point topRightP = to2D(topRight + mKinectPosition);
+                    Point bottomLeftP = to2D(bottomLeft + mKinectPosition);
+                    Point bottomRightP = to2D(bottomRight + mKinectPosition);
 
                     graphics.FillPolygon(b, new Point[] { centreP, topLeftP, topRightP, centreP });
                     graphics.FillPolygon(b, new Point[] { centreP, bottomLeftP, bottomRightP, centreP });
