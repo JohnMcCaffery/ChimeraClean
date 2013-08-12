@@ -192,7 +192,7 @@ namespace Chimera.Kinect {
                     Vector3 r = new Vector3(0f, 140, 0f) * mKinectOrientation.Quaternion;
                     graphics.DrawLine(p, to2D(mKinectPosition + l), to2D(mKinectPosition + r));
                 }
-                using (Brush b = new SolidBrush(Color.FromArgb(128, Color.Blue))) {
+                using (Brush b = new SolidBrush(Color.FromArgb(32, Color.Blue))) {
                     int hFoV = 57 / 2;
                     int vFoV = 43 / 2;
                     Vector3 range = new Vector3(3500f, 0f, 0f);
