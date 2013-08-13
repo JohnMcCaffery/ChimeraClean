@@ -323,6 +323,10 @@ namespace Chimera.OpenSim {
                     ThisLogger.Info(mViewerController.Name + " viewer pressing " + key);
                     mViewerController.PressKey(key);
                 }
+
+                if (mManager != null) {
+                    mManager.BringToFront();
+                }
             }).Start();
 
 

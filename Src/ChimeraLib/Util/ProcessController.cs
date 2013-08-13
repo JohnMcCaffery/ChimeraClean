@@ -512,11 +512,11 @@ namespace Chimera.Util {
             lock (Logger) {
                 if (!Started)
                     return;
-                Process foreground = Process.GetCurrentProcess();
+                //Process foreground = Process.GetCurrentProcess();
                 SetForegroundWindow(mProcess.MainWindowHandle);
                 Thread.Sleep(500);
                 SendKeys.SendWait((ctrl ? "^" : "") + (alt ? "%" : "") + (shift ? "+" : "") + key);
-                SetForegroundWindow(foreground.MainWindowHandle);
+                //SetForegroundWindow(foreground.MainWindowHandle);
             }
         }
 
