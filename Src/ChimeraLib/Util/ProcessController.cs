@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
 using log4net;
+using System.Threading;
 
 namespace Chimera.Util {
     public class ProcessController {
@@ -513,6 +514,7 @@ namespace Chimera.Util {
                     return;
                 Process foreground = Process.GetCurrentProcess();
                 SetForegroundWindow(mProcess.MainWindowHandle);
+                Thread.Sleep(500);
                 SendKeys.SendWait((ctrl ? "^" : "") + (alt ? "%" : "") + (shift ? "+" : "") + key);
                 SetForegroundWindow(foreground.MainWindowHandle);
             }

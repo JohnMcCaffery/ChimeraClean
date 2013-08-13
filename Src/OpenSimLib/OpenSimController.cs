@@ -319,9 +319,12 @@ namespace Chimera.OpenSim {
                 }
 
                 Thread.Sleep(20000);
-                foreach (var key in mConfig.StartupKeyPresses.Split(','))
+                foreach (var key in mConfig.StartupKeyPresses.Split(',')) {
+                    ThisLogger.Info(mViewerController.Name + " viewer pressing " + key);
                     mViewerController.PressKey(key);
+                }
             }).Start();
+
 
 
             if (ControlCamera) {
