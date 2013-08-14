@@ -28,6 +28,8 @@ namespace Chimera.Util {
                     mVal = value;
                     if (Changed != null)
                         Changed(mVal);
+                    if (ManuallyChanged != null)
+                        ManuallyChanged(mVal);
                 }
             }
         }
@@ -39,5 +41,8 @@ namespace Chimera.Util {
         }
 
         #endregion
+
+
+        public event Action<T> ManuallyChanged;
     }
 }

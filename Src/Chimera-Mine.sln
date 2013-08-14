@@ -67,6 +67,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Config", "Config", "{48AD03
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Flythroughs", "Flythroughs", "{CE093C7A-73E9-4099-BC51-C829AE71D482}"
+	ProjectSection(SolutionItems) = preProject
+		..\Bin\Flythroughs\Timespan\Guided-Zoomy.xml = ..\Bin\Flythroughs\Timespan\Guided-Zoomy.xml
+		..\Bin\Flythroughs\Timespan\Guided.xml = ..\Bin\Flythroughs\Timespan\Guided.xml
+		..\Bin\Flythroughs\Timespan\Idle.xml = ..\Bin\Flythroughs\Timespan\Idle.xml
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Overlay", "Overlay", "{06FD37A2-167A-47CA-9DF6-79B90A6A97F5}"
 	ProjectSection(SolutionItems) = preProject
@@ -603,8 +608,7 @@ Global
 		{C04A5541-444E-4312-97E7-F66457F87EF8}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
 		{C04A5541-444E-4312-97E7-F66457F87EF8}.Debug|Win32.ActiveCfg = Debug|Any CPU
 		{C04A5541-444E-4312-97E7-F66457F87EF8}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{C04A5541-444E-4312-97E7-F66457F87EF8}.Debug|x86.ActiveCfg = Debug|x86
-		{C04A5541-444E-4312-97E7-F66457F87EF8}.Debug|x86.Build.0 = Debug|x86
+		{C04A5541-444E-4312-97E7-F66457F87EF8}.Debug|x86.ActiveCfg = Debug|Any CPU
 		{C04A5541-444E-4312-97E7-F66457F87EF8}.DebugVisual|Any CPU.ActiveCfg = Debug|Any CPU
 		{C04A5541-444E-4312-97E7-F66457F87EF8}.DebugVisual|Any CPU.Build.0 = Debug|Any CPU
 		{C04A5541-444E-4312-97E7-F66457F87EF8}.DebugVisual|Mixed Platforms.ActiveCfg = Debug|Any CPU
@@ -618,7 +622,8 @@ Global
 		{C04A5541-444E-4312-97E7-F66457F87EF8}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{C04A5541-444E-4312-97E7-F66457F87EF8}.Release|Win32.ActiveCfg = Release|Any CPU
 		{C04A5541-444E-4312-97E7-F66457F87EF8}.Release|x64.ActiveCfg = Release|Any CPU
-		{C04A5541-444E-4312-97E7-F66457F87EF8}.Release|x86.ActiveCfg = Release|x86
+		{C04A5541-444E-4312-97E7-F66457F87EF8}.Release|x86.ActiveCfg = Release|Any CPU
+		{C04A5541-444E-4312-97E7-F66457F87EF8}.Release|x86.Build.0 = Release|Any CPU
 		{C04A5541-444E-4312-97E7-F66457F87EF8}.ReleaseVisual|Any CPU.ActiveCfg = Release|Any CPU
 		{C04A5541-444E-4312-97E7-F66457F87EF8}.ReleaseVisual|Any CPU.Build.0 = Release|Any CPU
 		{C04A5541-444E-4312-97E7-F66457F87EF8}.ReleaseVisual|Mixed Platforms.ActiveCfg = Release|Any CPU
