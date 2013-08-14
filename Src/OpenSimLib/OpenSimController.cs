@@ -207,6 +207,8 @@ namespace Chimera.OpenSim {
         }
 
         public void Restart(string reason) {
+            if (mClosingViewer)
+                return;
             ThisLogger.Warn("Restarting " + mFrame.Name + " viewer because " + reason + ".");
             //new Thread(() => {
             mClosingViewer = true;
@@ -214,9 +216,9 @@ namespace Chimera.OpenSim {
             StopProxy();
             if (!mShuttingDown) {
                 Thread.Sleep(1000);
-                mClosingViewer = false;
                 StartProxy();
                 mViewerController.Start();
+                mClosingViewer = false;
             }
             //}).Start();
         }
