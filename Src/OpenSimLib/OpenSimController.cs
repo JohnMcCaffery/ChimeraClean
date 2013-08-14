@@ -316,9 +316,8 @@ namespace Chimera.OpenSim {
             new Thread(() => {
                 Thread.Sleep(5000);
 
-                if (mManager != null) {
+                if (mManager != null)
                     mManager.BringToFront();
-                }
 
                 Thread.Sleep(20000);
                 foreach (var key in mConfig.StartupKeyPresses.Split(',')) {
@@ -326,9 +325,8 @@ namespace Chimera.OpenSim {
                     mViewerController.PressKey(key);
                 }
 
-                if (mManager != null) {
+                if (mManager != null) 
                     mManager.BringToFront();
-                }
             }).Start();
 
 
