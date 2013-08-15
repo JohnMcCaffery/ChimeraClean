@@ -171,5 +171,18 @@ namespace Chimera.Overlay {
         }
 
         #endregion
+
+        public double Opacity {
+            get { return mFrameManagers.Count > 0 ? mFrameManagers.Values.First().Opacity : 0.0; }
+            set {
+                foreach (var manager in mFrameManagers.Values)
+                    manager.Opacity = value;
+            }
+        }
+
+        internal void LaunchOverlays() {
+            foreach (var frameController in mFrameManagers.Values)
+                frameController.Launch();
+        }
     }
 }
