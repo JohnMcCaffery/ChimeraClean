@@ -434,6 +434,8 @@ namespace Chimera.Util {
         private string mWorkingDir;
         private string mArgs;
 
+        protected readonly EventHandler mExitListener;
+
         public event Action Exited;
 
         public string Exe {
@@ -473,6 +475,7 @@ namespace Chimera.Util {
             mExe = exe;
             mWorkingDir = workingDir;
             mArgs = args;
+            mExitListener = new EventHandler(mProcess_Exited);
         }
 
         public bool Start() {
@@ -480,6 +483,9 @@ namespace Chimera.Util {
         }
 
         public bool Start(string exe, string workingDir, string args) {
+            if (mProcess != null)
+                mProcess.Exited -= mExitListener;
+
             mExe = exe;
             mWorkingDir = workingDir;
             mArgs = args;
@@ -489,7 +495,7 @@ namespace Chimera.Util {
             mProcess.StartInfo.WorkingDirectory = workingDir;
             mProcess.StartInfo.Arguments =  args;
             mProcess.EnableRaisingEvents = true;
-            mProcess.Exited += new EventHandler(mProcess_Exited);
+            mProcess.Exited += mExitListener;
 
             Logger.Info("Launching " + exe + " " + args + " from " + workingDir);
             return mProcess.Start();
