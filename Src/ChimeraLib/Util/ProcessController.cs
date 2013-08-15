@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
 using log4net;
+using System.Threading;
 
 namespace Chimera.Util {
     public class ProcessController {
@@ -433,6 +434,8 @@ namespace Chimera.Util {
         private string mWorkingDir;
         private string mArgs;
 
+        protected readonly EventHandler mExitListener;
+
         public event Action Exited;
 
         public string Exe {
@@ -472,6 +475,7 @@ namespace Chimera.Util {
             mExe = exe;
             mWorkingDir = workingDir;
             mArgs = args;
+            mExitListener = new EventHandler(mProcess_Exited);
         }
 
         public bool Start() {
@@ -479,6 +483,9 @@ namespace Chimera.Util {
         }
 
         public bool Start(string exe, string workingDir, string args) {
+            if (mProcess != null)
+                mProcess.Exited -= mExitListener;
+
             mExe = exe;
             mWorkingDir = workingDir;
             mArgs = args;
@@ -488,7 +495,7 @@ namespace Chimera.Util {
             mProcess.StartInfo.WorkingDirectory = workingDir;
             mProcess.StartInfo.Arguments =  args;
             mProcess.EnableRaisingEvents = true;
-            mProcess.Exited += new EventHandler(mProcess_Exited);
+            mProcess.Exited += mExitListener;
 
             Logger.Info("Launching " + exe + " " + args + " from " + workingDir);
             return mProcess.Start();
@@ -511,10 +518,11 @@ namespace Chimera.Util {
             lock (Logger) {
                 if (!Started)
                     return;
-                Process foreground = Process.GetCurrentProcess();
+                //Process foreground = Process.GetCurrentProcess();
                 SetForegroundWindow(mProcess.MainWindowHandle);
+                Thread.Sleep(500);
                 SendKeys.SendWait((ctrl ? "^" : "") + (alt ? "%" : "") + (shift ? "+" : "") + key);
-                SetForegroundWindow(foreground.MainWindowHandle);
+                //SetForegroundWindow(foreground.MainWindowHandle);
             }
         }
 

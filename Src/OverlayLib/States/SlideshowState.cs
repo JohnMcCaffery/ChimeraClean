@@ -47,9 +47,12 @@ namespace Chimera.Overlay.States {
     public class SlideshowState : State {
         private readonly ILog Logger = LogManager.GetLogger("Overlay.Slideshow");
         private int mCurrentStep = 0;
+        private int mStepLengthS = -1;
         private List<ITrigger> mTriggers = new List<ITrigger>();
+        private DateTime mLastStep;
 
         private readonly List<IFeature>[] mSteps;
+        private readonly Action mTickListener;
 
 
         public SlideshowState(string name, OverlayPlugin manager, string folder, ITrigger next, ITrigger prev, IFeatureTransitionFactory transition, double fadeLengthMS)
@@ -58,10 +61,16 @@ namespace Chimera.Overlay.States {
 
             AddTrigger(true, next);
             AddTrigger(false, prev);
+
+            mTickListener = new Action(Core_Tick);
         }
 
         public SlideshowState(OverlayPlugin manager, XmlNode node)
             : base(GetName(node, "slideshow state"), manager) {
+
+            mTickListener = new Action(Core_Tick);
+
+            mStepLengthS = GetInt(node, -1, "StepLengthS");
 
             int count = 1;
             List<List<IFeature>> steps = new List<List<IFeature>>();
@@ -114,6 +123,13 @@ namespace Chimera.Overlay.States {
                 Increment(1);
         }
 
+        void Core_Tick() {
+            if (DateTime.Now.Subtract(mLastStep).TotalSeconds > mStepLengthS) {
+                mLastStep = DateTime.Now;
+                Increment(+1);
+            }
+        }
+
         private void Increment(int step) {
             foreach (var feature in mSteps[mCurrentStep])
                 feature.Active = false;
@@ -139,6 +155,9 @@ namespace Chimera.Overlay.States {
         protected override void TransitionToFinish() {
             SetTriggerState(true);
             TransitionToStart();
+
+            if (mStepLengthS > 0)
+                Manager.Core.Tick += mTickListener;
         }
 
         protected override void TransitionFromStart() {
@@ -147,6 +166,8 @@ namespace Chimera.Overlay.States {
 
         protected override void TransitionFromFinish() {
             SetTriggerState(false);
+            if (mStepLengthS > 0)
+                Manager.Core.Tick -= mTickListener;
         }
 
         private void SetTriggerState(bool state) {

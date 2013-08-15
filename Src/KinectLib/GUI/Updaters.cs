@@ -49,11 +49,14 @@ namespace Chimera.Kinect.GUI {
             get { return mScalar.Value; }
             set { 
                 mScalar.Value = value;
-                //Nui.Poll();
+                if (ManuallyChanged != null)
+                    ManuallyChanged(value);
             }
         }
 
         public event Action<float> Changed;
+
+        public event Action<float> ManuallyChanged;
 
         private void mScalar_OnChange() {
             if (Changed != null)
@@ -92,11 +95,14 @@ namespace Chimera.Kinect.GUI {
             get { return new Vector3(mVector.X, mVector.Y, mVector.Z); }
             set { 
                 mVector.Set(value.X, value.Y, value.Z);
-                //Nui.Poll();
+                if (ManuallyChanged != null)
+                    ManuallyChanged(value);
             }
         }
 
         public event Action<Vector3> Changed;
+
+        public event Action<Vector3> ManuallyChanged;
 
         private void mVector_OnChange() {
             if (Changed != null)
@@ -135,11 +141,14 @@ namespace Chimera.Kinect.GUI {
             get { return mCondition.Value; }
             set { 
                 mCondition.Value = value;
-                //Nui.Poll();
+                if (ManuallyChanged != null)
+                    ManuallyChanged(value);
             }
         }
 
         public event Action<bool> Changed;
+
+        public event Action<bool> ManuallyChanged;
 
         private void mCondition_OnChange() {
             if (Changed != null)

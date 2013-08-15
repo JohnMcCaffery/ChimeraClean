@@ -207,6 +207,8 @@ namespace Chimera.OpenSim {
         }
 
         public void Restart(string reason) {
+            if (mClosingViewer)
+                return;
             ThisLogger.Warn("Restarting " + mFrame.Name + " viewer because " + reason + ".");
             //new Thread(() => {
             mClosingViewer = true;
@@ -214,9 +216,9 @@ namespace Chimera.OpenSim {
             StopProxy();
             if (!mShuttingDown) {
                 Thread.Sleep(1000);
-                mClosingViewer = false;
                 StartProxy();
                 mViewerController.Start();
+                mClosingViewer = false;
             }
             //}).Start();
         }
@@ -314,14 +316,19 @@ namespace Chimera.OpenSim {
             new Thread(() => {
                 Thread.Sleep(5000);
 
-                if (mManager != null) {
+                if (mManager != null)
                     mManager.BringToFront();
-                }
 
                 Thread.Sleep(20000);
-                foreach (var key in mConfig.StartupKeyPresses.Split(','))
+                foreach (var key in mConfig.StartupKeyPresses.Split(',')) {
+                    ThisLogger.Info(mViewerController.Name + " viewer pressing " + key);
                     mViewerController.PressKey(key);
+                }
+
+                if (mManager != null) 
+                    mManager.BringToFront();
             }).Start();
+
 
 
             if (ControlCamera) {
