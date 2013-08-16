@@ -17,6 +17,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TouchscreenLib", "Touchscre
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Overlays", "Overlays", "{AA20755A-F03E-4FF6-A86E-DFC56F1994A9}"
 	ProjectSection(SolutionItems) = preProject
+		..\Bin\Overlays\Demo.xml = ..\Bin\Overlays\Demo.xml
+		..\Bin\Overlays\SingleImage.xml = ..\Bin\Overlays\SingleImage.xml
+		..\Bin\Overlays\Test.xml = ..\Bin\Overlays\Test.xml
+		..\Bin\Overlays\TimespanOverlayDemo.xml = ..\Bin\Overlays\TimespanOverlayDemo.xml
 		..\Bin\Overlays\TimespanOverlayDemo2.xml = ..\Bin\Overlays\TimespanOverlayDemo2.xml
 	EndProjectSection
 EndProject
@@ -131,12 +135,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{FCF1B4
 		..\Bin\Configs\Common\LaptopOverlay.ini = ..\Bin\Configs\Common\LaptopOverlay.ini
 		..\Bin\Configs\Common\Launch.ini = ..\Bin\Configs\Common\Launch.ini
 		..\Bin\Configs\Common\Main.ini = ..\Bin\Configs\Common\Main.ini
-		..\Bin\Configs\Common\NoOverlay.ini = ..\Bin\Configs\Common\NoOverlay.ini
 		..\Bin\Configs\Common\OpenSim.ini = ..\Bin\Configs\Common\OpenSim.ini
 		..\Bin\Configs\Common\Overlay.ini = ..\Bin\Configs\Common\Overlay.ini
-		..\Bin\Configs\Common\OverlayLaptop.ini = ..\Bin\Configs\Common\OverlayLaptop.ini
-		..\Bin\Configs\Common\OverlayNone.ini = ..\Bin\Configs\Common\OverlayNone.ini
-		..\Bin\Configs\Common\OverlayTouchscreen.ini = ..\Bin\Configs\Common\OverlayTouchscreen.ini
 		..\Bin\Configs\Common\Projectors.ini = ..\Bin\Configs\Common\Projectors.ini
 		..\Bin\Configs\Common\RemoteControl.ini = ..\Bin\Configs\Common\RemoteControl.ini
 		..\Bin\Configs\Common\TimespanRoom.xml = ..\Bin\Configs\Common\TimespanRoom.xml
