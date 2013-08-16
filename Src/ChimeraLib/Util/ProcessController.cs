@@ -465,10 +465,13 @@ namespace Chimera.Util {
             get { return mProcess != null; }
         }
 
-        public ProcessController() { }
+        public ProcessController() { 
+            mExitListener = new EventHandler(mProcess_Exited);
+        }
         
         public ProcessController(Process process) {
             mProcess = process;
+            mExitListener = new EventHandler(mProcess_Exited);
         }
 
         public ProcessController(string exe, string workingDir, string args) {
