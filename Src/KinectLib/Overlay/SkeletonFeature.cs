@@ -157,7 +157,7 @@ namespace Chimera.Kinect.Overlay {
 
         public void DrawDynamic(Graphics graphics) {
             sNeedsRedrawn = false;
-            if (!Nui.HasSkeleton)
+            if (!Nui.HasSkeleton || sCentreHip == null)
                 return;
 
             float scaledPos = ((sCentreHip.X + mRoomW / 2f) / mRoomW);
