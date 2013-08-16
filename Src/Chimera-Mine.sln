@@ -72,8 +72,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Config", "Config", "{48AD03
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Flythroughs", "Flythroughs", "{CE093C7A-73E9-4099-BC51-C829AE71D482}"
 	ProjectSection(SolutionItems) = preProject
-		..\Bin\Flythroughs\Timespan\Guided-Zoomy.xml = ..\Bin\Flythroughs\Timespan\Guided-Zoomy.xml
-		..\Bin\Flythroughs\Timespan\Guided.xml = ..\Bin\Flythroughs\Timespan\Guided.xml
 		..\Bin\Flythroughs\Timespan\Idle.xml = ..\Bin\Flythroughs\Timespan\Idle.xml
 	EndProjectSection
 EndProject
@@ -101,11 +99,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{ED9701C7-A
 		..\Bin\Configs\Test\InstallBindings.xml = ..\Bin\Configs\Test\InstallBindings.xml
 		..\Bin\Configs\Test\KinectMovement.ini = ..\Bin\Configs\Test\KinectMovement.ini
 		..\Bin\Configs\Test\LaptopOverlay.ini = ..\Bin\Configs\Test\LaptopOverlay.ini
-		..\Bin\Configs\Test\Launch.ini = ..\Bin\Configs\Test\Launch.ini
-		..\Bin\Configs\Test\Main.ini = ..\Bin\Configs\Test\Main.ini
 		..\Bin\Configs\Test\NoOverlay.ini = ..\Bin\Configs\Test\NoOverlay.ini
-		..\Bin\Configs\Test\OpenSim.ini = ..\Bin\Configs\Test\OpenSim.ini
-		..\Bin\Configs\Test\Overlay.ini = ..\Bin\Configs\Test\Overlay.ini
 		..\Bin\Configs\Test\OverlayLaptop.ini = ..\Bin\Configs\Test\OverlayLaptop.ini
 		..\Bin\Configs\Test\OverlayNone.ini = ..\Bin\Configs\Test\OverlayNone.ini
 		..\Bin\Configs\Test\OverlayTouchscreen.ini = ..\Bin\Configs\Test\OverlayTouchscreen.ini
@@ -127,7 +121,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{FCF1B4
 		..\Bin\Configs\Common\Core.ini = ..\Bin\Configs\Common\Core.ini
 		..\Bin\Configs\Common\Experiments.ini = ..\Bin\Configs\Common\Experiments.ini
 		..\Bin\Configs\Common\EyeTracker.ini = ..\Bin\Configs\Common\EyeTracker.ini
-		..\Bin\Configs\Common\Flythrough.ini = ..\Bin\Configs\Common\Flythrough.ini
 		..\Bin\Configs\Common\Frames.ini = ..\Bin\Configs\Common\Frames.ini
 		..\Bin\Configs\Common\Heightmap.ini = ..\Bin\Configs\Common\Heightmap.ini
 		..\Bin\Configs\Common\InstallBindings.xml = ..\Bin\Configs\Common\InstallBindings.xml

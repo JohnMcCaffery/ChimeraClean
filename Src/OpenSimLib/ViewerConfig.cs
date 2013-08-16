@@ -59,6 +59,7 @@ namespace Chimera.OpenSim {
         public bool ControlFrustum;
         public bool UseThread;
         public bool CheckForPause;
+        public bool AllowFly;
 
         public override string Group {
             get { return "SecondLifeViewer"; }
@@ -132,6 +133,8 @@ namespace Chimera.OpenSim {
 
             CheckForPause = Get(true, "CheckForPause", false, "Whether the proxy controller should check to see whether the updates have been received which correspond to the updates sent out.");
 
+
+            AllowFly = Get(true, "AllowFly", false, "Whether to allow the avatar to fly in delta mode.");
             //EnableWindowPackets = Init.Get(generalConfig, "EnableWindowPackets", true);
             //UseSetFollowCamPackets = !enableWindowPackets || Get(generalConfig, "UseSetFollowCamPackets", false);
             //ControlCamera = Init.Get(sectionConfig, "ControlCamera", true);
