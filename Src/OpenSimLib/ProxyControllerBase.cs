@@ -189,6 +189,7 @@ namespace Chimera.OpenSim {
             AgentUpdatePacket packet = p as AgentUpdatePacket;
             Vector3 pos = packet.AgentData.CameraCenter;
             mLastUpdatePacket = DateTime.Now;
+            //Console.WriteLine("Recieved agent update packet. " + mLastUpdatePacket);
 
             if (mFrame.Core.ControlMode == ControlMode.Absolute) {
                 //new Thread(() => {

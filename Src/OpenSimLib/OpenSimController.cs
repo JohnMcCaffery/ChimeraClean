@@ -81,6 +81,7 @@ namespace Chimera.OpenSim {
 
         public void Init(Core coordinator) {
             mFollowCamProperties = new SetFollowCamProperties(Frame.Core);
+            mFollowCamProperties.Enabled = mConfig.ControlCameraPosition;
             if (mProxyController.Started)
                 mFollowCamProperties.SetProxy(mProxyController.Proxy);
         }
@@ -328,7 +329,6 @@ namespace Chimera.OpenSim {
                 if (mManager != null) 
                     mManager.BringToFront();
             }).Start();
-
 
 
             if (ControlCamera) {
