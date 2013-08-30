@@ -33,6 +33,7 @@ namespace Joystick.Overlay {
             mTriggerListener = new Action(TriggerListener);
 
             mLeft = GetBool(node, false, "LeftClick");
+            mFrame = GetManager(plugin, node, "Click Feature").Name;
 
             List<ITrigger> triggers = new List<ITrigger>();
             foreach (XmlNode trigger in GetChildrenOfChild(node, "Triggers")) {
