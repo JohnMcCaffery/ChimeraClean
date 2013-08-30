@@ -8,9 +8,23 @@ using System.Xml;
 using Chimera.Util;
 
 namespace Joystick.Overlay {
+    public class JoystickClickFeatureFactory : IFeatureFactory {
+        public IFeature Create(OverlayPlugin manager, XmlNode node) {
+            return new JoystickClickFeature(manager, node);
+        }
+
+        public IFeature Create(OverlayPlugin manager, XmlNode node, System.Drawing.Rectangle clip) {
+            return Create(manager, node);
+        }
+
+        public string Name {
+            get { return "JoystickClick"; }
+        }
+    }
+
     public class JoystickClickFeature : OverlayXmlLoader, IFeature {
         private bool mActive;
-        private bool mRight;
+        private bool mLeft;
         private string mFrame;
         private ITrigger[] mTriggers;
         private Action mTriggerListener;
@@ -18,7 +32,7 @@ namespace Joystick.Overlay {
         public JoystickClickFeature(OverlayPlugin plugin, XmlNode node) {
             mTriggerListener = new Action(TriggerListener);
 
-            mRight = GetBool(node, false, "RightClick");
+            mLeft = GetBool(node, false, "LeftClick");
 
             List<ITrigger> triggers = new List<ITrigger>();
             foreach (XmlNode trigger in GetChildrenOfChild(node, "Triggers")) {
@@ -30,7 +44,7 @@ namespace Joystick.Overlay {
         }
 
         public void TriggerListener() {
-            ProcessWrangler.Click();
+            ProcessWrangler.Click(mLeft);
         }
 
         public System.Drawing.Rectangle Clip { get { return new System.Drawing.Rectangle(); } set { } }
@@ -58,7 +72,7 @@ namespace Joystick.Overlay {
         }
 
         public string Name {
-            get { return "JoystickClick"; }
+            get { return "Joystick" + (mLeft ? "Left" : "Right") + "Click"; }
             set { }
         }
 
