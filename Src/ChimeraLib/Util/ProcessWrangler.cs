@@ -1370,16 +1370,24 @@ namespace Chimera.Util {
         private const Int32 CURSOR_SHOWING = 0x00000001;
 
         public static void Click() {
+            Click(true);
+        }
+
+        public static void Click(bool left) {
+            Click(left ? MOUSEEVENTF.LEFTUP : MOUSEEVENTF.RIGHTUP, left ? MOUSEEVENTF.LEFTDOWN : MOUSEEVENTF.RIGHTDOWN);
+        }
+
+        private static void Click(MOUSEEVENTF up, MOUSEEVENTF down) {
             INPUT mouseInput = new INPUT();
             mouseInput.type = INPUT_MOUSE;
             mouseInput.U.mi.dx = 0;
             mouseInput.U.mi.dy = 0;
             mouseInput.U.mi.mouseData = MouseEventDataXButtons.Nothing;
 
-            mouseInput.U.mi.dwFlags = MOUSEEVENTF.LEFTDOWN;
+            mouseInput.U.mi.dwFlags = down;
             SendInput(1, new INPUT[] { mouseInput }, INPUT.Size);
 
-            mouseInput.U.mi.dwFlags = MOUSEEVENTF.LEFTUP;
+            mouseInput.U.mi.dwFlags = up;
             SendInput(1, new INPUT[] { mouseInput }, INPUT.Size);
         }
 
