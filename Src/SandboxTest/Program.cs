@@ -133,31 +133,27 @@ namespace Test {
             viewer.Start(exe, Path.GetDirectoryName(exe), viewerArgs);
             */
 
-            double total = 250;
-            double paid = 250;
-            for (int i = 0; i < 12; i++) {
-                total += (total * .06) / 12.0;
-                total += 300;
-                paid += 300;
-            }
-
-            Console.WriteLine("£" + total + " after 12 months. £" + paid + " paid in, £" + (total - paid) + " interest.");
-
-
-            total = 5510;
-            //paid = 250;
-            double interest = 0;
-            for (int i = 0; i < 12; i++) {
-                double interestM = (total * .03) / 12.0;
-                interest += interestM;
-                total += interestM;
-                total -= 300;
-                //paid += 250;
-            }
-
-            Console.WriteLine("£" + total + " left after 12 months. £" + interest + " interest.");
+            double firstDirect = CalcInterest(0, 300, .06);
+            double bos = CalcInterest(2000, 50, .0169);
+            Console.WriteLine("First Direct (300/m @ 6%) + Bank of Scotland (1.69%) = {0}", firstDirect + bos);
+            CalcInterest(2000, 350, .03);
 
             Console.ReadLine();
+        }
+
+        private static double CalcInterest(double start, double inc, double rate) {
+            double total = start;
+            double paid = 0;
+            for (int i = 0; i < 12; i++) {
+                total += (total * rate) / 12.0;
+                total += inc;
+                paid += inc;
+            }
+
+            Console.WriteLine("£{0} after 12 months starting at £{1}. £{2} paid in, £{3} interest @ {4}%.", total, start, paid, ((total - start) - paid), rate);
+
+            return total;
+
         }
 
         private static void SendPackets(object param) {
