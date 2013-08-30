@@ -98,8 +98,8 @@ namespace Chimera.Kinect {
         }
 
         void mHead_OnChange() {
-            if (mEnabled) {
-                Vector3 hKinect = new Vector3(mHead.Z, -mHead.X, mHead.Y) * 1000f;
+            if (mEnabled && mCore.ControlMode == ControlMode.Absolute) {
+                Vector3 hKinect = new Vector3(mHead.Z, mHead.X, mHead.Y) * 1000f;
                 //if (Nui.HasSkeleton)
                 if (!hKinect.Equals(Vector3.Zero)) {
                     if (mControlX)
@@ -124,6 +124,11 @@ namespace Chimera.Kinect {
             mCore.EyePosition = Vector3.Zero;
             if (mCore.ControlMode == ControlMode.Delta)
                 mCore.Update(Vector3.Zero, Vector3.Zero, Rotation.Zero, Rotation.Zero);
+        }
+
+        void mCore_ControlModeChanged(Core core, ControlMode mode) {
+            if (mCore.ControlMode == ControlMode.Delta)
+                mCore.EyePosition = Vector3.Zero;
         }
 
         #region ISystemPlugin Members
@@ -167,6 +172,7 @@ namespace Chimera.Kinect {
 
         public void Init(Core core) {
             mCore = core;
+            mCore.ControlModeChanged += new Action<Core,ControlMode>(mCore_ControlModeChanged);
         }
 
         public void Close() {
@@ -186,7 +192,7 @@ namespace Chimera.Kinect {
                     Vector3 r = new Vector3(0f, 140, 0f) * mKinectOrientation.Quaternion;
                     graphics.DrawLine(p, to2D(mKinectPosition + l), to2D(mKinectPosition + r));
                 }
-                using (Brush b = new SolidBrush(Color.FromArgb(128, Color.Blue))) {
+                using (Brush b = new SolidBrush(Color.FromArgb(32, Color.Blue))) {
                     int hFoV = 57 / 2;
                     int vFoV = 43 / 2;
                     Vector3 range = new Vector3(3500f, 0f, 0f);
@@ -196,10 +202,10 @@ namespace Chimera.Kinect {
                     Vector3 bottomRight = range * (new Rotation(-vFoV, hFoV) + mKinectOrientation).Quaternion;
 
                     Point centreP = to2D(mKinectPosition);
-                    Point topLeftP = to2D(topLeft);
-                    Point topRightP = to2D(topRight);
-                    Point bottomLeftP = to2D(bottomLeft);
-                    Point bottomRightP = to2D(bottomRight);
+                    Point topLeftP = to2D(topLeft + mKinectPosition);
+                    Point topRightP = to2D(topRight + mKinectPosition);
+                    Point bottomLeftP = to2D(bottomLeft + mKinectPosition);
+                    Point bottomRightP = to2D(bottomRight + mKinectPosition);
 
                     graphics.FillPolygon(b, new Point[] { centreP, topLeftP, topRightP, centreP });
                     graphics.FillPolygon(b, new Point[] { centreP, bottomLeftP, bottomRightP, centreP });

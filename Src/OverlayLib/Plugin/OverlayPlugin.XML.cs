@@ -96,6 +96,7 @@ namespace Chimera.Overlay {
         #region Loading
 
         public void LoadXML(string xml) {
+            Logger.Info("Loading overlay from " + xml + ".");
             XmlDocument doc = new XmlDocument();
             doc.Load(xml);
 
@@ -217,7 +218,8 @@ namespace Chimera.Overlay {
                     case "IdleTransition": mSplashIdleTransition = GetTransition(child, "to idle transition", new OpacityFadeOutWindowTransitionFactory(5000)); break;
                 }
             }
-        }
+        }
+
         private void LoadSpecialStates() {
             if (mIdleState != null)
                 foreach (var state in mStates.Values.Where(s => s != mIdleState))

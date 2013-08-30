@@ -27,6 +27,9 @@
             this.infoTab = new System.Windows.Forms.TabPage();
             this.stateList = new System.Windows.Forms.ListBox();
             this.changeStateButton = new System.Windows.Forms.Button();
+            this.windowsTab = new System.Windows.Forms.TabPage();
+            this.opacitySlider = new System.Windows.Forms.TrackBar();
+            this.launchButton = new System.Windows.Forms.Button();
             this.statesTab = new System.Windows.Forms.TabPage();
             this.triggersTab = new System.Windows.Forms.TabPage();
             this.windowTransitionsTab = new System.Windows.Forms.TabPage();
@@ -51,10 +54,6 @@
             this.label5 = new System.Windows.Forms.Label();
             this.featuresFactoryList = new System.Windows.Forms.ListBox();
             this.label6 = new System.Windows.Forms.Label();
-#if DEBUG
-            this.statsTab = new System.Windows.Forms.TabPage();
-            this.statsTabs = new System.Windows.Forms.TabControl();
-#endif
             this.stateSelector = new Chimera.Overlay.GUI.StateSelector();
             this.triggerSelector = new Chimera.Overlay.GUI.TriggerSelector();
             this.transitionStyleSelector = new Chimera.Overlay.GUI.TransitionStyleSelector();
@@ -63,6 +62,8 @@
             this.featureSelector = new Chimera.Overlay.GUI.FeatureSelector();
             this.mainTab.SuspendLayout();
             this.infoTab.SuspendLayout();
+            this.windowsTab.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.opacitySlider)).BeginInit();
             this.statesTab.SuspendLayout();
             this.triggersTab.SuspendLayout();
             this.windowTransitionsTab.SuspendLayout();
@@ -90,14 +91,12 @@
             this.splitContainer4.Panel1.SuspendLayout();
             this.splitContainer4.Panel2.SuspendLayout();
             this.splitContainer4.SuspendLayout();
-#if DEBUG
-            this.statsTab.SuspendLayout();
-#endif
             this.SuspendLayout();
             // 
             // mainTab
             // 
             this.mainTab.Controls.Add(this.infoTab);
+            this.mainTab.Controls.Add(this.windowsTab);
             this.mainTab.Controls.Add(this.statesTab);
             this.mainTab.Controls.Add(this.triggersTab);
             this.mainTab.Controls.Add(this.windowTransitionsTab);
@@ -105,18 +104,12 @@
             this.mainTab.Controls.Add(this.rendererTab);
             this.mainTab.Controls.Add(this.featuresTab);
             this.mainTab.Controls.Add(this.factoriesTab);
-#if DEBUG
-            this.mainTab.Controls.Add(this.statsTab);
-#endif
             this.mainTab.Dock = System.Windows.Forms.DockStyle.Fill;
             this.mainTab.Location = new System.Drawing.Point(0, 0);
             this.mainTab.Name = "mainTab";
             this.mainTab.SelectedIndex = 0;
             this.mainTab.Size = new System.Drawing.Size(634, 400);
             this.mainTab.TabIndex = 0;
-#if DEBUG
-            this.mainTab.SelectedIndexChanged += new System.EventHandler(this.statsTabs_SelectedIndexChanged);
-#endif
             this.mainTab.TabIndexChanged += new System.EventHandler(this.mainTab_TabIndexChanged);
             this.mainTab.VisibleChanged += new System.EventHandler(this.mainTab_VisibleChanged);
             // 
@@ -156,6 +149,41 @@
             this.changeStateButton.Text = "Change State";
             this.changeStateButton.UseVisualStyleBackColor = true;
             this.changeStateButton.Click += new System.EventHandler(this.changeStateButton_Click);
+            // 
+            // windowsTab
+            // 
+            this.windowsTab.Controls.Add(this.opacitySlider);
+            this.windowsTab.Controls.Add(this.launchButton);
+            this.windowsTab.Location = new System.Drawing.Point(4, 22);
+            this.windowsTab.Name = "windowsTab";
+            this.windowsTab.Padding = new System.Windows.Forms.Padding(3);
+            this.windowsTab.Size = new System.Drawing.Size(626, 374);
+            this.windowsTab.TabIndex = 8;
+            this.windowsTab.Text = "Windows";
+            this.windowsTab.UseVisualStyleBackColor = true;
+            // 
+            // opacitySlider
+            // 
+            this.opacitySlider.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.opacitySlider.Location = new System.Drawing.Point(6, 32);
+            this.opacitySlider.Maximum = 100;
+            this.opacitySlider.Name = "opacitySlider";
+            this.opacitySlider.Size = new System.Drawing.Size(614, 45);
+            this.opacitySlider.TabIndex = 1;
+            this.opacitySlider.Scroll += new System.EventHandler(this.opacitySlider_Scroll);
+            // 
+            // launchButton
+            // 
+            this.launchButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.launchButton.Location = new System.Drawing.Point(6, 6);
+            this.launchButton.Name = "launchButton";
+            this.launchButton.Size = new System.Drawing.Size(614, 20);
+            this.launchButton.TabIndex = 0;
+            this.launchButton.Text = "Launch";
+            this.launchButton.UseVisualStyleBackColor = true;
+            this.launchButton.Click += new System.EventHandler(this.launchButton_Click);
             // 
             // statesTab
             // 
@@ -455,29 +483,6 @@
             this.label6.Size = new System.Drawing.Size(48, 13);
             this.label6.TabIndex = 5;
             this.label6.Text = "Features";
-#if DEBUG
-            // 
-            // statsTab
-            // 
-            this.statsTab.Controls.Add(this.statsTabs);
-            this.statsTab.Location = new System.Drawing.Point(4, 22);
-            this.statsTab.Name = "statsTab";
-            this.statsTab.Padding = new System.Windows.Forms.Padding(3);
-            this.statsTab.Size = new System.Drawing.Size(626, 374);
-            this.statsTab.TabIndex = 8;
-            this.statsTab.Text = "Stats";
-            this.statsTab.UseVisualStyleBackColor = true;
-            // 
-            // statsTabs
-            // 
-            this.statsTabs.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.statsTabs.Location = new System.Drawing.Point(3, 3);
-            this.statsTabs.Name = "statsTabs";
-            this.statsTabs.SelectedIndex = 0;
-            this.statsTabs.Size = new System.Drawing.Size(620, 368);
-            this.statsTabs.TabIndex = 0;
-            this.statsTabs.SelectedIndexChanged += new System.EventHandler(this.statsTabs_SelectedIndexChanged);
-#endif
             // 
             // stateSelector
             // 
@@ -542,6 +547,9 @@
             this.Size = new System.Drawing.Size(634, 400);
             this.mainTab.ResumeLayout(false);
             this.infoTab.ResumeLayout(false);
+            this.windowsTab.ResumeLayout(false);
+            this.windowsTab.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.opacitySlider)).EndInit();
             this.statesTab.ResumeLayout(false);
             this.triggersTab.ResumeLayout(false);
             this.windowTransitionsTab.ResumeLayout(false);
@@ -575,9 +583,6 @@
             this.splitContainer4.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer4)).EndInit();
             this.splitContainer4.ResumeLayout(false);
-#if DEBUG
-            this.statsTab.ResumeLayout(false);
-#endif
             this.ResumeLayout(false);
 
         }
@@ -593,12 +598,6 @@
         private System.Windows.Forms.TabPage rendererTab;
         private System.Windows.Forms.TabPage featuresTab;
         private System.Windows.Forms.TabPage factoriesTab;
-        private StateSelector stateSelector;
-        private TriggerSelector triggerSelector;
-        private TransitionStyleSelector transitionStyleSelector;
-        private ImageTransitionSelector imageTransitionSelector;
-        private SelectionRendererSelector selectionRendererSelector;
-        private FeatureSelector featureSelector;
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.SplitContainer splitContainer2;
         private System.Windows.Forms.SplitContainer splitContainer3;
@@ -618,6 +617,15 @@
         private System.Windows.Forms.ListBox featuresFactoryList;
         private System.Windows.Forms.Button changeStateButton;
         private System.Windows.Forms.ListBox stateList;
+        private System.Windows.Forms.TabPage windowsTab;
+        private System.Windows.Forms.Button launchButton;
+        private System.Windows.Forms.TrackBar opacitySlider;
+        private StateSelector stateSelector;
+        private TriggerSelector triggerSelector;
+        private TransitionStyleSelector transitionStyleSelector;
+        private ImageTransitionSelector imageTransitionSelector;
+        private SelectionRendererSelector selectionRendererSelector;
+        private FeatureSelector featureSelector;
 #if DEBUG
         private System.Windows.Forms.TabPage statsTab;
         private System.Windows.Forms.TabControl statsTabs;

@@ -10,7 +10,7 @@ using Chimera.Plugins;
 namespace Chimera.Kinect.Axes {
     public class KinectAxisConfig : AxisBasedDelta.AxisConfig {
         public KinectAxisConfig()
-            : base("Kinect") {
+            : base("KinectMovement") {
         }
     }
 }

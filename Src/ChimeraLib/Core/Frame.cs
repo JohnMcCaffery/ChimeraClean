@@ -416,7 +416,7 @@ namespace Chimera {
                 Vector3 centre = new Vector3(0f, (float) mWidth, (float) mHeight) * mOrientation.Quaternion;
                 dump += "Centre: " + centre + Environment.NewLine;
                 dump += "Orientation | Yaw: " + mOrientation.Yaw + ", Pitch: " + mOrientation.Pitch + Environment.NewLine;
-                dump += "Distance: " + (centre - mCoordinator.EyePosition).Length() + Environment.NewLine;
+                dump += "Distance: " + (centre + mCoordinator.EyePosition).Length() + Environment.NewLine;
                 dump += "Width: " + mWidth + ", Height: " + mHeight + Environment.NewLine;
 
                 if (mOutput != null)
@@ -571,12 +571,10 @@ namespace Chimera {
         }
 
         private double CalculateFrustumOffset(Func<Vector3, Vector2> to2D, Vector3 b) {
-            Vector2 h = to2D(Centre - mCoordinator.EyePosition);
+            Vector2 h = to2D(Centre + mCoordinator.EyePosition);
             Vector2 a = to2D(mOrientation.LookAtVector);
             float dot = Vector2.Dot(Vector2.Normalize(h), Vector2.Normalize(a));
             return ApplySign(Math.Sin(Math.Acos(dot)) * h.Length(), new Vector3(h, 0f), new Vector3(a, 0f));
-            //return ApplySign(Math.Sin(Math.Acos(dot)) * h.Length(), Centre - mCoordinator.EyePosition, b);
-            //return ApplySign(Math.Sin(Math.Acos(dot)) * h.Length(), Centre - mCoordinator.EyePosition, mOrientation.LookAtVector);
         }
 
         private double CalculateFOV(double o, Vector3 edge) {
@@ -616,7 +614,7 @@ namespace Chimera {
             float hFoV = (float)(2.0 / (mWidth * scale));
             float vFoV = (float)(2.0 / (mHeight * scale));
             float hShift = (float)(HSkew / (mWidth / 2.0));
-            float vShift = (float)(VSkew / (mHeight / 2.0));
+            float vShift = (float)(-VSkew / (mHeight / 2.0));
             float clip1 = -(df + dn) / (df - dn);
             float clip2 = -(2.0f * df * dn) / (df - dn);
 

@@ -37,7 +37,6 @@ namespace Chimera.GUI {
         public UpdatedScalarPanel()
             : base() {
 
-            ValueChanged += UpdatedScalarPanel_ValueChanged;
             Disposed += new EventHandler(UpdatedScalarPanel_Disposed);
             mChangeListener = new Action<float>(mScalar_OnChange);
         }
@@ -54,8 +53,10 @@ namespace Chimera.GUI {
                     mScalar.Changed -= mChangeListener;
                 mScalar = value;
                 if (mScalar != null) {
+                    mExternalChanged = true;
                     Value = value.Value;
                     mScalar.Changed += mChangeListener;
+                    mExternalChanged = false;
                 }
             }
         }

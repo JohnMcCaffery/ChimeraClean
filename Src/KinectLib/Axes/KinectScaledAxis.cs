@@ -47,6 +47,17 @@ namespace Chimera.Kinect.Axes {
 
             mDeadzoneScale.Value = G.Cfg.GetDeadzone(name);
             mScaleScale.Value = G.Cfg.GetScale(name);
+
+            Scale.ManuallyChanged += new Action<float>(Scale_ManuallyChanged);
+            Deadzone.ManuallyChanged += new Action<float>(Deadzone_ManuallyChanged);
+        }
+
+        void Scale_ManuallyChanged(float value) {
+            ScaleScale.Value = value;
+        }
+
+        void Deadzone_ManuallyChanged(float value) {
+            DeadzoneScale.Value = value;
         }
     }
 }

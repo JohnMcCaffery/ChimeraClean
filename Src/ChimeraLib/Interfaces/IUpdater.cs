@@ -26,6 +26,7 @@ namespace Chimera.Interfaces {
     public interface IUpdater<T> {
         T Value { get; set; }
         event Action<T> Changed;
+        event Action<T> ManuallyChanged;
         string Name { get; }
     }
 }

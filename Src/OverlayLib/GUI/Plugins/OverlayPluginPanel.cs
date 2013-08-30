@@ -96,6 +96,14 @@ namespace Chimera.Overlay.GUI.Plugins {
             mainTab_TabIndexChanged(sender, e);
         }
 
+        private void launchButton_Click(object sender, EventArgs e) {
+            mOverlayPlugin.LaunchOverlays();
+        }
+
+        private void opacitySlider_Scroll(object sender, EventArgs e) {
+            mOverlayPlugin.Opacity = opacitySlider.Value / 100.0;
+        }
+
 #if DEBUG
         private void statsTabs_SelectedIndexChanged(object sender, EventArgs e) {
             if (mCurrentPanel != null)

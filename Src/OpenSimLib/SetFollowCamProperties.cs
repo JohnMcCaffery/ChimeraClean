@@ -37,7 +37,7 @@ namespace Chimera.OpenSim {
         private float mBehindnessLag = .5f;
         private float mLookAtThreshold;
         private float mFocusThreshold;
-        private bool mSendPackets = true;
+        private bool mSendPackets = false;
         private float mFocusOffset;
         private float mLookAt;
         private float mFocus;
@@ -160,7 +160,7 @@ namespace Chimera.OpenSim {
 
         public SetFollowCamProperties(Core coordinator) {
             mCoordinator = coordinator;
-            mCoordinator.CameraModeChanged += new Action<Core,ControlMode>(mCoordinator_CameraModeChanged);
+            mCoordinator.ControlModeChanged += new Action<Core,ControlMode>(mCoordinator_CameraModeChanged);
             mDeltaListener = new Action<Core,DeltaUpdateEventArgs>(mCoordinator_DeltaUpdated);
             if (mAdjustForFly && mCoordinator.ControlMode == ControlMode.Delta)
                 mCoordinator.DeltaUpdated += mDeltaListener;

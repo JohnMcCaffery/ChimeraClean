@@ -36,7 +36,14 @@ namespace Chimera.Kinect.Axes {
             "Push" + (right ? "Right" : "Left"), 
             binding,
             new PushSingleAxis(right, true), 
-            new PushSingleAxis(right, false)) { }
+            new PushSingleAxis(right, false)) { 
+
+            KinectAxisConfig cfg = new KinectAxisConfig();
+            (Positive as ConstrainedAxis).Deadzone.Value = cfg.GetDeadzone(Positive.Name);
+            (Negative as ConstrainedAxis).Deadzone.Value = cfg.GetDeadzone(Negative.Name);
+            (Positive as ConstrainedAxis).Scale.Value = cfg.GetScale(Positive.Name);
+            (Negative as ConstrainedAxis).Scale.Value = cfg.GetScale(Negative.Name);
+        }
 
         public PushAxis(bool right)
             : this(right, AxisBinding.NotSet) {

@@ -10,15 +10,20 @@ namespace Chimera.OpenSim {
     public class ViewerController : ProcessController {
         private ILog Logger;
         private string mToggleHudKey = "^%{F1}";
+        private string mName;
+
+        public string Name { get { return mName; } }
 
         public ViewerController(string exe, string workingDir, string args, string name)
             : base(exe, workingDir, args) {
 
+            mName = name;
             Logger = LogManager.GetLogger("OpenSim." + name + "Viewer");
         }
 
         public ViewerController(string toggleHUDKey, string name) {
             mToggleHudKey = toggleHUDKey;
+            mName = name;
 
             Logger = LogManager.GetLogger("OpenSim." + name + "Viewer");
         }
