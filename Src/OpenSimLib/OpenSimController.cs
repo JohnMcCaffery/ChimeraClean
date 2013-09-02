@@ -203,6 +203,7 @@ namespace Chimera.OpenSim {
                 mProxyController = new BackwardCompatibleController(frame);
             else
                 mProxyController = new FullController(frame);
+            mProxyController.Offset = mConfig.Offset;
 
             mExitListener = new Action(mViewerController_Exited);
 
@@ -406,6 +407,15 @@ namespace Chimera.OpenSim {
         internal void CloseViewer(bool blocking) {
             mClosingViewer = true;
             mViewerController.Close(blocking);
+        }
+
+        public Vector3 Offset {
+            get { return mConfig.Offset; }
+            set {
+                mConfig.Offset = value;
+                if (mProxyController != null)
+                    mProxyController.Offset = value;
+            }
         }
     }
 }

@@ -28,6 +28,7 @@ namespace Chimera.OpenSim {
         private string mLastName = "NotLoggedIn";
         private string mLoginURI;
         private GridProxyConfig mConfig;
+        private Vector3 mOffset;
 
         private ViewerConfig mViewerConfig;
 
@@ -312,6 +313,14 @@ namespace Chimera.OpenSim {
                     mProxy.InjectPacket(mCameraPacket, Direction.Incoming);
                     mCameraPacket = null;
                 }
+        }
+        public Vector3 Offset {
+            get { return mOffset; } 
+            set { 
+                mOffset = value;
+                if (Started)
+                    SetCamera();
+            } 
         }
     }
 }

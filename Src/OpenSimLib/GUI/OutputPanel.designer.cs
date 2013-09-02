@@ -76,11 +76,11 @@ namespace Chimera.OpenSim.GUI {
             this.chatButton = new System.Windows.Forms.Button();
             this.chatBox = new System.Windows.Forms.TextBox();
             this.channelSpinner = new System.Windows.Forms.NumericUpDown();
-            this.offsetPanel = new Chimera.GUI.VectorPanel();
             this.leftButton = new System.Windows.Forms.RadioButton();
             this.rightButton = new System.Windows.Forms.RadioButton();
             this.fullButton = new System.Windows.Forms.RadioButton();
             this.windowedButton = new System.Windows.Forms.RadioButton();
+            this.offsetPanel = new Chimera.GUI.VectorPanel();
             ((System.ComponentModel.ISupportInitialize)(this.channelSpinner)).BeginInit();
             this.SuspendLayout();
             // 
@@ -417,24 +417,6 @@ namespace Chimera.OpenSim.GUI {
             this.channelSpinner.Size = new System.Drawing.Size(36, 20);
             this.channelSpinner.TabIndex = 46;
             // 
-            // offsetPanel
-            // 
-            this.offsetPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.offsetPanel.Location = new System.Drawing.Point(-1, 267);
-            this.offsetPanel.Max = 10F;
-            this.offsetPanel.MaxV = ((OpenMetaverse.Vector3)(resources.GetObject("offsetPanel.MaxV")));
-            this.offsetPanel.Min = -10F;
-            this.offsetPanel.MinimumSize = new System.Drawing.Size(103, 95);
-            this.offsetPanel.MinV = ((OpenMetaverse.Vector3)(resources.GetObject("offsetPanel.MinV")));
-            this.offsetPanel.Name = "offsetPanel";
-            this.offsetPanel.Size = new System.Drawing.Size(382, 95);
-            this.offsetPanel.TabIndex = 47;
-            this.offsetPanel.Value = ((OpenMetaverse.Vector3)(resources.GetObject("offsetPanel.Value")));
-            this.offsetPanel.X = 0F;
-            this.offsetPanel.Y = 0F;
-            this.offsetPanel.Z = 0F;
-            // 
             // leftButton
             // 
             this.leftButton.AutoSize = true;
@@ -482,6 +464,25 @@ namespace Chimera.OpenSim.GUI {
             this.windowedButton.Text = "Windowed";
             this.windowedButton.UseVisualStyleBackColor = true;
             this.windowedButton.CheckedChanged += new System.EventHandler(this.windowedButton_CheckedChanged);
+            // 
+            // offsetPanel
+            // 
+            this.offsetPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.offsetPanel.Location = new System.Drawing.Point(-1, 267);
+            this.offsetPanel.Max = 10F;
+            this.offsetPanel.MaxV = ((OpenMetaverse.Vector3)(resources.GetObject("offsetPanel.MaxV")));
+            this.offsetPanel.Min = -10F;
+            this.offsetPanel.MinimumSize = new System.Drawing.Size(103, 95);
+            this.offsetPanel.MinV = ((OpenMetaverse.Vector3)(resources.GetObject("offsetPanel.MinV")));
+            this.offsetPanel.Name = "offsetPanel";
+            this.offsetPanel.Size = new System.Drawing.Size(382, 95);
+            this.offsetPanel.TabIndex = 47;
+            this.offsetPanel.Value = ((OpenMetaverse.Vector3)(resources.GetObject("offsetPanel.Value")));
+            this.offsetPanel.X = 0F;
+            this.offsetPanel.Y = 0F;
+            this.offsetPanel.Z = 0F;
+            this.offsetPanel.ValueChanged += new System.EventHandler(this.offsetPanel_ValueChanged);
             // 
             // OutputPanel
             // 

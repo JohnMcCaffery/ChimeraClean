@@ -61,6 +61,7 @@ namespace Chimera.OpenSim.GUI {
                     gridBox.Enabled = mConfig.UseGrid;
                     gridCheck.Checked = mConfig.UseGrid;
                     autoRestartBox.Checked = mController.AutoRestart;
+                    offsetPanel.Value = mController.Offset;
                     //fullscreenCheck.Checked = mController.Fullscreen;
                     switch (mController.Fill) {
                         case Fill.Left: leftButton.Checked = true; break;
@@ -324,6 +325,10 @@ namespace Chimera.OpenSim.GUI {
 
         private void windowedButton_CheckedChanged(object sender, EventArgs e) {
             mController.Fill = Fill.Windowed;
+        }
+
+        private void offsetPanel_ValueChanged(object sender, EventArgs e) {
+            mController.Offset = offsetPanel.Value;
         }
     }
 }

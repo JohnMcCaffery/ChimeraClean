@@ -18,6 +18,9 @@ namespace Chimera.OpenSim {
                 cameraPacket.CameraProperty[i].Type = i + 1;
             }
 
+            Vector3 offset = Offset * Frame.Core.Orientation.Quaternion;
+            Vector3 position = Frame.Core.Position + offset;
+
             Vector3 focus = Frame.Core.Position + Frame.Core.Orientation.LookAtVector;
             cameraPacket.CameraProperty[0].Value = 0;
             cameraPacket.CameraProperty[1].Value = 0f;
@@ -32,9 +35,9 @@ namespace Chimera.OpenSim {
             cameraPacket.CameraProperty[10].Value = 0f;
             cameraPacket.CameraProperty[11].Value = enable ? 1f : 0f; //enable
             cameraPacket.CameraProperty[12].Value = 0f;
-            cameraPacket.CameraProperty[13].Value = Frame.Core.Position.X;
-            cameraPacket.CameraProperty[14].Value = Frame.Core.Position.Y;
-            cameraPacket.CameraProperty[15].Value = Frame.Core.Position.Z;
+            cameraPacket.CameraProperty[13].Value = position.X;
+            cameraPacket.CameraProperty[14].Value = position.Y;
+            cameraPacket.CameraProperty[15].Value = position.Z;
             cameraPacket.CameraProperty[16].Value = 0f;
             cameraPacket.CameraProperty[17].Value = focus.X;
             cameraPacket.CameraProperty[18].Value = focus.Y;

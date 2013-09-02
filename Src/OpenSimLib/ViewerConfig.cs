@@ -24,6 +24,7 @@ using System.Text;
 using Chimera.Util;
 using System.IO;
 using Chimera.Config;
+using OpenMetaverse;
 
 namespace Chimera.OpenSim {
     internal class ViewerConfig : ConfigFolderBase {
@@ -61,6 +62,7 @@ namespace Chimera.OpenSim {
         public bool CheckForPause;
         public bool AllowFly;
         public bool ControlCameraPosition;
+        public OpenMetaverse.Vector3 Offset;
 
         public override string Group {
             get { return "SecondLifeViewer"; }
@@ -129,6 +131,8 @@ namespace Chimera.OpenSim {
             string fillStr = Get(false, "Fill", "Windowed", "What mode to set the window to, 'Full', 'Windowed', 'Left', 'Right'.");
             if (Enum.TryParse(fillStr, out fill))
                 Fill = fill;
+
+            Offset = GetV(false, "Offset", Vector3.Zero, "Offset from the raw camera position to apply.");
 
             StartupKeyPresses = Get(true, "StartupKeyPresses", "", "A series of key presses, using SendKeys syntax, which will be pressed when the viewer logs in. Separate sequences with commas.");
 
