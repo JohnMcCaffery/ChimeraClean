@@ -72,7 +72,6 @@
   <ItemGroup>
     <Compile Include="GamepadManager.cs" />
     <Compile Include="Overlay\JoystickButtonTrigger.cs" />
-    <Compile Include="Overlay\JoystickClickFeature.cs" />
     <Compile Include="Overlay\JoystickInactiveTrigger.cs" />
     <Compile Include="Overlay\JoystickActivatedTrigger.cs" />
     <Compile Include="XBoxControllerPlugin.cs" />

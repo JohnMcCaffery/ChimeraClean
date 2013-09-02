@@ -7,10 +7,10 @@ using Chimera.Overlay;
 using System.Xml;
 using Chimera.Util;
 
-namespace Joystick.Overlay {
-    public class JoystickClickFeatureFactory : IFeatureFactory {
+namespace Chimera.Overlay.Features {
+    public class ClickFeatureFactory : IFeatureFactory {
         public IFeature Create(OverlayPlugin manager, XmlNode node) {
-            return new JoystickClickFeature(manager, node);
+            return new ClickFeature(manager, node);
         }
 
         public IFeature Create(OverlayPlugin manager, XmlNode node, System.Drawing.Rectangle clip) {
@@ -22,14 +22,14 @@ namespace Joystick.Overlay {
         }
     }
 
-    public class JoystickClickFeature : OverlayXmlLoader, IFeature {
+    public class ClickFeature : OverlayXmlLoader, IFeature {
         private bool mActive;
         private bool mLeft;
         private string mFrame;
         private ITrigger[] mTriggers;
         private Action mTriggerListener;
 
-        public JoystickClickFeature(OverlayPlugin plugin, XmlNode node) {
+        public ClickFeature(OverlayPlugin plugin, XmlNode node) {
             mTriggerListener = new Action(TriggerListener);
 
             mLeft = GetBool(node, false, "LeftClick");
