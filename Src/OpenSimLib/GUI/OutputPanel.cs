@@ -61,7 +61,13 @@ namespace Chimera.OpenSim.GUI {
                     gridBox.Enabled = mConfig.UseGrid;
                     gridCheck.Checked = mConfig.UseGrid;
                     autoRestartBox.Checked = mController.AutoRestart;
-                    fullscreenCheck.Checked = mController.Fullscreen;
+                    //fullscreenCheck.Checked = mController.Fullscreen;
+                    switch (mController.Fill) {
+                        case Fill.Left: leftButton.Checked = true; break;
+                        case Fill.Right: leftButton.Checked = true; break;
+                        case Fill.Windowed: leftButton.Checked = true; break;
+                        case Fill.Full: leftButton.Checked = true; break;
+                    }
                     controlCameraCheck.Checked = mController.ControlCamera;
                     controlFrustumCheck.Checked = mController.ControlFrustum;
                     backwardsCompatibleLabel.Text = mConfig.BackwardsCompatible ? "Backwards Compatible" : "";
@@ -278,11 +284,6 @@ namespace Chimera.OpenSim.GUI {
                 mController.ViewerController.ToggleHUD();
         }
 
-        private void borderCheck_CheckedChanged(object sender, EventArgs e) {
-            if (mController != null)
-                mController.Fullscreen = fullscreenCheck.Checked;
-        }
-
         private void controlFrustumCheck_CheckedChanged(object sender, EventArgs e) {
             if (mController != null)
                 mController.ControlFrustum = controlFrustumCheck.Checked;
@@ -307,6 +308,22 @@ namespace Chimera.OpenSim.GUI {
             if (e.KeyData == Keys.Enter)
                 chatButton_Click(sender, e);
 
+        }
+
+        private void leftButton_CheckedChanged(object sender, EventArgs e) {
+            mController.Fill = Fill.Left;
+        }
+
+        private void rightButton_CheckedChanged(object sender, EventArgs e) {
+            mController.Fill = Fill.Right;
+        }
+
+        private void fullButton_CheckedChanged(object sender, EventArgs e) {
+            mController.Fill = Fill.Full;
+        }
+
+        private void windowedButton_CheckedChanged(object sender, EventArgs e) {
+            mController.Fill = Fill.Windowed;
         }
     }
 }

@@ -14,6 +14,25 @@ using log4net;
 using Chimera.Overlay;
 
 namespace Chimera.OpenSim {
+    public enum Fill {
+        /// <summary>
+        /// Fill the left half of the screen.
+        /// </summary>
+        Left, 
+        /// <summary>
+        /// Fill the right half of the screen.
+        /// </summary>
+        Right, 
+        /// <summary>
+        /// Run windowed.
+        /// </summary>
+        Windowed, 
+        /// <summary>
+        /// Fill the whole screen.
+        /// </summary>
+        Full
+    }
+
     public class OpenSimController : ISystemPlugin, IOutput {
         private static Form sForm = null;
 
@@ -26,6 +45,8 @@ namespace Chimera.OpenSim {
         private OutputPanel mOutputPanel;
         private InputPanel mInputPanel;
         private FrameOverlayManager mManager = null;
+
+        private Vector3 mOffset;
 
         private Action mExitListener;
 
@@ -41,11 +62,15 @@ namespace Chimera.OpenSim {
             get { return mViewerController; }
         }
 
-        public bool Fullscreen {
-            get { return mConfig.Fullscreen; }
+        public Fill Fill {
+            get { return mConfig.Fill; }
             set {
-                mConfig.Fullscreen = value;
-                mViewerController.FullScreen = value;
+                mConfig.Fill = value;
+                mViewerController.FullScreen = value == OpenSim.Fill.Full;
+                if (value == OpenSim.Fill.Left)
+                    mViewerController.Split(true);
+                else if (value == OpenSim.Fill.Right)
+                    mViewerController.Split(false);
             }
         }
 
@@ -310,9 +335,9 @@ namespace Chimera.OpenSim {
         }
 
         void mProxyController_OnClientLoggedIn(object sender, EventArgs e) {
-            if (mConfig.Fullscreen)
-                mViewerController.FullScreen = true;
             mViewerController.Monitor = mFrame.Monitor;
+            if (mConfig.Fill != OpenSim.Fill.Windowed)
+                Fill = mConfig.Fill;
 
             new Thread(() => {
                 Thread.Sleep(5000);

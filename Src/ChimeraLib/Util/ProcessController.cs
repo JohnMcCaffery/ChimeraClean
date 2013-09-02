@@ -16,7 +16,7 @@ namespace Chimera.Util {
         /// <summary>
         /// Sets a new extended input style.
         /// </summary>
-        private static readonly int GWL_EXSTYLE = -20;
+        protected static readonly int GWL_EXSTYLE = -20;
         /// <summary>
         /// Sets a new application instance handle.
         /// </summary>
@@ -28,7 +28,7 @@ namespace Chimera.Util {
         /// <summary>
         /// Sets a new input style.
         /// </summary>
-        private static readonly int GWL_STYLE = -16;
+        protected static readonly int GWL_STYLE = -16;
         /// <summary>
         /// Sets the user data associated with the input. This data is intended for use by the application that created the input. Its value is initially zero.
         /// </summary>
@@ -47,7 +47,7 @@ namespace Chimera.Util {
         /// <summary>
         /// The input has a title bar (includes the WS_BORDER style).
         /// </summary>
-        private static readonly Int32 WS_CAPTION = 0x00C00000;
+        protected static readonly Int32 WS_CAPTION = 0x00C00000;
         /// <summary>
         ///The input is a child input. A input with this style cannot have a menu bar. This style cannot be used with the WS_POPUP style.
         /// </summary>
@@ -88,7 +88,7 @@ namespace Chimera.Util {
         /// <summary>
         /// The input is initially maximized.
         /// </summary>
-        private static readonly Int32 WS_MAXIMIZE = 0x01000000;
+        protected static readonly Int32 WS_MAXIMIZE = 0x01000000;
         /// <summary>
         /// The input has a maximize button. Cannot be combined with the WS_EX_CONTEXTHELP style. The WS_SYSMENU style must also be specified.
         /// </summary>
@@ -96,7 +96,7 @@ namespace Chimera.Util {
         /// <summary>
         /// The input is initially minimized. Same as the WS_ICONIC style.
         /// </summary>
-        private static readonly Int32 WS_MINIMIZE = 0x20000000;
+        protected static readonly Int32 WS_MINIMIZE = 0x20000000;
         /// <summary>
         /// The input has a minimize button. Cannot be combined with the WS_EX_CONTEXTHELP style. The WS_SYSMENU style must also be specified.
         /// </summary>
@@ -124,7 +124,7 @@ namespace Chimera.Util {
         /// <summary>
         /// The input has a input menu on its title bar. The WS_CAPTION style must also be specified.
         /// </summary>
-        private static readonly Int32 WS_SYSMENU = 0x00080000;
+        protected static readonly Int32 WS_SYSMENU = 0x00080000;
         /// <summary>
         /// The input is a control that can receive the keyboard focus when the user presses the TAB key. Pressing the TAB key changes the keyboard focus to the next control with the WS_TABSTOP style.
         /// You can turn this style on and off to change dialog box navigation. To change this style after a input has been created, use the SetWindowLong function. For user-created windows and modeless dialogs to work with tab stops, alter the message loop to call the IsDialogMessage function.
@@ -133,7 +133,7 @@ namespace Chimera.Util {
         /// <summary>
         /// The input has a sizing border. Same as the WS_SIZEBOX style.
         /// </summary>
-        private static readonly Int32 WS_THICKFRAME = 0x00040000;
+        protected static readonly Int32 WS_THICKFRAME = 0x00040000;
         /// <summary>
         /// The input is an overlapped input. An overlapped input has a title bar and a border. Same as the WS_OVERLAPPED style.
         /// </summary>
@@ -155,7 +155,7 @@ namespace Chimera.Util {
         /// <summary>
         /// The input has a border with a sunken edge.
         /// </summary>
-        private static readonly Int32 WS_EX_CLIENTEDGE = 0x00000200;
+        protected static readonly Int32 WS_EX_CLIENTEDGE = 0x00000200;
         /// <summary>
         /// Paints all descendants of a input in bottom-to-top painting order using double-buffering. For more information, see Remarks. This cannot be used if the input has a class style of either CS_OWNDC or CS_CLASSDC.
         /// Frames 2000:  This style is not supported.
@@ -173,7 +173,7 @@ namespace Chimera.Util {
         /// <summary>
         /// The input has a double border; the input can, optionally, be created with a title bar by specifying the WS_CAPTION style in the dwStyle parameter.
         /// </summary>
-        private static readonly Int32 WS_EX_DLGMODALFRAME = 0x00000001;
+        protected static readonly Int32 WS_EX_DLGMODALFRAME = 0x00000001;
         /// <summary>
         /// The input is a layered input. This style cannot be used if the input has a class style of either CS_OWNDC or CS_CLASSDC.
         /// Frames 8:  The WS_EX_LAYERED style is supported for top-level windows and child windows. Previous Frames versions support WS_EX_LAYERED only for top-level windows.
@@ -241,7 +241,7 @@ namespace Chimera.Util {
         /// <summary>
         /// The input has a three-dimensional border style intended to be used for items that do not accept user input.
         /// </summary>
-        private static readonly Int32 WS_EX_STATICEDGE = 0x00020000;
+        protected static readonly Int32 WS_EX_STATICEDGE = 0x00020000;
         /// <summary>
         /// The input is intended to be used as a floating toolbar. A tool input has a title bar that is shorter than a normal title bar, and the input title is drawn using a smaller font. A tool input does not appear in the taskbar or in the dialog that appears when the user presses ALT+TAB. If a tool input has a system menu, its icon is not displayed on the title bar. However, you can display the system menu by right-clicking or by typing ALT+SPACE.
         /// </summary>
@@ -276,7 +276,7 @@ namespace Chimera.Util {
         /// <summary>
         /// Applies new frame styles set using the SetWindowLong function. Sends a WM_NCCALCSIZE message to the input, even if the input's size is not being changed. If this flag is not specified, WM_NCCALCSIZE is sent only when the input's size is being changed.
         /// </summary>
-        private static readonly uint SWP_FRAMECHANGED = 0x0020;
+        protected static readonly uint SWP_FRAMECHANGED = 0x0020;
         /// <summary>
         /// Hides the input.
         /// </summary>
@@ -316,7 +316,7 @@ namespace Chimera.Util {
         /// <summary>
         /// Retains the current Z order (ignores the hWndInsertAfter parameter).
         /// </summary>
-        private static readonly uint SWP_NOZORDER = 0x0004;
+        protected static readonly uint SWP_NOZORDER = 0x0004;
         /// <summary>
         /// Displays the input.
         /// </summary>
@@ -412,17 +412,17 @@ namespace Chimera.Util {
         public static extern bool SetForegroundWindow(IntPtr hWnd);
 
         [DllImport("user32.dll")]
-        private extern static bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int X, int Y, int cx, int cy, uint uFlags);
+        protected extern static bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int X, int Y, int cx, int cy, uint uFlags);
 
         [DllImport("user32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool GetWindowRect(HandleRef hwnd, out RECT lpRect);
 
         [DllImport("user32.dll")]
-        private extern static Int32 GetWindowLong(IntPtr hWnd, int nIndex);
+        protected extern static Int32 GetWindowLong(IntPtr hWnd, int nIndex);
 
         [DllImport("user32.dll")]
-        private extern static bool SetWindowLong(IntPtr hWnd, int nIndex, Int32 dwNewLong);
+        protected extern static bool SetWindowLong(IntPtr hWnd, int nIndex, Int32 dwNewLong);
 
         [DllImport("user32.dll")]
 
@@ -549,10 +549,14 @@ namespace Chimera.Util {
                 SetWindowLong(mProcess.MainWindowHandle, GWL_EXSTYLE, lExStyle);
 
                 RECT bounds;
-                GetWindowRect(new HandleRef(mProcess, mProcess.MainWindowHandle), out bounds);
+                if (Monitor == null)
+                    GetWindowRect(new HandleRef(mProcess, mProcess.MainWindowHandle), out bounds);
+                else
+                    bounds = Monitor.Bounds;
+                
 
                 //SetWindowPos(mProcess.MainWindowHandle, IntPtr.Zero, 0, 0, 0, 0, SWP_FRAMECHANGED | SWP_NOSIZE | SWP_NOREPOSITION | SWP_NOMOVE | SWP_NOZORDER | SWP_NOOWNERZORDER);
-                SetWindowPos(mProcess.MainWindowHandle, IntPtr.Zero, bounds.X + 5, bounds.Y + 5, bounds.Width - 5, bounds.Height - 5, SWP_FRAMECHANGED | SWP_NOZORDER);
+                SetWindowPos(mProcess.MainWindowHandle, IntPtr.Zero, bounds.X + 1, bounds.Y + 1, bounds.Width - 1, bounds.Height - 1, SWP_FRAMECHANGED | SWP_NOZORDER);
                 SetWindowPos(mProcess.MainWindowHandle, IntPtr.Zero, bounds.X, bounds.Y, bounds.Width, bounds.Height, SWP_FRAMECHANGED | SWP_NOZORDER);
 
                 /*

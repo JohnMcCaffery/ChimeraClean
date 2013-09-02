@@ -50,7 +50,7 @@ namespace Chimera.OpenSim {
         public bool AutoStartViewer;
         public bool AutoRestartViewer;
         public bool ControlCamera;
-        public bool Fullscreen;
+        public Fill Fill;
         public int ProxyPort;
 
         public bool BackwardsCompatible;
@@ -124,7 +124,11 @@ namespace Chimera.OpenSim {
             AutoRestartViewer = Get(true, "AutoRestart", false, "Whether to automatically restart the viewer if the process exits.");
             ControlCamera = Get(false, "ControlCamera", true, "Whether to control the position of the camera on the viewer.");
             ControlFrustum = Get(false, "ControlFrustum", true, "Whether to control the viewing frustum on the viewer.");
-            Fullscreen = Get(false, "Fullscreen", true, "Whether to start the viewer fullscreen.");
+
+            Fill fill;
+            string fillStr = Get(false, "Fill", "Windowed", "What mode to set the window to, 'Full', 'Windowed', 'Left', 'Right'.");
+            if (Enum.TryParse(fillStr, out fill))
+                Fill = fill;
 
             StartupKeyPresses = Get(true, "StartupKeyPresses", "", "A series of key presses, using SendKeys syntax, which will be pressed when the viewer logs in. Separate sequences with commas.");
 
