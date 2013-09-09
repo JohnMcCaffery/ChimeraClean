@@ -313,7 +313,8 @@ namespace Chimera.OpenSim {
                     mProxy.InjectPacket(mCameraPacket, Direction.Incoming);
                     mCameraPacket = null;
                 }
-        }
+        }
+
         public Vector3 Offset {
             get { return mOffset; } 
             set { 
