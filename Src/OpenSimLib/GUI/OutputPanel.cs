@@ -65,9 +65,9 @@ namespace Chimera.OpenSim.GUI {
                     //fullscreenCheck.Checked = mController.Fullscreen;
                     switch (mController.Fill) {
                         case Fill.Left: leftButton.Checked = true; break;
-                        case Fill.Right: leftButton.Checked = true; break;
-                        case Fill.Windowed: leftButton.Checked = true; break;
-                        case Fill.Full: leftButton.Checked = true; break;
+                        case Fill.Right: rightButton.Checked = true; break;
+                        case Fill.Windowed: windowedButton.Checked = true; break;
+                        case Fill.Full: fullButton.Checked = true; break;
                     }
                     controlCameraCheck.Checked = mController.ControlCamera;
                     controlFrustumCheck.Checked = mController.ControlFrustum;
