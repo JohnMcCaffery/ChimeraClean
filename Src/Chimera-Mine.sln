@@ -19,10 +19,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Overlays", "Overlays", "{AA
 	ProjectSection(SolutionItems) = preProject
 		..\Bin\Overlays\Demo.xml = ..\Bin\Overlays\Demo.xml
 		..\Bin\Overlays\SingleImage.xml = ..\Bin\Overlays\SingleImage.xml
-		..\Bin\Overlays\Test.xml = ..\Bin\Overlays\Test.xml
 		..\Bin\Overlays\Timespan\TimespanLaptop.xml = ..\Bin\Overlays\Timespan\TimespanLaptop.xml
 		..\Bin\Overlays\TimespanOverlayDemo.xml = ..\Bin\Overlays\TimespanOverlayDemo.xml
-		..\Bin\Overlays\TimespanOverlayDemo2.xml = ..\Bin\Overlays\TimespanOverlayDemo2.xml
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsMediaPlayerLib", "WindowsMediaPlayerLib\WindowsMediaPlayerLib.csproj", "{ED985A0A-C964-494D-88BB-E78ACE4F13D1}"
@@ -77,9 +75,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Flythroughs", "Flythroughs"
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Overlay", "Overlay", "{06FD37A2-167A-47CA-9DF6-79B90A6A97F5}"
-	ProjectSection(SolutionItems) = preProject
-		..\Bin\Overlays\Timespan\TimespanOverlay.xml = ..\Bin\Overlays\Timespan\TimespanOverlay.xml
-	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{DB1A444F-C959-40FE-A90B-10FF61313DE7}"
 	ProjectSection(SolutionItems) = preProject
@@ -121,7 +116,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{FCF1B4
 		..\Bin\Configs\Common\Bindings.xml = ..\Bin\Configs\Common\Bindings.xml
 		..\Bin\Configs\Common\Core.ini = ..\Bin\Configs\Common\Core.ini
 		..\Bin\Configs\Common\Experiments.ini = ..\Bin\Configs\Common\Experiments.ini
-		..\Bin\Configs\Common\EyeTracker.ini = ..\Bin\Configs\Common\EyeTracker.ini
 		..\Bin\Configs\Common\Frames.ini = ..\Bin\Configs\Common\Frames.ini
 		..\Bin\Configs\Common\Heightmap.ini = ..\Bin\Configs\Common\Heightmap.ini
 		..\Bin\Configs\Common\InstallBindings.xml = ..\Bin\Configs\Common\InstallBindings.xml
@@ -142,7 +136,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TimespanTest", "TimespanTest", "{22DC0F45-3E0B-4D99-B8C9-15ED2AD17EBC}"
 	ProjectSection(SolutionItems) = preProject
 		..\Bin\Configs\TimespanTest\Bindings.xml = ..\Bin\Configs\TimespanTest\Bindings.xml
-		..\Bin\Configs\TimespanTest\EyeTracker.ini = ..\Bin\Configs\TimespanTest\EyeTracker.ini
 		..\Bin\Configs\TimespanTest\Launch.ini = ..\Bin\Configs\TimespanTest\Launch.ini
 		..\Bin\Configs\TimespanTest\Main.ini = ..\Bin\Configs\TimespanTest\Main.ini
 	EndProjectSection

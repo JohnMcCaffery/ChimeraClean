@@ -21,7 +21,7 @@ namespace Chimera.OpenSim {
             Vector3 offset = Offset * Frame.Core.Orientation.Quaternion;
             Vector3 position = Frame.Core.Position + offset;
 
-            Vector3 focus = Frame.Core.Position + Frame.Core.Orientation.LookAtVector;
+            Vector3 focus = position + Frame.Core.Orientation.LookAtVector;
             cameraPacket.CameraProperty[0].Value = 0;
             cameraPacket.CameraProperty[1].Value = 0f;
             cameraPacket.CameraProperty[2].Value = 0f;
