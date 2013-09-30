@@ -237,10 +237,10 @@ namespace Chimera.Plugins {
                 case Keys.A: mDeltas.Y = mStrafeEnabled ? (float) mKBShift : 0f; break;
                 case Keys.E: mDeltas.Z = mFlyEnabled ? (float) mKBShift : 0f; break;
                 case Keys.C: mDeltas.Z = mFlyEnabled ? (float) -mKBShift : 0f; break;
-                case Keys.Left: mOrientation.Yaw = mYawEnabled ? mKBShift * 2.0 : 0.0; break;
-                case Keys.Right: mOrientation.Yaw = mYawEnabled ? -mKBShift * 2.0 : 0.0; break;
-                case Keys.Up: mOrientation.Pitch = mPitchEnabled ? -mKBShift * 2.0 : 0.0; break;
-                case Keys.Down: mOrientation.Pitch = mPitchEnabled ? mKBShift * 2.0 : 0.0; break;
+                case Keys.Left: mOrientation.Yaw = mYawEnabled ? mKBShift * 4.0 : 0.0; break;
+                case Keys.Right: mOrientation.Yaw = mYawEnabled ? -mKBShift * 4.0 : 0.0; break;
+                case Keys.Up: mOrientation.Pitch = mPitchEnabled ? -mKBShift * 4.0 : 0.0; break;
+                case Keys.Down: mOrientation.Pitch = mPitchEnabled ? mKBShift * 4.0 : 0.0; break;
             }
         }
 
