@@ -8,8 +8,11 @@
 
     <States>
       <State Factory="Blank" Name="Image" Start="true" Opacity=".2">
-        <Feature Factory="Image" X="0" Y="0" W="1920" H="1080" Frame="MainWindow">Images/realmatch_002.png</Feature>
+        <Features>
+          <Feature Factory="Image" X="0" Y="0" W="1920" H="1080" Frame="MainWindow">Images/realmatch_002.png</Feature>
+        </Features>
       </State>
+
 
     </States>
     <Transitions>
