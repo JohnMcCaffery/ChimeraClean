@@ -51,7 +51,7 @@ namespace Chimera.OpenSim {
         public bool AutoStartViewer;
         public bool AutoRestartViewer;
         public bool ControlCamera;
-        public Fill Fill;
+        public Fill Fill = Fill.Windowed;
         public int ProxyPort;
 
         public bool BackwardsCompatible;
@@ -77,33 +77,6 @@ namespace Chimera.OpenSim {
         }
 
         protected override void InitConfig() {
-            /*
-            AddCommandLineParam("General", "ViewerExe", "v");
-            AddCommandLineParam("General", "WorkingDirectory", "d");
-            AddCommandLineParam("General", "ViewerArguments", "a");
-            AddCommandLineParam("General", "ViewerToggleHUDKey", "k");
-            AddCommandLineParam("General", "UseGrid", "ug");
-            AddCommandLineParam("General", "UseSetFollowCamPackets", "uf");
-            AddCommandLineParam("General", "EnableWindowPackets", "ew");
-            AddCommandLineParam("General", "ProxyGrid", "g");
-            AddCommandLineParam("General", "LoginURI", "u");
-            AddCommandLineParam("General", "MasterAddress", "ma");
-            AddCommandLineParam("General", "MasterPort", "mp");
-            AddCommandLineParam("General", "WorldPosition", "cw");
-            AddCommandLineParam("General", "WorldPitch", "pw");
-            AddCommandLineParam("General", "WorldYaw", "yw");
-            AddCommandLineParam("General", "AutoRestart", "r");
-            AddCommandLineParam("General", "CrashLogFile", "l");
-            AddCommandLineParam(Name, "ControlCamera", "c");
-            AddCommandLineParam(Name, "AutoStartProxy", "ap");
-            AddCommandLineParam(Name, "AutoStartViewer", "av");
-            AddCommandLineParam(Name, "ProxyPort", "p");
-            AddCommandLineParam(Name, "FirstName", "fn");
-            AddCommandLineParam(Name, "LastName", "l");
-            AddCommandLineParam(Name, "Password", "pw");
-            AddCommandLineParam(Name, "Fullscreen", "pw");
-            */
-            
             ViewerExecutable = Path.GetFullPath(Get(true, "ViewerExe", DEFAULT_CLIENT_EXE, "The executable that runs the viewer."));
             ViewerWorkingDirectory = Get(true, "WorkingDirectory", Path.GetDirectoryName(ViewerExecutable), "The workign directory for the viewer executable.");
             ViewerArguments = Get(true, "ViewerArguments", "", "Any arguments to be passed to the viewer when it starts.");
@@ -129,7 +102,7 @@ namespace Chimera.OpenSim {
 
             Fill fill;
             string fillStr = Get(false, "Fill", "Windowed", "What mode to set the window to, 'Full', 'Windowed', 'Left', 'Right'.");
-            if (Enum.TryParse(fillStr, out fill))
+            if (fillStr != null && fillStr.ToUpper() != "NONE" && Enum.TryParse(fillStr, out fill))
                 Fill = fill;
 
             Offset = GetV(false, "Offset", Vector3.Zero, "Offset from the raw camera position to apply.");
