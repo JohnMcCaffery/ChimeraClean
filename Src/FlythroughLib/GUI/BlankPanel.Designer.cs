@@ -1,4 +1,23 @@
-﻿namespace Chimera.Flythrough.GUI {
+﻿/*************************************************************************
+Copyright (c) 2012 John McCaffery 
+
+This file is part of Chimera.
+
+Chimera is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Chimera is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Chimera.  If not, see <http://www.gnu.org/licenses/>.
+
+**************************************************************************/
+namespace Chimera.Flythrough.GUI {
     partial class BlankPanel<T> {
         /// <summary> 
         /// Required designer variable.
@@ -31,6 +50,8 @@
             // 
             // lengthValue
             // 
+            this.lengthValue.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.lengthValue.Increment = new decimal(new int[] {
             50,
             0,
@@ -43,13 +64,14 @@
             0,
             0});
             this.lengthValue.Name = "lengthValue";
-            this.lengthValue.Size = new System.Drawing.Size(60, 20);
+            this.lengthValue.Size = new System.Drawing.Size(61, 20);
             this.lengthValue.TabIndex = 15;
             this.lengthValue.Value = new decimal(new int[] {
             5000,
             0,
             0,
             0});
+            this.lengthValue.ValueChanged += new System.EventHandler(this.lengthValue_ValueChanged);
             // 
             // Length
             // 
@@ -62,11 +84,11 @@
             // 
             // progressBar
             // 
-            this.progressBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.progressBar.Location = new System.Drawing.Point(4, 29);
+            this.progressBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.progressBar.Location = new System.Drawing.Point(0, 25);
             this.progressBar.Name = "progressBar";
-            this.progressBar.Size = new System.Drawing.Size(455, 23);
+            this.progressBar.Size = new System.Drawing.Size(130, 23);
             this.progressBar.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
             this.progressBar.TabIndex = 16;
             // 
@@ -77,8 +99,10 @@
             this.Controls.Add(this.progressBar);
             this.Controls.Add(this.lengthValue);
             this.Controls.Add(this.Length);
+            this.MinimumSize = new System.Drawing.Size(130, 48);
             this.Name = "BlankPanel";
-            this.Size = new System.Drawing.Size(462, 156);
+            this.Size = new System.Drawing.Size(130, 48);
+            this.VisibleChanged += new System.EventHandler(this.BlankPanel_VisibleChanged);
             ((System.ComponentModel.ISupportInitialize)(this.lengthValue)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

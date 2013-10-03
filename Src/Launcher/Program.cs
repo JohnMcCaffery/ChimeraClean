@@ -12,6 +12,7 @@ namespace Chimera.Launcher {
         private static string sProxyExe;
         private static Process sServerProcess;
         private static Process sProxyProcess;
+        private static bool mShutdown;
 
         static void Main(string[] args) {
             LauncherConfig cfg = new LauncherConfig();
@@ -23,7 +24,9 @@ namespace Chimera.Launcher {
                     //sServerProcess.Exited += sServerProcess_Exited;
                 sServerProcess.Start();
 
-                Thread.Sleep(15 * 1000);
+                Console.WriteLine("Server started.");
+
+                Thread.Sleep(35 * 1000);
             }
 
             //sProxyExe = typeof(ChimeraLauncher).Assembly.Location;
@@ -32,6 +35,8 @@ namespace Chimera.Launcher {
                 //if (cfg.AutoRestart)
                     //sProxyProcess.Exited += sProxyProcess_Exited;
             sProxyProcess.Start();
+
+            Console.WriteLine("Chimera started.");
 
             Thread input = new Thread(() => {
                 Console.WriteLine("Type Exit to quit.");
@@ -42,21 +47,27 @@ namespace Chimera.Launcher {
                         ProcessWrangler.PressKey(sProxyProcess, "{F4}", false, true, false);
                 }
 
+                mShutdown = true;
+
                 ProcessWrangler.PressKey(sProxyProcess, "{F4}", false, true, false);
                 if (sServerProcess != null)
                     ProcessWrangler.PressKey(sServerProcess, "q{ENTER}");
             });
             input.Name = "Launcher input thread.";
-            input.Start();
+            //input.Start();
         }
 
         static void sProxyProcess_Exited(object sender, EventArgs e) {
+            if (mShutdown)
+                return;
             Process proxy = ProcessWrangler.InitProcess(sProxyExe);
             proxy.Exited += sProxyProcess_Exited;
             proxy.Start();
         }
 
         static void sServerProcess_Exited(object sender, EventArgs e) {
+            if (mShutdown)
+                return;
             Process server = ProcessWrangler.InitProcess(sServerExe);
             server.Exited += sServerProcess_Exited;
             server.Start();

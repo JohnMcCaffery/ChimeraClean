@@ -1,4 +1,23 @@
-﻿namespace Chimera.Flythrough.GUI {
+﻿/*************************************************************************
+Copyright (c) 2012 John McCaffery 
+
+This file is part of Chimera.
+
+Chimera is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Chimera is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Chimera.  If not, see <http://www.gnu.org/licenses/>.
+
+**************************************************************************/
+namespace Chimera.Flythrough.GUI {
     partial class MoveToPanel {
         /// <summary> 
         /// Required designer variable.
@@ -36,9 +55,9 @@
             // 
             this.moveToTakeCurrentButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.moveToTakeCurrentButton.Location = new System.Drawing.Point(134, 99);
+            this.moveToTakeCurrentButton.Location = new System.Drawing.Point(0, 125);
             this.moveToTakeCurrentButton.Name = "moveToTakeCurrentButton";
-            this.moveToTakeCurrentButton.Size = new System.Drawing.Size(80, 23);
+            this.moveToTakeCurrentButton.Size = new System.Drawing.Size(116, 23);
             this.moveToTakeCurrentButton.TabIndex = 11;
             this.moveToTakeCurrentButton.Text = "Take Current";
             this.moveToTakeCurrentButton.UseVisualStyleBackColor = true;
@@ -46,6 +65,8 @@
             // 
             // lengthValue
             // 
+            this.lengthValue.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.lengthValue.Increment = new decimal(new int[] {
             50,
             0,
@@ -58,13 +79,14 @@
             0,
             0});
             this.lengthValue.Name = "lengthValue";
-            this.lengthValue.Size = new System.Drawing.Size(60, 20);
+            this.lengthValue.Size = new System.Drawing.Size(48, 20);
             this.lengthValue.TabIndex = 13;
             this.lengthValue.Value = new decimal(new int[] {
             5000,
             0,
             0,
             0});
+            this.lengthValue.ValueChanged += new System.EventHandler(this.lengthValue_ValueChanged);
             // 
             // Length
             // 
@@ -79,15 +101,14 @@
             // 
             this.targetVectorPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.targetVectorPanel.Text = "Move To Target";
             this.targetVectorPanel.Location = new System.Drawing.Point(0, 0);
-            this.targetVectorPanel.Max = 2048f;
+            this.targetVectorPanel.Max = 256F;
             this.targetVectorPanel.MaxV = ((OpenMetaverse.Vector3)(resources.GetObject("targetVectorPanel.MaxV")));
-            this.targetVectorPanel.Min = -2048f;
+            this.targetVectorPanel.Min = 0F;
             this.targetVectorPanel.MinimumSize = new System.Drawing.Size(103, 95);
             this.targetVectorPanel.MinV = ((OpenMetaverse.Vector3)(resources.GetObject("targetVectorPanel.MinV")));
             this.targetVectorPanel.Name = "targetVectorPanel";
-            this.targetVectorPanel.Size = new System.Drawing.Size(214, 98);
+            this.targetVectorPanel.Size = new System.Drawing.Size(116, 98);
             this.targetVectorPanel.TabIndex = 10;
             this.targetVectorPanel.Value = ((OpenMetaverse.Vector3)(resources.GetObject("targetVectorPanel.Value")));
             this.targetVectorPanel.X = 128F;
@@ -96,11 +117,11 @@
             // 
             // progressBar
             // 
-            this.progressBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.progressBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.progressBar.Location = new System.Drawing.Point(3, 125);
+            this.progressBar.Location = new System.Drawing.Point(0, 156);
             this.progressBar.Name = "progressBar";
-            this.progressBar.Size = new System.Drawing.Size(211, 23);
+            this.progressBar.Size = new System.Drawing.Size(116, 23);
             this.progressBar.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
             this.progressBar.TabIndex = 14;
             // 
@@ -113,9 +134,10 @@
             this.Controls.Add(this.Length);
             this.Controls.Add(this.moveToTakeCurrentButton);
             this.Controls.Add(this.targetVectorPanel);
-            this.MinimumSize = new System.Drawing.Size(214, 149);
+            this.MinimumSize = new System.Drawing.Size(116, 179);
             this.Name = "MoveToPanel";
-            this.Size = new System.Drawing.Size(214, 149);
+            this.Size = new System.Drawing.Size(116, 179);
+            this.VisibleChanged += new System.EventHandler(this.MoveToPanel_VisibleChanged);
             ((System.ComponentModel.ISupportInitialize)(this.lengthValue)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

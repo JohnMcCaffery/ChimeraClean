@@ -1,4 +1,23 @@
-﻿namespace Chimera.Kinect.GUI {
+﻿/*************************************************************************
+Copyright (c) 2012 John McCaffery 
+
+This file is part of Chimera.
+
+Chimera is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Chimera is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Chimera.  If not, see <http://www.gnu.org/licenses/>.
+
+**************************************************************************/
+namespace Chimera.Kinect.GUI {
     partial class SimpleCursorPanel {
         /// <summary> 
         /// Required designer variable.
@@ -53,7 +72,9 @@
             this.enabledCheck = new System.Windows.Forms.CheckBox();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.leftBox = new System.Windows.Forms.GroupBox();
+            this.leftHandShiftLabel = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
+            this.LeftHandShift = new Chimera.GUI.UpdatedScalarPanel();
             this.HandL = new Chimera.GUI.UpdatedVectorPanel();
             this.ConstrainedXLeft = new Chimera.GUI.UpdatedScalarPanel();
             this.RawXLeft = new Chimera.GUI.UpdatedScalarPanel();
@@ -63,8 +84,8 @@
             this.label13 = new System.Windows.Forms.Label();
             this.ConstrainedYLeft = new Chimera.GUI.UpdatedScalarPanel();
             this.rightBox = new System.Windows.Forms.GroupBox();
-            this.leftHandShiftLabel = new System.Windows.Forms.Label();
-            this.LeftHandShift = new Chimera.GUI.UpdatedScalarPanel();
+            this.SmoothingFactor = new Chimera.GUI.UpdatedScalarPanel();
+            this.label14 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -112,7 +133,7 @@
             // XLable
             // 
             this.XLable.AutoSize = true;
-            this.XLable.Location = new System.Drawing.Point(0, 397);
+            this.XLable.Location = new System.Drawing.Point(0, 426);
             this.XLable.Name = "XLable";
             this.XLable.Size = new System.Drawing.Size(14, 13);
             this.XLable.TabIndex = 11;
@@ -121,7 +142,7 @@
             // YLable
             // 
             this.YLable.AutoSize = true;
-            this.YLable.Location = new System.Drawing.Point(0, 423);
+            this.YLable.Location = new System.Drawing.Point(0, 452);
             this.YLable.Name = "YLable";
             this.YLable.Size = new System.Drawing.Size(14, 13);
             this.YLable.TabIndex = 12;
@@ -183,8 +204,8 @@
             // 
             // RawYRight
             // 
-            this.RawYRight.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.RawYRight.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.RawYRight.Location = new System.Drawing.Point(48, 146);
             this.RawYRight.Max = 1F;
             this.RawYRight.Min = -1F;
@@ -197,8 +218,8 @@
             // 
             // RawXRight
             // 
-            this.RawXRight.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.RawXRight.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.RawXRight.Location = new System.Drawing.Point(48, 120);
             this.RawXRight.Max = 1F;
             this.RawXRight.Min = -1F;
@@ -211,8 +232,8 @@
             // 
             // ConstrainedYRight
             // 
-            this.ConstrainedYRight.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.ConstrainedYRight.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.ConstrainedYRight.Location = new System.Drawing.Point(82, 198);
             this.ConstrainedYRight.Max = 1F;
             this.ConstrainedYRight.Min = 0F;
@@ -225,8 +246,8 @@
             // 
             // ConstrainedXRight
             // 
-            this.ConstrainedXRight.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.ConstrainedXRight.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.ConstrainedXRight.Location = new System.Drawing.Point(82, 172);
             this.ConstrainedXRight.Max = 1F;
             this.ConstrainedXRight.Min = 0F;
@@ -239,8 +260,8 @@
             // 
             // Anchor
             // 
-            this.Anchor.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.Anchor.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.Anchor.Location = new System.Drawing.Point(9, 55);
             this.Anchor.Max = 10F;
             this.Anchor.MaxV = ((OpenMetaverse.Vector3)(resources.GetObject("Anchor.MaxV")));
@@ -258,8 +279,8 @@
             // 
             // TopLeftY
             // 
-            this.TopLeftY.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.TopLeftY.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.TopLeftY.Location = new System.Drawing.Point(71, 96);
             this.TopLeftY.Max = 10F;
             this.TopLeftY.Min = -10F;
@@ -272,8 +293,8 @@
             // 
             // TopLeftX
             // 
-            this.TopLeftX.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.TopLeftX.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.TopLeftX.Location = new System.Drawing.Point(71, 70);
             this.TopLeftX.Max = 10F;
             this.TopLeftX.Min = -10F;
@@ -286,9 +307,9 @@
             // 
             // Y
             // 
-            this.Y.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.Y.Location = new System.Drawing.Point(21, 423);
+            this.Y.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.Y.Location = new System.Drawing.Point(21, 452);
             this.Y.Max = 1F;
             this.Y.Min = 0F;
             this.Y.MinimumSize = new System.Drawing.Size(95, 20);
@@ -300,9 +321,9 @@
             // 
             // X
             // 
-            this.X.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.X.Location = new System.Drawing.Point(21, 397);
+            this.X.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.X.Location = new System.Drawing.Point(21, 426);
             this.X.Max = 1F;
             this.X.Min = 0F;
             this.X.MinimumSize = new System.Drawing.Size(95, 20);
@@ -314,8 +335,8 @@
             // 
             // Height
             // 
-            this.Height.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.Height.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.Height.Location = new System.Drawing.Point(49, 29);
             this.Height.Max = 3F;
             this.Height.Min = 0F;
@@ -328,8 +349,8 @@
             // 
             // Width
             // 
-            this.Width.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.Width.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.Width.Location = new System.Drawing.Point(49, 3);
             this.Width.Max = 3F;
             this.Width.Min = 0F;
@@ -342,8 +363,8 @@
             // 
             // UpShift
             // 
-            this.UpShift.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.UpShift.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.UpShift.Location = new System.Drawing.Point(61, 29);
             this.UpShift.Max = 2F;
             this.UpShift.Min = -2F;
@@ -356,8 +377,8 @@
             // 
             // LeftShift
             // 
-            this.LeftShift.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.LeftShift.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.LeftShift.Location = new System.Drawing.Point(61, 3);
             this.LeftShift.Max = 2F;
             this.LeftShift.Min = -2F;
@@ -370,8 +391,8 @@
             // 
             // HandR
             // 
-            this.HandR.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.HandR.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.HandR.Location = new System.Drawing.Point(6, 19);
             this.HandR.Max = 10F;
             this.HandR.MaxV = ((OpenMetaverse.Vector3)(resources.GetObject("HandR.MaxV")));
@@ -391,9 +412,9 @@
             // 
             this.enabledCheck.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.enabledCheck.AutoSize = true;
-            this.enabledCheck.Location = new System.Drawing.Point(999, 3);
+            this.enabledCheck.Location = new System.Drawing.Point(1008, 3);
             this.enabledCheck.Name = "enabledCheck";
-            this.enabledCheck.Size = new System.Drawing.Size(65, 17);
+            this.enabledCheck.Size = new System.Drawing.Size(56, 17);
             this.enabledCheck.TabIndex = 30;
             this.enabledCheck.Text = "Active";
             this.enabledCheck.UseVisualStyleBackColor = true;
@@ -401,9 +422,9 @@
             // 
             // splitContainer1
             // 
-            this.splitContainer1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.splitContainer1.Location = new System.Drawing.Point(6, 3);
+            this.splitContainer1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.splitContainer1.Location = new System.Drawing.Point(3, 26);
             this.splitContainer1.Name = "splitContainer1";
             // 
             // splitContainer1.Panel1
@@ -432,8 +453,8 @@
             // 
             // leftBox
             // 
-            this.leftBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.leftBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.leftBox.Controls.Add(this.leftHandShiftLabel);
             this.leftBox.Controls.Add(this.label10);
             this.leftBox.Controls.Add(this.LeftHandShift);
@@ -452,6 +473,15 @@
             this.leftBox.TabStop = false;
             this.leftBox.Text = "Left";
             // 
+            // leftHandShiftLabel
+            // 
+            this.leftHandShiftLabel.AutoSize = true;
+            this.leftHandShiftLabel.Location = new System.Drawing.Point(4, 21);
+            this.leftHandShiftLabel.Name = "leftHandShiftLabel";
+            this.leftHandShiftLabel.Size = new System.Drawing.Size(78, 13);
+            this.leftHandShiftLabel.TabIndex = 28;
+            this.leftHandShiftLabel.Text = "Left Hand Shift";
+            // 
             // label10
             // 
             this.label10.AutoSize = true;
@@ -461,10 +491,24 @@
             this.label10.TabIndex = 24;
             this.label10.Text = "Raw X";
             // 
+            // LeftHandShift
+            // 
+            this.LeftHandShift.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.LeftHandShift.Location = new System.Drawing.Point(87, 19);
+            this.LeftHandShift.Max = 1F;
+            this.LeftHandShift.Min = 0F;
+            this.LeftHandShift.MinimumSize = new System.Drawing.Size(95, 20);
+            this.LeftHandShift.Name = "LeftHandShift";
+            this.LeftHandShift.Scalar = null;
+            this.LeftHandShift.Size = new System.Drawing.Size(308, 20);
+            this.LeftHandShift.TabIndex = 27;
+            this.LeftHandShift.Value = 0F;
+            // 
             // HandL
             // 
-            this.HandL.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.HandL.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.HandL.Location = new System.Drawing.Point(6, 45);
             this.HandL.Max = 10F;
             this.HandL.MaxV = ((OpenMetaverse.Vector3)(resources.GetObject("HandL.MaxV")));
@@ -482,8 +526,8 @@
             // 
             // ConstrainedXLeft
             // 
-            this.ConstrainedXLeft.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.ConstrainedXLeft.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.ConstrainedXLeft.Location = new System.Drawing.Point(87, 198);
             this.ConstrainedXLeft.Max = 1F;
             this.ConstrainedXLeft.Min = 0F;
@@ -496,8 +540,8 @@
             // 
             // RawXLeft
             // 
-            this.RawXLeft.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.RawXLeft.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.RawXLeft.Location = new System.Drawing.Point(52, 146);
             this.RawXLeft.Max = 1F;
             this.RawXLeft.Min = -1F;
@@ -519,8 +563,8 @@
             // 
             // RawYLeft
             // 
-            this.RawYLeft.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.RawYLeft.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.RawYLeft.Location = new System.Drawing.Point(52, 172);
             this.RawYLeft.Max = 1F;
             this.RawYLeft.Min = -1F;
@@ -551,8 +595,8 @@
             // 
             // ConstrainedYLeft
             // 
-            this.ConstrainedYLeft.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.ConstrainedYLeft.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.ConstrainedYLeft.Location = new System.Drawing.Point(87, 224);
             this.ConstrainedYLeft.Max = 1F;
             this.ConstrainedYLeft.Min = 0F;
@@ -565,8 +609,8 @@
             // 
             // rightBox
             // 
-            this.rightBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.rightBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.rightBox.Controls.Add(this.label9);
             this.rightBox.Controls.Add(this.HandR);
             this.rightBox.Controls.Add(this.ConstrainedXRight);
@@ -583,33 +627,35 @@
             this.rightBox.TabStop = false;
             this.rightBox.Text = "Right";
             // 
-            // leftHandShiftLabel
+            // SmoothingFactor
             // 
-            this.leftHandShiftLabel.AutoSize = true;
-            this.leftHandShiftLabel.Location = new System.Drawing.Point(4, 21);
-            this.leftHandShiftLabel.Name = "leftHandShiftLabel";
-            this.leftHandShiftLabel.Size = new System.Drawing.Size(78, 13);
-            this.leftHandShiftLabel.TabIndex = 28;
-            this.leftHandShiftLabel.Text = "Left Hand Shift";
+            this.SmoothingFactor.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.SmoothingFactor.Location = new System.Drawing.Point(96, 3);
+            this.SmoothingFactor.Max = 20F;
+            this.SmoothingFactor.Min = 0F;
+            this.SmoothingFactor.MinimumSize = new System.Drawing.Size(95, 20);
+            this.SmoothingFactor.Name = "SmoothingFactor";
+            this.SmoothingFactor.Scalar = null;
+            this.SmoothingFactor.Size = new System.Drawing.Size(906, 20);
+            this.SmoothingFactor.TabIndex = 32;
+            this.SmoothingFactor.Value = 0F;
             // 
-            // LeftHandShift
+            // label14
             // 
-            this.LeftHandShift.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.LeftHandShift.Location = new System.Drawing.Point(87, 19);
-            this.LeftHandShift.Max = 1F;
-            this.LeftHandShift.Min = 0F;
-            this.LeftHandShift.MinimumSize = new System.Drawing.Size(95, 20);
-            this.LeftHandShift.Name = "LeftHandShift";
-            this.LeftHandShift.Scalar = null;
-            this.LeftHandShift.Size = new System.Drawing.Size(308, 20);
-            this.LeftHandShift.TabIndex = 27;
-            this.LeftHandShift.Value = 0F;
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(3, 7);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(90, 13);
+            this.label14.TabIndex = 33;
+            this.label14.Text = "Smoothing Factor";
             // 
             // SimpleCursorPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.label14);
+            this.Controls.Add(this.SmoothingFactor);
             this.Controls.Add(this.enabledCheck);
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.YLable);
@@ -676,5 +722,7 @@
         private System.Windows.Forms.GroupBox rightBox;
         private System.Windows.Forms.Label leftHandShiftLabel;
         private Chimera.GUI.UpdatedScalarPanel LeftHandShift;
+        private Chimera.GUI.UpdatedScalarPanel SmoothingFactor;
+        private System.Windows.Forms.Label label14;
     }
 }

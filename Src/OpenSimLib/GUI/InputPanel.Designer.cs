@@ -1,4 +1,23 @@
-﻿namespace Chimera.OpenSim.GUI {
+﻿/*************************************************************************
+Copyright (c) 2012 John McCaffery 
+
+This file is part of Chimera.
+
+Chimera is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Chimera is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Chimera.  If not, see <http://www.gnu.org/licenses/>.
+
+**************************************************************************/
+namespace Chimera.OpenSim.GUI {
     partial class InputPanel {
         /// <summary> 
         /// Required designer variable.
@@ -59,7 +78,7 @@
             // 
             this.activeCheckbox.AutoSize = true;
             this.activeCheckbox.CheckAlign = System.Drawing.ContentAlignment.BottomRight;
-            this.activeCheckbox.Location = new System.Drawing.Point(443, 182);
+            this.activeCheckbox.Location = new System.Drawing.Point(3, 194);
             this.activeCheckbox.Name = "activeCheckbox";
             this.activeCheckbox.Size = new System.Drawing.Size(56, 17);
             this.activeCheckbox.TabIndex = 127;
@@ -70,7 +89,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(9, 74);
+            this.label2.Location = new System.Drawing.Point(9, 96);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(86, 13);
             this.label2.TabIndex = 125;
@@ -79,7 +98,7 @@
             // type13Label
             // 
             this.type13Label.AutoSize = true;
-            this.type13Label.Location = new System.Drawing.Point(54, 130);
+            this.type13Label.Location = new System.Drawing.Point(54, 152);
             this.type13Label.Name = "type13Label";
             this.type13Label.Size = new System.Drawing.Size(41, 13);
             this.type13Label.TabIndex = 123;
@@ -88,7 +107,7 @@
             // type17Label
             // 
             this.type17Label.AutoSize = true;
-            this.type17Label.Location = new System.Drawing.Point(59, 156);
+            this.type17Label.Location = new System.Drawing.Point(59, 178);
             this.type17Label.Name = "type17Label";
             this.type17Label.Size = new System.Drawing.Size(36, 13);
             this.type17Label.TabIndex = 121;
@@ -97,7 +116,7 @@
             // type9Label
             // 
             this.type9Label.AutoSize = true;
-            this.type9Label.Location = new System.Drawing.Point(3, 0);
+            this.type9Label.Location = new System.Drawing.Point(3, 22);
             this.type9Label.Name = "type9Label";
             this.type9Label.Size = new System.Drawing.Size(92, 13);
             this.type9Label.TabIndex = 119;
@@ -106,7 +125,7 @@
             // type10Label
             // 
             this.type10Label.AutoSize = true;
-            this.type10Label.Location = new System.Drawing.Point(12, 28);
+            this.type10Label.Location = new System.Drawing.Point(12, 50);
             this.type10Label.Name = "type10Label";
             this.type10Label.Size = new System.Drawing.Size(83, 13);
             this.type10Label.TabIndex = 117;
@@ -115,7 +134,7 @@
             // type11Label
             // 
             this.type11Label.AutoSize = true;
-            this.type11Label.Location = new System.Drawing.Point(4, 51);
+            this.type11Label.Location = new System.Drawing.Point(4, 73);
             this.type11Label.Name = "type11Label";
             this.type11Label.Size = new System.Drawing.Size(91, 13);
             this.type11Label.TabIndex = 115;
@@ -142,7 +161,7 @@
             // type8Label
             // 
             this.type8Label.AutoSize = true;
-            this.type8Label.Location = new System.Drawing.Point(46, 106);
+            this.type8Label.Location = new System.Drawing.Point(46, 128);
             this.type8Label.Name = "type8Label";
             this.type8Label.Size = new System.Drawing.Size(49, 13);
             this.type8Label.TabIndex = 109;
@@ -245,7 +264,7 @@
             // 
             this.distancePanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.distancePanel.Location = new System.Drawing.Point(101, 104);
+            this.distancePanel.Location = new System.Drawing.Point(101, 126);
             this.distancePanel.Max = 10F;
             this.distancePanel.Min = -10F;
             this.distancePanel.MinimumSize = new System.Drawing.Size(95, 20);
@@ -259,7 +278,7 @@
             // 
             this.focusThresholdPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.focusThresholdPanel.Location = new System.Drawing.Point(101, 78);
+            this.focusThresholdPanel.Location = new System.Drawing.Point(101, 100);
             this.focusThresholdPanel.Max = 10F;
             this.focusThresholdPanel.Min = -10F;
             this.focusThresholdPanel.MinimumSize = new System.Drawing.Size(95, 20);
@@ -273,7 +292,7 @@
             // 
             this.lookAtThresholdPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.lookAtThresholdPanel.Location = new System.Drawing.Point(101, 52);
+            this.lookAtThresholdPanel.Location = new System.Drawing.Point(101, 74);
             this.lookAtThresholdPanel.Max = 10F;
             this.lookAtThresholdPanel.Min = -10F;
             this.lookAtThresholdPanel.MinimumSize = new System.Drawing.Size(95, 20);
@@ -287,7 +306,7 @@
             // 
             this.behindnessLagPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.behindnessLagPanel.Location = new System.Drawing.Point(101, 26);
+            this.behindnessLagPanel.Location = new System.Drawing.Point(101, 48);
             this.behindnessLagPanel.Max = 10F;
             this.behindnessLagPanel.Min = -10F;
             this.behindnessLagPanel.MinimumSize = new System.Drawing.Size(95, 20);
@@ -301,7 +320,7 @@
             // 
             this.behindnessAnglePanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.behindnessAnglePanel.Location = new System.Drawing.Point(101, 0);
+            this.behindnessAnglePanel.Location = new System.Drawing.Point(101, 22);
             this.behindnessAnglePanel.Max = 10F;
             this.behindnessAnglePanel.Min = -10F;
             this.behindnessAnglePanel.MinimumSize = new System.Drawing.Size(95, 20);
@@ -315,7 +334,7 @@
             // 
             this.focusPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.focusPanel.Location = new System.Drawing.Point(101, 156);
+            this.focusPanel.Location = new System.Drawing.Point(101, 178);
             this.focusPanel.Max = 10F;
             this.focusPanel.Min = -10F;
             this.focusPanel.MinimumSize = new System.Drawing.Size(95, 20);
@@ -329,7 +348,7 @@
             // 
             this.lookAtPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.lookAtPanel.Location = new System.Drawing.Point(101, 130);
+            this.lookAtPanel.Location = new System.Drawing.Point(101, 152);
             this.lookAtPanel.Max = 10F;
             this.lookAtPanel.Min = -10F;
             this.lookAtPanel.MinimumSize = new System.Drawing.Size(95, 20);

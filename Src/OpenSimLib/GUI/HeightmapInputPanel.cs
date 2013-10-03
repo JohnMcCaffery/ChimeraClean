@@ -1,4 +1,23 @@
-﻿using System;
+﻿/*************************************************************************
+Copyright (c) 2012 John McCaffery 
+
+This file is part of Chimera.
+
+Chimera is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Chimera is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Chimera.  If not, see <http://www.gnu.org/licenses/>.
+
+**************************************************************************/
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
@@ -9,19 +28,19 @@ using System.Windows.Forms;
 
 namespace Chimera.OpenSim.GUI {
     public partial class HeightmapInputPanel : UserControl {
-        private HeightmapInput mInput;
+        private HeightmapPlugin mInput;
         private HeightmapConfig mConfig;
 
         public HeightmapInputPanel() {
             InitializeComponent();
         }
 
-        public HeightmapInputPanel(HeightmapInput input)
+        public HeightmapInputPanel(HeightmapPlugin input)
             : this() {
             Init(input);
         }
 
-        public void Init(HeightmapInput input) {
+        public void Init(HeightmapPlugin input) {
             mInput = input;
             mConfig = (HeightmapConfig) mInput.Config;
             loginErrorLabel.Text = mInput.LoginFailMessage != null ? mInput.LoginFailMessage : "";
@@ -64,7 +83,7 @@ namespace Chimera.OpenSim.GUI {
                 }
             };
             if (InvokeRequired)
-                Invoke(a);
+                BeginInvoke(a);
             else
                 a();
         }

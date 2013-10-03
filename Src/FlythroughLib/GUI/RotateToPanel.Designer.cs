@@ -1,4 +1,23 @@
-﻿namespace Chimera.Flythrough.GUI {
+﻿/*************************************************************************
+Copyright (c) 2012 John McCaffery 
+
+This file is part of Chimera.
+
+Chimera is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Chimera is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Chimera.  If not, see <http://www.gnu.org/licenses/>.
+
+**************************************************************************/
+namespace Chimera.Flythrough.GUI {
     partial class RotateToPanel {
         /// <summary> 
         /// Required designer variable.
@@ -24,6 +43,7 @@
         /// </summary>
         private void InitializeComponent() {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RotateToPanel));
+            Chimera.Util.Rotation rotation1 = new Chimera.Util.Rotation();
             this.rotateToTakeCurrentButton = new System.Windows.Forms.Button();
             this.lengthValue = new System.Windows.Forms.NumericUpDown();
             this.Length = new System.Windows.Forms.Label();
@@ -34,11 +54,11 @@
             // 
             // rotateToTakeCurrentButton
             // 
-            this.rotateToTakeCurrentButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.rotateToTakeCurrentButton.Location = new System.Drawing.Point(134, 96);
+            this.rotateToTakeCurrentButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.rotateToTakeCurrentButton.Location = new System.Drawing.Point(0, 125);
             this.rotateToTakeCurrentButton.Name = "rotateToTakeCurrentButton";
-            this.rotateToTakeCurrentButton.Size = new System.Drawing.Size(118, 23);
+            this.rotateToTakeCurrentButton.Size = new System.Drawing.Size(133, 23);
             this.rotateToTakeCurrentButton.TabIndex = 20;
             this.rotateToTakeCurrentButton.Text = "Take Current";
             this.rotateToTakeCurrentButton.UseVisualStyleBackColor = true;
@@ -46,6 +66,8 @@
             // 
             // lengthValue
             // 
+            this.lengthValue.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.lengthValue.Increment = new decimal(new int[] {
             50,
             0,
@@ -58,13 +80,14 @@
             0,
             0});
             this.lengthValue.Name = "lengthValue";
-            this.lengthValue.Size = new System.Drawing.Size(60, 20);
+            this.lengthValue.Size = new System.Drawing.Size(65, 20);
             this.lengthValue.TabIndex = 22;
             this.lengthValue.Value = new decimal(new int[] {
             5000,
             0,
             0,
             0});
+            this.lengthValue.ValueChanged += new System.EventHandler(this.lengthValue_ValueChanged);
             // 
             // Length
             // 
@@ -77,27 +100,31 @@
             // 
             // progressBar
             // 
-            this.progressBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.progressBar.Location = new System.Drawing.Point(0, 125);
+            this.progressBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.progressBar.Location = new System.Drawing.Point(0, 156);
             this.progressBar.Name = "progressBar";
-            this.progressBar.Size = new System.Drawing.Size(252, 23);
+            this.progressBar.Size = new System.Drawing.Size(133, 23);
             this.progressBar.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
             this.progressBar.TabIndex = 23;
             // 
             // rotationPanel
             // 
-            this.rotationPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.rotationPanel.Text = "Name";
+            this.rotationPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.rotationPanel.Location = new System.Drawing.Point(0, 0);
             this.rotationPanel.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("rotationPanel.LookAtVector")));
             this.rotationPanel.MinimumSize = new System.Drawing.Size(252, 95);
             this.rotationPanel.Name = "rotationPanel";
             this.rotationPanel.Pitch = 0D;
-            this.rotationPanel.Quaternion = ((OpenMetaverse.Quaternion)(resources.GetObject("rotationPanel.Rotation")));
+            this.rotationPanel.Quaternion = ((OpenMetaverse.Quaternion)(resources.GetObject("rotationPanel.Quaternion")));
             this.rotationPanel.Size = new System.Drawing.Size(252, 95);
             this.rotationPanel.TabIndex = 24;
+            rotation1.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("rotation1.LookAtVector")));
+            rotation1.Pitch = 0D;
+            rotation1.Quaternion = ((OpenMetaverse.Quaternion)(resources.GetObject("rotation1.Quaternion")));
+            rotation1.Yaw = 0D;
+            this.rotationPanel.Value = rotation1;
             this.rotationPanel.Yaw = 0D;
             // 
             // RotateToPanel
@@ -109,9 +136,10 @@
             this.Controls.Add(this.lengthValue);
             this.Controls.Add(this.Length);
             this.Controls.Add(this.rotateToTakeCurrentButton);
-            this.MinimumSize = new System.Drawing.Size(252, 150);
+            this.MinimumSize = new System.Drawing.Size(133, 179);
             this.Name = "RotateToPanel";
-            this.Size = new System.Drawing.Size(252, 150);
+            this.Size = new System.Drawing.Size(133, 179);
+            this.VisibleChanged += new System.EventHandler(this.RotateToPanel_VisibleChanged);
             ((System.ComponentModel.ISupportInitialize)(this.lengthValue)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

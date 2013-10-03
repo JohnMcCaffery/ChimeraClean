@@ -1,0 +1,318 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Chimera.Kinect.Axes.ArmYawAxis">
+    <Position X="0.5" Y="5.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAQgAAAAAAAQABAAAAAAAEAAAAAAAAAgAAAAIAEAAAA=</HashCode>
+      <FileName>Axes\ArmYawAxis.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Chimera.Kinect.Axes.CrouchAxis">
+    <Position X="9.5" Y="5.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>ABAAAAAAAAAAAUAEAAAAAEAAAAAAAAIgAEAAAAAAAAA=</HashCode>
+      <FileName>Axes\CrouchAxis.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Chimera.Kinect.Axes.DotAxis">
+    <Position X="4" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAAAAAAAAAAVEAAAAAAAAAIAAAAAIAAEACIAEAAAA=</HashCode>
+      <FileName>Axes\DotAxis.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Chimera.Kinect.Axes.KinectAxis">
+    <Position X="6.25" Y="0.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>ABAAAQAAAEAAARAAAAAAAAAAAAAAAAAgEAACAAABAAA=</HashCode>
+      <FileName>Axes\KinectAxis.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Chimera.Kinect.Axes.KinectAxisConfig" Collapsed="true">
+    <Position X="20.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Axes\KinectAxisConfig.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Chimera.Kinect.Axes.KinectScaledAxis" Collapsed="true">
+    <Position X="9.5" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAQAAAAAAAAkQAAIAACAAAQIAAAAAAAAAAABAAA=</HashCode>
+      <FileName>Axes\KinectScaledAxis.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Chimera.Kinect.Axes.LeanAxis">
+    <Position X="7.25" Y="5.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAAAQAAAAAACAAEAAAAAAAAAgAAAAIAEAAAQ=</HashCode>
+      <FileName>Axes\LeanAxis.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Chimera.Kinect.Axes.PushAxis">
+    <Position X="9.5" Y="1" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <NestedTypes>
+      <Class Name="Chimera.Kinect.Axes.PushAxis.PushSingleAxis" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Axes\PushAxis.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Axes\PushAxis.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Chimera.Kinect.Axes.TAxis">
+    <Position X="2.75" Y="5.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAQgAAAAAAAAABAAAAAAAEAAAAAAAAAgAAAAIAEAAAA=</HashCode>
+      <FileName>Axes\TAxis.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Chimera.Kinect.Axes.TwistAxis">
+    <Position X="5" Y="5.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAAAQABAAAACAAEAAAAAAAAAgAAAAIAEAAAQ=</HashCode>
+      <FileName>Axes\TwistAxis.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Chimera.Kinect.GlobalConditions" Collapsed="true">
+    <Position X="19" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAIAMAAAAAAAAAAAAAAAgAAgAAAAAACAIAAAAE=</HashCode>
+      <FileName>GlobalConditions.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Chimera.Kinect.KinectConfig" Collapsed="true">
+    <Position X="15.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAAAAAAYEgAgAAAAAAAAAAAAAAAADAAAAAAAA=</HashCode>
+      <FileName>KinectConfig.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Chimera.Kinect.KinectMovementPlugin">
+    <Position X="16.75" Y="6.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>KinectMovementPlugin.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Chimera.Kinect.PointCursor" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="15.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACUoiCBECjEAgtAUgAKAgARAEBBIA0MAAhICDwDAaAE=</HashCode>
+      <FileName>PointCursor.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Chimera.Kinect.SimpleKinectCursor" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="19" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BiJSgSEM50ABBsAAgAZCIkRAiBEAAQYKDBACHQKJYAM=</HashCode>
+      <FileName>SimpleKinectCursor.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Chimera.Kinect.GUI.Axes.DotAxisPanel" Collapsed="true">
+    <Position X="17.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAACAggACAAAAAAAAAAAABAAAABA=</HashCode>
+      <FileName>GUI\Axes\DotAxisPanel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Chimera.Kinect.GUI.Axes.KinectAxisPanel" Collapsed="true">
+    <Position X="12" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACIAAQAgQICAAAACAAAAABAAAAAAAAAAAAA=</HashCode>
+      <FileName>GUI\Axes\KinectAxisPanel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Chimera.Kinect.GUI.Axes.KinectScaledAxisPanel" Collapsed="true">
+    <Position X="13.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAACAAAACIAARAgQIGAAAACAAAAABAAAAAAAAAAAAA=</HashCode>
+      <FileName>GUI\Axes\KinectScaledAxisPanel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Chimera.Kinect.GUI.KinectCamera" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="13.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IIAAAAgEBmEAIooABACEAIACSABAASIAEAACpQCACUA=</HashCode>
+      <FileName>GUI\KinectCamera.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Chimera.Kinect.GUI.PointCursorPanel" Collapsed="true">
+    <Position X="17.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACAAIAAACBAABAAQAGABgACIAEAhAAACAACAAQCAAA=</HashCode>
+      <FileName>GUI\PointCursorPanel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Chimera.Kinect.GUI.RaiseArmTriggerPanel" Collapsed="true">
+    <Position X="13.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAICAAAAASAAABAAAACAAABCIAAAAQIAAGAAAAEAAAg=</HashCode>
+      <FileName>GUI\RaiseArmTriggerPanel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Chimera.Kinect.GUI.SimpleCursorPanel" Collapsed="true">
+    <Position X="17.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>9QISAAFAhiAAABAAQAKCAEBCIBEABQAACAACAQIC4QE=</HashCode>
+      <FileName>GUI\SimpleCursorPanel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Chimera.Kinect.GUI.ScalarUpdater" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="15.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAAAAAAAAACAAAAEBAAAAAQAAAAAAAAgAAAgAAAAAAA=</HashCode>
+      <FileName>GUI\Updaters.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Chimera.Kinect.GUI.VectorUpdater" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="20.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAABAAAAAAAAAUBAAAAAQAAAAAAAAAAEAgAAAAAAA=</HashCode>
+      <FileName>GUI\Updaters.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Chimera.Kinect.GUI.ConditionUpdater" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="12" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAgAACAAAAEBAAAAAQgAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>GUI\Updaters.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Chimera.Kinect.Overlay.KinectControlStateFactory" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="19" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAEAAAAAAAAAAAAA=</HashCode>
+      <FileName>Overlay\KinectControlState.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Chimera.Kinect.Overlay.KinectControlState" Collapsed="true">
+    <Position X="17.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACAAAAAAAAAAAAAAIAAAAAAMAIAAAAAAiAAAAACIQA=</HashCode>
+      <FileName>Overlay\KinectControlState.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Chimera.Kinect.Overlay.KinectControlWindowState" Collapsed="true">
+    <Position X="20.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Overlay\KinectControlWindowState.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Chimera.Kinect.Overlay.RaiseArmTriggerFactory" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="12" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAAAIAAAAAAAAAAAAQAAAAAAEAAAAAAAAAAAAA=</HashCode>
+      <FileName>Overlay\RaiseArmTrigger.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Chimera.Kinect.Overlay.RaiseArmTrigger" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="20.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACIiAAAEAQAAAFgAACQAAQBAAAAQEAIgAMAAAAAAAAg=</HashCode>
+      <FileName>Overlay\RaiseArmTrigger.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Chimera.Kinect.Overlay.SkeletonFeatureFactory" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="12" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAEAAAAAAAAAAAAA=</HashCode>
+      <FileName>Overlay\SkeletonFeature.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Chimera.Kinect.Overlay.SkeletonFeature" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="20.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ASoABCAAgEAAEAAQgCggAEAQAgQALABgAJCCIBKRUwE=</HashCode>
+      <FileName>Overlay\SkeletonFeature.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Chimera.Kinect.Overlay.SkeletonFoundFactory" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="13.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAAAIAAAAAAAAAAAAQAAAAAAEAAAAAAAAAAAAA=</HashCode>
+      <FileName>Overlay\SkeletonFoundTrigger.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Chimera.Kinect.Overlay.SkeletonFoundTrigger" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="15.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAgAAAAAAEAAAAAAAAAgEAAAAAAAAAA=</HashCode>
+      <FileName>Overlay\SkeletonFoundTrigger.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Chimera.Kinect.Overlay.SkeletonLostFactory" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="17.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAAAIAAAAAAAAAAAAQAAAAAAEAAAAAAAAAAAAA=</HashCode>
+      <FileName>Overlay\SkeletonLostTrigger.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Chimera.Kinect.Overlay.SkeletonLostTrigger" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="19" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAAQgAAAAAAAkAAAAAAEAAAAAAAAIgEAAEAAABEAA=</HashCode>
+      <FileName>Overlay\SkeletonLostTrigger.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Chimera.Plugins.AxisBasedDelta">
+    <Position X="14.5" Y="6.25" Width="1.5" />
+    <NestedTypes>
+      <Class Name="Chimera.Plugins.AxisBasedDelta.AxisConfig" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier />
+    <ShowAsCollectionAssociation>
+      <Property Name="Axes" />
+    </ShowAsCollectionAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Chimera.Plugins.DeltaBasedPlugin">
+    <Position X="12.25" Y="6.25" Width="1.5" />
+    <TypeIdentifier />
+    <Lollipop Position="0.2" />
+  </Class>
+  <Interface Name="Chimera.Interfaces.IAxis">
+    <Position X="16.75" Y="7.75" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

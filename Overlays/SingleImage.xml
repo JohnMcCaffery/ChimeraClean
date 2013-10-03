@@ -1,0 +1,43 @@
+<Overlay Width="1920" Height="1080" >
+  <Any>
+    <Triggers>
+    </Triggers>
+
+    <TransitionStyles>
+    </TransitionStyles>
+
+    <States>
+      <State Factory="Blank" Name="Image" Start="true" Opacity=".2">
+        <Features>
+          <Feature Factory="Image" X="0" Y="0" W="1920" H="1080" Frame="MainWindow">Images/realmatch_002.png</Feature>
+        </Features>
+      </State>
+
+
+    </States>
+    <Transitions>
+    </Transitions>
+  </Any>
+
+  <!-- Settings specific to the overlay being instantiated based on click interactions -->
+
+  <ClickBased>
+    <States>
+
+    </States>
+    <Transitions>
+
+    </Transitions>
+  </ClickBased>
+
+  <!-- Settings specific to the overlay being instantiated based on hover interactions -->
+
+  <HoverBased>
+    <States>
+
+    </States>
+    <Transitions>
+
+    </Transitions>
+  </HoverBased>
+</Overlay>

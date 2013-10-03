@@ -1,4 +1,23 @@
-﻿using System;
+﻿/*************************************************************************
+Copyright (c) 2012 John McCaffery 
+
+This file is part of Chimera.
+
+Chimera is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Chimera is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Chimera.  If not, see <http://www.gnu.org/licenses/>.
+
+**************************************************************************/
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,9 +25,33 @@ using Chimera.Interfaces.Overlay;
 using System.Drawing;
 using NuiLibDotNet;
 using OpenMetaverse;
+using Chimera.Overlay;
+using System.Xml;
 
 namespace Chimera.Kinect.Overlay {
-    public class SkeletonFeature : IDrawable {
+    public class SkeletonFeatureFactory : IFeatureFactory {
+        #region IFactory<IFeature> Members
+
+        public IFeature Create(OverlayPlugin manager, XmlNode node) {
+            return new SkeletonFeature(manager, node);
+        }
+
+        public IFeature Create(OverlayPlugin manager, XmlNode node, Rectangle clip) {
+            return new SkeletonFeature(manager, node, clip);
+        }
+
+        #endregion
+
+        #region IFactory Members
+
+        public string Name {
+            get { return "Skeleton"; }
+        }
+
+        #endregion
+    }
+
+    public class SkeletonFeature : OverlayXmlLoader, IFeature {
         private static Vector sLeftHand, sRightHand;
         private static Vector sLeftElbow, sRightElbow;
         private static Vector sLeftShoulder, sRightShoulder;
@@ -19,6 +62,13 @@ namespace Chimera.Kinect.Overlay {
         private static Vector sCentreHip;
         private static Vector sCentreShoulder;
         private static Vector sHead;
+        private bool mActive = true;
+        /// <summary>
+        /// The clip rectangle bounding the area this item will be drawn to.
+        /// </summary>
+        private Rectangle mClip;
+ 
+
         /// <summary>
         /// The colour the current skeleton will be drawn. Changes every time the skeleton changes.
         /// </summary>
@@ -37,10 +87,8 @@ namespace Chimera.Kinect.Overlay {
         private static bool sNeedsRedrawn = false;
 
         private float mRoomW = 3f;
+        private RectangleF mBounds;
         /// <summary>
-        /// The clip rectangle for the window as a whole.
-        /// </summary>
-        private Rectangle mClip;
         /// <summary>
         /// Where the x coordinate the skeleton can be positioned at starts.
         /// </summary>
@@ -62,37 +110,59 @@ namespace Chimera.Kinect.Overlay {
         /// </summary>
         private string mWindowName;
 
+        public SkeletonFeature(int xStart, int xEnd, int y, float scale, string windowName, Rectangle clip)
+            : this((float)xStart / (float) clip.Width, (float)(xEnd - xStart) / (float) clip.Width, (float)y / (float) clip.Height, scale, windowName) {
+        }
+
         public SkeletonFeature (float xStart, float xRange, float y, float scale, string windowName) {
-            mXStart = xStart;
-            mXRange = xRange;
-            mY = y;
+            mBounds = new RectangleF(xStart, y, xRange, 0f);
             mScale = scale;
             mWindowName = windowName;
         }
 
-        public string Window {
+        public SkeletonFeature(OverlayPlugin plugin, XmlNode node) {
+            mScale = GetFloat(node, 100f, "Scale");
+            mWindowName = GetManager(plugin, node, "skeleton feature").Name;
+            mBounds = GetBounds(node, "skeleton feature");
+        }
+
+        public SkeletonFeature(OverlayPlugin plugin, XmlNode node, Rectangle clip)
+            : this(plugin, node) {
+            mBounds = GetBounds(node, "skeleton feature", clip);
+        }
+
+        public virtual Rectangle Clip {
+            get { return mClip; }
+            set { mClip = value; }
+        }
+
+
+        public string Frame {
             get { return mWindowName; }
+        }
+
+        public bool Active {
+            get { return mActive; }
+            set { mActive = value; }
         }
 
         public bool NeedsRedrawn {
             get { return sNeedsRedrawn; }
         }
 
-        public void RedrawStatic(Rectangle clip, Graphics graphics) {
-            mClip = clip;
-
+        public void DrawStatic(Graphics graphics) {
             if (!sInitialised)
                 Init();
         }
 
         public void DrawDynamic(Graphics graphics) {
             sNeedsRedrawn = false;
-            if (!Nui.HasSkeleton)
+            if (!Nui.HasSkeleton || sCentreHip == null)
                 return;
 
             float scaledPos = ((sCentreHip.X + mRoomW / 2f) / mRoomW);
-            float x = mXStart + (mXRange * scaledPos);
-            Point centreP = new Point((int)(mClip.Width * x), (int) (mY * mClip.Height));
+            float x = mBounds.X + (mBounds.Width * scaledPos);
+            Point centreP = new Point((int)(Clip.Width * x), (int) (mBounds.Y * Clip.Height));
             Vector3 centre = V3toVector(sCentreHip);
             float lineW = 16f;
             using (Pen p = new Pen(sSkeletonColour, lineW)) {

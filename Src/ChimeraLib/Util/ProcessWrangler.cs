@@ -1,4 +1,23 @@
-﻿using System;
+﻿/*************************************************************************
+Copyright (c) 2012 John McCaffery 
+
+This file is part of Chimera.
+
+Chimera is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Chimera is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Chimera.  If not, see <http://www.gnu.org/licenses/>.
+
+**************************************************************************/
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,6 +28,8 @@ using System.IO;
 using System.Reflection;
 using System.Threading;
 using Chimera.Interfaces;
+using Chimera.Config;
+using log4net;
 
 namespace Chimera.Util {
     public static class ProcessWrangler {
@@ -158,7 +179,7 @@ namespace Chimera.Util {
         private static readonly Int32 WS_EX_CLIENTEDGE = 0x00000200;
         /// <summary>
         /// Paints all descendants of a input in bottom-to-top painting order using double-buffering. For more information, see Remarks. This cannot be used if the input has a class style of either CS_OWNDC or CS_CLASSDC.
-        /// Windows 2000:  This style is not supported.
+        /// Frames 2000:  This style is not supported.
         /// </summary>
         private static readonly Int32 WS_EX_COMPOSITED = 0x02000000;
         /// <summary>
@@ -176,7 +197,7 @@ namespace Chimera.Util {
         private static readonly Int32 WS_EX_DLGMODALFRAME = 0x00000001;
         /// <summary>
         /// The input is a layered input. This style cannot be used if the input has a class style of either CS_OWNDC or CS_CLASSDC.
-        /// Windows 8:  The WS_EX_LAYERED style is supported for top-level windows and child windows. Previous Windows versions support WS_EX_LAYERED only for top-level windows.
+        /// Frames 8:  The WS_EX_LAYERED style is supported for top-level windows and child windows. Previous Frames versions support WS_EX_LAYERED only for top-level windows.
         /// </summary>
         private static readonly Int32 WS_EX_LAYERED = 0x00080000;
         /// <summary>
@@ -350,11 +371,11 @@ namespace Chimera.Util {
             ///</summary>
             MBUTTON = 0x04,
             ///<summary>
-            ///Windows 2000/XP: X1 mouse button
+            ///Frames 2000/XP: X1 mouse button
             ///</summary>
             XBUTTON1 = 0x05,
             ///<summary>
-            ///Windows 2000/XP: X2 mouse button
+            ///Frames 2000/XP: X2 mouse button
             ///</summary>
             XBUTTON2 = 0x06,
             ///<summary>
@@ -646,11 +667,11 @@ namespace Chimera.Util {
             ///</summary>
             KEY_Z = 0x5A,
             ///<summary>
-            ///Left Windows key (Microsoft Natural keyboard) 
+            ///Left Frames key (Microsoft Natural keyboard) 
             ///</summary>
             LWIN = 0x5B,
             ///<summary>
-            ///Right Windows key (Natural keyboard)
+            ///Right Frames key (Natural keyboard)
             ///</summary>
             RWIN = 0x5C,
             ///<summary>
@@ -854,75 +875,75 @@ namespace Chimera.Util {
             ///</summary>
             RMENU = 0xA5,
             ///<summary>
-            ///Windows 2000/XP: Browser Back key
+            ///Frames 2000/XP: Browser Back key
             ///</summary>
             BROWSER_BACK = 0xA6,
             ///<summary>
-            ///Windows 2000/XP: Browser Forward key
+            ///Frames 2000/XP: Browser Forward key
             ///</summary>
             BROWSER_FORWARD = 0xA7,
             ///<summary>
-            ///Windows 2000/XP: Browser Refresh key
+            ///Frames 2000/XP: Browser Refresh key
             ///</summary>
             BROWSER_REFRESH = 0xA8,
             ///<summary>
-            ///Windows 2000/XP: Browser Stop key
+            ///Frames 2000/XP: Browser Stop key
             ///</summary>
             BROWSER_STOP = 0xA9,
             ///<summary>
-            ///Windows 2000/XP: Browser Search key 
+            ///Frames 2000/XP: Browser Search key 
             ///</summary>
             BROWSER_SEARCH = 0xAA,
             ///<summary>
-            ///Windows 2000/XP: Browser Favorites key
+            ///Frames 2000/XP: Browser Favorites key
             ///</summary>
             BROWSER_FAVORITES = 0xAB,
             ///<summary>
-            ///Windows 2000/XP: Browser Begin and Home key
+            ///Frames 2000/XP: Browser Begin and Home key
             ///</summary>
             BROWSER_HOME = 0xAC,
             ///<summary>
-            ///Windows 2000/XP: Volume Mute key
+            ///Frames 2000/XP: Volume Mute key
             ///</summary>
             VOLUME_MUTE = 0xAD,
             ///<summary>
-            ///Windows 2000/XP: Volume Down key
+            ///Frames 2000/XP: Volume Down key
             ///</summary>
             VOLUME_DOWN = 0xAE,
             ///<summary>
-            ///Windows 2000/XP: Volume Up key
+            ///Frames 2000/XP: Volume Up key
             ///</summary>
             VOLUME_UP = 0xAF,
             ///<summary>
-            ///Windows 2000/XP: Next Track key
+            ///Frames 2000/XP: Next Track key
             ///</summary>
             MEDIA_NEXT_TRACK = 0xB0,
             ///<summary>
-            ///Windows 2000/XP: Previous Track key
+            ///Frames 2000/XP: Previous Track key
             ///</summary>
             MEDIA_PREV_TRACK = 0xB1,
             ///<summary>
-            ///Windows 2000/XP: Stop Media key
+            ///Frames 2000/XP: Stop Media key
             ///</summary>
             MEDIA_STOP = 0xB2,
             ///<summary>
-            ///Windows 2000/XP: Play/Pause Media key
+            ///Frames 2000/XP: Play/Pause Media key
             ///</summary>
             MEDIA_PLAY_PAUSE = 0xB3,
             ///<summary>
-            ///Windows 2000/XP: Begin Mail key
+            ///Frames 2000/XP: Begin Mail key
             ///</summary>
             LAUNCH_MAIL = 0xB4,
             ///<summary>
-            ///Windows 2000/XP: Select Media key
+            ///Frames 2000/XP: Select Media key
             ///</summary>
             LAUNCH_MEDIA_SELECT = 0xB5,
             ///<summary>
-            ///Windows 2000/XP: Begin Application 1 key
+            ///Frames 2000/XP: Begin Application 1 key
             ///</summary>
             LAUNCH_APP1 = 0xB6,
             ///<summary>
-            ///Windows 2000/XP: Begin Application 2 key
+            ///Frames 2000/XP: Begin Application 2 key
             ///</summary>
             LAUNCH_APP2 = 0xB7,
             ///<summary>
@@ -930,19 +951,19 @@ namespace Chimera.Util {
             ///</summary>
             OEM_1 = 0xBA,
             ///<summary>
-            ///Windows 2000/XP: For any country/region, the '+' key
+            ///Frames 2000/XP: For any country/region, the '+' key
             ///</summary>
             OEM_PLUS = 0xBB,
             ///<summary>
-            ///Windows 2000/XP: For any country/region, the ',' key
+            ///Frames 2000/XP: For any country/region, the ',' key
             ///</summary>
             OEM_COMMA = 0xBC,
             ///<summary>
-            ///Windows 2000/XP: For any country/region, the '-' key
+            ///Frames 2000/XP: For any country/region, the '-' key
             ///</summary>
             OEM_MINUS = 0xBD,
             ///<summary>
-            ///Windows 2000/XP: For any country/region, the '.' key
+            ///Frames 2000/XP: For any country/region, the '.' key
             ///</summary>
             OEM_PERIOD = 0xBE,
             ///<summary>
@@ -974,15 +995,15 @@ namespace Chimera.Util {
             ///</summary>
             OEM_8 = 0xDF,
             ///<summary>
-            ///Windows 2000/XP: Either the angle bracket key or the backslash key on the RT 102-key keyboard
+            ///Frames 2000/XP: Either the angle bracket key or the backslash key on the RT 102-key keyboard
             ///</summary>
             OEM_102 = 0xE2,
             ///<summary>
-            ///Windows 95/98/Me, Windows NT 4.0, Windows 2000/XP: IME PROCESS key
+            ///Frames 95/98/Me, Frames NT 4.0, Frames 2000/XP: IME PROCESS key
             ///</summary>
             PROCESSKEY = 0xE5,
             ///<summary>
-            ///Windows 2000/XP: Used to pass Unicode characters as if they were keystrokes.
+            ///Frames 2000/XP: Used to pass Unicode characters as if they were keystrokes.
             ///The VK_PACKET key is the low word of a 32-bit Virtual Key value used for non-keyboard input methods. For more information,
             ///see Remark in KEYBDINPUT, SendInput, WM_KEYDOWN, and WM_KEYUP
             ///</summary>
@@ -1200,6 +1221,7 @@ namespace Chimera.Util {
         }
         
 
+        private static ILog Logger = LogManager.GetLogger("ProcessManager");
         private static ICrashable sRoot;
         private static Form sForm;
         private static int sCurrentScreen = 0;
@@ -1348,16 +1370,24 @@ namespace Chimera.Util {
         private const Int32 CURSOR_SHOWING = 0x00000001;
 
         public static void Click() {
+            Click(true);
+        }
+
+        public static void Click(bool left) {
+            Click(left ? MOUSEEVENTF.LEFTUP : MOUSEEVENTF.RIGHTUP, left ? MOUSEEVENTF.LEFTDOWN : MOUSEEVENTF.RIGHTDOWN);
+        }
+
+        private static void Click(MOUSEEVENTF up, MOUSEEVENTF down) {
             INPUT mouseInput = new INPUT();
             mouseInput.type = INPUT_MOUSE;
             mouseInput.U.mi.dx = 0;
             mouseInput.U.mi.dy = 0;
             mouseInput.U.mi.mouseData = MouseEventDataXButtons.Nothing;
 
-            mouseInput.U.mi.dwFlags = MOUSEEVENTF.LEFTDOWN;
+            mouseInput.U.mi.dwFlags = down;
             SendInput(1, new INPUT[] { mouseInput }, INPUT.Size);
 
-            mouseInput.U.mi.dwFlags = MOUSEEVENTF.LEFTUP;
+            mouseInput.U.mi.dwFlags = up;
             SendInput(1, new INPUT[] { mouseInput }, INPUT.Size);
         }
 
@@ -1387,8 +1417,8 @@ namespace Chimera.Util {
 
             SetWindowLong(window.MainWindowHandle, GWL_STYLE, lStyle);
             SetWindowLong(window.MainWindowHandle, GWL_EXSTYLE, lExStyle);
-            //SetWindowPos(window.MainWindowHandle, IntPtr.Zero, monitor.Bounds.X, monitor.Bounds.Y, monitor.Bounds.Width, monitor.Bounds.Height, SWP_FRAMECHANGED |  SWP_NOZORDER | SWP_NOOWNERZORDER);
             SetWindowPos(window.MainWindowHandle, IntPtr.Zero, 0, 0, 0, 0, SWP_FRAMECHANGED | SWP_NOSIZE | SWP_NOREPOSITION | SWP_NOMOVE | SWP_NOZORDER | SWP_NOOWNERZORDER);
+            SetWindowPos(window.MainWindowHandle, IntPtr.Zero, monitor.Bounds.X, monitor.Bounds.Y, monitor.Bounds.Width, monitor.Bounds.Height, SWP_NOZORDER | SWP_NOOWNERZORDER);
             BringToFront(foreground);
         }
 
@@ -1457,13 +1487,13 @@ namespace Chimera.Util {
             sRoot = root;
             if (!Debugger.IsAttached) {
             //if (true) {
-                Console.WriteLine("Listening for crashes.");
+                Logger.Info("Listening for crashes.");
                 AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
                 Application.ThreadException += new ThreadExceptionEventHandler(Application_ThreadException);
                 try {
                     Application.Run(form);
                 } catch (Exception e) {
-                    Console.WriteLine("Exception caught transition GUI thread.");
+                    Logger.Warn("Exception caught in GUI thread.");
                     HandleException(e);
                 }
             } else
@@ -1471,28 +1501,59 @@ namespace Chimera.Util {
         }
 
         static void Application_ThreadException(object sender, System.Threading.ThreadExceptionEventArgs e) {
-            Console.WriteLine("Exception caught transition ThreadException.");
+            Logger.Warn("Exception caught from GUI Thread.");
             sForm.Close();
             HandleException(e.Exception);
         }
 
         static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e) {
-            Console.WriteLine("Exception caught transition App Domain.");
+            Logger.Warn("Exception caught in App Domain.");
             sForm.Close();
             HandleException((Exception)e.ExceptionObject);
         }
 
         static void HandleException(Exception e) {
-            Console.WriteLine(e.Message);
-            Console.WriteLine(e.StackTrace);
+            Logger.Warn(e.Message);
+            Logger.Warn(e.StackTrace);
             sRoot.OnCrash(e);
-            if (sRoot.AutoRestart) {
-                string entry = Assembly.GetEntryAssembly().Location;
-                string call = Assembly.GetCallingAssembly().Location;
-                string exe = Assembly.GetExecutingAssembly().Location;
-                InitProcess(Assembly.GetEntryAssembly().Location).Start();
-            }
             //throw e;
+            Logger.Warn("Exiting with code 42");
+            Environment.Exit(42);
+        }
+
+        public static void Dump(string dump, string end) {
+            DumpConfig cfg = new DumpConfig();
+
+            if (cfg.Dump) {
+                string t = DateTime.Now.ToString("dd-HH.mm");
+                string y = DateTime.Now.ToString("yyyy");
+                string m = DateTime.Now.ToString("MMM");
+
+                string file = Path.GetFullPath(cfg.Folder + y + "/" + m + "/" + t + end);
+                if (!Directory.Exists(Path.GetDirectoryName(file)))
+                    Directory.CreateDirectory(Path.GetDirectoryName(file));
+                Logger.Info("Dumping to " + file);
+
+                File.WriteAllText(file, dump);
+            }
+        }
+
+        private class DumpConfig : ConfigBase {
+            public bool Dump;
+            public string Folder;
+
+            public DumpConfig()
+                : base() {
+            }
+
+            public override string Group {
+                get { return "Dump"; }
+            }
+
+            protected override void InitConfig() {
+                Dump = Get(true, "DumpLogs", true, "Whether to write logs which are dumped via the ProcessWrangler.Dump method.");
+                Folder = Get(true, "DumpFolder", "Logs/", "The folder to write log files to.");
+            }
         }
     }
 }

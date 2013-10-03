@@ -1,4 +1,23 @@
-﻿using System;
+﻿/*************************************************************************
+Copyright (c) 2012 John McCaffery 
+
+This file is part of Chimera.
+
+Chimera is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Chimera is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Chimera.  If not, see <http://www.gnu.org/licenses/>.
+
+**************************************************************************/
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,18 +28,13 @@ using System.Windows.Forms;
 using System.Drawing;
 using Chimera.Util;
 using C = NuiLibDotNet.Condition;
-using Chimera.Kinect.Interfaces;
+using Chimera.Config;
 
 namespace Chimera.Kinect {
-    public class PointCursorFactory : IKinectCursorFactory {
-        public IKinectCursor Make() { return new PointCursor(); }
-        public string Name { get { return "Ray Tracing Pointer"; } }
-    }
-    public class PointCursor : IKinectCursor {
+    public class PointCursor : ISystemPlugin {
         public static float SCALE = 1000f;
 
-        private IKinectController mController;
-        private Window mWindow;
+        private Frame mFrame;
         private Rotation mOrientation;
         private Vector mPlaneTopLeft, mPlaneNormal;
         private Vector mPointDir, mPointStart;
@@ -82,16 +96,17 @@ namespace Chimera.Kinect {
         }
 
         private void ConfigureFromWindow() {
-            mWorldW.Value = (float) mWindow.Width;
-            mWorldH.Value = (float) mWindow.Height;
-            mScreenW.Value = mWindow.Monitor.Bounds.Width;
-            mScreenH.Value = mWindow.Monitor.Bounds.Height;
+            mWorldW.Value = (float) mFrame.Width;
+            mWorldH.Value = (float) mFrame.Height;
+            mScreenW.Value = mFrame.Monitor.Bounds.Width;
+            mScreenH.Value = mFrame.Monitor.Bounds.Height;
 
-            Vector3 topLeft = mWindow.TopLeft;
-            topLeft -= mController.Position;
+            Vector3 topLeft = mFrame.TopLeft;
+            //TODO - this should be set as property
+            topLeft -= Vector3.Zero;
             topLeft *= mOrientation.Quaternion;
 
-            Vector3 normal = mWindow.Orientation.LookAtVector * mOrientation.Quaternion;
+            Vector3 normal = mFrame.Orientation.LookAtVector * mOrientation.Quaternion;
 
             mPlaneTopLeft.Set(topLeft.Y, topLeft.Z, topLeft.X);
             mPlaneNormal.Set(normal.Y, normal.Z, normal.X);
@@ -103,19 +118,19 @@ namespace Chimera.Kinect {
 
         #region IKinectCursor
 
-        public event Action<IKinectCursor> CursorEnter;
+        public event Action<PointCursor> CursorEnter;
 
-        public event Action<IKinectCursor> CursorLeave;
+        public event Action<PointCursor> CursorLeave;
 
-        public event Action<IKinectCursor, float, float> CursorMove;
+        public event Action<PointCursor, float, float> CursorMove;
 
-        public event Action<bool> EnabledChanged;
+        public event Action<IPlugin, bool> EnabledChanged;
 
         public PointF Location {
             get { return mLocation; }
         }
 
-        public UserControl ControlPanel {
+        public Control ControlPanel {
             get {
                 if (mPanel == null)
                     mPanel = new PointCursorPanel(this);
@@ -123,8 +138,8 @@ namespace Chimera.Kinect {
             }
         }
 
-        public Window Window {
-            get { return mWindow; }
+        public Frame Frame {
+            get { return mFrame; }
         }
 
         public string State {
@@ -141,25 +156,25 @@ namespace Chimera.Kinect {
                 if (value != mEnabled) {
                     mEnabled = value;
                     if (EnabledChanged != null)
-                        EnabledChanged(value);
+                        EnabledChanged(this, value);
                 }
             }
         }
 
-        public void Init(IKinectController controller, Window window) {
-            mController = controller;
-            mWindow = window;
-            mOrientation = controller.Orientation;
+        public void Init(Frame frame) {
+            mFrame = frame;
+            //TODO - this should be set properly - as a property
+            mOrientation = Rotation.Zero;
 
             mOrientation.Changed += orientation_Changed;
-            mWindow.Changed += (win, args) => ConfigureFromWindow();
+            mFrame.Changed += (win, args) => ConfigureFromWindow();
 
             mPlaneTopLeft = Vector.Create("PlanePoint", 1f, 1f, 0f);
             mPlaneNormal = Nui.normalize(Vector.Create("PlaneNormal", 0f, 0f, 1f));
-            mWorldW = Scalar.Create("WorldW", (float) mWindow.Width);
-            mWorldH = Scalar.Create("WorldH", (float) mWindow.Height);
-            mScreenW = Scalar.Create("ScreenW", mWindow.Monitor.Bounds.Width);
-            mScreenH = Scalar.Create("ScreenH", mWindow.Monitor.Bounds.Height);
+            mWorldW = Scalar.Create("WorldW", (float) mFrame.Width);
+            mWorldH = Scalar.Create("WorldH", (float) mFrame.Height);
+            mScreenW = Scalar.Create("ScreenW", mFrame.Monitor.Bounds.Width);
+            mScreenH = Scalar.Create("ScreenH", mFrame.Monitor.Bounds.Height);
 
             Vector pointEnd = Nui.joint(Nui.Hand_Right) * SCALE;
             if (mTest) {
@@ -203,8 +218,6 @@ namespace Chimera.Kinect {
             mY.Name = "Y";
 
             ConfigureFromWindow();
-            mController.PositionChanged += SetPosition;
-            mController.OrientationChanged += SetOrientation;
 
             Nui.Tick += Tick;
         }
@@ -218,6 +231,41 @@ namespace Chimera.Kinect {
                 mOrientation.Changed -= orientation_Changed;
             mOrientation = orientation;
             orientation.Changed += orientation_Changed;
+        }
+
+        #endregion
+
+        #region ISystemPlugin Members
+
+        public void Init(Core coordinator) {
+
+        }
+
+        #endregion
+
+        #region IPlugin Members
+
+
+        public string Name {
+            get { return "RayTracingCursor"; }
+        }
+
+        public ConfigBase Config {
+            get { throw new NotImplementedException(); }
+        }
+
+        public void Close() {
+        }
+
+        public void Draw(Graphics graphics, Func<Vector3, Point> to2D, Action redraw, Perspective perspective) {
+        }
+
+        #endregion
+
+        #region ISystemPlugin Members
+
+
+        public void SetForm(Form form) {
         }
 
         #endregion

@@ -27,6 +27,7 @@ using System.Threading;
 using System.IO;
 using log4net;
 using OpenMetaverse;
+using Nini.Ini;
 
 namespace Chimera.Util {
     /// <summary>
@@ -335,7 +336,7 @@ namespace Chimera.Util {
         }
 
         /*
-        public static Coordinator InitCoordinator(string[] args, out IConfig masterConfig ) {
+        public static Core InitCoordinator(string[] args, out IConfig masterConfig ) {
             ArgvConfigSource argConfig = InitArgConfig(args);
             argConfig.AddSwitch("Master", "AutoStartMaster", "am");
             argConfig.AddSwitch("Master", "AutoStartProxy", "ap");
@@ -360,10 +361,10 @@ namespace Chimera.Util {
 
             AddFile(config, file);
 
-            LogManager.GetLogger("Master").Info("Creating Master.");
+            LogManager.GetLogger("Master").Info("\nCreating Master.");
 
             Config proxyConfig = new Config(args, "Master", AppDomain.CurrentDomain.SetupInformation.ConfigurationFile);
-            Coordinator m = new Coordinator(proxyConfig);
+            Core m = new Core(proxyConfig);
 
             bool autostartMaster = Get(masterConfig, "AutoStartMaster", true);
 
@@ -419,7 +420,7 @@ namespace Chimera.Util {
                 return null;
             }
 
-            LogManager.GetLogger(name).Info("Creating " + name + ".");
+            LogManager.GetLogger(name).Info("\nCreating " + name + ".");
 
             Config proxyConfig = new Config(args, name, AppDomain.CurrentDomain.SetupInformation.ConfigurationFile);
             Window s = new Window(name, proxyConfig);
@@ -471,11 +472,13 @@ namespace Chimera.Util {
             return ret;
         }
 
+        private static ILog Logger = LogManager.GetLogger("Startup");
+
         public static ArgvConfigSource InitArgConfig(string[] args) {
             try {
                 return new ArgvConfigSource(args);
             } catch (Exception e) {
-                Console.WriteLine("Unable to load argument config." + e.Message + "\n" + e.StackTrace);
+                Logger.Warn("Unable to load argument config." + e.Message + "\n" + e.StackTrace);
                 return new ArgvConfigSource(new string[0]);
             }
         }
@@ -524,10 +527,6 @@ namespace Chimera.Util {
         }
         */
 
-        public static IConfigSource AddFile(IConfigSource config, out string file) {
-            file = Get(config.Configs["General"], "File", AppDomain.CurrentDomain.SetupInformation.ConfigurationFile);
-            return AddFile(config, file);
-        }
         public static IConfigSource AddFile(IConfigSource config, string file) {
             if (File.Exists(file) && Path.GetExtension(file).ToUpper().Equals(".CONFIG")) {
                 try {
@@ -536,16 +535,17 @@ namespace Chimera.Util {
                     dotnet.Merge(config);
                     return dotnet;
                 } catch (Exception e) {
-                    Console.WriteLine("Unable to load app configuration file " + file + "'." + e.Message + ".\n" + e.StackTrace);
+                    Logger.Warn("Unable to load app configuration file " + file + "'." + e.Message + ".\n" + e.StackTrace);
                 }
             } else if (File.Exists(file) && Path.GetExtension(file).ToUpper().Equals(".INI")) {
                 try {
-                    IniConfigSource ini = new IniConfigSource(file);
+                    IniDocument doc = new IniDocument(file, IniFileType.WindowsStyle);
+                    IniConfigSource ini = new IniConfigSource(doc);
                     //config.Merge(ini);
                     ini.Merge(config);
                     return ini;
                 } catch (Exception e) {
-                    Console.WriteLine("Unable to load ini configuration file " + file + "'." + e.Message + ".\n" + e.StackTrace);
+                    Logger.Warn("Unable to load ini configuration file " + file + "'." + e.Message + ".\n" + e.StackTrace);
                 }
             }
             return config;

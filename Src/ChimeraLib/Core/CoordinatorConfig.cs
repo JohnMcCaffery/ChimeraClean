@@ -1,4 +1,23 @@
-﻿using System;
+﻿/*************************************************************************
+Copyright (c) 2012 John McCaffery 
+
+This file is part of Chimera.
+
+Chimera is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Chimera is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Chimera.  If not, see <http://www.gnu.org/licenses/>.
+
+**************************************************************************/
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -51,6 +70,12 @@ namespace Chimera {
             YRegions = Get(true, "YRegions", 1, "The number of contiguous regions along the Y axis that make up the environment.");
             HeightmapDefault = Get(true, "HeightmapDefault", 0f, "The default heightmap height. Any square that does not have heightmap data set will revert to this.");
             OverlayOpacity = Get(true, "OverlayOpacity", .5, "The opacity for the quick and dirty overlay for Miguel.");
+
+            Get(true, "|PLUGIN|Enabled", true, "Set whether |PLUGIN| is enabled at start-up.");
+        }
+
+        internal bool PluginEnabled(ISystemPlugin plugin) {
+            return Get(true, plugin.Name + "Enabled", true, "Find out whether a plugin is enabled.");
         }
     }
 }

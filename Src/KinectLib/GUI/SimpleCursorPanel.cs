@@ -1,4 +1,23 @@
-﻿using System;
+﻿/*************************************************************************
+Copyright (c) 2012 John McCaffery 
+
+This file is part of Chimera.
+
+Chimera is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Chimera is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Chimera.  If not, see <http://www.gnu.org/licenses/>.
+
+**************************************************************************/
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
@@ -9,19 +28,19 @@ using System.Windows.Forms;
 
 namespace Chimera.Kinect.GUI {
     public partial class SimpleCursorPanel : UserControl {
-        private SimpleCursor mInput;
+        private SimpleKinectCursor mInput;
 
         public SimpleCursorPanel() {
             InitializeComponent();
         }
 
-        public SimpleCursorPanel(SimpleCursor cursor)
+        public SimpleCursorPanel(SimpleKinectCursor cursor)
             : this() {
 
             Init(cursor);
         }
 
-        public void Init(SimpleCursor input) {
+        public void Init(SimpleKinectCursor input) {
             mInput = input;
 
             Anchor.Vector = new VectorUpdater(mInput.Anchor);
@@ -40,10 +59,11 @@ namespace Chimera.Kinect.GUI {
             ConstrainedYRight.Scalar = new ScalarUpdater(mInput.ConstrainedYRight);
             ConstrainedXLeft.Scalar = new ScalarUpdater(mInput.ConstrainedXLeft);
             ConstrainedYLeft.Scalar = new ScalarUpdater(mInput.ConstrainedYLeft);
-            RawXLeft.Scalar = new ScalarUpdater(mInput.RawXLeft);
+            RawXRight.Scalar = new ScalarUpdater(mInput.RawXRight);
             RawYRight.Scalar = new ScalarUpdater(mInput.RawYRight);
             RawXLeft.Scalar = new ScalarUpdater(mInput.RawXLeft);
             RawYLeft.Scalar = new ScalarUpdater(mInput.RawYLeft);
+            SmoothingFactor.Scalar = new ScalarUpdater(mInput.SmoothingFactor);
 
             enabledCheck.Checked = mInput.Enabled;
 

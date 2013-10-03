@@ -1,0 +1,16 @@
+<Events StartPosition="&lt;109.6256, 132.9617, 86.04561&gt;" StartPitch="-0.399999890179748" StartYaw="64.4000027027852">
+  <ComboEvent Name="Step 1">
+    <PositionSequence>
+      <MoveToEvent Name="Move To 1" Target="&lt;-88.42314, 358.8852, 152.0905&gt;" Length="5000" />
+      <MoveToEvent Name="Move To 2" Target="&lt;193.228, 629.1509, 151.8844&gt;" Length="5000" />
+      <MoveToEvent Name="Move To 3" Target="&lt;915.7382, 387.8202, 21.66827&gt;" Length="5000" />
+      <MoveToEvent Name="Move To 4" Target="&lt;737.6572, 109.3772, 275.361&gt;" Length="5000" />
+      <MoveToEvent Name="Move To 5" Target="&lt;335.7993, 168.4618, 51.34328&gt;" Length="5000" />
+      <MoveToEvent Name="Move To 6" Target="&lt;84.67089, 59.11633, 126.5712&gt;" Length="5000" />
+      <MoveToEvent Name="Move To 7" Target="&lt;34.22128, 354.6607, 49.77683&gt;" Length="5000" />
+    </PositionSequence>
+    <OrientationSequence>
+      <LookAtEvent Name="Look At 1" Target="&lt;216.7804, 356.6105, 87.77687&gt;" Length="35000" />
+    </OrientationSequence>
+  </ComboEvent>
+</Events>

@@ -1,4 +1,23 @@
-﻿using System;
+﻿/*************************************************************************
+Copyright (c) 2012 John McCaffery 
+
+This file is part of Chimera.
+
+Chimera is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Chimera is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Chimera.  If not, see <http://www.gnu.org/licenses/>.
+
+**************************************************************************/
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,11 +30,15 @@ namespace Chimera.Util {
         private DateTime mTickStart;
         private long mWorkTotal;
         private long mTickTotal;
+        private long mWorkDeviationTotal;
+        private long mTickDeviationTotal;
         private int mTickCount;
         private double mShortestTick = double.MaxValue;
         private double mShortestWork = double.MaxValue;
-        private double mLongestTick = double.MinValue;
-        private double mLongestWork = double.MinValue;
+        private double mLongestTick = -1.0;
+        private double mLongestWork = -1.0;
+        private double mLastTickLength;
+        private double mLastWorkLength;
 
         public int TickCount {
             get { lock (mTickTimes) return mTickCount; }
@@ -33,6 +56,22 @@ namespace Chimera.Util {
             get { return mShortestTick; }
         }
 
+        public long TickTotal {
+            get { return mTickTotal; }
+        }
+
+        public double LastTick {
+            get { 
+                double ret = mLastTickLength;
+                mLastTickLength = 0.0;
+                return ret;
+            }
+        }
+
+        public long TickStandardDeviation {
+            get { lock (mTickTimes) return mTickCount > 0 ? mTickDeviationTotal / mTickCount : 0; }
+        }
+
         public long MeanWorkLength {
             get { lock (mTickTimes) return mTickCount > 0 ? mWorkTotal / mTickCount : 0; }
         }
@@ -45,6 +84,22 @@ namespace Chimera.Util {
             get { return mShortestWork; }
         }
 
+        public long WorkTotal {
+            get { return mWorkTotal; }
+        }
+
+        public double LastWork {
+            get { 
+                double ret = mLastWorkLength;
+                mLastWorkLength = 0.0;
+                return ret;
+            }
+        }
+
+        public long WorkStandardDeviation {
+            get { lock (mTickTimes) return mTickCount > 0 ? mWorkDeviationTotal / mTickCount : 0; }
+        }
+
         public int TicksPerSecond {
             get { lock (mTickTimes) return mTickTimes.Count; }
         }
@@ -52,24 +107,28 @@ namespace Chimera.Util {
         public void Begin() {
             mTickStart = DateTime.Now;
         }
-        public void Tick() {
+        public void End() {
             lock (mTickTimes) {
                 if (mStarted) {
-                    double tickLength = DateTime.Now.Subtract(mLastTick).TotalMilliseconds;
-                    if (mWorkTotal > long.MaxValue - tickLength) {
+                    mLastTickLength = DateTime.Now.Subtract(mLastTick).TotalMilliseconds;
+                    if (mWorkTotal > long.MaxValue - mLastTickLength) {
                         mWorkTotal = MeanWorkLength;
                         mTickTotal = MeanTickLength;
                         mTickCount = 1;
                     }
-                    mTickTotal += (long)Math.Round(tickLength);
-                    mShortestTick = Math.Min(tickLength, mShortestTick);
-                    mLongestTick = Math.Max(tickLength, mLongestTick);
+                    long roundedTick = (long)Math.Round(mLastTickLength);
+                    mTickTotal += roundedTick;
+                    mTickDeviationTotal += Math.Abs(MeanTickLength - roundedTick);
+                    mShortestTick = Math.Min(mLastTickLength, mShortestTick);
+                    mLongestTick = Math.Max(mLastTickLength, mLongestTick);
                 }
 
-                double workLength = DateTime.Now.Subtract(mTickStart).TotalMilliseconds;
-                mWorkTotal += (long)Math.Round(workLength);
-                mShortestWork = Math.Min(workLength, mShortestWork);
-                mLongestWork = Math.Max(workLength, mLongestWork);
+                mLastWorkLength = DateTime.Now.Subtract(mTickStart).TotalMilliseconds;
+                long roundedWork = (long)Math.Round(mLastWorkLength);
+                mWorkTotal += roundedWork;
+                mWorkDeviationTotal += Math.Abs(MeanWorkLength - roundedWork);
+                mShortestWork = Math.Min(mLastWorkLength, mShortestWork);
+                mLongestWork = Math.Max(mLastWorkLength, mLongestWork);
 
                 mTickCount++;
                 mStarted = true;

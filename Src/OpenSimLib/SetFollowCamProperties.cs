@@ -1,10 +1,31 @@
-﻿using System;
+﻿/*************************************************************************
+Copyright (c) 2012 John McCaffery 
+
+This file is part of Chimera.
+
+Chimera is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Chimera is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Chimera.  If not, see <http://www.gnu.org/licenses/>.
+
+**************************************************************************/
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using OpenMetaverse.Packets;
 using OpenMetaverse;
 using GridProxy;
+using Chimera.Util;
+using System.Threading;
 
 namespace Chimera.OpenSim {
     class SetFollowCamProperties {
@@ -13,17 +34,25 @@ namespace Chimera.OpenSim {
         private float mFocusLag;
         private float mDistance;
         private float mBehindnessAngle;
-        private float mBehindnessLag;
+        private float mBehindnessLag = .5f;
         private float mLookAtThreshold;
         private float mFocusThreshold;
-        private bool mSendPackets;
+        private bool mSendPackets = false;
         private float mFocusOffset;
         private float mLookAt;
         private float mFocus;
-        private Vector3 mFocusOffset3D;
+        private Vector3 mFocusOffset3D = new Vector3(0f, 1f, 0f);
+
+        private bool mEnabled = true;
+        private bool mAdjustForFly = false;
 
         private Proxy mProxy;
-        private Coordinator mCoordinator;
+        private Core mCoordinator;
+
+        public bool Enabled {
+            get { return mEnabled; }
+            set { mEnabled = value; }
+        }
 
         public float Pitch {
             get { return mPitch; }
@@ -81,11 +110,15 @@ namespace Chimera.OpenSim {
                 Update();
             }
         }
-        public bool SendPackets {
+        public bool ControlCamera {
             get { return mSendPackets; }
             set {
-                mSendPackets = value;
-                Update();
+                if (mSendPackets != value) {
+                    mSendPackets = value;
+                    Update();
+                    if (ControlCameraChanged != null)
+                        ControlCameraChanged();
+                }
             }
         }
         public float FocusOffset {
@@ -117,22 +150,79 @@ namespace Chimera.OpenSim {
             }
         }
 
+        public event Action ControlCameraChanged;
+
         public void SetProxy(Proxy proxy) {
             mProxy = proxy;
         }
 
-        public SetFollowCamProperties(Coordinator coordinator) {
+        private Action<Core, DeltaUpdateEventArgs> mDeltaListener;
+
+        public SetFollowCamProperties(Core coordinator) {
             mCoordinator = coordinator;
-            mCoordinator.CameraModeChanged += new Action<Coordinator,ControlMode>(mCoordinator_CameraModeChanged);
+            mCoordinator.ControlModeChanged += new Action<Core,ControlMode>(mCoordinator_CameraModeChanged);
+            mDeltaListener = new Action<Core,DeltaUpdateEventArgs>(mCoordinator_DeltaUpdated);
+            if (mAdjustForFly && mCoordinator.ControlMode == ControlMode.Delta)
+                mCoordinator.DeltaUpdated += mDeltaListener;
         }
 
-        private void mCoordinator_CameraModeChanged(Coordinator coordinator, ControlMode mode) {
+        private bool mBackwards;
+        private bool mFlying;
+
+        void mCoordinator_CameraModeChanged(Core coordinator, ControlMode mode) {
+            //if (mAdjustForFly) {
+                if (mCoordinator.ControlMode == ControlMode.Delta) {
+                    mCoordinator.DeltaUpdated += mDeltaListener;
+                    //mCoordinator.Update(Vector3.Zero, Vector3.Zero, new Rotation(0.0, 1.0), Rotation.Zero);
+                    //Thread.Sleep(1000);
+                    //mCoordinator.Update(Vector3.Zero, Vector3.Zero, new Rotation(0.0, 0.0), Rotation.Zero);
+                } else
+                    mCoordinator.DeltaUpdated -= mDeltaListener;
+            //}
+
             Update();
         }
 
-        private void Update() {
-            if (mProxy != null && mCoordinator.ControlMode == ControlMode.Delta)
+        void mCoordinator_DeltaUpdated(Core coordinator, DeltaUpdateEventArgs args) {
+            if (mAdjustForFly)
+                ControlCamera = args.positionDelta.Z == 0f && args.positionDelta.X >= 0f;
+            else
+                ControlCamera = args.positionDelta.X >= 0f;
+
+            if (mAdjustForFly) {
+                if (mFlying && args.positionDelta.Z <= 0f) {
+                    mFlying = false;
+                    if (args.rotationDelta.Yaw == 0.0) {
+                        mCoordinator.Update(Vector3.Zero, args.positionDelta, Rotation.Zero, new Rotation(args.rotationDelta.Pitch, -.5));
+                        Thread.Sleep(500);
+                        mCoordinator.Update(Vector3.Zero, args.positionDelta, Rotation.Zero, new Rotation(args.rotationDelta.Pitch, .5));
+                        Thread.Sleep(500);
+                        mCoordinator.Update(Vector3.Zero, args.positionDelta, Rotation.Zero, args.rotationDelta);
+                    }
+                } else if (!mFlying && args.positionDelta.Z > 0f)
+                    mFlying = true;
+            }
+
+            if (mBackwards && args.positionDelta.X >= 0f) {
+                mBackwards = false;
+                if (args.positionDelta.X == 0f)
+                    mCoordinator.Update(Vector3.Zero, new Vector3(1f, args.positionDelta.Y, args.positionDelta.Z), Rotation.Zero, args.rotationDelta);
+                Thread.Sleep(500);
+                mCoordinator.Update(Vector3.Zero, new Vector3(0f, args.positionDelta.Y, args.positionDelta.Z), Rotation.Zero, args.rotationDelta);
+            } else if (!mBackwards && args.positionDelta.X < 0f)
+                mBackwards = true;
+        }
+
+        public void Update() {
+            if (mEnabled && mProxy != null && mCoordinator.ControlMode == ControlMode.Delta)
                 mProxy.InjectPacket(Packet, Direction.Incoming);
+        }
+
+        public void Clear() {
+            bool sendPackets = mSendPackets;
+            mSendPackets = false;
+            Update();
+            mSendPackets = sendPackets;
         }
 
         public SetFollowCamPropertiesPacket Packet {

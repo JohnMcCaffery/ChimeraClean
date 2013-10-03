@@ -24,12 +24,13 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>SecurityRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <PlatformTarget>x86</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>..\..\Bin\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -37,17 +38,29 @@
   <PropertyGroup>
     <StartupObject />
   </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="log4net">
-      <HintPath>..\..\..\libopenmetaverse\bin\log4net.dll</HintPath>
+      <HintPath>..\..\Lib\log4net.dll</HintPath>
     </Reference>
-    <Reference Include="NuiLib-DotNet_dv">
-      <HintPath>..\..\Lib\NuiLib-DotNet_dv.dll</HintPath>
+    <Reference Include="Ninject, Version=3.0.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Lib\Ninject.dll</HintPath>
     </Reference>
-    <Reference Include="OpenMetaverse">
-      <HintPath>..\..\..\libopenmetaverse\bin\OpenMetaverse.dll</HintPath>
+    <Reference Include="Ninject.Extensions.Xml">
+      <HintPath>..\..\Lib\Ninject.Extensions.Xml.dll</HintPath>
     </Reference>
-    <Reference Include="OpenMetaverseTypes">
+    <Reference Include="NuiLib-DotNet">
+      <HintPath>..\..\Lib\NuiLib-DotNet.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenMetaverseTypes, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Lib\OpenMetaverseTypes.dll</HintPath>
     </Reference>
     <Reference Include="System" />
@@ -65,8 +78,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="LaunchConfig.cs" />
+    <Compile Include="Launcher.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SimpleSingleInstanceLauncher.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -88,10 +102,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\libopenmetaverse\Programs\GridProxy\GridProxy.csproj">
-      <Project>{C04A5541-444E-4312-97E7-F66457F87EF8}</Project>
-      <Name>GridProxy</Name>
-    </ProjectReference>
     <ProjectReference Include="..\ChimeraLib\ChimeraLib.csproj">
       <Project>{58E39BFE-20D5-4C8D-BCFC-6B5E641C2DFF}</Project>
       <Name>ChimeraLib</Name>
@@ -100,6 +110,10 @@
       <Project>{D0708045-6CCA-4764-B438-A2D6E8635978}</Project>
       <Name>FlythroughLib</Name>
     </ProjectReference>
+    <ProjectReference Include="..\JoystickLib\JoystickLib.csproj">
+      <Project>{C184F128-6AE6-43D7-922E-B706E7B4E576}</Project>
+      <Name>JoystickLib</Name>
+    </ProjectReference>
     <ProjectReference Include="..\KinectLib\KinectLib.csproj">
       <Project>{D9D475BF-C0EE-4DF6-89A3-55199BB32ABE}</Project>
       <Name>KinectLib</Name>
@@ -107,6 +121,18 @@
     <ProjectReference Include="..\OpenSimLib\OpenSimLib.csproj">
       <Project>{D1978D10-E5B0-40F9-BDB7-11BF03C7A6CB}</Project>
       <Name>OpenSimLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OverlayLib\OverlayLib.csproj">
+      <Project>{F1421BBF-6313-4C3D-9AF4-1898528728D0}</Project>
+      <Name>OverlayLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TouchscreenLib\TouchscreenLib.csproj">
+      <Project>{7780A366-F9CE-4E9F-8C91-0763F73A3A8A}</Project>
+      <Name>TouchscreenLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WindowsMediaPlayerLib\WindowsMediaPlayerLib.csproj">
+      <Project>{ED985A0A-C964-494D-88BB-E78ACE4F13D1}</Project>
+      <Name>WindowsMediaPlayerLib</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -1,4 +1,23 @@
-﻿using System;
+﻿/*************************************************************************
+Copyright (c) 2012 John McCaffery 
+
+This file is part of Chimera.
+
+Chimera is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Chimera is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Chimera.  If not, see <http://www.gnu.org/licenses/>.
+
+**************************************************************************/
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -30,11 +49,14 @@ namespace Chimera.Kinect.GUI {
             get { return mScalar.Value; }
             set { 
                 mScalar.Value = value;
-                //Nui.Poll();
+                if (ManuallyChanged != null)
+                    ManuallyChanged(value);
             }
         }
 
         public event Action<float> Changed;
+
+        public event Action<float> ManuallyChanged;
 
         private void mScalar_OnChange() {
             if (Changed != null)
@@ -43,6 +65,10 @@ namespace Chimera.Kinect.GUI {
 
         public ScalarUpdater(Scalar scalar) {
             Scalar = scalar;
+        }
+
+        public override string ToString() {
+            return Name + ":" + Value;
         }
     }
 
@@ -69,11 +95,14 @@ namespace Chimera.Kinect.GUI {
             get { return new Vector3(mVector.X, mVector.Y, mVector.Z); }
             set { 
                 mVector.Set(value.X, value.Y, value.Z);
-                //Nui.Poll();
+                if (ManuallyChanged != null)
+                    ManuallyChanged(value);
             }
         }
 
         public event Action<Vector3> Changed;
+
+        public event Action<Vector3> ManuallyChanged;
 
         private void mVector_OnChange() {
             if (Changed != null)
@@ -82,6 +111,10 @@ namespace Chimera.Kinect.GUI {
 
         public VectorUpdater(Vector vector) {
             Vector = vector;
+        }
+
+        public override string ToString() {
+            return Name + ":" + Value;
         }
     }
 
@@ -108,11 +141,14 @@ namespace Chimera.Kinect.GUI {
             get { return mCondition.Value; }
             set { 
                 mCondition.Value = value;
-                //Nui.Poll();
+                if (ManuallyChanged != null)
+                    ManuallyChanged(value);
             }
         }
 
         public event Action<bool> Changed;
+
+        public event Action<bool> ManuallyChanged;
 
         private void mCondition_OnChange() {
             if (Changed != null)
@@ -121,6 +157,10 @@ namespace Chimera.Kinect.GUI {
 
         public ConditionUpdater(Condition condition) {
             Condition = condition;
+        }
+
+        public override string ToString() {
+            return Name + ":" + Value;
         }
     }
 }

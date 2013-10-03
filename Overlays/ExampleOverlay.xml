@@ -1,0 +1,101 @@
+<Overlay Width="1920" Height="1080" >
+  <Any>
+    <Triggers>
+      <Trigger Factory="SkeletonLost" Timeout="30000" Name="SkeletonLost" />
+    </Triggers>
+
+    <TransitionStyles>
+      <Transition Factory="BitmapTransition" Name="BitmapFade" Length="2000" Style="Fade" />
+      <Transition Factory="OpacityTransition" Name="FadeOut" Length="2000" FadeOut="true" />
+      <Transition Factory="OpacityTransition" Name="FadeIn" Length="2000" FadeOut="false" />
+    </TransitionStyles>
+
+    <States>
+      <State Factory="ImageBG" Name="Splash" Splash="true">
+        <window Window="MainWindow"  Start="True">../Images/Example/ExampleBG.png</window>
+      </State>
+
+      <State Factory="Flythrough" Name="Idle" File="../Flythroughs/Cathedral5.xml" Idle="true">
+        <IdleTrigger Factory="SkeletonLost" />
+        <IdleTransition Transition="FadeOut" />
+        <SplashTransition Transition="FadeIn" />
+      </State>
+
+      <State Factory="Slideshow" Name="Slideshow" Folder="C:\Users\Iain\Pictures\Helmsdale Demo - 18-2-2013" >
+        <NextTriggers>
+          <TextTrigger X="1600" Y="950" Size="50" Colour="Red" Style="Bold">Next</TextTrigger>
+        </NextTriggers>
+        <PrevTriggers>
+          <TextTrigger X="100" Y="950" Size="50" Colour="Red" Style="Bold">Prev</TextTrigger>
+        </PrevTriggers>
+      </State>
+
+      <State Factory="Video" Name="Video" File="E:\Video\Edit\Out\vid.mpg" FinishState="None" L="310" T="310" R="790" B="590" RestartMode="true">
+        <window Window="MainWindow"  Splash="True">../Images/Example/ExampleBGVideo.png</window>
+        <StartTriggers>
+          <!--<InvisibleTrigger T="310" L="310" R="790" B="590" />-->
+        </StartTriggers>
+        <StopTriggers>
+          <!--<InvisibleTrigger T="30" L="30" R="800" B="600" />-->
+        </StopTriggers>
+        <ResetTriggers>
+          <ImageTrigger X="1000" Y="300"  AlwaysOn="false" >../Images/Example/Button.png</ImageTrigger>
+        </ResetTriggers>
+      </State>
+
+      <State Factory="Flythrough" Name="FullFlythrough" File="../Flythroughs/Cathedral5.xml" Stepping="true" DisplaySubtitles="true" SubtitleTimeout="20">
+
+        <StepText Window="MainWindow" Font="Verdana" Size="50" Color="Red" Style="Bold" Colour="Red" X="200" Y="200" />
+        <SubtitleText Window="MainWindow" Font="Verdana" Size="30" Color="Red" Style="Bold" Colour="Red" X="200" Y="800" Alignment="TopMiddle" />
+
+        <Triggers>
+          <TextTrigger X="1500" Y="900" Style="Bold" Size="35">Next</TextTrigger>
+        </Triggers>
+
+        <Steps>
+          <Step Step="0" Voiceover="../Voiceovers/Voiceover1.wma" >
+            <Features> <Image  X="700" Y="50">../Images/Example/SlideshowImg1.png</Image> </Features>
+            <Subtitles>
+              <Subtitle>First Subtitle</Subtitle>
+              <Subtitle Time="5">Second Subtitle</Subtitle>
+            </Subtitles>
+          </Step>
+          <Step Step="2">
+            <Features> <Image  X="600" Y="100">../Images/Example/SlideshowImg3.png</Image> </Features>
+          </Step>
+          <Step Step="3" Voiceover="../Voiceovers/Voiceover2.wma" >
+          </Step>
+        </Steps>
+      </State>
+    </States>
+    <Transitions>
+      <InvisibleTransition From="Splash" To="Slideshow" Transition="BitmapFade" T="300" L="300" R="800" B="600" />
+      <TextTransition From="Splash" To="Video" Transition="BitmapFade" X="1400" Y="300" Size="50" Style="Bold">Video</TextTransition>
+      <ImageTransition From="Splash" To="FullFlythrough" Transition="FadeOut" X="1000" Y="300"  >../Images/Example/Button.png</ImageTransition>
+      <TextTransition From="Video" To="Splash" Transition="BitmapFade" X="1400" Y="300" Size="50" Style="Bold">Back</TextTransition>
+      <TextTransition From="FullFlythrough" To="Splash" Transition="FadeIn" X="850" Y="950" Size="50" Style="Bold">Main Menu</TextTransition>
+    </Transitions>
+  </Any>
+
+  <!-- Settings specific to the overlay being instantiated based on click interactions -->
+
+  <ClickBased>
+    <States>
+
+    </States>
+    <Transitions>
+
+    </Transitions>
+  </ClickBased>
+
+  <!-- Settings specific to the overlay being instantiated based on hover interactions -->
+
+  <HoverBased>
+    <States>
+
+    </States>
+    <Transitions>
+
+    </Transitions>
+  </HoverBased>
+</Overlay>
