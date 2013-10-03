@@ -67,8 +67,10 @@ namespace Chimera.Flythrough {
         private bool mLoop = false;
         private bool mAutoStep = true;
         private bool mTicking;
-        private int mDefaultLength = 7000;
         private bool mSynchLengths;
+        private int mDefaultLength = 7000;
+
+        private double mSpeed = 1;
 
         public event Action<int> StepFinished;
         public event Action<int> StepStarted;
@@ -113,6 +115,11 @@ namespace Chimera.Flythrough {
         /// </summary>
         public FlythroughEvent<Camera>[] Events {
             get { return mEvents.ToArray(); }
+        }
+
+        public double Speed {
+            get { return mSpeed; }
+            set { mSpeed = value; }
         }
 
         /// <summary>
@@ -381,7 +388,7 @@ namespace Chimera.Flythrough {
                 mStats.End();
 #endif
 
-                double wait = mCore.TickLength - DateTime.Now.Subtract(mLastTick).TotalMilliseconds;
+                double wait = (mCore.TickLength * (1.0 / mSpeed)) - DateTime.Now.Subtract(mLastTick).TotalMilliseconds;
                 if (wait < 0)
                     Logger.Debug("Flythrough Tick overran by " + (wait * -1) + "ms.");
                 else

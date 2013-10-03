@@ -321,6 +321,14 @@ namespace Chimera.Flythrough.GUI {
             mPlugin.SynchStreams = synchBoxCheck.Checked;
         }
 
+        private void speedScroll_Scroll(object sender, EventArgs e) {
+            double v = speedScroll.Value;
+            if (v >= 100.0)
+                mPlugin.Speed = 100.0 / (200.0 - v);
+            else
+                mPlugin.Speed = v / 100.0;
+        }
+
 #if DEBUG
         private StatisticsForm mStatsForm;
 
