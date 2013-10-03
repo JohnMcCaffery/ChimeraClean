@@ -11,8 +11,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KinectLib", "KinectLib\Kine
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JoystickLib", "JoystickLib\JoystickLib.csproj", "{C184F128-6AE6-43D7-922E-B706E7B4E576}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LauncherLib", "LauncherLib\LauncherLib.csproj", "{FE0EAF99-0485-4B17-BFCD-D5D9A2890DB3}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenSimLib", "OpenSimLib\OpenSimLib.csproj", "{D1978D10-E5B0-40F9-BDB7-11BF03C7A6CB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OverlayLib", "OverlayLib\OverlayLib.csproj", "{F1421BBF-6313-4C3D-9AF4-1898528728D0}"
@@ -47,6 +45,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{B3C711
 		..\Config\Common\Touchscreen.ini = ..\Config\Common\Touchscreen.ini
 		..\Config\Common\XBoxController.ini = ..\Config\Common\XBoxController.ini
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LauncherLib", "LauncherLib\LauncherLib.csproj", "{FE0EAF99-0485-4B17-BFCD-D5D9A2890DB3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -110,16 +110,6 @@ Global
 		{C184F128-6AE6-43D7-922E-B706E7B4E576}.Release|Mixed Platforms.Build.0 = Release|x86
 		{C184F128-6AE6-43D7-922E-B706E7B4E576}.Release|x86.ActiveCfg = Release|x86
 		{C184F128-6AE6-43D7-922E-B706E7B4E576}.Release|x86.Build.0 = Release|x86
-		{FE0EAF99-0485-4B17-BFCD-D5D9A2890DB3}.Debug|Any CPU.ActiveCfg = Debug|x86
-		{FE0EAF99-0485-4B17-BFCD-D5D9A2890DB3}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
-		{FE0EAF99-0485-4B17-BFCD-D5D9A2890DB3}.Debug|Mixed Platforms.Build.0 = Debug|x86
-		{FE0EAF99-0485-4B17-BFCD-D5D9A2890DB3}.Debug|x86.ActiveCfg = Debug|x86
-		{FE0EAF99-0485-4B17-BFCD-D5D9A2890DB3}.Debug|x86.Build.0 = Debug|x86
-		{FE0EAF99-0485-4B17-BFCD-D5D9A2890DB3}.Release|Any CPU.ActiveCfg = Release|x86
-		{FE0EAF99-0485-4B17-BFCD-D5D9A2890DB3}.Release|Mixed Platforms.ActiveCfg = Release|x86
-		{FE0EAF99-0485-4B17-BFCD-D5D9A2890DB3}.Release|Mixed Platforms.Build.0 = Release|x86
-		{FE0EAF99-0485-4B17-BFCD-D5D9A2890DB3}.Release|x86.ActiveCfg = Release|x86
-		{FE0EAF99-0485-4B17-BFCD-D5D9A2890DB3}.Release|x86.Build.0 = Release|x86
 		{D1978D10-E5B0-40F9-BDB7-11BF03C7A6CB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D1978D10-E5B0-40F9-BDB7-11BF03C7A6CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D1978D10-E5B0-40F9-BDB7-11BF03C7A6CB}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
@@ -190,6 +180,16 @@ Global
 		{ED985A0A-C964-494D-88BB-E78ACE4F13D1}.Release|Mixed Platforms.Build.0 = Release|x86
 		{ED985A0A-C964-494D-88BB-E78ACE4F13D1}.Release|x86.ActiveCfg = Release|x86
 		{ED985A0A-C964-494D-88BB-E78ACE4F13D1}.Release|x86.Build.0 = Release|x86
+		{FE0EAF99-0485-4B17-BFCD-D5D9A2890DB3}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{FE0EAF99-0485-4B17-BFCD-D5D9A2890DB3}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{FE0EAF99-0485-4B17-BFCD-D5D9A2890DB3}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{FE0EAF99-0485-4B17-BFCD-D5D9A2890DB3}.Debug|x86.ActiveCfg = Debug|x86
+		{FE0EAF99-0485-4B17-BFCD-D5D9A2890DB3}.Debug|x86.Build.0 = Debug|x86
+		{FE0EAF99-0485-4B17-BFCD-D5D9A2890DB3}.Release|Any CPU.ActiveCfg = Release|x86
+		{FE0EAF99-0485-4B17-BFCD-D5D9A2890DB3}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{FE0EAF99-0485-4B17-BFCD-D5D9A2890DB3}.Release|Mixed Platforms.Build.0 = Release|x86
+		{FE0EAF99-0485-4B17-BFCD-D5D9A2890DB3}.Release|x86.ActiveCfg = Release|x86
+		{FE0EAF99-0485-4B17-BFCD-D5D9A2890DB3}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
