@@ -24,6 +24,7 @@ using System.Text;
 using Nini.Config;
 using OpenMetaverse;
 using Chimera.Util;
+using System.IO;
 
 namespace Chimera.Config {
     public abstract class ConfigBase {
@@ -159,6 +160,10 @@ namespace Chimera.Config {
         /// </summary>
         public abstract string Group {
             get;
+        }
+
+        public string Folder {
+            get { return Path.GetDirectoryName(mFile); }
         }
 
         public ConfigBase(params string[] args) {
