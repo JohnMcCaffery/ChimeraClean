@@ -9,9 +9,12 @@ using System.Drawing;
 using Chimera.Plugins;
 using System.Windows.Forms;
 using Chimera.GUI.Controls.Plugins;
+using System.IO;
+using log4net;
 
 namespace Chimera.Plugins {
     public class ProjectorPlugin : ISystemPlugin {
+        private ILog Logger = LogManager.GetLogger("Projector");
         private readonly HashSet<Action> mRedraws = new HashSet<Action>();
         private readonly List<Vector3> sCorners = new List<Vector3>();
 
@@ -100,7 +103,7 @@ namespace Chimera.Plugins {
             mDrawRoom = config.DrawRoom;
 
             string roomFile = config.RoomFile;
-            if (roomFile != null) {
+            if (roomFile != null && File.Exists(roomFile)) {
                 XmlDocument doc = new XmlDocument();
                 doc.Load(roomFile);
 
@@ -131,7 +134,8 @@ namespace Chimera.Plugins {
                 }
 
                 mAnchor = config.RoomAnchor;
-            }
+            } else if (roomFile != null)
+                Logger.Warn("Unable to initialise room. File '" + roomFile + "' does not exist.");
 
             coordinator.FrameAdded += new Action<Frame,EventArgs>(coordinator_FrameAdded);
             foreach (var window in coordinator.Frames)
@@ -180,7 +184,7 @@ namespace Chimera.Plugins {
             if (!mEnabled)
                 return;
 
-            if (mDrawRoom) {
+            if (mDrawRoom && sCorners.Count > 1) {
                 g.DrawPolygon(Pens.Black, sCorners.Select(v => to2D(v + mAnchor)).ToArray());
                 if (mDrawLabels) {
                     Font font = SystemFonts.DefaultFont;

@@ -61,10 +61,13 @@ namespace Chimera.Config {
         }
 
         protected override void InitConfig() {
-            RoomFile = Get(true, "RoomFile", null, "The file containing the layout for the room the projector is in.");
             RoomAnchor = GetV(true, "RoomAnchor", Vector3.Zero, "The anchor point for the room. All room position values will be offset by this in relation to the eye position.");
             DrawRoom = Get(true, "DrawRoom", true, "Whether to draw the room on the window diagrams.");
             DrawGlobalLabels = Get(true, "DrawLabels", true, "Whether to draw for the room on the window diagrams.");
+
+            RoomFile = Get(true, "RoomFile", null, "The file containing the layout for the room the projector is in.");
+            if (RoomFile != null && !Path.IsPathRooted(RoomFile))
+                RoomFile = Path.Combine(Folder, RoomFile);
 
             ProjectorPosition = GetV(false, "Position", new Vector3(0f, 1000f, -30f), "Where the projector is, relative to the Room Anchor.");
             ProjectorPitch = Get(false, "Pitch", 5.0, "The pitch the projector is set at.");
