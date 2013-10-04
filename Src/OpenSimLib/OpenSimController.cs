@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,15 +18,15 @@ namespace Chimera.OpenSim {
         /// <summary>
         /// Fill the left half of the screen.
         /// </summary>
-        Left, 
+        Left,
         /// <summary>
         /// Fill the right half of the screen.
         /// </summary>
-        Right, 
+        Right,
         /// <summary>
         /// Run windowed.
         /// </summary>
-        Windowed, 
+        Windowed,
         /// <summary>
         /// Fill the whole screen.
         /// </summary>
@@ -80,7 +80,7 @@ namespace Chimera.OpenSim {
                 mConfig.ControlFrustum = value;
                 if (value)
                     mProxyController.SetFrustum(SetCamera);
-                else 
+                else
                     mProxyController.ClearFrustum();
             }
         }
@@ -207,15 +207,15 @@ namespace Chimera.OpenSim {
 
             mExitListener = new Action(mViewerController_Exited);
 
-            mFrame.Core.DeltaUpdated += new Action<Core,DeltaUpdateEventArgs>(Coordinator_DeltaUpdated);
-            mFrame.Core.CameraUpdated += new Action<Core,CameraUpdateEventArgs>(Coordinator_CameraUpdated);
-            mFrame.Core.ControlModeChanged += new Action<Core,ControlMode>(Coordinator_CameraModeChanged);
-            mFrame.Core.EyeUpdated += new Action<Core,EventArgs>(Coordinator_EyeUpdated);
+            mFrame.Core.DeltaUpdated += new Action<Core, DeltaUpdateEventArgs>(Coordinator_DeltaUpdated);
+            mFrame.Core.CameraUpdated += new Action<Core, CameraUpdateEventArgs>(Coordinator_CameraUpdated);
+            mFrame.Core.ControlModeChanged += new Action<Core, ControlMode>(Coordinator_CameraModeChanged);
+            mFrame.Core.EyeUpdated += new Action<Core, EventArgs>(Coordinator_EyeUpdated);
             mFrame.Core.InitialisationComplete += new Action(Core_InitialisationComplete);
-            mFrame.Changed += new Action<Chimera.Frame,EventArgs>(mFrame_Changed);
-            mFrame.MonitorChanged += new Action<Chimera.Frame,Screen>(mFrame_MonitorChanged);
+            mFrame.Changed += new Action<Chimera.Frame, EventArgs>(mFrame_Changed);
+            mFrame.MonitorChanged += new Action<Chimera.Frame, Screen>(mFrame_MonitorChanged);
             mProxyController.OnClientLoggedIn += new EventHandler(mProxyController_OnClientLoggedIn);
-            mProxyController.PositionChanged += new Action<Vector3,Rotation>(mProxyController_PositionChanged);
+            mProxyController.PositionChanged += new Action<Vector3, Rotation>(mProxyController_PositionChanged);
             mViewerController.Exited += mExitListener;
         }
 
@@ -271,17 +271,42 @@ namespace Chimera.OpenSim {
             };
 
             if (sForm != null && sForm.Created && !sForm.Disposing && !sForm.IsDisposed)
-                return (bool) sForm.Invoke(a);
+                return (bool)sForm.Invoke(a);
             else
                 return a();
         }
 
+        private static int sViewerStartDelay = 0;
+        private object mStartLock = new object();
+        private string mArgs;
+
         public bool StartViewer() {
-            string args = mProxyController.LoginURI;
+            mArgs = mProxyController.LoginURI;
             if (mConfig.LoginFirstName != null && mConfig.LoginLastName != null && mConfig.LoginPassword != null)
-                args += " --login " + mConfig.LoginFirstName + " " + mConfig.LoginLastName + " " + mConfig.LoginPassword;
-            args += " " + mConfig.ViewerArguments.Trim();
-            return mViewerController.Start(mConfig.ViewerExecutable, mConfig.ViewerWorkingDirectory, args);
+                mArgs += " --login " + mConfig.LoginFirstName + " " + mConfig.LoginLastName + " " + mConfig.LoginPassword;
+            mArgs += " " + mConfig.ViewerArguments.Trim();
+
+            if (sViewerStartDelay == 0) {
+                mProxyController.LastUpdatePacket = DateTime.Now;
+                mViewerController.Start(mConfig.ViewerExecutable, mConfig.ViewerWorkingDirectory, mArgs);
+            } else {
+                ThisLogger.Info("Queuing viewer start for " + Name + " in " + sViewerStartDelay + "s.");
+                Thread t = new Thread(DelayedViewerStart);
+                t.Name = Name + " viewer start";
+                t.Start();
+            }
+
+            sViewerStartDelay += mConfig.StartStagger;
+            return mViewerController.Started;
+        }
+
+        private void DelayedViewerStart() {
+            lock (mStartLock)
+                Monitor.Wait(mStartLock, sViewerStartDelay * 1000);
+            if (!mClosingViewer) {
+                mProxyController.LastUpdatePacket = DateTime.Now;
+                mViewerController.Start(mConfig.ViewerExecutable, mConfig.ViewerWorkingDirectory, mArgs);
+            }
         }
 
         public void CloseViewer() {
@@ -323,7 +348,7 @@ namespace Chimera.OpenSim {
 
         void Coordinator_EyeUpdated(Core coordinator, EventArgs args) {
             //if (ControlCamera && ControlFrustum && mProxyController.Started && Mode == ControlMode.Absolute)
-                //mProxyController.SetFrustum(SetCamera);
+            //mProxyController.SetFrustum(SetCamera);
         }
 
         void mFrame_Changed(Frame frame, EventArgs args) {
@@ -336,9 +361,9 @@ namespace Chimera.OpenSim {
         }
 
         void mProxyController_OnClientLoggedIn(object sender, EventArgs e) {
-            mViewerController.Monitor = mFrame.Monitor;
             if (mConfig.Fill != OpenSim.Fill.Windowed)
                 Fill = mConfig.Fill;
+            mViewerController.Monitor = mFrame.Monitor;
 
             new Thread(() => {
                 Thread.Sleep(5000);
@@ -352,7 +377,7 @@ namespace Chimera.OpenSim {
                     mViewerController.PressKey(key);
                 }
 
-                if (mManager != null) 
+                if (mManager != null)
                     mManager.BringToFront();
             }).Start();
 
@@ -385,7 +410,8 @@ namespace Chimera.OpenSim {
         #endregion
 
         private void CheckTimeout() {
-            if (mProxyController.Started && DateTime.Now.Subtract(mProxyController.LastUpdatePacket).TotalMinutes > 1.0) {
+            //if (mViewerController.Started && mProxyController.LoggedIn && DateTime.Now.Subtract(mProxyController.LastUpdatePacket).TotalMinutes > 1.0) {
+            if (mViewerController.Started && DateTime.Now.Subtract(mProxyController.LastUpdatePacket).TotalMinutes > 1.0) {
                 mProxyController.LastUpdatePacket = DateTime.Now;
                 Restart("ViewerStoppedResponding");
             }
@@ -402,6 +428,8 @@ namespace Chimera.OpenSim {
             mClosingViewer = true;
             mViewerController.Close(false);
             StopProxy();
+            lock (mStartLock)
+                Monitor.PulseAll(mStartLock);
         }
 
         internal void CloseViewer(bool blocking) {
