@@ -27,6 +27,7 @@ namespace Chimera.OpenSim {
         private string mFirstName = "NotLoggedIn";
         private string mLastName = "NotLoggedIn";
         private string mLoginURI;
+        private bool mLoggedIn = false;
         private GridProxyConfig mConfig;
 
         private ViewerConfig mViewerConfig;
@@ -83,6 +84,10 @@ namespace Chimera.OpenSim {
             get { return mFrame; }
         }
 
+        public bool LoggedIn {
+            get { return mLoggedIn; }
+        }
+
         internal ProxyControllerBase(Frame frame) {
             mFrame = frame;
 
@@ -119,6 +124,7 @@ namespace Chimera.OpenSim {
             if (mConfig == null)
                 throw new ArgumentException("Unable to start proxy. No configuration specified.");
             try {
+                mLoggedIn = false;
                 mLastUpdatePacket = DateTime.Now;
                 mProxy = new Proxy(mConfig);
                 mProxy.AddLoginResponseDelegate(mProxy_LoginResponse);
@@ -175,6 +181,9 @@ namespace Chimera.OpenSim {
                     mAgentID = UUID.Parse(t["agent_id"].ToString());
                     mFirstName = t["first_name"].ToString();
                     mLastName = t["last_name"].ToString();
+
+                    mLastUpdatePacket = DateTime.Now;
+                    mLoggedIn = true;
 
                     Thread.Sleep(50);
                     if (OnClientLoggedIn != null)

@@ -61,6 +61,7 @@ namespace Chimera.OpenSim {
         public bool CheckForPause;
         public bool AllowFly;
         public bool ControlCameraPosition;
+        public int StartStagger;
 
         public override string Group {
             get { return "SecondLifeViewer"; }
@@ -110,6 +111,15 @@ namespace Chimera.OpenSim {
             UseGrid = Get(true, "UseGrid", false, "Whether to login using the --grid or --loginuri command line parameter to specify the login target.");
             DeltaScale = Get(true, "DeltaScale", .25f, "How much to scale delta values by when using remote control.");
 
+            ControlCameraPosition = Get(true, "ControlCameraOffset", false, "Whether to use SetFollowCamProperties packets to control the camera position.");
+            AllowFly = Get(true, "AllowFly", false, "Whether to allow the avatar to fly in delta mode.");
+
+            CheckForPause = Get(true, "CheckForPause", false, "Whether the proxy controller should check to see whether the updates have been received which correspond to the updates sent out.");
+
+            UseThread = Get(true, "UseThread", false, "If true then each proxy will spawn a thread to deliver camera updates to the viewer at a constant rate. If false packets will be injected whenever CameraUpdate events are triggered.");
+            StartStagger = Get(true, "StartStagger", 60, "How many seconds to way between starting each viewer if multiple viewers are being launched.");
+            BackwardsCompatible = Get(true, "BackwardsCompatible", false, "If true, no unusual packets will be injected into the viewer. This will disable remote control and frustum control.");
+
             CrashLogFile = Get(true, "CrashLogFile", "CrashLog.log", "The log file to record crashes to.");
 
             LoginFirstName = Get(false, "FirstName", null, "The first name to log the viewer in with.");
@@ -128,15 +138,6 @@ namespace Chimera.OpenSim {
 
             StartupKeyPresses = Get(true, "StartupKeyPresses", "", "A series of key presses, using SendKeys syntax, which will be pressed when the viewer logs in. Separate sequences with commas.");
 
-            BackwardsCompatible = Get(true, "BackwardsCompatible", false, "If true, no unusual packets will be injected into the viewer. This will disable remote control and frustum control.");
-
-            UseThread = Get(true, "UseThread", false, "If true then each proxy will spawn a thread to deliver camera updates to the viewer at a constant rate. If false packets will be injected whenever CameraUpdate events are triggered.");
-
-            CheckForPause = Get(true, "CheckForPause", false, "Whether the proxy controller should check to see whether the updates have been received which correspond to the updates sent out.");
-
-
-            ControlCameraPosition = Get(true, "ControlCameraOffset", false, "Whether to use SetFollowCamProperties packets to control the camera position.");
-            AllowFly = Get(true, "AllowFly", false, "Whether to allow the avatar to fly in delta mode.");
             //EnableWindowPackets = Init.Get(generalConfig, "EnableWindowPackets", true);
             //UseSetFollowCamPackets = !enableWindowPackets || Get(generalConfig, "UseSetFollowCamPackets", false);
             //ControlCamera = Init.Get(sectionConfig, "ControlCamera", true);

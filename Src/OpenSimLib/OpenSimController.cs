@@ -250,12 +250,37 @@ namespace Chimera.OpenSim {
                 return a();
         }
 
+        private static int sViewerStartDelay = 0;
+        private object mStartLock = new object();
+        private string mArgs;
+
         public bool StartViewer() {
-            string args = mProxyController.LoginURI;
+            mArgs = mProxyController.LoginURI;
             if (mConfig.LoginFirstName != null && mConfig.LoginLastName != null && mConfig.LoginPassword != null)
-                args += " --login " + mConfig.LoginFirstName + " " + mConfig.LoginLastName + " " + mConfig.LoginPassword;
-            args += " " + mConfig.ViewerArguments.Trim();
-            return mViewerController.Start(mConfig.ViewerExecutable, mConfig.ViewerWorkingDirectory, args);
+                mArgs += " --login " + mConfig.LoginFirstName + " " + mConfig.LoginLastName + " " + mConfig.LoginPassword;
+            mArgs += " " + mConfig.ViewerArguments.Trim();
+
+            if (sViewerStartDelay == 0) {
+                mProxyController.LastUpdatePacket = DateTime.Now;
+                mViewerController.Start(mConfig.ViewerExecutable, mConfig.ViewerWorkingDirectory, mArgs);
+            } else {
+                ThisLogger.Info("Queuing viewer start for " + Name + " in " + sViewerStartDelay + "s.");
+                Thread t = new Thread(DelayedViewerStart);
+                t.Name = Name + " viewer start";
+                t.Start();
+            }
+
+            sViewerStartDelay += mConfig.StartStagger;
+            return mViewerController.Started;
+        }
+
+        private void DelayedViewerStart() {
+            lock (mStartLock)
+                Monitor.Wait(mStartLock, sViewerStartDelay * 1000);
+            if (!mClosingViewer) {
+                mProxyController.LastUpdatePacket = DateTime.Now;
+                mViewerController.Start(mConfig.ViewerExecutable, mConfig.ViewerWorkingDirectory, mArgs);
+            }
         }
 
         public void CloseViewer() {
@@ -359,7 +384,8 @@ namespace Chimera.OpenSim {
         #endregion
 
         private void CheckTimeout() {
-            if (mProxyController.Started && DateTime.Now.Subtract(mProxyController.LastUpdatePacket).TotalMinutes > 1.0) {
+            //if (mViewerController.Started && mProxyController.LoggedIn && DateTime.Now.Subtract(mProxyController.LastUpdatePacket).TotalMinutes > 1.0) {
+            if (mViewerController.Started && DateTime.Now.Subtract(mProxyController.LastUpdatePacket).TotalMinutes > 1.0) {
                 mProxyController.LastUpdatePacket = DateTime.Now;
                 Restart("ViewerStoppedResponding");
             }
@@ -376,6 +402,8 @@ namespace Chimera.OpenSim {
             mClosingViewer = true;
             mViewerController.Close(false);
             StopProxy();
+            lock (mStartLock)
+                Monitor.PulseAll(mStartLock);
         }
 
         internal void CloseViewer(bool blocking) {
