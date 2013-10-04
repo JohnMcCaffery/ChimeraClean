@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -44,7 +44,7 @@ namespace Chimera.Plugins {
 
         public Vector3 RoomPosition {
             get { return mAnchor; }
-            set { 
+            set {
                 mAnchor = value;
                 if (RoomChanged != null)
                     RoomChanged();
@@ -137,7 +137,7 @@ namespace Chimera.Plugins {
             } else if (roomFile != null)
                 Logger.Warn("Unable to initialise room. File '" + roomFile + "' does not exist.");
 
-            coordinator.FrameAdded += new Action<Frame,EventArgs>(coordinator_FrameAdded);
+            coordinator.FrameAdded += new Action<Frame, EventArgs>(coordinator_FrameAdded);
             foreach (var window in coordinator.Frames)
                 coordinator_FrameAdded(window, null);
         }
@@ -148,7 +148,7 @@ namespace Chimera.Plugins {
             get {
                 if (mPanel == null)
                     mPanel = new ProjectorPluginPanel(this);
-                return mPanel; 
+                return mPanel;
             }
         }
 
@@ -180,7 +180,7 @@ namespace Chimera.Plugins {
         public void Draw(Graphics g, Func<Vector3, Point> to2D, Action redraw, Perspective perspective) {
             if (!mRedraws.Contains(redraw))
                 mRedraws.Add(redraw);
-            
+
             if (!mEnabled)
                 return;
 

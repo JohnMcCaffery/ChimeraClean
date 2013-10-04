@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -27,6 +27,7 @@ namespace Chimera.OpenSim {
         private string mFirstName = "NotLoggedIn";
         private string mLastName = "NotLoggedIn";
         private string mLoginURI;
+        private bool mLoggedIn = false;
         private GridProxyConfig mConfig;
         private Vector3 mOffset;
 
@@ -34,7 +35,7 @@ namespace Chimera.OpenSim {
 
         private Packet mCameraPacket;
 
-        private readonly Dictionary<string, DateTime> mUnackedUpdates = new Dictionary<string,DateTime>();
+        private readonly Dictionary<string, DateTime> mUnackedUpdates = new Dictionary<string, DateTime>();
         private int mUnackedCountThresh = 40;
         private long mUnackedDiscardMS = 1000;
 
@@ -84,6 +85,10 @@ namespace Chimera.OpenSim {
             get { return mFrame; }
         }
 
+        public bool LoggedIn {
+            get { return mLoggedIn; }
+        }
+
         internal ProxyControllerBase(Frame frame) {
             mFrame = frame;
 
@@ -120,6 +125,7 @@ namespace Chimera.OpenSim {
             if (mConfig == null)
                 throw new ArgumentException("Unable to start proxy. No configuration specified.");
             try {
+                mLoggedIn = false;
                 mLastUpdatePacket = DateTime.Now;
                 mProxy = new Proxy(mConfig);
                 mProxy.AddLoginResponseDelegate(mProxy_LoginResponse);
@@ -177,6 +183,9 @@ namespace Chimera.OpenSim {
                     mFirstName = t["first_name"].ToString();
                     mLastName = t["last_name"].ToString();
 
+                    mLastUpdatePacket = DateTime.Now;
+                    mLoggedIn = true;
+
                     Thread.Sleep(50);
                     if (OnClientLoggedIn != null)
                         OnClientLoggedIn(mProxy, null);
@@ -185,7 +194,7 @@ namespace Chimera.OpenSim {
                 }
             }).Start();
         }
-    
+
         Packet mProxy_AgentUpdatePacketReceived(Packet p, IPEndPoint ep) {
             AgentUpdatePacket packet = p as AgentUpdatePacket;
             Vector3 pos = packet.AgentData.CameraCenter;
@@ -286,14 +295,14 @@ namespace Chimera.OpenSim {
         }
 
         private void MarkUntracked() {
-                string str = MakeKey(mFrame.Core.Position);
-                lock (mUnackedUpdates)
-                    if (mUnackedUpdates.ContainsKey(str))
-                        mUnackedUpdates[str] = DateTime.Now;
-                    else
-                        mUnackedUpdates.Add(str, DateTime.Now);
+            string str = MakeKey(mFrame.Core.Position);
+            lock (mUnackedUpdates)
+                if (mUnackedUpdates.ContainsKey(str))
+                    mUnackedUpdates[str] = DateTime.Now;
+                else
+                    mUnackedUpdates.Add(str, DateTime.Now);
         }
-        
+
         protected abstract Packet ActualSetCamera();
         protected abstract Packet ActualSetCamera(Vector3 positionDelta, Rotation orientationDelta);
         /// <summary>
@@ -316,12 +325,12 @@ namespace Chimera.OpenSim {
         }
 
         public Vector3 Offset {
-            get { return mOffset; } 
-            set { 
+            get { return mOffset; }
+            set {
                 mOffset = value;
                 if (Started)
                     SetCamera();
-            } 
+            }
         }
     }
 }

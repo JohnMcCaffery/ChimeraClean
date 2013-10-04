@@ -125,7 +125,7 @@ namespace Chimera.Flythrough {
         /// <summary>
         /// The default length for new events
         /// </summary>
-        public int DefaultLength { 
+        public int DefaultLength {
             get { return mDefaultLength; }
             set { mDefaultLength = value; }
         }
@@ -241,7 +241,7 @@ namespace Chimera.Flythrough {
         public FlythroughPlugin() {
             Start = new Camera(new Vector3(128f, 128f, 60f), Rotation.Zero);
             mEvents.Start = Start;
-            mEvents.LengthChange += new Action<EventSequence<Camera>,int>(mEvents_LengthChange);
+            mEvents.LengthChange += new Action<EventSequence<Camera>, int>(mEvents_LengthChange);
             mTickListener = new Action(mCoordinator_Tick);
 
             FlythroughConfig cfg = new FlythroughConfig();
@@ -310,13 +310,13 @@ namespace Chimera.Flythrough {
                 FlythroughLoading();
 
             mEvents = new EventSequence<Camera>();
-            mEvents.LengthChange += new Action<EventSequence<Camera>,int>(mEvents_LengthChange);
+            mEvents.LengthChange += new Action<EventSequence<Camera>, int>(mEvents_LengthChange);
 
             XmlDocument doc = new XmlDocument();
             doc.Load(file);
             int start = 0;
             XmlNode root = doc.GetElementsByTagName("Events")[0];
-            
+
             XmlAttribute startPositionAttr = root.Attributes["StartPosition"];
             XmlAttribute startPitchAttr = root.Attributes["StartPitch"];
             XmlAttribute startYawAttr = root.Attributes["StartYaw"];
@@ -494,7 +494,7 @@ namespace Chimera.Flythrough {
 
         public bool Enabled {
             get { return mEnabled; }
-            set { 
+            set {
                 mEnabled = value;
                 if (EnabledChanged != null)
                     EnabledChanged(this, value);

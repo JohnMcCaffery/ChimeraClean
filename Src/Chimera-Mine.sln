@@ -81,7 +81,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{DB1A
 		..\Bin\Scripts\launch.bat = ..\Bin\Scripts\launch.bat
 		..\Bin\Scripts\shutdown1.vbs = ..\Bin\Scripts\shutdown1.vbs
 		..\Bin\Scripts\shutdown2.vbs = ..\Bin\Scripts\shutdown2.vbs
-		..\Bin\Scripts\startup.bat = ..\Bin\Scripts\startup.bat
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Configs", "Configs", "{2C880FBA-0B83-43B9-9C64-69F9BD30D72A}"
