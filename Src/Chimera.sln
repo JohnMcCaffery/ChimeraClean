@@ -28,6 +28,23 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Config", "Config", "{F40686D4-BDE8-42A7-BFB8-C64B3AEC4FC4}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{B3C71188-8BD1-4C4E-BF37-D2D1BB04DA5F}"
+	ProjectSection(SolutionItems) = preProject
+		..\Config\Common\Bindings.xml = ..\Config\Common\Bindings.xml
+		..\Config\Common\EyeTracker.ini = ..\Config\Common\EyeTracker.ini
+		..\Config\Common\Flythrough.ini = ..\Config\Common\Flythrough.ini
+		..\Config\Common\Frames.ini = ..\Config\Common\Frames.ini
+		..\Config\Common\Heightmap.ini = ..\Config\Common\Heightmap.ini
+		..\Config\Common\KinectMovement.ini = ..\Config\Common\KinectMovement.ini
+		..\Config\Common\Launch.ini = ..\Config\Common\Launch.ini
+		..\Config\Common\Main.ini = ..\Config\Common\Main.ini
+		..\Config\Common\OpenSim.ini = ..\Config\Common\OpenSim.ini
+		..\Config\Common\Overlay.ini = ..\Config\Common\Overlay.ini
+		..\Config\Common\Projectors.ini = ..\Config\Common\Projectors.ini
+		..\Config\Common\RemoteControl.ini = ..\Config\Common\RemoteControl.ini
+		..\Config\Common\TestRoom.xml = ..\Config\Common\TestRoom.xml
+		..\Config\Common\Touchscreen.ini = ..\Config\Common\Touchscreen.ini
+		..\Config\Common\XBoxController.ini = ..\Config\Common\XBoxController.ini
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LauncherLib", "LauncherLib\LauncherLib.csproj", "{FE0EAF99-0485-4B17-BFCD-D5D9A2890DB3}"
 EndProject
