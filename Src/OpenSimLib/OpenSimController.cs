@@ -398,6 +398,9 @@ namespace Chimera.OpenSim {
         }
 
         void mViewerController_Exited() {
+            if (sViewerStartDelay > 0)
+                sViewerStartDelay -= mConfig.StartStagger;
+
             if (mConfig.AutoRestartViewer && !mClosingViewer)
                 Restart("UnexpectedViewerClose");
             mClosingViewer = false;
@@ -413,7 +416,7 @@ namespace Chimera.OpenSim {
             //if (mViewerController.Started && mProxyController.LoggedIn && DateTime.Now.Subtract(mProxyController.LastUpdatePacket).TotalMinutes > 1.0) {
             if (mViewerController.Started && DateTime.Now.Subtract(mProxyController.LastUpdatePacket).TotalMinutes > 1.0) {
                 mProxyController.LastUpdatePacket = DateTime.Now;
-                Restart("ViewerStoppedResponding");
+                //Restart("ViewerStoppedResponding");
             }
         }
 
