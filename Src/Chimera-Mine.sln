@@ -115,6 +115,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{FCF1B4
 		..\Bin\Configs\Common\Bindings.xml = ..\Bin\Configs\Common\Bindings.xml
 		..\Bin\Configs\Common\Core.ini = ..\Bin\Configs\Common\Core.ini
 		..\Bin\Configs\Common\Experiments.ini = ..\Bin\Configs\Common\Experiments.ini
+		..\Bin\Configs\Common\Flythrough.ini = ..\Bin\Configs\Common\Flythrough.ini
 		..\Bin\Configs\Common\Frames.ini = ..\Bin\Configs\Common\Frames.ini
 		..\Bin\Configs\Common\Heightmap.ini = ..\Bin\Configs\Common\Heightmap.ini
 		..\Bin\Configs\Common\InstallBindings.xml = ..\Bin\Configs\Common\InstallBindings.xml
@@ -142,6 +143,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExperimentalLib", "ExperimentalLib\ExperimentalLib.csproj", "{6288745C-11BE-4CFC-83F1-F37B71CF53D6}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Experiments", "Experiments", "{CA5E6F57-AE17-4E20-A63A-C80D61FF8774}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Config", "Config\Config.csproj", "{23A42804-76FD-4FE5-A86D-7DB40372CB5E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -666,6 +669,34 @@ Global
 		{6288745C-11BE-4CFC-83F1-F37B71CF53D6}.ReleaseVisual|Win32.ActiveCfg = Release|Any CPU
 		{6288745C-11BE-4CFC-83F1-F37B71CF53D6}.ReleaseVisual|x64.ActiveCfg = Release|Any CPU
 		{6288745C-11BE-4CFC-83F1-F37B71CF53D6}.ReleaseVisual|x86.ActiveCfg = Release|Any CPU
+		{23A42804-76FD-4FE5-A86D-7DB40372CB5E}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{23A42804-76FD-4FE5-A86D-7DB40372CB5E}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{23A42804-76FD-4FE5-A86D-7DB40372CB5E}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{23A42804-76FD-4FE5-A86D-7DB40372CB5E}.Debug|Win32.ActiveCfg = Debug|x86
+		{23A42804-76FD-4FE5-A86D-7DB40372CB5E}.Debug|x64.ActiveCfg = Debug|x86
+		{23A42804-76FD-4FE5-A86D-7DB40372CB5E}.Debug|x86.ActiveCfg = Debug|x86
+		{23A42804-76FD-4FE5-A86D-7DB40372CB5E}.Debug|x86.Build.0 = Debug|x86
+		{23A42804-76FD-4FE5-A86D-7DB40372CB5E}.DebugVisual|Any CPU.ActiveCfg = Debug|x86
+		{23A42804-76FD-4FE5-A86D-7DB40372CB5E}.DebugVisual|Mixed Platforms.ActiveCfg = Debug|x86
+		{23A42804-76FD-4FE5-A86D-7DB40372CB5E}.DebugVisual|Mixed Platforms.Build.0 = Debug|x86
+		{23A42804-76FD-4FE5-A86D-7DB40372CB5E}.DebugVisual|Win32.ActiveCfg = Debug|x86
+		{23A42804-76FD-4FE5-A86D-7DB40372CB5E}.DebugVisual|x64.ActiveCfg = Debug|x86
+		{23A42804-76FD-4FE5-A86D-7DB40372CB5E}.DebugVisual|x86.ActiveCfg = Debug|x86
+		{23A42804-76FD-4FE5-A86D-7DB40372CB5E}.DebugVisual|x86.Build.0 = Debug|x86
+		{23A42804-76FD-4FE5-A86D-7DB40372CB5E}.Release|Any CPU.ActiveCfg = Release|x86
+		{23A42804-76FD-4FE5-A86D-7DB40372CB5E}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{23A42804-76FD-4FE5-A86D-7DB40372CB5E}.Release|Mixed Platforms.Build.0 = Release|x86
+		{23A42804-76FD-4FE5-A86D-7DB40372CB5E}.Release|Win32.ActiveCfg = Release|x86
+		{23A42804-76FD-4FE5-A86D-7DB40372CB5E}.Release|x64.ActiveCfg = Release|x86
+		{23A42804-76FD-4FE5-A86D-7DB40372CB5E}.Release|x86.ActiveCfg = Release|x86
+		{23A42804-76FD-4FE5-A86D-7DB40372CB5E}.Release|x86.Build.0 = Release|x86
+		{23A42804-76FD-4FE5-A86D-7DB40372CB5E}.ReleaseVisual|Any CPU.ActiveCfg = Release|x86
+		{23A42804-76FD-4FE5-A86D-7DB40372CB5E}.ReleaseVisual|Mixed Platforms.ActiveCfg = Release|x86
+		{23A42804-76FD-4FE5-A86D-7DB40372CB5E}.ReleaseVisual|Mixed Platforms.Build.0 = Release|x86
+		{23A42804-76FD-4FE5-A86D-7DB40372CB5E}.ReleaseVisual|Win32.ActiveCfg = Release|x86
+		{23A42804-76FD-4FE5-A86D-7DB40372CB5E}.ReleaseVisual|x64.ActiveCfg = Release|x86
+		{23A42804-76FD-4FE5-A86D-7DB40372CB5E}.ReleaseVisual|x86.ActiveCfg = Release|x86
+		{23A42804-76FD-4FE5-A86D-7DB40372CB5E}.ReleaseVisual|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
