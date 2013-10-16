@@ -7,6 +7,7 @@ using Chimera.Config;
 namespace Chimera.Experimental {
     public class ExperimentalConfig : ConfigFolderBase {
         public string ExperimentFile;
+        public string FPSFolder;
 
         public ExperimentalConfig()
             : base("Experiments") { }
@@ -17,6 +18,7 @@ namespace Chimera.Experimental {
 
         protected override void InitConfig() {
             ExperimentFile = Get(true, "File", null, "The xml file which defines the experiment.");
+            FPSFolder = Get(true, "FPSFolder", "FPS", "The folder where FPS results will be written to.");
         }
     }
 }
