@@ -57,10 +57,6 @@ namespace Chimera.OpenSim.Overlay {
         private string mNoGlowString;
         private int mGlowChannel;
 
-        public override IFrameState CreateWindowState(FrameOverlayManager manager) {
-            return new FrameState(manager);
-        }
-
         public InfoState(string name, OverlayPlugin manager, string mainWindow, string whereWindow)
             : base(name, manager) {
 
