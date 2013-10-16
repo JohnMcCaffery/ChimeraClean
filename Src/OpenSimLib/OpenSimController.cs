@@ -54,11 +54,11 @@ namespace Chimera.OpenSim {
         private ProxyControllerBase mProxyController;
         private ViewerController mViewerController;
 
-        internal ProxyControllerBase ProxyController {
+        public ProxyControllerBase ProxyController {
             get { return mProxyController; }
         }
 
-        internal ViewerController ViewerController {
+        public ViewerController ViewerController {
             get { return mViewerController; }
         }
 
