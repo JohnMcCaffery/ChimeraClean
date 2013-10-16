@@ -18,8 +18,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Overlays", "Overlays", "{AA20755A-F03E-4FF6-A86E-DFC56F1994A9}"
 	ProjectSection(SolutionItems) = preProject
 		..\Bin\Overlays\Demo.xml = ..\Bin\Overlays\Demo.xml
-		..\Bin\Overlays\SingleImage.xml = ..\Bin\Overlays\SingleImage.xml
-		..\Bin\Overlays\Timespan\TimespanLaptop.xml = ..\Bin\Overlays\Timespan\TimespanLaptop.xml
+		..\Bin\Overlays\FPSExperiment.xml = ..\Bin\Overlays\FPSExperiment.xml
 		..\Bin\Overlays\TimespanOverlayDemo.xml = ..\Bin\Overlays\TimespanOverlayDemo.xml
 	EndProjectSection
 EndProject
@@ -75,6 +74,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Flythroughs", "Flythroughs"
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Overlay", "Overlay", "{06FD37A2-167A-47CA-9DF6-79B90A6A97F5}"
+	ProjectSection(SolutionItems) = preProject
+		..\Bin\Overlays\Timespan\TimespanOverlay.xml = ..\Bin\Overlays\Timespan\TimespanOverlay.xml
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{DB1A444F-C959-40FE-A90B-10FF61313DE7}"
 	ProjectSection(SolutionItems) = preProject
@@ -114,8 +116,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{FCF1B4
 	ProjectSection(SolutionItems) = preProject
 		..\Bin\Configs\Common\Bindings.xml = ..\Bin\Configs\Common\Bindings.xml
 		..\Bin\Configs\Common\Core.ini = ..\Bin\Configs\Common\Core.ini
-		..\Bin\Configs\Common\Experiments.ini = ..\Bin\Configs\Common\Experiments.ini
-		..\Bin\Configs\Common\Flythrough.ini = ..\Bin\Configs\Common\Flythrough.ini
 		..\Bin\Configs\Common\Frames.ini = ..\Bin\Configs\Common\Frames.ini
 		..\Bin\Configs\Common\Heightmap.ini = ..\Bin\Configs\Common\Heightmap.ini
 		..\Bin\Configs\Common\InstallBindings.xml = ..\Bin\Configs\Common\InstallBindings.xml
