@@ -67,7 +67,7 @@ namespace Chimera.Experimental.Overlay {
                     OSOut.ViewerController.PressKey("{DEL}");
                     Console.WriteLine("{DEL}");
 
-                    string file = Path.Combine(dir, frame.Name + ".log");
+                    string file = Path.Combine(dir, started + "-" + frame.Name + ".log");
 
                     foreach (char c in file) {
                         OSOut.ViewerController.PressKey(c + "");
