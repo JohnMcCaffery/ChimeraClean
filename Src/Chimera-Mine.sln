@@ -135,8 +135,10 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TimespanTest", "TimespanTest", "{22DC0F45-3E0B-4D99-B8C9-15ED2AD17EBC}"
 	ProjectSection(SolutionItems) = preProject
 		..\Bin\Configs\TimespanTest\Bindings.xml = ..\Bin\Configs\TimespanTest\Bindings.xml
+		..\Bin\Configs\TimespanTest\EyeTracker.ini = ..\Bin\Configs\TimespanTest\EyeTracker.ini
 		..\Bin\Configs\TimespanTest\Launch.ini = ..\Bin\Configs\TimespanTest\Launch.ini
 		..\Bin\Configs\TimespanTest\Main.ini = ..\Bin\Configs\TimespanTest\Main.ini
+		..\Bin\Configs\TimespanTest\OpenSim.ini = ..\Bin\Configs\TimespanTest\OpenSim.ini
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExperimentalLib", "ExperimentalLib\ExperimentalLib.csproj", "{6288745C-11BE-4CFC-83F1-F37B71CF53D6}"
