@@ -99,6 +99,8 @@ namespace Chimera.Kinect {
         private ChangeDelegate mTickListener;
 
         public SimpleKinectCursor() {
+            GlobalConditions.Init();
+
             mTickListener = new ChangeDelegate(Nui_Tick);
             mSmoothingFactor = Scalar.Create(HAND_SMOOTHING_FRAMES);
             /*

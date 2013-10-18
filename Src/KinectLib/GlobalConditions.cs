@@ -19,7 +19,10 @@ namespace Chimera.Kinect {
             get { return mConfig; }
         }
 
-        private static void Init() {
+        public static void Init() {
+            if (mInit)
+                return;
+
             Nui.Init();
             Nui.SetAutoPoll(true);
 

@@ -70,7 +70,8 @@ namespace Chimera.Overlay {
             mManager = manager;
 
             mManager.Core.FrameAdded += new Action<Frame,EventArgs>(Coordinator_FrameAdded);
-        }
+        }
+
         /// <summary>
         /// CreateWindowState the state, specifying the name, form and the window factory for creating window states.
         /// </summary>

@@ -26,6 +26,7 @@ namespace Chimera.Kinect.Axes {
         }
 
         private void Init() {
+            G.Init();
             Deadzone.Value = G.Cfg.GetDeadzone(Name);
             Scale.Value = G.Cfg.GetScale(Name);
         }
