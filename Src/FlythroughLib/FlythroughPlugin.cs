@@ -388,7 +388,8 @@ namespace Chimera.Flythrough {
                 mStats.End();
 #endif
 
-                double wait = (mCore.TickLength * (1.0 / mSpeed)) - DateTime.Now.Subtract(mLastTick).TotalMilliseconds;
+                //double wait = (mCore.TickLength * (1.0 / mSpeed)) - DateTime.Now.Subtract(mLastTick).TotalMilliseconds;
+                double wait = mCore.TickLength - DateTime.Now.Subtract(mLastTick).TotalMilliseconds;
                 if (wait < 0)
                     Logger.Debug("Flythrough Tick overran by " + (wait * -1) + "ms.");
                 else
@@ -410,7 +411,7 @@ namespace Chimera.Flythrough {
 
         private void IncrementTime() {
             mTicking = true;
-            int newTime = mEvents.Time + mCore.TickLength;
+            int newTime = mEvents.Time + (int)(mCore.TickLength * mSpeed);
             if (newTime < mEvents.Length) {
                 if (mAutoStep || (newTime < mEvents.CurrentEvent.GlobalFinishTime))
                     Time = newTime;
