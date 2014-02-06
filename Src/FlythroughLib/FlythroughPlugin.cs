@@ -411,7 +411,8 @@ namespace Chimera.Flythrough {
 
         private void IncrementTime() {
             mTicking = true;
-            int newTime = mEvents.Time + (int)(mCore.TickLength * mSpeed);
+            int inc = Math.Max(1, (int)(mCore.TickLength * mSpeed));
+            int newTime = mEvents.Time + inc;
             if (newTime < mEvents.Length) {
                 if (mAutoStep || (newTime < mEvents.CurrentEvent.GlobalFinishTime))
                     Time = newTime;

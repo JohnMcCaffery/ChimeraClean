@@ -98,7 +98,7 @@ namespace Chimera.Flythrough {
             }
         }
         /// <summary>
-        /// How far through the sequence playback has reached.
+        /// How far through the sequence playback has reached in ms.
         /// </summary>
         public int Time {
             get { return mCurrentEvent == null ? 0 : mCurrentEvent.SequenceStartTime + mCurrentEvent.Time; }
