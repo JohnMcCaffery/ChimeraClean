@@ -26,6 +26,8 @@ using System.Windows.Forms;
 using OpenMetaverse;
 using System.Drawing;
 using Chimera.Config;
+using SystemCursor = System.Windows.Forms.Cursor;
+using log4net;
 
 namespace Chimera.Plugins {
     public abstract class DeltaBasedPlugin : ISystemPlugin {
@@ -97,6 +99,8 @@ namespace Chimera.Plugins {
             }
         }
 
+        private readonly ILog Logger = LogManager.GetLogger("DeltaBasedPlugin");
+
         protected void TriggerChange(DeltaBasedPlugin input) {
             Vector3 moveDelta = PositionDelta;
             moveDelta.X = mEnableX ? moveDelta.X : 0f;
@@ -126,6 +130,15 @@ namespace Chimera.Plugins {
                 if (Change != null)
                     Change(this);
             }
+
+            Vector2 mouseDelta = MouseDelta;
+            mouseDelta.X = mEnableX ? mouseDelta.X : 0f;
+            mouseDelta.Y = mEnableY ? mouseDelta.Y : 0f;
+
+            Point p = SystemCursor.Position;
+            p.X += (int)mouseDelta.X;
+            p.Y += (int)mouseDelta.Y;
+            SystemCursor.Position = p;
         }
 
         #region ISystemPlugin Members
@@ -182,6 +195,14 @@ namespace Chimera.Plugins {
         /// How much the orientation of the camera should change.
         /// </summary>
         public abstract Rotation OrientationDelta {
+            get;
+        }
+
+        /// <summary>
+        /// How much the mouse position should change
+        /// </summary>
+        public abstract Vector2 MouseDelta
+        {
             get;
         }
 

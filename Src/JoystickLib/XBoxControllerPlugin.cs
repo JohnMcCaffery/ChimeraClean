@@ -35,7 +35,9 @@ namespace Joystick {
                 new ThumbstickAxis(false, true),
                 new TriggerAxis(false),
                 new ThumbstickAxis(true, false),
-                new ThumbstickAxis(true, true)
+                new ThumbstickAxis(true, true),
+                new DPadAxis(false),
+                new DPadAxis(true)
             ) { }
     }
 }
