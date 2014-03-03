@@ -5,6 +5,7 @@ using System.Text;
 using Chimera.Interfaces.Overlay;
 using Chimera.Overlay;
 using System.Xml;
+using log4net;
 using Chimera.Util;
 
 namespace Chimera.Overlay.Features {
@@ -39,7 +40,9 @@ namespace Chimera.Overlay.Features {
             foreach (XmlNode trigger in GetChildrenOfChild(node, "Triggers")) {
                 ITrigger t = plugin.GetTrigger(trigger, "JoystickClick trigger", null);
                 if (t != null)
+                {
                     triggers.Add(t);
+                }
             }
             mTriggers = triggers.ToArray();
         }
@@ -57,9 +60,15 @@ namespace Chimera.Overlay.Features {
                     mActive = value;
                     foreach (var trigger in mTriggers)
                         if (value)
+                        {
+                            trigger.Active = true;
                             trigger.Triggered += mTriggerListener;
+                        }
                         else
+                        {
                             trigger.Triggered -= mTriggerListener;
+                            trigger.Active = false;
+                        }
                 }
             }
         }

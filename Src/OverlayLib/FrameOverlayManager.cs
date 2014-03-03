@@ -165,7 +165,7 @@ namespace Chimera.Overlay {
             get { return mControlPointer; }
             set {
                 mControlPointer = value && mConfig.ControlPointer;
-                if (!value)
+                if (!value && mConfig.DisablePointer)
                     MoveCursorOffScreen();
                 Logger.Debug((value ? "Enabling" : "Disabling") + " cursor control");
             }
