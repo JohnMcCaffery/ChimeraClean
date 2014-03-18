@@ -21,12 +21,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
+using Chimera.GUI.Forms;
 using Chimera;
+using Chimera.Util;
+using Chimera.Plugins;
 using Chimera.Launcher;
 using System.Reflection;
 using log4net;
 
-[assembly: log4net.Config.XmlConfigurator(Watch = true)]
+[assembly: log4net.Config.XmlConfigurator(Watch=true)]
 
 namespace Chimera {
     public static class EyemouthLauncher {

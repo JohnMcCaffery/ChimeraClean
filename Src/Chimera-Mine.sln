@@ -88,25 +88,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Configs", "Configs", "{2C880FBA-0B83-43B9-9C64-69F9BD30D72A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{ED9701C7-AC45-41C5-A61A-788C9D636A73}"
-	ProjectSection(SolutionItems) = preProject
-		..\Bin\Configs\Test\Bindings.xml = ..\Bin\Configs\Test\Bindings.xml
-		..\Bin\Configs\Test\Core.ini = ..\Bin\Configs\Test\Core.ini
-		..\Bin\Configs\Test\Frames.ini = ..\Bin\Configs\Test\Frames.ini
-		..\Bin\Configs\Test\Heightmap.ini = ..\Bin\Configs\Test\Heightmap.ini
-		..\Bin\Configs\Test\InstallBindings.xml = ..\Bin\Configs\Test\InstallBindings.xml
-		..\Bin\Configs\Test\KinectMovement.ini = ..\Bin\Configs\Test\KinectMovement.ini
-		..\Bin\Configs\Test\LaptopOverlay.ini = ..\Bin\Configs\Test\LaptopOverlay.ini
-		..\Bin\Configs\Test\NoOverlay.ini = ..\Bin\Configs\Test\NoOverlay.ini
-		..\Bin\Configs\Test\OverlayLaptop.ini = ..\Bin\Configs\Test\OverlayLaptop.ini
-		..\Bin\Configs\Test\OverlayNone.ini = ..\Bin\Configs\Test\OverlayNone.ini
-		..\Bin\Configs\Test\OverlayTouchscreen.ini = ..\Bin\Configs\Test\OverlayTouchscreen.ini
-		..\Bin\Configs\Test\Projectors.ini = ..\Bin\Configs\Test\Projectors.ini
-		..\Bin\Configs\Test\RemoteControl.ini = ..\Bin\Configs\Test\RemoteControl.ini
-		..\Bin\Configs\Test\TimespanRoom.xml = ..\Bin\Configs\Test\TimespanRoom.xml
-		..\Bin\Configs\Test\Touchscreen.ini = ..\Bin\Configs\Test\Touchscreen.ini
-		..\Bin\Configs\Test\TouchscreenOverlay.ini = ..\Bin\Configs\Test\TouchscreenOverlay.ini
-		..\Bin\Configs\Test\XBoxController.ini = ..\Bin\Configs\Test\XBoxController.ini
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Timespan", "Timespan\Timespan.csproj", "{A4304EE2-9B06-416A-AD48-89434262E322}"
 EndProject
@@ -145,6 +126,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Experiments", "Experiments", "{CA5E6F57-AE17-4E20-A63A-C80D61FF8774}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Config", "Config\Config.csproj", "{23A42804-76FD-4FE5-A86D-7DB40372CB5E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Eyemouth", "Eyemouth\Eyemouth.csproj", "{FCBE7872-8C58-49D9-A637-54DB2BC5158C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -697,6 +680,34 @@ Global
 		{23A42804-76FD-4FE5-A86D-7DB40372CB5E}.ReleaseVisual|x64.ActiveCfg = Release|x86
 		{23A42804-76FD-4FE5-A86D-7DB40372CB5E}.ReleaseVisual|x86.ActiveCfg = Release|x86
 		{23A42804-76FD-4FE5-A86D-7DB40372CB5E}.ReleaseVisual|x86.Build.0 = Release|x86
+		{FCBE7872-8C58-49D9-A637-54DB2BC5158C}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{FCBE7872-8C58-49D9-A637-54DB2BC5158C}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{FCBE7872-8C58-49D9-A637-54DB2BC5158C}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{FCBE7872-8C58-49D9-A637-54DB2BC5158C}.Debug|Win32.ActiveCfg = Debug|x86
+		{FCBE7872-8C58-49D9-A637-54DB2BC5158C}.Debug|x64.ActiveCfg = Debug|x86
+		{FCBE7872-8C58-49D9-A637-54DB2BC5158C}.Debug|x86.ActiveCfg = Debug|x86
+		{FCBE7872-8C58-49D9-A637-54DB2BC5158C}.Debug|x86.Build.0 = Debug|x86
+		{FCBE7872-8C58-49D9-A637-54DB2BC5158C}.DebugVisual|Any CPU.ActiveCfg = Debug|x86
+		{FCBE7872-8C58-49D9-A637-54DB2BC5158C}.DebugVisual|Mixed Platforms.ActiveCfg = Debug|x86
+		{FCBE7872-8C58-49D9-A637-54DB2BC5158C}.DebugVisual|Mixed Platforms.Build.0 = Debug|x86
+		{FCBE7872-8C58-49D9-A637-54DB2BC5158C}.DebugVisual|Win32.ActiveCfg = Debug|x86
+		{FCBE7872-8C58-49D9-A637-54DB2BC5158C}.DebugVisual|x64.ActiveCfg = Debug|x86
+		{FCBE7872-8C58-49D9-A637-54DB2BC5158C}.DebugVisual|x86.ActiveCfg = Debug|x86
+		{FCBE7872-8C58-49D9-A637-54DB2BC5158C}.DebugVisual|x86.Build.0 = Debug|x86
+		{FCBE7872-8C58-49D9-A637-54DB2BC5158C}.Release|Any CPU.ActiveCfg = Release|x86
+		{FCBE7872-8C58-49D9-A637-54DB2BC5158C}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{FCBE7872-8C58-49D9-A637-54DB2BC5158C}.Release|Mixed Platforms.Build.0 = Release|x86
+		{FCBE7872-8C58-49D9-A637-54DB2BC5158C}.Release|Win32.ActiveCfg = Release|x86
+		{FCBE7872-8C58-49D9-A637-54DB2BC5158C}.Release|x64.ActiveCfg = Release|x86
+		{FCBE7872-8C58-49D9-A637-54DB2BC5158C}.Release|x86.ActiveCfg = Release|x86
+		{FCBE7872-8C58-49D9-A637-54DB2BC5158C}.Release|x86.Build.0 = Release|x86
+		{FCBE7872-8C58-49D9-A637-54DB2BC5158C}.ReleaseVisual|Any CPU.ActiveCfg = Release|x86
+		{FCBE7872-8C58-49D9-A637-54DB2BC5158C}.ReleaseVisual|Mixed Platforms.ActiveCfg = Release|x86
+		{FCBE7872-8C58-49D9-A637-54DB2BC5158C}.ReleaseVisual|Mixed Platforms.Build.0 = Release|x86
+		{FCBE7872-8C58-49D9-A637-54DB2BC5158C}.ReleaseVisual|Win32.ActiveCfg = Release|x86
+		{FCBE7872-8C58-49D9-A637-54DB2BC5158C}.ReleaseVisual|x64.ActiveCfg = Release|x86
+		{FCBE7872-8C58-49D9-A637-54DB2BC5158C}.ReleaseVisual|x86.ActiveCfg = Release|x86
+		{FCBE7872-8C58-49D9-A637-54DB2BC5158C}.ReleaseVisual|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
