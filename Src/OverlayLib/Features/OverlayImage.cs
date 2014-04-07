@@ -244,14 +244,18 @@ namespace Chimera.Overlay.Features {
             if (mImage == null)
                 mImage = new Bitmap(mFile);
 
-            int x = (int) (Clip.Width * mBounds.X);
-            int y = (int) (Clip.Height * mBounds.Y);
-            if (mBounds.Width > 0) {
-                int w = (int)(Clip.Width * mBounds.Width);
-                int h = (int)(mBounds.Height > 0 ? Clip.Height * mBounds.Height : w * mAspectRatio);
-                graphics.DrawImage(mImage, new Rectangle(x, y, w, h));
-            } else
-                graphics.DrawImage(mImage, x, y, mW, mH);
+            lock (mImage) {
+                int x = (int)(Clip.Width * mBounds.X);
+                int y = (int)(Clip.Height * mBounds.Y);
+                if (mBounds.Width > 0)
+                {
+                    int w = (int)(Clip.Width * mBounds.Width);
+                    int h = (int)(mBounds.Height > 0 ? Clip.Height * mBounds.Height : w * mAspectRatio);
+                    graphics.DrawImage(mImage, new Rectangle(x, y, w, h));
+                }
+                else
+                    graphics.DrawImage(mImage, x, y, mW, mH);
+            }
         }
 
         public void DrawDynamic(Graphics graphics) { }
