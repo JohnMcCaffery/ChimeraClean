@@ -142,11 +142,6 @@ namespace Chimera.Overlay.States {
                 man.ForceRedrawStatic();
         }
 
-
-        public override IFrameState CreateWindowState(FrameOverlayManager manager) {
-            return new FrameState(manager);
-        }
-
         protected override void TransitionToStart() {
             foreach (var feature in mSteps.Skip(1).Aggregate((seed, current) => new List<IFeature>(seed.Concat(current))))
                 feature.Active = false;

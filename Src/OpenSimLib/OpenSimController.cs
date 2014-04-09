@@ -54,11 +54,11 @@ namespace Chimera.OpenSim {
         private ProxyControllerBase mProxyController;
         private ViewerController mViewerController;
 
-        internal ProxyControllerBase ProxyController {
+        public ProxyControllerBase ProxyController {
             get { return mProxyController; }
         }
 
-        internal ViewerController ViewerController {
+        public ViewerController ViewerController {
             get { return mViewerController; }
         }
 
@@ -398,6 +398,9 @@ namespace Chimera.OpenSim {
         }
 
         void mViewerController_Exited() {
+            if (sViewerStartDelay > 0)
+                sViewerStartDelay -= mConfig.StartStagger;
+
             if (mConfig.AutoRestartViewer && !mClosingViewer)
                 Restart("UnexpectedViewerClose");
             mClosingViewer = false;

@@ -27,25 +27,25 @@ using System.Drawing;
 namespace Chimera.Overlay {
     public class FrameState : DrawableRoot, IFrameState {
         /// <summary>
-        /// The overlay form for the window this window state is linked to.
+        /// The overlay drawable for the frame this FrameState is linked to.
         /// </summary>
         private readonly FrameOverlayManager mManager;
 
-        /// <param name="manager">The manager which controls this window state.</param>
+        /// <param name="manager">The manager which controls this frame state.</param>
         public FrameState(FrameOverlayManager manager)
             : base(manager.Frame.Name) {
             mManager = manager;
         }
 
         /// <summary>
-        /// The manager which controls this window state.
+        /// The manager which controls this frame state.
         /// </summary>
         public FrameOverlayManager Manager {
             get { return mManager; }
         }
 
         /// <summary>
-        /// Whether or not the window state is currently enabled.
+        /// Whether or not the frame state is currently enabled.
         /// </summary>
         public override bool Active {
             get { return base.Active; }

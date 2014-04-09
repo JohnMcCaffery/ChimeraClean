@@ -200,11 +200,6 @@ namespace Chimera.Flythrough.Overlay {
             mInput.Step();
         }
 
-
-        public override IFrameState CreateWindowState(FrameOverlayManager manager) {
-            return new FrameState(manager);
-        }
-
         protected override void TransitionToFinish() {
             foreach (var step in mSteps.Values)
                 step.Prep();

@@ -191,7 +191,8 @@ namespace Chimera.Plugins {
         /// <param name="input">The source of tick and keyboard events.</param>
         public virtual void Init(Core input) {
             mCoordinator = input;
-        }
+        }
+
         public virtual void SetForm(Form form) { }
     }
 }

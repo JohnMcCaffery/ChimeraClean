@@ -29,6 +29,7 @@ namespace Chimera.Flythrough {
         public bool SynchLengths;
         public bool Loop;
         public bool Autostart;
+        public double Speed;
         public string StartFile;
 
         public override string Group {
@@ -44,6 +45,7 @@ namespace Chimera.Flythrough {
             Loop = Get(true, "Loop", false, "Whether to loop playback by default.");
             StartFile = Get(true, "DefaultFile", null, "Default file to load at startup.");
             Autostart = Get(true, "Autostart", false, "If a default file is specified whether to start playing on system startup.");
+            Speed = Get(true, "Speed", 1.0, "How fast the playback should be. 1 is normal speed, < 1 is slower, > 1 is faster.");
         }
     }
 }

@@ -47,10 +47,6 @@ namespace Chimera.Overlay.States {
             mStartPosition = new Vector3(GetFloat(node, 0f, "X"), GetFloat(node, 0f, "Y"), GetFloat(node, 0f, "Z"));
         }
 
-        public override IFrameState CreateWindowState(FrameOverlayManager manager) {
-            return new FrameState(manager);
-        }
-
         protected override void TransitionToStart() {
             Manager.Core.EnableUpdates = true;
             Manager.Core.ControlMode = mAvatar ? ControlMode.Delta : ControlMode.Absolute;

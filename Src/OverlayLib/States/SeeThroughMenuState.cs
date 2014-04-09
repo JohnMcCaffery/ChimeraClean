@@ -40,7 +40,7 @@ namespace Chimera.Overlay.States {
             mOrientation = orientation;
         }
 
-        public override IFrameState CreateWindowState(FrameOverlayManager manager) {
+        public override IFrameState CreateFrameState(FrameOverlayManager manager) {
             SeeThroughMenuWindow stateWindow = new SeeThroughMenuWindow(manager);
             mWindows.Add(stateWindow);
             return stateWindow;

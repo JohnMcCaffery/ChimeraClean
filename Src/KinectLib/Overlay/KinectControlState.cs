@@ -61,7 +61,7 @@ namespace Chimera.Kinect.Overlay {
         private Vector3 mStartPosition;
         private bool mSetPosition;
 
-        public override IFrameState CreateWindowState(FrameOverlayManager manager) {
+        public override IFrameState CreateFrameState(FrameOverlayManager manager) {
             return new KinectControlWindowState(manager);
         }
 

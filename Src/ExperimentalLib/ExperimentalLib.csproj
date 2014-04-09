@@ -85,6 +85,7 @@
     <Compile Include="GUI\MovementTrackerControl.Designer.cs">
       <DependentUpon>MovementTrackerControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Overlay\FPSRecorder.cs" />
     <Compile Include="Plugins\MovementTracker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -92,6 +93,14 @@
     <ProjectReference Include="..\ChimeraLib\ChimeraLib.csproj">
       <Project>{58E39BFE-20D5-4C8D-BCFC-6B5E641C2DFF}</Project>
       <Name>ChimeraLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OpenSimLib\OpenSimLib.csproj">
+      <Project>{D1978D10-E5B0-40F9-BDB7-11BF03C7A6CB}</Project>
+      <Name>OpenSimLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OverlayLib\OverlayLib.csproj">
+      <Project>{F1421BBF-6313-4C3D-9AF4-1898528728D0}</Project>
+      <Name>OverlayLib</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

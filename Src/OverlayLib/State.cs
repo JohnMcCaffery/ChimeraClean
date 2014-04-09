@@ -61,7 +61,7 @@ namespace Chimera.Overlay {
         private TickStatistics mStatistics = new TickStatistics();
 
         /// <summary>
-        /// CreateWindowState the state, specifying the name, form and the window factory for creating window states.
+        /// State the state, specifying the name, form and the window factory for creating window states.
         /// </summary>
         /// <param name="name">The name of the state. All state names should be unique.</param>
         /// <param name="form">The form which will control this state.</param>
@@ -70,9 +70,10 @@ namespace Chimera.Overlay {
             mManager = manager;
 
             mManager.Core.FrameAdded += new Action<Frame,EventArgs>(Coordinator_FrameAdded);
-        }
+        }
+
         /// <summary>
-        /// CreateWindowState the state, specifying the name, form and the window factory for creating window states.
+        /// State the state, specifying the name, form and the window factory for creating window states.
         /// </summary>
         /// <param name="name">The name of the state. All state names should be unique.</param>
         /// <param name="form">The form which will control this state.</param>
@@ -93,7 +94,7 @@ namespace Chimera.Overlay {
 
         protected virtual void Coordinator_FrameAdded(Frame frame, EventArgs args) {
             if (!mWindowStates.ContainsKey(frame.Name))
-                mWindowStates.Add(frame.Name, CreateWindowState(mManager[frame.Name]));
+                mWindowStates.Add(frame.Name, CreateFrameState(mManager[frame.Name]));
         }
 
         public IFrameState this[string window] {
@@ -220,10 +221,12 @@ namespace Chimera.Overlay {
         }
 
         /// <summary>
-        /// CreateWindowState a window state for drawing this state to the specified window.
+        /// Create a window state for drawing this state to the specified window.
         /// </summary>
         /// <param name="window">The window the new window state is to draw on.</param>
-        public abstract IFrameState CreateWindowState(FrameOverlayManager manager);
+        public virtual IFrameState CreateFrameState(FrameOverlayManager manager) {
+            return new FrameState(manager);
+        }
 
         public void StartTransitionTo() {
             foreach (var window in mWindowStates.Values)
