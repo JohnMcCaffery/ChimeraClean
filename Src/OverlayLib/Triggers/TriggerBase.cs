@@ -19,10 +19,10 @@ namespace Chimera.Overlay.Triggers {
 
         public virtual void Trigger() {
             if (Active && Triggered != null)
-                Triggered();
+                Triggered(this);
         }
 
-        public virtual event Action Triggered;
+        public virtual event Action<ITrigger> Triggered;
 
         public abstract bool Active { get; set; }
 

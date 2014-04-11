@@ -28,10 +28,10 @@ namespace Chimera.Overlay.Features {
         private bool mLeft;
         private string mFrame;
         private ITrigger[] mTriggers;
-        private Action mTriggerListener;
+        private Action<ITrigger> mTriggerListener;
 
         public ClickFeature(OverlayPlugin plugin, XmlNode node) {
-            mTriggerListener = new Action(TriggerListener);
+            mTriggerListener = new Action<ITrigger>(TriggerListener);
 
             mLeft = GetBool(node, false, "LeftClick");
             mFrame = GetManager(plugin, node, "Click Feature").Name;
@@ -47,7 +47,7 @@ namespace Chimera.Overlay.Features {
             mTriggers = triggers.ToArray();
         }
 
-        public void TriggerListener() {
+        public void TriggerListener(ITrigger source) {
             ProcessWrangler.Click(mLeft);
         }
 

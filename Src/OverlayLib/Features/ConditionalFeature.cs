@@ -36,15 +36,15 @@ namespace Chimera.Overlay.Features {
             if (featureNode == null)
                 throw new ArgumentException("Unable to load Conditional Feature. Unable to parse feature.");
 
-            mActiveTrigger.Triggered += new Action(mActiveTrigger_Triggered);
-            mInactiveTrigger.Triggered += new Action(mInactiveTrigger_Triggered);
+            mActiveTrigger.Triggered += new Action<ITrigger>(mActiveTrigger_Triggered);
+            mInactiveTrigger.Triggered += new Action<ITrigger>(mInactiveTrigger_Triggered);
         }
 
-        void mActiveTrigger_Triggered() {
+        void mActiveTrigger_Triggered(ITrigger source) {
             mFeature.Active = true;
         }
 
-        void mInactiveTrigger_Triggered() {
+        void mInactiveTrigger_Triggered(ITrigger source) {
             mFeature.Active = false;
         }
 

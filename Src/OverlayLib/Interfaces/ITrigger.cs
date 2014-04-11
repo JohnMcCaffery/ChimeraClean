@@ -29,7 +29,7 @@ namespace Chimera.Interfaces.Overlay {
         /// <summary>
         /// The trigger has been activated.
         /// </summary>
-        event Action Triggered;
+        event Action<ITrigger> Triggered;
 
         /// <summary>
         /// Whether the trigger should activate.

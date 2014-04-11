@@ -35,12 +35,12 @@ namespace Chimera.OpenSim.Overlay
         private string keys;
         private string mFrame;
         private ITrigger[] mTriggers;
-        private Action mTriggerListener;
+        private Action<ITrigger> mTriggerListener;
         private OpenSimController mController;
 
         public KeyClickFeature(OverlayPlugin plugin, XmlNode node)
         {
-            mTriggerListener = new Action(TriggerListener);
+            mTriggerListener = new Action<ITrigger>(TriggerListener);
 
             keys = node.Attributes["Keys"].Value;
             mFrame = GetManager(plugin, node, "Click Feature").Name;
@@ -59,7 +59,7 @@ namespace Chimera.OpenSim.Overlay
                 mController = plugin.Core.Frames.First().Output as OpenSimController;
         }
 
-        public void TriggerListener()
+        public void TriggerListener(ITrigger source)
         {
             foreach (var key in keys.Split(','))
             {

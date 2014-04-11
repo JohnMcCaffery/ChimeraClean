@@ -148,7 +148,7 @@ namespace Chimera.Overlay {
         }
 
         public void AddTrigger(ITrigger trigger) {
-            trigger.Triggered += new Action(mTrigger_Triggered);
+            trigger.Triggered += new Action<ITrigger>(mTrigger_Triggered);
             mTriggers.Add(trigger);
 
             if (trigger is IFeature) {
@@ -183,7 +183,7 @@ namespace Chimera.Overlay {
             }
         }
 
-        void mTrigger_Triggered() {
+        void mTrigger_Triggered(ITrigger source) {
             if (mActive) {
                 Thread t = new Thread(() => {
                     foreach (var trigger in mTriggers)
