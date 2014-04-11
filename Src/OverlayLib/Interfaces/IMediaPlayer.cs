@@ -16,6 +16,8 @@ namespace Chimera.Interfaces {
         /// </summary>
         event Action PlaybackFinished;
 
+        event Action PlaybackStarted;
+
         void PlayVideo(string uri);
 
         void PlayAudio(string uri);
@@ -45,12 +47,18 @@ namespace Chimera.Interfaces {
 
         public event Action PlaybackFinished;
 
+        public event Action PlaybackStarted;
+
         public void PlayVideo(string uri) {
+            if (PlaybackStarted != null)
+                PlaybackStarted();
             if (PlaybackFinished != null)
                 PlaybackFinished();
         }
 
         public void PlayAudio(string uri) {
+            if (PlaybackStarted != null)
+                PlaybackStarted();
             if (PlaybackFinished != null)
                 PlaybackFinished();
         }
