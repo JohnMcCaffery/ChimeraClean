@@ -197,6 +197,7 @@
     <Compile Include="Triggers\HoverTrigger.cs" />
     <Compile Include="Triggers\ImageClickTrigger.cs" />
     <Compile Include="Triggers\ImageHoverTrigger.cs" />
+    <Compile Include="Triggers\MultiTrigger.cs" />
     <Compile Include="Triggers\SimpleTrigger.cs" />
     <Compile Include="Triggers\TextClickTrigger.cs" />
     <Compile Include="Triggers\TextHoverTrigger.cs" />
