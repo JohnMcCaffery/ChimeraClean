@@ -10,15 +10,20 @@ namespace Chimera.Kinect {
     public class KinectMovementPlugin : AxisBasedDelta {
         public KinectMovementPlugin()
             : base("KinectMovement",
+                new StandAxis(true),
+                new StandAxis(false),
                 new PushAxis(true),
                 new PushAxis(false),
+                new PushAxis(),
                 new TAxis(true),
                 new TAxis(false),
                 new CrouchAxis(),
                 new TwistAxis(),
                 new LeanAxis(),
                 new ArmYawAxis(true),
-                new ArmYawAxis(false)
+                new ArmYawAxis(false),
+                new ArmPitchAxis(true),
+                new ArmPitchAxis(false)
                 ) {
         }
 
