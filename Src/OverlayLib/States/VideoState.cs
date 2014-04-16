@@ -172,7 +172,7 @@ namespace Chimera.Overlay.States {
             if (!mAdded) {
                 mMainWindow.AddControl(mPlayer.Player, mBounds);
                 mAdded = true;
-                mMainWindow.OverlayWindow.Invoke(() => Cursor.Hide());
+                //mMainWindow.OverlayWindow.Invoke(() => Cursor.Hide());
             }
             foreach (var transition in Transitions)
                 transition.Active = false;
@@ -184,7 +184,7 @@ namespace Chimera.Overlay.States {
             if (mAdded) {
                 mPlayer.StopPlayback();
                 SetTriggers(true);
-                 mMainWindow.OverlayWindow.Invoke(() => Cursor.Show());
+                 //mMainWindow.OverlayWindow.Invoke(() => Cursor.Show());
                 mMainWindow.RemoveControl(mPlayer.Player);
                 mAdded = false;
                 if (remove) {
