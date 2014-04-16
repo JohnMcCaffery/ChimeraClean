@@ -51,6 +51,7 @@ namespace Chimera.Overlay.GUI.Plugins {
             foreach (var factory in overlayPlugin.GetFactories<ISelectionRenderer>())
                 selectionRendererFactoriesList.Items.Add(factory);
 
+            /*
 #if DEBUG
             foreach (var frameManager in mOverlayPlugin.OverlayManagers) {
                 StatisticsPanel p = new StatisticsPanel(frameManager.Statistics, mOverlayPlugin.Core);
@@ -65,6 +66,7 @@ namespace Chimera.Overlay.GUI.Plugins {
                 statsTabs.Controls.Add(page);
             }
 #endif
+            */
         }
 
         void mOverlayPlugin_StateChanged(State state) {
