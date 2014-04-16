@@ -109,7 +109,6 @@ namespace ConfigurationTool {
         }
 
         private class Binding {
-            public bool Bound;
             public XmlNode Node;
             public Assembly Assembly;
             public Type Interface;
@@ -161,6 +160,22 @@ namespace ConfigurationTool {
                 return match;
             }
 
+            public void Enable(XmlDocument doc) {
+                if (Node != null)
+                    doc.FirstChild.AppendChild(Node);
+                else 
+                    doc.FirstChild.AppendChild(CreateNode(doc));
+            }
+
+            public void Disable(XmlDocument doc) {
+                if (Node != null)
+                    doc.RemoveChild(Node);
+            }
+
+        }
+
+        private void loadFileButton_Click(object sender, EventArgs e) {
+            LoadDocument("Configs/Common/Bindings.xml");
         }
     }
 }
