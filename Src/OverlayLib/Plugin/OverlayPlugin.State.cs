@@ -188,7 +188,7 @@ namespace Chimera.Overlay {
             set {
                 mControlPointers = value;
                 foreach (var frame in mFrameManagers.Values)
-                    frame.ControlPointer = value;
+                    frame.ControlCursor = value;
             }
         }
 
