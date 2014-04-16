@@ -284,8 +284,14 @@ namespace Chimera.Config {
             AddParam(key, description, "bool", general, defalt.ToString());
             return Init.Get(mSource.Configs[general], key, defalt);
         }
-
-
+        /*
+        protected T Get<T>(string general, string key, T defalt, string description) where T : Enum {
+            if (!configLoaded)
+                LoadConfig();
+            AddParam(key, description, "enum", general, defalt.ToString(), typeoef(T));
+            return (T)Enum.Parse(typeof(T), Get(general, key, defalt.ToString(), ""));
+        }
+        */
 
         protected Vector3 GetV(bool general, string key, Vector3 defalt, string description) {
             return GetV(general ? "General" : Section, key, defalt, description);
