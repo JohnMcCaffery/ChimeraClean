@@ -6,7 +6,7 @@ using Chimera.Config;
 using Chimera.Plugins;
 
 namespace Touchscreen {
-    public class TouchscreenConfig : AxisBasedDelta.AxisConfig {
+    public class TouchscreenConfig : AxisConfig {
         public float LeftW;
         public float LeftH;
         public float LeftPaddingH;
