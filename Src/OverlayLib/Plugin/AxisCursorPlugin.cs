@@ -60,16 +60,12 @@ namespace Chimera.Overlay.Plugins {
             float xInc = 0f, yInc = 0f;
             foreach (var axis in mAxes.Where(a => a.Binding == AxisBinding.MouseX || a.Binding == AxisBinding.MouseY)) {
                 //This is the code that moves the mouse!
-                if (axis.Binding == AxisBinding.MouseX) {
+                if (axis.Binding == AxisBinding.MouseX) 
                     x += axis.Delta;
-                    xInc += axis.Delta;
-                }else  {
+                else 
                     y += axis.Delta;
-                    yInc += axis.Delta;
-                }
             }
             mManager.UpdateCursor(x, y);
-            Console.WriteLine("X: " + x + " - Y: " + y + " - X Increment: " + xInc + " - Y Increment: " + yInc);
         }
 
         #region ISystemPlugin Members
