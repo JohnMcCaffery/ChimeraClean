@@ -29,6 +29,7 @@
             this.NameCol = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.DiscriptionCol = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.loadButton = new System.Windows.Forms.Button();
+            this.loadFileButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // BindingsList
@@ -81,10 +82,22 @@
             this.loadButton.UseVisualStyleBackColor = true;
             this.loadButton.Click += new System.EventHandler(this.loadButton_Click);
             // 
+            // loadFileButton
+            // 
+            this.loadFileButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.loadFileButton.Location = new System.Drawing.Point(617, 32);
+            this.loadFileButton.Name = "loadFileButton";
+            this.loadFileButton.Size = new System.Drawing.Size(75, 23);
+            this.loadFileButton.TabIndex = 2;
+            this.loadFileButton.Text = "Load File";
+            this.loadFileButton.UseVisualStyleBackColor = true;
+            this.loadFileButton.Click += new System.EventHandler(this.loadFileButton_Click);
+            // 
             // BindingsControlPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.loadFileButton);
             this.Controls.Add(this.loadButton);
             this.Controls.Add(this.BindingsList);
             this.Name = "BindingsControlPanel";
@@ -101,5 +114,6 @@
         private System.Windows.Forms.ColumnHeader NameCol;
         private System.Windows.Forms.ColumnHeader DiscriptionCol;
         private System.Windows.Forms.Button loadButton;
+        private System.Windows.Forms.Button loadFileButton;
     }
 }
