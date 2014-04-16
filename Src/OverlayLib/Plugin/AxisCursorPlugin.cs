@@ -12,7 +12,7 @@ using Chimera.Interfaces;
 using OpenMetaverse;
 using Chimera.Overlay.GUI.Plugins;
 
-namespace Overlay.Plugins {
+namespace Chimera.Overlay.Plugins {
     public class AxisCursorPlugin : ISystemPlugin {
         private ILog Logger = LogManager.GetLogger("AxisCursor");
 
@@ -27,15 +27,17 @@ namespace Overlay.Plugins {
 
         private Action mTickListener;
         private AxisConfig mAxisConfig;
+        private IAxis[] mInitialAxes;
         private List<IAxis> mAxes = new List<IAxis>();
 
         public event Action<IAxis> AxisAdded;
 
+        public IEnumerable<IAxis> Axes {
+            get { return mAxes; }
+        }
+
         public AxisCursorPlugin(params IAxis[] axes) {
-            mTickListener = new Action(TickListener);
-            mAxisConfig = new AxisConfig("AxisCursor");
-            foreach (IAxis axis in axes)
-                AddAxis(axis);
+            mInitialAxes = axes;
         }
 
         public void AddAxis(IAxis axis) {
@@ -45,19 +47,29 @@ namespace Overlay.Plugins {
                 AxisAdded(axis);
         }
 
-        private void Init() { }
+        private void Init() {
+            mTickListener = new Action(TickListener);
+            mAxisConfig = new AxisConfig("AxisCursor");
+            foreach (IAxis axis in mInitialAxes)
+                AddAxis(axis);
+        }
 
         private void TickListener() {
             float x = mManager.CursorPosition.X;
             float y = mManager.CursorPosition.Y;
+            float xInc = 0f, yInc = 0f;
             foreach (var axis in mAxes.Where(a => a.Binding == AxisBinding.MouseX || a.Binding == AxisBinding.MouseY)) {
                 //This is the code that moves the mouse!
-                if (axis.Binding == AxisBinding.MouseX)
+                if (axis.Binding == AxisBinding.MouseX) {
                     x += axis.Delta;
-                else 
+                    xInc += axis.Delta;
+                }else  {
                     y += axis.Delta;
+                    yInc += axis.Delta;
+                }
             }
             mManager.UpdateCursor(x, y);
+            Console.WriteLine("X: " + x + " - Y: " + y + " - X Increment: " + xInc + " - Y Increment: " + yInc);
         }
 
         #region ISystemPlugin Members
@@ -120,7 +132,7 @@ namespace Overlay.Plugins {
 
 
         public string Name {
-            get { return "KinectCursor"; }
+            get { return "AxisCursor"; }
         }
 
         public ConfigBase Config {

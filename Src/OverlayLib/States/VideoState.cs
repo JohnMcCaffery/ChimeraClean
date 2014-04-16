@@ -70,21 +70,8 @@ namespace Chimera.Overlay.States {
             }
         }
 
-        public VideoState(string name, FrameOverlayManager mainWindow, string video, State parent, ITransitionStyle transition, IMediaPlayer player)
-            : base(name, mainWindow.Manager, DefaultBG) {
-
-            mPlayer = player;
-            mMainWindow = mainWindow;
-            mVideo = Path.GetFullPath(video);
-            mPlayer.PlaybackFinished += mPlayer_VideoFinished;
-            mPlayer.PlaybackStarted += mPlayer_VideoStarted;
-
-            mTrigger = new SimpleTrigger();
-            AddTransition(new StateTransition(Manager, this, parent, mTrigger, transition));
-        }
-
         public VideoState(OverlayPlugin manager, XmlNode node, IMediaPlayer player)
-            : base(manager, node) {
+            : base(manager, node, false) {
 
             mPlayer = player;
             mVideo = GetString(node, null, "File");
@@ -149,7 +136,6 @@ namespace Chimera.Overlay.States {
         protected override void TransitionToStart() {
             SetTriggers(true);
             ControlTriggers(mResetTriggers, true);
-            Manager.ControlPointers = false;
         }
 
         protected override void TransitionToFinish() {
@@ -157,7 +143,6 @@ namespace Chimera.Overlay.States {
                 mRestarted = false;
                 Start();
             }
-            Manager.ControlPointers = false;
         }
 
         void mPlayer_VideoFinished() {

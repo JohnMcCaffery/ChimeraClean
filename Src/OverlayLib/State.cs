@@ -54,6 +54,10 @@ namespace Chimera.Overlay {
         /// How opaque the overlays should be for this state. Set when the state is transitioned to.
         /// </summary>
         private double mOpacity = 1.0;
+        /// <summary>
+        /// Whether to allow control of the pointer when this state is enabled.
+        /// </summary>
+        private bool mEnableCursor;
 
         /// <summary>
         /// Statistics object for tracking how this state is used.
@@ -65,7 +69,7 @@ namespace Chimera.Overlay {
         /// </summary>
         /// <param name="name">The name of the state. All state names should be unique.</param>
         /// <param name="form">The form which will control this state.</param>
-        public State(string name, OverlayPlugin manager) {
+        private State(string name, OverlayPlugin manager) {
             mName = name;
             mManager = manager;
 
@@ -73,7 +77,7 @@ namespace Chimera.Overlay {
         }
 
         /// <summary>
-        /// State the state, specifying the name, form and the window factory for creating window states.
+        /// State the state, specifying the name, overlay and node to load values from.
         /// </summary>
         /// <param name="name">The name of the state. All state names should be unique.</param>
         /// <param name="form">The form which will control this state.</param>
@@ -81,7 +85,20 @@ namespace Chimera.Overlay {
             : this(name, manager) {
 
             mOpacity = GetDouble(node, mOpacity, "Opacity");
+            mEnableCursor = GetBool(node, mEnableCursor, "EnableCursor");
         }
+
+        /// <summary>
+        /// State the state, specifying the name, overlay, node to load values from and whether to control the cursor.
+        /// </summary>
+        /// <param name="name">The name of the state. All state names should be unique.</param>
+        /// <param name="form">The form which will control this state.</param>
+        public State(string name, OverlayPlugin manager, XmlNode node, bool enableCursor)
+            : this(name, manager, node) {
+            mEnableCursor = enableCursor;
+        }
+
+
 
         /// <summary>
         /// //TODO - is this right? 
@@ -167,6 +184,7 @@ namespace Chimera.Overlay {
                     foreach (var man in Manager.OverlayManagers)
                         man.Opacity = mOpacity;
                     TransitionToFinish();
+                    mManager.ControlPointers = mEnableCursor;
                     mStatistics.Begin();
                 } else {
                     TransitionFromStart();
@@ -232,6 +250,8 @@ namespace Chimera.Overlay {
             foreach (var window in mWindowStates.Values)
                 window.Active = true;
             TransitionToStart();
+            if (!mEnableCursor)
+                mManager.ControlPointers = false;
         }
 
         public void FinishTransitionFrom() {

@@ -16,6 +16,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TouchscreenLib", "TouchscreenLib\TouchscreenLib.csproj", "{7780A366-F9CE-4E9F-8C91-0763F73A3A8A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Overlays", "Overlays", "{AA20755A-F03E-4FF6-A86E-DFC56F1994A9}"
+	ProjectSection(SolutionItems) = preProject
+		..\Bin\Overlays\Test.xml = ..\Bin\Overlays\Test.xml
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsMediaPlayerLib", "WindowsMediaPlayerLib\WindowsMediaPlayerLib.csproj", "{ED985A0A-C964-494D-88BB-E78ACE4F13D1}"
 EndProject
@@ -49,6 +52,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Configs", "Configs", "{2C88
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{ED9701C7-AC45-41C5-A61A-788C9D636A73}"
 	ProjectSection(SolutionItems) = preProject
+		..\Bin\Configs\Test\AxisCursor.ini = ..\Bin\Configs\Test\AxisCursor.ini
 		..\Bin\Configs\Test\Bindings.xml = ..\Bin\Configs\Test\Bindings.xml
 		..\Bin\Configs\Test\Core.ini = ..\Bin\Configs\Test\Core.ini
 		..\Bin\Configs\Test\EyemouthRoom.xml = ..\Bin\Configs\Test\EyemouthRoom.xml
@@ -99,6 +103,11 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Config", "Config\Config.csproj", "{23A42804-76FD-4FE5-A86D-7DB40372CB5E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Eyemouth", "Eyemouth\Eyemouth.csproj", "{FCBE7872-8C58-49D9-A637-54DB2BC5158C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Timespan", "Timespan", "{782189F3-C8D8-45EC-A5DB-41D35DC591D9}"
+	ProjectSection(SolutionItems) = preProject
+		..\Bin\Overlays\Timespan\TimespanOverlay.xml = ..\Bin\Overlays\Timespan\TimespanOverlay.xml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -684,6 +693,7 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{782189F3-C8D8-45EC-A5DB-41D35DC591D9} = {AA20755A-F03E-4FF6-A86E-DFC56F1994A9}
 		{B100C9B2-813B-4180-95BB-434A197819F1} = {2C880FBA-0B83-43B9-9C64-69F9BD30D72A}
 		{ED9701C7-AC45-41C5-A61A-788C9D636A73} = {2C880FBA-0B83-43B9-9C64-69F9BD30D72A}
 		{2E5DF2CA-8923-4171-8FAD-C5B15DE739B7} = {2C880FBA-0B83-43B9-9C64-69F9BD30D72A}

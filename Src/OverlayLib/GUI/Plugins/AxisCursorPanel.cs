@@ -8,7 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using Chimera.Interfaces;
 using Chimera.GUI.Controls.Plugins;
-using Overlay.Plugins;
+using Chimera.Overlay.Plugins;
 
 namespace Chimera.Overlay.GUI.Plugins {
     public partial class AxisCursorPanel : UserControl {
@@ -22,10 +22,14 @@ namespace Chimera.Overlay.GUI.Plugins {
         public AxisCursorPanel(AxisCursorPlugin plugin)
             : this() {
             mPlugin = plugin;
+            mPlugin.AxisAdded += new Action<IAxis>(mPlugin_AxisAdded);
+
+            foreach (var axis in mPlugin.Axes)
+                mPlugin_AxisAdded(axis);
         }
 
-        void mInput_AxisAdded(IAxis axis) {
-            AxisPanel panel = new AxisPanel(axis, AxisBinding.MouseX, AxisBinding.MouseY);
+        void mPlugin_AxisAdded(IAxis axis) {
+            AxisPanel panel = new AxisPanel(axis, AxisBinding.X, AxisBinding.Y, AxisBinding.Z, AxisBinding.Pitch, AxisBinding.Yaw, AxisBinding.Z);
             panel.Anchor = AnchorStyles.Left | AnchorStyles.Right;
             panel.Width = axesBox.Width - PADDING * 2;
             axesBox.Controls.Add(panel);

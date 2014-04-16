@@ -54,19 +54,8 @@ namespace Chimera.Overlay.States {
         private readonly List<IFeature>[] mSteps;
         private readonly Action mTickListener;
 
-
-        public SlideshowState(string name, OverlayPlugin manager, string folder, ITrigger next, ITrigger prev, IFeatureTransitionFactory transition, double fadeLengthMS)
-            : base(name, manager) {
-
-
-            AddTrigger(true, next);
-            AddTrigger(false, prev);
-
-            mTickListener = new Action(Core_Tick);
-        }
-
         public SlideshowState(OverlayPlugin manager, XmlNode node)
-            : base(GetName(node, "slideshow state"), manager) {
+            : base(GetName(node, "slideshow state"), manager, node) {
 
             mTickListener = new Action(Core_Tick);
 

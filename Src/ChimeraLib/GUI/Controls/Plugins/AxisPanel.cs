@@ -32,8 +32,7 @@ namespace Chimera.GUI.Controls.Plugins {
         private IAxis mAxis;
         private int mExpandedSize;
 
-        public AxisPanel(params AxisBinding[] ignoredBindings)
-            : this() {
+        public AxisPanel(params AxisBinding[] ignoredBindings) {
             InitializeComponent();
 
             foreach (var binding in (Enum.GetValues(typeof(AxisBinding))as IEnumerable<AxisBinding>).Except(ignoredBindings).Where(b => b != AxisBinding.NotSet))

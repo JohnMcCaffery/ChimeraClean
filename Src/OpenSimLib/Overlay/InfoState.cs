@@ -57,15 +57,8 @@ namespace Chimera.OpenSim.Overlay {
         private string mNoGlowString;
         private int mGlowChannel;
 
-        public InfoState(string name, OverlayPlugin manager, string mainWindow, string whereWindow)
-            : base(name, manager) {
-
-            mPlugin = manager;
-            mMainWindow = manager[mainWindow];
-        }
-
         public InfoState(OverlayPlugin manager, XmlNode node)
-            : base(GetName(node, "information state"), manager) {
+            : base(GetName(node, "information state"), manager, node, true) {
 
             mPlugin = manager;
             mGlowString = GetString(node, "Glow", "GlowMessage");
@@ -78,7 +71,6 @@ namespace Chimera.OpenSim.Overlay {
         }
         protected override void TransitionToFinish() {
             Manager.Core.EnableUpdates = false;
-            Manager.ControlPointers = true;
             Chat(mGlowString);
         }
 

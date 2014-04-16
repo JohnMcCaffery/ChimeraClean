@@ -31,12 +31,8 @@ namespace Chimera.Overlay.States {
         private Vector3 mStartPosition;
         private Rotation mStartOrientation;
 
-        public ExploreState(string name, OverlayPlugin manager)
-            : base(name, manager) {
-        }
-
         public ExploreState(OverlayPlugin manager, XmlNode node)
-            : base(GetName(node, "explore state"), manager) {
+            : base(GetName(node, "explore state"), manager, node) {
 
             mAvatar = GetBool(node, false, "Avatar");
 

@@ -65,17 +65,8 @@ namespace Chimera.Joystick.Overlay
         private Rotation mStartOrientation;
         private Vector3 mStartPosition;
 
-        public JoystickControlState(string name, OverlayPlugin manager, bool avatar)
-            : base(name, manager)
-        {
-            mAvatar = avatar;
-
-            mStartOrientation = new Rotation(manager.Core.Orientation);
-            mStartPosition = manager.Core.Position;
-        }
-
         public JoystickControlState(OverlayPlugin manager, XmlNode node)
-            : base(GetName(node, "joystick movement state"), manager, node)
+            : base(GetName(node, "joystick movement state"), manager, node, false)
         {
 
             mAvatar = GetBool(node, true, "Avatar");
@@ -97,7 +88,6 @@ namespace Chimera.Joystick.Overlay
                 Manager.Core.EnableUpdates = true;
             }
             Manager.Core.EnableUpdates = true;
-            Manager.ControlPointers = false;
         }
 
         protected override void TransitionFromFinish() { }
