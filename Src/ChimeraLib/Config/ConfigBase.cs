@@ -103,6 +103,11 @@ namespace Chimera.Config {
             }
         }
 
+        private void AddParam(string key, string description, string p, string general, string p_2, Type type) {
+            throw new NotImplementedException();
+        }
+
+
         public string Section;
         private IConfigSource mSource;
         private ArgvConfigSource mArgConfig;
@@ -288,10 +293,11 @@ namespace Chimera.Config {
         protected T Get<T>(string general, string key, T defalt, string description) where T : Enum {
             if (!configLoaded)
                 LoadConfig();
-            AddParam(key, description, "enum", general, defalt.ToString(), typeoef(T));
+            AddParam(key, description, "enum", general, defalt.ToString(), typeof(T));
             return (T)Enum.Parse(typeof(T), Get(general, key, defalt.ToString(), ""));
         }
         */
+
 
         protected Vector3 GetV(bool general, string key, Vector3 defalt, string description) {
             return GetV(general ? "General" : Section, key, defalt, description);
