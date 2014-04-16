@@ -19,22 +19,30 @@ namespace ConfigurationTool {
         private List<Type> mMultiInterfaces = new List<Type>();
         private List<Type> mExclusiveInterfaces = new List<Type>();
         private Dictionary<Assembly, List<Binding>> mBindings = new Dictionary<Assembly, List<Binding>>();
+        private Dictionary<ListViewItem, Binding> mBindingsByItem = new Dictionary<ListViewItem, Binding>();
+        private XmlDocument mDocument;
+
+        public static bool Loading = false;
 
         public BindingsControlPanel() {
             InitializeComponent();
         }
 
         public void LoadDocument(string bindingsFile) {
-            XmlDocument doc = new XmlDocument();
-            doc.Load(bindingsFile);
+            mDocument = new XmlDocument();
+            mDocument.Load(bindingsFile);
 
-            foreach (var node in doc.GetElementsByTagName("bind").OfType<XmlElement>()) {
+            Loading = true;
+
+            foreach (var node in mDocument.GetElementsByTagName("bind").OfType<XmlElement>()) {
                 if (node.ParentNode.NodeType != XmlNodeType.Comment) {
                     Binding binding = mBindings.Values.SelectMany(g => g).FirstOrDefault(b => b.Matches(node));
                     if (binding != null)
                         binding.Item.Checked = true;
                 }
             }
+
+            Loading = false;
         }
 
         private void InitialiseInterfaces() {
@@ -82,8 +90,9 @@ namespace ConfigurationTool {
                     if (details != null)
                         it.SubItems.Add(new ListViewItem.ListViewSubItem(it, details.GetValue(null).ToString()));
 
-
-                    mBindings[assembly].Add(new Binding(assembly, clazz, intrface, it));
+                    Binding binding = new Binding(assembly, clazz, intrface, it);
+                    mBindings[assembly].Add(binding);
+                    mBindingsByItem.Add(it, binding);
 
                     BindingsList.Items.Add(it);
                 }
@@ -135,12 +144,15 @@ namespace ConfigurationTool {
 
                 XmlAttribute service = doc.CreateAttribute("service");
                 XmlAttribute to = doc.CreateAttribute("to");
+                XmlAttribute scope = doc.CreateAttribute("scope");
 
                 service.Value = Service;
                 to.Value = To;
+                scope.Value = "singleton";
 
                 node.Attributes.Append(service);
                 node.Attributes.Append(to);
+                node.Attributes.Append(scope);
 
                 Node = node;
                 return node;
@@ -160,22 +172,54 @@ namespace ConfigurationTool {
                 return match;
             }
 
+            public string HeaderCommentStr {
+                get {
+                    return "                        " + Path.GetFileNameWithoutExtension(Assembly.Location).Replace("Lib", "").ToUpper() + " BINDINGS                         ";
+                }
+            }
+
             public void Enable(XmlDocument doc) {
-                if (Node != null)
-                    doc.FirstChild.AppendChild(Node);
-                else 
-                    doc.FirstChild.AppendChild(CreateNode(doc));
+                if (BindingsControlPanel.Loading)
+                    return;
+
+                if (Node == null)
+                    CreateNode(doc);
+
+                XmlComment comment = doc.FirstChild.ChildNodes.OfType<XmlComment>().FirstOrDefault(c => c.InnerText == HeaderCommentStr);
+                if (comment == null) {
+                    comment = doc.CreateComment(HeaderCommentStr);
+                    doc.FirstChild.AppendChild(comment);
+                }
+
+                doc.FirstChild.InsertAfter(Node, comment);
             }
 
             public void Disable(XmlDocument doc) {
                 if (Node != null)
-                    doc.RemoveChild(Node);
+                    doc.FirstChild.RemoveChild(Node);
             }
 
+
+            internal void CheckedChanged(XmlDocument doc) {
+                if (Item.Checked)
+                    Enable(doc);
+                else
+                    Disable(doc);
+            }
         }
 
         private void loadFileButton_Click(object sender, EventArgs e) {
-            LoadDocument("Configs/Common/Bindings.xml");
+            LoadDocument("Configs/Common/BindingsTest.xml");
+        }
+
+        private void BindingsList_ItemChecked(object sender, ItemCheckedEventArgs e) {
+            if (mDocument != null)
+                mBindingsByItem[e.Item].CheckedChanged(mDocument);
+        }
+
+        private void button1_Click(object sender, EventArgs e) {
+            if (mDocument != null)
+                mDocument.Save("Configs/Common/BindingsTest.xml");
         }
     }
 }

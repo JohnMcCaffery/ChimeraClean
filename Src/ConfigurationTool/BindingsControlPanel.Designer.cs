@@ -30,6 +30,7 @@
             this.DiscriptionCol = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.loadButton = new System.Windows.Forms.Button();
             this.loadFileButton = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // BindingsList
@@ -50,6 +51,7 @@
             this.BindingsList.TabIndex = 0;
             this.BindingsList.UseCompatibleStateImageBehavior = false;
             this.BindingsList.View = System.Windows.Forms.View.Details;
+            this.BindingsList.ItemChecked += new System.Windows.Forms.ItemCheckedEventHandler(this.BindingsList_ItemChecked);
             // 
             // BoundCol
             // 
@@ -93,10 +95,22 @@
             this.loadFileButton.UseVisualStyleBackColor = true;
             this.loadFileButton.Click += new System.EventHandler(this.loadFileButton_Click);
             // 
+            // button1
+            // 
+            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.button1.Location = new System.Drawing.Point(617, 61);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 3;
+            this.button1.Text = "Save File";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // BindingsControlPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.loadFileButton);
             this.Controls.Add(this.loadButton);
             this.Controls.Add(this.BindingsList);
@@ -115,5 +129,6 @@
         private System.Windows.Forms.ColumnHeader DiscriptionCol;
         private System.Windows.Forms.Button loadButton;
         private System.Windows.Forms.Button loadFileButton;
+        private System.Windows.Forms.Button button1;
     }
 }
