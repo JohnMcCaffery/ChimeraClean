@@ -27,6 +27,23 @@ using Chimera;
 using Chimera.Interfaces;
 
 namespace Joystick {
+    public class ThumpadAxisLX : ThumbstickAxis {
+        public ThumpadAxisLX() : base(true, true, AxisBinding.NotSet) {
+        }
+    }
+    public class ThumpadAxisRY : ThumbstickAxis {
+        public ThumpadAxisRY() : base(true, false, AxisBinding.NotSet) {
+        }
+    }
+    public class ThumpadAxisLX : ThumbstickAxis {
+        public ThumpadAxisLX() : base(false, true, AxisBinding.NotSet) {
+        }
+    }
+    public class ThumpadAxisRY : ThumbstickAxis {
+        public ThumpadAxisRY() : base(false, false, AxisBinding.NotSet) {
+        }
+    }
+
     public class ThumbstickAxis : ConstrainedAxis, ITickListener {
         private bool mLeft;
         private bool mX;

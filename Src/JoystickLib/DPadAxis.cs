@@ -9,6 +9,15 @@ using Chimera.Interfaces;
 
 namespace Joystick
 {
+    public class DPadAxisX : DPadAxis {
+        public DPadAxisX() : base(true, AxisBinding.NotSet) {
+        }
+    }
+    public class DPadAxisY : DPadAxis {
+        public DPadAxisY() : base(false, AxisBinding.NotSet) {
+        }
+    }
+
     class DPadAxis : ConstrainedAxis, ITickListener
     {
         private bool mX;
