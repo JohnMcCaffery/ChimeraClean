@@ -23,50 +23,52 @@
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent() {
-            this.listView1 = new System.Windows.Forms.ListView();
+            this.BindingsList = new System.Windows.Forms.ListView();
             this.BoundCol = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.InterfaceCol = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.NameCol = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.LibraryCol = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.DiscriptionCol = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.loadButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
-            // listView1
+            // BindingsList
             // 
-            this.listView1.CheckBoxes = true;
-            this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.BindingsList.CheckBoxes = true;
+            this.BindingsList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.BoundCol,
-            this.InterfaceCol,
             this.NameCol,
-            this.LibraryCol,
+            this.InterfaceCol,
             this.DiscriptionCol});
-            this.listView1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.listView1.Location = new System.Drawing.Point(0, 0);
-            this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(695, 341);
-            this.listView1.TabIndex = 0;
-            this.listView1.UseCompatibleStateImageBehavior = false;
+            this.BindingsList.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.BindingsList.FullRowSelect = true;
+            this.BindingsList.GridLines = true;
+            this.BindingsList.Location = new System.Drawing.Point(0, 0);
+            this.BindingsList.Name = "BindingsList";
+            this.BindingsList.Size = new System.Drawing.Size(695, 341);
+            this.BindingsList.Sorting = System.Windows.Forms.SortOrder.Ascending;
+            this.BindingsList.TabIndex = 0;
+            this.BindingsList.UseCompatibleStateImageBehavior = false;
+            this.BindingsList.View = System.Windows.Forms.View.Details;
             // 
             // BoundCol
             // 
-            this.BoundCol.Text = "Bound";
+            this.BoundCol.Text = "Bind";
+            this.BoundCol.Width = 33;
             // 
             // InterfaceCol
             // 
             this.InterfaceCol.Text = "Interface";
+            this.InterfaceCol.Width = 156;
             // 
             // NameCol
             // 
             this.NameCol.Text = "Name";
-            // 
-            // LibraryCol
-            // 
-            this.LibraryCol.Text = "Library";
+            this.NameCol.Width = 182;
             // 
             // DiscriptionCol
             // 
             this.DiscriptionCol.Text = "Description";
+            this.DiscriptionCol.Width = 396;
             // 
             // loadButton
             // 
@@ -84,7 +86,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.loadButton);
-            this.Controls.Add(this.listView1);
+            this.Controls.Add(this.BindingsList);
             this.Name = "BindingsControlPanel";
             this.Size = new System.Drawing.Size(695, 341);
             this.ResumeLayout(false);
@@ -93,11 +95,10 @@
 
         #endregion
 
-        private System.Windows.Forms.ListView listView1;
+        private System.Windows.Forms.ListView BindingsList;
         private System.Windows.Forms.ColumnHeader BoundCol;
         private System.Windows.Forms.ColumnHeader InterfaceCol;
         private System.Windows.Forms.ColumnHeader NameCol;
-        private System.Windows.Forms.ColumnHeader LibraryCol;
         private System.Windows.Forms.ColumnHeader DiscriptionCol;
         private System.Windows.Forms.Button loadButton;
     }
