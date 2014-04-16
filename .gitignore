@@ -49,6 +49,7 @@ Thumbs.db
 # Folders #
 ###################
 Bin/
+Monitor/
 Src/Backup/*
 Src/_UpgradeReport_Files/*
 

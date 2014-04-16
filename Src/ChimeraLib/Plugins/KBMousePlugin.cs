@@ -186,6 +186,11 @@ namespace Chimera.Plugins {
             get { return mOrientation; }
         }
 
+        public override Vector2 MouseDelta
+        {
+            get { return Vector2.Zero; }
+        }
+
         public override void Init(Core core) {
             mCore = core;
             base.Init(core);

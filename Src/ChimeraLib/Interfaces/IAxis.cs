@@ -55,7 +55,15 @@ namespace Chimera.Interfaces {
         /// <summary>
         /// The input axis yaws the camera left or right.
         /// </summary>
-        Yaw
+        Yaw,
+        /// <summary>
+        /// The input axis for the mouse x
+        /// </summary>
+        MouseX,
+        /// <summary>
+        /// The input axis for the mouse y
+        /// </summary>
+        MouseY
     }
 
     /// <summary>

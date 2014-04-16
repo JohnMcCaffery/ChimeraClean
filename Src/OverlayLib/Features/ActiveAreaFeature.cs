@@ -50,10 +50,10 @@ namespace Chimera.Overlay.Features {
             if (mFeature == null)
                 throw new ArgumentException("Unable to load Active Area. Unable to parse feature.");
 
-            mTrigger.Triggered += new Action(mActiveTrigger_Triggered);
+            mTrigger.Triggered += new Action<ITrigger>(mActiveTrigger_Triggered);
         }
 
-        void mActiveTrigger_Triggered() {
+        void mActiveTrigger_Triggered(ITrigger source) {
             mFeature.Active = mTrigger.Inside;
             mPlugin[Frame].ForceRedrawStatic();
         }

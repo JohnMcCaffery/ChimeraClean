@@ -158,6 +158,16 @@ namespace Chimera.Plugins {
             }
         }
 
+        public override Vector2 MouseDelta
+        {
+            get
+            {
+                float x = mAxes.Where(a => a.Binding == AxisBinding.MouseX).Sum(a => a.Delta);
+                float y = mAxes.Where(a => a.Binding == AxisBinding.MouseY).Sum(a => a.Delta);
+                return new Vector2(x, y);
+            }
+        }
+
         public override void Init(Core core) {
             base.Init(core);
             mCore = core;

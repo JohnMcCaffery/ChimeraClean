@@ -169,7 +169,7 @@ namespace Chimera.Flythrough.Overlay {
                 //TODO - debug?
                 return;
             mStepTriggers.Add(trigger);
-            trigger.Triggered += new Action(step_Triggered);
+            trigger.Triggered += new Action<ITrigger>(step_Triggered);
             if (trigger is IFeature)
                 AddFeature(trigger as IFeature);
         }
@@ -196,7 +196,7 @@ namespace Chimera.Flythrough.Overlay {
                 mStepText.TextString = (step + 1) + "\\" + mInput.Count;
         }
 
-        void step_Triggered() {
+        void step_Triggered(ITrigger source) {
             mInput.Step();
         }
 

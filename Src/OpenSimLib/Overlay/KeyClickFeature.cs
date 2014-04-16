@@ -7,56 +7,75 @@ using Chimera.Overlay;
 using System.Xml;
 using log4net;
 using Chimera.Util;
+using Chimera.OpenSim;
 
-namespace Chimera.Overlay.Features {
-    public class ClickFeatureFactory : IFeatureFactory {
-        public IFeature Create(OverlayPlugin manager, XmlNode node) {
-            return new ClickFeature(manager, node);
+namespace Chimera.OpenSim.Overlay
+{
+    public class KeyClickFeatureFactory : IFeatureFactory
+    {
+        public IFeature Create(OverlayPlugin manager, XmlNode node)
+        {
+            return new KeyClickFeature(manager, node);
         }
 
-        public IFeature Create(OverlayPlugin manager, XmlNode node, System.Drawing.Rectangle clip) {
+        public IFeature Create(OverlayPlugin manager, XmlNode node, System.Drawing.Rectangle clip)
+        {
             return Create(manager, node);
         }
 
-        public string Name {
-            get { return "JoystickClick"; }
+        public string Name
+        {
+            get { return "KeyClick"; }
         }
     }
 
-    public class ClickFeature : OverlayXmlLoader, IFeature {
+    public class KeyClickFeature : OverlayXmlLoader, IFeature
+    {
         private bool mActive;
-        private bool mLeft;
+        private string keys;
         private string mFrame;
         private ITrigger[] mTriggers;
         private Action<ITrigger> mTriggerListener;
+        private OpenSimController mController;
 
-        public ClickFeature(OverlayPlugin plugin, XmlNode node) {
+        public KeyClickFeature(OverlayPlugin plugin, XmlNode node)
+        {
             mTriggerListener = new Action<ITrigger>(TriggerListener);
 
-            mLeft = GetBool(node, false, "LeftClick");
+            keys = node.Attributes["Keys"].Value;
             mFrame = GetManager(plugin, node, "Click Feature").Name;
 
             List<ITrigger> triggers = new List<ITrigger>();
-            foreach (XmlNode trigger in GetChildrenOfChild(node, "Triggers")) {
-                ITrigger t = plugin.GetTrigger(trigger, "JoystickClick trigger", null);
+            foreach (XmlNode trigger in GetChildrenOfChild(node, "Triggers"))
+            {
+                ITrigger t = plugin.GetTrigger(trigger, "KeyClick trigger", null);
                 if (t != null)
                 {
                     triggers.Add(t);
                 }
             }
             mTriggers = triggers.ToArray();
+            if (plugin.Core.Frames.First().Output is OpenSimController)
+                mController = plugin.Core.Frames.First().Output as OpenSimController;
         }
 
-        public void TriggerListener(ITrigger source) {
-            ProcessWrangler.Click(mLeft);
+        public void TriggerListener(ITrigger source)
+        {
+            foreach (var key in keys.Split(','))
+            {
+                mController.ViewerController.PressKey(key);
+            }
         }
 
         public System.Drawing.Rectangle Clip { get { return new System.Drawing.Rectangle(); } set { } }
 
-        public bool Active {
+        public bool Active
+        {
             get { return mActive; }
-            set {
-                if (mActive != value) {
+            set
+            {
+                if (mActive != value)
+                {
                     mActive = value;
                     foreach (var trigger in mTriggers)
                         if (value)
@@ -73,16 +92,19 @@ namespace Chimera.Overlay.Features {
             }
         }
 
-        public bool NeedsRedrawn {
+        public bool NeedsRedrawn
+        {
             get { return false; }
         }
 
-        public string Frame {
+        public string Frame
+        {
             get { return mFrame; }
         }
 
-        public string Name {
-            get { return "Joystick" + (mLeft ? "Left" : "Right") + "Click"; }
+        public string Name
+        {
+            get { return "KeyClick"; }
             set { }
         }
 

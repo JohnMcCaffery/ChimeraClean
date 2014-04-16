@@ -12,6 +12,7 @@ namespace Chimera.Overlay {
         public string InterfaceMode;
         public string OverlayFile;
         public bool ControlPointer;
+        public bool DisablePointer;
         public bool AlwaysOnTop;
         public bool LaunchOverlay;
         public bool Fullscreen;
@@ -32,6 +33,7 @@ namespace Chimera.Overlay {
             LaunchOverlay = Get(true, "LaunchOverlay", true, "Whether to create the overlay windows when the system starts up.");
             AlwaysOnTop = Get(true, "AlwaysOnTop", true, "Whether to force overlay windows to always be on top.");
             ControlPointer = Get(true, "ControlPointer", true, "Whether to allow the overlay to move the system pointer.");
+            DisablePointer = Get(true, "DisablePointer", true, "Wether to move the pointer off the screen.");
             InterfaceMode = Get(true, "InterfaceMode", "HoverBased", "The mode the overlay is in. Use this to choose between different configs embedded in the same Overlay config file.");
             OverlayFile = Get(true, "OverlayFile", null, "The overlay file to load.");
             IdleEnabled = Get(true, "IdleEnabled", true, "Whether the idle triggers should be activated.");

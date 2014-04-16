@@ -103,9 +103,9 @@ namespace Chimera.Overlay.States {
 
         private void AddTrigger(bool next, ITrigger trigger) {
             if (next)
-                trigger.Triggered += new Action(next_Triggered);
+                trigger.Triggered += new Action<ITrigger>(next_Triggered);
             else
-                trigger.Triggered += new Action(prev_Triggered);
+                trigger.Triggered += new Action<ITrigger>(prev_Triggered);
 
             mTriggers.Add(trigger);
 
@@ -113,12 +113,12 @@ namespace Chimera.Overlay.States {
                 AddFeature(trigger as IFeature);
         }
 
-        void prev_Triggered() {
+        void prev_Triggered(ITrigger source) {
             if (Active)
                 Increment(-1);
         }
 
-        void next_Triggered() {
+        void next_Triggered(ITrigger source) {
             if (Active)
                 Increment(1);
         }

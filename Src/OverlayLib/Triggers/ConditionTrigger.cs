@@ -19,11 +19,11 @@ namespace Chimera.Overlay.Triggers {
         private bool mHasTriggered;
         private DateTime mStart;
 
-        private event Action mTriggered;
+        private event Action<ITrigger> mTriggered;
 
         public override void Trigger() {
             if (Active && mTriggered != null)
-                mTriggered();
+                mTriggered(this);
         }
 
         public abstract bool Condition {
@@ -57,12 +57,12 @@ namespace Chimera.Overlay.Triggers {
                 if (!mCondition) {
                     mCondition = true;
                     if (mWaitMS <= 0.0)
-                        mTriggered();
+                        mTriggered(this);
                     else
                         mStart = DateTime.Now;
                 } else if (!mHasTriggered && mWaitMS > 0.0 && DateTime.Now.Subtract(mStart).TotalMilliseconds > mWaitMS) {
                     mHasTriggered = true;
-                    mTriggered();
+                    mTriggered(this);
                 }
             } else if (mCondition) {
                 mCondition = false;
@@ -75,7 +75,7 @@ namespace Chimera.Overlay.Triggers {
 
         #region ITrigger Members
 
-        public override event Action Triggered {
+        public override event Action<ITrigger> Triggered {
             add {
                 if (mActive && mTriggered == null)
                     mCore.Tick += mTickListener;
