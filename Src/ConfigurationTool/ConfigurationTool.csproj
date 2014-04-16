@@ -35,12 +35,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Nini, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Lib\Nini.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
-    <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -52,10 +47,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controls\BindingsControlPanel.cs">
+    <Compile Include="BindingsControlPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\BindingsControlPanel.Designer.cs">
+    <Compile Include="BindingsControlPanel.Designer.cs">
       <DependentUpon>BindingsControlPanel.cs</DependentUpon>
     </Compile>
     <Compile Include="ConfigurationTool.cs">
@@ -64,41 +59,13 @@
     <Compile Include="ConfigurationTool.Designer.cs">
       <DependentUpon>ConfigurationTool.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\ConfigurationFolderPanel.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Controls\ConfigurationFolderPanel.Designer.cs">
-      <DependentUpon>ConfigurationFolderPanel.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\ConfigurationObjectControlPanel.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Controls\ConfigurationObjectControlPanel.Designer.cs">
-      <DependentUpon>ConfigurationObjectControlPanel.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\ValueColumn.cs" />
-    <Compile Include="Controls\ValueEditingControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Controls\ValueEditingControl.Designer.cs">
-      <DependentUpon>ValueEditingControl.cs</DependentUpon>
-    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Controls\BindingsControlPanel.resx">
+    <EmbeddedResource Include="BindingsControlPanel.resx">
       <DependentUpon>BindingsControlPanel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ConfigurationTool.resx">
       <DependentUpon>ConfigurationTool.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Controls\ConfigurationFolderPanel.resx">
-      <DependentUpon>ConfigurationFolderPanel.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Controls\ConfigurationObjectControlPanel.resx">
-      <DependentUpon>ConfigurationObjectControlPanel.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Controls\ValueEditingControl.resx">
-      <DependentUpon>ValueEditingControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
