@@ -26,6 +26,8 @@ namespace Chimera.Plugins {
         private bool mDrawRoom;
         private ProjectorPluginPanel mPanel;
 
+        public static string Details = "Plugin that draws a physical projector onto the GUI and allows parameters to be adjusted to visualise how the projection will appear in a real room.";
+
         public Vector3 Big {
             get { return mBig; }
         }
