@@ -7,15 +7,15 @@ using Chimera.Plugins;
 
 namespace Chimera.Config {
     public class AxisConfig : ConfigFolderBase {
-        private string mType;
+        private string mName;
 
-        public AxisConfig(string type)
-            : base(type, new string[0]) {
-            mType = type;
+        public AxisConfig(string name)
+            : base(name, new string[0]) {
+            mName = name;
         }
 
         public override string Group {
-            get { return mType + "Movement"; }
+            get { return mName; }
         }
 
         protected override void InitConfig() { }
