@@ -31,12 +31,12 @@ namespace Joystick {
         public ThumpadAxisLX() : base(true, true, AxisBinding.NotSet) {
         }
     }
-    public class ThumpadAxisRY : ThumbstickAxis {
-        public ThumpadAxisRY() : base(true, false, AxisBinding.NotSet) {
+    public class ThumpadAxisLY : ThumbstickAxis {
+        public ThumpadAxisLY() : base(true, false, AxisBinding.NotSet) {
         }
     }
-    public class ThumpadAxisLX : ThumbstickAxis {
-        public ThumpadAxisLX() : base(false, true, AxisBinding.NotSet) {
+    public class ThumpadAxisRX : ThumbstickAxis {
+        public ThumpadAxisRX() : base(false, true, AxisBinding.NotSet) {
         }
     }
     public class ThumpadAxisRY : ThumbstickAxis {

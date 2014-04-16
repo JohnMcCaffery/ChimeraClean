@@ -76,17 +76,10 @@
   <ItemGroup>
     <Compile Include="DPadAxis.cs" />
     <Compile Include="GamepadManager.cs" />
-    <Compile Include="GUI\JoystickCursorPanel.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="GUI\JoystickCursorPanel.Designer.cs">
-      <DependentUpon>JoystickCursorPanel.cs</DependentUpon>
-    </Compile>
     <Compile Include="Overlay\JoystickButtonTrigger.cs" />
     <Compile Include="Overlay\JoystickControlState.cs" />
     <Compile Include="Overlay\JoystickInactiveTrigger.cs" />
     <Compile Include="Overlay\JoystickActivatedTrigger.cs" />
-    <Compile Include="Plugins\JoystickMousePlugin.cs" />
     <Compile Include="XBoxControllerPlugin.cs" />
     <Compile Include="TriggerAxis.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -102,7 +95,10 @@
       <Name>OverlayLib</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="GUI\" />
+    <Folder Include="Plugins\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
