@@ -18,7 +18,7 @@ namespace Joystick
         }
     }
 
-    class DPadAxis : ConstrainedAxis, ITickListener
+    public class DPadAxis : ConstrainedAxis, ITickListener
     {
         private bool mX;
 
