@@ -8,6 +8,9 @@ using Chimera.OpenSim;
 using System.Xml;
 using System.IO;
 using System.Threading;
+using Chimera.Flythrough;
+using log4net.Core;
+using log4net;
 
 namespace Chimera.Experimental.Overlay {
     public class FPSRecorderStateFactory : XmlLoader, IStateFactory {
@@ -25,17 +28,25 @@ namespace Chimera.Experimental.Overlay {
     }
 
     public class FPSRecorderState : State {
+        private ILog Logger = LogManager.GetLogger(typeof(FPSRecorderState));
+        private FlythroughPlugin mFlythroughPlugin;
         private string mFolder;
         private string mFlythrough;
 
         public FPSRecorderState(OverlayPlugin manager, XmlNode node) : base (GetName(node, "initialising FPSRecorder state"), manager) {
             mFolder = Path.GetFullPath(GetString(node, "FPS", "Folder"));
-            mFlythrough = GetString(node, "Flythrough", "Flythroughs/Expriment.xml");
+            mFlythrough = GetString(node, "Flythroughs/Expriment.xml", "Flythrough");
+
+            if (manager.Core.HasPlugin<FlythroughPlugin>())
+                mFlythroughPlugin = manager.Core.GetPlugin<FlythroughPlugin>();
+            else
+                Logger.Warn("Unable to initialise FPSRecorder, flythroughPlugin not bound.");
         }
 
         protected override void TransitionToStart() { }
 
         protected override void TransitionToFinish() {
+
             string started = DateTime.Now.ToString("yyyy.MM.dd.HH.mm");
 
             string dir = Path.Combine(mFolder, started);
@@ -47,48 +58,55 @@ namespace Chimera.Experimental.Overlay {
                 OpenSimController OSOut = frame.Output as OpenSimController;
                 if (OSOut != null && OSOut.ViewerController.Started) {
                     OSOut.ViewerController.PressKey("s", true, true, true);
-                    Console.WriteLine("ctrl + alt + shift + s");
+                    /*
                     OSOut.ViewerController.PressKey("U");
-                    Console.WriteLine("U");
                     OSOut.ViewerController.PressKey("s");
-                    Console.WriteLine("s");
                     OSOut.ViewerController.PressKey("e");
-                    Console.WriteLine("e");
                     OSOut.ViewerController.PressKey("r");
-                    Console.WriteLine("r");
                     OSOut.ViewerController.PressKey("L");
-                    Console.WriteLine("L");
                     OSOut.ViewerController.PressKey("{TAB}");
-                    Console.WriteLine("{TAB}");
                     OSOut.ViewerController.PressKey("{TAB}");
-                    Console.WriteLine("{TAB}");
                     OSOut.ViewerController.PressKey("{TAB}");
-                    Console.WriteLine("{TAB}");
                     OSOut.ViewerController.PressKey("{DEL}");
-                    Console.WriteLine("{DEL}");
 
                     string file = Path.Combine(dir, started + "-" + frame.Name + ".log");
-
-                    foreach (char c in file) {
+                    foreach (char c in file)
                         OSOut.ViewerController.PressKey(c + "");
-                        Console.WriteLine(c + "");
-                    }
+                    */
 
+                    //Select the correct setting
+                    OSOut.ViewerController.SendString("UserL");
                     OSOut.ViewerController.PressKey("{TAB}");
-                    Console.WriteLine("{TAB}");
+                    OSOut.ViewerController.PressKey("{TAB}");
+                    OSOut.ViewerController.PressKey("{TAB}");
+                    //Delete the old value
+                    OSOut.ViewerController.PressKey("{DEL}");
 
+                    //Set the filename
+                    string file = Path.Combine(dir, started + "-" + frame.Name + ".log");
+                    OSOut.ViewerController.SendString(file);
+
+                    //Save filename and close window
+                    OSOut.ViewerController.PressKey("{TAB}");
                     OSOut.ViewerController.PressKey("W", true, false, false);
-                    Console.WriteLine("ctrl + W");
                 }
+            }
+
+            if (mFlythroughPlugin != null) {
+                mFlythroughPlugin.Enabled = true;
+                mFlythroughPlugin.Load(mFlythrough);
+                mFlythroughPlugin.Play();
             }
         }
 
-        protected override void TransitionFromStart() { }
+        protected override void TransitionFromStart() { 
+        }
 
         protected override void TransitionFromFinish() {
             foreach (var frame in Manager.Core.Frames) {
                 OpenSimController OSOut = frame.Output as OpenSimController;
                 if (OSOut != null && OSOut.ViewerController.Started) {
+                    /*
                     OSOut.ViewerController.PressKey("s", true, true, true);
                     OSOut.ViewerController.PressKey("U");
                     OSOut.ViewerController.PressKey("s");
@@ -99,6 +117,19 @@ namespace Chimera.Experimental.Overlay {
                     OSOut.ViewerController.PressKey("{TAB}");
                     OSOut.ViewerController.PressKey("{TAB}");
                     OSOut.ViewerController.PressKey("{DEL}");
+                    OSOut.ViewerController.PressKey("{TAB}");
+                    OSOut.ViewerController.PressKey("W", true, false, false);
+                    */
+
+
+                    //Select the correct setting
+                    OSOut.ViewerController.SendString("UserL");
+                    OSOut.ViewerController.PressKey("{TAB}");
+                    OSOut.ViewerController.PressKey("{TAB}");
+                    OSOut.ViewerController.PressKey("{TAB}");
+                    //Delete the test filename
+                    OSOut.ViewerController.PressKey("{DEL}");
+                    //Save filename and close window
                     OSOut.ViewerController.PressKey("{TAB}");
                     OSOut.ViewerController.PressKey("W", true, false, false);
                 }
