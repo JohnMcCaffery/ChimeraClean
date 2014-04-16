@@ -107,7 +107,7 @@ namespace Chimera.Plugins {
         public AxisBasedDelta(string name, params IAxis[] axes) {
             Logger = LogManager.GetLogger(name);
             mName = name;
-            mConfig = new AxisConfig(name + "Movement");
+            mConfig = new AxisConfig(name);
 
             mTickListener = new Action(mCore_Tick);
 
