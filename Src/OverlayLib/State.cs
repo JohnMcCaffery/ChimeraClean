@@ -96,6 +96,7 @@ namespace Chimera.Overlay {
         public State(string name, OverlayPlugin manager, XmlNode node, bool enableCursor)
             : this(name, manager, node) {
             mEnableCursor = enableCursor;
+            mEnableCursor = GetBool(node, mEnableCursor, "EnableCursor");
         }
 
 
