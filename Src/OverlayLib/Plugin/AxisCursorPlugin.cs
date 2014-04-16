@@ -57,7 +57,6 @@ namespace Chimera.Overlay.Plugins {
         private void TickListener() {
             float x = mManager.CursorPosition.X;
             float y = mManager.CursorPosition.Y;
-            float xInc = 0f, yInc = 0f;
             foreach (var axis in mAxes.Where(a => a.Binding == AxisBinding.MouseX || a.Binding == AxisBinding.MouseY)) {
                 //This is the code that moves the mouse!
                 if (axis.Binding == AxisBinding.MouseX) 
@@ -65,7 +64,7 @@ namespace Chimera.Overlay.Plugins {
                 else 
                     y += axis.Delta;
             }
-            mManager.UpdateCursor(x, y);
+            mManager.UpdateCursor(Math.Max(Math.Min(x, .999999999), 0), Math.Max(Math.Min(y, .999999999), 0));
         }
 
         #region ISystemPlugin Members
