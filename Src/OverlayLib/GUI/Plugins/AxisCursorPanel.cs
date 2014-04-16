@@ -6,11 +6,11 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using Joystick.Plugins;
 using Chimera.Interfaces;
 using Chimera.GUI.Controls.Plugins;
+using Overlay.Plugins;
 
-namespace Chimera.Kinect.GUI {
+namespace Chimera.Overlay.GUI.Plugins {
     public partial class AxisCursorPanel : UserControl {
         private static readonly int PADDING = 3;
         private AxisCursorPlugin mPlugin;

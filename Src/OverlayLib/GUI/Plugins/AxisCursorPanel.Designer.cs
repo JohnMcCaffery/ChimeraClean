@@ -1,4 +1,4 @@
-﻿namespace Chimera.Kinect.GUI {
+﻿namespace Chimera.Overlay.GUI.Plugins {
     partial class AxisCursorPanel {
         /// <summary> 
         /// Required designer variable.

@@ -8,19 +8,17 @@ using Chimera.Overlay;
 using System.Drawing;
 using System.Windows.Forms;
 using Chimera.Config;
-using Chimera.Kinect.GUI;
 using Chimera.Interfaces;
 using OpenMetaverse;
+using Chimera.Overlay.GUI.Plugins;
 
-namespace Joystick.Plugins {
+namespace Overlay.Plugins {
     public class AxisCursorPlugin : ISystemPlugin {
         private ILog Logger = LogManager.GetLogger("AxisCursor");
 
         private AxisCursorPanel mPanel;
 
-        private PointF mLocation;
         private bool mEnabled;
-        private bool mListening;
         //TODO add init of this to the config
         private string mWindow = "MainWindow";
 
@@ -34,6 +32,8 @@ namespace Joystick.Plugins {
         public event Action<IAxis> AxisAdded;
 
         public AxisCursorPlugin(params IAxis[] axes) {
+            mTickListener = new Action(TickListener);
+            mAxisConfig = new AxisConfig("AxisCursor");
             foreach (IAxis axis in axes)
                 AddAxis(axis);
         }
