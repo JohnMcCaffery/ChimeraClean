@@ -32,15 +32,20 @@ namespace Chimera.GUI.Controls.Plugins {
         private IAxis mAxis;
         private int mExpandedSize;
 
-        public AxisPanel() {
+        public AxisPanel(params AxisBinding[] ignoredBindings)
+            : this() {
             InitializeComponent();
 
-            foreach (var binding in Enum.GetValues(typeof(AxisBinding)))
+            foreach (var binding in (Enum.GetValues(typeof(AxisBinding))as IEnumerable<AxisBinding>).Except(ignoredBindings).Where(b => b != AxisBinding.NotSet))
                 bindingDropdown.Items.Add(binding);
         }
 
-        public AxisPanel(IAxis axis)
-            : this() {
+        public AxisPanel()
+            : this(new AxisBinding[0]) {
+        }
+
+        public AxisPanel(IAxis axis, params AxisBinding[] ignoredBindings)
+            : this(ignoredBindings) {
 
             mAxis = axis;
 

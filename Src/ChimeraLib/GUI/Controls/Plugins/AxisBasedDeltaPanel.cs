@@ -58,7 +58,7 @@ namespace Chimera.GUI.Controls.Plugins {
         }
 
         void mInput_AxisAdded(IAxis axis) {
-            AxisPanel panel = new AxisPanel(axis);
+            AxisPanel panel = new AxisPanel(axis, AxisBinding.MouseX, AxisBinding.MouseY);
             panel.Anchor = AnchorStyles.Left | AnchorStyles.Right;
             panel.Width = axesBox.Width - PADDING * 2;
             axesBox.Controls.Add(panel);
