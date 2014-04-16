@@ -33,8 +33,7 @@ namespace Chimera.Experimental.Overlay {
         private string mFolder;
         private string mFlythrough;
 
-        public FPSRecorderState(OverlayPlugin manager, XmlNode node)
-            : base(GetName(node, "initialising FPSRecorder state"), manager, node) {
+        public FPSRecorderState(OverlayPlugin manager, XmlNode node) : base (GetName(node, "initialising FPSRecorder state"), manager) {
             mFolder = Path.GetFullPath(GetString(node, "FPS", "Folder"));
             mFlythrough = GetString(node, "Flythroughs/Expriment.xml", "Flythrough");
 
