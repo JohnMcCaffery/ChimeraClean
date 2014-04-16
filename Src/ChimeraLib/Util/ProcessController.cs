@@ -517,14 +517,27 @@ namespace Chimera.Util {
         public void PressKey(string str) {
             PressKey(str, false, false, false);
         }
+
         public void PressKey(string key, bool ctrl, bool alt, bool shift) {
             lock (Logger) {
                 if (!Started)
                     return;
                 //Process foreground = Process.GetCurrentProcess();
                 SetForegroundWindow(mProcess.MainWindowHandle);
-                Thread.Sleep(500);
+                Thread.Sleep(100);
                 SendKeys.SendWait((ctrl ? "^" : "") + (alt ? "%" : "") + (shift ? "+" : "") + key);
+                //SetForegroundWindow(foreground.MainWindowHandle);
+            }
+        }
+
+        public void SendString(string str) {
+            lock (Logger) {
+                if (!Started)
+                    return;
+                //Process foreground = Process.GetCurrentProcess();
+                SetForegroundWindow(mProcess.MainWindowHandle);
+                foreach (var key in str)
+                    SendKeys.SendWait(key + "");
                 //SetForegroundWindow(foreground.MainWindowHandle);
             }
         }
