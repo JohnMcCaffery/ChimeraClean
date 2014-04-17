@@ -27,22 +27,63 @@ using Chimera.Util;
 using System.IO;
 
 namespace Chimera.Config {
-    public abstract class ConfigBase {
-        private class ConfigParam : IComparable<ConfigParam> {
+    public enum ParameterTypes {
+        Bool,
+        Float,
+        Double,
+        Int,
+        String,
+        Enum,
+        Vector3
+    }
+
+        public class ConfigParam : IComparable<ConfigParam> {
             private string mKey;
             private string mDescription;
             private string mShortKey;
             private bool mCommandLine;
             private string mSection;
-            private string mType;
+            private ParameterTypes mType;
             private string mDefault;
+            private string mValue;
+            private string[] mValues;
             private readonly List<string> mGroups = new List<string>();
+
+            public string Key {
+                get { return mKey; }
+            }
+
+            public string Description {
+                get { return mDescription; }
+            }
+
+            public string Default {
+                get { return mDefault; }
+            }
+
+            public string Section {
+                get { return mSection; }
+            }
+
+            public string[] Values {
+                get { return mValues; }
+            }
+
+            public string Value {
+                get { return mValue; }
+                set {
+                    //TODO - make this write out!
+                }
+            }
 
             public override string ToString() {
                 return base.ToString();
             }
+            public ParameterTypes Type {
+                get { return mType; }
+            }
 
-            public ConfigParam(string key, string description, string type, string section, string group, string defalt, bool commandLine, string shortKey) {
+            public ConfigParam(string key, string description, ParameterTypes type, string section, string group, string defalt, bool commandLine, string shortKey, string value, params string[] values) {
                 mKey = key;
                 mDescription = description;
                 mType = type;
@@ -53,6 +94,8 @@ namespace Chimera.Config {
                 mDefault = defalt;
                 mShortKey = shortKey;
                 mCommandLine = commandLine;
+                mValues = values;
+                mValue = value;
             }
 
             public bool CommandLine {
@@ -86,15 +129,31 @@ namespace Chimera.Config {
                     return mGroups[0].CompareTo(other.mGroups[0]);
             }
         }
+    public abstract class ConfigBase {
+        public string Section;
+        private IConfigSource mSource;
+        private ArgvConfigSource mArgConfig;
+        private string mFile;
 
-        private void AddParam(string key, string description, string type, string section, string defalt) {
+        private bool configLoaded;
+
+        private readonly Dictionary<string, HashSet<string>> commandLineKeys = new Dictionary<string, HashSet<string>>();
+        private readonly Dictionary<string, Dictionary<string, string>> commandLineShortKeys = new Dictionary<string, Dictionary<string, string>>();
+        private readonly Dictionary<string, ConfigParam> _mParameters = new Dictionary<string,ConfigParam>();
+
+
+        public IEnumerable<ConfigParam> Parameters {
+            get { return _mParameters.Values; }
+        }
+
+        private void AddParam(string key, string description, ParameterTypes type, string section, string defalt, object value, params string[] values) {
             bool commandLine = commandLineKeys.ContainsKey(section) && commandLineKeys[section].Contains(key);
             string shortKey = commandLine && commandLineShortKeys.ContainsKey(section) ? commandLineShortKeys[section][key] : null;
 
-            if (!_parameters.ContainsKey(key))
-                _parameters.Add(key, new ConfigParam(key, description, type, section, Group, defalt, commandLine, shortKey));
+            if (!_mParameters.ContainsKey(key))
+                _mParameters.Add(key, new ConfigParam(key, description, type, section, Group, defalt, commandLine, shortKey, value != null ? value.ToString() : "null", values));
             else {
-                ConfigParam param = _parameters[key];
+                ConfigParam param = _mParameters[key];
                 param.AddGroup(Group);
                 if (!param.CommandLine && commandLine)
                     param.CommandLine = true;
@@ -106,29 +165,17 @@ namespace Chimera.Config {
         private void AddParam(string key, string description, string p, string general, string p_2, Type type) {
             throw new NotImplementedException();
         }
-
-
-        public string Section;
-        private IConfigSource mSource;
-        private ArgvConfigSource mArgConfig;
-        private string mFile;
-
-        private bool configLoaded;
-
-        private readonly static Dictionary<string, HashSet<string>> commandLineKeys = new Dictionary<string, HashSet<string>>();
-        private readonly static Dictionary<string, Dictionary<string, string>> commandLineShortKeys = new Dictionary<string, Dictionary<string, string>>();
-        private readonly static Dictionary<string, ConfigParam> _parameters = new Dictionary<string,ConfigParam>();
-
         /// <summary>
         /// Get the main config file used across the whole application.
         /// </summary>
         /// <param name="args">Any command line arguments passed to the application.</param>
         /// <returns>A config source for the main configuration common across the whole application.</returns>
-        protected static IConfigSource GetMainConfig(string[] args) {
+        public static IConfigSource GetMainConfig(string[] args) {
             ArgvConfigSource argConfig;
             string file;
             return GetMainConfig(args, out argConfig, out file);
         }
+
         protected static IConfigSource GetMainConfig(string[] args, out ArgvConfigSource argConfig, out string file) {
             argConfig = Init.InitArgConfig(args);
             argConfig.AddSwitch("General", "MainConfigFile", "f");
@@ -256,47 +303,57 @@ namespace Chimera.Config {
         protected Vector3 GetV(string general, string key, Vector3 defalt, string description) {
             if (!configLoaded)
                 LoadConfig();
-            AddParam(key, description, "Vector3", general, defalt.ToString());
-            return Init.GetV(mSource.Configs[general], key, defalt);
+            Vector3 value =Init.GetV(mSource.Configs[general], key, defalt);
+            AddParam(key, description, ParameterTypes.Vector3, general, defalt.ToString(), value);
+            return value;
         }
         protected double Get(string general, string key, double defalt, string description) {
             if (!configLoaded)
                 LoadConfig();
-            AddParam(key, description, "double", general, defalt.ToString());
-            return Init.Get(mSource.Configs[general], key, defalt);
+            double value = Init.Get(mSource.Configs[general], key, defalt);
+            AddParam(key, description, ParameterTypes.Double, general, defalt.ToString(), value);
+            return value;
         }
-        protected string Get(string general, string key, string defalt, string description) {
+        protected string Get(string general, string key, string defalt, string description, params string[] values) {
             if (!configLoaded)
                 LoadConfig();
-            AddParam(key, description, "string", general, defalt);
-            return Init.Get(mSource.Configs[general], key, defalt);
+            string value = Init.Get(mSource.Configs[general], key, defalt);
+            AddParam(key, description, ParameterTypes.String, general, defalt, value, values);
+            return value;
         }
         protected float Get(string general, string key, float defalt, string description) {
             if (!configLoaded)
                 LoadConfig();
-            AddParam(key, description, "float", general, defalt.ToString());
-            return Init.Get(mSource.Configs[general], key, defalt);
+            float value = Init.Get(mSource.Configs[general], key, defalt);
+            AddParam(key, description, ParameterTypes.Float, general, defalt.ToString(), value);
+            return value;
         }
         protected int Get(string general, string key, int defalt, string description) {
             if (!configLoaded)
                 LoadConfig();
-            AddParam(key, description, "int", general, defalt.ToString());
-            return Init.Get(mSource.Configs[general], key, defalt);
+            int value = Init.Get(mSource.Configs[general], key, defalt);
+            AddParam(key, description, ParameterTypes.Int, general, defalt.ToString(), value);
+            return value;
         }
         protected bool Get(string general, string key, bool defalt, string description) {
             if (!configLoaded)
                 LoadConfig();
-            AddParam(key, description, "bool", general, defalt.ToString());
-            return Init.Get(mSource.Configs[general], key, defalt);
+            bool value = Init.Get(mSource.Configs[general], key, defalt);
+            AddParam(key, description, ParameterTypes.Bool, general, defalt.ToString(), value);
+            return value;
         }
-        /*
-        protected T Get<T>(string general, string key, T defalt, string description) where T : Enum {
+        protected T Get<T>(string general, string key, T defalt, string description) {
             if (!configLoaded)
                 LoadConfig();
-            AddParam(key, description, "enum", general, defalt.ToString(), typeof(T));
-            return (T)Enum.Parse(typeof(T), Get(general, key, defalt.ToString(), ""));
+            T value = (T)Enum.Parse(typeof(T), Get(general, key, defalt.ToString(), ""));
+            //Init.Get(mSource.Configs[general], key, defalt);
+            List<object> vs = new List<object>();
+            foreach (var v in Enum.GetValues(typeof(T)))
+                vs.Add(v);
+            string[] values = vs.Select(v => v.ToString()).ToArray();
+            AddParam(key, description, ParameterTypes.Enum, general, defalt.ToString(), value, values);
+            return value;
         }
-        */
 
 
         protected Vector3 GetV(bool general, string key, Vector3 defalt, string description) {
@@ -305,8 +362,8 @@ namespace Chimera.Config {
         protected double Get(bool general, string key, double defalt, string description) {
             return Get(general ? "General" : Section, key, defalt, description);
         }
-        protected string Get(bool general, string key, string defalt, string description) {
-            return Get(general ? "General" : Section, key, defalt, description);
+        protected string Get(bool general, string key, string defalt, string description, params string[] values) {
+            return Get(general ? "General" : Section, key, defalt, description, values);
         }
         protected float Get(bool general, string key, float defalt, string description) {
             return Get(general ? "General" : Section, key, defalt, description);
@@ -316,6 +373,9 @@ namespace Chimera.Config {
         }
         protected bool Get(bool general, string key, bool defalt, string description) {
             return Get(general ? "General" : Section, key, defalt, description);
+        }
+        protected T Get<T>(bool general, string key, T defalt, string description) {
+            return Get<T>(general ? "General" : Section, key, defalt, description);
         }
 
         protected abstract void InitConfig();

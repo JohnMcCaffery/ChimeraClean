@@ -1,4 +1,4 @@
-﻿using ConfigurationTool;
+﻿using ConfigurationTool.Controls;
 namespace Chimera.ConfigurationTool {
     partial class ConfigurationTool {
         /// <summary>
@@ -24,31 +24,35 @@ namespace Chimera.ConfigurationTool {
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent() {
-            this.bindingsControlPanel1 = new BindingsControlPanel();
+            this.FoldersTab = new System.Windows.Forms.TabControl();
             this.SuspendLayout();
             // 
-            // bindingsControlPanel1
+            // FoldersTab
             // 
-            this.bindingsControlPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.bindingsControlPanel1.Location = new System.Drawing.Point(0, 0);
-            this.bindingsControlPanel1.Name = "bindingsControlPanel1";
-            this.bindingsControlPanel1.Size = new System.Drawing.Size(284, 262);
-            this.bindingsControlPanel1.TabIndex = 0;
+            this.FoldersTab.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.FoldersTab.Location = new System.Drawing.Point(0, 0);
+            this.FoldersTab.Name = "FoldersTab";
+            this.FoldersTab.SelectedIndex = 0;
+            this.FoldersTab.Size = new System.Drawing.Size(578, 473);
+            this.FoldersTab.TabIndex = 0;
             // 
             // ConfigurationTool
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 262);
-            this.Controls.Add(this.bindingsControlPanel1);
+            this.ClientSize = new System.Drawing.Size(578, 473);
+            this.Controls.Add(this.FoldersTab);
             this.Name = "ConfigurationTool";
             this.Text = "Chimera Configuration Tool";
+            this.Click += new System.EventHandler(this.ConfigurationTool_Click);
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private global::ConfigurationTool.BindingsControlPanel bindingsControlPanel1;
+        private System.Windows.Forms.TabControl FoldersTab;
+
+
     }
 }
