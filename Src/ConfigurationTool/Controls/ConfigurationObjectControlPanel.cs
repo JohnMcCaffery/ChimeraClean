@@ -20,28 +20,29 @@ namespace Chimera.ConfigurationTool.Controls {
             : this() {
             mConfig = config;
 
-            foreach (var parameter in mConfig.Parameters.OrderBy(p => p.Section)) {
-                parametersList.Rows.Add(parameter.Key, parameter, parameter.Default, parameter.Section, parameter.Description);
+            foreach (var parameter in mConfig.Parameters) {
+                /*
+                DataGridViewRow row = new DataGridViewRow();
+
+                DataGridViewCell keyCell = new DataGridViewCell();
+                DataGridViewCell valueCell = new DataGridViewCell();
+                DataGridViewCell defaultCell = new DataGridViewCell();
+                DataGridViewCell descriptionCell = new DataGridViewCell();
+
+                parametersList.Rows.Add(row);
+
+                /*
+                it.SubItems.Add(new ListViewItem.ListViewSubItem(it, parameter.Value));
+                it.SubItems.Add(new ListViewItem.ListViewSubItem(it, parameter.Default));
+                it.SubItems.Add(new ListViewItem.ListViewSubItem(it, parameter.Description));
+                */
+
+                int r = parametersList.Rows.Add(parameter.Key, parameter, parameter.Default, parameter.Description);
+                var valueCell = parametersList.Rows[r].Cells[1];
+                //var editor = parametersList.EditingControl
+
+                //valueCell.
             }
         }
-
-        public ConfigurationObjectControlPanel(ConfigBase config, string frame)
-            : this() {
-            mConfig = config;
-
-            foreach (var parameter in mConfig.Parameters.Where(p => p.Section == frame)) {
-                parametersList.Rows.Add(parameter.Key, parameter, parameter.Default, parameter.Section, parameter.Description);
-            }
-        }
-
-        public ConfigurationObjectControlPanel(ConfigBase config, string[] frames)
-            : this() {
-            mConfig = config;
-
-            foreach (var parameter in mConfig.Parameters.Where(p => !frames.Contains(p.Section))) {
-                parametersList.Rows.Add(parameter.Key, parameter, parameter.Default, parameter.Section, parameter.Description);
-            }
-        }
-
     }
 }

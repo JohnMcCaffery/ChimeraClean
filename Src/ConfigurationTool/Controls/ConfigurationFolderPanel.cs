@@ -73,72 +73,25 @@ namespace Chimera.ConfigurationTool.Controls {
                         !t.IsInterface && 
                         IsConfig(t))) {
 
-                    CfgBase config = InstantiateConfig(clazz, assembly, CfgBase.IGNORE_FRAME);
-                    if (config == null)
+                    CfgBase config = null;
+                    if (clazz.GetConstructor(new Type[0]) != null)
+                        config =(CfgBase)assembly.CreateInstance(clazz.FullName);
+                    else if (clazz.GetConstructor(new Type[] { typeof(string) }) != null)
+                        config =(CfgBase)assembly.CreateInstance(clazz.FullName, true, BindingFlags.CreateInstance, null, new object[] { "A string" }, null, null);
+                    else 
                         continue;
 
                     TabPage page = new TabPage(clazz.Name.Replace("Config", ""));
-                    if (config.Frame == null)
-                        LoadConfig(page, config);
-                    else
-                        LoadFrameConfig(clazz, page, config);
+
+                    ConfigurationObjectControlPanel panel = new ConfigurationObjectControlPanel(config);
+                    panel.Dock = DockStyle.Fill;
+
+                    page.Controls.Add(panel);
 
                     MainTab.Controls.Add(page);
+
                 }
             }
-        }
-
-        private CfgBase InstantiateConfig(Type clazz, Assembly assembly, string frame) {
-            if (clazz.GetConstructor(new Type[] { typeof(string), typeof(string[]) }) != null)
-                return (CfgBase)assembly.CreateInstance(clazz.FullName, true, BindingFlags.CreateInstance, null, new object[] { frame, new string[0] }, null, null);
-            else if (clazz.GetConstructor(new Type[] { typeof(string) }) != null)
-                return (CfgBase)assembly.CreateInstance(clazz.FullName, true, BindingFlags.CreateInstance, null, new object[] { frame }, null, null);
-            else if (clazz.GetConstructor(new Type[] { typeof(string[]) }) != null)
-                return (CfgBase)assembly.CreateInstance(clazz.FullName, true, BindingFlags.CreateInstance, null, new object[] { new string[0] }, null, null);
-            else if (clazz.GetConstructor(new Type[0]) != null)
-                return (CfgBase)assembly.CreateInstance(clazz.FullName);
-            else {
-                MessageBox.Show("Unable to to instantiate " + clazz.Name + ". No matching constructor found.\n" +
-                    "Valid constructors are:\n" +
-                    "()\n" +
-                    "(params string[])" +
-                    "(string)" +
-                    "(string, params string[])", "Unable to load configuration file", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return null;
-            }
-        }
-
-        private void LoadConfig(TabPage page, CfgBase config) {
-            ConfigurationObjectControlPanel panel = new ConfigurationObjectControlPanel(config);
-            panel.Dock = DockStyle.Fill;
-            page.Controls.Add(panel);
-        }
-
-        private void LoadFrameConfig(Type clazz, TabPage page, CfgBase config) {
-            CoreConfig core = new CoreConfig();
-
-            TabControl sectionsTab = new TabControl();
-
-            TabPage sectionPage = new TabPage("Shared");
-            ConfigurationObjectControlPanel panel = new ConfigurationObjectControlPanel(config, core.Frames);
-            panel.Dock = DockStyle.Fill;
-
-            sectionPage.Controls.Add(panel);
-            sectionsTab.Controls.Add(sectionPage);
-
-            foreach (var frame in core.Frames) {
-                config = InstantiateConfig(clazz, clazz.Assembly, frame);
-                sectionPage = new TabPage(frame);
-
-                panel = new ConfigurationObjectControlPanel(config, frame);
-                panel.Dock = DockStyle.Fill;
-
-                sectionPage.Controls.Add(panel);
-                sectionsTab.Controls.Add(sectionPage);
-            }
-
-            sectionsTab.Dock = DockStyle.Fill;
-            page.Controls.Add(sectionsTab);
         }
     }
 }

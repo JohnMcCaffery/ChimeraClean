@@ -31,8 +31,6 @@ namespace Chimera.ConfigurationTool.Controls {
                 case ParameterTypes.Float: FloatLoaded(); break;
                 case ParameterTypes.Int: IntLoaded(); break;
                 case ParameterTypes.String: StringLoaded(); break;
-                case ParameterTypes.File: FileLoaded(); break;
-                case ParameterTypes.Folder: FolderLoaded(); break;
                 case ParameterTypes.Enum: EnumLoaded(); break;
             }
         }
@@ -65,26 +63,6 @@ namespace Chimera.ConfigurationTool.Controls {
         }
 
         private void StringLoaded() {
-            textInput.Visible = true;
-            textInput.DropDownStyle = ComboBoxStyle.DropDown;
-            textInput.TextChanged += new EventHandler(textInput_TextChanged);
-
-            textInput.Items.Add(mParameter.Value);
-            textInput.Items.AddRange(mParameter.Values);
-            textInput.SelectedValue = mParameter.Value;
-        }
-
-        private void FileLoaded() {
-            textInput.Visible = true;
-            textInput.DropDownStyle = ComboBoxStyle.DropDown;
-            textInput.TextChanged += new EventHandler(textInput_TextChanged);
-
-            textInput.Items.Add(mParameter.Value);
-            textInput.Items.AddRange(mParameter.Values);
-            textInput.SelectedValue = mParameter.Value;
-        }
-
-        private void FolderLoaded() {
             textInput.Visible = true;
             textInput.DropDownStyle = ComboBoxStyle.DropDown;
             textInput.TextChanged += new EventHandler(textInput_TextChanged);
