@@ -78,13 +78,27 @@ namespace Chimera.OpenSim {
         }
 
         protected override void InitConfig() {
-            ViewerExecutable = Path.GetFullPath(Get(true, "ViewerExe", DEFAULT_CLIENT_EXE, "The executable that runs the viewer."));
+            ViewerExecutable = Path.GetFullPath(Get(true, "ViewerExe", DEFAULT_CLIENT_EXE, "The executable that runs the viewer.", 
+                "../../Armadillo-Phoenix/Bin/firestorm-bin.exe",
+                "../../Armadillo-Phoenix/Armadillo/Bin/firestorm-bin.exe",
+                "C:\\Program Files (x86)\\Firestorm-Release\\Firestorm-Release.exe",
+                "C:\\Program Files (x86)\\Firestorm-private-shutle01\\Firestorm-private-shutle01.exe"));
+
             ViewerWorkingDirectory = Get(true, "WorkingDirectory", Path.GetDirectoryName(ViewerExecutable), "The workign directory for the viewer executable.");
             ViewerArguments = Get(true, "ViewerArguments", "", "Any arguments to be passed to the viewer when it starts.");
             ViewerToggleHUDKey= Get(true, "ViewerToggleHUDKey", "%^{F1}", "The key press that will toggle the HUD on and off in the viewer.");
-            ProxyLoginURI = Get(true, "LoginURI", DEFAULT_LOGINURI, "The URI of the server the proxy should proxy.");
             UseGrid = Get(true, "UseGrid", false, "Whether to login using the --grid or --loginuri command line parameter to specify the login target.");
             DeltaScale = Get(true, "DeltaScale", .25f, "How much to scale delta values by when using remote control.");
+  
+            ProxyLoginURI = Get(true, "LoginURI", DEFAULT_LOGINURI, "The URI of the server the proxy should proxy.",
+                "http://192.168.1.181:9000",
+                "http://169.254.189.108:9000",
+                "http://138.251.194.191:9000",
+                "http://apollo.cs.st-andrews.ac.uk:8002",
+                "http://mimuve.cs.st-andrews.ac.uk:8002",
+                "http://192.168.1.101:9000",
+                "http://localhost:9000 "
+            );
 
             ControlCameraPosition = Get(true, "ControlCameraOffset", false, "Whether to use SetFollowCamProperties packets to control the camera position.");
             AllowFly = Get(true, "AllowFly", false, "Whether to allow the avatar to fly in delta mode.");
@@ -110,10 +124,13 @@ namespace Chimera.OpenSim {
             ControlCamera = Get(false, "ControlCamera", true, "Whether to control the position of the camera on the viewer.");
             ControlFrustum = Get(false, "ControlFrustum", true, "Whether to control the viewing frustum on the viewer.");
 
+            Fill = Get<Fill>(false, "Fill", Fill.Windowed, "What mode to set the window to.");
+            /*
             Fill fill;
             string fillStr = Get(false, "Fill", "Windowed", "What mode to set the window to, 'Full', 'Windowed', 'Left', 'Right'.");
             if (fillStr != null && fillStr.ToUpper() != "NONE" && Enum.TryParse(fillStr, out fill))
                 Fill = fill;
+            */
 
             Offset = GetV(false, "Offset", Vector3.Zero, "Offset from the raw camera position to apply.");
 

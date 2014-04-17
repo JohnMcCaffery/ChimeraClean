@@ -47,7 +47,8 @@ namespace Touchscreen {
             Frame = Get(true, "Window", null, "The window which is a touch screen.");
             Opacity = Get(true, "Opacity", .01f, "How opaque the input window should be.");
 
-            SinglePos = (SinglePos) Enum.Parse(typeof(SinglePos), Get("Single", "Position", "Right", "Where the single axis is positioned (Left, Right or Centre)."));
+            //SinglePos = (SinglePos) Enum.Parse(typeof(SinglePos), Get("Single", "Position", "Right", "Where the single axis is positioned (Left, Right or Centre)."));
+            SinglePos = Get<SinglePos>("Single", "Position", SinglePos.Right, "Where the single axis is positioned (Left, Right or Centre).");
         }
     }
 }
