@@ -92,6 +92,7 @@
   <ItemGroup>
     <Compile Include="Config\AxisConfig.cs" />
     <Compile Include="Config\ConfigFolderBase.cs" />
+    <Compile Include="Config\ConfigParam.cs" />
     <Compile Include="Config\PluginConfig.cs" />
     <Compile Include="Config\ProjectorConfig.cs" />
     <Compile Include="GUI\Controls\StatisticsPanel.cs">

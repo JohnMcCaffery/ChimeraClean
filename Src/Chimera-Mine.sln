@@ -19,7 +19,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Overlays", "Overlays", "{AA
 	ProjectSection(SolutionItems) = preProject
 		..\Bin\Overlays\Eyemouth-Kinect.xml = ..\Bin\Overlays\Eyemouth-Kinect.xml
 		..\Bin\Overlays\Eyemouth.xml = ..\Bin\Overlays\Eyemouth.xml
-		..\Bin\Overlays\Test.xml = ..\Bin\Overlays\Test.xml
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsMediaPlayerLib", "WindowsMediaPlayerLib\WindowsMediaPlayerLib.csproj", "{ED985A0A-C964-494D-88BB-E78ACE4F13D1}"
@@ -55,26 +54,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{ED9701C7-AC45-41C5-A61A-788C9D636A73}"
 	ProjectSection(SolutionItems) = preProject
 		..\Bin\Configs\Test\AxisCursor.ini = ..\Bin\Configs\Test\AxisCursor.ini
-		..\Bin\Configs\Test\Bindings.xml = ..\Bin\Configs\Test\Bindings.xml
-		..\Bin\Configs\Test\Core.ini = ..\Bin\Configs\Test\Core.ini
 		..\Bin\Configs\Test\EyemouthRoom.xml = ..\Bin\Configs\Test\EyemouthRoom.xml
 		..\Bin\Configs\Test\EyeTracker.ini = ..\Bin\Configs\Test\EyeTracker.ini
-		..\Bin\Configs\Test\Frames.ini = ..\Bin\Configs\Test\Frames.ini
-		..\Bin\Configs\Test\Heightmap.ini = ..\Bin\Configs\Test\Heightmap.ini
-		..\Bin\Configs\Test\KinectMovement.ini = ..\Bin\Configs\Test\KinectMovement.ini
-		..\Bin\Configs\Test\LaptopOverlay.ini = ..\Bin\Configs\Test\LaptopOverlay.ini
-		..\Bin\Configs\Test\Launch.ini = ..\Bin\Configs\Test\Launch.ini
-		..\Bin\Configs\Test\NoOverlay.ini = ..\Bin\Configs\Test\NoOverlay.ini
-		..\Bin\Configs\Test\OpenSim.ini = ..\Bin\Configs\Test\OpenSim.ini
-		..\Bin\Configs\Test\Overlay.ini = ..\Bin\Configs\Test\Overlay.ini
-		..\Bin\Configs\Test\OverlayLaptop.ini = ..\Bin\Configs\Test\OverlayLaptop.ini
-		..\Bin\Configs\Test\OverlayNone.ini = ..\Bin\Configs\Test\OverlayNone.ini
-		..\Bin\Configs\Test\OverlayTouchscreen.ini = ..\Bin\Configs\Test\OverlayTouchscreen.ini
-		..\Bin\Configs\Test\Projectors.ini = ..\Bin\Configs\Test\Projectors.ini
-		..\Bin\Configs\Test\RemoteControl.ini = ..\Bin\Configs\Test\RemoteControl.ini
-		..\Bin\Configs\Test\Touchscreen.ini = ..\Bin\Configs\Test\Touchscreen.ini
-		..\Bin\Configs\Test\TouchscreenOverlay.ini = ..\Bin\Configs\Test\TouchscreenOverlay.ini
-		..\Bin\Configs\Test\XBoxController.ini = ..\Bin\Configs\Test\XBoxController.ini
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Timespan", "Timespan\Timespan.csproj", "{A4304EE2-9B06-416A-AD48-89434262E322}"
@@ -83,17 +64,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Chimera", "Chimera", "{2E5D
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{FCF1B486-05B8-4DC0-9EF4-C88359331724}"
 	ProjectSection(SolutionItems) = preProject
-		..\Bin\Configs\Common\Heightmap.ini = ..\Bin\Configs\Common\Heightmap.ini
-		..\Bin\Configs\Common\KinectMovement.ini = ..\Bin\Configs\Common\KinectMovement.ini
 		..\Bin\Configs\Common\LaptopOverlay.ini = ..\Bin\Configs\Common\LaptopOverlay.ini
 		..\Bin\Configs\Common\Launch.ini = ..\Bin\Configs\Common\Launch.ini
-		..\Bin\Configs\Common\Main.ini = ..\Bin\Configs\Common\Main.ini
-		..\Bin\Configs\Common\OpenSim.ini = ..\Bin\Configs\Common\OpenSim.ini
-		..\Bin\Configs\Common\Projectors.ini = ..\Bin\Configs\Common\Projectors.ini
-		..\Bin\Configs\Common\RemoteControl.ini = ..\Bin\Configs\Common\RemoteControl.ini
-		..\Bin\Configs\Common\TimespanRoom.xml = ..\Bin\Configs\Common\TimespanRoom.xml
-		..\Bin\Configs\Common\Touchscreen.ini = ..\Bin\Configs\Common\Touchscreen.ini
-		..\Bin\Configs\Common\XBoxController.ini = ..\Bin\Configs\Common\XBoxController.ini
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TimespanTest", "TimespanTest", "{22DC0F45-3E0B-4D99-B8C9-15ED2AD17EBC}"
@@ -107,34 +79,14 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Eyemouth", "Eyemouth\Eyemouth.csproj", "{FCBE7872-8C58-49D9-A637-54DB2BC5158C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Timespan", "Timespan", "{782189F3-C8D8-45EC-A5DB-41D35DC591D9}"
-	ProjectSection(SolutionItems) = preProject
-		..\Bin\Overlays\Timespan\TimespanOverlay.xml = ..\Bin\Overlays\Timespan\TimespanOverlay.xml
-	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Eyemouth", "Eyemouth", "{D994DBE6-7467-47AA-993B-AF555A8431AA}"
 	ProjectSection(SolutionItems) = preProject
 		..\Bin\Configs\Eyemouth\AxisCursor.ini = ..\Bin\Configs\Eyemouth\AxisCursor.ini
-		..\Bin\Configs\Eyemouth\Bindings.xml = ..\Bin\Configs\Eyemouth\Bindings.xml
-		..\Bin\Configs\Eyemouth\Core.ini = ..\Bin\Configs\Eyemouth\Core.ini
-		..\Bin\Configs\Eyemouth\EyemouthRoom.xml = ..\Bin\Configs\Eyemouth\EyemouthRoom.xml
 		..\Bin\Configs\Eyemouth\EyeTracker.ini = ..\Bin\Configs\Eyemouth\EyeTracker.ini
-		..\Bin\Configs\Eyemouth\Frames.ini = ..\Bin\Configs\Eyemouth\Frames.ini
 		..\Bin\Configs\Eyemouth\Heightmap.ini = ..\Bin\Configs\Eyemouth\Heightmap.ini
-		..\Bin\Configs\Eyemouth\KinectMovement.ini = ..\Bin\Configs\Eyemouth\KinectMovement.ini
-		..\Bin\Configs\Eyemouth\LaptopOverlay.ini = ..\Bin\Configs\Eyemouth\LaptopOverlay.ini
-		..\Bin\Configs\Eyemouth\Launch.ini = ..\Bin\Configs\Eyemouth\Launch.ini
-		..\Bin\Configs\Eyemouth\Main.ini = ..\Bin\Configs\Eyemouth\Main.ini
-		..\Bin\Configs\Eyemouth\NoOverlay.ini = ..\Bin\Configs\Eyemouth\NoOverlay.ini
-		..\Bin\Configs\Eyemouth\OpenSim.ini = ..\Bin\Configs\Eyemouth\OpenSim.ini
-		..\Bin\Configs\Eyemouth\Overlay.ini = ..\Bin\Configs\Eyemouth\Overlay.ini
-		..\Bin\Configs\Eyemouth\OverlayLaptop.ini = ..\Bin\Configs\Eyemouth\OverlayLaptop.ini
 		..\Bin\Configs\Eyemouth\OverlayNone.ini = ..\Bin\Configs\Eyemouth\OverlayNone.ini
-		..\Bin\Configs\Eyemouth\OverlayTouchscreen.ini = ..\Bin\Configs\Eyemouth\OverlayTouchscreen.ini
-		..\Bin\Configs\Eyemouth\Projectors.ini = ..\Bin\Configs\Eyemouth\Projectors.ini
-		..\Bin\Configs\Eyemouth\RemoteControl.ini = ..\Bin\Configs\Eyemouth\RemoteControl.ini
 		..\Bin\Configs\Eyemouth\Touchscreen.ini = ..\Bin\Configs\Eyemouth\Touchscreen.ini
-		..\Bin\Configs\Eyemouth\TouchscreenOverlay.ini = ..\Bin\Configs\Eyemouth\TouchscreenOverlay.ini
-		..\Bin\Configs\Eyemouth\XBoxController.ini = ..\Bin\Configs\Eyemouth\XBoxController.ini
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConfigurationTool", "ConfigurationTool\ConfigurationTool.csproj", "{26B6BC99-32A2-419F-BE5B-EB3AA6BF0570}"

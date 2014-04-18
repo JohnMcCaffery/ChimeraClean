@@ -79,13 +79,18 @@ namespace Chimera.OpenSim {
         }
 
         protected override void InitConfig() {
-            ViewerExecutable = Path.GetFullPath(GetFile("ViewerExe", DEFAULT_CLIENT_EXE, "The executable that runs the viewer.", 
-                "../../Armadillo-Phoenix/Bin/firestorm-bin.exe", 
-                "../../Armadillo-Phoenix/Armadillo/Bin/firestorm-bin.exe", 
-                "C:\\Program Files (x86)\\Firestorm-Release\\Firestorm-Release.exe", 
-                "C:\\Program Files (x86)\\Firestorm-private-shutle01\\Firestorm-private-shutle01.exe"));
+            string folder = Environment.CurrentDirectory.Replace("\\Configs", "") + "\\";
+            string file = GetFile("ViewerExe", DEFAULT_CLIENT_EXE, "The executable that runs the viewer.",
+                "../../Armadillo-Phoenix/Bin/firestorm-bin.exe",
+                "../../Armadillo-Phoenix/Armadillo/Bin/firestorm-bin.exe",
+                "C:\\Program Files (x86)\\Firestorm-Release\\Firestorm-Release.exe",
+                "C:\\Program Files (x86)\\Firestorm-private-shutle01\\Firestorm-private-shutle01.exe");
 
-            ViewerWorkingDirectory = GetFolder("WorkingDirectory", Path.GetDirectoryName(ViewerExecutable), "The workign directory for the viewer executable.");
+            ViewerExecutable = Path.GetFullPath(Path.Combine(folder, file));
+
+            string defaultWD = new Uri(folder).MakeRelativeUri(new Uri(Path.GetDirectoryName(ViewerExecutable))).OriginalString;
+            ViewerWorkingDirectory = GetFolder("WorkingDirectory", defaultWD, "The workign directory for the viewer executable.");
+
             ViewerArguments = GetStr("ViewerArguments", "", "Any arguments to be passed to the viewer when it starts.");
             ViewerToggleHUDKey = GetStr("ViewerToggleHUDKey", "%^{F1}", "The key press that will toggle the HUD on and off in the viewer.");
             UseGrid = Get("UseGrid", false, "Whether to login using the --grid or --loginuri command line parameter to specify the login target.");

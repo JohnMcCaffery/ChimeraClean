@@ -24,6 +24,10 @@
         /// </summary>
         private void InitializeComponent() {
             this.parametersList = new System.Windows.Forms.DataGridView();
+            this.valueColumn1 = new Chimera.ConfigurationTool.Controls.ValueColumn();
+            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Key = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ValueCol = new Chimera.ConfigurationTool.Controls.ValueColumn();
             this.DefaultCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -51,12 +55,40 @@
             this.parametersList.Size = new System.Drawing.Size(664, 435);
             this.parametersList.TabIndex = 0;
             // 
+            // valueColumn1
+            // 
+            this.valueColumn1.DataPropertyName = "Value";
+            this.valueColumn1.HeaderText = "Value";
+            this.valueColumn1.Name = "valueColumn1";
+            this.valueColumn1.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            // 
+            // dataGridViewTextBoxColumn1
+            // 
+            this.dataGridViewTextBoxColumn1.HeaderText = "Default";
+            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
+            this.dataGridViewTextBoxColumn1.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn2
+            // 
+            this.dataGridViewTextBoxColumn2.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dataGridViewTextBoxColumn2.HeaderText = "Section";
+            this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
+            this.dataGridViewTextBoxColumn2.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn3
+            // 
+            this.dataGridViewTextBoxColumn3.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.dataGridViewTextBoxColumn3.HeaderText = "Description";
+            this.dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
+            this.dataGridViewTextBoxColumn3.ReadOnly = true;
+            // 
             // Key
             // 
             this.Key.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
             this.Key.HeaderText = "Key";
             this.Key.Name = "Key";
             this.Key.ReadOnly = true;
+            this.Key.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.Key.Width = 50;
             // 
             // ValueCol
@@ -65,6 +97,7 @@
             this.ValueCol.HeaderText = "Value";
             this.ValueCol.Name = "ValueCol";
             this.ValueCol.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.ValueCol.Width = 450;
             // 
             // DefaultCol
             // 
@@ -102,6 +135,10 @@
         #endregion
 
         private System.Windows.Forms.DataGridView parametersList;
+        private ValueColumn valueColumn1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn3;
         private System.Windows.Forms.DataGridViewTextBoxColumn Key;
         private ValueColumn ValueCol;
         private System.Windows.Forms.DataGridViewTextBoxColumn DefaultCol;

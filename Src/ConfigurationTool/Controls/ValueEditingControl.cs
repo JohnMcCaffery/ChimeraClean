@@ -7,23 +7,33 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using Chimera.Config;
+using System.IO;
+using OpenMetaverse;
 
 namespace Chimera.ConfigurationTool.Controls {
     public partial class ValueEditingControl : UserControl, IDataGridViewEditingControl {
         private ConfigParam mParameter;
         private DataGridView mView;
         private int mRowIndex;
+        private string mValue;
 
         private bool mFirstLoad = true;
 
         public ValueEditingControl() {
             InitializeComponent();
+            HideAll();
+        }
+
+        private void HideAll() {
+            boolInput.Visible = false;
+            textInput.Visible = false;
         }
 
         public ConfigParam Parameter {
             get { return mParameter; }
             set {
                 mParameter = value;
+                mValue = value.Value;
                 LoadParameter(value);
             }
         }
@@ -31,117 +41,82 @@ namespace Chimera.ConfigurationTool.Controls {
         private void LoadParameter(ConfigParam value) {
             switch (value.Type) {
                 case ParameterTypes.Bool: BoolLoaded();  break;
-                case ParameterTypes.Double: DoubleLoaded(); break;
-                case ParameterTypes.Float: FloatLoaded(); break;
-                case ParameterTypes.Int: IntLoaded(); break;
-                case ParameterTypes.String: StringLoaded(); break;
+                case ParameterTypes.Folder: 
                 case ParameterTypes.File: FileLoaded(); break;
-                case ParameterTypes.Folder: FolderLoaded(); break;
                 case ParameterTypes.Enum: EnumLoaded(); break;
-                case ParameterTypes.Vector3: Vector3Loaded(); break;
+                case ParameterTypes.Vector3: 
+                case ParameterTypes.Double: 
+                case ParameterTypes.Float: 
+                case ParameterTypes.Int: 
+                case ParameterTypes.String: StringLoaded(); break;
             }
-        }
-
-        private void Vector3Loaded() {
-            numberInput.Visible = true;
         }
 
         private void BoolLoaded() {
             if (mFirstLoad) {
                 mFirstLoad = false;
-                boolInput.Visible = true;
-                boolInput.CheckedChanged += new EventHandler(boolInput_CheckedChanged);
             }
+            textInput.Visible = false;
+            boolInput.Visible = true;
+            dialogButton.Visible = false;
+
             boolInput.Checked = bool.Parse(mParameter.Value);
         }
 
-        private void DoubleLoaded() {
-            if (mFirstLoad) {
-                mFirstLoad = false;
-                numberInput.Visible = true;
-                numberInput.DecimalPlaces = 100;
-                numberInput.ValueChanged += new EventHandler(numberInput_ValueChanged);
-            }
-            numberInput.Value = decimal.Parse(mParameter.Value);
-        }
-
-        private void FloatLoaded() {
-            if (mFirstLoad) {
-                mFirstLoad = false;
-                numberInput.Visible = true;
-                numberInput.DecimalPlaces = 10;
-                numberInput.ValueChanged += new EventHandler(numberInput_ValueChanged);
-            }
-            numberInput.Value = decimal.Parse(mParameter.Value);
-        }
-
-        private void IntLoaded() {
-            if (mFirstLoad) {
-                mFirstLoad = false;
-                numberInput.Visible = true;
-                numberInput.DecimalPlaces = 0;
-                numberInput.ValueChanged += new EventHandler(numberInput_ValueChanged);
-            }
-            numberInput.Value = decimal.Parse(mParameter.Value);
-        }
-
         private void StringLoaded() {
-            if (mFirstLoad) {
-                mFirstLoad = false;
-                textInput.Visible = true;
-                textInput.DropDownStyle = ComboBoxStyle.Simple;
-                textInput.TextChanged += new EventHandler(textInput_TextChanged);
+            textInput.DropDownStyle = ComboBoxStyle.Simple;
+            textInput.Items.Add(mParameter.Value);
+            textInput.Items.AddRange(mParameter.Values);
 
-                textInput.Items.Add(mParameter.Value);
-                textInput.Items.AddRange(mParameter.Values);
-            }
+            boolInput.Visible = false;
+            dialogButton.Visible = false;
+            textInput.Visible = true;
+
             textInput.Text = mParameter.Value;
         }
 
         private void FileLoaded() {
-            if (mFirstLoad) {
-                mFirstLoad = false;
-                textInput.Visible = true;
-                textInput.DropDownStyle = ComboBoxStyle.Simple;
-                textInput.TextChanged += new EventHandler(textInput_TextChanged);
+            StringLoaded();
 
-                textInput.Items.Add(mParameter.Value);
-                textInput.Items.AddRange(mParameter.Values);
+            if (mParameter.Type == ParameterTypes.File) {
+                openFileDialog.FileName = Path.GetFileName(mParameter.Value);
+                openFileDialog.InitialDirectory = Path.GetDirectoryName(ToAbsolute(mParameter.Value));
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                    textInput.Text = ToRelative(openFileDialog.FileName);
             }
-            textInput.Text = mParameter.Value;
+
+            if (mParameter.Type == ParameterTypes.Folder) {
+                folderBrowserDialog.SelectedPath = ToAbsolute(mParameter.Value);
+                if (folderBrowserDialog.ShowDialog() == DialogResult.OK) {
+                    textInput.Text = ToRelative(folderBrowserDialog.SelectedPath);
+                }
+            }
+
+            //textInput.Width = Width - (dialogButton.Width + 3);
+            //dialogButton.Visible = true;
         }
 
-        private void FolderLoaded() {
-            if (mFirstLoad) {
-                mFirstLoad = false;
-                textInput.Visible = true;
-                textInput.DropDownStyle = ComboBoxStyle.Simple;
-                textInput.TextChanged += new EventHandler(textInput_TextChanged);
+        private string ToAbsolute(string uri) {
+            string rootFolder = Path.GetFullPath(Path.Combine(Environment.CurrentDirectory, ".."));
+            return Path.GetFullPath(Path.Combine(rootFolder, uri));
+        }
 
-                textInput.Items.Add(mParameter.Value);
-                textInput.Items.AddRange(mParameter.Values);
-            }
-            textInput.Text = mParameter.Value;
+        private string ToRelative(string uri) {
+            Uri x = new Uri(Environment.CurrentDirectory);
+            Uri xy = x.MakeRelativeUri(new Uri(uri));
+            return xy.OriginalString;
         }
 
         private void EnumLoaded() {
-            if (mFirstLoad) {
-                mFirstLoad = false;
-                textInput.Visible = true;
-                textInput.DropDownStyle = ComboBoxStyle.DropDownList;
-                textInput.TextChanged += new EventHandler(textInput_TextChanged);
+            StringLoaded();
 
-                textInput.Items.AddRange(mParameter.Values);
-            }
+            textInput.DropDownStyle = ComboBoxStyle.DropDownList;
+            textInput.Items.AddRange(mParameter.Values);
             textInput.SelectedItem = mParameter.Values.First(p => p == mParameter.Value);
         }
 
         void textInput_TextChanged(object sender, EventArgs e) {
             mParameter.Value = textInput.Text;
-        }
-
-        void numberInput_ValueChanged(object sender, EventArgs e) {
-            mParameter.Value = numberInput.Value.ToString();
         }
 
         void boolInput_CheckedChanged(object sender, EventArgs e) {
@@ -188,5 +163,48 @@ namespace Chimera.ConfigurationTool.Controls {
         public bool RepositionEditingControlOnValueChange {
             get { return true; }
         }
+
+        private void textInput_Validating(object sender, CancelEventArgs e) {
+            double d;
+            float f;
+            int i;
+            if (
+                (mParameter.Type == ParameterTypes.Double && !double.TryParse(textInput.Text, out d)) ||
+                (mParameter.Type == ParameterTypes.Float && !float.TryParse(textInput.Text, out f)) ||
+                (mParameter.Type == ParameterTypes.Int && !int.TryParse(textInput.Text, out i))
+                )
+                e.Cancel = true;
+
+            Vector3 v;
+            if (mParameter.Type == ParameterTypes.Vector3 && !Vector3.TryParse(textInput.Text, out v))
+                e.Cancel = true;
+
+            if (mParameter.Type == ParameterTypes.File && !File.Exists(ToAbsolute(textInput.Text)))
+                e.Cancel = true;
+
+            if (mParameter.Type == ParameterTypes.Folder && !Directory.Exists(ToAbsolute(textInput.Text)))
+                e.Cancel = true;
+
+            if (e.Cancel)
+                mParameter.Value = mValue;
+            else
+                mValue = mParameter.Value;
+        }
+
+        private void dialogButton_Click(object sender, EventArgs e) {
+
+            if (mParameter.Type == ParameterTypes.File) {
+                openFileDialog.FileName = mParameter.Value;
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                    textInput.Text = openFileDialog.FileName;
+            }
+
+            if (mParameter.Type == ParameterTypes.Folder) {
+                folderBrowserDialog.SelectedPath = mParameter.Value;
+                if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
+                    textInput.Text = folderBrowserDialog.SelectedPath;
+            }
+        }
+
     }
 }

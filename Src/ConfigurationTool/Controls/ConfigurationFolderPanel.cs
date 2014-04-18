@@ -75,7 +75,9 @@ namespace Chimera.ConfigurationTool.Controls {
                     } catch (Exception e) {
                         return null;
                     }
-            }).Where(a => a != null)) {
+                }).
+                Where(a => a != null).
+                Concat(new Assembly[] { typeof(CfgBase).Assembly })) {
                 ListViewGroup g = null;
 
                 //Iterate through every class which implements one of the interfaces on the interfaces list
