@@ -128,6 +128,8 @@ namespace Chimera {
         /// </summary>
         private HashSet<Action> mRedraws = new HashSet<Action>();
 
+        private float mFarClip = 1024f;
+
         /// <summary>
         /// Triggered whenever the position of this input changes.
         /// </summary>
@@ -155,6 +157,7 @@ namespace Chimera {
             mCentre = Centre;
             mDraw = cfg.Draw;
             mDrawEye = cfg.DrawEye;
+            mFarClip = cfg.FarClip;
 
             mOrientation.Changed += mOrientation_Changed;
 
@@ -598,7 +601,7 @@ namespace Chimera {
             float fH = (float) (1.0 /  Math.Tan(HFieldOfView / 2.0));
             float fV = (float) (1.0 /  Math.Tan(VFieldOfView / 2.0));
             float zNear = .1f;
-            float zFar = 1024f;
+            float zFar = mFarClip;
             return new Matrix4(
                 fH, 0,      0,                                  0,
                 0,  fV,     0,                                  0,
@@ -608,7 +611,7 @@ namespace Chimera {
 
         private Matrix4 CalculatedProjection() {
             float dn = .1f;
-            float df = 1024f;
+            float df = mFarClip;
             double scale = 1f / ScreenDistance;
 
             float hFoV = (float)(2.0 / (mWidth * scale));
@@ -627,7 +630,7 @@ namespace Chimera {
 
         private Matrix4 CalculateOrthogonalMatrix() {
             float dn = .1f;
-            float df = 1024f;
+            float df = mFarClip;
             double scale = 1f / ScreenDistance;
             float r = (float) ((mWidth * scale) / 2.0);
             float t = (float) ((mHeight * scale) / 2.0);
