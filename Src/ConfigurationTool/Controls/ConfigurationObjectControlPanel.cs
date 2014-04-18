@@ -21,7 +21,7 @@ namespace Chimera.ConfigurationTool.Controls {
             mConfig = config;
 
             foreach (var parameter in mConfig.Parameters.OrderBy(p => p.Section)) {
-                parametersList.Rows.Add(parameter.Key, parameter, parameter.Default, parameter.Section, parameter.Description);
+                LoadParameter(parameter);
             }
         }
 
@@ -30,7 +30,7 @@ namespace Chimera.ConfigurationTool.Controls {
             mConfig = config;
 
             foreach (var parameter in mConfig.Parameters.Where(p => p.Section == frame)) {
-                parametersList.Rows.Add(parameter.Key, parameter, parameter.Default, parameter.Section, parameter.Description);
+                LoadParameter(parameter);
             }
         }
 
@@ -39,8 +39,12 @@ namespace Chimera.ConfigurationTool.Controls {
             mConfig = config;
 
             foreach (var parameter in mConfig.Parameters.Where(p => !frames.Contains(p.Section))) {
-                parametersList.Rows.Add(parameter.Key, parameter, parameter.Default, parameter.Section, parameter.Description);
+                LoadParameter(parameter);
             }
+        }
+
+        private void LoadParameter(ConfigParam parameter) {
+            int row = parametersList.Rows.Add(parameter.Key, parameter, parameter.Default, parameter.Section, parameter.Description);
         }
 
     }

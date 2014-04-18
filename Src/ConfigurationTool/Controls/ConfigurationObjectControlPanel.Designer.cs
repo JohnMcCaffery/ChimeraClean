@@ -25,7 +25,7 @@
         private void InitializeComponent() {
             this.parametersList = new System.Windows.Forms.DataGridView();
             this.Key = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ValueCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ValueCol = new Chimera.ConfigurationTool.Controls.ValueColumn();
             this.DefaultCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.SectionCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.DescriptionCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -61,6 +61,7 @@
             // 
             // ValueCol
             // 
+            this.ValueCol.DataPropertyName = "Value";
             this.ValueCol.HeaderText = "Value";
             this.ValueCol.Name = "ValueCol";
             this.ValueCol.Resizable = System.Windows.Forms.DataGridViewTriState.True;
@@ -102,10 +103,11 @@
 
         private System.Windows.Forms.DataGridView parametersList;
         private System.Windows.Forms.DataGridViewTextBoxColumn Key;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ValueCol;
+        private ValueColumn ValueCol;
         private System.Windows.Forms.DataGridViewTextBoxColumn DefaultCol;
         private System.Windows.Forms.DataGridViewTextBoxColumn SectionCol;
         private System.Windows.Forms.DataGridViewTextBoxColumn DescriptionCol;
+        //private System.Windows.Forms.DataGridViewTextBoxColumn ValueCol;
 
     }
 }

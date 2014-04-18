@@ -51,6 +51,7 @@ namespace Chimera.Config {
         private string mDefault;
         private string mValue;
         private string[] mValues;
+        private IConfigSource mSource;
         private readonly List<string> mGroups = new List<string>();
 
         public string Key {
@@ -76,18 +77,19 @@ namespace Chimera.Config {
         public string Value {
             get { return mValue; }
             set {
+                mValue = value;
                 //TODO - make this write out!
             }
         }
 
         public override string ToString() {
-            return base.ToString();
+            return mValue;
         }
         public ParameterTypes Type {
             get { return mType; }
         }
 
-        public ConfigParam(string key, string description, ParameterTypes type, string section, string group, string defalt, bool commandLine, string shortKey, string value, params string[] values) {
+        public ConfigParam(string key, string description, ParameterTypes type, string section, string group, string defalt, bool commandLine, string shortKey, string value, IConfigSource source, params string[] values) {
             mKey = key;
             mDescription = description;
             mType = type;
@@ -98,6 +100,7 @@ namespace Chimera.Config {
             mDefault = defalt;
             mShortKey = shortKey;
             mCommandLine = commandLine;
+            mSource = source;
             mValues = values;
             mValue = value;
         }
@@ -157,7 +160,7 @@ namespace Chimera.Config {
             string shortKey = commandLine && commandLineShortKeys.ContainsKey(section) ? commandLineShortKeys[section][key] : null;
 
             if (!_mParameters.ContainsKey(key))
-                _mParameters.Add(key, new ConfigParam(key, description, type, section, Group, defalt, commandLine, shortKey, value != null ? value.ToString() : "null", values));
+                _mParameters.Add(key, new ConfigParam(key, description, type, section, Group, defalt, commandLine, shortKey, value != null ? value.ToString() : "null", mSource, values));
             else {
                 ConfigParam param = _mParameters[key];
                 param.AddGroup(Group);

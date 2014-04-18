@@ -25,6 +25,7 @@ using Chimera.Util;
 using System.IO;
 using OpenMetaverse;
 using Chimera.Plugins;
+using log4net;
 
 namespace Chimera.Config {
     public class ProjectorConfig : ConfigFolderBase {
@@ -80,10 +81,8 @@ namespace Chimera.Config {
             AutoUpdate = GetFrame("AutoUpdate", false, "Whether to automatically update the screen size based on the projector position.");
             UpsideDown = GetFrame("UpsideDown", true, "Whether the projector is mounted upside down.");
 
-            string aspectRatioStr = GetFrame("AspectRatio", "9:16", "Aspect ratio the projector is set to.");
-            string nativeAspectRatioStr = GetFrame("NativeAspectRatio", "9:16", "Native aspect ratio the projector supports.");
-            Enum.TryParse(aspectRatioStr, out AspectRatio);
-            Enum.TryParse(nativeAspectRatioStr, out NativeAspectRatio);
+            AspectRatio = GetEnum<AspectRatio>("AspectRatio", Plugins.AspectRatio.SixteenNine, "Aspect ratio the projector is set to.", LogManager.GetLogger(Frame + "Projector"));
+            NativeAspectRatio = GetEnum<AspectRatio>("NativeAspectRatio", Plugins.AspectRatio.SixteenNine, "Native aspect ratio the projector supports.", LogManager.GetLogger(Frame + "Projector"));
 
             string lockStr = GetFrame("Lock", "Nothing", "The variable that will remain constant as the properties of the system are altered. Valid choices are 'Nothing', 'Width', 'Height' and 'Position'.");
             Enum.TryParse(lockStr, out Lock);

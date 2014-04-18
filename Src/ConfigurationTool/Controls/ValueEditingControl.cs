@@ -11,6 +11,10 @@ using Chimera.Config;
 namespace Chimera.ConfigurationTool.Controls {
     public partial class ValueEditingControl : UserControl, IDataGridViewEditingControl {
         private ConfigParam mParameter;
+        private DataGridView mView;
+        private int mRowIndex;
+
+        private bool mFirstLoad = true;
 
         public ValueEditingControl() {
             InitializeComponent();
@@ -34,73 +38,102 @@ namespace Chimera.ConfigurationTool.Controls {
                 case ParameterTypes.File: FileLoaded(); break;
                 case ParameterTypes.Folder: FolderLoaded(); break;
                 case ParameterTypes.Enum: EnumLoaded(); break;
+                case ParameterTypes.Vector3: Vector3Loaded(); break;
             }
         }
 
+        private void Vector3Loaded() {
+            numberInput.Visible = true;
+        }
+
         private void BoolLoaded() {
-            boolInput.Visible = true;
-            boolInput.CheckedChanged += new EventHandler(boolInput_CheckedChanged);
+            if (mFirstLoad) {
+                mFirstLoad = false;
+                boolInput.Visible = true;
+                boolInput.CheckedChanged += new EventHandler(boolInput_CheckedChanged);
+            }
             boolInput.Checked = bool.Parse(mParameter.Value);
         }
 
         private void DoubleLoaded() {
-            numberInput.Visible = true;
-            numberInput.DecimalPlaces = 100;
-            numberInput.ValueChanged += new EventHandler(numberInput_ValueChanged);
+            if (mFirstLoad) {
+                mFirstLoad = false;
+                numberInput.Visible = true;
+                numberInput.DecimalPlaces = 100;
+                numberInput.ValueChanged += new EventHandler(numberInput_ValueChanged);
+            }
             numberInput.Value = decimal.Parse(mParameter.Value);
         }
 
         private void FloatLoaded() {
-            numberInput.Visible = true;
-            numberInput.DecimalPlaces = 10;
-            numberInput.ValueChanged += new EventHandler(numberInput_ValueChanged);
+            if (mFirstLoad) {
+                mFirstLoad = false;
+                numberInput.Visible = true;
+                numberInput.DecimalPlaces = 10;
+                numberInput.ValueChanged += new EventHandler(numberInput_ValueChanged);
+            }
             numberInput.Value = decimal.Parse(mParameter.Value);
         }
 
         private void IntLoaded() {
-            numberInput.Visible = true;
-            numberInput.DecimalPlaces = 0;
+            if (mFirstLoad) {
+                mFirstLoad = false;
+                numberInput.Visible = true;
+                numberInput.DecimalPlaces = 0;
+                numberInput.ValueChanged += new EventHandler(numberInput_ValueChanged);
+            }
             numberInput.Value = decimal.Parse(mParameter.Value);
-            numberInput.ValueChanged += new EventHandler(numberInput_ValueChanged);
         }
 
         private void StringLoaded() {
-            textInput.Visible = true;
-            textInput.DropDownStyle = ComboBoxStyle.DropDown;
-            textInput.TextChanged += new EventHandler(textInput_TextChanged);
+            if (mFirstLoad) {
+                mFirstLoad = false;
+                textInput.Visible = true;
+                textInput.DropDownStyle = ComboBoxStyle.Simple;
+                textInput.TextChanged += new EventHandler(textInput_TextChanged);
 
-            textInput.Items.Add(mParameter.Value);
-            textInput.Items.AddRange(mParameter.Values);
-            textInput.SelectedValue = mParameter.Value;
+                textInput.Items.Add(mParameter.Value);
+                textInput.Items.AddRange(mParameter.Values);
+            }
+            textInput.Text = mParameter.Value;
         }
 
         private void FileLoaded() {
-            textInput.Visible = true;
-            textInput.DropDownStyle = ComboBoxStyle.DropDown;
-            textInput.TextChanged += new EventHandler(textInput_TextChanged);
+            if (mFirstLoad) {
+                mFirstLoad = false;
+                textInput.Visible = true;
+                textInput.DropDownStyle = ComboBoxStyle.Simple;
+                textInput.TextChanged += new EventHandler(textInput_TextChanged);
 
-            textInput.Items.Add(mParameter.Value);
-            textInput.Items.AddRange(mParameter.Values);
-            textInput.SelectedValue = mParameter.Value;
+                textInput.Items.Add(mParameter.Value);
+                textInput.Items.AddRange(mParameter.Values);
+            }
+            textInput.Text = mParameter.Value;
         }
 
         private void FolderLoaded() {
-            textInput.Visible = true;
-            textInput.DropDownStyle = ComboBoxStyle.DropDown;
-            textInput.TextChanged += new EventHandler(textInput_TextChanged);
+            if (mFirstLoad) {
+                mFirstLoad = false;
+                textInput.Visible = true;
+                textInput.DropDownStyle = ComboBoxStyle.Simple;
+                textInput.TextChanged += new EventHandler(textInput_TextChanged);
 
-            textInput.Items.Add(mParameter.Value);
-            textInput.Items.AddRange(mParameter.Values);
-            textInput.SelectedValue = mParameter.Value;
+                textInput.Items.Add(mParameter.Value);
+                textInput.Items.AddRange(mParameter.Values);
+            }
+            textInput.Text = mParameter.Value;
         }
 
         private void EnumLoaded() {
-            textInput.Visible = true;
-            textInput.DropDownStyle = ComboBoxStyle.DropDownList;
-            textInput.TextChanged += new EventHandler(textInput_TextChanged);
+            if (mFirstLoad) {
+                mFirstLoad = false;
+                textInput.Visible = true;
+                textInput.DropDownStyle = ComboBoxStyle.DropDownList;
+                textInput.TextChanged += new EventHandler(textInput_TextChanged);
 
-            textInput.Items.AddRange(mParameter.Values);
-            textInput.SelectedValue = mParameter.Value;
+                textInput.Items.AddRange(mParameter.Values);
+            }
+            textInput.SelectedItem = mParameter.Values.First(p => p == mParameter.Value);
         }
 
         void textInput_TextChanged(object sender, EventArgs e) {
@@ -115,53 +148,45 @@ namespace Chimera.ConfigurationTool.Controls {
             mParameter.Value = boolInput.Checked.ToString();
         }
 
-        public void ApplyCellStyleToEditingControl(DataGridViewCellStyle dataGridViewCellStyle) {
-            throw new NotImplementedException();
-        }
+        public void ApplyCellStyleToEditingControl(DataGridViewCellStyle dataGridViewCellStyle) { }
 
         public DataGridView EditingControlDataGridView {
-            get { return null; }
-            set {
-            }
+            get { return mView; }
+            set { mView = value; }
         }
 
         public object EditingControlFormattedValue {
-            get { return null; }
-            set {
-            }
+            get { return mParameter.Value; }
+            set { }
         }
 
         public int EditingControlRowIndex {
-            get {
-                throw new NotImplementedException();
-            }
-            set {
-            }
+            get { return mRowIndex; }
+            set { mRowIndex = value; }
         }
 
         public bool EditingControlValueChanged {
-            get { return false; }
-            set {
-            }
+            get;
+            set;
         }
 
         public bool EditingControlWantsInputKey(Keys keyData, bool dataGridViewWantsInputKey) {
-            return false;
+            return keyData != Keys.Escape;
         }
 
         public Cursor EditingPanelCursor {
-            get { throw new NotImplementedException(); }
+            get { return base.Cursor; }
         }
 
         public object GetEditingControlFormattedValue(DataGridViewDataErrorContexts context) {
-            return null;
+            return EditingControlFormattedValue;
         }
 
         public void PrepareEditingControlForEdit(bool selectAll) {
         }
 
         public bool RepositionEditingControlOnValueChange {
-            get { return false; }
+            get { return true; }
         }
     }
 }

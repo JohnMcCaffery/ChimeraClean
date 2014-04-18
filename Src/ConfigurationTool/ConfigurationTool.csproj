@@ -52,6 +52,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controls\AxisConfigurationPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\AxisConfigurationPanel.Designer.cs">
+      <DependentUpon>AxisConfigurationPanel.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\BindingsControlPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -85,6 +91,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Controls\AxisConfigurationPanel.resx">
+      <DependentUpon>AxisConfigurationPanel.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Controls\BindingsControlPanel.resx">
       <DependentUpon>BindingsControlPanel.cs</DependentUpon>
     </EmbeddedResource>
