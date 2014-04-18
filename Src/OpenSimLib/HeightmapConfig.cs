@@ -40,13 +40,13 @@ namespace Chimera.OpenSim {
         }
 
         protected override void InitConfig() {
-            FirstName = Get("FirstName", "Heightmap", "The first name for the heightmap listening bot to login with.");
-            LastName = Get("LastName", "Bot", "The last name for the heightmap listening bot to login with.");
-            Password = Get("Password", "botPassword", "The password for the heightmap listening bot to login with.");
+            FirstName = GetStr("FirstName", "Heightmap", "The first name for the heightmap listening bot to login with.");
+            LastName = GetStr("LastName", "Bot", "The last name for the heightmap listening bot to login with.");
+            Password = GetStr("Password", "botPassword", "The password for the heightmap listening bot to login with.");
             AutoLogin = Get("AutoLogin", true, "Whether the bot should automatically login when the system starts up.");
             AutoLogout = Get("AutoLogout", true, "Whether the bot should automatically logout when the system starts up.");
             StartLocation = GetV("StartLocation", new Vector3(128f, 128f, 60f), "Where on the island the bot should login to.");
-            StartIsland = Get("StartIsland", "Cathedral 1", "What island the bot should login to.");
+            StartIsland = GetStr("StartIsland", "Cathedral 1", "What island the bot should login to.");
         }
 
         public HeightmapConfig(params string[] args)

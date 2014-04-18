@@ -34,102 +34,107 @@ namespace Chimera.Config {
         Int,
         String,
         Enum,
-        Vector3
+        Vector3,
+        File,
+        Folder
     }
 
-        public class ConfigParam : IComparable<ConfigParam> {
-            private string mKey;
-            private string mDescription;
-            private string mShortKey;
-            private bool mCommandLine;
-            private string mSection;
-            private ParameterTypes mType;
-            private string mDefault;
-            private string mValue;
-            private string[] mValues;
-            private readonly List<string> mGroups = new List<string>();
+    public class ConfigParam : IComparable<ConfigParam> {
 
-            public string Key {
-                get { return mKey; }
-            }
+        private string mKey;
+        private string mDescription;
+        private string mShortKey;
+        private bool mCommandLine;
+        private string mSection;
+        private ParameterTypes mType;
+        private string mDefault;
+        private string mValue;
+        private string[] mValues;
+        private readonly List<string> mGroups = new List<string>();
 
-            public string Description {
-                get { return mDescription; }
-            }
+        public string Key {
+            get { return mKey; }
+        }
 
-            public string Default {
-                get { return mDefault; }
-            }
+        public string Description {
+            get { return mDescription; }
+        }
 
-            public string Section {
-                get { return mSection; }
-            }
+        public string Default {
+            get { return mDefault; }
+        }
 
-            public string[] Values {
-                get { return mValues; }
-            }
+        public string Section {
+            get { return mSection; }
+        }
 
-            public string Value {
-                get { return mValue; }
-                set {
-                    //TODO - make this write out!
-                }
-            }
+        public string[] Values {
+            get { return mValues; }
+        }
 
-            public override string ToString() {
-                return base.ToString();
-            }
-            public ParameterTypes Type {
-                get { return mType; }
-            }
-
-            public ConfigParam(string key, string description, ParameterTypes type, string section, string group, string defalt, bool commandLine, string shortKey, string value, params string[] values) {
-                mKey = key;
-                mDescription = description;
-                mType = type;
-                mSection = section;
-                mCommandLine = false;
-                mGroups.Add(group);
-                mShortKey = null;
-                mDefault = defalt;
-                mShortKey = shortKey;
-                mCommandLine = commandLine;
-                mValues = values;
-                mValue = value;
-            }
-
-            public bool CommandLine {
-                get { return mCommandLine; }
-                set { mCommandLine = value; }
-            }
-            public string ShortKey {
-                get { return mShortKey; }
-                set { mShortKey = value; }
-            }
-            public bool Shared {
-                get { return mGroups.Count > 0; }
-            }
-
-            public override int GetHashCode() {
-                return Shared ? 0 : 1;
-            }
-
-            public void AddGroup(string group) {
-                mGroups.Add(group);
-            }
-
-            public int CompareTo(ConfigParam other) {
-                if (Shared && other.Shared)
-                    return mKey.CompareTo(other.mKey);
-                else if (Shared)
-                    return -1;
-                else if (other.Shared)
-                    return 1;
-                else
-                    return mGroups[0].CompareTo(other.mGroups[0]);
+        public string Value {
+            get { return mValue; }
+            set {
+                //TODO - make this write out!
             }
         }
+
+        public override string ToString() {
+            return base.ToString();
+        }
+        public ParameterTypes Type {
+            get { return mType; }
+        }
+
+        public ConfigParam(string key, string description, ParameterTypes type, string section, string group, string defalt, bool commandLine, string shortKey, string value, params string[] values) {
+            mKey = key;
+            mDescription = description;
+            mType = type;
+            mSection = section;
+            mCommandLine = false;
+            mGroups.Add(group);
+            mShortKey = null;
+            mDefault = defalt;
+            mShortKey = shortKey;
+            mCommandLine = commandLine;
+            mValues = values;
+            mValue = value;
+        }
+
+        public bool CommandLine {
+            get { return mCommandLine; }
+            set { mCommandLine = value; }
+        }
+        public string ShortKey {
+            get { return mShortKey; }
+            set { mShortKey = value; }
+        }
+        public bool Shared {
+            get { return mGroups.Count > 0; }
+        }
+
+        public override int GetHashCode() {
+            return Shared ? 0 : 1;
+        }
+
+        public void AddGroup(string group) {
+            mGroups.Add(group);
+        }
+
+        public int CompareTo(ConfigParam other) {
+            if (Shared && other.Shared)
+                return mKey.CompareTo(other.mKey);
+            else if (Shared)
+                return -1;
+            else if (other.Shared)
+                return 1;
+            else
+                return mGroups[0].CompareTo(other.mGroups[0]);
+        }
+    }
     public abstract class ConfigBase {
+        public const string IGNORE_FRAME = "Irrelevant";
+
         public string Frame = null;
         private IConfigSource mSource;
         private ArgvConfigSource mArgConfig;
@@ -222,7 +227,7 @@ namespace Chimera.Config {
             IConfigSource mSource = GetMainConfig(args, out mArgConfig, out mFile);
 
             mArgConfig.AddSwitch("General", "Section", "s");
-            Frame = Init.Get(mSource.Configs["General"], "Section", "MainWindow");
+            //Frame = Init.Get(mSource.Configs["General"], "Section", "MainWindow");
 
             InitConfig();
         }
@@ -314,11 +319,24 @@ namespace Chimera.Config {
             AddParam(key, description, ParameterTypes.Double, section, defalt.ToString(), value);
             return value;
         }
-        protected string Get(string section, string key, string defalt, string description, params string[] values) {
+        protected string GetSection(string section, string key, string defalt, string description, params string[] values) {
             if (!configLoaded)
                 LoadConfig();
             string value = Init.Get(mSource.Configs[section], key, defalt);
             AddParam(key, description, ParameterTypes.String, section, defalt, value, values);
+            return value;
+        }        protected string GetFileSection(string section, string key, string defalt, string description, params string[] values) {
+            if (!configLoaded)
+                LoadConfig();
+            string value = Init.Get(mSource.Configs[section], key, defalt);
+            AddParam(key, description, ParameterTypes.File, section, defalt, value, values);
+            return value;
+        }
+        protected string GetFolderSection(string section, string key, string defalt, string description, params string[] values) {
+            if (!configLoaded)
+                LoadConfig();
+            string value = Init.Get(mSource.Configs[section], key, defalt);
+            AddParam(key, description, ParameterTypes.Folder, section, defalt, value, values);
             return value;
         }
         protected float Get(string section, string key, float defalt, string description) {
@@ -342,10 +360,10 @@ namespace Chimera.Config {
             AddParam(key, description, ParameterTypes.Bool, section, defalt.ToString(), value);
             return value;
         }
-        protected T Get<T>(string section, string key, T defalt, string description) {
+        protected T GetEnum<T>(string section, string key, T defalt, string description) {
             if (!configLoaded)
                 LoadConfig();
-            T value = (T)Enum.Parse(typeof(T), Get(section, key, defalt.ToString(), ""));
+            T value = (T)Enum.Parse(typeof(T), GetSection(section, key, defalt.ToString(), ""));
             //Init.Get(mSource.Configs[general], key, defalt);
             List<object> vs = new List<object>();
             foreach (var v in Enum.GetValues(typeof(T)))
@@ -362,8 +380,14 @@ namespace Chimera.Config {
         protected double Get(string key, double defalt, string description) {
             return Get("General", key, defalt, description);
         }
-        protected string Get(string key, string defalt, string description, params string[] values) {
-            return Get("General", key, defalt, description, values);
+        protected string GetStr(string key, string defalt, string description, params string[] values) {
+            return GetSection("General", key, defalt, description, values);
+        }
+        protected string GetFile(string key, string defalt, string description, params string[] values) {
+            return GetFileSection("General", key, defalt, description, values);
+        }
+        protected string GetFolder(string key, string defalt, string description, params string[] values) {
+            return GetFolderSection("General", key, defalt, description, values);
         }
         protected float Get(string key, float defalt, string description) {
             return Get("General", key, defalt, description);
@@ -374,30 +398,30 @@ namespace Chimera.Config {
         protected bool Get(string key, bool defalt, string description) {
             return Get("General", key, defalt, description);
         }
-        protected T Get<T>(string key, T defalt, string description) {
-            return Get<T>("General", key, defalt, description);
+        protected T GetEnum<T>(string key, T defalt, string description) {
+            return GetEnum<T>("General", key, defalt, description);
         }
 
         protected Vector3 GetVFrame(string key, Vector3 defalt, string description) {
-            return GetV(Frame, key, defalt, description);
+            return Frame == IGNORE_FRAME ? defalt : GetV(Frame, key, defalt, description);
         }
         protected double GetFrame(string key, double defalt, string description) {
-            return Get(Frame, key, defalt, description);
+            return Frame == IGNORE_FRAME ? defalt : Get(Frame, key, defalt, description);
         }
         protected string GetFrame(string key, string defalt, string description, params string[] values) {
-            return Get(Frame, key, defalt, description, values);
+            return Frame == IGNORE_FRAME ? defalt : GetSection(Frame, key, defalt, description, values);
         }
         protected float GetFrame(string key, float defalt, string description) {
-            return Get(Frame, key, defalt, description);
+            return Frame == IGNORE_FRAME ? defalt : Get(Frame, key, defalt, description);
         }
         protected int GetFrame(string key, int defalt, string description) {
-            return Get(Frame, key, defalt, description);
+            return Frame == IGNORE_FRAME ? defalt : Get(Frame, key, defalt, description);
         }
         protected bool GetFrame(string key, bool defalt, string description) {
-            return Get(Frame, key, defalt, description);
+            return Frame == IGNORE_FRAME ? defalt : Get(Frame, key, defalt, description);
         }
-        protected T GetFrame<T>(string key, T defalt, string description) {
-            return Get<T>(Frame, key, defalt, description);
+        protected T GetFrameEnum<T>(string key, T defalt, string description) {
+            return Frame == IGNORE_FRAME ? defalt : GetEnum<T>(Frame, key, defalt, description);
         }
 
         protected abstract void InitConfig();

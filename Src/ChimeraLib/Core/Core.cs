@@ -142,7 +142,7 @@ namespace Chimera {
         /// <summary>
         /// The object containing the configuration for the system.
         /// </summary>
-        private readonly CoordinatorConfig mConfig;
+        private readonly CoreConfig mConfig;
         /// <summary>
         /// Logger for recording details of how the core is operating.
         /// </summary>
@@ -276,7 +276,7 @@ namespace Chimera {
         /// <param name="plugins">The plugins which control this coordinator.</param>
         public Core(IOutputFactory outputFactory, params ISystemPlugin[] plugins) {
             try {
-                mConfig = new CoordinatorConfig();
+                mConfig = new CoreConfig();
 
                 mPlugins = new List<ISystemPlugin>(plugins);
                 mOrientation = new Rotation(mRotationLock, mConfig.Pitch, mConfig.Yaw);

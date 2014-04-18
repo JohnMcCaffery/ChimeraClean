@@ -238,7 +238,7 @@ namespace Chimera.Plugins {
             protected override void InitConfig() {
                 Get("Movement", "Deadzone|X|", .1f, "The deadzone for axis |X|.");
                 Get("Movement", "Scale|X|", .1f, "The scale factor for axis |X|.");
-                Get("Movement", "Binding|X|", "None", "The camera axis binding for axis |X|.");
+                GetSection("Movement", "Binding|X|", "None", "The camera axis binding for axis |X|.");
             }
 
             public float GetDeadzone(string name) {
@@ -251,7 +251,7 @@ namespace Chimera.Plugins {
 
             public AxisBinding GetBinding(string name) {
                 //return (AxisBinding) Enum.Parse(typeof(AxisBinding), Get("Bindings", name, "None", ""));
-                return Get<AxisBinding>("Bindings", name, AxisBinding.None, "The output axis that " + name + " is bound to.");
+                return GetEnum<AxisBinding>("Bindings", name, AxisBinding.None, "The output axis that " + name + " is bound to.");
             }
         }
 
