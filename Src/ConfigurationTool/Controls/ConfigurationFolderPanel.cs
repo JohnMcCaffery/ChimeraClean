@@ -11,6 +11,7 @@ using System.Reflection;
 using Chimera.Config;
 using Nini.Config;
 using CfgBase = Chimera.Config.ConfigBase;
+using ConfigurationTool.Controls;
 
 namespace Chimera.ConfigurationTool.Controls {
     public partial class ConfigurationFolderPanel : UserControl {
@@ -22,6 +23,26 @@ namespace Chimera.ConfigurationTool.Controls {
 
         public ConfigurationFolderPanel(string folder) : this() {
             mFolder = folder;
+
+            this.bindingsControlPanel = new BindingsControlPanel(folder);
+            // 
+            // bindingsControlPanel
+            // 
+            this.bindingsControlPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.bindingsControlPanel.Location = new System.Drawing.Point(3, 3);
+            this.bindingsControlPanel.Name = "bindingsControlPanel";
+            this.bindingsControlPanel.Size = new System.Drawing.Size(1079, 564);
+            this.bindingsControlPanel.TabIndex = 0;
+
+            this.BindingsTab.Controls.Add(this.bindingsControlPanel);
+
+            launcher.DoWork += Startup;
+            launcher.RunWorkerAsync();
+        }
+
+        private void Startup(object source, DoWorkEventArgs args) {
+            LoadConfigurationObjects();
+            Refresh();
         }
 
         private bool InheritsFrom(Type t, Type p) {
@@ -38,20 +59,18 @@ namespace Chimera.ConfigurationTool.Controls {
             return InheritsFrom(t, typeof(ConfigFolderBase)) || InheritsFrom(t, typeof(CfgBase));
         }
 
-        private void loadConfigsButton_Click(object sender, EventArgs e) {
-                DotNetConfigSource source = new DotNetConfigSource();
-                IConfig cfg = source.Configs["Config"];
-                if (cfg == null) {
-                    cfg = source.Configs.Add("Config");
-                }
-
-                cfg.Set("ConfigFolder", "Configs/" + mFolder);
-                source.Save(AppDomain.CurrentDomain.SetupInformation.ConfigurationFile);
-            LoadConfigurationObjects();
-        }
-
         private void LoadConfigurationObjects() {
-            string folder = Path.GetDirectoryName(Assembly.GetCallingAssembly().Location);
+            DotNetConfigSource source = new DotNetConfigSource();
+            IConfig cfg = source.Configs["Config"];
+            if (cfg == null) {
+                cfg = source.Configs.Add("Config");
+            }
+
+            cfg.Set("ConfigFolder", mFolder);
+            source.Save(AppDomain.CurrentDomain.SetupInformation.ConfigurationFile);
+
+            string folder = Path.GetDirectoryName(AppDomain.CurrentDomain.SetupInformation.ConfigurationFile);
+            folder = Path.GetFullPath(Path.Combine(folder, "../"));
 
             //Iterate through every assembly in the folder where the tool is running
             foreach (var assembly in 
@@ -74,19 +93,22 @@ namespace Chimera.ConfigurationTool.Controls {
                         !t.IsInterface && 
                         IsConfig(t))) {
 
+
                     CfgBase config = InstantiateConfig(clazz, assembly, CfgBase.IGNORE_FRAME);
                     if (config == null)
                         continue;
 
-                    TabPage page = new TabPage(clazz.Name.Replace("Config", ""));
-                    if (InheritsFrom(clazz, typeof(AxisConfig)))
-                        LoadAxisConfig(page, config as AxisConfig);
-                    if (config.Frame == null)
-                        LoadConfig(page, config);
-                    else
-                        LoadFrameConfig(clazz, page, config);
+                    Invoke(new Action(() => {
+                        TabPage page = new TabPage(clazz.Name.Replace("Config", ""));
+                        if (InheritsFrom(clazz, typeof(AxisConfig)))
+                            LoadAxisConfig(page, config as AxisConfig);
+                        if (config.Frame == null)
+                            LoadConfig(page, config);
+                        else
+                            LoadFrameConfig(clazz, page, config);
 
-                    MainTab.Controls.Add(page);
+                        MainTab.Controls.Add(page);
+                    }));
                 }
             }
         }

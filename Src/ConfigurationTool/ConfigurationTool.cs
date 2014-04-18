@@ -22,8 +22,7 @@ namespace Chimera.ConfigurationTool {
         }
 
         public void LoadFolders() {
-            var directories = Directory.GetDirectories("Configs/");
-            foreach (var folder in Directory.GetDirectories("Configs/").Select(f => f.Substring(8))) {
+            foreach (var folder in Directory.GetDirectories(".").Select(f => f.Substring(2))) {
                 TabPage page = new TabPage(folder);
 
                 ConfigurationFolderPanel panel = new ConfigurationFolderPanel(folder);
@@ -34,11 +33,9 @@ namespace Chimera.ConfigurationTool {
                 FoldersTab.TabPages.Add(page);
             }
         }
+        
 
-        private void ConfigurationTool_Click(object sender, EventArgs e) {
-            if (mLoaded)
-                return;
-            mLoaded = true;
+        private void ConfigurationTool_Load(object sender, EventArgs e) {
             LoadFolders();
         }
     }
