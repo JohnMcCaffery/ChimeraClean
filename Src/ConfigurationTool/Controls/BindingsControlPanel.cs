@@ -220,6 +220,11 @@ namespace ConfigurationTool.Controls {
             if (mDocument != null)
                 mDocument.Save("Configs/Common/BindingsTest.xml");
         }
+
+        internal IEnumerable<Type> GetBoundClasses<Interface>() {
+            Type t = typeof(Interface);
+            return mBindingsByItem.Values.Where(b => b.Interface == t).Select(b => b.Class);
+        }
     }
 }
 

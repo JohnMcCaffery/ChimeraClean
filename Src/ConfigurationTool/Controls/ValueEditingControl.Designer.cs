@@ -32,38 +32,39 @@
             // boolInput
             // 
             this.boolInput.AutoSize = true;
-            this.boolInput.Location = new System.Drawing.Point(3, 3);
+            this.boolInput.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.boolInput.Location = new System.Drawing.Point(0, 0);
             this.boolInput.Name = "boolInput";
-            this.boolInput.Size = new System.Drawing.Size(15, 14);
+            this.boolInput.Size = new System.Drawing.Size(259, 28);
             this.boolInput.TabIndex = 0;
             this.boolInput.UseVisualStyleBackColor = true;
             this.boolInput.Visible = false;
             // 
             // textInput
             // 
-            this.textInput.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.textInput.Dock = System.Windows.Forms.DockStyle.Fill;
             this.textInput.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.textInput.FormattingEnabled = true;
-            this.textInput.Location = new System.Drawing.Point(3, 3);
+            this.textInput.Location = new System.Drawing.Point(0, 0);
             this.textInput.Name = "textInput";
-            this.textInput.Size = new System.Drawing.Size(253, 21);
+            this.textInput.Size = new System.Drawing.Size(259, 21);
             this.textInput.TabIndex = 1;
             this.textInput.Visible = false;
             // 
             // numberInput
             // 
-            this.numberInput.Location = new System.Drawing.Point(4, 3);
+            this.numberInput.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.numberInput.Location = new System.Drawing.Point(0, 0);
             this.numberInput.Name = "numberInput";
-            this.numberInput.Size = new System.Drawing.Size(252, 20);
+            this.numberInput.Size = new System.Drawing.Size(259, 20);
             this.numberInput.TabIndex = 2;
             // 
             // ValueEditingControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.textInput);
             this.Controls.Add(this.boolInput);
+            this.Controls.Add(this.textInput);
             this.Controls.Add(this.numberInput);
             this.Name = "ValueEditingControl";
             this.Size = new System.Drawing.Size(259, 28);

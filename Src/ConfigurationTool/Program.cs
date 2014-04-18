@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
+using Chimera.ConfigurationTool.Controls;
 
 namespace Chimera.ConfigurationTool {
     static class Program {

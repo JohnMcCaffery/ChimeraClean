@@ -9,6 +9,9 @@ namespace Chimera.ConfigurationTool.Controls {
     public class ValueColumn : DataGridViewColumn {
         public override DataGridViewCell CellTemplate {
             get {
+                if (base.CellTemplate == null)
+                    base.CellTemplate = new ValueCell();
+
                 return base.CellTemplate;
             }
             set {
@@ -20,13 +23,14 @@ namespace Chimera.ConfigurationTool.Controls {
                 base.CellTemplate = value;
             }
         }
+
     }
 
-    public class ValueCell : DataGridViewCell {
+    public class ValueCell : DataGridViewTextBoxCell {
         public override void InitializeEditingControl(int rowIndex, object initialFormattedValue, DataGridViewCellStyle dataGridViewCellStyle) {
             base.InitializeEditingControl(rowIndex, initialFormattedValue, dataGridViewCellStyle);
 
-            ValueEditingControl ctrl = new ValueEditingControl();
+            ValueEditingControl ctrl = DataGridView.EditingControl as ValueEditingControl;
 
             if (Value != null)
                 ctrl.Parameter = (ConfigParam) Value;
@@ -47,7 +51,7 @@ namespace Chimera.ConfigurationTool.Controls {
 
         public override object DefaultNewRowValue {
             get {
-                return new ConfigParam("Default", "Default", ParameterTypes.String, "Default", "Default", "Default", true, "Default", "Default");
+                return new ConfigParam("Default", "Default", ParameterTypes.String, "Default", "Default", "Default", true, "Default", "Default", null);
             }
         }
     }
