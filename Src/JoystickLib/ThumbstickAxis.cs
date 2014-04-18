@@ -44,7 +44,7 @@ namespace Joystick {
         }
     }
 
-    public class ThumbstickAxis : ConstrainedAxis, ITickListener {
+    public abstract class ThumbstickAxis : ConstrainedAxis, ITickListener {
         private bool mLeft;
         private bool mX;
 

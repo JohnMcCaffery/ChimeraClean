@@ -4,9 +4,13 @@ using System.Linq;
 using System.Text;
 using Chimera.Interfaces;
 using Chimera.Plugins;
+using log4net;
 
 namespace Chimera.Config {
-    public class AxisConfig : ConfigFolderBase {
+    /// <summary>
+    /// Must be subclassed with a zero argument constructor that passes the name up. If this is not done config util will not work.
+    /// </summary>
+    public abstract class AxisConfig : ConfigFolderBase {
         private string mName;
 
         public AxisConfig(string name)
@@ -16,6 +20,10 @@ namespace Chimera.Config {
 
         public override string Group {
             get { return mName; }
+        }
+
+        public virtual bool LoadBoundAxes {
+            get { return false; }
         }
 
         protected override void InitConfig() { }
@@ -29,7 +37,7 @@ namespace Chimera.Config {
         }
 
         public AxisBinding GetBinding(string name) {
-            return (AxisBinding)Enum.Parse(typeof(AxisBinding), Get("Bindings", name, "None", ""));
+            return GetEnum<AxisBinding>("Bindings", name, AxisBinding.None, "What output axis " + name + " is bound to.", LogManager.GetLogger(Group + "AxisBinding"));
         }
 
         public void ConfigureAxis(IAxis axis, Core core) {
