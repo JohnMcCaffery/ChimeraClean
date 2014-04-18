@@ -26,10 +26,8 @@ namespace Chimera.ConfigurationTool.Controls {
         private void InitializeComponent() {
             this.MainTab = new System.Windows.Forms.TabControl();
             this.BindingsTab = new System.Windows.Forms.TabPage();
-            this.loadConfigsButton = new System.Windows.Forms.Button();
-            this.bindingsControlPanel = new BindingsControlPanel();
+            this.launcher = new System.ComponentModel.BackgroundWorker();
             this.MainTab.SuspendLayout();
-            this.BindingsTab.SuspendLayout();
             this.SuspendLayout();
             // 
             // MainTab
@@ -44,8 +42,6 @@ namespace Chimera.ConfigurationTool.Controls {
             // 
             // BindingsTab
             // 
-            this.BindingsTab.Controls.Add(this.loadConfigsButton);
-            this.BindingsTab.Controls.Add(this.bindingsControlPanel);
             this.BindingsTab.Location = new System.Drawing.Point(4, 22);
             this.BindingsTab.Name = "BindingsTab";
             this.BindingsTab.Padding = new System.Windows.Forms.Padding(3);
@@ -53,25 +49,6 @@ namespace Chimera.ConfigurationTool.Controls {
             this.BindingsTab.TabIndex = 0;
             this.BindingsTab.Text = "Bindings";
             this.BindingsTab.UseVisualStyleBackColor = true;
-            // 
-            // loadConfigsButton
-            // 
-            this.loadConfigsButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.loadConfigsButton.Location = new System.Drawing.Point(1004, 95);
-            this.loadConfigsButton.Name = "loadConfigsButton";
-            this.loadConfigsButton.Size = new System.Drawing.Size(75, 23);
-            this.loadConfigsButton.TabIndex = 1;
-            this.loadConfigsButton.Text = "Load Config Objects";
-            this.loadConfigsButton.UseVisualStyleBackColor = true;
-            this.loadConfigsButton.Click += new System.EventHandler(this.loadConfigsButton_Click);
-            // 
-            // bindingsControlPanel
-            // 
-            this.bindingsControlPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.bindingsControlPanel.Location = new System.Drawing.Point(3, 3);
-            this.bindingsControlPanel.Name = "bindingsControlPanel";
-            this.bindingsControlPanel.Size = new System.Drawing.Size(1079, 564);
-            this.bindingsControlPanel.TabIndex = 0;
             // 
             // ConfigurationFolderPanel
             // 
@@ -81,7 +58,6 @@ namespace Chimera.ConfigurationTool.Controls {
             this.Name = "ConfigurationFolderPanel";
             this.Size = new System.Drawing.Size(1093, 596);
             this.MainTab.ResumeLayout(false);
-            this.BindingsTab.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -90,7 +66,7 @@ namespace Chimera.ConfigurationTool.Controls {
 
         private System.Windows.Forms.TabControl MainTab;
         private System.Windows.Forms.TabPage BindingsTab;
-        private System.Windows.Forms.Button loadConfigsButton;
         private global::ConfigurationTool.Controls.BindingsControlPanel bindingsControlPanel;
+        private System.ComponentModel.BackgroundWorker launcher;
     }
 }

@@ -21,16 +21,44 @@ namespace ConfigurationTool.Controls {
         private Dictionary<Assembly, List<Binding>> mBindings = new Dictionary<Assembly, List<Binding>>();
         private Dictionary<ListViewItem, Binding> mBindingsByItem = new Dictionary<ListViewItem, Binding>();
         private XmlDocument mDocument;
+        public static string mFile;
 
         public static bool Loading = false;
 
         public BindingsControlPanel() {
-            InitializeComponent();
+            InitializeComponent();
+            mMultiInterfaces.Add(typeof(ISystemPlugin));
+            mMultiInterfaces.Add(typeof(IFeatureFactory));
+            mMultiInterfaces.Add(typeof(IFeatureTransitionFactory));
+            mMultiInterfaces.Add(typeof(ITriggerFactory));
+            mMultiInterfaces.Add(typeof(ISelectionRendererFactory));
+            mMultiInterfaces.Add(typeof(ITransitionStyleFactory));
+            mMultiInterfaces.Add(typeof(IStateFactory));
+            mMultiInterfaces.Add(typeof(IAxis));
+
+            mExclusiveInterfaces.Add(typeof(IOutputFactory));
+            mExclusiveInterfaces.Add(typeof(IMediaPlayer));
+
+            mInterfaces = mExclusiveInterfaces.Concat(mMultiInterfaces);
+
         }
 
-        public void LoadDocument(string bindingsFile) {
+        public BindingsControlPanel(string folder) : this() {
+            mFile = Path.GetFullPath(Path.Combine(folder, "Bindings.xml"));
+
+            loader.DoWork += Startup;
+            loader.RunWorkerAsync();
+        }
+
+        private void Startup(object source, DoWorkEventArgs args) {
+            InitialiseInterfaces();
+            LoadDocument();
+            Refresh();
+        }
+
+        public void LoadDocument() {
             mDocument = new XmlDocument();
-            mDocument.Load(bindingsFile);
+            mDocument.Load(mFile);
 
             Loading = true;
 
@@ -38,7 +66,7 @@ namespace ConfigurationTool.Controls {
                 if (node.ParentNode.NodeType != XmlNodeType.Comment) {
                     Binding binding = mBindings.Values.SelectMany(g => g).FirstOrDefault(b => b.Matches(node));
                     if (binding != null)
-                        binding.Item.Checked = true;
+                        Invoke(new Action(() => binding.Item.Checked = true));
                 }
             }
 
@@ -46,11 +74,9 @@ namespace ConfigurationTool.Controls {
         }
 
         private void InitialiseInterfaces() {
-            string folder = Path.GetDirectoryName(Assembly.GetCallingAssembly().Location);
-
             //Iterate through every assembly in the folder where the tool is running
             foreach (var assembly in 
-                Directory.GetFiles(folder).
+                Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory).
                 Where(f => Path.GetExtension(f).ToUpper() == ".DLL").
                 Select(f => {
                     try {
@@ -72,47 +98,35 @@ namespace ConfigurationTool.Controls {
                         OrderBy(t => t.GetInterfaces()[0].Name)) {
                     var intrface = clazz.GetInterfaces().Intersect(mInterfaces).First();
 
-                    if (g == null) {
-                        g = new ListViewGroup(Path.GetFileNameWithoutExtension(assembly.Location));
-                        BindingsList.Groups.Add(g);
-                        mBindings.Add(assembly, new List<Binding>());
-                    }
+                    Invoke(new Action(() => {
+                        if (g == null) {
+                            g = new ListViewGroup(Path.GetFileNameWithoutExtension(assembly.Location));
+                            BindingsList.Groups.Add(g);
+                            mBindings.Add(assembly, new List<Binding>());
+                        }
 
-                    ListViewItem it = new ListViewItem(g);
+                        ListViewItem it = new ListViewItem(g);
 
-                    it.SubItems.Add(new ListViewItem.ListViewSubItem(it, clazz.Name));
-                    it.SubItems.Add(new ListViewItem.ListViewSubItem(it, intrface.Name));
+                        it.SubItems.Add(new ListViewItem.ListViewSubItem(it, clazz.Name));
+                        it.SubItems.Add(new ListViewItem.ListViewSubItem(it, intrface.Name));
 
-                    var fields = clazz.GetFields();
-                    FieldInfo details = clazz.GetFields().FirstOrDefault(f => f.Name == "Details");
+                        var fields = clazz.GetFields();
+                        FieldInfo details = clazz.GetFields().FirstOrDefault(f => f.Name == "Details");
 
-                    if (details != null)
-                        it.SubItems.Add(new ListViewItem.ListViewSubItem(it, details.GetValue(null).ToString()));
+                        if (details != null)
+                            it.SubItems.Add(new ListViewItem.ListViewSubItem(it, details.GetValue(null).ToString()));
 
-                    Binding binding = new Binding(assembly, clazz, intrface, it);
-                    mBindings[assembly].Add(binding);
-                    mBindingsByItem.Add(it, binding);
+                        Binding binding = new Binding(assembly, clazz, intrface, it);
+                        mBindings[assembly].Add(binding);
+                        mBindingsByItem.Add(it, binding);
 
-                    BindingsList.Items.Add(it);
+                        BindingsList.Items.Add(it);
+                    }));
                 }
             }
         }
 
         private void loadButton_Click(object sender, EventArgs e) {
-            mMultiInterfaces.Add(typeof(ISystemPlugin));
-            mMultiInterfaces.Add(typeof(IFeatureFactory));
-            mMultiInterfaces.Add(typeof(IFeatureTransitionFactory));
-            mMultiInterfaces.Add(typeof(ITriggerFactory));
-            mMultiInterfaces.Add(typeof(ISelectionRendererFactory));
-            mMultiInterfaces.Add(typeof(ITransitionStyleFactory));
-            mMultiInterfaces.Add(typeof(IStateFactory));
-            mMultiInterfaces.Add(typeof(IAxis));
-
-            mExclusiveInterfaces.Add(typeof(IOutputFactory));
-            mExclusiveInterfaces.Add(typeof(IMediaPlayer));
-
-            mInterfaces = mExclusiveInterfaces.Concat(mMultiInterfaces);
-
             InitialiseInterfaces();
         }
 
@@ -199,11 +213,12 @@ namespace ConfigurationTool.Controls {
             }
 
 
-            internal void CheckedChanged(XmlDocument doc) {
+            internal void CheckedChanged(XmlDocument doc, string file) {
                 if (Item.Checked)
                     Enable(doc);
                 else
                     Disable(doc);
+                doc.Save(file);
             }
 
             public bool IsBound {
@@ -211,18 +226,9 @@ namespace ConfigurationTool.Controls {
             }
         }
 
-        private void loadFileButton_Click(object sender, EventArgs e) {
-            LoadDocument("Configs/Common/BindingsTest.xml");
-        }
-
         private void BindingsList_ItemChecked(object sender, ItemCheckedEventArgs e) {
             if (mDocument != null)
-                mBindingsByItem[e.Item].CheckedChanged(mDocument);
-        }
-
-        private void button1_Click(object sender, EventArgs e) {
-            if (mDocument != null)
-                mDocument.Save("Configs/Common/BindingsTest.xml");
+                mBindingsByItem[e.Item].CheckedChanged(mDocument, mFile);
         }
 
         internal IEnumerable<Type> GetBoundClasses<Interface>() {

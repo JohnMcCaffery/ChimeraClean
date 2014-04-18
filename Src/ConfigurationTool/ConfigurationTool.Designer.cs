@@ -44,7 +44,7 @@ namespace Chimera.ConfigurationTool {
             this.Controls.Add(this.FoldersTab);
             this.Name = "ConfigurationTool";
             this.Text = "Chimera Configuration Tool";
-            this.Click += new System.EventHandler(this.ConfigurationTool_Click);
+            this.Load += new System.EventHandler(this.ConfigurationTool_Load);
             this.ResumeLayout(false);
 
         }
