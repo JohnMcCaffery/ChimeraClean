@@ -41,10 +41,10 @@ namespace Chimera.Kinect {
         }
 
         protected override void InitConfig() {
-            Position = GetV(true, "Position", Vector3.Zero, "The position of the kinect in real world coordinates (mm).");
-            Pitch = Get(true, "Pitch", 0, "The pitch of where the kinect is looking in real space.");
-            Yaw = Get(true, "Yaw", 180.0, "the yaw of where the kinect is looking in real space.");
-            ControlX = Get(true, "ControlX", true, "Whether to control the X (Z from the Kinect's perspective) axis. Turning this off should help with 'concertina' effects.");
+            Position = GetV("Position", Vector3.Zero, "The position of the kinect in real world coordinates (mm).");
+            Pitch = Get("Pitch", 0, "The pitch of where the kinect is looking in real space.");
+            Yaw = Get("Yaw", 180.0, "the yaw of where the kinect is looking in real space.");
+            ControlX = Get("ControlX", true, "Whether to control the X (Z from the Kinect's perspective) axis. Turning this off should help with 'concertina' effects.");
         }
     }
 }
