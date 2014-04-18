@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Chimera.Config;
 using Chimera.Plugins;
+using log4net;
 
 namespace Touchscreen {
     public class TouchscreenConfig : AxisBasedDelta.AxisConfig {
@@ -48,7 +49,7 @@ namespace Touchscreen {
             Opacity = Get("Opacity", .01f, "How opaque the input window should be.");
 
             //SinglePos = (SinglePos) Enum.Parse(typeof(SinglePos), Get("Single", "Position", "Right", "Where the single axis is positioned (Left, Right or Centre)."));
-            SinglePos = GetEnum<SinglePos>("Single", "Position", SinglePos.Right, "Where the single axis is positioned (Left, Right or Centre).");
+            SinglePos = GetEnum<SinglePos>("Single", "Position", SinglePos.Right, "Where the single axis is positioned (Left, Right or Centre).", LogManager.GetLogger("Touchscreen"));
         }
     }
 }
