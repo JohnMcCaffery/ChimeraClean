@@ -52,7 +52,7 @@ namespace Chimera.Config {
         public ProjectorConfig() : base ("Projectors") { }
 
         public ProjectorConfig(string window, params string[] args)
-            : base(window, "Projectors", args) {
+            : base("Projectors", window, args) {
             mWindow = window;
         }
 
@@ -61,31 +61,31 @@ namespace Chimera.Config {
         }
 
         protected override void InitConfig() {
-            RoomAnchor = GetV(true, "RoomAnchor", Vector3.Zero, "The anchor point for the room. All room position values will be offset by this in relation to the eye position.");
-            DrawRoom = Get(true, "DrawRoom", true, "Whether to draw the room on the window diagrams.");
-            DrawGlobalLabels = Get(true, "DrawLabels", true, "Whether to draw for the room on the window diagrams.");
+            RoomAnchor = GetV("RoomAnchor", Vector3.Zero, "The anchor point for the room. All room position values will be offset by this in relation to the eye position.");
+            DrawRoom = Get("DrawRoom", true, "Whether to draw the room on the window diagrams.");
+            DrawGlobalLabels = Get("DrawLabels", true, "Whether to draw for the room on the window diagrams.");
 
-            RoomFile = Get(true, "RoomFile", null, "The file containing the layout for the room the projector is in.");
+            RoomFile = Get("RoomFile", null, "The file containing the layout for the room the projector is in.");
             if (RoomFile != null && !Path.IsPathRooted(RoomFile))
                 RoomFile = Path.Combine(Folder, RoomFile);
 
-            ProjectorPosition = GetV(false, "Position", new Vector3(0f, 1000f, -30f), "Where the projector is, relative to the Room Anchor.");
-            ProjectorPitch = Get(false, "Pitch", 5.0, "The pitch the projector is set at.");
-            ProjectorYaw = Get(false, "Yaw", 0.0, "The yaw the projector is set at.");
-            ThrowRatio = Get(false, "ThrowRatio", 1.7f, "The throw ratio of the projector. Throw ratio is the screen distance/screenWidth");
-            WallDistance = Get(false, "WallDistance", 2000f, "How far away from the projector the wall is.");
-            VOffset = Get(false, "VOffset", .09f, "How for that image is shifted up above the level of the projector.");
-            Draw = Get(false, "Draw", true, "Whether to draw the projector on the window diagrams.");
-            DrawLabels = Get(false, "DrawLabels", true, "Whether to draw labels for the specified projector on the window diagrams.");
-            AutoUpdate = Get(false, "AutoUpdate", false, "Whether to automatically update the screen size based on the projector position.");
-            UpsideDown = Get(false, "UpsideDown", true, "Whether the projector is mounted upside down.");
+            ProjectorPosition = GetVFrame("Position", new Vector3(0f, 1000f, -30f), "Where the projector is, relative to the Room Anchor.");
+            ProjectorPitch = GetFrame("Pitch", 5.0, "The pitch the projector is set at.");
+            ProjectorYaw = GetFrame("Yaw", 0.0, "The yaw the projector is set at.");
+            ThrowRatio = GetFrame("ThrowRatio", 1.7f, "The throw ratio of the projector. Throw ratio is the screen distance/screenWidth");
+            WallDistance = GetFrame("WallDistance", 2000f, "How far away from the projector the wall is.");
+            VOffset = GetFrame("VOffset", .09f, "How for that image is shifted up above the level of the projector.");
+            Draw = GetFrame("Draw", true, "Whether to draw the projector on the window diagrams.");
+            DrawLabels = GetFrame("DrawLabels", true, "Whether to draw labels for the specified projector on the window diagrams.");
+            AutoUpdate = GetFrame("AutoUpdate", false, "Whether to automatically update the screen size based on the projector position.");
+            UpsideDown = GetFrame("UpsideDown", true, "Whether the projector is mounted upside down.");
 
-            string aspectRatioStr = Get(false, "AspectRatio", "9:16", "Aspect ratio the projector is set to.");
-            string nativeAspectRatioStr = Get(false, "NativeAspectRatio", "9:16", "Native aspect ratio the projector supports.");
+            string aspectRatioStr = GetFrame("AspectRatio", "9:16", "Aspect ratio the projector is set to.");
+            string nativeAspectRatioStr = GetFrame("NativeAspectRatio", "9:16", "Native aspect ratio the projector supports.");
             Enum.TryParse(aspectRatioStr, out AspectRatio);
             Enum.TryParse(nativeAspectRatioStr, out NativeAspectRatio);
 
-            string lockStr = Get(false, "Lock", "Nothing", "The variable that will remain constant as the properties of the system are altered. Valid choices are 'Nothing', 'Width', 'Height' and 'Position'.");
+            string lockStr = GetFrame("Lock", "Nothing", "The variable that will remain constant as the properties of the system are altered. Valid choices are 'Nothing', 'Width', 'Height' and 'Position'.");
             Enum.TryParse(lockStr, out Lock);
         }
     }

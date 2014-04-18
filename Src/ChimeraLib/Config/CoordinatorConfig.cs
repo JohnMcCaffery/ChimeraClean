@@ -57,10 +57,10 @@ namespace Chimera.Config {
             AddCommandLineKey(true, "CrashLogFile", "l");
             AddCommandLineKey(true, "TickLength", "tl");
 
-            CrashLogFile = Get(true, "CrashLogFile", "CrashLog.log", "The file to log any crashes to.");
-            AutoRestart = Get(true, "AutoRestart", false, "Whether to automatically restart the system any time it crashes.");
+            CrashLogFile = Get("CrashLogFile", "CrashLog.log", "The file to log any crashes to.");
+            AutoRestart = Get("AutoRestart", false, "Whether to automatically restart the system any time it crashes.");
 
-            TickLength = Get(true, "TickLength", 20, "How long each tick should be for any system that uses ticks.");
+            TickLength = Get("TickLength", 20, "How long each tick should be for any system that uses ticks.");
 
             EyePosition = GetV("Camera", "EyePosition", new Vector3(0f, 0, 0), "The position of the eye in real world coordinates (mm).");
             Position = GetV("Camera", "CameraPosition", new Vector3(128f, 128f, 60f), "The position of the camera in virtual space coordinates.");
@@ -70,7 +70,7 @@ namespace Chimera.Config {
             XRegions = Get("Heightmap", "XRegions", 1, "The number of contiguous regions along the X axis that make up the environment.");
             YRegions = Get("Heightmap", "YRegions", 1, "The number of contiguous regions along the Y axis that make up the environment.");
             HeightmapDefault = Get("Heightmap", "HeightmapDefault", 0f, "The default heightmap height. Any square that does not have heightmap data set will revert to this.");
-            Frames = Get(true, "Frames", "MainWindow", "The name of all the windows to load, separated by commas.").Split(',');
+            Frames = Get("Frames", "MainWindow", "The name of all the windows to load, separated by commas.").Split(',');
 
             Get("Plugins", "|PLUGIN|Enabled", true, "Set whether |PLUGIN| is enabled at start-up.");
         }
