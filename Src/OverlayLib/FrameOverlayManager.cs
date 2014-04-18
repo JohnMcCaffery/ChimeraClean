@@ -169,20 +169,18 @@ namespace Chimera.Overlay {
             get { return mEnableCursor; }
             set {
                 mEnableCursor = value && mConfig.ControlPointer;
-                if (mConfig.DisablePointer) {
-                    if (value && !mMouseState)
-                        OverlayWindow.Invoke(() => {
-                            mMouseState = true;
-                            Logger.Debug("Enabling cursor control");
-                            Cursor.Show();
-                        });
-                    else if (!value && mMouseState)
-                        OverlayWindow.Invoke(() => {
-                            mMouseState = false;
-                            Logger.Debug("Disabling cursor control");
-                            Cursor.Hide();
-                        });
-                }
+                if (value && !mMouseState)
+                    OverlayWindow.Invoke(() => {
+                        mMouseState = true;
+                        Logger.Debug("Enabling cursor control");
+                        Cursor.Show();
+                    });
+                else if (!value && mMouseState)
+                    OverlayWindow.Invoke(() => {
+                        mMouseState = false;
+                        Logger.Debug("Disabling cursor control");
+                        Cursor.Hide();
+                    });
             }
         }
         /// <summary>
