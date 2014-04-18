@@ -27,6 +27,7 @@
             this.Key = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ValueCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.DefaultCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.SectionCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.DescriptionCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.parametersList)).BeginInit();
             this.SuspendLayout();
@@ -41,6 +42,7 @@
             this.Key,
             this.ValueCol,
             this.DefaultCol,
+            this.SectionCol,
             this.DescriptionCol});
             this.parametersList.Dock = System.Windows.Forms.DockStyle.Fill;
             this.parametersList.Location = new System.Drawing.Point(0, 0);
@@ -69,6 +71,14 @@
             this.DefaultCol.Name = "DefaultCol";
             this.DefaultCol.ReadOnly = true;
             // 
+            // SectionCol
+            // 
+            this.SectionCol.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.SectionCol.HeaderText = "Section";
+            this.SectionCol.Name = "SectionCol";
+            this.SectionCol.ReadOnly = true;
+            this.SectionCol.Width = 68;
+            // 
             // DescriptionCol
             // 
             this.DescriptionCol.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
@@ -94,6 +104,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Key;
         private System.Windows.Forms.DataGridViewTextBoxColumn ValueCol;
         private System.Windows.Forms.DataGridViewTextBoxColumn DefaultCol;
+        private System.Windows.Forms.DataGridViewTextBoxColumn SectionCol;
         private System.Windows.Forms.DataGridViewTextBoxColumn DescriptionCol;
 
     }

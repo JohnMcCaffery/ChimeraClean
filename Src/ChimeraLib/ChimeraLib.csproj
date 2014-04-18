@@ -157,7 +157,6 @@
     <Compile Include="GUI\Controls\Plugins\SplitAxisPanel.Designer.cs">
       <DependentUpon>SplitAxisPanel.cs</DependentUpon>
     </Compile>
-    <Compile Include="Config\OverlayConfig.cs" />
     <Compile Include="GUI\Controls\Plugins\ProjectorPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -171,7 +170,7 @@
     <Compile Include="Plugins\SplitAxis.cs" />
     <Compile Include="Interfaces\IAxis.cs" />
     <Compile Include="Interfaces\ITickListener.cs" />
-    <Compile Include="Config\CoordinatorConfig.cs" />
+    <Compile Include="Config\CoreConfig.cs" />
     <Compile Include="Config\FrameConfig.cs" />
     <Compile Include="GUI\Controls\ConditionalCheck.cs">
       <SubType>Component</SubType>

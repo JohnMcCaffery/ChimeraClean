@@ -70,7 +70,7 @@ namespace Chimera.OpenSim {
         }
 
         public ViewerConfig(params string[] args)
-            : base("OpenSim", args) {
+            : base("OpenSim", IGNORE_FRAME, args) {
         }
 
         public ViewerConfig(string frameName, params string[] args)
@@ -78,15 +78,26 @@ namespace Chimera.OpenSim {
         }
 
         protected override void InitConfig() {
-            ViewerExecutable = Path.GetFullPath(Get("ViewerExe", DEFAULT_CLIENT_EXE, "The executable that runs the viewer.", "../../Armadillo-Phoenix/Bin/firestorm-bin.exe", "../../Armadillo-Phoenix/Armadillo/Bin/firestorm-bin.exe", "C:\\Program Files (x86)\\Firestorm-Release\\Firestorm-Release.exe", "C:\\Program Files (x86)\\Firestorm-private-shutle01\\Firestorm-private-shutle01.exe"));
+            ViewerExecutable = Path.GetFullPath(GetFile("ViewerExe", DEFAULT_CLIENT_EXE, "The executable that runs the viewer.", 
+                "../../Armadillo-Phoenix/Bin/firestorm-bin.exe", 
+                "../../Armadillo-Phoenix/Armadillo/Bin/firestorm-bin.exe", 
+                "C:\\Program Files (x86)\\Firestorm-Release\\Firestorm-Release.exe", 
+                "C:\\Program Files (x86)\\Firestorm-private-shutle01\\Firestorm-private-shutle01.exe"));
 
-            ViewerWorkingDirectory = Get("WorkingDirectory", Path.GetDirectoryName(ViewerExecutable), "The workign directory for the viewer executable.");
-            ViewerArguments = Get("ViewerArguments", "", "Any arguments to be passed to the viewer when it starts.");
-            ViewerToggleHUDKey = Get("ViewerToggleHUDKey", "%^{F1}", "The key press that will toggle the HUD on and off in the viewer.");
+            ViewerWorkingDirectory = GetFolder("WorkingDirectory", Path.GetDirectoryName(ViewerExecutable), "The workign directory for the viewer executable.");
+            ViewerArguments = GetStr("ViewerArguments", "", "Any arguments to be passed to the viewer when it starts.");
+            ViewerToggleHUDKey = GetStr("ViewerToggleHUDKey", "%^{F1}", "The key press that will toggle the HUD on and off in the viewer.");
             UseGrid = Get("UseGrid", false, "Whether to login using the --grid or --loginuri command line parameter to specify the login target.");
             DeltaScale = Get("DeltaScale", .25f, "How much to scale delta values by when using remote control.");
 
-            ProxyLoginURI = Get("LoginURI", DEFAULT_LOGINURI, "The URI of the server the proxy should proxy.", "http://192.168.1.181:9000", "http://169.254.189.108:9000", "http://138.251.194.191:9000", "http://apollo.cs.st-andrews.ac.uk:8002", "http://mimuve.cs.st-andrews.ac.uk:8002", "http://192.168.1.101:9000", "http://localhost:9000 ");
+            ProxyLoginURI = GetStr("LoginURI", DEFAULT_LOGINURI, "The URI of the server the proxy should proxy.", 
+                "http://192.168.1.181:9000", 
+                "http://169.254.189.108:9000", 
+                "http://138.251.194.191:9000", 
+                "http://apollo.cs.st-andrews.ac.uk:8002", 
+                "http://mimuve.cs.st-andrews.ac.uk:8002", 
+                "http://192.168.1.101:9000", 
+                "http://localhost:9000 ");
 
             ControlCameraPosition = Get("ControlCameraOffset", false, "Whether to use SetFollowCamProperties packets to control the camera position.");
             AllowFly = Get("AllowFly", false, "Whether to allow the avatar to fly in delta mode.");
@@ -97,8 +108,9 @@ namespace Chimera.OpenSim {
             StartStagger = Get("StartStagger", 60, "How many seconds to way between starting each viewer if multiple viewers are being launched.");
             BackwardsCompatible = Get("BackwardsCompatible", false, "If true, no unusual packets will be injected into the viewer. This will disable remote control and frustum control.");
 
-            CrashLogFile = Get("CrashLogFile", "CrashLog.log", "The log file to record crashes to.");
+            CrashLogFile = GetFile("CrashLogFile", "CrashLog.log", "The log file to record crashes to.");
             AutoRestartViewer = Get("AutoRestart", false, "Whether to automatically restart the viewer if the process exits.");
+            StartupKeyPresses = GetStr("StartupKeyPresses", "", "A series of key presses, using SendKeys syntax, which will be pressed when the viewer logs in. Separate sequences with commas.");
 
             LoginFirstName = GetFrame("FirstName", null, "The first name to log the viewer in with.");
             LoginLastName = GetFrame("LastName", null, "The last name to log the viewer in with.");
@@ -112,11 +124,8 @@ namespace Chimera.OpenSim {
             ControlCamera = GetFrame("ControlCamera", true, "Whether to control the position of the camera on the viewer.");
             ControlFrustum = GetFrame("ControlFrustum", true, "Whether to control the viewing frustum on the viewer.");
 
-            Fill = GetFrame<Fill>("Fill", Fill.Windowed, "What mode to set the window to.");
-
-            Offset = GetVFrame("Offset", Vector3.Zero, "Offset from the raw camera position to apply.");
-
-            StartupKeyPresses = Get("StartupKeyPresses", "", "A series of key presses, using SendKeys syntax, which will be pressed when the viewer logs in. Separate sequences with commas.");
+            Fill = GetFrameEnum<Fill>("Fill", Fill.Windowed, "What mode to set the window to.");
+            Offset = GetVFrame("Offset", Vector3.Zero, "Offset from the raw camera position to apply."); 
 
             //EnableWindowPackets = Init.Get(generalConfig, "EnableWindowPackets", true);
             //UseSetFollowCamPackets = !enableWindowPackets || Get(generalConfig, "UseSetFollowCamPackets", false);
