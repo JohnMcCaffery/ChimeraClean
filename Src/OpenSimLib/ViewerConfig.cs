@@ -25,6 +25,7 @@ using Chimera.Util;
 using System.IO;
 using Chimera.Config;
 using OpenMetaverse;
+using log4net;
 
 namespace Chimera.OpenSim {
     internal class ViewerConfig : ConfigFolderBase {
@@ -124,7 +125,7 @@ namespace Chimera.OpenSim {
             ControlCamera = GetFrame("ControlCamera", true, "Whether to control the position of the camera on the viewer.");
             ControlFrustum = GetFrame("ControlFrustum", true, "Whether to control the viewing frustum on the viewer.");
 
-            Fill = GetFrameEnum<Fill>("Fill", Fill.Windowed, "What mode to set the window to.");
+            Fill = GetFrameEnum<Fill>("Fill", Fill.Windowed, "What mode to set the window to.", LogManager.GetLogger(Frame + "Viewer"));
             Offset = GetVFrame("Offset", Vector3.Zero, "Offset from the raw camera position to apply."); 
 
             //EnableWindowPackets = Init.Get(generalConfig, "EnableWindowPackets", true);

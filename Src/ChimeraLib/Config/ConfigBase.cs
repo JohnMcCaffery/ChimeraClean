@@ -25,6 +25,7 @@ using Nini.Config;
 using OpenMetaverse;
 using Chimera.Util;
 using System.IO;
+using log4net;
 
 namespace Chimera.Config {
     public enum ParameterTypes {
@@ -360,10 +361,15 @@ namespace Chimera.Config {
             AddParam(key, description, ParameterTypes.Bool, section, defalt.ToString(), value);
             return value;
         }
-        protected T GetEnum<T>(string section, string key, T defalt, string description) {
+        protected T GetEnum<T>(string section, string key, T defalt, string description, ILog logger) where T : struct  {
             if (!configLoaded)
                 LoadConfig();
-            T value = (T)Enum.Parse(typeof(T), GetSection(section, key, defalt.ToString(), ""));
+            T value;
+            string val = Init.Get(mSource.Configs[section], key, defalt.ToString());
+            if (!Enum.TryParse<T>(val, out value)) {
+                value = defalt;
+                logger.Warn("Unable to load " + key + ". " + value + " is not a valid member of " + typeof(T).Name + ".");
+            }
             //Init.Get(mSource.Configs[general], key, defalt);
             List<object> vs = new List<object>();
             foreach (var v in Enum.GetValues(typeof(T)))
@@ -398,8 +404,8 @@ namespace Chimera.Config {
         protected bool Get(string key, bool defalt, string description) {
             return Get("General", key, defalt, description);
         }
-        protected T GetEnum<T>(string key, T defalt, string description) {
-            return GetEnum<T>("General", key, defalt, description);
+        protected T GetEnum<T>(string key, T defalt, string description, ILog logger) where T : struct {
+            return GetEnum<T>("General", key, defalt, description, logger);
         }
 
         protected Vector3 GetVFrame(string key, Vector3 defalt, string description) {
@@ -420,8 +426,8 @@ namespace Chimera.Config {
         protected bool GetFrame(string key, bool defalt, string description) {
             return Frame == IGNORE_FRAME ? defalt : Get(Frame, key, defalt, description);
         }
-        protected T GetFrameEnum<T>(string key, T defalt, string description) {
-            return Frame == IGNORE_FRAME ? defalt : GetEnum<T>(Frame, key, defalt, description);
+        protected T GetFrameEnum<T>(string key, T defalt, string description, ILog logger) where T : struct {
+            return Frame == IGNORE_FRAME ? defalt : GetEnum<T>(Frame, key, defalt, description, logger);
         }
 
         protected abstract void InitConfig();
