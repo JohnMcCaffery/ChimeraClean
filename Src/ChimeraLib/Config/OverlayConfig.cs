@@ -19,10 +19,10 @@ namespace Chimera.Config {
             : base("Overlay", args) { }
 
         protected override void InitConfig() {
-            LaunchOverlay = Get(true, "LaunchOverlay", false, "Whether to launch an overlay for this window at startup.");
-            Fullscreen = Get(true, "Fullscreen", false, "Whether to launch the overlay fullscreen.");
-            ControlPointer = Get(true, "ControlPointer", false, "Whether the overlay should take control of the pointer and move it when the pointer is over the window.");
-            AlwaysOnTop = Get(true, "AlwaysOnTop", true, "Whether the overlay window should force itself to stay on top at all times or let it's order in the Z buffer be freely decided.");
+            LaunchOverlay = Get("LaunchOverlay", false, "Whether to launch an overlay for this window at startup.");
+            Fullscreen = Get("Fullscreen", false, "Whether to launch the overlay fullscreen.");
+            ControlPointer = Get("ControlPointer", false, "Whether the overlay should take control of the pointer and move it when the pointer is over the window.");
+            AlwaysOnTop = Get("AlwaysOnTop", true, "Whether the overlay window should force itself to stay on top at all times or let it's order in the Z buffer be freely decided.");
         }
     }
 }

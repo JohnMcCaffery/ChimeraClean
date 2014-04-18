@@ -30,10 +30,10 @@ namespace Chimera.Config {
         }
 
         protected ConfigFolderBase(string group, params string[] args) :
-            this(group, group, args) {
+            this(group, null, args) {
         }
-        protected ConfigFolderBase(string section, string group, params string[] args) :
-            base (section, GetFile(group, args), args) {
+        protected ConfigFolderBase(string group, string frame, params string[] args) :
+            base(GetFile(group, args), frame, args) {
         }
     }
 }

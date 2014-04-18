@@ -22,9 +22,9 @@ namespace Chimera.Launcher {
             : base("Launch", args) { }
 
         protected override void InitConfig() {
-            BasicGUI = Get(true, "BasicGUI", true, "Whether to use a simple GUI. If not the system will either use the full GUI or no GUI depending on the GUI flag.");
-            GUI = Get(true, "GUI", true, "Whether to launch the full GUI or no GUI if not using the basic GUI.");
-            BindingsFile = Get(true, "BindingsFile", null, "The XML file describing the dependency injection bindings used to instantiate the system. Relative paths are specified relative to the folder the launch config file is in.");
+            BasicGUI = Get("BasicGUI", true, "Whether to use a simple GUI. If not the system will either use the full GUI or no GUI depending on the GUI flag.");
+            GUI = Get("GUI", true, "Whether to launch the full GUI or no GUI if not using the basic GUI.");
+            BindingsFile = Get("BindingsFile", null, "The XML file describing the dependency injection bindings used to instantiate the system. Relative paths are specified relative to the folder the launch config file is in.");
             if (!Path.IsPathRooted(BindingsFile))
                 BindingsFile = Path.Combine(Folder, BindingsFile);
         }

@@ -93,7 +93,7 @@ namespace Chimera.Kinect.Axes {
          public float Maximum = 10.0f;
 
          public StandConfig(string type)
-             : base("Positions", type + "Movement", new string[0]) {
+             : base(type + "Movement", new string[0]) {
              mType = type;
          }
 
@@ -102,8 +102,8 @@ namespace Chimera.Kinect.Axes {
          }
 
          protected override void InitConfig() {
-             ZeroPosition = GetV(false, "ZeroPosition", ZeroPosition, "The neutral position for the user to stand where they will not move. Moving from this position moves the avatar.");
-             Maximum = Get(false, "Maximum", Maximum, "The maximum distance from the center to read values.");
+             ZeroPosition = GetV("Positions", "ZeroPosition", ZeroPosition, "The neutral position for the user to stand where they will not move. Moving from this position moves the avatar.");
+             Maximum = Get("Positions", "Maximum", Maximum, "The maximum distance from the center to read values.");
          }
 
      }
