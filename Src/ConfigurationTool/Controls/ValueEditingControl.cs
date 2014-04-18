@@ -171,7 +171,7 @@ namespace Chimera.ConfigurationTool.Controls {
         }
 
         public bool EditingControlWantsInputKey(Keys keyData, bool dataGridViewWantsInputKey) {
-            return keyData != Keys.Escape;
+            return keyData != Keys.Escape && keyData != Keys.Enter;
         }
 
         public Cursor EditingPanelCursor {

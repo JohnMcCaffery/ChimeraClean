@@ -26,6 +26,7 @@ using OpenMetaverse;
 using Chimera.Util;
 using System.IO;
 using log4net;
+using Nini.Ini;
 
 namespace Chimera.Config {
     public enum ParameterTypes {
@@ -51,7 +52,7 @@ namespace Chimera.Config {
         private string mDefault;
         private string mValue;
         private string[] mValues;
-        private IConfigSource mSource;
+        private string mFile;
         private readonly List<string> mGroups = new List<string>();
 
         public string Key {
@@ -78,14 +79,17 @@ namespace Chimera.Config {
             get { return mValue; }
             set {
                 mValue = value;
+
+                IniDocument doc = new IniDocument(mFile, IniFileType.WindowsStyle);
+                IniConfigSource source = new IniConfigSource(doc);
                 //TODO - make this write out!
-                IConfig cfg = mSource.Configs[mSection];
+                IConfig cfg = source.Configs[mSection];
                 if (cfg == null)
-                    cfg = mSource.Configs.Add(mSection);
+                    cfg = source.Configs.Add(mSection);
 
                 cfg.Set(mKey, value);
 
-                mSource.Save();
+                doc.Save(mFile);
             }
         }
 
@@ -96,7 +100,7 @@ namespace Chimera.Config {
             get { return mType; }
         }
 
-        public ConfigParam(string key, string description, ParameterTypes type, string section, string group, string defalt, bool commandLine, string shortKey, string value, IConfigSource source, params string[] values) {
+        public ConfigParam(string key, string description, ParameterTypes type, string section, string group, string defalt, bool commandLine, string shortKey, string value, string file, params string[] values) {
             mKey = key;
             mDescription = description;
             mType = type;
@@ -107,7 +111,7 @@ namespace Chimera.Config {
             mDefault = defalt;
             mShortKey = shortKey;
             mCommandLine = commandLine;
-            mSource = source;
+            mFile = file;
             mValues = values;
             mValue = value;
         }
@@ -169,7 +173,7 @@ namespace Chimera.Config {
             if (!mParameters.ContainsKey(section))
                 mParameters.Add(section, new Dictionary<string, ConfigParam>());
             if (!mParameters[section].ContainsKey(key))
-                mParameters[section].Add(key, new ConfigParam(key, description, type, section, Group, defalt, commandLine, shortKey, value != null ? value.ToString() : "null", mSource, values));
+                mParameters[section].Add(key, new ConfigParam(key, description, type, section, Group, defalt, commandLine, shortKey, value != null ? value.ToString() : "null", mFile, values));
             else {
                 ConfigParam param = mParameters[section][key];
                 param.AddGroup(Group);
@@ -262,9 +266,18 @@ namespace Chimera.Config {
         }
 
         private void LoadConfig() {
-            mSource = Init.AddFile(mArgConfig, mFile);
+            if (configLoaded)
+                return;
+            if (!File.Exists(mFile))
+                File.Create(mFile);
+
+            mDoc = new IniDocument(mFile, IniFileType.WindowsStyle);
+            mSource = new IniConfigSource(mDoc);
+            //mSource = Init.AddFile(mArgConfig, mFile);
             configLoaded = true;
         }
+
+        private IniDocument mDoc;
 
         /// <summary>
         /// Add a key to the list of command line arguments that will be interpreted.

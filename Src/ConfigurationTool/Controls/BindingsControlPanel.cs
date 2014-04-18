@@ -80,7 +80,7 @@ namespace ConfigurationTool.Controls {
             //Iterate through every assembly in the folder where the tool is running
             foreach (var assembly in 
                 Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory).
-                Where(f => Path.GetExtension(f).ToUpper() == ".DLL").
+                Where(f => Path.GetExtension(f).ToUpper() == ".DLL" && !f.Contains("NuiLib") && !f.Contains("opencv") && !f.Contains("openjpeg")).
                 Select(f => {
                     try {
                         return Assembly.LoadFile(f);
