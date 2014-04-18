@@ -49,11 +49,11 @@ namespace Chimera.Config {
         private string mWindow = "MainWindow";
         public LockedVariable Lock;
 
-        public ProjectorConfig() : base ("Projectors", IGNORE_FRAME) { }
+        public ProjectorConfig() : base ("Projectors") { }
 
-        public ProjectorConfig(string frame, params string[] args)
-            : base("Projectors", frame, args) {
-            mWindow = frame;
+        public ProjectorConfig(string window, params string[] args)
+            : base("Projectors", window, args) {
+            mWindow = window;
         }
 
         public override string Group {
@@ -65,7 +65,7 @@ namespace Chimera.Config {
             DrawRoom = Get("DrawRoom", true, "Whether to draw the room on the window diagrams.");
             DrawGlobalLabels = Get("DrawLabels", true, "Whether to draw for the room on the window diagrams.");
 
-            RoomFile = GetStr("RoomFile", null, "The file containing the layout for the room the projector is in.");
+            RoomFile = Get("RoomFile", null, "The file containing the layout for the room the projector is in.");
             if (RoomFile != null && !Path.IsPathRooted(RoomFile))
                 RoomFile = Path.Combine(Folder, RoomFile);
 

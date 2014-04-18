@@ -39,11 +39,11 @@ namespace Chimera.Config {
         public bool Draw;
         public bool DrawEye;
 
-        public FrameConfig() : base ("Frames", IGNORE_FRAME) { }
+        public FrameConfig() : base ("Frames") { }
 
-        public FrameConfig(string frame, params string[] args)
-            : base("Frames", frame, args) {
-            mWindow = frame;
+        public FrameConfig(string window, params string[] args)
+            : base("Frames", window, args) {
+            mWindow = window;
         }
 
         public override string Group {
@@ -51,12 +51,10 @@ namespace Chimera.Config {
         }
 
         protected override void InitConfig() {
-            /*
             AddCommandLineKey(false, "Monitor", "m");
             AddCommandLineKey(false, "LaunchOverlay", "l");
             AddCommandLineKey(false, "Fullscreen", "f");
             AddCommandLineKey(false, "MouseControl", "mc");
-            */
 
 
             Monitor = GetFrame("Monitor", "\\\\.\\DISPLAY2", "The monitor on which this window should render.");

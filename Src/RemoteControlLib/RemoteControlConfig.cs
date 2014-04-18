@@ -21,10 +21,10 @@ namespace Chimera.RemoteControl {
         }
 
         protected override void InitConfig() {
-            OpenSimExe = GetFile("OpenSimExe", "C:\\Users\\user\\Desktop\\opensim-0.7.5\\bin\\OpenSim.exe", "The executable that will run the OpenSim server.");
-            ClientAddress = GetStr("ClientAddress", "127.0.0.1", "The address of the client that is to be remote controlled.");
+            OpenSimExe = Get("OpenSimExe", "C:\\Users\\user\\Desktop\\opensim-0.7.5\\bin\\OpenSim.exe", "The executable that will run the OpenSim server.");
+            ClientAddress = Get("ClientAddress", "127.0.0.1", "The address of the client that is to be remote controlled.");
             Port = Get("Port", 8050, "The port that the client will listen for remote control messages on.");
-            Title = GetStr("Title", "Remote Control", "The title that will appear at the top of the remote control window.");
+            Title = Get("Title", "Remote Control", "The title that will appear at the top of the remote control window.");
             ShutdownEverything = Get("Shutdown", true, "Whether to shutdown OpenSim and the computer or just send the shutdown signal to the client.");
         }
     }

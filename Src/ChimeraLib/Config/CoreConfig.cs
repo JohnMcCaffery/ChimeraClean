@@ -26,7 +26,7 @@ using System.IO;
 using OpenMetaverse;
 
 namespace Chimera.Config {
-    public class CoreConfig : ConfigFolderBase {
+    public class CoordinatorConfig : ConfigFolderBase {
         public string CrashLogFile;
         public int TickLength;
         public bool AutoRestart;
@@ -40,11 +40,11 @@ namespace Chimera.Config {
         public double OverlayOpacity;
         public string[] Frames;
 
-        public CoreConfig(params string[] args)
+        public CoordinatorConfig(params string[] args)
             : base("Main", args) {
         }
 
-        public CoreConfig(string file, string[] args)
+        public CoordinatorConfig(string file, string[] args)
             : base("Main", args) {
         }
 
@@ -57,7 +57,7 @@ namespace Chimera.Config {
             AddCommandLineKey(true, "CrashLogFile", "l");
             AddCommandLineKey(true, "TickLength", "tl");
 
-            CrashLogFile = GetStr("CrashLogFile", "CrashLog.log", "The file to log any crashes to.");
+            CrashLogFile = Get("CrashLogFile", "CrashLog.log", "The file to log any crashes to.");
             AutoRestart = Get("AutoRestart", false, "Whether to automatically restart the system any time it crashes.");
 
             TickLength = Get("TickLength", 20, "How long each tick should be for any system that uses ticks.");
@@ -70,7 +70,7 @@ namespace Chimera.Config {
             XRegions = Get("Heightmap", "XRegions", 1, "The number of contiguous regions along the X axis that make up the environment.");
             YRegions = Get("Heightmap", "YRegions", 1, "The number of contiguous regions along the Y axis that make up the environment.");
             HeightmapDefault = Get("Heightmap", "HeightmapDefault", 0f, "The default heightmap height. Any square that does not have heightmap data set will revert to this.");
-            Frames = GetStr("Frames", "MainWindow", "The name of all the windows to load, separated by commas.").Split(',');
+            Frames = Get("Frames", "MainWindow", "The name of all the windows to load, separated by commas.").Split(',');
 
             Get("Plugins", "|PLUGIN|Enabled", true, "Set whether |PLUGIN| is enabled at start-up.");
         }

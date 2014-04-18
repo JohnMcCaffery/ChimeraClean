@@ -43,7 +43,7 @@ namespace Chimera.Flythrough {
         protected override void InitConfig() {
             SynchLengths = Get("SynchLengths", true, "Whether updating a position event's length will change the corresponding orientation event's length and vice versa.");
             Loop = Get("Loop", false, "Whether to loop playback by default.");
-            StartFile = GetFile("DefaultFile", null, "Default file to load at startup.");
+            StartFile = Get("DefaultFile", null, "Default file to load at startup.");
             Autostart = Get("Autostart", false, "If a default file is specified whether to start playing on system startup.");
             Speed = Get("Speed", 1.0, "How fast the playback should be. 1 is normal speed, < 1 is slower, > 1 is faster.");
         }

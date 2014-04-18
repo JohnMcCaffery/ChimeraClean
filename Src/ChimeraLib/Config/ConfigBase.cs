@@ -130,7 +130,7 @@ namespace Chimera.Config {
             }
         }
     public abstract class ConfigBase {
-        public string Section;
+        public string Frame = null;
         private IConfigSource mSource;
         private ArgvConfigSource mArgConfig;
         private string mFile;
@@ -222,21 +222,21 @@ namespace Chimera.Config {
             IConfigSource mSource = GetMainConfig(args, out mArgConfig, out mFile);
 
             mArgConfig.AddSwitch("General", "Section", "s");
-            Section = Init.Get(mSource.Configs["General"], "Section", "MainWindow");
+            Frame = Init.Get(mSource.Configs["General"], "Section", "MainWindow");
 
             InitConfig();
         }
 
-        public ConfigBase(string section, string[] args) {
+        public ConfigBase(string frame, string[] args) {
             GetMainConfig(args, out mArgConfig, out mFile);
 
-            Section = section;
+            Frame = frame;
 
             InitConfig();
         }
 
-        public ConfigBase(string section, string file, string[] args) {
-            Section = section;
+        public ConfigBase(string file, string frame, string[] args) {
+            Frame = frame;
             mFile = file;
             mArgConfig = Init.InitArgConfig(args);
             
@@ -256,7 +256,7 @@ namespace Chimera.Config {
         /// <param name="key">The key to add.</param>
         /// <param name="shortkey">The short version of the key.</param>
         protected void AddCommandLineKey(bool general, string key, string shortkey) {
-            AddCommandLineKey(general ? "General" : Section, key);
+            AddCommandLineKey(general ? "General" : Frame, key);
         }
         /// <summary>
         /// Add a key to the list of command line arguments that will be interpreted.
@@ -285,7 +285,7 @@ namespace Chimera.Config {
         /// <param name="general">Whether to add it to the general config or Name.</param>
         /// <param name="key">The key to add.</param>
         protected void AddCommandLineKey(bool general, string key) {
-            AddCommandLineKey(general ? "General" : Section, key);
+            AddCommandLineKey(general ? "General" : Frame, key);
         }
         /// <summary>
         /// Add a key to the list of command line arguments that will be interpreted.
@@ -300,82 +300,104 @@ namespace Chimera.Config {
             commandLineKeys[section].Add(key);
         }
 
-        protected Vector3 GetV(string general, string key, Vector3 defalt, string description) {
+        protected Vector3 GetV(string section, string key, Vector3 defalt, string description) {
             if (!configLoaded)
                 LoadConfig();
-            Vector3 value =Init.GetV(mSource.Configs[general], key, defalt);
-            AddParam(key, description, ParameterTypes.Vector3, general, defalt.ToString(), value);
+            Vector3 value =Init.GetV(mSource.Configs[section], key, defalt);
+            AddParam(key, description, ParameterTypes.Vector3, section, defalt.ToString(), value);
             return value;
         }
-        protected double Get(string general, string key, double defalt, string description) {
+        protected double Get(string section, string key, double defalt, string description) {
             if (!configLoaded)
                 LoadConfig();
-            double value = Init.Get(mSource.Configs[general], key, defalt);
-            AddParam(key, description, ParameterTypes.Double, general, defalt.ToString(), value);
+            double value = Init.Get(mSource.Configs[section], key, defalt);
+            AddParam(key, description, ParameterTypes.Double, section, defalt.ToString(), value);
             return value;
         }
-        protected string Get(string general, string key, string defalt, string description, params string[] values) {
+        protected string Get(string section, string key, string defalt, string description, params string[] values) {
             if (!configLoaded)
                 LoadConfig();
-            string value = Init.Get(mSource.Configs[general], key, defalt);
-            AddParam(key, description, ParameterTypes.String, general, defalt, value, values);
+            string value = Init.Get(mSource.Configs[section], key, defalt);
+            AddParam(key, description, ParameterTypes.String, section, defalt, value, values);
             return value;
         }
-        protected float Get(string general, string key, float defalt, string description) {
+        protected float Get(string section, string key, float defalt, string description) {
             if (!configLoaded)
                 LoadConfig();
-            float value = Init.Get(mSource.Configs[general], key, defalt);
-            AddParam(key, description, ParameterTypes.Float, general, defalt.ToString(), value);
+            float value = Init.Get(mSource.Configs[section], key, defalt);
+            AddParam(key, description, ParameterTypes.Float, section, defalt.ToString(), value);
             return value;
         }
-        protected int Get(string general, string key, int defalt, string description) {
+        protected int Get(string section, string key, int defalt, string description) {
             if (!configLoaded)
                 LoadConfig();
-            int value = Init.Get(mSource.Configs[general], key, defalt);
-            AddParam(key, description, ParameterTypes.Int, general, defalt.ToString(), value);
+            int value = Init.Get(mSource.Configs[section], key, defalt);
+            AddParam(key, description, ParameterTypes.Int, section, defalt.ToString(), value);
             return value;
         }
-        protected bool Get(string general, string key, bool defalt, string description) {
+        protected bool Get(string section, string key, bool defalt, string description) {
             if (!configLoaded)
                 LoadConfig();
-            bool value = Init.Get(mSource.Configs[general], key, defalt);
-            AddParam(key, description, ParameterTypes.Bool, general, defalt.ToString(), value);
+            bool value = Init.Get(mSource.Configs[section], key, defalt);
+            AddParam(key, description, ParameterTypes.Bool, section, defalt.ToString(), value);
             return value;
         }
-        protected T Get<T>(string general, string key, T defalt, string description) {
+        protected T Get<T>(string section, string key, T defalt, string description) {
             if (!configLoaded)
                 LoadConfig();
-            T value = (T)Enum.Parse(typeof(T), Get(general, key, defalt.ToString(), ""));
+            T value = (T)Enum.Parse(typeof(T), Get(section, key, defalt.ToString(), ""));
             //Init.Get(mSource.Configs[general], key, defalt);
             List<object> vs = new List<object>();
             foreach (var v in Enum.GetValues(typeof(T)))
                 vs.Add(v);
             string[] values = vs.Select(v => v.ToString()).ToArray();
-            AddParam(key, description, ParameterTypes.Enum, general, defalt.ToString(), value, values);
+            AddParam(key, description, ParameterTypes.Enum, section, defalt.ToString(), value, values);
             return value;
         }
 
 
-        protected Vector3 GetV(bool general, string key, Vector3 defalt, string description) {
-            return GetV(general ? "General" : Section, key, defalt, description);
+        protected Vector3 GetV(string key, Vector3 defalt, string description) {
+            return GetV("General", key, defalt, description);
         }
-        protected double Get(bool general, string key, double defalt, string description) {
-            return Get(general ? "General" : Section, key, defalt, description);
+        protected double Get(string key, double defalt, string description) {
+            return Get("General", key, defalt, description);
         }
-        protected string Get(bool general, string key, string defalt, string description, params string[] values) {
-            return Get(general ? "General" : Section, key, defalt, description, values);
+        protected string Get(string key, string defalt, string description, params string[] values) {
+            return Get("General", key, defalt, description, values);
         }
-        protected float Get(bool general, string key, float defalt, string description) {
-            return Get(general ? "General" : Section, key, defalt, description);
+        protected float Get(string key, float defalt, string description) {
+            return Get("General", key, defalt, description);
         }
-        protected int Get(bool general, string key, int defalt, string description) {
-            return Get(general ? "General" : Section, key, defalt, description);
+        protected int Get(string key, int defalt, string description) {
+            return Get("General", key, defalt, description);
         }
-        protected bool Get(bool general, string key, bool defalt, string description) {
-            return Get(general ? "General" : Section, key, defalt, description);
+        protected bool Get(string key, bool defalt, string description) {
+            return Get("General", key, defalt, description);
         }
-        protected T Get<T>(bool general, string key, T defalt, string description) {
-            return Get<T>(general ? "General" : Section, key, defalt, description);
+        protected T Get<T>(string key, T defalt, string description) {
+            return Get<T>("General", key, defalt, description);
+        }
+
+        protected Vector3 GetVFrame(string key, Vector3 defalt, string description) {
+            return GetV(Frame, key, defalt, description);
+        }
+        protected double GetFrame(string key, double defalt, string description) {
+            return Get(Frame, key, defalt, description);
+        }
+        protected string GetFrame(string key, string defalt, string description, params string[] values) {
+            return Get(Frame, key, defalt, description, values);
+        }
+        protected float GetFrame(string key, float defalt, string description) {
+            return Get(Frame, key, defalt, description);
+        }
+        protected int GetFrame(string key, int defalt, string description) {
+            return Get(Frame, key, defalt, description);
+        }
+        protected bool GetFrame(string key, bool defalt, string description) {
+            return Get(Frame, key, defalt, description);
+        }
+        protected T GetFrame<T>(string key, T defalt, string description) {
+            return Get<T>(Frame, key, defalt, description);
         }
 
         protected abstract void InitConfig();
