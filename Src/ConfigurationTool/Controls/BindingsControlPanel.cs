@@ -205,6 +205,10 @@ namespace ConfigurationTool.Controls {
                 else
                     Disable(doc);
             }
+
+            public bool IsBound {
+                get { return Item != null && Item.Checked; }
+            }
         }
 
         private void loadFileButton_Click(object sender, EventArgs e) {
@@ -223,7 +227,7 @@ namespace ConfigurationTool.Controls {
 
         internal IEnumerable<Type> GetBoundClasses<Interface>() {
             Type t = typeof(Interface);
-            return mBindingsByItem.Values.Where(b => b.Interface == t).Select(b => b.Class);
+            return mBindingsByItem.Values.Where(b => b.IsBound && b.Interface == t).Select(b => b.Class);
         }
     }
 }

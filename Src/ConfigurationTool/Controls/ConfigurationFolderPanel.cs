@@ -14,9 +14,6 @@ using CfgBase = Chimera.Config.ConfigBase;
 
 namespace Chimera.ConfigurationTool.Controls {
     public partial class ConfigurationFolderPanel : UserControl {
-        private static Type sConfigT = typeof(CfgBase);
-        private static Type sConfigFolderT = typeof(ConfigFolderBase);
-
         private string mFolder;
         
         public ConfigurationFolderPanel() {
@@ -27,14 +24,18 @@ namespace Chimera.ConfigurationTool.Controls {
             mFolder = folder;
         }
 
-        private bool IsConfig(Type t) {
+        private bool InheritsFrom(Type t, Type p) {
             Type b = t.BaseType;
             while (b != null) {
-                if (b == sConfigT || b == sConfigFolderT)
+                if (b == p)
                     return true;
                 b = b.BaseType;
             }
             return false;
+        }
+
+        private bool IsConfig(Type t) {
+            return InheritsFrom(t, typeof(ConfigFolderBase)) || InheritsFrom(t, typeof(CfgBase));
         }
 
         private void loadConfigsButton_Click(object sender, EventArgs e) {
@@ -78,6 +79,8 @@ namespace Chimera.ConfigurationTool.Controls {
                         continue;
 
                     TabPage page = new TabPage(clazz.Name.Replace("Config", ""));
+                    if (InheritsFrom(clazz, typeof(AxisConfig)))
+                        LoadAxisConfig(page, config as AxisConfig);
                     if (config.Frame == null)
                         LoadConfig(page, config);
                     else
@@ -106,6 +109,15 @@ namespace Chimera.ConfigurationTool.Controls {
                     "(string, params string[])", "Unable to load configuration file", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return null;
             }
+        }
+
+        private void LoadAxisConfig(TabPage page, AxisConfig config) {
+            if (config.LoadBoundAxes) {
+                AxisConfigurationPanel panel = new AxisConfigurationPanel(config, bindingsControlPanel);
+                panel.Dock = DockStyle.Fill;
+                page.Controls.Add(panel);
+            } else
+                LoadConfig(page, config);
         }
 
         private void LoadConfig(TabPage page, CfgBase config) {

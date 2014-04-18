@@ -104,10 +104,10 @@ namespace Chimera.Plugins {
         /// </summary>
         /// <param name="name"></param>
         /// <param name="axes"></param>
-        public AxisBasedDelta(string name, params IAxis[] axes) {
+        public AxisBasedDelta(string name, AxisConfig config, params IAxis[] axes) {
             Logger = LogManager.GetLogger(name);
             mName = name;
-            mConfig = new AxisConfig(name);
+            mConfig = config;
 
             mTickListener = new Action(mCore_Tick);
 
@@ -121,16 +121,8 @@ namespace Chimera.Plugins {
         }
 
         public void AddAxis(IAxis axis) {
+            AxConfig.ConfigureAxis(axis, mCore);
             mAxes.Add(axis);
-            if (mCore != null && axis is ITickListener)
-                (axis as ITickListener).Init(mCore);
-            if (axis is ConstrainedAxis) {
-                ConstrainedAxis ax = axis as ConstrainedAxis;
-                ax.Deadzone.Value = AxConfig.GetDeadzone(axis.Name);
-                ax.Scale.Value  = AxConfig.GetScale(axis.Name);
-            }
-            if (axis.Binding == AxisBinding.NotSet)
-                axis.Binding = AxConfig.GetBinding(axis.Name);
             if (AxisAdded != null)
                 AxisAdded(axis);
         }
@@ -155,16 +147,6 @@ namespace Chimera.Plugins {
                 float p = mAxes.Where(a => a.Binding == AxisBinding.Pitch).Sum(a => a.Delta);
                 float y = mAxes.Where(a => a.Binding == AxisBinding.Yaw).Sum(a => a.Delta);
                 return new Rotation(p * mScale * mRotXMove, y * mScale * mRotXMove);
-            }
-        }
-
-        public override Vector2 MouseDelta
-        {
-            get
-            {
-                float x = mAxes.Where(a => a.Binding == AxisBinding.MouseX).Sum(a => a.Delta);
-                float y = mAxes.Where(a => a.Binding == AxisBinding.MouseY).Sum(a => a.Delta);
-                return new Vector2(x, y);
             }
         }
 
@@ -221,35 +203,6 @@ namespace Chimera.Plugins {
 
         protected virtual AxisConfig AxConfig {
             get { return mConfig; }
-        }
-
-        public class AxisConfig : ConfigFolderBase {
-            private string mType;
-
-            public AxisConfig(string type)
-                : base(type, new string[0]) {
-                mType = type;
-            }
-
-            public override string Group {
-                get { return mType; }
-            }
-
-            protected override void InitConfig() {
-            }
-
-            public float GetDeadzone(string name) {
-                return Get("Deadzones", name, .1f, "");
-            }
-
-            public float GetScale(string name) {
-                return Get("Scales", name, 1f, "");
-            }
-
-            public AxisBinding GetBinding(string name) {
-                //return (AxisBinding) Enum.Parse(typeof(AxisBinding), Get("Bindings", name, "None", ""));
-                return GetEnum<AxisBinding>("Bindings", name, AxisBinding.None, "The output axis that " + name + " is bound to.", LogManager.GetLogger(name));
-            }
         }
 
         #region ISystemPlugin Members

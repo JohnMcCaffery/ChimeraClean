@@ -148,21 +148,23 @@ namespace Chimera.Config {
 
         private readonly Dictionary<string, HashSet<string>> commandLineKeys = new Dictionary<string, HashSet<string>>();
         private readonly Dictionary<string, Dictionary<string, string>> commandLineShortKeys = new Dictionary<string, Dictionary<string, string>>();
-        private readonly Dictionary<string, ConfigParam> _mParameters = new Dictionary<string,ConfigParam>();
+        private readonly Dictionary<string, Dictionary<string, ConfigParam>> mParameters = new Dictionary<string, Dictionary<string, ConfigParam>>();
 
 
         public IEnumerable<ConfigParam> Parameters {
-            get { return _mParameters.Values; }
+            get { return mParameters.Values.SelectMany(d => d.Values); }
         }
 
         private void AddParam(string key, string description, ParameterTypes type, string section, string defalt, object value, params string[] values) {
             bool commandLine = commandLineKeys.ContainsKey(section) && commandLineKeys[section].Contains(key);
             string shortKey = commandLine && commandLineShortKeys.ContainsKey(section) ? commandLineShortKeys[section][key] : null;
 
-            if (!_mParameters.ContainsKey(key))
-                _mParameters.Add(key, new ConfigParam(key, description, type, section, Group, defalt, commandLine, shortKey, value != null ? value.ToString() : "null", mSource, values));
+            if (!mParameters.ContainsKey(section))
+                mParameters.Add(section, new Dictionary<string, ConfigParam>());
+            if (!mParameters[section].ContainsKey(key))
+                mParameters[section].Add(key, new ConfigParam(key, description, type, section, Group, defalt, commandLine, shortKey, value != null ? value.ToString() : "null", mSource, values));
             else {
-                ConfigParam param = _mParameters[key];
+                ConfigParam param = mParameters[section][key];
                 param.AddGroup(Group);
                 if (!param.CommandLine && commandLine)
                     param.CommandLine = true;

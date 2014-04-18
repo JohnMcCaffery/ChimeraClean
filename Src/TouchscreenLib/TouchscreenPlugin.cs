@@ -19,6 +19,11 @@ namespace Touchscreen {
         Left,
         Middle,
         Right
+    }
+    public class TouchscreenMovementConfig : AxisConfig {
+        public TouchscreenMovementConfig()
+            : base("Touchscreen") {
+        }
     }
 
     public class TouchscreenPlugin : AxisBasedDelta, ITouchSource {
@@ -81,7 +86,7 @@ namespace Touchscreen {
         }
 
         public TouchscreenPlugin()
-            : base("Touchscreen") {
+            : base("Touchscreen", new TouchscreenMovementConfig()) {
         }
 
         public override void Init(Core input) {

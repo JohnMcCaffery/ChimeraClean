@@ -36,6 +36,7 @@
             this.reloadButton.TabIndex = 0;
             this.reloadButton.Text = "Reload";
             this.reloadButton.UseVisualStyleBackColor = true;
+            this.reloadButton.Click += new System.EventHandler(this.reloadButton_Click);
             // 
             // AxisConfigurationPanel
             // 
