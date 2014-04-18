@@ -251,7 +251,7 @@ namespace Chimera.Plugins {
 
             public AxisBinding GetBinding(string name) {
                 //return (AxisBinding) Enum.Parse(typeof(AxisBinding), Get("Bindings", name, "None", ""));
-                return GetEnum<AxisBinding>("Bindings", name, AxisBinding.None, "The output axis that " + name + " is bound to.");
+                return GetEnum<AxisBinding>("Bindings", name, AxisBinding.None, "The output axis that " + name + " is bound to.", LogManager.GetLogger(name));
             }
         }
 
