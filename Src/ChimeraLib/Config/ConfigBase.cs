@@ -79,6 +79,13 @@ namespace Chimera.Config {
             set {
                 mValue = value;
                 //TODO - make this write out!
+                IConfig cfg = mSource.Configs[mSection];
+                if (cfg == null)
+                    cfg = mSource.Configs.Add(mSection);
+
+                cfg.Set(mKey, value);
+
+                mSource.Save();
             }
         }
 

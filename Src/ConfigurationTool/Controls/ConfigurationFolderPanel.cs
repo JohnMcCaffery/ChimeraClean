@@ -16,13 +16,15 @@ using ConfigurationTool.Controls;
 namespace Chimera.ConfigurationTool.Controls {
     public partial class ConfigurationFolderPanel : UserControl {
         private string mFolder;
+        private ConfigFolderSetter mSetter;
         
         public ConfigurationFolderPanel() {
             InitializeComponent();
         }
 
-        public ConfigurationFolderPanel(string folder) : this() {
+        public ConfigurationFolderPanel(string folder, ConfigFolderSetter setter) : this() {
             mFolder = folder;
+            mSetter = setter;
 
             this.bindingsControlPanel = new BindingsControlPanel(folder);
             // 
@@ -36,8 +38,8 @@ namespace Chimera.ConfigurationTool.Controls {
 
             this.BindingsTab.Controls.Add(this.bindingsControlPanel);
 
-            launcher.DoWork += Startup;
-            launcher.RunWorkerAsync();
+            loader.DoWork += Startup;
+            //loader.RunWorkerAsync();
         }
 
         private void Startup(object source, DoWorkEventArgs args) {
@@ -60,15 +62,6 @@ namespace Chimera.ConfigurationTool.Controls {
         }
 
         private void LoadConfigurationObjects() {
-            DotNetConfigSource source = new DotNetConfigSource();
-            IConfig cfg = source.Configs["Config"];
-            if (cfg == null) {
-                cfg = source.Configs.Add("Config");
-            }
-
-            cfg.Set("ConfigFolder", mFolder);
-            source.Save(AppDomain.CurrentDomain.SetupInformation.ConfigurationFile);
-
             string folder = Path.GetDirectoryName(AppDomain.CurrentDomain.SetupInformation.ConfigurationFile);
             folder = Path.GetFullPath(Path.Combine(folder, "../"));
 
@@ -173,6 +166,13 @@ namespace Chimera.ConfigurationTool.Controls {
 
             sectionsTab.Dock = DockStyle.Fill;
             page.Controls.Add(sectionsTab);
+        }
+
+        internal void LoadFolder() {
+            mSetter.SetFolder(mFolder);
+            bindingsControlPanel.InitialiseInterfaces();
+            bindingsControlPanel.LoadDocument();
+            LoadConfigurationObjects();
         }
     }
 }

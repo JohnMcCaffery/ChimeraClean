@@ -25,6 +25,7 @@ namespace Chimera.ConfigurationTool {
         /// </summary>
         private void InitializeComponent() {
             this.FoldersTab = new System.Windows.Forms.TabControl();
+            this.loader = new System.ComponentModel.BackgroundWorker();
             this.SuspendLayout();
             // 
             // FoldersTab
@@ -52,6 +53,7 @@ namespace Chimera.ConfigurationTool {
         #endregion
 
         private System.Windows.Forms.TabControl FoldersTab;
+        private System.ComponentModel.BackgroundWorker loader;
 
 
     }

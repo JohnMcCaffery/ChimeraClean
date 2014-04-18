@@ -31,11 +31,13 @@
             // 
             // boolInput
             // 
+            this.boolInput.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.boolInput.AutoSize = true;
-            this.boolInput.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.boolInput.Location = new System.Drawing.Point(0, 0);
+            this.boolInput.Location = new System.Drawing.Point(120, 3);
             this.boolInput.Name = "boolInput";
-            this.boolInput.Size = new System.Drawing.Size(259, 28);
+            this.boolInput.Size = new System.Drawing.Size(15, 14);
             this.boolInput.TabIndex = 0;
             this.boolInput.UseVisualStyleBackColor = true;
             this.boolInput.Visible = false;
