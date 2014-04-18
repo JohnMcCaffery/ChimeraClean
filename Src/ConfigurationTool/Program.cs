@@ -5,6 +5,7 @@ using System.Windows.Forms;
 using Chimera.ConfigurationTool.Controls;
 using System.IO;
 using System.Reflection;
+using Nini.Config;
 
 namespace Chimera.ConfigurationTool {
     static class Program {
@@ -14,7 +15,7 @@ namespace Chimera.ConfigurationTool {
             info.ApplicationBase = Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase, "../");
             AppDomain sub = AppDomain.CreateDomain("Cached domain", null, info);
             Launch launch = sub.CreateInstanceAndUnwrap(typeof(Launch).Assembly.FullName, typeof(Launch).FullName) as Launch;
-            launch.Run();
+            launch.Run(new ConfigFolderSetter());
         }
     }
 
@@ -23,10 +24,23 @@ namespace Chimera.ConfigurationTool {
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
-        public void Run() {
+        public void Run(ConfigFolderSetter setter) {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new ConfigurationTool());
+            Application.Run(new ConfigurationTool(setter));
         }
+    }
+
+    public class ConfigFolderSetter : MarshalByRefObject {
+        public void SetFolder(string folder) {
+            DotNetConfigSource source = new DotNetConfigSource();
+            IConfig cfg = source.Configs["Config"];
+            if (cfg == null) {
+                cfg = source.Configs.Add("Config");
+            }
+
+            cfg.Set("ConfigFolder", folder);
+            source.Save(AppDomain.CurrentDomain.SetupInformation.ConfigurationFile);
+}
     }
 }

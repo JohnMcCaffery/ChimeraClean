@@ -21,7 +21,7 @@ namespace ConfigurationTool.Controls {
         private Dictionary<Assembly, List<Binding>> mBindings = new Dictionary<Assembly, List<Binding>>();
         private Dictionary<ListViewItem, Binding> mBindingsByItem = new Dictionary<ListViewItem, Binding>();
         private XmlDocument mDocument;
-        public static string mFile;
+        private string mFile;
 
         public static bool Loading = false;
 
@@ -46,34 +46,37 @@ namespace ConfigurationTool.Controls {
         public BindingsControlPanel(string folder) : this() {
             mFile = Path.GetFullPath(Path.Combine(folder, "Bindings.xml"));
 
+            //InitialiseInterfaces();
+            //LoadDocument();
             loader.DoWork += Startup;
-            loader.RunWorkerAsync();
+            //loader.RunWorkerAsync();
         }
 
         private void Startup(object source, DoWorkEventArgs args) {
             InitialiseInterfaces();
             LoadDocument();
-            Refresh();
         }
 
         public void LoadDocument() {
             mDocument = new XmlDocument();
-            mDocument.Load(mFile);
+            if (File.Exists(mFile)) {
+                mDocument.Load(mFile);
 
-            Loading = true;
+                Loading = true;
 
-            foreach (var node in mDocument.GetElementsByTagName("bind").OfType<XmlElement>()) {
-                if (node.ParentNode.NodeType != XmlNodeType.Comment) {
-                    Binding binding = mBindings.Values.SelectMany(g => g).FirstOrDefault(b => b.Matches(node));
-                    if (binding != null)
-                        Invoke(new Action(() => binding.Item.Checked = true));
+                foreach (var node in mDocument.GetElementsByTagName("bind").OfType<XmlElement>()) {
+                    if (node.ParentNode.NodeType != XmlNodeType.Comment) {
+                        Binding binding = mBindings.Values.SelectMany(g => g).FirstOrDefault(b => b.Matches(node));
+                        if (binding != null)
+                            Invoke(new Action(() => binding.Item.Checked = true));
+                    }
                 }
-            }
 
-            Loading = false;
+                Loading = false;
+            }
         }
 
-        private void InitialiseInterfaces() {
+        public void InitialiseInterfaces() {
             //Iterate through every assembly in the folder where the tool is running
             foreach (var assembly in 
                 Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory).
@@ -96,6 +99,7 @@ namespace ConfigurationTool.Controls {
                         t.GetInterfaces().Intersect(mInterfaces).Count() > 0).
                         OrderBy(t => t.Name).
                         OrderBy(t => t.GetInterfaces()[0].Name)) {
+
                     var intrface = clazz.GetInterfaces().Intersect(mInterfaces).First();
 
                     Invoke(new Action(() => {

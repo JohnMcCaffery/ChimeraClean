@@ -26,7 +26,7 @@ namespace Chimera.ConfigurationTool.Controls {
         private void InitializeComponent() {
             this.MainTab = new System.Windows.Forms.TabControl();
             this.BindingsTab = new System.Windows.Forms.TabPage();
-            this.launcher = new System.ComponentModel.BackgroundWorker();
+            this.loader = new System.ComponentModel.BackgroundWorker();
             this.MainTab.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -67,6 +67,6 @@ namespace Chimera.ConfigurationTool.Controls {
         private System.Windows.Forms.TabControl MainTab;
         private System.Windows.Forms.TabPage BindingsTab;
         private global::ConfigurationTool.Controls.BindingsControlPanel bindingsControlPanel;
-        private System.ComponentModel.BackgroundWorker launcher;
+        private System.ComponentModel.BackgroundWorker loader;
     }
 }
