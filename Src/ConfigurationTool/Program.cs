@@ -9,13 +9,35 @@ using Nini.Config;
 
 namespace Chimera.ConfigurationTool {
     static class Program {
+
+        [STAThread]
         static void Main() {
             AppDomainSetup info = new AppDomainSetup();
             info.ShadowCopyFiles = "true";
-            info.ApplicationBase = Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase, "../");
+            //info.ApplicationBase = Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase, "../");
             AppDomain sub = AppDomain.CreateDomain("Cached domain", null, info);
+            sub.AssemblyResolve += new ResolveEventHandler(sub_AssemblyResolve);
             Launch launch = sub.CreateInstanceAndUnwrap(typeof(Launch).Assembly.FullName, typeof(Launch).FullName) as Launch;
             launch.Run(new ConfigFolderSetter());
+        }
+
+        static Assembly sub_AssemblyResolve(object sender, ResolveEventArgs args) {
+            string folder = AppDomain.CurrentDomain.BaseDirectory;
+
+            Assembly ass = LoadAssembly(folder, args);
+            if (ass != null)
+                return null;
+
+            folder = Path.GetFullPath(Path.Combine(folder, ".."));
+            return LoadAssembly(folder, args);
+        }
+
+        private static Assembly LoadAssembly(string folder, ResolveEventArgs args) {
+            string file = Path.Combine(folder, args.Name.Split(',')[0] + ".dll");
+            if (!File.Exists(file))
+                return null;
+
+            return Assembly.LoadFrom(file);
         }
     }
 

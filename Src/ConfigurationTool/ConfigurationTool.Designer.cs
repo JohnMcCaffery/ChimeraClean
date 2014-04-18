@@ -45,6 +45,7 @@ namespace Chimera.ConfigurationTool {
             this.Controls.Add(this.FoldersTab);
             this.Name = "ConfigurationTool";
             this.Text = "Chimera Configuration Tool";
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.ConfigurationTool_Load);
             this.ResumeLayout(false);
 

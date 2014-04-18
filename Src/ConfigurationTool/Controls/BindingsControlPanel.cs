@@ -77,9 +77,12 @@ namespace ConfigurationTool.Controls {
         }
 
         public void InitialiseInterfaces() {
+            string folder = Path.GetDirectoryName(AppDomain.CurrentDomain.SetupInformation.ConfigurationFile);
+            folder = Path.GetFullPath(Path.Combine(folder, "../"));
+
             //Iterate through every assembly in the folder where the tool is running
             foreach (var assembly in 
-                Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory).
+                Directory.GetFiles(folder).
                 Where(f => Path.GetExtension(f).ToUpper() == ".DLL" && !f.Contains("NuiLib") && !f.Contains("opencv") && !f.Contains("openjpeg")).
                 Select(f => {
                     try {
