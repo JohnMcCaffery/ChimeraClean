@@ -185,9 +185,11 @@ namespace Chimera.Overlay {
 
         void mTrigger_Triggered(ITrigger source) {
             if (mActive) {
+                //TODO - This could cause issues! Disabling it as triggered makes sure transition won't start twice.
+                //mActive = false;
+                foreach (var trigger in mTriggers)
+                    trigger.Active = false;
                 Thread t = new Thread(() => {
-                    foreach (var trigger in mTriggers)
-                        trigger.Active = false;
                     mManager.BeginTransition(this);
                 });
                 t.Name = "StateChange";
