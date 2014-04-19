@@ -57,6 +57,7 @@ namespace ConfigurationTool.Controls {
             LoadDocument();
         }
 
+
         public void LoadDocument() {
             mDocument = new XmlDocument();
             if (File.Exists(mFile)) {
@@ -84,7 +85,12 @@ namespace ConfigurationTool.Controls {
             //Iterate through every assembly in the folder where the tool is running
             foreach (var assembly in 
                 Directory.GetFiles(folder).
-                Where(f => Path.GetExtension(f).ToUpper() == ".DLL" && !f.Contains("NuiLib") && !f.Contains("opencv") && !f.Contains("openjpeg")).
+                Where(f => 
+                    Path.GetExtension(f).ToUpper() == ".DLL" && 
+                    !f.Contains("NuiLib") && 
+                    !f.Contains("opencv") && 
+                    !f.Contains("openjpeg") && 
+                    !f.Contains("SlimDX")).
                 Select(f => {
                     try {
                         /*
@@ -241,13 +247,29 @@ namespace ConfigurationTool.Controls {
         }
 
         private void BindingsList_ItemChecked(object sender, ItemCheckedEventArgs e) {
-            if (mDocument != null)
+            if (mDocument != null) {
+                if (!File.Exists(mFile))
+                    CreateFile();
+
                 mBindingsByItem[e.Item].CheckedChanged(mDocument, mFile);
+            }
         }
 
         internal IEnumerable<Type> GetBoundClasses<Interface>() {
             Type t = typeof(Interface);
             return mBindingsByItem.Values.Where(b => b.IsBound && b.Interface == t).Select(b => b.Class);
+        }
+
+        private void CreateFile() {
+            File.Create(mFile).Close();
+
+            XmlElement root = mDocument.CreateElement("module");
+            XmlAttribute nameAttr = mDocument.CreateAttribute("name");
+            nameAttr.Value = "ChimeraBindings";
+
+            root.Attributes.Append(nameAttr);
+            mDocument.AppendChild(root);
+
         }
     }
 }

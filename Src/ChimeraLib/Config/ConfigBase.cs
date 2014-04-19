@@ -162,14 +162,18 @@ namespace Chimera.Config {
         private void LoadConfig() {
             if (configLoaded)
                 return;
-            if (!File.Exists(mFile))
-                File.Create(mFile);
-
             if (Path.GetExtension(mFile).ToUpper() == ".INI") {
-                IniDocument doc = new IniDocument(mFile, IniFileType.WindowsStyle);
-                mSource = new IniConfigSource(doc);
+                if (!File.Exists(mFile))
+                    mSource = new IniConfigSource();
+                else {
+                    IniDocument doc = new IniDocument(mFile, IniFileType.WindowsStyle);
+                    mSource = new IniConfigSource(doc);
+                }
             } else if (Path.GetExtension(mFile).ToUpper() == ".CONFIG") {
-                mSource = new DotNetConfigSource(mFile);
+                if (!File.Exists(mFile))
+                    mSource = new DotNetConfigSource();
+                else
+                    mSource = new DotNetConfigSource(mFile);
             }
             //mSource = Init.AddFile(mArgConfig, mFile);
             configLoaded = true;
