@@ -18,7 +18,7 @@ namespace ConfigurationTool.Controls {
         private IEnumerable<Type> mInterfaces;
         private List<Type> mMultiInterfaces = new List<Type>();
         private List<Type> mExclusiveInterfaces = new List<Type>();
-        private Dictionary<Assembly, List<Binding>> mBindings = new Dictionary<Assembly, List<Binding>>();
+        private Dictionary<string, List<Binding>> mBindings = new Dictionary<string, List<Binding>>();
         private Dictionary<ListViewItem, Binding> mBindingsByItem = new Dictionary<ListViewItem, Binding>();
         private XmlDocument mDocument;
         private string mFile;
@@ -80,13 +80,20 @@ namespace ConfigurationTool.Controls {
             string folder = Path.GetDirectoryName(AppDomain.CurrentDomain.SetupInformation.ConfigurationFile);
             folder = Path.GetFullPath(Path.Combine(folder, "../"));
 
+            string assemblyName = "";
             //Iterate through every assembly in the folder where the tool is running
             foreach (var assembly in 
                 Directory.GetFiles(folder).
                 Where(f => Path.GetExtension(f).ToUpper() == ".DLL" && !f.Contains("NuiLib") && !f.Contains("opencv") && !f.Contains("openjpeg")).
                 Select(f => {
                     try {
-                        return Assembly.LoadFile(f);
+                        /*
+                        string copy = Path.Combine(Environment.CurrentDirectory, Path.GetFileName(f));
+                        File.Copy(f, copy);
+                        return Assembly.LoadFile(copy);
+                        */
+                        assemblyName = Path.GetFileNameWithoutExtension(f);
+                        return Assembly.Load(File.ReadAllBytes(f));
                     } catch (Exception e) {
                         return null;
                     }
@@ -107,9 +114,9 @@ namespace ConfigurationTool.Controls {
 
                     Invoke(new Action(() => {
                         if (g == null) {
-                            g = new ListViewGroup(Path.GetFileNameWithoutExtension(assembly.Location));
+                            g = new ListViewGroup(assemblyName);
                             BindingsList.Groups.Add(g);
-                            mBindings.Add(assembly, new List<Binding>());
+                            mBindings.Add(assemblyName, new List<Binding>());
                         }
 
                         ListViewItem it = new ListViewItem(g);
@@ -123,8 +130,8 @@ namespace ConfigurationTool.Controls {
                         if (details != null)
                             it.SubItems.Add(new ListViewItem.ListViewSubItem(it, details.GetValue(null).ToString()));
 
-                        Binding binding = new Binding(assembly, clazz, intrface, it);
-                        mBindings[assembly].Add(binding);
+                        Binding binding = new Binding(assemblyName, clazz, intrface, it);
+                        mBindings[assemblyName].Add(binding);
                         mBindingsByItem.Add(it, binding);
 
                         BindingsList.Items.Add(it);
@@ -139,13 +146,13 @@ namespace ConfigurationTool.Controls {
 
         private class Binding {
             public XmlNode Node;
-            public Assembly Assembly;
+            public string AssemblyName;
             public Type Interface;
             public Type Class;
             public ListViewItem Item;
 
-            public Binding(Assembly assembly, Type clazz, Type intrface, ListViewItem it) {
-                Assembly = assembly;
+            public Binding(string assemblyName, Type clazz, Type intrface, ListViewItem it) {
+                AssemblyName = assemblyName;
                 Class = clazz;
                 Interface = intrface;
                 Item = it;
@@ -156,11 +163,11 @@ namespace ConfigurationTool.Controls {
                 get { return Interface.FullName + ", " + Path.GetFileNameWithoutExtension(Interface.Assembly.Location); }
             }
             public string To {
-                get { return Class.FullName + ", " + Path.GetFileNameWithoutExtension(Class.Assembly.Location); }
+                get { return Class.FullName + ", " + AssemblyName; }
             }
 
             public XmlNode CreateNode(XmlDocument doc) {
-                XmlNode node =doc.CreateElement("bind");
+                XmlNode node = doc.CreateElement("bind");
 
                 XmlAttribute service = doc.CreateAttribute("service");
                 XmlAttribute to = doc.CreateAttribute("to");
@@ -194,7 +201,7 @@ namespace ConfigurationTool.Controls {
 
             public string HeaderCommentStr {
                 get {
-                    return "                        " + Path.GetFileNameWithoutExtension(Assembly.Location).Replace("Lib", "").ToUpper() + " BINDINGS                         ";
+                    return "                        " + AssemblyName.Replace("Lib", "").ToUpper() + " BINDINGS                         ";
                 }
             }
 

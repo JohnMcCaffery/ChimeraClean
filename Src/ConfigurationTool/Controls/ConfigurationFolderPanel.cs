@@ -71,7 +71,12 @@ namespace Chimera.ConfigurationTool.Controls {
                 Where(f => Path.GetExtension(f).ToUpper() == ".DLL" && !f.Contains("NuiLib") && !f.Contains("opencv") && !f.Contains("openjpeg")).
                 Select(f => {
                     try {
-                        return Assembly.LoadFile(f);
+                        /*
+                        string copy = Path.Combine(Environment.CurrentDirectory, Path.GetFileName(f));
+                        File.Copy(f, copy);
+                        return Assembly.LoadFile(copy);
+                        */
+                        return Assembly.Load(File.ReadAllBytes(f));
                     } catch (Exception e) {
                         return null;
                     }

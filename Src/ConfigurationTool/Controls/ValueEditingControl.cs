@@ -165,30 +165,34 @@ namespace Chimera.ConfigurationTool.Controls {
         }
 
         private void textInput_Validating(object sender, CancelEventArgs e) {
+            if (!Validate(textInput.Text))
+                mParameter.Value = mValue;
+            else
+                mValue = mParameter.Value;
+        }
+
+        private bool Validate(string Text) {
             double d;
             float f;
             int i;
             if (
-                (mParameter.Type == ParameterTypes.Double && !double.TryParse(textInput.Text, out d)) ||
-                (mParameter.Type == ParameterTypes.Float && !float.TryParse(textInput.Text, out f)) ||
-                (mParameter.Type == ParameterTypes.Int && !int.TryParse(textInput.Text, out i))
+                (mParameter.Type == ParameterTypes.Double && !double.TryParse(Text, out d)) ||
+                (mParameter.Type == ParameterTypes.Float && !float.TryParse(Text, out f)) ||
+                (mParameter.Type == ParameterTypes.Int && !int.TryParse(Text, out i))
                 )
-                e.Cancel = true;
+                return false;
 
             Vector3 v;
-            if (mParameter.Type == ParameterTypes.Vector3 && !Vector3.TryParse(textInput.Text, out v))
-                e.Cancel = true;
+            if (mParameter.Type == ParameterTypes.Vector3 && !Vector3.TryParse(Text, out v))
+                return false;
 
-            if (mParameter.Type == ParameterTypes.File && !File.Exists(ToAbsolute(textInput.Text)))
-                e.Cancel = true;
+            if (mParameter.Type == ParameterTypes.File && !File.Exists(ToAbsolute(Text)))
+                return false;
 
-            if (mParameter.Type == ParameterTypes.Folder && !Directory.Exists(ToAbsolute(textInput.Text)))
-                e.Cancel = true;
+            if (mParameter.Type == ParameterTypes.Folder && !Directory.Exists(ToAbsolute(Text)))
+                return false;
 
-            if (e.Cancel)
-                mParameter.Value = mValue;
-            else
-                mValue = mParameter.Value;
+            return true;
         }
 
         private void dialogButton_Click(object sender, EventArgs e) {

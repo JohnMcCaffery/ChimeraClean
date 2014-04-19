@@ -12,23 +12,34 @@ namespace Chimera.ConfigurationTool {
 
         [STAThread]
         static void Main() {
+            Type t = typeof(Chimera.Config.ConfigBase);
+            Assembly chimeraLib = t.Assembly;
+            string chimeraLibFile = chimeraLib.Location;
+
             AppDomainSetup info = new AppDomainSetup();
             info.ShadowCopyFiles = "true";
             //info.ApplicationBase = Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase, "../");
             AppDomain sub = AppDomain.CreateDomain("Cached domain", null, info);
+
             sub.AssemblyResolve += new ResolveEventHandler(sub_AssemblyResolve);
             Launch launch = sub.CreateInstanceAndUnwrap(typeof(Launch).Assembly.FullName, typeof(Launch).FullName) as Launch;
             launch.Run(new ConfigFolderSetter());
         }
 
         static Assembly sub_AssemblyResolve(object sender, ResolveEventArgs args) {
+            Type t = typeof(Chimera.Config.ConfigBase);
+            Assembly chimeraLib = t.Assembly;
+            string chimeraLibFile = chimeraLib.Location;
             string folder = AppDomain.CurrentDomain.BaseDirectory;
 
             Assembly ass = LoadAssembly(folder, args);
-            if (ass != null)
+            if (ass != null) {
+                Console.WriteLine("Loaded " + args.Name + " from " + folder);
                 return null;
+            }
 
             folder = Path.GetFullPath(Path.Combine(folder, ".."));
+            Console.WriteLine("Loaded " + args.Name + " from " + folder);
             return LoadAssembly(folder, args);
         }
 
@@ -47,6 +58,10 @@ namespace Chimera.ConfigurationTool {
         /// </summary>
         [STAThread]
         public void Run(ConfigFolderSetter setter) {
+            Type t = typeof(Chimera.Config.ConfigBase);
+            Assembly chimeraLib = t.Assembly;
+            string chimeraLibFile = chimeraLib.Location;
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new ConfigurationTool(setter));
