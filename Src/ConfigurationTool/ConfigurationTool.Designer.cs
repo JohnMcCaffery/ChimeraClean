@@ -55,7 +55,7 @@ namespace Chimera.ConfigurationTool {
             // 
             this.applicationList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.applicationList.FormattingEnabled = true;
-            this.applicationList.Location = new System.Drawing.Point(62, 6);
+            this.applicationList.Location = new System.Drawing.Point(68, 6);
             this.applicationList.Name = "applicationList";
             this.applicationList.Size = new System.Drawing.Size(121, 21);
             this.applicationList.TabIndex = 1;
@@ -64,14 +64,14 @@ namespace Chimera.ConfigurationTool {
             // 
             this.folderList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.folderList.FormattingEnabled = true;
-            this.folderList.Location = new System.Drawing.Point(231, 6);
+            this.folderList.Location = new System.Drawing.Point(237, 6);
             this.folderList.Name = "folderList";
             this.folderList.Size = new System.Drawing.Size(121, 21);
             this.folderList.TabIndex = 2;
             // 
             // bindButton
             // 
-            this.bindButton.Location = new System.Drawing.Point(358, 4);
+            this.bindButton.Location = new System.Drawing.Point(364, 4);
             this.bindButton.Name = "bindButton";
             this.bindButton.Size = new System.Drawing.Size(75, 23);
             this.bindButton.TabIndex = 3;
@@ -82,7 +82,7 @@ namespace Chimera.ConfigurationTool {
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(-3, 9);
+            this.label2.Location = new System.Drawing.Point(3, 9);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(59, 13);
             this.label2.TabIndex = 5;
@@ -91,7 +91,7 @@ namespace Chimera.ConfigurationTool {
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(189, 9);
+            this.label3.Location = new System.Drawing.Point(195, 9);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(36, 13);
             this.label3.TabIndex = 6;
