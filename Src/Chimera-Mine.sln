@@ -61,6 +61,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Timespan", "Timespan\Timespan.csproj", "{A4304EE2-9B06-416A-AD48-89434262E322}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Chimera", "Chimera", "{2E5DF2CA-8923-4171-8FAD-C5B15DE739B7}"
+	ProjectSection(SolutionItems) = preProject
+		..\Bin\Configs\Common\Bindings.xml = ..\Bin\Configs\Common\Bindings.xml
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{FCF1B486-05B8-4DC0-9EF4-C88359331724}"
 	ProjectSection(SolutionItems) = preProject

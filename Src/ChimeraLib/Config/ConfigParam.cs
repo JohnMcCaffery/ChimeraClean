@@ -43,7 +43,13 @@ namespace Chimera.Config {
         public string Value {
             get { return mValue; }
             set {
+                if (mValue == value)
+                    return;
+
                 mValue = value;
+
+                if (!File.Exists(mFile))
+                    File.Create(mFile).Close();
 
                 IniDocument doc = new IniDocument(mFile, IniFileType.WindowsStyle);
                 IniConfigSource source = new IniConfigSource(doc);
