@@ -17,7 +17,7 @@ namespace Chimera.Experimental {
         }
 
         protected override void InitConfig() {
-            ExperimentFile = GetStr("File", null, "The xml file which defines the experiment.");
+            ExperimentFile = GetFile("File", null, "The xml file which defines the experiment.");
             FPSFolder = GetFolder("FPSFolder", "FPS", "The folder where FPS results will be written to.");
         }
     }
