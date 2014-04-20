@@ -44,7 +44,6 @@ namespace Chimera.Experimental.Overlay {
                 Logger.Warn("Unable to initialise FPSRecorder, flythroughPlugin not bound.");
         }
 
-        }
         protected override void TransitionToStart() { }
 
         protected override void TransitionToFinish() {
