@@ -83,6 +83,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ExperimentalConfig.cs" />
+    <Compile Include="GUI\AvatarMovementControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\AvatarMovementControl.Designer.cs">
+      <DependentUpon>AvatarMovementControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="GUI\MovementTrackerControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -90,6 +96,7 @@
       <DependentUpon>MovementTrackerControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Overlay\FPSRecorder.cs" />
+    <Compile Include="Plugins\AvatarMovementPlugin.cs" />
     <Compile Include="Plugins\MovementTracker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -112,6 +119,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="GUI\AvatarMovementControl.resx">
+      <DependentUpon>AvatarMovementControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="GUI\MovementTrackerControl.resx">
       <DependentUpon>MovementTrackerControl.cs</DependentUpon>
     </EmbeddedResource>
