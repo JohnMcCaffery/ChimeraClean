@@ -12,12 +12,18 @@ using log4net;
 using Touchscreen.Interfaces;
 using Touchscreen.Overlay;
 using System.Drawing;
+using Chimera.Config;
 
 namespace Touchscreen {
     public enum SinglePos {
         Left,
         Middle,
         Right
+    }
+    public class TouchscreenMovementConfig : AxisConfig {
+        public TouchscreenMovementConfig()
+            : base("Touchscreen") {
+        }
     }
 
     public class TouchscreenPlugin : AxisBasedDelta, ITouchSource {
@@ -75,12 +81,12 @@ namespace Touchscreen {
         public TwoDAxis RightY { get { return mRightY; } }
         public VerticalAxis Single { get { return mSingle; } }
 
-        protected override AxisBasedDelta.AxisConfig AxConfig {
+        protected override AxisConfig AxConfig {
             get { return mConfig; }
         }
 
         public TouchscreenPlugin()
-            : base("Touchscreen") {
+            : base("Touchscreen", new TouchscreenMovementConfig()) {
         }
 
         public override void Init(Core input) {

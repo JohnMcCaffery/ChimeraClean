@@ -62,7 +62,6 @@ namespace Chimera.Overlay.States {
         }
 
         protected override void OnActivated() {
-            Manager.ControlPointer = true;
             Manager.Opacity = 1.0; ;
         }
     }

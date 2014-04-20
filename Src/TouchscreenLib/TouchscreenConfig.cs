@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using Chimera.Config;
 using Chimera.Plugins;
+using log4net;
 
 namespace Touchscreen {
-    public class TouchscreenConfig : AxisBasedDelta.AxisConfig {
+    public class TouchscreenConfig : AxisConfig {
         public float LeftW;
         public float LeftH;
         public float LeftPaddingH;
@@ -44,10 +45,11 @@ namespace Touchscreen {
             SingleH = Get("Single", "H", .8f, "The height of the single axis control section.");
             SinglePaddingH = Get("Single", "PaddingH", .05f, "The padding to the left of the single axis control section.");
             SinglePaddingV = Get("Single", "PaddingV", .1f, "The padding above the single axis control section.");
-            Frame = Get(true, "Window", null, "The window which is a touch screen.");
-            Opacity = Get(true, "Opacity", .01f, "How opaque the input window should be.");
+            Frame = GetStr("Window", null, "The window which is a touch screen.");
+            Opacity = Get("Opacity", .01f, "How opaque the input window should be.");
 
-            SinglePos = (SinglePos) Enum.Parse(typeof(SinglePos), Get("Single", "Position", "Right", "Where the single axis is positioned (Left, Right or Centre)."));
+            //SinglePos = (SinglePos) Enum.Parse(typeof(SinglePos), Get("Single", "Position", "Right", "Where the single axis is positioned (Left, Right or Centre)."));
+            SinglePos = GetEnum<SinglePos>("Single", "Position", SinglePos.Right, "Where the single axis is positioned (Left, Right or Centre).", LogManager.GetLogger("Touchscreen"));
         }
     }
 }

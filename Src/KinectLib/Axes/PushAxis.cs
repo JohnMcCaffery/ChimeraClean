@@ -49,6 +49,24 @@ namespace Chimera.Kinect.Axes {
             : this(right, AxisBinding.NotSet) {
         }
 
+        public PushAxis(AxisBinding binding)
+            : base(
+            "Push",
+            binding,
+            new PushSingleAxis(true),
+            new PushSingleAxis(false)) {
+
+            KinectAxisConfig cfg = new KinectAxisConfig();
+            (Positive as ConstrainedAxis).Deadzone.Value = cfg.GetDeadzone(Positive.Name);
+            (Negative as ConstrainedAxis).Deadzone.Value = cfg.GetDeadzone(Negative.Name);
+            (Positive as ConstrainedAxis).Scale.Value = cfg.GetScale(Positive.Name);
+            (Negative as ConstrainedAxis).Scale.Value = cfg.GetScale(Negative.Name);
+        }
+
+        public PushAxis()
+            : this(AxisBinding.NotSet) {
+        }
+
         public class PushSingleAxis : KinectScaledAxis {
             private static readonly float DZ = .3f;
             private static readonly float SCALE = .05f;
@@ -98,6 +116,29 @@ namespace Chimera.Kinect.Axes {
 
                 //Whether the push gesture could be active
                 mActive = right ? GlobalConditions.ActiveR : GlobalConditions.ActiveL;
+                //mActive = C.And(mActive, Nui.y(hand) > Nui.y(elbow));
+                //The value for the push gesture
+                mValue = Nui.ifScalar(mActive, mRaw, 0f);
+            }
+
+            public PushSingleAxis(bool forward)
+                : this(forward, AxisBinding.NotSet) { }
+
+            public PushSingleAxis(bool forward, AxisBinding binding)
+                : base("Push" + (forward ? "+" : "-"), binding) {
+
+                mMirror = false;
+
+                Vector handR = Nui.joint(Nui.Hand_Right);
+                Vector handL = Nui.joint(Nui.Hand_Left);
+
+                //How far pushing forward
+                mRaw = Nui.z(handR - Nui.joint(Nui.Hip_Centre)) + Nui.z(handL - Nui.joint(Nui.Hip_Centre));
+                if (forward)
+                    mRaw *= -1f;
+
+                //Whether the push gesture could be active
+                mActive = C.And(C.Or(GlobalConditions.ActiveR, GlobalConditions.ActiveL), !C.And(GlobalConditions.ActiveR, GlobalConditions.ActiveL));
                 //mActive = C.And(mActive, Nui.y(hand) > Nui.y(elbow));
                 //The value for the push gesture
                 mValue = Nui.ifScalar(mActive, mRaw, 0f);

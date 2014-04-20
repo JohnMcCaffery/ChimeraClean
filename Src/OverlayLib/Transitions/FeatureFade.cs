@@ -196,13 +196,11 @@ namespace Chimera.Overlay.Transitions {
         }
 
         public void DrawStatic(Graphics graphics) {
-            Console.WriteLine("Drawing static fade");
             if (mFinishImg != null)
                 graphics.DrawImage(mFinishImg, 0, 0);
         }
 
         public void DrawDynamic(System.Drawing.Graphics graphics) {
-            Console.WriteLine("Drawing fade");
             double time = DateTime.Now.Subtract(mTransitionStart).TotalMilliseconds;
             if (time > mLengthMS && !mCompleted) {
                 mCompleted = true;
@@ -230,8 +228,6 @@ namespace Chimera.Overlay.Transitions {
             if (mStartImg != null)
                 Dispose();
 
-            Console.WriteLine("Initialising fade");
-
             mStartImg = new Bitmap(mClip.Width, mClip.Height);
             mFinishImg = new Bitmap(mClip.Width, mClip.Height);
             using (Graphics g = Graphics.FromImage(mStartImg))
@@ -251,8 +247,6 @@ namespace Chimera.Overlay.Transitions {
             if (mStartImg == null)
                 return;
 
-            Console.WriteLine("Disposing of fade");
-
             mStartImg.Dispose();
             mFinishImg.Dispose();
             mStartImg = null;
@@ -264,8 +258,6 @@ namespace Chimera.Overlay.Transitions {
         }
 
         private void Preload() {
-            Console.WriteLine("Preloading fade");
-
             double stepLength = mStepsPerS / 1000.0;
             int steps = (int)(mLengthMS / stepLength);
             mSteps = new Bitmap[steps];
@@ -274,8 +266,6 @@ namespace Chimera.Overlay.Transitions {
         }
 
         private Bitmap CreateStep(double time) {
-            Console.WriteLine("Fade creating step");
-
             Bitmap image = new Bitmap(mStartImg);
             Rectangle affectedRect = new Rectangle(0, 0, image.Width, image.Height);
             BitmapData dat = image.LockBits(affectedRect, ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);

@@ -1551,8 +1551,8 @@ namespace Chimera.Util {
             }
 
             protected override void InitConfig() {
-                Dump = Get(true, "DumpLogs", true, "Whether to write logs which are dumped via the ProcessWrangler.Dump method.");
-                Folder = Get(true, "DumpFolder", "Logs/", "The folder to write log files to.");
+                Dump = Get("DumpLogs", true, "Whether to write logs which are dumped via the ProcessWrangler.Dump method.");
+                Folder = GetFolder("DumpFolder", "Logs/", "The folder to write log files to.");
             }
         }
     }

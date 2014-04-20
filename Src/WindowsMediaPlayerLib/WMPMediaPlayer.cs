@@ -28,6 +28,8 @@ namespace Chimera.Multimedia {
         }
 
         private static void videoPlayer_PlayStateChange(object source, _WMPOCXEvents_PlayStateChangeEvent args) {
+            if (args.newState == 3 && sPlaybackStarted != null)
+                sPlaybackStarted();
             if (args.newState == 1 && sPlaybackFinished != null) {
                 sVideoPlayer.Visible = false;
                 sPlaybackFinished();
@@ -38,7 +40,8 @@ namespace Chimera.Multimedia {
         /// Triggered whenever a video that has been played through the interface finishes.
         /// </summary>
         private static event Action sPlaybackFinished;
-        
+
+        private static event Action sPlaybackStarted;
 
         private static void sPlayVideo(string uri) {
             Invoke(() => {
@@ -89,6 +92,12 @@ namespace Chimera.Multimedia {
         public event Action PlaybackFinished {
             add { sPlaybackFinished += value; }
             remove { sPlaybackFinished -= value; }
+        }
+
+        public event Action PlaybackStarted
+        {
+            add { sPlaybackStarted += value; }
+            remove { sPlaybackStarted -= value; }
         }
 
         public void PlayVideo(string uri) {

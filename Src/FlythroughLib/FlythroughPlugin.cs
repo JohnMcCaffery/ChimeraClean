@@ -67,8 +67,10 @@ namespace Chimera.Flythrough {
         private bool mLoop = false;
         private bool mAutoStep = true;
         private bool mTicking;
-        private int mDefaultLength = 7000;
         private bool mSynchLengths;
+        private int mDefaultLength = 7000;
+
+        private double mSpeed = 1;
 
         public event Action<int> StepFinished;
         public event Action<int> StepStarted;
@@ -115,10 +117,15 @@ namespace Chimera.Flythrough {
             get { return mEvents.ToArray(); }
         }
 
+        public double Speed {
+            get { return mSpeed; }
+            set { mSpeed = value; }
+        }
+
         /// <summary>
         /// The default length for new events
         /// </summary>
-        public int DefaultLength { 
+        public int DefaultLength {
             get { return mDefaultLength; }
             set { mDefaultLength = value; }
         }
@@ -234,7 +241,7 @@ namespace Chimera.Flythrough {
         public FlythroughPlugin() {
             Start = new Camera(new Vector3(128f, 128f, 60f), Rotation.Zero);
             mEvents.Start = Start;
-            mEvents.LengthChange += new Action<EventSequence<Camera>,int>(mEvents_LengthChange);
+            mEvents.LengthChange += new Action<EventSequence<Camera>, int>(mEvents_LengthChange);
             mTickListener = new Action(mCoordinator_Tick);
 
             FlythroughConfig cfg = new FlythroughConfig();
@@ -303,13 +310,13 @@ namespace Chimera.Flythrough {
                 FlythroughLoading();
 
             mEvents = new EventSequence<Camera>();
-            mEvents.LengthChange += new Action<EventSequence<Camera>,int>(mEvents_LengthChange);
+            mEvents.LengthChange += new Action<EventSequence<Camera>, int>(mEvents_LengthChange);
 
             XmlDocument doc = new XmlDocument();
             doc.Load(file);
             int start = 0;
             XmlNode root = doc.GetElementsByTagName("Events")[0];
-            
+
             XmlAttribute startPositionAttr = root.Attributes["StartPosition"];
             XmlAttribute startPitchAttr = root.Attributes["StartPitch"];
             XmlAttribute startYawAttr = root.Attributes["StartYaw"];
@@ -381,6 +388,7 @@ namespace Chimera.Flythrough {
                 mStats.End();
 #endif
 
+                //double wait = (mCore.TickLength * (1.0 / mSpeed)) - DateTime.Now.Subtract(mLastTick).TotalMilliseconds;
                 double wait = mCore.TickLength - DateTime.Now.Subtract(mLastTick).TotalMilliseconds;
                 if (wait < 0)
                     Logger.Debug("Flythrough Tick overran by " + (wait * -1) + "ms.");
@@ -403,7 +411,8 @@ namespace Chimera.Flythrough {
 
         private void IncrementTime() {
             mTicking = true;
-            int newTime = mEvents.Time + mCore.TickLength;
+            int inc = Math.Max(1, (int)(mCore.TickLength * mSpeed));
+            int newTime = mEvents.Time + inc;
             if (newTime < mEvents.Length) {
                 if (mAutoStep || (newTime < mEvents.CurrentEvent.GlobalFinishTime))
                     Time = newTime;
@@ -487,7 +496,7 @@ namespace Chimera.Flythrough {
 
         public bool Enabled {
             get { return mEnabled; }
-            set { 
+            set {
                 mEnabled = value;
                 if (EnabledChanged != null)
                     EnabledChanged(this, value);

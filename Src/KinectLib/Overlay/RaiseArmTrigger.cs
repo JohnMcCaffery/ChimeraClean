@@ -96,11 +96,11 @@ namespace Chimera.Kinect.Overlay {
         public Scalar DepthThreshold { get { return mDepthThreshold; } }
         public Scalar WidthThreshold { get { return mWidthThreshold; } }
 
-        public event Action Triggered;
+        public event Action<ITrigger> Triggered;
 
         public void ForceTrigger() {
             if (Triggered != null)
-                Triggered();
+                Triggered(this);
         }
 
         public override Control  ControlPanel {
@@ -143,7 +143,7 @@ namespace Chimera.Kinect.Overlay {
 
         void mTrigger_OnChange() {
             if (mEnabled && mTrigger.Value && Triggered != null)
-                Triggered();
+                Triggered(this);
         }
     }
 }

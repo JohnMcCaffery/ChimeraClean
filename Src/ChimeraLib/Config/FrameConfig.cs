@@ -39,11 +39,11 @@ namespace Chimera.Config {
         public bool Draw;
         public bool DrawEye;
 
-        public FrameConfig() : base ("Frames") { }
+        public FrameConfig() : base ("Frames", IGNORE_FRAME) { }
 
-        public FrameConfig(string window, params string[] args)
-            : base(window, "Frames", args) {
-            mWindow = window;
+        public FrameConfig(string frame, params string[] args)
+            : base("Frames", frame, args) {
+            mWindow = frame;
         }
 
         public override string Group {
@@ -51,22 +51,24 @@ namespace Chimera.Config {
         }
 
         protected override void InitConfig() {
+            /*
             AddCommandLineKey(false, "Monitor", "m");
             AddCommandLineKey(false, "LaunchOverlay", "l");
             AddCommandLineKey(false, "Fullscreen", "f");
             AddCommandLineKey(false, "MouseControl", "mc");
-           
+            */
 
-            Monitor = Get(false, "Monitor", "\\\\.\\DISPLAY2", "The monitor on which this window should render.");
 
-            TopLeft = GetV(false, "TopLeft", new Vector3(1000f, -500f, 0f), "The position of the top left corner of the window in real world coordinates (mm).");
-            Yaw = Get(false, "Yaw", 0.0, "The yaw for the direction the monitor faces in the real world.");
-            Pitch = Get(false, "Pitch", 0.0, "The pitch for the direction the monitor faces in the real world.");
-            Width = Get(false, "Width", 1000.0, "The width of the window in the real world (mm).");
-            Height = Get(false, "Height", 1000.0, "The height of the window in the real world (mm).");
+            Monitor = GetFrame("Monitor", "\\\\.\\DISPLAY2", "The monitor on which this window should render.");
 
-            Draw = Get(false, "Draw", true, "Whether to draw the window on the diagram.");
-            DrawEye = Get(false, "DrawEye", true, "Whether to draw perspective lines for the window on the diagram.");
+            TopLeft = GetVFrame("TopLeft", new Vector3(1000f, -500f, 0f), "The position of the top left corner of the window in real world coordinates (mm).");
+            Yaw = GetFrame("Yaw", 0.0, "The yaw for the direction the monitor faces in the real world.");
+            Pitch = GetFrame("Pitch", 0.0, "The pitch for the direction the monitor faces in the real world.");
+            Width = GetFrame("Width", 1000.0, "The width of the window in the real world (mm).");
+            Height = GetFrame("Height", 1000.0, "The height of the window in the real world (mm).");
+
+            Draw = GetFrame("Draw", true, "Whether to draw the window on the diagram.");
+            DrawEye = GetFrame("DrawEye", true, "Whether to draw perspective lines for the window on the diagram.");
         }
     }
 }

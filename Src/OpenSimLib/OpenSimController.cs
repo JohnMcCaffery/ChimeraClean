@@ -54,11 +54,11 @@ namespace Chimera.OpenSim {
         private ProxyControllerBase mProxyController;
         private ViewerController mViewerController;
 
-        internal ProxyControllerBase ProxyController {
+        public ProxyControllerBase ProxyController {
             get { return mProxyController; }
         }
 
-        internal ViewerController ViewerController {
+        public ViewerController ViewerController {
             get { return mViewerController; }
         }
 
@@ -212,6 +212,7 @@ namespace Chimera.OpenSim {
             mFrame.Core.ControlModeChanged += new Action<Core, ControlMode>(Coordinator_CameraModeChanged);
             mFrame.Core.EyeUpdated += new Action<Core, EventArgs>(Coordinator_EyeUpdated);
             mFrame.Core.InitialisationComplete += new Action(Core_InitialisationComplete);
+            mFrame.Core.Tick += new Action(CheckTimeoutThread);
             mFrame.Changed += new Action<Chimera.Frame, EventArgs>(mFrame_Changed);
             mFrame.MonitorChanged += new Action<Chimera.Frame, Screen>(mFrame_MonitorChanged);
             mProxyController.OnClientLoggedIn += new EventHandler(mProxyController_OnClientLoggedIn);
@@ -398,6 +399,9 @@ namespace Chimera.OpenSim {
         }
 
         void mViewerController_Exited() {
+            if (sViewerStartDelay > 0)
+                sViewerStartDelay -= mConfig.StartStagger;
+
             if (mConfig.AutoRestartViewer && !mClosingViewer)
                 Restart("UnexpectedViewerClose");
             mClosingViewer = false;
@@ -408,6 +412,15 @@ namespace Chimera.OpenSim {
         }
 
         #endregion
+
+        void CheckTimeoutThread() {
+            if (mViewerController.Started && DateTime.Now.Subtract(mProxyController.LastUpdatePacket).TotalMinutes > 1.0) {
+                mProxyController.LastUpdatePacket = DateTime.Now;
+                new Thread(() => {
+                Restart("ViewerStoppedResponding");
+                }).Start();
+            }
+        }
 
         private void CheckTimeout() {
             //if (mViewerController.Started && mProxyController.LoggedIn && DateTime.Now.Subtract(mProxyController.LastUpdatePacket).TotalMinutes > 1.0) {

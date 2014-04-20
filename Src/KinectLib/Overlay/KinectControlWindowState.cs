@@ -38,7 +38,6 @@ namespace Chimera.Kinect.Overlay {
 
         protected override void OnActivated() {
             Manager.Opacity = mOpacity;
-            Manager.ControlPointer = false;
         }
     }
 }

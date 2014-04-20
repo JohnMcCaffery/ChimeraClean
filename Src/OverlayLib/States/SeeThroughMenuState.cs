@@ -26,6 +26,7 @@ using System.Drawing;
 using OpenMetaverse;
 using Chimera.Util;
 using Chimera.Overlay.Features;
+using System.Xml;
 
 namespace Chimera.Overlay.States {
     public class SeeThroughMenuState : State {
@@ -33,14 +34,14 @@ namespace Chimera.Overlay.States {
         private Vector3 mPosition;
         private Rotation mOrientation;
 
-        public SeeThroughMenuState(string name, OverlayPlugin manager, Vector3 position, Rotation orientation)
-            : base(name, manager) {
+        public SeeThroughMenuState(string name, OverlayPlugin manager, XmlNode node, Vector3 position, Rotation orientation)
+            : base(name, manager, node) {
 
             mPosition = position;
             mOrientation = orientation;
         }
 
-        public override IFrameState CreateWindowState(FrameOverlayManager manager) {
+        public override IFrameState CreateFrameState(FrameOverlayManager manager) {
             SeeThroughMenuWindow stateWindow = new SeeThroughMenuWindow(manager);
             mWindows.Add(stateWindow);
             return stateWindow;

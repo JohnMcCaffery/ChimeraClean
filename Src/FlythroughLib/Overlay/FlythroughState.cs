@@ -81,39 +81,8 @@ namespace Chimera.Flythrough.Overlay {
 
         private Action<int> mStepListener;
 
-        public FlythroughState(string name, OverlayPlugin manager, string flythrough)
-            : base(name, manager) {
-
-            mFlythrough = flythrough;
-            mInput = manager.Core.GetPlugin<FlythroughPlugin>();
-            mStepListener = new Action<int>(mInput_StepStarted);
-        }
-
-        public FlythroughState(string name, OverlayPlugin manager, string flythrough, params ITrigger[] stepTriggers)
-            : this(name, manager, flythrough) {
-
-            mAutoStepping = true;
-            Font f = new Font(FONT, FONT_SIZE, FontStyle.Bold);
-            mStepText = new StaticText("1/" + mInput.Count, manager[0], f, FONT_COLOUR, STEP_TEXT_POS);
-            AddFeature(mStepText);
-
-            //mInput.CurrentEventChange += new Action<FlythroughEvent<Camera>,FlythroughEvent<Camera>>(mInput_CurrentEventChange);
-            mInput.StepStarted += new Action<int>(mInput_StepStarted);
-
-            foreach (var trigger in stepTriggers)
-                AddStepTrigger(trigger);
-        }
-
-        public FlythroughState(string name, OverlayPlugin manager, string flythrough, string slideshowWindow, string slideshowFolder, IFeatureTransition slideshowTransition, params ITrigger[] steps)
-            : this(name, manager, flythrough, steps) {
-
-            mSlideshowWindowName = slideshowWindow;
-            mSlideshowFolder = slideshowFolder;
-            mSlideshowTransition = slideshowTransition;
-        }
-
         public FlythroughState(OverlayPlugin manager, XmlNode node, IMediaPlayer player)
-            : base(GetName(node, "flythrough state"), manager, node) {
+            : base(GetName(node, "flythrough state"), manager, node, false) {
 
             mStepListener = new Action<int>(mInput_StepStarted);
 
@@ -169,7 +138,7 @@ namespace Chimera.Flythrough.Overlay {
                 //TODO - debug?
                 return;
             mStepTriggers.Add(trigger);
-            trigger.Triggered += new Action(step_Triggered);
+            trigger.Triggered += new Action<ITrigger>(step_Triggered);
             if (trigger is IFeature)
                 AddFeature(trigger as IFeature);
         }
@@ -196,13 +165,8 @@ namespace Chimera.Flythrough.Overlay {
                 mStepText.TextString = (step + 1) + "\\" + mInput.Count;
         }
 
-        void step_Triggered() {
+        void step_Triggered(ITrigger source) {
             mInput.Step();
-        }
-
-
-        public override IFrameState CreateWindowState(FrameOverlayManager manager) {
-            return new FrameState(manager);
         }
 
         protected override void TransitionToFinish() {
@@ -224,7 +188,6 @@ namespace Chimera.Flythrough.Overlay {
             }
 
             mInput.StepStarted += mStepListener;
-            Manager.ControlPointers = false;
 
             if (mPlayer != null)
                 mDefaultWindow.AddControl(mPlayer.Player, new RectangleF(0f, 0f, 0f, 0f));

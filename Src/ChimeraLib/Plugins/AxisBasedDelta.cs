@@ -104,10 +104,10 @@ namespace Chimera.Plugins {
         /// </summary>
         /// <param name="name"></param>
         /// <param name="axes"></param>
-        public AxisBasedDelta(string name, params IAxis[] axes) {
+        public AxisBasedDelta(string name, AxisConfig config, params IAxis[] axes) {
             Logger = LogManager.GetLogger(name);
             mName = name;
-            mConfig = new AxisConfig(name);
+            mConfig = config;
 
             mTickListener = new Action(mCore_Tick);
 
@@ -121,16 +121,8 @@ namespace Chimera.Plugins {
         }
 
         public void AddAxis(IAxis axis) {
+            AxConfig.ConfigureAxis(axis, mCore);
             mAxes.Add(axis);
-            if (mCore != null && axis is ITickListener)
-                (axis as ITickListener).Init(mCore);
-            if (axis is ConstrainedAxis) {
-                ConstrainedAxis ax = axis as ConstrainedAxis;
-                ax.Deadzone.Value = AxConfig.GetDeadzone(axis.Name);
-                ax.Scale.Value  = AxConfig.GetScale(axis.Name);
-            }
-            if (axis.Binding == AxisBinding.NotSet)
-                axis.Binding = AxConfig.GetBinding(axis.Name);
             if (AxisAdded != null)
                 AxisAdded(axis);
         }
@@ -211,37 +203,6 @@ namespace Chimera.Plugins {
 
         protected virtual AxisConfig AxConfig {
             get { return mConfig; }
-        }
-
-        public class AxisConfig : ConfigFolderBase {
-            private string mType;
-
-            public AxisConfig(string type)
-                : base(type, new string[0]) {
-                mType = type;
-            }
-
-            public override string Group {
-                get { return mType + "Movement"; }
-            }
-
-            protected override void InitConfig() {
-                Get("Movement", "Deadzone|X|", .1f, "The deadzone for axis |X|.");
-                Get("Movement", "Scale|X|", .1f, "The scale factor for axis |X|.");
-                Get("Movement", "Binding|X|", "None", "The camera axis binding for axis |X|.");
-            }
-
-            public float GetDeadzone(string name) {
-                return Get("Deadzones", name, .1f, "");
-            }
-
-            public float GetScale(string name) {
-                return Get("Scales", name, 1f, "");
-            }
-
-            public AxisBinding GetBinding(string name) {
-                return (AxisBinding) Enum.Parse(typeof(AxisBinding), Get("Bindings", name, "None", ""));
-            }
         }
 
         #region ISystemPlugin Members

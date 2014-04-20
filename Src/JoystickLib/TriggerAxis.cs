@@ -40,6 +40,9 @@ namespace Joystick {
             : this(leftUp, AxisBinding.NotSet) {
         }
 
+        public TriggerAxis() : this (false) { }
+
+
         public void Init(ITickSource source) {
             GamepadManager.Init(source);
         }

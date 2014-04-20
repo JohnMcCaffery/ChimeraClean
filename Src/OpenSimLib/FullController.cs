@@ -14,7 +14,7 @@ namespace Chimera.OpenSim {
         public FullController(Frame frame)
             : base(frame) {
 
-            mAllowFly = new ViewerConfig().AllowFly;
+            mAllowFly = new ViewerConfig("Irrelevant").AllowFly;
         }        
         protected override Packet ActualSetCamera() {
             return new SetCameraPacket(MakeCameraBlock());

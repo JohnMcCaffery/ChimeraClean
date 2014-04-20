@@ -70,20 +70,8 @@ namespace Chimera.Overlay.States {
             }
         }
 
-        public VideoState(string name, FrameOverlayManager mainWindow, string video, State parent, ITransitionStyle transition, IMediaPlayer player)
-            : base(name, mainWindow.Manager, DefaultBG) {
-
-            mPlayer = player;
-            mMainWindow = mainWindow;
-            mVideo = Path.GetFullPath(video);
-            mPlayer.PlaybackFinished += mPlayer_VideoFinished;
-
-            mTrigger = new SimpleTrigger();
-            AddTransition(new StateTransition(Manager, this, parent, mTrigger, transition));
-        }
-
         public VideoState(OverlayPlugin manager, XmlNode node, IMediaPlayer player)
-            : base(manager, node) {
+            : base(manager, node, false) {
 
             mPlayer = player;
             mVideo = GetString(node, null, "File");
@@ -94,6 +82,7 @@ namespace Chimera.Overlay.States {
                 throw new ArgumentException("Unable to load VideoState. The file '" + mVideo + "' does not exist.");
 
             mPlayer.PlaybackFinished += new Action(mPlayer_VideoFinished);
+            mPlayer.PlaybackStarted += new Action(mPlayer_VideoStarted);
             mMainWindow = GetManager(manager, node, "video state");
             mBounds = manager.GetBounds(node, "video state");
 
@@ -108,28 +97,28 @@ namespace Chimera.Overlay.States {
                 AddTransition(new StateTransition(Manager, this, manager.GetState(toAttr.Value), mTrigger, transition));
             }
 
-            LoadTriggers(node, manager, "StartTriggers", mStartTriggers, new Action(StartTriggered));
-            LoadTriggers(node, manager, "StopTriggers", mStopTriggers, new Action(StopTriggered));
+            LoadTriggers(node, manager, "StartTriggers", mStartTriggers, new Action<ITrigger>(StartTriggered));
+            LoadTriggers(node, manager, "StopTriggers", mStopTriggers, new Action<ITrigger>(StopTriggered));
 
             mRestartMode = GetBool(node, false, "RestartMode");
             if (mRestartMode) {
-                LoadTriggers(node, manager, "ResetTriggers", mResetTriggers, new Action(RestartTriggered));
+                LoadTriggers(node, manager, "ResetTriggers", mResetTriggers, new Action<ITrigger>(RestartTriggered));
             }
         }
 
-        private void StartTriggered() {
+        private void StartTriggered(ITrigger source) {
             Start();
         }
 
-        private void StopTriggered() {
+        private void StopTriggered(ITrigger source) {
             Stop(false);
         }
 
-        private void RestartTriggered() {
+        private void RestartTriggered(ITrigger source) {
             mRestarted = true;
         }
 
-        private void LoadTriggers(XmlNode node, OverlayPlugin manager, string triggerType, List<ITrigger> list, Action onTrigger) {
+        private void LoadTriggers(XmlNode node, OverlayPlugin manager, string triggerType, List<ITrigger> list, Action<ITrigger> onTrigger) {
             foreach (XmlElement child in GetChildrenOfChild(node, triggerType)) {
                 ITrigger trigger = manager.GetTrigger(child, "video " + triggerType.TrimEnd('s'), null);
                 if (trigger != null) {
@@ -147,7 +136,6 @@ namespace Chimera.Overlay.States {
         protected override void TransitionToStart() {
             SetTriggers(true);
             ControlTriggers(mResetTriggers, true);
-            Manager.ControlPointers = false;
         }
 
         protected override void TransitionToFinish() {
@@ -155,12 +143,20 @@ namespace Chimera.Overlay.States {
                 mRestarted = false;
                 Start();
             }
-            Manager.ControlPointers = false;
         }
 
         void mPlayer_VideoFinished() {
             if (mTrigger != null)
                 mTrigger.Trigger();
+        }
+
+        void mPlayer_VideoStarted()
+        {
+            if (Active)
+            {
+                foreach (var transition in Transitions)
+                    transition.Active = true;
+            }
         }
 
         protected override void TransitionFromStart() {
@@ -169,13 +165,17 @@ namespace Chimera.Overlay.States {
 
         protected override void TransitionFromFinish() {
             Stop(true);
+            
         }
 
         private void Start() {
             if (!mAdded) {
                 mMainWindow.AddControl(mPlayer.Player, mBounds);
                 mAdded = true;
+                //mMainWindow.OverlayWindow.Invoke(() => Cursor.Hide());
             }
+            foreach (var transition in Transitions)
+                transition.Active = false;
             mPlayer.PlayVideo(mVideo);
             new Thread(() => SetTriggers(false)).Start();
         }
@@ -184,6 +184,7 @@ namespace Chimera.Overlay.States {
             if (mAdded) {
                 mPlayer.StopPlayback();
                 SetTriggers(true);
+                 //mMainWindow.OverlayWindow.Invoke(() => Cursor.Show());
                 mMainWindow.RemoveControl(mPlayer.Player);
                 mAdded = false;
                 if (remove) {

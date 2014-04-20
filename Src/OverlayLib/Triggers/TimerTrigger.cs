@@ -36,6 +36,7 @@ namespace Chimera.Overlay.Triggers {
         private DateTime mStart;
         private Core mCore;
 
+
         public TimerTrigger(OverlayPlugin plugin, XmlNode node)
             : base(node) {
 
@@ -46,6 +47,7 @@ namespace Chimera.Overlay.Triggers {
 
         void mCore_Tick() {
             if (DateTime.Now.Subtract(mStart).TotalMilliseconds > mLengthMS) {
+                mStart = DateTime.Now;
                 mCore.Tick -= mTickListener;
                 Trigger();
             }

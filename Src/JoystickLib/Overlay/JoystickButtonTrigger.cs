@@ -8,6 +8,7 @@ using System.Xml;
 using Chimera;
 using Chimera.Interfaces.Overlay;
 using System.Drawing;
+using log4net;
 using Chimera.Overlay;
 
 namespace Joystick.Overlay {
@@ -35,13 +36,17 @@ namespace Joystick.Overlay {
 
     public class JoystickButtonTrigger : ConditionTrigger {
         private GamepadButtonFlags mButton = GamepadButtonFlags.A;
+        private readonly ILog Logger = LogManager.GetLogger("OpenSim");
 
         public override bool Condition {
-            get { return (GamepadManager.Gamepad.Buttons & mButton) == mButton; }
+            get {
+                return (GamepadManager.Gamepad.Buttons & mButton) == mButton;
+            }
         }
 
         public JoystickButtonTrigger(Core coordinator, XmlNode node)
             : base(coordinator, GetName(node, "Joystick Button Trigger")) {
+
             
             GamepadButtonFlags b = GamepadButtonFlags.A;
             if (Enum.TryParse<GamepadButtonFlags>(GetString(node, mButton.ToString(), "Button"), out b))

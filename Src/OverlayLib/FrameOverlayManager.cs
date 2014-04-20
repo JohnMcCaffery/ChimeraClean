@@ -55,7 +55,11 @@ namespace Chimera.Overlay {
         /// <summary>
         /// Whether the overlay should control the cursor position.
         /// </summary>
-        private bool mControlPointer;
+        private bool mEnableCursor;
+        /// <summary>
+        /// Whether the mouse is currently disabled. Stops the mouse from being disabled multiple times.
+        /// </summary>
+        private bool mMouseState = true;
         /// <summary>
         /// The window used to render the overlay.
         /// </summary>
@@ -161,13 +165,25 @@ namespace Chimera.Overlay {
         /// <summary>
         /// Whether the overlay should control the position of the cursor in the wider system.
         /// </summary>
-        public bool ControlPointer {
-            get { return mControlPointer; }
+        public bool ControlCursor {
+            get { return mEnableCursor; }
             set {
-                mControlPointer = value && mConfig.ControlPointer;
-                if (!value)
-                    MoveCursorOffScreen();
-                Logger.Debug((value ? "Enabling" : "Disabling") + " cursor control");
+                mEnableCursor = value && mConfig.ControlPointer;
+                lock (this) {
+                    if (value && !mMouseState) {
+                        mMouseState = true;
+                        OverlayWindow.Invoke(() => {
+                            Logger.Debug("Enabling cursor control");
+                            Cursor.Show();
+                        });
+                    } else if (!value && mMouseState) {
+                        mMouseState = false;
+                        OverlayWindow.Invoke(() => {
+                            Logger.Debug("Disabling cursor control");
+                            Cursor.Hide();
+                        });
+                    }
+                }
             }
         }
         /// <summary>
@@ -280,9 +296,9 @@ namespace Chimera.Overlay {
             bool wasOn = mFrame.Monitor.Bounds.Contains(MonitorCursor);
             mCursorX = x;
             mCursorY = y;
-            if (mControlPointer && mFrame.Monitor.Bounds.Contains(MonitorCursor))
+            if (mEnableCursor && mFrame.Monitor.Bounds.Contains(MonitorCursor))
                 SystemCursor.Position = MonitorCursor;
-            else if (wasOn && mControlPointer)
+            else if (wasOn && mEnableCursor)
                 MoveCursorOffScreen();
 
             if (CursorMoved != null && (mFrame.Monitor.Bounds.Contains(MonitorCursor) || wasOn))
@@ -352,7 +368,7 @@ namespace Chimera.Overlay {
 
             mConfig = new OverlayConfig();
             mOverlayActive = mConfig.LaunchOverlay;
-            mControlPointer = mConfig.ControlPointer;
+            mEnableCursor = mConfig.ControlPointer;
             mOverlayFullscreen = mConfig.Fullscreen;
         }
 

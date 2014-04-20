@@ -61,18 +61,8 @@ namespace Chimera.Kinect.Overlay {
         private Vector3 mStartPosition;
         private bool mSetPosition;
 
-        public override IFrameState CreateWindowState(FrameOverlayManager manager) {
+        public override IFrameState CreateFrameState(FrameOverlayManager manager) {
             return new KinectControlWindowState(manager);
-        }
-
-        public KinectControlState(string name, OverlayPlugin manager, bool avatar)
-            : base(name, manager) {
-
-            mInput = manager.Core.GetPlugin<KinectMovementPlugin>();
-            mAvatar = avatar;
-
-            mStartOrientation = new Rotation(manager.Core.Orientation);
-            mStartPosition = manager.Core.Position;
         }
 
         public KinectControlState(OverlayPlugin manager, XmlNode node)
@@ -108,7 +98,6 @@ namespace Chimera.Kinect.Overlay {
                     Manager.Core.Update(mStartPosition, Vector3.Zero, mStartOrientation, Rotation.Zero);
             }
             Manager.Core.EnableUpdates = true;
-            Manager.ControlPointers = false;
         }
 
         protected override void TransitionFromFinish() { }

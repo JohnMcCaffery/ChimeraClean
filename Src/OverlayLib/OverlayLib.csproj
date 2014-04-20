@@ -32,7 +32,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\x86\Debug\</OutputPath>
+    <OutputPath>..\..\Bin\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>x86</PlatformTarget>
@@ -101,6 +101,12 @@
     <Compile Include="GUI\ControllableSelector.Designer.cs">
       <DependentUpon>ControllableSelector.cs</DependentUpon>
     </Compile>
+    <Compile Include="GUI\Plugins\AxisCursorPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\Plugins\AxisCursorPanel.Designer.cs">
+      <DependentUpon>AxisCursorPanel.cs</DependentUpon>
+    </Compile>
     <Compile Include="GUI\Plugins\StatsPluginPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -165,6 +171,7 @@
     <Compile Include="Interfaces\IFrameState.cs" />
     <Compile Include="Interfaces\IFrameTransition.cs" />
     <Compile Include="Interfaces\ITransitionStyle.cs" />
+    <Compile Include="Plugin\AxisCursorPlugin.cs" />
     <Compile Include="Plugin\OverlayPlugin.State.cs" />
     <Compile Include="Plugin\OverlayPlugin.XML.cs" />
     <Compile Include="Plugin\OverlayConfig.cs" />
@@ -197,6 +204,7 @@
     <Compile Include="Triggers\HoverTrigger.cs" />
     <Compile Include="Triggers\ImageClickTrigger.cs" />
     <Compile Include="Triggers\ImageHoverTrigger.cs" />
+    <Compile Include="Triggers\MultiTrigger.cs" />
     <Compile Include="Triggers\SimpleTrigger.cs" />
     <Compile Include="Triggers\TextClickTrigger.cs" />
     <Compile Include="Triggers\TextHoverTrigger.cs" />
@@ -216,6 +224,9 @@
   <ItemGroup>
     <EmbeddedResource Include="GUI\ControllableSelector.resx">
       <DependentUpon>ControllableSelector.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\Plugins\AxisCursorPanel.resx">
+      <DependentUpon>AxisCursorPanel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\Plugins\MousePluginPanel.resx">
       <DependentUpon>MousePluginPanel.cs</DependentUpon>

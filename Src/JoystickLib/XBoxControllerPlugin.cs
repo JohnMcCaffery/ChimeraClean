@@ -25,17 +25,53 @@ using Chimera.Plugins;
 using Chimera;
 using Chimera.Interfaces;
 using SlimDX.XInput;
+using Chimera.Config;
 
 namespace Joystick {
     public class XBoxControllerPlugin : AxisBasedDelta {
         public XBoxControllerPlugin()
             : base(
                 "XBoxController",
-                new ThumbstickAxis(false, false),
-                new ThumbstickAxis(false, true),
+                new XBoxMovementConfig(),
+                new ThumbstickAxisLX(),
+                new ThumbstickAxisLY(),
                 new TriggerAxis(false),
-                new ThumbstickAxis(true, false),
-                new ThumbstickAxis(true, true)
+                new ThumbstickAxisRX(),
+                new ThumbstickAxisRY(),
+                new DPadAxisX(),
+                new DPadAxisY()
             ) { }
+    }
+
+    public class XBoxMovementConfig : AxisConfig {
+        public XBoxMovementConfig()
+            : base("XBoxController") {
+        }
+
+        protected override void InitConfig() {
+            GetDeadzone("LeftThumbstickX");
+            GetDeadzone("LeftThumbstickY");
+            GetDeadzone("RightThumbstickX");
+            GetDeadzone("RightThumbstickY");
+            GetDeadzone("Trigger");
+            GetDeadzone("DPadX");
+            GetDeadzone("DPadY");
+
+            GetScale("LeftThumbstickX");
+            GetScale("LeftThumbstickY");
+            GetScale("RightThumbstickX");
+            GetScale("RightThumbstickY");
+            GetScale("Trigger");
+            GetScale("DPadX");
+            GetScale("DPadY");
+
+            GetBinding("LeftThumbstickX");
+            GetBinding("LeftThumbstickY");
+            GetBinding("RightThumbstickX");
+            GetBinding("RightThumbstickY");
+            GetBinding("Trigger");
+            GetBinding("DPadX");
+            GetBinding("DPadY");
+        }
     }
 }

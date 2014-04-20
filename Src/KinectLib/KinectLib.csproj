@@ -92,6 +92,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Axes\ArmYawAxis.cs" />
+    <Compile Include="Axes\ArmPitchAxis.cs" />
+    <Compile Include="Axes\StandAxis.cs" />
     <Compile Include="Axes\CrouchAxis.cs" />
     <Compile Include="Axes\DotAxis.cs" />
     <Compile Include="Axes\KinectAxis.cs" />
@@ -117,6 +119,12 @@
     </Compile>
     <Compile Include="Axes\KinectScaledAxis.cs" />
     <Compile Include="Axes\KinectAxisConfig.cs" />
+    <Compile Include="GUI\CrossArmsTriggerPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\CrossArmsTriggerPanel.Designer.cs">
+      <DependentUpon>CrossArmsTriggerPanel.cs</DependentUpon>
+    </Compile>
     <Compile Include="GUI\EyeTrackerPluginControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -130,6 +138,8 @@
       <DependentUpon>KinectCamera.cs</DependentUpon>
     </Compile>
     <Compile Include="Axes\LeanAxis.cs" />
+    <Compile Include="Overlay\CrossArmsLowTrigger.cs" />
+    <Compile Include="Overlay\CrossArmsTrigger.cs" />
     <Compile Include="Overlay\RaiseArmTrigger.cs" />
     <Compile Include="Overlay\SkeletonFoundTrigger.cs" />
     <Compile Include="Overlay\KinectControlState.cs" />
@@ -191,6 +201,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\Axes\KinectScaledAxisPanel.resx">
       <DependentUpon>KinectScaledAxisPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\CrossArmsTriggerPanel.resx">
+      <DependentUpon>CrossArmsTriggerPanel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\EyeTrackerPluginControl.resx">
       <DependentUpon>EyeTrackerPluginControl.cs</DependentUpon>

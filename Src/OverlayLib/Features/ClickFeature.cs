@@ -5,6 +5,7 @@ using System.Text;
 using Chimera.Interfaces.Overlay;
 using Chimera.Overlay;
 using System.Xml;
+using log4net;
 using Chimera.Util;
 
 namespace Chimera.Overlay.Features {
@@ -27,10 +28,10 @@ namespace Chimera.Overlay.Features {
         private bool mLeft;
         private string mFrame;
         private ITrigger[] mTriggers;
-        private Action mTriggerListener;
+        private Action<ITrigger> mTriggerListener;
 
         public ClickFeature(OverlayPlugin plugin, XmlNode node) {
-            mTriggerListener = new Action(TriggerListener);
+            mTriggerListener = new Action<ITrigger>(TriggerListener);
 
             mLeft = GetBool(node, false, "LeftClick");
             mFrame = GetManager(plugin, node, "Click Feature").Name;
@@ -39,12 +40,14 @@ namespace Chimera.Overlay.Features {
             foreach (XmlNode trigger in GetChildrenOfChild(node, "Triggers")) {
                 ITrigger t = plugin.GetTrigger(trigger, "JoystickClick trigger", null);
                 if (t != null)
+                {
                     triggers.Add(t);
+                }
             }
             mTriggers = triggers.ToArray();
         }
 
-        public void TriggerListener() {
+        public void TriggerListener(ITrigger source) {
             ProcessWrangler.Click(mLeft);
         }
 
@@ -57,9 +60,15 @@ namespace Chimera.Overlay.Features {
                     mActive = value;
                     foreach (var trigger in mTriggers)
                         if (value)
+                        {
+                            trigger.Active = true;
                             trigger.Triggered += mTriggerListener;
+                        }
                         else
+                        {
                             trigger.Triggered -= mTriggerListener;
+                            trigger.Active = false;
+                        }
                 }
             }
         }

@@ -188,7 +188,7 @@ namespace Chimera.Overlay {
             set {
                 mControlPointers = value;
                 foreach (var frame in mFrameManagers.Values)
-                    frame.ControlPointer = value;
+                    frame.ControlCursor = value;
             }
         }
 
@@ -217,9 +217,9 @@ namespace Chimera.Overlay {
         /// </summary>
         /// <param name="transition">The transition to begin.</param>
         public void BeginTransition(StateTransition transition) {
-            if (Transitioning)
+            /*if (Transitioning)
                 throw new InvalidOperationException("Unable to start transition transition " + transition.From.Name
-                     + " to " + transition.To.Name + ". There is already a transition in progress.");
+                     + " to " + transition.To.Name + ". There is already a transition in progress.");*/
 
             lock (this) {
                 mCurrentState = null;

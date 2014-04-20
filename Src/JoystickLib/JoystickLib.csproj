@@ -51,6 +51,10 @@
     <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Lib\log4net.dll</HintPath>
+    </Reference>
     <Reference Include="OpenMetaverseTypes, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Lib\OpenMetaverseTypes.dll</HintPath>
@@ -70,8 +74,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DPadAxis.cs" />
     <Compile Include="GamepadManager.cs" />
     <Compile Include="Overlay\JoystickButtonTrigger.cs" />
+    <Compile Include="Overlay\JoystickControlState.cs" />
     <Compile Include="Overlay\JoystickInactiveTrigger.cs" />
     <Compile Include="Overlay\JoystickActivatedTrigger.cs" />
     <Compile Include="XBoxControllerPlugin.cs" />
@@ -91,6 +97,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="GUI\" />
+    <Folder Include="Plugins\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

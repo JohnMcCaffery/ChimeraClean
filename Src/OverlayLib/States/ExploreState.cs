@@ -31,12 +31,8 @@ namespace Chimera.Overlay.States {
         private Vector3 mStartPosition;
         private Rotation mStartOrientation;
 
-        public ExploreState(string name, OverlayPlugin manager)
-            : base(name, manager) {
-        }
-
         public ExploreState(OverlayPlugin manager, XmlNode node)
-            : base(GetName(node, "explore state"), manager) {
+            : base(GetName(node, "explore state"), manager, node) {
 
             mAvatar = GetBool(node, false, "Avatar");
 
@@ -45,10 +41,6 @@ namespace Chimera.Overlay.States {
 
             mStartOrientation = new Rotation(GetDouble(node, 0.0, "Pitch"), GetDouble(node, 0.0, "Yaw"));
             mStartPosition = new Vector3(GetFloat(node, 0f, "X"), GetFloat(node, 0f, "Y"), GetFloat(node, 0f, "Z"));
-        }
-
-        public override IFrameState CreateWindowState(FrameOverlayManager manager) {
-            return new FrameState(manager);
         }
 
         protected override void TransitionToStart() {
