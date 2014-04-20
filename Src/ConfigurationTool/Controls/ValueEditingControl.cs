@@ -39,6 +39,8 @@ namespace Chimera.ConfigurationTool.Controls {
         }
 
         private void LoadParameter(ConfigParam value) {
+            textInput.Items.Clear();
+
             switch (value.Type) {
                 case ParameterTypes.Bool: BoolLoaded();  break;
                 case ParameterTypes.Folder: 
@@ -91,20 +93,6 @@ namespace Chimera.ConfigurationTool.Controls {
                     textInput.Text = ToRelative(folderBrowserDialog.SelectedPath);
                 }
             }
-
-            //textInput.Width = Width - (dialogButton.Width + 3);
-            //dialogButton.Visible = true;
-        }
-
-        private string ToAbsolute(string uri) {
-            string rootFolder = Path.GetFullPath(Path.Combine(Environment.CurrentDirectory, ".."));
-            return Path.GetFullPath(Path.Combine(rootFolder, uri));
-        }
-
-        private string ToRelative(string uri) {
-            Uri x = new Uri(Environment.CurrentDirectory);
-            Uri xy = x.MakeRelativeUri(new Uri(uri));
-            return xy.OriginalString;
         }
 
         private void EnumLoaded() {
@@ -193,6 +181,16 @@ namespace Chimera.ConfigurationTool.Controls {
                 return false;
 
             return true;
+        }
+        private string ToAbsolute(string uri) {
+            string rootFolder = Path.GetFullPath(Path.Combine(Environment.CurrentDirectory, ".."));
+            return Path.GetFullPath(Path.Combine(rootFolder, uri));
+        }
+
+        private string ToRelative(string uri) {
+            Uri x = new Uri(Environment.CurrentDirectory);
+            Uri xy = x.MakeRelativeUri(new Uri(uri));
+            return xy.OriginalString;
         }
 
         private void dialogButton_Click(object sender, EventArgs e) {
