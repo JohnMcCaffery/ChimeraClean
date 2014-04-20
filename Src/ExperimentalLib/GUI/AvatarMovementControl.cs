@@ -9,14 +9,14 @@ using System.Windows.Forms;
 using Chimera.Experimental.Plugins;
 
 namespace Chimera.Experimental.GUI {
-    public partial class AvatarMovementContrl : UserControl {
+    public partial class AvatarMovementControl : UserControl {
         private AvatarMovementPlugin mPlugin;
 
-        public AvatarMovementContrl() {
+        public AvatarMovementControl() {
             InitializeComponent();
         }
 
-        public AvatarMovementContrl(AvatarMovementPlugin plugin) : this() {
+        public AvatarMovementControl(AvatarMovementPlugin plugin) : this() {
             mPlugin = plugin;
         }
 
