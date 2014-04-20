@@ -47,12 +47,19 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ExperimentalConfig.cs" />
+    <Compile Include="GUI\AvatarMovementContrl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\AvatarMovementContrl.Designer.cs">
+      <DependentUpon>AvatarMovementContrl.cs</DependentUpon>
+    </Compile>
     <Compile Include="GUI\MovementTrackerControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="GUI\MovementTrackerControl.Designer.cs">
       <DependentUpon>MovementTrackerControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Plugins\AvatarMovementPlugin.cs" />
     <Compile Include="Plugins\MovementTracker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -61,8 +68,15 @@
       <Project>{58E39BFE-20D5-4C8D-BCFC-6B5E641C2DFF}</Project>
       <Name>ChimeraLib</Name>
     </ProjectReference>
+    <ProjectReference Include="..\OpenSimLib\OpenSimLib.csproj">
+      <Project>{D1978D10-E5B0-40F9-BDB7-11BF03C7A6CB}</Project>
+      <Name>OpenSimLib</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="GUI\AvatarMovementContrl.resx">
+      <DependentUpon>AvatarMovementContrl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="GUI\MovementTrackerControl.resx">
       <DependentUpon>MovementTrackerControl.cs</DependentUpon>
     </EmbeddedResource>
