@@ -1,5 +1,5 @@
 ﻿namespace Chimera.Experimental.GUI {
-    partial class AvatarMovementContrl {
+    partial class AvatarMovementControl {
         /// <summary> 
         /// Required designer variable.
         /// </summary>
