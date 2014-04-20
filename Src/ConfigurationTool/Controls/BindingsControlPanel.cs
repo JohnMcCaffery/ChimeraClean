@@ -12,6 +12,7 @@ using Chimera.Interfaces;
 using System.Reflection;
 using System.IO;
 using System.Xml;
+using Chimera.Config;
 
 namespace ConfigurationTool.Controls {
     public partial class BindingsControlPanel : UserControl {
@@ -83,10 +84,11 @@ namespace ConfigurationTool.Controls {
             string folder = Path.GetDirectoryName(AppDomain.CurrentDomain.SetupInformation.ConfigurationFile);
             folder = Path.GetFullPath(Path.Combine(folder, "../"));
 
-            string assemblyName = "";
+            string assemblyName = "ChimeraLib";
             //Iterate through every assembly in the folder where the tool is running
             foreach (var assembly in 
-                Directory.GetFiles(folder).
+                new Assembly[] { typeof(ConfigBase).Assembly }.
+                Concat(Directory.GetFiles(folder).
                 Where(f => 
                     Path.GetExtension(f).ToUpper() == ".DLL" && 
                     !f.Contains("NuiLib") && 
@@ -95,17 +97,13 @@ namespace ConfigurationTool.Controls {
                     !f.Contains("SlimDX")).
                 Select(f => {
                     try {
-                        /*
-                        string copy = Path.Combine(Environment.CurrentDirectory, Path.GetFileName(f));
-                        File.Copy(f, copy);
-                        return Assembly.LoadFile(copy);
-                        */
                         assemblyName = Path.GetFileNameWithoutExtension(f);
                         return Assembly.Load(File.ReadAllBytes(f));
                     } catch (Exception e) {
                         return null;
                     }
-            }).Where(a => a != null)) {
+                }).
+                Where(a => a != null))) {
                 ListViewGroup g = null;
 
                 //Iterate through every class which implements one of the interfaces on the interfaces list
