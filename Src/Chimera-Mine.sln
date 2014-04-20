@@ -54,7 +54,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Timespan", "Timespan", "{B1
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Config", "Config", "{48AD0346-709E-4D74-9F75-5F0D9820157F}"
 	ProjectSection(SolutionItems) = preProject
-		..\Bin\Configs\Timespan\Bindings.xml = ..\Bin\Configs\Timespan\Bindings.xml
 		..\Bin\Configs\Timespan\Core.ini = ..\Bin\Configs\Timespan\Core.ini
 		..\Bin\Configs\Timespan\Frames.ini = ..\Bin\Configs\Timespan\Frames.ini
 		..\Bin\Configs\Timespan\Heightmap.ini = ..\Bin\Configs\Timespan\Heightmap.ini
@@ -112,7 +111,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Chimera", "Chimera", "{2E5D
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{FCF1B486-05B8-4DC0-9EF4-C88359331724}"
 	ProjectSection(SolutionItems) = preProject
-		..\Bin\Configs\Common\Bindings.xml = ..\Bin\Configs\Common\Bindings.xml
 		..\Bin\Configs\Common\Core.ini = ..\Bin\Configs\Common\Core.ini
 		..\Bin\Configs\Common\Experiments.ini = ..\Bin\Configs\Common\Experiments.ini
 		..\Bin\Configs\Common\Frames.ini = ..\Bin\Configs\Common\Frames.ini
@@ -134,7 +132,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{FCF1B4
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TimespanTest", "TimespanTest", "{22DC0F45-3E0B-4D99-B8C9-15ED2AD17EBC}"
 	ProjectSection(SolutionItems) = preProject
-		..\Bin\Configs\TimespanTest\Bindings.xml = ..\Bin\Configs\TimespanTest\Bindings.xml
 		..\Bin\Configs\TimespanTest\Launch.ini = ..\Bin\Configs\TimespanTest\Launch.ini
 		..\Bin\Configs\TimespanTest\Main.ini = ..\Bin\Configs\TimespanTest\Main.ini
 	EndProjectSection
@@ -688,7 +685,6 @@ Global
 		{26B6BC99-32A2-419F-BE5B-EB3AA6BF0570}.Release|Win32.ActiveCfg = Release|x86
 		{26B6BC99-32A2-419F-BE5B-EB3AA6BF0570}.Release|x64.ActiveCfg = Release|x86
 		{26B6BC99-32A2-419F-BE5B-EB3AA6BF0570}.Release|x86.ActiveCfg = Release|x86
-		{26B6BC99-32A2-419F-BE5B-EB3AA6BF0570}.Release|x86.Build.0 = Release|x86
 		{26B6BC99-32A2-419F-BE5B-EB3AA6BF0570}.ReleaseVisual|Any CPU.ActiveCfg = Release|x86
 		{26B6BC99-32A2-419F-BE5B-EB3AA6BF0570}.ReleaseVisual|Mixed Platforms.ActiveCfg = Release|x86
 		{26B6BC99-32A2-419F-BE5B-EB3AA6BF0570}.ReleaseVisual|Mixed Platforms.Build.0 = Release|x86
