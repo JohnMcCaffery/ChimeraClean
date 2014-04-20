@@ -126,5 +126,15 @@ namespace Chimera.ConfigurationTool {
             if (nameBox.Text == "")
                 nameBox.Text = NAME_DEFAULT;
         }
+
+        private void reloadButton_Click(object sender, EventArgs e) {
+            foreach (Control tab in FoldersTab.Controls)
+                FoldersTab.Controls.Remove(tab);
+
+            copyList.Items.Clear();
+            folderList.Items.Clear();
+
+            LoadFolders();
+        }
     }
 }
