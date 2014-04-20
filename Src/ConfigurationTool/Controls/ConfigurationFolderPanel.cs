@@ -76,11 +76,6 @@ namespace Chimera.ConfigurationTool.Controls {
                     !f.Contains("openjpeg")).
                 Select(f => {
                     try {
-                        /*
-                        string copy = Path.Combine(Environment.CurrentDirectory, Path.GetFileName(f));
-                        File.Copy(f, copy);
-                        return Assembly.LoadFile(copy);
-                        */
                         return Assembly.Load(File.ReadAllBytes(f));
                     } catch (Exception e) {
                         return null;
