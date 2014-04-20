@@ -27,7 +27,7 @@ namespace Chimera.Launcher {
             //BindingsFile = GetFile("BindingsFile", null, "The XML file describing the dependency injection bindings used to instantiate the system. Relative paths are specified relative to the folder the launch config file is in.");
             //if (!Path.IsPathRooted(BindingsFile))
                 //BindingsFile = Path.Combine(Folder, BindingsFile);
-            BindingsFile = "Bindings.xml";
+            BindingsFile = Path.Combine(Folder, "Bindings.xml");
         }
     }
 }
