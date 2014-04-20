@@ -7,35 +7,82 @@ using Chimera.OpenSim;
 using Chimera.Experimental.GUI;
 using OpenMetaverse;
 using System.Xml;
+using System.IO;
+using log4net;
 
 namespace Chimera.Experimental.Plugins {
     public class AvatarMovementPlugin : XmlLoader, ISystemPlugin {
+        private ILog Logger = LogManager.GetLogger("AvatarMovementPlugin");
         private bool mEnabled;
         private Dictionary<string, OpenSimController> mController = new Dictionary<string,OpenSimController>();
         private OpenSimController mMainController;
         private Core mCore;
         private ExperimentalConfig mConfig = new ExperimentalConfig();
-        private AvatarMovementContrl mPanel;
-        private string mFile;
+        private AvatarMovementControl mPanel;
+        private string mTargetsFile, mNodesFile;
 
         private List<Vector3> mTargets = new List<Vector3>();
 
         private double mYawRate = .2;
         private double mPitchRate = .2;
 
-        public string File {
-            get { return mFile; }
+        public string NodesFile {
+            get { return mNodesFile; }
             set {
-                mFile = value;
+                mNodesFile = value;
+                LoadTargets();
+            }
+        }
 
-                XmlDocument doc = new XmlDocument();
-                doc.Load(mFile);
+        public string TargetsFile {
+            get { return mTargetsFile; }
+            set {
+                mTargetsFile = value;
+                LoadTargets();
+            }
+        }
 
-                mTargets.Clear();
-                foreach (var targetNode in doc.GetElementsByTagName("Target").OfType<XmlElement>()) {
-                     var targetStr = targetNode.Attributes["value"].Value;
-                    mTargets.Add(Vector3.Parse(targetStr));
+        private void LoadTargets() {
+            if (mTargetsFile == null || mNodesFile == null)
+                return;
+
+            if (!File.Exists(mTargetsFile) && !File.Exists(mNodesFile)) {
+                Logger.Warn("Unable to load targets. Neither targets file or nodes file exists.");
+                return;
+            } else if (!File.Exists(mTargetsFile)) {
+                Logger.Warn("Unable to load targets. Targets file does not exist.");
+                return;
+            } else if (!File.Exists(mNodesFile)) {
+                Logger.Warn("Unable to load targets. Nodes file does not exist.");
+                return;
+            }
+
+            XmlDocument nodesDoc = new XmlDocument();
+            nodesDoc.Load(mNodesFile);
+
+            XmlDocument targetsDoc = new XmlDocument();
+            nodesDoc.Load(mTargetsFile);
+
+            mTargets.Clear();
+            foreach (var targetNode in targetsDoc.GetElementsByTagName("Target").OfType<XmlElement>()) {
+                var nameStr = targetNode.Attributes["name"].Value;
+                Vector3 target = Vector3.Zero;
+
+                foreach (var node in nodesDoc.GetElementsByTagName("node").OfType<XmlElement>()) {
+                    if (node.InnerText == nameStr) {
+                        XmlNode x = node.NextSibling;
+                        XmlNode y = node.NextSibling;
+                        XmlNode z = node.NextSibling;
+
+                        target.X = float.Parse(x.InnerXml);
+                        target.Y = float.Parse(y.InnerXml);
+                        target.Z = float.Parse(z.InnerXml);
+
+                        break;
+                    }
                 }
+
+                mTargets.Add(target);
             }
         }
 
@@ -67,7 +114,7 @@ namespace Chimera.Experimental.Plugins {
         public System.Windows.Forms.Control ControlPanel {
             get {
                 if (mPanel == null)
-                    mPanel = new AvatarMovementContrl(this);
+                    mPanel = new AvatarMovementControl(this);
                 return mPanel;
             }
         }
