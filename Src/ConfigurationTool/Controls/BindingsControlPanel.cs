@@ -78,6 +78,8 @@ namespace ConfigurationTool.Controls {
         }
 
         public void InitialiseInterfaces() {
+            mBindings.Clear();
+
             string folder = Path.GetDirectoryName(AppDomain.CurrentDomain.SetupInformation.ConfigurationFile);
             folder = Path.GetFullPath(Path.Combine(folder, "../"));
 
