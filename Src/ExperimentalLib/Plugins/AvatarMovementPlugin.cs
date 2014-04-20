@@ -9,6 +9,7 @@ using OpenMetaverse;
 using System.Xml;
 using System.IO;
 using log4net;
+using Chimera.Util;
 
 namespace Chimera.Experimental.Plugins {
     public class AvatarMovementPlugin : XmlLoader, ISystemPlugin {
@@ -19,80 +20,125 @@ namespace Chimera.Experimental.Plugins {
         private Core mCore;
         private ExperimentalConfig mConfig = new ExperimentalConfig();
         private AvatarMovementControl mPanel;
-        private string mTargetsFile, mNodesFile;
+        private Action mTickListener;
 
-        private List<Vector3> mTargets = new List<Vector3>();
-
-        private double mYawRate = .2;
-        private double mPitchRate = .2;
+        private List<KeyValuePair<string, Vector3>> mTargets = new List<KeyValuePair<string, Vector3>>();
+        private KeyValuePair<string, Vector3> mTarget;
+        private int mTargetIndex = 0;
 
         public string NodesFile {
-            get { return mNodesFile; }
+            get { return mConfig.NodesFile; }
             set {
-                mNodesFile = value;
+                mConfig.NodesFile = value;
                 LoadTargets();
             }
         }
 
         public string TargetsFile {
-            get { return mTargetsFile; }
+            get { return mConfig.TargetsFile; }
             set {
-                mTargetsFile = value;
+                mConfig.TargetsFile = value;
                 LoadTargets();
             }
         }
 
+        public AvatarMovementPlugin() {
+            mTickListener = new Action(mCore_Tick);
+        }
+
         private void LoadTargets() {
-            if (mTargetsFile == null || mNodesFile == null)
+            if (mConfig.TargetsFile == null || mConfig.NodesFile == null)
                 return;
 
-            if (!File.Exists(mTargetsFile) && !File.Exists(mNodesFile)) {
+            if (!File.Exists(mConfig.TargetsFile) && !File.Exists(mConfig.NodesFile)) {
                 Logger.Warn("Unable to load targets. Neither targets file or nodes file exists.");
                 return;
-            } else if (!File.Exists(mTargetsFile)) {
+            } else if (!File.Exists(mConfig.TargetsFile)) {
                 Logger.Warn("Unable to load targets. Targets file does not exist.");
                 return;
-            } else if (!File.Exists(mNodesFile)) {
+            } else if (!File.Exists(mConfig.NodesFile)) {
                 Logger.Warn("Unable to load targets. Nodes file does not exist.");
                 return;
             }
 
             XmlDocument nodesDoc = new XmlDocument();
-            nodesDoc.Load(mNodesFile);
+            nodesDoc.Load(mConfig.NodesFile);
 
             XmlDocument targetsDoc = new XmlDocument();
-            nodesDoc.Load(mTargetsFile);
+            targetsDoc.Load(mConfig.TargetsFile);
 
             mTargets.Clear();
             foreach (var targetNode in targetsDoc.GetElementsByTagName("Target").OfType<XmlElement>()) {
                 var nameStr = targetNode.Attributes["name"].Value;
-                Vector3 target = Vector3.Zero;
 
-                foreach (var node in nodesDoc.GetElementsByTagName("node").OfType<XmlElement>()) {
+                foreach (var node in nodesDoc.GetElementsByTagName("name").OfType<XmlElement>()) {
                     if (node.InnerText == nameStr) {
                         XmlNode x = node.NextSibling;
-                        XmlNode y = node.NextSibling;
-                        XmlNode z = node.NextSibling;
+                        XmlNode y = x.NextSibling;
+                        XmlNode z = y.NextSibling;
+
+                        Vector3 target = Vector3.Zero;
 
                         target.X = float.Parse(x.InnerXml);
                         target.Y = float.Parse(y.InnerXml);
                         target.Z = float.Parse(z.InnerXml);
 
+                        mTargets.Add(new KeyValuePair<string, Vector3>(nameStr, target));
                         break;
                     }
                 }
 
-                mTargets.Add(target);
             }
         }
+
+        public event Action<string, Vector3> TargetChanged;
 
         public void Start() {
-            foreach (var target in mTargets) {
+            if (mTargets.Count > 0) {
+                mTargetIndex = 0;
+                mTarget = mTargets[mTargetIndex];
+                mTurn = new Rotation(mTarget.Value - mCore.Position);
+                if (TargetChanged != null)
+                    TargetChanged(mTarget.Key, mTarget.Value);
+                mCore.Tick += new Action(mCore_Tick);
+            }
+
+        }
+
+        private Rotation mTurn;
+
+        private bool AreClose(double a, double b) {
+            return Math.Abs(a - b) < .0001;
+        }
+
+        void mCore_Tick() {
+            if (!AreClose(mCore.Orientation.Yaw, mTurn.Yaw) || !AreClose(mCore.Orientation.Pitch, mTurn.Pitch)) {
+                Rotation delta = mTurn - mCore.Orientation;
+                delta.Pitch = delta.Pitch >= 0 ? 1 : -1 * Math.Min(mConfig.PitchRate, Math.Abs(delta.Pitch));
+                delta.Yaw = delta.Yaw >= 0 ? 1 : -1 * Math.Min(mConfig.YawRate, Math.Abs(delta.Yaw));
+
+                mCore.Update(mCore.Position, Vector3.Zero, mCore.Orientation + delta, delta);
+                return;
+            } else if ((mTarget.Value - mCore.Position).Length() > .5f) {
+                Vector3 delta = mTarget.Value - mCore.Position;
+                if (delta.Length() > mConfig.MoveRate)
+                    delta *= mConfig.MoveRate / delta.Length();
+
+                mCore.Update(mCore.Position + delta, delta, mCore.Orientation, Rotation.Zero);
+            } else {
+                mCore.Update(mCore.Position, Vector3.Zero, mCore.Orientation, Rotation.Zero);
+                if (++ mTargetIndex< mTargets.Count) {
+                    mTarget = mTargets[mTargetIndex];
+                    mTurn = new Rotation(mTarget.Value - mCore.Position);
+                    if (TargetChanged != null)
+                        TargetChanged(mTarget.Key, mTarget.Value);
+                } else {
+                    Logger.Info("Finished walking route.");
+                    mCore.Tick -= mTickListener;
+                }
             }
         }
 
-        private void GoToTarget(Vector3 target) {
-        }
 
         #region ISystemPlugin Members
 
@@ -101,6 +147,8 @@ namespace Chimera.Experimental.Plugins {
             mMainController = mCore.GetPlugin<OpenSimController>();
             foreach (var controller in core.Frames.Select(f => f.Output as OpenSimController))
                 mController.Add(controller.Frame.Name, controller);
+
+            LoadTargets();
         }
 
         public void SetForm(System.Windows.Forms.Form form) { }
@@ -124,6 +172,8 @@ namespace Chimera.Experimental.Plugins {
             set {
                 if (mEnabled != value) {
                     mEnabled = value;
+                    if (!value)
+                        mCore.Tick -= mTickListener;
                     if (EnabledChanged != null)
                         EnabledChanged(this, value);
                 }
