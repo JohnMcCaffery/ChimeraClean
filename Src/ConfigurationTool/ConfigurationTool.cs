@@ -23,13 +23,6 @@ namespace Chimera.ConfigurationTool {
         public ConfigurationTool(ConfigFolderSetter setter) {
             mSetter = setter;
             InitializeComponent();
-
-            foreach (var exe in Directory.GetFiles("..").Where(e => Path.GetExtension(e).ToUpper() == ".EXE" && !e.Contains("vshost"))) {
-                string app = Path.GetFileNameWithoutExtension(exe);
-                applicationList.Items.Add(app);
-                if (applicationList.SelectedItem == null)
-                    applicationList.SelectedItem = app;
-            }
         }
 
         public void LoadFolders() {
@@ -37,11 +30,18 @@ namespace Chimera.ConfigurationTool {
             copyList.SelectedItem = NONE;
             foreach (var folder in Directory.GetDirectories(".").Select(f => f.Substring(2))) {
                 folderList.Items.Add(folder);
-                if (folderList.SelectedItem == null)
-                    folderList.SelectedItem = folder;
+                //if (folderList.SelectedItem == null)
+                    //folderList.SelectedItem = folder;
                 copyList.Items.Add(folder);
 
                 AddFolder(folder);
+            }
+
+            foreach (var exe in Directory.GetFiles("..").Where(e => Path.GetExtension(e).ToUpper() == ".EXE" && !e.Contains("vshost"))) {
+                string app = Path.GetFileNameWithoutExtension(exe);
+                applicationList.Items.Add(app);
+                if (applicationList.SelectedItem == null)
+                    applicationList.SelectedItem = app;
             }
 
             loader.DoWork += Init;
@@ -135,6 +135,16 @@ namespace Chimera.ConfigurationTool {
             folderList.Items.Clear();
 
             LoadFolders();
+        }
+
+        private void applicationList_SelectedIndexChanged(object sender, EventArgs e) {
+            string file = Path.GetFullPath(Path.Combine(Environment.CurrentDirectory, "../" + applicationList.SelectedItem + ".exe.config"));
+            IConfigSource src = new DotNetConfigSource(file);
+            string folder = "Configs/Test";
+            if (src.Configs["Config"] != null)
+                folder = src.Configs["Config"].Get("ConfigFolder", folder).Substring(8).TrimEnd('/', '\\');
+
+            folderList.SelectedItem = folderList.Items.OfType<string>().FirstOrDefault(f => f == folder);
         }
     }
 }

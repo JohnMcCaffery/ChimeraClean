@@ -60,6 +60,7 @@ namespace Chimera.ConfigurationTool {
             this.applicationList.Name = "applicationList";
             this.applicationList.Size = new System.Drawing.Size(121, 21);
             this.applicationList.TabIndex = 1;
+            this.applicationList.SelectedIndexChanged += new System.EventHandler(this.applicationList_SelectedIndexChanged);
             // 
             // folderList
             // 
