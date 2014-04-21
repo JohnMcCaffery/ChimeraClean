@@ -71,7 +71,7 @@ namespace Chimera.Config {
             Draw = GetFrame("Draw", true, "Whether to draw the window on the diagram.");
             DrawEye = GetFrame("DrawEye", true, "Whether to draw perspective lines for the window on the diagram.");
 
-            FarClip = Get(false, "FarClip", 1024f, "FarClip Value to use when calculating the projection matrix.");
+            FarClip = Get("FarClip", 1024f, "FarClip Value to use when calculating the projection matrix.");
         }
     }
 }
