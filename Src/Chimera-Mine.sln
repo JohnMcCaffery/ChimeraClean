@@ -17,8 +17,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TouchscreenLib", "Touchscre
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Overlays", "Overlays", "{AA20755A-F03E-4FF6-A86E-DFC56F1994A9}"
 	ProjectSection(SolutionItems) = preProject
-		..\Bin\Overlays\Eyemouth-Kinect.xml = ..\Bin\Overlays\Eyemouth-Kinect.xml
-		..\Bin\Overlays\Eyemouth.xml = ..\Bin\Overlays\Eyemouth.xml
 		..\Bin\Overlays\Test.xml = ..\Bin\Overlays\Test.xml
 	EndProjectSection
 EndProject
@@ -65,7 +63,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{ED9701C7-A
 		..\Bin\Configs\Test\LaptopOverlay.ini = ..\Bin\Configs\Test\LaptopOverlay.ini
 		..\Bin\Configs\Test\Launch.ini = ..\Bin\Configs\Test\Launch.ini
 		..\Bin\Configs\Test\NoOverlay.ini = ..\Bin\Configs\Test\NoOverlay.ini
-		..\Bin\Configs\Test\OpenSim.ini = ..\Bin\Configs\Test\OpenSim.ini
 		..\Bin\Configs\Test\Overlay.ini = ..\Bin\Configs\Test\Overlay.ini
 		..\Bin\Configs\Test\OverlayLaptop.ini = ..\Bin\Configs\Test\OverlayLaptop.ini
 		..\Bin\Configs\Test\OverlayNone.ini = ..\Bin\Configs\Test\OverlayNone.ini
@@ -83,7 +80,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Chimera", "Chimera", "{2E5D
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{FCF1B486-05B8-4DC0-9EF4-C88359331724}"
 	ProjectSection(SolutionItems) = preProject
-		..\Bin\Configs\Common\Heightmap.ini = ..\Bin\Configs\Common\Heightmap.ini
 		..\Bin\Configs\Common\KinectMovement.ini = ..\Bin\Configs\Common\KinectMovement.ini
 		..\Bin\Configs\Common\LaptopOverlay.ini = ..\Bin\Configs\Common\LaptopOverlay.ini
 		..\Bin\Configs\Common\Launch.ini = ..\Bin\Configs\Common\Launch.ini
