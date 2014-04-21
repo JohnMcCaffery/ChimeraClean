@@ -13,6 +13,16 @@ using OpenMetaverse;
 using Chimera.Overlay.GUI.Plugins;
 
 namespace Chimera.Overlay.Plugins {
+    public class AxisCursorConfig : AxisConfig {
+        public AxisCursorConfig()
+            : base("AxisCursor") {
+        }
+
+        public override bool LoadBoundAxes {
+            get { return true; }
+        }
+    }
+
     public class AxisCursorPlugin : ISystemPlugin {
         private ILog Logger = LogManager.GetLogger("AxisCursor");
 
@@ -49,7 +59,7 @@ namespace Chimera.Overlay.Plugins {
 
         private void Init() {
             mTickListener = new Action(TickListener);
-            mAxisConfig = new AxisConfig("AxisCursor");
+            mAxisConfig = new AxisCursorConfig();
             foreach (IAxis axis in mInitialAxes)
                 AddAxis(axis);
         }

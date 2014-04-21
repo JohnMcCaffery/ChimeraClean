@@ -470,8 +470,7 @@ namespace Chimera.Util {
             if (raw == null || !Vector3.TryParse(raw, out ret))
                 return defalt;
             return ret;
-        }
-
+        }
         private static ILog Logger = LogManager.GetLogger("Startup");
 
         public static ArgvConfigSource InitArgConfig(string[] args) {

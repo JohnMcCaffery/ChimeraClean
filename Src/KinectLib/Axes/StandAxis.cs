@@ -70,7 +70,7 @@ namespace Chimera.Kinect.Axes {
             public StandAxis(bool forward, AxisBinding binding)
                 : base("Stand" + (forward ? "X" : "Y"), binding) {
 
-                mStandConfig = new StandConfig("Kinect");
+                mStandConfig = new StandConfig();
                 Vector handR = Nui.joint(Nui.Hand_Right);
                 Vector handL = Nui.joint(Nui.Hand_Left);
 
@@ -88,22 +88,20 @@ namespace Chimera.Kinect.Axes {
         }
 
      public class StandConfig : ConfigFolderBase {
-         private string mType;
          public Vector3 ZeroPosition = new Vector3(0f, 0f, 5f);
          public float Maximum = 10.0f;
 
-         public StandConfig(string type)
-             : base("Positions", type + "Movement", new string[0]) {
-             mType = type;
+         public StandConfig()
+             : base("StandMovement") {
          }
 
          public override string Group {
-             get { return mType + "Movement"; }
+             get { return "StandMovement"; }
          }
 
          protected override void InitConfig() {
-             ZeroPosition = GetV(false, "ZeroPosition", ZeroPosition, "The neutral position for the user to stand where they will not move. Moving from this position moves the avatar.");
-             Maximum = Get(false, "Maximum", Maximum, "The maximum distance from the center to read values.");
+             ZeroPosition = GetV("Positions", "ZeroPosition", ZeroPosition, "The neutral position for the user to stand where they will not move. Moving from this position moves the avatar.");
+             Maximum = Get("Positions", "Maximum", Maximum, "The maximum distance from the center to read values.");
          }
 
      }

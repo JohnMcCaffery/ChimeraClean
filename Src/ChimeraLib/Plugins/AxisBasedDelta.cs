@@ -104,10 +104,10 @@ namespace Chimera.Plugins {
         /// </summary>
         /// <param name="name"></param>
         /// <param name="axes"></param>
-        public AxisBasedDelta(string name, params IAxis[] axes) {
+        public AxisBasedDelta(string name, AxisConfig config, params IAxis[] axes) {
             Logger = LogManager.GetLogger(name);
             mName = name;
-            mConfig = new AxisConfig(name);
+            mConfig = config;
 
             mTickListener = new Action(mCore_Tick);
 
