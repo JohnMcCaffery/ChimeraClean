@@ -142,6 +142,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Experiments", "Experiments"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConfigurationTool", "ConfigurationTool\ConfigurationTool.csproj", "{26B6BC99-32A2-419F-BE5B-EB3AA6BF0570}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenMetaverseTypes", "..\..\libopenmetaverse\OpenMetaverseTypes\OpenMetaverseTypes.csproj", "{7EBA4367-FE5C-433B-B67D-B6A1BBD15B1D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -692,6 +694,35 @@ Global
 		{26B6BC99-32A2-419F-BE5B-EB3AA6BF0570}.ReleaseVisual|x64.ActiveCfg = Release|x86
 		{26B6BC99-32A2-419F-BE5B-EB3AA6BF0570}.ReleaseVisual|x86.ActiveCfg = Release|x86
 		{26B6BC99-32A2-419F-BE5B-EB3AA6BF0570}.ReleaseVisual|x86.Build.0 = Release|x86
+		{7EBA4367-FE5C-433B-B67D-B6A1BBD15B1D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7EBA4367-FE5C-433B-B67D-B6A1BBD15B1D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7EBA4367-FE5C-433B-B67D-B6A1BBD15B1D}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{7EBA4367-FE5C-433B-B67D-B6A1BBD15B1D}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{7EBA4367-FE5C-433B-B67D-B6A1BBD15B1D}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{7EBA4367-FE5C-433B-B67D-B6A1BBD15B1D}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{7EBA4367-FE5C-433B-B67D-B6A1BBD15B1D}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{7EBA4367-FE5C-433B-B67D-B6A1BBD15B1D}.Debug|x86.Build.0 = Debug|Any CPU
+		{7EBA4367-FE5C-433B-B67D-B6A1BBD15B1D}.DebugVisual|Any CPU.ActiveCfg = Debug|Any CPU
+		{7EBA4367-FE5C-433B-B67D-B6A1BBD15B1D}.DebugVisual|Any CPU.Build.0 = Debug|Any CPU
+		{7EBA4367-FE5C-433B-B67D-B6A1BBD15B1D}.DebugVisual|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{7EBA4367-FE5C-433B-B67D-B6A1BBD15B1D}.DebugVisual|Mixed Platforms.Build.0 = Debug|Any CPU
+		{7EBA4367-FE5C-433B-B67D-B6A1BBD15B1D}.DebugVisual|Win32.ActiveCfg = Debug|Any CPU
+		{7EBA4367-FE5C-433B-B67D-B6A1BBD15B1D}.DebugVisual|x64.ActiveCfg = Debug|Any CPU
+		{7EBA4367-FE5C-433B-B67D-B6A1BBD15B1D}.DebugVisual|x86.ActiveCfg = Debug|Any CPU
+		{7EBA4367-FE5C-433B-B67D-B6A1BBD15B1D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7EBA4367-FE5C-433B-B67D-B6A1BBD15B1D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7EBA4367-FE5C-433B-B67D-B6A1BBD15B1D}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{7EBA4367-FE5C-433B-B67D-B6A1BBD15B1D}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{7EBA4367-FE5C-433B-B67D-B6A1BBD15B1D}.Release|Win32.ActiveCfg = Release|Any CPU
+		{7EBA4367-FE5C-433B-B67D-B6A1BBD15B1D}.Release|x64.ActiveCfg = Release|Any CPU
+		{7EBA4367-FE5C-433B-B67D-B6A1BBD15B1D}.Release|x86.ActiveCfg = Release|Any CPU
+		{7EBA4367-FE5C-433B-B67D-B6A1BBD15B1D}.ReleaseVisual|Any CPU.ActiveCfg = Release|Any CPU
+		{7EBA4367-FE5C-433B-B67D-B6A1BBD15B1D}.ReleaseVisual|Any CPU.Build.0 = Release|Any CPU
+		{7EBA4367-FE5C-433B-B67D-B6A1BBD15B1D}.ReleaseVisual|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{7EBA4367-FE5C-433B-B67D-B6A1BBD15B1D}.ReleaseVisual|Mixed Platforms.Build.0 = Release|Any CPU
+		{7EBA4367-FE5C-433B-B67D-B6A1BBD15B1D}.ReleaseVisual|Win32.ActiveCfg = Release|Any CPU
+		{7EBA4367-FE5C-433B-B67D-B6A1BBD15B1D}.ReleaseVisual|x64.ActiveCfg = Release|Any CPU
+		{7EBA4367-FE5C-433B-B67D-B6A1BBD15B1D}.ReleaseVisual|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

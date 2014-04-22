@@ -19,7 +19,13 @@ namespace Chimera.Experimental.GUI {
 
         public AvatarMovementControl(AvatarMovementPlugin plugin) : this() {
             mPlugin = plugin;
-            mPlugin.TargetChanged += new Action<string,OpenMetaverse.Vector3>(mPlugin_TargetChanged);
+            mPlugin.TargetChanged += new Action<string, Vector3>(mPlugin_TargetChanged);
+
+            pitchRatePanel.Value = (float) (mPlugin.Config as ExperimentalConfig).PitchRate;
+            yawRatePanel.Value = (float) (mPlugin.Config as ExperimentalConfig).YawRate;
+            moveRatePanel.Value = (mPlugin.Config as ExperimentalConfig).MoveRate;
+            distanceThresholdPanel.Value = (mPlugin.Config as ExperimentalConfig).DistanceThreshold;
+            heightOffsetPanel.Value = (mPlugin.Config as ExperimentalConfig).HeightOffset;
         }
 
         private void mPlugin_TargetChanged(string name, Vector3 position) {
@@ -44,6 +50,18 @@ namespace Chimera.Experimental.GUI {
 
         private void movePanel_ValueChanged(float obj) {
             (mPlugin.Config as ExperimentalConfig).MoveRate = moveRatePanel.Value;
+        }
+
+        private void targetThresholdPanel_ValueChanged(float obj) {
+            (mPlugin.Config as ExperimentalConfig).DistanceThreshold = distanceThresholdPanel.Value;
+        }
+
+        private void heightOffsetPanel_ValueChanged(float obj) {
+            (mPlugin.Config as ExperimentalConfig).HeightOffset = heightOffsetPanel.Value;
+        }
+
+        private void stopButton_Click(object sender, EventArgs e) {
+            mPlugin.Stop();
         }
     }
 }

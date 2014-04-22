@@ -38,6 +38,7 @@ namespace Chimera.Config {
         private string mWindow = "MainWindow";
         public bool Draw;
         public bool DrawEye;
+        public float FarClip;
 
         public FrameConfig() : base ("Frames", IGNORE_FRAME) { }
 
@@ -69,6 +70,8 @@ namespace Chimera.Config {
 
             Draw = GetFrame("Draw", true, "Whether to draw the window on the diagram.");
             DrawEye = GetFrame("DrawEye", true, "Whether to draw perspective lines for the window on the diagram.");
+
+            FarClip = Get("FarClip", 1024f, "FarClip Value to use when calculating the projection matrix.");
         }
     }
 }

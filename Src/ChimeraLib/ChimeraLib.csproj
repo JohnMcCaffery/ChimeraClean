@@ -72,10 +72,6 @@
     <Reference Include="Nini">
       <HintPath>..\..\Lib\Nini.dll</HintPath>
     </Reference>
-    <Reference Include="OpenMetaverseTypes, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Lib\OpenMetaverseTypes.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -260,7 +256,6 @@
     <None Include="Overlay.cd" />
     <None Include="Core.cd" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <EmbeddedResource Include="GUI\Controls\Plugins\AxisBasedDeltaPanel.resx">
       <DependentUpon>AxisBasedDeltaPanel.cs</DependentUpon>
@@ -333,6 +328,12 @@
       <Isolated>False</Isolated>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </COMReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\libopenmetaverse\OpenMetaverseTypes\OpenMetaverseTypes.csproj">
+      <Project>{7EBA4367-FE5C-433B-B67D-B6A1BBD15B1D}</Project>
+      <Name>OpenMetaverseTypes</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
