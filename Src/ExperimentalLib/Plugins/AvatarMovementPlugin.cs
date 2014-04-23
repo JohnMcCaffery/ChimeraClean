@@ -106,11 +106,23 @@ namespace Chimera.Experimental.Plugins {
         }
 
         private Vector3 Target {
-            get { return mTarget.Value + new Vector3(0f, 0f, mConfig.HeightOffset); }
+            //get { return mTarget.Value + new Vector3(0f, 0f, mConfig.HeightOffset); }
+            get { return mCore.ControlMode == ControlMode.Absolute ?
+                mTarget.Value + new Vector3(0f, 0f, mConfig.HeightOffset) :
+                new Vector3(mTarget.Value.X, mTarget.Value.Y, 0f); 
+            }
         }
 
         private Vector3 Position {
-            get { return mCore.ControlMode == ControlMode.Absolute ? mCore.Position : mMainController.AvatarPosition; }
+            //get { return mCore.ControlMode == ControlMode.Absolute ? mCore.Position : mMainController.AvatarPosition; }
+            get { 
+                Vector3 ret = mCore.Position;
+                if (mCore.ControlMode == ControlMode.Delta) {
+                    ret += mMainController.PositionOffset;
+                    ret.Z = 0f;
+                }
+                return ret;
+            }
         }
 
         private Rotation Orientation {
@@ -121,35 +133,58 @@ namespace Chimera.Experimental.Plugins {
             get { return new Rotation(Target - Position); }
         }
 
-        private bool mRotationComplete = false;
+        private Rotation GetRotationDelta(out bool move) {
+            Rotation delta = Turn - Orientation;
+            move = Math.Abs(delta.Yaw) < TargetAccuracy;
+            delta.Yaw = GetDelta(delta.Yaw);
+            //delta.Pitch = GetDelta(delta.Pitch);
+            delta.Pitch = 0;
+            return delta;
+        }
+
+        private double GetDelta(double delta) {
+            if (delta == 0)
+                return 0;
+
+            double slowStart = 4;
+            double sign = (delta >= 0 ? 1 : -1);
+            double absDelta = Math.Abs(delta);
+            if (absDelta > TargetAccuracy * slowStart)
+                return mConfig.TurnRate * sign;
+
+            if (absDelta > TargetAccuracy) {
+                double c = mConfig.TurnRate / 5;
+                double xDelta = (TargetAccuracy * slowStart) - TargetAccuracy;
+                double m = (mConfig.TurnRate - c) / xDelta;
+                return ((m * absDelta) + c) * sign;
+            }
+            
+            return Math.Min(absDelta, .005) * sign;
+        }
 
         void mCore_Tick() {
-            if (!AtTarget()) {
-                if (!mRotationComplete && !RotatedToTarget()) {
-                    Rotation delta = Turn - Orientation;
-                    if (Math.Abs(delta.Pitch) > mConfig.PitchRate)
-                        delta.Pitch = (delta.Pitch >= 0 ? 1 : -1) * mConfig.PitchRate;
-                    if (Math.Abs(delta.Yaw) > mConfig.YawRate)
-                        delta.Yaw = (delta.Yaw >= 0 ? 1 : -1) * mConfig.YawRate;
+            if (TargetDistance > mConfig.DistanceThreshold) {
+                bool move;
+                Rotation rotationDelta = GetRotationDelta(out move);
+                Rotation orientation = mCore.Orientation + rotationDelta;
 
-                    mCore.Update(mCore.Position, Vector3.Zero, mCore.Orientation + delta, delta);
-
-                    //mCore.Update(mCore.Position, Vector3.Zero, mTurn, delta);
-                    return;
+                if (!move && TargetDistance > (mConfig.DistanceThreshold * 4)) {
+                    mCore.Update(mCore.Position, Vector3.Zero, orientation, rotationDelta);
                 } else {
-                    mRotationComplete = true;
-                    Vector3 delta = Target - Position;
-                    if (delta.Length() > mConfig.MoveRate)
-                        delta *= mConfig.MoveRate / delta.Length();
+
+                    Vector3 moveDelta = Target - Position;
+                    if (moveDelta.Length() > mConfig.MoveRate)
+                        moveDelta *= mConfig.MoveRate / moveDelta.Length();
+
+                    Vector3 position = mCore.Position + moveDelta;
 
                     if (mCore.ControlMode == ControlMode.Absolute)
-                        mCore.Update(mCore.Position + delta, delta, mCore.Orientation, Rotation.Zero);
+                        mCore.Update(position, moveDelta, orientation, rotationDelta);
                     else
-                        mCore.Update(mCore.Position + delta, new Vector3(mConfig.MoveRate, 0f, 0f), mCore.Orientation, Rotation.Zero);
+                        mCore.Update(position, new Vector3(mConfig.MoveRate, 0f, 0f), orientation, rotationDelta);
                 }
             } else {
                 mCore.Update(mCore.Position, Vector3.Zero, mCore.Orientation, Rotation.Zero);
-                mRotationComplete = false;
                 if (++mTargetIndex < mTargets.Count) {
                     mTarget = mTargets[mTargetIndex];
                     //Turn = new Rotation(Target - mCore.Position);
@@ -163,24 +198,25 @@ namespace Chimera.Experimental.Plugins {
         }
 
         private bool RotatedToTarget() {
-            Console.Write("Yaw: " + (Orientation.Yaw - Turn.Yaw) + " - Pitch: " + (Orientation.Pitch - Turn.Pitch));
-            bool ret = AreClose(Orientation.Yaw, Turn.Yaw) && AreClose(Orientation.Pitch, Turn.Pitch);
-            Console.WriteLine();
+            //Console.Write("Yaw: " + (Orientation.Yaw - Turn.Yaw) + " - Pitch: " + (Orientation.Pitch - Turn.Pitch));
+            bool ret = AreClose(Orientation.Yaw, Turn.Yaw);
+            if (mCore.ControlMode == ControlMode.Absolute)
+                ret = ret && AreClose(Orientation.Pitch, Turn.Pitch);
+            //Console.WriteLine();
             return ret;
         }
 
-        private bool AtTarget() {
-            //Vector3 delta = (Target - Position);
-            //Console.WriteLine(delta + "    " + delta.Length());
-            return (Target - Position).Length() < mConfig.DistanceThreshold;
-        }
+        private float TargetDistance {
+            get { return (Target - Position).Length(); }
+        }
+
         private bool AreClose(double a, double b) {
-            Console.Write(" Diff: " + Math.Abs(a - b) + " - ret: " + (Math.Abs(a - b) < TargetAccuracy));
+            //Console.Write(" Diff: " + Math.Abs(a - b) + " - ret: " + (Math.Abs(a - b) < TargetAccuracy));
             return Math.Abs(a - b) < TargetAccuracy;
         }
 
         private double TargetAccuracy {
-            get { return mCore.ControlMode == ControlMode.Absolute ? .0000000001 : .4; }
+            get { return mCore.ControlMode == ControlMode.Absolute ? .0000000001 : (mConfig.TurnRate * 1.5); }
         }
 
 

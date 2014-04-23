@@ -54,6 +54,10 @@ namespace Chimera.OpenSim {
         private ProxyControllerBase mProxyController;
         private ViewerController mViewerController;
 
+        public Vector3 PositionOffset {
+            get { return mProxyController.PositionOffset; }
+        }
+
         public Vector3 AvatarPosition {
             get { return mProxyController.AvatarPosition; }
         }

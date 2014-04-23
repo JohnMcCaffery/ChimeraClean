@@ -39,6 +39,7 @@ namespace Chimera.OpenSim {
         private int mUnackedCountThresh = 40;
         private long mUnackedDiscardMS = 1000;
 
+        private Vector3 mPositionOffset;
         private Vector3 mAvatarPosition;
         private Rotation mAvatarOrientation;
         private bool mTrackingAvatarPosition;
@@ -47,6 +48,19 @@ namespace Chimera.OpenSim {
             get { return mLastUpdatePacket; }
             set { mLastUpdatePacket = value; }
         }
+        public Vector3 Offset {
+            get { return mOffset; }
+            set {
+                mOffset = value;
+                if (Started)
+                    SetCamera();
+            }
+        }
+
+        public Vector3 PositionOffset {
+            get { return mPositionOffset; }
+        }
+
         public Vector3 AvatarPosition {
             get {
                 if (!LoggedIn)
@@ -84,6 +98,7 @@ namespace Chimera.OpenSim {
             //if (packet.ObjectData[0].Data[0x5] == 1 && (new UUID(packet.ObjectData[0].Data, 0)) == mAgentID) {
             if (packet.ObjectData[0].Data[0x5] != 0/* && (new UUID(packet.ObjectData[0].Data, 0)) == mAgentID*/) {
                 mAvatarPosition = new Vector3(packet.ObjectData[0].Data, 0x16);
+                mPositionOffset = mAvatarPosition - mFrame.Core.Position;
                 Quaternion rotation = Quaternion.Identity;
 
                 // Rotation (theta)
@@ -378,15 +393,6 @@ namespace Chimera.OpenSim {
                     mProxy.InjectPacket(mCameraPacket, Direction.Incoming);
                     mCameraPacket = null;
                 }
-        }
-
-        public Vector3 Offset {
-            get { return mOffset; }
-            set {
-                mOffset = value;
-                if (Started)
-                    SetCamera();
-            }
         }
     }
 }

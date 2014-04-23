@@ -21,8 +21,7 @@ namespace Chimera.Experimental.GUI {
             mPlugin = plugin;
             mPlugin.TargetChanged += new Action<string, Vector3>(mPlugin_TargetChanged);
 
-            pitchRatePanel.Value = (float) (mPlugin.Config as ExperimentalConfig).PitchRate;
-            yawRatePanel.Value = (float) (mPlugin.Config as ExperimentalConfig).YawRate;
+            turnRatePanel.Value = (float) (mPlugin.Config as ExperimentalConfig).TurnRate;
             moveRatePanel.Value = (mPlugin.Config as ExperimentalConfig).MoveRate;
             distanceThresholdPanel.Value = (mPlugin.Config as ExperimentalConfig).DistanceThreshold;
             heightOffsetPanel.Value = (mPlugin.Config as ExperimentalConfig).HeightOffset;
@@ -40,12 +39,8 @@ namespace Chimera.Experimental.GUI {
             mPlugin.Start();
         }
 
-        private void yawRatePanel_ValueChanged(float obj) {
-            (mPlugin.Config as ExperimentalConfig).YawRate = yawRatePanel.Value;
-        }
-
-        private void pitchPanel_ValueChanged(float obj) {
-            (mPlugin.Config as ExperimentalConfig).PitchRate = pitchRatePanel.Value;
+        private void turnRatePanel_ValueChanged(float obj) {
+            (mPlugin.Config as ExperimentalConfig).TurnRate = turnRatePanel.Value;
         }
 
         private void movePanel_ValueChanged(float obj) {
