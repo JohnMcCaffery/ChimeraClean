@@ -62,13 +62,13 @@
             this.turnRatePanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.turnRatePanel.Location = new System.Drawing.Point(3, 32);
-            this.turnRatePanel.Max = 1F;
+            this.turnRatePanel.Max = 2F;
             this.turnRatePanel.Min = 0F;
             this.turnRatePanel.MinimumSize = new System.Drawing.Size(95, 20);
             this.turnRatePanel.Name = "turnRatePanel";
             this.turnRatePanel.Size = new System.Drawing.Size(298, 20);
             this.turnRatePanel.TabIndex = 2;
-            this.turnRatePanel.Value = 0.005F;
+            this.turnRatePanel.Value = 0.85F;
             this.turnRatePanel.ValueChanged += new System.Action<float>(this.turnRatePanel_ValueChanged);
             // 
             // moveRatePanel
