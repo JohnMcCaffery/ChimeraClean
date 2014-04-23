@@ -10,6 +10,8 @@ using System.Xml;
 using System.IO;
 using log4net;
 using Chimera.Util;
+using System.Windows.Forms;
+using System.Threading;
 
 namespace Chimera.Experimental.Plugins {
     public class AvatarMovementPlugin : XmlLoader, ISystemPlugin {
@@ -21,6 +23,7 @@ namespace Chimera.Experimental.Plugins {
         private ExperimentalConfig mConfig = new ExperimentalConfig();
         private AvatarMovementControl mPanel;
         private Action mTickListener;
+        private Form mForm;
 
         private List<KeyValuePair<string, Vector3>> mTargets = new List<KeyValuePair<string, Vector3>>();
         private KeyValuePair<string, Vector3> mTarget;
@@ -87,29 +90,45 @@ namespace Chimera.Experimental.Plugins {
                         break;
                     }
                 }
-
             }
         }
 
         public event Action<string, Vector3> TargetChanged;
 
         public void Start() {
-            if (mTargets.Count > 0) {
-                mTargetIndex = 0;
-                mTarget = mTargets[mTargetIndex];
-                //Turn = new Rotation(Target - Position);
-                if (TargetChanged != null)
-                    TargetChanged(mTarget.Key, Target);
-                mCore.Tick += new Action(mCore_Tick);
-            }
+            Action start = () => {
+                if (mTargets.Count > 0) {
+                    Logger.Info("Starting loop.");
+                    mCore.ControlMode = mConfig.Mode;
+                    if (mConfig.StartAtHome)
+                        mMainController.ViewerController.PressKey("H", true, false, true);
+                    mTargetIndex = 0;
+                    mTarget = mTargets[mTargetIndex];
+                    if (TargetChanged != null)
+                        TargetChanged(mTarget.Key, Target);
+                    mCore.Tick += new Action(mCore_Tick);
+                } else {
+                    Logger.Info("No targets loaded. Unable to start loop.");
+                }
+            };
 
+            if (mConfig.StartWaitMS > 0) {
+                Thread t = new Thread(() => {
+                Logger.Info("Waiting " + mConfig.StartWaitMS + "MS before starting loop.");
+                    Thread.Sleep(mConfig.StartWaitMS);
+                    start();
+                });
+                t.Name = "WalkBotStartWait";
+                t.Start();
+            } else
+                start();
         }
 
         private Vector3 Target {
-            //get { return mTarget.Value + new Vector3(0f, 0f, mConfig.HeightOffset); }
-            get { return mCore.ControlMode == ControlMode.Absolute ?
-                mTarget.Value + new Vector3(0f, 0f, mConfig.HeightOffset) :
-                new Vector3(mTarget.Value.X, mTarget.Value.Y, 0f); 
+            get { 
+                return mCore.ControlMode == ControlMode.Absolute ?
+                    mTarget.Value + new Vector3(0f, 0f, mConfig.HeightOffset) :
+                    new Vector3(mTarget.Value.X, mTarget.Value.Y, 0f); 
             }
         }
 
@@ -193,6 +212,8 @@ namespace Chimera.Experimental.Plugins {
                 } else {
                     Logger.Info("Finished walking route.");
                     mCore.Tick -= mTickListener;
+                    if (mConfig.AutoShutdown)
+                        mForm.Invoke(new Action(() => mForm.Close()));
                 }
             }
         }
@@ -225,13 +246,21 @@ namespace Chimera.Experimental.Plugins {
         public void Init(Core core) {
             mCore = core;
             mMainController = mCore.GetPlugin<OpenSimController>();
+            mMainController.ClientLoginComplete += new EventHandler(mMainController_CLientLoginComplete);
             foreach (var controller in core.Frames.Select(f => f.Output as OpenSimController))
                 mController.Add(controller.Frame.Name, controller);
 
             LoadTargets();
         }
 
-        public void SetForm(System.Windows.Forms.Form form) { }
+        void mMainController_CLientLoginComplete(object sender, EventArgs e) {
+            if (Enabled && mConfig.AutoStart)
+                Start();
+        }
+
+        public void SetForm(System.Windows.Forms.Form form) {
+            mForm = form;
+        }
 
         #endregion
 
@@ -254,6 +283,7 @@ namespace Chimera.Experimental.Plugins {
                     mEnabled = value;
                     if (!value)
                         mCore.Tick -= mTickListener;
+
                     if (EnabledChanged != null)
                         EnabledChanged(this, value);
                 }
