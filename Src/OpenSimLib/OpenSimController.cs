@@ -54,6 +54,8 @@ namespace Chimera.OpenSim {
         private ProxyControllerBase mProxyController;
         private ViewerController mViewerController;
 
+        public event EventHandler ClientLoginComplete;
+
         public Vector3 PositionOffset {
             get { return mProxyController.PositionOffset; }
         }
@@ -392,6 +394,9 @@ namespace Chimera.OpenSim {
 
                 if (mManager != null)
                     mManager.BringToFront();
+
+                if (ClientLoginComplete != null)
+                    ClientLoginComplete(sender, null);
             }).Start();
 
 
