@@ -71,6 +71,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Lib\Nini.dll</HintPath>
     </Reference>
+    <Reference Include="OpenMetaverse, Version=0.0.0.16439, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Lib\OpenMetaverse.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -95,8 +99,15 @@
     <Compile Include="GUI\MovementTrackerControl.Designer.cs">
       <DependentUpon>MovementTrackerControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="GUI\RecorderControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\RecorderControl.Designer.cs">
+      <DependentUpon>RecorderControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Overlay\FPSRecorder.cs" />
     <Compile Include="Plugins\AvatarMovementPlugin.cs" />
+    <Compile Include="Plugins\RecorderPlugin.cs" />
     <Compile Include="Plugins\MovementTracker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -128,6 +139,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\MovementTrackerControl.resx">
       <DependentUpon>MovementTrackerControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\RecorderControl.resx">
+      <DependentUpon>RecorderControl.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

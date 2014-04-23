@@ -30,6 +30,7 @@ namespace Chimera.Experimental.Overlay {
     public class FPSRecorderState : State {
         private ILog Logger = LogManager.GetLogger(typeof(FPSRecorderState));
         private FlythroughPlugin mFlythroughPlugin;
+        private ExperimentalConfig mConfig;
         private string mFolder;
         private string mFlythrough;
 
@@ -47,51 +48,7 @@ namespace Chimera.Experimental.Overlay {
         protected override void TransitionToStart() { }
 
         protected override void TransitionToFinish() {
-
-            string started = DateTime.Now.ToString("yyyy.MM.dd.HH.mm");
-
-            string dir = Path.Combine(mFolder, started);
-
-            if (!Directory.Exists(dir))
-                Directory.CreateDirectory(dir);
-
-            foreach (var frame in Manager.Core.Frames) {
-                OpenSimController OSOut = frame.Output as OpenSimController;
-                if (OSOut != null && OSOut.ViewerController.Started) {
-                    OSOut.ViewerController.PressKey("s", true, true, true);
-                    /*
-                    OSOut.ViewerController.PressKey("U");
-                    OSOut.ViewerController.PressKey("s");
-                    OSOut.ViewerController.PressKey("e");
-                    OSOut.ViewerController.PressKey("r");
-                    OSOut.ViewerController.PressKey("L");
-                    OSOut.ViewerController.PressKey("{TAB}");
-                    OSOut.ViewerController.PressKey("{TAB}");
-                    OSOut.ViewerController.PressKey("{TAB}");
-                    OSOut.ViewerController.PressKey("{DEL}");
-
-                    string file = Path.Combine(dir, started + "-" + frame.Name + ".log");
-                    foreach (char c in file)
-                        OSOut.ViewerController.PressKey(c + "");
-                    */
-
-                    //Select the correct setting
-                    OSOut.ViewerController.SendString("UserL");
-                    OSOut.ViewerController.PressKey("{TAB}");
-                    OSOut.ViewerController.PressKey("{TAB}");
-                    OSOut.ViewerController.PressKey("{TAB}");
-                    //Delete the old value
-                    OSOut.ViewerController.PressKey("{DEL}");
-
-                    //Set the filename
-                    string file = Path.Combine(dir, started + "-" + frame.Name + ".log");
-                    OSOut.ViewerController.SendString(file);
-
-                    //Save filename and close window
-                    OSOut.ViewerController.PressKey("{TAB}");
-                    OSOut.ViewerController.PressKey("W", true, false, false);
-                }
-            }
+            mConfig.SetupFPSLogs(mFlythroughPlugin.Core, "");
 
             if (mFlythroughPlugin != null) {
                 mFlythroughPlugin.Enabled = true;

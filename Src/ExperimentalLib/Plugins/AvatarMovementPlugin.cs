@@ -17,7 +17,6 @@ namespace Chimera.Experimental.Plugins {
     public class AvatarMovementPlugin : XmlLoader, ISystemPlugin {
         private ILog Logger = LogManager.GetLogger("AvatarMovementPlugin");
         private bool mEnabled;
-        private Dictionary<string, OpenSimController> mController = new Dictionary<string,OpenSimController>();
         private OpenSimController mMainController;
         private Core mCore;
         private ExperimentalConfig mConfig = new ExperimentalConfig();
@@ -99,9 +98,12 @@ namespace Chimera.Experimental.Plugins {
             Action start = () => {
                 if (mTargets.Count > 0) {
                     Logger.Info("Starting loop.");
-                    mCore.ControlMode = mConfig.Mode;
                     if (mConfig.StartAtHome)
                         mMainController.ViewerController.PressKey("H", true, false, true);
+
+                    if (mConfig.SaveResults)
+                        mConfig.SetupFPSLogs(mCore, "-" + mCore.ControlMode);
+
                     mTargetIndex = 0;
                     mTarget = mTargets[mTargetIndex];
                     if (TargetChanged != null)
@@ -112,6 +114,7 @@ namespace Chimera.Experimental.Plugins {
                 }
             };
 
+            mCore.ControlMode = mConfig.Mode;
             if (mConfig.StartWaitMS > 0) {
                 Thread t = new Thread(() => {
                 Logger.Info("Waiting " + mConfig.StartWaitMS + "MS before starting loop.");
@@ -145,7 +148,7 @@ namespace Chimera.Experimental.Plugins {
         }
 
         private Rotation Orientation {
-            get { return mCore.ControlMode == ControlMode.Absolute ? mCore.Orientation : mMainController.AvatarOrientation; }
+            get { return mCore.Orientation; }
         }
 
         private Rotation Turn {
@@ -247,8 +250,6 @@ namespace Chimera.Experimental.Plugins {
             mCore = core;
             mMainController = mCore.GetPlugin<OpenSimController>();
             mMainController.ClientLoginComplete += new EventHandler(mMainController_CLientLoginComplete);
-            foreach (var controller in core.Frames.Select(f => f.Output as OpenSimController))
-                mController.Add(controller.Frame.Name, controller);
 
             LoadTargets();
         }
