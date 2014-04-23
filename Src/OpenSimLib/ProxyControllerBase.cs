@@ -39,9 +39,80 @@ namespace Chimera.OpenSim {
         private int mUnackedCountThresh = 40;
         private long mUnackedDiscardMS = 1000;
 
+        private Vector3 mPositionOffset;
+        private Vector3 mAvatarPosition;
+        private Rotation mAvatarOrientation;
+        private bool mTrackingAvatarPosition;
+
         public DateTime LastUpdatePacket {
             get { return mLastUpdatePacket; }
             set { mLastUpdatePacket = value; }
+        }
+        public Vector3 Offset {
+            get { return mOffset; }
+            set {
+                mOffset = value;
+                if (Started)
+                    SetCamera();
+            }
+        }
+
+        public Vector3 PositionOffset {
+            get { return mPositionOffset; }
+        }
+
+        public Vector3 AvatarPosition {
+            get {
+                if (!LoggedIn)
+                    return Vector3.Zero;
+
+                if (!mTrackingAvatarPosition)
+                    InitAvatarTracking();
+
+                return mAvatarPosition;
+            }
+        }
+
+        public Rotation AvatarOrientation {
+            get {
+                if (!LoggedIn)
+                    return Rotation.Zero;
+
+                if (!mTrackingAvatarPosition)
+                    InitAvatarTracking();
+
+                return mAvatarOrientation;
+            }
+        }
+
+        private void InitAvatarTracking() {
+            mTrackingAvatarPosition = true;
+            mAvatarPosition = Vector3.Zero;
+            mAvatarOrientation = Rotation.Zero;
+            mProxy.AddDelegate(PacketType.ImprovedTerseObjectUpdate, Direction.Incoming, mProxy_ImprovedTerseListener);
+        }
+
+        private Packet mProxy_ImprovedTerseListener(Packet p, IPEndPoint ep) {
+            ImprovedTerseObjectUpdatePacket packet = p as ImprovedTerseObjectUpdatePacket;
+
+            //if (packet.ObjectData[0].Data[0x5] == 1 && (new UUID(packet.ObjectData[0].Data, 0)) == mAgentID) {
+            if (packet.ObjectData[0].Data[0x5] != 0/* && (new UUID(packet.ObjectData[0].Data, 0)) == mAgentID*/) {
+                mAvatarPosition = new Vector3(packet.ObjectData[0].Data, 0x16);
+                mPositionOffset = mAvatarPosition - mFrame.Core.Position;
+                Quaternion rotation = Quaternion.Identity;
+
+                // Rotation (theta)
+                rotation = new Quaternion(
+                    Utils.UInt16ToFloat(packet.ObjectData[0].Data, 0x2E, -1.0f, 1.0f),
+                    Utils.UInt16ToFloat(packet.ObjectData[0].Data, 0x2E + 2, -1.0f, 1.0f),
+                    Utils.UInt16ToFloat(packet.ObjectData[0].Data, 0x2E + 4, -1.0f, 1.0f),
+                    Utils.UInt16ToFloat(packet.ObjectData[0].Data, 0x2E + 6, -1.0f, 1.0f));
+
+                //mAvatarOrientation = new Rotation(rotation);
+                mAvatarOrientation = Frame.Core.Orientation;
+            }
+
+            return p;
         }
 
         /// <summary>
@@ -322,15 +393,6 @@ namespace Chimera.OpenSim {
                     mProxy.InjectPacket(mCameraPacket, Direction.Incoming);
                     mCameraPacket = null;
                 }
-        }
-
-        public Vector3 Offset {
-            get { return mOffset; }
-            set {
-                mOffset = value;
-                if (Started)
-                    SetCamera();
-            }
         }
     }
 }

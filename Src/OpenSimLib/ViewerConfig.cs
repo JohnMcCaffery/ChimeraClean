@@ -65,6 +65,7 @@ namespace Chimera.OpenSim {
         public bool ControlCameraPosition;
         public OpenMetaverse.Vector3 Offset;
         public int StartStagger;
+        public bool BlockOnViewerShutdown;
 
         public override string Group {
             get { return "SecondLifeViewer"; }
@@ -104,6 +105,8 @@ namespace Chimera.OpenSim {
                 "http://mimuve.cs.st-andrews.ac.uk:8002", 
                 "http://192.168.1.101:9000", 
                 "http://localhost:9000 ");
+
+            BlockOnViewerShutdown = Get("BlockOnViewerShutdown", false, "Whether to block while the viewer is being shutdown as the system is shut down. If true the GUI might become unresponsive during shutdown but viewer is more likely to exit correctly."); 
 
             ControlCameraPosition = Get("ControlCameraOffset", false, "Whether to use SetFollowCamProperties packets to control the camera position.");
             AllowFly = Get("AllowFly", false, "Whether to allow the avatar to fly in delta mode.");
