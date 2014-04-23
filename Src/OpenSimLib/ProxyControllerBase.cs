@@ -24,6 +24,7 @@ namespace Chimera.OpenSim {
         private UUID mSecureSessionID = UUID.Zero;
         private UUID mSessionID = UUID.Zero;
         private UUID mAgentID = UUID.Zero;
+        private uint mLocalID = 0;
         private string mFirstName = "NotLoggedIn";
         private string mLastName = "NotLoggedIn";
         private string mLoginURI;
@@ -42,7 +43,9 @@ namespace Chimera.OpenSim {
         private Vector3 mPositionOffset;
         private Vector3 mAvatarPosition;
         private Rotation mAvatarOrientation;
-        private bool mTrackingAvatarPosition;
+        private bool mParseImprovedTerseObjectUpdatePackets;
+
+        private PacketDelegate mObjectUpdateListener;
 
         public DateTime LastUpdatePacket {
             get { return mLastUpdatePacket; }
@@ -58,7 +61,15 @@ namespace Chimera.OpenSim {
         }
 
         public Vector3 PositionOffset {
-            get { return mPositionOffset; }
+            get { 
+                if (!LoggedIn)
+                    return Vector3.Zero;
+
+                if (!mParseImprovedTerseObjectUpdatePackets && mViewerConfig.GetLocalID)
+                    InitAvatarTracking();
+
+                return mPositionOffset;
+            }
         }
 
         public Vector3 AvatarPosition {
@@ -66,7 +77,7 @@ namespace Chimera.OpenSim {
                 if (!LoggedIn)
                     return Vector3.Zero;
 
-                if (!mTrackingAvatarPosition)
+                if (!mParseImprovedTerseObjectUpdatePackets && mViewerConfig.GetLocalID)
                     InitAvatarTracking();
 
                 return mAvatarPosition;
@@ -78,7 +89,7 @@ namespace Chimera.OpenSim {
                 if (!LoggedIn)
                     return Rotation.Zero;
 
-                if (!mTrackingAvatarPosition)
+                if (!mParseImprovedTerseObjectUpdatePackets && mViewerConfig.GetLocalID)
                     InitAvatarTracking();
 
                 return mAvatarOrientation;
@@ -86,33 +97,10 @@ namespace Chimera.OpenSim {
         }
 
         private void InitAvatarTracking() {
-            mTrackingAvatarPosition = true;
+            mParseImprovedTerseObjectUpdatePackets = true;
             mAvatarPosition = Vector3.Zero;
             mAvatarOrientation = Rotation.Zero;
-            mProxy.AddDelegate(PacketType.ImprovedTerseObjectUpdate, Direction.Incoming, mProxy_ImprovedTerseListener);
-        }
-
-        private Packet mProxy_ImprovedTerseListener(Packet p, IPEndPoint ep) {
-            ImprovedTerseObjectUpdatePacket packet = p as ImprovedTerseObjectUpdatePacket;
-
-            //if (packet.ObjectData[0].Data[0x5] == 1 && (new UUID(packet.ObjectData[0].Data, 0)) == mAgentID) {
-            if (packet.ObjectData[0].Data[0x5] != 0/* && (new UUID(packet.ObjectData[0].Data, 0)) == mAgentID*/) {
-                mAvatarPosition = new Vector3(packet.ObjectData[0].Data, 0x16);
-                mPositionOffset = mAvatarPosition - mFrame.Core.Position;
-                Quaternion rotation = Quaternion.Identity;
-
-                // Rotation (theta)
-                rotation = new Quaternion(
-                    Utils.UInt16ToFloat(packet.ObjectData[0].Data, 0x2E, -1.0f, 1.0f),
-                    Utils.UInt16ToFloat(packet.ObjectData[0].Data, 0x2E + 2, -1.0f, 1.0f),
-                    Utils.UInt16ToFloat(packet.ObjectData[0].Data, 0x2E + 4, -1.0f, 1.0f),
-                    Utils.UInt16ToFloat(packet.ObjectData[0].Data, 0x2E + 6, -1.0f, 1.0f));
-
-                //mAvatarOrientation = new Rotation(rotation);
-                mAvatarOrientation = Frame.Core.Orientation;
-            }
-
-            return p;
+            mProxy.AddDelegate(PacketType.ImprovedTerseObjectUpdate, Direction.Incoming, mProxy_ImprovedTerseObjectUpdatePacketReceived);
         }
 
         /// <summary>
@@ -173,6 +161,7 @@ namespace Chimera.OpenSim {
             }
 
             mAgentUpdateListener = new PacketDelegate(mProxy_AgentUpdatePacketReceived);
+            mObjectUpdateListener = new PacketDelegate(mProxy_ObjectUpdatePacketReceived);
         }
 
         public bool StartProxy(int port, string loginURI) {
@@ -201,6 +190,10 @@ namespace Chimera.OpenSim {
                 mProxy = new Proxy(mConfig);
                 mProxy.AddLoginResponseDelegate(mProxy_LoginResponse);
                 mProxy.AddDelegate(PacketType.AgentUpdate, Direction.Outgoing, mProxy_AgentUpdatePacketReceived);
+                if (mViewerConfig.GetLocalID) {
+                    mLocalID = 0;
+                    mProxy.AddDelegate(PacketType.ObjectUpdate, Direction.Incoming, mObjectUpdateListener);
+                }
 
                 ThisLogger.Info("Proxying " + mConfig.remoteLoginUri);
                 mProxy.Start();
@@ -266,7 +259,7 @@ namespace Chimera.OpenSim {
             }).Start();
         }
 
-        Packet mProxy_AgentUpdatePacketReceived(Packet p, IPEndPoint ep) {
+        private Packet mProxy_AgentUpdatePacketReceived(Packet p, IPEndPoint ep) {
             AgentUpdatePacket packet = p as AgentUpdatePacket;
             Vector3 pos = packet.AgentData.CameraCenter;
             mLastUpdatePacket = DateTime.Now;
@@ -288,6 +281,46 @@ namespace Chimera.OpenSim {
 
             if (pPositionChanged != null)
                 pPositionChanged(pos, new Rotation(packet.AgentData.CameraAtAxis));
+            return p;
+        }
+
+        private Packet mProxy_ObjectUpdatePacketReceived(Packet p, IPEndPoint ep) {
+            ObjectUpdatePacket packet = p as ObjectUpdatePacket;
+            foreach (var block in packet.ObjectData) {
+                if (block.FullID == mAgentID) {
+                    mLocalID = block.ID;
+                    return p;
+                }
+            }
+            return p;
+        }
+
+        private Packet mProxy_ImprovedTerseObjectUpdatePacketReceived(Packet p, IPEndPoint ep) {
+            if (mLocalID != 0 && mProxy != null)
+                mProxy.RemoveDelegate(PacketType.ObjectUpdate, Direction.Incoming, mObjectUpdateListener);
+
+            ImprovedTerseObjectUpdatePacket packet = p as ImprovedTerseObjectUpdatePacket;
+
+            foreach (var block in packet.ObjectData) {
+                uint localid = Utils.BytesToUInt(block.Data, 0);
+
+                if (block.Data[0x5] != 0 && localid == mLocalID) {
+                    mAvatarPosition = new Vector3(block.Data, 0x16);
+                    mPositionOffset = mAvatarPosition - mFrame.Core.Position;
+                    Quaternion rotation = Quaternion.Identity;
+
+                    // Rotation (theta)
+                    rotation = new Quaternion(
+                        Utils.UInt16ToFloat(block.Data, 0x2E, -1.0f, 1.0f),
+                        Utils.UInt16ToFloat(block.Data, 0x2E + 2, -1.0f, 1.0f),
+                        Utils.UInt16ToFloat(block.Data, 0x2E + 4, -1.0f, 1.0f),
+                        Utils.UInt16ToFloat(block.Data, 0x2E + 6, -1.0f, 1.0f));
+
+                    mAvatarOrientation = new Rotation(rotation);
+                    //mAvatarOrientation = Frame.Core.Orientation;
+                }
+            }
+
             return p;
         }
 

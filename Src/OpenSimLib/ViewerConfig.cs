@@ -28,7 +28,7 @@ using OpenMetaverse;
 using log4net;
 
 namespace Chimera.OpenSim {
-    internal class ViewerConfig : ConfigFolderBase {
+    public class ViewerConfig : ConfigFolderBase {
         public static readonly string DEFAULT_LOGINURI = "http://localhost:9000";
         public static readonly string DEFAULT_CLIENT_EXE = "C:\\Program Files (x86)\\Firestorm-Release\\Firestorm-Release.exe";
         public static readonly string DEFAULT_MASTER_ADDRESS = "127.0.0.1";
@@ -54,6 +54,8 @@ namespace Chimera.OpenSim {
         public bool ControlCamera;
         public Fill Fill = Fill.Windowed;
         public int ProxyPort;
+
+        public bool GetLocalID;
 
         public bool BackwardsCompatible;
         public string StartupKeyPresses;
@@ -96,6 +98,8 @@ namespace Chimera.OpenSim {
             ViewerToggleHUDKey = GetStr("ViewerToggleHUDKey", "%^{F1}", "The key press that will toggle the HUD on and off in the viewer.");
             UseGrid = Get("UseGrid", false, "Whether to login using the --grid or --loginuri command line parameter to specify the login target.");
             DeltaScale = Get("DeltaScale", .25f, "How much to scale delta values by when using remote control.");
+
+            GetLocalID = Get("GetLocalID", false, "Whether to check all ObjectUpdate packets until the local ID for the logged in agent is parsed. Required for requesting AvatarPosition and AvatarOrientation.");
 
             ProxyLoginURI = GetStr("LoginURI", DEFAULT_LOGINURI, "The URI of the server the proxy should proxy.", 
                 "http://192.168.1.181:9000", 

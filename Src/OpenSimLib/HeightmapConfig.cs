@@ -24,15 +24,16 @@ using System.Text;
 using Chimera.Util;
 using OpenMetaverse;
 using Chimera.Config;
+using Chimera.OpenSim.Interfaces;
 
 namespace Chimera.OpenSim {
-    public class HeightmapConfig : ConfigFolderBase {
-        public string FirstName;
-        public string LastName;
-        public string Password;
-        public Vector3 StartLocation;
-        public string StartIsland;
-        public bool AutoLogin;
+    public class HeightmapConfig : ConfigFolderBase, IOpensimBotConfig {
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string Password { get; set; }
+        public Vector3 StartLocation { get; set; }
+        public string StartIsland { get; set; }
+        public bool AutoLogin { get; set; }
         public bool AutoLogout;
 
         public override string Group {

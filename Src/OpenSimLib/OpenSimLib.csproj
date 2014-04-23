@@ -89,6 +89,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BackwardCompatibleController.cs" />
+    <Compile Include="Interfaces\IOpensimBotConfig.cs" />
+    <Compile Include="OpensimBotPlugin.cs" />
     <Compile Include="FullController.cs" />
     <Compile Include="GUI\InputPanel.cs">
       <SubType>UserControl</SubType>
@@ -102,11 +104,11 @@
     <Compile Include="GUI\OutputPanel.designer.cs">
       <DependentUpon>OutputPanel.cs</DependentUpon>
     </Compile>
-    <Compile Include="GUI\HeightmapInputPanel.cs">
+    <Compile Include="GUI\OpensimBotPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="GUI\HeightmapInputPanel.designer.cs">
-      <DependentUpon>HeightmapInputPanel.cs</DependentUpon>
+    <Compile Include="GUI\OpensimBotPanel.designer.cs">
+      <DependentUpon>OpensimBotPanel.cs</DependentUpon>
     </Compile>
     <Compile Include="HeightmapConfig.cs" />
     <Compile Include="HeightmapPlugin.cs" />
@@ -150,10 +152,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\OutputPanel.resx">
       <DependentUpon>OutputPanel.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="GUI\HeightmapInputPanel.resx">
-      <DependentUpon>HeightmapInputPanel.cs</DependentUpon>
-      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />

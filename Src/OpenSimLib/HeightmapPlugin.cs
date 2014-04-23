@@ -29,44 +29,38 @@ using System.Threading;
 using System.Drawing;
 using Chimera.Config;
 using log4net;
+using Chimera.OpenSim.Interfaces;
 
 namespace Chimera.OpenSim {
-    public class HeightmapPlugin : ISystemPlugin {
+    public class HeightmapPlugin : OpensimBotPlugin {
         private readonly ILog ThisLogger = LogManager.GetLogger("Heightmap");
         private readonly Dictionary<ulong, HashSet<string>> mMappedParcels = new Dictionary<ulong, HashSet<string>>();
         private readonly HashSet<ulong> mFinishedRegions = new HashSet<ulong>();
 
-        private  GridClient Client = new GridClient();
         private Core mCoordinator;
-        private HeightmapConfig mConfig;
-        private HeightmapInputPanel mPanel;
-        private bool mLoggedIn;
-        private bool mEnabled;
-        private bool mLoggingOut;
+        private HeightmapConfig mConfig = new HeightmapConfig();
         private Point mStartLocation;
         private object mGridLayerWait = new object();
         private string mCurrentRegion;
-
-
-        public event Action<bool> LoggedInChanged;
-
-        public event Action LoginFailed;
-
-        public bool LoggedIn {
-            get { return mLoggedIn; }
-        }
-
-        public string LoginFailMessage {
-            get { return Client.Network.LoginErrorKey; }
-        }
 
         public HeightmapPlugin() {
             mConfig = new HeightmapConfig();
         }
 
-        void Network_LoggedOut(object sender, LoggedOutEventArgs e) {
-            mLoggedIn = false;
-            mLoggingOut = false;
+        protected override IOpensimBotConfig BotConfig {
+            get { return mConfig; }
+        }
+
+        protected override void OnLoggedIn() {
+            Client.Terrain.LandPatchReceived += Terrain_LandPatchReceived;
+            mCurrentRegion = Client.Network.CurrentSim.Name;
+        }
+
+        protected override void OnLoggingOut() {
+            Client.Terrain.LandPatchReceived -= Terrain_LandPatchReceived;
+        }
+
+        protected override void OnLoggedOut() {
         }
 
         void Terrain_LandPatchReceived(object sender, LandPatchReceivedEventArgs e) {
@@ -109,7 +103,7 @@ namespace Chimera.OpenSim {
                 }
             }
 
-            while (!mLoggedIn)
+            while (!LoggedIn)
                 Thread.Sleep(500);
 
             x += (int) globalX - mStartLocation.X;
@@ -129,104 +123,10 @@ namespace Chimera.OpenSim {
             }
         }
 
-        public void Login() {
-            if (!mEnabled)
-                return;
-            Thread t = new Thread(() => {
-                string startLocation = NetworkManager.StartLocation(mConfig.StartIsland, (int)mConfig.StartLocation.X, (int)mConfig.StartLocation.Y, (int)mConfig.StartLocation.Z);
-                Client.Settings.LOGIN_SERVER = new ViewerConfig().ProxyLoginURI;
-                Client.Terrain.LandPatchReceived += Terrain_LandPatchReceived;
-                Client.Network.LoggedOut += Network_LoggedOut;
-                if (Client.Network.Login(mConfig.FirstName, mConfig.LastName, mConfig.Password, "Monitor", startLocation, "1.0")) {
-                    mCurrentRegion = Client.Network.CurrentSim.Name;
-                    uint globalX, globalY;
-                    Utils.LongToUInts(Client.Network.CurrentSim.Handle, out globalX, out globalY);
-                    mStartLocation = new Point((int)globalX, (int)globalY);
+        #region IPlugin Members
 
-                    mLoggedIn = true;
-                    if (LoggedInChanged != null)
-                        LoggedInChanged(true);
-                } else {
-                    ThisLogger.Warn("Unable to log in heightmap bot. " + Client.Network.LoginMessage);
-                    if (LoginFailed != null)
-                        LoginFailed();
-                }
-            });
-            t.Name = "Heightmap Bot Login Thread";
-            t.Start();
-        }
-
-        public void Logout() {
-            if (mLoggedIn && !mLoggingOut) {
-                mLoggingOut = true;
-                Client.Network.Logout();
-                Client.Terrain.LandPatchReceived -= Terrain_LandPatchReceived;
-                Client.Network.LoggedOut -= Network_LoggedOut;
-                if (LoggedInChanged != null)
-                    LoggedInChanged(false);
-            }
-        }
-
-        #region IInput Members
-
-        public event Action<IPlugin, bool> EnabledChanged;
-
-        public Control ControlPanel {
-            get {
-                if (mPanel == null)
-                    mPanel = new HeightmapInputPanel(this);
-                return mPanel;
-            }
-        }
-
-        public bool Enabled {
-            get { return mEnabled; }
-            set {
-                if (value != mEnabled) {
-                    mEnabled = value;
-                    if (value)
-                        if (mConfig.AutoLogin)
-                            Login();
-                    if (EnabledChanged != null)
-                        EnabledChanged(this, value);
-                }
-            }
-        }
-
-        public string Name {
+        public override string Name {
             get { return "HeightmapBot"; }
-        }
-
-        public string State {
-            get { throw new NotImplementedException(); }
-        }
-
-        public ConfigBase Config {
-            get { return mConfig; }
-        }
-
-        public void Close() {
-            Logout();
-        }
-
-        public void Draw(System.Drawing.Graphics graphics, Func<Vector3, Point> to2D, Action redraw, Perspective perspective) {
-            //Do nothing
-        }
-
-        #endregion
-
-        #region ISystemPlugin Members
-
-        public void Init(Core coordinator) {
-            mCoordinator = coordinator;
-        }
-
-        #endregion
-
-        #region ISystemPlugin Members
-
-
-        public void SetForm(Form form) {
         }
 
         #endregion
