@@ -629,7 +629,7 @@ namespace Chimera.GUI.Forms {
 
 
         private void absoluteModeButton_CheckedChanged(object sender, EventArgs e) {
-            if (!mExternalUpdate) {
+            if (!mExternalUpdate && absoluteModeButton.Checked) {
                 mGuiUpdate = true;
                 mCore.ControlMode = ControlMode.Absolute;
                 virtualPositionPanel.Text = "Camera Position";
@@ -645,7 +645,7 @@ namespace Chimera.GUI.Forms {
         }
 
         private void deltaModeButton_CheckedChanged(object sender, EventArgs e) {
-            if (!mExternalUpdate) {
+            if (!mExternalUpdate && deltaModeButton.Checked) {
                 mGuiUpdate = true;
                 mCore.ControlMode = ControlMode.Delta;
                 virtualPositionPanel.Text = "Camera Position Delta";
