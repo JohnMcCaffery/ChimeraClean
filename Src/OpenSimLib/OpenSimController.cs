@@ -456,7 +456,7 @@ namespace Chimera.OpenSim {
 
         public void Stop() {
             mClosingViewer = true;
-            mViewerController.Close(false);
+            mViewerController.Close(mConfig.BlockOnViewerShutdown);
             StopProxy();
             lock (mStartLock)
                 Monitor.PulseAll(mStartLock);
