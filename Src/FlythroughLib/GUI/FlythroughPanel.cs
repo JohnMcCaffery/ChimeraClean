@@ -68,6 +68,8 @@ namespace Chimera.Flythrough.GUI {
 
             autoStepCheck.Checked = mPlugin.AutoStep;
             loopCheck.Checked = mPlugin.Loop;
+            speedLabel.Text = "Speed: " + mPlugin.Speed;
+            //speedScroll.Value = (float) mPlugin.Speed;
 
             mStartEvt = new ComboEvent(mPlugin);
             mStartEvt.Name = "Begin";
@@ -321,12 +323,14 @@ namespace Chimera.Flythrough.GUI {
             mPlugin.SynchStreams = synchBoxCheck.Checked;
         }
 
-        private void speedScroll_Scroll(object sender, EventArgs e) {
+        private void speedScroll_Scroll(object source, EventArgs args) {
             double v = speedScroll.Value;
             if (v >= 100.0)
                 mPlugin.Speed = 100.0 / (200.0 - v);
             else
                 mPlugin.Speed = v / 100.0;
+
+            //speedLabel.Text = "Speed: " + mPlugin.Speed;
         }
 
 #if DEBUG
