@@ -32,6 +32,7 @@ using log4net;
 using Chimera.OpenSim.Interfaces;
 using Chimera.Experimental.Plugins;
 using Chimera.Experimental;
+using System.IO;
 
 namespace Chimera.OpenSim {
     public class RecorderPlugin : OpensimBotPlugin {
@@ -39,6 +40,8 @@ namespace Chimera.OpenSim {
         private ExperimentalConfig mConfig;
         private Dictionary<string, Stats> mStats = new Dictionary<string, Stats>();
         private Stats mLastStat;
+        private Action mTickListener;
+        private int mExitCount = 0;
 
         public Stats LastStat {
             get { return mLastStat; }
@@ -52,32 +55,89 @@ namespace Chimera.OpenSim {
         }
 
         protected override void OnLoggingOut() {
+            Core.Tick -= mTickListener;
         }
 
-        protected override void OnLoggedOut() {
-        }
+        protected override void OnLoggedOut() { }
 
         public override string Name {
             get { return "Recorder"; }
         }
 
         public override void Init(Core coordinator) {
+            mTickListener = new Action(Core_Tick);
             base.Init(coordinator);
-            if (Core.HasPlugin<AvatarMovementPlugin>())
+
+            if (Core.HasPlugin<AvatarMovementPlugin>()) {
                 mMovementPlugin = Core.GetPlugin<AvatarMovementPlugin>();
-            else
+                mConfig = mMovementPlugin.Config as ExperimentalConfig;
+            } else
                 mConfig = new ExperimentalConfig();
 
-            Core.Tick += new Action(Core_Tick);
+            LoggedInChanged += new Action<bool>(RecorderPlugin_LoggedInChanged);
+        }
+
+        void RecorderPlugin_LoggedInChanged(bool loggedIn) {
+            Core.Tick += mTickListener;
+        }
+
+        public override void Close() {
+            base.Close();
+
+            foreach (var output in Core.Frames.Select(f => f.Output))
+                output.Process.Exited += new EventHandler(Process_Exited);
+        }
+
+        void Process_Exited(object sender, EventArgs e) {
+            if (++mExitCount == Core.Frames.Count())
+                LoadFPS();
+        }
+
+        public void LoadFPS() {
+            Dictionary<string, List<float>> fpses = new Dictionary<string, List<float>>();
+
+            string startTS = mConfig.Timestamp;
+            foreach (var file in Directory.
+                    GetFiles(Path.Combine("Experiments", mConfig.ExperimentName)).
+                    Where(f => Path.GetFileName(f).StartsWith(mConfig.Timestamp))) {
+
+                foreach (var line in File.
+                        ReadAllLines(file).
+                        Where(l => l.Contains("FPS")).
+                        SkipWhile(l => !l.StartsWith(startTS))) {
+
+                    string[] s = line.Split(' ');
+                    if (!fpses.ContainsKey(s[0]))
+                        fpses.Add(s[0], new List<float>());
+                    fpses[s[0]].Add(float.Parse(s[6]));
+                }
+            }
+
+            foreach (var timestamp in mStats.Keys) {
+                if (fpses.ContainsKey(timestamp)) {
+                    Stats stat = mStats[timestamp];
+                    stat.CFPS = fpses[timestamp].ToArray();
+                }
+            }
+
+            string resultsFile = Path.GetFullPath(Path.Combine("Experiments", mConfig.ExperimentName, mConfig.Timestamp + ".csv"));
+            File.Delete(resultsFile);
+            File.Create(resultsFile);
+            File.AppendAllText(resultsFile, mConfig.OutputKeys.Aggregate((a, k) => a + "," + k) + Environment.NewLine);
+            File.AppendAllLines(resultsFile, mStats.Values.Select(s => s.ToString(mConfig.OutputKeys)));
         }
 
         void Core_Tick() {
-            mLastStat = new Stats(Sim.Stats, Core.Frames.Count());
-            mStats.Add(mLastStat.TimeStamp.ToString("yyyy.MM.dd.HH.mm.ss"), mLastStat);
+            mLastStat = new Stats(Sim.Stats, Core.Frames.Count(), mConfig);
+            string ts = mLastStat.ToString();
+            if (mStats.ContainsKey(ts))
+                mStats[ts] = mLastStat;
+            else
+                mStats.Add(mLastStat.ToString(), mLastStat);
         }
 
         public struct Stats {
-            public int[] CFPS;
+            public float[] CFPS;
             public int[] PingTime;
 
             public readonly float Dilation;
@@ -101,9 +161,11 @@ namespace Chimera.OpenSim {
             public readonly int ActiveScripts;
             public DateTime TimeStamp;
 
+            private ExperimentalConfig mConfig;
+
             public string Get(string key) {
                 switch (key.ToUpper()) {
-                    case "FPS": return CFPS.Aggregate("", (s, v) => s + v + ",", f => f.TrimEnd(','));
+                    case "CFPS": return CFPS.Aggregate("", (s, v) => s + v + ",", f => f.TrimEnd(','));
                     case "PINGTIME": return PingTime.Aggregate("", (s, v) => s + v + ",", f => f.TrimEnd(','));
                     case "FT": return FrameTime.ToString();
                     case "SFPS": return SFPS.ToString();
@@ -111,8 +173,10 @@ namespace Chimera.OpenSim {
                 return "UnknownKey(" + key + ")";
             }
 
-            public Stats(Simulator.SimStats stats, int frames) {
-                CFPS = new int[frames];
+            public Stats(Simulator.SimStats stats, int frames, ExperimentalConfig config) {
+                mConfig = config;
+
+                CFPS = new float[frames];
                 PingTime = new int[frames];
 
                 Dilation = stats.Dilation;
@@ -135,6 +199,19 @@ namespace Chimera.OpenSim {
                 ChildAgents = stats.ChildAgents;
                 ActiveScripts = stats.ActiveScripts;
                 TimeStamp = DateTime.Now;
+            }
+
+            public override string ToString() {
+                return TimeStamp.ToString(mConfig.TimestampFormat);
+            }
+
+            public string ToString(params string[] keys) {
+                string line = "";
+
+                foreach (var key in keys)
+                    line += Get(key) + ",";
+
+                return line.TrimEnd(',');
             }
         }
     }

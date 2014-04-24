@@ -31,6 +31,9 @@ namespace Chimera.Experimental {
 
         public string Timestamp;
 
+        public string TimestampFormat = "yyyy-MM-ddTHH:mm:ss";
+        public string[] OutputKeys;
+
         public ExperimentalConfig()
             : base("Experiments") { }
 
@@ -59,17 +62,22 @@ namespace Chimera.Experimental {
             StartAtHome = Get("AvatarMovement", "StartAtHome", false, "Whether to teleport the avatar home before starting.");
             SaveResults = Get("AvatarMovement", "SaveFPS", true, "Whether to save the log 'Experiments/<ExperimentName>/<Timestamp>-Mode-Frame.log'.");
 
-            FirstName = GetSection("RecorderBot", "FirstName", "Recorder", "The first name of the bot that will be logged in to track server stats.");
-            LastName = GetSection("RecorderBot", "LastName", "Recorder", "The last name of the bot that will be logged in to track server stats.");
-            Password = GetSection("RecorderBot", "Password", "Recorder", "The password for the bot that will be logged in to track server stats.");
+            TimestampFormat = GetStr("TimestampFormat", TimestampFormat, "The format that all timestamps will be saved as. Should match second life's log's timestamps.");
 
-            StartLocation = GetV("RecorderBot", "FirstName", new Vector3(128f, 128f, 24f), "Where on the island the bot should be logged in to.");
-            StartIsland = GetSection("RecorderBot", "LastName", "Recorder", "Which island the bot should log in to.");
+            FirstName = GetSection("RecorderBot", "FirstName", "Recorder", "The first name of the bot that will be logged in to track server stats.");
+            LastName = GetSection("RecorderBot", "LastName", "Bot", "The last name of the bot that will be logged in to track server stats.");
+            Password = GetSection("RecorderBot", "Password", "password", "The password for the bot that will be logged in to track server stats.");
+
+            StartLocation = GetV("RecorderBot", "StartLocation", new Vector3(128f, 128f, 24f), "Where on the island the bot should be logged in to.");
+            StartIsland = GetSection("RecorderBot", "StartIsland", "Cathedral 1", "Which island the bot should log in to.");
             AutoLogin = Get("RecorderBot", "AutoLogin", false, "Whether the bot should automatically log in as soon as the plugin is enabled.");
+
+            string outputKeysStr = GetSection("Recorder", "OutputKeys", "CFPS,SFPS,FT", "The columns the output table should have. Each column is separted by a comma. Valid keys are: CFPS, SFPS, FT, PingTime.");
+            OutputKeys = outputKeysStr.Split(',');
         }
 
         public void SetupFPSLogs(Core core, string specific) {
-            Timestamp = DateTime.Now.ToString("yyyy.MM.dd.HH.mm");
+            Timestamp = DateTime.Now.ToString(TimestampFormat);
 
             string dir = Path.GetFullPath(Path.Combine("Experiments", ExperimentName));
 
