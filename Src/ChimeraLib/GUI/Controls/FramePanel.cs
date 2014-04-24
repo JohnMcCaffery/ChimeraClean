@@ -26,12 +26,14 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using Chimera.Plugins;
+using Chimera.Config;
 
 namespace Chimera.GUI.Controls {
     public partial class FramePanel : UserControl {
         private bool mMassUpdated;
         private double mScale = 10.0;
         private Frame mFrame;
+        private FrameConfig mConfig;
 
         public FramePanel() {
             InitializeComponent();
@@ -49,6 +51,7 @@ namespace Chimera.GUI.Controls {
 
         public void Init(Frame frame) {
             mFrame = frame;
+            mConfig = frame.Config;
 
             mFrame.Changed += new Action<Frame, EventArgs>(mWindow_Changed);
 
@@ -93,6 +96,7 @@ namespace Chimera.GUI.Controls {
                 fovVPanel.Value = (float)(mFrame.VFieldOfView * (180.0 / Math.PI));
                 drawCheck.Checked = mFrame.DrawWindow;
                 drawEyeCheck.Checked = mFrame.DrawEye;
+                farClipPanel.Value = mConfig.FarClip;
 
                 switch (mFrame.Projection) {
                     case ProjectionStyle.Orthogonal: simpleProjectionButton.Checked = true; break;
@@ -218,6 +222,13 @@ namespace Chimera.GUI.Controls {
 
         private void drawCheck_CheckedChanged(object sender, EventArgs e) {
             mFrame.DrawWindow = drawCheck.Checked;
+        }
+
+        private void farClipPanel_ValueChanged(float obj) {
+            if (!mMassUpdated) {
+                mConfig.FarClip = farClipPanel.Value;
+                mFrame.UpdateFrustum();
+            }
         }
     }
 }

@@ -85,6 +85,8 @@ namespace Chimera.GUI.Controls {
             this.orientationPanel = new Chimera.GUI.RotationPanel();
             this.centrePanel = new Chimera.GUI.VectorPanel();
             this.topLeftPanel = new Chimera.GUI.VectorPanel();
+            this.farClipPanel = new Chimera.GUI.ScalarPanel();
+            this.label7 = new System.Windows.Forms.Label();
             this.mainTab.SuspendLayout();
             this.configTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -179,6 +181,8 @@ namespace Chimera.GUI.Controls {
             // 
             // splitContainer1.Panel2
             // 
+            this.splitContainer1.Panel2.Controls.Add(this.label7);
+            this.splitContainer1.Panel2.Controls.Add(this.farClipPanel);
             this.splitContainer1.Panel2.Controls.Add(this.orientationPanel);
             this.splitContainer1.Panel2.Controls.Add(this.centrePanel);
             this.splitContainer1.Panel2.Controls.Add(this.topLeftPanel);
@@ -589,7 +593,7 @@ namespace Chimera.GUI.Controls {
             // 
             this.orientationPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.orientationPanel.Location = new System.Drawing.Point(6, 203);
+            this.orientationPanel.Location = new System.Drawing.Point(6, 191);
             this.orientationPanel.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("orientationPanel.LookAtVector")));
             this.orientationPanel.MinimumSize = new System.Drawing.Size(252, 95);
             this.orientationPanel.Name = "orientationPanel";
@@ -642,6 +646,29 @@ namespace Chimera.GUI.Controls {
             this.topLeftPanel.Z = 0F;
             this.topLeftPanel.ValueChanged += new System.EventHandler(this.topLeftPanel_ValueChanged);
             // 
+            // farClipPanel
+            // 
+            this.farClipPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.farClipPanel.Location = new System.Drawing.Point(51, 287);
+            this.farClipPanel.Max = 4096F;
+            this.farClipPanel.Min = 128F;
+            this.farClipPanel.MinimumSize = new System.Drawing.Size(95, 20);
+            this.farClipPanel.Name = "farClipPanel";
+            this.farClipPanel.Size = new System.Drawing.Size(304, 20);
+            this.farClipPanel.TabIndex = 40;
+            this.farClipPanel.Value = 1024F;
+            this.farClipPanel.ValueChanged += new System.Action<float>(this.farClipPanel_ValueChanged);
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(3, 292);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(42, 13);
+            this.label7.TabIndex = 41;
+            this.label7.Text = "Far Clip";
+            // 
             // FramePanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -654,6 +681,7 @@ namespace Chimera.GUI.Controls {
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel1.PerformLayout();
             this.splitContainer1.Panel2.ResumeLayout(false);
+            this.splitContainer1.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
             this.anchorBox.ResumeLayout(false);
@@ -710,5 +738,7 @@ namespace Chimera.GUI.Controls {
         private ProjectorPanel projectorPanel;
         private System.Windows.Forms.Button aspectRatioButton;
         private System.Windows.Forms.CheckBox drawCheck;
+        private System.Windows.Forms.Label label7;
+        private ScalarPanel farClipPanel;
     }
 }
