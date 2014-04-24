@@ -44,7 +44,7 @@ namespace Chimera.Flythrough.GUI {
         private void InitializeComponent() {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FlythroughPanel));
-            Chimera.Util.Rotation rotation4 = new Chimera.Util.Rotation();
+            Chimera.Util.Rotation rotation1 = new Chimera.Util.Rotation();
             this.saveSequenceDialog = new System.Windows.Forms.SaveFileDialog();
             this.eventsList = new System.Windows.Forms.ListBox();
             this.eventsContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -75,7 +75,7 @@ namespace Chimera.Flythrough.GUI {
             this.stepButton = new System.Windows.Forms.Button();
             this.synchBoxCheck = new System.Windows.Forms.CheckBox();
             this.speedScroll = new System.Windows.Forms.TrackBar();
-            this.label1 = new System.Windows.Forms.Label();
+            this.speedLabel = new System.Windows.Forms.Label();
             this.eventsContextMenu.SuspendLayout();
             this.eventPanel.SuspendLayout();
             this.startPanel.SuspendLayout();
@@ -92,7 +92,7 @@ namespace Chimera.Flythrough.GUI {
             this.eventsList.FormattingEnabled = true;
             this.eventsList.Location = new System.Drawing.Point(3, 3);
             this.eventsList.Name = "eventsList";
-            this.eventsList.Size = new System.Drawing.Size(120, 316);
+            this.eventsList.Size = new System.Drawing.Size(120, 381);
             this.eventsList.TabIndex = 9;
             this.eventsList.SelectedValueChanged += new System.EventHandler(this.eventsList_SelectedValueChanged);
             this.eventsList.DoubleClick += new System.EventHandler(this.eventsList_DoubleClick);
@@ -104,26 +104,26 @@ namespace Chimera.Flythrough.GUI {
             this.removeToolStripMenuItem,
             this.moveUpToolStripMenuItem});
             this.eventsContextMenu.Name = "eventsContextMenu";
-            this.eventsContextMenu.Size = new System.Drawing.Size(114, 70);
+            this.eventsContextMenu.Size = new System.Drawing.Size(120, 70);
             // 
             // addToolStripMenuItem
             // 
             this.addToolStripMenuItem.Name = "addToolStripMenuItem";
-            this.addToolStripMenuItem.Size = new System.Drawing.Size(113, 22);
+            this.addToolStripMenuItem.Size = new System.Drawing.Size(119, 22);
             this.addToolStripMenuItem.Text = "Add";
             this.addToolStripMenuItem.Click += new System.EventHandler(this.addToolStripMenuItem_Click);
             // 
             // removeToolStripMenuItem
             // 
             this.removeToolStripMenuItem.Name = "removeToolStripMenuItem";
-            this.removeToolStripMenuItem.Size = new System.Drawing.Size(113, 22);
+            this.removeToolStripMenuItem.Size = new System.Drawing.Size(119, 22);
             this.removeToolStripMenuItem.Text = "Remove";
             this.removeToolStripMenuItem.Click += new System.EventHandler(this.removeToolStripMenuItem_Click);
             // 
             // moveUpToolStripMenuItem
             // 
             this.moveUpToolStripMenuItem.Name = "moveUpToolStripMenuItem";
-            this.moveUpToolStripMenuItem.Size = new System.Drawing.Size(113, 22);
+            this.moveUpToolStripMenuItem.Size = new System.Drawing.Size(119, 22);
             this.moveUpToolStripMenuItem.Text = "MoveUp";
             this.moveUpToolStripMenuItem.Click += new System.EventHandler(this.moveUpToolStripMenuItem_Click);
             // 
@@ -134,7 +134,7 @@ namespace Chimera.Flythrough.GUI {
             // loadButton
             // 
             this.loadButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.loadButton.Location = new System.Drawing.Point(202, 317);
+            this.loadButton.Location = new System.Drawing.Point(540, 389);
             this.loadButton.Name = "loadButton";
             this.loadButton.Size = new System.Drawing.Size(40, 23);
             this.loadButton.TabIndex = 10;
@@ -145,7 +145,7 @@ namespace Chimera.Flythrough.GUI {
             // saveButton
             // 
             this.saveButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.saveButton.Location = new System.Drawing.Point(248, 317);
+            this.saveButton.Location = new System.Drawing.Point(586, 389);
             this.saveButton.Name = "saveButton";
             this.saveButton.Size = new System.Drawing.Size(40, 23);
             this.saveButton.TabIndex = 11;
@@ -157,7 +157,7 @@ namespace Chimera.Flythrough.GUI {
             // 
             this.loopCheck.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.loopCheck.AutoSize = true;
-            this.loopCheck.Location = new System.Drawing.Point(336, 352);
+            this.loopCheck.Location = new System.Drawing.Point(674, 424);
             this.loopCheck.Name = "loopCheck";
             this.loopCheck.Size = new System.Drawing.Size(50, 17);
             this.loopCheck.TabIndex = 12;
@@ -168,7 +168,7 @@ namespace Chimera.Flythrough.GUI {
             // playButton
             // 
             this.playButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.playButton.Location = new System.Drawing.Point(294, 317);
+            this.playButton.Location = new System.Drawing.Point(632, 389);
             this.playButton.Name = "playButton";
             this.playButton.Size = new System.Drawing.Size(45, 23);
             this.playButton.TabIndex = 13;
@@ -184,7 +184,7 @@ namespace Chimera.Flythrough.GUI {
             this.eventPanel.Controls.Add(this.startPanel);
             this.eventPanel.Location = new System.Drawing.Point(129, 0);
             this.eventPanel.Name = "eventPanel";
-            this.eventPanel.Size = new System.Drawing.Size(256, 287);
+            this.eventPanel.Size = new System.Drawing.Size(594, 359);
             this.eventPanel.TabIndex = 14;
             // 
             // startPanel
@@ -198,7 +198,7 @@ namespace Chimera.Flythrough.GUI {
             this.startPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.startPanel.Location = new System.Drawing.Point(0, 0);
             this.startPanel.Name = "startPanel";
-            this.startPanel.Size = new System.Drawing.Size(256, 287);
+            this.startPanel.Size = new System.Drawing.Size(594, 359);
             this.startPanel.TabIndex = 0;
             // 
             // takeCurrentCameraButton
@@ -207,7 +207,7 @@ namespace Chimera.Flythrough.GUI {
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.takeCurrentCameraButton.Location = new System.Drawing.Point(0, 263);
             this.takeCurrentCameraButton.Name = "takeCurrentCameraButton";
-            this.takeCurrentCameraButton.Size = new System.Drawing.Size(256, 23);
+            this.takeCurrentCameraButton.Size = new System.Drawing.Size(594, 23);
             this.takeCurrentCameraButton.TabIndex = 4;
             this.takeCurrentCameraButton.Text = "Take Current Camera";
             this.takeCurrentCameraButton.UseVisualStyleBackColor = true;
@@ -219,7 +219,7 @@ namespace Chimera.Flythrough.GUI {
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.takeOrientationButton.Location = new System.Drawing.Point(0, 234);
             this.takeOrientationButton.Name = "takeOrientationButton";
-            this.takeOrientationButton.Size = new System.Drawing.Size(256, 23);
+            this.takeOrientationButton.Size = new System.Drawing.Size(594, 23);
             this.takeOrientationButton.TabIndex = 3;
             this.takeOrientationButton.Text = "Take Current Orientation";
             this.takeOrientationButton.UseVisualStyleBackColor = true;
@@ -231,7 +231,7 @@ namespace Chimera.Flythrough.GUI {
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.currentPositionButton.Location = new System.Drawing.Point(0, 104);
             this.currentPositionButton.Name = "currentPositionButton";
-            this.currentPositionButton.Size = new System.Drawing.Size(256, 23);
+            this.currentPositionButton.Size = new System.Drawing.Size(594, 23);
             this.currentPositionButton.TabIndex = 2;
             this.currentPositionButton.Text = "Take Current Position";
             this.currentPositionButton.UseVisualStyleBackColor = true;
@@ -248,7 +248,7 @@ namespace Chimera.Flythrough.GUI {
             this.startPositionPanel.MinimumSize = new System.Drawing.Size(103, 95);
             this.startPositionPanel.MinV = ((OpenMetaverse.Vector3)(resources.GetObject("startPositionPanel.MinV")));
             this.startPositionPanel.Name = "startPositionPanel";
-            this.startPositionPanel.Size = new System.Drawing.Size(253, 95);
+            this.startPositionPanel.Size = new System.Drawing.Size(591, 95);
             this.startPositionPanel.TabIndex = 0;
             this.startPositionPanel.Value = ((OpenMetaverse.Vector3)(resources.GetObject("startPositionPanel.Value")));
             this.startPositionPanel.X = 0F;
@@ -266,13 +266,13 @@ namespace Chimera.Flythrough.GUI {
             this.startOrientationPanel.Name = "startOrientationPanel";
             this.startOrientationPanel.Pitch = 0D;
             this.startOrientationPanel.Quaternion = ((OpenMetaverse.Quaternion)(resources.GetObject("startOrientationPanel.Quaternion")));
-            this.startOrientationPanel.Size = new System.Drawing.Size(256, 95);
+            this.startOrientationPanel.Size = new System.Drawing.Size(594, 95);
             this.startOrientationPanel.TabIndex = 1;
-            rotation4.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("rotation4.LookAtVector")));
-            rotation4.Pitch = 0D;
-            rotation4.Quaternion = ((OpenMetaverse.Quaternion)(resources.GetObject("rotation4.Quaternion")));
-            rotation4.Yaw = 0D;
-            this.startOrientationPanel.Value = rotation4;
+            rotation1.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("rotation1.LookAtVector")));
+            rotation1.Pitch = 0D;
+            rotation1.Quaternion = ((OpenMetaverse.Quaternion)(resources.GetObject("rotation1.Quaternion")));
+            rotation1.Yaw = 0D;
+            this.startOrientationPanel.Value = rotation1;
             this.startOrientationPanel.Yaw = 0D;
             this.startOrientationPanel.OnChange += new System.EventHandler(this.startOrientationPanel_OnChange);
             // 
@@ -280,7 +280,7 @@ namespace Chimera.Flythrough.GUI {
             // 
             this.autoStepCheck.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.autoStepCheck.AutoSize = true;
-            this.autoStepCheck.Location = new System.Drawing.Point(257, 351);
+            this.autoStepCheck.Location = new System.Drawing.Point(595, 423);
             this.autoStepCheck.Name = "autoStepCheck";
             this.autoStepCheck.Size = new System.Drawing.Size(73, 17);
             this.autoStepCheck.TabIndex = 15;
@@ -292,10 +292,10 @@ namespace Chimera.Flythrough.GUI {
             // 
             this.timeSlider.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.timeSlider.Location = new System.Drawing.Point(138, 288);
+            this.timeSlider.Location = new System.Drawing.Point(138, 360);
             this.timeSlider.Maximum = 0;
             this.timeSlider.Name = "timeSlider";
-            this.timeSlider.Size = new System.Drawing.Size(234, 45);
+            this.timeSlider.Size = new System.Drawing.Size(572, 45);
             this.timeSlider.TabIndex = 0;
             this.timeSlider.TickStyle = System.Windows.Forms.TickStyle.None;
             this.timeSlider.Scroll += new System.EventHandler(this.timeSlider_Scroll);
@@ -304,7 +304,7 @@ namespace Chimera.Flythrough.GUI {
             // 
             this.lengthLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lengthLabel.AutoSize = true;
-            this.lengthLabel.Location = new System.Drawing.Point(3, 352);
+            this.lengthLabel.Location = new System.Drawing.Point(3, 424);
             this.lengthLabel.Name = "lengthLabel";
             this.lengthLabel.Size = new System.Drawing.Size(40, 13);
             this.lengthLabel.TabIndex = 0;
@@ -314,7 +314,7 @@ namespace Chimera.Flythrough.GUI {
             // 
             this.timeLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.timeLabel.AutoSize = true;
-            this.timeLabel.Location = new System.Drawing.Point(87, 351);
+            this.timeLabel.Location = new System.Drawing.Point(87, 423);
             this.timeLabel.Name = "timeLabel";
             this.timeLabel.Size = new System.Drawing.Size(30, 13);
             this.timeLabel.TabIndex = 16;
@@ -323,7 +323,7 @@ namespace Chimera.Flythrough.GUI {
             // startButton
             // 
             this.startButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.startButton.Location = new System.Drawing.Point(159, 317);
+            this.startButton.Location = new System.Drawing.Point(497, 389);
             this.startButton.Name = "startButton";
             this.startButton.Size = new System.Drawing.Size(37, 23);
             this.startButton.TabIndex = 17;
@@ -338,7 +338,7 @@ namespace Chimera.Flythrough.GUI {
             // stepBackButton
             // 
             this.stepBackButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.stepBackButton.Location = new System.Drawing.Point(129, 288);
+            this.stepBackButton.Location = new System.Drawing.Point(129, 360);
             this.stepBackButton.Name = "stepBackButton";
             this.stepBackButton.Size = new System.Drawing.Size(14, 23);
             this.stepBackButton.TabIndex = 2;
@@ -349,7 +349,7 @@ namespace Chimera.Flythrough.GUI {
             // stepForwardButton
             // 
             this.stepForwardButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.stepForwardButton.Location = new System.Drawing.Point(368, 288);
+            this.stepForwardButton.Location = new System.Drawing.Point(706, 360);
             this.stepForwardButton.Name = "stepForwardButton";
             this.stepForwardButton.Size = new System.Drawing.Size(14, 23);
             this.stepForwardButton.TabIndex = 18;
@@ -360,7 +360,7 @@ namespace Chimera.Flythrough.GUI {
             // stepButton
             // 
             this.stepButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.stepButton.Location = new System.Drawing.Point(345, 317);
+            this.stepButton.Location = new System.Drawing.Point(683, 389);
             this.stepButton.Name = "stepButton";
             this.stepButton.Size = new System.Drawing.Size(37, 23);
             this.stepButton.TabIndex = 19;
@@ -372,7 +372,7 @@ namespace Chimera.Flythrough.GUI {
             // 
             this.synchBoxCheck.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.synchBoxCheck.AutoSize = true;
-            this.synchBoxCheck.Location = new System.Drawing.Point(159, 352);
+            this.synchBoxCheck.Location = new System.Drawing.Point(497, 424);
             this.synchBoxCheck.Name = "synchBoxCheck";
             this.synchBoxCheck.Size = new System.Drawing.Size(97, 17);
             this.synchBoxCheck.TabIndex = 20;
@@ -384,25 +384,23 @@ namespace Chimera.Flythrough.GUI {
             // 
             this.speedScroll.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.speedScroll.LargeChange = 10;
-            this.speedScroll.Location = new System.Drawing.Point(6, 325);
+            this.speedScroll.Location = new System.Drawing.Point(6, 397);
             this.speedScroll.Maximum = 199;
             this.speedScroll.Name = "speedScroll";
-            this.speedScroll.Size = new System.Drawing.Size(147, 45);
+            this.speedScroll.Size = new System.Drawing.Size(485, 45);
             this.speedScroll.TabIndex = 21;
-            this.speedScroll.TickStyle = System.Windows.Forms.TickStyle.None;
             this.speedScroll.Value = 100;
-            this.speedScroll.Scroll += new System.EventHandler(this.speedScroll_Scroll);
+            this.speedScroll.ValueChanged += new System.EventHandler(this.speedScroll_Scroll);
             // 
-            // label1
+            // speedLabel
             // 
-            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(3, 317);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(38, 13);
-            this.label1.TabIndex = 22;
-            this.label1.Text = "Speed";
+            this.speedLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.speedLabel.AutoSize = true;
+            this.speedLabel.Location = new System.Drawing.Point(3, 389);
+            this.speedLabel.Name = "speedLabel";
+            this.speedLabel.Size = new System.Drawing.Size(38, 13);
+            this.speedLabel.TabIndex = 22;
+            this.speedLabel.Text = "Speed";
             // 
             // FlythroughPanel
             // 
@@ -410,7 +408,7 @@ namespace Chimera.Flythrough.GUI {
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.stepForwardButton);
             this.Controls.Add(this.synchBoxCheck);
-            this.Controls.Add(this.label1);
+            this.Controls.Add(this.speedLabel);
             this.Controls.Add(this.timeLabel);
             this.Controls.Add(this.playButton);
             this.Controls.Add(this.stepBackButton);
@@ -422,11 +420,11 @@ namespace Chimera.Flythrough.GUI {
             this.Controls.Add(this.eventsList);
             this.Controls.Add(this.startButton);
             this.Controls.Add(this.autoStepCheck);
-            this.Controls.Add(this.timeSlider);
             this.Controls.Add(this.loopCheck);
             this.Controls.Add(this.speedScroll);
+            this.Controls.Add(this.timeSlider);
             this.Name = "FlythroughPanel";
-            this.Size = new System.Drawing.Size(385, 373);
+            this.Size = new System.Drawing.Size(723, 445);
             this.Load += new System.EventHandler(this.FlythroughPanel_Load);
             this.eventsContextMenu.ResumeLayout(false);
             this.eventPanel.ResumeLayout(false);
@@ -470,7 +468,8 @@ namespace Chimera.Flythrough.GUI {
         private System.Windows.Forms.Button stepButton;
         private System.Windows.Forms.CheckBox synchBoxCheck;
         private System.Windows.Forms.TrackBar speedScroll;
-        private System.Windows.Forms.Label label1;
+        //private Chimera.GUI.ScalarPanel speedScroll;
+        private System.Windows.Forms.Label speedLabel;
 #if DEBUG
         private System.Windows.Forms.Button statsButton;
 #endif
