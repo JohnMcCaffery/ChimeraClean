@@ -33,7 +33,7 @@ using Chimera.OpenSim.Interfaces;
 
 namespace Chimera.OpenSim {
     public abstract class OpensimBotPlugin : ISystemPlugin {
-        private readonly ILog ThisLogger = LogManager.GetLogger("Heightmap");
+        private readonly ILog ThisLogger = LogManager.GetLogger("Bot");
         private readonly Dictionary<ulong, HashSet<string>> mMappedParcels = new Dictionary<ulong, HashSet<string>>();
         private readonly HashSet<ulong> mFinishedRegions = new HashSet<ulong>();
 
@@ -100,12 +100,12 @@ namespace Chimera.OpenSim {
                     if (LoggedInChanged != null)
                         LoggedInChanged(true);
                 } else {
-                    ThisLogger.Warn("Unable to log in heightmap bot. " + mClient.Network.LoginMessage);
+                    ThisLogger.Warn("Unable to log in " + BotConfig.FirstName + " " + BotConfig.LastName + " as bot. " + mClient.Network.LoginMessage);
                     if (LoginFailed != null)
                         LoginFailed();
                 }
             });
-            t.Name = "Heightmap Bot Login Thread";
+            t.Name = "Bot Login Thread";
             t.Start();
         }
 
