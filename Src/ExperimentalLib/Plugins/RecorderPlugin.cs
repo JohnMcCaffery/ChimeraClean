@@ -39,6 +39,7 @@ using Routrek.SSHCV2;
 using Routrek.SSHC;
 using System.Net;
 using System.Net.Sockets;
+using System.Data.SQLite;
 
 namespace Chimera.OpenSim {
     public class RecorderPlugin : OpensimBotPlugin {
@@ -116,26 +117,29 @@ namespace Chimera.OpenSim {
             LoadFPS();
             LoadPingTime();
 
-            string fileName = mConfig.Timestamp.ToString(mConfig.TimestampFormat) + ".csv";
-            string resultsFile = Path.GetFullPath(Path.Combine("Experiments", mConfig.ExperimentName, fileName));
-            File.Delete(resultsFile);
-            try {
-                File.Create(resultsFile).Close();
-            } catch (Exception ex) {
-                Logger.Warn("Unable to create " + resultsFile + ".", ex);
+            if (mStats.Count > 0) {
+
+                string fileName = mConfig.Timestamp.ToString(mConfig.TimestampFormat) + ".csv";
+                string resultsFile = Path.GetFullPath(Path.Combine("Experiments", mConfig.ExperimentName, fileName));
+                File.Delete(resultsFile);
+                try {
+                    File.Create(resultsFile).Close();
+                } catch (Exception ex) {
+                    Logger.Warn("Unable to create " + resultsFile + ".", ex);
+                }
+
+                /*
+                Console.WriteLine("Writing out " + mStats.Count(p => p.Value.TimeStamp > mConfig.Timestamp) + " lines.");
+                foreach (var stat in mStats.Values)
+                    Console.WriteLine(stat.ToString(mConfig.OutputKeys));
+                */
+
+                File.AppendAllText(resultsFile, "Timestamp," + mConfig.OutputKeys.Aggregate((a, k) => a + "," + k) + Environment.NewLine);
+                File.AppendAllLines(resultsFile, mStats.
+                    Values.
+                    Where(s => s.TimeStamp > mConfig.Timestamp).
+                    Select(s => s.ToString(mConfig.OutputKeys)));
             }
-
-            /*
-            Console.WriteLine("Writing out " + mStats.Count(p => p.Value.TimeStamp > mConfig.Timestamp) + " lines.");
-            foreach (var stat in mStats.Values)
-                Console.WriteLine(stat.ToString(mConfig.OutputKeys));
-            */
-
-            File.AppendAllText(resultsFile, "Timestamp," + mConfig.OutputKeys.Aggregate((a, k) => a + "," + k) + Environment.NewLine);
-            File.AppendAllLines(resultsFile, mStats.
-                Values.
-                Where(s => s.TimeStamp > mConfig.Timestamp).
-                Select(s => s.ToString(mConfig.OutputKeys)));
         }
 
         void Process_Exited(object sender, EventArgs e) {
@@ -150,7 +154,9 @@ namespace Chimera.OpenSim {
             string startTS = mConfig.Timestamp.ToString(logTimestampFormat);
             foreach (var file in Directory.
                     GetFiles(Path.Combine("Experiments", mConfig.ExperimentName)).
-                    Where(f => Path.GetFileName(f).StartsWith(mConfig.Timestamp.ToString(mConfig.TimestampFormat)))) {
+                    Where(f => 
+                        Path.GetExtension(f) == ".log" &&
+                        Path.GetFileName(f).StartsWith(mConfig.Timestamp.ToString(mConfig.TimestampFormat)))) {
 
                 string[] lines = null;
                 int wait = 500;
@@ -193,23 +199,42 @@ namespace Chimera.OpenSim {
         private bool mCopyDone = false;
 
         public void LoadPingTime() {
+            string db = Path.Combine(Environment.CurrentDirectory, "Experiments", mConfig.ExperimentName);
+
             if (!mCopyDone) {
-                mCopyDone = false;
-                ProcessController p = new ProcessController("cmd.exe", "C:\\Windows\\System32", "");
-                p.Start();
-                string local = Path.Combine(Environment.CurrentDirectory, "Experiments", mConfig.ExperimentName);
-                string remote = "scp jm726@mimuve.cs.st-andrews.ac.uk:/home/opensim/opensim-0.7.3.1/bin/LocalUserStatistics.db .";
+                mCopyDone = true;
+
+                string local = db.Substring(2);
+                string remote = "/home/opensim/opensim-0.7.3.1/bin/LocalUserStatistics.db";
                 string server = "mimuve.cs.st-andrews.ac.uk";
                 string pass = "P3ngu1n!";
                 string username = "jm726";
+
+                ProcessController p = new ProcessController("cmd.exe", "C:\\Windows\\System32", "");
+
+                p.Start();
+
+                Thread.Sleep(500);
+
+                p.PressKey("E:{ENTER}");
                 p.SendString("scp " + username + "@" + server + ":" + remote + " " + local);
                 p.PressKey("{ENTER}");
                 p.SendString(pass);
                 p.PressKey("{ENTER}");
                 p.SendString(pass);
                 p.PressKey("{ENTER}");
+
                 p.Process.Close();
             }
+
+            var viewerCfg = new ViewerConfig("MainWindow");
+
+            var connection = new SQLiteConnection("Data Source=" + db + ";Version=3");
+            var tableCommand = new SQLiteCommand("SELECT * FROM dbname.sqlite_master WHERE type='table';");
+            var reader = tableCommand.ExecuteReader();
+            while (reader.Read())
+                Console.WriteLine(reader.ToString());
+            var command = new SQLiteCommand("SELECT * FROM table WHERE name_f == " + viewerCfg.LoginFirstName + " && name_l == " + viewerCfg.LoginLastName + ";");
 
             /*
             var param = new SSHConnectionParameter();
