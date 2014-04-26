@@ -27,7 +27,8 @@
             this.updateTimer = new System.Windows.Forms.Timer(this.components);
             this.updateFreq = new System.Windows.Forms.NumericUpDown();
             this.label3 = new System.Windows.Forms.Label();
-            this.listView1 = new System.Windows.Forms.ListView();
+            this.statsList = new System.Windows.Forms.ListView();
+            this.pingButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.updateFreq)).BeginInit();
             this.SuspendLayout();
             // 
@@ -37,6 +38,7 @@
             // 
             // updateFreq
             // 
+            this.updateFreq.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.updateFreq.Location = new System.Drawing.Point(445, 173);
             this.updateFreq.Name = "updateFreq";
             this.updateFreq.Size = new System.Drawing.Size(120, 20);
@@ -53,25 +55,41 @@
             this.label3.TabIndex = 39;
             this.label3.Text = "UpdateFrequency";
             // 
-            // listView1
+            // statsList
             // 
-            this.listView1.Location = new System.Drawing.Point(7, 199);
-            this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(558, 199);
-            this.listView1.TabIndex = 40;
-            this.listView1.UseCompatibleStateImageBehavior = false;
+            this.statsList.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.statsList.Location = new System.Drawing.Point(7, 199);
+            this.statsList.Name = "statsList";
+            this.statsList.Size = new System.Drawing.Size(558, 199);
+            this.statsList.TabIndex = 40;
+            this.statsList.UseCompatibleStateImageBehavior = false;
+            this.statsList.View = System.Windows.Forms.View.Details;
+            // 
+            // pingButton
+            // 
+            this.pingButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.pingButton.Location = new System.Drawing.Point(266, 170);
+            this.pingButton.Name = "pingButton";
+            this.pingButton.Size = new System.Drawing.Size(75, 23);
+            this.pingButton.TabIndex = 41;
+            this.pingButton.Text = "Load PingTime";
+            this.pingButton.UseVisualStyleBackColor = true;
+            this.pingButton.Click += new System.EventHandler(this.pingButton_Click);
             // 
             // RecorderControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.listView1);
+            this.Controls.Add(this.pingButton);
+            this.Controls.Add(this.statsList);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.updateFreq);
             this.Name = "RecorderControl";
             this.Controls.SetChildIndex(this.updateFreq, 0);
             this.Controls.SetChildIndex(this.label3, 0);
-            this.Controls.SetChildIndex(this.listView1, 0);
+            this.Controls.SetChildIndex(this.statsList, 0);
+            this.Controls.SetChildIndex(this.pingButton, 0);
             ((System.ComponentModel.ISupportInitialize)(this.updateFreq)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -83,6 +101,7 @@
         private System.Windows.Forms.Timer updateTimer;
         private System.Windows.Forms.NumericUpDown updateFreq;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.ListView listView1;
+        private System.Windows.Forms.ListView statsList;
+        private System.Windows.Forms.Button pingButton;
     }
 }

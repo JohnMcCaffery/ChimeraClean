@@ -26,18 +26,36 @@ namespace Chimera.Experimental.GUI {
 
             mPlugin = plugin;
             mConfig = mPlugin.Config as ExperimentalConfig;
+
+            updateFreq.Value = updateTimer.Interval;
+
+            statsList.Columns.Add("Timestamp");
+            foreach (var colName in mConfig.OutputKeys) {
+                var col = statsList.Columns.Add(colName);
+                col.Width = 30;
+            }
+
+            if (mConfig.UpdateStatsGUI)
+                updateTimer.Enabled = true;
         }
 
         private void updateTimer_Tick(object sender, EventArgs e) {
-            /*
-            if (mPlugin.LastStat != null && mPlugin.LastStat != null) {
+            if (!mPlugin.Recording)
+                return;
 
-            }
-            */
+            ListViewItem item = new ListViewItem(mPlugin.LastStat.TimeStamp.ToString(mConfig.TimestampFormat));
+            foreach (var key in mConfig.OutputKeys)
+                item.SubItems.Add(mPlugin.LastStat.Get(key));
+
+            statsList.Items.Insert(0, item);
         }
 
         private void updateFreq_ValueChanged(object sender, EventArgs e) {
             updateTimer.Interval = decimal.ToInt32(updateFreq.Value);
+        }
+
+        private void pingButton_Click(object sender, EventArgs e) {
+            mPlugin.LoadPingTime();
         }
     }
 }

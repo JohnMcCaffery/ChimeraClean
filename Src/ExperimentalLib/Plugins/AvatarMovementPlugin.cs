@@ -98,11 +98,9 @@ namespace Chimera.Experimental.Plugins {
             Action start = () => {
                 if (mTargets.Count > 0) {
                     Logger.Info("Starting loop.");
-                    if (mConfig.StartAtHome)
-                        mMainController.ViewerController.PressKey("H", true, false, true);
 
                     if (mConfig.SaveResults)
-                        mConfig.SetupFPSLogs(mCore, "-" + mCore.ControlMode);
+                        mConfig.SetupFPSLogs(mCore, mCore.ControlMode + "-", Logger);
 
                     mTargetIndex = 0;
                     mTarget = mTargets[mTargetIndex];
@@ -115,6 +113,9 @@ namespace Chimera.Experimental.Plugins {
             };
 
             mCore.ControlMode = mConfig.Mode;
+            if (mConfig.StartAtHome)
+                mMainController.ViewerController.PressKey("H", true, false, true);
+
             if (mConfig.StartWaitMS > 0) {
                 Thread t = new Thread(() => {
                 Logger.Info("Waiting " + mConfig.StartWaitMS + "MS before starting loop.");
@@ -215,6 +216,8 @@ namespace Chimera.Experimental.Plugins {
                 } else {
                     Logger.Info("Finished walking route.");
                     mCore.Tick -= mTickListener;
+                    mConfig.StopRecordingLog(mCore);
+
                     if (mConfig.AutoShutdown)
                         mForm.Invoke(new Action(() => mForm.Close()));
                 }

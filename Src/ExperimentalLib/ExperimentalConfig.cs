@@ -8,6 +8,7 @@ using Chimera.OpenSim;
 using System.IO;
 using Chimera.OpenSim.Interfaces;
 using OpenMetaverse;
+using System.Threading;
 
 namespace Chimera.Experimental {
     public class ExperimentalConfig : ConfigFolderBase, IOpensimBotConfig {
@@ -29,9 +30,11 @@ namespace Chimera.Experimental {
         public bool StartAtHome;
         public bool SaveResults;
 
-        public string Timestamp;
+        public bool UpdateStatsGUI;
 
-        public string TimestampFormat = "yyyy-MM-ddTHH:mm:ss";
+        public DateTime Timestamp;
+
+        public string TimestampFormat = "yyyy.MM.dd-HH.mm.ss";
         public string[] OutputKeys;
 
         public ExperimentalConfig()
@@ -71,13 +74,15 @@ namespace Chimera.Experimental {
             StartLocation = GetV("RecorderBot", "StartLocation", new Vector3(128f, 128f, 24f), "Where on the island the bot should be logged in to.");
             StartIsland = GetSection("RecorderBot", "StartIsland", "Cathedral 1", "Which island the bot should log in to.");
             AutoLogin = Get("RecorderBot", "AutoLogin", false, "Whether the bot should automatically log in as soon as the plugin is enabled.");
+            UpdateStatsGUI = Get("RecorderBot", "UpdateStatsGUI", false, "Whether to regularly update the Recorder's GUI with Recorder bot stats.");
 
             string outputKeysStr = GetSection("Recorder", "OutputKeys", "CFPS,SFPS,FT", "The columns the output table should have. Each column is separted by a comma. Valid keys are: CFPS, SFPS, FT, PingTime.");
             OutputKeys = outputKeysStr.Split(',');
         }
 
-        public void SetupFPSLogs(Core core, string specific) {
-            Timestamp = DateTime.Now.ToString(TimestampFormat);
+        public void SetupFPSLogs(Core core, string specific, ILog logger) {
+            Timestamp = DateTime.Now;
+            string time = Timestamp.ToString(TimestampFormat);
 
             string dir = Path.GetFullPath(Path.Combine("Experiments", ExperimentName));
 
@@ -88,21 +93,6 @@ namespace Chimera.Experimental {
                 OpenSimController OSOut = frame.Output as OpenSimController;
                 if (OSOut != null && OSOut.ViewerController.Started) {
                     OSOut.ViewerController.PressKey("s", true, true, true);
-                    /*
-                    OSOut.ViewerController.PressKey("U");
-                    OSOut.ViewerController.PressKey("s");
-                    OSOut.ViewerController.PressKey("e");
-                    OSOut.ViewerController.PressKey("r");
-                    OSOut.ViewerController.PressKey("L");
-                    OSOut.ViewerController.PressKey("{TAB}");
-                    OSOut.ViewerController.PressKey("{TAB}");
-                    OSOut.ViewerController.PressKey("{TAB}");
-                    OSOut.ViewerController.PressKey("{DEL}");
-
-                    string file = Path.Combine(dir, started + "-" + frame.Name + ".log");
-                    foreach (char c in file)
-                        OSOut.ViewerController.PressKey(c + "");
-                    */
 
                     //Select the correct setting
                     OSOut.ViewerController.SendString("UserL");
@@ -113,9 +103,28 @@ namespace Chimera.Experimental {
                     OSOut.ViewerController.PressKey("{DEL}");
 
                     //Set the filename
-                    string file = Path.Combine(dir, Timestamp + "-" + frame.Name + specific + ".log");
+                    string file = Path.Combine(dir, time + "-" + specific + frame.Name + ".log");
                     OSOut.ViewerController.SendString(file);
+                    logger.Info("Saving viewer log to " + file + ".");
 
+                    //Save filename and close window
+                    OSOut.ViewerController.PressKey("{TAB}");
+                    OSOut.ViewerController.PressKey("W", true, false, false);
+                }
+            }
+        }
+        public void StopRecordingLog(Core core) {
+            foreach (var frame in core.Frames) {
+                OpenSimController OSOut = frame.Output as OpenSimController;
+                if (OSOut != null && OSOut.ViewerController.Started) {
+
+                    //Select the correct setting
+                    OSOut.ViewerController.SendString("UserL");
+                    OSOut.ViewerController.PressKey("{TAB}");
+                    OSOut.ViewerController.PressKey("{TAB}");
+                    OSOut.ViewerController.PressKey("{TAB}");
+                    //Delete the test filename
+                    OSOut.ViewerController.PressKey("{DEL}");
                     //Save filename and close window
                     OSOut.ViewerController.PressKey("{TAB}");
                     OSOut.ViewerController.PressKey("W", true, false, false);
