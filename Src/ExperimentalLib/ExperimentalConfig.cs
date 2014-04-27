@@ -122,7 +122,8 @@ namespace Chimera.Experimental {
                     logger.Info("Saving viewer log to " + file + ".");
 
                     //Save filename and close window
-                    OSOut.ViewerController.PressKey("{TAB}");
+                    OSOut.ViewerController.PressKey("{ENTER}");
+                    Thread.Sleep(500);
                     OSOut.ViewerController.PressKey("W", true, false, false);
                 }
             }
