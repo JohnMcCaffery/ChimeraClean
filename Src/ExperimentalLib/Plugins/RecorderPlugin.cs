@@ -115,11 +115,16 @@ namespace Chimera.OpenSim {
 
         void form_FormClosed(object sender, FormClosedEventArgs e) {
             LoadFPS();
-            LoadPingTime();
+            //LoadPingTime();
+            WriteCSV();
+        }
 
-            if (mStats.Count > 0) {
+        private void WriteCSV() {            if (mStats.Count > 0) {
 
-                string fileName = mConfig.Timestamp.ToString(mConfig.TimestampFormat) + ".csv";
+                string ids = Core.Frames.Select(f => (f.Output as OpenSimController).ProxyController.SessionID).
+                    Aggregate("", (a, id) => a + "," + id);
+
+                string fileName = mConfig.RunInfo + "-" + mConfig.Timestamp.ToString(mConfig.TimestampFormat) + ".csv";
                 string resultsFile = Path.GetFullPath(Path.Combine("Experiments", mConfig.ExperimentName, fileName));
                 File.Delete(resultsFile);
                 try {
@@ -128,13 +133,12 @@ namespace Chimera.OpenSim {
                     Logger.Warn("Unable to create " + resultsFile + ".", ex);
                 }
 
-                /*
-                Console.WriteLine("Writing out " + mStats.Count(p => p.Value.TimeStamp > mConfig.Timestamp) + " lines.");
-                foreach (var stat in mStats.Values)
-                    Console.WriteLine(stat.ToString(mConfig.OutputKeys));
-                */
+                string headers = "Timestamp,";
+                headers += mConfig.OutputKeys.Aggregate((a, k) => a + "," + k);
+                headers += ids;
+                headers += Environment.NewLine;
 
-                File.AppendAllText(resultsFile, "Timestamp," + mConfig.OutputKeys.Aggregate((a, k) => a + "," + k) + Environment.NewLine);
+                File.AppendAllText(resultsFile, headers);
                 File.AppendAllLines(resultsFile, mStats.
                     Values.
                     Where(s => s.TimeStamp > mConfig.Timestamp).
@@ -199,13 +203,15 @@ namespace Chimera.OpenSim {
         private bool mCopyDone = false;
 
         public void LoadPingTime() {
-            string db = Path.Combine(Environment.CurrentDirectory, "Experiments", mConfig.ExperimentName);
+            string dbFolder = Path.Combine(Environment.CurrentDirectory, "Experiments", mConfig.ExperimentName);
+            string file = "LocalUserStatistics.db";
 
             if (!mCopyDone) {
                 mCopyDone = true;
 
-                string local = db.Substring(2);
-                string remote = "/home/opensim/opensim-0.7.3.1/bin/LocalUserStatistics.db";
+                string local = dbFolder.Substring(2);
+                //string remote = "/home/opensim/opensim-0.7.3.1/bin/LocalUserStatistics.db";
+                string remote = "/home/opensim/opensim-0.7.6.1/bin/" + file;
                 string server = "mimuve.cs.st-andrews.ac.uk";
                 string pass = "P3ngu1n!";
                 string username = "jm726";
@@ -229,12 +235,36 @@ namespace Chimera.OpenSim {
 
             var viewerCfg = new ViewerConfig("MainWindow");
 
-            var connection = new SQLiteConnection("Data Source=" + db + ";Version=3");
-            var tableCommand = new SQLiteCommand("SELECT * FROM dbname.sqlite_master WHERE type='table';");
-            var reader = tableCommand.ExecuteReader();
-            while (reader.Read())
-                Console.WriteLine(reader.ToString());
-            var command = new SQLiteCommand("SELECT * FROM table WHERE name_f == " + viewerCfg.LoginFirstName + " && name_l == " + viewerCfg.LoginLastName + ";");
+            string dbFile = Path.Combine(dbFolder, file);
+            var connection = new SQLiteConnection("Data Source=" + dbFile + ";Version=3");
+            connection.Open();
+
+            SQLiteDataReader reader;
+
+            /*
+            var tableCommand = new SQLiteCommand("SELECT * FROM main.sqlite_master WHERE type='table';", connection);
+            reader = tableCommand.ExecuteReader();
+            while (reader.Read()) {
+                object[] row = new object[100];
+                int columns = reader.GetValues(row);
+                for (int i = 0; i < columns; i++)
+                    Console.Write(row[i] + ", ");
+                Console.WriteLine();
+            }
+            */
+
+            //var dataCommand = new SQLiteCommand("SELECT avg_ping FROM stats_session_data WHERE name_f == '" + viewerCfg.LoginFirstName + "' AND name_l == '" + viewerCfg.LoginLastName + "';", connection);
+            var dataCommand = new SQLiteCommand("SELECT * FROM stats_session_data WHERE name_f == '" + viewerCfg.LoginFirstName + "' AND name_l == '" + viewerCfg.LoginLastName + "';", connection);
+            reader = dataCommand.ExecuteReader();
+            while (reader.Read()) {
+                object[] row = new object[100];
+                int columns = reader.GetValues(row);
+                for (int i = 0; i < columns; i++)
+                    Console.Write(row[i] + ", ");
+                Console.WriteLine();
+            }
+
+            connection.Close();
 
             /*
             var param = new SSHConnectionParameter();

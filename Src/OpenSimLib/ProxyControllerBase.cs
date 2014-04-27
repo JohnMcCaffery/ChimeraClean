@@ -51,6 +51,10 @@ namespace Chimera.OpenSim {
             get { return mLastUpdatePacket; }
             set { mLastUpdatePacket = value; }
         }
+        public UUID SessionID {
+            get { return mSessionID; }
+        }
+
         public Vector3 Offset {
             get { return mOffset; }
             set {
@@ -427,5 +431,5 @@ namespace Chimera.OpenSim {
                     mCameraPacket = null;
                 }
         }
-    }
+        }
 }

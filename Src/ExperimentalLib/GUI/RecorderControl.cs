@@ -57,5 +57,9 @@ namespace Chimera.Experimental.GUI {
         private void pingButton_Click(object sender, EventArgs e) {
             mPlugin.LoadPingTime();
         }
+
+        private void timestampButton_Click(object sender, EventArgs e) {
+            mConfig.Timestamp = DateTime.Now;
+        }
     }
 }

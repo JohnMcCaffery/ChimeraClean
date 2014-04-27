@@ -33,6 +33,7 @@ namespace Chimera.Experimental {
         public bool UpdateStatsGUI;
 
         public DateTime Timestamp;
+        public string RunInfo;
 
         public string TimestampFormat = "yyyy.MM.dd-HH.mm.ss";
         public string[] OutputKeys;
@@ -78,9 +79,16 @@ namespace Chimera.Experimental {
 
             string outputKeysStr = GetSection("Recorder", "OutputKeys", "CFPS,SFPS,FT", "The columns the output table should have. Each column is separted by a comma. Valid keys are: CFPS, SFPS, FT, PingTime.");
             OutputKeys = outputKeysStr.Split(',');
+
         }
 
-        public void SetupFPSLogs(Core core, string specific, ILog logger) {
+        public void SetupFPSLogs(Core core, string runInfo, ILog logger) {
+            RunInfo = runInfo;
+            if (runInfo == null)
+                runInfo = "";
+            else if (runInfo.Length > 0)
+                runInfo += "-";
+            
             Timestamp = DateTime.Now;
             string time = Timestamp.ToString(TimestampFormat);
 
@@ -103,7 +111,7 @@ namespace Chimera.Experimental {
                     OSOut.ViewerController.PressKey("{DEL}");
 
                     //Set the filename
-                    string file = Path.Combine(dir, time + "-" + specific + frame.Name + ".log");
+                    string file = Path.Combine(dir, time + "-" + runInfo + frame.Name + ".log");
                     OSOut.ViewerController.SendString(file);
                     logger.Info("Saving viewer log to " + file + ".");
 

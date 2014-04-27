@@ -100,7 +100,7 @@ namespace Chimera.Experimental.Plugins {
                     Logger.Info("Starting loop.");
 
                     if (mConfig.SaveResults)
-                        mConfig.SetupFPSLogs(mCore, mCore.ControlMode + "-", Logger);
+                        mConfig.SetupFPSLogs(mCore, mCore.ControlMode.ToString(), Logger);
 
                     mTargetIndex = 0;
                     mTarget = mTargets[mTargetIndex];
@@ -137,7 +137,6 @@ namespace Chimera.Experimental.Plugins {
         }
 
         private Vector3 Position {
-            //get { return mCore.ControlMode == ControlMode.Absolute ? mCore.Position : mMainController.AvatarPosition; }
             get { 
                 Vector3 ret = mCore.Position;
                 if (mCore.ControlMode == ControlMode.Delta) {
@@ -245,7 +244,6 @@ namespace Chimera.Experimental.Plugins {
         private double TargetAccuracy {
             get { return mCore.ControlMode == ControlMode.Absolute ? .0000000001 : (mConfig.TurnRate * 1.5); }
         }
-
 
         #region ISystemPlugin Members
 
