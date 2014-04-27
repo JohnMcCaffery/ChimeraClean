@@ -35,8 +35,11 @@ namespace Chimera.Experimental.GUI {
                 col.Width = 30;
             }
 
-            if (mConfig.UpdateStatsGUI)
-                updateTimer.Enabled = true;
+            mPlugin.LoggedInChanged += new Action<bool>(mPlugin_LoggedInChanged);
+        }
+
+        void mPlugin_LoggedInChanged(bool loggedIn) {
+            Invoke(new Action(() => updateTimer.Enabled = mConfig.UpdateStatsGUI && loggedIn));
         }
 
         private void updateTimer_Tick(object sender, EventArgs e) {
@@ -60,6 +63,16 @@ namespace Chimera.Experimental.GUI {
 
         private void timestampButton_Click(object sender, EventArgs e) {
             mConfig.Timestamp = DateTime.Now;
+            Clipboard.SetText("-" + mConfig.Timestamp.ToString(mConfig.TimestampFormat) + "-MainWindow.log");
+            clipboardLabel.Text = "'" + Clipboard.GetText() + "' in the clipboard.";
+        }
+
+        private void loadFileButton_Click(object sender, EventArgs e) {
+            mPlugin.Logout();
+            if (openLogFileDialog.ShowDialog() == DialogResult.OK) {
+                mConfig.Timestamp = mPlugin.LoadFPS(openLogFileDialog.FileName);
+                mPlugin.WriteCSV();
+            }
         }
     }
 }

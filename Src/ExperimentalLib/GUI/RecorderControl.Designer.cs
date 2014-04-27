@@ -30,6 +30,9 @@
             this.statsList = new System.Windows.Forms.ListView();
             this.pingButton = new System.Windows.Forms.Button();
             this.timestampButton = new System.Windows.Forms.Button();
+            this.clipboardLabel = new System.Windows.Forms.Label();
+            this.openLogFileDialog = new System.Windows.Forms.OpenFileDialog();
+            this.loadFileButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.updateFreq)).BeginInit();
             this.SuspendLayout();
             // 
@@ -40,9 +43,9 @@
             // updateFreq
             // 
             this.updateFreq.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.updateFreq.Location = new System.Drawing.Point(445, 173);
+            this.updateFreq.Location = new System.Drawing.Point(532, 173);
             this.updateFreq.Name = "updateFreq";
-            this.updateFreq.Size = new System.Drawing.Size(120, 20);
+            this.updateFreq.Size = new System.Drawing.Size(33, 20);
             this.updateFreq.TabIndex = 38;
             this.updateFreq.ValueChanged += new System.EventHandler(this.updateFreq_ValueChanged);
             // 
@@ -50,7 +53,7 @@
             // 
             this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(347, 175);
+            this.label3.Location = new System.Drawing.Point(434, 176);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(92, 13);
             this.label3.TabIndex = 39;
@@ -70,7 +73,7 @@
             // pingButton
             // 
             this.pingButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.pingButton.Location = new System.Drawing.Point(252, 170);
+            this.pingButton.Location = new System.Drawing.Point(339, 170);
             this.pingButton.Name = "pingButton";
             this.pingButton.Size = new System.Drawing.Size(89, 23);
             this.pingButton.TabIndex = 41;
@@ -81,18 +84,46 @@
             // timestampButton
             // 
             this.timestampButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.timestampButton.Location = new System.Drawing.Point(146, 170);
+            this.timestampButton.Location = new System.Drawing.Point(174, 171);
             this.timestampButton.Name = "timestampButton";
-            this.timestampButton.Size = new System.Drawing.Size(100, 23);
+            this.timestampButton.Size = new System.Drawing.Size(94, 23);
             this.timestampButton.TabIndex = 42;
             this.timestampButton.Text = "Save Timestamp";
             this.timestampButton.UseVisualStyleBackColor = true;
             this.timestampButton.Click += new System.EventHandler(this.timestampButton_Click);
             // 
+            // clipboardLabel
+            // 
+            this.clipboardLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.clipboardLabel.Location = new System.Drawing.Point(-261, 170);
+            this.clipboardLabel.Name = "clipboardLabel";
+            this.clipboardLabel.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.clipboardLabel.Size = new System.Drawing.Size(429, 23);
+            this.clipboardLabel.TabIndex = 43;
+            this.clipboardLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // openLogFileDialog
+            // 
+            this.openLogFileDialog.InitialDirectory = "U:\\Results";
+            this.openLogFileDialog.RestoreDirectory = true;
+            // 
+            // loadFileButton
+            // 
+            this.loadFileButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.loadFileButton.Location = new System.Drawing.Point(274, 170);
+            this.loadFileButton.Name = "loadFileButton";
+            this.loadFileButton.Size = new System.Drawing.Size(59, 23);
+            this.loadFileButton.TabIndex = 44;
+            this.loadFileButton.Text = "Load File";
+            this.loadFileButton.UseVisualStyleBackColor = true;
+            this.loadFileButton.Click += new System.EventHandler(this.loadFileButton_Click);
+            // 
             // RecorderControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.loadFileButton);
+            this.Controls.Add(this.clipboardLabel);
             this.Controls.Add(this.timestampButton);
             this.Controls.Add(this.pingButton);
             this.Controls.Add(this.statsList);
@@ -104,6 +135,8 @@
             this.Controls.SetChildIndex(this.statsList, 0);
             this.Controls.SetChildIndex(this.pingButton, 0);
             this.Controls.SetChildIndex(this.timestampButton, 0);
+            this.Controls.SetChildIndex(this.clipboardLabel, 0);
+            this.Controls.SetChildIndex(this.loadFileButton, 0);
             ((System.ComponentModel.ISupportInitialize)(this.updateFreq)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -118,5 +151,8 @@
         private System.Windows.Forms.ListView statsList;
         private System.Windows.Forms.Button pingButton;
         private System.Windows.Forms.Button timestampButton;
+        private System.Windows.Forms.Label clipboardLabel;
+        private System.Windows.Forms.OpenFileDialog openLogFileDialog;
+        private System.Windows.Forms.Button loadFileButton;
     }
 }

@@ -43,6 +43,7 @@ using System.Data.SQLite;
 
 namespace Chimera.OpenSim {
     public class RecorderPlugin : OpensimBotPlugin {
+        const string LOG_TIMESTAMP_FORMAT = "yyyy-MM-ddTHH:mm:ssZ";
         private ILog Logger = LogManager.GetLogger("StatsRecorder");
 
         private RecorderControl mPanel;
@@ -53,6 +54,8 @@ namespace Chimera.OpenSim {
         private Action mTickListener;
         private int mExitCount = 0;
         private bool mRecording;
+        private bool mCopyDone = false;
+        private UUID mSessionID = UUID.Zero;
 
         public Stats LastStat {
             get { return mLastStat; }
@@ -114,15 +117,20 @@ namespace Chimera.OpenSim {
         }
 
         void form_FormClosed(object sender, FormClosedEventArgs e) {
-            LoadFPS();
+            if (mConfig.SaveResults)
+                LoadFPS();
             //LoadPingTime();
-            WriteCSV();
+            if (mConfig.ProcessOnFinish)
+                WriteCSV();
         }
 
-        private void WriteCSV() {            if (mStats.Count > 0) {
+        public void WriteCSV() {            if (mStats.Count > 0) {
 
                 string ids = Core.Frames.Select(f => (f.Output as OpenSimController).ProxyController.SessionID).
                     Aggregate("", (a, id) => a + "," + id);
+
+                if (mSessionID != UUID.Zero)
+                    ids = "," + mSessionID;
 
                 string fileName = mConfig.RunInfo + "-" + mConfig.Timestamp.ToString(mConfig.TimestampFormat) + ".csv";
                 string resultsFile = Path.GetFullPath(Path.Combine("Experiments", mConfig.ExperimentName, fileName));
@@ -139,56 +147,40 @@ namespace Chimera.OpenSim {
                 headers += Environment.NewLine;
 
                 File.AppendAllText(resultsFile, headers);
-                File.AppendAllLines(resultsFile, mStats.
-                    Values.
-                    Where(s => s.TimeStamp > mConfig.Timestamp).
-                    Select(s => s.ToString(mConfig.OutputKeys)));
+                lock (mStats) {
+                    File.AppendAllLines(resultsFile, mStats.
+                        Values.
+                        Where(s => s.TimeStamp > mConfig.Timestamp).
+                        Select(s => s.ToString(mConfig.OutputKeys)));
+                }
             }
-        }
-
-        void Process_Exited(object sender, EventArgs e) {
-            if (++mExitCount == Core.Frames.Count())
-                LoadFPS();
         }
 
         public void LoadFPS() {
             Dictionary<string, List<float>> fpses = new Dictionary<string, List<float>>();
 
-            string logTimestampFormat = "yyyy-MM-ddTHH:mm:ssZ";
-            string startTS = mConfig.Timestamp.ToString(logTimestampFormat);
+            string startTS = mConfig.Timestamp.ToString(LOG_TIMESTAMP_FORMAT);
             foreach (var file in Directory.
                     GetFiles(Path.Combine("Experiments", mConfig.ExperimentName)).
                     Where(f => 
                         Path.GetExtension(f) == ".log" &&
                         Path.GetFileName(f).StartsWith(mConfig.Timestamp.ToString(mConfig.TimestampFormat)))) {
 
-                string[] lines = null;
-                int wait = 500;
-
-                while (lines == null) {
-                    try {
-                        lines = File.ReadAllLines(file);
-                    } catch (IOException e) {
-                        if (wait > 60000)
-                            return;
-                        Logger.Debug("Problem loading log file. Waiting " + wait + "MS then trying again.");
-                        //Logger.Debug("Problem loading log file. Waiting " + wait + "MS then trying again.", e);
-                        Thread.Sleep(wait);
-                        wait = (int) (wait * 1.5);
-                    }
-                }
-
-                foreach (var line in lines.Where(l => l.Contains("FPS"))) {
-                    string[] s = line.Split(' ');
-                    DateTime ts = DateTime.ParseExact(s[0], logTimestampFormat, new DateTimeFormatInfo());
-                    string time = ts.ToString(mConfig.TimestampFormat);
-
-                    if (!fpses.ContainsKey(time))
-                        fpses.Add(time, new List<float>());
-                    fpses[time].Add(float.Parse(s[6]));
-                }
+                LoadFPS(file, fpses);
             }
 
+            MergeFPSes(fpses);
+        }
+
+        public DateTime LoadFPS(string file) {
+            Dictionary<string, List<float>> fpses = new Dictionary<string, List<float>>();
+            DateTime ret = LoadFPS(file, fpses);
+            MergeFPSes(fpses);
+            GetMostRecentSessionID();
+            return ret;
+        }
+
+        public void MergeFPSes(Dictionary<string, List<float>> fpses) {
             int frames = Core.Frames.Count();
             foreach (var timestamp in mStats.Keys) {
                 if (fpses.ContainsKey(timestamp)) {
@@ -200,9 +192,45 @@ namespace Chimera.OpenSim {
             }
         }
 
-        private bool mCopyDone = false;
+        public DateTime LoadFPS(string file, Dictionary<string, List<float>> fpses) {
+            string[] lines = null;
+            int wait = 500;
+            bool retSet = false;
+            DateTime ret = DateTime.Now;
 
-        public void LoadPingTime() {
+            while (lines == null) {
+                try {
+                    lines = File.ReadAllLines(file);
+                } catch (IOException e) {
+                    if (wait > 60000)
+                        return ret;
+                    Logger.Debug("Problem loading log file. Waiting " + wait + "MS then trying again.");
+                    //Logger.Debug("Problem loading log file. Waiting " + wait + "MS then trying again.", e);
+                    Thread.Sleep(wait);
+                    wait = (int)(wait * 1.5);
+                }
+            }
+
+            foreach (var line in lines.Where(l => l.Contains("FPS"))) {
+                string[] s = line.Split(' ');
+                DateTime ts = DateTime.ParseExact(s[0], LOG_TIMESTAMP_FORMAT, new DateTimeFormatInfo());
+                string time = ts.ToString(mConfig.TimestampFormat);
+
+                if (!retSet) {
+                    retSet = true;
+                    ret = ts;
+                }
+
+                if (!fpses.ContainsKey(time))
+                    fpses.Add(time, new List<float>());
+                fpses[time].Add(float.Parse(s[6]));
+
+            }
+            return ret;
+        }
+
+
+        private void CopyWebStatsDB() {
             string dbFolder = Path.Combine(Environment.CurrentDirectory, "Experiments", mConfig.ExperimentName);
             string file = "LocalUserStatistics.db";
 
@@ -231,7 +259,15 @@ namespace Chimera.OpenSim {
                 p.PressKey("{ENTER}");
 
                 p.Process.Close();
+
+                Thread.Sleep(5000);
             }
+        }
+
+        public void GetMostRecentSessionID() {
+            string dbFolder = Path.Combine(Environment.CurrentDirectory, "Experiments", mConfig.ExperimentName);
+            string file = "LocalUserStatistics.db";
+            CopyWebStatsDB();
 
             var viewerCfg = new ViewerConfig("MainWindow");
 
@@ -242,8 +278,9 @@ namespace Chimera.OpenSim {
             SQLiteDataReader reader;
 
             /*
-            var tableCommand = new SQLiteCommand("SELECT * FROM main.sqlite_master WHERE type='table';", connection);
-            reader = tableCommand.ExecuteReader();
+            var tablesCommand = new SQLiteCommand("SELECT * FROM main.sqlite_master WHERE type='table';", connection);
+            reader = tablesCommand.ExecuteReader();
+
             while (reader.Read()) {
                 object[] row = new object[100];
                 int columns = reader.GetValues(row);
@@ -252,6 +289,41 @@ namespace Chimera.OpenSim {
                 Console.WriteLine();
             }
             */
+
+            //var dataCommand = new SQLiteCommand("SELECT avg_ping FROM stats_session_data WHERE name_f == '" + viewerCfg.LoginFirstName + "' AND name_l == '" + viewerCfg.LoginLastName + "';", connection);
+            var dataCommand = new SQLiteCommand("SELECT session_id FROM stats_session_data WHERE name_f == '" + viewerCfg.LoginFirstName + "' AND name_l == '" + viewerCfg.LoginLastName + "';", connection);
+            reader = dataCommand.ExecuteReader();
+            object[] lastLine = new object[1];
+            while (reader.Read()) {
+                /*
+                object[] row = new object[100];
+                int columns = reader.GetValues(row);
+                for (int i = 0; i < columns; i++)
+                    Console.Write(row[i] + ", ");
+                Console.WriteLine();
+                */
+                int columns = reader.GetValues(lastLine);
+            }
+
+            mSessionID = UUID.Parse(lastLine[0].ToString());
+
+            connection.Close();
+
+        }
+
+        public void LoadPingTime() {
+            string dbFolder = Path.Combine(Environment.CurrentDirectory, "Experiments", mConfig.ExperimentName);
+            string file = "LocalUserStatistics.db";
+
+            CopyWebStatsDB();
+
+            var viewerCfg = new ViewerConfig("MainWindow");
+
+            string dbFile = Path.Combine(dbFolder, file);
+            var connection = new SQLiteConnection("Data Source=" + dbFile + ";Version=3");
+            connection.Open();
+
+            SQLiteDataReader reader;
 
             //var dataCommand = new SQLiteCommand("SELECT avg_ping FROM stats_session_data WHERE name_f == '" + viewerCfg.LoginFirstName + "' AND name_l == '" + viewerCfg.LoginLastName + "';", connection);
             var dataCommand = new SQLiteCommand("SELECT * FROM stats_session_data WHERE name_f == '" + viewerCfg.LoginFirstName + "' AND name_l == '" + viewerCfg.LoginLastName + "';", connection);
@@ -266,79 +338,43 @@ namespace Chimera.OpenSim {
 
             connection.Close();
 
-            /*
-            var param = new SSHConnectionParameter();
-            param.UserName = "jm726";
-            param.Password = "P3ngu1n!";
-            param.Protocol = SSHProtocol.SSH2;
-            param.AuthenticationType = AuthenticationType.Password;
-            param.WindowSize = 0x1000;
-            param.PreferableCipherAlgorithms = new CipherAlgorithm[] { 
-                CipherAlgorithm.Blowfish, 
-                CipherAlgorithm.TripleDES, 
-                CipherAlgorithm.AES128, 
-            };
-
-            var reader = new Reader();
-            var sock = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            sock.Connect(new IPEndPoint(Dns.GetHostAddresses("mimuve.cs.st-andrews.ac.uk")[0], 22));
-
-            SSHConnection _conn = SSHConnection.Connect(param, reader, sock);
-            reader._conn = _conn;
-            SSHChannel ch = _conn.OpenShell(reader);
-            reader._pf = ch;
-            SSHConnectionInfo info = _conn.ConnectionInfo;
-            */
-
-
-
         }
 
-        private class Reader : ISSHChannelEventReceiver, ISSHConnectionEventReceiver {
-            public SSHConnection _conn;
-            public SSHChannel _pf;
+        public void ProcessFolder() {
+            Dictionary<string, List<string[]>> lines = new Dictionary<string, List<string[]>>();
+            Dictionary<string, List<UUID>> session_ids = new Dictionary<string, List<UUID>>();
 
-            public void OnChannelClosed() { }
+            string folder = Path.Combine(Environment.CurrentDirectory, "Experiments", mConfig.ExperimentName);
+            foreach (var file in Directory.GetFiles(folder).Where(f => Path.GetExtension(f) == ".csv")) {
+                string configuration = file.Split('-')[0];
+                if (!lines.ContainsKey(configuration)) {
+                    lines.Add(configuration, new List<string[]>());
+                    session_ids.Add(configuration, new List<UUID>());
+                }
 
-            public void OnChannelEOF() { }
+                string[] linesSet = File.ReadAllLines(file);
+                lines[configuration].Add(linesSet);
 
-            public void OnChannelError(Exception error, string msg) { }
-
-            public void OnChannelReady() { }
-
-            public void OnData(byte[] data, int offset, int length) { }
-
-            public void OnExtendedData(int type, byte[] data) { }
-
-            public void OnMiscPacket(byte packet_type, byte[] data, int offset, int length) { }
-
-            public PortForwardingCheckResult CheckPortForwardingRequest(string remote_host, int remote_port, string originator_ip, int originator_port) {
-                throw new NotImplementedException();
+                string[] headers = linesSet[0].Split(',');
+                for (int i = linesSet[1].Split(',').Length; i < headers.Length; i++)
+                    session_ids[configuration].Add(UUID.Parse(headers[i]));
             }
 
-            public void EstablishPortforwarding(ISSHChannelEventReceiver receiver, SSHChannel channel) { }
-
-            public void OnAuthenticationPrompt(string[] prompts) { }
-
-            public void OnConnectionClosed() { }
-
-            public void OnDebugMessage(bool always_display, byte[] msg) { }
-
-            public void OnError(Exception error, string msg) { }
-
-            public void OnIgnoreMessage(byte[] msg) { }
-
-            public void OnUnknownMessage(byte type, byte[] data) { }
+            for (int i = 0; i < mConfig.OutputKeys.Length; i++) {
+                string key = mConfig.OutputKeys[i];
+            }
         }
 
         void Core_Tick() {
             mRecording = true;
             mLastStat = new Stats(Sim.Stats, Core.Frames.Count(), mConfig);
-            string ts = mLastStat.ToString();
-            if (mStats.ContainsKey(ts))
-                mStats[ts] = mLastStat;
-            else
-                mStats.Add(mLastStat.ToString(), mLastStat);
+            lock (mStats) {
+                string ts = mLastStat.ToString();
+                if (mStats.ContainsKey(ts))
+                    mStats[ts] = mLastStat;
+                else
+                    mStats.Add(mLastStat.ToString(), mLastStat);
+            }
         }
 
         public struct Stats {
@@ -434,3 +470,70 @@ namespace Chimera.OpenSim {
         }
     }
 }
+            /*
+            var param = new SSHConnectionParameter();
+            param.UserName = "jm726";
+            param.Password = "P3ngu1n!";
+            param.Protocol = SSHProtocol.SSH2;
+            param.AuthenticationType = AuthenticationType.Password;
+            param.WindowSize = 0x1000;
+            param.PreferableCipherAlgorithms = new CipherAlgorithm[] { 
+                CipherAlgorithm.Blowfish, 
+                CipherAlgorithm.TripleDES, 
+                CipherAlgorithm.AES128, 
+            };
+
+            var reader = new Reader();
+            var sock = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            sock.Connect(new IPEndPoint(Dns.GetHostAddresses("mimuve.cs.st-andrews.ac.uk")[0], 22));
+
+            SSHConnection _conn = SSHConnection.Connect(param, reader, sock);
+            reader._conn = _conn;
+            SSHChannel ch = _conn.OpenShell(reader);
+            reader._pf = ch;
+            SSHConnectionInfo info = _conn.ConnectionInfo;
+
+             
+             
+             
+           
+        private class Reader : ISSHChannelEventReceiver, ISSHConnectionEventReceiver {
+            public SSHConnection _conn;
+            public SSHChannel _pf;
+
+            public void OnChannelClosed() { }
+
+            public void OnChannelEOF() { }
+
+            public void OnChannelError(Exception error, string msg) { }
+
+            public void OnChannelReady() { }
+
+            public void OnData(byte[] data, int offset, int length) { }
+
+            public void OnExtendedData(int type, byte[] data) { }
+
+            public void OnMiscPacket(byte packet_type, byte[] data, int offset, int length) { }
+
+            public PortForwardingCheckResult CheckPortForwardingRequest(string remote_host, int remote_port, string originator_ip, int originator_port) {
+                throw new NotImplementedException();
+            }
+
+            public void EstablishPortforwarding(ISSHChannelEventReceiver receiver, SSHChannel channel) { }
+
+            public void OnAuthenticationPrompt(string[] prompts) { }
+
+            public void OnConnectionClosed() { }
+
+            public void OnDebugMessage(bool always_display, byte[] msg) { }
+
+            public void OnError(Exception error, string msg) { }
+
+            public void OnIgnoreMessage(byte[] msg) { }
+
+            public void OnUnknownMessage(byte type, byte[] data) { }
+        } 
+            */
+
+
+

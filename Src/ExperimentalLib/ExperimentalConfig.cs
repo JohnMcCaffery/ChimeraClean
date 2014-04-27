@@ -37,6 +37,7 @@ namespace Chimera.Experimental {
 
         public string TimestampFormat = "yyyy.MM.dd-HH.mm.ss";
         public string[] OutputKeys;
+        public bool ProcessOnFinish;
 
         public ExperimentalConfig()
             : base("Experiments") { }
@@ -65,6 +66,7 @@ namespace Chimera.Experimental {
             AutoShutdown = Get("AvatarMovement", "AutoShutdown", false, "Whether to stop Chimera when the loop completes.");
             StartAtHome = Get("AvatarMovement", "StartAtHome", false, "Whether to teleport the avatar home before starting.");
             SaveResults = Get("AvatarMovement", "SaveFPS", true, "Whether to save the log 'Experiments/<ExperimentName>/<Timestamp>-Mode-Frame.log'.");
+            ProcessOnFinish = Get("AvatarMovement", "ProcessResults", false, "Whether to process the log files to a .csv file when closing.");
 
             TimestampFormat = GetStr("TimestampFormat", TimestampFormat, "The format that all timestamps will be saved as. Should match second life's log's timestamps.");
 
@@ -104,15 +106,19 @@ namespace Chimera.Experimental {
 
                     //Select the correct setting
                     OSOut.ViewerController.SendString("UserL");
+                    Thread.Sleep(500);
                     OSOut.ViewerController.PressKey("{TAB}");
+                    Thread.Sleep(500);
                     OSOut.ViewerController.PressKey("{TAB}");
+                    Thread.Sleep(500);
                     OSOut.ViewerController.PressKey("{TAB}");
                     //Delete the old value
                     OSOut.ViewerController.PressKey("{DEL}");
 
                     //Set the filename
-                    string file = Path.Combine(dir, time + "-" + runInfo + frame.Name + ".log");
+                    string file = Path.Combine(dir, time + runInfo + "-" + frame.Name + ".log");
                     OSOut.ViewerController.SendString(file);
+                    Thread.Sleep(500);
                     logger.Info("Saving viewer log to " + file + ".");
 
                     //Save filename and close window

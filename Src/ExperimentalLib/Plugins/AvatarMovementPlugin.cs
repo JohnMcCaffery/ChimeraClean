@@ -242,7 +242,8 @@ namespace Chimera.Experimental.Plugins {
         }
 
         private double TargetAccuracy {
-            get { return mCore.ControlMode == ControlMode.Absolute ? .0000000001 : (mConfig.TurnRate * 1.5); }
+            //get { return mCore.ControlMode == ControlMode.Absolute ? .0000000001 : (mConfig.TurnRate * 1.5); }
+            get { return mConfig.TurnRate * 1.5; }
         }
 
         #region ISystemPlugin Members
