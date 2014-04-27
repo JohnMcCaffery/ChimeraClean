@@ -146,6 +146,7 @@ namespace Chimera.OpenSim {
                 headers += ids;
                 headers += Environment.NewLine;
 
+                Logger.Info("Outputting CSV to " + resultsFile + ".");
                 File.AppendAllText(resultsFile, headers);
                 lock (mStats) {
                     File.AppendAllLines(resultsFile, mStats.
@@ -253,6 +254,8 @@ namespace Chimera.OpenSim {
                 p.PressKey("E:{ENTER}");
                 p.SendString("scp " + username + "@" + server + ":" + remote + " " + local);
                 p.PressKey("{ENTER}");
+                p.SendString("yes");
+                p.PressKey("{ENTER}");
                 p.SendString(pass);
                 p.PressKey("{ENTER}");
                 p.SendString(pass);
@@ -277,31 +280,11 @@ namespace Chimera.OpenSim {
 
             SQLiteDataReader reader;
 
-            /*
-            var tablesCommand = new SQLiteCommand("SELECT * FROM main.sqlite_master WHERE type='table';", connection);
-            reader = tablesCommand.ExecuteReader();
-
-            while (reader.Read()) {
-                object[] row = new object[100];
-                int columns = reader.GetValues(row);
-                for (int i = 0; i < columns; i++)
-                    Console.Write(row[i] + ", ");
-                Console.WriteLine();
-            }
-            */
-
             //var dataCommand = new SQLiteCommand("SELECT avg_ping FROM stats_session_data WHERE name_f == '" + viewerCfg.LoginFirstName + "' AND name_l == '" + viewerCfg.LoginLastName + "';", connection);
             var dataCommand = new SQLiteCommand("SELECT session_id FROM stats_session_data WHERE name_f == '" + viewerCfg.LoginFirstName + "' AND name_l == '" + viewerCfg.LoginLastName + "';", connection);
             reader = dataCommand.ExecuteReader();
             object[] lastLine = new object[1];
             while (reader.Read()) {
-                /*
-                object[] row = new object[100];
-                int columns = reader.GetValues(row);
-                for (int i = 0; i < columns; i++)
-                    Console.Write(row[i] + ", ");
-                Console.WriteLine();
-                */
                 int columns = reader.GetValues(lastLine);
             }
 
