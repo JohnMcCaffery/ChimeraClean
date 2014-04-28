@@ -121,10 +121,10 @@ namespace Chimera.OpenSim {
                 LoadFPS();
             //LoadPingTime();
             if (mConfig.ProcessOnFinish)
-                WriteCSV();
+                WriteCSV(mConfig.RunInfo);
         }
 
-        public void WriteCSV() {            if (mStats.Count > 0) {
+        public void WriteCSV(string runInfo) {            if (mStats.Count > 0) {
 
                 string ids = Core.Frames.Select(f => (f.Output as OpenSimController).ProxyController.SessionID).
                     Aggregate("", (a, id) => a + "," + id);
@@ -132,7 +132,7 @@ namespace Chimera.OpenSim {
                 if (mSessionID != UUID.Zero)
                     ids = "," + mSessionID;
 
-                string fileName = mConfig.RunInfo + "-" + mConfig.Timestamp.ToString(mConfig.TimestampFormat) + ".csv";
+                string fileName = runInfo + "-" + mConfig.Timestamp.ToString(mConfig.TimestampFormat) + ".csv";
                 string resultsFile = Path.GetFullPath(Path.Combine("Experiments", mConfig.ExperimentName, fileName));
                 File.Delete(resultsFile);
                 try {

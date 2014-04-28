@@ -8,6 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using Chimera.OpenSim.GUI;
 using Chimera.OpenSim;
+using System.IO;
 
 namespace Chimera.Experimental.GUI {
     public partial class RecorderControl : OpensimBotPanel {
@@ -71,7 +72,7 @@ namespace Chimera.Experimental.GUI {
             mPlugin.Logout();
             if (openLogFileDialog.ShowDialog() == DialogResult.OK) {
                 mConfig.Timestamp = mPlugin.LoadFPS(openLogFileDialog.FileName);
-                mPlugin.WriteCSV();
+                mPlugin.WriteCSV(Path.GetFileNameWithoutExtension(openLogFileDialog.FileName));
             }
         }
     }
