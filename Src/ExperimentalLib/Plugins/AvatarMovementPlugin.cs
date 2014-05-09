@@ -72,21 +72,28 @@ namespace Chimera.Experimental.Plugins {
             mTargets.Clear();
             foreach (var targetNode in targetsDoc.GetElementsByTagName("Target").OfType<XmlElement>()) {
                 var nameStr = targetNode.Attributes["name"].Value;
+                var targetAttr = targetNode.Attributes["location"];
 
-                foreach (var node in nodesDoc.GetElementsByTagName("name").OfType<XmlElement>()) {
-                    if (node.InnerText == nameStr) {
-                        XmlNode x = node.NextSibling;
-                        XmlNode y = x.NextSibling;
-                        XmlNode z = y.NextSibling;
-
-                        Vector3 target = Vector3.Zero;
-
-                        target.X = float.Parse(x.InnerXml);
-                        target.Y = float.Parse(y.InnerXml);
-                        target.Z = float.Parse(z.InnerXml);
-
+                if (targetAttr != null) {
+                    Vector3 target = Vector3.Zero;
+                    if (Vector3.TryParse(targetAttr.Value, out target))
                         mTargets.Add(new KeyValuePair<string, Vector3>(nameStr, target));
-                        break;
+                } else {
+                    foreach (var node in nodesDoc.GetElementsByTagName("name").OfType<XmlElement>()) {
+                        if (node.InnerText == nameStr) {
+                            XmlNode x = node.NextSibling;
+                            XmlNode y = x.NextSibling;
+                            XmlNode z = y.NextSibling;
+
+                            Vector3 target = Vector3.Zero;
+
+                            target.X = float.Parse(x.InnerXml);
+                            target.Y = float.Parse(y.InnerXml);
+                            target.Z = float.Parse(z.InnerXml);
+
+                            mTargets.Add(new KeyValuePair<string, Vector3>(nameStr, target));
+                            break;
+                        }
                     }
                 }
             }
