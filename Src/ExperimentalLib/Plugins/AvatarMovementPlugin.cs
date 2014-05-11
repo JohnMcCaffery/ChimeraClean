@@ -121,23 +121,6 @@ namespace Chimera.Experimental.Plugins {
         }
 
         public void Start() {
-            Action start = () => {
-                if (mTargets.Count > 0) {
-                    Logger.Info("Starting loop.");
-
-                    if (mConfig.SaveResults)
-                        mConfig.SetupFPSLogs(mCore, Logger);
-
-                    mTargetIndex = 0;
-                    mTarget = mTargets[mTargetIndex];
-                    if (TargetChanged != null)
-                        TargetChanged(mTarget.Key, Target);
-                    mCore.Tick += new Action(mCore_Tick);
-                } else {
-                    Logger.Info("No targets loaded. Unable to start loop.");
-                }
-            };
-
             mCore.ControlMode = mConfig.Mode;
 
             if (mConfig.StartAtHome)
@@ -146,16 +129,20 @@ namespace Chimera.Experimental.Plugins {
                 TeleportToStart();
             }
 
-            if (mConfig.StartWaitMS > 0) {
-                Thread t = new Thread(() => {
-                Logger.Info("Waiting " + mConfig.StartWaitMS + "MS before starting loop.");
-                    Thread.Sleep(mConfig.StartWaitMS);
-                    start();
-                });
-                t.Name = "WalkBotStartWait";
-                t.Start();
-            } else
-                start();
+            if (mTargets.Count > 0) {
+                Logger.Info("Starting loop.");
+
+                if (mConfig.SaveResults)
+                    mConfig.SetupFPSLogs(mCore, Logger);
+
+                mTargetIndex = 0;
+                mTarget = mTargets[mTargetIndex];
+                if (TargetChanged != null)
+                    TargetChanged(mTarget.Key, Target);
+                mCore.Tick += new Action(mCore_Tick);
+            } else {
+                Logger.Info("No targets loaded. Unable to start loop.");
+            }
         }
 
         private void TeleportToStart() {
@@ -316,7 +303,16 @@ namespace Chimera.Experimental.Plugins {
 
         void mMainController_CLientLoginComplete(object sender, EventArgs e) {
             if (Enabled && mConfig.AutoStart)
-                Start();
+                if (mConfig.StartWaitMS > 0) {
+                    Thread t = new Thread(() => {
+                        Logger.Info("Waiting " + mConfig.StartWaitMS + "MS before starting loop.");
+                        Thread.Sleep(mConfig.StartWaitMS);
+                        Start();
+                    });
+                    t.Name = "WalkBotStartWait";
+                    t.Start();
+                } else
+                    Start();
         }
 
         public void SetForm(System.Windows.Forms.Form form) {
