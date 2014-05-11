@@ -31,8 +31,10 @@
             this.pingButton = new System.Windows.Forms.Button();
             this.timestampButton = new System.Windows.Forms.Button();
             this.clipboardLabel = new System.Windows.Forms.Label();
-            this.openLogFileDialog = new System.Windows.Forms.OpenFileDialog();
+            this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.loadFileButton = new System.Windows.Forms.Button();
+            this.saveCSVButton = new System.Windows.Forms.Button();
+            this.loadCSVButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.updateFreq)).BeginInit();
             this.SuspendLayout();
             // 
@@ -43,7 +45,7 @@
             // updateFreq
             // 
             this.updateFreq.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.updateFreq.Location = new System.Drawing.Point(532, 173);
+            this.updateFreq.Location = new System.Drawing.Point(532, 204);
             this.updateFreq.Name = "updateFreq";
             this.updateFreq.Size = new System.Drawing.Size(33, 20);
             this.updateFreq.TabIndex = 38;
@@ -53,7 +55,7 @@
             // 
             this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(434, 176);
+            this.label3.Location = new System.Drawing.Point(434, 207);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(92, 13);
             this.label3.TabIndex = 39;
@@ -61,11 +63,12 @@
             // 
             // statsList
             // 
-            this.statsList.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.statsList.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.statsList.Location = new System.Drawing.Point(7, 199);
+            this.statsList.Location = new System.Drawing.Point(7, 230);
             this.statsList.Name = "statsList";
-            this.statsList.Size = new System.Drawing.Size(558, 199);
+            this.statsList.Size = new System.Drawing.Size(558, 168);
             this.statsList.TabIndex = 40;
             this.statsList.UseCompatibleStateImageBehavior = false;
             this.statsList.View = System.Windows.Forms.View.Details;
@@ -73,7 +76,7 @@
             // pingButton
             // 
             this.pingButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.pingButton.Location = new System.Drawing.Point(339, 170);
+            this.pingButton.Location = new System.Drawing.Point(244, 201);
             this.pingButton.Name = "pingButton";
             this.pingButton.Size = new System.Drawing.Size(89, 23);
             this.pingButton.TabIndex = 41;
@@ -84,7 +87,7 @@
             // timestampButton
             // 
             this.timestampButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.timestampButton.Location = new System.Drawing.Point(174, 171);
+            this.timestampButton.Location = new System.Drawing.Point(471, 175);
             this.timestampButton.Name = "timestampButton";
             this.timestampButton.Size = new System.Drawing.Size(94, 23);
             this.timestampButton.TabIndex = 42;
@@ -95,33 +98,57 @@
             // clipboardLabel
             // 
             this.clipboardLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.clipboardLabel.Location = new System.Drawing.Point(-261, 170);
+            this.clipboardLabel.Location = new System.Drawing.Point(36, 174);
             this.clipboardLabel.Name = "clipboardLabel";
             this.clipboardLabel.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.clipboardLabel.Size = new System.Drawing.Size(429, 23);
             this.clipboardLabel.TabIndex = 43;
             this.clipboardLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // openLogFileDialog
+            // openFileDialog
             // 
-            this.openLogFileDialog.InitialDirectory = "U:\\Results";
-            this.openLogFileDialog.RestoreDirectory = true;
+            this.openFileDialog.InitialDirectory = "U:\\Results";
+            this.openFileDialog.RestoreDirectory = true;
             // 
             // loadFileButton
             // 
             this.loadFileButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.loadFileButton.Location = new System.Drawing.Point(274, 170);
+            this.loadFileButton.Location = new System.Drawing.Point(174, 201);
             this.loadFileButton.Name = "loadFileButton";
-            this.loadFileButton.Size = new System.Drawing.Size(59, 23);
+            this.loadFileButton.Size = new System.Drawing.Size(63, 23);
             this.loadFileButton.TabIndex = 44;
-            this.loadFileButton.Text = "Load File";
+            this.loadFileButton.Text = "Load FPS";
             this.loadFileButton.UseVisualStyleBackColor = true;
-            this.loadFileButton.Click += new System.EventHandler(this.loadFileButton_Click);
+            this.loadFileButton.Click += new System.EventHandler(this.loadFPSFileButton_Click);
+            // 
+            // saveCSVButton
+            // 
+            this.saveCSVButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.saveCSVButton.Location = new System.Drawing.Point(339, 201);
+            this.saveCSVButton.Name = "saveCSVButton";
+            this.saveCSVButton.Size = new System.Drawing.Size(89, 23);
+            this.saveCSVButton.TabIndex = 45;
+            this.saveCSVButton.Text = "Save CSV";
+            this.saveCSVButton.UseVisualStyleBackColor = true;
+            this.saveCSVButton.Click += new System.EventHandler(this.saveCSVButton_Click);
+            // 
+            // loadCSVButton
+            // 
+            this.loadCSVButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.loadCSVButton.Location = new System.Drawing.Point(79, 201);
+            this.loadCSVButton.Name = "loadCSVButton";
+            this.loadCSVButton.Size = new System.Drawing.Size(89, 23);
+            this.loadCSVButton.TabIndex = 46;
+            this.loadCSVButton.Text = "Load CSV";
+            this.loadCSVButton.UseVisualStyleBackColor = true;
+            this.loadCSVButton.Click += new System.EventHandler(this.loadCSVButton_Click);
             // 
             // RecorderControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.loadCSVButton);
+            this.Controls.Add(this.saveCSVButton);
             this.Controls.Add(this.loadFileButton);
             this.Controls.Add(this.clipboardLabel);
             this.Controls.Add(this.timestampButton);
@@ -137,6 +164,8 @@
             this.Controls.SetChildIndex(this.timestampButton, 0);
             this.Controls.SetChildIndex(this.clipboardLabel, 0);
             this.Controls.SetChildIndex(this.loadFileButton, 0);
+            this.Controls.SetChildIndex(this.saveCSVButton, 0);
+            this.Controls.SetChildIndex(this.loadCSVButton, 0);
             ((System.ComponentModel.ISupportInitialize)(this.updateFreq)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -152,7 +181,9 @@
         private System.Windows.Forms.Button pingButton;
         private System.Windows.Forms.Button timestampButton;
         private System.Windows.Forms.Label clipboardLabel;
-        private System.Windows.Forms.OpenFileDialog openLogFileDialog;
+        private System.Windows.Forms.OpenFileDialog openFileDialog;
         private System.Windows.Forms.Button loadFileButton;
+        private System.Windows.Forms.Button saveCSVButton;
+        private System.Windows.Forms.Button loadCSVButton;
     }
 }

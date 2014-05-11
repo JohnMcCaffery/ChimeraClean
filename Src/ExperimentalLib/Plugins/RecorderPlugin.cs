@@ -52,10 +52,17 @@ namespace Chimera.OpenSim {
         private Dictionary<string, Stats> mStats = new Dictionary<string, Stats>();
         private Stats mLastStat;
         private Action mTickListener;
-        private int mExitCount = 0;
         private bool mRecording;
         private bool mCopyDone = false;
         private UUID mSessionID = UUID.Zero;
+
+        public Stats this[string s] {
+            get { return mStats[s]; }
+        }
+
+        public IEnumerable<Stats> StatsList {
+            get { return mStats.Values; }
+        }
 
         public Stats LastStat {
             get { return mLastStat; }
@@ -121,10 +128,10 @@ namespace Chimera.OpenSim {
                 LoadFPS();
             //LoadPingTime();
             if (mConfig.ProcessOnFinish)
-                WriteCSV();
+                WriteCSV(mConfig.RunInfo + "-" + mConfig.Timestamp.ToString(mConfig.TimestampFormat) + ".csv");
         }
 
-        public void WriteCSV() {            if (mStats.Count > 0) {
+        public void WriteCSV(string filename) {            if (mStats.Count > 0) {
 
                 string ids = Core.Frames.Select(f => (f.Output as OpenSimController).ProxyController.SessionID).
                     Aggregate("", (a, id) => a + "," + id);
@@ -132,8 +139,7 @@ namespace Chimera.OpenSim {
                 if (mSessionID != UUID.Zero)
                     ids = "," + mSessionID;
 
-                string fileName = mConfig.RunInfo + "-" + mConfig.Timestamp.ToString(mConfig.TimestampFormat) + ".csv";
-                string resultsFile = Path.GetFullPath(Path.Combine("Experiments", mConfig.ExperimentName, fileName));
+                string resultsFile = Path.GetFullPath(Path.Combine("Experiments", mConfig.ExperimentName, filename));
                 File.Delete(resultsFile);
                 try {
                     File.Create(resultsFile).Close();
@@ -156,6 +162,27 @@ namespace Chimera.OpenSim {
             }
         }
 
+        public DateTime LoadCSV(string file) {
+            mStats.Clear();
+
+            bool skip = true;
+            foreach (var line in File.ReadAllLines(file)) {
+                if (skip) {
+                    skip = false;
+                    string[] split = line.Split(',');
+                    mSessionID = UUID.Parse(split[split.Length - 1]);
+                    continue;
+                }
+
+                Stats s = new Stats(line, mConfig);
+                mStats.Add(s.ToString(), s);
+            }
+
+            string[] splitFilename = Path.GetFileNameWithoutExtension(file).Split(new char[] { '-' }, 2);
+            mConfig.RunInfo = splitFilename[0];
+            return DateTime.ParseExact(splitFilename[1], mConfig.TimestampFormat, new DateTimeFormatInfo());
+        }
+
         public void LoadFPS() {
             Dictionary<string, List<float>> fpses = new Dictionary<string, List<float>>();
 
@@ -176,7 +203,8 @@ namespace Chimera.OpenSim {
             Dictionary<string, List<float>> fpses = new Dictionary<string, List<float>>();
             DateTime ret = LoadFPS(file, fpses);
             MergeFPSes(fpses);
-            GetMostRecentSessionID();
+            if (mSessionID == UUID.Zero)
+                GetMostRecentSessionID();
             return ret;
         }
 
@@ -373,7 +401,7 @@ namespace Chimera.OpenSim {
                 if (mStats.ContainsKey(ts))
                     mStats[ts] = mLastStat;
                 else
-                    mStats.Add(mLastStat.ToString(), mLastStat);
+                    mStats.Add(ts, mLastStat);
             }
         }
 
@@ -450,6 +478,47 @@ namespace Chimera.OpenSim {
                 ChildAgents = stats.ChildAgents;
                 ActiveScripts = stats.ActiveScripts;
                 TimeStamp = DateTime.Now;
+            }
+
+            public Stats(string line, ExperimentalConfig config) {
+                string[] s = line.Split(',');
+                int frames = new CoreConfig().Frames.Length;
+
+                CFPS = new float[frames];
+                PingTime = new int[frames];
+
+                Dilation = 0f;
+                SFPS = 0;
+                Agents = 0;
+                IncomingBPS = 0;
+                OutgoingBPS = 0;
+                ResentPackets = 0;
+                ReceivedResends = 0;
+                PhysicsFPS = 0f;
+                AgentUpdates = 0f;
+                Objects = 0;
+                ScriptedObjects = 0;
+                FrameTime = 0f;
+                NetTime = 0f;
+                ImageTime = 0f;
+                PhysicsTime = 0f;
+                ScriptTime = 0f;
+                OtherTime = 0f;
+                ChildAgents = 0;
+                ActiveScripts = 0;
+                mConfig = config;
+
+                TimeStamp = DateTime.ParseExact(s[0], mConfig.TimestampFormat, new DateTimeFormatInfo());
+
+                for (int i = 0; i < mConfig.OutputKeys.Length; i++) {
+                    switch (mConfig.OutputKeys[i]) {
+                        case "CFPS": CFPS = s.Skip(i + 1).Take(frames).Select(cfps => float.Parse(cfps)).ToArray(); break;
+                        //case "CFPS": ArrayStr(CFPS); break;
+                        //case "PingTime": ArrayStr(PingTime); break;
+                        case "FT": FrameTime = float.Parse(s[i + 1]); break;
+                        case "SFPS": SFPS = int.Parse(s[i + 1]); break;
+                    }
+                }
             }
 
             public override string ToString() {

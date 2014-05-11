@@ -12,6 +12,7 @@ using log4net;
 using Chimera.Util;
 using System.Windows.Forms;
 using System.Threading;
+using System.Drawing;
 
 namespace Chimera.Experimental.Plugins {
     public class AvatarMovementPlugin : XmlLoader, ISystemPlugin {
@@ -73,11 +74,12 @@ namespace Chimera.Experimental.Plugins {
             foreach (var targetNode in targetsDoc.GetElementsByTagName("Target").OfType<XmlElement>()) {
                 var nameStr = targetNode.Attributes["name"].Value;
                 var targetAttr = targetNode.Attributes["location"];
+                Vector3 target;
 
                 if (targetAttr != null) {
-                    Vector3 target = Vector3.Zero;
-                    if (Vector3.TryParse(targetAttr.Value, out target))
+                    if (Vector3.TryParse(targetAttr.Value, out target)) {
                         mTargets.Add(new KeyValuePair<string, Vector3>(nameStr, target));
+                    }
                 } else {
                     foreach (var node in nodesDoc.GetElementsByTagName("name").OfType<XmlElement>()) {
                         if (node.InnerText == nameStr) {
@@ -85,11 +87,8 @@ namespace Chimera.Experimental.Plugins {
                             XmlNode y = x.NextSibling;
                             XmlNode z = y.NextSibling;
 
-                            Vector3 target = Vector3.Zero;
-
-                            target.X = float.Parse(x.InnerXml);
-                            target.Y = float.Parse(y.InnerXml);
-                            target.Z = float.Parse(z.InnerXml);
+                            if (!float.TryParse(x.InnerXml, out target.X) || !float.TryParse(y.InnerXml, out target.Y) || !float.TryParse(z.InnerXml, out target.Z))
+                                break;
 
                             mTargets.Add(new KeyValuePair<string, Vector3>(nameStr, target));
                             break;
@@ -101,13 +100,33 @@ namespace Chimera.Experimental.Plugins {
 
         public event Action<string, Vector3> TargetChanged;
 
+        public void DrawMap() {
+            Vector3 prev = mMainController.AvatarPosition;
+            Thread.Sleep(500);
+            prev = mMainController.AvatarPosition;
+            using (Bitmap map = new Bitmap(mConfig.MapFile)) {
+                prev.Y = map.Height - prev.Y;
+                using (Graphics g = Graphics.FromImage(map)) {
+                    using (Pen p = new Pen(Brushes.Red, 5))
+                    foreach (var target in mTargets.Select(t => new Vector3(t.Value.X, map.Height - t.Value.Y, t.Value.Z))) {
+                        g.DrawLine(p, new PointF(prev.X, prev.Y), new PointF(target.X, target.Y));
+                        prev = target;
+                    }
+                }
+                string name = Path.GetFileNameWithoutExtension(mConfig.MapFile) + "-WithRoute" + Path.GetExtension(mConfig.MapFile);
+                string file = Path.Combine(Path.GetDirectoryName(mConfig.MapFile), name);
+                Logger.Info("Saving map file to " + file + ".");
+                map.Save(file);
+            }
+        }
+
         public void Start() {
             Action start = () => {
                 if (mTargets.Count > 0) {
                     Logger.Info("Starting loop.");
 
                     if (mConfig.SaveResults)
-                        mConfig.SetupFPSLogs(mCore, mCore.ControlMode.ToString(), Logger);
+                        mConfig.SetupFPSLogs(mCore, Logger);
 
                     mTargetIndex = 0;
                     mTarget = mTargets[mTargetIndex];
@@ -120,8 +139,12 @@ namespace Chimera.Experimental.Plugins {
             };
 
             mCore.ControlMode = mConfig.Mode;
+
             if (mConfig.StartAtHome)
                 mMainController.ViewerController.PressKey("H", true, false, true);
+            else if (mConfig.Mode == ControlMode.Delta && mConfig.TeleportToStart) {
+                TeleportToStart();
+            }
 
             if (mConfig.StartWaitMS > 0) {
                 Thread t = new Thread(() => {
@@ -133,6 +156,27 @@ namespace Chimera.Experimental.Plugins {
                 t.Start();
             } else
                 start();
+        }
+
+        private void TeleportToStart() {
+            mMainController.ViewerController.PressKey("m", true, false, false);
+            mMainController.ViewerController.SendString(mConfig.StartIsland);
+            mMainController.ViewerController.PressKey("{ENTER}");
+            Thread.Sleep(5000);
+            mMainController.ViewerController.PressKey("{TAB}");
+            mMainController.ViewerController.SendString(mConfig.StartLocation.X.ToString());
+            mMainController.ViewerController.PressKey("{TAB}");
+            mMainController.ViewerController.SendString(mConfig.StartLocation.Y.ToString());
+            mMainController.ViewerController.PressKey("{TAB}");
+            mMainController.ViewerController.SendString(mConfig.StartLocation.Z.ToString());
+            mMainController.ViewerController.PressKey("{TAB}");
+
+
+            Thread.Sleep(5000);
+
+            mMainController.ViewerController.PressKey("{ENTER}");
+
+            Logger.Debug("Sent start location to client.");
         }
 
         private Vector3 Target {
@@ -224,6 +268,12 @@ namespace Chimera.Experimental.Plugins {
                     mCore.Tick -= mTickListener;
                     mConfig.StopRecordingLog(mCore);
 
+                    Console.Beep(2000, 100);
+                    Thread.Sleep(100);
+                    Console.Beep(2000, 100);
+                    Thread.Sleep(100);
+                    Console.Beep(2000, 100);
+
                     if (mConfig.AutoShutdown)
                         mForm.Invoke(new Action(() => mForm.Close()));
                 }
@@ -259,6 +309,7 @@ namespace Chimera.Experimental.Plugins {
             mCore = core;
             mMainController = mCore.GetPlugin<OpenSimController>();
             mMainController.ClientLoginComplete += new EventHandler(mMainController_CLientLoginComplete);
+            mCore.ControlMode = mConfig.Mode;
 
             LoadTargets();
         }

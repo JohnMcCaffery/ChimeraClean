@@ -34,6 +34,8 @@
             this.stopButton = new System.Windows.Forms.Button();
             this.heightOffsetPanel = new Chimera.GUI.ScalarPanel();
             this.label5 = new System.Windows.Forms.Label();
+            this.drawMapButton = new System.Windows.Forms.Button();
+            this.mapFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.SuspendLayout();
             // 
             // startButton
@@ -42,7 +44,7 @@
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.startButton.Location = new System.Drawing.Point(3, 3);
             this.startButton.Name = "startButton";
-            this.startButton.Size = new System.Drawing.Size(81, 23);
+            this.startButton.Size = new System.Drawing.Size(37, 23);
             this.startButton.TabIndex = 0;
             this.startButton.Text = "Start";
             this.startButton.UseVisualStyleBackColor = true;
@@ -132,9 +134,9 @@
             // stopButton
             // 
             this.stopButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.stopButton.Location = new System.Drawing.Point(90, 3);
+            this.stopButton.Location = new System.Drawing.Point(127, 3);
             this.stopButton.Name = "stopButton";
-            this.stopButton.Size = new System.Drawing.Size(75, 23);
+            this.stopButton.Size = new System.Drawing.Size(38, 23);
             this.stopButton.TabIndex = 10;
             this.stopButton.Text = "Stop";
             this.stopButton.UseVisualStyleBackColor = true;
@@ -164,10 +166,26 @@
             this.label5.TabIndex = 12;
             this.label5.Text = "Height Offset";
             // 
+            // drawMapButton
+            // 
+            this.drawMapButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.drawMapButton.Location = new System.Drawing.Point(46, 3);
+            this.drawMapButton.Name = "drawMapButton";
+            this.drawMapButton.Size = new System.Drawing.Size(75, 23);
+            this.drawMapButton.TabIndex = 13;
+            this.drawMapButton.Text = "Draw Map";
+            this.drawMapButton.UseVisualStyleBackColor = true;
+            this.drawMapButton.Click += new System.EventHandler(this.drawMapButton_Click);
+            // 
+            // mapFileDialog
+            // 
+            this.mapFileDialog.FileName = "mapFileDialog";
+            // 
             // AvatarMovementControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.drawMapButton);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.stopButton);
             this.Controls.Add(this.label4);
@@ -199,5 +217,7 @@
         private System.Windows.Forms.Button stopButton;
         private Chimera.GUI.ScalarPanel heightOffsetPanel;
         private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Button drawMapButton;
+        private System.Windows.Forms.OpenFileDialog mapFileDialog;
     }
 }

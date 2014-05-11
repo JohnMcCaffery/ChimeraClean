@@ -425,8 +425,11 @@ namespace Chimera.Util {
         protected extern static bool SetWindowLong(IntPtr hWnd, int nIndex, Int32 dwNewLong);
 
         [DllImport("user32.dll")]
+        static extern IntPtr GetForegroundWindow();
 
+        [DllImport("user32.dll")]
         public extern static IntPtr GetCursor();
+
         private Process mProcess;
         private Screen mMonitor;
         private bool mFullscreen;
@@ -519,25 +522,39 @@ namespace Chimera.Util {
         }
 
         public void PressKey(string key, bool ctrl, bool alt, bool shift) {
+            if (key == null || key.Trim(' ').Length < 1)
+                return;
             lock (Logger) {
-                if (!Started)
+                var process = this.mProcess;
+                if (process == null)
                     return;
                 //Process foreground = Process.GetCurrentProcess();
-                SetForegroundWindow(mProcess.MainWindowHandle);
+                if (process.MainWindowHandle != Process.GetCurrentProcess().MainWindowHandle)
+                    SetForegroundWindow(process.MainWindowHandle);
                 Thread.Sleep(100);
                 SendKeys.SendWait((ctrl ? "^" : "") + (alt ? "%" : "") + (shift ? "+" : "") + key);
+                Console.WriteLine("Sent: " + key);
                 //SetForegroundWindow(foreground.MainWindowHandle);
             }
         }
 
         public void SendString(string str) {
+            if (str == null || str.Trim(' ').Length < 1)
+                return;
             lock (Logger) {
-                if (!Started)
+                var process = this.mProcess;
+                if (process == null)
                     return;
                 //Process foreground = Process.GetCurrentProcess();
-                SetForegroundWindow(mProcess.MainWindowHandle);
-                foreach (var key in str)
+                if (process.MainWindowHandle != Process.GetCurrentProcess().MainWindowHandle) {
+                    SetForegroundWindow(process.MainWindowHandle);
+                }
+                foreach (var key in str) {
                     SendKeys.SendWait(key + "");
+                    Console.Write(key);
+                }
+
+                Console.WriteLine("\nSent: " + str);
                 //SetForegroundWindow(foreground.MainWindowHandle);
             }
         }

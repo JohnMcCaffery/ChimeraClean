@@ -46,7 +46,7 @@ namespace Chimera.Experimental.GUI {
             if (!mPlugin.Recording)
                 return;
 
-            ListViewItem item = new ListViewItem(mPlugin.LastStat.TimeStamp.ToString(mConfig.TimestampFormat));
+            ListViewItem item = new ListViewItem(mPlugin.LastStat.ToString());
             foreach (var key in mConfig.OutputKeys)
                 item.SubItems.Add(mPlugin.LastStat.Get(key));
 
@@ -65,14 +65,46 @@ namespace Chimera.Experimental.GUI {
             mConfig.Timestamp = DateTime.Now;
             Clipboard.SetText("-" + mConfig.Timestamp.ToString(mConfig.TimestampFormat) + "-MainWindow.log");
             clipboardLabel.Text = "'" + Clipboard.GetText() + "' in the clipboard.";
+        }
+
+        private void loadCSVButton_Click(object sender, EventArgs e) {
+            if (openFileDialog.ShowDialog() == DialogResult.OK) {
+                mConfig.Timestamp = mPlugin.LoadCSV(openFileDialog.FileName);
+
+                statsList.Items.Clear();
+
+                foreach (var stat in mPlugin.StatsList) {
+                    ListViewItem item = new ListViewItem(stat.ToString());
+                    foreach (var key in mConfig.OutputKeys)
+                        item.SubItems.Add(stat.Get(key));
+
+                    statsList.Items.Add(item);
+                }
+            }
+
         }
 
-        private void loadFileButton_Click(object sender, EventArgs e) {
+        private void loadFPSFileButton_Click(object sender, EventArgs e) {
             mPlugin.Logout();
-            if (openLogFileDialog.ShowDialog() == DialogResult.OK) {
-                mConfig.Timestamp = mPlugin.LoadFPS(openLogFileDialog.FileName);
-                mPlugin.WriteCSV();
+            if (openFileDialog.ShowDialog() == DialogResult.OK) {
+                mConfig.Timestamp = mPlugin.LoadFPS(openFileDialog.FileName);
+
+                int cfps = 0;
+                for (int i = 0; i < mConfig.OutputKeys.Length; i++)
+                    if (mConfig.OutputKeys[i] == "CFPS")
+                        cfps = i+1;
+
+                foreach (var it in statsList.Items) {
+                    ListViewItem item = it as ListViewItem;
+                    item.SubItems[cfps].Text = mPlugin[item.Text].CFPS[0].ToString();
+                }
             }
+        }
+
+        private void saveCSVButton_Click(object sender, EventArgs e) {
+            openFileDialog.FileName = mConfig.RunInfo + "-" + mConfig.Timestamp.ToString(mConfig.TimestampFormat) + ".csv";
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+                mPlugin.WriteCSV(openFileDialog.FileName);
         }
     }
 }

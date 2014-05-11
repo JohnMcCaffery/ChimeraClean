@@ -8,10 +8,12 @@ using System.Text;
 using System.Windows.Forms;
 using Chimera.Experimental.Plugins;
 using OpenMetaverse;
+using System.IO;
 
 namespace Chimera.Experimental.GUI {
     public partial class AvatarMovementControl : UserControl {
         private AvatarMovementPlugin mPlugin;
+        private ExperimentalConfig mConfig;
 
         public AvatarMovementControl() {
             InitializeComponent();
@@ -19,6 +21,7 @@ namespace Chimera.Experimental.GUI {
 
         public AvatarMovementControl(AvatarMovementPlugin plugin) : this() {
             mPlugin = plugin;
+            mConfig = mPlugin.Config as ExperimentalConfig;
             mPlugin.TargetChanged += new Action<string, Vector3>(mPlugin_TargetChanged);
 
             turnRatePanel.Value = (float) (mPlugin.Config as ExperimentalConfig).TurnRate;
@@ -57,6 +60,16 @@ namespace Chimera.Experimental.GUI {
 
         private void stopButton_Click(object sender, EventArgs e) {
             mPlugin.Stop();
+        }
+
+        private void drawMapButton_Click(object sender, EventArgs e) {
+            if (mConfig.MapFile != null)
+                mapFileDialog.FileName = Path.GetFullPath(mConfig.MapFile);
+
+            if (mapFileDialog.ShowDialog() == DialogResult.OK) {
+                mConfig.MapFile = mapFileDialog.FileName;
+                mPlugin.DrawMap();
+            }
         }
     }
 }

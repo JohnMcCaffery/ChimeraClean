@@ -48,7 +48,7 @@ namespace Chimera.Experimental.Overlay {
         protected override void TransitionToStart() { }
 
         protected override void TransitionToFinish() {
-            mConfig.SetupFPSLogs(mFlythroughPlugin.Core, "", Logger);
+            mConfig.SetupFPSLogs(mFlythroughPlugin.Core, Logger);
 
             if (mFlythroughPlugin != null) {
                 mFlythroughPlugin.Enabled = true;

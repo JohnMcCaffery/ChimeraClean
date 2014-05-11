@@ -38,6 +38,8 @@ namespace Chimera.Experimental {
         public string TimestampFormat = "yyyy.MM.dd-HH.mm.ss";
         public string[] OutputKeys;
         public bool ProcessOnFinish;
+        public bool TeleportToStart;
+        public string MapFile;
 
         public ExperimentalConfig()
             : base("Experiments") { }
@@ -47,7 +49,6 @@ namespace Chimera.Experimental {
         }
 
         protected override void InitConfig() {
-            ExperimentName = GetStr("ExperimentName", "Experiment", "The name of the experiment. Controls the folder where the results will be written to.");
 
             ExperimentFile = GetFileSection("MovementTracker", "File", null, "The xml file which defines the experiment.");
             FPSFolder = GetFolderSection("MovementTracker", "FPSFolder", "FPS", "The folder where FPS results will be written to.");
@@ -64,9 +65,11 @@ namespace Chimera.Experimental {
             StartWaitMS = Get("AvatarMovement", "StartWaitMS", 0, "How many MS to wait before starting the loop.");
             AutoStart = Get("AvatarMovement", "AutoStart", false, "Whether to start the loop as soon as the plugin is enabled.");
             AutoShutdown = Get("AvatarMovement", "AutoShutdown", false, "Whether to stop Chimera when the loop completes.");
-            StartAtHome = Get("AvatarMovement", "StartAtHome", false, "Whether to teleport the avatar home before starting.");
+            StartAtHome = Get("AvatarMovement", "StartAtHome", false, "Whether to teleport the avatar home before starting. Overrides TeleportToStart if set.");
             SaveResults = Get("AvatarMovement", "SaveFPS", true, "Whether to save the log 'Experiments/<ExperimentName>/<Timestamp>-Mode-Frame.log'.");
             ProcessOnFinish = Get("AvatarMovement", "ProcessResults", false, "Whether to process the log files to a .csv file when closing.");
+            TeleportToStart = Get("AvatarMovement", "TeleportToStart", false, "Whether to use the map dialog to teleport the avatar to the start location specified in RecorderBot / StartIsland/StartLocation. Won't work if StartAtHome is enabled.");
+            MapFile = GetFileSection("AvatarMovement", "MapFile", null, "The file where the map image one which the route is to be drawn on is stored.");
 
             TimestampFormat = GetStr("TimestampFormat", TimestampFormat, "The format that all timestamps will be saved as. Should match second life's log's timestamps.");
 
@@ -82,10 +85,12 @@ namespace Chimera.Experimental {
             string outputKeysStr = GetSection("Recorder", "OutputKeys", "CFPS,SFPS,FT", "The columns the output table should have. Each column is separted by a comma. Valid keys are: CFPS, SFPS, FT, PingTime.");
             OutputKeys = outputKeysStr.Split(',');
 
+            ExperimentName = GetStr("ExperimentName", "Experiment", "The name of the experiment. Controls the folder where the results will be written to.");
+            RunInfo = GetStr("RunInfo", Mode.ToString(), "The name of the specific run happening.");
         }
 
-        public void SetupFPSLogs(Core core, string runInfo, ILog logger) {
-            RunInfo = runInfo;
+        public void SetupFPSLogs(Core core, ILog logger) {
+            string runInfo = this.RunInfo;
             if (runInfo == null)
                 runInfo = "";
             else if (runInfo.Length > 0)
@@ -116,7 +121,7 @@ namespace Chimera.Experimental {
                     OSOut.ViewerController.PressKey("{DEL}");
 
                     //Set the filename
-                    string file = Path.Combine(dir, time + runInfo + "-" + frame.Name + ".log");
+                    string file = Path.Combine(dir, time + "-" + runInfo + frame.Name + ".log");
                     OSOut.ViewerController.SendString(file);
                     Thread.Sleep(500);
                     logger.Info("Saving viewer log to " + file + ".");
