@@ -36,6 +36,7 @@
             this.label5 = new System.Windows.Forms.Label();
             this.drawMapButton = new System.Windows.Forms.Button();
             this.mapFileDialog = new System.Windows.Forms.OpenFileDialog();
+            this.reloadTargetsButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // startButton
@@ -44,7 +45,7 @@
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.startButton.Location = new System.Drawing.Point(3, 3);
             this.startButton.Name = "startButton";
-            this.startButton.Size = new System.Drawing.Size(37, 23);
+            this.startButton.Size = new System.Drawing.Size(146, 23);
             this.startButton.TabIndex = 0;
             this.startButton.Text = "Start";
             this.startButton.UseVisualStyleBackColor = true;
@@ -68,7 +69,7 @@
             this.turnRatePanel.Min = 0F;
             this.turnRatePanel.MinimumSize = new System.Drawing.Size(95, 20);
             this.turnRatePanel.Name = "turnRatePanel";
-            this.turnRatePanel.Size = new System.Drawing.Size(298, 20);
+            this.turnRatePanel.Size = new System.Drawing.Size(508, 20);
             this.turnRatePanel.TabIndex = 2;
             this.turnRatePanel.Value = 0.85F;
             this.turnRatePanel.ValueChanged += new System.Action<float>(this.turnRatePanel_ValueChanged);
@@ -82,7 +83,7 @@
             this.moveRatePanel.Min = 0F;
             this.moveRatePanel.MinimumSize = new System.Drawing.Size(95, 20);
             this.moveRatePanel.Name = "moveRatePanel";
-            this.moveRatePanel.Size = new System.Drawing.Size(298, 20);
+            this.moveRatePanel.Size = new System.Drawing.Size(508, 20);
             this.moveRatePanel.TabIndex = 4;
             this.moveRatePanel.Value = 0.005F;
             this.moveRatePanel.ValueChanged += new System.Action<float>(this.movePanel_ValueChanged);
@@ -91,7 +92,7 @@
             // 
             this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(241, 32);
+            this.label1.Location = new System.Drawing.Point(451, 32);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(63, 13);
             this.label1.TabIndex = 5;
@@ -101,7 +102,7 @@
             // 
             this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(233, 58);
+            this.label3.Location = new System.Drawing.Point(443, 58);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(68, 13);
             this.label3.TabIndex = 7;
@@ -116,7 +117,7 @@
             this.distanceThresholdPanel.Min = 0F;
             this.distanceThresholdPanel.MinimumSize = new System.Drawing.Size(95, 20);
             this.distanceThresholdPanel.Name = "distanceThresholdPanel";
-            this.distanceThresholdPanel.Size = new System.Drawing.Size(298, 20);
+            this.distanceThresholdPanel.Size = new System.Drawing.Size(508, 20);
             this.distanceThresholdPanel.TabIndex = 8;
             this.distanceThresholdPanel.Value = 0.5F;
             this.distanceThresholdPanel.ValueChanged += new System.Action<float>(this.targetThresholdPanel_ValueChanged);
@@ -125,7 +126,7 @@
             // 
             this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(213, 84);
+            this.label4.Location = new System.Drawing.Point(423, 84);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(88, 13);
             this.label4.TabIndex = 9;
@@ -134,7 +135,7 @@
             // stopButton
             // 
             this.stopButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.stopButton.Location = new System.Drawing.Point(127, 3);
+            this.stopButton.Location = new System.Drawing.Point(337, 3);
             this.stopButton.Name = "stopButton";
             this.stopButton.Size = new System.Drawing.Size(38, 23);
             this.stopButton.TabIndex = 10;
@@ -151,7 +152,7 @@
             this.heightOffsetPanel.Min = 0F;
             this.heightOffsetPanel.MinimumSize = new System.Drawing.Size(95, 20);
             this.heightOffsetPanel.Name = "heightOffsetPanel";
-            this.heightOffsetPanel.Size = new System.Drawing.Size(298, 20);
+            this.heightOffsetPanel.Size = new System.Drawing.Size(508, 20);
             this.heightOffsetPanel.TabIndex = 11;
             this.heightOffsetPanel.Value = 0.5F;
             this.heightOffsetPanel.ValueChanged += new System.Action<float>(this.heightOffsetPanel_ValueChanged);
@@ -160,7 +161,7 @@
             // 
             this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(232, 110);
+            this.label5.Location = new System.Drawing.Point(442, 110);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(69, 13);
             this.label5.TabIndex = 12;
@@ -169,7 +170,7 @@
             // drawMapButton
             // 
             this.drawMapButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.drawMapButton.Location = new System.Drawing.Point(46, 3);
+            this.drawMapButton.Location = new System.Drawing.Point(256, 3);
             this.drawMapButton.Name = "drawMapButton";
             this.drawMapButton.Size = new System.Drawing.Size(75, 23);
             this.drawMapButton.TabIndex = 13;
@@ -181,10 +182,22 @@
             // 
             this.mapFileDialog.FileName = "mapFileDialog";
             // 
+            // reloadTargetsButton
+            // 
+            this.reloadTargetsButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.reloadTargetsButton.Location = new System.Drawing.Point(155, 3);
+            this.reloadTargetsButton.Name = "reloadTargetsButton";
+            this.reloadTargetsButton.Size = new System.Drawing.Size(95, 23);
+            this.reloadTargetsButton.TabIndex = 14;
+            this.reloadTargetsButton.Text = "ReLoad Targets";
+            this.reloadTargetsButton.UseVisualStyleBackColor = true;
+            this.reloadTargetsButton.Click += new System.EventHandler(this.reloadTargetsButton_Click);
+            // 
             // AvatarMovementControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.reloadTargetsButton);
             this.Controls.Add(this.drawMapButton);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.stopButton);
@@ -198,7 +211,7 @@
             this.Controls.Add(this.distanceThresholdPanel);
             this.Controls.Add(this.moveRatePanel);
             this.Name = "AvatarMovementControl";
-            this.Size = new System.Drawing.Size(304, 190);
+            this.Size = new System.Drawing.Size(514, 190);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -219,5 +232,6 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Button drawMapButton;
         private System.Windows.Forms.OpenFileDialog mapFileDialog;
+        private System.Windows.Forms.Button reloadTargetsButton;
     }
 }

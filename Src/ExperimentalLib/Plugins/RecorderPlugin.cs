@@ -211,7 +211,7 @@ namespace Chimera.OpenSim {
         public void MergeFPSes(Dictionary<string, List<float>> fpses) {
             int frames = Core.Frames.Count();
             foreach (var timestamp in mStats.Keys) {
-                if (fpses.ContainsKey(timestamp)) {
+                if (fpses.ContainsKey(timestamp) && fpses[timestamp].Count == frames) {
                     List<float> list = fpses[timestamp];
                     float[] from = list.ToArray<float>();
                     float[] to = mStats[timestamp].CFPS;

@@ -49,7 +49,7 @@ namespace Chimera.Experimental.Plugins {
             mTickListener = new Action(mCore_Tick);
         }
 
-        private void LoadTargets() {
+        public void LoadTargets() {
             if (mConfig.TargetsFile == null || mConfig.NodesFile == null)
                 return;
 

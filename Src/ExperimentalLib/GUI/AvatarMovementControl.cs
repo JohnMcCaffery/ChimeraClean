@@ -71,5 +71,9 @@ namespace Chimera.Experimental.GUI {
                 mPlugin.DrawMap();
             }
         }
+
+        private void reloadTargetsButton_Click(object sender, EventArgs e) {
+            mPlugin.LoadTargets();
+        }
     }
 }

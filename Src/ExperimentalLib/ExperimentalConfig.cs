@@ -90,7 +90,8 @@ namespace Chimera.Experimental {
         }
 
         public void SetupFPSLogs(Core core, ILog logger) {
-            string runInfo = this.RunInfo;
+            //string runInfo = RunInfo.Clone().ToString();
+            string runInfo = RunInfo;
             if (runInfo == null)
                 runInfo = "";
             else if (runInfo.Length > 0)
