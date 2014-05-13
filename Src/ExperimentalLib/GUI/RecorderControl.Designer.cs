@@ -35,6 +35,7 @@
             this.loadFileButton = new System.Windows.Forms.Button();
             this.saveCSVButton = new System.Windows.Forms.Button();
             this.loadCSVButton = new System.Windows.Forms.Button();
+            this.recordFPS = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.updateFreq)).BeginInit();
             this.SuspendLayout();
             // 
@@ -143,10 +144,22 @@
             this.loadCSVButton.UseVisualStyleBackColor = true;
             this.loadCSVButton.Click += new System.EventHandler(this.loadCSVButton_Click);
             // 
+            // recordFPS
+            // 
+            this.recordFPS.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.recordFPS.Location = new System.Drawing.Point(-16, 202);
+            this.recordFPS.Name = "recordFPS";
+            this.recordFPS.Size = new System.Drawing.Size(89, 23);
+            this.recordFPS.TabIndex = 47;
+            this.recordFPS.Text = "Record FPS";
+            this.recordFPS.UseVisualStyleBackColor = true;
+            this.recordFPS.Click += new System.EventHandler(this.recordFPS_Click);
+            // 
             // RecorderControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.recordFPS);
             this.Controls.Add(this.loadCSVButton);
             this.Controls.Add(this.saveCSVButton);
             this.Controls.Add(this.loadFileButton);
@@ -166,6 +179,7 @@
             this.Controls.SetChildIndex(this.loadFileButton, 0);
             this.Controls.SetChildIndex(this.saveCSVButton, 0);
             this.Controls.SetChildIndex(this.loadCSVButton, 0);
+            this.Controls.SetChildIndex(this.recordFPS, 0);
             ((System.ComponentModel.ISupportInitialize)(this.updateFreq)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -185,5 +199,6 @@
         private System.Windows.Forms.Button loadFileButton;
         private System.Windows.Forms.Button saveCSVButton;
         private System.Windows.Forms.Button loadCSVButton;
+        private System.Windows.Forms.Button recordFPS;
     }
 }

@@ -106,5 +106,9 @@ namespace Chimera.Experimental.GUI {
             if (openFileDialog.ShowDialog() == DialogResult.OK)
                 mPlugin.WriteCSV(openFileDialog.FileName);
         }
+
+        private void recordFPS_Click(object sender, EventArgs e) {
+            mPlugin.SaveFPS();
+        }
     }
 }
