@@ -96,7 +96,7 @@ namespace Chimera.Experimental.GUI {
 
                 foreach (var it in statsList.Items) {
                     ListViewItem item = it as ListViewItem;
-                    item.SubItems[cfps].Text = mPlugin[item.Text].CFPS[0].ToString();
+                    item.SubItems[cfps].Text = mPlugin[item.Text, "CFPS"];
                 }
             }
         }
