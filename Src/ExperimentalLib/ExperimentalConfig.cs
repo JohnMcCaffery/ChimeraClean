@@ -32,7 +32,6 @@ namespace Chimera.Experimental {
 
         public bool UpdateStatsGUI;
 
-        public DateTime Timestamp;
         public string RunInfo;
 
         public string TimestampFormat = "yyyy.MM.dd-HH.mm.ss";
@@ -40,6 +39,9 @@ namespace Chimera.Experimental {
         public bool ProcessOnFinish;
         public bool TeleportToStart;
         public string MapFile;
+
+        public DateTime Timestamp;
+        public string IDS;
 
         public ExperimentalConfig()
             : base("Experiments") { }
@@ -87,23 +89,33 @@ namespace Chimera.Experimental {
 
             ExperimentName = GetStr("ExperimentName", "Experiment", "The name of the experiment. Controls the folder where the results will be written to.");
             RunInfo = GetStr("RunInfo", Mode.ToString(), "The name of the specific run happening.");
+        }
+        internal string GetLogFileName() {
+            return GetLogFileName(new CoreConfig().Frames[0]);
         }
 
-        public void SetupFPSLogs(Core core, ILog logger) {
-            //string runInfo = RunInfo.Clone().ToString();
-            string runInfo = RunInfo;
+        internal string GetLogFileName(string frameName) {            string runInfo = RunInfo;
             if (runInfo == null)
                 runInfo = "";
             else if (runInfo.Length > 0)
                 runInfo += "-";
             
-            Timestamp = DateTime.Now;
-            string time = Timestamp.ToString(TimestampFormat);
 
             string dir = Path.GetFullPath(Path.Combine("Experiments", ExperimentName));
 
             if (!Directory.Exists(dir))
                 Directory.CreateDirectory(dir);
+
+            string time = Timestamp.ToString(TimestampFormat);
+            return Path.Combine(dir, time + "-" + runInfo + frameName + ".log");
+        }
+
+        public void SetupFPSLogs(Core core, ILog logger) {
+            //string runInfo = RunInfo.Clone().ToString();
+            Timestamp = DateTime.Now;
+
+            IDS = core.Frames.Select(f => (f.Output as OpenSimController).ProxyController.SessionID).
+                Aggregate("", (a, id) => a + "," + id);
 
             foreach (var frame in core.Frames) {
                 OpenSimController OSOut = frame.Output as OpenSimController;
@@ -121,8 +133,9 @@ namespace Chimera.Experimental {
                     //Delete the old value
                     OSOut.ViewerController.PressKey("{DEL}");
 
+                    string file = GetLogFileName(frame.Name);
+
                     //Set the filename
-                    string file = Path.Combine(dir, time + "-" + runInfo + frame.Name + ".log");
                     OSOut.ViewerController.SendString(file);
                     Thread.Sleep(500);
                     logger.Info("Saving viewer log to " + file + ".");

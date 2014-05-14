@@ -32,10 +32,11 @@
             this.timestampButton = new System.Windows.Forms.Button();
             this.clipboardLabel = new System.Windows.Forms.Label();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
-            this.loadFileButton = new System.Windows.Forms.Button();
+            this.loadLogButton = new System.Windows.Forms.Button();
             this.saveCSVButton = new System.Windows.Forms.Button();
             this.loadCSVButton = new System.Windows.Forms.Button();
             this.recordFPS = new System.Windows.Forms.Button();
+            this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             ((System.ComponentModel.ISupportInitialize)(this.updateFreq)).BeginInit();
             this.SuspendLayout();
             // 
@@ -64,9 +65,9 @@
             // 
             // statsList
             // 
-            this.statsList.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.statsList.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.statsList.Location = new System.Drawing.Point(7, 230);
             this.statsList.Name = "statsList";
             this.statsList.Size = new System.Drawing.Size(558, 168);
@@ -111,16 +112,16 @@
             this.openFileDialog.InitialDirectory = "U:\\Results";
             this.openFileDialog.RestoreDirectory = true;
             // 
-            // loadFileButton
+            // loadLogButton
             // 
-            this.loadFileButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.loadFileButton.Location = new System.Drawing.Point(174, 201);
-            this.loadFileButton.Name = "loadFileButton";
-            this.loadFileButton.Size = new System.Drawing.Size(63, 23);
-            this.loadFileButton.TabIndex = 44;
-            this.loadFileButton.Text = "Load FPS";
-            this.loadFileButton.UseVisualStyleBackColor = true;
-            this.loadFileButton.Click += new System.EventHandler(this.loadFPSFileButton_Click);
+            this.loadLogButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.loadLogButton.Location = new System.Drawing.Point(174, 201);
+            this.loadLogButton.Name = "loadLogButton";
+            this.loadLogButton.Size = new System.Drawing.Size(63, 23);
+            this.loadLogButton.TabIndex = 44;
+            this.loadLogButton.Text = "Load Log";
+            this.loadLogButton.UseVisualStyleBackColor = true;
+            this.loadLogButton.Click += new System.EventHandler(this.loadLogButton_Click);
             // 
             // saveCSVButton
             // 
@@ -162,7 +163,7 @@
             this.Controls.Add(this.recordFPS);
             this.Controls.Add(this.loadCSVButton);
             this.Controls.Add(this.saveCSVButton);
-            this.Controls.Add(this.loadFileButton);
+            this.Controls.Add(this.loadLogButton);
             this.Controls.Add(this.clipboardLabel);
             this.Controls.Add(this.timestampButton);
             this.Controls.Add(this.pingButton);
@@ -176,7 +177,7 @@
             this.Controls.SetChildIndex(this.pingButton, 0);
             this.Controls.SetChildIndex(this.timestampButton, 0);
             this.Controls.SetChildIndex(this.clipboardLabel, 0);
-            this.Controls.SetChildIndex(this.loadFileButton, 0);
+            this.Controls.SetChildIndex(this.loadLogButton, 0);
             this.Controls.SetChildIndex(this.saveCSVButton, 0);
             this.Controls.SetChildIndex(this.loadCSVButton, 0);
             this.Controls.SetChildIndex(this.recordFPS, 0);
@@ -196,9 +197,10 @@
         private System.Windows.Forms.Button timestampButton;
         private System.Windows.Forms.Label clipboardLabel;
         private System.Windows.Forms.OpenFileDialog openFileDialog;
-        private System.Windows.Forms.Button loadFileButton;
+        private System.Windows.Forms.Button loadLogButton;
         private System.Windows.Forms.Button saveCSVButton;
         private System.Windows.Forms.Button loadCSVButton;
         private System.Windows.Forms.Button recordFPS;
+        private System.Windows.Forms.SaveFileDialog saveFileDialog;
     }
 }

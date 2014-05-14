@@ -68,6 +68,12 @@ namespace Chimera.OpenSim {
                 else
                     return mServerStats[ts].Get(key);
             }
+        }
+        internal bool HasStat(string ts, string key) {
+            if (key == "CFPS" || key == "Polygons")
+                return mClientStats.ContainsKey(ts);
+            else
+                return mServerStats.ContainsKey(ts);
         }
 
         public IEnumerable<ServerStats> StatsList {
@@ -136,18 +142,16 @@ namespace Chimera.OpenSim {
         void form_FormClosed(object sender, FormClosedEventArgs e) {
             if (mConfig.ProcessOnFinish)
                 LoadClientStats();
-                WriteCSV(mConfig.RunInfo + "-" + mConfig.Timestamp.ToString(mConfig.TimestampFormat) + ".csv");
+                WriteCSV(GetCSVName());
         }
 
-        public void WriteCSV(string filename) {            if (mServerStats.Count > 0) {
+        public void WriteCSV(string resultsFile) {            if (mServerStats.Count > 0) {
 
-                string ids = Core.Frames.Select(f => (f.Output as OpenSimController).ProxyController.SessionID).
-                    Aggregate("", (a, id) => a + "," + id);
+                string ids = mConfig.IDS;
 
                 if (mSessionID != UUID.Zero)
                     ids = "," + mSessionID;
 
-                string resultsFile = Path.GetFullPath(Path.Combine("Experiments", mConfig.ExperimentName, filename));
                 File.Delete(resultsFile);
                 try {
                     File.Create(resultsFile).Close();
@@ -155,7 +159,7 @@ namespace Chimera.OpenSim {
                     Logger.Warn("Unable to create " + resultsFile + ".", ex);
                 }
 
-                string headers = "Timestamp,";
+                string headers = "Timestamp,Second,";
                 headers += mConfig.OutputKeys.Aggregate((a, k) => a + "," + k);
                 headers += ids;
                 headers += Environment.NewLine;
@@ -199,6 +203,9 @@ namespace Chimera.OpenSim {
 
                 ServerStats s = new ServerStats(line, mConfig);
                 mServerStats.Add(s.ToString(), s);
+
+                ClientStats c = new ClientStats(line, mConfig);
+                mClientStats.Add(c.ToString(), c);
             }
 
             string[] splitFilename = Path.GetFileNameWithoutExtension(file).Split(new char[] { '-' }, 2);
@@ -210,25 +217,26 @@ namespace Chimera.OpenSim {
             Dictionary<string, List<float>> fpses = new Dictionary<string, List<float>>();
 
             string startTS = mConfig.Timestamp.ToString(LOG_TIMESTAMP_FORMAT);
+            int i = 0;
             foreach (var file in Directory.
                     GetFiles(Path.Combine("Experiments", mConfig.ExperimentName)).
                     Where(f => 
                         Path.GetExtension(f) == ".log" &&
                         Path.GetFileName(f).StartsWith(mConfig.Timestamp.ToString(mConfig.TimestampFormat)))) {
 
-                            LoadFPS(file);
+                            LoadViewerLog(file, i++);
             }
         }
 
-        public DateTime LoadFPS(string file) {
+        public DateTime LoadViewerLog(string file) {
             Dictionary<string, List<float>> fpses = new Dictionary<string, List<float>>();
-            DateTime ret = LoadFPS(file, 0);
+            DateTime ret = LoadViewerLog(file, 0);
             if (mSessionID == UUID.Zero)
                 GetMostRecentSessionID();
             return ret;
         }
 
-        public DateTime LoadFPS(string file, int frame) {
+        public DateTime LoadViewerLog(string file, int frame) {
             string[] lines = null;
             int wait = 500;
             bool retSet = false;
@@ -398,10 +406,10 @@ namespace Chimera.OpenSim {
 
             foreach (var key in config.OutputKeys) {
                 switch (key.ToUpper()) {
-                    case "CFPS": line += client.CFPS.Aggregate("", (s, v) => s + v + ",", f => f.TrimEnd(',')); break;
-                    case "Polygons": line += client.Polys.Aggregate("", (s, v) => s + v + ",", f => f.TrimEnd(',')); break;
-                    case "FT": line += server.FrameTime.ToString(); break;
-                    case "SFPS": line += server.SFPS.ToString(); break;
+                    case "CFPS": line += client.CFPS.Aggregate("", (s, v) => s + v + ",", f => f); break;
+                    case "POLYGONS": line += client.Polys.Aggregate("", (s, v) => s + v + ",", f => f); break;
+                    case "FT": line += server.FrameTime.ToString() + ","; break;
+                    case "SFPS": line += server.SFPS.ToString() + ","; break;
                 }
             }
 
@@ -434,8 +442,6 @@ namespace Chimera.OpenSim {
 
             public string Get(string key) {
                 switch (key.ToUpper()) {
-                    //case "CFPS": return ArrayStr(CFPS);
-                    //case "PingTime": return ArrayStr(PingTime);
                     case "FT": return FrameTime.ToString();
                     case "SFPS": return SFPS.ToString();
                 }
@@ -504,10 +510,8 @@ namespace Chimera.OpenSim {
 
                 for (int i = 0; i < mConfig.OutputKeys.Length; i++) {
                     switch (mConfig.OutputKeys[i]) {
-                        //case "CFPS": ArrayStr(CFPS); break;
-                        //case "PingTime": ArrayStr(PingTime); break;
-                        case "FT": FrameTime = float.Parse(s[i + 1]); break;
-                        case "SFPS": SFPS = int.Parse(s[i + 1]); break;
+                        case "FT": FrameTime = float.Parse(s[i + 2]); break;
+                        case "SFPS": SFPS = int.Parse(s[i + 2]); break;
                     }
                 }
             }
@@ -528,7 +532,7 @@ namespace Chimera.OpenSim {
 
         public struct ClientStats {
             public float[] CFPS;
-            public int[] Polys;
+            public float[] Polys;
 
             public DateTime TimeStamp;
 
@@ -537,7 +541,7 @@ namespace Chimera.OpenSim {
             public string Get(string key) {
                 switch (key.ToUpper()) {
                     case "CFPS": return CFPS.Aggregate("", (s, v) => s + v + ",", f => f.TrimEnd(','));
-                    case "Polygons": return Polys.Aggregate("", (s, v) => s + v + ",", f => f.TrimEnd(','));
+                    case "POLYGONS": return Polys.Aggregate("", (s, v) => s + v + ",", f => f.TrimEnd(','));
                 }
                 return "-";
             }
@@ -547,7 +551,7 @@ namespace Chimera.OpenSim {
                 int frames = new CoreConfig().Frames.Length;
 
                 CFPS = new float[frames];
-                Polys = new int[frames];
+                Polys = new float[frames];
 
                 mConfig = config;
 
@@ -555,8 +559,8 @@ namespace Chimera.OpenSim {
 
                 for (int i = 0; i < mConfig.OutputKeys.Length; i++) {
                     switch (mConfig.OutputKeys[i]) {
-                        case "CFPS": CFPS = s.Skip(i + 1).Take(frames).Select(cfps => float.Parse(cfps)).ToArray(); i += frames-1; break;
-                        case "Polygons": Polys = s.Skip(i + 1).Take(frames).Select(polys => int.Parse(polys)).ToArray(); i += frames-1; break;
+                        case "CFPS": CFPS = s.Skip(i + 2).Take(frames).Select(cfps => cfps != "-" ? float.Parse(cfps) : 0f).ToArray(); i += frames-1; break;
+                        case "Polygons": Polys = s.Skip(i + 2).Take(frames).Select(polys => polys != "-" ? float.Parse(polys) : 0f).ToArray(); i += frames-1; break;
                     }
                 }
             }
@@ -566,7 +570,7 @@ namespace Chimera.OpenSim {
                 int frames = new CoreConfig().Frames.Length;
 
                 CFPS = new float[frames];
-                Polys = new int[frames];
+                Polys = new float[frames];
 
                 mConfig = config;
 
@@ -579,7 +583,7 @@ namespace Chimera.OpenSim {
 
                 switch (s[5]) {
                     case "FPS:": CFPS[frame] = float.Parse(s[6]); break;
-                    case "Polygons:": CFPS[frame] = int.Parse(s[6]); break;
+                    case "POLYGONS:": Polys[frame] = float.Parse(s[6]); break;
                 }
             }
 
@@ -597,8 +601,13 @@ namespace Chimera.OpenSim {
             }
         }
 
-        internal void SaveFPS() {
+        internal void StartLogging() {
             mConfig.SetupFPSLogs(Core, Logger);
+            mSessionID = UUID.Parse(mConfig.IDS.Split(',')[0]);
+        }
+
+        internal string GetCSVName() {
+            return Path.GetFullPath(Path.Combine("Experiments", mConfig.ExperimentName, mConfig.RunInfo + "-" + mConfig.Timestamp.ToString(mConfig.TimestampFormat) + ".csv"));
         }
     }
 }
