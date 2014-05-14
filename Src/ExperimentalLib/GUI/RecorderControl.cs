@@ -96,6 +96,7 @@ namespace Chimera.Experimental.GUI {
 
                 int cfps = GetKeyIndex("CFPS");
                 int polygons = GetKeyIndex("Polygons");
+                int ping = GetKeyIndex("Ping");
 
                 foreach (var it in statsList.Items) {
                     ListViewItem item = it as ListViewItem;
@@ -103,6 +104,8 @@ namespace Chimera.Experimental.GUI {
                         item.SubItems[cfps].Text = mPlugin[item.Text, "CFPS"];
                     if (mPlugin.HasStat(item.Text, "Polygons"))
                         item.SubItems[polygons].Text = mPlugin[item.Text, "Polygons"];
+                    if (mPlugin.HasStat(item.Text, "Ping"))
+                        item.SubItems[polygons].Text = mPlugin[item.Text, "Ping"];
                 }
             }
         }

@@ -261,8 +261,10 @@ namespace Chimera.Experimental.Plugins {
                     Thread.Sleep(100);
                     Console.Beep(2000, 100);
 
-                    foreach (var frame in mCore.Frames)
-                        frame.Output.Close();
+                    Thread.Sleep(5000);
+
+                    foreach (var controller in mCore.Frames.Select(f => f.Output as OpenSimController))
+                        controller.Stop();
 
                     Thread.Sleep(5000);
 
