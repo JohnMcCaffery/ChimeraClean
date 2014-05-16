@@ -49,35 +49,94 @@ namespace Chimera.OpenSim {
         private RecorderControl mPanel;
         private AvatarMovementPlugin mMovementPlugin;
         private ExperimentalConfig mConfig;
-        private Dictionary<string, ServerStats> mServerStats = new Dictionary<string, ServerStats>();
-        private Dictionary<string, ClientStats> mClientStats = new Dictionary<string, ClientStats>();
+        private List<ServerStats> mServerStats = new List<ServerStats>();
+        private List<ClientStats> mClientStats = new List<ClientStats>();
         private ServerStats mLastStat;
         private Action mTickListener;
         private bool mRecording;
         private bool mCopyDone = false;
         private UUID mSessionID = UUID.Zero;
 
-        public ServerStats this[string ts] {
-            get { return mServerStats[ts]; }
+        private ServerStats NearestServerStat(DateTime timestamp) {
+            return mServerStats.FirstOrDefault(s => s.TimeStamp > timestamp);
         }
 
-        public string this[string ts, string key] {
+        private ClientStats NearestClientStat(DateTime timestamp) {
+            return mClientStats.FirstOrDefault(c => c.TimeStamp > timestamp);
+        }
+
+        public ServerStats this[DateTime timestamp] {
+            get { return NearestServerStat(timestamp); }
+        }
+
+        public string this[DateTime ts, string key] {
             get { 
-                if (key == "CFPS" || key == "Polygons")
-                    return mClientStats[ts].Get(key);
+                if (key == "CFPS" || key == "Polygons" || key == "Ping")
+                    return NearestClientStat(ts).Get(key);
                 else
-                    return mServerStats[ts].Get(key);
+                    return NearestServerStat(ts).Get(key);
             }
         }
-        internal bool HasStat(string ts, string key) {
+        internal bool HasStat(DateTime ts, string key) {
             if (key == "CFPS" || key == "Polygons" || key == "Ping")
-                return mClientStats.ContainsKey(ts);
+                return mClientStats.Last().TimeStamp > ts;
             else
-                return mServerStats.ContainsKey(ts);
+                return mServerStats.Last().TimeStamp > ts;
         }
 
-        public IEnumerable<ServerStats> StatsList {
-            get { return mServerStats.Values; }
+        public IEnumerable<String> CombinedStats {
+            get {
+                if (mServerStats.Count != 0 && mClientStats.Count != 0) {
+                    DateTime start = mConfig.Timestamp;
+
+                    DateTime cEnd = mClientStats.Last().TimeStamp;
+                    DateTime sEnd = mServerStats.Last().TimeStamp;
+                    DateTime end = cEnd < sEnd ? cEnd : sEnd;
+
+                    IEnumerator<ServerStats> server =
+                            mServerStats.
+                            SkipWhile(s => s.TimeStamp < start).
+                            TakeWhile(s => s.TimeStamp <= end).
+                            GetEnumerator();
+
+                    IEnumerator<ClientStats> client =
+                            mClientStats.
+                            SkipWhile(c => c.TimeStamp < start).
+                            TakeWhile(c => c.TimeStamp <= end).
+                            GetEnumerator();
+
+                    List<string> lines = new List<string>();
+
+                    bool moreClients = server.MoveNext();
+                    bool moreServers = client.MoveNext();
+
+                    while (moreClients || moreServers) {
+                        while (moreClients && moreServers && server.Current.TimeStamp == client.Current.TimeStamp) {
+                            lines.Add(CombineStats(mConfig, server.Current, client.Current));
+                            moreClients = client.MoveNext();
+                            moreServers = server.MoveNext();
+                        }
+
+                        while (moreClients && (!moreServers || server.Current.TimeStamp > client.Current.TimeStamp)) {
+                            lines.Add(client.Current.ToString(mConfig));
+                            moreClients = client.MoveNext();
+                        }
+
+                        while (moreServers && (!moreClients || server.Current.TimeStamp < client.Current.TimeStamp)) {
+                            lines.Add(server.Current.ToString(mConfig));
+                            moreServers = server.MoveNext();
+                        }
+                    }
+
+                    return lines;
+
+                } else if (mServerStats.Count > 0)
+                    return mServerStats.SkipWhile(s => s.TimeStamp < mConfig.Timestamp).Select(s => s.TimeStamp.ToString(s.ToString(mConfig)));
+                else if (mClientStats.Count > 0)
+                    return mClientStats.SkipWhile(c => c.TimeStamp < mConfig.Timestamp).Select(c => c.TimeStamp.ToString(c.ToString(mConfig)));
+
+                return new string[0];
+            }
         }
 
         public ServerStats LastStat {
@@ -93,6 +152,7 @@ namespace Chimera.OpenSim {
         }
 
         protected override void OnLoggedIn() {
+            mConfig.Timestamp = DateTime.Now;
         }
 
         protected override void OnLoggingOut() {
@@ -145,50 +205,28 @@ namespace Chimera.OpenSim {
                 WriteCSV(GetCSVName());
         }
 
-        public void WriteCSV(string file) {            if (mServerStats.Count > 0) {
+        public void WriteCSV(string file) {            if (mServerStats.Count <= 0 && mClientStats.Count <= 0)
+                return;
 
-                string ids = mConfig.IDS;
+            string ids = mConfig.IDS;
 
-                if (mSessionID != UUID.Zero)
-                    ids = "," + mSessionID;
-
-                File.Delete(file);
-                try {
-                    File.Create(file).Close();
-                } catch (Exception ex) {
-                    Logger.Warn("Unable to create " + file + ".", ex);
-                }
-
-                string headers = "Timestamp,Second,";
-                headers += mConfig.OutputKeys.Aggregate((a, k) => a + "," + k);
-                headers += ids;
-                headers += Environment.NewLine;
-
-                IEnumerable<string> lines = null;
-                int count = 0;
-                if (mServerStats.Count != 0 && mClientStats.Count != 0)
-                    lines = mServerStats.Keys.Intersect(mClientStats.Keys).Select(ts => CombineStats(++count, mConfig, mServerStats[ts], mClientStats[ts]));
-                else if (mServerStats.Count > 0)
-                    lines = mServerStats.Values.Select(s => s.TimeStamp.ToString(s.ToString(mConfig, ++count)));
-                else if (mClientStats.Count > 0)
-                    lines = mClientStats.Values.Select(c => c.TimeStamp.ToString(c.ToString(mConfig, ++count)));
-
-                if (lines != null) {
-                    File.AppendAllText(file, headers);
-                    File.AppendAllLines(file, lines);
-
-                    Logger.Info("Written statistics to: " + file);
-                }
-
-                /*
-                lock (mServerStats) {
-                    File.AppendAllLines(resultsFile, mServerStats.
-                        Values.
-                        Where(s => s.TimeStamp > mConfig.Timestamp).
-                        Select(s => s.ToString(mConfig.OutputKeys)));
-                }
-                */
+            File.Delete(file);
+            try {
+                File.Create(file).Close();
+            } catch (Exception ex) {
+                Logger.Warn("Unable to create " + file + ".", ex);
             }
+
+            string headers = "Timestamp,Second,";
+            headers += mConfig.OutputKeys.Aggregate((a, k) => a + "," + k);
+            headers += ids;
+            headers += Environment.NewLine;
+
+
+            File.AppendAllText(file, headers);
+            File.AppendAllLines(file, CombinedStats);
+
+            Logger.Info("Written statistics to: " + file);
         }
 
         public DateTime LoadCSV(string file) {
@@ -204,10 +242,10 @@ namespace Chimera.OpenSim {
                 }
 
                 ServerStats s = new ServerStats(line, mConfig);
-                mServerStats.Add(s.ToString(), s);
+                mServerStats.Add(s);
 
                 ClientStats c = new ClientStats(line, mConfig);
-                mClientStats.Add(c.ToString(), c);
+                mClientStats.Add(c);
             }
 
             string[] splitFilename = Path.GetFileNameWithoutExtension(file).Split(new char[] { '-' }, 2);
@@ -224,11 +262,14 @@ namespace Chimera.OpenSim {
 
             string startTS = mConfig.Timestamp.ToString(LOG_TIMESTAMP_FORMAT);
             int i = 0;
-            foreach (var file in Directory.
+            foreach (var file in Core.Frames.Select(f => mConfig.GetLogFileName(f.Name))) {
+                /*
+                Directory.
                     GetFiles(Path.Combine("Experiments", mConfig.ExperimentName)).
                     Where(f => 
                         Path.GetExtension(f) == ".log" &&
                         Path.GetFileName(f).StartsWith(mConfig.Timestamp.ToString(mConfig.TimestampFormat)))) {
+                */
 
                             LoadViewerLog(file, i++);
             }
@@ -242,7 +283,10 @@ namespace Chimera.OpenSim {
             return ret;
         }
 
-        public DateTime LoadViewerLog(string file, int frame) {
+        public DateTime LoadViewerLog(string file, int frame) {            if (!File.Exists(file)) {
+                Logger.Warn("Unable to load viewer log from '" + file + "'. File does not exist.");
+                return DateTime.Now;
+            }
             string[] lines = null;
             int wait = 500;
             bool retSet = false;
@@ -261,7 +305,7 @@ namespace Chimera.OpenSim {
                 }
             }
 
-            foreach (var line in lines.Where(l => l.Contains("FPS") || l.Contains("POLYGONS") || l.Contains("PING"))) {
+            foreach (var line in lines.Where(l => l.Contains("FPS") && l.Contains("POLYGONS") && l.Contains("PING"))) {
                 DateTime ts = DateTime.ParseExact(line.Split(' ')[0], LOG_TIMESTAMP_FORMAT, new DateTimeFormatInfo());
                 string time = ts.ToString(mConfig.TimestampFormat);
 
@@ -270,10 +314,7 @@ namespace Chimera.OpenSim {
                     ret = ts;
                 }
 
-                if (!mClientStats.ContainsKey(time))
-                    mClientStats.Add(time, new ClientStats(line, mConfig, ts));
-                else
-                    mClientStats[time].AddLine(line, frame);
+                mClientStats.Add(new ClientStats(line, mConfig, ts));
 
             }
 
@@ -401,17 +442,14 @@ namespace Chimera.OpenSim {
             mRecording = true;
             mLastStat = new ServerStats(Sim.Stats, Core.Frames.Count(), mConfig);
             lock (mServerStats) {
-                string ts = mLastStat.ToString();
-                if (mServerStats.ContainsKey(ts))
-                    mServerStats[ts] = mLastStat;
-                else
-                    mServerStats.Add(ts, mLastStat);
+                mServerStats.Add(mLastStat);
             }
         }
 
-        public static string CombineStats(int count, ExperimentalConfig config, ServerStats server, ClientStats client) {
+        public static string CombineStats(ExperimentalConfig config, ServerStats server, ClientStats client) {
             DateTime ts = server.TimeStamp;
-            string line = client.TimeStamp.ToString(config.TimestampFormat) + "," + count + ",";
+            string line = client.TimeStamp.ToString(config.TimestampFormat) + ",";
+            line += (config.Timestamp - ts).TotalMilliseconds + ",";
 
             foreach (var key in config.OutputKeys) {
                 switch (key.ToUpper()) {
@@ -423,10 +461,32 @@ namespace Chimera.OpenSim {
                 }
             }
 
-            return line;
+            return line + "," + ((server.TimeStamp - client.TimeStamp).TotalMilliseconds);
+        }
+        public class Stats {
+            public readonly DateTime TimeStamp;
+            protected readonly ExperimentalConfig mConfig;
+
+            public Stats(DateTime timestamp, ExperimentalConfig config) {
+                mConfig = config;
+
+                TimeStamp = timestamp;
+            }
+
+            public Stats(string line, ExperimentalConfig config) {
+                string[] s = line.Split(',');
+                int frames = new CoreConfig().Frames.Length;
+
+                mConfig = config;
+                TimeStamp = DateTime.ParseExact(line.Split(',')[0], mConfig.TimestampFormat, new DateTimeFormatInfo());
+            }
+
+            public override string ToString() {
+                return TimeStamp.ToString(mConfig.TimestampFormat) + "," + (TimeStamp - mConfig.Timestamp).TotalMilliseconds + ",";
+            }
         }
 
-        public struct ServerStats {
+        public class ServerStats : Stats {
             public readonly float Dilation;
             public readonly int SFPS;
             public readonly int Agents;
@@ -446,9 +506,6 @@ namespace Chimera.OpenSim {
             public readonly float OtherTime;
             public readonly int ChildAgents;
             public readonly int ActiveScripts;
-            public DateTime TimeStamp;
-
-            private ExperimentalConfig mConfig;
 
             public string Get(string key) {
                 switch (key.ToUpper()) {
@@ -466,9 +523,7 @@ namespace Chimera.OpenSim {
                 return ret.TrimEnd(',');
             }
 
-            public ServerStats(Simulator.SimStats stats, int frames, ExperimentalConfig config) {
-                mConfig = config;
-
+            public ServerStats(Simulator.SimStats stats, int frames, ExperimentalConfig config) : base (DateTime.Now, config) {
                 Dilation = stats.Dilation;
                 SFPS = stats.FPS;
                 Agents = stats.Agents;
@@ -488,10 +543,10 @@ namespace Chimera.OpenSim {
                 OtherTime = stats.OtherTime;
                 ChildAgents = stats.ChildAgents;
                 ActiveScripts = stats.ActiveScripts;
-                TimeStamp = DateTime.Now;
             }
 
-            public ServerStats(string line, ExperimentalConfig config) {
+            public ServerStats(string line, ExperimentalConfig config)
+                : base(line, config) {
                 string[] s = line.Split(',');
                 int frames = new CoreConfig().Frames.Length;
 
@@ -513,10 +568,7 @@ namespace Chimera.OpenSim {
                 ScriptTime = 0f;
                 OtherTime = 0f;
                 ChildAgents = 0;
-                ActiveScripts = 0;
-                mConfig = config;
-
-                TimeStamp = DateTime.ParseExact(s[0], mConfig.TimestampFormat, new DateTimeFormatInfo());
+                ActiveScripts = 0;
 
                 for (int i = 0; i < mConfig.OutputKeys.Length; i++) {
                     switch (mConfig.OutputKeys[i]) {
@@ -530,8 +582,8 @@ namespace Chimera.OpenSim {
                 return TimeStamp.ToString(mConfig.TimestampFormat);
             }
 
-            public string ToString(ExperimentalConfig config, int count) {
-                string line = TimeStamp.ToString(mConfig.TimestampFormat) + "," + count + ",";
+            public string ToString(ExperimentalConfig config) {
+                string line = base.ToString();
 
                 foreach (var key in config.OutputKeys)
                     line += Get(key) + ",";
@@ -540,14 +592,11 @@ namespace Chimera.OpenSim {
             }
         }
 
-        public struct ClientStats {
+        public class ClientStats : Stats {
             public float[] CFPS;
             public float[] Polys;
             public float[] Ping;
 
-            public DateTime TimeStamp;
-
-            private ExperimentalConfig mConfig;
 
             public string Get(string key) {
                 switch (key.ToUpper()) {
@@ -558,17 +607,13 @@ namespace Chimera.OpenSim {
                 return "-";
             }
 
-            public ClientStats(string line, ExperimentalConfig config) {
+            public ClientStats(string line, ExperimentalConfig config) : base (line, config) {
                 string[] s = line.Split(',');
                 int frames = new CoreConfig().Frames.Length;
 
                 CFPS = new float[frames];
                 Polys = new float[frames];
                 Ping = new float[frames];
-
-                mConfig = config;
-
-                TimeStamp = DateTime.ParseExact(s[0], mConfig.TimestampFormat, new DateTimeFormatInfo());
 
                 for (int i = 0; i < mConfig.OutputKeys.Length; i++) {
                     switch (mConfig.OutputKeys[i]) {
@@ -577,9 +622,11 @@ namespace Chimera.OpenSim {
                         case "Ping": Polys = s.Skip(i + 2).Take(frames).Select(ping => ping != "-" ? float.Parse(ping) : 0f).ToArray(); i += frames-1; break;
                     }
                 }
-            }
+            }
 
-            public ClientStats(string line, ExperimentalConfig config, DateTime timestamp) {
+
+            public ClientStats(string line, ExperimentalConfig config, DateTime timestamp)
+                : base(timestamp, config) {
                 string[] s = line.Split(',');
                 int frames = new CoreConfig().Frames.Length;
 
@@ -587,28 +634,22 @@ namespace Chimera.OpenSim {
                 Polys = new float[frames];
                 Ping = new float[frames];
 
-                mConfig = config;
-
-                TimeStamp = timestamp;
-
                 AddLine(line, 0);
             }
 
             public void AddLine(string line, int frame) {                string[] s = line.Split(' ');
 
-                switch (s[5]) {
-                    case "FPS:": CFPS[frame] = float.Parse(s[6]); break;
-                    case "POLYGONS:": Polys[frame] = float.Parse(s[6]); break;
-                    case "PING:": Ping[frame] = float.Parse(s[6]); break;
-                }
+                CFPS[frame] = float.Parse(s[6]);
+                Polys[frame] = float.Parse(s[10]);
+                Ping[frame] = float.Parse(s[8]);
             }
 
             public override string ToString() {
                 return TimeStamp.ToString(mConfig.TimestampFormat);
             }
 
-            public string ToString(ExperimentalConfig config, int count) {
-                string line = TimeStamp.ToString(mConfig.TimestampFormat) + "," + count + ",";
+            public string ToString(ExperimentalConfig config) {
+                string line = base.ToString();
 
                 foreach (var key in mConfig.OutputKeys)
                     line += Get(key) + ",";
@@ -623,7 +664,10 @@ namespace Chimera.OpenSim {
         }
 
         internal string GetCSVName() {
-            return Path.GetFullPath(Path.Combine("Experiments", mConfig.ExperimentName, mConfig.RunInfo + "-" + mConfig.Timestamp.ToString(mConfig.TimestampFormat) + ".csv"));
+            string file = Path.GetFullPath(Path.Combine("Experiments", mConfig.ExperimentName, mConfig.RunInfo));
+            if (mConfig.IncludeTimestamp)
+                file += "-" + mConfig.Timestamp.ToString(mConfig.TimestampFormat);
+            return file + ".csv";
         }
     }
 }

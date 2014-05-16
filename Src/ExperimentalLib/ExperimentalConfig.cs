@@ -42,6 +42,7 @@ namespace Chimera.Experimental {
 
         public DateTime Timestamp;
         public string IDS;
+        public bool IncludeTimestamp;
 
         public ExperimentalConfig()
             : base("Experiments") { }
@@ -74,6 +75,7 @@ namespace Chimera.Experimental {
             MapFile = GetFileSection("AvatarMovement", "MapFile", null, "The file where the map image one which the route is to be drawn on is stored.");
 
             TimestampFormat = GetStr("TimestampFormat", TimestampFormat, "The format that all timestamps will be saved as. Should match second life's log's timestamps.");
+            IncludeTimestamp = Get("IncludeTimestamp", true, "Whether to include a timestamp in file names when saving results.");
 
             FirstName = GetSection("RecorderBot", "FirstName", "Recorder", "The first name of the bot that will be logged in to track server stats.");
             LastName = GetSection("RecorderBot", "LastName", "Bot", "The last name of the bot that will be logged in to track server stats.");
@@ -94,20 +96,24 @@ namespace Chimera.Experimental {
             return GetLogFileName(new CoreConfig().Frames[0]);
         }
 
-        internal string GetLogFileName(string frameName) {            string runInfo = RunInfo;
-            if (runInfo == null)
-                runInfo = "";
-            else if (runInfo.Length > 0)
-                runInfo += "-";
-            
-
+        internal string GetLogFileName(string frameName) {
             string dir = Path.GetFullPath(Path.Combine("Experiments", ExperimentName));
 
             if (!Directory.Exists(dir))
                 Directory.CreateDirectory(dir);
 
-            string time = Timestamp.ToString(TimestampFormat);
-            return Path.Combine(dir, time + "-" + runInfo + frameName + ".log");
+            string filename = RunInfo;
+            if (filename == null)
+                filename = "";
+
+            if (new CoreConfig().Frames.Length > 1)
+                filename += (filename.Length == 0 ? "" : "-") + frameName;
+
+            if (IncludeTimestamp || filename.Length == 0) {
+                string time = Timestamp.ToString(TimestampFormat);
+                filename = time + (filename.Length == 0 ? "" : "-") + filename;
+            } 
+            return Path.Combine(dir, filename + ".log");
         }
 
         public void SetupFPSLogs(Core core, ILog logger) {
@@ -132,6 +138,10 @@ namespace Chimera.Experimental {
                     OSOut.ViewerController.PressKey("{TAB}");
                     //Delete the old value
                     OSOut.ViewerController.PressKey("{DEL}");
+
+                    //Create temp file (If the new log file has the same name as the one that was originally entered logging won't work)
+                    OSOut.ViewerController.SendString("Blah");
+                    OSOut.ViewerController.PressKey("{ENTER}");
 
                     string file = GetLogFileName(frame.Name);
 
@@ -160,7 +170,7 @@ namespace Chimera.Experimental {
                     //Delete the test filename
                     OSOut.ViewerController.PressKey("{DEL}");
                     //Save filename and close window
-                    OSOut.ViewerController.PressKey("{TAB}");
+                    OSOut.ViewerController.PressKey("{ENTER}");
                     OSOut.ViewerController.PressKey("W", true, false, false);
                 }
             }

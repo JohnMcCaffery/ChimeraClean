@@ -75,10 +75,10 @@ namespace Chimera.Experimental.GUI {
 
                 statsList.Items.Clear();
 
-                foreach (var stat in mPlugin.StatsList) {
+                foreach (var stat in mPlugin.CombinedStats) {
                     ListViewItem item = new ListViewItem(stat.ToString());
-                    foreach (var key in mConfig.OutputKeys)
-                        item.SubItems.Add(stat.Get(key));
+                    foreach (var value in stat.Split(','))
+                        item.SubItems.Add(value);
 
                     statsList.Items.Add(item);
                 }
@@ -94,18 +94,14 @@ namespace Chimera.Experimental.GUI {
             if (openFileDialog.ShowDialog() == DialogResult.OK) {
                 mConfig.Timestamp = mPlugin.LoadViewerLog(openFileDialog.FileName);
 
-                int cfps = GetKeyIndex("CFPS");
-                int polygons = GetKeyIndex("Polygons");
-                int ping = GetKeyIndex("Ping");
+                statsList.Items.Clear();
 
-                foreach (var it in statsList.Items) {
-                    ListViewItem item = it as ListViewItem;
-                    if (mPlugin.HasStat(item.Text, "CFPS"))
-                        item.SubItems[cfps].Text = mPlugin[item.Text, "CFPS"];
-                    if (mPlugin.HasStat(item.Text, "Polygons"))
-                        item.SubItems[polygons].Text = mPlugin[item.Text, "Polygons"];
-                    if (mPlugin.HasStat(item.Text, "Ping"))
-                        item.SubItems[polygons].Text = mPlugin[item.Text, "Ping"];
+                foreach (var stat in mPlugin.CombinedStats) {
+                    ListViewItem item = new ListViewItem(stat.ToString());
+                    foreach (var value in stat.Split(','))
+                        item.SubItems.Add(value);
+
+                    statsList.Items.Add(item);
                 }
             }
         }
