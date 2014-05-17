@@ -81,14 +81,14 @@ namespace Chimera.ConfigurationTool.Controls {
             StringLoaded();
 
             if (mParameter.Type == ParameterTypes.File) {
-                openFileDialog.FileName = Path.GetFileName(mParameter.Value);
                 openFileDialog.InitialDirectory = Path.GetDirectoryName(ToAbsolute(mParameter.Value));
+                openFileDialog.FileName = Path.Combine(openFileDialog.InitialDirectory, Path.GetFileName(mParameter.Value));
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
                     textInput.Text = ToRelative(openFileDialog.FileName);
             }
 
-            if (mParameter.Type == ParameterTypes.Folder) {
-                folderBrowserDialog.SelectedPath = ToAbsolute(mParameter.Value);
+            else if (mParameter.Type == ParameterTypes.Folder) {
+                folderBrowserDialog.SelectedPath = Path.GetDirectoryName(ToAbsolute(mParameter.Value) + "\\");
                 if (folderBrowserDialog.ShowDialog() == DialogResult.OK) {
                     textInput.Text = ToRelative(folderBrowserDialog.SelectedPath);
                 }
@@ -184,17 +184,22 @@ namespace Chimera.ConfigurationTool.Controls {
         }
         private string ToAbsolute(string uri) {
             string rootFolder = Path.GetFullPath(Path.Combine(Environment.CurrentDirectory, ".."));
-            return Path.GetFullPath(Path.Combine(rootFolder, uri));
+            string rootRun = Path.GetPathRoot(Environment.CurrentDirectory);
+            string rootUri = Path.GetPathRoot(Path.GetFullPath(uri));
+
+            if (rootUri == rootRun) {
+                return Uri.UnescapeDataString(Path.GetFullPath(Path.Combine(rootFolder, uri)));
+            } else
+                return uri;
         }
 
         private string ToRelative(string uri) {
             Uri x = new Uri(Environment.CurrentDirectory);
             Uri xy = x.MakeRelativeUri(new Uri(uri));
-            return xy.OriginalString;
+            return Uri.UnescapeDataString(xy.OriginalString);
         }
 
         private void dialogButton_Click(object sender, EventArgs e) {
-
             if (mParameter.Type == ParameterTypes.File) {
                 openFileDialog.FileName = mParameter.Value;
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
