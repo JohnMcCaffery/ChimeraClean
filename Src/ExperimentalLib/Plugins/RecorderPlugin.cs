@@ -86,6 +86,7 @@ namespace Chimera.OpenSim {
 
         public IEnumerable<String> CombinedStats {
             get {
+                int count = 1;
                 if (mServerStats.Count != 0 && mClientStats.Count != 0) {
                     DateTime start = mConfig.Timestamp;
 
@@ -112,18 +113,18 @@ namespace Chimera.OpenSim {
 
                     while (moreClients || moreServers) {
                         while (moreClients && moreServers && server.Current.TimeStamp == client.Current.TimeStamp) {
-                            lines.Add(CombineStats(mConfig, server.Current, client.Current));
+                            lines.Add(CombineStats(mConfig, server.Current, client.Current, count++));
                             moreClients = client.MoveNext();
                             moreServers = server.MoveNext();
                         }
 
                         while (moreClients && (!moreServers || server.Current.TimeStamp > client.Current.TimeStamp)) {
-                            lines.Add(client.Current.ToString(mConfig));
+                            lines.Add(client.Current.ToString(mConfig, count++));
                             moreClients = client.MoveNext();
                         }
 
                         while (moreServers && (!moreClients || server.Current.TimeStamp < client.Current.TimeStamp)) {
-                            lines.Add(server.Current.ToString(mConfig));
+                            lines.Add(server.Current.ToString(mConfig, count++));
                             moreServers = server.MoveNext();
                         }
                     }
@@ -131,9 +132,9 @@ namespace Chimera.OpenSim {
                     return lines;
 
                 } else if (mServerStats.Count > 0)
-                    return mServerStats.SkipWhile(s => s.TimeStamp < mConfig.Timestamp).Select(s => s.TimeStamp.ToString(s.ToString(mConfig)));
+                    return mServerStats.SkipWhile(s => s.TimeStamp < mConfig.Timestamp).Select(s => s.TimeStamp.ToString(s.ToString(mConfig, count++)));
                 else if (mClientStats.Count > 0)
-                    return mClientStats.SkipWhile(c => c.TimeStamp < mConfig.Timestamp).Select(c => c.TimeStamp.ToString(c.ToString(mConfig)));
+                    return mClientStats.SkipWhile(c => c.TimeStamp < mConfig.Timestamp).Select(c => c.TimeStamp.ToString(c.ToString(mConfig, count++)));
 
                 return new string[0];
             }
@@ -217,7 +218,7 @@ namespace Chimera.OpenSim {
                 Logger.Warn("Unable to create " + file + ".", ex);
             }
 
-            string headers = "Timestamp,Second,";
+            string headers = "Timestamp,Second,Sample#";
             headers += mConfig.OutputKeys.Aggregate((a, k) => a + "," + k);
             headers += ids;
             headers += Environment.NewLine;
@@ -446,10 +447,11 @@ namespace Chimera.OpenSim {
             }
         }
 
-        public static string CombineStats(ExperimentalConfig config, ServerStats server, ClientStats client) {
+        public static string CombineStats(ExperimentalConfig config, ServerStats server, ClientStats client, int count) {
             DateTime ts = server.TimeStamp;
             string line = client.TimeStamp.ToString(config.TimestampFormat) + ",";
             line += (config.Timestamp - ts).TotalMilliseconds + ",";
+            line += count + ",";
 
             foreach (var key in config.OutputKeys) {
                 switch (key.ToUpper()) {
@@ -481,8 +483,8 @@ namespace Chimera.OpenSim {
                 TimeStamp = DateTime.ParseExact(line.Split(',')[0], mConfig.TimestampFormat, new DateTimeFormatInfo());
             }
 
-            public override string ToString() {
-                return TimeStamp.ToString(mConfig.TimestampFormat) + "," + (TimeStamp - mConfig.Timestamp).TotalMilliseconds + ",";
+            public string ToString(int count) {
+                return TimeStamp.ToString(mConfig.TimestampFormat) + "," + (TimeStamp - mConfig.Timestamp).TotalMilliseconds + "," + count + ",";
             }
         }
 
@@ -582,8 +584,8 @@ namespace Chimera.OpenSim {
                 return TimeStamp.ToString(mConfig.TimestampFormat);
             }
 
-            public string ToString(ExperimentalConfig config) {
-                string line = base.ToString();
+            public string ToString(ExperimentalConfig config, int count) {
+                string line = base.ToString(count);
 
                 foreach (var key in config.OutputKeys)
                     line += Get(key) + ",";
@@ -648,8 +650,8 @@ namespace Chimera.OpenSim {
                 return TimeStamp.ToString(mConfig.TimestampFormat);
             }
 
-            public string ToString(ExperimentalConfig config) {
-                string line = base.ToString();
+            public string ToString(ExperimentalConfig config, int count) {
+                string line = base.ToString(count);
 
                 foreach (var key in mConfig.OutputKeys)
                     line += Get(key) + ",";
