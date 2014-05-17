@@ -28,6 +28,7 @@ namespace Chimera.Experimental.Plugins {
         private List<KeyValuePair<string, Vector3>> mTargets = new List<KeyValuePair<string, Vector3>>();
         private KeyValuePair<string, Vector3> mTarget;
         private int mTargetIndex = 0;
+        private bool mRunning;
 
         public string NodesFile {
             get { return mConfig.NodesFile; }
@@ -121,6 +122,12 @@ namespace Chimera.Experimental.Plugins {
         }
 
         public void Start() {
+            lock (this) {
+                if (mRunning) {
+                    Logger.Warn("Unable to start, already running.");
+                    return;
+                }
+            }
             mCore.ControlMode = mConfig.Mode;
 
             if (mConfig.StartAtHome)
@@ -139,7 +146,10 @@ namespace Chimera.Experimental.Plugins {
                 mTarget = mTargets[mTargetIndex];
                 if (TargetChanged != null)
                     TargetChanged(mTarget.Key, Target);
-                mCore.Tick += new Action(mCore_Tick);
+                lock (this) {
+                    mRunning = true;
+                    mCore.Tick += new Action(mCore_Tick);
+                }
             } else {
                 Logger.Info("No targets loaded. Unable to start loop.");
             }
@@ -252,22 +262,25 @@ namespace Chimera.Experimental.Plugins {
                         TargetChanged(mTarget.Key, mTarget.Value);
                 } else {
                     Logger.Info("Finished walking route.");
-                    mCore.Tick -= mTickListener;
-                    mConfig.StopRecordingLog(mCore);
+                    lock (this) {
+                        mCore.Tick -= mTickListener;
+                        mRunning = false;
+                        mConfig.StopRecordingLog(mCore);
 
-                    Console.Beep(2000, 100);
-                    Thread.Sleep(100);
-                    Console.Beep(2000, 100);
-                    Thread.Sleep(100);
-                    Console.Beep(2000, 100);
+                        Console.Beep(2000, 100);
+                        Thread.Sleep(100);
+                        Console.Beep(2000, 100);
+                        Thread.Sleep(100);
+                        Console.Beep(2000, 100);
 
-                    Thread.Sleep(1000);
+                        Thread.Sleep(1000);
 
-                    foreach (var controller in mCore.Frames.Select(f => f.Output as OpenSimController))
-                        controller.Stop();
+                        foreach (var controller in mCore.Frames.Select(f => f.Output as OpenSimController))
+                            controller.Stop();
 
-                    Thread.Sleep(500);
+                        Thread.Sleep(500);
 
+                    }
                     if (mConfig.AutoShutdown)
                         mForm.Invoke(new Action(() => mForm.Close()));
                 }
@@ -345,8 +358,10 @@ namespace Chimera.Experimental.Plugins {
             set {
                 if (mEnabled != value) {
                     mEnabled = value;
-                    if (!value)
+                    if (!value) {
                         mCore.Tick -= mTickListener;
+                        mRunning = false;
+                    }
 
                     if (EnabledChanged != null)
                         EnabledChanged(this, value);
@@ -373,8 +388,11 @@ namespace Chimera.Experimental.Plugins {
         #endregion
 
         internal void Stop() {
-            mCore.Tick -= mTickListener;
-            mCore.Update(mCore.Position, Vector3.Zero, mCore.Orientation, Rotation.Zero);
+            lock (this) {
+                mRunning = false;
+                mCore.Tick -= mTickListener;
+                mCore.Update(mCore.Position, Vector3.Zero, mCore.Orientation, Rotation.Zero);
+            }
         }
     }
 }
