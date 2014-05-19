@@ -16,7 +16,7 @@ namespace Chimera.OpenSim {
         public string Name { get { return mName; } }
 
         public ViewerController(string exe, string workingDir, string args, string name)
-            : base(exe, workingDir, args) {
+            : base(exe, workingDir, args, new ViewerConfig().Priority) {
 
             mName = name;
             Logger = LogManager.GetLogger("OpenSim." + name + "Viewer");

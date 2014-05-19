@@ -120,6 +120,7 @@
     <Compile Include="Overlay\InfoState.cs" />
     <Compile Include="Overlay\KeyClickFeature.cs" />
     <Compile Include="Overlay\KeyPressFeature.cs" />
+    <Compile Include="Overlay\SpinFeature.cs" />
     <Compile Include="Packets\ClearRemoteControlPacket.cs" />
     <Compile Include="Packets\ClearFrustumPacket.cs" />
     <Compile Include="Packets\ClearCameraPacket.cs" />

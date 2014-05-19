@@ -26,6 +26,7 @@ using System.IO;
 using Chimera.Config;
 using OpenMetaverse;
 using log4net;
+using System.Diagnostics;
 
 namespace Chimera.OpenSim {
     public class ViewerConfig : ConfigFolderBase {
@@ -69,6 +70,8 @@ namespace Chimera.OpenSim {
         public int StartStagger;
         public bool BlockOnViewerShutdown;
 
+        public ProcessPriorityClass Priority;
+
         public override string Group {
             get { return "SecondLifeViewer"; }
         }
@@ -94,6 +97,7 @@ namespace Chimera.OpenSim {
             string defaultWD = new Uri(folder).MakeRelativeUri(new Uri(Path.GetDirectoryName(ViewerExecutable))).OriginalString;
             ViewerWorkingDirectory = GetFolder("WorkingDirectory", defaultWD, "The workign directory for the viewer executable.");
 
+            Priority = GetEnum<ProcessPriorityClass>("Priority", ProcessPriorityClass.RealTime, "What priority the viewer process should be assigned by the operating system.", LogManager.GetLogger("ViewerConfig"));
             ViewerArguments = GetStr("ViewerArguments", "", "Any arguments to be passed to the viewer when it starts.");
             ViewerToggleHUDKey = GetStr("ViewerToggleHUDKey", "%^{F1}", "The key press that will toggle the HUD on and off in the viewer.");
             UseGrid = Get("UseGrid", false, "Whether to login using the --grid or --loginuri command line parameter to specify the login target.");

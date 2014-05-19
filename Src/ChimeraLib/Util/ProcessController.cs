@@ -433,6 +433,7 @@ namespace Chimera.Util {
         private string mExe;
         private string mWorkingDir;
         private string mArgs;
+        private ProcessPriorityClass mPriority;
 
         protected readonly EventHandler mExitListener;
 
@@ -474,24 +475,33 @@ namespace Chimera.Util {
             mExitListener = new EventHandler(mProcess_Exited);
         }
 
-        public ProcessController(string exe, string workingDir, string args) {
+        public ProcessController(string exe, string workingDir, string args) : this(exe, workingDir, args, ProcessPriorityClass.Normal) {
+        }
+            
+        public ProcessController(string exe, string workingDir, string args, ProcessPriorityClass priority) {
             mExe = exe;
             mWorkingDir = workingDir;
             mArgs = args;
+            mPriority = priority;
             mExitListener = new EventHandler(mProcess_Exited);
         }
 
-        public bool Start() {
-            return Start(mExe, mWorkingDir, mArgs);
+        public virtual bool Start() {
+            return Start(mExe, mWorkingDir, mArgs, mPriority);
         }
 
-        public bool Start(string exe, string workingDir, string args) {
+        public virtual bool Start(string exe, string workingDir, string args) {
+            return Start(exe, workingDir, args, ProcessPriorityClass.Normal);
+        }
+
+        public virtual bool Start(string exe, string workingDir, string args, ProcessPriorityClass priority) {
             if (mProcess != null)
                 mProcess.Exited -= mExitListener;
 
             mExe = exe;
             mWorkingDir = workingDir;
             mArgs = args;
+            mPriority = priority;
 
             mProcess = new Process();
             mProcess.StartInfo.FileName = exe;
@@ -501,7 +511,12 @@ namespace Chimera.Util {
             mProcess.Exited += mExitListener;
 
             Logger.Info("Launching " + exe + " " + args + " from " + workingDir);
-            return mProcess.Start();
+
+            bool started = mProcess.Start();
+            if (started) 
+            mProcess.PriorityClass = priority;
+            
+            return started;
         }
 
         private static ILog Logger = LogManager.GetLogger("ProcessController");

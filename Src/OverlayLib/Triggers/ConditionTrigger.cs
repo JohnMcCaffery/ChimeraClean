@@ -56,13 +56,15 @@ namespace Chimera.Overlay.Triggers {
             if (Condition) {
                 if (!mCondition) {
                     mCondition = true;
-                    if (mWaitMS <= 0.0)
-                        mTriggered(this);
-                    else
+                    if (mWaitMS <= 0.0) {
+                        if(mTriggered != null)
+                            mTriggered(this);
+                    } else
                         mStart = DateTime.Now;
                 } else if (!mHasTriggered && mWaitMS > 0.0 && DateTime.Now.Subtract(mStart).TotalMilliseconds > mWaitMS) {
                     mHasTriggered = true;
-                    mTriggered(this);
+                    if(mTriggered != null)
+                        mTriggered(this);
                 }
             } else if (mCondition) {
                 mCondition = false;

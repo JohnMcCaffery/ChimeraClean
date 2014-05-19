@@ -42,7 +42,7 @@ namespace Chimera.Overlay.States {
         }
     }
 
-    public class VideoState : ImageBGState {
+    public class VideoState : State {
         private readonly ILog Logger = LogManager.GetLogger("Overlay.Video");
         private string mVideo;
         private FrameOverlayManager mMainWindow;
@@ -71,7 +71,7 @@ namespace Chimera.Overlay.States {
         }
 
         public VideoState(OverlayPlugin manager, XmlNode node, IMediaPlayer player)
-            : base(manager, node, false) {
+            : base(GetName(node, "creating video state"), manager, node, false) {
 
             mPlayer = player;
             mVideo = GetString(node, null, "File");
