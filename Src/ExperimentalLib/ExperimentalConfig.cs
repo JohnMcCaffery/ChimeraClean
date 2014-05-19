@@ -14,35 +14,42 @@ namespace Chimera.Experimental {
     public class ExperimentalConfig : ConfigFolderBase, IOpensimBotConfig {
         public string ExperimentName;
 
-        public string ExperimentFile;
-        public string FPSFolder;
+        //General
+        public string RunInfo;
+        public bool IncludeTimestamp;
+        public bool SaveResults;
+        public bool OneSecMininum;
+        public string TimestampFormat = "yyyy.MM.dd-HH.mm.ss";
+        public string[] OutputKeys;
 
+        //Avatar Movement
         public string NodesFile;
         public string TargetsFile;
-        public double TurnRate;
-        public float MoveRate;
-        public float DistanceThreshold;
-        public float HeightOffset;
+        public string MapFile;
+
         public ControlMode Mode;
         public int StartWaitMS;
         public bool AutoStart;
         public bool AutoShutdown;
         public bool StartAtHome;
-        public bool SaveResults;
 
-        public bool UpdateStatsGUI;
+        public double TurnRate;
+        public float MoveRate;
+        public float DistanceThreshold;
+        public float HeightOffset;
 
-        public string RunInfo;
-
-        public string TimestampFormat = "yyyy.MM.dd-HH.mm.ss";
-        public string[] OutputKeys;
+        //Recorder Bot
         public bool ProcessOnFinish;
         public bool TeleportToStart;
-        public string MapFile;
+        public bool UpdateStatsGUI;
 
+        //Movement Tracker
+        public string ExperimentFile;
+        public string FPSFolder;
+
+        //Non config
         public DateTime Timestamp;
         public string IDS;
-        public bool IncludeTimestamp;
 
         public ExperimentalConfig()
             : base("Experiments") { }
@@ -52,45 +59,47 @@ namespace Chimera.Experimental {
         }
 
         protected override void InitConfig() {
+            //General
+            ExperimentName = GetStr("ExperimentName", "Experiment", "The name of the experiment. Controls the folder where the results will be written to.");
+            RunInfo = GetStr("RunInfo", Mode.ToString(), "The name of the specific run happening.");
+            OneSecMininum = Get("LimitFrequency", true, "Whether to limit the maximum log frequency to one log per second. Viewer timestamps only go to the second so finer grained logging is not possible.");
+            TimestampFormat = GetStr("TimestampFormat", TimestampFormat, "The format that all timestamps will be saved as. Should match second life's log's timestamps.");
+            IncludeTimestamp = Get("IncludeTimestamp", true, "Whether to include a timestamp in file names when saving results.");
+            ProcessOnFinish = Get("ProcessResults", false, "Whether to process the log files to  <ExperimentName>/RunInfo(-<Timestamp>).csv file when closing.");
+            string outputKeysStr = GetSection("Recorder", "OutputKeys", "CFPS,SFPS,FT", "The columns the output table should have. Each column is separted by a comma. Valid keys are: CFPS, SFPS, FT, PingTime.");
+            OutputKeys = outputKeysStr.Split(',');
 
+            //Movement Tracker
             ExperimentFile = GetFileSection("MovementTracker", "File", null, "The xml file which defines the experiment.");
             FPSFolder = GetFolderSection("MovementTracker", "FPSFolder", "FPS", "The folder where FPS results will be written to.");
 
+            //Avatar movement
             NodesFile = GetFileSection("AvatarMovement", "NodesFile", "Experiments/Cathedral.xml", "The xml file where the nodes which are potential targets for navigating to are stored.");
             TargetsFile = GetFileSection("AvatarMovement", "TargetsFile", "Experiments/CathedralRoute.xml", "The xml file where the nodes which make up a route are stored.");
-
-            TurnRate = Get("AvatarMovement", "TurnRate", .01, "How far the camera will turn each tick.");
-            MoveRate = Get("AvatarMovement", "MoveRate", .03f, "How far the camera will move each tick.");
-            DistanceThreshold = Get("AvatarMovement", "DistanceThreshold", .5f, "How far away from a target the position has to be before the target is considered hit.");
-            HeightOffset = Get("AvatarMovement", "HeightOffset", 1f, "How much above the floor nodes the target is.");
+            MapFile = GetFileSection("AvatarMovement", "MapFile", null, "The file where the map image one which the route is to be drawn on is stored.");
 
             Mode = GetEnum<ControlMode>("AvatarMovement", "Mode", ControlMode.Delta, "What mode the system should be in for the run.", LogManager.GetLogger("Experiments"));
             StartWaitMS = Get("AvatarMovement", "StartWaitMS", 0, "How many MS to wait before starting the loop.");
             AutoStart = Get("AvatarMovement", "AutoStart", false, "Whether to start the loop as soon as the plugin is enabled.");
             AutoShutdown = Get("AvatarMovement", "AutoShutdown", false, "Whether to stop Chimera when the loop completes.");
             StartAtHome = Get("AvatarMovement", "StartAtHome", false, "Whether to teleport the avatar home before starting. Overrides TeleportToStart if set.");
-            SaveResults = Get("AvatarMovement", "SaveFPS", true, "Whether to save the log 'Experiments/<ExperimentName>/<Timestamp>-Mode-Frame.log'.");
-            ProcessOnFinish = Get("AvatarMovement", "ProcessResults", false, "Whether to process the log files to a .csv file when closing.");
-            TeleportToStart = Get("AvatarMovement", "TeleportToStart", false, "Whether to use the map dialog to teleport the avatar to the start location specified in RecorderBot / StartIsland/StartLocation. Won't work if StartAtHome is enabled.");
-            MapFile = GetFileSection("AvatarMovement", "MapFile", null, "The file where the map image one which the route is to be drawn on is stored.");
+            SaveResults = Get("AvatarMovement", "SaveFPS", true, "Whether to save the log 'Experiments/<ExperimentName>/<Timestamp>-RunInfo(-Frame).log'.");
+            TeleportToStart = Get("AvatarMovement", "TeleportToStart", false, "<CURRENTLY DOES NOT WORK> Whether to use the map dialog to teleport the avatar to the start location specified in RecorderBot / StartIsland/StartLocation. Won't work if StartAtHome is enabled.");
 
-            TimestampFormat = GetStr("TimestampFormat", TimestampFormat, "The format that all timestamps will be saved as. Should match second life's log's timestamps.");
-            IncludeTimestamp = Get("IncludeTimestamp", true, "Whether to include a timestamp in file names when saving results.");
+            TurnRate = Get("AvatarMovement", "TurnRate", .01, "How far the camera will turn each tick.");
+            MoveRate = Get("AvatarMovement", "MoveRate", .03f, "How far the camera will move each tick.");
+            HeightOffset = Get("AvatarMovement", "HeightOffset", 1f, "How much above the floor nodes the target is.");
+            DistanceThreshold = Get("AvatarMovement", "DistanceThreshold", .5f, "How far away from a target the position has to be before the target is considered hit.");
 
+            //Recorder Bot
             FirstName = GetSection("RecorderBot", "FirstName", "Recorder", "The first name of the bot that will be logged in to track server stats.");
             LastName = GetSection("RecorderBot", "LastName", "Bot", "The last name of the bot that will be logged in to track server stats.");
             Password = GetSection("RecorderBot", "Password", "password", "The password for the bot that will be logged in to track server stats.");
 
+            AutoLogin = Get("RecorderBot", "AutoLogin", false, "Whether the bot should automatically log in as soon as the plugin is enabled.");
             StartLocation = GetV("RecorderBot", "StartLocation", new Vector3(128f, 128f, 24f), "Where on the island the bot should be logged in to.");
             StartIsland = GetSection("RecorderBot", "StartIsland", "Cathedral 1", "Which island the bot should log in to.");
-            AutoLogin = Get("RecorderBot", "AutoLogin", false, "Whether the bot should automatically log in as soon as the plugin is enabled.");
             UpdateStatsGUI = Get("RecorderBot", "UpdateStatsGUI", false, "Whether to regularly update the Recorder's GUI with Recorder bot stats.");
-
-            string outputKeysStr = GetSection("Recorder", "OutputKeys", "CFPS,SFPS,FT", "The columns the output table should have. Each column is separted by a comma. Valid keys are: CFPS, SFPS, FT, PingTime.");
-            OutputKeys = outputKeysStr.Split(',');
-
-            ExperimentName = GetStr("ExperimentName", "Experiment", "The name of the experiment. Controls the folder where the results will be written to.");
-            RunInfo = GetStr("RunInfo", Mode.ToString(), "The name of the specific run happening.");
         }
         internal string GetLogFileName() {
             return GetLogFileName(new CoreConfig().Frames[0]);

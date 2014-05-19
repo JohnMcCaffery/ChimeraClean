@@ -56,6 +56,7 @@ namespace Chimera.OpenSim {
         private bool mRecording;
         private bool mCopyDone = false;
         private UUID mSessionID = UUID.Zero;
+        private int mLastServerStatSec = -1;
 
         private ServerStats NearestServerStat(DateTime timestamp) {
             return mServerStats.FirstOrDefault(s => s.TimeStamp > timestamp);
@@ -202,12 +203,16 @@ namespace Chimera.OpenSim {
 
         void form_FormClosed(object sender, FormClosedEventArgs e) {
             if (mConfig.ProcessOnFinish)
+                Logger.Warn("Writing out stats on close.");
                 LoadClientStats();
                 WriteCSV(GetCSVName());
         }
 
-        public void WriteCSV(string file) {            if (mServerStats.Count <= 0 && mClientStats.Count <= 0)
+        public void WriteCSV(string file) {
+            if (mServerStats.Count <= 0 && mClientStats.Count <= 0) {
+                Logger.Warn("Not writing stats. No client or server stats in memory to write.");
                 return;
+            }
 
             string ids = mConfig.IDS;
 
@@ -264,15 +269,7 @@ namespace Chimera.OpenSim {
             string startTS = mConfig.Timestamp.ToString(LOG_TIMESTAMP_FORMAT);
             int i = 0;
             foreach (var file in Core.Frames.Select(f => mConfig.GetLogFileName(f.Name))) {
-                /*
-                Directory.
-                    GetFiles(Path.Combine("Experiments", mConfig.ExperimentName)).
-                    Where(f => 
-                        Path.GetExtension(f) == ".log" &&
-                        Path.GetFileName(f).StartsWith(mConfig.Timestamp.ToString(mConfig.TimestampFormat)))) {
-                */
-
-                            LoadViewerLog(file, i++);
+                LoadViewerLog(file, i++);
             }
         }
 
@@ -306,6 +303,7 @@ namespace Chimera.OpenSim {
                 }
             }
 
+            int lastSec = -1;
             foreach (var line in lines.Where(l => l.Contains("FPS") && l.Contains("POLYGONS") && l.Contains("PING"))) {
                 DateTime ts = DateTime.ParseExact(line.Split(' ')[0], LOG_TIMESTAMP_FORMAT, new DateTimeFormatInfo());
                 string time = ts.ToString(mConfig.TimestampFormat);
@@ -313,10 +311,11 @@ namespace Chimera.OpenSim {
                 if (!retSet) {
                     retSet = true;
                     ret = ts;
-                }
+                } else if (mConfig.OneSecMininum && lastSec == ts.Second)
+                    continue;
 
                 mClientStats.Add(new ClientStats(line, mConfig, ts));
-
+                lastSec = ts.Second;
             }
 
             Logger.Info("Loaded viewer log file from: " + file + ".");
@@ -443,7 +442,10 @@ namespace Chimera.OpenSim {
             mRecording = true;
             mLastStat = new ServerStats(Sim.Stats, Core.Frames.Count(), mConfig);
             lock (mServerStats) {
-                mServerStats.Add(mLastStat);
+                if (!mConfig.OneSecMininum || mLastServerStatSec != mLastStat.TimeStamp.Second) {
+                    mServerStats.Add(mLastStat);
+                    mLastServerStatSec = mLastStat.TimeStamp.Second;
+                }
             }
         }
 
