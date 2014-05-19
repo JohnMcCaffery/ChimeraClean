@@ -303,7 +303,7 @@ namespace Chimera.OpenSim {
 
             if (sViewerStartDelay == 0) {
                 mProxyController.LastUpdatePacket = DateTime.Now;
-                mViewerController.Start(mConfig.ViewerExecutable, mConfig.ViewerWorkingDirectory, mArgs);
+                mViewerController.Start(mConfig.ViewerExecutable, mConfig.ViewerWorkingDirectory, mArgs, mConfig.Priority);
             } else {
                 ThisLogger.Info("Queuing viewer start for " + Name + " in " + sViewerStartDelay + "s.");
                 Thread t = new Thread(DelayedViewerStart);
@@ -320,7 +320,7 @@ namespace Chimera.OpenSim {
                 Monitor.Wait(mStartLock, sViewerStartDelay * 1000);
             if (!mClosingViewer) {
                 mProxyController.LastUpdatePacket = DateTime.Now;
-                mViewerController.Start(mConfig.ViewerExecutable, mConfig.ViewerWorkingDirectory, mArgs);
+                mViewerController.Start(mConfig.ViewerExecutable, mConfig.ViewerWorkingDirectory, mArgs, mConfig.Priority);
             }
         }
 

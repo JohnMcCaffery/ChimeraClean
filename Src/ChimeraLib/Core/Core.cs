@@ -334,8 +334,9 @@ namespace Chimera {
 #if DEBUG
                 mTickStats.Begin();
 #endif
-                if (Tick != null)
-                    Tick();
+                var tick = Tick;
+                if (tick != null)
+                    tick();
 #if DEBUG
                 mTickStats.End();
 #endif
