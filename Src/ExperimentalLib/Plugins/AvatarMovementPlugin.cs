@@ -121,10 +121,21 @@ namespace Chimera.Experimental.Plugins {
             }
         }
 
+        public void Restart() {
+            Stop();
+            mTargetIndex = 0;
+            Start();
+        }
+
         public void Start() {
             lock (this) {
                 if (mRunning) {
                     Logger.Warn("Unable to start, already running.");
+                    return;
+                } else if (mTargetIndex != 0) {
+                    Logger.Warn("Restarting movement at target " + (mTargetIndex + 1) + ".");
+                    mRunning = true;
+                    mCore.Tick += new Action(mCore_Tick);
                     return;
                 }
             }
@@ -240,7 +251,7 @@ namespace Chimera.Experimental.Plugins {
                 if (++mTargetIndex < mTargets.Count)
                     NextTarget();
                 else if (mConfig.Loop)
-                    Restart();
+                    Loop();
                 else
                     Finish();
             }
@@ -275,7 +286,7 @@ namespace Chimera.Experimental.Plugins {
                 TargetChanged(mTarget.Key, mTarget.Value);
         }
 
-        private void Restart() {
+        private void Loop() {
             Logger.Info("Route finished. Restarting.");
             if (mConfig.StartAtHome)
                 mMainController.ViewerController.PressKey("H", true, false, true);
@@ -292,6 +303,7 @@ namespace Chimera.Experimental.Plugins {
             Logger.Info("Finished walking route.");
             lock (this) {
                 mCore.Tick -= mTickListener;
+                mTargetIndex = 0;
                 mRunning = false;
                 mConfig.StopRecordingLog(mCore);
 

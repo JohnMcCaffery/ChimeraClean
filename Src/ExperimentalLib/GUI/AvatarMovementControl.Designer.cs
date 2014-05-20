@@ -37,15 +37,16 @@
             this.drawMapButton = new System.Windows.Forms.Button();
             this.mapFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.reloadTargetsButton = new System.Windows.Forms.Button();
+            this.restartButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // startButton
             // 
-            this.startButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.startButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.startButton.Location = new System.Drawing.Point(3, 3);
             this.startButton.Name = "startButton";
-            this.startButton.Size = new System.Drawing.Size(146, 23);
+            this.startButton.Size = new System.Drawing.Size(86, 23);
             this.startButton.TabIndex = 0;
             this.startButton.Text = "Start";
             this.startButton.UseVisualStyleBackColor = true;
@@ -62,8 +63,8 @@
             // 
             // turnRatePanel
             // 
-            this.turnRatePanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.turnRatePanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.turnRatePanel.Location = new System.Drawing.Point(3, 32);
             this.turnRatePanel.Max = 2F;
             this.turnRatePanel.Min = 0F;
@@ -76,8 +77,8 @@
             // 
             // moveRatePanel
             // 
-            this.moveRatePanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.moveRatePanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.moveRatePanel.Location = new System.Drawing.Point(3, 58);
             this.moveRatePanel.Max = 1F;
             this.moveRatePanel.Min = 0F;
@@ -110,8 +111,8 @@
             // 
             // distanceThresholdPanel
             // 
-            this.distanceThresholdPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.distanceThresholdPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.distanceThresholdPanel.Location = new System.Drawing.Point(3, 84);
             this.distanceThresholdPanel.Max = 10F;
             this.distanceThresholdPanel.Min = 0F;
@@ -145,8 +146,8 @@
             // 
             // heightOffsetPanel
             // 
-            this.heightOffsetPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.heightOffsetPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.heightOffsetPanel.Location = new System.Drawing.Point(3, 110);
             this.heightOffsetPanel.Max = 4F;
             this.heightOffsetPanel.Min = 0F;
@@ -193,10 +194,23 @@
             this.reloadTargetsButton.UseVisualStyleBackColor = true;
             this.reloadTargetsButton.Click += new System.EventHandler(this.reloadTargetsButton_Click);
             // 
+            // restartButton
+            // 
+            this.restartButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.restartButton.Location = new System.Drawing.Point(95, 3);
+            this.restartButton.Name = "restartButton";
+            this.restartButton.Size = new System.Drawing.Size(54, 23);
+            this.restartButton.TabIndex = 15;
+            this.restartButton.Text = "Restart";
+            this.restartButton.UseVisualStyleBackColor = true;
+            this.restartButton.Click += new System.EventHandler(this.restartButton_Click);
+            // 
             // AvatarMovementControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.restartButton);
             this.Controls.Add(this.reloadTargetsButton);
             this.Controls.Add(this.drawMapButton);
             this.Controls.Add(this.label5);
@@ -233,5 +247,6 @@
         private System.Windows.Forms.Button drawMapButton;
         private System.Windows.Forms.OpenFileDialog mapFileDialog;
         private System.Windows.Forms.Button reloadTargetsButton;
+        private System.Windows.Forms.Button restartButton;
     }
 }
