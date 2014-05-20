@@ -31,6 +31,7 @@ namespace Chimera.Experimental {
         public int StartWaitMS;
         public bool AutoStart;
         public bool AutoShutdown;
+        public bool Loop;
         public bool StartAtHome;
 
         public double TurnRate;
@@ -81,7 +82,8 @@ namespace Chimera.Experimental {
             Mode = GetEnum<ControlMode>("AvatarMovement", "Mode", ControlMode.Delta, "What mode the system should be in for the run.", LogManager.GetLogger("Experiments"));
             StartWaitMS = Get("AvatarMovement", "StartWaitMS", 0, "How many MS to wait before starting the loop.");
             AutoStart = Get("AvatarMovement", "AutoStart", false, "Whether to start the loop as soon as the plugin is enabled.");
-            AutoShutdown = Get("AvatarMovement", "AutoShutdown", false, "Whether to stop Chimera when the loop completes.");
+            AutoShutdown = Get("AvatarMovement", "AutoShutdown", false, "Whether to stop Chimera when the route is completed. Will only work if Loop is disabled.");
+            Loop = Get("AvatarMovement", "Loop", false, "Whether to start the loop again when it finishes.");
             StartAtHome = Get("AvatarMovement", "StartAtHome", false, "Whether to teleport the avatar home before starting. Overrides TeleportToStart if set.");
             SaveResults = Get("AvatarMovement", "SaveFPS", true, "Whether to save the log 'Experiments/<ExperimentName>/<Timestamp>-RunInfo(-Frame).log'.");
             TeleportToStart = Get("AvatarMovement", "TeleportToStart", false, "<CURRENTLY DOES NOT WORK> Whether to use the map dialog to teleport the avatar to the start location specified in RecorderBot / StartIsland/StartLocation. Won't work if StartAtHome is enabled.");

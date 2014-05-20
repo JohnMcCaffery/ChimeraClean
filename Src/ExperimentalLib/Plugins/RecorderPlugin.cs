@@ -223,7 +223,7 @@ namespace Chimera.OpenSim {
                 Logger.Warn("Unable to create " + file + ".", ex);
             }
 
-            string headers = "Timestamp,Second,Sample#";
+            string headers = "Timestamp,Second,Sample#,";
             headers += mConfig.OutputKeys.Aggregate((a, k) => a + "," + k);
             headers += ids;
             headers += Environment.NewLine;

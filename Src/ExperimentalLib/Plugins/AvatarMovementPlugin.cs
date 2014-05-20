@@ -233,58 +233,84 @@ namespace Chimera.Experimental.Plugins {
         }
 
         void mCore_Tick() {
-            if (TargetDistance > mConfig.DistanceThreshold) {
-                bool move;
-                Rotation rotationDelta = GetRotationDelta(out move);
-                Rotation orientation = mCore.Orientation + rotationDelta;
-
-                if (!move && TargetDistance > (mConfig.DistanceThreshold * 4)) {
-                    mCore.Update(mCore.Position, Vector3.Zero, orientation, rotationDelta);
-                } else {
-
-                    Vector3 moveDelta = Target - Position;
-                    if (moveDelta.Length() > mConfig.MoveRate)
-                        moveDelta *= mConfig.MoveRate / moveDelta.Length();
-
-                    Vector3 position = mCore.Position + moveDelta;
-
-                    if (mCore.ControlMode == ControlMode.Absolute)
-                        mCore.Update(position, moveDelta, orientation, rotationDelta);
-                    else
-                        mCore.Update(position, new Vector3(mConfig.MoveRate, 0f, 0f), orientation, rotationDelta);
-                }
-            } else {
+            if (TargetDistance > mConfig.DistanceThreshold)
+                AdjustDeltas();
+            else {
                 mCore.Update(mCore.Position, Vector3.Zero, mCore.Orientation, Rotation.Zero);
-                if (++mTargetIndex < mTargets.Count) {
-                    mTarget = mTargets[mTargetIndex];
-                    //Turn = new Rotation(Target - mCore.Position);
-                    if (TargetChanged != null)
-                        TargetChanged(mTarget.Key, mTarget.Value);
-                } else {
-                    Logger.Info("Finished walking route.");
-                    lock (this) {
-                        mCore.Tick -= mTickListener;
-                        mRunning = false;
-                        mConfig.StopRecordingLog(mCore);
-
-                        Console.Beep(2000, 100);
-                        Thread.Sleep(100);
-                        Console.Beep(2000, 100);
-                        Thread.Sleep(100);
-                        Console.Beep(2000, 100);
-
-                        Thread.Sleep(1000);
-
-                        foreach (var controller in mCore.Frames.Select(f => f.Output as OpenSimController))
-                            controller.Stop();
-
-                        Thread.Sleep(500);
-
-                    }
-                    if (mConfig.AutoShutdown)
-                        mForm.Invoke(new Action(() => mForm.Close()));
-                }
+                if (++mTargetIndex < mTargets.Count)
+                    NextTarget();
+                else if (mConfig.Loop)
+                    Restart();
+                else
+                    Finish();
             }
+        }
+
+        private void AdjustDeltas() {
+            bool move;
+            Rotation rotationDelta = GetRotationDelta(out move);
+            Rotation orientation = mCore.Orientation + rotationDelta;
+
+            if (!move && TargetDistance > (mConfig.DistanceThreshold * 4)) {
+                mCore.Update(mCore.Position, Vector3.Zero, orientation, rotationDelta);
+            } else {
+
+                Vector3 moveDelta = Target - Position;
+                if (moveDelta.Length() > mConfig.MoveRate)
+                    moveDelta *= mConfig.MoveRate / moveDelta.Length();
+
+                Vector3 position = mCore.Position + moveDelta;
+
+                if (mCore.ControlMode == ControlMode.Absolute)
+                    mCore.Update(position, moveDelta, orientation, rotationDelta);
+                else
+                    mCore.Update(position, new Vector3(mConfig.MoveRate, 0f, 0f), orientation, rotationDelta);
+            }
+        }
+
+        private void NextTarget() {
+            mTarget = mTargets[mTargetIndex];
+            //Turn = new Rotation(Target - mCore.Position);
+            if (TargetChanged != null)
+                TargetChanged(mTarget.Key, mTarget.Value);
+        }
+
+        private void Restart() {
+            Logger.Info("Route finished. Restarting.");
+            if (mConfig.StartAtHome)
+                mMainController.ViewerController.PressKey("H", true, false, true);
+            else if (mConfig.Mode == ControlMode.Delta && mConfig.TeleportToStart)
+                TeleportToStart();
+
+            mTargetIndex = 0;
+            mTarget = mTargets[mTargetIndex];
+            if (TargetChanged != null)
+                TargetChanged(mTarget.Key, Target);
+        }
+
+        private void Finish() {
+            Logger.Info("Finished walking route.");
+            lock (this) {
+                mCore.Tick -= mTickListener;
+                mRunning = false;
+                mConfig.StopRecordingLog(mCore);
+
+                Console.Beep(2000, 100);
+                Thread.Sleep(100);
+                Console.Beep(2000, 100);
+                Thread.Sleep(100);
+                Console.Beep(2000, 100);
+
+                Thread.Sleep(1000);
+
+                foreach (var controller in mCore.Frames.Select(f => f.Output as OpenSimController))
+                    controller.Stop();
+
+                Thread.Sleep(500);
+
+            }
+            if (mConfig.AutoShutdown)
+                mForm.Invoke(new Action(() => mForm.Close()));
         }
 
         private bool RotatedToTarget() {
