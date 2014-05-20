@@ -196,8 +196,7 @@
             // 
             // restartButton
             // 
-            this.restartButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.restartButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.restartButton.Location = new System.Drawing.Point(89, 3);
             this.restartButton.Name = "restartButton";
             this.restartButton.Size = new System.Drawing.Size(52, 23);
