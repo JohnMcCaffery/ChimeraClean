@@ -58,8 +58,8 @@ namespace Chimera.Experimental.GUI {
             (mPlugin.Config as ExperimentalConfig).HeightOffset = heightOffsetPanel.Value;
         }
 
-        private void stopButton_Click(object sender, EventArgs e) {
-            mPlugin.Stop();
+        private void pauseButton_Click(object sender, EventArgs e) {
+            mPlugin.Pause();
         }
 
         private void drawMapButton_Click(object sender, EventArgs e) {

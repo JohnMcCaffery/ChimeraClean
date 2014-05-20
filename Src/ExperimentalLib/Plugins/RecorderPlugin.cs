@@ -194,18 +194,11 @@ namespace Chimera.OpenSim {
 
         public override void Close() {
             base.Close();
-        }
-
-        public override void SetForm(Form form) {
-            base.SetForm(form);
-            form.FormClosed += new FormClosedEventHandler(form_FormClosed);
-        }
-
-        void form_FormClosed(object sender, FormClosedEventArgs e) {
-            if (mConfig.ProcessOnFinish)
+            if (mConfig.ProcessOnFinish) {
                 Logger.Warn("Writing out stats on close.");
                 LoadClientStats();
                 WriteCSV(GetCSVName());
+            }
         }
 
         public void WriteCSV(string file) {
@@ -333,7 +326,7 @@ namespace Chimera.OpenSim {
                 string local = dbFolder.Substring(2);
                 //string remote = "/home/opensim/opensim-0.7.3.1/bin/LocalUserStatistics.db";
                 string remote = "/home/opensim/opensim-0.7.6.1/bin/" + file;
-                string server = "mimuve.cs.st-andrews.ac.uk";
+                string server = "apollo.cs.st-andrews.ac.uk";
                 string pass = "P3ngu1n!";
                 string username = "jm726";
 

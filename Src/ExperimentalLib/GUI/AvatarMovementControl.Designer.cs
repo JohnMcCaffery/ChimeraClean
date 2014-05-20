@@ -31,7 +31,7 @@
             this.label3 = new System.Windows.Forms.Label();
             this.distanceThresholdPanel = new Chimera.GUI.ScalarPanel();
             this.label4 = new System.Windows.Forms.Label();
-            this.stopButton = new System.Windows.Forms.Button();
+            this.pauseButton = new System.Windows.Forms.Button();
             this.heightOffsetPanel = new Chimera.GUI.ScalarPanel();
             this.label5 = new System.Windows.Forms.Label();
             this.drawMapButton = new System.Windows.Forms.Button();
@@ -46,7 +46,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.startButton.Location = new System.Drawing.Point(3, 3);
             this.startButton.Name = "startButton";
-            this.startButton.Size = new System.Drawing.Size(86, 23);
+            this.startButton.Size = new System.Drawing.Size(80, 23);
             this.startButton.TabIndex = 0;
             this.startButton.Text = "Start";
             this.startButton.UseVisualStyleBackColor = true;
@@ -133,16 +133,16 @@
             this.label4.TabIndex = 9;
             this.label4.Text = "Target Threshold";
             // 
-            // stopButton
+            // pauseButton
             // 
-            this.stopButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.stopButton.Location = new System.Drawing.Point(337, 3);
-            this.stopButton.Name = "stopButton";
-            this.stopButton.Size = new System.Drawing.Size(38, 23);
-            this.stopButton.TabIndex = 10;
-            this.stopButton.Text = "Stop";
-            this.stopButton.UseVisualStyleBackColor = true;
-            this.stopButton.Click += new System.EventHandler(this.stopButton_Click);
+            this.pauseButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.pauseButton.Location = new System.Drawing.Point(329, 3);
+            this.pauseButton.Name = "pauseButton";
+            this.pauseButton.Size = new System.Drawing.Size(46, 23);
+            this.pauseButton.TabIndex = 10;
+            this.pauseButton.Text = "Pause";
+            this.pauseButton.UseVisualStyleBackColor = true;
+            this.pauseButton.Click += new System.EventHandler(this.pauseButton_Click);
             // 
             // heightOffsetPanel
             // 
@@ -171,7 +171,7 @@
             // drawMapButton
             // 
             this.drawMapButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.drawMapButton.Location = new System.Drawing.Point(256, 3);
+            this.drawMapButton.Location = new System.Drawing.Point(248, 3);
             this.drawMapButton.Name = "drawMapButton";
             this.drawMapButton.Size = new System.Drawing.Size(75, 23);
             this.drawMapButton.TabIndex = 13;
@@ -186,7 +186,7 @@
             // reloadTargetsButton
             // 
             this.reloadTargetsButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.reloadTargetsButton.Location = new System.Drawing.Point(155, 3);
+            this.reloadTargetsButton.Location = new System.Drawing.Point(147, 3);
             this.reloadTargetsButton.Name = "reloadTargetsButton";
             this.reloadTargetsButton.Size = new System.Drawing.Size(95, 23);
             this.reloadTargetsButton.TabIndex = 14;
@@ -198,9 +198,9 @@
             // 
             this.restartButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.restartButton.Location = new System.Drawing.Point(95, 3);
+            this.restartButton.Location = new System.Drawing.Point(89, 3);
             this.restartButton.Name = "restartButton";
-            this.restartButton.Size = new System.Drawing.Size(54, 23);
+            this.restartButton.Size = new System.Drawing.Size(52, 23);
             this.restartButton.TabIndex = 15;
             this.restartButton.Text = "Restart";
             this.restartButton.UseVisualStyleBackColor = true;
@@ -214,7 +214,7 @@
             this.Controls.Add(this.reloadTargetsButton);
             this.Controls.Add(this.drawMapButton);
             this.Controls.Add(this.label5);
-            this.Controls.Add(this.stopButton);
+            this.Controls.Add(this.pauseButton);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label1);
@@ -241,7 +241,7 @@
         private System.Windows.Forms.Label label3;
         private Chimera.GUI.ScalarPanel distanceThresholdPanel;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Button stopButton;
+        private System.Windows.Forms.Button pauseButton;
         private Chimera.GUI.ScalarPanel heightOffsetPanel;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Button drawMapButton;

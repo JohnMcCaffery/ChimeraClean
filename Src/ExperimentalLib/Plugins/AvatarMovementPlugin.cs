@@ -122,7 +122,7 @@ namespace Chimera.Experimental.Plugins {
         }
 
         public void Restart() {
-            Stop();
+            Pause();
             mTargetIndex = 0;
             Start();
         }
@@ -425,7 +425,7 @@ namespace Chimera.Experimental.Plugins {
 
         #endregion
 
-        internal void Stop() {
+        internal void Pause() {
             lock (this) {
                 mRunning = false;
                 mCore.Tick -= mTickListener;
