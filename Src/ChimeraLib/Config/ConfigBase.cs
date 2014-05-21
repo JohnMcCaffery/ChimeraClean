@@ -60,21 +60,37 @@ namespace Chimera.Config {
             get { return mParameters.Values.SelectMany(d => d.Values); }
         }
 
-        private void AddParam(string key, string description, ParameterTypes type, string section, string defalt, object value, params string[] values) {
+        public bool HasParameter(string section, string key) {
+            return mParameters.ContainsKey(section) && mParameters[section].ContainsKey(key);
+        }
+
+        public ConfigParam this[string section, string key] {
+            get { return mParameters[section][key]; }
+        }
+
+        public ConfigParam GetParam(string section, string key, float defalt, string description, params string[] values) {
+            float value = Init.Get(mSource.Configs[section], key, defalt);
+            return AddParam(key, description, ParameterTypes.Float, section, defalt.ToString(), value, values);
+        }
+
+        private ConfigParam AddParam(string key, string description, ParameterTypes type, string section, string defalt, object value, params string[] values) {
             bool commandLine = commandLineKeys.ContainsKey(section) && commandLineKeys[section].Contains(key);
             string shortKey = commandLine && commandLineShortKeys.ContainsKey(section) ? commandLineShortKeys[section][key] : null;
 
             if (!mParameters.ContainsKey(section))
                 mParameters.Add(section, new Dictionary<string, ConfigParam>());
-            if (!mParameters[section].ContainsKey(key))
-                mParameters[section].Add(key, new ConfigParam(key, description, type, section, Group, defalt, commandLine, shortKey, value != null ? value.ToString() : "null", mFile, values));
-            else {
+            if (!mParameters[section].ContainsKey(key)) {
+                ConfigParam param = new ConfigParam(key, description, type, section, Group, defalt, commandLine, shortKey, value != null ? value.ToString() : "null", mFile, values);
+                mParameters[section].Add(key, param);
+                return param;
+            } else {
                 ConfigParam param = mParameters[section][key];
                 param.AddGroup(Group);
                 if (!param.CommandLine && commandLine)
                     param.CommandLine = true;
                 if (param.ShortKey == null && shortKey != null)
                     param.ShortKey = shortKey;
+                return param;
             }
         }
 
