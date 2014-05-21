@@ -38,6 +38,8 @@
             this.mapFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.reloadTargetsButton = new System.Windows.Forms.Button();
             this.restartButton = new System.Windows.Forms.Button();
+            this.prevButton = new System.Windows.Forms.Button();
+            this.nextButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // startButton
@@ -46,7 +48,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.startButton.Location = new System.Drawing.Point(3, 3);
             this.startButton.Name = "startButton";
-            this.startButton.Size = new System.Drawing.Size(80, 23);
+            this.startButton.Size = new System.Drawing.Size(34, 23);
             this.startButton.TabIndex = 0;
             this.startButton.Text = "Start";
             this.startButton.UseVisualStyleBackColor = true;
@@ -205,10 +207,34 @@
             this.restartButton.UseVisualStyleBackColor = true;
             this.restartButton.Click += new System.EventHandler(this.restartButton_Click);
             // 
+            // prevButton
+            // 
+            this.prevButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.prevButton.Location = new System.Drawing.Point(43, 3);
+            this.prevButton.Name = "prevButton";
+            this.prevButton.Size = new System.Drawing.Size(17, 23);
+            this.prevButton.TabIndex = 16;
+            this.prevButton.Text = "<";
+            this.prevButton.UseVisualStyleBackColor = true;
+            this.prevButton.Click += new System.EventHandler(this.prevButton_Click);
+            // 
+            // nextButton
+            // 
+            this.nextButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.nextButton.Location = new System.Drawing.Point(66, 3);
+            this.nextButton.Name = "nextButton";
+            this.nextButton.Size = new System.Drawing.Size(17, 23);
+            this.nextButton.TabIndex = 17;
+            this.nextButton.Text = ">";
+            this.nextButton.UseVisualStyleBackColor = true;
+            this.nextButton.Click += new System.EventHandler(this.nextButton_Click);
+            // 
             // AvatarMovementControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.nextButton);
+            this.Controls.Add(this.prevButton);
             this.Controls.Add(this.restartButton);
             this.Controls.Add(this.reloadTargetsButton);
             this.Controls.Add(this.drawMapButton);
@@ -247,5 +273,7 @@
         private System.Windows.Forms.OpenFileDialog mapFileDialog;
         private System.Windows.Forms.Button reloadTargetsButton;
         private System.Windows.Forms.Button restartButton;
+        private System.Windows.Forms.Button prevButton;
+        private System.Windows.Forms.Button nextButton;
     }
 }

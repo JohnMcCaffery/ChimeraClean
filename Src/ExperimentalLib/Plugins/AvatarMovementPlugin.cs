@@ -127,6 +127,16 @@ namespace Chimera.Experimental.Plugins {
             Start();
         }
 
+        public void Next() {
+            if (mTargetIndex < mTargets.Count -1)
+                mTargetIndex++;
+        }
+
+        public void Prev() {
+            if (mTargetIndex > 0)
+                mTargetIndex--;
+        }
+
         public void Start() {
             lock (this) {
                 if (mRunning) {

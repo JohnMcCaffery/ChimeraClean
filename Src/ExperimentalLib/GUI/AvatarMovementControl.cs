@@ -79,5 +79,13 @@ namespace Chimera.Experimental.GUI {
         private void restartButton_Click(object sender, EventArgs e) {
             mPlugin.Restart();
         }
+
+        private void nextButton_Click(object sender, EventArgs e) {
+            mPlugin.Next();
+        }
+
+        private void prevButton_Click(object sender, EventArgs e) {
+            mPlugin.Prev();
+        }
     }
 }

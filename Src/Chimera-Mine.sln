@@ -86,7 +86,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Configs", "Configs", "{2C88
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{ED9701C7-AC45-41C5-A61A-788C9D636A73}"
 	ProjectSection(SolutionItems) = preProject
-		..\Bin\Configs\Test\Bindings.xml = ..\Bin\Configs\Test\Bindings.xml
 		..\Bin\Configs\Test\Core.ini = ..\Bin\Configs\Test\Core.ini
 		..\Bin\Configs\Test\Frames.ini = ..\Bin\Configs\Test\Frames.ini
 		..\Bin\Configs\Test\Heightmap.ini = ..\Bin\Configs\Test\Heightmap.ini
