@@ -128,13 +128,21 @@ namespace Chimera.Experimental.Plugins {
         }
 
         public void Next() {
-            if (mTargetIndex < mTargets.Count -1)
+            if (mTargetIndex < mTargets.Count -1) {
                 mTargetIndex++;
+                mTarget = mTargets[mTargetIndex];
+                if (TargetChanged != null)
+                    TargetChanged(mTargets[mTargetIndex].Key, mTargets[mTargetIndex].Value);
+            }
         }
 
         public void Prev() {
-            if (mTargetIndex > 0)
+            if (mTargetIndex > 0) {
                 mTargetIndex--;
+                mTarget = mTargets[mTargetIndex];
+                if (TargetChanged != null)
+                    TargetChanged(mTargets[mTargetIndex].Key, mTargets[mTargetIndex].Value);
+            }
         }
 
         public void Start() {

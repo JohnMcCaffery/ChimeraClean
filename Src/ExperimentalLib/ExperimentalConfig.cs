@@ -48,6 +48,15 @@ namespace Chimera.Experimental {
         public string ExperimentFile;
         public string FPSFolder;
 
+        //Settings Changer
+        private ConfigParam mValue;
+        public float Value {
+            get { return float.Parse(mValue.Value); }
+            set { mValue.Value = value.ToString(); }
+        }
+        public float Increment;
+        public string Setting;
+
         //Non config
         public DateTime Timestamp;
         public string IDS;
@@ -102,7 +111,11 @@ namespace Chimera.Experimental {
             StartLocation = GetV("RecorderBot", "StartLocation", new Vector3(128f, 128f, 24f), "Where on the island the bot should be logged in to.");
             StartIsland = GetSection("RecorderBot", "StartIsland", "Cathedral 1", "Which island the bot should log in to.");
             UpdateStatsGUI = Get("RecorderBot", "UpdateStatsGUI", false, "Whether to regularly update the Recorder's GUI with Recorder bot stats.");
-        }
+
+            //Settings Changer
+            Setting = GetSection("SettingsChanger", "Setting", null, "Which of the viewer's debug settings to change each launch.");
+            Increment = Get("SettingsChanger", "Increment", .01f, "The amount to increment 'Value' for before the next run.");
+            mValue = GetParam("SettingsChanger", "Value", .01f, "The current value to set 'Setting' to on this run. Will be incremented by 'Increment' after being set.");        }
         internal string GetLogFileName() {
             return GetLogFileName(new CoreConfig().Frames[0]);
         }

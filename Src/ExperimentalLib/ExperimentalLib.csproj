@@ -114,6 +114,7 @@
     <Compile Include="Plugins\AvatarMovementPlugin.cs" />
     <Compile Include="Plugins\RecorderPlugin.cs" />
     <Compile Include="Plugins\MovementTracker.cs" />
+    <Compile Include="Plugins\SettingChangerPlugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
