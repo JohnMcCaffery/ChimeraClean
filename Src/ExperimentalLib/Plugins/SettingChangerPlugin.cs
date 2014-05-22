@@ -6,19 +6,23 @@ using Chimera.OpenSim;
 using System.Windows.Forms;
 using System.Threading;
 using log4net;
+using Chimera.Experimental.GUI;
 
 namespace Chimera.Experimental.Plugins {
-    class SettingChangerPlugin : ISystemPlugin {
+    public class SettingChangerPlugin : ISystemPlugin {
         private ILog Logger;
-        private bool mEnabled;
         private ExperimentalConfig mConfig;
         private OpenSimController OSOut;
+
+        public event Action Set;
 
         public void Init(Core core) {
             Logger = LogManager.GetLogger("SettingsChanger");
             mConfig = new ExperimentalConfig();
-            OSOut = (core.Frames[0].Output as OpenSimController);
-            OSOut.ClientLoginComplete += new EventHandler(SettingChangerPlugin_ClientLoginComplete);
+            if (mConfig.SettingsChangerEnabled && mConfig.Setting != null) {
+                OSOut = (core.Frames[0].Output as OpenSimController);
+                OSOut.ClientLoginComplete += new EventHandler(SettingChangerPlugin_ClientLoginComplete);
+            }
         }
 
         void SettingChangerPlugin_ClientLoginComplete(object sender, EventArgs e) {
@@ -46,21 +50,30 @@ namespace Chimera.Experimental.Plugins {
             OSOut.ViewerController.PressKey("{ENTER}");
             Thread.Sleep(500);
             OSOut.ViewerController.PressKey("W", true, false, false);
+
+            if (Set != null)
+                Set();
         }
 
         public void SetForm(System.Windows.Forms.Form form) { }
 
         public event Action<IPlugin, bool> EnabledChanged;
 
+        private SettingChangerControl mControl;
+
         public Control ControlPanel {
-            get { return new Control(); }
+            get {
+                if (mControl == null)
+                    mControl = new SettingChangerControl(this);
+                return mControl;
+            }
         }
 
         public bool Enabled {
-            get { return mEnabled; }
+            get { return mConfig.SettingsChangerEnabled; }
             set {
-                if (mEnabled != value) {
-                    mEnabled = value;
+                if (mConfig.SettingsChangerEnabled != value) {
+                    mConfig.SettingsChangerEnabled = value;
                     if (EnabledChanged != null)
                         EnabledChanged(this, value);
                 }

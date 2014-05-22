@@ -56,6 +56,7 @@ namespace Chimera.Experimental {
         }
         public float Increment;
         public string Setting;
+        public bool SettingsChangerEnabled;
 
         //Non config
         public DateTime Timestamp;
@@ -115,7 +116,8 @@ namespace Chimera.Experimental {
             //Settings Changer
             Setting = GetSection("SettingsChanger", "Setting", null, "Which of the viewer's debug settings to change each launch.");
             Increment = Get("SettingsChanger", "Increment", .01f, "The amount to increment 'Value' for before the next run.");
-            mValue = GetParam("SettingsChanger", "Value", .01f, "The current value to set 'Setting' to on this run. Will be incremented by 'Increment' after being set.");        }
+            mValue = GetParam("SettingsChanger", "Value", .01f, "The current value to set 'Setting' to on this run. Will be incremented by 'Increment' after being set.");
+            SettingsChangerEnabled = Get("SettingsChanger", "Enabled", true, "Whether the settings changer pluging should be enabled. If false 'Setting' will not be changed.");        }
         internal string GetLogFileName() {
             return GetLogFileName(new CoreConfig().Frames[0]);
         }
