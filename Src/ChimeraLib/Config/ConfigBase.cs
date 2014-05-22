@@ -68,11 +68,6 @@ namespace Chimera.Config {
             get { return mParameters[section][key]; }
         }
 
-        public ConfigParam GetParam(string section, string key, float defalt, string description, params string[] values) {
-            float value = Init.Get(mSource.Configs[section], key, defalt);
-            return AddParam(key, description, ParameterTypes.Float, section, defalt.ToString(), value, values);
-        }
-
         private ConfigParam AddParam(string key, string description, ParameterTypes type, string section, string defalt, object value, params string[] values) {
             bool commandLine = commandLineKeys.ContainsKey(section) && commandLineKeys[section].Contains(key);
             string shortKey = commandLine && commandLineShortKeys.ContainsKey(section) ? commandLineShortKeys[section][key] : null;
@@ -369,6 +364,105 @@ namespace Chimera.Config {
         }
         protected T GetFrameEnum<T>(string key, T defalt, string description, ILog logger) where T : struct {
             return Frame == IGNORE_FRAME ? defalt : GetEnum<T>(Frame, key, defalt, description, logger);
+        }
+
+        public ConfigParam GetParam(string section, string key, float defalt, string description, params string[] values) {
+            float value = Init.Get(mSource.Configs[section], key, defalt);
+            return AddParam(key, description, ParameterTypes.Float, section, defalt.ToString(), value, values);
+        }
+        public ConfigParam GetParam(string section, string key, double defalt, string description, params string[] values) {
+            double value = Init.Get(mSource.Configs[section], key, defalt);
+            return AddParam(key, description, ParameterTypes.Double, section, defalt.ToString(), value, values);
+        }
+        public ConfigParam GetParam(string section, string key, bool defalt, string description, params string[] values) {
+            bool value = Init.Get(mSource.Configs[section], key, defalt);
+            return AddParam(key, description, ParameterTypes.Bool, section, defalt.ToString(), value, values);
+        }
+        public ConfigParam GetParam(string section, string key, string defalt, string description, params string[] values) {
+            string value = Init.Get(mSource.Configs[section], key, defalt);
+            return AddParam(key, description, ParameterTypes.String, section, defalt.ToString(), value, values);
+        }
+        public ConfigParam GetParam(string section, string key, Vector3 defalt, string description, params string[] values) {
+            Vector3 value = Init.GetV(mSource.Configs[section], key, defalt);
+            return AddParam(key, description, ParameterTypes.Vector3, section, defalt.ToString(), value, values);
+        }
+        public ConfigParam GetParam<Enum>(string section, string key, Enum defalt, string description, ILog logger) where Enum : struct {
+            GetEnum<Enum>(section, key, defalt, description, logger);
+            return mParameters[section][key];
+        }
+        public ConfigParam GetParamFile(string section, string key, string defalt, string description, params string[] values) {
+            string value = Init.Get(mSource.Configs[section], key, defalt);
+            return AddParam(key, description, ParameterTypes.File, section, defalt.ToString(), value, values);
+        }
+        public ConfigParam GetParamFolder(string section, string key, string defalt, string description, params string[] values) {
+            string value = Init.Get(mSource.Configs[section], key, defalt);
+            return AddParam(key, description, ParameterTypes.Folder, section, defalt.ToString(), value, values);
+        }
+
+        public ConfigParam GetFrameParam(string key, float defalt, string description, params string[] values) {
+            return Frame == IGNORE_FRAME ?
+                new ConfigParam(key, description, ParameterTypes.Float, "Frame", Group, defalt.ToString(), false, "b", "Blah", mFile, values) :
+                GetParam(Frame, key, defalt, description, values);
+        }
+        public ConfigParam GetFrameParam(string key, double defalt, string description, params string[] values) {
+            return Frame == IGNORE_FRAME ? 
+                new ConfigParam(key, description, ParameterTypes.Double, "Frame", Group, defalt.ToString(), false, "b", "Blah", mFile, values) :
+                GetParam(Frame, key, defalt, description, values);
+        }
+        public ConfigParam GetFrameParam(string key, bool defalt, string description, params string[] values) {
+            return Frame == IGNORE_FRAME ? 
+                new ConfigParam(key, description, ParameterTypes.Bool, "Frame", Group, defalt.ToString(), false, "b", "Blah", mFile, values) :
+                GetParam(Frame, key, defalt, description, values);
+        }
+        public ConfigParam GetFrameParam(string key, string defalt, string description, params string[] values) {
+            return Frame == IGNORE_FRAME ? 
+                new ConfigParam(key, description, ParameterTypes.String, "Frame", Group, defalt.ToString(), false, "b", "Blah", mFile, values) :
+                GetParam(Frame, key, defalt, description, values);
+        }
+        public ConfigParam GetFrameParam(string key, Vector3 defalt, string description, params string[] values) {
+            return Frame == IGNORE_FRAME ? 
+                new ConfigParam(key, description, ParameterTypes.Vector3, "Frame", Group, defalt.ToString(), false, "b", "Blah", mFile, values) :
+                GetParam(Frame, key, defalt, description, values);
+        }
+        public ConfigParam GetFrameParam<Enum>(string key, Enum defalt, string description, ILog logger) where Enum : struct {
+            return Frame == IGNORE_FRAME ? 
+                new ConfigParam(key, description, ParameterTypes.Enum, "Frame", Group, defalt.ToString(), false, "b", "Blah", mFile, new string[0]) :
+                GetParam<Enum>(Frame, key, defalt, description, logger);
+        }        public ConfigParam GetFrameParamFile(string key, string defalt, string description, params string[] values) {
+            return Frame == IGNORE_FRAME ? 
+                new ConfigParam(key, description, ParameterTypes.File, "Frame", Group, defalt.ToString(), false, "b", "Blah", mFile, values) :
+                GetParamFile(Frame, key, defalt, description, values);
+        }
+        public ConfigParam GetFrameParamFolder(string key, string defalt, string description, params string[] values) {
+            return Frame == IGNORE_FRAME ? 
+                new ConfigParam(key, description, ParameterTypes.Folder, "Frame", Group, defalt.ToString(), false, "b", "Blah", mFile, values) :
+                GetParamFolder(Frame, key, defalt, description, values);
+        }
+
+
+        public ConfigParam GetGeneralParam(string key, float defalt, string description, params string[] values) {
+            return GetParam("General", key, defalt.ToString(), description, values);
+        }
+        public ConfigParam GetGeneralParam(string key, double defalt, string description, params string[] values) {
+            return GetParam("General", key, defalt.ToString(), description, values);
+        }
+        public ConfigParam GetGeneralParam(string key, bool defalt, string description, params string[] values) {
+            return GetParam("General", key, defalt.ToString(), description, values);
+        }
+        public ConfigParam GetGeneralParam(string key, string defalt, string description, params string[] values) {
+            return GetParam("General", key, defalt.ToString(), description, values);
+        }
+        public ConfigParam GetGeneralParam(string key, Vector3 defalt, string description, params string[] values) {
+            return GetParam("General", key, defalt.ToString(), description, values);
+        }
+        public ConfigParam GetGeneralParam<Enum>(string key, Enum defalt, string description, ILog logger) where Enum : struct {
+            return GetParam<Enum>("General", key, defalt, description, logger);
+        }
+        public ConfigParam GetGeneralParamFile(string key, string defalt, string description, params string[] values) {
+            return GetParamFile("General", key, defalt.ToString(), description, values);
+        }
+        public ConfigParam GetGeneralParamFolder(string key, string defalt, string description, params string[] values) {
+            return GetParamFolder("General", key, defalt.ToString(), description, values);
         }
 
         protected abstract void InitConfig();
