@@ -86,8 +86,8 @@ namespace Chimera.OpenSim.GUI {
             // 
             // loginURIBox
             // 
-            this.loginURIBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.loginURIBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.loginURIBox.Location = new System.Drawing.Point(64, 5);
             this.loginURIBox.Name = "loginURIBox";
             this.loginURIBox.Size = new System.Drawing.Size(200, 20);
@@ -126,8 +126,8 @@ namespace Chimera.OpenSim.GUI {
             // 
             // proxyStartButton
             // 
-            this.proxyStartButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.proxyStartButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.proxyStartButton.Location = new System.Drawing.Point(6, 31);
             this.proxyStartButton.Name = "proxyStartButton";
             this.proxyStartButton.Size = new System.Drawing.Size(373, 20);
@@ -138,8 +138,8 @@ namespace Chimera.OpenSim.GUI {
             // 
             // viewerLaunchButton
             // 
-            this.viewerLaunchButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.viewerLaunchButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.viewerLaunchButton.Location = new System.Drawing.Point(3, 133);
             this.viewerLaunchButton.Name = "viewerLaunchButton";
             this.viewerLaunchButton.Size = new System.Drawing.Size(291, 23);
@@ -150,9 +150,9 @@ namespace Chimera.OpenSim.GUI {
             // 
             // firstNameBox
             // 
-            this.firstNameBox.Location = new System.Drawing.Point(64, 55);
+            this.firstNameBox.Location = new System.Drawing.Point(101, 55);
             this.firstNameBox.Name = "firstNameBox";
-            this.firstNameBox.Size = new System.Drawing.Size(60, 20);
+            this.firstNameBox.Size = new System.Drawing.Size(67, 20);
             this.firstNameBox.TabIndex = 20;
             this.firstNameBox.Text = "Routing";
             this.firstNameBox.TextChanged += new System.EventHandler(this.firstNameBox_TextChanged);
@@ -160,7 +160,7 @@ namespace Chimera.OpenSim.GUI {
             // firstNameLabel
             // 
             this.firstNameLabel.AutoSize = true;
-            this.firstNameLabel.Location = new System.Drawing.Point(3, 58);
+            this.firstNameLabel.Location = new System.Drawing.Point(38, 58);
             this.firstNameLabel.Name = "firstNameLabel";
             this.firstNameLabel.Size = new System.Drawing.Size(57, 13);
             this.firstNameLabel.TabIndex = 21;
@@ -169,7 +169,7 @@ namespace Chimera.OpenSim.GUI {
             // lastNameLabel
             // 
             this.lastNameLabel.AutoSize = true;
-            this.lastNameLabel.Location = new System.Drawing.Point(130, 58);
+            this.lastNameLabel.Location = new System.Drawing.Point(174, 58);
             this.lastNameLabel.Name = "lastNameLabel";
             this.lastNameLabel.Size = new System.Drawing.Size(58, 13);
             this.lastNameLabel.TabIndex = 23;
@@ -177,9 +177,9 @@ namespace Chimera.OpenSim.GUI {
             // 
             // lastNameBox
             // 
-            this.lastNameBox.Location = new System.Drawing.Point(194, 55);
+            this.lastNameBox.Location = new System.Drawing.Point(238, 55);
             this.lastNameBox.Name = "lastNameBox";
-            this.lastNameBox.Size = new System.Drawing.Size(49, 20);
+            this.lastNameBox.Size = new System.Drawing.Size(63, 20);
             this.lastNameBox.TabIndex = 22;
             this.lastNameBox.Text = "God";
             this.lastNameBox.TextChanged += new System.EventHandler(this.lastNameBox_TextChanged);
@@ -187,7 +187,7 @@ namespace Chimera.OpenSim.GUI {
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(249, 58);
+            this.label1.Location = new System.Drawing.Point(307, 58);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(53, 13);
             this.label1.TabIndex = 25;
@@ -195,23 +195,23 @@ namespace Chimera.OpenSim.GUI {
             // 
             // passwordBox
             // 
-            this.passwordBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.passwordBox.Location = new System.Drawing.Point(308, 55);
+            this.passwordBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.passwordBox.Location = new System.Drawing.Point(366, 55);
             this.passwordBox.Name = "passwordBox";
             this.passwordBox.PasswordChar = '*';
-            this.passwordBox.Size = new System.Drawing.Size(71, 20);
+            this.passwordBox.Size = new System.Drawing.Size(13, 20);
             this.passwordBox.TabIndex = 24;
             this.passwordBox.Text = "1245";
             this.passwordBox.TextChanged += new System.EventHandler(this.passwordBox_TextChanged);
             // 
             // viewerExeBox
             // 
-            this.viewerExeBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.viewerExeBox.Location = new System.Drawing.Point(48, 81);
+            this.viewerExeBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.viewerExeBox.Location = new System.Drawing.Point(101, 81);
             this.viewerExeBox.Name = "viewerExeBox";
-            this.viewerExeBox.Size = new System.Drawing.Size(195, 20);
+            this.viewerExeBox.Size = new System.Drawing.Size(142, 20);
             this.viewerExeBox.TabIndex = 26;
             this.viewerExeBox.Text = "C:\\\\Program Files (x86)\\\\Firestorm-Release\\\\Firestorm-Release.exe";
             this.viewerExeBox.TextChanged += new System.EventHandler(this.targetBox_TextChanged);
@@ -219,7 +219,7 @@ namespace Chimera.OpenSim.GUI {
             // clientLabel
             // 
             this.clientLabel.AutoSize = true;
-            this.clientLabel.Location = new System.Drawing.Point(3, 84);
+            this.clientLabel.Location = new System.Drawing.Point(56, 83);
             this.clientLabel.Name = "clientLabel";
             this.clientLabel.Size = new System.Drawing.Size(39, 13);
             this.clientLabel.TabIndex = 27;
@@ -309,8 +309,8 @@ namespace Chimera.OpenSim.GUI {
             // 
             // workingDirectoryBox
             // 
-            this.workingDirectoryBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.workingDirectoryBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.workingDirectoryBox.Location = new System.Drawing.Point(101, 107);
             this.workingDirectoryBox.Name = "workingDirectoryBox";
             this.workingDirectoryBox.Size = new System.Drawing.Size(278, 20);
@@ -376,8 +376,8 @@ namespace Chimera.OpenSim.GUI {
             // 
             // keyBox
             // 
-            this.keyBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.keyBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.keyBox.Location = new System.Drawing.Point(3, 212);
             this.keyBox.Name = "keyBox";
             this.keyBox.Size = new System.Drawing.Size(292, 20);
@@ -397,8 +397,8 @@ namespace Chimera.OpenSim.GUI {
             // 
             // chatBox
             // 
-            this.chatBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.chatBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.chatBox.Location = new System.Drawing.Point(47, 242);
             this.chatBox.Name = "chatBox";
             this.chatBox.Size = new System.Drawing.Size(286, 20);
@@ -467,8 +467,8 @@ namespace Chimera.OpenSim.GUI {
             // 
             // offsetPanel
             // 
-            this.offsetPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.offsetPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.offsetPanel.Location = new System.Drawing.Point(-1, 267);
             this.offsetPanel.Max = 10F;
             this.offsetPanel.MaxV = ((OpenMetaverse.Vector3)(resources.GetObject("offsetPanel.MaxV")));
