@@ -20,6 +20,7 @@ namespace Chimera.Experimental.Plugins {
             Logger = LogManager.GetLogger("SettingsChanger");
             mConfig = new ExperimentalConfig();
             if (mConfig.SettingsChangerEnabled && mConfig.Setting != null) {
+                mConfig.RunInfo += (mConfig.RunInfo.Length == 0 ? "" : "-") + mConfig.Value;
                 OSOut = (core.Frames[0].Output as OpenSimController);
                 OSOut.ClientLoginComplete += new EventHandler(SettingChangerPlugin_ClientLoginComplete);
             }
