@@ -11,7 +11,8 @@ using System.IO;
 
 namespace Chimera.Experimental.Plugins {
     public class SettingLoaderPlugin : ISystemPlugin {
-        private ILog Logger;
+        private ILog Logger = LogManager.GetLogger("SettingsChanger");
+        private Core mCore;
         private ExperimentalConfig mConfig;
         private ViewerConfig mViewerConfig;
         private OpenSimController OSOut;
@@ -21,7 +22,7 @@ namespace Chimera.Experimental.Plugins {
         public event Action Set;
 
         public void Init(Core core) {
-            Logger = LogManager.GetLogger("SettingsChanger");
+            mCore = core;
             mConfig = core.HasPlugin<RecorderPlugin>() ? core.GetPlugin<RecorderPlugin>().Config as ExperimentalConfig : new ExperimentalConfig();
             mViewerConfig = new ViewerConfig();
 
@@ -99,16 +100,27 @@ namespace Chimera.Experimental.Plugins {
             get { return mConfig; }
         }
 
-        public void Close() { 
-            if (File.Exists(mConfig.GetLogFileName())) {
-                mConfig.Index++;
-                if (mConfig.Index < mFiles.Length) {
-                    if (mViewerConfig.ViewerArguments.Contains("--settings"))
-                        mViewerConfig.ViewerArguments.Replace(@"--settings settings.* ", "--settings " + mFiles[mConfig.Index]);
-                    else
-                        mViewerConfig.ViewerArguments += " --settings " + mFiles[mConfig.Index];
-                }
+        public void Close() {
+            bool incremented = false;
+            bool failed = false;
+            foreach (var frame in mCore.Frames) {
+                if (File.Exists(mConfig.GetLogFileName(frame.Name))) {
+                    if (!incremented) {
+                        mConfig.Index++;
+                        if (mConfig.Index < mFiles.Length) {
+                            if (mViewerConfig.ViewerArguments.Contains("--settings"))
+                                mViewerConfig.ViewerArguments.Replace(@"--settings settings.* ", "--settings " + mFiles[mConfig.Index]);
+                            else
+                                mViewerConfig.ViewerArguments += " --settings " + mFiles[mConfig.Index];
+                        }
+                    }
+                    incremented = true;
+                } else
+                    failed = true;
             }
+
+            if (failed)
+                mCore.ExitCode = mConfig.FailCode;
         }
 
         public void Draw(System.Drawing.Graphics graphics, Func<OpenMetaverse.Vector3, System.Drawing.Point> to2D, Action redraw, Perspective perspective) { }

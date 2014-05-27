@@ -21,6 +21,7 @@ namespace Chimera.Experimental {
         public bool OneSecMininum;
         public string TimestampFormat = "yyyy.MM.dd-HH.mm.ss";
         public string[] OutputKeys;
+        public int FailCode;
 
         //Avatar Movement
         public string NodesFile;
@@ -88,6 +89,7 @@ namespace Chimera.Experimental {
             ProcessOnFinish = Get("ProcessResults", false, "Whether to process the log files to  <ExperimentName>/RunInfo(-<Timestamp>).csv file when closing.");
             string outputKeysStr = GetSection("Recorder", "OutputKeys", "CFPS,SFPS,FT", "The columns the output table should have. Each column is separted by a comma. Valid keys are: CFPS, SFPS, FT, PingTime.");
             OutputKeys = outputKeysStr.Split(',');
+            FailCode = Get("FailCode", 12, "The exit code to use if ProcessResults is set but there are no results to process.");
 
             //Movement Tracker
             ExperimentFile = GetFileSection("MovementTracker", "File", null, "The xml file which defines the experiment.");
