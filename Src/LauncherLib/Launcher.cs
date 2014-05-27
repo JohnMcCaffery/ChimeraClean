@@ -111,9 +111,9 @@ namespace Chimera.Launcher {
             return new Launcher();
         }
 
-        public void Launch() {
+        public int Launch() {
             if (mCore == null || !mCore.Initialised)
-                return;
+                return 0;
 
             if (mConfig.GUI) {
                 if (mConfig.BasicGUI)
@@ -128,6 +128,8 @@ namespace Chimera.Launcher {
                 //t.Name = "Input Thread";
                 //t.Start();
             }
+
+            return mCore != null ? mCore.ExitCode : 0;
         }
     }
 }
