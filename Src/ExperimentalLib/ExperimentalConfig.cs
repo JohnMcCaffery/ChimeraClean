@@ -58,6 +58,15 @@ namespace Chimera.Experimental {
         public string Setting;
         public bool SettingsChangerEnabled;
 
+        //Settings Loader
+        private ConfigParam mIndex;
+        public int Index {
+            get { return int.Parse(mIndex.Value); }
+            set { mIndex.Value = value.ToString(); }
+        }
+        public string SettingsCollectionFile;
+        public bool SettingsLoaderEnabled;
+
         //Non config
         public DateTime Timestamp;
         public string IDS;
@@ -117,7 +126,7 @@ namespace Chimera.Experimental {
             Setting = GetSection("SettingsChanger", "Setting", null, "Which of the viewer's debug settings to change each launch.");
             Increment = Get("SettingsChanger", "Increment", .01f, "The amount to increment 'Value' for before the next run.");
             mValue = GetParam("SettingsChanger", "Value", .01f, "The current value to set 'Setting' to on this run. Will be incremented by 'Increment' after being set.");
-            SettingsChangerEnabled = Get("SettingsChanger", "Enabled", true, "Whether the settings changer pluging should be enabled. If false 'Setting' will not be changed.");        }
+            SettingsChangerEnabled = Get("SettingsChanger", "Enabled", true, "Whether the settings changer pluging should be enabled. If false 'Setting' will not be changed.");            //Settings Loader            SettingsCollectionFile = GetSection("SettingsLoader", "File", null, "The file which contains a list of settings files to be launched. Each line is a file. The line specified by 'Index' will be supplied to the viewer as a command line parameter on startup. All files must be in the AppData/Roaming/Firestorm/user_settings/ folder.");            mIndex = GetParam("SettingsLoader", "Index", 0, "The index in the list of settings files to load for this run.");            SettingsLoaderEnabled = Get("SettingsLoader", "Enabled", true, "Whether the settings loader pluging should be enabled. If false viewer command line parameters will not be changed.");        }
         internal string GetLogFileName() {
             return GetLogFileName(new CoreConfig().Frames[0]);
         }

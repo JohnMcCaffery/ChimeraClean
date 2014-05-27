@@ -98,6 +98,12 @@
     <Compile Include="GUI\AvatarMovementControl.Designer.cs">
       <DependentUpon>AvatarMovementControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="GUI\SettingLoaderControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\SettingLoaderControl.Designer.cs">
+      <DependentUpon>SettingLoaderControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="GUI\MovementTrackerControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -118,6 +124,7 @@
     </Compile>
     <Compile Include="Overlay\FPSRecorder.cs" />
     <Compile Include="Plugins\AvatarMovementPlugin.cs" />
+    <Compile Include="Plugins\SettingLoaderPlugin.cs" />
     <Compile Include="Plugins\RecorderPlugin.cs" />
     <Compile Include="Plugins\MovementTracker.cs" />
     <Compile Include="Plugins\SettingChangerPlugin.cs" />
@@ -148,6 +155,9 @@
   <ItemGroup>
     <EmbeddedResource Include="GUI\AvatarMovementControl.resx">
       <DependentUpon>AvatarMovementControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\SettingLoaderControl.resx">
+      <DependentUpon>SettingLoaderControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\MovementTrackerControl.resx">
       <DependentUpon>MovementTrackerControl.cs</DependentUpon>
