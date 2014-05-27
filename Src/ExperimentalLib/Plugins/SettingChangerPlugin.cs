@@ -13,12 +13,13 @@ namespace Chimera.Experimental.Plugins {
         private ILog Logger;
         private ExperimentalConfig mConfig;
         private OpenSimController OSOut;
+        private SettingChangerControl mControl;
 
         public event Action Set;
 
         public void Init(Core core) {
             Logger = LogManager.GetLogger("SettingsChanger");
-            mConfig = new ExperimentalConfig();
+            mConfig = core.HasPlugin<RecorderPlugin>() ? core.GetPlugin<RecorderPlugin>().Config as ExperimentalConfig : new ExperimentalConfig();
             if (mConfig.SettingsChangerEnabled && mConfig.Setting != null) {
                 mConfig.RunInfo += (mConfig.RunInfo.Length == 0 ? "" : "-") + mConfig.Value;
                 OSOut = (core.Frames[0].Output as OpenSimController);
@@ -59,8 +60,6 @@ namespace Chimera.Experimental.Plugins {
         public void SetForm(System.Windows.Forms.Form form) { }
 
         public event Action<IPlugin, bool> EnabledChanged;
-
-        private SettingChangerControl mControl;
 
         public Control ControlPanel {
             get {
