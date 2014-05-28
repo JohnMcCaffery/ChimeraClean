@@ -8,61 +8,39 @@ using System.Threading;
 using log4net;
 using Chimera.Experimental.GUI;
 using System.IO;
+using System.Text.RegularExpressions;
 
 namespace Chimera.Experimental.Plugins {
     public class SettingLoaderPlugin : ISystemPlugin {
-        private ILog Logger = LogManager.GetLogger("SettingsChanger");
+        private ILog Logger = LogManager.GetLogger("SettingsLoader");
         private Core mCore;
         private ExperimentalConfig mConfig;
-        private ViewerConfig mViewerConfig;
-        private OpenSimController OSOut;
         private SettingLoaderControl mControl;
         private string[] mFiles;
-
-        public event Action Set;
 
         public void Init(Core core) {
             mCore = core;
             mConfig = core.HasPlugin<RecorderPlugin>() ? core.GetPlugin<RecorderPlugin>().Config as ExperimentalConfig : new ExperimentalConfig();
-            mViewerConfig = new ViewerConfig();
 
             mFiles = File.ReadAllLines(mConfig.SettingsCollectionFile);
 
-            if (mConfig.SettingsChangerEnabled && mConfig.Setting != null) {
-                mConfig.RunInfo += (mConfig.RunInfo.Length == 0 ? "" : "-") + mConfig.Value;
-                OSOut = (core.Frames[0].Output as OpenSimController);
-                OSOut.ClientLoginComplete += new EventHandler(SettingLoaderPlugin_ClientLoginComplete);
+            if (mConfig.SettingsLoaderEnabled) {
+                if (mConfig.Index < mFiles.Length) {
+                    mConfig.RunInfo = mFiles[mConfig.Index];
+
+                    foreach (var output in core.Frames.Select(f => f.Output)) {
+                        string file = "settings-" + mFiles[mConfig.Index] + ".xml";
+                        ViewerConfig viewerConfig = (output as OpenSimController).Config as ViewerConfig;
+                        if (viewerConfig.ViewerArguments.Contains("--settings")) {
+                            viewerConfig.ViewerArguments.Replace(@"--settings .*xml", "--settings " + file);
+                            viewerConfig.ViewerArguments = Regex.Replace(viewerConfig.ViewerArguments, @"--settings .*xml", "--settings " + file);
+                        } else
+                            viewerConfig.ViewerArguments += " --settings " + file;
+                    }
+
+                    Logger.Info("Settings loader loading settings file: settings-" + mConfig.RunInfo + ".xml.");
+                }
             }
-        }
-
-        void SettingLoaderPlugin_ClientLoginComplete(object sender, EventArgs e) {
-            OSOut.ViewerController.PressKey("s", true, true, true);
-
-            //Select the correct setting
-            OSOut.ViewerController.SendString(mConfig.Setting);
-            Thread.Sleep(500);
-            OSOut.ViewerController.PressKey("{TAB}");
-            Thread.Sleep(500);
-            OSOut.ViewerController.PressKey("{TAB}");
-            Thread.Sleep(500);
-            OSOut.ViewerController.PressKey("{TAB}");
-            //Delete the old value
-            OSOut.ViewerController.PressKey("{DEL}");
-
-            //Set the filename
-            OSOut.ViewerController.SendString(mConfig.Value.ToString());
-            Thread.Sleep(500);
-            Logger.Info("Set " + mConfig.Setting + " to " + mConfig.Value + ". Incrementing value by " + mConfig.Increment + ".");
-
-            mConfig.Value += mConfig.Increment;
-
-            //Save filename and close window
-            OSOut.ViewerController.PressKey("{ENTER}");
-            Thread.Sleep(500);
-            OSOut.ViewerController.PressKey("W", true, false, false);
-
-            if (Set != null)
-                Set();
         }
 
         public void SetForm(System.Windows.Forms.Form form) { }
@@ -89,7 +67,7 @@ namespace Chimera.Experimental.Plugins {
         }
 
         public string Name {
-            get { return "SettingsChanger"; }
+            get { return "SettingsLoader"; }
         }
 
         public string State {
@@ -101,26 +79,30 @@ namespace Chimera.Experimental.Plugins {
         }
 
         public void Close() {
+            if (!mConfig.SettingsLoaderEnabled)
+                return;
+
             bool incremented = false;
-            bool failed = false;
+            bool repeat = true;
+
             foreach (var frame in mCore.Frames) {
                 if (File.Exists(mConfig.GetLogFileName(frame.Name))) {
                     if (!incremented) {
                         mConfig.Index++;
                         if (mConfig.Index < mFiles.Length) {
-                            if (mViewerConfig.ViewerArguments.Contains("--settings"))
-                                mViewerConfig.ViewerArguments.Replace(@"--settings settings.* ", "--settings " + mFiles[mConfig.Index]);
-                            else
-                                mViewerConfig.ViewerArguments += " --settings " + mFiles[mConfig.Index];
+                            Logger.Info("Settings file set to: settings-" + mFiles[mConfig.Index] + ".xml. Exiting with RepeatCode (" + mConfig.RepeatCode + ").");
+                        } else {
+                            Logger.Info("No more graphics settings. No exit code set.");
+                            repeat = false;
                         }
                     }
                     incremented = true;
                 } else
-                    failed = true;
+                    Logger.Info("No log file found after " + mConfig.RunInfo + " run. Exiting with RepeatCode (" + mConfig.RepeatCode + ").");
             }
 
-            if (failed)
-                mCore.ExitCode = mConfig.FailCode;
+            if (repeat)
+                mCore.ExitCode = mConfig.RepeatCode;
         }
 
         public void Draw(System.Drawing.Graphics graphics, Func<OpenMetaverse.Vector3, System.Drawing.Point> to2D, Action redraw, Perspective perspective) { }
