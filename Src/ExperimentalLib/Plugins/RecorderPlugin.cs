@@ -203,7 +203,8 @@ namespace Chimera.OpenSim {
 
         public void WriteCSV(string file) {
             if (mServerStats.Count <= 0 && mClientStats.Count <= 0) {
-                Logger.Warn("Not writing stats. No client or server stats in memory to write.");
+                Logger.Warn("Not writing stats. No client or server stats in memory to write. Exiting with code " + mConfig.RepeatCode + ".");
+                Core.ExitCode = mConfig.RepeatCode;
                 return;
             }
 
