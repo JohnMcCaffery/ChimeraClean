@@ -7,11 +7,13 @@ using System.Windows.Forms;
 using System.Threading;
 using log4net;
 using Chimera.Experimental.GUI;
+using System.IO;
 
 namespace Chimera.Experimental.Plugins {
     public class SettingChangerPlugin : ISystemPlugin {
         private ILog Logger;
         private ExperimentalConfig mConfig;
+        private Core mCore;
         private OpenSimController OSOut;
         private SettingChangerControl mControl;
 
@@ -19,7 +21,8 @@ namespace Chimera.Experimental.Plugins {
 
         public void Init(Core core) {
             Logger = LogManager.GetLogger("SettingsChanger");
-            mConfig = core.HasPlugin<RecorderPlugin>() ? core.GetPlugin<RecorderPlugin>().Config as ExperimentalConfig : new ExperimentalConfig();
+            mCore = core;
+            mConfig = mCore.HasPlugin<RecorderPlugin>() ? mCore.GetPlugin<RecorderPlugin>().Config as ExperimentalConfig : new ExperimentalConfig();
             if (mConfig.SettingsChangerEnabled && mConfig.Setting != null) {
                 mConfig.RunInfo += (mConfig.RunInfo.Length == 0 ? "" : "-") + mConfig.Value;
                 OSOut = (core.Frames[0].Output as OpenSimController);
@@ -45,8 +48,6 @@ namespace Chimera.Experimental.Plugins {
             OSOut.ViewerController.SendString(mConfig.Value.ToString());
             Thread.Sleep(500);
             Logger.Info("Set " + mConfig.Setting + " to " + mConfig.Value + ". Incrementing value by " + mConfig.Increment + ".");
-
-            mConfig.Value += mConfig.Increment;
 
             //Save filename and close window
             OSOut.ViewerController.PressKey("{ENTER}");
@@ -92,7 +93,19 @@ namespace Chimera.Experimental.Plugins {
             get { return mConfig; }
         }
 
-        public void Close() { }
+        public void Close() {
+            if (File.Exists(mConfig.GetLogFileName())) {
+                mConfig.Value += mConfig.Increment;
+                if (mConfig.Value <= mConfig.Max) {
+                    mCore.ExitCode = mConfig.RepeatCode;
+                    Logger.Info(mConfig.Setting + " incremented to " + mConfig.Value + ". Exiting with RepeatCode (" + mConfig.RepeatCode + ").");
+                } else 
+                    Logger.Info("Finished incrementing " + mConfig.Setting + ". No exit code set.");
+            } else {
+                Logger.Info("No log file found after " + mConfig.RunInfo + " run. " + mConfig.Setting + " not incremented. Exiting with RepeatCode (" + mConfig.RepeatCode + ").");
+                mCore.ExitCode = mConfig.RepeatCode;
+            }
+        }
 
         public void Draw(System.Drawing.Graphics graphics, Func<OpenMetaverse.Vector3, System.Drawing.Point> to2D, Action redraw, Perspective perspective) { }
     }
