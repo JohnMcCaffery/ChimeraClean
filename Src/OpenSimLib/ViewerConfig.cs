@@ -44,11 +44,14 @@ namespace Chimera.OpenSim {
         public string LoginGrid;
         public string ViewerWorkingDirectory;
         public string CrashLogFile;
+        /*
         private ConfigParam mViewerArguments;
         public string ViewerArguments {
             get { return mViewerArguments.Value; }
             set { mViewerArguments.Value = value; }
         }
+        */
+        public string ViewerArguments;
         public string ViewerToggleHUDKey;
         public bool UseGrid;
         public bool AutoLoginClient;
@@ -98,7 +101,8 @@ namespace Chimera.OpenSim {
             string defaultWD = new Uri(folder).MakeRelativeUri(new Uri(Path.GetDirectoryName(ViewerExecutable))).OriginalString;
             ViewerWorkingDirectory = GetFolder("WorkingDirectory", defaultWD, "The workign directory for the viewer executable.");
 
-            mViewerArguments = GetGeneralParam("ViewerArguments", "", "Any arguments to be passed to the viewer when it starts.");
+            //mViewerArguments = GetGeneralParam("ViewerArguments", "", "Any arguments to be passed to the viewer when it starts.");
+            ViewerArguments = GetStr("ViewerArguments", "", "Any arguments to be passed to the viewer when it starts.");
             ViewerToggleHUDKey = GetStr("ViewerToggleHUDKey", "%^{F1}", "The key press that will toggle the HUD on and off in the viewer.");
             UseGrid = Get("UseGrid", false, "Whether to login using the --grid or --loginuri command line parameter to specify the login target.");
             DeltaScale = Get("DeltaScale", .25f, "How much to scale delta values by when using remote control.");
