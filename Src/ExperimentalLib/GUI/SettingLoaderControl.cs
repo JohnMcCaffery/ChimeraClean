@@ -23,13 +23,7 @@ namespace Chimera.Experimental.GUI {
             mConfig = plugin.Config as ExperimentalConfig;
             mValue = mConfig.Value;
 
-            statusLabel.Text = mConfig.Setting + " will be set to " + mConfig.Value + " on login. Increment: " + mConfig.Increment + ".";
-
-            mPlugin.Set += () =>
-                Invoke(new Action(() => {
-                    statusLabel.Text = mConfig.Setting + " set to " + mValue + ". Next iteration: " + mConfig.Value + " (increment " + mConfig.Increment + ").";
-                    mValue = mConfig.Value;
-                }));
+            statusLabel.Text = mConfig.SettingsLoaderEnabled ? "Loaded settings from: " + mConfig.RunInfo : "Settings loading disabled.";
         }
     }
 }
