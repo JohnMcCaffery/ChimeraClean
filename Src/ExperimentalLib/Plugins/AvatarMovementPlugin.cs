@@ -168,6 +168,8 @@ namespace Chimera.Experimental.Plugins {
             if (mTargets.Count > 0) {
                 Logger.Info("Starting loop.");
 
+                Cursor.Position = new Point(0, 0);
+
                 if (mConfig.SaveResults)
                     mConfig.SetupFPSLogs(mCore, Logger);
 
