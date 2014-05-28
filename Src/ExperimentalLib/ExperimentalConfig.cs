@@ -15,13 +15,20 @@ namespace Chimera.Experimental {
         public string ExperimentName;
 
         //General
+        /*
+        private ConfigParam mRunInfo;
+        public string RunInfo {
+            get { return mRunInfo.Value; }
+            set { mRunInfo.Value = value; }
+        }
+        */
         public string RunInfo;
         public bool IncludeTimestamp;
         public bool SaveResults;
         public bool OneSecMininum;
         public string TimestampFormat = "yyyy.MM.dd-HH.mm.ss";
         public string[] OutputKeys;
-        public int FailCode;
+        public int RepeatCode;
 
         //Avatar Movement
         public string NodesFile;
@@ -56,6 +63,7 @@ namespace Chimera.Experimental {
             set { mValue.Value = value.ToString(); }
         }
         public float Increment;
+        public float Max;
         public string Setting;
         public bool SettingsChangerEnabled;
 
@@ -82,6 +90,7 @@ namespace Chimera.Experimental {
         protected override void InitConfig() {
             //General
             ExperimentName = GetStr("ExperimentName", "Experiment", "The name of the experiment. Controls the folder where the results will be written to.");
+            //mRunInfo = GetGeneralParam("RunInfo", Mode.ToString(), "The name of the specific run happening.");
             RunInfo = GetStr("RunInfo", Mode.ToString(), "The name of the specific run happening.");
             OneSecMininum = Get("LimitFrequency", true, "Whether to limit the maximum log frequency to one log per second. Viewer timestamps only go to the second so finer grained logging is not possible.");
             TimestampFormat = GetStr("TimestampFormat", TimestampFormat, "The format that all timestamps will be saved as. Should match second life's log's timestamps.");
@@ -89,7 +98,7 @@ namespace Chimera.Experimental {
             ProcessOnFinish = Get("ProcessResults", false, "Whether to process the log files to  <ExperimentName>/RunInfo(-<Timestamp>).csv file when closing.");
             string outputKeysStr = GetSection("Recorder", "OutputKeys", "CFPS,SFPS,FT", "The columns the output table should have. Each column is separted by a comma. Valid keys are: CFPS, SFPS, FT, PingTime.");
             OutputKeys = outputKeysStr.Split(',');
-            FailCode = Get("FailCode", 12, "The exit code to use if ProcessResults is set but there are no results to process.");
+            RepeatCode = Get("RepeatCode", 12, "The exit code to use if the application should be launched again.");
 
             //Movement Tracker
             ExperimentFile = GetFileSection("MovementTracker", "File", null, "The xml file which defines the experiment.");
@@ -127,8 +136,9 @@ namespace Chimera.Experimental {
             //Settings Changer
             Setting = GetSection("SettingsChanger", "Setting", null, "Which of the viewer's debug settings to change each launch.");
             Increment = Get("SettingsChanger", "Increment", .01f, "The amount to increment 'Value' for before the next run.");
+            Max = Get("SettingsChanger", "Max", .2f, "The amount for value to reach before the test stops.");
             mValue = GetParam("SettingsChanger", "Value", .01f, "The current value to set 'Setting' to on this run. Will be incremented by 'Increment' after being set.");
-            SettingsChangerEnabled = Get("SettingsChanger", "Enabled", true, "Whether the settings changer pluging should be enabled. If false 'Setting' will not be changed.");            //Settings Loader            SettingsCollectionFile = GetSection("SettingsLoader", "File", null, "The file which contains a list of settings files to be launched. Each line is a file. The line specified by 'Index' will be supplied to the viewer as a command line parameter on startup. All files must be in the AppData/Roaming/Firestorm/user_settings/ folder.");            mIndex = GetParam("SettingsLoader", "Index", 0, "The index in the list of settings files to load for this run.");            SettingsLoaderEnabled = Get("SettingsLoader", "Enabled", true, "Whether the settings loader pluging should be enabled. If false viewer command line parameters will not be changed.");        }
+            SettingsChangerEnabled = Get("SettingsChanger", "Enabled", true, "Whether the settings changer pluging should be enabled. If false 'Setting' will not be changed.");            //Settings Loader            SettingsCollectionFile = GetFileSection("SettingsLoader", "File", null, "The file which contains a list of settings files to be launched. Each line is a file. The line specified by 'Index' will be supplied to the viewer as a command line parameter on startup. All files must be in the AppData/Roaming/Firestorm/user_settings/ folder.");            mIndex = GetParam("SettingsLoader", "Index", 0, "The index in the list of settings files to load for this run.");            SettingsLoaderEnabled = Get("SettingsLoader", "Enabled", true, "Whether the settings loader pluging should be enabled. If false viewer command line parameters will not be changed.");        }
         internal string GetLogFileName() {
             return GetLogFileName(new CoreConfig().Frames[0]);
         }

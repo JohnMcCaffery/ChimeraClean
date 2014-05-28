@@ -77,7 +77,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Overlay", "Overlay", "{06FD
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{DB1A444F-C959-40FE-A90B-10FF61313DE7}"
 	ProjectSection(SolutionItems) = preProject
-		..\Bin\Scripts\launch.bat = ..\Bin\Scripts\launch.bat
 		..\Bin\Scripts\shutdown1.vbs = ..\Bin\Scripts\shutdown1.vbs
 		..\Bin\Scripts\shutdown2.vbs = ..\Bin\Scripts\shutdown2.vbs
 	EndProjectSection
