@@ -168,10 +168,16 @@ namespace Chimera.Experimental.Plugins {
             if (mTargets.Count > 0) {
                 Logger.Info("Starting loop.");
 
-                Cursor.Position = new Point(0, 0);
+                if (mConfig.MoveMouseOffscreen)
+                    Cursor.Position = new Point(0, 0);
 
                 if (mConfig.SaveResults)
                     mConfig.SetupFPSLogs(mCore, Logger);
+
+                if (mConfig.StartupKeyPresses.Length > 0)
+                    foreach (var viewer in mCore.Frames.Select(f => (f.Output as OpenSimController).ViewerController))
+                        foreach (var key in mConfig.StartupKeyPresses)
+                            viewer.PressKey(key);
 
                 mTargetIndex = 0;
                 mTarget = mTargets[mTargetIndex];

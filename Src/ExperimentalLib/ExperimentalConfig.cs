@@ -41,6 +41,8 @@ namespace Chimera.Experimental {
         public bool AutoShutdown;
         public bool Loop;
         public bool StartAtHome;
+        public bool MoveMouseOffscreen;
+        public string[] StartupKeyPresses;
 
         public double TurnRate;
         public float MoveRate;
@@ -117,6 +119,8 @@ namespace Chimera.Experimental {
             StartAtHome = Get("AvatarMovement", "StartAtHome", false, "Whether to teleport the avatar home before starting. Overrides TeleportToStart if set.");
             SaveResults = Get("AvatarMovement", "SaveFPS", true, "Whether to save the log 'Experiments/<ExperimentName>/<Timestamp>-RunInfo(-Frame).log'.");
             TeleportToStart = Get("AvatarMovement", "TeleportToStart", false, "<CURRENTLY DOES NOT WORK> Whether to use the map dialog to teleport the avatar to the start location specified in RecorderBot / StartIsland/StartLocation. Won't work if StartAtHome is enabled.");
+            MoveMouseOffscreen = Get("AvatarMovement", "MoveMouseOffscreen", true, "Whether the mouse should be moved off screen before the run starts.");
+            StartupKeyPresses = GetStr("AvatarMovement", "StartupKeyPress", "", "Key presses which will be sent to the viewer before the run starts, separated by commas.").Split(',');
 
             TurnRate = Get("AvatarMovement", "TurnRate", .01, "How far the camera will turn each tick.");
             MoveRate = Get("AvatarMovement", "MoveRate", .03f, "How far the camera will move each tick.");
