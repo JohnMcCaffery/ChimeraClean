@@ -5,6 +5,6 @@ using System.Text;
 
 namespace Chimera.Interfaces {
     public interface IOutputFactory {
-        IOutput Create();
+        IOutput Create(string name);
     }
 }

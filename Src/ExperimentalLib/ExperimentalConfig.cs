@@ -65,6 +65,7 @@ namespace Chimera.Experimental {
             set { mValue.Value = value.ToString(); }
         }
         public float Increment;
+        public int SelectDownPress;
         public float Max;
         public string Setting;
         public bool SettingsChangerEnabled;
@@ -120,7 +121,7 @@ namespace Chimera.Experimental {
             SaveResults = Get("AvatarMovement", "SaveFPS", true, "Whether to save the log 'Experiments/<ExperimentName>/<Timestamp>-RunInfo(-Frame).log'.");
             TeleportToStart = Get("AvatarMovement", "TeleportToStart", false, "<CURRENTLY DOES NOT WORK> Whether to use the map dialog to teleport the avatar to the start location specified in RecorderBot / StartIsland/StartLocation. Won't work if StartAtHome is enabled.");
             MoveMouseOffscreen = Get("AvatarMovement", "MoveMouseOffscreen", true, "Whether the mouse should be moved off screen before the run starts.");
-            StartupKeyPresses = GetStr("AvatarMovement", "StartupKeyPress", "", "Key presses which will be sent to the viewer before the run starts, separated by commas.").Split(',');
+            StartupKeyPresses = GetSection("AvatarMovement", "StartupKeyPress", "", "Key presses which will be sent to the viewer before the run starts, separated by commas.").Split(',');
 
             TurnRate = Get("AvatarMovement", "TurnRate", .01, "How far the camera will turn each tick.");
             MoveRate = Get("AvatarMovement", "MoveRate", .03f, "How far the camera will move each tick.");
@@ -142,7 +143,7 @@ namespace Chimera.Experimental {
             Increment = Get("SettingsChanger", "Increment", .01f, "The amount to increment 'Value' for before the next run.");
             Max = Get("SettingsChanger", "Max", .2f, "The amount for value to reach before the test stops.");
             mValue = GetParam("SettingsChanger", "Value", .01f, "The current value to set 'Setting' to on this run. Will be incremented by 'Increment' after being set.");
-            SettingsChangerEnabled = Get("SettingsChanger", "Enabled", true, "Whether the settings changer pluging should be enabled. If false 'Setting' will not be changed.");            //Settings Loader            SettingsCollectionFile = GetFileSection("SettingsLoader", "File", null, "The file which contains a list of settings files to be launched. Each line is a file. The line specified by 'Index' will be supplied to the viewer as a command line parameter on startup. All files must be in the AppData/Roaming/Firestorm/user_settings/ folder.");            mIndex = GetParam("SettingsLoader", "Index", 0, "The index in the list of settings files to load for this run.");            SettingsLoaderEnabled = Get("SettingsLoader", "Enabled", true, "Whether the settings loader pluging should be enabled. If false viewer command line parameters will not be changed.");        }
+            SettingsChangerEnabled = Get("SettingsChanger", "Enabled", true, "Whether the settings changer pluging should be enabled. If false 'Setting' will not be changed.");            SelectDownPress = Get("SettingsChanger", "SelectDownPress", 0, "How many times to press 'down' to select the correct setting to change.");            //Settings Loader            SettingsCollectionFile = GetFileSection("SettingsLoader", "File", null, "The file which contains a list of settings files to be launched. Each line is a file. The line specified by 'Index' will be supplied to the viewer as a command line parameter on startup. All files must be in the AppData/Roaming/Firestorm/user_settings/ folder.");            mIndex = GetParam("SettingsLoader", "Index", 0, "The index in the list of settings files to load for this run.");            SettingsLoaderEnabled = Get("SettingsLoader", "Enabled", true, "Whether the settings loader pluging should be enabled. If false viewer command line parameters will not be changed.");        }
         internal string GetLogFileName() {
             return GetLogFileName(new CoreConfig().Frames[0]);
         }

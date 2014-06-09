@@ -24,6 +24,7 @@ namespace Chimera.Experimental.Plugins {
         private AvatarMovementControl mPanel;
         private Action mTickListener;
         private Form mForm;
+        private RecorderPlugin mRecorder;
 
         private List<KeyValuePair<string, Vector3>> mTargets = new List<KeyValuePair<string, Vector3>>();
         private KeyValuePair<string, Vector3> mTarget;
@@ -346,6 +347,12 @@ namespace Chimera.Experimental.Plugins {
 
                 Thread.Sleep(500);
 
+                if (mRecorder != null && mConfig.ProcessOnFinish)
+                    foreach (var frame in mCore.Frames) {
+                        mRecorder.LoadViewerLog(frame.Name);
+                        mRecorder.WriteCSV(Path.ChangeExtension(mConfig.GetLogFileName(frame.Name), "csv"));
+                    }
+
             }
             if (mConfig.AutoShutdown)
                 mForm.Invoke(new Action(() => mForm.Close()));
@@ -381,6 +388,8 @@ namespace Chimera.Experimental.Plugins {
             mMainController = mCore.GetPlugin<OpenSimController>();
             mMainController.ClientLoginComplete += new EventHandler(mMainController_CLientLoginComplete);
             mCore.ControlMode = mConfig.Mode;
+            if (mCore.HasPlugin<RecorderPlugin>())
+                mRecorder = mCore.GetPlugin<RecorderPlugin>();
 
             LoadTargets();
         }

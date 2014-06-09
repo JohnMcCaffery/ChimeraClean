@@ -300,7 +300,7 @@ namespace Chimera {
 
                 foreach (string frame in mConfig.Frames)
                     if (outputFactory != null)
-                        AddFrame(new Frame(frame, outputFactory.Create()));
+                        AddFrame(new Frame(frame, outputFactory.Create(frame)));
                     else
                         AddFrame(new Frame(frame));
 

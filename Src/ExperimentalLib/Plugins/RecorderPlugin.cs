@@ -194,9 +194,8 @@ namespace Chimera.OpenSim {
 
         public override void Close() {
             base.Close();
-            if (mConfig.ProcessOnFinish) {
+            if (mConfig.ProcessOnFinish && mServerStats.Count > 0) {
                 Logger.Warn("Writing out stats on close.");
-                LoadClientStats();
                 WriteCSV(GetCSVName());
             }
         }
@@ -268,10 +267,11 @@ namespace Chimera.OpenSim {
         }
 
         public DateTime LoadViewerLog(string file) {
+            mClientStats.Clear();
             Dictionary<string, List<float>> fpses = new Dictionary<string, List<float>>();
             DateTime ret = LoadViewerLog(file, 0);
-            if (mSessionID == UUID.Zero)
-                GetMostRecentSessionID();
+            //if (mSessionID == UUID.Zero)
+                //GetMostRecentSessionID();
             return ret;
         }
 

@@ -75,6 +75,7 @@ namespace Chimera.OpenSim {
         public OpenMetaverse.Vector3 Offset;
         public int StartStagger;
         public bool BlockOnViewerShutdown;
+        public string MasterFrame;
 
         public override string Group {
             get { return "SecondLifeViewer"; }
@@ -106,6 +107,7 @@ namespace Chimera.OpenSim {
             ViewerToggleHUDKey = GetStr("ViewerToggleHUDKey", "%^{F1}", "The key press that will toggle the HUD on and off in the viewer.");
             UseGrid = Get("UseGrid", false, "Whether to login using the --grid or --loginuri command line parameter to specify the login target.");
             DeltaScale = Get("DeltaScale", .25f, "How much to scale delta values by when using remote control.");
+            MasterFrame = GetStr("MasterFrame", "MainWindow", "The name of the frame which is to be the master controller.");
 
             GetLocalID = Get("GetLocalID", false, "Whether to check all ObjectUpdate packets until the local ID for the logged in agent is parsed. Required for requesting AvatarPosition and AvatarOrientation.");
 

@@ -13,8 +13,9 @@ namespace Chimera.OpenSim {
             mPluginController = plugins.FirstOrDefault(p => p is OpenSimController) as OpenSimController;
         }
 
-        public IOutput Create() {
-            if (mPluginController != null && !mPluginAssigned) {
+        public IOutput Create(string name) {
+            ViewerConfig cfg = new ViewerConfig();
+            if (name == cfg.MasterFrame && mPluginController != null && !mPluginAssigned) {
                 mPluginAssigned = true;
                 return mPluginController;
             }

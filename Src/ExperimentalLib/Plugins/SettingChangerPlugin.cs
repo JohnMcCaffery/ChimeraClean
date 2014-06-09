@@ -37,6 +37,10 @@ namespace Chimera.Experimental.Plugins {
             OSOut.ViewerController.SendString(mConfig.Setting);
             Thread.Sleep(500);
             OSOut.ViewerController.PressKey("{TAB}");
+            for (int i = 0; i < mConfig.SelectDownPress; i++) {
+                Thread.Sleep(500);
+                OSOut.ViewerController.PressKey("{DOWN}");
+            }
             Thread.Sleep(500);
             OSOut.ViewerController.PressKey("{TAB}");
             Thread.Sleep(500);
