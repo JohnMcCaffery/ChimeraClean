@@ -349,8 +349,9 @@ namespace Chimera.Experimental.Plugins {
 
                 if (mRecorder != null && mConfig.ProcessOnFinish)
                     foreach (var frame in mCore.Frames) {
-                        mRecorder.LoadViewerLog(frame.Name);
-                        mRecorder.WriteCSV(Path.ChangeExtension(mConfig.GetLogFileName(frame.Name), "csv"));
+                        string logFile = mConfig.GetLogFileName(frame.Name);
+                        mRecorder.LoadViewerLog(logFile);
+                        mRecorder.WriteCSV(Path.ChangeExtension(logFile, ".csv"));
                     }
 
             }
