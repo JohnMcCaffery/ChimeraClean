@@ -220,5 +220,15 @@ namespace Chimera.GUI.Forms {
         private void OverlayWindow_FormClosing(object sender, FormClosingEventArgs e) {
             mCont = false;
         }
+
+        private void OverlayWindow_KeyDown(object sender, KeyEventArgs e) {
+            if (mManager.Frame.Core != null)
+                mManager.Frame.Core.TriggerKeyboard(true, e);
+        }
+
+        private void OverlayWindow_KeyUp(object sender, KeyEventArgs e) {
+            if (mManager.Frame.Core != null)
+                mManager.Frame.Core.TriggerKeyboard(false, e);
+        }
     }
 }

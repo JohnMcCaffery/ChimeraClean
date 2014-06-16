@@ -59,6 +59,8 @@ namespace Chimera.GUI.Forms {
             this.drawPanel.Paint += new System.Windows.Forms.PaintEventHandler(this.drawPanel_Paint);
             this.drawPanel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.OverlayWindow_MouseDown);
             this.drawPanel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.OverlayWindow_MouseUp);
+            this.drawPanel.KeyDown += new System.Windows.Forms.KeyEventHandler(this.OverlayWindow_KeyDown);
+            this.drawPanel.KeyUp += new System.Windows.Forms.KeyEventHandler(this.OverlayWindow_KeyUp);
             // 
             // refreshTimer
             // 
@@ -75,6 +77,8 @@ namespace Chimera.GUI.Forms {
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.OverlayWindow_FormClosing);
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.OverlayWindow_MouseDown);
             this.MouseUp += new System.Windows.Forms.MouseEventHandler(this.OverlayWindow_MouseUp);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.OverlayWindow_KeyDown);
+            this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.OverlayWindow_KeyUp);
             ((System.ComponentModel.ISupportInitialize)(this.drawPanel)).EndInit();
             this.ResumeLayout(false);
 

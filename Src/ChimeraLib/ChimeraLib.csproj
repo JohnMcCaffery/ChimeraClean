@@ -26,7 +26,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>..\..\Bin\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -95,6 +95,7 @@
     <Compile Include="Config\ConfigParam.cs" />
     <Compile Include="Config\PluginConfig.cs" />
     <Compile Include="Config\ProjectorConfig.cs" />
+    <Compile Include="Config\ShutdownConfig.cs" />
     <Compile Include="GUI\Controls\StatisticsPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -168,6 +169,7 @@
     <Compile Include="Plugins\ConstrainedAxis.cs" />
     <Compile Include="Plugins\ProjectorPlugin.cs" />
     <Compile Include="Plugins\SelectablePlugin.cs" />
+    <Compile Include="Plugins\ShutdownPlugin.cs" />
     <Compile Include="Plugins\SplitAxis.cs" />
     <Compile Include="Interfaces\IAxis.cs" />
     <Compile Include="Interfaces\ITickListener.cs" />
