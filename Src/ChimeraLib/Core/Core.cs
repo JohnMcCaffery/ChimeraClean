@@ -215,6 +215,10 @@ namespace Chimera {
         /// When the view was last updated.
         /// </summary>
         private DateTime mLastUpdate;
+        /// <summary>
+        /// What exit code to exit with.
+        /// </summary>
+        private int mExitCode;
 
 
         /// <summary>
@@ -345,6 +349,14 @@ namespace Chimera {
 
         public bool Initialised {
             get { return mInitialised; }
+        }
+
+        /// <summary>
+        /// What exit code the application should exit with.
+        /// </summary>
+        public int ExitCode {
+            get { return mExitCode; }
+            set { mExitCode = value; }
         }
 
         /// <summary>

@@ -133,7 +133,7 @@ namespace Chimera.OpenSim {
             LoginLastName = GetFrame("LastName", null, "The last name to log the viewer in with.");
             LoginPassword = GetFrame("Password", null, "The password to log the viewer in with.");
             ProxyPort = GetFrame("ProxyPort", CURRENT_PORT++, "The port to run the proxy on.");
-            LoginGrid = GetFrame("ProxyGrid", ProxyPort.ToString(), "The name of the grid the proxy will appear as.");
+            LoginGrid = GetFrame("ProxyGrid", "Proxy:" + ProxyPort.ToString(), "The name of the grid the proxy will appear as.");
             AutoLoginClient = LoginFirstName != null && LoginLastName != null && LoginPassword != null;
 
             AutoStartProxy = GetFrame("AutoStartProxy", false, "Whether to automatically start the proxy when the system start.");

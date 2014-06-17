@@ -296,7 +296,7 @@ namespace Chimera.OpenSim {
         private string mArgs;
 
         public bool StartViewer() {
-            mArgs = mProxyController.LoginURI;
+            mArgs = mConfig.UseGrid ? "--grid " + mConfig.LoginGrid : mProxyController.LoginURI;
             if (mConfig.LoginFirstName != null && mConfig.LoginLastName != null && mConfig.LoginPassword != null)
                 mArgs += " --login " + mConfig.LoginFirstName + " " + mConfig.LoginLastName + " " + mConfig.LoginPassword;
             mArgs += " " + mConfig.ViewerArguments.Trim();
