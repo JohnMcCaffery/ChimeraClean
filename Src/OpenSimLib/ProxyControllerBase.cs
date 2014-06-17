@@ -50,7 +50,7 @@ namespace Chimera.OpenSim {
         public DateTime LastUpdatePacket {
             get { return mLastUpdatePacket; }
             set { mLastUpdatePacket = value; }
-        }
+        }
         public Vector3 Offset {
             get { return mOffset; }
             set {
@@ -173,8 +173,9 @@ namespace Chimera.OpenSim {
             string portArg = "--proxy-login-port=" + port;
             string listenIPArg = "--proxy-proxyAddress-facing-address=" + localAddress;
             string loginURIArg = "--proxy-remote-login-uri=" + loginURI;
-            string proxyCaps = "--proxy-caps=false";
-            string[] args = { portArg, listenIPArg, loginURIArg, proxyCaps };
+            string proxyCaps = "--proxy-caps=true";
+            string proxyEventQueue = "--proxy-event-queue-only=true";
+            string[] args = { portArg, listenIPArg, loginURIArg, proxyCaps, proxyEventQueue };
             mConfig = new GridProxyConfig("Routing God", "jm726@st-andrews.ac.uk", args);
             mLoginURI = " --loginuri http://" + localAddress + ":" + port;
 
