@@ -64,7 +64,12 @@ namespace Chimera.Experimental {
             get { return float.Parse(mValue.Value); }
             set { mValue.Value = value.ToString(); }
         }
-        public float Increment;
+        private ConfigParam mIncrement;
+        public float Increment {
+            get { return float.Parse(mIncrement.Value); }
+            set { mIncrement.Value = value.ToString(); }
+        }
+        public float IncrementMultiplier;
         public int SelectDownPress;
         public float Max;
         public string Setting;
@@ -140,7 +145,8 @@ namespace Chimera.Experimental {
 
             //Settings Changer
             Setting = GetSection("SettingsChanger", "Setting", null, "Which of the viewer's debug settings to change each launch.");
-            Increment = Get("SettingsChanger", "Increment", .01f, "The amount to increment 'Value' for before the next run.");
+            mIncrement = GetParam("SettingsChanger", "Increment", .01f, "The amount to increment 'Value' for before the next run.");
+            IncrementMultiplier = Get("SettingsChanger", "IncrementMultiplier", 1f, "How much to multiply the increment by after every run. Allows log scales. Leave at 1 for normal incrementing.");
             Max = Get("SettingsChanger", "Max", .2f, "The amount for value to reach before the test stops.");
             mValue = GetParam("SettingsChanger", "Value", .01f, "The current value to set 'Setting' to on this run. Will be incremented by 'Increment' after being set.");
             SettingsChangerEnabled = Get("SettingsChanger", "Enabled", true, "Whether the settings changer pluging should be enabled. If false 'Setting' will not be changed.");            SelectDownPress = Get("SettingsChanger", "SelectDownPress", 0, "How many times to press 'down' to select the correct setting to change.");            //Settings Loader            SettingsCollectionFile = GetFileSection("SettingsLoader", "File", null, "The file which contains a list of settings files to be launched. Each line is a file. The line specified by 'Index' will be supplied to the viewer as a command line parameter on startup. All files must be in the AppData/Roaming/Firestorm/user_settings/ folder.");            mIndex = GetParam("SettingsLoader", "Index", 0, "The index in the list of settings files to load for this run.");            SettingsLoaderEnabled = Get("SettingsLoader", "Enabled", true, "Whether the settings loader pluging should be enabled. If false viewer command line parameters will not be changed.");        }

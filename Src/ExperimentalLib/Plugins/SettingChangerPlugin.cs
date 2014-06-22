@@ -51,7 +51,7 @@ namespace Chimera.Experimental.Plugins {
             //Set the filename
             OSOut.ViewerController.SendString(mConfig.Value.ToString());
             Thread.Sleep(500);
-            Logger.Info("Set " + mConfig.Setting + " to " + mConfig.Value + ". Incrementing value by " + mConfig.Increment + ".");
+            Logger.Info("Set " + mConfig.Setting + " to " + mConfig.Value + ".");
 
             //Save filename and close window
             OSOut.ViewerController.PressKey("{ENTER}");
@@ -100,9 +100,10 @@ namespace Chimera.Experimental.Plugins {
         public void Close() {
             if (File.Exists(mConfig.GetLogFileName())) {
                 mConfig.Value += mConfig.Increment;
+                mConfig.Increment = mConfig.Increment * mConfig.IncrementMultiplier;
                 if (mConfig.Value <= mConfig.Max) {
                     mCore.ExitCode = mConfig.RepeatCode;
-                    Logger.Info(mConfig.Setting + " incremented to " + mConfig.Value + ". Exiting with RepeatCode (" + mConfig.RepeatCode + ").");
+                    Logger.Info(mConfig.Setting + " incremented to " + mConfig.Value + ". New increment: " + mConfig.Increment + ". Exiting with RepeatCode (" + mConfig.RepeatCode + ").");
                 } else 
                     Logger.Info("Finished incrementing " + mConfig.Setting + ". No exit code set.");
             } else {
