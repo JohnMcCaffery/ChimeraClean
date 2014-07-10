@@ -330,7 +330,7 @@ namespace Chimera.Flythrough.GUI {
             else
                 mPlugin.Speed = v / 100.0;
 
-            //speedLabel.Text = "Speed: " + mPlugin.Speed;
+            speedLabel.Text = "Speed: " + mPlugin.Speed;
         }
 
 #if DEBUG
