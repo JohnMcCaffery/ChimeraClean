@@ -306,14 +306,8 @@ namespace Chimera {
 
                 foreach (var plugin in mPlugins) {
                     plugin.Init(this);
+                    plugin.Enabled = mConfig.PluginEnabled(plugin);
                     Logger.Info("Loaded " + plugin.Name + ". " + (plugin.Enabled ? "Enabled" : "Disabled") + ".");
-                }
-
-                if (mConfig.SetPluginState) {
-                    foreach (var plugin in mPlugins) {
-                        plugin.Enabled = mConfig.PluginEnabled(plugin);
-                        Logger.Info(plugin.Name + " " + (plugin.Enabled ? "Enabled" : "Disabled") + ".");
-                    }
                 }
 
                 Thread tickThread = new Thread(TickMethod);

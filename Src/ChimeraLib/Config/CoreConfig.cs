@@ -39,7 +39,6 @@ namespace Chimera.Config {
         public float HeightmapDefault;
         public double OverlayOpacity;
         public string[] Frames;
-        public bool SetPluginState;
 
         public CoreConfig(params string[] args)
             : base("Main", args) {
@@ -73,14 +72,11 @@ namespace Chimera.Config {
             HeightmapDefault = Get("Heightmap", "HeightmapDefault", 0f, "The default heightmap height. Any square that does not have heightmap data set will revert to this.");
             Frames = GetStr("Frames", "MainWindow", "The name of all the windows to load, separated by commas.").Split(',');
 
-            SetPluginState = Get("SetPluginState", false, "Whether to automatically set plugins to be enabled or disabled based on this config file.");
-
-            if (SetPluginState)
-                Get("Plugins", "|PLUGIN|Enabled", true, "Set whether |PLUGIN| is enabled at start-up.");
+            Get("Plugins", "|PLUGIN|Enabled", true, "Set whether |PLUGIN| is enabled at start-up.");
         }
 
         internal bool PluginEnabled(ISystemPlugin plugin) {
-            return Get("Plugins", plugin.Name, true, "Set whether a plugin is enabled.");
+            return Get("Plugins", plugin.Name, plugin.Enabled, "Set whether a plugin is enabled.");
         }
     }
 }
