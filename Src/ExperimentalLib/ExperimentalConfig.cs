@@ -22,6 +22,13 @@ namespace Chimera.Experimental {
             set { mRunInfo.Value = value; }
         }
         */
+        /*
+        public string RunInfo {
+            get { return sRunInfo; }
+            set { sRunInfo = value; }
+        }
+        private static string sRunInfo;
+        */
         public string RunInfo;
         public bool IncludeTimestamp;
         public bool SaveResults;
@@ -34,6 +41,10 @@ namespace Chimera.Experimental {
         public string NodesFile;
         public string TargetsFile;
         public string MapFile;
+
+        public string UserSettingsFolder;
+        public string SettingsFile;
+        public string Region;
 
         public ControlMode Mode;
         public int StartWaitMS;
@@ -116,6 +127,10 @@ namespace Chimera.Experimental {
             NodesFile = GetFileSection("AvatarMovement", "NodesFile", "Experiments/Cathedral.xml", "The xml file where the nodes which are potential targets for navigating to are stored.");
             TargetsFile = GetFileSection("AvatarMovement", "TargetsFile", "Experiments/CathedralRoute.xml", "The xml file where the nodes which make up a route are stored.");
             MapFile = GetFileSection("AvatarMovement", "MapFile", null, "The file where the map image one which the route is to be drawn on is stored.");
+
+            UserSettingsFolder = GetFolderSection("AvatarMovement", "UserSettingsFolder", "C:/Users/johnmcc/AppData/Roaming/Firestorm/user_settings/", "The folder where the settings file will be loaded from.");
+            SettingsFile = GetFileSection("AvatarMovement", "SettingsFile", null, "The file where the configuration of the client is to be loaded from.");
+            Region = GetSection("AvatarMovement", "Region", "Cathedral 1", "The region to connect to.");
 
             Mode = GetEnum<ControlMode>("AvatarMovement", "Mode", ControlMode.Delta, "What mode the system should be in for the run.", LogManager.GetLogger("Experiments"));
             StartWaitMS = Get("AvatarMovement", "StartWaitMS", 0, "How many MS to wait before starting the loop.");
@@ -263,6 +278,15 @@ namespace Chimera.Experimental {
         public bool AutoLogin {
             get;
             set;
+        }
+
+        private static ExperimentalConfig sInstance;
+        public static ExperimentalConfig Instance {
+            get {
+                if (sInstance == null)
+                    sInstance = new ExperimentalConfig();
+                return sInstance;
+            }
         }
     }
 }

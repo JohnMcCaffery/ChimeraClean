@@ -42,15 +42,14 @@ using System.Net.Sockets;
 using System.Data.SQLite;
 
 namespace Chimera.OpenSim {
-    public class RecorderPlugin : OpensimBotPlugin {
+    public class ServerRecorderPlugin : OpensimBotPlugin {
         const string LOG_TIMESTAMP_FORMAT = "yyyy-MM-ddTHH:mm:ssZ";
         private ILog Logger = LogManager.GetLogger("StatsRecorder");
 
-        private RecorderControl mPanel;
+        private ServerRecorderControl mPanel;
         private AvatarMovementPlugin mMovementPlugin;
         private ExperimentalConfig mConfig;
-        private List<ServerStats> mServerStats = new List<ServerStats>();
-        private List<ClientStats> mClientStats = new List<ClientStats>();
+        private List<ServerStats> mStats = new List<ServerStats>();
         private ServerStats mLastStat;
         private Action mTickListener;
         private bool mRecording;
@@ -59,11 +58,7 @@ namespace Chimera.OpenSim {
         private int mLastServerStatSec = -1;
 
         private ServerStats NearestServerStat(DateTime timestamp) {
-            return mServerStats.FirstOrDefault(s => s.TimeStamp > timestamp);
-        }
-
-        private ClientStats NearestClientStat(DateTime timestamp) {
-            return mClientStats.FirstOrDefault(c => c.TimeStamp > timestamp);
+            return mStats.FirstOrDefault(s => s.TimeStamp > timestamp);
         }
 
         public ServerStats this[DateTime timestamp] {
@@ -71,74 +66,14 @@ namespace Chimera.OpenSim {
         }
 
         public string this[DateTime ts, string key] {
-            get { 
-                if (key == "CFPS" || key == "Polygons" || key == "Ping")
-                    return NearestClientStat(ts).Get(key);
-                else
-                    return NearestServerStat(ts).Get(key);
-            }
+            get { return NearestServerStat(ts).Get(key); }
         }
         internal bool HasStat(DateTime ts, string key) {
-            if (key == "CFPS" || key == "Polygons" || key == "Ping")
-                return mClientStats.Last().TimeStamp > ts;
-            else
-                return mServerStats.Last().TimeStamp > ts;
+            return mStats.Last().TimeStamp > ts;
         }
 
-        public IEnumerable<String> CombinedStats {
-            get {
-                int count = 1;
-                if (mServerStats.Count != 0 && mClientStats.Count != 0) {
-                    DateTime start = mConfig.Timestamp;
-
-                    DateTime cEnd = mClientStats.Last().TimeStamp;
-                    DateTime sEnd = mServerStats.Last().TimeStamp;
-                    DateTime end = cEnd < sEnd ? cEnd : sEnd;
-
-                    IEnumerator<ServerStats> server =
-                            mServerStats.
-                            SkipWhile(s => s.TimeStamp < start).
-                            TakeWhile(s => s.TimeStamp <= end).
-                            GetEnumerator();
-
-                    IEnumerator<ClientStats> client =
-                            mClientStats.
-                            SkipWhile(c => c.TimeStamp < start).
-                            TakeWhile(c => c.TimeStamp <= end).
-                            GetEnumerator();
-
-                    List<string> lines = new List<string>();
-
-                    bool moreClients = server.MoveNext();
-                    bool moreServers = client.MoveNext();
-
-                    while (moreClients || moreServers) {
-                        while (moreClients && moreServers && server.Current.TimeStamp == client.Current.TimeStamp) {
-                            lines.Add(CombineStats(mConfig, server.Current, client.Current, count++));
-                            moreClients = client.MoveNext();
-                            moreServers = server.MoveNext();
-                        }
-
-                        while (moreClients && (!moreServers || server.Current.TimeStamp > client.Current.TimeStamp)) {
-                            lines.Add(client.Current.ToString(mConfig, count++));
-                            moreClients = client.MoveNext();
-                        }
-
-                        while (moreServers && (!moreClients || server.Current.TimeStamp < client.Current.TimeStamp)) {
-                            lines.Add(server.Current.ToString(mConfig, count++));
-                            moreServers = server.MoveNext();
-                        }
-                    }
-
-                    return lines;
-
-                } else if (mServerStats.Count > 0)
-                    return mServerStats.SkipWhile(s => s.TimeStamp < mConfig.Timestamp).Select(s => s.TimeStamp.ToString(s.ToString(mConfig, count++)));
-                else if (mClientStats.Count > 0)
-                    return mClientStats.SkipWhile(c => c.TimeStamp < mConfig.Timestamp).Select(c => c.TimeStamp.ToString(c.ToString(mConfig, count++)));
-
-                return new string[0];
-            }
+        public IEnumerable<string> Stats {
+            get { return mStats.Select(s => s.ToString()); }
         }
 
         public ServerStats LastStat {
@@ -166,7 +101,7 @@ namespace Chimera.OpenSim {
         public override Control ControlPanel {
             get {
                 if (mPanel == null)
-                    mPanel = new RecorderControl(this);
+                    mPanel = new ServerRecorderControl(this);
                 return mPanel;
             }
         }
@@ -197,14 +132,14 @@ namespace Chimera.OpenSim {
 
         public override void Close() {
             base.Close();
-            if (mConfig.ProcessOnFinish && mServerStats.Count > 0) {
+            if (mConfig.ProcessOnFinish && mStats.Count > 0) {
                 Logger.Warn("Writing out stats on close.");
                 WriteCSV(GetCSVName());
             }
         }
 
         public void WriteCSV(string file) {
-            if (mServerStats.Count <= 0 && mClientStats.Count <= 0) {
+            if (mStats.Count <= 0) {
                 Logger.Warn("Not writing stats. No client or server stats in memory to write. Exiting with code " + mConfig.RepeatCode + ".");
                 Core.ExitCode = mConfig.RepeatCode;
                 return;
@@ -226,13 +161,13 @@ namespace Chimera.OpenSim {
 
 
             File.AppendAllText(file, headers);
-            File.AppendAllLines(file, CombinedStats);
+            File.AppendAllLines(file, Stats);
 
             Logger.Info("Written statistics to: " + file);
         }
 
         public DateTime LoadCSV(string file) {
-            mServerStats.Clear();
+            mStats.Clear();
 
             bool skip = true;
             foreach (var line in File.ReadAllLines(file)) {
@@ -244,10 +179,7 @@ namespace Chimera.OpenSim {
                 }
 
                 ServerStats s = new ServerStats(line, mConfig);
-                mServerStats.Add(s);
-
-                ClientStats c = new ClientStats(line, mConfig);
-                mClientStats.Add(c);
+                mStats.Add(s);
             }
 
             string[] splitFilename = Path.GetFileNameWithoutExtension(file).Split(new char[] { '-' }, 2);
@@ -255,67 +187,6 @@ namespace Chimera.OpenSim {
             DateTime ret = DateTime.ParseExact(splitFilename[1], mConfig.TimestampFormat, new DateTimeFormatInfo());
 
             Logger.Info("Loaded pre recorded statistics from: " + file + ".");
-
-            return ret;
-        }
-
-        public void LoadClientStats() {
-            Dictionary<string, List<float>> fpses = new Dictionary<string, List<float>>();
-
-            string startTS = mConfig.Timestamp.ToString(LOG_TIMESTAMP_FORMAT);
-            int i = 0;
-            foreach (var file in Core.Frames.Select(f => mConfig.GetLogFileName(f.Name))) {
-                LoadViewerLog(file, i++);
-            }
-        }
-
-        public DateTime LoadViewerLog(string file) {
-            mClientStats.Clear();
-            Dictionary<string, List<float>> fpses = new Dictionary<string, List<float>>();
-            DateTime ret = LoadViewerLog(file, 0);
-            //if (mSessionID == UUID.Zero)
-                //GetMostRecentSessionID();
-            return ret;
-        }
-
-        public DateTime LoadViewerLog(string file, int frame) {            if (!File.Exists(file)) {
-                Logger.Warn("Unable to load viewer log from '" + file + "'. File does not exist.");
-                return DateTime.Now;
-            }
-            string[] lines = null;
-            int wait = 500;
-            bool retSet = false;
-            DateTime ret = DateTime.Now;
-
-            while (lines == null) {
-                try {
-                    lines = File.ReadAllLines(file);
-                } catch (IOException e) {
-                    if (wait > 60000)
-                        return ret;
-                    Logger.Debug("Problem loading log file. Waiting " + wait + "MS then trying again.");
-                    //Logger.Debug("Problem loading log file. Waiting " + wait + "MS then trying again.", e);
-                    Thread.Sleep(wait);
-                    wait = (int)(wait * 1.5);
-                }
-            }
-
-            int lastSec = -1;
-            foreach (var line in lines.Where(l => l.Contains("FPS") && l.Contains("POLYGONS") && l.Contains("PING"))) {
-                DateTime ts = DateTime.ParseExact(line.Split(' ')[0], LOG_TIMESTAMP_FORMAT, new DateTimeFormatInfo());
-                string time = ts.ToString(mConfig.TimestampFormat);
-
-                if (!retSet) {
-                    retSet = true;
-                    ret = ts;
-                } else if (mConfig.OneSecMininum && lastSec == ts.Second)
-                    continue;
-
-                mClientStats.Add(new ClientStats(line, mConfig, ts));
-                lastSec = ts.Second;
-            }
-
-            Logger.Info("Loaded viewer log file from: " + file + ".");
 
             return ret;
         }
@@ -438,52 +309,11 @@ namespace Chimera.OpenSim {
         void Core_Tick() {
             mRecording = true;
             mLastStat = new ServerStats(Sim.Stats, Core.Frames.Count(), mConfig);
-            lock (mServerStats) {
+            lock (mStats) {
                 if (!mConfig.OneSecMininum || mLastServerStatSec != mLastStat.TimeStamp.Second) {
-                    mServerStats.Add(mLastStat);
+                    mStats.Add(mLastStat);
                     mLastServerStatSec = mLastStat.TimeStamp.Second;
                 }
-            }
-        }
-
-        public static string CombineStats(ExperimentalConfig config, ServerStats server, ClientStats client, int count) {
-            DateTime ts = server.TimeStamp;
-            string line = client.TimeStamp.ToString(config.TimestampFormat) + ",";
-            line += (config.Timestamp - ts).TotalMilliseconds + ",";
-            line += count + ",";
-
-            foreach (var key in config.OutputKeys) {
-                switch (key.ToUpper()) {
-                    case "CFPS": line += client.CFPS.Aggregate("", (s, v) => s + v + ",", f => f); break;
-                    case "POLYGONS": line += client.Polys.Aggregate("", (s, v) => s + v + ",", f => f); break;
-                    case "PING": line += client.Ping.Aggregate("", (s, v) => s + v + ",", f => f); break;
-                    case "FT": line += server.FrameTime.ToString() + ","; break;
-                    case "SFPS": line += server.SFPS.ToString() + ","; break;
-                }
-            }
-
-            return line + "," + ((server.TimeStamp - client.TimeStamp).TotalMilliseconds);
-        }
-        public class Stats {
-            public readonly DateTime TimeStamp;
-            protected readonly ExperimentalConfig mConfig;
-
-            public Stats(DateTime timestamp, ExperimentalConfig config) {
-                mConfig = config;
-
-                TimeStamp = timestamp;
-            }
-
-            public Stats(string line, ExperimentalConfig config) {
-                string[] s = line.Split(',');
-                int frames = new CoreConfig().Frames.Length;
-
-                mConfig = config;
-                TimeStamp = DateTime.ParseExact(line.Split(',')[0], mConfig.TimestampFormat, new DateTimeFormatInfo());
-            }
-
-            public string ToString(int count) {
-                return TimeStamp.ToString(mConfig.TimestampFormat) + "," + (TimeStamp - mConfig.Timestamp).TotalMilliseconds + "," + count + ",";
             }
         }
 
@@ -587,72 +417,6 @@ namespace Chimera.OpenSim {
                 string line = base.ToString(count);
 
                 foreach (var key in config.OutputKeys)
-                    line += Get(key) + ",";
-
-                return line.TrimEnd(',');
-            }
-        }
-
-        public class ClientStats : Stats {
-            public float[] CFPS;
-            public float[] Polys;
-            public float[] Ping;
-
-
-            public string Get(string key) {
-                switch (key.ToUpper()) {
-                    case "CFPS": return CFPS.Aggregate("", (s, v) => s + v + ",", f => f.TrimEnd(','));
-                    case "POLYGONS": return Polys.Aggregate("", (s, v) => s + v + ",", f => f.TrimEnd(','));
-                    case "PING": return Ping.Aggregate("", (s, v) => s + v + ",", f => f.TrimEnd(','));
-                }
-                return "-";
-            }
-
-            public ClientStats(string line, ExperimentalConfig config) : base (line, config) {
-                string[] s = line.Split(',');
-                int frames = new CoreConfig().Frames.Length;
-
-                CFPS = new float[frames];
-                Polys = new float[frames];
-                Ping = new float[frames];
-
-                for (int i = 0; i < mConfig.OutputKeys.Length; i++) {
-                    switch (mConfig.OutputKeys[i]) {
-                        case "CFPS": CFPS = s.Skip(i + 2).Take(frames).Select(cfps => cfps != "-" ? float.Parse(cfps) : 0f).ToArray(); i += frames-1; break;
-                        case "Polygons": Polys = s.Skip(i + 2).Take(frames).Select(polys => polys != "-" ? float.Parse(polys) : 0f).ToArray(); i += frames-1; break;
-                        case "Ping": Polys = s.Skip(i + 2).Take(frames).Select(ping => ping != "-" ? float.Parse(ping) : 0f).ToArray(); i += frames-1; break;
-                    }
-                }
-            }
-
-
-            public ClientStats(string line, ExperimentalConfig config, DateTime timestamp)
-                : base(timestamp, config) {
-                string[] s = line.Split(',');
-                int frames = new CoreConfig().Frames.Length;
-
-                CFPS = new float[frames];
-                Polys = new float[frames];
-                Ping = new float[frames];
-
-                AddLine(line, 0);
-            }
-
-            public void AddLine(string line, int frame) {                string[] s = line.Split(' ');
-
-                CFPS[frame] = float.Parse(s[6]);
-                Polys[frame] = float.Parse(s[10]);
-                Ping[frame] = float.Parse(s[8]);
-            }
-
-            public override string ToString() {
-                return TimeStamp.ToString(mConfig.TimestampFormat);
-            }
-
-            public string ToString(ExperimentalConfig config, int count) {
-                string line = base.ToString(count);
-
-                foreach (var key in mConfig.OutputKeys)
                     line += Get(key) + ",";
 
                 return line.TrimEnd(',');

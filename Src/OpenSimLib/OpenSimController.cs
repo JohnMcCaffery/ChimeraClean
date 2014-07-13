@@ -37,7 +37,7 @@ namespace Chimera.OpenSim {
         private static Form sForm = null;
 
         private readonly ILog ThisLogger = LogManager.GetLogger("OpenSim");
-        private bool mEnabled;
+        private bool mEnabled = true;
         private bool mClosingViewer;
         private bool mShuttingDown;
         private ViewerConfig mConfig;

@@ -41,7 +41,7 @@ namespace Chimera.OpenSim {
         private Core mCore;
         private OpensimBotPanel mPanel;
         private bool mLoggedIn;
-        private bool mEnabled;
+        private bool mEnabled = true;
         private bool mLoggingOut;
         private Point mStartLocation;
 

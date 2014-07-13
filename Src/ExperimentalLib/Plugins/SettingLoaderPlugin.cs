@@ -17,35 +17,56 @@ namespace Chimera.Experimental.Plugins {
         private ExperimentalConfig mConfig;
         private SettingLoaderControl mControl;
         private string[] mFiles;
+        private string mFile;
 
         public void Init(Core core) {
             mCore = core;
-            mConfig = core.HasPlugin<RecorderPlugin>() ? core.GetPlugin<RecorderPlugin>().Config as ExperimentalConfig : new ExperimentalConfig();
+            mConfig = ExperimentalConfig.Instance;
 
             mFiles = File.ReadAllLines(mConfig.SettingsCollectionFile);
 
             if (mConfig.SettingsLoaderEnabled) {
                 if (mConfig.Index < mFiles.Length) {
-                    mConfig.RunInfo = mFiles[mConfig.Index];
-
                     foreach (var output in core.Frames.Select(f => f.Output)) {
-                        string file = "settings-" + mFiles[mConfig.Index] + ".xml";
-                        ViewerConfig viewerConfig = (output as OpenSimController).Config as ViewerConfig;
-                        if (viewerConfig.ViewerArguments.Contains("--settings")) {
-                            viewerConfig.ViewerArguments.Replace(@"--settings .*xml", "--settings " + file);
-                            viewerConfig.ViewerArguments = Regex.Replace(viewerConfig.ViewerArguments, @"--settings .*xml", "--settings " + file);
-                        } else
-                            viewerConfig.ViewerArguments += " --settings " + file;
+                        mFile = "settings-" + mFiles[mConfig.Index] + ".xml";
+                        string file = Path.Combine(Path.GetDirectoryName(mConfig.SettingsCollectionFile), mFile);
+                        ReplaceSettingsFile((output as OpenSimController).Config as ViewerConfig, file, mConfig, Logger);
                     }
 
                     Logger.Info("Settings loader loading settings file: settings-" + mConfig.RunInfo + ".xml.");
+
+                    new Thread(() => {
+                        Thread.Sleep(200);
+                        mConfig.RunInfo = mFiles[mConfig.Index];
+                    }).Start();
+
                 }
             }
+        }
+
+        public static void ReplaceSettingsFile(ViewerConfig viewerConfig, string file, ExperimentalConfig config, ILog Logger) {
+            string filename = Path.GetFileName(file);
+            try {
+                File.Copy(file, Path.Combine(config.UserSettingsFolder, filename), true);
+                Logger.Info("Copied " + file + " to " + config.UserSettingsFolder + ".");
+            } catch (IOException e) {
+                Logger.Fatal("Unable to copy settings file from stored directory (" + Path.GetDirectoryName(config.SettingsFile) + ") to user settings folder (" + config.UserSettingsFolder + ").", e);
+                Environment.Exit(-1);
+            }
+
+            if (viewerConfig.ViewerArguments.Contains("--settings")) {
+                viewerConfig.ViewerArguments.Replace(@"--settings .*xml", "--settings " + filename);
+                //viewerConfig.ViewerArguments = Regex.Replace(viewerConfig.ViewerArguments, @"--settings .*xml", "--settings " + filename);
+            } else
+                viewerConfig.ViewerArguments += " --settings " + filename;
         }
 
         public void SetForm(System.Windows.Forms.Form form) { }
 
         public event Action<IPlugin, bool> EnabledChanged;
+        public string Setting {
+            get { return mFile; }
+        }
 
         public Control ControlPanel {
             get {
@@ -56,10 +77,10 @@ namespace Chimera.Experimental.Plugins {
         }
 
         public bool Enabled {
-            get { return mConfig.SettingsChangerEnabled; }
+            get { return mConfig.SettingsLoaderEnabled; }
             set {
-                if (mConfig.SettingsChangerEnabled != value) {
-                    mConfig.SettingsChangerEnabled = value;
+                if (mConfig.SettingsLoaderEnabled != value) {
+                    mConfig.SettingsLoaderEnabled = value;
                     if (EnabledChanged != null)
                         EnabledChanged(this, value);
                 }

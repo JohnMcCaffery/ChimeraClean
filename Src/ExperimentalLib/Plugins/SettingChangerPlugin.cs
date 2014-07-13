@@ -22,11 +22,16 @@ namespace Chimera.Experimental.Plugins {
         public void Init(Core core) {
             Logger = LogManager.GetLogger("SettingsChanger");
             mCore = core;
-            mConfig = mCore.HasPlugin<RecorderPlugin>() ? mCore.GetPlugin<RecorderPlugin>().Config as ExperimentalConfig : new ExperimentalConfig();
+            mConfig = ExperimentalConfig.Instance;
+            //mConfig = mCore.HasPlugin<ClientRecorderPlugin>() ? mCore.GetPlugin<ClientRecorderPlugin>().Config as ExperimentalConfig : new ExperimentalConfig();
             if (mConfig.SettingsChangerEnabled && mConfig.Setting != null) {
-                mConfig.RunInfo += (mConfig.RunInfo.Length == 0 ? "" : "-") + mConfig.Value;
                 OSOut = (core.Frames[0].Output as OpenSimController);
                 OSOut.ClientLoginComplete += new EventHandler(SettingChangerPlugin_ClientLoginComplete);
+
+                new Thread(() => {
+                    Thread.Sleep(200);
+                    mConfig.RunInfo += (mConfig.RunInfo.Length == 0 ? "" : "-") + mConfig.Value;
+                }).Start();
             }
         }
 
@@ -98,17 +103,19 @@ namespace Chimera.Experimental.Plugins {
         }
 
         public void Close() {
-            if (File.Exists(mConfig.GetLogFileName())) {
-                mConfig.Value += mConfig.Increment;
-                mConfig.Increment = mConfig.Increment * mConfig.IncrementMultiplier;
-                if (mConfig.Value <= mConfig.Max) {
+            if (mConfig.SettingsChangerEnabled) {
+                if (File.Exists(mConfig.GetLogFileName())) {
+                    mConfig.Value += mConfig.Increment;
+                    mConfig.Increment = mConfig.Increment * mConfig.IncrementMultiplier;
+                    if (mConfig.Value <= mConfig.Max) {
+                        mCore.ExitCode = mConfig.RepeatCode;
+                        Logger.Info(mConfig.Setting + " incremented to " + mConfig.Value + ". New increment: " + mConfig.Increment + ". Exiting with RepeatCode (" + mConfig.RepeatCode + ").");
+                    } else
+                        Logger.Info("Finished incrementing " + mConfig.Setting + ". No exit code set.");
+                } else {
+                    Logger.Info("No log file found after " + mConfig.RunInfo + " run. " + mConfig.Setting + " not incremented. Exiting with RepeatCode (" + mConfig.RepeatCode + ").");
                     mCore.ExitCode = mConfig.RepeatCode;
-                    Logger.Info(mConfig.Setting + " incremented to " + mConfig.Value + ". New increment: " + mConfig.Increment + ". Exiting with RepeatCode (" + mConfig.RepeatCode + ").");
-                } else 
-                    Logger.Info("Finished incrementing " + mConfig.Setting + ". No exit code set.");
-            } else {
-                Logger.Info("No log file found after " + mConfig.RunInfo + " run. " + mConfig.Setting + " not incremented. Exiting with RepeatCode (" + mConfig.RepeatCode + ").");
-                mCore.ExitCode = mConfig.RepeatCode;
+                }
             }
         }
 

@@ -533,7 +533,7 @@ namespace Chimera.Util {
                     SetForegroundWindow(process.MainWindowHandle);
                 Thread.Sleep(100);
                 SendKeys.SendWait((ctrl ? "^" : "") + (alt ? "%" : "") + (shift ? "+" : "") + key);
-                Console.WriteLine("Sent: " + key);
+                //Console.WriteLine("Sent: " + key);
                 //SetForegroundWindow(foreground.MainWindowHandle);
             }
         }
@@ -551,10 +551,10 @@ namespace Chimera.Util {
                 }
                 foreach (var key in str) {
                     SendKeys.SendWait(key + "");
-                    Console.Write(key);
+                    //Console.Write(key);
                 }
 
-                Console.WriteLine("\nSent: " + str);
+                //Console.WriteLine("\nSent: " + str);
                 //SetForegroundWindow(foreground.MainWindowHandle);
             }
         }

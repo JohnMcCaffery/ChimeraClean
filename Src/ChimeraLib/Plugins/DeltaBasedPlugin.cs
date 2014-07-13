@@ -38,7 +38,7 @@ namespace Chimera.Plugins {
         private bool mEnableZ = true;
         private bool mEnablePitch = true;
         private bool mEnableYaw = true;
-        private bool mEnabled;
+        private bool mEnabled = true;
 
         public Action<DeltaBasedPlugin> Change;
 

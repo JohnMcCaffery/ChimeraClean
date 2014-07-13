@@ -17,14 +17,14 @@ using System.Drawing;
 namespace Chimera.Experimental.Plugins {
     public class AvatarMovementPlugin : XmlLoader, ISystemPlugin {
         private ILog Logger = LogManager.GetLogger("AvatarMovementPlugin");
-        private bool mEnabled;
+        private bool mEnabled = true;
         private OpenSimController mMainController;
         private Core mCore;
-        private ExperimentalConfig mConfig = new ExperimentalConfig();
+        private ExperimentalConfig mConfig = ExperimentalConfig.Instance;
         private AvatarMovementControl mPanel;
         private Action mTickListener;
         private Form mForm;
-        private RecorderPlugin mRecorder;
+        private ClientRecorderPlugin mRecorder;
 
         private List<KeyValuePair<string, Vector3>> mTargets = new List<KeyValuePair<string, Vector3>>();
         private KeyValuePair<string, Vector3> mTarget;
@@ -342,18 +342,40 @@ namespace Chimera.Experimental.Plugins {
 
                 Thread.Sleep(1000);
 
-                foreach (var controller in mCore.Frames.Select(f => f.Output as OpenSimController))
+                string ids = "";
+
+                foreach (var controller in mCore.Frames.Select(f => f.Output as OpenSimController)) {
+                    ids += "," + controller.ProxyController.SessionID;
                     controller.Stop();
+                }
 
                 Thread.Sleep(500);
 
-                if (mRecorder != null && mConfig.ProcessOnFinish)
+                if (mRecorder != null && mConfig.ProcessOnFinish) {
                     foreach (var frame in mCore.Frames) {
-                        string logFile = mConfig.GetLogFileName(frame.Name);
-                        mRecorder.LoadViewerLog(logFile);
-                        mRecorder.WriteCSV(Path.ChangeExtension(logFile, ".csv"));
+                        string viewerLogFile = mConfig.GetLogFileName(frame.Name);
+                        mRecorder.LoadViewerLog(viewerLogFile);
+                        mRecorder.WriteCSV(Path.ChangeExtension(viewerLogFile, ".csv"));
                     }
+                }
 
+                string logFile = Path.Combine(Path.GetDirectoryName(mConfig.GetLogFileName()), "Runs.csv");
+                if (!File.Exists(logFile)) 
+                    File.AppendAllText(logFile, "Run,Region,Start,Finish,Mode,Settings File,Settings Loader Plugin,SettingsChangerPlugin" + Environment.NewLine);
+
+                File.AppendAllText(logFile, mConfig.RunInfo + ",");
+                File.AppendAllText(logFile, mConfig.Region + ",");
+                File.AppendAllText(logFile, mConfig.Timestamp.ToString() + ",");
+                File.AppendAllText(logFile, DateTime.Now + ",");
+                File.AppendAllText(logFile, mConfig.Mode + ",");
+                if (mConfig.SettingsLoaderEnabled && mCore.HasPlugin<SettingLoaderPlugin>())
+                    File.AppendAllText(logFile, mCore.GetPlugin<SettingLoaderPlugin>().Setting + ",");
+                else
+                    File.AppendAllText(logFile, Path.GetFileName(mConfig.SettingsFile) + ",");
+                File.AppendAllText(logFile, (mConfig.SettingsLoaderEnabled ? "Enabled" : "Disabled") + ",");
+                File.AppendAllText(logFile, (mConfig.SettingsChangerEnabled ? "Enabled" : "Disabled") + ids);
+                
+                File.AppendAllText(logFile, Environment.NewLine);
             }
             if (mConfig.AutoShutdown)
                 mForm.Invoke(new Action(() => mForm.Close()));
@@ -389,9 +411,15 @@ namespace Chimera.Experimental.Plugins {
             mMainController = mCore.GetPlugin<OpenSimController>();
             mMainController.ClientLoginComplete += new EventHandler(mMainController_CLientLoginComplete);
             mCore.ControlMode = mConfig.Mode;
-            if (mCore.HasPlugin<RecorderPlugin>())
-                mRecorder = mCore.GetPlugin<RecorderPlugin>();
+            if (mCore.HasPlugin<ClientRecorderPlugin>())
+                mRecorder = mCore.GetPlugin<ClientRecorderPlugin>();
 
+            foreach (var frame in core.Frames) {
+                ViewerConfig config = (frame.Output as OpenSimController).Config as ViewerConfig;
+                if (!mConfig.SettingsLoaderEnabled || !mCore.HasPlugin<SettingLoaderPlugin>())
+                    SettingLoaderPlugin.ReplaceSettingsFile(config, mConfig.SettingsFile, mConfig, Logger);
+                config.ViewerArguments += " --set LoginLocation \"" + mConfig.Region + "\"";
+            }
             LoadTargets();
         }
 

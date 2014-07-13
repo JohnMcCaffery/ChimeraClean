@@ -106,7 +106,7 @@ namespace Chimera.Experimental.Plugins {
             mCore.CameraUpdated += new Action<Core, CameraUpdateEventArgs>(mCore_CameraUpdated);
             mTickListener = new Action(mCore_Tick);
 
-            ExperimentalConfig cfg = new ExperimentalConfig();
+            ExperimentalConfig cfg = ExperimentalConfig.Instance;
             if (cfg.ExperimentFile != null && File.Exists(cfg.ExperimentFile))
                 Load(cfg.ExperimentFile);
             else {
