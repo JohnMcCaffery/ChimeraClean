@@ -351,17 +351,19 @@ namespace Chimera.Experimental.Plugins {
 
                 Thread.Sleep(500);
 
+                bool success = false;
+
                 if (mRecorder != null && mConfig.ProcessOnFinish) {
                     foreach (var frame in mCore.Frames) {
                         string viewerLogFile = mConfig.GetLogFileName(frame.Name);
-                        mRecorder.LoadViewerLog(viewerLogFile);
+                        success = mRecorder.LoadViewerLog(viewerLogFile);
                         mRecorder.WriteCSV(Path.ChangeExtension(viewerLogFile, ".csv"));
                     }
                 }
 
                 string logFile = Path.Combine(Path.GetDirectoryName(mConfig.GetLogFileName()), "Runs.csv");
                 if (!File.Exists(logFile)) 
-                    File.AppendAllText(logFile, "Run,Region,Start,Finish,Mode,Settings File,Settings Loader Plugin,SettingsChangerPlugin" + Environment.NewLine);
+                    File.AppendAllText(logFile, "Run,Region,Start,Finish,Mode,Settings File,Settings Loader Plugin,SettingsChangerPlugin,Log Loaded,UUID" + Environment.NewLine);
 
                 File.AppendAllText(logFile, mConfig.RunInfo + ",");
                 File.AppendAllText(logFile, mConfig.Region + ",");
@@ -373,7 +375,8 @@ namespace Chimera.Experimental.Plugins {
                 else
                     File.AppendAllText(logFile, Path.GetFileName(mConfig.SettingsFile) + ",");
                 File.AppendAllText(logFile, (mConfig.SettingsLoaderEnabled ? "Enabled" : "Disabled") + ",");
-                File.AppendAllText(logFile, (mConfig.SettingsChangerEnabled ? "Enabled" : "Disabled") + ids);
+                File.AppendAllText(logFile, (mConfig.SettingsChangerEnabled ? "Enabled" : "Disabled") + ",");
+                File.AppendAllText(logFile, (mConfig.SettingsChangerEnabled ? "True" : "False") + ids);
                 
                 File.AppendAllText(logFile, Environment.NewLine);
             }

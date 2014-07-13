@@ -96,9 +96,9 @@ namespace Chimera.OpenSim {
             headers += ids;
             headers += Environment.NewLine;
 
-
+            int i = 1;
             File.AppendAllText(file, headers);
-            File.AppendAllLines(file, mStats.Select(s => s.ToString()));
+            File.AppendAllLines(file, mStats.Select(s => s.ToString(mConfig, (i++))));
 
             Logger.Info("Written statistics to: " + file);
         }
@@ -138,30 +138,26 @@ namespace Chimera.OpenSim {
             }
         }
 
-        public DateTime LoadViewerLog(string file) {
+        public bool LoadViewerLog(string file) {
             mStats.Clear();
             Dictionary<string, List<float>> fpses = new Dictionary<string, List<float>>();
-            DateTime ret = LoadViewerLog(file, 0);
-            //if (mSessionID == UUID.Zero)
-                //GetMostRecentSessionID();
-            return ret;
+            return LoadViewerLog(file, 0);
         }
 
-        public DateTime LoadViewerLog(string file, int frame) {            if (!File.Exists(file)) {
+        public bool LoadViewerLog(string file, int frame) {            if (!File.Exists(file)) {
                 Logger.Warn("Unable to load viewer log from '" + file + "'. File does not exist.");
-                return DateTime.Now;
+                return false;
             }
             string[] lines = null;
             int wait = 500;
             bool retSet = false;
-            DateTime ret = DateTime.Now;
 
             while (lines == null) {
                 try {
                     lines = File.ReadAllLines(file);
                 } catch (IOException e) {
                     if (wait > 60000)
-                        return ret;
+                        return false;
                     Logger.Debug("Problem loading log file. Waiting " + wait + "MS then trying again.");
                     //Logger.Debug("Problem loading log file. Waiting " + wait + "MS then trying again.", e);
                     Thread.Sleep(wait);
@@ -175,9 +171,11 @@ namespace Chimera.OpenSim {
                 string time = ts.ToString(mConfig.TimestampFormat);
 
                 if (!retSet) {
+                    mConfig.Timestamp = ts;
                     retSet = true;
-                    ret = ts;
-                } else if (mConfig.OneSecMininum && lastSec == ts.Second)
+                }
+
+                if (mConfig.OneSecMininum && lastSec == ts.Second)
                     continue;
 
                 mStats.Add(new ClientStats(line, mConfig, ts));
@@ -186,7 +184,7 @@ namespace Chimera.OpenSim {
 
             Logger.Info("Loaded viewer log file from: " + file + ".");
 
-            return ret;
+            return true;
         }
 
         public void ProcessFolder() {

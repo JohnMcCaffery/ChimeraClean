@@ -62,7 +62,7 @@ namespace Chimera.Experimental.GUI {
             openFileDialog.InitialDirectory = Path.GetDirectoryName(file);
             openFileDialog.FileName = mConfig.GetLogFileName();
             if (openFileDialog.ShowDialog() == DialogResult.OK) {
-                mConfig.Timestamp = mPlugin.LoadViewerLog(openFileDialog.FileName);
+                mPlugin.LoadViewerLog(openFileDialog.FileName);
 
                 statsList.Items.Clear();
 
