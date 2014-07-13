@@ -60,7 +60,6 @@
             // 
             // pingButton
             // 
-            this.pingButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.pingButton.Location = new System.Drawing.Point(357, 3);
             this.pingButton.Name = "pingButton";
             this.pingButton.Size = new System.Drawing.Size(89, 23);
@@ -70,7 +69,6 @@
             // 
             // timestampButton
             // 
-            this.timestampButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.timestampButton.Location = new System.Drawing.Point(3, 32);
             this.timestampButton.Name = "timestampButton";
             this.timestampButton.Size = new System.Drawing.Size(94, 23);
@@ -96,7 +94,6 @@
             // 
             // loadLogButton
             // 
-            this.loadLogButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.loadLogButton.Location = new System.Drawing.Point(98, 3);
             this.loadLogButton.Name = "loadLogButton";
             this.loadLogButton.Size = new System.Drawing.Size(63, 23);
@@ -107,7 +104,6 @@
             // 
             // saveCSVButton
             // 
-            this.saveCSVButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.saveCSVButton.Location = new System.Drawing.Point(262, 3);
             this.saveCSVButton.Name = "saveCSVButton";
             this.saveCSVButton.Size = new System.Drawing.Size(89, 23);
@@ -118,7 +114,6 @@
             // 
             // loadCSVButton
             // 
-            this.loadCSVButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.loadCSVButton.Location = new System.Drawing.Point(167, 3);
             this.loadCSVButton.Name = "loadCSVButton";
             this.loadCSVButton.Size = new System.Drawing.Size(89, 23);
@@ -129,7 +124,6 @@
             // 
             // recordFPS
             // 
-            this.recordFPS.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.recordFPS.Location = new System.Drawing.Point(3, 3);
             this.recordFPS.Name = "recordFPS";
             this.recordFPS.Size = new System.Drawing.Size(89, 23);

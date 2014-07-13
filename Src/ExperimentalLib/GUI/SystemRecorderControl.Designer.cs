@@ -87,7 +87,6 @@
             // 
             // saveCSVButton
             // 
-            this.saveCSVButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.saveCSVButton.Location = new System.Drawing.Point(73, 5);
             this.saveCSVButton.Name = "saveCSVButton";
             this.saveCSVButton.Size = new System.Drawing.Size(89, 23);
@@ -98,7 +97,6 @@
             // 
             // loadCSVButton
             // 
-            this.loadCSVButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.loadCSVButton.Location = new System.Drawing.Point(3, 5);
             this.loadCSVButton.Name = "loadCSVButton";
             this.loadCSVButton.Size = new System.Drawing.Size(64, 23);
@@ -116,6 +114,7 @@
             this.Controls.Add(this.statsList);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.updateFreq);
+            this.ForeColor = System.Drawing.Color.Black;
             this.Name = "SystemRecorderControl";
             this.Size = new System.Drawing.Size(889, 470);
             ((System.ComponentModel.ISupportInitialize)(this.updateFreq)).EndInit();
