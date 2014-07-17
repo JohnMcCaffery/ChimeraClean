@@ -16,6 +16,7 @@ namespace Chimera.Experimental.Plugins {
         private Core mCore;
         private OpenSimController OSOut;
         private SettingChangerControl mControl;
+        private bool mWasEnabled;
 
         public event Action Set;
 
@@ -23,6 +24,7 @@ namespace Chimera.Experimental.Plugins {
             Logger = LogManager.GetLogger("SettingsChanger");
             mCore = core;
             mConfig = ExperimentalConfig.Instance;
+            mWasEnabled = mConfig.SettingsChangerEnabled;
             //mConfig = mCore.HasPlugin<ClientRecorderPlugin>() ? mCore.GetPlugin<ClientRecorderPlugin>().Config as ExperimentalConfig : new ExperimentalConfig();
             if (mConfig.SettingsChangerEnabled && mConfig.Setting != null) {
                 OSOut = (core.Frames[0].Output as OpenSimController);
@@ -103,8 +105,10 @@ namespace Chimera.Experimental.Plugins {
         }
 
         public void Close() {
-            if (mConfig.SettingsChangerEnabled) {
-                if (File.Exists(mConfig.GetLogFileName())) {
+            if (mWasEnabled) {
+                //This will break if ClientRecorderPlugin is not loaded.
+                string file = mCore.GetPlugin<ClientRecorderPlugin>().GetCSVName();
+                if (File.Exists(file)) {
                     mConfig.Value += mConfig.Increment;
                     mConfig.Increment = mConfig.Increment * mConfig.IncrementMultiplier;
                     if (mConfig.Value <= mConfig.Max) {
@@ -113,10 +117,11 @@ namespace Chimera.Experimental.Plugins {
                     } else
                         Logger.Info("Finished incrementing " + mConfig.Setting + ". No exit code set.");
                 } else {
-                    Logger.Info("No log file found after " + mConfig.RunInfo + " run. " + mConfig.Setting + " not incremented. Exiting with RepeatCode (" + mConfig.RepeatCode + ").");
+                    Logger.Info("No log file found at " + file + " after " + mConfig.RunInfo + " run. " + mConfig.Setting + " not incremented. Exiting with RepeatCode (" + mConfig.RepeatCode + ").");
                     mCore.ExitCode = mConfig.RepeatCode;
                 }
-            }
+            } else
+                Logger.Info("Settings changer not enabled.");
         }
 
         public void Draw(System.Drawing.Graphics graphics, Func<OpenMetaverse.Vector3, System.Drawing.Point> to2D, Action redraw, Perspective perspective) { }

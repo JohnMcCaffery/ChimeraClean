@@ -18,12 +18,15 @@ namespace Chimera.Experimental.Plugins {
         private SettingLoaderControl mControl;
         private string[] mFiles;
         private string mFile;
+        private bool mWasEnabled;
 
         public void Init(Core core) {
             mCore = core;
             mConfig = ExperimentalConfig.Instance;
 
             mFiles = File.ReadAllLines(mConfig.SettingsCollectionFile);
+
+            mWasEnabled = mConfig.SettingsLoaderEnabled;
 
             if (mConfig.SettingsLoaderEnabled) {
                 if (mConfig.Index < mFiles.Length) {
@@ -100,7 +103,7 @@ namespace Chimera.Experimental.Plugins {
         }
 
         public void Close() {
-            if (!mConfig.SettingsLoaderEnabled)
+            if (!mWasEnabled)
                 return;
 
             bool incremented = false;

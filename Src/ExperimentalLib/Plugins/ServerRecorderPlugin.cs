@@ -44,7 +44,7 @@ using System.Data.SQLite;
 namespace Chimera.OpenSim {
     public class ServerRecorderPlugin : OpensimBotPlugin {
         const string LOG_TIMESTAMP_FORMAT = "yyyy-MM-ddTHH:mm:ssZ";
-        private ILog Logger = LogManager.GetLogger("StatsRecorder");
+        private ILog Logger = LogManager.GetLogger("ServerRecorder");
 
         private ServerRecorderControl mPanel;
         private AvatarMovementPlugin mMovementPlugin;
@@ -132,10 +132,12 @@ namespace Chimera.OpenSim {
 
         public override void Close() {
             base.Close();
+            /*
             if (mConfig.ProcessOnFinish && mStats.Count > 0) {
                 Logger.Warn("Writing out stats on close.");
                 WriteCSV(GetCSVName());
             }
+            */
         }
 
         public void WriteCSV(string file) {

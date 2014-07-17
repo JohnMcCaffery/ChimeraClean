@@ -46,7 +46,7 @@ using System.Management;
 namespace Chimera.OpenSim {
     public class SystemRecorderPlugin : ISystemPlugin {
         const string LOG_TIMESTAMP_FORMAT = "yyyy-MM-ddTHH:mm:ssZ";
-        private ILog Logger = LogManager.GetLogger("StatsRecorder");
+        private ILog Logger = LogManager.GetLogger("SystemRecorder");
 
         private SystemRecorderControl mPanel;
         private ExperimentalConfig mConfig;
@@ -116,10 +116,12 @@ namespace Chimera.OpenSim {
         }
 
         public void Close() {
+            /*
             if (mConfig.ProcessOnFinish && mStats.Count > 0) {
                 Logger.Warn("Writing out stats on close.");
                 WriteCSV(GetCSVName());
             }
+            */
         }
 
         public void WriteCSV(string file) {

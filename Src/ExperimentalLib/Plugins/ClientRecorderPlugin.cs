@@ -44,7 +44,7 @@ using System.Data.SQLite;
 namespace Chimera.OpenSim {
     public class ClientRecorderPlugin : ISystemPlugin {
         const string LOG_TIMESTAMP_FORMAT = "yyyy-MM-ddTHH:mm:ssZ";
-        private ILog Logger = LogManager.GetLogger("StatsRecorder");
+        private ILog Logger = LogManager.GetLogger("ClientRecorder");
 
         private Core mCore;
         private ClientRecorderControl mPanel;
@@ -69,10 +69,20 @@ namespace Chimera.OpenSim {
         }
 
         public void Close() {
+            /*
             if (mConfig.ProcessOnFinish) {
                 Logger.Warn("Writing out stats on close.");
                 WriteCSV(GetCSVName());
             }
+            */
+        }
+
+        public void WriteCSV(Frame frame) {
+            WriteCSV(GetCSVName(frame.Name));
+        }
+
+        public void WriteCSV() {
+            WriteCSV(GetCSVName());
         }
 
         public void WriteCSV(string file) {
@@ -285,7 +295,13 @@ namespace Chimera.OpenSim {
         }
 
         internal string GetCSVName() {
+            return GetCSVName("");
+        }
+
+        internal string GetCSVName(string name) {
             string file = Path.GetFullPath(Path.Combine("Experiments", mConfig.ExperimentName, mConfig.RunInfo));
+            if (mCore.Frames.Length > 1 && name.Length > 0)
+                file += "-" + name;
             if (mConfig.IncludeTimestamp)
                 file += "-" + mConfig.Timestamp.ToString(mConfig.TimestampFormat);
             return file + ".csv";

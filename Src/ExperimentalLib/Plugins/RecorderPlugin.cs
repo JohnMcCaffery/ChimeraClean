@@ -44,7 +44,7 @@ using System.Data.SQLite;
 namespace Chimera.OpenSim {
     public class RecorderPlugin : OpensimBotPlugin {
         const string LOG_TIMESTAMP_FORMAT = "yyyy-MM-ddTHH:mm:ssZ";
-        private ILog Logger = LogManager.GetLogger("StatsRecorder");
+        private ILog Logger = LogManager.GetLogger("Recorder");
 
         private RecorderControl mPanel;
         private AvatarMovementPlugin mMovementPlugin;

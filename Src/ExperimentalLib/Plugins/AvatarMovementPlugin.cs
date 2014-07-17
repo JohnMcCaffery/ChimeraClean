@@ -357,13 +357,15 @@ namespace Chimera.Experimental.Plugins {
                     foreach (var frame in mCore.Frames) {
                         string viewerLogFile = mConfig.GetLogFileName(frame.Name);
                         success = mRecorder.LoadViewerLog(viewerLogFile);
-                        mRecorder.WriteCSV(Path.ChangeExtension(viewerLogFile, ".csv"));
+                        mRecorder.WriteCSV(frame);
                     }
                 }
 
-                string logFile = Path.Combine(Path.GetDirectoryName(mConfig.GetLogFileName()), "Runs.csv");
+                //This will break if ClientRecorderPlugin is not loaded.
+                string csvFile = mCore.GetPlugin<ClientRecorderPlugin>().GetCSVName();
+                string logFile = Path.Combine(Path.GetDirectoryName(csvFile), "Runs.csv");
                 if (!File.Exists(logFile)) 
-                    File.AppendAllText(logFile, "Run,Region,Start,Finish,Mode,Settings File,Settings Loader Plugin,SettingsChangerPlugin,Log Loaded,UUID" + Environment.NewLine);
+                    File.AppendAllText(logFile, "Run,Region,Start,Finish,Mode,Settings File,Settings Loader Plugin,SettingsChangerPlugin,Log Loaded,# Samples,UUID" + Environment.NewLine);
 
                 File.AppendAllText(logFile, mConfig.RunInfo + ",");
                 File.AppendAllText(logFile, mConfig.Region + ",");
@@ -376,7 +378,10 @@ namespace Chimera.Experimental.Plugins {
                     File.AppendAllText(logFile, Path.GetFileName(mConfig.SettingsFile) + ",");
                 File.AppendAllText(logFile, (mConfig.SettingsLoaderEnabled ? "Enabled" : "Disabled") + ",");
                 File.AppendAllText(logFile, (mConfig.SettingsChangerEnabled ? "Enabled" : "Disabled") + ",");
-                File.AppendAllText(logFile, (mConfig.SettingsChangerEnabled ? "True" : "False") + ids);
+                if (File.Exists(csvFile))
+                    File.AppendAllText(logFile, "True," + (File.ReadAllLines(csvFile).Length -1) + "," + ids);
+                else
+                    File.AppendAllText(logFile, "False,-1," + ids);
                 
                 File.AppendAllText(logFile, Environment.NewLine);
             }
