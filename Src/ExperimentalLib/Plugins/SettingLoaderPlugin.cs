@@ -110,7 +110,8 @@ namespace Chimera.Experimental.Plugins {
             bool repeat = true;
 
             foreach (var frame in mCore.Frames) {
-                if (File.Exists(mConfig.GetLogFileName(frame.Name))) {
+                string file = mCore.GetPlugin<ClientRecorderPlugin>().GetCSVName(frame.Name);
+                if (File.Exists(file)) {
                     if (!incremented) {
                         mConfig.Index++;
                         if (mConfig.Index < mFiles.Length) {
