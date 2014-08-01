@@ -43,7 +43,7 @@ namespace Chimera.GUI.Forms {
         /// </summary>
         private void InitializeComponent() {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CoordinatorForm));
-            Chimera.Util.Rotation rotation1 = new Chimera.Util.Rotation();
+            Chimera.Util.Rotation rotation4 = new Chimera.Util.Rotation();
             this.hSplit = new System.Windows.Forms.SplitContainer();
             this.diagramWorldSplit = new System.Windows.Forms.SplitContainer();
             this.diagSplit = new System.Windows.Forms.SplitContainer();
@@ -59,6 +59,7 @@ namespace Chimera.GUI.Forms {
             this.heightmapPanel = new System.Windows.Forms.PictureBox();
             this.heightmapScale = new System.Windows.Forms.TrackBar();
             this.globalBox = new System.Windows.Forms.GroupBox();
+            this.InputUpdatesCheck = new System.Windows.Forms.CheckBox();
             this.label1 = new System.Windows.Forms.Label();
             this.tickLengthPanel = new Chimera.GUI.ScalarPanel();
             this.enableUpdates = new System.Windows.Forms.CheckBox();
@@ -117,7 +118,7 @@ namespace Chimera.GUI.Forms {
             // 
             this.hSplit.Panel2.Controls.Add(this.windowsPluginsSplit);
             this.hSplit.Size = new System.Drawing.Size(911, 822);
-            this.hSplit.SplitterDistance = 319;
+            this.hSplit.SplitterDistance = 330;
             this.hSplit.TabIndex = 0;
             this.hSplit.KeyDown += new System.Windows.Forms.KeyEventHandler(this.CoordinatorForm_KeyDown);
             this.hSplit.KeyUp += new System.Windows.Forms.KeyEventHandler(this.CoordinatorForm_KeyUp);
@@ -137,7 +138,7 @@ namespace Chimera.GUI.Forms {
             // 
             this.diagramWorldSplit.Panel2.AutoScroll = true;
             this.diagramWorldSplit.Panel2.Controls.Add(this.globalBox);
-            this.diagramWorldSplit.Size = new System.Drawing.Size(911, 319);
+            this.diagramWorldSplit.Size = new System.Drawing.Size(911, 330);
             this.diagramWorldSplit.SplitterDistance = 646;
             this.diagramWorldSplit.TabIndex = 0;
             // 
@@ -154,7 +155,7 @@ namespace Chimera.GUI.Forms {
             // diagSplit.Panel2
             // 
             this.diagSplit.Panel2.Controls.Add(this.virtualSpaceGroup);
-            this.diagSplit.Size = new System.Drawing.Size(646, 319);
+            this.diagSplit.Size = new System.Drawing.Size(646, 330);
             this.diagSplit.SplitterDistance = 361;
             this.diagSplit.TabIndex = 1;
             // 
@@ -170,7 +171,7 @@ namespace Chimera.GUI.Forms {
             this.realSpaceGroup.Dock = System.Windows.Forms.DockStyle.Fill;
             this.realSpaceGroup.Location = new System.Drawing.Point(0, 0);
             this.realSpaceGroup.Name = "realSpaceGroup";
-            this.realSpaceGroup.Size = new System.Drawing.Size(361, 319);
+            this.realSpaceGroup.Size = new System.Drawing.Size(361, 330);
             this.realSpaceGroup.TabIndex = 0;
             this.realSpaceGroup.TabStop = false;
             this.realSpaceGroup.Text = "Real Space";
@@ -179,7 +180,7 @@ namespace Chimera.GUI.Forms {
             // 
             this.yPerspectiveButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.yPerspectiveButton.AutoSize = true;
-            this.yPerspectiveButton.Location = new System.Drawing.Point(284, 265);
+            this.yPerspectiveButton.Location = new System.Drawing.Point(284, 276);
             this.yPerspectiveButton.Name = "yPerspectiveButton";
             this.yPerspectiveButton.Size = new System.Drawing.Size(32, 17);
             this.yPerspectiveButton.TabIndex = 6;
@@ -192,7 +193,7 @@ namespace Chimera.GUI.Forms {
             this.zPerspectiveButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.zPerspectiveButton.AutoSize = true;
             this.zPerspectiveButton.Checked = true;
-            this.zPerspectiveButton.Location = new System.Drawing.Point(322, 265);
+            this.zPerspectiveButton.Location = new System.Drawing.Point(322, 276);
             this.zPerspectiveButton.Name = "zPerspectiveButton";
             this.zPerspectiveButton.Size = new System.Drawing.Size(32, 17);
             this.zPerspectiveButton.TabIndex = 5;
@@ -205,7 +206,7 @@ namespace Chimera.GUI.Forms {
             // 
             this.xPerspectiveButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.xPerspectiveButton.AutoSize = true;
-            this.xPerspectiveButton.Location = new System.Drawing.Point(246, 265);
+            this.xPerspectiveButton.Location = new System.Drawing.Point(246, 276);
             this.xPerspectiveButton.Name = "xPerspectiveButton";
             this.xPerspectiveButton.Size = new System.Drawing.Size(32, 17);
             this.xPerspectiveButton.TabIndex = 4;
@@ -241,7 +242,7 @@ namespace Chimera.GUI.Forms {
             this.realSpacePanel.Cursor = System.Windows.Forms.Cursors.Hand;
             this.realSpacePanel.Location = new System.Drawing.Point(3, 16);
             this.realSpacePanel.Name = "realSpacePanel";
-            this.realSpacePanel.Size = new System.Drawing.Size(355, 274);
+            this.realSpacePanel.Size = new System.Drawing.Size(355, 285);
             this.realSpacePanel.TabIndex = 3;
             this.realSpacePanel.TabStop = false;
             this.realSpacePanel.Paint += new System.Windows.Forms.PaintEventHandler(this.realSpacePanel_Paint);
@@ -254,11 +255,11 @@ namespace Chimera.GUI.Forms {
             // 
             this.realSpaceScale.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.realSpaceScale.Location = new System.Drawing.Point(5, 291);
+            this.realSpaceScale.Location = new System.Drawing.Point(5, 302);
             this.realSpaceScale.Maximum = 1000;
             this.realSpaceScale.Minimum = 1;
             this.realSpaceScale.Name = "realSpaceScale";
-            this.realSpaceScale.Size = new System.Drawing.Size(353, 42);
+            this.realSpaceScale.Size = new System.Drawing.Size(353, 45);
             this.realSpaceScale.TabIndex = 3;
             this.realSpaceScale.TickStyle = System.Windows.Forms.TickStyle.None;
             this.realSpaceScale.Value = 1000;
@@ -271,7 +272,7 @@ namespace Chimera.GUI.Forms {
             this.virtualSpaceGroup.Dock = System.Windows.Forms.DockStyle.Fill;
             this.virtualSpaceGroup.Location = new System.Drawing.Point(0, 0);
             this.virtualSpaceGroup.Name = "virtualSpaceGroup";
-            this.virtualSpaceGroup.Size = new System.Drawing.Size(281, 319);
+            this.virtualSpaceGroup.Size = new System.Drawing.Size(281, 330);
             this.virtualSpaceGroup.TabIndex = 0;
             this.virtualSpaceGroup.TabStop = false;
             this.virtualSpaceGroup.Text = "Virtual Space";
@@ -284,7 +285,7 @@ namespace Chimera.GUI.Forms {
             this.heightmapPanel.Cursor = System.Windows.Forms.Cursors.Hand;
             this.heightmapPanel.Location = new System.Drawing.Point(3, 16);
             this.heightmapPanel.Name = "heightmapPanel";
-            this.heightmapPanel.Size = new System.Drawing.Size(275, 275);
+            this.heightmapPanel.Size = new System.Drawing.Size(275, 286);
             this.heightmapPanel.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.heightmapPanel.TabIndex = 1;
             this.heightmapPanel.TabStop = false;
@@ -297,11 +298,11 @@ namespace Chimera.GUI.Forms {
             // 
             this.heightmapScale.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.heightmapScale.Location = new System.Drawing.Point(3, 291);
+            this.heightmapScale.Location = new System.Drawing.Point(3, 302);
             this.heightmapScale.Maximum = 16000;
             this.heightmapScale.Minimum = 1000;
             this.heightmapScale.Name = "heightmapScale";
-            this.heightmapScale.Size = new System.Drawing.Size(275, 42);
+            this.heightmapScale.Size = new System.Drawing.Size(275, 45);
             this.heightmapScale.TabIndex = 2;
             this.heightmapScale.TickStyle = System.Windows.Forms.TickStyle.None;
             this.heightmapScale.Value = 1000;
@@ -309,6 +310,7 @@ namespace Chimera.GUI.Forms {
             // 
             // globalBox
             // 
+            this.globalBox.Controls.Add(this.InputUpdatesCheck);
             this.globalBox.Controls.Add(this.label1);
             this.globalBox.Controls.Add(this.tickLengthPanel);
             this.globalBox.Controls.Add(this.enableUpdates);
@@ -321,10 +323,21 @@ namespace Chimera.GUI.Forms {
             this.globalBox.Location = new System.Drawing.Point(0, 0);
             this.globalBox.MinimumSize = new System.Drawing.Size(261, 290);
             this.globalBox.Name = "globalBox";
-            this.globalBox.Size = new System.Drawing.Size(261, 319);
+            this.globalBox.Size = new System.Drawing.Size(261, 330);
             this.globalBox.TabIndex = 0;
             this.globalBox.TabStop = false;
             this.globalBox.Text = "Global";
+            // 
+            // InputUpdatesCheck
+            // 
+            this.InputUpdatesCheck.AutoSize = true;
+            this.InputUpdatesCheck.Location = new System.Drawing.Point(6, 307);
+            this.InputUpdatesCheck.Name = "InputUpdatesCheck";
+            this.InputUpdatesCheck.Size = new System.Drawing.Size(128, 17);
+            this.InputUpdatesCheck.TabIndex = 9;
+            this.InputUpdatesCheck.Text = "Input Control Enabled";
+            this.InputUpdatesCheck.UseVisualStyleBackColor = true;
+            this.InputUpdatesCheck.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged_1);
             // 
             // label1
             // 
@@ -419,11 +432,11 @@ namespace Chimera.GUI.Forms {
             this.virtualOrientationPanel.Quaternion = ((OpenMetaverse.Quaternion)(resources.GetObject("virtualOrientationPanel.Quaternion")));
             this.virtualOrientationPanel.Size = new System.Drawing.Size(255, 95);
             this.virtualOrientationPanel.TabIndex = 2;
-            rotation1.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("rotation1.LookAtVector")));
-            rotation1.Pitch = 0D;
-            rotation1.Quaternion = ((OpenMetaverse.Quaternion)(resources.GetObject("rotation1.Quaternion")));
-            rotation1.Yaw = 0D;
-            this.virtualOrientationPanel.Value = rotation1;
+            rotation4.LookAtVector = ((OpenMetaverse.Vector3)(resources.GetObject("rotation4.LookAtVector")));
+            rotation4.Pitch = 0D;
+            rotation4.Quaternion = ((OpenMetaverse.Quaternion)(resources.GetObject("rotation4.Quaternion")));
+            rotation4.Yaw = 0D;
+            this.virtualOrientationPanel.Value = rotation4;
             this.virtualOrientationPanel.Yaw = 0D;
             this.virtualOrientationPanel.OnChange += new System.EventHandler(this.virtualRotation_OnChange);
             // 
@@ -459,7 +472,7 @@ namespace Chimera.GUI.Forms {
             // windowsPluginsSplit.Panel2
             // 
             this.windowsPluginsSplit.Panel2.Controls.Add(this.inputsGroup);
-            this.windowsPluginsSplit.Size = new System.Drawing.Size(911, 499);
+            this.windowsPluginsSplit.Size = new System.Drawing.Size(911, 488);
             this.windowsPluginsSplit.SplitterDistance = 445;
             this.windowsPluginsSplit.TabIndex = 0;
             this.windowsPluginsSplit.KeyDown += new System.Windows.Forms.KeyEventHandler(this.CoordinatorForm_KeyDown);
@@ -471,7 +484,7 @@ namespace Chimera.GUI.Forms {
             this.windowsGroup.Dock = System.Windows.Forms.DockStyle.Fill;
             this.windowsGroup.Location = new System.Drawing.Point(0, 0);
             this.windowsGroup.Name = "windowsGroup";
-            this.windowsGroup.Size = new System.Drawing.Size(445, 499);
+            this.windowsGroup.Size = new System.Drawing.Size(445, 488);
             this.windowsGroup.TabIndex = 0;
             this.windowsGroup.TabStop = false;
             this.windowsGroup.Text = "Frames";
@@ -482,7 +495,7 @@ namespace Chimera.GUI.Forms {
             this.windowsTab.Location = new System.Drawing.Point(3, 16);
             this.windowsTab.Name = "windowsTab";
             this.windowsTab.SelectedIndex = 0;
-            this.windowsTab.Size = new System.Drawing.Size(439, 480);
+            this.windowsTab.Size = new System.Drawing.Size(439, 469);
             this.windowsTab.TabIndex = 0;
             this.windowsTab.KeyDown += new System.Windows.Forms.KeyEventHandler(this.CoordinatorForm_KeyDown);
             this.windowsTab.KeyUp += new System.Windows.Forms.KeyEventHandler(this.CoordinatorForm_KeyUp);
@@ -493,7 +506,7 @@ namespace Chimera.GUI.Forms {
             this.inputsGroup.Dock = System.Windows.Forms.DockStyle.Fill;
             this.inputsGroup.Location = new System.Drawing.Point(0, 0);
             this.inputsGroup.Name = "inputsGroup";
-            this.inputsGroup.Size = new System.Drawing.Size(462, 499);
+            this.inputsGroup.Size = new System.Drawing.Size(462, 488);
             this.inputsGroup.TabIndex = 0;
             this.inputsGroup.TabStop = false;
             this.inputsGroup.Text = "Plugins";
@@ -504,7 +517,7 @@ namespace Chimera.GUI.Forms {
             this.pluginsTab.Location = new System.Drawing.Point(3, 16);
             this.pluginsTab.Name = "pluginsTab";
             this.pluginsTab.SelectedIndex = 0;
-            this.pluginsTab.Size = new System.Drawing.Size(456, 480);
+            this.pluginsTab.Size = new System.Drawing.Size(456, 469);
             this.pluginsTab.TabIndex = 0;
             this.pluginsTab.KeyDown += new System.Windows.Forms.KeyEventHandler(this.CoordinatorForm_KeyDown);
             this.pluginsTab.KeyUp += new System.Windows.Forms.KeyEventHandler(this.CoordinatorForm_KeyUp);
@@ -607,5 +620,6 @@ namespace Chimera.GUI.Forms {
 #endif
         private System.Windows.Forms.Label label1;
         private ScalarPanel tickLengthPanel;
+        private System.Windows.Forms.CheckBox InputUpdatesCheck;
     }
 }

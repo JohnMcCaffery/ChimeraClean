@@ -39,6 +39,7 @@ namespace Chimera.Config {
         public float HeightmapDefault;
         public double OverlayOpacity;
         public string[] Frames;
+        public bool EnableInputUpdates;
 
         public CoreConfig(params string[] args)
             : base("Main", args) {
@@ -59,6 +60,7 @@ namespace Chimera.Config {
 
             CrashLogFile = GetStr("CrashLogFile", "CrashLog.log", "The file to log any crashes to.");
             AutoRestart = Get("AutoRestart", false, "Whether to automatically restart the system any time it crashes.");
+            EnableInputUpdates = Get("EnableInputUpdates", false, "Whether to enable input by default.");
 
             TickLength = Get("TickLength", 20, "How long each tick should be for any system that uses ticks.");
 

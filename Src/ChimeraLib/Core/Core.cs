@@ -292,6 +292,7 @@ namespace Chimera {
                 mTickLength = mConfig.TickLength;
                 mDefaultHeight = mConfig.HeightmapDefault;
                 mHeightmap = new float[mConfig.XRegions * 256, mConfig.YRegions * 256];
+                mEnableInputUpdates = mConfig.EnableInputUpdates;
 
                 for (int i = 0; i < mHeightmap.GetLength(0); i++) {
                     for (int j = 0; j < mHeightmap.GetLength(1); j++) {
