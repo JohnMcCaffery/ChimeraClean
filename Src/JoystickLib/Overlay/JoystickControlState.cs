@@ -61,7 +61,6 @@ namespace Chimera.Joystick.Overlay
 
     public class JoystickControlState : State
     {
-        private XBoxControllerPlugin mInput;
         private bool mAvatar;
         private List<CursorTrigger> mClickTriggers = new List<CursorTrigger>();
         private Rotation mStartOrientation;
@@ -70,17 +69,16 @@ namespace Chimera.Joystick.Overlay
         public JoystickControlState(OverlayPlugin manager, XmlNode node)
             : base(GetName(node, "joystick movement state"), manager, node, false)
         {
-            mInput = manager.Core.GetPlugin<XBoxControllerPlugin>();
             mAvatar = GetBool(node, true, "Avatar");
         }
 
         protected override void TransitionToFinish() {
-            mInput.Enabled = true;
             Manager.Core.EnableUpdates = true;
+            Manager.Core.EnableInputUpdates = true;
         }
 
         protected override void TransitionFromStart() {
-            mInput.Enabled = false;
+            Manager.Core.EnableInputUpdates = false;
             Manager.Core.EnableUpdates = false;
         }
 

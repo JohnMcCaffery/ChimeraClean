@@ -123,9 +123,9 @@ namespace Chimera.Plugins {
 
                     Vector3 pos = mCoordinator.Position + moveDelta;
                     Rotation orientation = mCoordinator.Orientation + orientationDelta;
-                    mCoordinator.Update(pos, moveDelta, orientation, orientationDelta);
+                    mCoordinator.InputUpdate(pos, moveDelta, orientation, orientationDelta);
                 } else
-                    mCoordinator.Update(Vector3.Zero, moveDelta, Rotation.Zero, orientationDelta);
+                    mCoordinator.InputUpdate(Vector3.Zero, moveDelta, Rotation.Zero, orientationDelta);
                 if (Change != null)
                     Change(this);
             }

@@ -54,7 +54,7 @@ namespace Chimera.Kinect.Overlay {
     }
 
     public class KinectControlState : State {
-        private KinectMovementPlugin mInput;
+        //private KinectMovementPlugin mInput;
         private bool mAvatar;
         private List<CursorTrigger> mClickTriggers = new List<CursorTrigger>();
         private Rotation mStartOrientation;
@@ -68,7 +68,7 @@ namespace Chimera.Kinect.Overlay {
         public KinectControlState(OverlayPlugin manager, XmlNode node)
             : base(GetName(node, "kinect movement state"), manager, node) {
 
-            mInput = manager.Core.GetPlugin<KinectMovementPlugin>();
+            //mInput = manager.Core.GetPlugin<KinectMovementPlugin>();
             mAvatar = GetBool(node, true, "Avatar");
 
             double pitch = GetDouble(node, manager.Core.Orientation.Pitch);
@@ -83,11 +83,15 @@ namespace Chimera.Kinect.Overlay {
         }
 
         protected override void TransitionToFinish() {
-            mInput.Enabled = true;
+            //mInput.Enabled = true;
+            Manager.Core.EnableUpdates = true;
+            Manager.Core.EnableInputUpdates = true;
         }
 
         protected override void TransitionFromStart() {
-            mInput.Enabled = false;
+            //mInput.Enabled = false;
+            Manager.Core.EnableInputUpdates = false;
+            Manager.Core.EnableUpdates = false;
         }
 
         protected override void TransitionToStart() {
