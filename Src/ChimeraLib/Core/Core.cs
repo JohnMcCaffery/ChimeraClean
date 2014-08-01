@@ -220,6 +220,7 @@ namespace Chimera {
         /// </summary>
         private int mExitCode;
 
+        private bool mEnableInputUpdates = false;
 
         /// <summary>
         /// Triggered whenever the ability to control the view is switched on or off.
@@ -386,8 +387,19 @@ namespace Chimera {
         /// </summary>
         public bool EnableUpdates {
             get { return mEnableUpdates; }
-            set { 
+            set {
                 mEnableUpdates = value;
+                if (EnableUpdatesChanged != null)
+                    EnableUpdatesChanged();
+            }
+        }
+
+        public bool EnableInputUpdates
+        {
+            get { return mEnableInputUpdates; }
+            set
+            {
+                mEnableInputUpdates = value;
                 if (EnableUpdatesChanged != null)
                     EnableUpdatesChanged();
             }
@@ -517,6 +529,12 @@ namespace Chimera {
                 args.StartY = startY;
                 HeightmapChanged(this, args);
             }
+        }
+
+        public void InputUpdate(Vector3 position, Vector3 postionDelta, Rotation orientation, Rotation orientationDelta)
+        {
+            if(mEnableInputUpdates)
+                Update(position, postionDelta, orientation, orientationDelta);
         }
 
         /// <summary>
