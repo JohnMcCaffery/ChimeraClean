@@ -9,12 +9,12 @@ using Chimera.Interfaces;
 
 namespace Joystick
 {
-    public class DPadAxisX : DPadAxis {
-        public DPadAxisX() : base(true, AxisBinding.NotSet) {
+    public class DPadX : DPadAxis {
+        public DPadX() : base(true, AxisBinding.NotSet) {
         }
     }
-    public class DPadAxisY : DPadAxis {
-        public DPadAxisY() : base(false, AxisBinding.NotSet) {
+    public class DPadY : DPadAxis {
+        public DPadY() : base(false, AxisBinding.NotSet) {
         }
     }
 

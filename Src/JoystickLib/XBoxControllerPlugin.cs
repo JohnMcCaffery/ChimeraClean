@@ -33,13 +33,13 @@ namespace Joystick {
             : base(
                 "XBoxController",
                 new XBoxMovementConfig(),
-                new ThumbstickAxisLX(),
-                new ThumbstickAxisLY(),
+                new LeftThumbstickX(),
+                new LeftThumbstickY(),
                 new TriggerAxis(false),
-                new ThumbstickAxisRX(),
-                new ThumbstickAxisRY(),
-                new DPadAxisX(),
-                new DPadAxisY()
+                new RightThumbstickX(),
+                new RightThumbstickY(),
+                new DPadX(),
+                new DPadY()
             ) { }
     }
 
