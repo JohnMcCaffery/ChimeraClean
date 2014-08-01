@@ -115,6 +115,9 @@
     <Compile Include="Interfaces\IViewerController.cs" />
     <Compile Include="OpenSimController.cs" />
     <Compile Include="OpenSimViewerFactory.cs" />
+    <Compile Include="Overlay\ProximityClickFeature.cs" />
+    <Compile Include="Overlay\SayOnceFeature.cs" />
+    <Compile Include="Overlay\SayFeature.cs" />
     <Compile Include="Overlay\InfoState.cs" />
     <Compile Include="Overlay\KeyClickFeature.cs" />
     <Compile Include="Overlay\KeyPressFeature.cs" />

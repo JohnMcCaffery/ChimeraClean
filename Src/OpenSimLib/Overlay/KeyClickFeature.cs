@@ -1,13 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using System.Xml;
 using Chimera.Interfaces.Overlay;
 using Chimera.Overlay;
-using System.Xml;
-using log4net;
-using Chimera.Util;
-using Chimera.OpenSim;
 
 namespace Chimera.OpenSim.Overlay
 {
@@ -55,8 +51,8 @@ namespace Chimera.OpenSim.Overlay
                 }
             }
             mTriggers = triggers.ToArray();
-            if (plugin.Core.Frames.First().Output is OpenSimController)
-                mController = plugin.Core.Frames.First().Output as OpenSimController;
+            if (plugin.Core[mFrame].Output is OpenSimController)
+                mController = plugin.Core[mFrame].Output as OpenSimController;
         }
 
         public void TriggerListener(ITrigger source)

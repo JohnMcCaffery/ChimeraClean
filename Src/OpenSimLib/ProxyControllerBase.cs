@@ -153,6 +153,11 @@ namespace Chimera.OpenSim {
             get { return mLoggedIn; }
         }
 
+        public UUID AgentID
+        {
+            get { return mAgentID; }
+        }
+
         internal ProxyControllerBase(Frame frame) {
             mFrame = frame;
 

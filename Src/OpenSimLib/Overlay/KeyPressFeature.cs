@@ -45,14 +45,16 @@ namespace Chimera.OpenSim.Overlay
         private bool mActive = false;
         private string keys;
         private readonly ILog ThisLogger = LogManager.GetLogger("KeyPress");
+        private string mFrame;
 
         public KeyPressFeature(OverlayPlugin plugin, XmlNode node)
         {
             mPlugin = plugin;
             keys = node.Attributes["Keys"].Value;
             ThisLogger.WarnFormat("Creating KeyPress with: {0}", keys);
-            if (plugin.Core.Frames.First().Output is OpenSimController)
-                mController = plugin.Core.Frames.First().Output as OpenSimController;
+            mFrame = GetManager(plugin, node, "Click Feature").Name;
+            if (plugin.Core[mFrame].Output is OpenSimController)
+                mController = plugin.Core[mFrame].Output as OpenSimController;
         }
 
 
