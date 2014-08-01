@@ -119,6 +119,7 @@ namespace Chimera.GUI.Forms {
             virtualOrientationPanel.Value = orientation;
             eyePositionPanel.Value = mCore.EyePosition;
             enableUpdates.Checked = mCore.EnableUpdates;
+            InputUpdatesCheck.Checked = mCore.EnableInputUpdates;
 
             mHeightmap = new Bitmap(mCore.Heightmap.GetLength(0), mCore.Heightmap.GetLength(1), PixelFormat.Format24bppRgb);
             mHeightmapPerspective = new HeightmapPerspective(mCore, heightmapPanel);
@@ -810,6 +811,11 @@ namespace Chimera.GUI.Forms {
                 float y = mClip.Height * scaled.Y;
                 return new Point((int)x, (int)y);
             }
+        }
+
+        private void checkBox1_CheckedChanged_1(object sender, EventArgs e)
+        {
+            mCore.EnableInputUpdates = InputUpdatesCheck.Checked;
         }
     }
 }
