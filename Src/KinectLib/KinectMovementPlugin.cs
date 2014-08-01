@@ -9,6 +9,8 @@ using Chimera.Config;
 
 namespace Chimera.Kinect {
     public class KinectMovementPlugin : AxisBasedDelta {
+        private bool mDisabled = false;
+
         public KinectMovementPlugin()
             : base("KinectMovement",
                 new KinectMovementConfig(),
@@ -27,6 +29,24 @@ namespace Chimera.Kinect {
                 new ArmPitchAxis(true),
                 new ArmPitchAxis(false)
                 ) {
+        }
+
+        public override bool Enabled
+        {
+            get { return base.Enabled && !mDisabled; }
+            set
+            {
+                if (value != base.Enabled)
+                {
+                    base.Enabled = value;
+                }
+            }
+        }
+
+        public virtual bool Disabled
+        {
+            get { return mDisabled; }
+            set { mDisabled = value; }
         }
     }
 

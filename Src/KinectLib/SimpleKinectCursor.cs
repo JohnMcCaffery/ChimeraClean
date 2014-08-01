@@ -64,6 +64,7 @@ namespace Chimera.Kinect {
         private RectangleF mBounds = new RectangleF(0f, 0f, 1f, 1f);
         private bool mEnabled;
         private bool mListening;
+        private bool mDisabled = false;
         //TODO add init of this to the config
         private string mWindow = "MainWindow";
 
@@ -143,6 +144,9 @@ namespace Chimera.Kinect {
             float x = mX.Value;
             float y = mY.Value;
 
+            if (Disabled)
+                return;
+
             if (mLocation.X != y || mLocation.Y != y) {
                 mLocation = new PointF(x, y);
 
@@ -172,7 +176,8 @@ namespace Chimera.Kinect {
         }
 
         void Nui_SkeletonLost() {
-            mManager.MoveCursorOffScreen();
+            if(!Disabled)
+                mManager.MoveCursorOffScreen();
         }
 
         #region IKinectCursorWindow Members
@@ -224,6 +229,12 @@ namespace Chimera.Kinect {
                         EnabledChanged(this, value);
                 }
             }
+        }
+
+        public bool Disabled
+        {
+            get { return mDisabled; }
+            set { mDisabled = value; }
         }
 
         #endregion

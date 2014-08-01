@@ -138,6 +138,7 @@
       <DependentUpon>KinectCamera.cs</DependentUpon>
     </Compile>
     <Compile Include="Axes\LeanAxis.cs" />
+    <Compile Include="KinectDisablePlugin.cs" />
     <Compile Include="Overlay\CrossArmsLowTrigger.cs" />
     <Compile Include="Overlay\CrossArmsTrigger.cs" />
     <Compile Include="Overlay\RaiseArmTrigger.cs" />
