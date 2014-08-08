@@ -10,8 +10,17 @@ using Chimera.Config;
 
 namespace Chimera.Kinect.Axes {
     public class KinectAxisConfig : AxisConfig {
+        public bool LimitArea;
+        public float AreaX;
+        public float AreaY;
+        public float AreaRadius;
+
         public KinectAxisConfig()
             : base("KinectMovement") {
+                LimitArea = Get("LimitArea", false, "If the kinect area should be limited to the specified area.");
+                AreaX = Get("AreaX", 0.0f, "The X coordinate of the area center.");
+                AreaY = Get("AreaY", 5.0f, "The X coordinate of the area center.");
+                AreaRadius = Get("AreaRadius", 2.0f, "The radius of the area.");
         }
     }
 }
