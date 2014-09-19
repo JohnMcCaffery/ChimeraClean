@@ -12,6 +12,7 @@ using OpenMetaverse;
 using System.Net;
 using System.Collections;
 using log4net;
+using System.Collections.Concurrent;
 
 namespace Chimera.OpenSim {
     public abstract class ProxyControllerBase {
@@ -31,6 +32,10 @@ namespace Chimera.OpenSim {
         private bool mLoggedIn = false;
         private GridProxyConfig mConfig;
         private Vector3 mOffset;
+        private CancellationTokenSource mCanncelTockenSource;
+        private bool stopping = false;
+        private Thread mAvatarLocationThread;
+        private BlockingCollection<ImprovedTerseObjectUpdatePacket> packetQueue;
 
         private ViewerConfig mViewerConfig;
 
@@ -101,6 +106,36 @@ namespace Chimera.OpenSim {
             mAvatarPosition = Vector3.Zero;
             mAvatarOrientation = Rotation.Zero;
             mProxy.AddDelegate(PacketType.ImprovedTerseObjectUpdate, Direction.Incoming, mProxy_ImprovedTerseObjectUpdatePacketReceived);
+            new Thread(() => {
+                ImprovedTerseObjectUpdatePacket packet;
+                while (!stopping) {
+                    try {
+                       packet  = packetQueue.Take(mCanncelTockenSource.Token);
+                    } catch (OperationCanceledException) {
+                        return;
+                    }
+
+                    foreach (var block in packet.ObjectData) {
+                        uint localid = Utils.BytesToUInt(block.Data, 0);
+
+                        if (block.Data[0x5] != 0 && localid == mLocalID) {
+                            mAvatarPosition = new Vector3(block.Data, 0x16);
+                            mPositionOffset = mAvatarPosition - mFrame.Core.Position;
+                            Quaternion rotation = Quaternion.Identity;
+
+                            // Rotation (theta)
+                            rotation = new Quaternion(
+                                Utils.UInt16ToFloat(block.Data, 0x2E, -1.0f, 1.0f),
+                                Utils.UInt16ToFloat(block.Data, 0x2E + 2, -1.0f, 1.0f),
+                                Utils.UInt16ToFloat(block.Data, 0x2E + 4, -1.0f, 1.0f),
+                                Utils.UInt16ToFloat(block.Data, 0x2E + 6, -1.0f, 1.0f));
+
+                            mAvatarOrientation = new Rotation(rotation);
+                            //mAvatarOrientation = Frame.Core.Orientation;
+                        }
+                    }
+                }
+            }).Start();
         }
 
         /// <summary>
@@ -167,6 +202,7 @@ namespace Chimera.OpenSim {
 
             mAgentUpdateListener = new PacketDelegate(mProxy_AgentUpdatePacketReceived);
             mObjectUpdateListener = new PacketDelegate(mProxy_ObjectUpdatePacketReceived);
+            mCanncelTockenSource = new CancellationTokenSource();
         }
 
         public bool StartProxy(int port, string loginURI) {
@@ -228,6 +264,8 @@ namespace Chimera.OpenSim {
                 mProxy = null;
             }
             ThisLogger.Info("Closed");
+            stopping = true;
+            mCanncelTockenSource.Cancel();
         }
 
         public void Chat(string message, int channel) {
@@ -307,7 +345,7 @@ namespace Chimera.OpenSim {
 
             ImprovedTerseObjectUpdatePacket packet = p as ImprovedTerseObjectUpdatePacket;
 
-            foreach (var block in packet.ObjectData) {
+            /*foreach (var block in packet.ObjectData) {
                 uint localid = Utils.BytesToUInt(block.Data, 0);
 
                 if (block.Data[0x5] != 0 && localid == mLocalID) {
@@ -325,7 +363,8 @@ namespace Chimera.OpenSim {
                     mAvatarOrientation = new Rotation(rotation);
                     //mAvatarOrientation = Frame.Core.Orientation;
                 }
-            }
+            }*/
+            packetQueue.Add(packet);
 
             return p;
         }
