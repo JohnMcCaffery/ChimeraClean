@@ -167,7 +167,7 @@ namespace Chimera.Experimental.Plugins {
             }
 
             if (mTargets.Count > 0) {
-                Logger.Info("Starting loop.");
+                Logger.Info("Starting loop: " + mConfig.RunInfo + ".");
 
                 if (mConfig.MoveMouseOffscreen)
                     Cursor.Position = new Point(0, 0);
@@ -365,7 +365,7 @@ namespace Chimera.Experimental.Plugins {
                 string csvFile = mCore.GetPlugin<ClientRecorderPlugin>().GetCSVName();
                 string logFile = Path.Combine(Path.GetDirectoryName(csvFile), "Runs.csv");
                 if (!File.Exists(logFile)) 
-                    File.AppendAllText(logFile, "Run,Region,Start,Finish,Mode,Settings File,Settings Loader Plugin,SettingsChangerPlugin,Log Loaded,# Samples,UUID" + Environment.NewLine);
+                    File.AppendAllText(logFile, "Run,Region,Start,Finish,Mode,Settings File,Startup Key Presses,Settings Loader Plugin,SettingsChangerPlugin,Log Loaded,# Samples,UUID" + Environment.NewLine);
 
                 File.AppendAllText(logFile, mConfig.RunInfo + ",");
                 File.AppendAllText(logFile, mConfig.Region + ",");
@@ -376,6 +376,7 @@ namespace Chimera.Experimental.Plugins {
                     File.AppendAllText(logFile, mCore.GetPlugin<SettingLoaderPlugin>().Setting + ",");
                 else
                     File.AppendAllText(logFile, Path.GetFileName(mConfig.SettingsFile) + ",");
+                File.AppendAllText(logFile, mConfig.StartupKeyPresses.Aggregate((a, c) => a + ":" + c) + ",");
                 File.AppendAllText(logFile, (mConfig.SettingsLoaderEnabled ? "Enabled" : "Disabled") + ",");
                 File.AppendAllText(logFile, (mConfig.SettingsChangerEnabled ? "Enabled" : "Disabled") + ",");
                 if (File.Exists(csvFile))
@@ -421,6 +422,10 @@ namespace Chimera.Experimental.Plugins {
             mCore.ControlMode = mConfig.Mode;
             if (mCore.HasPlugin<ClientRecorderPlugin>())
                 mRecorder = mCore.GetPlugin<ClientRecorderPlugin>();
+
+            if (!mConfig.SettingsLoaderEnabled || !mCore.HasPlugin<SettingLoaderPlugin>())
+                Logger.Info("Setting Settings file: " + mConfig.SettingsFile + ".");
+            Logger.Info("Setting Region: " + mConfig.Region + ".");
 
             foreach (var frame in core.Frames) {
                 ViewerConfig config = (frame.Output as OpenSimController).Config as ViewerConfig;

@@ -30,20 +30,20 @@ namespace Chimera.Experimental.Plugins {
 
             if (mConfig.SettingsLoaderEnabled) {
                 if (mConfig.Index < mFiles.Length) {
+                    mFile = "settings-" + mFiles[mConfig.Index] + ".xml";
+                    string file = Path.Combine(Path.GetDirectoryName(mConfig.SettingsCollectionFile), mFile);
                     foreach (var output in core.Frames.Select(f => f.Output)) {
-                        mFile = "settings-" + mFiles[mConfig.Index] + ".xml";
-                        string file = Path.Combine(Path.GetDirectoryName(mConfig.SettingsCollectionFile), mFile);
                         ReplaceSettingsFile((output as OpenSimController).Config as ViewerConfig, file, mConfig, Logger);
                     }
 
-                    Logger.Info("Settings loader loading settings file: settings-" + mConfig.RunInfo + ".xml.");
+                    Logger.Info("Settings loader loading settings file " + mConfig.Index + " of " + mFiles.Length + ": " + mFile + ".");
 
                     new Thread(() => {
                         Thread.Sleep(200);
                         mConfig.RunInfo = mFiles[mConfig.Index];
                     }).Start();
-
-                }
+                } else
+                    Logger.Info("All settings files loaded, index " + mConfig.Index + " out of " + mFiles.Length + ". Not specifying file.");
             }
         }
 
