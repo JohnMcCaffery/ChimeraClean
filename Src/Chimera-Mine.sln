@@ -75,6 +75,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Flythroughs", "Flythroughs"
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Overlay", "Overlay", "{06FD37A2-167A-47CA-9DF6-79B90A6A97F5}"
+	ProjectSection(SolutionItems) = preProject
+		..\Bin\Overlays\Timespan\TimespanOverlay.xml = ..\Bin\Overlays\Timespan\TimespanOverlay.xml
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{DB1A444F-C959-40FE-A90B-10FF61313DE7}"
 	ProjectSection(SolutionItems) = preProject
