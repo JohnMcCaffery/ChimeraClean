@@ -333,10 +333,6 @@ namespace Chimera.Flythrough.GUI {
             speedLabel.Text = "Speed: " + mPlugin.Speed;
         }
 
-        private void speedScroll_Scroll_1(object sender, EventArgs e) {
-
-        }
-
 #if DEBUG
         private StatisticsForm mStatsForm;
 

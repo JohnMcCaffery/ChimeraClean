@@ -390,7 +390,6 @@ namespace Chimera.Flythrough.GUI {
             this.speedScroll.Size = new System.Drawing.Size(485, 42);
             this.speedScroll.TabIndex = 21;
             this.speedScroll.Value = 100;
-            this.speedScroll.Scroll += new System.EventHandler(this.speedScroll_Scroll_1);
             this.speedScroll.ValueChanged += new System.EventHandler(this.speedScroll_Scroll);
             // 
             // speedLabel
