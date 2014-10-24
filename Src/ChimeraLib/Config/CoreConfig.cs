@@ -40,6 +40,12 @@ namespace Chimera.Config {
         public double OverlayOpacity;
         public string[] Frames;
 
+	//Button Presser
+        public string Key;
+        public double IntervalMS;
+        public bool AutoStart;
+        public double ShutdownM;
+
         public CoreConfig(params string[] args)
             : base("Main", args) {
         }
@@ -73,6 +79,12 @@ namespace Chimera.Config {
             Frames = GetStr("Frames", "MainWindow", "The name of all the windows to load, separated by commas.").Split(',');
 
             Get("Plugins", "|PLUGIN|Enabled", true, "Set whether |PLUGIN| is enabled at start-up.");
+
+            //Button Presser
+            Key = GetSection("KeyPresser", "Key", "^'", "The button to press ever <IntervalS> seconds.");
+            IntervalMS = Get("KeyPresser", "IntervalS", 1.0, "How long (in seconds) between each Button press.") * 1000.0;
+            AutoStart = Get("KeyPresser", "Autostart", false, "Whether to automatically start pressing the key when the system starts.");
+            ShutdownM = Get("KeyPresser", "ShutdownM", 1, "How many minutes the key presser should run before shutting down Chimera.");
         }
 
         internal bool PluginEnabled(ISystemPlugin plugin) {

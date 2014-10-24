@@ -125,6 +125,13 @@
     <Compile Include="Packets\SetWindowPacket.cs" />
     <Compile Include="Packets\SetFrustumPacket.cs" />
     <Compile Include="Packets\SetCameraPacket.cs" />
+    <Compile Include="GUI\KeyPresserPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\KeyPresserPanel.Designer.cs">
+      <DependentUpon>KeyPresserPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Plugins\KeyPresser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ProxyControllerPacketThread.cs" />
     <Compile Include="ViewerConfig.cs" />
@@ -152,6 +159,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\OutputPanel.resx">
       <DependentUpon>OutputPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\KeyPresserPanel.resx">
+      <DependentUpon>KeyPresserPanel.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />
