@@ -91,6 +91,18 @@
     <Compile Include="Config\ConfigParam.cs" />
     <Compile Include="Config\PluginConfig.cs" />
     <Compile Include="Config\ProjectorConfig.cs" />
+    <Compile Include="GUI\Controls\Plugins\PanoramaPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\Controls\Plugins\PanoramaPanel.Designer.cs">
+      <DependentUpon>PanoramaPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\Controls\Plugins\ScreenshotSequencePanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\Controls\Plugins\ScreenshotSequencePanel.Designer.cs">
+      <DependentUpon>ScreenshotSequencePanel.cs</DependentUpon>
+    </Compile>
     <Compile Include="GUI\Controls\StatisticsPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -117,6 +129,9 @@
     </Compile>
     <Compile Include="Interfaces\IDiagramDrawable.cs" />
     <Compile Include="Interfaces\IOutputFactory.cs" />
+    <Compile Include="Plugins\PanoramaPlugin.cs" />
+    <Compile Include="Plugins\PluginBase.cs" />
+    <Compile Include="Plugins\ScreenshotSequencePlugin.cs" />
     <Compile Include="Plugins\Projector.cs" />
     <Compile Include="GUI\Controls\Plugins\AxisBasedDeltaPanel.cs">
       <SubType>UserControl</SubType>
@@ -265,6 +280,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\Controls\Plugins\ConstrainedAxisPanel.resx">
       <DependentUpon>ConstrainedAxisPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\Controls\Plugins\PanoramaPanel.resx">
+      <DependentUpon>PanoramaPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\Controls\Plugins\ScreenshotSequencePanel.resx">
+      <DependentUpon>ScreenshotSequencePanel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\Controls\Plugins\PluginSelectorPanel.resx">
       <DependentUpon>PluginSelectorPanel.cs</DependentUpon>

@@ -1,5 +1,5 @@
-﻿namespace Chimera.OpenSim.GUI.Controls.Plugins {
-    partial class KeyPresserPanel {
+﻿namespace Chimera.GUI.Controls.Plugins {
+    partial class ScreenshotSequencePanel {
         /// <summary> 
         /// Required designer variable.
         /// </summary>
@@ -25,12 +25,14 @@
         private void InitializeComponent() {
             this.startButton = new System.Windows.Forms.Button();
             this.intervalS = new System.Windows.Forms.NumericUpDown();
-            this.key = new System.Windows.Forms.TextBox();
+            this.file = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.stopM = new System.Windows.Forms.NumericUpDown();
             this.shutdownBox = new System.Windows.Forms.CheckBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.folderBox = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.intervalS)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.stopM)).BeginInit();
             this.SuspendLayout();
@@ -69,12 +71,13 @@
             0});
             this.intervalS.ValueChanged += new System.EventHandler(this.intervalS_ValueChanged);
             // 
-            // key
+            // file
             // 
-            this.key.Location = new System.Drawing.Point(100, 59);
-            this.key.Name = "key";
-            this.key.Size = new System.Drawing.Size(99, 20);
-            this.key.TabIndex = 2;
+            this.file.Location = new System.Drawing.Point(100, 59);
+            this.file.Name = "file";
+            this.file.Size = new System.Drawing.Size(99, 20);
+            this.file.TabIndex = 2;
+            this.file.TextChanged += new System.EventHandler(this.file_TextChanged);
             // 
             // label1
             // 
@@ -90,14 +93,14 @@
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(1, 62);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(25, 13);
+            this.label2.Size = new System.Drawing.Size(54, 13);
             this.label2.TabIndex = 4;
-            this.label2.Text = "Key";
+            this.label2.Text = "File Name";
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(1, 87);
+            this.label3.Location = new System.Drawing.Point(1, 113);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(38, 13);
             this.label3.TabIndex = 5;
@@ -106,7 +109,7 @@
             // stopM
             // 
             this.stopM.DecimalPlaces = 1;
-            this.stopM.Location = new System.Drawing.Point(100, 85);
+            this.stopM.Location = new System.Drawing.Point(100, 111);
             this.stopM.Maximum = new decimal(new int[] {
             240,
             0,
@@ -120,7 +123,7 @@
             // shutdownBox
             // 
             this.shutdownBox.AutoSize = true;
-            this.shutdownBox.Location = new System.Drawing.Point(0, 111);
+            this.shutdownBox.Location = new System.Drawing.Point(0, 137);
             this.shutdownBox.Name = "shutdownBox";
             this.shutdownBox.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.shutdownBox.Size = new System.Drawing.Size(114, 17);
@@ -129,19 +132,38 @@
             this.shutdownBox.UseVisualStyleBackColor = true;
             this.shutdownBox.CheckedChanged += new System.EventHandler(this.shutdownBox_CheckedChanged);
             // 
-            // KeyPresserPanel
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(1, 88);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(36, 13);
+            this.label4.TabIndex = 9;
+            this.label4.Text = "Folder";
+            // 
+            // folderBox
+            // 
+            this.folderBox.Location = new System.Drawing.Point(100, 85);
+            this.folderBox.Name = "folderBox";
+            this.folderBox.Size = new System.Drawing.Size(99, 20);
+            this.folderBox.TabIndex = 8;
+            this.folderBox.TextChanged += new System.EventHandler(this.folderBox_TextChanged);
+            // 
+            // ScreenshotSequencePanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.folderBox);
             this.Controls.Add(this.shutdownBox);
             this.Controls.Add(this.stopM);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.key);
+            this.Controls.Add(this.file);
             this.Controls.Add(this.intervalS);
             this.Controls.Add(this.startButton);
-            this.Name = "KeyPresserPanel";
+            this.Name = "ScreenshotSequencePanel";
             this.Size = new System.Drawing.Size(626, 478);
             ((System.ComponentModel.ISupportInitialize)(this.intervalS)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.stopM)).EndInit();
@@ -154,11 +176,13 @@
 
         private System.Windows.Forms.Button startButton;
         private System.Windows.Forms.NumericUpDown intervalS;
-        private System.Windows.Forms.TextBox key;
+        private System.Windows.Forms.TextBox file;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.NumericUpDown stopM;
         private System.Windows.Forms.CheckBox shutdownBox;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.TextBox folderBox;
     }
 }

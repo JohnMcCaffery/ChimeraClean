@@ -40,11 +40,13 @@ namespace Chimera.Config {
         public double OverlayOpacity;
         public string[] Frames;
 
-	//Button Presser
+	//Screenshot Sequence Presser
         public string Key;
         public double IntervalMS;
-        public bool AutoStart;
-        public double ShutdownM;
+        public double StopM;
+        public bool AutoShutdown;
+        public string ScreenshotFolder;
+        public string ScreenshotFile;
 
         public CoreConfig(params string[] args)
             : base("Main", args) {
@@ -81,10 +83,13 @@ namespace Chimera.Config {
             Get("Plugins", "|PLUGIN|Enabled", true, "Set whether |PLUGIN| is enabled at start-up.");
 
             //Button Presser
-            Key = GetSection("KeyPresser", "Key", "^'", "The button to press ever <IntervalS> seconds.");
-            IntervalMS = Get("KeyPresser", "IntervalS", 1.0, "How long (in seconds) between each Button press.") * 1000.0;
-            AutoStart = Get("KeyPresser", "Autostart", false, "Whether to automatically start pressing the key when the system starts.");
-            ShutdownM = Get("KeyPresser", "ShutdownM", 1, "How many minutes the key presser should run before shutting down Chimera.");
+            IntervalMS = Get("ScreenshotSequence", "IntervalS", .5, "How long (in seconds) between each screenshot.") * 1000.0;
+            StopM = Get("ScreenshotSequence", "ShutdownM", 1, "How many minutes the screenshot sequence should run before stopping.");
+            AutoShutdown = Get("ScreenshotSequence", "AutoShutdown", false, "Whether to shut down the viewer when screenshots have stopped.");
+            ScreenshotFile = GetSection("ScreenshotSequence", "File", "TimeLapse", "The prefix for all screenshot files, will be appended with _X.");
+
+            ScreenshotFolder = GetFolderSection("Screenshot", "Folder", "Images/TimeLapse/", "The folder where captured images will be stored.");
+
         }
 
         internal bool PluginEnabled(ISystemPlugin plugin) {

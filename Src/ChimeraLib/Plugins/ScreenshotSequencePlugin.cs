@@ -4,20 +4,25 @@ using System.Linq;
 using System.Text;
 using Chimera.Config;
 using System.Windows.Forms;
-using Chimera.OpenSim;
-using Chimera.OpenSim.GUI.Controls.Plugins;
+using Chimera.GUI.Controls.Plugins;
+using System.Drawing;
+using System.IO;
+using System.Threading;
 
-namespace Chimera.OpenSim.Plugins {
-    public class KeyPresser : ISystemPlugin {
-        private ViewerConfig mConfig = new ViewerConfig();
+namespace Chimera.Plugins {
+    public class ScreenshotSequencePlugin : ISystemPlugin {
+        private CoreConfig mConfig = new CoreConfig();
         private Core mCore;
-        private KeyPresserPanel mPanel;
+        private ScreenshotSequencePanel mPanel;
         private Form mForm = null;
-        private bool mEnabled;
+        private bool mEnabled = true;
         private bool mRunning;
         private DateTime mStarted;
         private DateTime mLastPress;
         private Action mTickListener;
+	private Frame mFrame;
+
+        private Queue<Bitmap> mScreenshots = new Queue<Bitmap>();
 
         public event Action Started;
         public event Action Stopped;
@@ -30,6 +35,9 @@ namespace Chimera.OpenSim.Plugins {
                     if (value) {
                         mStarted = DateTime.Now;
                         mCore.Tick += mTickListener;
+                        Thread t = new Thread(ScreenshotProcessor);
+                        t.Name = "Screenshot Processor";
+                        t.Start();
                         if (Started != null)
                             Started();
                     } else {
@@ -43,6 +51,7 @@ namespace Chimera.OpenSim.Plugins {
 
         public void Init(Core core) {
             mCore = core;
+	    mFrame = mCore.Frames[0];
             mTickListener = new Action(TickListener);
         }
 
@@ -55,7 +64,7 @@ namespace Chimera.OpenSim.Plugins {
         public Control ControlPanel {
             get {
                 if (mPanel == null)
-                    mPanel = new KeyPresserPanel(this);
+                    mPanel = new ScreenshotSequencePanel(this);
                 return mPanel;
             }
         }
@@ -72,7 +81,7 @@ namespace Chimera.OpenSim.Plugins {
         }
 
         public string Name {
-            get { return "Key Presser"; }
+            get { return "ScreenshotSequence"; }
         }
 
         public string State {
@@ -83,7 +92,7 @@ namespace Chimera.OpenSim.Plugins {
             get { return mConfig; }
         }
 
-        public void Close() { 
+        public void Close() {
         }
 
         public void Draw(System.Drawing.Graphics graphics, Func<OpenMetaverse.Vector3, System.Drawing.Point> to2D, Action redraw, Perspective perspective) { }
@@ -91,17 +100,34 @@ namespace Chimera.OpenSim.Plugins {
         private void TickListener() {
             if (mConfig.StopM < DateTime.Now.Subtract(mStarted).TotalMinutes) {
                 Running = false;
-		if (mConfig.AutoShutdown)
-			mForm.Close();
             } else if (mConfig.IntervalMS < DateTime.Now.Subtract(mLastPress).TotalMilliseconds) {
-                PressKey();
+                TakeScreenshot();
                 mLastPress = DateTime.Now;
             }
         }
 
-        private void PressKey() {
-            foreach (var controller in mCore.Frames.Select(f => f.Output as OpenSimController).Where(c => c.ViewerController.Started))
-                controller.ViewerController.PressKey(mConfig.Key);
+        private void ScreenshotProcessor() {
+	    int image = 1;
+            while (mRunning || mScreenshots.Count > 0) {
+                if (mScreenshots.Count > 0) {
+                    Bitmap screenshot = mScreenshots.Dequeue();
+                    screenshot.Save(Path.Combine(mConfig.ScreenshotFolder, mConfig.ScreenshotFile) + "_" + (image++) + ".png");
+                    screenshot.Dispose();
+                }
+                Thread.Sleep(5);
+            }
+            if (mConfig.AutoShutdown)
+                mForm.Close();
+        }
+
+        private void TakeScreenshot() {
+            Bitmap screenshot = new Bitmap(mFrame.Monitor.Bounds.Width, mFrame.Monitor.Bounds.Height);
+            using (Graphics g = Graphics.FromImage(screenshot)) {
+                g.CopyFromScreen(mFrame.Monitor.Bounds.Location, Point.Empty, mFrame.Monitor.Bounds.Size);
+            }
+            mScreenshots.Enqueue(screenshot);
         }
     }
 }
+
+

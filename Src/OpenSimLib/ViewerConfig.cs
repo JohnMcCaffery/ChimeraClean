@@ -77,6 +77,12 @@ namespace Chimera.OpenSim {
         public bool BlockOnViewerShutdown;
         public string MasterFrame;
 
+	//Button Presser
+        public string Key;
+        public double IntervalMS;
+        public double StopM;
+        public bool AutoShutdown;
+
         public override string Group {
             get { return "SecondLifeViewer"; }
         }
@@ -153,6 +159,12 @@ namespace Chimera.OpenSim {
             //EnableWindowPackets = Init.Get(generalConfig, "EnableWindowPackets", true);
             //UseSetFollowCamPackets = !enableWindowPackets || Get(generalConfig, "UseSetFollowCamPackets", false);
             //ControlCamera = Init.Get(sectionConfig, "ControlCamera", true);
+
+            //Button Presser
+            Key = GetSection("KeyPresser", "Key", "^'", "The button to press ever <IntervalS> seconds.");
+            IntervalMS = Get("KeyPresser", "IntervalS", .5, "How long (in seconds) between each Button press.") * 1000.0;
+            StopM = Get("KeyPresser", "ShutdownM", 1, "How many minutes the key presser should run before stopping.");
+            AutoShutdown = Get("KeyPresser", "AutoShutdown", false, "Whether to shut down the viewer when key presses have stopped.");
         }
     }
 }

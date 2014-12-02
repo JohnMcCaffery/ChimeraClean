@@ -7,22 +7,22 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using Chimera.Config;
-using Chimera.OpenSim.Plugins;
+using Chimera.Plugins;
 
-namespace Chimera.OpenSim.GUI.Controls.Plugins {
-    public partial class KeyPresserPanel : UserControl {
-        private KeyPresser mPlugin;
-        private ViewerConfig mConfig;
+namespace Chimera.GUI.Controls.Plugins {
+    public partial class ScreenshotSequencePanel : UserControl {
+        private ScreenshotSequencePlugin mPlugin;
+        private CoreConfig mConfig;
 
-        public KeyPresserPanel() {
+        public ScreenshotSequencePanel() {
             InitializeComponent();
         }
 
-        public KeyPresserPanel(KeyPresser plugin) {
+        public ScreenshotSequencePanel(ScreenshotSequencePlugin plugin) {
             InitializeComponent();
 
             mPlugin = plugin;
-            mConfig = plugin.Config as ViewerConfig;
+            mConfig = plugin.Config as CoreConfig;
 
             mPlugin.Started += () => {
                 if (InvokeRequired)
@@ -41,8 +41,10 @@ namespace Chimera.OpenSim.GUI.Controls.Plugins {
             intervalS.Value = new Decimal(mConfig.IntervalMS / 1000);
             stopM.Value = new Decimal(mConfig.StopM);
             shutdownBox.Checked = mConfig.AutoShutdown;
+            file.Text = mConfig.ScreenshotFile;
+            folderBox.Text = mConfig.ScreenshotFolder;
 
-            key.Text = mConfig.Key;
+            file.Text = mConfig.Key;
         }
 
         private void startButton_Click(object sender, EventArgs e) {
@@ -59,6 +61,14 @@ namespace Chimera.OpenSim.GUI.Controls.Plugins {
 
         private void shutdownBox_CheckedChanged(object sender, EventArgs e) {
             mConfig.AutoShutdown = shutdownBox.Checked;
+        }
+
+        private void folderBox_TextChanged(object sender, EventArgs e) {
+            mConfig.ScreenshotFolder = folderBox.Text;
+        }
+
+        private void file_TextChanged(object sender, EventArgs e) {
+            mConfig.ScreenshotFile = file.Text;
         }
     }
 }
