@@ -40,13 +40,18 @@ namespace Chimera.Config {
         public double OverlayOpacity;
         public string[] Frames;
 
+	//Shared Screenshot 
+        public string ScreenshotFolder;
+
 	//Screenshot Sequence Presser
         public string Key;
         public double IntervalMS;
         public double StopM;
         public bool AutoShutdown;
-        public string ScreenshotFolder;
         public string ScreenshotFile;
+
+	//Panorama
+        public int CaptureDelayMS;
 
         public CoreConfig(params string[] args)
             : base("Main", args) {
@@ -82,13 +87,17 @@ namespace Chimera.Config {
 
             Get("Plugins", "|PLUGIN|Enabled", true, "Set whether |PLUGIN| is enabled at start-up.");
 
+	    //Screenshot shared
+            ScreenshotFolder = GetFolderSection("Screenshot", "Folder", "Images/TimeLapse/", "The folder where captured images will be stored.");
+
             //Button Presser
             IntervalMS = Get("ScreenshotSequence", "IntervalS", .5, "How long (in seconds) between each screenshot.") * 1000.0;
             StopM = Get("ScreenshotSequence", "ShutdownM", 1, "How many minutes the screenshot sequence should run before stopping.");
             AutoShutdown = Get("ScreenshotSequence", "AutoShutdown", false, "Whether to shut down the viewer when screenshots have stopped.");
             ScreenshotFile = GetSection("ScreenshotSequence", "File", "TimeLapse", "The prefix for all screenshot files, will be appended with _X.");
 
-            ScreenshotFolder = GetFolderSection("Screenshot", "Folder", "Images/TimeLapse/", "The folder where captured images will be stored.");
+	    //Panorama
+            CaptureDelayMS = Get("Panorama", "CaptureDelayMS", 150, "How long (in milliseconds) to wait for the view to adjust before capturing an image.");
 
         }
 

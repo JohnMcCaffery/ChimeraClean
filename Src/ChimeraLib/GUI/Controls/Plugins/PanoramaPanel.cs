@@ -23,11 +23,31 @@ namespace Chimera.GUI.Controls.Plugins {
 
             mPlugin = plugin;
             mConfig = plugin.Config as CoreConfig;
+
+            folderAddress.Text = mConfig.ScreenshotFolder;
+            folderDialog.RootFolder = Environment.SpecialFolder.MyDocuments;
+            folderDialog.SelectedPath = mConfig.ScreenshotFolder;
+            captureDelay.Value = mConfig.CaptureDelayMS;
         }
 
-        private void button1_Click(object sender, EventArgs e) {
+        private void captureButton_Click(object sender, EventArgs e) {
             mPlugin.TakePanorama();
         }
 
+        private void folderButton_Click(object sender, EventArgs e) {
+            if (folderDialog.ShowDialog() == DialogResult.OK) {
+                folderAddress.Text = folderDialog.SelectedPath;
+                mConfig.ScreenshotFolder = folderDialog.SelectedPath;
+            }
+        }
+
+        private void folderAddress_TextChanged(object sender, EventArgs e) {
+            folderDialog.SelectedPath = folderAddress.Text;
+            mConfig.ScreenshotFolder = folderDialog.SelectedPath;
+        }
+
+        private void captureDelay_ValueChanged(object sender, EventArgs e) {
+            mConfig.CaptureDelayMS = Decimal.ToInt32(captureDelay.Value);
+        }
     }
 }

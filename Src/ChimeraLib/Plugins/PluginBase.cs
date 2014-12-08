@@ -13,9 +13,10 @@ namespace Chimera.Plugins {
         protected bool mEnabled;
         private string mName;
 
-	protected PluginBase(string name, Func<PluginBase<TControlPanel>, TControlPanel> createPanel) {
-		mCreatePanel = createPanel;
-	}
+        protected PluginBase(string name, Func<PluginBase<TControlPanel>, TControlPanel> createPanel) {
+            mCreatePanel = createPanel;
+            mName = name;
+        }
 
         public virtual void Init(Core core) {
             mCore = core;
