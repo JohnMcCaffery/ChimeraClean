@@ -19,6 +19,13 @@ namespace Chimera.Plugins {
         private Frame mFrame;
         private bool mRunning;
 
+        private static float sOffset = 6.3f;
+        private Vector3 mCentre;
+        private Vector3 mLeftOffset = new Vector3(0f, sOffset / 2f, 0f);
+        private Vector3 mRightOffset = new Vector3(0f, -sOffset / 2f, 0f);
+
+	private int mCurrentImage = 0;
+
         private Queue<Bitmap> mScreenshots = new Queue<Bitmap>();
 
         public PanoramaPlugin()
@@ -28,6 +35,7 @@ namespace Chimera.Plugins {
         public override void Init(Core core) {
             base.Init(core);
             mFrame = mCore.Frames.First();
+            mCentre = mCore.Position;
         }
 
         public override Config.ConfigBase Config {
@@ -51,18 +59,57 @@ namespace Chimera.Plugins {
             t.Name = "Panorama Image Processor";
             t.Start();
 
-            for (int i = 1; i < 7; i++) {
-                mCore.Update(mCore.Position, Vector3.Zero, GetRotation(i), Rotation.Zero);
+            mCentre = mCore.Position;
+            mCurrentImage = 0;
+
+            for (int image = 0; image < 18; image++) {
+                ShowNextImage();
                 Thread.Sleep(mConfig.CaptureDelayMS);
                 TakeScreenshot();
             }
+
+	    /*
+            for (int side = 0; side < 6; side++) {
+		Rotation rotation = GetRotation(side);
+                mCore.Update(mCentre, Vector3.Zero, rotation, Rotation.Zero);
+                Thread.Sleep(mConfig.CaptureDelayMS);
+                TakeScreenshot();
+
+                mCore.Update(mCentre + (mLeftOffset * rotation.Quaternion), Vector3.Zero, rotation, Rotation.Zero);
+                Thread.Sleep(mConfig.CaptureDelayMS);
+                TakeScreenshot();
+
+                mCore.Update(mCentre + (mRightOffset * rotation.Quaternion), Vector3.Zero, rotation, Rotation.Zero);
+                Thread.Sleep(mConfig.CaptureDelayMS);
+                TakeScreenshot();
+            }
+	    */
 
             mRunning = false;
 
             mCore.Update(mCore.Position, Vector3.Zero, r, Rotation.Zero);
         }
 
-        private void TakeScreenshot() {
+        public void SetCentre() {
+            mCentre = mCore.Position;
+        }
+
+        public void ShowNextImage() {
+            Rotation rotation = GetRotation(mCurrentImage);
+            Vector3 position = mCentre;
+            if (mCurrentImage % 3 == 1)
+                position += mLeftOffset * rotation.Quaternion;
+            if (mCurrentImage % 3 == 2)
+                position += mRightOffset * rotation.Quaternion;
+
+            mCore.Update(position, Vector3.Zero, rotation, Rotation.Zero);
+
+            mCurrentImage++;
+            if (mCurrentImage == 18)
+                mCurrentImage = 0;
+        }
+
+        public void TakeScreenshot() {
             Bitmap screenshot = new Bitmap(mFrame.Monitor.Bounds.Width, mFrame.Monitor.Bounds.Height);
             using (Graphics g = Graphics.FromImage(screenshot)) {
                 g.CopyFromScreen(mFrame.Monitor.Bounds.Location, Point.Empty, mFrame.Monitor.Bounds.Size);
@@ -89,27 +136,36 @@ namespace Chimera.Plugins {
         }
 
         private Rotation GetRotation(int image) {
-            switch (image) {
-                case 1: return new Rotation(0.0, 0.0);
-                case 2: return new Rotation(0.0, 90);
-                case 3: return new Rotation(0.0, 180.0);
-                case 4: return new Rotation(0.0, -90);
-                case 5: return new Rotation(-90.0, 0.0);
-                case 6: return new Rotation(90.0, 0.0);
+            switch (image / 3) {
+                case 0: return new Rotation(0.0, 0.0);
+                case 1: return new Rotation(0.0, 90);
+                case 2: return new Rotation(0.0, 180.0);
+                case 3: return new Rotation(0.0, -90);
+                case 4: return new Rotation(-90.0, 0.0);
+                case 5: return new Rotation(90.0, 0.0);
                 default: return new Rotation(0.0, 0.0);
             }
         }
 
         private string GetImageName(int image) {
-            switch (image) {
-                case 1: return "North";
-                case 2: return "West";
-                case 3: return "South";
-                case 4: return "East";
-                case 5: return "Up";
-                case 6: return "Down";
-                default: return "Unknown";
+            string side = "North";
+            switch (image / 3) {
+                case 0: side = "North"; break;
+                case 1: side = "West"; break;
+                case 2: side = "South"; break;
+                case 3: side = "East"; break;
+                case 4: side = "Up"; break;
+                case 5: side = "Down"; break;
             }
+
+            string offset = "";
+            switch (image % 3) {
+                case 0: offset = ""; break;
+                case 1: offset = "Left"; break;
+                case 2: offset = "Right"; break;
+            }
+
+            return side + offset;
         }
     }
 }

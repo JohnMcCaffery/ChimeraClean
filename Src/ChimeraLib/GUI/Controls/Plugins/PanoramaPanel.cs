@@ -49,5 +49,17 @@ namespace Chimera.GUI.Controls.Plugins {
         private void captureDelay_ValueChanged(object sender, EventArgs e) {
             mConfig.CaptureDelayMS = Decimal.ToInt32(captureDelay.Value);
         }
+
+        private void setCentreButton_Click(object sender, EventArgs e) {
+            mPlugin.SetCentre();
+        }
+
+        private void nextImageButton_Click(object sender, EventArgs e) {
+            mPlugin.ShowNextImage();
+        }
+
+        private void screenshotButton_Click(object sender, EventArgs e) {
+            mPlugin.TakeScreenshot();
+        }
     }
 }

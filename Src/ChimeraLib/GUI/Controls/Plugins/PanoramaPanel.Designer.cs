@@ -30,6 +30,9 @@
             this.captureDelay = new System.Windows.Forms.NumericUpDown();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
+            this.screenshotButton = new System.Windows.Forms.Button();
+            this.nextImageButton = new System.Windows.Forms.Button();
+            this.setCentreButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.captureDelay)).BeginInit();
             this.SuspendLayout();
             // 
@@ -107,10 +110,49 @@
             this.label2.TabIndex = 5;
             this.label2.Text = "Save Path";
             // 
+            // screenshotButton
+            // 
+            this.screenshotButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.screenshotButton.Location = new System.Drawing.Point(3, 155);
+            this.screenshotButton.Name = "screenshotButton";
+            this.screenshotButton.Size = new System.Drawing.Size(546, 23);
+            this.screenshotButton.TabIndex = 6;
+            this.screenshotButton.Text = "Take Screenshot";
+            this.screenshotButton.UseVisualStyleBackColor = true;
+            this.screenshotButton.Click += new System.EventHandler(this.screenshotButton_Click);
+            // 
+            // nextImageButton
+            // 
+            this.nextImageButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.nextImageButton.Location = new System.Drawing.Point(6, 126);
+            this.nextImageButton.Name = "nextImageButton";
+            this.nextImageButton.Size = new System.Drawing.Size(546, 23);
+            this.nextImageButton.TabIndex = 7;
+            this.nextImageButton.Text = "Next Position";
+            this.nextImageButton.UseVisualStyleBackColor = true;
+            this.nextImageButton.Click += new System.EventHandler(this.nextImageButton_Click);
+            // 
+            // setCentreButton
+            // 
+            this.setCentreButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.setCentreButton.Location = new System.Drawing.Point(6, 97);
+            this.setCentreButton.Name = "setCentreButton";
+            this.setCentreButton.Size = new System.Drawing.Size(546, 23);
+            this.setCentreButton.TabIndex = 8;
+            this.setCentreButton.Text = "Set Centre";
+            this.setCentreButton.UseVisualStyleBackColor = true;
+            this.setCentreButton.Click += new System.EventHandler(this.setCentreButton_Click);
+            // 
             // PanoramaPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.setCentreButton);
+            this.Controls.Add(this.nextImageButton);
+            this.Controls.Add(this.screenshotButton);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.captureDelay);
@@ -134,5 +176,8 @@
         private System.Windows.Forms.NumericUpDown captureDelay;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Button screenshotButton;
+        private System.Windows.Forms.Button nextImageButton;
+        private System.Windows.Forms.Button setCentreButton;
     }
 }
