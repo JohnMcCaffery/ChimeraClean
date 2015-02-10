@@ -118,7 +118,7 @@ namespace Chimera.Plugins {
         }
 
         private void ScreenshotProcessor() {
-            int image = 1;
+            int image = 0;
             while (mRunning || mScreenshots.Count > 0) {
                 if (mScreenshots.Count > 0) {
                     Bitmap screenshot = mScreenshots.Dequeue();
