@@ -68,23 +68,6 @@ namespace Chimera.Plugins {
                 TakeScreenshot();
             }
 
-	    /*
-            for (int side = 0; side < 6; side++) {
-		Rotation rotation = GetRotation(side);
-                mCore.Update(mCentre, Vector3.Zero, rotation, Rotation.Zero);
-                Thread.Sleep(mConfig.CaptureDelayMS);
-                TakeScreenshot();
-
-                mCore.Update(mCentre + (mLeftOffset * rotation.Quaternion), Vector3.Zero, rotation, Rotation.Zero);
-                Thread.Sleep(mConfig.CaptureDelayMS);
-                TakeScreenshot();
-
-                mCore.Update(mCentre + (mRightOffset * rotation.Quaternion), Vector3.Zero, rotation, Rotation.Zero);
-                Thread.Sleep(mConfig.CaptureDelayMS);
-                TakeScreenshot();
-            }
-	    */
-
             mRunning = false;
 
             mCore.Update(mCore.Position, Vector3.Zero, r, Rotation.Zero);
