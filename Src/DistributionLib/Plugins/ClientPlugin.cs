@@ -42,7 +42,7 @@ namespace DistributionLib.Plugins {
 
         public void Connect() {
             Logger.Info("Connecting as " + mConfig.ClientName);
-            mClient = new InterProxyClient(mConfig.ClientName, mConfig.Port);
+            mClient = new InterProxyClient(mConfig.ClientName, mConfig.Port, mConfig.Address);
             mClient.OnPacketReceived += mListener;
         }
 
