@@ -9,16 +9,11 @@ namespace Chimera.Config {
     public abstract class ConfigFolderBase : ConfigBase {
         private const string DEFAULT_FOLDER = "../Configs/Config";
 
-        public static string sCommonFolder;
-        public static string CommonFolder { get { return sCommonFolder; } }
-
         private static string GetFile(string group, string[] args) {
             IConfigSource source = GetMainConfig(args);
             IConfig cfg = source.Configs["Config"];
             if (cfg == null)
                 return Path.GetFullPath("../Config");
-
-            sCommonFolder = cfg.Get("ConfigFolderCommon", DEFAULT_COMMON_FOLDER);
 
             string folder = cfg.Get("ConfigFolder", DEFAULT_FOLDER);
             string file = cfg.Get(group, group + ".ini");
@@ -26,7 +21,6 @@ namespace Chimera.Config {
 
             if (!File.Exists(file)) {
                 file = cfg.Get(group, group + ".ini");
-                file = Path.GetFullPath(Path.Combine(sCommonFolder, file));
             }
 
             return file;
