@@ -85,7 +85,7 @@ namespace Chimera.Launcher {
         public Launcher(params string[] args) {
             mConfig = new LauncherConfig(args);
 
-            if (!GlobalConditions.Init()) {
+            if (mConfig.InitKinect && !GlobalConditions.Init()) {
                 Logger.Fatal("Unable to initialise Kinect. Exiting.");
                 return;
             }

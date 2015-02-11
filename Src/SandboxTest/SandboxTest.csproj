@@ -106,7 +106,7 @@
     <Reference Include="NuiLib-DotNet_dv">
       <HintPath>..\..\Lib\NuiLib-DotNet_dv.dll</HintPath>
     </Reference>
-    <Reference Include="OpenMetaverse, Version=0.0.0.17443, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="OpenMetaverse, Version=0.0.0.16439, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Lib\OpenMetaverse.dll</HintPath>
     </Reference>
@@ -151,6 +151,10 @@
     <ProjectReference Include="..\ChimeraLib\ChimeraLib.csproj">
       <Project>{58E39BFE-20D5-4C8D-BCFC-6B5E641C2DFF}</Project>
       <Name>ChimeraLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DistributionLib\DistributionLib.csproj">
+      <Project>{318F9878-F3FB-40A5-922B-98AB88BCE395}</Project>
+      <Name>DistributionLib</Name>
     </ProjectReference>
     <ProjectReference Include="..\KinectLib\KinectLib.csproj">
       <Project>{D9D475BF-C0EE-4DF6-89A3-55199BB32ABE}</Project>

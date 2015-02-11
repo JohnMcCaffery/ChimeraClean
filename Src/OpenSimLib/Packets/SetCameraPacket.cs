@@ -6,6 +6,7 @@ using OpenMetaverse.Packets;
 using OpenMetaverse;
 
 namespace Chimera.OpenSim.Packets {
+
     /// <exclude/>
     public sealed class SetCameraPacket: Packet {
         /// <exclude/>
@@ -80,6 +81,11 @@ namespace Chimera.OpenSim.Packets {
 
         public SetCameraPacket(CameraBlock camera) : this() {
             Camera = camera;
+        }
+
+        public SetCameraPacket(Vector3 position, Vector3 lookAt) : this() {
+            Camera.Position = position;
+            Camera.LookAt = lookAt;
         }
 
         public SetCameraPacket(byte[] bytes, ref int i)

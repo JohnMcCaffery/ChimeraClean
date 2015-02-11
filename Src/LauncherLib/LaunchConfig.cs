@@ -10,6 +10,7 @@ namespace Chimera.Launcher {
     public class LauncherConfig : ConfigFolderBase {
         public bool GUI;
         public bool BasicGUI;
+        public bool InitKinect;
 
         public bool BackwardsCompatible;
         public String BindingsFile;
@@ -23,10 +24,12 @@ namespace Chimera.Launcher {
 
         protected override void InitConfig() {
 	    //Merge conflict - don't know what that first parameter for Get does
-            //BasicGUI = Get("BasicGUI", true, "Whether to use a simple GUI. If not the system will either use the full GUI or no GUI depending on the GUI flag.");
-            //GUI = Get("GUI", true, "Whether to launch the full GUI or no GUI if not using the basic GUI.");
-            BasicGUI = Get(true, "BasicGUI", true, "Whether to use a simple GUI. If not the system will either use the full GUI or no GUI depending on the GUI flag.");
-            GUI = Get(true, "GUI", true, "Whether to launch the full GUI or no GUI if not using the basic GUI.");
+            //BasicGUI = Get(true, "BasicGUI", true, "Whether to use a simple GUI. If not the system will either use the full GUI or no GUI depending on the GUI flag.");
+            //GUI = Get(true, "GUI", true, "Whether to launch the full GUI or no GUI if not using the basic GUI.");
+
+            InitKinect = Get("InitKinect", false, "Whether to initialise the Kinect at startup.");
+            BasicGUI = Get("BasicGUI", true, "Whether to use a simple GUI. If not the system will either use the full GUI or no GUI depending on the GUI flag.");
+            GUI = Get("GUI", true, "Whether to launch the full GUI or no GUI if not using the basic GUI.");
 
 	    //Cluster fuck of a merge conflict - no idea which is the correct way of getting the bindings file
             //BindingsFile = Path.Combine(Folder, "Bindings.xml");

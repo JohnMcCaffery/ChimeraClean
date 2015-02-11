@@ -29,10 +29,8 @@ using OpenMetaverse;
 using Chimera.Kinect;
 using Nini.Config;
 using System.Configuration;
-using GridProxy;
 using OpenMetaverse.Packets;
 using System.Threading;
-using Chimera.OpenSim;
 using System.IO;
 using System.Net.Sockets;
 using System.Net;
@@ -40,6 +38,8 @@ using SandboxTest;
 using CefSharp.Example;
 using CefSharp;
 using System.Diagnostics;
+using UtilLib;
+using Chimera.OpenSim.Packets;
 
 namespace Test {
     public class Program {
@@ -57,6 +57,50 @@ namespace Test {
         private static Core mCoordinator;
         private static Vector3 sCentre = new Vector3(128f, 128f, 60f);
 
+
+
+	/*
+	Test for distributed Chimera
+        [STAThread]
+        public static void Main(string[] a) {
+            InterProxyServer server = new InterProxyServer(5000);
+            InterProxyClient client = new InterProxyClient("Client", 5000);
+
+            client.OnPacketReceived += new BackChannelPacketDelegate(client_OnPacketReceived);
+
+            SetCameraPacket p = new SetCameraPacket();
+            p.Camera.LookAt = new Vector3(1f, 2f, 3f);
+            p.Camera.LookAtDelta = new Vector3(0f, 0f, 0f);
+            p.Camera.Position = new Vector3(3f, 2f, 1f);
+            p.Camera.PositionDelta = new Vector3(0f, 0f, 0f);
+
+            Console.WriteLine("Sending packet");
+            server.BroadcastPacket(p);
+            Console.ReadLine();
+
+            Console.WriteLine("Sending packet");
+            server.BroadcastPacket(p);
+            Console.ReadLine();
+
+            Console.WriteLine("Sending packet");
+            server.BroadcastPacket(p);
+            Console.ReadLine();
+
+            Console.WriteLine("Exiting");
+
+	    client.Stop();
+            server.Stop();
+        }
+
+        static Packet client_OnPacketReceived(Packet packet, System.Net.IPEndPoint endPoint) {
+            Console.WriteLine("Received");
+            return packet;
+        }
+
+        private static Rotation GetRot(Vector3 pos) {
+            return new Rotation(sCentre - pos);
+        }
+*/
 
         [STAThread]
         public static void Main(string[] a) {
@@ -185,6 +229,7 @@ namespace Test {
 
         }
 
+	/*
         private static void SendPackets(object param) {
             ProxyControllerBase controller = (ProxyControllerBase)param;
             SetFollowCamPropertiesPacket packet = MakePacket();
@@ -213,7 +258,7 @@ namespace Test {
                 }
             }
         }
-
+*/
 
 
             /*
