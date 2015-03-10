@@ -51,7 +51,7 @@ namespace Chimera.Experimental.Plugins {
         private Vector3 mPrev = Vector3.Zero;
 
         public TimeSpan Time {
-            get { return mState == Plugins.State.Running ? DateTime.Now.Subtract(mStart) : mFinish.Subtract(mStart); }
+            get { return mState == Plugins.State.Running ? DateTime.UtcNow.Subtract(mStart) : mFinish.Subtract(mStart); }
         }
 
         public bool Prep {
@@ -221,7 +221,7 @@ namespace Chimera.Experimental.Plugins {
             mState = Plugins.State.Running;
             mRoute.Clear();
             mRoute.Add(mPrev);
-            mStart = DateTime.Now;
+            mStart = DateTime.UtcNow;
             mCore.Tick += mTickListener;
             mPrep = false;
             if (StateChanged != null)
@@ -230,7 +230,7 @@ namespace Chimera.Experimental.Plugins {
 
         private void OnFinish() {
             mCore.Tick -= mTickListener;
-            mFinish = DateTime.Now;
+            mFinish = DateTime.UtcNow;
             mState = Plugins.State.Finished;
             if (StateChanged != null)
                 StateChanged();

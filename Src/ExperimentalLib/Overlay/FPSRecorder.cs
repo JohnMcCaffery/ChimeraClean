@@ -37,7 +37,7 @@ namespace Chimera.Experimental.Overlay {
         protected override void TransitionToStart() { }
 
         protected override void TransitionToFinish() {
-            string started = DateTime.Now.ToString("yyyy.MM.dd.HH.mm");
+            string started = DateTime.UtcNow.ToString("yyyy.MM.dd.HH.mm");
 
             string dir = Path.Combine(mFolder, started);
 
