@@ -18,7 +18,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\..\NuiLib\Bin\x86\vc10\</OutputPath>
+    <OutputPath>..\..\Bin\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -70,7 +70,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL" />
-    <Reference Include="NuiLib-DotNet, Version=1.0.5333.19701, Culture=neutral, processorArchitecture=x86">
+    <Reference Include="NuiLib-DotNet, Version=1.0.4867.31431, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Bin\NuiLib-DotNet.dll</HintPath>
     </Reference>
@@ -86,13 +86,11 @@
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="WinGridProxy">
-      <HintPath>..\..\Lib\WinGridProxy.exe</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Axes\ArmYawAxis.cs" />
     <Compile Include="Axes\ArmPitchAxis.cs" />
+    <Compile Include="Axes\KinectCursorAxis.cs" />
     <Compile Include="Axes\StandAxis.cs" />
     <Compile Include="Axes\CrouchAxis.cs" />
     <Compile Include="Axes\DotAxis.cs" />
