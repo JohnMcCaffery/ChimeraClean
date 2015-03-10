@@ -21,7 +21,7 @@ namespace Chimera.OpenSim {
         private readonly Frame mFrame;
         private Proxy mProxy;
         private PacketDelegate mAgentUpdateListener;
-        private DateTime mLastUpdatePacket = DateTime.Now;
+        private DateTime mLastUpdatePacket = DateTime.UtcNow;
         private UUID mSecureSessionID = UUID.Zero;
         private UUID mSessionID = UUID.Zero;
         private UUID mAgentID = UUID.Zero;
@@ -35,7 +35,8 @@ namespace Chimera.OpenSim {
         private CancellationTokenSource mCanncelTockenSource;
         private bool stopping = false;
         private Thread mAvatarLocationThread;
-        private BlockingCollection<ImprovedTerseObjectUpdatePacket> packetQueue;
+        private BlockingCollection<ImprovedTerseObjectUpdatePacket> objectUpdatePacketQueue = new BlockingCollection<ImprovedTerseObjectUpdatePacket>();
+        private BlockingCollection<AgentUpdatePacket> agentUpdatePacketQueue = new BlockingCollection<AgentUpdatePacket>();
 
         private ViewerConfig mViewerConfig;
 
@@ -106,36 +107,8 @@ namespace Chimera.OpenSim {
             mAvatarPosition = Vector3.Zero;
             mAvatarOrientation = Rotation.Zero;
             mProxy.AddDelegate(PacketType.ImprovedTerseObjectUpdate, Direction.Incoming, mProxy_ImprovedTerseObjectUpdatePacketReceived);
-            new Thread(() => {
-                ImprovedTerseObjectUpdatePacket packet;
-                while (!stopping) {
-                    try {
-                       packet  = packetQueue.Take(mCanncelTockenSource.Token);
-                    } catch (OperationCanceledException) {
-                        return;
-                    }
-
-                    foreach (var block in packet.ObjectData) {
-                        uint localid = Utils.BytesToUInt(block.Data, 0);
-
-                        if (block.Data[0x5] != 0 && localid == mLocalID) {
-                            mAvatarPosition = new Vector3(block.Data, 0x16);
-                            mPositionOffset = mAvatarPosition - mFrame.Core.Position;
-                            Quaternion rotation = Quaternion.Identity;
-
-                            // Rotation (theta)
-                            rotation = new Quaternion(
-                                Utils.UInt16ToFloat(block.Data, 0x2E, -1.0f, 1.0f),
-                                Utils.UInt16ToFloat(block.Data, 0x2E + 2, -1.0f, 1.0f),
-                                Utils.UInt16ToFloat(block.Data, 0x2E + 4, -1.0f, 1.0f),
-                                Utils.UInt16ToFloat(block.Data, 0x2E + 6, -1.0f, 1.0f));
-
-                            mAvatarOrientation = new Rotation(rotation);
-                            //mAvatarOrientation = Frame.Core.Orientation;
-                        }
-                    }
-                }
-            }).Start();
+           
+            
         }
 
         /// <summary>
@@ -202,7 +175,7 @@ namespace Chimera.OpenSim {
 
             mAgentUpdateListener = new PacketDelegate(mProxy_AgentUpdatePacketReceived);
             mObjectUpdateListener = new PacketDelegate(mProxy_ObjectUpdatePacketReceived);
-            mCanncelTockenSource = new CancellationTokenSource();
+            
         }
 
         public bool StartProxy(int port, string loginURI) {
@@ -228,7 +201,7 @@ namespace Chimera.OpenSim {
                 throw new ArgumentException("Unable to start proxy. No configuration specified.");
             try {
                 mLoggedIn = false;
-                mLastUpdatePacket = DateTime.Now;
+                mLastUpdatePacket = DateTime.UtcNow;
                 mProxy = new Proxy(mConfig);
                 mProxy.AddLoginResponseDelegate(mProxy_LoginResponse);
                 mProxy.AddDelegate(PacketType.AgentUpdate, Direction.Outgoing, mProxy_AgentUpdatePacketReceived);
@@ -245,6 +218,86 @@ namespace Chimera.OpenSim {
 
                 if (ProxyStarted != null)
                     ProxyStarted();
+
+                stopping = false;
+                mCanncelTockenSource = new CancellationTokenSource();
+
+                new Thread(() =>
+                {
+                    AgentUpdatePacket packet;
+                    while (!stopping)
+                    {
+                        try
+                        {
+                            packet = agentUpdatePacketQueue.Take(mCanncelTockenSource.Token);
+                        }
+                        catch (OperationCanceledException)
+                        {
+                            return;
+                        }
+
+
+                        Vector3 pos = packet.AgentData.CameraCenter;
+
+                        if (mFrame.Core.ControlMode == ControlMode.Absolute)
+                        {
+                            //new Thread(() => {
+                            if (mViewerConfig.CheckForPause)
+                            {
+                                string key = MakeKey(pos);
+                                lock (mUnackedUpdates)
+                                {
+                                    if (mUnackedUpdates.ContainsKey(key))
+                                        mUnackedUpdates.Remove(key);
+                                }
+
+                                CheckForPause();
+                            }
+                            //}).Start();
+                        }
+
+                        if (pPositionChanged != null)
+                            pPositionChanged(pos, new Rotation(packet.AgentData.CameraAtAxis));
+                    }
+                }).Start();
+
+                new Thread(() =>
+                {
+                    ImprovedTerseObjectUpdatePacket packet;
+                    while (!stopping)
+                    {
+                        try
+                        {
+                            packet = objectUpdatePacketQueue.Take(mCanncelTockenSource.Token);
+                        }
+                        catch (OperationCanceledException)
+                        {
+                            return;
+                        }
+
+                        foreach (var block in packet.ObjectData)
+                        {
+                            uint localid = Utils.BytesToUInt(block.Data, 0);
+
+                            if (block.Data[0x5] != 0 && localid == mLocalID)
+                            {
+                                mAvatarPosition = new Vector3(block.Data, 0x16);
+                                mPositionOffset = mAvatarPosition - mFrame.Core.Position;
+                                Quaternion rotation = Quaternion.Identity;
+
+                                // Rotation (theta)
+                                rotation = new Quaternion(
+                                    Utils.UInt16ToFloat(block.Data, 0x2E, -1.0f, 1.0f),
+                                    Utils.UInt16ToFloat(block.Data, 0x2E + 2, -1.0f, 1.0f),
+                                    Utils.UInt16ToFloat(block.Data, 0x2E + 4, -1.0f, 1.0f),
+                                    Utils.UInt16ToFloat(block.Data, 0x2E + 6, -1.0f, 1.0f));
+
+                                mAvatarOrientation = new Rotation(rotation);
+                                //mAvatarOrientation = Frame.Core.Orientation;
+                            }
+                        }
+                    }
+                }).Start();
             } catch (NullReferenceException e) {
                 //Logger.Info("Unable to start proxy. " + e.Message);
                 mProxy = null;
@@ -265,7 +318,7 @@ namespace Chimera.OpenSim {
             }
             ThisLogger.Info("Closed");
             stopping = true;
-            mCanncelTockenSource.Cancel();
+            if(mCanncelTockenSource != null) mCanncelTockenSource.Cancel();
         }
 
         public void Chat(string message, int channel) {
@@ -291,7 +344,7 @@ namespace Chimera.OpenSim {
                     mFirstName = t["first_name"].ToString();
                     mLastName = t["last_name"].ToString();
 
-                    mLastUpdatePacket = DateTime.Now;
+                    mLastUpdatePacket = DateTime.UtcNow;
                     mLoggedIn = true;
 
                     Thread.Sleep(50);
@@ -305,9 +358,10 @@ namespace Chimera.OpenSim {
 
         private Packet mProxy_AgentUpdatePacketReceived(Packet p, IPEndPoint ep) {
             AgentUpdatePacket packet = p as AgentUpdatePacket;
-            Vector3 pos = packet.AgentData.CameraCenter;
-            mLastUpdatePacket = DateTime.Now;
+            
+            mLastUpdatePacket = DateTime.UtcNow;
             //Console.WriteLine("Recieved agent update packet. " + mLastUpdatePacket);
+            /*Vector3 pos = packet.AgentData.CameraCenter;
 
             if (mFrame.Core.ControlMode == ControlMode.Absolute) {
                 //new Thread(() => {
@@ -324,7 +378,8 @@ namespace Chimera.OpenSim {
             }
 
             if (pPositionChanged != null)
-                pPositionChanged(pos, new Rotation(packet.AgentData.CameraAtAxis));
+                pPositionChanged(pos, new Rotation(packet.AgentData.CameraAtAxis));*/
+            agentUpdatePacketQueue.Add(packet);
             return p;
         }
 
@@ -364,7 +419,7 @@ namespace Chimera.OpenSim {
                     //mAvatarOrientation = Frame.Core.Orientation;
                 }
             }*/
-            packetQueue.Add(packet);
+            objectUpdatePacketQueue.Add(packet);
 
             return p;
         }
@@ -377,7 +432,7 @@ namespace Chimera.OpenSim {
             Queue<KeyValuePair<string, DateTime>> q;
             lock (mUnackedUpdates)
                 q = new Queue<KeyValuePair<string, DateTime>>(mUnackedUpdates.OrderBy(u => u.Value));
-            while (q.Count > 0 && DateTime.Now.Subtract(q.Peek().Value).TotalMilliseconds > mUnackedDiscardMS)
+            while (q.Count > 0 && DateTime.UtcNow.Subtract(q.Peek().Value).TotalMilliseconds > mUnackedDiscardMS)
                 mUnackedUpdates.Remove(q.Dequeue().Key);
 
             if (mUnackedUpdates.Count > mUnackedCountThresh) {
@@ -419,27 +474,27 @@ namespace Chimera.OpenSim {
         }
 
 
-        private DateTime mLastUpdate = DateTime.Now;
+        private DateTime mLastUpdate = DateTime.UtcNow;
         private double mTotalMS;
         private double mUpdates;
         private bool mFirstSet;
 
         private void PrintTickInfo() {
             if (!mFirstSet) {
-                if (DateTime.Now.Subtract(mLastUpdate).TotalSeconds > 30.0) {
+                if (DateTime.UtcNow.Subtract(mLastUpdate).TotalSeconds > 30.0) {
                     mFirstSet = true;
-                    mLastUpdate = DateTime.Now;
+                    mLastUpdate = DateTime.UtcNow;
                 }
                 return;
             }
             if (mFirstName == "Master") {
-                double diff = DateTime.Now.Subtract(mLastUpdate).TotalMilliseconds;
+                double diff = DateTime.UtcNow.Subtract(mLastUpdate).TotalMilliseconds;
                 mTotalMS += diff;
                 mUpdates++;
                 double mean = mTotalMS / mUpdates;
                 if (Math.Abs(mean - diff) > 1.0)
                     ThisLogger.Debug(String.Format("Unexpected update. Mean: {0:0.#} - Tick: {1:0.#}.", mean, diff));
-                mLastUpdate = DateTime.Now;
+                mLastUpdate = DateTime.UtcNow;
             }
         }
 
@@ -447,9 +502,9 @@ namespace Chimera.OpenSim {
             string str = MakeKey(mFrame.Core.Position);
             lock (mUnackedUpdates)
                 if (mUnackedUpdates.ContainsKey(str))
-                    mUnackedUpdates[str] = DateTime.Now;
+                    mUnackedUpdates[str] = DateTime.UtcNow;
                 else
-                    mUnackedUpdates.Add(str, DateTime.Now);
+                    mUnackedUpdates.Add(str, DateTime.UtcNow);
         }
 
         protected abstract Packet ActualSetCamera();
@@ -464,6 +519,8 @@ namespace Chimera.OpenSim {
         public abstract void ClearCamera();
         public abstract void ClearFrustum();
         public abstract void ClearMovement();
+        public abstract void CloseBrowser();
+        public abstract void MuteAudio(bool mute);
 
         internal void UpdateCamera() {
             if (mProxy != null && mCameraPacket != null)
