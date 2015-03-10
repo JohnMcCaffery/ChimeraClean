@@ -117,6 +117,8 @@
     <Compile Include="Interfaces\IViewerController.cs" />
     <Compile Include="OpenSimController.cs" />
     <Compile Include="OpenSimViewerFactory.cs" />
+    <Compile Include="Overlay\CloseBrowserFeature.cs" />
+    <Compile Include="Overlay\MuteAudioFeature.cs" />
     <Compile Include="Overlay\ProximityClickFeature.cs" />
     <Compile Include="Overlay\SayOnceFeature.cs" />
     <Compile Include="Overlay\SayFeature.cs" />
@@ -127,6 +129,8 @@
     <Compile Include="Packets\ClearRemoteControlPacket.cs" />
     <Compile Include="Packets\ClearFrustumPacket.cs" />
     <Compile Include="Packets\ClearCameraPacket.cs" />
+    <Compile Include="Packets\CloseBrowserPacket.cs" />
+    <Compile Include="Packets\MuteAudioPacket.cs" />
     <Compile Include="Packets\RemoteControlPacket.cs" />
     <Compile Include="Packets\SetWindowPacket.cs" />
     <Compile Include="Packets\SetFrustumPacket.cs" />

@@ -53,8 +53,15 @@ namespace Chimera.OpenSim {
             InjectPacket(new ClearRemoteControlPacket());
         }
 
+        public override void CloseBrowser()
+        {
+            InjectPacket(new CloseBrowserPacket());
+        }
 
-
+        public override void MuteAudio(bool mute)
+        {
+            InjectPacket(new MuteAudioPacket(mute));
+        }
 
         private SetCameraPacket.CameraBlock MakeCameraBlock() {
             return MakeCameraBlock(Frame.Core.Position, Vector3.Zero, Frame.Core.Orientation, Rotation.Zero);
