@@ -49,6 +49,7 @@ namespace Chimera.Experimental.Overlay {
 
         protected override void TransitionToFinish() {
             mConfig.SetupFPSLogs(mFlythroughPlugin.Core, Logger);
+            string started = DateTime.UtcNow.ToString("yyyy.MM.dd.HH.mm");
 
             if (mFlythroughPlugin != null) {
                 mFlythroughPlugin.Enabled = true;
