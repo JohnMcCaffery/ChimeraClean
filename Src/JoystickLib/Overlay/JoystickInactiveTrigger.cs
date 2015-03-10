@@ -32,7 +32,7 @@ namespace Joystick.Overlay {
 
     public class JoystickInactiveTrigger : JoystickActivatedTrigger {
         private double mTimeoutS;
-        private DateTime mLastTrigger = DateTime.Now;
+        private DateTime mLastTrigger = DateTime.UtcNow;
 
 
         public JoystickInactiveTrigger(Core coordinator, XmlNode node)
@@ -45,7 +45,7 @@ namespace Joystick.Overlay {
             get { return base.Active; }
             set {
                 if (value)
-                    mLastTrigger = DateTime.Now;
+                    mLastTrigger = DateTime.UtcNow;
                 base.Active = value;
             }
         }
@@ -53,10 +53,10 @@ namespace Joystick.Overlay {
         public override bool Condition {
             get {
                 if (base.Condition) {
-                    mLastTrigger = DateTime.Now;
+                    mLastTrigger = DateTime.UtcNow;
                     return false;
                 }
-                return DateTime.Now.Subtract(mLastTrigger).TotalSeconds > mTimeoutS;
+                return DateTime.UtcNow.Subtract(mLastTrigger).TotalSeconds > mTimeoutS;
             }
         }
     }
