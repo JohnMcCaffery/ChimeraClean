@@ -104,10 +104,10 @@ namespace Chimera.Flythrough.Overlay {
             }
 
             mSubtitleTimes = new Queue<double>(mSubtitles.Keys.OrderBy(i=>i));
-            mLastSubtitle = DateTime.Now;
+            mLastSubtitle = DateTime.UtcNow;
 
             if (mSubtitles.Count > 0) {
-                mStarted = DateTime.Now;
+                mStarted = DateTime.UtcNow;
                 mManager.Core.Tick += mTickListener;
             }
 
@@ -140,10 +140,10 @@ namespace Chimera.Flythrough.Overlay {
 #if DEBUG
             sStatistics.Begin();
 #endif
-            if (mSubtitleTimes.Count > 0 && DateTime.Now.Subtract(mStarted).TotalSeconds > mSubtitleTimes.Peek()) {
+            if (mSubtitleTimes.Count > 0 && DateTime.UtcNow.Subtract(mStarted).TotalSeconds > mSubtitleTimes.Peek()) {
                 mSubtitlesText.TextString = mSubtitles[mSubtitleTimes.Dequeue()];
-                mLastSubtitle = DateTime.Now;
-            } else if (DateTime.Now.Subtract(mLastSubtitle).TotalSeconds > mSubtitleTimeoutS && mSubtitlesText.TextString.Length > 0)
+                mLastSubtitle = DateTime.UtcNow;
+            } else if (DateTime.UtcNow.Subtract(mLastSubtitle).TotalSeconds > mSubtitleTimeoutS && mSubtitlesText.TextString.Length > 0)
                 mSubtitlesText.TextString = "";
 #if DEBUG
             sStatistics.End();
