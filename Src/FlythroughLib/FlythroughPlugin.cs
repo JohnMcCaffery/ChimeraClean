@@ -60,7 +60,7 @@ namespace Chimera.Flythrough {
         private EventSequence<Camera> mEvents = new EventSequence<Camera>();
         private Core mCore;
         private FlythroughPanel mPanel;
-        private DateTime mLastTick = DateTime.Now;
+        private DateTime mLastTick = DateTime.UtcNow;
         private Camera mPrev;
         private bool mEnabled = true;
         private bool mPlaying = false;
@@ -261,7 +261,7 @@ namespace Chimera.Flythrough {
                 mCurrent = mEvents.CurrentEvent.Value;
                 mCore.Update(mCurrent.Position, Vector3.Zero, mCurrent.Orientation, Rotation.Zero);
                 mPrev = mCurrent;
-                mLastTick = DateTime.Now;
+                mLastTick = DateTime.UtcNow;
                 if (mSeparateThread) {
                     Thread t = new Thread(FlythroughThread);
                     t.Name = "Flythrough thread";
@@ -389,7 +389,7 @@ namespace Chimera.Flythrough {
 #endif
 
                 //double wait = (mCore.TickLength * (1.0 / mSpeed)) - DateTime.Now.Subtract(mLastTick).TotalMilliseconds;
-                double wait = mCore.TickLength - DateTime.Now.Subtract(mLastTick).TotalMilliseconds;
+                double wait = mCore.TickLength - DateTime.UtcNow.Subtract(mLastTick).TotalMilliseconds;
                 if (wait < 0)
                     Logger.Debug("Flythrough Tick overran by " + (wait * -1) + "ms.");
                 else
@@ -397,7 +397,7 @@ namespace Chimera.Flythrough {
 #if DEBUG
                 mStats.Begin();
 #endif
-                mLastTick = DateTime.Now;
+                mLastTick = DateTime.UtcNow;
                 mCore.Update(mCurrent.Position, mCurrent.Position - mPrev.Position, mCurrent.Orientation, mCurrent.Orientation - mPrev.Orientation);
             }
             lock (mFinishLock) {
