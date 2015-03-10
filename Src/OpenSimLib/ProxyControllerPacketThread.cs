@@ -45,10 +45,10 @@ namespace Chimera.OpenSim {
 #if DEBUG
                 mStatistics.Begin();
 #endif
-                DateTime mStart = DateTime.Now;
+                DateTime mStart = DateTime.UtcNow;
                 foreach (var controller in mControllers)
                     controller.UpdateCamera();
-                double t = DateTime.Now.Subtract(mStart).TotalMilliseconds - mCore.TickLength;
+                double t = DateTime.UtcNow.Subtract(mStart).TotalMilliseconds - mCore.TickLength;
 #if DEBUG
                 mStatistics.End();
 #endif
