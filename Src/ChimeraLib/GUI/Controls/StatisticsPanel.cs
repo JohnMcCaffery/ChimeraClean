@@ -84,7 +84,7 @@ namespace Chimera.GUI.Controls {
                 shortestWorkLabel.Text = "Shortest Work: " + (mStats.ShortestTick == double.MaxValue ? -1.0 : mStats.ShortestTick);
                 workDeviation.Text = "Work Std Deviation: " + mStats.WorkStandardDeviation;
 
-                double t = Math.Round(DateTime.Now.Subtract(mStart).TotalSeconds, 2);
+                double t = Math.Round(DateTime.UtcNow.Subtract(mStart).TotalSeconds, 2);
                 mValues.Points.Add(new DataPoint(t, mStats.LastWork));
                 mMeans.Points.Add(new DataPoint(t, mStats.MeanWorkLength));
                 mMins.Points.Add(new DataPoint(t, mStats.ShortestWork));
@@ -102,7 +102,7 @@ namespace Chimera.GUI.Controls {
 
         private void Start() {
             mCore.Tick += mTickListener;
-            mStart = DateTime.Now;
+            mStart = DateTime.UtcNow;
 
             mValues = new Series("Values", 100);
             mMins = new Series("Min", 100);

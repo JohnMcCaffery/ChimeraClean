@@ -1525,9 +1525,9 @@ namespace Chimera.Util {
             DumpConfig cfg = new DumpConfig();
 
             if (cfg.Dump) {
-                string t = DateTime.Now.ToString("dd-HH.mm");
-                string y = DateTime.Now.ToString("yyyy");
-                string m = DateTime.Now.ToString("MMM");
+                string t = DateTime.UtcNow.ToString("dd-HH.mm");
+                string y = DateTime.UtcNow.ToString("yyyy");
+                string m = DateTime.UtcNow.ToString("MMM");
 
                 string file = Path.GetFullPath(cfg.Folder + y + "/" + m + "/" + t + end);
                 if (!Directory.Exists(Path.GetDirectoryName(file)))

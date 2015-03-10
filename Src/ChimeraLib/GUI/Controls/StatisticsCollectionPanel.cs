@@ -22,7 +22,7 @@ namespace Chimera.GUI.Controls {
         private Core mCore;
 
         private StatisticsPanel mCurrentPanel;
-        private DateTime mStart = DateTime.Now;
+        private DateTime mStart = DateTime.UtcNow;
         private bool mActive;
 
         public bool Active {
@@ -90,14 +90,14 @@ namespace Chimera.GUI.Controls {
             if (mainTab.SelectedTab == graphsTab) {
                 foreach (var name in mCollection.StatisticsNames) {
                     TickStatistics stats = mCollection[name];
-                    double s = Math.Round(DateTime.Now.Subtract(mStart).TotalSeconds, 2);
+                    double s = Math.Round(DateTime.UtcNow.Subtract(mStart).TotalSeconds, 2);
                     mCurrentSeries[name].Points.Add(new DataPoint(s, stats.LastWork));
                     mMeanSeries[name].Points.Add(new DataPoint(s, stats.MeanWorkLength));
                 }
             } else if (mainTab.SelectedTab == valuesTab) {
                 foreach (var name in mCollection.StatisticsNames) {
                     TickStatistics stats = mCollection[name];
-                    double s = Math.Round(DateTime.Now.Subtract(mStart).TotalSeconds, 2);
+                    double s = Math.Round(DateTime.UtcNow.Subtract(mStart).TotalSeconds, 2);
                     mRows[name].SubItems[1].Text = stats.MeanWorkLength.ToString(".##");
                     mRows[name].SubItems[2].Text = stats.LastWork.ToString(".##");
                     mRows[name].SubItems[3].Text = stats.TickCount.ToString();
@@ -121,7 +121,7 @@ namespace Chimera.GUI.Controls {
                 foreach (var series in mMeanSeries.Values)
                     series.Points.Clear();
 
-                mStart = DateTime.Now;
+                mStart = DateTime.UtcNow;
 
                 //mCore.Tick += mTickListener;
                 updateTimer.Enabled = true;
