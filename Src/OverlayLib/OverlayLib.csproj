@@ -17,7 +17,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>..\..\Bin\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -63,6 +63,22 @@
     <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CefSharp, Version=37.0.0.0, Culture=neutral, PublicKeyToken=40c4b6fc221f4138, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Bin\CefSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="CefSharp.Core, Version=37.0.0.0, Culture=neutral, PublicKeyToken=40c4b6fc221f4138, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Bin\CefSharp.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="CefSharp.Example, Version=37.0.0.0, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Bin\CefSharp.Example.dll</HintPath>
+    </Reference>
+    <Reference Include="CefSharp.WinForms, Version=37.0.0.0, Culture=neutral, PublicKeyToken=40c4b6fc221f4138, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Bin\CefSharp.WinForms.dll</HintPath>
+    </Reference>
     <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Lib\log4net.dll</HintPath>
@@ -80,6 +96,7 @@
   <ItemGroup>
     <Compile Include="DrawableRoot.cs" />
     <Compile Include="Features\ActiveAreaFeature.cs" />
+    <Compile Include="Features\BrowserFeature.cs" />
     <Compile Include="Features\ColourFeature.cs" />
     <Compile Include="Features\ConditionalFeature.cs" />
     <Compile Include="Features\DynamicText.cs" />
@@ -182,6 +199,7 @@
     <Compile Include="States\ImageBGWindow.cs" />
     <Compile Include="States\SeeThroughMenuState.cs" />
     <Compile Include="States\SlideshowState.cs" />
+    <Compile Include="States\UnityState.cs" />
     <Compile Include="States\VideoState.cs" />
     <Compile Include="StateTransition.cs" />
     <Compile Include="Transitions\FeatureFade.cs" />
