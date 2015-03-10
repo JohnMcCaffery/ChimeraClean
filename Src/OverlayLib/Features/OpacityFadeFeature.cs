@@ -57,7 +57,7 @@ namespace Chimera.Overlay.Features {
                     mActive = value;
                     if (value) {
                         mFinished = false;
-                        mActivated = DateTime.Now;
+                        mActivated = DateTime.UtcNow;
                         mManager.Opacity = mStart;
                     }
                 }
@@ -85,7 +85,7 @@ namespace Chimera.Overlay.Features {
 
         private double Time {
             get {
-                double ellapsed = DateTime.Now.Subtract(mActivated).TotalMilliseconds - Math.Min(0.0, mWait);
+                double ellapsed = DateTime.UtcNow.Subtract(mActivated).TotalMilliseconds - Math.Min(0.0, mWait);
                 return ellapsed / mLength;
             }
         }

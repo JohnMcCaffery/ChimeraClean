@@ -137,7 +137,7 @@ namespace Chimera.Overlay.Transitions {
 
         public void Begin() {
             mCompleted = false;
-            mTransitionStart = DateTime.Now;
+            mTransitionStart = DateTime.UtcNow;
         }
 
         public virtual bool Active {
@@ -201,7 +201,7 @@ namespace Chimera.Overlay.Transitions {
         }
 
         public void DrawDynamic(System.Drawing.Graphics graphics) {
-            double time = DateTime.Now.Subtract(mTransitionStart).TotalMilliseconds;
+            double time = DateTime.UtcNow.Subtract(mTransitionStart).TotalMilliseconds;
             if (time > mLengthMS && !mCompleted) {
                 mCompleted = true;
                 if (Finished != null)

@@ -60,8 +60,8 @@ namespace Chimera.Overlay.Triggers {
                         if(mTriggered != null)
                             mTriggered(this);
                     } else
-                        mStart = DateTime.Now;
-                } else if (!mHasTriggered && mWaitMS > 0.0 && DateTime.Now.Subtract(mStart).TotalMilliseconds > mWaitMS) {
+                        mStart = DateTime.UtcNow;
+                } else if (!mHasTriggered && mWaitMS > 0.0 && DateTime.UtcNow.Subtract(mStart).TotalMilliseconds > mWaitMS) {
                     mHasTriggered = true;
                     if(mTriggered != null)
                         mTriggered(this);

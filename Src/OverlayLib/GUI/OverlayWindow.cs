@@ -88,9 +88,9 @@ namespace Chimera.GUI.Forms {
         private void TickThread() {
             mCont = true;
             while (mCont) {
-                DateTime start = DateTime.Now;
+                DateTime start = DateTime.UtcNow;
                 Tick();
-                int length = mManager.Frame.Core.TickLength - (int) DateTime.Now.Subtract(start).TotalMilliseconds;
+                int length = mManager.Frame.Core.TickLength - (int) DateTime.UtcNow.Subtract(start).TotalMilliseconds;
                 if (length > 0)
                     Thread.Sleep(length);
             }

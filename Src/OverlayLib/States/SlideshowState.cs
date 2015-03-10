@@ -113,8 +113,8 @@ namespace Chimera.Overlay.States {
         }
 
         void Core_Tick() {
-            if (DateTime.Now.Subtract(mLastStep).TotalSeconds > mStepLengthS) {
-                mLastStep = DateTime.Now;
+            if (DateTime.UtcNow.Subtract(mLastStep).TotalSeconds > mStepLengthS) {
+                mLastStep = DateTime.UtcNow;
                 Increment(+1);
             }
         }
