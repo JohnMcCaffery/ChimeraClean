@@ -69,7 +69,7 @@ namespace Chimera.Overlay.Features {
         }
 
         private double Time {
-            get { return DateTime.Now.Subtract(mActivated).TotalMilliseconds; }
+            get { return DateTime.UtcNow.Subtract(mActivated).TotalMilliseconds; }
         }
 
         public override bool NeedsRedrawn {
@@ -86,7 +86,7 @@ namespace Chimera.Overlay.Features {
         }
 
         public override void DrawStatic(Graphics graphics) {
-            mActivated = DateTime.Now;
+            mActivated = DateTime.UtcNow;
             mFirstDrawn = false;
         }
 

@@ -58,7 +58,7 @@ namespace Chimera.Overlay.Triggers {
         }
 
         public double HoverTime {
-            get { return DateTime.Now.Subtract(mEnter).TotalMilliseconds; }
+            get { return DateTime.UtcNow.Subtract(mEnter).TotalMilliseconds; }
         }
 
         public override bool Condition {
@@ -67,7 +67,7 @@ namespace Chimera.Overlay.Triggers {
                 if (ret) {
                     if (!mHovering) {
                         mHovering = true;
-                        mEnter = DateTime.Now;
+                        mEnter = DateTime.UtcNow;
                     }
                 } else if (mHovering) {
                     mManager.ForceRedraw();

@@ -46,8 +46,8 @@ namespace Chimera.Overlay.Triggers {
         }
 
         void mCore_Tick() {
-            if (DateTime.Now.Subtract(mStart).TotalMilliseconds > mLengthMS) {
-                mStart = DateTime.Now;
+            if (DateTime.UtcNow.Subtract(mStart).TotalMilliseconds > mLengthMS) {
+                mStart = DateTime.UtcNow;
                 mCore.Tick -= mTickListener;
                 Trigger();
             }
@@ -61,7 +61,7 @@ namespace Chimera.Overlay.Triggers {
                 if (mActive != value) {
                     mActive = value;
                     if (value) {
-                        mStart = DateTime.Now;
+                        mStart = DateTime.UtcNow;
                         mCore.Tick += mTickListener;
                     } else
                         mCore.Tick -= mTickListener;

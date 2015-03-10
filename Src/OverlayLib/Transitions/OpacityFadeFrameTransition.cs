@@ -125,7 +125,7 @@ namespace Chimera.Overlay.Transitions {
 #if DEBUG
             mStatistics.Begin();
 #endif
-            double time = DateTime.Now.Subtract(mTransitionStart).TotalMilliseconds;
+            double time = DateTime.UtcNow.Subtract(mTransitionStart).TotalMilliseconds;
             if (time > mLengthMS) {
                 mTransitioning = false;
                 //Manager.Opacity = mFadeIn ? 1.0 : 0.0;
@@ -148,7 +148,7 @@ namespace Chimera.Overlay.Transitions {
 
         public override void Begin() {
             base.Begin();
-            mTransitionStart = DateTime.Now;
+            mTransitionStart = DateTime.UtcNow;
             mTransitioning = true;
             Transition.Manager.Core.Tick += mTickListener;
         }

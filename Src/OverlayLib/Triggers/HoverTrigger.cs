@@ -168,7 +168,7 @@ namespace Chimera.Overlay.Triggers {
             if (!Inside)
                 return;
 
-            double t = DateTime.Now.Subtract(mHoverStart).TotalMilliseconds;
+            double t = DateTime.UtcNow.Subtract(mHoverStart).TotalMilliseconds;
             if (t < sSelectTimeMS)
                 mRenderer.DrawHover(graphics, ScaledBounds, t / sSelectTimeMS);
             else if (!mTriggered) {
@@ -189,7 +189,7 @@ namespace Chimera.Overlay.Triggers {
         #endregion    
 
         protected override void Entered() {
-            mHoverStart = DateTime.Now;
+            mHoverStart = DateTime.UtcNow;
             mTriggered = false;
         }
 
