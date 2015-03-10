@@ -20,8 +20,8 @@ namespace Chimera.Kinect {
         }
 
         private static void Init() {
-            if (mConfig.LimitArea)
-                Nui.SelectSkeleton(mConfig.AreaX, mConfig.AreaY, mConfig.AreaRadius);
+            //if (mConfig.LimitArea)
+            //    Nui.SelectSkeleton(mConfig.AreaX, mConfig.AreaY, mConfig.AreaRadius);
             Nui.Init();
             Nui.SetAutoPoll(true);
 

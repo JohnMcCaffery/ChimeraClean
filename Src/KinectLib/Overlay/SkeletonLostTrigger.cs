@@ -105,14 +105,14 @@ namespace Chimera.Kinect.Overlay {
 
         void Nui_SkeletonLost() {
             if (mActive) {
-                mLost = DateTime.Now;
+                mLost = DateTime.UtcNow;
                 mWaiting = true;
                 mCoordinator.Tick += mTickListener;
             }
         }
 
         void coordinator_Tick() {
-            if (DateTime.Now.Subtract(mLost).TotalMilliseconds > mTimeout) {
+            if (DateTime.UtcNow.Subtract(mLost).TotalMilliseconds > mTimeout) {
                 Trigger();
                 mCoordinator.Tick -= mTickListener;
             }

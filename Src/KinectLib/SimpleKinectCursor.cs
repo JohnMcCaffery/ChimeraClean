@@ -31,6 +31,7 @@ using OpenMetaverse;
 using Chimera.Overlay;
 using Chimera.Config;
 using log4net;
+using Chimera.Kinect.Axes;
 
 namespace Chimera.Kinect {
     public class SimpleKinectCursor : ISystemPlugin {
@@ -98,17 +99,18 @@ namespace Chimera.Kinect {
         private static readonly int ANCHOR = Nui.Hip_Centre;
 
         private ChangeDelegate mTickListener;
+        private static KinectAxisConfig mConfig = new KinectAxisConfig();
 
         public SimpleKinectCursor() {
             mTickListener = new ChangeDelegate(Nui_Tick);
-            mSmoothingFactor = Scalar.Create(HAND_SMOOTHING_FRAMES);
+            mSmoothingFactor = Scalar.Create(mConfig.CursorSmoothing);
             /*
             mHandR = test ? Vector.Create("HandR", 0f, 0f, 0f) : Nui.smooth(Nui.joint(Nui.Hand_Right), mSmoothingFactor);
             mHandL = test ? Vector.Create("HandL", 0f, 0f, 0f) : Nui.smooth(Nui.joint(Nui.Hand_Left), HAND_SMOOTHING_FRAMES);
             mAnchor = test ? Vector.Create("Anchor", 0f, 0f, 0f) : Nui.smooth(Nui.joint(Nui.Hip_Centre), ANCHOR_SMOOTHING_FRAMES);
             */
             mHandR = Nui.smooth(Nui.joint(Nui.Hand_Right), mSmoothingFactor);
-            mHandL = Nui.smooth(Nui.joint(Nui.Hand_Left), HAND_SMOOTHING_FRAMES);
+            mHandL = Nui.smooth(Nui.joint(Nui.Hand_Left), mSmoothingFactor);
             mAnchor = Nui.smooth(Nui.joint(Nui.Hip_Centre), ANCHOR_SMOOTHING_FRAMES);
 
             mLeftShift = Scalar.Create("Left Shift", .0f);
