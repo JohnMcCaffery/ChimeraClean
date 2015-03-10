@@ -101,6 +101,7 @@ namespace Chimera.Plugins {
         private readonly ILog Logger = LogManager.GetLogger("DeltaBasedPlugin");
 
         protected void TriggerChange(DeltaBasedPlugin input) {
+            if (!mCoordinator.EnableInputUpdates) return;
             Vector3 moveDelta = PositionDelta;
             moveDelta.X = mEnableX ? moveDelta.X : 0f;
             moveDelta.Y = mEnableY ? moveDelta.Y : 0f;

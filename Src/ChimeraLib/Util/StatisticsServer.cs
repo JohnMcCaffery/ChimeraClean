@@ -35,7 +35,7 @@ namespace Chimera.Util {
 
         public StatisticsServer(Core coordinator) {
             mCoordinator = coordinator;
-            mStarted = DateTime.Now;
+            mStarted = DateTime.UtcNow;
 
             return;
 

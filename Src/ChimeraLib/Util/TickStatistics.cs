@@ -105,12 +105,12 @@ namespace Chimera.Util {
         }
 
         public void Begin() {
-            mTickStart = DateTime.Now;
+            mTickStart = DateTime.UtcNow;
         }
         public void End() {
             lock (mTickTimes) {
                 if (mStarted) {
-                    mLastTickLength = DateTime.Now.Subtract(mLastTick).TotalMilliseconds;
+                    mLastTickLength = DateTime.UtcNow.Subtract(mLastTick).TotalMilliseconds;
                     if (mWorkTotal > long.MaxValue - mLastTickLength) {
                         mWorkTotal = MeanWorkLength;
                         mTickTotal = MeanTickLength;
@@ -123,7 +123,7 @@ namespace Chimera.Util {
                     mLongestTick = Math.Max(mLastTickLength, mLongestTick);
                 }
 
-                mLastWorkLength = DateTime.Now.Subtract(mTickStart).TotalMilliseconds;
+                mLastWorkLength = DateTime.UtcNow.Subtract(mTickStart).TotalMilliseconds;
                 long roundedWork = (long)Math.Round(mLastWorkLength);
                 mWorkTotal += roundedWork;
                 mWorkDeviationTotal += Math.Abs(MeanWorkLength - roundedWork);
@@ -132,10 +132,10 @@ namespace Chimera.Util {
 
                 mTickCount++;
                 mStarted = true;
-                while (mTickTimes.Count > 0 && DateTime.Now.Subtract(mTickTimes.Peek()).TotalSeconds > 1.0)
+                while (mTickTimes.Count > 0 && DateTime.UtcNow.Subtract(mTickTimes.Peek()).TotalSeconds > 1.0)
                     mTickTimes.Dequeue();
-                mLastTick = DateTime.Now;
-                mTickTimes.Enqueue(DateTime.Now);
+                mLastTick = DateTime.UtcNow;
+                mTickTimes.Enqueue(DateTime.UtcNow);
             }
         }
     }

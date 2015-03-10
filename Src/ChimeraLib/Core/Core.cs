@@ -31,6 +31,7 @@ using System.IO;
 using System.Threading;
 using Chimera.Config;
 using log4net;
+using System.Diagnostics;
 
 namespace Chimera {
     /// <summary>
@@ -158,7 +159,7 @@ namespace Chimera {
         /// <summary>
         /// When the system was started.
         /// </summary>
-        private readonly DateTime mStart = DateTime.Now;
+        private readonly DateTime mStart = DateTime.UtcNow;
 
 #if DEBUG
         /// <summary>
@@ -332,17 +333,34 @@ namespace Chimera {
         private void TickMethod() {
             mAlive = true;
             while (mAlive) {
-                DateTime tickStart = DateTime.Now;
+                DateTime tickStart = DateTime.UtcNow;
 #if DEBUG
                 mTickStats.Begin();
 #endif
                 var tick = Tick;
+#if DEBUG
+                if (tick != null) {
+                    Delegate[] tickHandlers = tick.GetInvocationList();
+                    foreach (Delegate currentHandler in tickHandlers)
+                    {
+                        
+                        Action tickAction = (Action)currentHandler;
+                        var watch = Stopwatch.StartNew();
+                        tickAction();
+                        watch.Stop();
+                        if(watch.ElapsedMilliseconds > 0)
+                            Logger.InfoFormat("{0}.{2} {1}", currentHandler.Method.DeclaringType.FullName, watch.ElapsedMilliseconds, currentHandler.Method.Name);
+                    }
+                }
+#else
                 if (tick != null)
                     tick();
+#endif
+
 #if DEBUG
                 mTickStats.End();
 #endif
-                int time = (int)(mTickLength - DateTime.Now.Subtract(tickStart).TotalMilliseconds);
+                int time = (int)(mTickLength - DateTime.UtcNow.Subtract(tickStart).TotalMilliseconds);
                 if (mAlive && time > 0)
                     Thread.Sleep(time);
             }
@@ -588,7 +606,7 @@ namespace Chimera {
                         mCameraStats.End();
 #endif
                         //Console.WriteLine("TickFrequency - time since update: " + (mTickLength -  DateTime.Now.Subtract(mLastUpdate).TotalMilliseconds));
-                        mLastUpdate = DateTime.Now;
+                        mLastUpdate = DateTime.UtcNow;
                     }
                 } else if (DeltaUpdated != null && mAlive) {
                     DeltaUpdateEventArgs args = new DeltaUpdateEventArgs(postionDelta, orientationDelta);
@@ -682,8 +700,8 @@ namespace Chimera {
         /// Handle a crash event,
         /// </summary>
         public void OnCrash(Exception e) {
-            string dump = "Crash: " + DateTime.Now.ToString("u") + Environment.NewLine;
-            dump += "Uptime: " + DateTime.Now.Subtract(mStart) + Environment.NewLine;
+            string dump = "Crash: " + DateTime.UtcNow.ToString("u") + Environment.NewLine;
+            dump += "Uptime: " + DateTime.UtcNow.Subtract(mStart) + Environment.NewLine;
             dump += String.Format("{1}{0}{2}{0}{0}", Environment.NewLine, e.Message, e.StackTrace);
             dump += String.Format("-----------Core-----------{0}", Environment.NewLine);
             dump += "Virtual Position: " + mPosition + Environment.NewLine;

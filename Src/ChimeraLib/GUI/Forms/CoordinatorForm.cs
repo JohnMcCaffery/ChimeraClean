@@ -39,7 +39,7 @@ namespace Chimera.GUI.Forms {
         private bool mClosing;
         private Core mCore;
         private Bitmap mHeightmap;
-        private DateTime mLastUpdate = DateTime.Now;
+        private DateTime mLastUpdate = DateTime.UtcNow;
 
         private Action<Core, CameraUpdateEventArgs> mCameraUpdatedListener;
         private Action<Core, DeltaUpdateEventArgs> mDeltaUpdatedListener;
@@ -345,7 +345,7 @@ namespace Chimera.GUI.Forms {
             //if (DateTime.Now.Subtract(mLastUpdate).TotalMilliseconds < 20)
               //  return;
 
-            mLastUpdate = DateTime.Now;
+            mLastUpdate = DateTime.UtcNow;
             if (!mGuiUpdate && coordinator.ControlMode == ControlMode.Absolute) {
                 Invoke(() => {
                     mExternalUpdate = true;
