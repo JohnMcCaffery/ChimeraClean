@@ -64,7 +64,7 @@ namespace Chimera.OpenSim {
         }
 
         void Terrain_LandPatchReceived(object sender, LandPatchReceivedEventArgs e) {
-            DateTime start = DateTime.Now;
+            DateTime start = DateTime.UtcNow;
             if (e.X >= 16 || e.Y >= 16) {
                 Logger.Log(String.Format("Bad patch coordinates, x = {0}, y = {1}", e.X, e.Y), Helpers.LogLevel.Warning);
                 return;

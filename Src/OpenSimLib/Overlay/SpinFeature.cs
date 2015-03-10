@@ -42,7 +42,7 @@ namespace Chimera.OpenSim.Overlay
         public SpinFeature(OverlayPlugin manager, XmlNode node) {
             mCore = manager.Core;
             mDelta = new Rotation(0, 3);
-            mFrame = GetManager(manager, node, "Click Feature").Name;
+            mFrame = GetManager(manager, node, "Spin Feature").Name;
         }
 
         public Rectangle Clip {

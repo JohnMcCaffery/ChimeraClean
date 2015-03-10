@@ -302,7 +302,7 @@ namespace Chimera.OpenSim {
             mArgs += " " + mConfig.ViewerArguments.Trim();
 
             if (sViewerStartDelay == 0) {
-                mProxyController.LastUpdatePacket = DateTime.Now;
+                mProxyController.LastUpdatePacket = DateTime.UtcNow;
                 mViewerController.Start(mConfig.ViewerExecutable, mConfig.ViewerWorkingDirectory, mArgs, mConfig.Priority);
             } else {
                 ThisLogger.Info("Queuing viewer start for " + Name + " in " + sViewerStartDelay + "s.");
@@ -319,7 +319,7 @@ namespace Chimera.OpenSim {
             lock (mStartLock)
                 Monitor.Wait(mStartLock, sViewerStartDelay * 1000);
             if (!mClosingViewer) {
-                mProxyController.LastUpdatePacket = DateTime.Now;
+                mProxyController.LastUpdatePacket = DateTime.UtcNow;
                 mViewerController.Start(mConfig.ViewerExecutable, mConfig.ViewerWorkingDirectory, mArgs, mConfig.Priority);
             }
         }
@@ -431,8 +431,8 @@ namespace Chimera.OpenSim {
         #endregion
 
         void CheckTimeoutThread() {
-            if (mViewerController.Started && DateTime.Now.Subtract(mProxyController.LastUpdatePacket).TotalMinutes > 1.0) {
-                mProxyController.LastUpdatePacket = DateTime.Now;
+            if (mViewerController.Started && DateTime.UtcNow.Subtract(mProxyController.LastUpdatePacket).TotalMinutes > 1.0) {
+                mProxyController.LastUpdatePacket = DateTime.UtcNow;
                 new Thread(() => {
                 Restart("ViewerStoppedResponding");
                 }).Start();
@@ -441,8 +441,8 @@ namespace Chimera.OpenSim {
 
         private void CheckTimeout() {
             //if (mViewerController.Started && mProxyController.LoggedIn && DateTime.Now.Subtract(mProxyController.LastUpdatePacket).TotalMinutes > 1.0) {
-            if (mViewerController.Started && DateTime.Now.Subtract(mProxyController.LastUpdatePacket).TotalMinutes > 1.0) {
-                mProxyController.LastUpdatePacket = DateTime.Now;
+            if (mViewerController.Started && DateTime.UtcNow.Subtract(mProxyController.LastUpdatePacket).TotalMinutes > 1.0) {
+                mProxyController.LastUpdatePacket = DateTime.UtcNow;
                 Restart("ViewerStoppedResponding");
             }
         }

@@ -74,5 +74,15 @@ namespace Chimera.OpenSim {
         public override void ClearMovement() {
             //throw new NotImplementedException();
         }
+
+        public override void CloseBrowser()
+        {
+            //throw new NotImplementedException();
+        }
+
+        public override void MuteAudio(bool mute)
+        {
+            //throw new NotImplementedException();
+        }
     }
 }
