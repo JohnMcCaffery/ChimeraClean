@@ -138,6 +138,21 @@ namespace Chimera.Overlay {
             return t;
         }
 
+
+        public static TEnum GetEnum<TEnum>(XmlNode node, TEnum defalt, ILog logger, params string[] attributes) where TEnum : struct {
+            TEnum value;
+            string val = GetString(node, defalt.ToString(), attributes);
+            if (!Enum.TryParse<TEnum>(val, out value)) {
+                value = defalt;
+                logger.Warn("Unable to load " + 
+                    (attributes.Length > 0 ? attributes[0] : "from enum") + ". " + 
+                    value + " is not a valid member of " + 
+                    typeof(TEnum).Name + ".");
+            }
+            //Init.Get(mSource.Configs[general], key, defalt);
+            return value;
+        }
+
         public static Vector3 GetVector(XmlNode node, Vector3 defalt) {
             XmlAttribute xAttr = node.Attributes["X"];
             XmlAttribute yAttr = node.Attributes["Y"];
