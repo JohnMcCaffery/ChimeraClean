@@ -23,8 +23,28 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.Diagnostics;
+using Chimera.Util;
 
 namespace Chimera {
+    public enum Fill {
+        /// <summary>
+        /// Fill the left half of the screen.
+        /// </summary>
+        Left,
+        /// <summary>
+        /// Fill the right half of the screen.
+        /// </summary>
+        Right,
+        /// <summary>
+        /// Run windowed.
+        /// </summary>
+        Windowed,
+        /// <summary>
+        /// Fill the whole screen.
+        /// </summary>
+        Full
+    }
+
     public interface IOutput {
 
         /// <summary>
@@ -58,6 +78,11 @@ namespace Chimera {
         string Type {
             get;
         }
+
+	/// <summary>
+	/// How the output should fill the screen.
+	/// </summary>
+        Fill Fill { get; set; }
 
         /// <summary>
         /// Whether the output has started.

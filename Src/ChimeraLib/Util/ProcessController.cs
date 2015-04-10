@@ -639,5 +639,32 @@ namespace Chimera.Util {
                     SWP_NOZORDER);
             }
         }
+
+	public enum Side { Left, Right }
+
+        public void Split(Side side) {
+            if (!Started || Monitor == null)
+                return;
+
+            System.Diagnostics.Process foreground = System.Diagnostics.Process.GetCurrentProcess();
+            Int32 lStyle = GetWindowLong(Process.MainWindowHandle, GWL_STYLE);
+            lStyle &= ~(WS_CAPTION | WS_THICKFRAME | WS_MINIMIZE | WS_MAXIMIZE | WS_SYSMENU);
+
+
+            Int32 lExStyle = GetWindowLong(Process.MainWindowHandle, GWL_EXSTYLE);
+            lExStyle &= ~(WS_EX_DLGMODALFRAME | WS_EX_CLIENTEDGE | WS_EX_STATICEDGE);
+
+            SetWindowLong(Process.MainWindowHandle, GWL_STYLE, lStyle);
+            SetWindowLong(Process.MainWindowHandle, GWL_EXSTYLE, lExStyle);
+
+            int w = Monitor.Bounds.Width / 2;
+            int x = Monitor.Bounds.X + (side == Side.Left ? 0 : w);
+
+            SetWindowPos(Process.MainWindowHandle, IntPtr.Zero, x + 1, Monitor.Bounds.Y + 1, Monitor.Bounds.Width - 1, Monitor.Bounds.Height - 1, SWP_FRAMECHANGED | SWP_NOZORDER);
+            SetWindowPos(Process.MainWindowHandle, IntPtr.Zero, x, Monitor.Bounds.Y, w, Monitor.Bounds.Height, SWP_FRAMECHANGED | SWP_NOZORDER);
+
+            BringToFront();
+        }
+
     }
 }

@@ -108,7 +108,7 @@ namespace Chimera.OpenSim {
             ViewerExecutable = Path.GetFullPath(Path.Combine(folder, file));
 
             string defaultWD = new Uri(folder).MakeRelativeUri(new Uri(Path.GetDirectoryName(ViewerExecutable))).OriginalString;
-            ViewerWorkingDirectory = GetFolder("WorkingDirectory", defaultWD, "The workign directory for the viewer executable.");
+            ViewerWorkingDirectory = GetFolder("WorkingDirectory", defaultWD, "The working directory for the viewer executable.");
 
             Priority = GetEnum<ProcessPriorityClass>("Priority", ProcessPriorityClass.RealTime, "What priority the viewer process should be assigned by the operating system.", LogManager.GetLogger("ViewerConfig"));
             //mViewerArguments = GetGeneralParam("ViewerArguments", "", "Any arguments to be passed to the viewer when it starts.");
