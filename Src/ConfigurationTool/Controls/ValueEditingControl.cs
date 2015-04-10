@@ -66,14 +66,14 @@ namespace Chimera.ConfigurationTool.Controls {
         }
 
         private void StringLoaded() {
-            textInput.DropDownStyle = ComboBoxStyle.Simple;
-            textInput.Items.Add(mParameter.Value);
             textInput.Items.AddRange(mParameter.Values);
 
             boolInput.Visible = false;
             dialogButton.Visible = false;
             textInput.Visible = true;
 
+            textInput.DropDownStyle = ComboBoxStyle.Simple;
+            textInput.BringToFront();
             textInput.Text = mParameter.Value;
         }
 
@@ -99,7 +99,6 @@ namespace Chimera.ConfigurationTool.Controls {
             StringLoaded();
 
             textInput.DropDownStyle = ComboBoxStyle.DropDownList;
-            textInput.Items.AddRange(mParameter.Values);
             textInput.SelectedItem = mParameter.Values.First(p => p == mParameter.Value);
         }
 

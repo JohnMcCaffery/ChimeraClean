@@ -73,6 +73,7 @@ namespace Chimera.ConfigurationTool.Controls {
                     !f.Contains("NuiLib") && 
                     !f.Contains("opencv") && 
                     !f.Contains("SlimDX") && 
+                    !f.Contains("Cef") && 
                     !f.Contains("openjpeg")).
                 Select(f => {
                     try {

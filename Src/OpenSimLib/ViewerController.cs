@@ -64,38 +64,5 @@ namespace Chimera.OpenSim {
             PressKey(mToggleHudKey);
         }
 
-        internal void Split(bool left) {
-            if (!Started || Monitor == null)
-                return;
-
-            System.Diagnostics.Process foreground = System.Diagnostics.Process.GetCurrentProcess();
-            Int32 lStyle = GetWindowLong(Process.MainWindowHandle, GWL_STYLE);
-            lStyle &= ~(WS_CAPTION | WS_THICKFRAME | WS_MINIMIZE | WS_MAXIMIZE | WS_SYSMENU);
-
-
-            Int32 lExStyle = GetWindowLong(Process.MainWindowHandle, GWL_EXSTYLE);
-            lExStyle &= ~(WS_EX_DLGMODALFRAME | WS_EX_CLIENTEDGE | WS_EX_STATICEDGE);
-
-            SetWindowLong(Process.MainWindowHandle, GWL_STYLE, lStyle);
-            SetWindowLong(Process.MainWindowHandle, GWL_EXSTYLE, lExStyle);
-
-            //RECT bounds;
-            //GetWindowRect(new HandleRef(Process, Process.MainWindowHandle), out bounds);
-            //SetWindowPos(mProcess.MainWindowHandle, IntPtr.Zero, 0, 0, 0, 0, SWP_FRAMECHANGED | SWP_NOSIZE | SWP_NOREPOSITION | SWP_NOMOVE | SWP_NOZORDER | SWP_NOOWNERZORDER);
-
-            int w = Monitor.Bounds.Width / 2;
-            int x = Monitor.Bounds.X + (left ? 0 : w);
-
-            SetWindowPos(Process.MainWindowHandle, IntPtr.Zero, x + 1, Monitor.Bounds.Y + 1, Monitor.Bounds.Width - 1, Monitor.Bounds.Height - 1, SWP_FRAMECHANGED | SWP_NOZORDER);
-            SetWindowPos(Process.MainWindowHandle, IntPtr.Zero, x, Monitor.Bounds.Y, w, Monitor.Bounds.Height, SWP_FRAMECHANGED | SWP_NOZORDER);
-
-            /*
-            if (mMonitor != null) {
-                SetWindowPos(mProcess.MainWindowHandle, IntPtr.Zero, mMonitor.Bounds.X + 50, mMonitor.Bounds.Y + 50, mMonitor.Bounds.Width - 50, mMonitor.Bounds.Height - 50, SWP_NOZORDER);
-                SetWindowPos(mProcess.MainWindowHandle, IntPtr.Zero, mMonitor.Bounds.X, mMonitor.Bounds.Y, mMonitor.Bounds.Width, mMonitor.Bounds.Height, SWP_NOZORDER);
-            }
-            */
-            BringToFront();
-        }
     }
 }

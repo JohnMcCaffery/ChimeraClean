@@ -71,6 +71,8 @@ namespace Chimera.GUI.Controls {
                 tab.Controls.Add(panel);
 
                 mainTab.Controls.Add(tab);
+
+                mainTab.SelectedTab = tab;
             }
 
             mWindow_Changed(frame, null);
