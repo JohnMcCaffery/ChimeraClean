@@ -34,6 +34,12 @@ using OpenMetaverse.Packets;
 using System.Threading;
 using Chimera.OpenSim;
 using System.IO;
+using System.Net.Sockets;
+using System.Net;
+using SandboxTest;
+using CefSharp.Example;
+using CefSharp;
+using System.Diagnostics;
 
 namespace Test {
     public class Program {
@@ -51,46 +57,31 @@ namespace Test {
         private static Core mCoordinator;
         private static Vector3 sCentre = new Vector3(128f, 128f, 60f);
 
-        private static Rotation GetRot(Vector3 pos) {
-            return new Rotation(sCentre - pos);
-        }
-
-        private static SetFollowCamPropertiesPacket MakePacket() {
-                SetFollowCamPropertiesPacket packet = new SetFollowCamPropertiesPacket();
-                packet.CameraProperty = new SetFollowCamPropertiesPacket.CameraPropertyBlock[22];
-                for (int i = 0; i < 22; i++) {
-                    packet.CameraProperty[i] = new SetFollowCamPropertiesPacket.CameraPropertyBlock();
-                    packet.CameraProperty[i].Type = i + 1;
-                }
-
-                packet.CameraProperty[0].Value = 0f;
-                packet.CameraProperty[1].Value = 0f;
-                packet.CameraProperty[2].Value = 0f;
-                packet.CameraProperty[3].Value = 0f;
-                packet.CameraProperty[4].Value = 0f;
-                packet.CameraProperty[5].Value = 0f;
-                packet.CameraProperty[6].Value = 0f;
-                packet.CameraProperty[7].Value = 0f;
-                packet.CameraProperty[8].Value = 0f;
-                packet.CameraProperty[9].Value = 0f;
-                packet.CameraProperty[10].Value = 0f;
-                packet.CameraProperty[11].Value = 1f;
-                packet.CameraProperty[12].Value = 0f; //Position
-                packet.CameraProperty[13].Value = 100f; //Position X
-                packet.CameraProperty[14].Value = 100f; //Position Y
-                packet.CameraProperty[15].Value = 60f; //Position Z
-                packet.CameraProperty[16].Value = 0f; //Focus
-                packet.CameraProperty[17].Value = 128f; //Focus X
-                packet.CameraProperty[18].Value = 128f; //Focus Y
-                packet.CameraProperty[19].Value = 60; //Focus Z
-                packet.CameraProperty[20].Value = 1f; //Lock Positon
-                packet.CameraProperty[21].Value = 1f; //Lock Focus
-
-                return packet;
-        }
 
         [STAThread]
         public static void Main(string[] a) {
+	    /*
+            CefExample.Init();
+
+	    Application.SetCompatibleTextRenderingDefault(false);
+            UDPTest form = new UDPTest();
+            Application.Run(form);
+	    */
+
+            Socket sock = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            sock.Connect(IPAddress.Loopback, 5001);
+
+            IPAddress serverAddr = IPAddress.Parse("127.0.0.1");
+
+            IPEndPoint endPoint = new IPEndPoint(serverAddr, 5000);
+
+            string text = "Hello";
+            byte[] send_buffer = Encoding.ASCII.GetBytes(text);
+
+            sock.Send(send_buffer);
+
+            Thread.Sleep(10000);
+
             /*
             string localAddress = "127.0.0.1";
             string portArg = "--proxy-login-port=8080";
@@ -131,7 +122,6 @@ namespace Test {
             viewerArgs += " --channel \"Firestorm-Release\" --settings settings_firestorm_release_v4.xml --set InstallLanguage en";
 
             viewer.Start(exe, Path.GetDirectoryName(exe), viewerArgs);
-            */
 
             double firstDirect = CalcInterest(0, 300, .06);
             double bos = CalcInterest(2000, 50, .0169);
@@ -139,6 +129,45 @@ namespace Test {
             CalcInterest(2000, 350, .03);
 
             Console.ReadLine();
+            */
+        }
+
+        private static Rotation GetRot(Vector3 pos) {
+            return new Rotation(sCentre - pos);
+        }
+
+        private static SetFollowCamPropertiesPacket MakePacket() {
+                SetFollowCamPropertiesPacket packet = new SetFollowCamPropertiesPacket();
+                packet.CameraProperty = new SetFollowCamPropertiesPacket.CameraPropertyBlock[22];
+                for (int i = 0; i < 22; i++) {
+                    packet.CameraProperty[i] = new SetFollowCamPropertiesPacket.CameraPropertyBlock();
+                    packet.CameraProperty[i].Type = i + 1;
+                }
+
+                packet.CameraProperty[0].Value = 0f;
+                packet.CameraProperty[1].Value = 0f;
+                packet.CameraProperty[2].Value = 0f;
+                packet.CameraProperty[3].Value = 0f;
+                packet.CameraProperty[4].Value = 0f;
+                packet.CameraProperty[5].Value = 0f;
+                packet.CameraProperty[6].Value = 0f;
+                packet.CameraProperty[7].Value = 0f;
+                packet.CameraProperty[8].Value = 0f;
+                packet.CameraProperty[9].Value = 0f;
+                packet.CameraProperty[10].Value = 0f;
+                packet.CameraProperty[11].Value = 1f;
+                packet.CameraProperty[12].Value = 0f; //Position
+                packet.CameraProperty[13].Value = 100f; //Position X
+                packet.CameraProperty[14].Value = 100f; //Position Y
+                packet.CameraProperty[15].Value = 60f; //Position Z
+                packet.CameraProperty[16].Value = 0f; //Focus
+                packet.CameraProperty[17].Value = 128f; //Focus X
+                packet.CameraProperty[18].Value = 128f; //Focus Y
+                packet.CameraProperty[19].Value = 60; //Focus Z
+                packet.CameraProperty[20].Value = 1f; //Lock Positon
+                packet.CameraProperty[21].Value = 1f; //Lock Focus
+
+                return packet;
         }
 
         private static double CalcInterest(double start, double inc, double rate) {
@@ -225,8 +254,8 @@ namespace Test {
             ProcessWrangler.BlockingRunForm(form, null);
             */
 
-        private static void Init() {
-			Nui.Init();
+        private static void InitNui() {
+            Nui.Init();
             Nui.SetAutoPoll(true);
             Vector pointEnd = Nui.joint(Nui.Hand_Right);
             mPointStart = Nui.joint(Nui.Shoulder_Right);
@@ -258,6 +287,41 @@ namespace Test {
             };
 
             mPointStart.Set(1f, 0f, 0f);
+        }
+
+        internal class CefSharpSchemeHandlerFactory : ISchemeHandlerFactory {
+            public const string SchemeName = "custom";
+
+            public ISchemeHandler Create() {
+                return new CefSharpSchemeHandler();
+            }
+        }
+
+        public static void Init() {
+            var settings = new CefSettings();
+            settings.RemoteDebuggingPort = 8088;
+            //settings.CefCommandLineArgs.Add("renderer-process-limit", "1");
+            //settings.CefCommandLineArgs.Add("renderer-startup-dialog", "renderer-startup-dialog");
+            settings.LogSeverity = LogSeverity.Verbose;
+
+            if (Debugger.IsAttached) {
+                var architecture = Environment.Is64BitProcess ? "x64" : "x86";
+                settings.BrowserSubprocessPath = "BrowserSubprocess\\" + architecture + "\\Debug\\CefSharp.BrowserSubprocess.exe";
+            }
+	    
+
+            settings.RegisterScheme(new CefCustomScheme {
+                SchemeName = CefSharpSchemeHandlerFactory.SchemeName,
+                SchemeHandlerFactory = new CefSharpSchemeHandlerFactory()
+            });
+
+            if (!Cef.Initialize(settings)) {
+                if (Environment.GetCommandLineArgs().Contains("--type=renderer")) {
+                    Environment.Exit(0);
+                } else {
+                    return;
+                }
+            }
         }
     }
 }

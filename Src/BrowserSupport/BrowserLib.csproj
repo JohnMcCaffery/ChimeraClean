@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{010F68CE-B9AC-48DD-A606-5628A52CAF45}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>BrowserLib</RootNamespace>
+    <AssemblyName>BrowserLib</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\Bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\Bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="CefSharp">
+      <HintPath>..\..\Lib\CefSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="CefSharp.Core">
+      <HintPath>..\..\Lib\CefSharp.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="CefSharp.WinForms">
+      <HintPath>..\..\Lib\CefSharp.WinForms.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CefSharp\CefSharpSchemeHandler.cs" />
+    <Compile Include="CefSharp\CefSharpSchemeHandlerFactory.cs" />
+    <Compile Include="CefSharp\DownloadHandler.cs" />
+    <Compile Include="CefSharp\DragHandler.cs" />
+    <Compile Include="CefSharp\JsDialogHandler.cs" />
+    <Compile Include="CefSharp\Properties\Resources.Designer.cs" />
+    <Compile Include="CefSharp\SubBoundObject.cs" />
+    <Compile Include="CefSharp\TempFileDialogHandler.cs" />
+    <Compile Include="Overlay\Features\BrowserFeature.cs" />
+    <Compile Include="Overlay\Triggers\PageLoadTrigger.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="CefSharp\Properties\Resources.resx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="GUI\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ChimeraLib\ChimeraLib.csproj">
+      <Project>{58E39BFE-20D5-4C8D-BCFC-6B5E641C2DFF}</Project>
+      <Name>ChimeraLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OverlayLib\OverlayLib.csproj">
+      <Project>{F1421BBF-6313-4C3D-9AF4-1898528728D0}</Project>
+      <Name>OverlayLib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

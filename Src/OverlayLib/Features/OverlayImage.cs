@@ -71,7 +71,6 @@ namespace Chimera.Overlay.Features {
             set { mClip = value; }
         }
 
-
         /// <summary>
         /// The position / size for the image. Specified as a relative values.
         /// For location: 0,0 = top left, 1,1 = bottom right.

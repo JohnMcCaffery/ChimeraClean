@@ -197,12 +197,10 @@ namespace Chimera.GUI.Forms {
         }
 
         public void AddControl(Control control, RectangleF pos) {
-            Action setBounds = () => control.Bounds = new Rectangle((int) (Width * pos.X), (int) (Height * pos.Y), (int) (Width * pos.Width), (int) (Height * pos.Height));
-            if (control.InvokeRequired)
-                control.BeginInvoke(setBounds);
-            else
-                setBounds();
-            Invoke(() => drawPanel.Controls.Add(control));
+            Invoke(() => {
+                control.Bounds = new Rectangle((int)(Width * pos.X), (int)(Height * pos.Y), (int)(Width * pos.Width), (int)(Height * pos.Height));
+                drawPanel.Controls.Add(control);
+            });
         }
 
         public void RemoveControl(Control control) {

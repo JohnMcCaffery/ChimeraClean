@@ -48,7 +48,6 @@ namespace Chimera.Interfaces.Overlay {
         /// <summary>
         /// Notify the drawable that the area on which it is to draw has changed. Should draw any elements which only change when the area is resized to the supplied graphics object.
         /// </summary>
-        /// 
         /// <param name="graphics">The object with which to to draw any elements which only change when the area is resized.</param>
         void DrawStatic(Graphics graphics);
 
