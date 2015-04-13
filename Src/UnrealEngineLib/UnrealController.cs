@@ -10,6 +10,7 @@ using System.Net;
 using log4net;
 using Chimera.Interfaces;
 using System.IO;
+using System.Drawing;
 
 namespace UnrealEngineLib {
     public class UnrealControllerFactor : IOutputFactory {
@@ -92,6 +93,7 @@ namespace UnrealEngineLib {
         public void Close() {
             if (mServer != null) {
                 SendString(mConfig.ShutdownStr);
+                SendString("~console exit");
             }
         }
 
@@ -103,6 +105,21 @@ namespace UnrealEngineLib {
             get { return mConfig.Fill; }
             set {
                 mConfig.Fill = value;
+                if (mProcess == null)
+                    return;
+
+                if (value == Chimera.Fill.Full) {
+                    mProcess.Monitor = mFrame.Monitor;
+                    SendString("~console r.setRes " + mFrame.Width + "x" + mFrame.Height);
+                } else if (value == Chimera.Fill.Left || value == Chimera.Fill.Right) {
+                    Rectangle position = mFrame.Monitor.Bounds;
+                    SendString("~console r.setRes " + position.Width + "x" + position.Height);
+                    position.Width /= 2;
+                    if (value == Chimera.Fill.Right)
+                        position.X += position.Width;
+                    mProcess.Position = position;
+                } else {
+                }
                 mProcess.FullScreen = value == Fill.Full;
                 if (value == Fill.Left)
                     mProcess.Split(ProcessController.Side.Left);
@@ -117,6 +134,10 @@ namespace UnrealEngineLib {
         }
 
         public void SendString(string str) {
+            if (mUnrealCommunicator == null) {
+                ThisLogger.Warn("Cannot send message to unreal, communicator is not yet established: " + str);
+                return;
+            }
             byte[] send_buffer = Encoding.ASCII.GetBytes(str + '\0');
 
             try {

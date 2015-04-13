@@ -4,6 +4,6 @@ using System.Linq;
 using System.Text;
 
 namespace UnrealEngineLib.Overlay {
-    class StringFeature {
+    public class SendStringFeature {
     }
 }

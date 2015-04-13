@@ -7,6 +7,7 @@ using System.Windows.Forms;
 using System.Runtime.InteropServices;
 using log4net;
 using System.Threading;
+using System.Drawing;
 
 namespace Chimera.Util {
     public class ProcessController {
@@ -625,17 +626,27 @@ namespace Chimera.Util {
             get { return mMonitor; }
             set {
                 mMonitor = value;
+                Position = mMonitor.Bounds;
+            }
+        }
 
+        private Rectangle mPosition;
+
+        public Rectangle Position {
+            get { return mMonitor.Bounds; }
+            set {
                 if (!Started)
                     return;
+
+                mPosition = value;
 
                 SetWindowPos(
                     mProcess.MainWindowHandle,
                     IntPtr.Zero,
-                    mMonitor.Bounds.X,
-                    mMonitor.Bounds.Y,
-                    mMonitor.Bounds.Width,
-                    mMonitor.Bounds.Height,
+                    mPosition.X,
+                    mPosition.Y,
+                    mPosition.Width,
+                    mPosition.Height,
                     SWP_NOZORDER);
             }
         }

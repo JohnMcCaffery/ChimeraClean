@@ -64,8 +64,8 @@ namespace UnrealEngineLib {
             UnrealShutdownStr = GetStr("UnrealShutdownStr", UNREAL_SHUTDOWN_STR, "The string that will be received from Unreal if it is shut down.");
             ShutdownStr = GetStr("ShutdownStr", SHUTDOWN_STR, "The string that can be sent to Unreal to request it shut down.");
 
-            AutoStartUnreal = Get("AutoStarUnreal", false, "Whether to automatically start unreal at startup.");
-            AutoStartServer = Get("AutoStarServer", false, "Whether to automatically restart the TCP server which listens for connections at startup.");
+            AutoStartUnreal = GetFrame("AutoStarUnreal", false, "Whether to automatically start unreal at startup.");
+            AutoStartServer = GetFrame("AutoStarServer", false, "Whether to automatically restart the TCP server which listens for connections at startup.");
 
             AutoRestartUnreal = Get("AutoRestart", false, "Whether to automatically restart unreal if the process exits.");
 
