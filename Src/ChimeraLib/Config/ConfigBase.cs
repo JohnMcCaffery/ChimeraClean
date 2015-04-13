@@ -289,6 +289,7 @@ namespace Chimera.Config {
         protected T GetEnum<T>(string section, string key, T defalt, string description, ILog logger) where T : struct  {
             if (!configLoaded)
                 LoadConfig();
+
             T value;
             string val = Init.Get(mSource.Configs[section], key, defalt.ToString());
             if (!Enum.TryParse<T>(val, out value)) {
