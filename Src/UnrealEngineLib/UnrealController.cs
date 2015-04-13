@@ -84,7 +84,12 @@ namespace UnrealEngineLib {
 
         public bool Launch() {
             StartServer();
-            mProcess = new ProcessController(mConfig.UnrealExecutable, mConfig.UnrealWorkingDirectory, mConfig.UnrealArguments);
+            string windowPosition = "";
+            windowPosition += " -WinX=" + mFrame.Monitor.Bounds.X;
+            windowPosition += " -WinY=" + mFrame.Monitor.Bounds.Y;
+            windowPosition += " -ResX=" + mFrame.Monitor.Bounds.Width;
+            windowPosition += " -ResY=" + mFrame.Monitor.Bounds.Height;
+            mProcess = new ProcessController(mConfig.UnrealExecutable, mConfig.UnrealWorkingDirectory, mConfig.UnrealArguments + windowPosition);
             mProcess.Start();
 
             return false;
@@ -105,26 +110,28 @@ namespace UnrealEngineLib {
             get { return mConfig.Fill; }
             set {
                 mConfig.Fill = value;
-                if (mProcess == null)
-                    return;
 
                 if (value == Chimera.Fill.Full) {
-                    mProcess.Monitor = mFrame.Monitor;
+                    //mProcess.Monitor = mFrame.Monitor;
+                    SendString("~Position " + mFrame.Monitor.Bounds.X + "," + mFrame.Monitor.Bounds.Y);
                     SendString("~console r.setRes " + mFrame.Width + "x" + mFrame.Height);
                 } else if (value == Chimera.Fill.Left || value == Chimera.Fill.Right) {
                     Rectangle position = mFrame.Monitor.Bounds;
-                    SendString("~console r.setRes " + position.Width + "x" + position.Height);
                     position.Width /= 2;
                     if (value == Chimera.Fill.Right)
                         position.X += position.Width;
-                    mProcess.Position = position;
+                    SendString("~console r.setRes " + position.Width + "x" + position.Height);
+                    SendString("~Position " + position.X + "," + position.Y);
+                    //mProcess.Position = position;
                 } else {
                 }
+		/*
                 mProcess.FullScreen = value == Fill.Full;
                 if (value == Fill.Left)
                     mProcess.Split(ProcessController.Side.Left);
                 else if (value == Fill.Right)
                     mProcess.Split(ProcessController.Side.Right);
+		*/
             }
         }
 
@@ -190,8 +197,8 @@ namespace UnrealEngineLib {
             ThisLogger.Warn("Unreal launched and connected.");
             SendString(mConfig.UnrealInitialisedAck);
             WaitForMessages();
-	    if (mProcess != null)
-		    Fill = mConfig.Fill;
+	    //if (mProcess != null)
+            Fill = mConfig.Fill;
         }
 
         private void WaitForConnections() {
