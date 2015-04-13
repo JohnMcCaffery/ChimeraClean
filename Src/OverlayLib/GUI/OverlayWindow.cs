@@ -204,7 +204,9 @@ namespace Chimera.GUI.Forms {
         }
 
         public void RemoveControl(Control control) {
-            Controls.Remove(control);
+            Invoke(() => {
+                drawPanel.Controls.Remove(control);
+            });
         }
 
         private void OverlayWindow_MouseDown(object sender, MouseEventArgs e) {

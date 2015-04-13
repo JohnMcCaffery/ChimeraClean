@@ -7,6 +7,7 @@ using Chimera.Overlay;
 using Chimera.Interfaces.Overlay;
 using Chimera.Overlay.Triggers;
 using System.Xml;
+using Chimera.BrowserLib.Features;
 
 namespace BrowserLib.Overlay.Triggers {
     public class PageLoadTriggerFactory : ITriggerFactory {
@@ -49,7 +50,7 @@ namespace BrowserLib.Overlay.Triggers {
             mUrl = GetString(node, "http://openvirtualworlds.org", "URL");
 
             mPageLoadListener = (addr, browser) => {
-                                if (mUrl == addr)
+                                if (BrowserFeature.IsActive(browser) && mUrl == addr)
                                     Trigger();
                             };
         }

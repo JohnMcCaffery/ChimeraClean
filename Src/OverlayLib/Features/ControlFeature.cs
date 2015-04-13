@@ -29,11 +29,11 @@ namespace Chimera.Overlay.Features {
         protected abstract Func<TControl> MakeControl { get; }
         protected abstract Func<Control> MakeControlPanel { get; }
 
-        protected ControlFeature(OverlayPlugin manager, XmlNode node, bool SingletonControl) {
+        protected ControlFeature(OverlayPlugin manager, XmlNode node, bool singletonControl) {
             mPlugin = manager;
             mManager = GetManager(manager, node, "control feature");
             mFrame = mManager.Frame.Name;
-            mSingletonControl = SingletonControl;
+            mSingletonControl = singletonControl;
 
             float x = GetFloat(node, 0f, "X");
             float y = GetFloat(node, 0f, "Y");

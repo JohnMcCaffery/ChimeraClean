@@ -62,10 +62,22 @@ namespace Chimera.BrowserLib.Features
     }
     public class BrowserFeature : ControlFeature<ChromiumWebBrowser>, IFeature
     {
+        private const bool SINGLETON = false;
         private static bool sInitialised;
 
         private RectangleF mBounds = new RectangleF(0f, 0f, 1f, 1f);
         private string mUrl;
+
+        private static HashSet<ChromiumWebBrowser> sActiveFeatures = new HashSet<ChromiumWebBrowser>();
+
+	/// <summary>
+	/// Checks whether the supplied browser is currently activated.
+	/// </summary>
+	/// <param name="browser">The browser to check.</param>
+	/// <returns>True if the browser is active.</returns>
+        public static bool IsActive(ChromiumWebBrowser browser) {
+            return sActiveFeatures.Contains(browser);
+        }
 
         private void InitCef() {
             if (!sInitialised) {
@@ -74,14 +86,14 @@ namespace Chimera.BrowserLib.Features
             }
         }
 
-        public  BrowserFeature(OverlayPlugin manager, XmlNode node) : base (manager, node, false)
-        {
+        public BrowserFeature(OverlayPlugin manager, XmlNode node)
+            : base(manager, node, SINGLETON) {
             mUrl = GetString(node, "http://get.webgl.org/", "URL");
             InitCef();
         }
 
         public BrowserFeature(OverlayPlugin manager, XmlNode node, Rectangle clip)
-            : base(manager, node, true, clip) {
+            : base(manager, node, SINGLETON, clip) {
             InitCef();
             mUrl = GetString(node, "http://get.webgl.org/", "URL");
 
@@ -136,6 +148,19 @@ namespace Chimera.BrowserLib.Features
                 } else {
                     return;
                 }
+            }
+        }
+
+        public override bool Active {
+            get { return base.Active; }
+            set {
+                if (value) {
+                    sActiveFeatures.Add(Control);
+                } else {
+                    sActiveFeatures.Remove(Control);
+                    Control.Load(mUrl);
+                }
+                base.Active = value;
             }
         }
     }
