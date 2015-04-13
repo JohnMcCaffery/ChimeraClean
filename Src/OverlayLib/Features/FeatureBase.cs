@@ -15,17 +15,15 @@ namespace Chimera.Overlay.Features {
         private Control mControlPanel;
         private string mName;
 
-        FeatureBase(OverlayPlugin plugin, XmlNode node) {
-            GetManager(plugin, node, "FeatureBase");
+        protected FeatureBase(OverlayPlugin plugin, XmlNode node) {
+            mManager = GetManager(plugin, node, "FeatureBase");
         }
 
-        FeatureBase(OverlayPlugin plugin, XmlNode node, Rectangle clip) : this(plugin, node) {
+        protected FeatureBase(OverlayPlugin plugin, XmlNode node, Rectangle clip) : this(plugin, node) {
             mClip = clip;
         }
 
         protected FrameOverlayManager Manager { get { return mManager; } }
-
-        protected abstract Control MakeControlPanel();
 
         public Rectangle Clip {
             get { return mClip; ; }
@@ -48,18 +46,5 @@ namespace Chimera.Overlay.Features {
         public virtual void DrawStatic(System.Drawing.Graphics graphics) { }
 
         public virtual void DrawDynamic(System.Drawing.Graphics graphics) { }
-
-        public Control ControlPanel {
-            get {
-                if (mControlPanel == null)
-                    mControlPanel = MakeControlPanel();
-                return mControlPanel;
-            }
-        }
-
-        public string Name {
-            get { return mName; }
-            set { mName = value; }
-        }
     }
 }
