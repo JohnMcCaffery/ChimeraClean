@@ -5,39 +5,63 @@ using System.Text;
 using Chimera.Interfaces.Overlay;
 using System.Drawing;
 using System.Xml;
+using log4net;
 
 namespace Chimera.Overlay.Features {
+    public class ConditionalFeatureFactory : IFeatureFactory {
+        public IFeature Create(OverlayPlugin manager, XmlNode node) {
+            return new ConditionalFeature(manager, node);
+        }
+
+        public IFeature Create(OverlayPlugin manager, XmlNode node, Rectangle clip) {
+            return Create(manager, node);
+        }
+
+        public string Name {
+            get { return "Conditional"; }
+        }
+    }
     public class ConditionalFeature : OverlayXmlLoader, IFeature {
+        private static ILog Logger = LogManager.GetLogger("Overlay");
         private OverlayPlugin mPlugin;
         private IFeature mFeature;
-        private ITrigger mActiveTrigger;
-        private ITrigger mInactiveTrigger;
+        private List<ITrigger> mActiveTriggers = new List<ITrigger>();
+        private List<ITrigger> mInactiveTriggers = new List<ITrigger>();
+        private bool mActive = false;
+        private bool mStartActive = false;
+        private bool mMultiActivate = false;
 
         public ConditionalFeature(OverlayPlugin plugin, XmlNode node) {
             mPlugin = plugin;
-            XmlNode activeTriggerNode = node.SelectSingleNode("child::ActiveTrigger");
-            XmlNode inActiveTriggerNode = node.SelectSingleNode("child::InactiveTrigger");
             XmlNode featureNode = node.SelectSingleNode("child::Feature");
-            if (activeTriggerNode == null)
-                throw new ArgumentException("Unable to load Conditional Feature. No 'ActiveTrigger' attribute specified.");
-            if (inActiveTriggerNode == null)
-                throw new ArgumentException("Unable to load Conditional Feature. No 'InactiveTrigger' attribute specified.");
-            if (featureNode == null)
-                throw new ArgumentException("Unable to load Conditional Feature. No 'Feature' attribute specified.");
 
-            mActiveTrigger = mPlugin.GetTrigger(node, "conditional feature", null);
-            mInactiveTrigger = mPlugin.GetTrigger(node, "conditional feature", null);
-            mFeature = mPlugin.GetFeature(featureNode, "conditional feature", null);
+            mStartActive = GetBool(node, false, "StartActive");
+            mMultiActivate = GetBool(node, false, "MultiActivate");
 
-            if (activeTriggerNode == null)
-                throw new ArgumentException("Unable to load Conditional Feature. Unable to parse active trigger.");
-            if (inActiveTriggerNode == null)
-                throw new ArgumentException("Unable to load Conditional Feature. Unable to parse inactive trigger.");
             if (featureNode == null)
                 throw new ArgumentException("Unable to load Conditional Feature. Unable to parse feature.");
 
-            mActiveTrigger.Triggered += new Action<ITrigger>(mActiveTrigger_Triggered);
-            mInactiveTrigger.Triggered += new Action<ITrigger>(mInactiveTrigger_Triggered);
+            foreach (var child in GetChildrenOfChild(node, "ActiveTriggers")) {
+                var trigger = plugin.GetTrigger(child, "conditional feature", null);
+                mActiveTriggers.Add(trigger);
+                trigger.Triggered += mActiveTrigger_Triggered;
+            } foreach (var child in GetChildrenOfChild(node, "InactiveTriggers")) {
+                var trigger = plugin.GetTrigger(child, "conditional feature", null);
+                mInactiveTriggers.Add(trigger);
+                trigger.Triggered += mInactiveTrigger_Triggered;
+            }
+
+            mFeature = mPlugin.GetFeature(featureNode, "conditional feature", null);
+
+            if (node.SelectSingleNode("child::ActiveTriggers") == null)
+                Logger.Info("No active trigger node found in conditional feature " + Name + ".");
+            if (node.SelectSingleNode("child::InactiveTriggers") == null)
+                Logger.Info("No inactive trigger node found in conditional feature.");
+
+            if (mActiveTriggers.Count == 0)
+                Logger.Info("No active triggers loaded in conditional feature " + Name + ".");
+            if (mInactiveTriggers.Count == 0)
+                Logger.Info("No inactive triggers loaded in conditional feature " + Name + ".");
         }
 
         void mActiveTrigger_Triggered(ITrigger source) {
@@ -56,12 +80,17 @@ namespace Chimera.Overlay.Features {
         }
 
         public bool Active {
-            get { return mActiveTrigger.Active; }
+            get { return mActive; }
             set {
-                mActiveTrigger.Active = value;
-                mInactiveTrigger.Active = value;
-                if (!value)
-                    mFeature.Active = false;
+                if (mActive != value || mMultiActivate) {
+                    mActive = value;
+                    mActiveTriggers.ForEach((testc) => testc.Active = value);
+                    mInactiveTriggers.ForEach((testc) => testc.Active = value);
+                    if (!value)
+                        mFeature.Active = false;
+                    else if (mStartActive)
+                        mFeature.Active = true;
+                }
             }
         }
 
