@@ -129,7 +129,7 @@ namespace Chimera.BrowserLib.Features
             settings.RemoteDebuggingPort = 8088;
             //settings.CefCommandLineArgs.Add("renderer-process-limit", "1");
             //settings.CefCommandLineArgs.Add("renderer-startup-dialog", "renderer-startup-dialog");
-            settings.LogSeverity = LogSeverity.Verbose;
+            settings.LogSeverity = LogSeverity.Warning;
 
             if (Debugger.IsAttached) {
                 var architecture = Environment.Is64BitProcess ? "x64" : "x86";
@@ -155,7 +155,10 @@ namespace Chimera.BrowserLib.Features
             get { return base.Active; }
             set {
                 if (value) {
-                    sActiveFeatures.Add(Control);
+                    if (base.Active)
+                        Control.Load(mUrl);
+                    else
+                        sActiveFeatures.Add(Control);
                 } else {
                     sActiveFeatures.Remove(Control);
                     Control.Load(mUrl);
