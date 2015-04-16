@@ -32,6 +32,8 @@ namespace BrowserLib.Overlay.Triggers {
         }
     }
     public class PageLoadTrigger :TriggerBase {
+        public const string ANY_PAGE = "ANY_PAGE";
+
         public static void RegisterBrowser(ChromiumWebBrowser browser) {
             browser.AddressChanged += (source, args) => {
                 if (PageLoaded != null)
@@ -50,7 +52,7 @@ namespace BrowserLib.Overlay.Triggers {
             mUrl = GetString(node, "http://openvirtualworlds.org", "URL");
 
             mPageLoadListener = (addr, browser) => {
-                                if (BrowserFeature.IsActive(browser) && mUrl == addr)
+                                if (BrowserFeature.IsActive(browser) && (mUrl == ANY_PAGE || mUrl == addr))
                                     Trigger();
                             };
         }
