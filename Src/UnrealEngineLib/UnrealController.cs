@@ -114,14 +114,14 @@ namespace UnrealEngineLib {
                 if (value == Chimera.Fill.Full) {
                     //mProcess.Monitor = mFrame.Monitor;
                     SendString("~Position " + mFrame.Monitor.Bounds.X + "," + mFrame.Monitor.Bounds.Y);
-                    SendString("~console r.setRes " + mFrame.Width + "x" + mFrame.Height);
+                    SendString("~console r.setRes " + mFrame.Monitor.Bounds.Width + "x" + mFrame.Monitor.Bounds.Height);
                 } else if (value == Chimera.Fill.Left || value == Chimera.Fill.Right) {
                     Rectangle position = mFrame.Monitor.Bounds;
                     position.Width /= 2;
                     if (value == Chimera.Fill.Right)
                         position.X += position.Width;
-                    SendString("~console r.setRes " + position.Width + "x" + position.Height);
                     SendString("~Position " + position.X + "," + position.Y);
+                    SendString("~console r.setRes " + position.Width + "x" + position.Height);
                     //mProcess.Position = position;
                 } else {
                 }
