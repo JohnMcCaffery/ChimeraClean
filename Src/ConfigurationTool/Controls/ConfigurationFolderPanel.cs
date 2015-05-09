@@ -26,7 +26,8 @@ namespace Chimera.ConfigurationTool.Controls {
             mFolder = folder;
             mSetter = setter;
 
-            this.bindingsControlPanel = new BindingsControlPanel(folder);
+            this.bindingsControlPanel = new BindingsControlPanel(folder);
+
             // 
             // bindingsControlPanel
             // 
@@ -74,7 +75,8 @@ namespace Chimera.ConfigurationTool.Controls {
                     !f.Contains("opencv") && 
                     !f.Contains("SlimDX") && 
                     !f.Contains("Cef") && 
-                    !f.Contains("openjpeg")).
+                    !f.Contains("openjpeg") &&
+                    f.EndsWith("Lib.dll")).
                 Select(f => {
                     try {
                         return Assembly.Load(File.ReadAllBytes(f));

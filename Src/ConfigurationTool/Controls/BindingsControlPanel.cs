@@ -78,45 +78,78 @@ namespace ConfigurationTool.Controls {
             }
         }
 
+        private class AssemblyComparer : IEqualityComparer<Assembly> {
+            public bool Equals(Assembly x, Assembly y) {
+                return x.FullName == y.FullName;
+            }
+
+            public int GetHashCode(Assembly obj) {
+                return obj.FullName.GetHashCode();
+            }
+        }
+
+
+        private class InterfaceComparer : IEqualityComparer<Type> {
+            public bool Equals(Type x, Type y) {
+                return x.Name == y.Name;
+            }
+
+            public int GetHashCode(Type obj) {
+                return obj.Name.GetHashCode();
+            }
+        }
+
         public void InitialiseInterfaces() {
             mBindings.Clear();
 
             string folder = Path.GetDirectoryName(AppDomain.CurrentDomain.SetupInformation.ConfigurationFile);
             folder = Path.GetFullPath(Path.Combine(folder, "../"));
 
-            string assemblyName = "ChimeraLib";
-            //Iterate through every assembly in the folder where the tool is running
-            foreach (var assembly in 
-                new Assembly[] { typeof(ConfigBase).Assembly }.
+            AssemblyComparer comp = new AssemblyComparer();
+
+            var assemblies = new Assembly[] { typeof(ConfigBase).Assembly }.
                 Concat(Directory.GetFiles(folder).
                 Where(f => 
                     Path.GetExtension(f).ToUpper() == ".DLL" && 
                     !f.Contains("NuiLib") && 
                     !f.Contains("opencv") && 
                     !f.Contains("openjpeg") && 
-                    !f.Contains("SlimDX")).
+                    !f.Contains("SlimDX") &&
+                    !f.Contains("WMP") &&
+                    f.EndsWith("Lib.dll")).
                 Select(f => {
                     try {
-                        assemblyName = Path.GetFileNameWithoutExtension(f);
                         return Assembly.Load(File.ReadAllBytes(f));
                     } catch (Exception e) {
                         return null;
                     }
-                }).
-                Where(a => a != null))) {
+                })).Where(a => a != null).Distinct(comp);
+
+            Console.WriteLine(assemblies.Count());
+
+            //Iterate through every assembly in the folder where the tool is running
+            foreach (var assembly in assemblies) {
                 ListViewGroup g = null;
 
+                string assemblyName = assembly.FullName.Split(',')[0];
+
+                InterfaceComparer comparer = new InterfaceComparer();
+
                 //Iterate through every class which implements one of the interfaces on the interfaces list
-                foreach (var clazz in 
-                    assembly.GetTypes().
+                var types = assembly.GetTypes().
                     Where(t => 
                         !t.IsAbstract && 
                         !t.IsInterface && 
-                        t.GetInterfaces().Intersect(mInterfaces).Count() > 0).
+                        t.GetInterfaces().Intersect(mInterfaces, comparer).Count() > 0).
                         OrderBy(t => t.Name).
-                        OrderBy(t => t.GetInterfaces()[0].Name)) {
+                        OrderBy(t => t.GetInterfaces()[0].Name);
 
-                    var intrface = clazz.GetInterfaces().Intersect(mInterfaces).First();
+                Console.WriteLine(types.Count());
+
+                //Iterate through every class which implements one of the interfaces on the interfaces list
+                foreach (var clazz in types) {
+
+                    var intrface = clazz.GetInterfaces().Intersect(mInterfaces, comparer).First();
 
                     Invoke(new Action(() => {
                         if (g == null) {

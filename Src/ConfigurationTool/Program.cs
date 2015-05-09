@@ -48,7 +48,13 @@ namespace Chimera.ConfigurationTool {
             if (!File.Exists(file))
                 return null;
 
-            return Assembly.LoadFrom(file);
+            try {
+                return Assembly.LoadFrom(file);
+                //File.Copy(file, Path.GetFileName(file), true);
+                //return Assembly.Load(args.Name);
+            } catch (Exception e) {
+                return null;
+            }
         }
     }
 
