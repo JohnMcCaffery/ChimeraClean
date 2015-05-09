@@ -3,10 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using Chimera.Interfaces;
 
 namespace Chimera.Plugins
 {
-    public class OutputPluginStub : IOutput {
+    public class StubOutputPluginFactory : IOutputFactory {
+        public IOutput Create() {
+            return new StubOutputPlugin();
+        }
+    }
+
+    public class StubOutputPlugin : IOutput {
         private Frame mFrame;
 
         public Frame Frame {
