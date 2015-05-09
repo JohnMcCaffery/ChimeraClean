@@ -85,10 +85,25 @@ namespace UnrealEngineLib {
         public bool Launch() {
             StartServer();
             string windowPosition = "";
-            windowPosition += " -WinX=" + mFrame.Monitor.Bounds.X;
-            windowPosition += " -WinY=" + mFrame.Monitor.Bounds.Y;
-            windowPosition += " -ResX=" + mFrame.Monitor.Bounds.Width;
-            windowPosition += " -ResY=" + mFrame.Monitor.Bounds.Height;
+
+
+            if (mConfig.Fill != Chimera.Fill.Windowed) {
+                windowPosition += " -WinX=" + mFrame.Monitor.Bounds.X;
+                windowPosition += " -WinY=" + mFrame.Monitor.Bounds.Y;
+                if (mConfig.Fill == Chimera.Fill.Full) {
+                    windowPosition += " -ResX=" + mFrame.Monitor.Bounds.Width;
+                    windowPosition += " -ResY=" + mFrame.Monitor.Bounds.Height;
+                } else if (mConfig.Fill == Chimera.Fill.Left || mConfig.Fill == Chimera.Fill.Right) {
+                    Rectangle position = mFrame.Monitor.Bounds;
+                    position.Width /= 2;
+                    if (mConfig.Fill == Chimera.Fill.Right)
+                        position.X += position.Width;
+                    windowPosition += " -ResX=" + position.Width;
+                    windowPosition += " -ResY=" + position.Height;
+                }
+            }
+
+
             mProcess = new ProcessController(mConfig.UnrealExecutable, mConfig.UnrealWorkingDirectory, mConfig.UnrealArguments + windowPosition);
             mProcess.Start();
 
@@ -113,18 +128,19 @@ namespace UnrealEngineLib {
 
                 if (value == Chimera.Fill.Full) {
                     //mProcess.Monitor = mFrame.Monitor;
-                    SendString("~Position " + mFrame.Monitor.Bounds.X + "," + mFrame.Monitor.Bounds.Y);
-                    SendString("~console r.setRes " + mFrame.Monitor.Bounds.Width + "x" + mFrame.Monitor.Bounds.Height);
+                    //SendString("~Position " + mFrame.Monitor.Bounds.X + "," + mFrame.Monitor.Bounds.Y);
+                    //SendString("~console r.setRes " + mFrame.Monitor.Bounds.Width + "x" + mFrame.Monitor.Bounds.Height);
                 } else if (value == Chimera.Fill.Left || value == Chimera.Fill.Right) {
                     Rectangle position = mFrame.Monitor.Bounds;
                     position.Width /= 2;
                     if (value == Chimera.Fill.Right)
                         position.X += position.Width;
-                    SendString("~Position " + position.X + "," + position.Y);
-                    SendString("~console r.setRes " + position.Width + "x" + position.Height);
+                    //SendString("~Position " + position.X + "," + position.Y);
+                    //SendString("~console r.setRes " + position.Width + "x" + position.Height);
                     //mProcess.Position = position;
                 } else {
                 }
+
 		/*
                 mProcess.FullScreen = value == Fill.Full;
                 if (value == Fill.Left)
