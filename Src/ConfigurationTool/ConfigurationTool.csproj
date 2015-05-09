@@ -6,7 +6,7 @@
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{26B6BC99-32A2-419F-BE5B-EB3AA6BF0570}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Chimera.ConfigurationTool</RootNamespace>
     <AssemblyName>ConfigurationTool</AssemblyName>
