@@ -67,6 +67,7 @@ namespace Chimera.BrowserLib.Features
 
         private RectangleF mBounds = new RectangleF(0f, 0f, 1f, 1f);
         private string mUrl;
+        private ChromiumWebBrowser mBrowser;
 
         private static HashSet<ChromiumWebBrowser> sActiveFeatures = new HashSet<ChromiumWebBrowser>();
 
@@ -79,35 +80,60 @@ namespace Chimera.BrowserLib.Features
             return sActiveFeatures.Contains(browser);
         }
 
-        private void InitCef() {
+        private void Init() {
             if (!sInitialised) {
-                Init();
+
+                var settings = new CefSettings();
+                settings.RemoteDebuggingPort = 8088;
+                //settings.CefCommandLineArgs.Add("renderer-process-limit", "1");
+                //settings.CefCommandLineArgs.Add("renderer-startup-dialog", "renderer-startup-dialog");
+                settings.LogSeverity = LogSeverity.Warning;
+
+                if (Debugger.IsAttached) {
+                    var architecture = Environment.Is64BitProcess ? "x64" : "x86";
+                    settings.BrowserSubprocessPath = "BrowserSubprocess\\" + architecture + "\\Debug\\CefSharp.BrowserSubprocess.exe";
+                }
+
+
+                settings.RegisterScheme(new CefCustomScheme {
+                    SchemeName = CefSharpSchemeHandlerFactory.SchemeName,
+                    SchemeHandlerFactory = new CefSharpSchemeHandlerFactory()
+                });
+
+                if (!Cef.Initialize(settings)) {
+                    if (Environment.GetCommandLineArgs().Contains("--type=renderer")) {
+                        Environment.Exit(0);
+                    } else {
+                        return;
+                    }
+                }
                 sInitialised = true;
             }
+
+            mBrowser = new ChromiumWebBrowser(mUrl);
+            PageLoadTrigger.RegisterBrowser(mBrowser);
+
+            base.Active = true;
+            base.Active = false;
+
+            //mBrowser.RegisterJsObject("bound", new BoundObject());
+
         }
 
         public BrowserFeature(OverlayPlugin manager, XmlNode node)
             : base(manager, node, SINGLETON) {
             mUrl = GetString(node, "http://get.webgl.org/", "URL");
-            InitCef();
+            Init();
         }
 
         public BrowserFeature(OverlayPlugin manager, XmlNode node, Rectangle clip)
             : base(manager, node, SINGLETON, clip) {
-            InitCef();
             mUrl = GetString(node, "http://get.webgl.org/", "URL");
-
-            //Control.RegisterJsObject("bound", new BoundObject());
+            Init();
         }
 
         protected override Func<ChromiumWebBrowser> MakeControl {
-            get {
-                return new Func<ChromiumWebBrowser>(() => {
-                    ChromiumWebBrowser browser = new ChromiumWebBrowser(mUrl);
-                    PageLoadTrigger.RegisterBrowser(browser);
-                    return browser;
-                });
-            }
+            get { return new Func<ChromiumWebBrowser>(() => mBrowser); }
         }
 
         protected override Func<Control> MakeControlPanel {
@@ -121,33 +147,6 @@ namespace Chimera.BrowserLib.Features
 
             public ISchemeHandler Create() {
                 return new CefSharpSchemeHandler();
-            }
-        }
-
-        public static void Init() {
-            var settings = new CefSettings();
-            settings.RemoteDebuggingPort = 8088;
-            //settings.CefCommandLineArgs.Add("renderer-process-limit", "1");
-            //settings.CefCommandLineArgs.Add("renderer-startup-dialog", "renderer-startup-dialog");
-            settings.LogSeverity = LogSeverity.Warning;
-
-            if (Debugger.IsAttached) {
-                var architecture = Environment.Is64BitProcess ? "x64" : "x86";
-                settings.BrowserSubprocessPath = "BrowserSubprocess\\" + architecture + "\\Debug\\CefSharp.BrowserSubprocess.exe";
-            }
-	    
-
-            settings.RegisterScheme(new CefCustomScheme {
-                SchemeName = CefSharpSchemeHandlerFactory.SchemeName,
-                SchemeHandlerFactory = new CefSharpSchemeHandlerFactory()
-            });
-
-            if (!Cef.Initialize(settings)) {
-                if (Environment.GetCommandLineArgs().Contains("--type=renderer")) {
-                    Environment.Exit(0);
-                } else {
-                    return;
-                }
             }
         }
 
