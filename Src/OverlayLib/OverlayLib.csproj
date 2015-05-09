@@ -116,6 +116,7 @@
     <Compile Include="Features\ScreenshotFeature.cs" />
     <Compile Include="Features\StaticText.cs" />
     <Compile Include="Features\Text.cs" />
+    <Compile Include="Features\VideoFeature.cs" />
     <Compile Include="GUI\ControllableSelector.cs">
       <SubType>UserControl</SubType>
     </Compile>

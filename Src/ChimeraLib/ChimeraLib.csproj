@@ -122,6 +122,7 @@
     </Compile>
     <Compile Include="Interfaces\IDiagramDrawable.cs" />
     <Compile Include="Interfaces\IOutputFactory.cs" />
+    <Compile Include="Plugins\OutputPluginStub.cs" />
     <Compile Include="Plugins\Projector.cs" />
     <Compile Include="GUI\Controls\Plugins\AxisBasedDeltaPanel.cs">
       <SubType>UserControl</SubType>
