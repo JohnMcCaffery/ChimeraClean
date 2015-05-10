@@ -58,6 +58,7 @@ namespace UnrealEngineLib {
 
             string defaultWD = new Uri(folder).MakeRelativeUri(new Uri(Path.GetDirectoryName(UnrealExecutable))).OriginalString;
             UnrealWorkingDirectory = GetFolder("WorkingDirectory", defaultWD, "The working directory for the unreal executable.");
+            UnrealArguments = GetStr("Arguments", "", "Any arguments to pass to the unreal executable on startup.");
 
             UnrealInitialisedAck = GetStr("UnrealInitialisedAck", UNREAL_INITIALISED_ACK, "The string to send to unreal to acknowledge receipt of it's startup message.");
             UnrealInitialisedStr = GetStr("UnrealInitialisedStr", UNREAL_INITIALISED_STR, "The string that will be received from Unreal when it has started up and started a socket.");
