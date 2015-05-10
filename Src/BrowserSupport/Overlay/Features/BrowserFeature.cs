@@ -99,6 +99,7 @@ namespace Chimera.BrowserLib.Features
                     SchemeName = CefSharpSchemeHandlerFactory.SchemeName,
                     SchemeHandlerFactory = new CefSharpSchemeHandlerFactory()
                 });
+                settings.UserAgent = "ChromeCEF";
 
                 if (!Cef.Initialize(settings)) {
                     if (Environment.GetCommandLineArgs().Contains("--type=renderer")) {
@@ -116,7 +117,7 @@ namespace Chimera.BrowserLib.Features
             base.Active = true;
             base.Active = false;
 
-            //mBrowser.RegisterJsObject("bound", new BoundObject());
+            mBrowser.RegisterJsObject("bound", new BoundObject());
 
         }
 
