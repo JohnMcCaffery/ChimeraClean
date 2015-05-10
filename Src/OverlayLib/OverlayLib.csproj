@@ -29,6 +29,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
@@ -222,6 +223,7 @@
     <Compile Include="Triggers\HoverTrigger.cs" />
     <Compile Include="Triggers\ImageClickTrigger.cs" />
     <Compile Include="Triggers\ImageHoverTrigger.cs" />
+    <Compile Include="Triggers\MouseActiveTrigger.cs" />
     <Compile Include="Triggers\MultiTrigger.cs" />
     <Compile Include="Triggers\SimpleTrigger.cs" />
     <Compile Include="Triggers\TextClickTrigger.cs" />
@@ -232,6 +234,7 @@
     <Compile Include="Triggers\TimerTrigger.cs" />
     <Compile Include="Triggers\TriggerBase.cs" />
     <Compile Include="OverlayXmlLoader.cs" />
+    <Compile Include="Triggers\TriggerTimeoutTrigger.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\libopenmetaverse\OpenMetaverseTypes\OpenMetaverseTypes.csproj">

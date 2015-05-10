@@ -130,6 +130,7 @@ namespace UnrealEngineLib {
                     //mProcess.Monitor = mFrame.Monitor;
                     //SendString("~Position " + mFrame.Monitor.Bounds.X + "," + mFrame.Monitor.Bounds.Y);
                     //SendString("~console r.setRes " + mFrame.Monitor.Bounds.Width + "x" + mFrame.Monitor.Bounds.Height);
+
                     SendString("~console fullscreen");
                 } else if (value == Chimera.Fill.Left || value == Chimera.Fill.Right) {
                     Rectangle position = mFrame.Monitor.Bounds;

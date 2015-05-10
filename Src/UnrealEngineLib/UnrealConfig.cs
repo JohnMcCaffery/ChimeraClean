@@ -63,6 +63,7 @@ namespace UnrealEngineLib {
             UnrealInitialisedAck = GetStr("UnrealInitialisedAck", UNREAL_INITIALISED_ACK, "The string to send to unreal to acknowledge receipt of it's startup message.");
             UnrealInitialisedStr = GetStr("UnrealInitialisedStr", UNREAL_INITIALISED_STR, "The string that will be received from Unreal when it has started up and started a socket.");
             UnrealShutdownStr = GetStr("UnrealShutdownStr", UNREAL_SHUTDOWN_STR, "The string that will be received from Unreal if it is shut down.");
+            UnrealArguments = GetStr("Arguments", "", "Any arguments to be sent to the unreal executable on startup.");
             ShutdownStr = GetStr("ShutdownStr", SHUTDOWN_STR, "The string that can be sent to Unreal to request it shut down.");
 
             AutoStartUnreal = GetFrame("AutoStarUnreal", false, "Whether to automatically start unreal at startup.");
