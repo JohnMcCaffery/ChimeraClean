@@ -62,20 +62,33 @@ namespace Chimera.ConfigurationTool.Controls {
             return InheritsFrom(t, typeof(ConfigFolderBase)) || InheritsFrom(t, typeof(CfgBase));
         }
 
-        private void LoadConfigurationObjects() {
-            string folder = Path.GetDirectoryName(AppDomain.CurrentDomain.SetupInformation.ConfigurationFile);
-            folder = Path.GetFullPath(Path.Combine(folder, "../"));
+        private class AssemblyComparer : IEqualityComparer<Assembly> {
+            public bool Equals(Assembly x, Assembly y) {
+                return x.FullName == y.FullName;
+            }
 
-            //Iterate through every assembly in the folder where the tool is running
-            foreach (var assembly in 
-                Directory.GetFiles(folder).
+            public int GetHashCode(Assembly obj) {
+                return obj.FullName.GetHashCode();
+            }
+        }
+
+
+        private static AssemblyComparer sAssemblyComparer = new AssemblyComparer();
+        private static IEnumerable<Assembly> sAssemblies = null;
+
+        public static IEnumerable<Assembly> LoadAssemblies(string folder) {
+            if (sAssemblies != null)
+                return sAssemblies;
+
+            sAssemblies = new Assembly[] { typeof(Chimera.Config.ConfigBase).Assembly }.
+                Concat(Directory.GetFiles(folder).
                 Where(f => 
                     Path.GetExtension(f).ToUpper() == ".DLL" && 
                     !f.Contains("NuiLib") && 
                     !f.Contains("opencv") && 
-                    !f.Contains("SlimDX") && 
-                    !f.Contains("Cef") && 
-                    !f.Contains("openjpeg") &&
+                    !f.Contains("openjpeg") && 
+                    !f.Contains("SlimDX") &&
+                    !f.Contains("WMP") &&
                     f.EndsWith("Lib.dll")).
                 Select(f => {
                     try {
@@ -83,20 +96,35 @@ namespace Chimera.ConfigurationTool.Controls {
                     } catch (Exception e) {
                         return null;
                     }
-                }).
-                Where(a => a != null).
-                Concat(new Assembly[] { typeof(CfgBase).Assembly })) {
-                ListViewGroup g = null;
+                })).Where(a => a != null).Distinct(sAssemblyComparer);
 
-                //Iterate through every class which implements one of the interfaces on the interfaces list
-                foreach (var clazz in 
-                    assembly.GetTypes().
+            Console.WriteLine(String.Format("Loading Chimera assemblies. %-3i assemblies found.",  sAssemblies.Count()));
+                //sAssemblies.Aggregate("", (str, assembly) => str + assembly.FullName.Split(',')[0]+",").Trim(',')                
+
+            return sAssemblies;
+        }
+
+        private void LoadConfigurationObjects() {
+            string folder = Path.GetDirectoryName(AppDomain.CurrentDomain.SetupInformation.ConfigurationFile);
+            folder = Path.GetFullPath(Path.Combine(folder, "../"));
+
+            var assemblies = ConfigurationFolderPanel.LoadAssemblies(folder);
+
+            //Iterate through every assembly in the folder where the tool is running
+            foreach (var assembly in assemblies.Concat(new Assembly[] { typeof(CfgBase).Assembly })) {
+
+                ListViewGroup g = null;
+                
+                var classes = assembly.GetTypes().
                     Where(t => 
                         !t.IsAbstract && 
                         !t.IsInterface && 
-                        IsConfig(t))) {
+                        IsConfig(t));
 
+                Console.WriteLine("Loading {1,3} configuration objects from {0}.", assembly.FullName.Split(',')[0], classes.Count());
 
+                //Iterate through every class which implements one of the interfaces on the interfaces list
+                foreach (var clazz in classes) {
                     CfgBase config = InstantiateConfig(clazz, assembly, CfgBase.IGNORE_FRAME);
                     if (config == null)
                         continue;
