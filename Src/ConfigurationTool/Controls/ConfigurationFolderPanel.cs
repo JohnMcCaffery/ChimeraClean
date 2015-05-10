@@ -114,12 +114,22 @@ namespace Chimera.ConfigurationTool.Controls {
             foreach (var assembly in assemblies.Concat(new Assembly[] { typeof(CfgBase).Assembly })) {
 
                 ListViewGroup g = null;
+
+                IEnumerable<Type> classes = null;
+                try {
+                    classes = assembly.GetTypes().
+                        Where(t => 
+                            !t.IsAbstract && 
+                            !t.IsInterface && 
+                            IsConfig(t));
                 
-                var classes = assembly.GetTypes().
-                    Where(t => 
-                        !t.IsAbstract && 
-                        !t.IsInterface && 
-                        IsConfig(t));
+                }
+                catch (ReflectionTypeLoadException e) {
+                    Console.WriteLine("Problem loading types for " + assembly.FullName.Split(',')[0] + ". " + e.Message);
+                    foreach (var ex in e.LoaderExceptions)
+                        Console.WriteLine(ex.Message);
+                    continue;
+                }
 
                 Console.WriteLine("Loading {1,3} configuration objects from {0}.", assembly.FullName.Split(',')[0], classes.Count());
 
