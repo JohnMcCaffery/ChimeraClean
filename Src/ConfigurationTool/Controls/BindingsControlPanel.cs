@@ -13,6 +13,7 @@ using System.Reflection;
 using System.IO;
 using System.Xml;
 using Chimera.Config;
+using Chimera.ConfigurationTool.Controls;
 
 namespace ConfigurationTool.Controls {
     public partial class BindingsControlPanel : UserControl {
@@ -34,6 +35,7 @@ namespace ConfigurationTool.Controls {
             mMultiInterfaces.Add(typeof(ITriggerFactory));
             mMultiInterfaces.Add(typeof(ISelectionRendererFactory));
             mMultiInterfaces.Add(typeof(ITransitionStyleFactory));
+
             mMultiInterfaces.Add(typeof(IStateFactory));
             mMultiInterfaces.Add(typeof(IAxis));
 
@@ -54,6 +56,7 @@ namespace ConfigurationTool.Controls {
         }
 
         private void Startup(object source, DoWorkEventArgs args) {
+
             InitialiseInterfaces();
             LoadDocument();
         }
@@ -78,17 +81,6 @@ namespace ConfigurationTool.Controls {
             }
         }
 
-        private class AssemblyComparer : IEqualityComparer<Assembly> {
-            public bool Equals(Assembly x, Assembly y) {
-                return x.FullName == y.FullName;
-            }
-
-            public int GetHashCode(Assembly obj) {
-                return obj.FullName.GetHashCode();
-            }
-        }
-
-
         private class InterfaceComparer : IEqualityComparer<Type> {
             public bool Equals(Type x, Type y) {
                 return x.Name == y.Name;
@@ -99,33 +91,27 @@ namespace ConfigurationTool.Controls {
             }
         }
 
+        private static InterfaceComparer sInterfaceComparer = new InterfaceComparer();
+
+        private IEnumerable<Type> LoadTypes(Assembly assembly) {
+            return assembly.GetTypes().
+                        Where(t =>
+                            !t.IsAbstract &&
+                            !t.IsInterface &&
+                            t.GetInterfaces().Intersect(mInterfaces, sInterfaceComparer).Count() > 0).
+                            OrderBy(t => t.Name).
+                            OrderBy(t => t.GetInterfaces()[0].Name);
+        }
+
         public void InitialiseInterfaces() {
             mBindings.Clear();
 
             string folder = Path.GetDirectoryName(AppDomain.CurrentDomain.SetupInformation.ConfigurationFile);
             folder = Path.GetFullPath(Path.Combine(folder, "../"));
 
-            AssemblyComparer comp = new AssemblyComparer();
+            var assemblies = ConfigurationFolderPanel.LoadAssemblies(folder);
 
-            var assemblies = new Assembly[] { typeof(ConfigBase).Assembly }.
-                Concat(Directory.GetFiles(folder).
-                Where(f => 
-                    Path.GetExtension(f).ToUpper() == ".DLL" && 
-                    !f.Contains("NuiLib") && 
-                    !f.Contains("opencv") && 
-                    !f.Contains("openjpeg") && 
-                    !f.Contains("SlimDX") &&
-                    !f.Contains("WMP") &&
-                    f.EndsWith("Lib.dll")).
-                Select(f => {
-                    try {
-                        return Assembly.Load(File.ReadAllBytes(f));
-                    } catch (Exception e) {
-                        return null;
-                    }
-                })).Where(a => a != null).Distinct(comp);
-
-            Console.WriteLine(assemblies.Count());
+            Console.WriteLine("\n\n\nProcessing " + Path.GetDirectoryName(mFile) + ".");
 
             //Iterate through every assembly in the folder where the tool is running
             foreach (var assembly in assemblies) {
@@ -133,23 +119,16 @@ namespace ConfigurationTool.Controls {
 
                 string assemblyName = assembly.FullName.Split(',')[0];
 
-                InterfaceComparer comparer = new InterfaceComparer();
-
                 //Iterate through every class which implements one of the interfaces on the interfaces list
-                var types = assembly.GetTypes().
-                    Where(t => 
-                        !t.IsAbstract && 
-                        !t.IsInterface && 
-                        t.GetInterfaces().Intersect(mInterfaces, comparer).Count() > 0).
-                        OrderBy(t => t.Name).
-                        OrderBy(t => t.GetInterfaces()[0].Name);
+                var types = LoadTypes(assembly);
 
-                Console.WriteLine(types.Count());
+
+                Console.WriteLine("Loading {1,3} interface implementations from {0}.", assemblyName, types.Count());
 
                 //Iterate through every class which implements one of the interfaces on the interfaces list
                 foreach (var clazz in types) {
 
-                    var intrface = clazz.GetInterfaces().Intersect(mInterfaces, comparer).First();
+                    var intrface = clazz.GetInterfaces().Intersect(mInterfaces, sInterfaceComparer).First();
 
                     Invoke(new Action(() => {
                         if (g == null) {
