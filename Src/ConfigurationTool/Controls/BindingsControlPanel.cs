@@ -28,7 +28,8 @@ namespace ConfigurationTool.Controls {
         public static bool Loading = false;
 
         public BindingsControlPanel() {
-            InitializeComponent();
+            InitializeComponent();
+
             mMultiInterfaces.Add(typeof(ISystemPlugin));
             mMultiInterfaces.Add(typeof(IFeatureFactory));
             mMultiInterfaces.Add(typeof(IFeatureTransitionFactory));
