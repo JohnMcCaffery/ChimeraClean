@@ -184,6 +184,8 @@
     <Compile Include="GUI\WizardPanel.Designer.cs">
       <DependentUpon>WizardPanel.cs</DependentUpon>
     </Compile>
+    <Compile Include="HoverRenderers\ImageCursorRenderer.cs" />
+    <Compile Include="HoverRenderers\ImageRenderer.cs" />
     <Compile Include="Interfaces\IControllable.cs" />
     <Compile Include="Interfaces\IFeature.cs" />
     <Compile Include="Interfaces\IFactory.cs" />
@@ -239,6 +241,7 @@
     <Compile Include="Triggers\TriggerBase.cs" />
     <Compile Include="OverlayXmlLoader.cs" />
     <Compile Include="Triggers\TriggerTimeoutTrigger.cs" />
+    <Compile Include="Triggers\VideoFinishedTrigger.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ChimeraLib\ChimeraLib.csproj">
