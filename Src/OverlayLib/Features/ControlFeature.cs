@@ -40,6 +40,7 @@ namespace Chimera.Overlay.Features {
             float w = GetFloat(node, 1f, "W", "Width");
             float h = GetFloat(node, 1f, "H", "Height");
             mBounds = new RectangleF(x, y, w, h);
+
         }
 
         protected ControlFeature(OverlayPlugin manager, XmlNode node, bool SingletonControl, Rectangle clip)

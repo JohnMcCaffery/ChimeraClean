@@ -122,7 +122,6 @@
     </Compile>
     <Compile Include="Interfaces\IDiagramDrawable.cs" />
     <Compile Include="Interfaces\IOutputFactory.cs" />
-    <Compile Include="Plugins\StubOutputPlugin.cs" />
     <Compile Include="Plugins\Projector.cs" />
     <Compile Include="GUI\Controls\Plugins\AxisBasedDeltaPanel.cs">
       <SubType>UserControl</SubType>
@@ -215,6 +214,7 @@
       <DependentUpon>KBMousePanel.cs</DependentUpon>
     </Compile>
     <Compile Include="Interfaces\ICrashable.cs" />
+    <Compile Include="Plugins\StubOutputPlugin.cs" />
     <Compile Include="Util\Algorithms.cs" />
     <Compile Include="Util\FireEventAppender.cs" />
     <Compile Include="Util\InvokeExtension.cs" />
