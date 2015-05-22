@@ -62,9 +62,17 @@ namespace Chimera.Overlay {
                 Logger.Debug("Unable to load image for " + request + " from " + node.Name + ". No file specified.");
                 return null;
             }
-
+            return GetImage(node, Path.GetFullPath(node.InnerText), request);
+        }
+        public static Bitmap GetImage(XmlNode node, string request, params string[] attributes) {
+            return GetImage(node, GetString(node, null, attributes), request);
+        }
+        private static Bitmap GetImage(XmlNode node, string file, string request) {
+            if (file == null) {
+                Logger.Debug("Unable to load image for " + request + " from " + node.Name + ". No file specified.");
+                return null;
+            }
             try {
-                string file = Path.GetFullPath(node.InnerText);
                 if (!File.Exists(file)) {
                     Logger.Debug("Unable to load image for " + request + " from " + node.Name + ". #" + file + "' does not exist.");
                     return null;
@@ -74,7 +82,6 @@ namespace Chimera.Overlay {
                 Logger.Debug("Unable to load image for " + request + " from " + node.Name + ". '" + node.InnerText + "' is not a valid file name.");
                 return null;
             }
-
         }
         public static string GetText(XmlNode node, string defalt) {
             if (node.InnerText == null)

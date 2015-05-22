@@ -93,15 +93,32 @@ namespace ConfigurationTool.Controls {
         }
 
         private static InterfaceComparer sInterfaceComparer = new InterfaceComparer();
+        private static HashSet<String> sFailedAssemblies = new HashSet<String>();
 
         private IEnumerable<Type> LoadTypes(Assembly assembly) {
-            return assembly.GetTypes().
-                        Where(t =>
-                            !t.IsAbstract &&
-                            !t.IsInterface &&
-                            t.GetInterfaces().Intersect(mInterfaces, sInterfaceComparer).Count() > 0).
-                            OrderBy(t => t.Name).
-                            OrderBy(t => t.GetInterfaces()[0].Name);
+            try {
+                return assembly.GetTypes().
+                            Where(t =>
+                                !t.IsAbstract &&
+                                !t.IsInterface &&
+                                t.GetInterfaces().Intersect(mInterfaces, sInterfaceComparer).Count() > 0).
+                                OrderBy(t => t.Name).
+                                OrderBy(t => t.GetInterfaces()[0].Name);
+            }
+            catch (ReflectionTypeLoadException e) {
+                if (!sFailedAssemblies.Contains(assembly.FullName)) {
+                    sFailedAssemblies.Add(assembly.FullName);
+                    string assemblyName = assembly.FullName.Split(',')[0];
+                    string msg = "Problem loading types for " + assemblyName + ". " + e.Message;
+
+                    foreach (var ex in e.LoaderExceptions)
+                        msg += ex.Message;
+                    Console.WriteLine(msg);
+
+                    MessageBox.Show(msg, assemblyName + " Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                return new Type[0];
+            }
         }
 
         public void InitialiseInterfaces() {
@@ -169,20 +186,24 @@ namespace ConfigurationTool.Controls {
             public Type Interface;
             public Type Class;
             public ListViewItem Item;
+            private string mInterfaceName;
+            private string mClassName;
 
             public Binding(string assemblyName, Type clazz, Type intrface, ListViewItem it) {
                 AssemblyName = assemblyName;
                 Class = clazz;
                 Interface = intrface;
                 Item = it;
+                
+                mClassName = Class.FullName + ", " + AssemblyName;
+                mInterfaceName = Interface.FullName + ", " + Interface.Assembly.FullName.Split(',')[0];
             }
-
-
+            
             public string Service {
-                get { return Interface.FullName + ", " + Path.GetFileNameWithoutExtension(Interface.Assembly.Location); }
+                get { return mInterfaceName; }
             }
             public string To {
-                get { return Class.FullName + ", " + AssemblyName; }
+                get { return mClassName; }
             }
 
             public XmlNode CreateNode(XmlDocument doc) {

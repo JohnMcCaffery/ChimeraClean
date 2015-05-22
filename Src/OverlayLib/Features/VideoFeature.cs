@@ -8,6 +8,7 @@ using System.Xml;
 using System.IO;
 using Chimera.Interfaces.Overlay;
 using System.Drawing;
+using Chimera.Overlay.Triggers;
 
 namespace Chimera.Overlay.Features {
     public class VideoFeatureFactory : IFeatureFactory {
@@ -70,6 +71,7 @@ namespace Chimera.Overlay.Features {
         void mPlayer_VideoFinished() {
             mPlaying = false;
             base.Active = false;
+            VideoFinishedTrigger.TriggerAll();
         }
 
         public override bool Active {
