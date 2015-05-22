@@ -197,8 +197,7 @@ namespace ConfigurationTool.Controls {
                 mClassName = Class.FullName + ", " + AssemblyName;
                 mInterfaceName = Interface.FullName + ", " + Interface.Assembly.FullName.Split(',')[0];
             }
-
-
+            
             public string Service {
                 get { return mInterfaceName; }
             }
