@@ -55,7 +55,8 @@
     <Compile Include="GUI\UnrealControlPanel.Designer.cs">
       <DependentUpon>UnrealControlPanel.cs</DependentUpon>
     </Compile>
-    <Compile Include="Overlay\FillFeature.cs" />
+    <Compile Include="Overlay\Features\FillFeature.cs" />
+    <Compile Include="Overlay\Features\SendStringFeature.cs" />
     <Compile Include="Overlay\SendStringFeature.cs" />
     <Compile Include="Overlay\Triggers\StringReceivedTrigger.cs" />
     <Compile Include="UnrealConfig.cs" />

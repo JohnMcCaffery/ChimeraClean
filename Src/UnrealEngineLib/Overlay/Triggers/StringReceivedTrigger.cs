@@ -8,7 +8,7 @@ using System.Xml;
 using Chimera.Interfaces.Overlay;
 
 namespace UnrealEngineLib.Overlay.Triggers {
-    public class StringReceivedTriggerBase : ITriggerFactory {
+    public class StringReceivedTriggerFactory : ITriggerFactory {
         public SpecialTrigger Special {
             get { return SpecialTrigger.None; }
         }
