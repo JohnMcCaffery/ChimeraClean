@@ -52,9 +52,9 @@ namespace BrowserLib.Overlay.Triggers {
             mUrl = GetString(node, "http://openvirtualworlds.org", "URL");
 
             mPageLoadListener = (addr, browser) => {
-                                if (BrowserFeature.IsActive(browser) && (mUrl == ANY_PAGE || mUrl == addr))
-                                    Trigger();
-                            };
+                if (BrowserFeature.IsActive(browser) && (mUrl == ANY_PAGE || mUrl == addr))
+                    Trigger();
+            };
         }
 
         public override bool Active {
