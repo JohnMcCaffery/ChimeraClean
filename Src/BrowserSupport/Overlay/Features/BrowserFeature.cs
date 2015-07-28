@@ -166,5 +166,9 @@ namespace Chimera.BrowserLib.Features
                 base.Active = value;
             }
         }
+
+        public override string ToString() {
+            return mUrl;
+        }
     }
 }
