@@ -45,6 +45,14 @@ namespace Chimera.Interfaces.Overlay {
         /// The name of the window this drawable is to be rendered on.
         /// </summary>
         string Frame { get; }
+
+        /*
+        /// <summary>
+        /// Called whenever the feature goes from being inactive to active or vice versa.
+        /// </summary>
+        event Action<bool> ActiveChanged;
+        */
+
         /// <summary>
         /// Notify the drawable that the area on which it is to draw has changed. Should draw any elements which only change when the area is resized to the supplied graphics object.
         /// </summary>
