@@ -22,6 +22,7 @@ namespace Chimera.Multimedia {
                     sVideoPlayer.Visible = true;
 
                     sVideoPlayer.PlayStateChange += new AxWMPLib._WMPOCXEvents_PlayStateChangeEventHandler(videoPlayer_PlayStateChange);
+                    //sVideoPlayer.CreateControl();
                 }
                 return sVideoPlayer;
             }
@@ -44,9 +45,11 @@ namespace Chimera.Multimedia {
         private static event Action sPlaybackStarted;
 
         private static void sPlayVideo(string uri) {
+            Thread.Sleep(50);
             Invoke(() => {
                 //videoPlayer.uiMode = "Mini";
                 sPlayer.Visible = true;
+                //sPlayer.CreateControl();
                 sPlayer.URL = uri;
 
                 sPlayer.uiMode = "none";
