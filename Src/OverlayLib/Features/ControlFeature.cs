@@ -9,7 +9,8 @@ using System.Xml;
 
 namespace Chimera.Overlay.Features {
     public abstract class ControlFeature<TControl> : OverlayXmlLoader, IFeature where  TControl : System.Windows.Forms.Control {
-        private string mFrame;        /// <summary>
+        private string mFrame;
+        /// <summary>
         /// The clip rectangle bounding the area this item will be drawn to.
         /// </summary>
         private Rectangle mClip;
