@@ -47,6 +47,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Bin\CefSharp.WinForms.dll</HintPath>
     </Reference>
+    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Bin\log4net.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -64,6 +68,7 @@
     <Compile Include="CefSharp\DragHandler.cs" />
     <Compile Include="CefSharp\JsDialogHandler.cs" />
     <Compile Include="CefSharp\Properties\Resources.Designer.cs" />
+    <Compile Include="CefSharp\RequestHandler.cs" />
     <Compile Include="CefSharp\SubBoundObject.cs" />
     <Compile Include="CefSharp\TempFileDialogHandler.cs" />
     <Compile Include="Overlay\Features\BrowserFeature.cs" />

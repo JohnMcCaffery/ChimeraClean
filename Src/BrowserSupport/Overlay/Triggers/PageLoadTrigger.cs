@@ -8,6 +8,8 @@ using Chimera.Interfaces.Overlay;
 using Chimera.Overlay.Triggers;
 using System.Xml;
 using Chimera.BrowserLib.Features;
+using log4net;
+using CefSharp;
 
 namespace BrowserLib.Overlay.Triggers {
     public class PageLoadTriggerFactory : ITriggerFactory {
@@ -41,20 +43,32 @@ namespace BrowserLib.Overlay.Triggers {
             };
         }
 
-        private static event Action<string, ChromiumWebBrowser> PageLoaded;
+
+        private static event Action<string, IWebBrowser> PageLoaded;
+        public static String TriggeredURL = "";
 
         private bool mActive;
         private string mUrl;
-        private Action<string, ChromiumWebBrowser> mPageLoadListener;
+        private bool mNot;
+        private bool mSaveURL;
+        private Action<string, IWebBrowser> mPageLoadListener;
+        private readonly ILog Logger;
 
         public PageLoadTrigger(OverlayPlugin manager, XmlNode node)
             : base(node) {
+                Logger = LogManager.GetLogger("PageLoadTrigger");
             mUrl = GetString(node, "http://openvirtualworlds.org", "URL");
+            mNot = GetBool(node, false, "Not");
+            mSaveURL = GetBool(node, false, "SaveURL");
 
             mPageLoadListener = (addr, browser) => {
-                if (BrowserFeature.IsActive(browser) && (mUrl == ANY_PAGE || mUrl == addr))
+                //if (BrowserFeature.IsActive(browser) && (mUrl == ANY_PAGE || mUrl == addr))
+                if (BrowserFeature.IsActive(browser) && (mUrl == ANY_PAGE || (mUrl == addr && !mNot) || (mUrl != addr && mNot))) {
+                    //Logger.WarnFormat("Triggering for : {0}", addr);
+                    if(mSaveURL) TriggeredURL = addr;
                     Trigger();
-            };
+                }
+	    };
         }
 
         public override bool Active {
@@ -68,6 +82,11 @@ namespace BrowserLib.Overlay.Triggers {
                     mActive = value;
                 }
             }
+        }
+
+        public static void TriggerPageLoaded(string url, IWebBrowser browser) {
+            if (PageLoaded != null)
+                PageLoaded(url, browser);
         }
     }
 }
