@@ -67,16 +67,20 @@ namespace Chimera.BrowserLib.Features
 
         private RectangleF mBounds = new RectangleF(0f, 0f, 1f, 1f);
         private string mUrl;
+        private string mWhiteList;
+        private string mBlackList;
+        private bool mLoadTriggeredURL;
+        private bool mReturnToURL;
         private ChromiumWebBrowser mBrowser;
 
-        private static HashSet<ChromiumWebBrowser> sActiveFeatures = new HashSet<ChromiumWebBrowser>();
+        private static HashSet<IWebBrowser> sActiveFeatures = new HashSet<IWebBrowser>();
 
 	/// <summary>
 	/// Checks whether the supplied browser is currently activated.
 	/// </summary>
 	/// <param name="browser">The browser to check.</param>
 	/// <returns>True if the browser is active.</returns>
-        public static bool IsActive(ChromiumWebBrowser browser) {
+        public static bool IsActive(IWebBrowser browser) {
             return sActiveFeatures.Contains(browser);
         }
 
@@ -100,6 +104,7 @@ namespace Chimera.BrowserLib.Features
                     SchemeHandlerFactory = new CefSharpSchemeHandlerFactory()
                 });
                 settings.UserAgent = "ChromeCEF";
+                settings.CachePath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)+"\\CEFCache\\";
 
                 if (!Cef.Initialize(settings)) {
                     if (Environment.GetCommandLineArgs().Contains("--type=renderer")) {
@@ -118,18 +123,28 @@ namespace Chimera.BrowserLib.Features
             base.Active = false;
 
             mBrowser.RegisterJsObject("bound", new BoundObject());
+            mBrowser.RequestHandler = new Chimera.BrowserLib.RequestHandler(mUrl, mWhiteList, mBlackList);
+            mBrowser.JsDialogHandler = new JsDialogHandler();
 
         }
 
         public BrowserFeature(OverlayPlugin manager, XmlNode node)
             : base(manager, node, SINGLETON) {
             mUrl = GetString(node, "http://get.webgl.org/", "URL");
+            mLoadTriggeredURL = GetBool(node, false, "LoadTriggeredURL");
+            mReturnToURL = GetBool(node, true, "ReturnToURL");
+            mWhiteList = GetString(node, "", "WhiteList");
+            mBlackList = GetString(node, "", "BlackList");
             Init();
         }
 
         public BrowserFeature(OverlayPlugin manager, XmlNode node, Rectangle clip)
             : base(manager, node, SINGLETON, clip) {
             mUrl = GetString(node, "http://get.webgl.org/", "URL");
+            mLoadTriggeredURL = GetBool(node, false, "LoadTriggeredURL");
+            mReturnToURL = GetBool(node, true, "ReturnToURL");
+            mWhiteList = GetString(node, "", "WhiteList");
+            mBlackList = GetString(node, "", "BlackList");
             Init();
         }
 
@@ -155,13 +170,21 @@ namespace Chimera.BrowserLib.Features
             get { return base.Active; }
             set {
                 if (value) {
-                    if (base.Active)
-                        Control.Load(mUrl);
-                    else
+                    if (base.Active) {
+                        String url = mUrl;
+                        if (mLoadTriggeredURL && PageLoadTrigger.TriggeredURL != "") {
+                            url = PageLoadTrigger.TriggeredURL;
+                            PageLoadTrigger.TriggeredURL = "";
+                        }
+                        if(mBrowser.Address != url)
+                            Control.Load(url);
+                    } else {
                         sActiveFeatures.Add(Control);
+                    }
                 } else {
                     sActiveFeatures.Remove(Control);
-                    Control.Load(mUrl);
+                    if (mReturnToURL && mBrowser.Address != mUrl)
+                        Control.Load(mUrl);
                 }
                 base.Active = value;
             }
