@@ -67,7 +67,7 @@ namespace BrowserLib.Overlay.Triggers {
                     if(mSaveURL) TriggeredURL = addr;
                     Trigger();
                 }
-                            };
+	    };
         }
 
         public override bool Active {

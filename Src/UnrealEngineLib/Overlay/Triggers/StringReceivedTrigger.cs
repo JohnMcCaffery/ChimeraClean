@@ -8,7 +8,7 @@ using System.Xml;
 using Chimera.Interfaces.Overlay;
 
 namespace UnrealEngineLib.Overlay.Triggers {
-    public class StringReceivedTriggerBase : ITriggerFactory {
+    public class StringReceivedTriggerFactory : ITriggerFactory {
         public SpecialTrigger Special {
             get { return SpecialTrigger.None; }
         }
@@ -30,13 +30,14 @@ namespace UnrealEngineLib.Overlay.Triggers {
         }
     }
     public class StringReceivedTrigger : TriggerBase {
-	
+
         private UnrealController mController;
         private Action<string> mTextReceivedTrigger;
-	private string mString;
-	private bool mActive;
+        private string mString;
+        private bool mActive;
 
-	public StringReceivedTrigger(OverlayPlugin plugin, XmlNode node) : base (node) {
+        public StringReceivedTrigger(OverlayPlugin plugin, XmlNode node)
+            : base(node) {
 
             mController = GetManager(plugin, node, "string received trigger").Frame.Output as UnrealController;
             if (mController == null)
@@ -44,9 +45,9 @@ namespace UnrealEngineLib.Overlay.Triggers {
 
             mString = GetString(node, "", "String");
             mTextReceivedTrigger = (str) => {
-                                if (mString == str)
-                                    Trigger();
-                            };
+                if (mString == str)
+                    Trigger();
+            };
         }
 
         public override bool Active {
@@ -57,7 +58,7 @@ namespace UnrealEngineLib.Overlay.Triggers {
                         mController.StringReceived += mTextReceivedTrigger;
                     else
                         mController.StringReceived -= mTextReceivedTrigger;
-			mActive = value;
+                    mActive = value;
                 }
             }
         }

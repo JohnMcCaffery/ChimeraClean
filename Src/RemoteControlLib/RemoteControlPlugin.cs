@@ -83,6 +83,7 @@ namespace Chimera.RemoteControl {
         private void ListenThread() {
             mCont = true;
             string msg = "Not Yet Received";
+            Logger.Info("Listening for commands on: " + mPort);
             while (mCont) {
                 try {
                     byte[] data = mListener.Receive(ref ep);
