@@ -9,6 +9,7 @@ using Chimera.Plugins;
 using Chimera.Config;
 
 namespace Chimera.Kinect.Axes {
+<<<<<<< HEAD
     public class KinectAxisConfig : AxisConfig {
         public bool LimitArea;
         public float AreaX;
@@ -16,13 +17,26 @@ namespace Chimera.Kinect.Axes {
         public float AreaRadius;
         public float CursorSmoothing;
 
+        public int RetryAttempts;
+        public int InitialRetryWait;
+        public float RetryWaitMultiplier;
+
         public KinectAxisConfig()
             : base("KinectMovement") {
-                LimitArea = Get("LimitArea", false, "If the kinect area should be limited to the specified area.");
-                AreaX = Get("AreaX", 0.0f, "The X coordinate of the area center.");
-                AreaY = Get("AreaY", 5.0f, "The X coordinate of the area center.");
-                AreaRadius = Get("AreaRadius", 2.0f, "The radius of the area.");
-                CursorSmoothing = Get("SimpleKinectCursor", "Smoothing", 5.0f, "The number of frames for cdursor smoothing.");
+
         }
+
+	protected override void InitConfig() {
+		base.InitConfig();
+		LimitArea = Get("LimitArea", false, "If the kinect area should be limited to the specified area.");
+		AreaX = Get("AreaX", 0.0f, "The X coordinate of the area center.");
+		AreaY = Get("AreaY", 5.0f, "The X coordinate of the area center.");
+		AreaRadius = Get("AreaRadius", 2.0f, "The radius of the area.");
+		CursorSmoothing = Get("SimpleKinectCursor", "Smoothing", 5.0f, "The number of frames for cdursor smoothing.");
+
+		RetryAttempts = Get(true, "RetryAttempts", 10, "How many times to retry to get a connection to the Kinect.");
+		RetryWaitMultiplier = Get(true, "RetryWaitMultiplier", 1.5f, "How long to extend the wait by each retry attempt.");
+		InitialRetryWait = Get(true, "InitialRetryWaitMS", 2000, "How long to wait before retrying to connect to the Kinect on the first attempt.");
+	}
     }
 }

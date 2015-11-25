@@ -296,6 +296,9 @@ namespace Chimera.Flythrough.GUI {
             this.timeSlider.Maximum = 0;
             this.timeSlider.Name = "timeSlider";
             this.timeSlider.Size = new System.Drawing.Size(572, 42);
+	    //Which position is better?
+            //this.timeSlider.Location = new System.Drawing.Point(138, 288);
+            //this.timeSlider.Size = new System.Drawing.Size(234, 42);
             this.timeSlider.TabIndex = 0;
             this.timeSlider.TickStyle = System.Windows.Forms.TickStyle.None;
             this.timeSlider.Scroll += new System.EventHandler(this.timeSlider_Scroll);
@@ -388,6 +391,10 @@ namespace Chimera.Flythrough.GUI {
             this.speedScroll.Maximum = 199;
             this.speedScroll.Name = "speedScroll";
             this.speedScroll.Size = new System.Drawing.Size(485, 42);
+            this.speedScroll.LargeChange = 10;
+	    //Merge conflict - which position is better?
+            //this.speedScroll.Location = new System.Drawing.Point(6, 325);
+            //this.speedScroll.Size = new System.Drawing.Size(147, 42);
             this.speedScroll.TabIndex = 21;
             this.speedScroll.Value = 100;
             this.speedScroll.ValueChanged += new System.EventHandler(this.speedScroll_Scroll);
@@ -397,6 +404,8 @@ namespace Chimera.Flythrough.GUI {
             this.speedLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.speedLabel.AutoSize = true;
             this.speedLabel.Location = new System.Drawing.Point(3, 389);
+	    //Merge conflict - which position is better?
+            //this.speedLabel.Location = new System.Drawing.Point(3, 317);
             this.speedLabel.Name = "speedLabel";
             this.speedLabel.Size = new System.Drawing.Size(38, 13);
             this.speedLabel.TabIndex = 22;

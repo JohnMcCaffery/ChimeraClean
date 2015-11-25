@@ -102,6 +102,8 @@ namespace Chimera.Kinect {
         private static KinectAxisConfig mConfig = new KinectAxisConfig();
 
         public SimpleKinectCursor() {
+            GlobalConditions.Init();
+
             mTickListener = new ChangeDelegate(Nui_Tick);
             mSmoothingFactor = Scalar.Create(mConfig.CursorSmoothing);
             /*

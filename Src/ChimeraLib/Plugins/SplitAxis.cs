@@ -87,7 +87,8 @@ namespace Chimera.Plugins {
 
                 return Math.Abs(mPositive.Delta) + (Math.Abs(mNegative.Delta) * -1f);
             }
-        }
+        }
+
         public virtual bool Enabled {
             get { return mEnabled; }
             set { mEnabled = value; }

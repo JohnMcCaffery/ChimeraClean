@@ -6,6 +6,8 @@ using NuiLibDotNet;
 using C = NuiLibDotNet.Condition;
 using Chimera.Kinect.Axes;
 using Chimera.Kinect.GUI;
+using log4net;
+using System.Threading;
 
 namespace Chimera.Kinect {
     public static class GlobalConditions {
@@ -19,12 +21,34 @@ namespace Chimera.Kinect {
             get { return mConfig; }
         }
 
-        private static void Init() {
-            //if (mConfig.LimitArea)
-            //    Nui.SelectSkeleton(mConfig.AreaX, mConfig.AreaY, mConfig.AreaRadius);
-            Nui.Init();
-            Nui.SetAutoPoll(true);
+        public static bool Initialised {
+            get { return mInit; }
+        }
 
+        
+        public static bool Init() {
+	    //From a merge between master and working
+            //Nui.Init();
+            //Nui.SetAutoPoll(true);
+            if (mInit)
+                return true;
+
+            int attempt = 1;
+            int wait = mConfig.InitialRetryWait;
+            while (!Nui.Init()) {
+                if (attempt > mConfig.RetryAttempts)
+                    return false;
+
+                LogManager.GetLogger("Kinect").Warn(String.Format("NuiLib unable to initialise Kinect after attempt {0}. Waiting {1}s and retrying.", attempt, (wait / 1000)));
+
+                Thread.Sleep(wait);
+
+                attempt++;
+                float newWait = wait * mConfig.RetryWaitMultiplier;
+                wait = (int) newWait;
+            }
+
+            Nui.SetAutoPoll(true);
             mInit = true;
             Vector hipR = Nui.joint(Nui.Hip_Right);
             Vector handR = Nui.joint(Nui.Hand_Right);
@@ -42,6 +66,8 @@ namespace Chimera.Kinect {
 
             sActiveConditionR = C.Or(heightThresholdR, distanceThresholdR);
             sActiveConditionL = C.Or(heightThresholdL, distanceThresholdL);
+
+            return true;
         }
 
         public static Condition ActiveR {
