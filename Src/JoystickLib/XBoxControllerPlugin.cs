@@ -33,14 +33,47 @@ namespace Joystick {
             : base(
                 "XBoxController",
                 new XBoxMovementConfig(),
-                new LeftThumbstickX(),
-                new LeftThumbstickY(),
+                new ThumbstickAxisLX(),
+                new ThumbstickAxisLY(),
                 new TriggerAxis(false),
-                new RightThumbstickX(),
-                new RightThumbstickY(),
-                new DPadX(),
-                new DPadY()
+                new ThumbstickAxisRX(),
+                new ThumbstickAxisRY(),
+                new DPadAxisX(),
+                new DPadAxisY()
+>>>>>>> No idea what is going on.
             ) { }
+    }
+
+    public class XBoxMovementConfig : AxisConfig {
+        public XBoxMovementConfig()
+            : base("XBoxController") {
+        }
+
+        protected override void InitConfig() {
+            GetDeadzone("LeftThumbstickX");
+            GetDeadzone("LeftThumbstickY");
+            GetDeadzone("RightThumbstickX");
+            GetDeadzone("RightThumbstickY");
+            GetDeadzone("Trigger");
+            GetDeadzone("DPadX");
+            GetDeadzone("DPadY");
+
+            GetScale("LeftThumbstickX");
+            GetScale("LeftThumbstickY");
+            GetScale("RightThumbstickX");
+            GetScale("RightThumbstickY");
+            GetScale("Trigger");
+            GetScale("DPadX");
+            GetScale("DPadY");
+
+            GetBinding("LeftThumbstickX");
+            GetBinding("LeftThumbstickY");
+            GetBinding("RightThumbstickX");
+            GetBinding("RightThumbstickY");
+            GetBinding("Trigger");
+            GetBinding("DPadX");
+            GetBinding("DPadY");
+        }
     }
 
     public class XBoxMovementConfig : AxisConfig {

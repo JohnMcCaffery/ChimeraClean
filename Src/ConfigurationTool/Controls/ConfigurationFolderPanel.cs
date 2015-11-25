@@ -104,6 +104,37 @@ namespace Chimera.ConfigurationTool.Controls {
             return sAssemblies;
         }
 
+/*
+=======
+Random shit from merge - I think this is before config tool handled load errors correctly
+        private void LoadConfigurationObjects() {
+            string folder = Path.GetDirectoryName(AppDomain.CurrentDomain.SetupInformation.ConfigurationFile);
+            folder = Path.GetFullPath(Path.Combine(folder, "../"));
+
+            //Iterate through every assembly in the folder where the tool is running
+            foreach (var assembly in 
+                Directory.GetFiles(folder).
+                    !f.Contains("SlimDX") && 
+                    !f.Contains("openjpeg")).
+
+                }).
+                Where(a => a != null).
+                Concat(new Assembly[] { typeof(CfgBase).Assembly })) {
+                ListViewGroup g = null;
+                //Iterate through every class which implements one of the interfaces on the interfaces list
+                foreach (var clazz in 
+                    assembly.GetTypes().
+                    Where(t => 
+                        !t.IsAbstract && 
+                        !t.IsInterface && 
+                        IsConfig(t))) {
+
+
+
+>>>>>>> No idea what is going on.
+*/
+
+
         private void LoadConfigurationObjects() {
             string folder = Path.GetDirectoryName(AppDomain.CurrentDomain.SetupInformation.ConfigurationFile);
             folder = Path.GetFullPath(Path.Combine(folder, "../"));

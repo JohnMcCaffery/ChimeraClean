@@ -36,7 +36,6 @@ namespace ConfigurationTool.Controls {
             mMultiInterfaces.Add(typeof(ITriggerFactory));
             mMultiInterfaces.Add(typeof(ISelectionRendererFactory));
             mMultiInterfaces.Add(typeof(ITransitionStyleFactory));
-
             mMultiInterfaces.Add(typeof(IStateFactory));
             mMultiInterfaces.Add(typeof(IAxis));
 
@@ -44,7 +43,6 @@ namespace ConfigurationTool.Controls {
             mExclusiveInterfaces.Add(typeof(IMediaPlayer));
 
             mInterfaces = mExclusiveInterfaces.Concat(mMultiInterfaces);
-
         }
 
         public BindingsControlPanel(string folder) : this() {
@@ -57,7 +55,6 @@ namespace ConfigurationTool.Controls {
         }
 
         private void Startup(object source, DoWorkEventArgs args) {
-
             InitialiseInterfaces();
             LoadDocument();
         }
@@ -82,6 +79,7 @@ namespace ConfigurationTool.Controls {
             }
         }
 
+<<<<<<< HEAD
         private class InterfaceComparer : IEqualityComparer<Type> {
             public bool Equals(Type x, Type y) {
                 return x.Name == y.Name;
@@ -147,6 +145,40 @@ namespace ConfigurationTool.Controls {
                 foreach (var clazz in types) {
 
                     var intrface = clazz.GetInterfaces().Intersect(mInterfaces, sInterfaceComparer).First();
+            string assemblyName = "ChimeraLib";
+            //Iterate through every assembly in the folder where the tool is running
+            foreach (var assembly in 
+                new Assembly[] { typeof(ConfigBase).Assembly }.
+                Concat(Directory.GetFiles(folder).
+                Where(f => 
+                    Path.GetExtension(f).ToUpper() == ".DLL" && 
+                    !f.Contains("NuiLib") && 
+                    !f.Contains("opencv") && 
+                    !f.Contains("openjpeg") && 
+                    !f.Contains("SlimDX")).
+                Select(f => {
+                    try {
+                        assemblyName = Path.GetFileNameWithoutExtension(f);
+                        return Assembly.Load(File.ReadAllBytes(f));
+                    } catch (Exception e) {
+                        return null;
+                    }
+                }).
+                Where(a => a != null))) {
+                ListViewGroup g = null;
+
+                //Iterate through every class which implements one of the interfaces on the interfaces list
+                foreach (var clazz in 
+                    assembly.GetTypes().
+                    Where(t => 
+                        !t.IsAbstract && 
+                        !t.IsInterface && 
+                        t.GetInterfaces().Intersect(mInterfaces).Count() > 0).
+                        OrderBy(t => t.Name).
+                        OrderBy(t => t.GetInterfaces()[0].Name)) {
+
+                    var intrface = clazz.GetInterfaces().Intersect(mInterfaces).First();
+>>>>>>> No idea what is going on.
 
                     Invoke(new Action(() => {
                         if (g == null) {
@@ -199,12 +231,16 @@ namespace ConfigurationTool.Controls {
                 mInterfaceName = Interface.FullName + ", " + Interface.Assembly.FullName.Split(',')[0];
             }
             
-            public string Service {
-                get { return mInterfaceName; }
+            //Merge conflict - dunno which version is correct
+	    public string Service {
+                //get { return mInterfaceName; }
+                get { return Interface.FullName + ", " + Path.GetFileNameWithoutExtension(Interface.Assembly.Location); }
             }
             public string To {
-                get { return mClassName; }
+                //get { return mClassName; }
+                get { return Class.FullName + ", " + AssemblyName; }
             }
+
 
             public XmlNode CreateNode(XmlDocument doc) {
                 XmlNode node = doc.CreateElement("bind");

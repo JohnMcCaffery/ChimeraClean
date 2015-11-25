@@ -72,6 +72,7 @@ namespace Chimera.Overlay.States {
 
         public VideoState(OverlayPlugin manager, XmlNode node, IMediaPlayer player)
             : base(GetName(node, "creating video state"), manager, node, false) {
+            //: base(manager, node, false) {
 
             mPlayer = player;
             mVideo = GetString(node, null, "File");
@@ -105,7 +106,6 @@ namespace Chimera.Overlay.States {
                 LoadTriggers(node, manager, "ResetTriggers", mResetTriggers, new Action<ITrigger>(RestartTriggered));
             }
         }
-
         private void StartTriggered(ITrigger source) {
             Start();
         }
@@ -159,6 +159,15 @@ namespace Chimera.Overlay.States {
             }
         }
 
+        void mPlayer_VideoStarted()
+        {
+            if (Active)
+            {
+                foreach (var transition in Transitions)
+                    transition.Active = true;
+            }
+        }
+
         protected override void TransitionFromStart() {
             Stop(true);
         }
@@ -171,6 +180,7 @@ namespace Chimera.Overlay.States {
         private void Start() {
             if (!mAdded) {
                 mMainWindow.AddControl(mPlayer.Player, mBounds);
+
                 mAdded = true;
                 //mMainWindow.OverlayWindow.Invoke(() => Cursor.Hide());
             }

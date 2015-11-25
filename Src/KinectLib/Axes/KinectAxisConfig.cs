@@ -9,7 +9,6 @@ using Chimera.Plugins;
 using Chimera.Config;
 
 namespace Chimera.Kinect.Axes {
-<<<<<<< HEAD
     public class KinectAxisConfig : AxisConfig {
         public bool LimitArea;
         public float AreaX;

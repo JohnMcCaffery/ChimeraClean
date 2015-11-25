@@ -241,7 +241,6 @@ namespace Chimera.Overlay.Features {
 
         public void DrawStatic(Graphics graphics) {
             if (mImage == null)
-                mImage = new Bitmap(mFile);
 
             lock (mImage) {
                 int x = (int)(Clip.Width * mBounds.X);

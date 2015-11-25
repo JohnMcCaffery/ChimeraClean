@@ -85,8 +85,6 @@ namespace Chimera.OpenSim {
         public bool AutoShutdown;
         public ProcessPriorityClass Priority;
 
-        public ProcessPriorityClass Priority;
-
         public override string Group {
             get { return "SecondLifeViewer"; }
         }

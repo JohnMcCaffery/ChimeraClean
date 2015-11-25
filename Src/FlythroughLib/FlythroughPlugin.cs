@@ -390,9 +390,9 @@ namespace Chimera.Flythrough {
 
                 //double wait = (mCore.TickLength * (1.0 / mSpeed)) - DateTime.Now.Subtract(mLastTick).TotalMilliseconds;
                 //double wait = mCore.TickLength - DateTime.Now.Subtract(mLastTick).TotalMilliseconds;
-		//Merge conflic - wait UTC or now? wait <= or < 0?
-                double wait = mCore.TickLength - DateTime.UtcNow.Subtract(mLastTick).TotalMilliseconds;
+		//Merge conflict - wait UTC or now? wait <= or < 0?
                 //if (wait < 0)
+                double wait = mCore.TickLength - DateTime.UtcNow.Subtract(mLastTick).TotalMilliseconds;
                 if (wait <= 0)
                     Logger.Debug("Flythrough Tick overran by " + (wait * -1) + "ms.");
                 else

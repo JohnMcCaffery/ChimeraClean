@@ -132,6 +132,7 @@ namespace Chimera {
         /// </summary>
         private FrameConfig mConfig;
 
+>>>>>>> No idea what is going on.
         /// <summary>
         /// Triggered whenever the position of this input changes.
         /// </summary>
@@ -182,6 +183,13 @@ namespace Chimera {
         public Core Core {
             get { return mCoordinator ; }
             set { mCoordinator  = value; }
+        }
+
+        /// <summary>
+        /// The configuration object where all the values are stored.
+        /// </summary>
+        public FrameConfig Config {
+            get { return mConfig; }
         }
 
         /// <summary>

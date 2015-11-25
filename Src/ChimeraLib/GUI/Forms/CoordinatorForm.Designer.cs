@@ -256,10 +256,12 @@ namespace Chimera.GUI.Forms {
             this.realSpaceScale.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.realSpaceScale.Location = new System.Drawing.Point(5, 302);
+	    //Merge -Dunno which location is better
+            //this.realSpaceScale.Location = new System.Drawing.Point(5, 291);
             this.realSpaceScale.Maximum = 1000;
             this.realSpaceScale.Minimum = 1;
             this.realSpaceScale.Name = "realSpaceScale";
-            this.realSpaceScale.Size = new System.Drawing.Size(353, 45);
+            this.realSpaceScale.Size = new System.Drawing.Size(353, 42);
             this.realSpaceScale.TabIndex = 3;
             this.realSpaceScale.TickStyle = System.Windows.Forms.TickStyle.None;
             this.realSpaceScale.Value = 1000;
@@ -298,11 +300,13 @@ namespace Chimera.GUI.Forms {
             // 
             this.heightmapScale.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+	    //Merge -Dunno which location is better
             this.heightmapScale.Location = new System.Drawing.Point(3, 302);
+            //this.heightmapScale.Location = new System.Drawing.Point(3, 291);
             this.heightmapScale.Maximum = 16000;
             this.heightmapScale.Minimum = 1000;
             this.heightmapScale.Name = "heightmapScale";
-            this.heightmapScale.Size = new System.Drawing.Size(275, 45);
+            this.heightmapScale.Size = new System.Drawing.Size(275, 42);
             this.heightmapScale.TabIndex = 2;
             this.heightmapScale.TickStyle = System.Windows.Forms.TickStyle.None;
             this.heightmapScale.Value = 1000;
