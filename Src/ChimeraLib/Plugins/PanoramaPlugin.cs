@@ -24,7 +24,7 @@ namespace Chimera.Plugins {
         private Vector3 mLeftOffset = new Vector3(0f, sOffset / 2f, 0f);
         private Vector3 mRightOffset = new Vector3(0f, -sOffset / 2f, 0f);
 
-	private int mCurrentImage = 0;
+        private int mCurrentImage = 0;
 
         private Queue<Bitmap> mScreenshots = new Queue<Bitmap>();
 
@@ -40,6 +40,11 @@ namespace Chimera.Plugins {
 
         public override Config.ConfigBase Config {
             get { return mConfig; }
+        }
+
+        public bool Capture3D {
+            get { return mConfig.Capture3D; }
+            set { mConfig.Capture3D = value; }
         }
 
         public void TakePanorama() {
@@ -87,7 +92,7 @@ namespace Chimera.Plugins {
 
             mCore.Update(position, Vector3.Zero, rotation, Rotation.Zero);
 
-            mCurrentImage++;
+            mCurrentImage = mConfig.Capture3D ? mCurrentImage++ : mCurrentImage += 3;
             if (mCurrentImage == 18)
                 mCurrentImage = 0;
         }
