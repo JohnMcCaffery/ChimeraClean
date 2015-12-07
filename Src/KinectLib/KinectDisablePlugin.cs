@@ -118,17 +118,15 @@ namespace Chimera.Kinect
             args.Handled = true;
         }
 
-        private void Disable(bool disable)
-        {
-            if (mInput != null)
-            {
-                   mInput.Disabled = disable;
+        private void Disable(bool disable) {
+            if (mInput != null) {
+                mInput.Enabled = !disable;
+                //Originally disable had its own property. Don't know whether enable is analogous
+                //mInput.Disabled = disable;
             }
-            if (mCursor != null)
-            {
-                    mCursor.Disabled = disable;
+            if (mCursor != null) {
+                mCursor.Disabled = disable;
             }
         }
     }
-
 }

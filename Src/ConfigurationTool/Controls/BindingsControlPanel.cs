@@ -79,7 +79,6 @@ namespace ConfigurationTool.Controls {
             }
         }
 
-<<<<<<< HEAD
         private class InterfaceComparer : IEqualityComparer<Type> {
             public bool Equals(Type x, Type y) {
                 return x.Name == y.Name;
@@ -145,40 +144,6 @@ namespace ConfigurationTool.Controls {
                 foreach (var clazz in types) {
 
                     var intrface = clazz.GetInterfaces().Intersect(mInterfaces, sInterfaceComparer).First();
-            string assemblyName = "ChimeraLib";
-            //Iterate through every assembly in the folder where the tool is running
-            foreach (var assembly in 
-                new Assembly[] { typeof(ConfigBase).Assembly }.
-                Concat(Directory.GetFiles(folder).
-                Where(f => 
-                    Path.GetExtension(f).ToUpper() == ".DLL" && 
-                    !f.Contains("NuiLib") && 
-                    !f.Contains("opencv") && 
-                    !f.Contains("openjpeg") && 
-                    !f.Contains("SlimDX")).
-                Select(f => {
-                    try {
-                        assemblyName = Path.GetFileNameWithoutExtension(f);
-                        return Assembly.Load(File.ReadAllBytes(f));
-                    } catch (Exception e) {
-                        return null;
-                    }
-                }).
-                Where(a => a != null))) {
-                ListViewGroup g = null;
-
-                //Iterate through every class which implements one of the interfaces on the interfaces list
-                foreach (var clazz in 
-                    assembly.GetTypes().
-                    Where(t => 
-                        !t.IsAbstract && 
-                        !t.IsInterface && 
-                        t.GetInterfaces().Intersect(mInterfaces).Count() > 0).
-                        OrderBy(t => t.Name).
-                        OrderBy(t => t.GetInterfaces()[0].Name)) {
-
-                    var intrface = clazz.GetInterfaces().Intersect(mInterfaces).First();
->>>>>>> No idea what is going on.
 
                     Invoke(new Action(() => {
                         if (g == null) {

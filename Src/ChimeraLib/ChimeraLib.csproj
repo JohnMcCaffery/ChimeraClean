@@ -72,6 +72,15 @@
     <Reference Include="Nini">
       <HintPath>..\..\Lib\Nini.dll</HintPath>
     </Reference>
+    <Reference Include="OpenMetaverse">
+      <HintPath>..\..\Lib\OpenMetaverse.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenMetaverse.StructuredData">
+      <HintPath>..\..\Lib\OpenMetaverse.StructuredData.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenMetaverseTypes">
+      <HintPath>..\..\Lib\OpenMetaverseTypes.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -133,7 +142,6 @@
     <Compile Include="Plugins\PanoramaPlugin.cs" />
     <Compile Include="Plugins\PluginBase.cs" />
     <Compile Include="Plugins\ScreenshotSequencePlugin.cs" />
-    <Compile Include="Plugins\OutputPluginStub.cs" />
     <Compile Include="Plugins\StubOutputPlugin.cs" />
     <Compile Include="Plugins\Projector.cs" />
     <Compile Include="GUI\Controls\Plugins\AxisBasedDeltaPanel.cs">
@@ -227,7 +235,6 @@
       <DependentUpon>KBMousePanel.cs</DependentUpon>
     </Compile>
     <Compile Include="Interfaces\ICrashable.cs" />
-    <Compile Include="Plugins\StubOutputPlugin.cs" />
     <Compile Include="Util\Algorithms.cs" />
     <Compile Include="Util\FireEventAppender.cs" />
     <Compile Include="Util\InvokeExtension.cs" />
@@ -354,12 +361,6 @@
       <Isolated>False</Isolated>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </COMReference>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\libopenmetaverse\OpenMetaverseTypes\OpenMetaverseTypes.csproj">
-      <Project>{7EBA4367-FE5C-433B-B67D-B6A1BBD15B1D}</Project>
-      <Name>OpenMetaverseTypes</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

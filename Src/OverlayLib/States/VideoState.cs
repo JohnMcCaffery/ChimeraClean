@@ -159,15 +159,6 @@ namespace Chimera.Overlay.States {
             }
         }
 
-        void mPlayer_VideoStarted()
-        {
-            if (Active)
-            {
-                foreach (var transition in Transitions)
-                    transition.Active = true;
-            }
-        }
-
         protected override void TransitionFromStart() {
             Stop(true);
         }

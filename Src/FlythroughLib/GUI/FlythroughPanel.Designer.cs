@@ -391,13 +391,10 @@ namespace Chimera.Flythrough.GUI {
             this.speedScroll.Maximum = 199;
             this.speedScroll.Name = "speedScroll";
             this.speedScroll.Size = new System.Drawing.Size(485, 42);
-<<<<<<< HEAD
             this.speedScroll.LargeChange = 10;
-	    //Merge conflict - which position is better?
+            //Merge conflict - which position is better?
             //this.speedScroll.Location = new System.Drawing.Point(6, 325);
             //this.speedScroll.Size = new System.Drawing.Size(147, 42);
-=======
->>>>>>> No idea what is going on.
             this.speedScroll.TabIndex = 21;
             this.speedScroll.Value = 100;
             this.speedScroll.ValueChanged += new System.EventHandler(this.speedScroll_Scroll);
@@ -407,11 +404,8 @@ namespace Chimera.Flythrough.GUI {
             this.speedLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.speedLabel.AutoSize = true;
             this.speedLabel.Location = new System.Drawing.Point(3, 389);
-<<<<<<< HEAD
-	    //Merge conflict - which position is better?
+            //Merge conflict - which position is better?
             //this.speedLabel.Location = new System.Drawing.Point(3, 317);
-=======
->>>>>>> No idea what is going on.
             this.speedLabel.Name = "speedLabel";
             this.speedLabel.Size = new System.Drawing.Size(38, 13);
             this.speedLabel.TabIndex = 22;

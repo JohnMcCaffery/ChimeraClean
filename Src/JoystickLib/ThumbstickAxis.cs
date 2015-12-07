@@ -42,7 +42,7 @@ namespace Joystick {
     }
     public class RightThumbstickY : ThumbstickAxis {
         public RightThumbstickY() : base(false, false, AxisBinding.NotSet) {
-
+        }
     }
     /*
     public class ThumbstickAxisLX : ThumbstickAxis {

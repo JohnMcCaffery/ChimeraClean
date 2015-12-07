@@ -90,11 +90,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Lib\CefSharp.WinForms.dll</HintPath>
     </Reference>
-    <Reference Include="CefSharp.WinForms.Example, Version=37.0.0.0, Culture=neutral, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <ExecutableExtension>.exe</ExecutableExtension>
-      <HintPath>..\..\Bin\CefSharp.WinForms.Example.exe</HintPath>
-    </Reference>
     <Reference Include="GridProxy, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Lib\GridProxy.dll</HintPath>

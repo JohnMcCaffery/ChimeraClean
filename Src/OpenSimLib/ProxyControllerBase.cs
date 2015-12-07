@@ -426,17 +426,7 @@ namespace Chimera.OpenSim {
             return p;
         }
 
-        private Packet mProxy_ObjectUpdatePacketReceived(Packet p, IPEndPoint ep) {
-            ObjectUpdatePacket packet = p as ObjectUpdatePacket;
-            foreach (var block in packet.ObjectData) {
-                if (block.FullID == mAgentID) {
-                    mLocalID = block.ID;
-                    return p;
-                }
-            }
-            return p;
-        }
-
+        /*
         private Packet mProxy_ImprovedTerseObjectUpdatePacketReceived(Packet p, IPEndPoint ep) {
             if (mLocalID != 0 && mProxy != null)
                 mProxy.RemoveDelegate(PacketType.ObjectUpdate, Direction.Incoming, mObjectUpdateListener);
@@ -462,9 +452,9 @@ namespace Chimera.OpenSim {
                     //mAvatarOrientation = Frame.Core.Orientation;
                 }
             }
-
             return p;
         }
+        */
 
         private string MakeKey(Vector3 v) {
             return String.Format("{0},{1},{2}", Math.Round(v.X), Math.Round(v.Y), Math.Round(v.Z));

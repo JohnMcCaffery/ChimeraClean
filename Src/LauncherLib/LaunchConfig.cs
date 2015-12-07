@@ -33,16 +33,17 @@ namespace Chimera.Launcher {
 
 	    //Cluster fuck of a merge conflict - no idea which is the correct way of getting the bindings file
             //BindingsFile = Path.Combine(Folder, "Bindings.xml");
-            //BindingsFile = GetFile("BindingsFile", null, "The XML file describing the dependency injection bindings used to instantiate the system. Relative paths are specified relative to the folder the launch config file is in.");
+            BindingsFile = GetFile("BindingsFile", null, "The XML file describing the dependency injection bindings used to instantiate the system. Relative paths are specified relative to the folder the launch config file is in.");
+            //BindingsFile = Get(true, "BindingsFile", null, "The XML file describing the dependency injection bindings used to instantiate the system. Relative paths are specified relative to the folder the launch config file is in.");
 
-            BindingsFile = Get(true, "BindingsFile", null, "The XML file describing the dependency injection bindings used to instantiate the system. Relative paths are specified relative to the folder the launch config file is in.");
-
+            /*
             if (!Path.IsPathRooted(BindingsFile)) {
                 string f = BindingsFile;
                 BindingsFile = Path.Combine(Folder, BindingsFile);
                 if (!File.Exists(BindingsFile))
                     BindingsFile = Path.Combine(CommonFolder, f);
             }
+            */
         }
     }
 }

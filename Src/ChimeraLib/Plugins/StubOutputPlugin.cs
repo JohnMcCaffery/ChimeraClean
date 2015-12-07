@@ -11,6 +11,10 @@ namespace Chimera.Plugins
         public IOutput Create() {
             return new StubOutputPlugin();
         }
+
+        public IOutput Create(string name) {
+            return new StubOutputPlugin();
+        }
     }
 
     public class StubOutputPlugin : IOutput {
