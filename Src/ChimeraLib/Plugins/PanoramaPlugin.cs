@@ -50,10 +50,12 @@ namespace Chimera.Plugins {
         public void TakePanorama() {
             Rotation r = mCore.Orientation;
 
+            /*
             for (int i = 1; i < 7; i++) {
                 mCore.Update(mCore.Position, Vector3.Zero, GetRotation(i), Rotation.Zero);
                 Thread.Sleep(500);
             }
+            */
 
             mRunning = true;
 
@@ -67,7 +69,7 @@ namespace Chimera.Plugins {
             mCentre = mCore.Position;
             mCurrentImage = 0;
 
-            for (int image = 0; image < 18; image++) {
+            for (int image = 0; mCurrentImage != 0 || image == 0; image++) {
                 ShowNextImage();
                 Thread.Sleep(mConfig.CaptureDelayMS);
                 TakeScreenshot();
@@ -92,8 +94,10 @@ namespace Chimera.Plugins {
 
             mCore.Update(position, Vector3.Zero, rotation, Rotation.Zero);
 
-            mCurrentImage = mConfig.Capture3D ? mCurrentImage++ : mCurrentImage += 3;
-            if (mCurrentImage == 18)
+            mCurrentImage = mConfig.Capture3D ? mCurrentImage + 1 : mCurrentImage += 3;
+            if (!mConfig.CaptureOverlaps && mCurrentImage == 18)
+                mCurrentImage = 0;
+            else if (mConfig.CaptureOverlaps && mCurrentImage == 42)
                 mCurrentImage = 0;
         }
 
@@ -111,7 +115,8 @@ namespace Chimera.Plugins {
                 if (mScreenshots.Count > 0) {
                     Bitmap screenshot = mScreenshots.Dequeue();
                     using (Bitmap resized = new Bitmap(screenshot, new Size(screenshot.Height, screenshot.Height))) {
-                        string file = Path.Combine(mConfig.ScreenshotFolder, GetImageName(image++) + ".png");
+                        string file = Path.Combine(mConfig.ScreenshotFolder, GetImageName(image) + ".png");
+                        image = mConfig.Capture3D ? image + 1 : image += 3;
                         Logger.Info("Writing Panorama image to: " + file + ".");
                         resized.Save(file);
                     }
@@ -125,12 +130,18 @@ namespace Chimera.Plugins {
 
         private Rotation GetRotation(int image) {
             switch (image / 3) {
-                case 0: return new Rotation(0.0, 0.0);
-                case 1: return new Rotation(0.0, 90);
-                case 2: return new Rotation(0.0, 180.0);
-                case 3: return new Rotation(0.0, -90);
-                case 4: return new Rotation(-90.0, 0.0);
-                case 5: return new Rotation(90.0, 0.0);
+                case 0: return new Rotation(-90.0, 0.0);
+                case 1: return new Rotation(90.0, 0.0);
+                case 2: return new Rotation((mConfig.CaptureOverlaps ? -35 : 0.0), (!mConfig.CaptureOverlaps ? 0 : 0));
+                case 3: return new Rotation((mConfig.CaptureOverlaps ? -35 : 0.0), (!mConfig.CaptureOverlaps ? 270 : 72));
+                case 4: return new Rotation((mConfig.CaptureOverlaps ? -35 : 0.0), (!mConfig.CaptureOverlaps ? 180 : 144));
+                case 5: return new Rotation((mConfig.CaptureOverlaps ? -35 : 0.0), (!mConfig.CaptureOverlaps ? 90 : 216));
+                case 6: return new Rotation(-35, 288);
+                case 7: return new Rotation(35, 0);
+                case 8: return new Rotation(35, 72);
+                case 9: return new Rotation(35, 144);
+                case 10: return new Rotation(35, 216);
+                case 11: return new Rotation(35, 288);
                 default: return new Rotation(0.0, 0.0);
             }
         }
@@ -138,12 +149,18 @@ namespace Chimera.Plugins {
         private string GetImageName(int image) {
             string side = "North";
             switch (image / 3) {
-                case 0: side = "North"; break;
-                case 1: side = "West"; break;
-                case 2: side = "South"; break;
-                case 3: side = "East"; break;
-                case 4: side = "Up"; break;
-                case 5: side = "Down"; break;
+                case 0: side = (mConfig.CaptureOverlaps ? "0,90" : "Up"); break;
+                case 1: side = (mConfig.CaptureOverlaps ? "0,-90" : "Down"); break;
+                case 2: side = (mConfig.CaptureOverlaps ? "0,35" : "North"); break;
+                case 3: side = (mConfig.CaptureOverlaps ? "72,35" : "West"); break;
+                case 4: side = (mConfig.CaptureOverlaps ? "144,35" : "South"); break;
+                case 5: side = (mConfig.CaptureOverlaps ? "216,35" : "East"); break;
+                case 6: side = "288,35"; break;
+                case 7: side = "0,-35"; break;
+                case 8: side = "72,-35"; break;
+                case 9: side = "144,-35"; break;
+                case 10: side = "216,-35"; break;
+                case 11: side = "288,-35"; break;
             }
 
             string offset = "";

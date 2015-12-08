@@ -54,6 +54,7 @@ namespace Chimera.Config {
 	//Panorama
         public int CaptureDelayMS;
         public bool Capture3D;
+        public bool CaptureOverlaps;
 
         public CoreConfig(params string[] args)
             : base("Main", args) {
@@ -102,6 +103,7 @@ namespace Chimera.Config {
 	    //Panorama
             CaptureDelayMS = Get("Panorama", "CaptureDelayMS", 150, "How long (in milliseconds) to wait for the view to adjust before capturing an image.");
             Capture3D = Get("Panorama", "Capture3D", false, "Whether to capture images in triplets (centre, left, right) or just take one image at each orientation.");
+            CaptureOverlaps = Get("Panorama", "CaptureOverlaps", false, "Whether to continue capturing images after the first 6 positions. A further four images will be captured at 45 degrees up and down.");
 
         }
 
