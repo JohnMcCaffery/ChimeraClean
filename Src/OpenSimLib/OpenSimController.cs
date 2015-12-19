@@ -415,7 +415,7 @@ namespace Chimera.OpenSim {
         #endregion
 
         void CheckTimeoutThread() {
-            if (mViewerController.Started && DateTime.UtcNow.Subtract(mProxyController.LastUpdatePacket).TotalMinutes > 1.0) {
+            if (mViewerController.Started && DateTime.UtcNow.Subtract(mProxyController.LastUpdatePacket).TotalMinutes > mConfig.ViewerNotRespondingTimeoutM) {
                 mProxyController.LastUpdatePacket = DateTime.UtcNow;
                 new Thread(() => {
                 Restart("ViewerStoppedResponding");
@@ -425,7 +425,7 @@ namespace Chimera.OpenSim {
 
         private void CheckTimeout() {
             //if (mViewerController.Started && mProxyController.LoggedIn && DateTime.Now.Subtract(mProxyController.LastUpdatePacket).TotalMinutes > 1.0) {
-            if (mViewerController.Started && DateTime.UtcNow.Subtract(mProxyController.LastUpdatePacket).TotalMinutes > 1.0) {
+            if (mViewerController.Started && DateTime.UtcNow.Subtract(mProxyController.LastUpdatePacket).TotalMinutes > mConfig.ViewerNotRespondingTimeoutM) {
                 mProxyController.LastUpdatePacket = DateTime.UtcNow;
                 Restart("ViewerStoppedResponding");
             }

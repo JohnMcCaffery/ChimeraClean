@@ -15,7 +15,7 @@ namespace Chimera.OpenSim {
             : base(frame) {
 
             mAllowFly = new ViewerConfig("Irrelevant").AllowFly;
-        }        
+        }
         protected override Packet ActualSetCamera() {
             return new SetCameraPacket(MakeCameraBlock());
         }
@@ -53,19 +53,18 @@ namespace Chimera.OpenSim {
             InjectPacket(new ClearRemoteControlPacket());
         }
 
-        public override void CloseBrowser()
-        {
+        public override void CloseBrowser() {
             InjectPacket(new CloseBrowserPacket());
         }
 
-        public override void MuteAudio(bool mute)
-        {
+        public override void MuteAudio(bool mute) {
             InjectPacket(new MuteAudioPacket(mute));
         }
 
         private SetCameraPacket.CameraBlock MakeCameraBlock() {
             return MakeCameraBlock(Frame.Core.Position, Vector3.Zero, Frame.Core.Orientation, Rotation.Zero);
         }
+
         private SetCameraPacket.CameraBlock MakeCameraBlock(Vector3 position, Vector3 positionDelta, Rotation rotation, Rotation rotationDelta) {
             Rotation orientationOffset = new Rotation(Frame.Orientation.Pitch, -Frame.Orientation.Yaw);
             Vector3 lookAt = orientationOffset.LookAtVector * rotation.Quaternion;
@@ -75,8 +74,8 @@ namespace Chimera.OpenSim {
 
             Vector3 offset = Offset * rotation.Quaternion;
             if (Frame.Core.ControlMode == ControlMode.Absolute)
-               offset += eyePos / 1000f;
-            
+                offset += eyePos / 1000f;
+
             Vector3 cameraUp = Vector3.UnitZ * rotation.Quaternion;
             Vector3 up = Vector3.UnitZ;
             if (orientationOffset.Yaw != 0.0)
@@ -88,7 +87,7 @@ namespace Chimera.OpenSim {
             block.LookAt = lookAt;
             block.LookAtDelta = rotationDelta.LookAtVector;
             block.Up = up;
-            block.TickLength = (uint) Frame.Core.TickLength * 1000;
+            block.TickLength = (uint)Frame.Core.TickLength * 1000;
             return block;
         }
     }

@@ -62,6 +62,7 @@ namespace Chimera.OpenSim {
         public bool ControlCamera;
         public Fill Fill = Fill.Windowed;
         public int ProxyPort;
+        public double ViewerNotRespondingTimeoutM;
 
         public bool GetLocalID;
 
@@ -117,6 +118,7 @@ namespace Chimera.OpenSim {
             UseGrid = Get("UseGrid", false, "Whether to login using the --grid or --loginuri command line parameter to specify the login target.");
             DeltaScale = Get("DeltaScale", .25f, "How much to scale delta values by when using remote control.");
             MasterFrame = GetStr("MasterFrame", "MainWindow", "The name of the frame which is to be the master controller.");
+            ViewerNotRespondingTimeoutM = Get("ViewerNotRespondingTimeoutM", 1.0, "How long to wait between update packets before assuming the client has failed and restarting it.");
 
             GetLocalID = Get("GetLocalID", false, "Whether to check all ObjectUpdate packets until the local ID for the logged in agent is parsed. Required for requesting AvatarPosition and AvatarOrientation.");
 
