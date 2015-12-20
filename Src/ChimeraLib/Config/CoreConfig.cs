@@ -53,10 +53,12 @@ namespace Chimera.Config {
 
 	//Photosphere
         public int PhotosphereCaptureDelayMS;
-        public bool Capture3D;
-        public bool CaptureOverlaps;
+        public bool PhotosphereCapture3D;
         public int PhotosphereOutputWidth;
         public string PhotosphereName;
+        public string PhotosphereBatcherExe;
+        public bool PhotosphereAutoStartBatch;
+        public bool PhotosphereAddBatch;
 
         public CoreConfig(params string[] args)
             : base("Main", args) {
@@ -104,10 +106,12 @@ namespace Chimera.Config {
 
 	    //Photosphere
             PhotosphereCaptureDelayMS = Get("Photosphere", "CaptureDelayMS", 150, "How long (in milliseconds) to wait for the view to adjust before capturing an image.");
-            Capture3D = Get("Photosphere", "Capture3D", false, "Whether to capture images in triplets (centre, left, right) or just take one image at each orientation.");
-            CaptureOverlaps = Get("Photosphere", "CaptureOverlaps", false, "Whether to continue capturing images after the first 6 positions. A further four images will be captured at 45 degrees up and down.");
+            PhotosphereCapture3D = Get("Photosphere", "Capture3D", false, "Whether to capture images in triplets (centre, left, right) or just take one image at each orientation.");
             PhotosphereOutputWidth = Get("Photosphere", "OutputWidth", 8192, "The width of the final Photosphere that will be produced.");
             PhotosphereName = GetSection("Photosphere", "Name", "Photosphere", "The name for this Photosphere.");
+            PhotosphereAutoStartBatch = Get("Photosphere", "AutostartBatch", false, "If the output PTO file is to be added to the batcher then this controls whether the batcher will be started once the PTO file is added.");
+            PhotosphereBatcherExe = GetFileSection("Photosphere", "BatcherExe", "C:/Program Files/Hugin/bin/PTBatcherGUI.exe", "The hugin batcher executable.");
+            PhotosphereAddBatch = Get("Photosphere", "Batch", false, "Whether to add the PTO project to hugin's batcher once the photosphere has been created.");
 
         }
 

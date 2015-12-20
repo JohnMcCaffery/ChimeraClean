@@ -69,8 +69,8 @@ namespace Chimera.Plugins {
         }
 
         public bool Capture3D {
-            get { return mConfig.Capture3D; }
-            set { mConfig.Capture3D = value; }
+            get { return mConfig.PhotosphereCapture3D; }
+            set { mConfig.PhotosphereCapture3D = value; }
         }
 
         public int Rows {
@@ -116,7 +116,7 @@ namespace Chimera.Plugins {
                 //The field of view each screenshot should have to to produce a final image ofr OutputWidth or greater.
                 mFoV = 360.0 / (mCols - 1.0);
                 //If the calculated filed of view is less than 90 there will be problems with hugin so manually set to 90.
-                if (mFoV < 90.0) {
+                if (mFoV > 90.0) {
                     Logger.Info("Calculated panosphere field of view was greater than 90 degrees. This causes problems with Hugin so has been changed to 90.");
                     mFoV = 90.0;
                     mCols = 5;
@@ -209,7 +209,7 @@ namespace Chimera.Plugins {
 
             mCore.Update(position, Vector3.Zero, rotation, Rotation.Zero);
 
-            mCurrentImage = mConfig.Capture3D ? mCurrentImage + 1 : mCurrentImage += 3;
+            mCurrentImage = mConfig.PhotosphereCapture3D ? mCurrentImage + 1 : mCurrentImage += 3;
             if (mCurrentImage == mTotalImages * 3)
                 mCurrentImage = 0;
             /*
@@ -247,7 +247,7 @@ namespace Chimera.Plugins {
                         File.AppendAllLines(PTOFile, new string[] {
                                 "#-hugin  cropFactor=1",
                                 string.Format("i w{0} h{0} f0 v{1} Ra0 Rb0 Rc0 Rd0 Re0 Eev0 Er1 Eb1 r0 p{2} y{3} TrX0 TrY0 TrZ0 Tpy0 Tpp0 j0 a0 b0 c0 d0 e0 g0 t0 Va1 Vb0 Vc0 Vd0 Vx0 Vy0  Vm5 n\"{4}\"",
-                                OutputWidth,
+                                resized.Height,
                                 mFoV,
                                 rot.Pitch * -1.0,
                                 rot.Yaw * -1.0,
@@ -256,6 +256,14 @@ namespace Chimera.Plugins {
 
                         if ((image / 3) == TotalImages - 1) {
                             FinishPTOFile();
+                            if (mConfig.PhotosphereAddBatch) {
+                                Logger.Info("Adding " + mConfig.PhotosphereName + " as batch processing job" + (mConfig.PhotosphereAutoStartBatch ? " and starting batcher" : "") + ".");
+                                string args = String.Format("{0} {1}.pto {1}.jpg",
+                                    (mConfig.PhotosphereAutoStartBatch ? " --batch" : ""),
+                                    mConfig.PhotosphereName);
+                                Logger.Debug(mConfig.PhotosphereAutoStartBatch + args);
+                                ProcessWrangler.InitProcess(mConfig.PhotosphereBatcherExe, SaveFolder, args).Start();
+                            }
                         }
                     }
                     screenshot.Dispose();
@@ -408,11 +416,11 @@ namespace Chimera.Plugins {
                 "#hugin_enblendOptions ",
                 "#hugin_enfuseOptions ",
                 "#hugin_hdrmergeOptions -m avg -c",
-                "#hugin_outputLDRBlended false",
+                "#hugin_outputLDRBlended true",
                 "#hugin_outputLDRLayers false",
                 "#hugin_outputLDRExposureRemapped false",
                 "#hugin_outputLDRExposureLayers false",
-                "#hugin_outputLDRExposureBlended true",
+                "#hugin_outputLDRExposureBlended false",
                 "#hugin_outputLDRStacks false",
                 "#hugin_outputLDRExposureLayersFused false",
                 "#hugin_outputHDRBlended false",
@@ -421,7 +429,7 @@ namespace Chimera.Plugins {
                 "#hugin_outputLayersCompression LZW",
                 "#hugin_outputImageType jpg",
                 "#hugin_outputImageTypeCompression LZW",
-                "#hugin_outputJPEGQuality 90",
+                "#hugin_outputJPEGQuality 100",
                 "#hugin_outputImageTypeHDR exr",
                 "#hugin_outputImageTypeHDRCompression LZW",
                 "#hugin_outputStacksMinOverlap 0.7",

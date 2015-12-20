@@ -121,7 +121,7 @@
             // 
             this.screenshotButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.screenshotButton.Location = new System.Drawing.Point(3, 155);
+            this.screenshotButton.Location = new System.Drawing.Point(6, 155);
             this.screenshotButton.Name = "screenshotButton";
             this.screenshotButton.Size = new System.Drawing.Size(546, 23);
             this.screenshotButton.TabIndex = 6;
