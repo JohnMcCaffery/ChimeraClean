@@ -1,5 +1,5 @@
 ﻿namespace Chimera.GUI.Controls.Plugins {
-    partial class PanoramaPanel {
+    partial class PhotospherePanel {
         /// <summary> 
         /// Required designer variable.
         /// </summary>
@@ -33,7 +33,14 @@
             this.screenshotButton = new System.Windows.Forms.Button();
             this.nextImageButton = new System.Windows.Forms.Button();
             this.setCentreButton = new System.Windows.Forms.Button();
+            this.nameBox = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.widthBox = new System.Windows.Forms.NumericUpDown();
+            this.label4 = new System.Windows.Forms.Label();
+            this.heightLabel = new System.Windows.Forms.Label();
+            this.detailsLabel = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.captureDelay)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.widthBox)).BeginInit();
             this.SuspendLayout();
             // 
             // captureButton
@@ -146,10 +153,89 @@
             this.setCentreButton.UseVisualStyleBackColor = true;
             this.setCentreButton.Click += new System.EventHandler(this.setCentreButton_Click);
             // 
-            // PanoramaPanel
+            // nameBox
+            // 
+            this.nameBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.nameBox.Location = new System.Drawing.Point(229, 58);
+            this.nameBox.Name = "nameBox";
+            this.nameBox.Size = new System.Drawing.Size(122, 20);
+            this.nameBox.TabIndex = 9;
+            this.nameBox.Text = "Photosphere";
+            this.nameBox.TextChanged += new System.EventHandler(this.NameBox_TextChanged);
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(187, 61);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(35, 13);
+            this.label3.TabIndex = 10;
+            this.label3.Text = "Name";
+            // 
+            // widthBox
+            // 
+            this.widthBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.widthBox.Increment = new decimal(new int[] {
+            512,
+            0,
+            0,
+            0});
+            this.widthBox.Location = new System.Drawing.Point(433, 58);
+            this.widthBox.Maximum = new decimal(new int[] {
+            1000000,
+            0,
+            0,
+            0});
+            this.widthBox.Name = "widthBox";
+            this.widthBox.Size = new System.Drawing.Size(69, 20);
+            this.widthBox.TabIndex = 11;
+            this.widthBox.Value = new decimal(new int[] {
+            8192,
+            0,
+            0,
+            0});
+            this.widthBox.ValueChanged += new System.EventHandler(this.widthBox_ValueChanged);
+            // 
+            // label4
+            // 
+            this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(357, 61);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(70, 13);
+            this.label4.TabIndex = 12;
+            this.label4.Text = "Output Width";
+            // 
+            // heightLabel
+            // 
+            this.heightLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.heightLabel.AutoSize = true;
+            this.heightLabel.Location = new System.Drawing.Point(510, 61);
+            this.heightLabel.Name = "heightLabel";
+            this.heightLabel.Size = new System.Drawing.Size(39, 13);
+            this.heightLabel.TabIndex = 13;
+            this.heightLabel.Text = "x 4096";
+            // 
+            // detailsLabel
+            // 
+            this.detailsLabel.AutoSize = true;
+            this.detailsLabel.Location = new System.Drawing.Point(6, 185);
+            this.detailsLabel.Name = "detailsLabel";
+            this.detailsLabel.Size = new System.Drawing.Size(35, 13);
+            this.detailsLabel.TabIndex = 14;
+            this.detailsLabel.Text = "label5";
+            // 
+            // PhotospherePanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.detailsLabel);
+            this.Controls.Add(this.heightLabel);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.widthBox);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.nameBox);
             this.Controls.Add(this.setCentreButton);
             this.Controls.Add(this.nextImageButton);
             this.Controls.Add(this.screenshotButton);
@@ -159,9 +245,10 @@
             this.Controls.Add(this.folderButton);
             this.Controls.Add(this.folderAddress);
             this.Controls.Add(this.captureButton);
-            this.Name = "PanoramaPanel";
+            this.Name = "PhotospherePanel";
             this.Size = new System.Drawing.Size(555, 290);
             ((System.ComponentModel.ISupportInitialize)(this.captureDelay)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.widthBox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -179,5 +266,11 @@
         private System.Windows.Forms.Button screenshotButton;
         private System.Windows.Forms.Button nextImageButton;
         private System.Windows.Forms.Button setCentreButton;
+        private System.Windows.Forms.TextBox nameBox;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.NumericUpDown widthBox;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label heightLabel;
+        private System.Windows.Forms.Label detailsLabel;
     }
 }

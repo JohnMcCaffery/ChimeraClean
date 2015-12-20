@@ -348,6 +348,7 @@ namespace Chimera {
             set {
                 if (value <= 0.0)
                     return;
+                double tan = Math.Tan(value / 2.0);
                 double width = 2 * ScreenDistance * Math.Tan(value / 2.0);
                 double height = mLinkFoVs ? width * AspectRatio : mHeight;
                 ChangeDimesions(width, height);

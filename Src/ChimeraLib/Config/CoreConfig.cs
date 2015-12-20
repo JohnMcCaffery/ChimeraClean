@@ -51,10 +51,12 @@ namespace Chimera.Config {
         public bool AutoShutdown;
         public string ScreenshotFile;
 
-	//Panorama
-        public int CaptureDelayMS;
+	//Photosphere
+        public int PhotosphereCaptureDelayMS;
         public bool Capture3D;
         public bool CaptureOverlaps;
+        public int PhotosphereOutputWidth;
+        public string PhotosphereName;
 
         public CoreConfig(params string[] args)
             : base("Main", args) {
@@ -100,10 +102,12 @@ namespace Chimera.Config {
             AutoShutdown = Get("ScreenshotSequence", "AutoShutdown", false, "Whether to shut down the viewer when screenshots have stopped.");
             ScreenshotFile = GetSection("ScreenshotSequence", "File", "TimeLapse", "The prefix for all screenshot files, will be appended with _X.");
 
-	    //Panorama
-            CaptureDelayMS = Get("Panorama", "CaptureDelayMS", 150, "How long (in milliseconds) to wait for the view to adjust before capturing an image.");
-            Capture3D = Get("Panorama", "Capture3D", false, "Whether to capture images in triplets (centre, left, right) or just take one image at each orientation.");
-            CaptureOverlaps = Get("Panorama", "CaptureOverlaps", false, "Whether to continue capturing images after the first 6 positions. A further four images will be captured at 45 degrees up and down.");
+	    //Photosphere
+            PhotosphereCaptureDelayMS = Get("Photosphere", "CaptureDelayMS", 150, "How long (in milliseconds) to wait for the view to adjust before capturing an image.");
+            Capture3D = Get("Photosphere", "Capture3D", false, "Whether to capture images in triplets (centre, left, right) or just take one image at each orientation.");
+            CaptureOverlaps = Get("Photosphere", "CaptureOverlaps", false, "Whether to continue capturing images after the first 6 positions. A further four images will be captured at 45 degrees up and down.");
+            PhotosphereOutputWidth = Get("Photosphere", "OutputWidth", 8192, "The width of the final Photosphere that will be produced.");
+            PhotosphereName = GetSection("Photosphere", "Name", "Photosphere", "The name for this Photosphere.");
 
         }
 

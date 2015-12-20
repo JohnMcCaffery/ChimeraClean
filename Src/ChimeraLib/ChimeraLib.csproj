@@ -101,11 +101,11 @@
     <Compile Include="Config\PluginConfig.cs" />
     <Compile Include="Config\ProjectorConfig.cs" />
     <Compile Include="Config\ShutdownConfig.cs" />
-    <Compile Include="GUI\Controls\Plugins\PanoramaPanel.cs">
+    <Compile Include="GUI\Controls\Plugins\PhotospherePanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="GUI\Controls\Plugins\PanoramaPanel.Designer.cs">
-      <DependentUpon>PanoramaPanel.cs</DependentUpon>
+    <Compile Include="GUI\Controls\Plugins\PhotospherePanel.Designer.cs">
+      <DependentUpon>PhotospherePanel.cs</DependentUpon>
     </Compile>
     <Compile Include="GUI\Controls\Plugins\ScreenshotSequencePanel.cs">
       <SubType>UserControl</SubType>
@@ -139,7 +139,7 @@
     </Compile>
     <Compile Include="Interfaces\IDiagramDrawable.cs" />
     <Compile Include="Interfaces\IOutputFactory.cs" />
-    <Compile Include="Plugins\PanoramaPlugin.cs" />
+    <Compile Include="Plugins\PhotospherePlugin.cs" />
     <Compile Include="Plugins\PluginBase.cs" />
     <Compile Include="Plugins\ScreenshotSequencePlugin.cs" />
     <Compile Include="Plugins\StubOutputPlugin.cs" />
@@ -293,8 +293,8 @@
     <EmbeddedResource Include="GUI\Controls\Plugins\ConstrainedAxisPanel.resx">
       <DependentUpon>ConstrainedAxisPanel.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="GUI\Controls\Plugins\PanoramaPanel.resx">
-      <DependentUpon>PanoramaPanel.cs</DependentUpon>
+    <EmbeddedResource Include="GUI\Controls\Plugins\PhotospherePanel.resx">
+      <DependentUpon>PhotospherePanel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\Controls\Plugins\ScreenshotSequencePanel.resx">
       <DependentUpon>ScreenshotSequencePanel.cs</DependentUpon>

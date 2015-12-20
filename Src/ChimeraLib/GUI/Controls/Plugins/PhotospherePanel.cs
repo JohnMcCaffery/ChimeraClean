@@ -10,15 +10,15 @@ using Chimera.Plugins;
 using Chimera.Config;
 
 namespace Chimera.GUI.Controls.Plugins {
-    public partial class PanoramaPanel : UserControl {
-        private PanoramaPlugin mPlugin;
+    public partial class PhotospherePanel : UserControl {
+        private PhotospherePlugin mPlugin;
         private CoreConfig mConfig;
 
-        public PanoramaPanel() {
+        public PhotospherePanel() {
             InitializeComponent();
         }
 
-        public PanoramaPanel(PanoramaPlugin plugin) {
+        public PhotospherePanel(PhotospherePlugin plugin) {
             InitializeComponent();
 
             mPlugin = plugin;
@@ -27,11 +27,24 @@ namespace Chimera.GUI.Controls.Plugins {
             folderAddress.Text = mConfig.ScreenshotFolder;
             folderDialog.RootFolder = Environment.SpecialFolder.MyDocuments;
             folderDialog.SelectedPath = mConfig.ScreenshotFolder;
-            captureDelay.Value = mConfig.CaptureDelayMS;
+            captureDelay.Value = mConfig.PhotosphereCaptureDelayMS;
+            nameBox.Text = mConfig.PhotosphereName;
+            widthBox.Value = mConfig.PhotosphereOutputWidth;
+            detailsLabel.Text = 
+                "FoV: " + 
+                mPlugin.FoV + 
+                " Columns: " + 
+                mPlugin.Cols + 
+                " Rows: " + 
+                mPlugin.Rows + 
+                " YawIncrement: " + 
+                mPlugin.YawIncrement + 
+                " PitchIncrement:" + 
+                mPlugin.PitchIncrement;
         }
 
         private void captureButton_Click(object sender, EventArgs e) {
-            mPlugin.TakePanorama();
+            mPlugin.TakePhotosphere();
         }
 
         private void folderButton_Click(object sender, EventArgs e) {
@@ -47,7 +60,7 @@ namespace Chimera.GUI.Controls.Plugins {
         }
 
         private void captureDelay_ValueChanged(object sender, EventArgs e) {
-            mConfig.CaptureDelayMS = Decimal.ToInt32(captureDelay.Value);
+            mConfig.PhotosphereCaptureDelayMS = Decimal.ToInt32(captureDelay.Value);
         }
 
         private void setCentreButton_Click(object sender, EventArgs e) {
@@ -60,6 +73,15 @@ namespace Chimera.GUI.Controls.Plugins {
 
         private void screenshotButton_Click(object sender, EventArgs e) {
             mPlugin.TakeScreenshot();
+        }
+
+        private void NameBox_TextChanged(object sender, EventArgs e) {
+            mConfig.PhotosphereName = nameBox.Text;
+        }
+
+        private void widthBox_ValueChanged(object sender, EventArgs e) {
+            mPlugin.OutputWidth = decimal.ToInt32(widthBox.Value);
+            heightLabel.Text = "x " + (mConfig.PhotosphereOutputWidth / 2);
         }
     }
 }
