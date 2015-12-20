@@ -100,8 +100,10 @@ namespace Chimera.Plugins {
         public int OutputWidth {
             get { return mConfig.PhotosphereOutputWidth; }
             set {
-                if (value < 512)
+                if (value < 1) {
+                    Logger.Warn("Unable to set photosphere output width to " + value + ". OutputWidth must be > 1");
                     return;
+                }
 
                 //The height of the screen, used for calculating how much of the final output image can be captured in each screenshot.
                 //Images are compressed to squares so the smallest of width/height is used.
@@ -113,6 +115,12 @@ namespace Chimera.Plugins {
                 mCols = (int)screenshotsH + (screenshotsH % 1.0 == 0.0 ? 1 : 2);
                 //The field of view each screenshot should have to to produce a final image ofr OutputWidth or greater.
                 mFoV = 360.0 / (mCols - 1.0);
+                //If the calculated filed of view is less than 90 there will be problems with hugin so manually set to 90.
+                if (mFoV < 90.0) {
+                    Logger.Info("Calculated panosphere field of view was greater than 90 degrees. This causes problems with Hugin so has been changed to 90.");
+                    mFoV = 90.0;
+                    mCols = 5;
+                }
                 //How much to rotate the view by for each screenshot. Has to be slightly less that the FoV to allow for overlaps.
                 //The extra screenshot which allows for overlaps is divided by the number of columns to calculate the overlap per image.
                 mYawIncrement = mFoV - (mFoV / mCols);
