@@ -18,11 +18,13 @@ namespace Chimera.Plugins {
         private struct ImageToSave {
             public Bitmap Image;
             public int ImageNumber;
+            public string Name;
 
             public ImageToSave(Bitmap image, int imageNumber, PhotospherePlugin plugin) {
                 Image = image;
                 ImageNumber = imageNumber == 0 ? plugin.TotalImages * 3 : imageNumber;
                 ImageNumber--;
+                Name = plugin.PhotosphereName;
             }
         }
 
@@ -55,6 +57,16 @@ namespace Chimera.Plugins {
 
         public PhotospherePlugin()
             : base("Photosphere", plugin => new PhotospherePanel(plugin as PhotospherePlugin)) {
+        }
+
+        public string PhotosphereName {
+            get { return mConfig.PhotosphereName; }
+            set { mConfig.PhotosphereName = value; }
+        }
+
+        public string PhotosphereFolder {
+            get { return mConfig.PhotosphereFolder; }
+            set { mConfig.PhotosphereFolder = value; }
         }
 
         public override void Init(Core core) {
@@ -136,12 +148,13 @@ namespace Chimera.Plugins {
             }
         }
 
-        public string PTOFile {
-            get { return Path.Combine(SaveFolder, mConfig.PhotosphereName + ".pto"); }
+
+        public string GetPTOFile (string folder, string name) {
+            return Path.Combine(folder, name + ".pto"); 
         }
 
-        public String SaveFolder {
-            get { return Path.Combine(mConfig.ScreenshotFolder, mConfig.PhotosphereName); }
+        public String GetSaveFolder (string name) {
+            return Path.Combine(mConfig.PhotosphereFolder, name); 
         }
 
         public void TakePhotosphere() {
@@ -154,8 +167,6 @@ namespace Chimera.Plugins {
             }
             */
 
-            mRunning = true;
-
             mOriginalRotation = mCore.Orientation;
             mOriginalWidth = mFrame.Width;
             mOriginalHeight = mFrame.Height;
@@ -167,15 +178,20 @@ namespace Chimera.Plugins {
             if (mFrame.Output.Process != null)
                 ProcessWrangler.BringToFront(mFrame.Output.Process);
 
-            if (File.Exists(PTOFile))
-                File.Delete(PTOFile);
+            string saveFolder = GetSaveFolder(PhotosphereName);
+            string ptoFile = GetPTOFile(saveFolder, PhotosphereName);
+            if (File.Exists(ptoFile))
+                File.Delete(ptoFile);
 
-            if (!Directory.Exists(SaveFolder))
-                Directory.CreateDirectory(SaveFolder);
+            if (!Directory.Exists(saveFolder))
+                Directory.CreateDirectory(saveFolder);
 
-            Thread t = new Thread(ScreenshotProcessor);
-            t.Name = "Photosphere Image Processor";
-            t.Start();
+            if (!mRunning) {
+                mRunning = true;
+                Thread t = new Thread(ScreenshotProcessor);
+                t.Name = "Photosphere Image Processor";
+                t.Start();
+            }
 
             mCentre = mCore.Position;
             mCurrentImage = 0;
@@ -190,7 +206,7 @@ namespace Chimera.Plugins {
             mFrame.Height = mOriginalHeight;
             mFrame.LinkFoVs = true;
 
-            mRunning = false;
+            //mRunning = false;
 
             mCore.Update(mCore.Position, Vector3.Zero, r, mOriginalRotation);
         }
@@ -237,14 +253,16 @@ namespace Chimera.Plugins {
                         int image = toSave.ImageNumber;
                         Rotation rot = GetRotation(image);
                         string name = GetImageName(image);
-                        string file = Path.Combine(SaveFolder, name);
-                        Logger.Info("Writing Photosphere image to: " + file + ".");
-                        resized.Save(file);
+                        string folder = GetSaveFolder(toSave.Name);
+                        string imageFile = Path.Combine(folder, name);
+                        string ptoFile = GetPTOFile(folder, toSave.Name);
+                        Logger.Info("Writing Photosphere image to: " + imageFile + ".");
+                        resized.Save(imageFile);
 
                         if ((image / 3) == 0)
-                            StartPTOFile();
+                            StartPTOFile(ptoFile);
 
-                        File.AppendAllLines(PTOFile, new string[] {
+                        File.AppendAllLines(ptoFile, new string[] {
                                 "#-hugin  cropFactor=1",
                                 string.Format("i w{0} h{0} f0 v{1} Ra0 Rb0 Rc0 Rd0 Re0 Eev0 Er1 Eb1 r0 p{2} y{3} TrX0 TrY0 TrZ0 Tpy0 Tpp0 j0 a0 b0 c0 d0 e0 g0 t0 Va1 Vb0 Vc0 Vd0 Vx0 Vy0  Vm5 n\"{4}\"",
                                 resized.Height,
@@ -255,14 +273,14 @@ namespace Chimera.Plugins {
                         });
 
                         if ((image / 3) == TotalImages - 1) {
-                            FinishPTOFile();
+                            FinishPTOFile(ptoFile);
                             if (mConfig.PhotosphereAddBatch) {
-                                Logger.Info("Adding " + mConfig.PhotosphereName + " as batch processing job" + (mConfig.PhotosphereAutoStartBatch ? " and starting batcher" : "") + ".");
+                                Logger.Info("Adding " + toSave.Name + " as batch processing job" + (mConfig.PhotosphereAutoStartBatch ? " and starting batcher" : "") + ".");
                                 string args = String.Format("{0} {1}.pto {1}.jpg",
                                     (mConfig.PhotosphereAutoStartBatch ? " --batch" : ""),
-                                    mConfig.PhotosphereName);
+                                    toSave.Name);
                                 Logger.Debug(mConfig.PhotosphereAutoStartBatch + args);
-                                ProcessWrangler.InitProcess(mConfig.PhotosphereBatcherExe, SaveFolder, args).Start();
+                                ProcessWrangler.InitProcess(mConfig.PhotosphereBatcherExe, folder, args).Start();
                             }
                         }
                     }
@@ -270,6 +288,7 @@ namespace Chimera.Plugins {
                 }
                 Thread.Sleep(5);
             }
+            mRunning = false;
             if (mConfig.AutoShutdown)
                 mForm.Close();
         }
@@ -337,8 +356,8 @@ namespace Chimera.Plugins {
             return string.Format("{0} - {1}y {2}p{3}.png", (image / 3), rot.Yaw, rot.Pitch, offset);
         }
 
-        private void StartPTOFile() {
-            File.WriteAllLines(PTOFile, new string[] {
+        private void StartPTOFile(string ptoFile) {
+            File.WriteAllLines(ptoFile, new string[] {
                 "# hugin project file",
                 "#hugin_ptoversion 2",
                 String.Format("p f2 w{0} h{1} v360  E0 R0 n\"TIFF_m c:LZW r:CROP\"", OutputWidth, OutputWidth / 2),
@@ -348,8 +367,8 @@ namespace Chimera.Plugins {
             });
         }
 
-        private void FinishPTOFile () {
-            File.AppendAllLines(PTOFile, new string[] {
+        private void FinishPTOFile (string ptoFile) {
+            File.AppendAllLines(ptoFile, new string[] {
                 "",
                 "",
                 "# specify variables that should be optimized",

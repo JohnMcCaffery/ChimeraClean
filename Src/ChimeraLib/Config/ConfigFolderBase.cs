@@ -19,11 +19,13 @@ namespace Chimera.Config {
             string file = cfg.Get(group, group + ".ini");
             file = Path.GetFullPath(Path.Combine(folder, file));
 
+            /*
             if (!File.Exists(file)) {
-		//Creating file crashes config tool on launcher config for some reason
+                //Creating file crashes config tool on launcher config for some reason
                 file = cfg.Get(group, group + ".ini");
                 //File.Create(file);
             }
+            */
 
             return file;
         }

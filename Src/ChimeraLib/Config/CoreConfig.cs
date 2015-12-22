@@ -59,6 +59,7 @@ namespace Chimera.Config {
         public string PhotosphereBatcherExe;
         public bool PhotosphereAutoStartBatch;
         public bool PhotosphereAddBatch;
+        public string PhotosphereFolder;
 
         public CoreConfig(params string[] args)
             : base("Main", args) {
@@ -112,6 +113,7 @@ namespace Chimera.Config {
             PhotosphereAutoStartBatch = Get("Photosphere", "AutostartBatch", false, "If the output PTO file is to be added to the batcher then this controls whether the batcher will be started once the PTO file is added.");
             PhotosphereBatcherExe = GetFileSection("Photosphere", "BatcherExe", "C:/Program Files/Hugin/bin/PTBatcherGUI.exe", "The hugin batcher executable.");
             PhotosphereAddBatch = Get("Photosphere", "Batch", false, "Whether to add the PTO project to hugin's batcher once the photosphere has been created.");
+            PhotosphereFolder = GetFolderSection("Photosphere", "Folder", "Images/Photospheres", "The folder where photosphere material will be stored.");
 
         }
 
