@@ -24,9 +24,9 @@ namespace Chimera.GUI.Controls.Plugins {
             mPlugin = plugin;
             mConfig = plugin.Config as CoreConfig;
 
-            folderAddress.Text = mConfig.ScreenshotFolder;
+            folderAddress.Text = mConfig.PhotosphereFolder;
             folderDialog.RootFolder = Environment.SpecialFolder.MyDocuments;
-            folderDialog.SelectedPath = mConfig.ScreenshotFolder;
+            folderDialog.SelectedPath = mConfig.PhotosphereFolder;
             captureDelay.Value = mConfig.PhotosphereCaptureDelayMS;
             nameBox.Text = mConfig.PhotosphereName;
             widthBox.Value = mConfig.PhotosphereOutputWidth;
@@ -50,13 +50,13 @@ namespace Chimera.GUI.Controls.Plugins {
         private void folderButton_Click(object sender, EventArgs e) {
             if (folderDialog.ShowDialog() == DialogResult.OK) {
                 folderAddress.Text = folderDialog.SelectedPath;
-                mConfig.ScreenshotFolder = folderDialog.SelectedPath;
+                mConfig.PhotosphereFolder = folderDialog.SelectedPath;
             }
         }
 
         private void folderAddress_TextChanged(object sender, EventArgs e) {
             folderDialog.SelectedPath = folderAddress.Text;
-            mConfig.ScreenshotFolder = folderDialog.SelectedPath;
+            mConfig.PhotosphereFolder = folderDialog.SelectedPath;
         }
 
         private void captureDelay_ValueChanged(object sender, EventArgs e) {
